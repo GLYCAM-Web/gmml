@@ -88,7 +88,7 @@ using MolecularModeling::Assembly;
 //    ///Creating a new assembly only from the ring atoms for external detect shape program
 //    Assembly* detect_shape_assembly = new Assembly();
 //    detect_shape_assembly->AddResidue(cycle.at(0)->GetResidue());
-    
+
 //    Residue* detect_shape_residue = detect_shape_assembly->GetResidues().at(0);
 //    for(unsigned int i = 0; i < cycle.size(); i++)
 //    {
@@ -107,7 +107,7 @@ using MolecularModeling::Assembly;
 //        gmml::FindReplaceString(name, ",", "");
 //        gmml::FindReplaceString(name, "*", "");
 
-	
+
 //        cycle.at(i)->SetName(name);
 //        cycle.at(i)->SetId(id);
 //    }
@@ -196,7 +196,7 @@ using MolecularModeling::Assembly;
 //Other users call this wrapper.
 std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, bool glyprobity_report, bool populate_ontology )
 {
- 
+
     std::vector<Glycan::Monosaccharide*> monos = std::vector<Glycan::Monosaccharide*>();
 
     OligosaccharideVector oligos = Assembly::ExtractSugars( amino_lib_files, monos, glyprobity_report,  populate_ontology );
@@ -268,11 +268,11 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   //vector< Monosaccharide* > monos = vector< Monosaccharide* >(); //vector of monosaccharide has been made external
   int mono_id = 0;
   //for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ ) {
-    //std::string cycle_atoms_str = ( *it ).first;   
+    //std::string cycle_atoms_str = ( *it ).first;
   for (std::map <unsigned long long, std::pair<std::string, AtomVector> >::iterator it = ordered_cycles_map.begin(); it != ordered_cycles_map.end(); it++){
     std::string cycle_atoms_str = it->second.first;
     AtomVector cycle = it->second.second;
-    Glycan::Monosaccharide* mono = new Glycan::Monosaccharide(); 
+    Glycan::Monosaccharide* mono = new Glycan::Monosaccharide();
     //int status_index = distance( cycles.begin(), it );
     int status_index = distance( ordered_cycles_map.begin(), it );
     mono->anomeric_status_ = anomeric_carbons_status.at( status_index );
@@ -331,7 +331,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
           // test << "Atom_b_factor_mono" << this_b_factor;
           // gmml::log(__LINE__, __FILE__, gmml::INF, test.str());
         }
-        
+
       }
     }
     for (AtomVector::iterator it = mono->cycle_atoms_.begin(); it != mono->cycle_atoms_.end(); it++ )
@@ -592,9 +592,9 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     mono->mono_id = mono_id;
     monos.push_back( mono );
 
-    
+
   }
-	
+
 
   ///CREATING TREE-LIKE STRUCTURE OF OLIGOSACCHARIDE
   std::cout << std::endl << "Oligosaccharides:" << std::endl;
@@ -612,12 +612,11 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     } else {
       number_of_monosaccharides++;
     }
-    oligo->Print( std::cout ); 
+    oligo->Print( std::cout );
   }
 
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
   std::vector< Glycan::Note* > notes = this->GetNotes();
-  std::cout << "past note" << std::endl;
   if( !notes.empty() ) {
     std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
     std::cout << std::endl << "NOTES/ISSUES:" << std::endl;
@@ -1406,7 +1405,7 @@ void Assembly::InitiateDetectionOfCompleteSideGroupAtoms (std::vector<Glycan::Mo
 bool Assembly::CheckIfPlusOneSideAtomBelongsToCurrentMonosaccharide (AtomVector& SideAtomArm, AtomVector& cycle_atoms, Atom* working_atom )
 {
     bool belongs_to_current_monosaccharide = true;
-        AtomVector working_node_neighbors = working_atom -> GetNode() -> GetNodeNeighbors();    
+        AtomVector working_node_neighbors = working_atom -> GetNode() -> GetNodeNeighbors();
         AtomVector attached_anomeric_carbons = AtomVector();
         for (AtomVector::iterator it = working_node_neighbors.begin(); it != working_node_neighbors.end(); it++){
             if (*it != NULL){
@@ -1420,14 +1419,14 @@ bool Assembly::CheckIfPlusOneSideAtomBelongsToCurrentMonosaccharide (AtomVector&
         if (attached_anomeric_carbons.size() == 2){
         //TODO:figure out which branch is shorter
         }
-	
+
         if (attached_anomeric_carbons.size() == 1){
-            if (std::find(cycle_atoms.begin(),cycle_atoms.end(),attached_anomeric_carbons.at(0)) != cycle_atoms.end()){ //if the anomeric carbon is from the current monosaccharide 
+            if (std::find(cycle_atoms.begin(),cycle_atoms.end(),attached_anomeric_carbons.at(0)) != cycle_atoms.end()){ //if the anomeric carbon is from the current monosaccharide
 	        bool sidechain_is_terminal = true;
 	        AtomVector cycle_and_visisted_atoms = cycle_atoms;
 	        CheckIfSideChainIsTerminal(working_atom,cycle_and_visisted_atoms,sidechain_is_terminal);
 
-	        if (!sidechain_is_terminal ){   
+	        if (!sidechain_is_terminal ){
 	            SideAtomArm.erase(std::find(SideAtomArm.begin(), SideAtomArm.end(), working_atom));	//Unless it's terminal, this oxygen belongs to the other monosaccharide.
 		    belongs_to_current_monosaccharide = false;
 	        }
@@ -1438,10 +1437,10 @@ bool Assembly::CheckIfPlusOneSideAtomBelongsToCurrentMonosaccharide (AtomVector&
     return belongs_to_current_monosaccharide;
 }
 
-	    
+
 void Assembly::SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_atom, AtomVector& cycle_atoms, AtomVector& visited_atoms)
 {
-    AtomVector working_node_neighbors = working_atom -> GetNode() -> GetNodeNeighbors();    
+    AtomVector working_node_neighbors = working_atom -> GetNode() -> GetNodeNeighbors();
     for (AtomVector::iterator it = working_node_neighbors.begin(); it != working_node_neighbors.end(); it++){  //Detect atoms that should be added to the current side chain arm.
 	Atom* working_node_neighbor = *it;
         if (working_node_neighbor != NULL){
@@ -1462,7 +1461,7 @@ void Assembly::SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_
 	            }
 
 
-	            if (attached_anomeric_carbons.size() == 1){  // if attached to only one anomeric carbon 
+	            if (attached_anomeric_carbons.size() == 1){  // if attached to only one anomeric carbon
 		        if (attached_anomeric_carbons.front() != working_atom){  // if the working atom IS NOT the anomeric carbon the neighbor is attached to,the current side chain gets this oxygen.
 			    SideAtomArm.push_back(working_node_neighbor);
 		    	    working_node_neighbor-> SetIsSideChain(true);
@@ -1472,9 +1471,9 @@ void Assembly::SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_
 			/*else {
 			    AtomVector cycle_and_visited_atoms = AtomVector();
 			    cycle_and_visited_atoms.push_back(attached_anomeric_carbons.front() );
-			    bool side_chain_is_terminal = true; 
+			    bool side_chain_is_terminal = true;
 			    CheckIfSideChainIsTerminal (working_node_neighbor, cycle_and_visited_atoms, side_chain_is_terminal);
-			    if (side_chain_is_terminal){ 
+			    if (side_chain_is_terminal){
 			        SideAtomArm.push_back(working_node_neighbor);
 		    	        working_node_neighbor-> SetIsSideChain(true);
 			    }
@@ -1486,19 +1485,19 @@ void Assembly::SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_
 		    if (attached_anomeric_carbons.size() == 0){
 		        SideAtomArm.push_back(working_node_neighbor);
 			working_node_neighbor-> SetIsSideChain(true);
-		    }	
-		    
-		} // if is oxygen,nitrogen or sulfur     
+		    }
+
+		} // if is oxygen,nitrogen or sulfur
 
 		else {  // if this neighbor is not oxygen,nitrogen or sulfur, the current side chain should get this atom
 		    SideAtomArm.push_back(working_node_neighbor);
 		    working_node_neighbor-> SetIsSideChain(true);
 		}
-	    }//if not cycle   
-	}   
+	    }//if not cycle
+	}
     }//for
     visited_atoms.push_back(working_atom);
-    
+
     for (std::vector<Atom*>::iterator it3 = working_node_neighbors.begin(); it3 != working_node_neighbors.end(); it3++){
 	if (*it3 != NULL){
 	    Atom* working_node_neighbor = *it3;
@@ -1531,7 +1530,7 @@ void Assembly::CheckIfSideChainIsTerminal(Atom* starting_atom, std::vector<Atom*
     }//for
 
     for (std::vector<Atom*>::iterator it = starting_atom_node_neighbors.begin(); it != starting_atom_node_neighbors.end(); it++){
-	if ( *it != NULL){  
+	if ( *it != NULL){
 	    if(std::find(cycle_and_visited_atoms.begin(), cycle_and_visited_atoms.end(), *it) == cycle_and_visited_atoms.end() &&
 	       !(*it)->GetResidue()->CheckIfProtein()  && is_terminal ){
 	        starting_atom = *it;
@@ -3249,7 +3248,7 @@ void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide
       std::stringstream mono_index_stream;
       mono_index_stream << mono_index;
       std::string mono_index_str = mono_index_stream.str();
-      
+
       Glycan::Monosaccharide* mono = *it;
       Residue * NewResidueForThisMonosaccharide = new Residue();
       Residue * OldResidueForThisMonosaccharide = mono->cycle_atoms_.at(0)->GetResidue();
@@ -3264,7 +3263,7 @@ void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide
       }
 
 
-      std::vector<Atom*> AllAtomsInThisMonosaccharide = std::vector<Atom*>(); 
+      std::vector<Atom*> AllAtomsInThisMonosaccharide = std::vector<Atom*>();
       for (std::vector<Atom*>::iterator it2= mono->cycle_atoms_.begin(); it2!= mono->cycle_atoms_.end(); it2++){ //Add cycle atoms to monosaccharide
           AllAtomsInThisMonosaccharide.push_back(*it2);
       }
@@ -3369,8 +3368,8 @@ std::string Assembly::CheckROHTerminal(MolecularModeling::Atom* target, AtomVect
         return "ROH";
     }
     //else if (o_neighbors.size() > 1)
-    else if (o_neighbors.size() > 1 && o_neighbors.size()== 2 ) 
-    //ROH oxygen has up to two neighbors. It's safer to limit number of neighbors to two. 
+    else if (o_neighbors.size() > 1 && o_neighbors.size()== 2 )
+    //ROH oxygen has up to two neighbors. It's safer to limit number of neighbors to two.
     {
         if((o_neighbors.at(0)->GetName().at(0) == 'H' && o_neighbors.at(1)->GetName().at(0) != 'H'))
         {
@@ -3545,7 +3544,7 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector
         AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
 	//I have encounter the situation where a NLN is recognized as ROH, because the anomeric nitrogen has hydrogen and satisfies the criteria for ROH.
 	// So, I added codes to check if terminal is protein.
-	bool non_protein_terminal = true;			
+	bool non_protein_terminal = true;
 	if (target->GetResidue()->CheckIfProtein()){
 	    non_protein_terminal = false;
 	}
@@ -3573,7 +3572,7 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector
 	    /*for (unsigned int i=0; i< o_neighbors.size(); i++){
 		if (o_neighbors[i] -> GetResidue() -> CheckIfProtein()){
 		    //assuming normal structure, all neighbor atoms should belong to the same protein.
-		    target_o_neighbor = o_neighbors[i];		
+		    target_o_neighbor = o_neighbors[i];
 		}
 	    }*/
 	    // Yao Xiao: my code ends.
@@ -3599,11 +3598,11 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector
 
                 if(aminoacid_glycam.aminoacid_name_.compare("") != 0){
                     //return aminoacid_glycam.aminoacid_name_;	//Why return the amino acid name instead of Glycam name?
-                    return aminoacid_glycam.glycam_name_;	
+                    return aminoacid_glycam.glycam_name_;
 		}
                 else if(glycam_aminoacid.glycam_name_.compare("") != 0){
                     //return glycam_aminoacid.aminoacid_name_;	////Why return the amino acid name instead of Glycam name?
-                    return glycam_aminoacid.glycam_name_;	
+                    return glycam_aminoacid.glycam_name_;
 		}
                 else{
 		    std::cout << "This return." << std::endl;
@@ -3633,12 +3632,12 @@ void Assembly::CheckLinkageNote(Glycan::Monosaccharide* mono1, Glycan::Monosacch
         reverse_linkage << linkage_tokens.at(2) << "-" << linkage_tokens.at(1) << "-" << linkage_tokens.at(0);
         checked_linkages.push_back(linkage);
         checked_linkages.push_back(reverse_linkage.str());
-	
+
 	// Check if vector has a size and do some error handling
 	std::vector<std::string> left_c_index_vector = gmml::Split(gmml::Split(linkage_tokens.at(0), "_").at(0), "C*,\'");
 	std::vector<std::string> right_c_index_vector = gmml::Split(gmml::Split(linkage_tokens.at(2), "_").at(0), "C*,\'");
 	std::vector<std::string> glycosidic_o_index_vector = gmml::Split(gmml::Split(linkage_tokens.at(1), "_").at(0), "ON*,\'");
-	
+
 	if( !left_c_index_vector.empty() && !right_c_index_vector.empty() && !glycosidic_o_index_vector.empty() ) {
 		// Check if string in vector.at(0) is int
 		std::vector <std::vector <std::string> > C_index_ErrCheck = std::vector <std::vector <std::string> >();
