@@ -117,8 +117,11 @@ void Assembly::AdjustCharge(Residue *residue, Residue *parent_residue, int branc
 {
     if(residue->GetName().compare("SO3") == 0)
     {
+std::cout << "Derivative name: " << residue->GetName() << std::endl;
+std::cout << "Charge before adjustment: " << parent_residue->GetTailAtoms().at(branch_index)->GetName() << "--" << parent_residue->GetTailAtoms().at(branch_index)->MolecularDynamicAtom::GetCharge() << std::endl;
       parent_residue->GetTailAtoms().at(branch_index)->MolecularDynamicAtom::SetCharge(
                   parent_residue->GetTailAtoms().at(branch_index)->MolecularDynamicAtom::GetCharge() + 0.031);
+std::cout << "Charge after adjustment: " << parent_residue->GetTailAtoms().at(branch_index)->GetName() << "--" << parent_residue->GetTailAtoms().at(branch_index)->MolecularDynamicAtom::GetCharge() << std::endl;
     }
     else if(residue->GetName().compare("MEX") == 0 || residue->GetName().compare("ACX") == 0)
     {
@@ -142,8 +145,12 @@ void Assembly::AdjustCharge(Residue *residue, Residue *parent_residue, int branc
         }
         if(carbon != NULL)
         {
-            if(residue->GetName().compare("MEX") == 0)
+            if(residue->GetName().compare("MEX") == 0){
+std::cout << "Derivative name: " << residue->GetName() << std::endl;
+std::cout << "Charge before adjustment: " << carbon->GetName() << "--" << carbon->MolecularDynamicAtom::GetCharge() << std::endl;
                 carbon->MolecularDynamicAtom::SetCharge(carbon->MolecularDynamicAtom::GetCharge() - 0.039);
+std::cout << "Charge after adjustment: " << carbon->GetName() << "--" << carbon->MolecularDynamicAtom::GetCharge() << std::endl;
+	    }
             if(residue->GetName().compare("ACX") == 0)
                 carbon->MolecularDynamicAtom::SetCharge(carbon->MolecularDynamicAtom::GetCharge() + 0.008);
         }

@@ -106,6 +106,7 @@ using OffFileSpace::OffFile;
                     this->atom_index_map_[residue_atom->GetIndex()]=AtomIndex;
                      this->atom_bonding_map_[residue_atom->GetIndex()]=BoundingAtomIndex;
                     off_file_residue->AddAtom(off_file_atom);
+
                 }
 
                 /*
@@ -309,6 +310,7 @@ using OffFileSpace::OffFile;
                 {
                     MolecularModeling::Atom* atom = *it1;
                     c1x[c1x_count]=atom_bonding_map_[atom->GetIndex()];
+		    //std::cout << "c1x[" << c1x_count << "] = " << atom_bonding_map_[atom->GetIndex()] << std::endl;
                     c1x_count++;
                 }
 
@@ -316,16 +318,33 @@ using OffFileSpace::OffFile;
                 {
                    MolecularModeling::Atom* atom = *it2;
                     c2x[c2x_count]=atom_bonding_map_[atom->GetIndex()];
+		    //std::cout << "c2x[" << c2x_count << "] = " << atom_bonding_map_[atom->GetIndex()] << std::endl;
                     c2x_count++;
                 }
 
-                for(int i=0;i<c1x_count || i<c2x_count;i++)
+		stream << " " << c1x[0] << " " << c2x[0] << " ";
+		for (int i=1; i<c1x_count; i++){
+		    stream << c1x[i] << " ";
+		}
+		for (int i=1; i<c2x_count; i++){
+		    stream << c2x[i] << " ";
+		}
+		int zero_column_count = 6 - head_atoms_of_residue.size() - tail_atoms_of_residue.size();
+		for (int i=0; i<zero_column_count; i++){
+		    if (i != zero_column_count -1){
+		        stream << "0" << " ";
+		    }
+		    else{
+			stream << "0" << std::endl;
+		    }
+		}
+                /*for(int i=0;i<c1x_count || i<c2x_count;i++)
                 {
                     if(i<c1x_count && i<c2x_count)
                     {
                         stream << " " << c1x[i] << " " << c2x[i] << " " << 0 << " " << 0 << " " << 0 << " " << 0 << std::endl;
                     }
-                    else if(i<c1x_count && i>c2x_count )
+                    else if(i<c1x_count && i>c2x_count )//if more head than tail
                     {
                         stream << " " << c1x[i] << " " << 0 << " " << 0 << " " << 0 << " " << 0 << " " << 0 << std::endl;
                     }
@@ -333,8 +352,8 @@ using OffFileSpace::OffFile;
                     {
                         stream << " " << 0 << " " << c2x[i]  << " " << 0 << " " << 0 << " " << 0 << " " << 0 << std::endl;
                     }
-                }
-                        
+                }*/
+		
             }
     }
     
@@ -355,8 +374,12 @@ using OffFileSpace::OffFile;
                     name= residue->GetName();
                     seq++;
                     childseq= residue->GetAtoms().size()+1;
-                    AtomVector head_atoms_of_residue = residue->GetHeadAtoms();
-                    MolecularModeling::Atom* current_atom=head_atoms_of_residue[0];
+                    //AtomVector head_atoms_of_residue = residue->GetHeadAtoms();
+                    //MolecularModeling::Atom* current_atom =head_atoms_of_residue[0];
+                    MolecularModeling::Atom* current_atom = residue->GetAtoms().at(0);
+		    //Yao: Don't determine starting atom index from head atoms. Instead, search for AtomIndex = 1 in an offfile atom object, or use the index of an element in this ResidueVector.
+		    //Since there are offfile residue/atom objects populated, it might be better to rely on these objects, rather than assembly residues.
+		    //In one case,head_atoms_of_residue[0] is indeed the 2nd atom in residue.I'm talking about the residue ROH as extracted from prep file.
                     startatomx= atom_bonding_map_[current_atom->GetIndex()];
                     restype="?";
                     imagingx=0;

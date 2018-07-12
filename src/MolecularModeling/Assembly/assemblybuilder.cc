@@ -524,10 +524,28 @@ void Assembly::SetGlycam06ResidueBonding (std::map<int, std::pair<CondensedSeque
 	for (std::map<MolecularModeling::Atom*, MolecularModeling::Atom*>::iterator it2 = parent_tail_child_head_map.begin(); it2 != parent_tail_child_head_map.end(); it2++){
 	    MolecularModeling::Atom* parent_tail_atom = it2->first;
 	    MolecularModeling::Atom* child_head_atom = it2->second;
-	    parent_tail_atom->GetResidue()->AddTailAtom(parent_tail_atom);
-	    parent_tail_atom->GetResidue()->GetNode()->AddResidueNodeConnectingAtom(parent_tail_atom);
-	    child_head_atom->GetResidue()->AddHeadAtom(child_head_atom);
-	    child_head_atom->GetResidue()->GetNode()->AddResidueNodeConnectingAtom(child_head_atom);
+	    MolecularModeling::Residue* parent_residue = parent_tail_atom->GetResidue();
+	    MolecularModeling::Residue* child_residue = child_head_atom->GetResidue();
+	    parent_residue->AddTailAtom(parent_tail_atom);
+	    parent_residue->GetNode()->AddResidueNodeConnectingAtom(parent_tail_atom);
+	    child_residue->AddHeadAtom(child_head_atom);
+	    child_residue->GetNode()->AddResidueNodeConnectingAtom(child_head_atom);
+	}
+	//If child residue is derivative, adjust charge
+	for (std::map<MolecularModeling::Atom*, MolecularModeling::Atom*>::iterator it2 = parent_tail_child_head_map.begin(); it2 != parent_tail_child_head_map.end(); it2++){
+	    MolecularModeling::Atom* parent_tail_atom = it2->first;
+	    MolecularModeling::Atom* child_head_atom = it2->second;
+	    MolecularModeling::Residue* parent_residue = parent_tail_atom->GetResidue();
+	    MolecularModeling::Residue* child_residue = child_head_atom->GetResidue();
+	    if (child_residue->GetIsSugarDerivative()){
+		gmml::AtomVector all_parent_tail_atoms = parent_residue->GetTailAtoms();
+		for (unsigned int i = 0; i < all_parent_tail_atoms.size(); i++){
+		    if (all_parent_tail_atoms[i] == parent_tail_atom){
+			unsigned int branch_index = i;
+			this->AdjustCharge(child_residue, parent_residue, branch_index);
+		    }
+		}
+	    } 
 	}
 	
     }//for
@@ -759,6 +777,21 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 	this -> ConvertCondensedSequence2AssemblyResidues (glycam06_residues, template_assembly);
 
     this -> SetGlycam06ResidueBonding (glycam06_assembly_residue_map);
+//Testing:
+/*
+    gmml::AtomVector allAtoms = this->GetAllAtomsOfAssembly();
+    for (unsigned int z=0; z<allAtoms.size(); z++){
+	MolecularModeling::Atom* atom = allAtoms[z];
+	gmml::AtomVector neighbors = atom->GetNode()->GetNodeNeighbors();
+	std::cout << "Atom " << atom->GetResidue()->GetName() << "-" << atom->GetName() << " is bonded to: ";
+	for (unsigned int a=0; a< neighbors.size(); a++){
+	    MolecularModeling::Atom* neighbor = neighbors[a];
+	    std::cout << neighbor->GetResidue()->GetName() << "-" << neighbor->GetName() << ", ";
+	}
+	std::cout << std::endl;
+    }
+*/
+//Testing
     
     for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >::iterator it = 
 	glycam06_assembly_residue_map.begin(); it != glycam06_assembly_residue_map.end(); it++){
