@@ -7859,6 +7859,9 @@ void PdbFile::PrintOntology(std::stringstream& ont_stream)
   //Return Authors
   gmml::AddLiteral( uriStr, Ontology::hasAuthors, this->author_->GetAuthor(), ont_stream );
 
+  //Return JOURNAL
+  gmml::AddLiteral( uriStr, Ontology::hasJournal, this->journal_->GetReference(), ont_stream );
+
   //Return DOI
   gmml::AddLiteral( uriStr, Ontology::hasDOI, this->journal_->GetDOI(), ont_stream );
 
