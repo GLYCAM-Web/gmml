@@ -166,6 +166,110 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     return FormulateCURLGF(output_file_type, query.str(), url);
 }
 
+std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, std::string sortBy, std::string url, std::string output_file_type)
+{
+  std::stringstream query;
+  std::stringstream search;
+  search << searchType;
+     
+  query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
+  query << " DISTINCT ?PDB_ID \n";
+  query << "(group_concat(distinct ?oligo_sequence;separator=\"\\n\") as ?Oligosaccharides) ";
+  if(isComment == 1)
+  {
+    query << "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments) ";
+  }
+  if(isWarning == 1)
+  {
+    query << "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings) ";
+  }
+  if(isError == 1)
+  {
+     query << "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n";  
+  }     
+  query << Ontology::WHERE_CLAUSE;
+  query << "?pdb_file     :identifier             ?PDB_ID.\n";
+  if(search.str()=="PDB")
+  {
+    query << "VALUES ?PDB_ID { \"" << searchTerm << "\" }\n";
+  }
+  if((resolution_max != -1) | (resolution_min != -1))
+  {
+    query << "?pdb_file     :hasResolution          ?resolution.\n";
+  }
+  if(resolution_max != -1)
+  {
+    query << "FILTER (" << resolution_max << " > ?resolution)\n";
+  }
+  if(resolution_min != -1)
+  {
+    query << "FILTER (" << resolution_min << " < ?resolution)\n";
+  }
+  if((b_factor_max != -1) | (b_factor_min != -1))
+  {
+    query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.\n";
+  }
+  if(b_factor_max != -1)
+  {
+    query << "FILTER (" << b_factor_max << " > ?Mean_B_Factor)\n";
+  }
+  if(b_factor_min != -1)
+  {
+    query << "FILTER (" << b_factor_min << " < ?Mean_B_Factor)\n";
+  }
+  query << "?pdb_file     :hasOligo               ?oligo.\n";
+  query << "?oligo        :oligoName              ?oligo_sequence.\n";
+  if(search.str()=="Oligo_REGEX")
+  {
+    gmml::FindReplaceString(searchTerm, "[", "\\\\[");
+    gmml::FindReplaceString(searchTerm, "]", "\\\\]");
+    gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
+    query << "FILTER regex(?oligo_sequence, \"" << searchTerm << "\")\n";    
+  }
+  if(search.str()=="Condensed_Sequence")
+  {
+    gmml::FindReplaceString(searchTerm, "[", "\\\\[");
+    gmml::FindReplaceString(searchTerm, "]", "\\\\]");
+    gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
+    query << "VALUES ?oligo_sequence { \"" << searchTerm << "\" }\n";
+  }
+  if((oligo_b_factor_max != -1) | (oligo_b_factor_min != -1))
+  {
+    query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.\n";
+  }
+  if(oligo_b_factor_max != -1)
+  {
+    query << "FILTER (" << oligo_b_factor_max << " > ?oligo_mean_B_Factor)\n";
+  }
+  if(oligo_b_factor_min != -1)
+  {
+    query << "FILTER (" << oligo_b_factor_min << " < ?oligo_mean_B_Factor)\n";
+  }
+  if(isError == 1)
+  {
+    query << "?pdb_file       :hasNote       ?errorNote.\n";
+    query << "?errorNote	    :NoteType      \"error\".\n";
+    query << "?errorNote      :description   ?error.\n";
+  }
+  if(isWarning == 1)
+  {
+    query << "?pdb_file       :hasNote       ?warningNote.\n";
+    query << "?warningNote    :NoteType      \"warning\".\n";
+    query << "?warningNote    :description   ?warning.\n";
+  }
+  if(isComment == 1)
+  {
+    query << "?pdb_file       :hasNote       ?commentNote.\n";
+    query << "?commentNote    :NoteType      \"comment\".\n";
+    query << "?commentNote    :description   ?comment.\n";
+  }
+
+  query << Ontology::END_WHERE_CLAUSE << "\n";
+  query << "ORDER BY  ?" << sortBy << "\n";
+    
+  return FormulateCURLGF(output_file_type, query.str(), url);
+}
+
 std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, std::string sortBy, std::string url, std::string output_file_type)
 {
   std::stringstream query;
