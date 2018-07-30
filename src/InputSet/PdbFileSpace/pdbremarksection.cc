@@ -41,8 +41,13 @@ PdbRemarkSection::PdbRemarkSection(std::stringstream &stream_block)
                 {
                     std::string tmp_resolution = line.substr(23,7);
                     gmml::Trim(tmp_resolution);
-                    if( tmp_resolution != "NULL" ) {
+                    // if( tmp_resolution != "NULL" ) {
+                    //     this->SetResolution( std::stof( tmp_resolution ) );
+                    // }
+                    try {
                         this->SetResolution( std::stof( tmp_resolution ) );
+                    } catch (const std::invalid_argument& error) {
+                        gmml::log(__LINE__, __FILE__, gmml::ERR, "RESOLUTION is not a valid float value. Value:\t" + tmp_resolution);
                     }
                 }
                 if (line.find("MEAN B VALUE")!= std::string::npos)
@@ -50,8 +55,13 @@ PdbRemarkSection::PdbRemarkSection(std::stringstream &stream_block)
                     int start = line.find(":") + 1;
                     std::string tmp_b_factor = line.substr(start,80-start);
                     gmml::Trim( tmp_b_factor );
-                    if(tmp_b_factor != "NULL") {
+                    // if(tmp_b_factor != "NULL") {
+                    //     this->SetBFactor( std::stof( tmp_b_factor ) );
+                    // }
+                    try {
                         this->SetBFactor( std::stof( tmp_b_factor ) );
+                    } catch(const std::invalid_argument& error) {
+                        gmml::log(__LINE__, __FILE__, gmml::ERR, "MEAN B VALUE is not a valid float value. Value:\t" + tmp_b_factor);
                     }
                 }
                 getline(stream_block,line);
