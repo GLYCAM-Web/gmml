@@ -3612,12 +3612,14 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector
                 gmml::AminoacidGlycamMap glycam_aminoacid = gmml::GlycamAminoacidLookup(target_o_neighbor->GetResidue()->GetName());
 
                 if(aminoacid_glycam.aminoacid_name_.compare("") != 0){
-                    //return aminoacid_glycam.aminoacid_name_;	//Why return the amino acid name instead of Glycam name?
-                    return aminoacid_glycam.glycam_name_;
+                    return aminoacid_glycam.aminoacid_name_;	//Why return the amino acid name instead of Glycam name?
+                                                              //For glyfinder; will work out solution if both are needed (Dave)
+                    // return aminoacid_glycam.glycam_name_;
 		}
                 else if(glycam_aminoacid.glycam_name_.compare("") != 0){
-                    //return glycam_aminoacid.aminoacid_name_;	////Why return the amino acid name instead of Glycam name?
-                    return glycam_aminoacid.glycam_name_;
+                    return glycam_aminoacid.aminoacid_name_;	////Why return the amino acid name instead of Glycam name?
+                                                              //For glyfinder; will work out solution if both are needed (Dave)
+                    // return glycam_aminoacid.glycam_name_;
 		}
                 else{
 		    std::cout << "This return." << std::endl;
