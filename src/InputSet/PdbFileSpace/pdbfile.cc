@@ -7850,8 +7850,13 @@ void PdbFile::PrintOntology(std::stringstream& ont_stream)
   std::string uriStr = uri.str();
 
   gmml::AddLiteral( uriStr, Ontology::TYPE, Ontology::PDB, ont_stream );
-
+  
+  //Return PDB_ID
   gmml::AddLiteral( uriStr, Ontology::id, this->header_->GetIdentifierCode(), ont_stream );
+  
+  //Return Protein Acession Number
+  //TODO add check to make sure that it is the Uniprot database reference
+  //gmml::AddLiteral( uriStr, Ontology::ProteinID, this->database_reference_->GetDatabaseIDCode(), ont_stream );
 
   //Return Title
   gmml::AddLiteral( uriStr, Ontology::hasTitle, this->title_->GetTitle(), ont_stream );
