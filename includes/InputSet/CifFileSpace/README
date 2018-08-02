@@ -1,5 +1,0 @@
-CIF (crystallographic information format) filespace holds all of the code written by the PDB to handle CIF and mmCIF files
-
-see http://mmcif.wwpdb.org/docs/sw-examples/cpp/html/index.html to update these files
-
-The files have been modified to match the formatting of gmml (.hpp and .cc files) as well as fixing the filepaths to work with our architecture
