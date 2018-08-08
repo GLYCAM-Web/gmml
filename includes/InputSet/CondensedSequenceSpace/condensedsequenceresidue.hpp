@@ -38,6 +38,7 @@ namespace CondensedSequenceSpace
             int GetOxygenPosition();
             DerivativeMap GetDerivatives();
             int GetParentId();
+	    int GetBondId(); //Added by Yao 08/03/2018. Bond Id is to label the index of the bond of a residue to its parent, starting from reducing end.Numbering starts from 0.
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -53,6 +54,7 @@ namespace CondensedSequenceSpace
             void SetOxygenPosition(int oxygen_position);
             void SetDerivatives(DerivativeMap derivatives);
             void SetParentId(int parent_id);
+	    void SetBondId(int bond_id); //Added by Yao 08/03/2018. Bond Id is to label the index of the bond of a residue to its parent, starting from reducing end.Numbering starts from 0.
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -80,6 +82,7 @@ namespace CondensedSequenceSpace
             int oxygen_position_;
             DerivativeMap derivatives_;
             int parent_id_;
+	    int bond_id_;  //Added by Yao 08/03/2018. Bond Id is to label the index of the bond of a residue to its parent, starting from reducing end.Numbering starts from 0.
     };
 }
 
