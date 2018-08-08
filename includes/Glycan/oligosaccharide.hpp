@@ -54,10 +54,11 @@ namespace Glycan
 
                     std::string sub_name = oligosaccharide_name_.substr(0, end_index);
                     std::stringstream new_name;
+                    gmml::log(__LINE__, __FILE__,  gmml::INF, " This.size 1" );
                     new_name << "[" << tokens.at(tokens.size() - 1).at(0) << sub_name << "-]";
                     oligosaccharide_name_ = new_name.str();
                 }
-
+                gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_name_ );
                 // Example oligo sequence LRhapa1-3LRhapa1-3DGlcpNAcb1-OME
                 // Example oligo linkages
                 //{2}RAM(401_A)C1-RAE(402_A)C3, Glycosidic linkage: RAE(402_A)O3
@@ -74,7 +75,9 @@ namespace Glycan
                 size_t end_index = 0;
                 std::string first_residue_of_linkage  = "";
                 std::string second_residue_of_linkage  = "";
-
+//TODO fix the double condition for loop
+gmml::log(__LINE__, __FILE__,  gmml::INF, " This.size double for loop ..." );
+gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_linkages_ );
                 for(unsigned int i = 0; i < oligo_linkages_tokens.size() && i < oligo_name_tokens.size(); i++) ///Processing linkages line by line
                 {
                     full_glycosidic_linkage = oligo_linkages_tokens.at(i);
@@ -85,7 +88,6 @@ namespace Glycan
                     first_residue_of_linkage = link_left_side.substr(0, end_index + 1); ///filtering out atom name. e.g. RAM(401_A)
                     std::string oligo_temp = oligo_name_tokens.at(i);
                     residue_links_stream << updateResidueLink(oligo_temp, first_residue_of_linkage) << "-";
-
                     if (i >= oligo_linkages_tokens.size() - 1)
                     {
                         link_right_side = link_tokens.at(2);     ///Getting the second residue of linkage in the line. e.g. {1}NAG(1521_A)C1-NAG(1520_A)C4, Glycosidic linkage: NAG(1520_A)O4
@@ -94,6 +96,7 @@ namespace Glycan
                         second_residue_of_linkage = link_right_side.substr(0, end_index + 1); ///filtering out atom name. e.g. NAG(1520_A)
                         std::string oligo_temp = oligo_name_tokens.at(i+1);
                         residue_links_stream << updateResidueLink(oligo_temp, second_residue_of_linkage);
+                        gmml::log(__LINE__, __FILE__,  gmml::INF, residue_links_stream.str() );
                     }
                 }
 
@@ -106,6 +109,7 @@ namespace Glycan
                     std::vector<std::string> atom_id_tokens = gmml::Split(atom_id, "_");
                     root_residue_name = atom_id_tokens.at(2);
                     root_residue_number = atom_id_tokens.at(4);
+                    gmml::log(__LINE__, __FILE__,  gmml::INF, " This.size another time ..." );
                     if(oligo_linkages_tokens.size() == 0 && oligosaccharide_name_.compare("") != 0){
                         if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
                             residue_links_stream << root_residue_name << "(" << root_residue_number  << "_" << root_->bfmp_ring_conformation_ << ")" ;
@@ -224,8 +228,10 @@ namespace Glycan
                     Monosaccharide* mono1 = root_;
                     Oligosaccharide* child_oligo = child_oligos_.at(0);
                     Monosaccharide* mono2 = child_oligo->root_;
-                    std::string mono1_bfmp = mono1->bfmp_ring_conformation_;
-                    std::string mono2_bfmp = mono2->bfmp_ring_conformation_;
+                    // std::string mono1_bfmp = mono1->bfmp_ring_conformation_;
+                    // std::string mono2_bfmp = mono2->bfmp_ring_conformation_;
+                    std::string mono1_bfmp = "";
+                    std::string mono2_bfmp = "";
 
                     std::vector<std::string> tokens = gmml::Split(child_oligos_linkages_.at(0), "-");
 

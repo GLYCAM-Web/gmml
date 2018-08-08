@@ -367,8 +367,8 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       // for testing purposes.
       //GetBFMP( mono );
       //DetectShape( cycle, mono );
-      //glylib::CalculateRingShapeBFMP(mono);
-	mono->bfmp_ring_conformation_ = "TBD";
+      std::string mono_bfmp = glylib::CalculateRingShapeBFMP(mono);
+	    mono->bfmp_ring_conformation_ = mono_bfmp;
       if( mono->bfmp_ring_conformation_.compare( "" ) != 0 )
       {
         std::cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << std::endl << std::endl; ///Part of Glyprobity report
@@ -605,15 +605,26 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   ///BUILDING OLIGOSACCHARIDE SEQUENCE
   int number_of_oligosaccharides = 0;
   int number_of_monosaccharides = 0;
-  for( std::vector< Glycan::Oligosaccharide* >::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++ ) {
+  // gmml::log(__LINE__, __FILE__,  gmml::INF, " about to print oligos ..." );
+  
+  
+  //////////////////////////////////
+  //SEGFAULTS below               //
+  //////////////////////////////////
+  gmml::log(__LINE__, __FILE__,  gmml::INF, "Oligos length:  ");
+  gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharides.size() + "  ");
+  for( std::vector< Glycan::Oligosaccharide* >::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++ ) 
+  {
     Glycan::Oligosaccharide* oligo = ( *it );
     if( oligo->child_oligos_linkages_.size() > 0 ) {
       number_of_oligosaccharides++;
     } else {
       number_of_monosaccharides++;
     }
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "About to print Oligos");
     oligo->Print( std::cout );
   }
+  // gmml::log(__LINE__, __FILE__,  gmml::INF, "Done printing oligos ..." );
 
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
   std::vector< Glycan::Note* > notes = this->GetNotes();
@@ -2876,12 +2887,12 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
     gmml::ResidueNameMap common_terminal_residues = gmml::InitializeCommonTerminalResidueMap();
     std::map<Glycan::Monosaccharide*, std::vector<Glycan::Monosaccharide*> > monos_table = std::map<Glycan::Monosaccharide*, std::vector<Glycan::Monosaccharide*> >();
     std::map<Glycan::Monosaccharide*, std::vector<std::string> > monos_table_linkages = std::map<Glycan::Monosaccharide*, std::vector<std::string> >();
-
+    // gmml::log(__LINE__, __FILE__,  gmml::INF, " Start iterating on list ..." );
     ///Iterating on list of monos to check if there is a connection to another mono in the list
     for(std::vector<Glycan::Monosaccharide*>::iterator it = monos.begin(); it != monos.end(); it++)
     {
         Glycan::Monosaccharide* mono1 = (*it);
-
+        
         monos_table[mono1] = std::vector<Glycan::Monosaccharide*>();
         monos_table_linkages[mono1] = std::vector<std::string>();
 
@@ -2982,10 +2993,12 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
             }
         }
     }
+    // gmml::log(__LINE__, __FILE__,  gmml::INF, " Done iterating list" );
     std::vector<int> visited_monos = std::vector<int>();
     std::vector<Glycan::Oligosaccharide*> oligosaccharides = std::vector<Glycan::Oligosaccharide*>();
 
     std::vector<std::string> checked_linkages = std::vector<std::string>();
+    // gmml::log(__LINE__, __FILE__,  gmml::INF, " Start for loop ..." );
     for(std::map<Glycan::Monosaccharide*, std::vector<Glycan::Monosaccharide*> >::iterator it = monos_table.begin(); it != monos_table.end(); it++)
     {
         Glycan::Monosaccharide* key = (*it).first;
@@ -3206,7 +3219,8 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
             }
         }
     }
-
+// gmml::log(__LINE__, __FILE__,  gmml::INF, " End for loop ..." );
+// gmml::log(__LINE__, __FILE__,  gmml::INF, " Another for loop ..." );
     for(std::map<Glycan::Monosaccharide*, std::vector<Glycan::Monosaccharide*> >::iterator it = monos_table.begin(); it != monos_table.end(); it++)
     {
         Glycan::Monosaccharide* key = (*it).first;
@@ -3234,6 +3248,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
             }
         }
     }
+    // gmml::log(__LINE__, __FILE__,  gmml::INF, "Done with that too ..." );
     return oligosaccharides;
 }//End ExtractOligosaccharides
 
@@ -3597,12 +3612,14 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector
                 gmml::AminoacidGlycamMap glycam_aminoacid = gmml::GlycamAminoacidLookup(target_o_neighbor->GetResidue()->GetName());
 
                 if(aminoacid_glycam.aminoacid_name_.compare("") != 0){
-                    //return aminoacid_glycam.aminoacid_name_;	//Why return the amino acid name instead of Glycam name?
-                    return aminoacid_glycam.glycam_name_;
+                    return aminoacid_glycam.aminoacid_name_;	//Why return the amino acid name instead of Glycam name?
+                                                              //For glyfinder; will work out solution if both are needed (Dave)
+                    // return aminoacid_glycam.glycam_name_;
 		}
                 else if(glycam_aminoacid.glycam_name_.compare("") != 0){
-                    //return glycam_aminoacid.aminoacid_name_;	////Why return the amino acid name instead of Glycam name?
-                    return glycam_aminoacid.glycam_name_;
+                    return glycam_aminoacid.aminoacid_name_;	////Why return the amino acid name instead of Glycam name?
+                                                              //For glyfinder; will work out solution if both are needed (Dave)
+                    // return glycam_aminoacid.glycam_name_;
 		}
                 else{
 		    std::cout << "This return." << std::endl;
