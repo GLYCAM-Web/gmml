@@ -1432,7 +1432,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                 residue->SetId(key);
 
                 Atom* new_atom = new Atom();
-                residue->SetName(residue_name);
+                residue->SetName(residue_name);                
                 std::string atom_name = atom->GetAtomName();
                 new_atom->SetName(atom_name);
                 float atom_b_factor = atom->GetAtomTempretureFactor();

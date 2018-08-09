@@ -3556,85 +3556,93 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector
 {
     if(target !=NULL)
     {
-        AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
-	//I have encounter the situation where a NLN is recognized as ROH, because the anomeric nitrogen has hydrogen and satisfies the criteria for ROH.
-	// So, I added codes to check if terminal is protein.
-	bool non_protein_terminal = true;
-	if (target->GetResidue()->CheckIfProtein()){
-	    non_protein_terminal = false;
-	}
+      AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
+    	//I have encounter the situation where a NLN is recognized as ROH, because the anomeric nitrogen has hydrogen and satisfies the criteria for ROH.
+    	// So, I added codes to check if terminal is protein.
+    	bool non_protein_terminal = true;
+    	if (target->GetResidue()->CheckIfProtein())
+      {
+    	    non_protein_terminal = false;
+    	}
 
-	if (non_protein_terminal){
+      if (non_protein_terminal)
+      {
             if(CheckROHTerminal(target, terminal_atoms).compare("") != 0)
                 return "ROH";
             else if(CheckOMETerminal(target, terminal_atoms).compare("") != 0)
                 return "OME";
             else if(CheckTBTTerminal(target, terminal_atoms).compare("") != 0)
                 return "TBT";
-	    else
-		return "UNK";
-	}
-        //else if(o_neighbors.size() == 2)
-        else if(o_neighbors.size() >= 2) //Not just size =2 ,if terminal is NLN && input pdb file contains hydrogen.the sidechain connecting nitrogen contain 3 atoms
-        {
-            Atom* target_o_neighbor = NULL;
-            if(o_neighbors.at(0)->GetDescription().find("Het;") != std::string::npos && o_neighbors.at(1)->GetDescription().find("Het;") == std::string::npos)	//if one is het and the other is not
-                target_o_neighbor = o_neighbors.at(1);
-            else if(o_neighbors.at(0)->GetDescription().find("Het;") == std::string::npos && o_neighbors.at(1)->GetDescription().find("Het;") != std::string::npos)
-                target_o_neighbor = o_neighbors.at(0);
-
-	    //My code for assigning target_o_neighbor:
-	    /*for (unsigned int i=0; i< o_neighbors.size(); i++){
-		if (o_neighbors[i] -> GetResidue() -> CheckIfProtein()){
-		    //assuming normal structure, all neighbor atoms should belong to the same protein.
-		    target_o_neighbor = o_neighbors[i];
-		}
-	    }*/
-	    // Yao Xiao: my code ends.
-            if(target_o_neighbor != NULL)
-            {
-                ResidueVector residues = this->GetAllResiduesOfAssembly();
-                Residue* target_residue = NULL;
-                for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
-                {
-                    Residue* residue = *it;
-                    if(residue->GetId().compare(target_o_neighbor->GetResidue()->GetId()) == 0)
-                    {
-                        target_residue = residue;
-                        break;
-                    }
-                }
-                if(target_residue != NULL)
-                    terminal_atoms = target_residue->GetAtoms();
-
-
-                gmml::AminoacidGlycamMap aminoacid_glycam = gmml::AminoacidGlycamLookup(target_o_neighbor->GetResidue()->GetName());
-                gmml::AminoacidGlycamMap glycam_aminoacid = gmml::GlycamAminoacidLookup(target_o_neighbor->GetResidue()->GetName());
-
-                if(aminoacid_glycam.aminoacid_name_.compare("") != 0){
-                    return aminoacid_glycam.aminoacid_name_;	//Why return the amino acid name instead of Glycam name?
-                                                              //For glyfinder; will work out solution if both are needed (Dave)
-                    // return aminoacid_glycam.glycam_name_;
-		}
-                else if(glycam_aminoacid.glycam_name_.compare("") != 0){
-                    return glycam_aminoacid.aminoacid_name_;	////Why return the amino acid name instead of Glycam name?
-                                                              //For glyfinder; will work out solution if both are needed (Dave)
-                    // return glycam_aminoacid.glycam_name_;
-		}
-                else{
-		    std::cout << "This return." << std::endl;
-                    return target_o_neighbor->GetResidue()->GetName();
-	 	}
-            }
-            else{
-                return "UNK";
+            else
+		            return "UNK";
 	    }
-        }
-        else{
-            return "UNK";
-	}
+      //else if(o_neighbors.size() == 2)
+      else if(o_neighbors.size() >= 2) //Not just size =2 ,if terminal is NLN && input pdb file contains hydrogen.the sidechain connecting nitrogen contain 3 atoms
+      {
+          Atom* target_o_neighbor = NULL;
+          if(o_neighbors.at(0)->GetDescription().find("Het;") != std::string::npos && o_neighbors.at(1)->GetDescription().find("Het;") == std::string::npos)	//if one is het and the other is not
+              target_o_neighbor = o_neighbors.at(1);
+          else if(o_neighbors.at(0)->GetDescription().find("Het;") == std::string::npos && o_neighbors.at(1)->GetDescription().find("Het;") != std::string::npos)
+              target_o_neighbor = o_neighbors.at(0);
+
+        	    //My code for assigning target_o_neighbor:
+        	    /*for (unsigned int i=0; i< o_neighbors.size(); i++){
+        		if (o_neighbors[i] -> GetResidue() -> CheckIfProtein()){
+        		    //assuming normal structure, all neighbor atoms should belong to the same protein.
+        		    target_o_neighbor = o_neighbors[i];
+        		}
+        	    }*/
+        	    // Yao Xiao: my code ends.
+          if(target_o_neighbor != NULL)
+          {
+              ResidueVector residues = this->GetAllResiduesOfAssembly();
+              Residue* target_residue = NULL;
+              for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+              {
+                  Residue* residue = *it;
+                  if(residue->GetId().compare(target_o_neighbor->GetResidue()->GetId()) == 0)
+                  {
+                      target_residue = residue;
+                      break;
+                  }
+              }
+              if(target_residue != NULL)
+              {
+                terminal_atoms = target_residue->GetAtoms();
+              }
+              gmml::AminoacidGlycamMap aminoacid_glycam = gmml::AminoacidGlycamLookup(target_o_neighbor->GetResidue()->GetName());
+              gmml::AminoacidGlycamMap glycam_aminoacid = gmml::GlycamAminoacidLookup(target_o_neighbor->GetResidue()->GetName());
+
+              if(aminoacid_glycam.aminoacid_name_.compare("") != 0)
+              {
+                  return aminoacid_glycam.aminoacid_name_;	//Why return the amino acid name instead of Glycam name?
+                                                            //For glyfinder; will work out solution if both are needed (Dave)
+                  // return aminoacid_glycam.glycam_name_;
+              }
+              else if(glycam_aminoacid.glycam_name_.compare("") != 0)
+              {
+                  return glycam_aminoacid.aminoacid_name_;	////Why return the amino acid name instead of Glycam name?
+                                                            //For glyfinder; will work out solution if both are needed (Dave)
+                  // return glycam_aminoacid.glycam_name_;
+              }
+              else
+              {
+	                std::cout << "This return." << std::endl;
+                  return target_o_neighbor->GetResidue()->GetName();
+              }
+          }
+          else
+          {
+              return "UNK";
+          }
+      }
+      else
+      {
+          return "UNK";
+      }
     }
-    else{
+    else
+    {
         return "UNK";
     }
 }

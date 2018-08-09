@@ -83,10 +83,12 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 
     ///Initializing the std::map
     std::map<std::string, Atom*> IdAtom = std::map<std::string, Atom*>(); ///A std::map from atom ID to Assembly atom object
+    gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(atoms.size()));
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
         IdAtom[atom->GetId()] = atom;
+        gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
     }
     ///Pruning the graph (filter out atoms with less than 2 neighbors)
     PruneGraph(atoms);
@@ -354,6 +356,7 @@ void Assembly::PruneGraph(AtomVector& all_atoms)
     {
         Atom* atom = *it;
         het_atom_ids.push_back(atom->GetId());
+        gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
     }
     for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
