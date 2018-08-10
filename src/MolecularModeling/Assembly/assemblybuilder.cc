@@ -1598,12 +1598,14 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
 {
     std::vector<std::pair<gmml::AtomVector*, std::vector<double> > > all_dihedral_rotation_values = std::vector<std::pair<gmml::AtomVector*, std::vector<double> > >();
     typedef std::multimap<int, std::pair<gmml::AtomVector*, std::string> > index_torsion_map;
+    //Go through each linkage, look at its phi,psi and omega(if exists)
     for(unsigned int i = 0; i < rotamers_glycosidic_angles_info.size(); i++){
 	CondensedSequenceSpace::RotamersAndGlycosidicAnglesInfo* linkage_info = rotamers_glycosidic_angles_info[i].second; 
 	int linkage_index = linkage_info->GetLinkageIndex();
 	std::pair<index_torsion_map::iterator, index_torsion_map::iterator > current_linkage_dihedral_range = index_dihedral_map.equal_range(linkage_index);
-
+	//First, check for torsions explicitly set by the user. Apply user settting instead of default setting.
 	std::vector<std::pair<std::string, double> > user_defined_angles = linkage_info->GetEnabledGlycosidicAngles();
+	//Use a string to record what type of torsions are being set. For example, if phi and psi are explicitly set, user_defined_angle_types = "phipsi"
 	std::string user_defined_angle_types = std::string();
 	for (unsigned int j = 0; j < user_defined_angles.size(); j++){
 	    std::string& dihedral_type = user_defined_angles[j].first;
@@ -1618,21 +1620,33 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
 		}
 	    }
 	}
+	//Then, go through all rotamers, including user-defined and default torsions
 	std::vector<std::pair<std::string,std::vector<std::string> > > selected_rotamers = linkage_info->GetSelectedRotamers();
 	for (unsigned int j = 0; j < selected_rotamers.size(); j++){
 	    std::string& dihedral_type = selected_rotamers[j].first;
+	    //If a torsion is not being explicitly set:
 	    if (user_defined_angle_types.find(dihedral_type) == std::string::npos){
 		std::vector<std::string>& rotamer_names = selected_rotamers[j].second;
 		std::vector<double> rotation_values = std::vector<double>();
+		//This should be put into metadata one day.
 		for (unsigned int k = 0; k < rotamer_names.size(); k++){
 		    if (rotamer_names[k] == "gg"){
-			rotation_values.push_back(180.0);
-		    }
-		    if (rotamer_names[k] == "gt"){
 			rotation_values.push_back(-60.0);
 		    }
-		    if (rotamer_names[k] == "tg"){
+		    if (rotamer_names[k] == "gt"){
 			rotation_values.push_back(60.0);
+		    }
+		    if (rotamer_names[k] == "tg"){
+			rotation_values.push_back(180.0);
+		    }
+		    if (rotamer_names[k] == "g"){
+			rotation_values.push_back(60.0);
+		    }
+		    if (rotamer_names[k] == "t"){
+			rotation_values.push_back(180.0);
+		    }
+		    if (rotamer_names[k] == "-g"){
+			rotation_values.push_back(-60.0);
 		    }
 		}
 		for (index_torsion_map::iterator it = current_linkage_dihedral_range.first; it != current_linkage_dihedral_range.second; it++){
@@ -1646,10 +1660,46 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
 	}
 	
     }
+    //Generate All Rotation Combinations
     typedef std::vector<std::pair<gmml::AtomVector*, double> > combination; 
     std::vector<combination> all_rotation_combinations = std::vector<combination>();
     std::vector<double> angle_index_per_dihedral = std::vector<double> (all_dihedral_rotation_values.size(), gmml::dNotSet);
-    this ->GenerateAllTorsionCombinations(all_dihedral_rotation_values, 0, all_rotation_combinations, angle_index_per_dihedral);
+    working_assembly ->GenerateAllTorsionCombinations(all_dihedral_rotation_values, 0, all_rotation_combinations, angle_index_per_dihedral);
+    //Rotate according to each combination
+    std::vector<GeometryOperation::Geometry::CoordinateVector> rotamer_coordinate_sets = std::vector<GeometryOperation::Geometry::CoordinateVector>();
+    for (unsigned int i = 0; i < all_rotation_combinations.size(); i++){
+	combination& rotamer_rotation_set = all_rotation_combinations[i];
+	for (unsigned int j = 0; j < rotamer_rotation_set.size(); j++){
+	    std::pair<gmml::AtomVector*, double>& dihedral_rotation_value_pair = rotamer_rotation_set[j];
+	    gmml::AtomVector* dihedral_atoms = dihedral_rotation_value_pair.first;
+	    double rotation_value = dihedral_rotation_value_pair.second;
+	    working_assembly ->SetDihedral(dihedral_atoms->at(0), dihedral_atoms->at(1), dihedral_atoms->at(2), dihedral_atoms->at(3), rotation_value);
+	}
+	//Copy current coordinate objects 
+	GeometryOperation::Geometry::CoordinateVector new_rotamer_coordinate_set = GeometryOperation::Geometry::CoordinateVector();
+	gmml::AtomVector all_atoms_of_assembly = working_assembly->GetAllAtomsOfAssembly();
+	for (unsigned int j = 0; j < all_atoms_of_assembly.size(); j++){
+	    GeometryTopology::Coordinate* original_coordinate = all_atoms_of_assembly[j]->GetCoordinates().at(0);
+	    GeometryTopology::Coordinate* copied_coordinate = new GeometryTopology::Coordinate(original_coordinate);
+	    new_rotamer_coordinate_set.push_back(copied_coordinate);
+	}
+	rotamer_coordinate_sets.push_back(new_rotamer_coordinate_set);
+    }
+    
+    gmml::AtomVector all_atoms_of_assembly = working_assembly->GetAllAtomsOfAssembly();
+    //Empty current atoms coordinates
+    for (unsigned int i = 0; i < all_atoms_of_assembly.size(); i++){
+	all_atoms_of_assembly[i]->SetCoordinates(GeometryOperation::Geometry::CoordinateVector());
+    }
+    //Add each rotamer coordinate set one by one to atoms in assembly
+    for (unsigned int i = 0; i < rotamer_coordinate_sets.size(); i++){
+	GeometryOperation::Geometry::CoordinateVector& rotamer_set = rotamer_coordinate_sets[i];
+	for (unsigned int j = 0; j < rotamer_set.size(); j++){
+	   all_atoms_of_assembly[j]->AddCoordinate(rotamer_set[j]); 
+	}
+    }
+    
+    
 }
 
 /** ***************************************************************************
