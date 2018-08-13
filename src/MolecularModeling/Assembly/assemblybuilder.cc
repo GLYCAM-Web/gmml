@@ -1078,11 +1078,9 @@ void Assembly::ResolveClashes(std::map<MolecularModeling::Residue*, std::vector<
 {
     //For each common ancestor, go through all its clashing pathways one by one.
     for (std::map<MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> >::iterator it = fused_clashing_paths.begin(); it != fused_clashing_paths.end(); it++){
-	MolecularModeling::Residue* common_ancestor = it->first;
+	//MolecularModeling::Residue* common_ancestor = it->first; unused parameter
 	std::vector<MolecularModeling::Assembly::ResidueVector> clashing_pathways = it->second;
-	std::cout << "Dealing with common ancestor: " << common_ancestor->GetName() << ", pathways: " << clashing_pathways.size() << std::endl;
 	for (unsigned int i = 0; i < clashing_pathways.size(); i++){
-	    std::cout << "Dealing with pathway " << i +1<< " out of " << clashing_pathways.size() << std::endl;
 	    MolecularModeling::Assembly::ResidueVector pathway = clashing_pathways[i];
 	    //Find all omega torsion in the pathway, these are available for rotation in clash resolution process
 	    std::vector <gmml::AtomVector*> all_omega_dihedrals = this->FindAllOmegaTorsionsInPathway(pathway, index_dihedral_map);
@@ -1101,7 +1099,6 @@ void Assembly::ResolveClashes(std::map<MolecularModeling::Residue*, std::vector<
 	    }
 	}
     }
-std::cout << "Done resolving clashes." << std::endl;
 }
 
 std::vector< gmml::AtomVector* > Assembly::FindAllOmegaTorsionsInPathway (MolecularModeling::Assembly::ResidueVector& pathway, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& 
@@ -1165,24 +1162,6 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
     std::vector<combination> all_combinations = std::vector<combination>();
     std::vector<double> angle_index_per_dihedral = std::vector<double> (available_dihedrals.size(), gmml::dNotSet);
     this ->GenerateAllTorsionCombinations(all_dihedral_rotation_values, 0, all_combinations, angle_index_per_dihedral);
-    std::cout << "Done recursion" << std::endl;
-//testing
-    std::cout << "Original order: " << std::endl;
-    for (std::vector<gmml::AtomVector*>::iterator it = available_dihedrals.begin(); it != available_dihedrals.end(); it++){
-	gmml::AtomVector* dihedral = *it;
-	std::cout << dihedral->at(0)->GetName() << "-" << dihedral->at(1)->GetName() << "-" << dihedral->at(2)->GetName() << "-" << dihedral->at(3)->GetName() << std::endl;
-    }
-    for (std::vector<combination>::iterator it = all_combinations.begin(); it != all_combinations.end(); it++){
-	std::cout << "Begin combination" << std::endl;
-	combination& combo = *it;
-	for (combination::iterator it2 = combo.begin(); it2 != combo.end(); it2++){
-	    gmml::AtomVector* dihedral = (*it2).first;
-	    std::cout << dihedral->at(0)->GetName() << "-" << dihedral->at(1)->GetName() << "-" << dihedral->at(2)->GetName() << "-" << dihedral->at(3)->GetName() << std::endl;
-	}
-	std::cout << "End combination" << std::endl << std::endl;
-    }
-
-//testing
     //For each combination, rotate coordinates accordingly, then compute clash score. If clash score is lower than the current minimum, record the current set of coordinate as the least-clashing
     //coordinate set
     //Make a pair. Pair.first is clash score, pair.second is coordinate set
@@ -1190,7 +1169,6 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
     gmml::AtomVector all_atoms_in_assembly = this->GetAllAtomsOfAssembly();
     //Compute rotation score using the originial coordinate. Initiate least_clash_coordinate to contain this original state.
     double initial_clash_score = gmml::CalculateAtomicOverlaps(all_atoms_in_assembly, all_atoms_in_assembly);
-    std::cout << "Initial clash score before working with pathway is: " << initial_clash_score << std::endl;
     least_clash_coordinate.first = initial_clash_score;
     for (unsigned int i = 0; i < all_atoms_in_assembly.size(); i++){
 	MolecularModeling::Atom* atom = all_atoms_in_assembly[i];
@@ -1199,7 +1177,6 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
     //For each combination, rotate accordingly
     for (unsigned int i = 0; i < all_combinations.size(); i++){
 	combination& rotation_set = all_combinations[i];
-	std::cout << "Begin comb, size is: " << rotation_set.size() << std::endl;
 	for (combination::iterator it = rotation_set.begin(); it != rotation_set.end(); it++){
 	    gmml::AtomVector* dihedral_atoms = it->first;
 	    GeometryTopology::Coordinate* pivot_point = dihedral_atoms->at(1)->GetCoordinates().at(0);
@@ -1240,7 +1217,6 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
 	}
 	
     }
-    std::cout << "Combinations for this pathway exhausted, better clash score is: " << least_clash_coordinate.first << std::endl;
     //Return best set of coordinate
     return least_clash_coordinate.second;
 }
