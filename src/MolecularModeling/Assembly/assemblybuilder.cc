@@ -1330,18 +1330,18 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
         //The atom and the only atom without a parent is the absolute parent(terminal).
         if (glycam_06_res->GetParentId() == gmml::iNotSet && glycam_06_res->GetName() != "Deoxy"){
             MolecularModeling::Residue* root = corresponding_assembly_residue;
-            //this->RecursivelySetGeometry(root);
+            this->RecursivelySetGeometry(root);
 	    //The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
 	    //Linkage index is incremented inside function once a linkage has been processed.
 	    int linkage_index = 0;
-            //this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
+            this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
 	    break;
         }
     }
     //Find and resolve clashes below(crudely)
-    //MolecularModeling::Assembly::ResidueVector clashing_residues = this->FindClashingResidues();
-    //std::map <MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> > clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues); 
-    //this-> ResolveClashes(clashing_residue_parent_paths, index_dihedral_map);
+    MolecularModeling::Assembly::ResidueVector clashing_residues = this->FindClashingResidues();
+    std::map <MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> > clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues); 
+    this-> ResolveClashes(clashing_residue_parent_paths, index_dihedral_map);
 }
 
 void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure)

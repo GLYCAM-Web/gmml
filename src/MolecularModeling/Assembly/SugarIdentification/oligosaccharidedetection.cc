@@ -3571,8 +3571,9 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector
                 return "OME";
             else if(CheckTBTTerminal(target, terminal_atoms).compare("") != 0)
                 return "TBT";
-	    else
+	    else{
 		return "UNK";
+	    }
 	}
         //else if(o_neighbors.size() == 2)
         else if(o_neighbors.size() >= 2) //Not just size =2 ,if terminal is NLN && input pdb file contains hydrogen.the sidechain connecting nitrogen contain 3 atoms
@@ -3622,7 +3623,6 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector
                     // return glycam_aminoacid.glycam_name_;
 		}
                 else{
-		    std::cout << "This return." << std::endl;
                     return target_o_neighbor->GetResidue()->GetName();
 	 	}
             }
