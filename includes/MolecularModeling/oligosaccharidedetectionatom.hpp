@@ -3,11 +3,13 @@
 
 #include <iostream>
 #include <string>
+#include <map>
 
 namespace MolecularModeling
 {
     class OligoSaccharideDetectionAtom
     {
+	typedef std::multimap <std::string, std::string> OligosaccharidePropertyTags;
         public:
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -41,6 +43,7 @@ namespace MolecularModeling
 
 	    std::string GetNaming();
 	
+	    OligosaccharidePropertyTags GetAllOligosaccharidePropertyTags();
 /** @}*/
 
              /////////////////////////////////////////////////////////
@@ -70,6 +73,10 @@ namespace MolecularModeling
 
 	    void SetNaming(std::string naming);
 
+	    void AddOligosaccharidePropertyTag (std::pair<std::string, std::string> role_tag_pair);
+
+	    void RemoveOligosaccharidePropertyTag (std::pair<std::string, std::string> role_tag_pair);
+
 /** @}*/
 
             //////////////////////////////////////////////////////////
@@ -91,6 +98,7 @@ namespace MolecularModeling
 	    bool IsAnomericCarbon_;
 	    std::string naming_;
 	    bool is_aglycon_;
+	    OligosaccharidePropertyTags oligosaccharide_properties_;
 
     };//class
 
