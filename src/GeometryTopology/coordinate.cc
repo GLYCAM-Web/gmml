@@ -75,6 +75,11 @@ double Coordinate::Distance(Coordinate coordinate)
     return sqrt(dist);
 }
 
+double Coordinate::Distance(Coordinate *coordinate)
+{
+    return this->Distance(*coordinate);
+}
+
 double Coordinate::length()
 {
     double length = (x_ * x_) + (y_ * y_) + (z_ * z_);

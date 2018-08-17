@@ -102,6 +102,13 @@ namespace GeometryTopology
             double Distance(Coordinate coordinate);
 
             /*! \fn
+              * Calculate the distance between current object coordinate and the given coordinate
+              * @param coordinate A coordinate to calculate the distance between that and the current object
+              * @return A double value as a distance between two coordinates
+              */
+            double Distance(Coordinate *coordinate);
+
+            /*! \fn
               * Calculate the length of the vector
               * @return Length of the vector
               */
