@@ -68,6 +68,8 @@
 #include <errno.h>
 #include <string.h>
 
+
+
 using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
@@ -75,6 +77,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
+  int local_debug = 1;
     CycleMap cycles = CycleMap();
     AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
     std::vector<std::string> path_graph_edges = std::vector<std::string> (); ///The list of edges in the molecular graph
@@ -83,12 +86,18 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 
     ///Initializing the std::map
     std::map<std::string, Atom*> IdAtom = std::map<std::string, Atom*>(); ///A std::map from atom ID to Assembly atom object
-    gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(atoms.size()));
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(atoms.size()));
+    } 
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
         IdAtom[atom->GetId()] = atom;
-        gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
+        if ( local_debug > 0 )
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
+        }
     }
     ///Pruning the graph (filter out atoms with less than 2 neighbors)
     PruneGraph(atoms);
@@ -350,13 +359,22 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
 
 void Assembly::PruneGraph(AtomVector& all_atoms)
 {
+  
+  int local_debug = 1;
     AtomVector atoms_with_more_than_two_neighbors = AtomVector();
     std::vector<std::string> het_atom_ids = std::vector<std::string>();
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(all_atoms.size()));
+    }
     for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
         Atom* atom = *it;
         het_atom_ids.push_back(atom->GetId());
-        gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
+        if ( local_debug > 0 )
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
+        }
     }
     for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
@@ -372,10 +390,18 @@ void Assembly::PruneGraph(AtomVector& all_atoms)
         if(count > 1)
             atoms_with_more_than_two_neighbors.push_back(atom);
     }
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "About to Prune Graph");
+    }
     if(atoms_with_more_than_two_neighbors.size() != all_atoms.size())
     {
         all_atoms = atoms_with_more_than_two_neighbors;
         PruneGraph(all_atoms);
+    }
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Done with Prune Graph");
     }
     else
         return;
@@ -418,6 +444,8 @@ void Assembly::ConvertIntoPathGraph(std::vector<std::string>& path_graph_edges, 
 
 Assembly::CycleMap Assembly::DetectCyclesByDFS()
 {
+  
+  int local_debug = 1;
     int counter = 0;
 
     AtomStatusMap atom_status_map = AtomStatusMap();
@@ -447,7 +475,10 @@ Assembly::CycleMap Assembly::DetectCyclesByDFS()
     std::stringstream n_of_cycle;
     n_of_cycle << "Number of cycles found: " << counter;
     std::cout << n_of_cycle.str() << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, n_of_cycle.str());
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__,  gmml::INF, n_of_cycle.str());
+    }
     for(AtomIdAtomMap::iterator it = src_dest_map.begin(); it != src_dest_map.end(); it++)
     {
         std::string src_dest = (*it).first;

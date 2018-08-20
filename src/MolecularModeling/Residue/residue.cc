@@ -379,6 +379,7 @@ bool Residue::CheckIfProtein()
 {
     if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), this->GetName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
     {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Protein Found");
         return true;
     }
     return false;

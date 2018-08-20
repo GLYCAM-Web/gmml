@@ -1,6 +1,8 @@
 // Created by: Delaram Rahbarinia
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
+// See http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM for an explaination of atom formats in PDB files
+
 #ifndef PDBATOMCARD_HPP
 #define PDBATOMCARD_HPP
 

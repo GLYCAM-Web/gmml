@@ -604,20 +604,33 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
 ///First and second version
 void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, int model_index)
 {
+  int local_debug = 1;
     std::cout << "Building structure by distance ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
     model_index_ = model_index;
 
     pthread_t threads[number_of_threads];
     MolecularModeling::DistanceCalculationThreadArgument arg[number_of_threads];
+    if (local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "About to start for loop");
+    }
     for(int i = 0; i < number_of_threads; i++)
     {
+      if (local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(i));
+      }
         arg[i] = MolecularModeling::DistanceCalculationThreadArgument(i, number_of_threads, model_index, cutoff, this);
         //        pthread_create(&threads[i], NULL, &BuildStructureByDistanceThread, &arg[i]); ///First version. Workload of threads are not equal
         pthread_create(&threads[i], NULL, &BuildStructureByDistanceByOptimizedThread, &arg[i]); ///Second version. Workload of threads are roughly equal.
     }
     for(int i = 0; i < number_of_threads; i++)
     {
+      if (local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(i));
+      }
         pthread_join(threads[i], NULL);
     }
 }
