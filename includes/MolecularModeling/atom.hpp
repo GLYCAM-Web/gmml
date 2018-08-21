@@ -77,6 +77,11 @@ namespace MolecularModeling
             */
             CoordinateVector GetCoordinates() const;
             /*! \fn
+            * An accessor function in order to access to the first coordinate
+            * @return coordinates_.at(0) attribute of the current object of this class
+            */
+            GeometryTopology::Coordinate* GetCoordinate();
+            /*! \fn
             * An accessor function in order to access to the chemical_type
             * @return chemical_type_ attribute of the current object of this class
             */
