@@ -322,22 +322,19 @@ using OffFileSpace::OffFile;
                     c2x_count++;
                 }
 
-		stream << " " << c1x[0] << " " << c2x[0] << " ";
+		stream << " " << c1x[0] << " " << c2x[0];
 		for (int i=1; i<c1x_count; i++){
-		    stream << c1x[i] << " ";
+		    stream << " " << c1x[i];
 		}
 		for (int i=1; i<c2x_count; i++){
-		    stream << c2x[i] << " ";
+		    stream << " " << c2x[i];
 		}
+
 		int zero_column_count = 6 - head_atoms_of_residue.size() - tail_atoms_of_residue.size();
 		for (int i=0; i<zero_column_count; i++){
-		    if (i != zero_column_count -1){
-		        stream << "0" << " ";
-		    }
-		    else{
-			stream << "0" << std::endl;
-		    }
+		    stream << " " << "0";
 		}
+		stream << std::endl;
                 /*for(int i=0;i<c1x_count || i<c2x_count;i++)
                 {
                     if(i<c1x_count && i<c2x_count)

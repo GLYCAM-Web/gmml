@@ -80,7 +80,7 @@ CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string)
             }
         }
     }
-    parent_id_ = -1;
+    parent_id_ = gmml::iNotSet;
 }
 
 //////////////////////////////////////////////////////////
@@ -117,6 +117,10 @@ CondensedSequenceResidue::DerivativeMap CondensedSequenceResidue::GetDerivatives
 int CondensedSequenceResidue::GetParentId()
 {
     return parent_id_;
+}
+int CondensedSequenceResidue::GetBondId()  //Added by Yao 08/03/2018
+{
+    return bond_id_;
 }
 
 //////////////////////////////////////////////////////////
@@ -159,6 +163,10 @@ void CondensedSequenceResidue::SetDerivatives(DerivativeMap derivatives)
 void CondensedSequenceResidue::SetParentId(int parent_id)
 {
     parent_id_ = parent_id;
+}
+void CondensedSequenceResidue::SetBondId(int bond_id)  //Added by Yao 08/03/2018
+{
+    bond_id_ = bond_id;
 }
 
 //////////////////////////////////////////////////////////

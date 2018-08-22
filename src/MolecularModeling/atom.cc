@@ -93,6 +93,13 @@ Atom::CoordinateVector Atom::GetCoordinates() const
 	return this->coordinates_;
 } // end GetCoordinates
 
+// Most of the time, you just want the first coordinate
+GeometryTopology::Coordinate* Atom::GetCoordinate()
+{
+    return this->coordinates_.at(0);
+} // end GetCoordinate
+
+
 std::string Atom::GetChemicalType() const
 {
  	return this->chemical_type_;

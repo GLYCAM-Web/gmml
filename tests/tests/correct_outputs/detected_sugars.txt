@@ -478,7 +478,7 @@ Short name: DGalpb
 -------------------------------------------------------------------------------------------------------------------------------------------
 
 Oligosaccharides:
-DNeup5Aca2-3DGalpb1-ROH
+DGalpb3-2DNeup5Aca2-UNK
 DGalpb3-2DNeup5Aca2-UNK
 DGalpb3-2DNeup5Aca2-UNK
 DGalpb3-2DNeup5Aca2-UNK

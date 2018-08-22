@@ -347,23 +347,122 @@ namespace MolecularModeling
 */
             void BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure = false);
 
+	    /*! \fn
+              * A function in order to build an assembly from a condensed sequence, using a prep file as source data
+              * Convert a condensed sequence into assembly residues/atoms. Set ResidueNode, AtomNode. Set default phi/psi/omega angles. Crude adjust torsion values to resolve clashes. 
+              * @param condensed_sequence The condensed sequence string, for example DManpa1-4DGlcpb1-OH
+	      * @param prep_file A prep file object. 
+              */
 	    void BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file);	//Created by Yao 06/25/2018, replace old version above
-
+	    /*! \fn
+              * A function in order to build an assembly from a condensed sequence, using a prep file as source data
+              * A wrapper function for python to call. I(Yao) don't know how to initiate a prep file object in python. So let python generate a string, convert into prep file object
+		in the wrapper. Then the wrapper calls the above version.
+              * @param condensed_sequence The condensed sequence string, for example DManpa1-4DGlcpb1-OH
+	      * @param prep_file_path A prep file string to a prep file path.
+              */
 	    void BuildAssemblyFromCondensedSequence(std::string condensed_sequence, std::string prep_file_path);	//Created by Yao 07/02/2018, a temporary wrapepr for Python to call.
 
+	    /*! \fn
+	      * A function in order to obtain all the glycam06 residue names in a condensed sequence, and turn each glycam06 residue into an assembly residue
+	      * This function is called by the new version of "BuildAssemblyFromCondensedSequence" function. It's part of the build process.
+	      * @param glycam06_residue_tree A vector of glycam06_residue*
+	      * @param template_assembly A template assembly(see below) contains only one of each type of residue that appears in condensed sequence.
+	      */
 	    std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >
 		 ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree, TemplateAssembly* template_assembly);
-
+	    /*! \fn
+	      * A function that sets residue node and atom node connections for assembly residues based on the parent/child head/tail atom relationship of the corresponding condensed 
+		sequence residue.
+	      * This function is called by the new version of "BuildAssemblyFromCondensedSequence" function. It's part of the build process.
+	      * @param condensed_sequence_assembly_residue_map This map is the output of "ConvertCondensedSequence2AssemblyResidues". It's a map between a glycam06 residue and its corresponding 
+		assembly residue
+	      */
 	    void SetGlycam06ResidueBonding(std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >& condensed_sequence_assembly_residue_map);
+	    /*! \fn
+	      * A function that recursively go through an oligosaccharide tree structure from the reducing end(e.g. ROH,OME etc). It utilizes head-tail relationship, set phi/psi/omega
+	        torsions along with the recursion.
+	      * This function is called by the new version of "BuildAssemblyFromCondensedSequence" function. It's part of the build process.
+	      * @param parent_residue The current residue along the recursion process. It's named parent_residue, because this function next goes through one of its child residues,
+		which becomes the next parent residue. Termination condition: the current parent_residue has no child, or tail atom equals head atom(dead end).
+	      */
 	    void RecursivelySetGeometry (MolecularModeling::Residue* parent_residue);
+	    /*! \fn
+	      * A function that recursively go through an oligosaccharide tree structure from the reducing end, tagging dihedrals without performing any rotation. This function has the same code
+		organization as RecursivelySetGeometry. RecursivelySetGeometry sets torsion without tagging, but this function tags without performing any rotation.
+	      * This function is called by the new version of "BuildAssemblyFromCondensedSequence" function. It's part of the build process.
+	      * @param parent_residue The current residue along the recursion process. It's named parent_residue, because this function next goes through one of its child residues,
+	      * @param index_dihedral_map A map between an integer and a pair of AtomVector* and string. Integer is a bond index, starts from 0, starts numbering from reducing end. AtomVector*
+	        is pointer to an AtomVector containing the four atoms of a dihedral. String is the dihedral type, either phi, psi or omega.
+	      * @param linkage_index An integer that equals the current bond index, starting from the reducing end.
+	      */
+	    void RecursivelyTagDihedrals (MolecularModeling::Residue* parent_residue, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& index_dihedral_map, int& linkage_index);
+	    /*! \fn
+	      * A function that find residues that clash with other residues in an assembly.
+	      * This function is called by the new version of "BuildAssemblyFromCondensedSequence" function, after RecursivelySetGeometry. It follows up setting geometry, and initiate the attempt  		     to crudely resolve clashes resulting from default geometry setttings
+	      */
+	    ResidueVector FindClashingResidues();
+	    /*! \fn
+	      * A function that finds all pathways, which starts from a clashing residue, and ends at a branching point(residue with mutiple tail atoms).
+	      * This function is called by the new version of "BuildAssemblyFromCondensedSequence" function, after FindClashingResidues.
+	      * @param all_clashing_residues A ResidueVector containing all the clashing residues. It is the output of FindClashingResidues
+	      */
+	    std::map<MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> > FindPathToCommonAncestors(ResidueVector& all_clashing_residues);
+	    /*! \fn
+	      * A function that resolves clashes in assembly atoms.
+	      * This is an orchestrator function that calls FindAllOmegaTorsionsInPathway and FindBestSetOfTorsions
+	      * @param fused_clashing_paths A map between a common ancestor residue(branching residue), and the residue vector containg all residues in a clashing pathway. 
+	      * @param index_dihedral_map See above RecursivelyTagDihedrals @param documentation
+	      */
+	    void ResolveClashes(std::map<MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> >& fused_clashing_paths, 
+					std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& index_dihedral_map);
 
+	    /*! \fn
+	      * A function that finds all omega torsions in  pathway
+	      * The output of this function is a set of omega dihedrals. They will be rotated subsequently to resolve clases(limited grid search)
+	      * @param pathway A residue vector containing a clashing path. The code finds dihedrals within this path. 
+	      * @param dihedral_map See above.
+	      */
+	    std::vector< gmml::AtomVector* > FindAllOmegaTorsionsInPathway (MolecularModeling::Assembly::ResidueVector& pathway, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& 
+									    dihedral_map);
+	    /*! \fn
+	      * A function that returns the set of coordinates with the lowest clashes that the algorithm can generate.
+	      * This function is called by ResolveClashes
+	      * @param available_dihedrals a vector of AtomVector*. Each AtomVector contains four atoms for a dihdral.
+	      */
+	    GeometryTopology::Coordinate::CoordinateVector FindBestSetOfTorsions(std::vector<gmml::AtomVector*>& available_dihedrals);
+	    /*! \fn
+	      * A function that takes in all dihedrals, and their corresponding rotation values. Exhaustively generates individual sets of rotation values.
+	      * This function is called in the "FindBestSetOfTorsions" function
+	      * @param all_dihedral_rotation_values A vector of pair, each pair is an atomvector containing four atoms, and a vector of double containing allowable rotation values
+		e.g pair<C4-O4-C1-C2, -5,0,5>; pair <C5-C6-O6-C1, -5,0,5>
+	      * @param current_dihedral_index The index of the current dihedral in the vector "all_dihedral_rotation_values". To initiate recursion from the nth dihedral, supply n-1 as argument
+	      * @param container_for_combinations A vector of individual rotation combination. Each individual combination is a vector of pair<AtomVector*, double>. Each pair represents a 
+	      * particular dihedral and its corresponding rotation value.
+	      * angle_index_per_dihedral A temporary container holding the rotation value at each dihedral. To initiate a new recursion, supply an empty vector.
+	      */
+	    void GenerateAllTorsionCombinations (std::vector<std::pair<gmml::AtomVector*, std::vector<double> > >& all_dihedral_rotation_values, unsigned int current_dihedral_index ,
+						 std::vector<std::vector<std::pair<gmml::AtomVector*, double> > >& container_for_combinations,
+						 std::vector<double>& angle_index_per_dihedral);
 
+	    /*! \fn
+	      * A function that "grafts" a child residue onto a parent residue. It puts the head atoms of child a certain distance away from the tail atom of parent.In this process, the code
+		keeps parent residue intact, but moves the child residue accordingly.
+	      * This function is called within "RecursiveSetGeometry". It is part of the geometry setting process.
+	      * @param parent_tail_atom A bond involves the tail atom of parent, and the head atom of child. This is the Atom* of parent tail atom
+	      * @param child_head_atom A bond involves the tail atom of parent, and the head atom of child. This is the Atom* of child head atom
+	      */
 	    void SetResidueResidueBondDistance(MolecularModeling::Atom* parent_tail_atom, MolecularModeling::Atom* child_head_atom);
 /** @}*/
-            AssemblyVector BuildAllRotamersFromCondensedSequence(std::string sequence,
-                                                                 std::string prep_file, std::string parameter_file,
-                                                                 CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info,
-                                                                 CondensedSequenceSpace::CondensedSequence::IndexNameMap& names);
+	    /*! \fn
+	      * This function is the backend code that handles the website build rotamer feature
+	      * @param working_assembly The assembly from whose atoms rotamers will be populated, typically "this" assembly.
+	      * @param rotamers_glycosidic_angles_info A vector of "linkages". A linkage is a bond between monosaccharide residues in an oligosaccharide. Each linkage contains 
+		phi,psi, and sometime omega torsions. Detailed documentation check typedef. 
+	      * @index_dihedral_map See above.
+	      */
+            void GenerateRotamersForCondensedSequence(Assembly* working_assembly, CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo 
+							rotamers_glycosidic_angles_info, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& index_dihedral_map);
             void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void RemoveHydrogenAtAttachedPosition(Residue* residue, int branch_index);
             void SetDerivativeAngle(Residue* residue, Residue* parent_residue, int branch_index);

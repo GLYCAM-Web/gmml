@@ -33,6 +33,7 @@ namespace CondensedSequenceSpace
             std::string GetParentOxygen();
             bool GetIsDerivative();
             int GetParentId();
+	    int GetBondId();  //Added by Yao Xiao 08/03/2018
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -45,6 +46,7 @@ namespace CondensedSequenceSpace
             void SetParentOxygen(std::string parent_oxygen);
             void SetIsDerivative(bool is_derivative);
             void SetParentId(int parent_id);
+	    void SetBondId(int bond_id);  //Added by Yao Xiao 08/03/2018
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -69,6 +71,7 @@ namespace CondensedSequenceSpace
             std::string parent_oxygen_;
             bool is_derivative_;
             int parent_id_;
+	    int bond_id_;  //Added by Yao Xiao 08/03/2018
     };
 }
 
