@@ -21,14 +21,14 @@ namespace gmml
     void GenerateMatrixFromAssembyCoordinates(MolecularModeling::Assembly *assembly, Eigen::Matrix3Xd *matrix);
 
     void ReplaceAssemblyCoordinatesFromMatrix(MolecularModeling::Assembly *assembly, Eigen::Matrix3Xd *matrix);
-    //Atom Vector version, may be removed
+
     void GenerateMatrixFromAtomVectorCoordinates(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
 
     void ReplaceAtomVectorCoordinatesFromMatrix(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
 
     void GenerateMatrixFromCoordinates(CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix);
 
-    void ReplaceAtomVectorCoordinatesFromMatrix(CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix);
+    void ReplaceCoordinatesFromMatrix(CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix);
 
     Eigen::Affine3d Find3DAffineTransform(Eigen::Matrix3Xd in, Eigen::Matrix3Xd out);
 
