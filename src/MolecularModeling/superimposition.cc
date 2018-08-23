@@ -12,13 +12,13 @@ CoordinateVector gmml::GetCoordinatesInAtomVector(AtomVector *atoms)
     return coordinates;
 }
 
-AtomVector gmml::GetCoordinatesInAssemblyVector(AssemblyVector *assemblies)
+CoordinateVector gmml::GetCoordinatesInAssemblyVector(AssemblyVector *assemblies)
 {
-    AtomVector coordinates;
+    CoordinateVector coordinates;
     for(AssemblyVector::iterator it1 = assemblies->begin(); it1 != assemblies->end(); ++it1)
     {
         MolecularModeling::Assembly *assembly = *it1;
-        AtomVector extra_coordinates = assembly->GetAllCoordinates();
+        CoordinateVector extra_coordinates = assembly->GetAllCoordinates();
         coordinates.insert( coordinates.end(), extra_coordinates.begin(), extra_coordinates.end() ); // "Concatentate"
     }
     return coordinates;
