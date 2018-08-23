@@ -18,13 +18,15 @@ namespace gmml
 {
     CoordinateVector GetCoordinatesInAtomVector(AtomVector *atoms);
 
+    CoordinateVector GetCoordinatesInAssemblyVector(AssemblyVector *assemblies);
+
     void GenerateMatrixFromAssembyCoordinates(MolecularModeling::Assembly *assembly, Eigen::Matrix3Xd *matrix);
 
     void ReplaceAssemblyCoordinatesFromMatrix(MolecularModeling::Assembly *assembly, Eigen::Matrix3Xd *matrix);
 
-    void GenerateMatrixFromAtomVectorCoordinates(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
+    //void GenerateMatrixFromAtomVectorCoordinates(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
 
-    void ReplaceAtomVectorCoordinatesFromMatrix(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
+    //void ReplaceAtomVectorCoordinatesFromMatrix(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
 
     void GenerateMatrixFromCoordinates(CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix);
 

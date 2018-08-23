@@ -4,10 +4,22 @@
 CoordinateVector gmml::GetCoordinatesInAtomVector(AtomVector *atoms)
 {
     CoordinateVector coordinates;
-    for(AtomVector::iterator it = atoms->begin(); it != atoms->end(); it++)
+    for(AtomVector::iterator it = atoms->begin(); it != atoms->end(); ++it)
     {
         MolecularModeling::Atom *atom = *it;
         coordinates.push_back(atom->GetCoordinate());
+    }
+    return coordinates;
+}
+
+AtomVector gmml::GetCoordinatesInAssemblyVector(AssemblyVector *assemblies)
+{
+    AtomVector coordinates;
+    for(AssemblyVector::iterator it1 = assemblies->begin(); it1 != assemblies->end(); ++it1)
+    {
+        MolecularModeling::Assembly *assembly = *it1;
+        AtomVector extra_coordinates = assembly->GetAllCoordinates();
+        coordinates.insert( coordinates.end(), extra_coordinates.begin(), extra_coordinates.end() ); // "Concatentate"
     }
     return coordinates;
 }
@@ -219,53 +231,64 @@ void gmml::Superimpose(AtomVector moving, AtomVector target, AtomVector alsoMovi
 
 void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target)
 {
-    AtomVector moving_atoms = moving->GetAllAtomsOfAssembly();
-    AtomVector target_atoms = target->GetAllAtomsOfAssembly();
+    CoordinateVector moving_coordinates = moving->GetAllCoordinates();
+    CoordinateVector target_coordinates = target->GetAllCoordinates();
 
-    gmml::Superimpose(moving_atoms, target_atoms);
+    gmml::Superimpose(moving_coordinates, target_coordinates);
 }
 
 void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, MolecularModeling::Assembly *alsoMoving)
 {
-    AtomVector moving_atoms = moving->GetAllAtomsOfAssembly();
-    AtomVector target_atoms = target->GetAllAtomsOfAssembly();
-    AtomVector alsoMoving_atoms = alsoMoving->GetAllAtomsOfAssembly();
+    CoordinateVector moving_coordinates = moving->GetAllCoordinates();
+    CoordinateVector target_coordinates = target->GetAllCoordinates();
+    CoordinateVector alsoMoving_coordinates = alsoMoving->GetAllCoordinates();
 
-    gmml::Superimpose(moving_atoms, target_atoms, alsoMoving_atoms);
+    gmml::Superimpose(moving_coordinates, target_coordinates, alsoMoving_coordinates);
 
 }
 
 void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, AssemblyVector *alsoMoving)
 {
 
-    AtomVector moving_atoms = moving->GetAllAtomsOfAssembly();
-    AtomVector target_atoms = target->GetAllAtomsOfAssembly();
+    CoordinateVector moving_coordinates = moving->GetAllCoordinates();
+    CoordinateVector target_coordinates = target->GetAllCoordinates();
+    CoordinateVector alsoMoving_coordinates = gmml::GetCoordinatesInAssemblyVector(alsoMoving);
 
-    Eigen::Matrix3Xd movingMatrix(3, moving_atoms.size()), targetMatrix(3, target_atoms.size());
+    gmml::Superimpose(moving_coordinates, target_coordinates, alsoMoving_coordinates);
 
-        // Create a matrices containing co-ordinates of assembly moving and target
-    GenerateMatrixFromAtomVectorCoordinates(&moving_atoms, &movingMatrix);
-    GenerateMatrixFromAtomVectorCoordinates(&target_atoms, &targetMatrix);
-
-    // Figure out how to move assembly moving onto target
-    Eigen::Affine3d Affine = Find3DAffineTransform(movingMatrix, targetMatrix);
-
-    // Create a matrix containing the moved co-ordinates of assembly moving and alsoMoving.
-    Eigen::Matrix3Xd movedMatrix = (Affine * movingMatrix);
-
-    // Replace co-ordinates of moving with moved co-ordinates
-    ReplaceAtomVectorCoordinatesFromMatrix(&moving_atoms, &movedMatrix);
-
-    // Also move every assembly in also moving
-    for(AssemblyVector::iterator it = alsoMoving->begin(); it != alsoMoving->end(); it++)
-    {
-        AtomVector alsoMoving_atoms = (*it)->GetAllAtomsOfAssembly();
-        Eigen::Matrix3Xd alsoMovingMatrix(3, alsoMoving_atoms.size());
-        GenerateMatrixFromAtomVectorCoordinates(&alsoMoving_atoms, &alsoMovingMatrix);
-        Eigen::Matrix3Xd alsoMovedMatrix = (Affine * alsoMovingMatrix);
-        ReplaceAtomVectorCoordinatesFromMatrix(&alsoMoving_atoms, &alsoMovedMatrix);
-    }
 }
+
+//void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, AssemblyVector *alsoMoving)
+//{
+
+//    AtomVector moving_atoms = moving->GetAllAtomsOfAssembly();
+//    AtomVector target_atoms = target->GetAllAtomsOfAssembly();
+
+//    Eigen::Matrix3Xd movingMatrix(3, moving_atoms.size()), targetMatrix(3, target_atoms.size());
+
+//        // Create a matrices containing co-ordinates of assembly moving and target
+//    GenerateMatrixFromAtomVectorCoordinates(&moving_atoms, &movingMatrix);
+//    GenerateMatrixFromAtomVectorCoordinates(&target_atoms, &targetMatrix);
+
+//    // Figure out how to move assembly moving onto target
+//    Eigen::Affine3d Affine = Find3DAffineTransform(movingMatrix, targetMatrix);
+
+//    // Create a matrix containing the moved co-ordinates of assembly moving and alsoMoving.
+//    Eigen::Matrix3Xd movedMatrix = (Affine * movingMatrix);
+
+//    // Replace co-ordinates of moving with moved co-ordinates
+//    ReplaceAtomVectorCoordinatesFromMatrix(&moving_atoms, &movedMatrix);
+
+//    // Also move every assembly in also moving
+//    for(AssemblyVector::iterator it = alsoMoving->begin(); it != alsoMoving->end(); it++)
+//    {
+//        AtomVector alsoMoving_atoms = (*it)->GetAllAtomsOfAssembly();
+//        Eigen::Matrix3Xd alsoMovingMatrix(3, alsoMoving_atoms.size());
+//        GenerateMatrixFromAtomVectorCoordinates(&alsoMoving_atoms, &alsoMovingMatrix);
+//        Eigen::Matrix3Xd alsoMovedMatrix = (Affine * alsoMovingMatrix);
+//        ReplaceAtomVectorCoordinatesFromMatrix(&alsoMoving_atoms, &alsoMovedMatrix);
+//    }
+//}
 
 // A function to test Find3DAffineTransform()
 /* void gmml::TestFind3DAffineTransform()
