@@ -20,6 +20,9 @@
 // Probably a namespace would be a good addition to hide the functions from other parts of GMML.
 /***********************************************************************************************************/
 
+constexpr auto PI = 3.14159265358979323846;
+
+
 // This should not be in Assembly. Overloading to handle legacy code. Returning string so people can do as they wish.
 std::string glylib::CalculateRingShapeBFMP( Glycan::Monosaccharide* mono )
 {
