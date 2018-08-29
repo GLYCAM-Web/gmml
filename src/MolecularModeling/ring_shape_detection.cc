@@ -20,6 +20,9 @@
 // Probably a namespace would be a good addition to hide the functions from other parts of GMML.
 /***********************************************************************************************************/
 
+constexpr auto PI = 3.14159265358979323846;
+
+
 // This should not be in Assembly. Overloading to handle legacy code. Returning string so people can do as they wish.
 std::string glylib::CalculateRingShapeBFMP( Glycan::Monosaccharide* mono )
 {
@@ -956,27 +959,27 @@ double glylib::calculateTorsionAngle(GeometryTopology::Coordinate *coord1, Geome
 {
     double current_dihedral = 0.0;
 
-    GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*coord2);
-    b1->operator -(*coord1);
-    GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*coord3);
-    b2->operator -(*coord2);
-    GeometryTopology::Coordinate* b3 = new GeometryTopology::Coordinate(*coord4);
-    b3->operator -(*coord3);
-    GeometryTopology::Coordinate* b4 = new GeometryTopology::Coordinate(*b2);
-    b4->operator *(-1);
+    // Oliver updates to solve memory leaks
+    GeometryTopology::Coordinate b1 = *coord2; // deep copy
+    GeometryTopology::Coordinate b2 = *coord3;
+    GeometryTopology::Coordinate b3 = *coord4;
+    GeometryTopology::Coordinate b4 = b2;
+    b1.operator -(*coord1);
+    b2.operator -(*coord2);
+    b3.operator -(*coord3);
+    b4.operator *(-1);
 
-    GeometryTopology::Coordinate* b2xb3 = new GeometryTopology::Coordinate(*b2);
-    b2xb3->CrossProduct(*b3);
+    GeometryTopology::Coordinate b2xb3 = b2; // deep copy
+    b2xb3.CrossProduct(b3);
 
-    GeometryTopology::Coordinate* b1_m_b2n = new GeometryTopology::Coordinate(*b1);
-    b1_m_b2n->operator *(b2->length());
+    GeometryTopology::Coordinate b1_m_b2n = b1;
+    b1_m_b2n.operator *(b2.length());
 
-    GeometryTopology::Coordinate* b1xb2 = new GeometryTopology::Coordinate(*b1);
-    b1xb2->CrossProduct(*b2);
+    GeometryTopology::Coordinate b1xb2 = b1; // deep copy
+    b1xb2.CrossProduct(b2);
 
-    current_dihedral = atan2(b1_m_b2n->DotProduct(*b2xb3), b1xb2->DotProduct(*b2xb3));
-    delete b1, b2, b3, b4, b2xb3, b1_m_b2n, b1xb2;
-    return (current_dihedral * (180 / gmml::PI_RADIAN ) ); // Convert to DEGREES
+    current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
+    return (current_dihedral * (180 / PI ) ); // Convert to DEGREES
 }
 
 glylib::plane glylib::get_plane_for_ring(int n, CoordinateVector r)
