@@ -23,6 +23,13 @@ check_gemshome() {
    fi
 }
 
+check_dir_exists() {
+    if [ ! -d "$1" ]; then
+        echo ""
+        echo "Your $1 directory does not exist."
+    fi
+}
+
 cd ../
  gemshome=`pwd`
 cd -
@@ -61,7 +68,12 @@ if [ $result -eq 0 ] ; then
          exit 1
      else
          echo "GEMS level tests have passed. Checking glycoprotein builder."
+         if [ !check_dir_exists($GEMSHOME/gmml/programs/GlycoproteinBuilder)]; then
+             cd $GEMSHOME/gmml/programs/
+             git clone https://github.com/gitoliver/GlycoProteinBuilder.git GlycoproteinBuilder
+         fi
          cd $GEMSHOME/gmml/programs/GlycoproteinBuilder
+         git pull
          make clean
          make
          ./run_tests.sh
