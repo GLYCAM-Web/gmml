@@ -23,6 +23,13 @@ check_gemshome() {
    fi
 }
 
+check_dir_exists() {
+    if [ ! -d "$1" ]; then
+        echo ""
+        echo "Your $1 directory does not exist."
+    fi
+}
+
 cd ../
  gemshome=`pwd`
 cd -
@@ -54,14 +61,30 @@ if [ $result -eq 0 ] ; then
     cd $GEMSHOME/tests/
      bash run_tests.sh
      gems_tests_result=$? # record the exit status of previous command
-     if [ $gems_tests_result -eq 0 ] ; then
-         echo "GMML and GEMS tests have passed. Pushing is allowed."
-         exit 0
-     else
+     if [ $gems_tests_result -ne 0 ]; then
          echo "GEMS level tests have failed. Make sure you have pulled the latest version. At time of writing (July 2018) you probably need the gems-dev branch if using the gmml-dev branch." 
          echo "If you are up-to-date, this failure indicates that you have caused the outputs of $GEMSHOME/tests to change. You can open the $GEMSHOME/tests/run_tests.sh file and run the test line by line to get an output file. Compare it to the saved \"correct\" version in $GEMSHOME/tests/correct_outputs." 
          echo "Sometimes the changes you make are fine, and you just need to update what the correct output is by overwriting the old output. Make sure it is ok though, or you will be mur-didely-urdered."
          exit 1
+     else
+         echo "GEMS level tests have passed. Checking glycoprotein builder."
+         if [ ! -d "$GEMSHOME/gmml/programs/GlycoproteinBuilder" ]; then
+             cd $GEMSHOME/gmml/programs/
+             git clone https://github.com/gitoliver/GlycoProteinBuilder.git GlycoproteinBuilder
+         fi
+         cd $GEMSHOME/gmml/programs/GlycoproteinBuilder
+         git pull
+         make clean
+         make
+         ./run_tests.sh
+         gpbuilder_tests_result=$? # record the exit status of previous command
+         if [ $gpbuilder_tests_result -eq 0 ]; then
+             echo "All tests have passed. Pushing allowed"
+             exit 0
+         else
+             echo "The tests in $GEMSHOME/gmml/programs/GlycoproteinBuilder have failed. Check $GEMSHOME/gmml/programs/GlycoproteinBuilder/run_tests.sh" 
+             echo "Push cancelled."
+         fi
      fi
 else
     echo "
