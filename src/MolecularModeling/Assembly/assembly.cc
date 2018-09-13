@@ -72,7 +72,7 @@
 #include <errno.h>
 #include <string.h>
 
-int local_debug = 1;
+int local_debug = 0;
 
 using MolecularModeling::Assembly;
 

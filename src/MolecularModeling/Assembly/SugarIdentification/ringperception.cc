@@ -77,7 +77,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
-  int local_debug = 1;
+  int local_debug = 0;
     CycleMap cycles = CycleMap();
     AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
     std::vector<std::string> path_graph_edges = std::vector<std::string> (); ///The list of edges in the molecular graph
@@ -271,7 +271,7 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::vector<std::string> path_graph_labels, std::vector<std::string>& reduced_path_graph_edges,
                                std::vector<std::string>& reduced_path_graph_labels, std::string common_atom, std::vector<std::string>& cycles)
 {
-  int local_debug = 1;
+  int local_debug = 0;
     std::vector<int> to_be_deleted_edges = std::vector<int>();
     if ( local_debug > 0 )
     {
@@ -420,7 +420,7 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
 void Assembly::PruneGraph(AtomVector& all_atoms)
 {
   
-  int local_debug = 1;
+  int local_debug = 0;
     AtomVector atoms_with_more_than_two_neighbors = AtomVector();
     std::vector<std::string> het_atom_ids = std::vector<std::string>();
     if ( local_debug > 0 )
@@ -502,7 +502,7 @@ void Assembly::ConvertIntoPathGraph(std::vector<std::string>& path_graph_edges, 
 Assembly::CycleMap Assembly::DetectCyclesByDFS()
 {
   
-  int local_debug = 1;
+  int local_debug = 0;
     int counter = 0;
 
     AtomStatusMap atom_status_map = AtomStatusMap();
