@@ -76,7 +76,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card_direction, int connect_card_existance)
 {
-    std::cout << "Creating PDB file" << std::endl;
+//    std::cout << "Creating PDB file" << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating PDB file ...");
     PdbFileSpace::PdbFile* pdb_file = new PdbFileSpace::PdbFile();
     PdbFileSpace::PdbTitleSection* title_card = new PdbFileSpace::PdbTitleSection();
@@ -84,7 +84,7 @@ PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card
     // Set pdb_file title card
     pdb_file->SetTitle(title_card);
 
-std::cout << "hey1" << std::endl;
+//std::cout << "hey1" << std::endl;
     PdbFileSpace::PdbModelSection* model_card = new PdbFileSpace::PdbModelSection();
     PdbFileSpace::PdbModelSection::PdbModelCardMap models = PdbFileSpace::PdbModelSection::PdbModelCardMap();
     PdbFileSpace::PdbModelCard* model = new PdbFileSpace::PdbModelCard();
@@ -93,22 +93,22 @@ std::cout << "hey1" << std::endl;
     int serial_number = 1;
     int sequence_number = 1;
 
-std::cout << "hey2" << std::endl;
+//std::cout << "hey2" << std::endl;
     AssemblytoPdbSequenceNumberMap assembly_to_sequence_number_map = AssemblytoPdbSequenceNumberMap();
-std::cout << "hey2.1" << std::endl;
+//std::cout << "hey2.1" << std::endl;
     AssemblytoPdbSerialNumberMap assembly_to_serial_number_map = AssemblytoPdbSerialNumberMap();
-std::cout << "hey2.2" << std::endl;
+//std::cout << "hey2.2" << std::endl;
     ExtractPdbModelSectionFromAssembly(residue_set, serial_number, sequence_number, model_index_, assembly_to_sequence_number_map,
                                     assembly_to_serial_number_map);
 
-std::cout << "hey3" << std::endl;
+//std::cout << "hey3" << std::endl;
     PdbFileSpace::PdbLinkSection* link_card = new PdbFileSpace::PdbLinkSection();
     //The follwing line might be commented out for my testing purpose, definitely shouldn'be committed/pushed. If you see it commented out, please uncomment it.
     ExtractPdbLinkSectionFromAssembly(link_card, model_index_, assembly_to_sequence_number_map, link_card_direction);
     link_card->SetRecordName("LINK");
     pdb_file->SetLinks(link_card);
 
-std::cout << "hey4" << std::endl;
+//std::cout << "hey4" << std::endl;
     if(connect_card_existance == 1)
     {
         PdbFileSpace::PdbConnectSection* connect_card = new PdbFileSpace::PdbConnectSection();
@@ -119,10 +119,10 @@ std::cout << "hey4" << std::endl;
     model->SetModelResidueSet(residue_set);
     models[1] = model;
     model_card->SetModels(models);
-std::cout << "hey5" << std::endl;
+//std::cout << "hey5" << std::endl;
     pdb_file->SetModels(model_card);
 
-    std::cout << "PDB file created" << std::endl;
+//    std::cout << "PDB file created" << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "PDB file created");
     return pdb_file;
 }
