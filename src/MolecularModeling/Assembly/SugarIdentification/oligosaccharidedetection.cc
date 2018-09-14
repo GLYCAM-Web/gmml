@@ -1174,15 +1174,17 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 
 std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosaccharide* mono, std::string cycle_atoms_str)
 {
+  //9/14/18 Removed side atom initialization in this function and either moved it to detectSideGroups() or used Yao's InitiateDetectionOfCompleteSideGroupAtoms()
+  // Dave
   int local_debug = 1;
     std::vector<std::string> orientations = std::vector<std::string>();
-    std::vector<AtomVector> side_atoms = std::vector<AtomVector>();
+    // std::vector<AtomVector> side_atoms = std::vector<AtomVector>();
     AtomVector default_atom_vector = AtomVector(3, NULL);
 
     for(AtomVector::iterator it = mono->cycle_atoms_.begin(); it != mono->cycle_atoms_.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
     { 
       orientations.push_back("N");
-      side_atoms.push_back(default_atom_vector);
+      // side_atoms.push_back(default_atom_vector);
       unsigned int index = distance(mono->cycle_atoms_.begin(), it);
       MolecularModeling::Atom* prev_atom = new MolecularModeling::Atom();
       MolecularModeling::Atom* current_atom = (*it);
@@ -1240,13 +1242,13 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                 if(theta > (gmml::PI_RADIAN/2))
                 {
                   orientations.at(index) = "-1D";
-                  side_atoms.at(index).at(0) = neighbor;
+                  // side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 else
                 {
                   orientations.at(index) = "-1U";
-                  side_atoms.at(index).at(0) = neighbor;
+                  // side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 continue;
@@ -1258,14 +1260,14 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                 {
                   ss << orientations.at(index) << "-1D";
                   orientations.at(index) = ss.str();
-                  side_atoms.at(index).at(0) = neighbor;
+                  // side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 else
                 {
                   ss << orientations.at(index) << "-1U";
                   orientations.at(index) = ss.str();
-                  side_atoms.at(index).at(0) = neighbor;
+                  // side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 break;
@@ -1280,13 +1282,13 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                   if(theta > (gmml::PI_RADIAN/2))
                   {
                     orientations.at(index) = "D";
-                    side_atoms.at(index).at(1) = neighbor;
+                    // side_atoms.at(index).at(1) = neighbor;
                     neighbor -> SetIsSideChain(true);
                   }
                   else
                   {
                     orientations.at(index) = "U";
-                    side_atoms.at(index).at(1) = neighbor;
+                    // side_atoms.at(index).at(1) = neighbor;
                     neighbor -> SetIsSideChain(true);
                   }
                   continue;
@@ -1298,14 +1300,14 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                   {
                     ss << "D" << orientations.at(index);
                     orientations.at(index) = ss.str();
-                    side_atoms.at(index).at(1) = neighbor;
+                    // side_atoms.at(index).at(1) = neighbor;
                     neighbor -> SetIsSideChain(true);
                   }
                   else
                   {
                     ss << "U" << orientations.at(index);
                     orientations.at(index) = ss.str();
-                    side_atoms.at(index).at(1) = neighbor;
+                    // side_atoms.at(index).at(1) = neighbor;
                     neighbor -> SetIsSideChain(true);
                   }
                   break;
@@ -1316,13 +1318,13 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                 if(theta > (gmml::PI_RADIAN/2))
                 {
                   orientations.at(index) = "D";
-                  side_atoms.at(index).at(1) = neighbor;
+                  // side_atoms.at(index).at(1) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 else
                 {
                   orientations.at(index) = "U";
-                  side_atoms.at(index).at(1) = neighbor;
+                  // side_atoms.at(index).at(1) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 break;
@@ -1355,13 +1357,13 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                 if(theta > (gmml::PI_RADIAN/2))
                 {
                   orientations.at(index) = "D";
-                  side_atoms.at(index).at(0) = neighbor;
+                  // side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 else
                 {
                   orientations.at(index) = "U";
-                  side_atoms.at(index).at(0) = neighbor;
+                  // side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
               }
@@ -1370,13 +1372,13 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                 if(theta > (gmml::PI_RADIAN/2))
                 {
                   orientations.at(index) = "Dd";
-                  side_atoms.at(index).at(0) = neighbor;
+                  // side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 else
                 {
                   orientations.at(index) = "Ud";
-                  side_atoms.at(index).at(0) = neighbor;
+                  // side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 break;
@@ -1388,7 +1390,7 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
         }
       }
     }
-    mono->side_atoms_ = side_atoms;
+    // mono->side_atoms_ = side_atoms;
     if ((local_debug > 0) && (side_atoms.length() > 0))
     {
       for (std::vector<AtomVector>::iterator sideAtomVectorIT = side_atoms.begin(); sideAtomVectorIT != side_atoms.end(); sideAtomVectorIT ++)
