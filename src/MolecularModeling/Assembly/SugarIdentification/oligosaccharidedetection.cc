@@ -399,9 +399,9 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     if (!plus_sides.empty()){
     if( plus_sides.size() <= 1 ) {
       ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
-      GenerateCompleteSugarName( mono );
       UpdateComplexSugarChemicalCode( mono );
       UpdatePdbCode( mono );
+      GenerateCompleteSugarName( mono );
     } else {
       if( plus_sides.size() == 3 ) {
         std::vector< std::string >::iterator index_it;
@@ -446,7 +446,6 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
           mono->chemical_code_->right_down_.push_back( "+2" );
         }
       }
-    }
       ///UPDATING CHEMICAL CODE
       UpdateComplexSugarChemicalCode( mono );
       UpdatePdbCode( mono );
@@ -490,11 +489,14 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       mono->chemical_code_->Print( std::cout );
       ///FINDING COMPLEX CHEMICAL CODE IN COMPLEX SUGAR NAME LOOKUP TABLE
       mono->sugar_name_ = gmml::ComplexSugarNameLookup( mono->chemical_code_->toString() );
+      gmml::log(__LINE__, __FILE__, gmml::INF,  std::to_string(plus_sides.size()));
       if( plus_sides.size() == 2 ) {
         ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
         GenerateCompleteSugarName( mono );
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Generating complete sugar name");
       }
     }
+  }
     std::cout << std::endl;
 
     if( mono->sugar_name_.monosaccharide_stereochemistry_name_.compare( "" ) == 0 && mono->sugar_name_.monosaccharide_name_.compare( "" ) == 0 ) {
@@ -1178,13 +1180,13 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
   // Dave
   int local_debug = 1;
     std::vector<std::string> orientations = std::vector<std::string>();
-    // std::vector<AtomVector> side_atoms = std::vector<AtomVector>();
+    std::vector<AtomVector> side_atoms = std::vector<AtomVector>();
     AtomVector default_atom_vector = AtomVector(3, NULL);
 
     for(AtomVector::iterator it = mono->cycle_atoms_.begin(); it != mono->cycle_atoms_.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
     { 
       orientations.push_back("N");
-      // side_atoms.push_back(default_atom_vector);
+      side_atoms.push_back(default_atom_vector);
       unsigned int index = distance(mono->cycle_atoms_.begin(), it);
       MolecularModeling::Atom* prev_atom = new MolecularModeling::Atom();
       MolecularModeling::Atom* current_atom = (*it);
@@ -1242,13 +1244,13 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                 if(theta > (gmml::PI_RADIAN/2))
                 {
                   orientations.at(index) = "-1D";
-                  // side_atoms.at(index).at(0) = neighbor;
+                  side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 else
                 {
                   orientations.at(index) = "-1U";
-                  // side_atoms.at(index).at(0) = neighbor;
+                  side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 continue;
@@ -1260,14 +1262,14 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                 {
                   ss << orientations.at(index) << "-1D";
                   orientations.at(index) = ss.str();
-                  // side_atoms.at(index).at(0) = neighbor;
+                  side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 else
                 {
                   ss << orientations.at(index) << "-1U";
                   orientations.at(index) = ss.str();
-                  // side_atoms.at(index).at(0) = neighbor;
+                  side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 break;
@@ -1282,13 +1284,13 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                   if(theta > (gmml::PI_RADIAN/2))
                   {
                     orientations.at(index) = "D";
-                    // side_atoms.at(index).at(1) = neighbor;
+                    side_atoms.at(index).at(1) = neighbor;
                     neighbor -> SetIsSideChain(true);
                   }
                   else
                   {
                     orientations.at(index) = "U";
-                    // side_atoms.at(index).at(1) = neighbor;
+                    side_atoms.at(index).at(1) = neighbor;
                     neighbor -> SetIsSideChain(true);
                   }
                   continue;
@@ -1300,14 +1302,14 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                   {
                     ss << "D" << orientations.at(index);
                     orientations.at(index) = ss.str();
-                    // side_atoms.at(index).at(1) = neighbor;
+                    side_atoms.at(index).at(1) = neighbor;
                     neighbor -> SetIsSideChain(true);
                   }
                   else
                   {
                     ss << "U" << orientations.at(index);
                     orientations.at(index) = ss.str();
-                    // side_atoms.at(index).at(1) = neighbor;
+                    side_atoms.at(index).at(1) = neighbor;
                     neighbor -> SetIsSideChain(true);
                   }
                   break;
@@ -1318,13 +1320,13 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                 if(theta > (gmml::PI_RADIAN/2))
                 {
                   orientations.at(index) = "D";
-                  // side_atoms.at(index).at(1) = neighbor;
+                  side_atoms.at(index).at(1) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 else
                 {
                   orientations.at(index) = "U";
-                  // side_atoms.at(index).at(1) = neighbor;
+                  side_atoms.at(index).at(1) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 break;
@@ -1357,13 +1359,13 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                 if(theta > (gmml::PI_RADIAN/2))
                 {
                   orientations.at(index) = "D";
-                  // side_atoms.at(index).at(0) = neighbor;
+                  side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 else
                 {
                   orientations.at(index) = "U";
-                  // side_atoms.at(index).at(0) = neighbor;
+                  side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
               }
@@ -1372,13 +1374,13 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                 if(theta > (gmml::PI_RADIAN/2))
                 {
                   orientations.at(index) = "Dd";
-                  // side_atoms.at(index).at(0) = neighbor;
+                  side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 else
                 {
                   orientations.at(index) = "Ud";
-                  // side_atoms.at(index).at(0) = neighbor;
+                  side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 break;
@@ -1390,21 +1392,21 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
         }
       }
     }
-    // mono->side_atoms_ = side_atoms;
-    if ((local_debug > 0) && (side_atoms.length() > 0))
-    {
-      for (std::vector<AtomVector>::iterator sideAtomVectorIT = side_atoms.begin(); sideAtomVectorIT != side_atoms.end(); sideAtomVectorIT ++)
-      {
-        AtomVector sideAtomVector = (*sideAtomVectorIT);
-        for (AtomVector::iterator sideAtomIT = sideAtomVector.begin(); sideAtomIT != sideAtomVector.end(); sideAtomIT++)
-        {
-          MolecularModeling::Atom* sideAtom = (*sideAtomIT);
-          std::stringstream debugStr;
-          debugStr << "Side atom: " << sideAtom->GetName();
-          gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
-        }
-      }
-    }
+    mono->side_atoms_ = side_atoms;
+    // if ((local_debug > 0) && (side_atoms.length() > 0))
+    // {
+    //   for (std::vector<AtomVector>::iterator sideAtomVectorIT = side_atoms.begin(); sideAtomVectorIT != side_atoms.end(); sideAtomVectorIT ++)
+    //   {
+    //     AtomVector sideAtomVector = (*sideAtomVectorIT);
+    //     for (AtomVector::iterator sideAtomIT = sideAtomVector.begin(); sideAtomIT != sideAtomVector.end(); sideAtomIT++)
+    //     {
+    //       MolecularModeling::Atom* sideAtom = (*sideAtomIT);
+    //       std::stringstream debugStr;
+    //       debugStr << "Side atom: " << sideAtom->GetName();
+    //       gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
+    //     }
+    //   }
+    // }
 
     return orientations;
 }
@@ -1766,28 +1768,28 @@ void Assembly::ExtractDerivatives(Glycan::Monosaccharide * mono)
         MolecularModeling::Atom* target = NULL;
         std::string key = "";
         std::string value = "";
-        if(it == mono->side_atoms_.begin())///side atoms of anomeric carbon
-        {
-            if(sides.at(0) != NULL)
-                target = sides.at(0);///first index of each side is for carbon atoms in the std::vector<AtomVector> structure
-        }
-        //WHERE ARE ALL OF THE OTHER SIDE ATOMS?!?!?!?!?!?!?!?!?!??!
-        if(it == mono->side_atoms_.end() - 1)//side atoms of last carbon of the ring
-        {
-            if(sides.at(0) != NULL)
-            {
-                for(side_branch_last_carbon_index = sides.size() - 1; sides.at(side_branch_last_carbon_index) == NULL; side_branch_last_carbon_index-- )
-                {
-                  target = sides.at(side_branch_last_carbon_index);
-                }
-                
-            }
-        }
-        else
-        {
+        // if(it == mono->side_atoms_.begin())///side atoms of anomeric carbon
+        // {
+        //     if(sides.at(0) != NULL)
+        //         target = sides.at(0);///first index of each side is for carbon atoms in the std::vector<AtomVector> structure
+        // }
+        // //WHERE ARE ALL OF THE OTHER SIDE ATOMS?!?!?!?!?!?!?!?!?!??!
+        // if(it == mono->side_atoms_.end() - 1)//side atoms of last carbon of the ring
+        // {
+        //     if(sides.at(0) != NULL)
+        //     {
+        //         for(side_branch_last_carbon_index = sides.size() - 1; sides.at(side_branch_last_carbon_index) == NULL; side_branch_last_carbon_index-- )
+        //         {
+        //           target = sides.at(side_branch_last_carbon_index);
+        //         }
+        // 
+        //     }
+        // }
+        // else
+        // {
           if(sides.at(0) != NULL)
               target = sides.at(0);
-        }
+        // }
         if ((local_debug > 0) && (target != NULL))
         {
           std::stringstream debugStr;
