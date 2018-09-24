@@ -248,7 +248,7 @@ void* BuildStructureByDistanceThread(void* args){
     pthread_exit((void*) ti);
 }
 
-void* BuildStructureByDistanceByOptimizedThread(void* args){
+void* BuildStructureByDistanceByOptimizedThread(void* args){//This function should be changed to use atomic informatic to build structure by distance more intelligently
 
     MolecularModeling::DistanceCalculationThreadArgument* arg = (MolecularModeling::DistanceCalculationThreadArgument*)args;
     double cutoff = arg->cutoff;
