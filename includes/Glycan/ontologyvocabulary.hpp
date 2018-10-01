@@ -42,6 +42,9 @@ namespace Ontology
     const std::string hasChildAtomLinkage = "gmmo:hasChildAtomLinkage";
     const std::string hasParentAtomLinkage = "gmmo:hasParentAtomLinkage";
     const std::string hasGlycosidicLinkage = "gmmo:hasGlycosidicLinkage";
+    const std::string hasGlycosidicPhiAngle = "gmmo:hasGlycosidicPhiAngle";
+    const std::string hasGlycosidicPsiAngle = "gmmo:hasGlycosidicPsiAngle";
+    const std::string hasGlycosidicOmegaAngle = "gmmo:hasGlycosidicOmegaAngle";
     const std::string hasNeighbor = "gmmo:hasNeighbor";
     const std::string hasOligo = "gmmo:hasOligo";
     const std::string hasTerminal = "gmmo:hasTerminal";

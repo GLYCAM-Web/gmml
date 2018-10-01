@@ -1332,6 +1332,9 @@ double Assembly::CalculateTorsionAngleByAtoms(MolecularModeling::Atom *atom1, Mo
 {
     double current_dihedral = 0.0;
     GeometryTopology::Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
+    std::stringstream atom1Coordinates;
+    atom1Coordinates << atom1->GetId() << "X: " << a1->GetX() << " Y: " << a1->GetY() << " Z: " << a1->GetZ();
+    gmml::log(__LINE__, __FILE__, gmml::INF, atom1Coordinates.str());
     GeometryTopology::Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
     GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
     GeometryTopology::Coordinate* a4 = atom4->GetCoordinates().at(model_index_);

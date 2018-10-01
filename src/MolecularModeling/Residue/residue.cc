@@ -377,10 +377,14 @@ double Residue::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
 
 bool Residue::CheckIfProtein()
 {
+  int local_debug = -1;
     if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), this->GetName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
     {
+      if (local_debug > 0)
+      {
         gmml::log(__LINE__, __FILE__, gmml::INF, "Protein Found");
-        return true;
+      }
+      return true;
     }
     return false;
 }

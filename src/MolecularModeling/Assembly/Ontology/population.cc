@@ -354,13 +354,24 @@ void Assembly::PopulateLinkage(std::stringstream& linkage_stream, Glycan::Oligos
         glycosidic_atom_uri = CreateURI(glycosidic_atom_resource);
         gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicLinkage, glycosidic_atom_uri, linkage_stream);
 
-        //glycosidic_psi_angle = CalculatePsiAngle(child_oligo, parent_atom_id, child_atom_id, glycosidic_atom_id);
-        //psi_angle_uri = CreateURI???
-        //gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicPsiAngle, psi_angle_uri, linkage_stream);
+        double glycosidic_phi_angle = CalculatePhiAngle(oligo, child_oligo, parent_atom_id, child_atom_id, glycosidic_atom_id);
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Phi");
+        gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(glycosidic_phi_angle));
+        gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicPhiAngle, std::to_string(glycosidic_phi_angle), linkage_stream);
 
-        //glycosidic_phi_angle = CalculatePhiAngle(parent_oligo, parent_atom_id, child_atom_id, glycosidic_atom_id);
-        //phi_angle_uri = CreateURI???
-        //gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicPhiAngle, phi_angle_uri, linkage_stream);
+        double glycosidic_psi_angle = CalculatePsiAngle(child_oligo, parent_atom_id, child_atom_id, glycosidic_atom_id);
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Psi");
+        gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(glycosidic_psi_angle));
+        gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicPsiAngle, std::to_string(glycosidic_psi_angle), linkage_stream);
+
+        if (parent_c_index == 6)
+        {
+          double glycosidic_omega_angle = CalculateOmegaAngle(oligo, parent_atom_id, glycosidic_atom_id);
+          gmml::log(__LINE__, __FILE__, gmml::INF, "Omega");
+          gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(glycosidic_omega_angle));
+          gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicOmegaAngle, std::to_string(glycosidic_omega_angle), linkage_stream);
+
+        }
 
         parent_atom_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, parent_atom_id);
         parent_atom_uri = CreateURI(parent_atom_resource);

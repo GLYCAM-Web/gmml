@@ -610,14 +610,14 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   int number_of_oligosaccharides = 0;
   int number_of_monosaccharides = 0;
   // gmml::log(__LINE__, __FILE__,  gmml::INF, " about to print oligos ..." );
-  
-  
+
+
   //////////////////////////////////
   //SEGFAULTS below               //
   //////////////////////////////////
   gmml::log(__LINE__, __FILE__,  gmml::INF, "Oligos length:  ");
   gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharides.size() + "  ");
-  for( std::vector< Glycan::Oligosaccharide* >::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++ ) 
+  for( std::vector< Glycan::Oligosaccharide* >::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++ )
   {
     Glycan::Oligosaccharide* oligo = ( *it );
     if( oligo->child_oligos_linkages_.size() > 0 ) {
@@ -766,6 +766,7 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
                                 {
                                     phi_atom4 = atom3_neighbor; ///Cx
                                     phi_angle = CalculateTorsionAngleByAtoms(phi_atom1, phi_atom2, phi_atom3, phi_atom4); /// ϕ (O5′-C1′-Ox-Cx)
+                                    gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(phi_angle));
                                     AtomVector phi_atom4_neighbors = phi_atom4->GetNode()->GetNodeNeighbors();
 
                                     int atom4_index = gmml::ConvertString<int>(gmml::Split(phi_atom4->GetName(), "C*,\'").at(0));
@@ -1184,7 +1185,7 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
     AtomVector default_atom_vector = AtomVector(3, NULL);
 
     for(AtomVector::iterator it = mono->cycle_atoms_.begin(); it != mono->cycle_atoms_.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
-    { 
+    {
       orientations.push_back("N");
       side_atoms.push_back(default_atom_vector);
       unsigned int index = distance(mono->cycle_atoms_.begin(), it);
@@ -1343,7 +1344,7 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
               {
                 MolecularModeling::Atom* neighbor_of_neighbor = (*it2);
                 std::string neighbor_of_neighbor_id = neighbor_of_neighbor->GetId();
-                if((cycle_atoms_str.find(neighbor_of_neighbor_id) == std::string::npos) && 
+                if((cycle_atoms_str.find(neighbor_of_neighbor_id) == std::string::npos) &&
                   ((neighbor_of_neighbor_id.at(0) == 'O') || (neighbor_of_neighbor_id.at(0) == 'N'))) ///if neighbor of neighbor is a non-ring oxygen or nitrogen
                 {
                   o_neighbors++;
@@ -1352,7 +1353,7 @@ std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosacchari
                   (neighbor_of_neighbor_id.at(0) != 'H'))///if neighbor of neighbor is any non-ring atom other than hydrogen
                 {
                   not_h_neighbors++;
-                }    
+                }
               }
               if (o_neighbors >= 1)
               {
@@ -1711,7 +1712,7 @@ void Assembly::ExtractDerivatives(Glycan::Monosaccharide * mono)
         }
         for(AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
         {
-          
+
             AtomVector pattern_atoms = AtomVector();
             MolecularModeling::Atom* t_neighbor = (*it1);
             if(local_debug > 0)
@@ -1782,7 +1783,7 @@ void Assembly::ExtractDerivatives(Glycan::Monosaccharide * mono)
         //         {
         //           target = sides.at(side_branch_last_carbon_index);
         //         }
-        // 
+        //
         //     }
         // }
         // else
@@ -1902,7 +1903,7 @@ std::string Assembly::CheckxC_N(MolecularModeling::Atom* target, std::string cyc
       std::stringstream debugStr;
       debugStr << "CheckxC_N:" << pattern.str() << std::endl;
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
-    }  
+    }
     if(pattern.str().compare("xCH-NHH") == 0 || pattern.str().compare("xC-N") == 0 || pattern.str().compare("xCHH-NHH") == 0 || pattern.str().compare("xCH-N") == 0  ||
             pattern.str().compare("xCHH-N") == 0 || pattern.str().compare("xC-NHH") == 0)
         return "xCH-N";
@@ -1997,7 +1998,7 @@ std::string Assembly::CheckxC_NxO_CO_C(MolecularModeling::Atom *target, std::str
       std::stringstream debugStr;
       debugStr << "CheckxC_NxO_CO_C:" << pattern.str() << std::endl;
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
-    }  
+    }
     if(NxO == 'N')
     {
         if(pattern.str().compare("xCH-NH-CO-CHHH") == 0 || pattern.str().compare("xC-N-CO-C") == 0 || pattern.str().compare("xCHH-NH-CO-CHHH") == 0 || pattern.str().compare("xC-NH-CO-CHHH") == 0 ||
@@ -2124,7 +2125,7 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
       std::stringstream debugStr;
       debugStr << "CheckxC_NxO_CO_CO:" << pattern.str() << std::endl;
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
-    }  
+    }
     if(NxO == 'N')
     {
         if(pattern.str().compare("xCH-NH-CO-CHH-OH") == 0 || pattern.str().compare("xCH-N-CO-CHH-OH") == 0 || pattern.str().compare("xCH-NH-CO-C-OH") == 0 ||
@@ -2248,7 +2249,7 @@ std::string Assembly::CheckxC_NxO_SO3(MolecularModeling::Atom *target, std::stri
       std::stringstream debugStr;
       debugStr << "CheckxC_NxO_SO3:" << pattern.str() << std::endl;
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
-    }  
+    }
     if(NxO == 'N')
     {
         if(pattern.str().compare("xCH-NH-SOOOH") == 0 || pattern.str().compare("xCH-N-SOOOH") == 0 || pattern.str().compare("xCH-NH-SOOO") == 0 || pattern.str().compare("xCH-N-SOOO") == 0 ||
@@ -2361,7 +2362,7 @@ std::string Assembly::CheckxC_NxO_PO3(MolecularModeling::Atom *target, std::stri
       std::stringstream debugStr;
       debugStr << "CheckxC_NxO_PO3:" << pattern.str() << std::endl;
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
-    }  
+    }
     if(NxO == 'N')
     {
         if(pattern.str().compare("xCH-NH-POOOH") == 0 || pattern.str().compare("xCH-N-POOOH") == 0 || pattern.str().compare("xCH-NH-POOO") == 0 || pattern.str().compare("xCH-N-POOO") == 0 ||
@@ -2436,7 +2437,7 @@ std::string Assembly::CheckxC_NxO_C(MolecularModeling::Atom *target, std::string
       std::stringstream debugStr;
       debugStr << "CheckxC_NxO_C:" << pattern.str() << std::endl;
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
-    }  
+    }
     if(NxO == 'N')
     {
         if(pattern.str().compare("xCH-N-CHHH") == 0 ||  pattern.str().compare("xCH-NH-CHHH") == 0 || pattern.str().compare("xCH-NH-C") == 0 || pattern.str().compare("xCH-N-C") == 0 ||
@@ -2503,7 +2504,7 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
       std::stringstream debugStr;
       debugStr << "CheckxCOO:" << pattern.str() << std::endl;
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
-    }  
+    }
     if(pattern.str().compare("xCOO") == 0 || pattern.str().compare("xCHOO") == 0)
         return "xC-(O,O)";
     else if(pattern.str().compare("xCOOH") == 0 || pattern.str().compare("xCHOOH") == 0)
@@ -3000,7 +3001,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
     for(std::vector<Glycan::Monosaccharide*>::iterator it = monos.begin(); it != monos.end(); it++)
     {
         Glycan::Monosaccharide* mono1 = (*it);
-        
+
         monos_table[mono1] = std::vector<Glycan::Monosaccharide*>();
         monos_table_linkages[mono1] = std::vector<std::string>();
 
@@ -3873,4 +3874,191 @@ void Assembly::CalculateOligosaccharideBFactor(Glycan::Oligosaccharide* oligo, s
     num_monos++;
   }
   oligo->oligosaccharide_b_factor_ = total_b_factor/num_monos;
+}
+
+//I know there is a better way to do this and assign Phi/Psi/Omega values to the oligosaccharide struct, but for now it just needs to be done quickly
+//See Figure 1 in Vina Carb paper by our group if confused about which atoms are chosen and why
+//Dave 9/27/18
+double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id)
+{
+  gmml::log(__LINE__, __FILE__, gmml::INF, "CalculatingPhiAngle");
+  //(O5-C1-O-Cx') {Ring oxygen of child_oligo}-{child_atom_id}-{glycosidic_atom_id}-{parent_atom_id}
+
+  MolecularModeling::Atom* O5;
+  MolecularModeling::Atom* C1;
+  MolecularModeling::Atom* glycosidicO;
+  MolecularModeling::Atom* Cx;
+
+  //Get Anomeric Carbon and ring oxygen
+  for(std::vector<MolecularModeling::Atom*>::iterator it = child_oligo->root_->cycle_atoms_.begin();
+      it != child_oligo->root_->cycle_atoms_.end(); ++it)
+  {
+    MolecularModeling::Atom* this_cycle_atom = (*it);
+    std::string this_element = this_cycle_atom->GetElementSymbol();
+    std::string this_atom_id = this_cycle_atom->GetId();
+
+    if (this_atom_id.find("O5_") != std::string::npos)
+    {
+      O5 = this_cycle_atom;
+    }
+    if (this_atom_id == child_atom_id)
+    {
+      C1 = this_cycle_atom;
+    }
+  }
+  gmml::log(__LINE__, __FILE__, gmml::INF, "O5");
+  gmml::log(__LINE__, __FILE__, gmml::INF, O5->GetId());
+  gmml::log(__LINE__, __FILE__, gmml::INF, "C1");
+  gmml::log(__LINE__, __FILE__, gmml::INF, C1->GetId());
+    
+  //Find glycosidicO
+  AtomVector C1_neighbors = C1->GetNode()->GetNodeNeighbors();
+  for (AtomVector::iterator it = C1_neighbors.begin(); it != C1_neighbors.end(); ++it)
+  {
+    MolecularModeling::Atom* this_neighbor = (*it);
+    std::string this_atom_id = this_neighbor->GetId();
+    if (this_atom_id == glycosidic_atom_id)
+    {
+      glycosidicO = this_neighbor;
+    }
+  }
+  gmml::log(__LINE__, __FILE__, gmml::INF, "glycosidicO");
+  gmml::log(__LINE__, __FILE__, gmml::INF, glycosidicO->GetId());
+
+  //Get Cx
+  AtomVector glycosidicO_neighbors = glycosidicO->GetNode()->GetNodeNeighbors();
+  for (AtomVector::iterator it = glycosidicO_neighbors.begin(); it != glycosidicO_neighbors.end(); ++it)
+  {
+    MolecularModeling::Atom* this_neighbor = (*it);
+    std::string this_atom_id = this_neighbor->GetId();
+    if (this_atom_id == parent_atom_id)
+    {
+      Cx = this_neighbor;
+    }
+  }
+  gmml::log(__LINE__, __FILE__, gmml::INF, "Cx");
+  gmml::log(__LINE__, __FILE__, gmml::INF, Cx->GetId());
+
+  double Phi = CalculateTorsionAngleByAtoms(O5, C1, glycosidicO, Cx);
+  gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(Phi));
+  return Phi;
+}
+
+double Assembly::CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id)
+{
+  //(C1-O-Cx'-C[x-1]') {child_atom_id}-{glycosidic_atom_id}-{parent_atom_id}-{parent_atom_id - 1}
+
+  MolecularModeling::Atom* C1;
+  MolecularModeling::Atom* glycosidicO;
+  MolecularModeling::Atom* Cx;
+  MolecularModeling::Atom* Cx_1;
+
+  //Get Anomeric Carbon
+  for(std::vector<MolecularModeling::Atom*>::iterator it = child_oligo->root_->cycle_atoms_.begin();
+      it != child_oligo->root_->cycle_atoms_.end(); ++it)
+  {
+    MolecularModeling::Atom* this_cycle_atom = (*it);
+    std::string this_atom_id = this_cycle_atom->GetId();
+    if (this_atom_id == child_atom_id)
+    {
+      C1 = this_cycle_atom;
+    }
+  }
+
+  //Find glycosidicO
+  AtomVector C1_neighbors = C1->GetNode()->GetNodeNeighbors();
+  for (AtomVector::iterator it = C1_neighbors.begin(); it != C1_neighbors.end(); ++it)
+  {
+    MolecularModeling::Atom* this_neighbor = (*it);
+    std::string this_atom_id = this_neighbor->GetId();
+    if (this_atom_id == glycosidic_atom_id)
+    {
+      glycosidicO = this_neighbor;
+    }
+  }
+
+  //Get Cx
+  AtomVector glycosidicO_neighbors = glycosidicO->GetNode()->GetNodeNeighbors();
+  for (AtomVector::iterator it = glycosidicO_neighbors.begin(); it != glycosidicO_neighbors.end(); ++it)
+  {
+    MolecularModeling::Atom* this_neighbor = (*it);
+    std::string this_atom_id = this_neighbor->GetId();
+    if (this_atom_id == parent_atom_id)
+    {
+      Cx = this_neighbor;
+    }
+  }
+
+  //Get Cx-1
+  AtomVector Cx_neighbors = Cx->GetNode()->GetNodeNeighbors();
+  for (AtomVector::iterator it = Cx_neighbors.begin(); it != Cx_neighbors.end(); ++it)
+  {
+    MolecularModeling::Atom* this_neighbor = (*it);
+    std::string this_atom_id = this_neighbor->GetId();
+    int Cx_atom_number = parent_atom_id.at(1) - '0';
+    int this_atom_number = this_atom_id.at(1) - '0';
+    if ( (Cx_atom_number - 1) == this_atom_number)
+    {
+      Cx_1 = this_neighbor;
+    }
+  }
+
+  return CalculateTorsionAngleByAtoms(C1, glycosidicO, Cx, Cx_1);
+}
+
+double Assembly::CalculateOmegaAngle(Glycan::Oligosaccharide* parent_oligo, std::string parent_atom_id, std::string glycosidic_atom_id)
+{
+  //(O-C6'-C5'-O5') {glycosidic_atom_id}-{parent_atom_id}-{Carbon 5 in parent oligo}-{Ring oxygen in parent_oligo}
+
+  MolecularModeling::Atom* glycosidicO;
+  MolecularModeling::Atom* C6prime;
+  MolecularModeling::Atom* C5prime;
+  MolecularModeling::Atom* O5prime;
+
+  //Get C5' and O5' first
+  for(std::vector<MolecularModeling::Atom*>::iterator it = parent_oligo->root_->cycle_atoms_.begin();
+      it != parent_oligo->root_->cycle_atoms_.end(); ++it)
+  {
+    MolecularModeling::Atom* this_cycle_atom = (*it);
+    std::string this_atom_id = this_cycle_atom->GetId();
+    int this_atom_number = this_atom_id.at(1) - '0';
+    std::string this_element = this_cycle_atom->GetElementSymbol();
+    if (this_atom_number == 5)
+    {
+      if (this_element == "C")
+      {
+        C5prime = this_cycle_atom;
+      }
+      else if (this_element == "O")
+      {
+        O5prime = this_cycle_atom;
+      }
+    }
+  }
+
+  //Get C6'
+  AtomVector C5prime_neighbors = C5prime->GetNode()->GetNodeNeighbors();
+  for (AtomVector::iterator it = C5prime_neighbors.begin(); it != C5prime_neighbors.end(); ++it)
+  {
+    MolecularModeling::Atom* this_neighbor = (*it);
+    std::string this_atom_id = this_neighbor->GetId();
+    if ( this_atom_id == parent_atom_id)
+    {
+      C6prime = this_neighbor;
+    }
+  }
+
+  //Get glycosidic oxygen
+  AtomVector C6prime_neighbors = C6prime->GetNode()->GetNodeNeighbors();
+  for (AtomVector::iterator it = C6prime_neighbors.begin(); it != C6prime_neighbors.end(); ++it)
+  {
+    MolecularModeling::Atom* this_neighbor = (*it);
+    std::string this_atom_id = this_neighbor->GetId();
+    if ( this_atom_id == glycosidic_atom_id)
+    {
+      glycosidicO = this_neighbor;
+    }
+  }
+
+  return CalculateTorsionAngleByAtoms(glycosidicO, C6prime, C5prime, O5prime);
 }
