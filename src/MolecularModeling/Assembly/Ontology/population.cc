@@ -297,6 +297,7 @@ void Assembly::getDerivatives(std::string& mono_short_name, std::vector<std::str
 
 void Assembly::PopulateLinkage(std::stringstream& linkage_stream, Glycan::Oligosaccharide* oligo, std::string oligo_uri, std::string id_prefix, int& link_id, std::vector<int>& visited_oligos)
 {
+  int local_debug = -1;
     std::string linkage_resource = "";
     std::string linkage_uri = "";
     std::string child_oligo_resource = "";
@@ -356,22 +357,31 @@ void Assembly::PopulateLinkage(std::stringstream& linkage_stream, Glycan::Oligos
 
         double glycosidic_phi_angle = CalculatePhiAngle(oligo, child_oligo, parent_atom_id, child_atom_id, glycosidic_atom_id);
         glycosidic_phi_angle = gmml::ConvertRadian2Degree(glycosidic_phi_angle);
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Phi");
-        gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(glycosidic_phi_angle));
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, "Phi");
+          gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(glycosidic_phi_angle));
+        }
         gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicPhiAngle, std::to_string(glycosidic_phi_angle), linkage_stream);
 
         double glycosidic_psi_angle = CalculatePsiAngle(child_oligo, parent_atom_id, child_atom_id, glycosidic_atom_id);
         glycosidic_psi_angle = gmml::ConvertRadian2Degree(glycosidic_psi_angle);
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Psi");
-        gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(glycosidic_psi_angle));
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, "Psi");
+          gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(glycosidic_psi_angle));
+        } 
         gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicPsiAngle, std::to_string(glycosidic_psi_angle), linkage_stream);
 
         if (parent_c_index == 6)
         {
           double glycosidic_omega_angle = CalculateOmegaAngle(oligo, parent_atom_id, glycosidic_atom_id);
           glycosidic_omega_angle = gmml::ConvertRadian2Degree(glycosidic_omega_angle);
-          gmml::log(__LINE__, __FILE__, gmml::INF, "Omega");
-          gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(glycosidic_omega_angle));
+          if(local_debug > 0)
+          {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Omega");
+            gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(glycosidic_omega_angle));
+          }
           gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicOmegaAngle, std::to_string(glycosidic_omega_angle), linkage_stream);
 
         }
