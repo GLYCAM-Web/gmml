@@ -1,4 +1,5 @@
-File README in dat/MolecularMetadata begun on 2018-09-13 by BLFoley
+File README in gmml/dat/MolecularMetadata 
+Begun on 2018-09-13 by BLFoley
 
 This directory holds scripts for generating parts of GMML's molecular metadata.
 
@@ -61,4 +62,18 @@ Examples of Metadata use:
     * The formal charge of a residue.
 
     * Atomic masses for calculating center of mass.
+
+
+Here is a tree of the current directory structure:
+
+├── GLYCAM
+│   └── GLYCAM06
+│       ├── All_Residues.txt
+│       ├── README
+│       └── ResidueTags
+│           ├── 0_grep_residues.bash
+│           ├── 1_make_glycam06_residue_tag_lookup.bash
+│           ├── 2_general_residue-tags.bash
+│           ├── 3_carbohydrate_residue_tags.bash
+│           ├── README
 
