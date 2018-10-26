@@ -1,18 +1,18 @@
 #ifndef GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP
 #define GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP
 
-/** \file:  ../../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp
+/** \file:  includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp
  * GLYCAM06 metadata for residues
  *
- * This file is enerated automatically on:
- *     Wed Jun 27 17:56:06 EDT 2018
+ * This file was generated automatically on:
+ *     Thu Sep 13 11:01:29 EDT 2018
  *
  * by a script named:
- *     GLYCAM06_make_glycam06_residue_name-2-type_lookup.bash
+ *     1_make_glycam06_residue_tag_lookup.bash
  *
  * The script was begun on 16 June 2018 by BLFoley and
  * can be found in:
- *     dat/MolecularMetadata/scripts
+ *     dat/MolecularMetadata/scripts/GLYCAM/GLYCAM06/ResidueTags
  *
  * See that and associated scripts for more information.
  */
