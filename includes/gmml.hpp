@@ -126,7 +126,7 @@
 #include "MolecularMetadata/element.hpp"
 #include "MolecularMetadata/molecularmetadata.hpp"
 #include "MolecularMetadata/AMBER/amberelements.hpp"
-#include "MolecularMetadata/GLYCAM/glycam06.hpp"
+#include "MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
 #include "MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
 #include "MolecularModeling/assembly.hpp"
 #include "MolecularModeling/atom.hpp"

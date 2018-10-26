@@ -28,7 +28,7 @@
 #include "../../../includes/GeometryTopology/coordinate.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
-#include "../../../includes/MolecularMetadata/GLYCAM/glycam06.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
 
 
 using MolecularModeling::Residue;
