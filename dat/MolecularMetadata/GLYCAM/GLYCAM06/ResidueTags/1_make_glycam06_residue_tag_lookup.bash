@@ -18,7 +18,8 @@
 ## Before getting to docs for the main contents, we will make some
 ## declarations and do some preliminary stuff in a convenient location
 ##
-OUTPATH='../../../../includes/MolecularMetadata/GLYCAM'
+GMMLOUTPATH='includes/MolecularMetadata/GLYCAM'
+OUTPATH="../../../../../${GMMLOUTPATH}"
 OUTFILE='glycam06residueinfo.hpp' ## name of c++ file to write
 if [ -e ${OUTPATH}/${OUTFILE} ] ; then
    echo "
@@ -50,9 +51,9 @@ fi
 ########################################
 
 ##
-## Load in a helper script
+## Load in the residue tags.
 ##
-. GLYCAM06_res-name-mappings.bash
+. 2_general_residue-tags.bash
 
 ##
 ##  Sanity checking:
@@ -78,10 +79,10 @@ fi
 echo "#ifndef GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP
 #define GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP
 
-/** \\file:  ${OUTPATH}/${OUTFILE}
+/** \\file:  ${GMMLOUTPATH}/${OUTFILE}
  * GLYCAM06 metadata for residues
  *
- * This file is enerated automatically on:
+ * This file was generated automatically on:
  *     $(date)
  *
  * by a script named:
@@ -89,7 +90,7 @@ echo "#ifndef GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP
  *
  * The script was begun on 16 June 2018 by BLFoley and
  * can be found in:
- *     dat/MolecularMetadata/scripts
+ *     dat/MolecularMetadata/scripts/GLYCAM/GLYCAM06/ResidueTags
  *
  * See that and associated scripts for more information.
  */

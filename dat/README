@@ -1,0 +1,128 @@
+README file for gmml/dat
+Begun on 2018-10-18 by BLFoley
+
+
+Top-level directories:
+
+    Atomic              General information at the atomic level 
+    CurrentParams       Default (?) parameters for modeling
+    frcmod              A collection of AMBER frcmod files
+    lib                 GLYCAM06's amino lib files
+    MolecularMetadata   Files used to produc the MolecularMetadata in gmml/includes
+    parameter           Just a copy of parm99.dat
+    prep                Two GLYCAM06 prep files
+
+RECOMMEND:  
+
+    Leave the AMBER stuff in the AMBERHOME tree.   Keep only what is necessary
+    for basic modeling, and turn that into metadata that doesn't need to be 
+    read from a file (that needs a location, etc.).  
+ 
+    Reason:  AmberTools is free and open source, so there's no reason to keep
+             that stuff in here.  Just require AMBERHOME to be set if using
+             AMBER-style files.  Make it an AMBERPATH if you want more than
+             one directory.
+
+    More specifically: 
+           
+             Get rid of the contents of these directories except as needed 
+             for testing, and move those to the testing space:
+
+             CurrentParams  frcmod  lib  parameter prep
+
+
+TREE of the current directory structure
+
+├── Atomic
+│   └── NIST_Atomic_Weights_and_Isotopic_Compositions_for_All_Elements.html
+├── CurrentParams
+│   ├── leaprc.ff12SB_2014-04-24
+│   │   ├── amino12.lib
+│   │   ├── aminoct12.lib
+│   │   ├── aminont12.lib
+│   │   ├── frcmod.ff12SB
+│   │   ├── leaprc.ff12SB
+│   │   ├── nucleic12.lib
+│   │   └── parm10.dat
+│   ├── leaprc_GLYCAM_06j-1_2014-03-14
+│   │   ├── GLYCAM_06j-1.prep
+│   │   ├── GLYCAM_06j.dat
+│   │   ├── GLYCAM_amino_06j_12SB.lib
+│   │   ├── GLYCAM_aminoct_06j_12SB.lib
+│   │   ├── GLYCAM_aminont_06j_12SB.lib
+│   │   └── leaprc.GLYCAM_06j-1
+│   ├── leaprc_GLYCAM_06j-1_2014-03-14.tgz
+│   └── other
+│       ├── atomic_ions.lib
+│       ├── frcmod.ionsjc_tip3p
+│       └── solvents.lib
+├── frcmod
+│   ├── frcmod.chcl3
+│   ├── frcmod.constph
+│   ├── frcmod.dc4
+│   ├── frcmod.ff02pol.r1
+│   ├── frcmod.ff03
+│   ├── frcmod.ff03ua
+│   ├── frcmod.ff12polA
+│   ├── frcmod.ff12polL
+│   ├── frcmod.ff12SB
+│   ├── frcmod.ff14SB
+│   ├── frcmod.ff14SB_MOD
+│   ├── frcmod.ff99SB
+│   ├── frcmod.ff99SB14
+│   ├── frcmod.ff99SBildn
+│   ├── frcmod.ff99SBnmr
+│   ├── frcmod.ff99SP
+│   ├── frcmod.ionsff99_tip3p
+│   ├── frcmod.ionsjc_spce
+│   ├── frcmod.ionsjc_tip3p
+│   ├── frcmod.ionsjc_tip4pew
+│   ├── frcmod.ionslm_1264_spce
+│   ├── frcmod.ionslm_1264_tip3p
+│   ├── frcmod.ionslm_1264_tip4pew
+│   ├── frcmod.ionslrcm_cm_spce
+│   ├── frcmod.ionslrcm_cm_tip3p
+│   ├── frcmod.ionslrcm_cm_tip4pew
+│   ├── frcmod.ionslrcm_hfe_spce
+│   ├── frcmod.ionslrcm_hfe_tip3p
+│   ├── frcmod.ionslrcm_hfe_tip4pew
+│   ├── frcmod.ionslrcm_iod
+│   ├── frcmod.meoh
+│   ├── frcmod.nma
+│   ├── frcmod.opc
+│   ├── frcmod.parmbsc0
+│   ├── frcmod.parmCHI_YIL
+│   ├── frcmod.phosaa10
+│   ├── frcmod.pol3
+│   ├── frcmod.protonated_nucleic
+│   ├── frcmod.qspcfw
+│   ├── frcmod.spce
+│   ├── frcmod.spcfw
+│   ├── frcmod.tip3pf
+│   ├── frcmod.tip4p
+│   ├── frcmod.tip4pew
+│   ├── frcmod.tip5p
+│   └── frcmod.urea
+├── lib
+│   ├── GLYCAM_amino_06h.lib
+│   ├── GLYCAM_aminoct_06h.lib
+│   ├── GLYCAM_aminont_06h.lib
+│   └── tip3pbox.off
+├── MolecularMetadata
+│   ├── GLYCAM
+│   │   └── GLYCAM06
+│   │       ├── All_Residues.txt
+│   │       ├── README
+│   │       └── ResidueTags
+│   │           ├── 0_grep_residues.bash
+│   │           ├── 1_make_glycam06_residue_tag_lookup.bash
+│   │           ├── 2_general_residue-tags.bash
+│   │           ├── 3_carbohydrate_residue_tags.bash
+│   │           ├── README
+│   └── README
+├── parameter
+│   └── parm99.dat
+├── prep
+│   ├── GLYCAM_06j-1.prep
+│   └── Glycam_06.prep
+
