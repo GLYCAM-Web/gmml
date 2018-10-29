@@ -1,0 +1,13 @@
+File README in gmml/dat/MolecularMetadata/GLYCAM/GLYCAM06 
+Begun on 2018-09-13 by BLFoley
+
+This directory contains scripts used for generating metadata relevant to the
+GLYCAM06 force field.
+
+Directory contents:
+
+  README            This file
+  All_Residues.txt  File listing the names of all GLYCAM06 residues
+  ResidueTags       Directory containing scripts for generating residue tags
+
+
