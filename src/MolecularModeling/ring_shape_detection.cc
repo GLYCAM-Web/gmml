@@ -1,8 +1,40 @@
 #include "../includes/MolecularModeling/ring_shape_detection.hpp"
 
-std::string calculateRingShapeBFMP(CoordinateVector ring_coordinates, int cut_off)
-{
+/*********************************************************************************************************/
+/***************** Overview of port **********************************************************************/
+// In May 2018 Oliver ported Spandana's C code for BFMP into GMML
+// Method here: https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4210171/
+// C program found by searching BFMP ring detection or probably broken by the time you read this:
+// http://glycam.org/docs/othertoolsservice/download-docs/publication-materials/bfmp/
+// I initially thought I would replace the classes with C++ and GMML classes , but after a few
+// days I started just copying in the Glylib classes. The big change was to hard code canonicals.txt, as
+// I don't think that will be changed very often, and how it was read in was awful. Hardcoding that
+// meant I could delete a chunk of code. I also created a function does_conformation_match which
+// somewhat reduces code replication, but boy this whole file is just tons of repeated code with
+// different parameters. I ran out of time, and I'm thinking the more I change the harder it will
+// be to find any bugs in this vs the original C code.
 
+// There are a lot of geometry functions at the bottom. Some can be replaced by generic functions
+// once they become available within gmml, others use the Glylib structs, so probably not unless
+// you do a more extensive overhaul/replacment of the classes used here.
+// Probably a namespace would be a good addition to hide the functions from other parts of GMML.
+/***********************************************************************************************************/
+
+constexpr auto PI = 3.14159265358979323846;
+
+
+// This should not be in Assembly. Overloading to handle legacy code. Returning string so people can do as they wish.
+std::string glylib::CalculateRingShapeBFMP( Glycan::Monosaccharide* mono )
+{
+  CoordinateVector ring_coordinates = gmml::GetCycleAtomCoordinates( mono );
+  std::string bfmp = CalculateRingShapeBFMP(ring_coordinates);
+  // OG is wondering why Monosaccharide isn't a class with Get'ers and Set'ers.
+  mono->bfmp_ring_conformation_ = bfmp;
+  return bfmp;
+}
+
+std::string glylib::CalculateRingShapeBFMP(CoordinateVector ring_coordinates, int cut_off)
+{
     //****************************************************//
     //****************** canonicals.txt ******************//
     //****** OG is Hardcoding canonicals.txt here ********//
@@ -58,7 +90,7 @@ std::string calculateRingShapeBFMP(CoordinateVector ring_coordinates, int cut_of
     }
     i = 0;
     j = 0;
-    PlaneVector fifteen_planes;
+    glylib::PlaneVector fifteen_planes;
     CoordinateVector four;
     double dihedral;
     int no = 4; // just no?
@@ -626,7 +658,7 @@ if(focheck ==1){
     {
         if(sdsize>=3)
         {
-            if(does_conformation_match(3, sortedplanes, chair, 12, list, 4))
+            if(does_conformation_match(3, sortedplanes, chair, 12, list, 3))
             {
                 d[0]=get_signed_distance_from_point_to_plane(fifteen_planes[12],ring_coordinates.at(3));
                 d[1]=get_signed_distance_from_point_to_plane(fifteen_planes[12],ring_coordinates.at(0));
@@ -923,39 +955,39 @@ if(focheck ==1){
 }
 
 // Copied this from gmml Assembly. Should use a generic one from Geometry once it becomes available
-double calculateTorsionAngle(GeometryTopology::Coordinate *coord1, GeometryTopology::Coordinate *coord2, GeometryTopology::Coordinate *coord3, GeometryTopology::Coordinate *coord4)
+double glylib::calculateTorsionAngle(GeometryTopology::Coordinate *coord1, GeometryTopology::Coordinate *coord2, GeometryTopology::Coordinate *coord3, GeometryTopology::Coordinate *coord4)
 {
     double current_dihedral = 0.0;
 
-    GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*coord2);
-    b1->operator -(*coord1);
-    GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*coord3);
-    b2->operator -(*coord2);
-    GeometryTopology::Coordinate* b3 = new GeometryTopology::Coordinate(*coord4);
-    b3->operator -(*coord3);
-    GeometryTopology::Coordinate* b4 = new GeometryTopology::Coordinate(*b2);
-    b4->operator *(-1);
+    // Oliver updates to solve memory leaks
+    GeometryTopology::Coordinate b1 = *coord2; // deep copy
+    GeometryTopology::Coordinate b2 = *coord3;
+    GeometryTopology::Coordinate b3 = *coord4;
+    GeometryTopology::Coordinate b4 = b2;
+    b1.operator -(*coord1);
+    b2.operator -(*coord2);
+    b3.operator -(*coord3);
+    b4.operator *(-1);
 
-    GeometryTopology::Coordinate* b2xb3 = new GeometryTopology::Coordinate(*b2);
-    b2xb3->CrossProduct(*b3);
+    GeometryTopology::Coordinate b2xb3 = b2; // deep copy
+    b2xb3.CrossProduct(b3);
 
-    GeometryTopology::Coordinate* b1_m_b2n = new GeometryTopology::Coordinate(*b1);
-    b1_m_b2n->operator *(b2->length());
+    GeometryTopology::Coordinate b1_m_b2n = b1;
+    b1_m_b2n.operator *(b2.length());
 
-    GeometryTopology::Coordinate* b1xb2 = new GeometryTopology::Coordinate(*b1);
-    b1xb2->CrossProduct(*b2);
+    GeometryTopology::Coordinate b1xb2 = b1; // deep copy
+    b1xb2.CrossProduct(b2);
 
-    current_dihedral = atan2(b1_m_b2n->DotProduct(*b2xb3), b1xb2->DotProduct(*b2xb3));
-    delete b1, b2, b3, b4, b2xb3, b1_m_b2n, b1xb2;
-    return (current_dihedral * (180 / gmml::PI_RADIAN ) ); // Convert to DEGREES
+    current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
+    return (current_dihedral * (180 / PI ) ); // Convert to DEGREES
 }
 
-plane get_plane_for_ring(int n, CoordinateVector r)
+glylib::plane glylib::get_plane_for_ring(int n, CoordinateVector r)
 {
     int jval[n];
     int l;
-    plane pval; //plane for returning the values of plane
-    vectormag_3D Rj, Rcos, Rsin, R1, R2, R1xR2, avg_coord;
+    glylib::plane pval; //plane for returning the values of plane
+    glylib::vectormag_3D Rj, Rcos, Rsin, R1, R2, R1xR2, avg_coord;
     R1.i = R1.j = R1.k = R2.i = R2.j = R2.k = 0;
     avg_coord.i = avg_coord.j = avg_coord.k = 0;
     for(l = 0; l < n; l++)
@@ -1003,9 +1035,9 @@ plane get_plane_for_ring(int n, CoordinateVector r)
     return pval;
 }
 
-vectormag_3D get_crossprod(vectormag_3D a, vectormag_3D b)
+glylib::vectormag_3D glylib::get_crossprod(glylib::vectormag_3D a, glylib::vectormag_3D b)
 {
-    vectormag_3D xp;
+    glylib::vectormag_3D xp;
     xp.i = a.j * b.k - a.k * b.j;
     xp.j = -(a.i * b.k - a.k * b.i);
     xp.k = a.i * b.j - a.j * b.i;
@@ -1013,7 +1045,7 @@ vectormag_3D get_crossprod(vectormag_3D a, vectormag_3D b)
     return xp;
 }
 
-double get_signed_distance_from_point_to_plane(plane p, GeometryTopology::Coordinate pt)
+double glylib::get_signed_distance_from_point_to_plane(glylib::plane p, GeometryTopology::Coordinate pt)
 {
     double sum, sqroot, d;
     //printf("%f %f %f\n",pt.i,pt.j,pt.k);
@@ -1027,7 +1059,7 @@ double get_signed_distance_from_point_to_plane(plane p, GeometryTopology::Coordi
     return d;
 }
 
-bool does_conformation_match(int jloops, int *sortedplanes, int *atoms, int atoms_size, int *list, int required_matches)
+bool glylib::does_conformation_match(int jloops, int *sortedplanes, int *atoms, int atoms_size, int *list, int required_matches)
 {
     int test = count_conformation_matches(jloops, sortedplanes, atoms, atoms_size, list);
     if(test==required_matches)
@@ -1036,7 +1068,7 @@ bool does_conformation_match(int jloops, int *sortedplanes, int *atoms, int atom
         return false;
 }
 
-int count_conformation_matches(int jloops, int *sortedplanes, int *atoms, int atoms_size, int *list)
+int glylib::count_conformation_matches(int jloops, int *sortedplanes, int *atoms, int atoms_size, int *list)
 {
     int j = 0;
     int match1 = 0;
@@ -1075,7 +1107,7 @@ int count_conformation_matches(int jloops, int *sortedplanes, int *atoms, int at
 }
 
 /************** myfopen(const char,const char) ****************/
-FILE* myfopen(const char *myfilename,const char *myopentype)
+FILE* glylib::myfopen(const char *myfilename,const char *myopentype)
 {
     FILE *MYFP;
     MYFP=fopen(myfilename,myopentype);
@@ -1088,4 +1120,19 @@ FILE* myfopen(const char *myfilename,const char *myopentype)
         exit(1);
     }
     return MYFP;
+}
+
+// This doesn't belong here, but Glycan::Monsaccharide is a messy struct.
+CoordinateVector gmml::GetCycleAtomCoordinates( Glycan::Monosaccharide* mono ) {
+    CoordinateVector coordinates;
+    for( AtomVector::iterator it1 = mono->cycle_atoms_.begin(); it1 != mono->cycle_atoms_.end(); ++it1 )
+    {
+        MolecularModeling::Atom* atom = ( *it1 );
+        CoordinateVector atom_coordinates = atom->GetCoordinates();
+        for( CoordinateVector::iterator it2 = atom_coordinates.begin(); it2 != atom_coordinates.end(); ++it2 )
+        {
+            coordinates.push_back( ( *it2 ) );
+        }
+    }
+    return coordinates;
 }

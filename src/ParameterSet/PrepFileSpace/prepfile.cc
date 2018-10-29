@@ -24,7 +24,21 @@ PrepFile::PrepFile(const std::string& prep_file)
     {
         throw PrepFileProcessingException(__LINE__, "Prep file not found");
     }
-    Read(in_file);
+    ReadAllResidues(in_file);
+    in_file.close();            /// Close the prep files
+}
+
+PrepFile::PrepFile(const std::string& prep_file, std::vector<std::string>& query_residue_names)
+{
+    path_ = prep_file;
+    std::ifstream in_file;
+    if(std::ifstream(prep_file.c_str()))
+        in_file.open(prep_file.c_str());
+    else
+    {
+        throw PrepFileProcessingException(__LINE__, "Prep file not found");
+    }
+    ReadOnlyQueryResidues(in_file, query_residue_names);
     in_file.close();            /// Close the prep files
 }
 
@@ -103,17 +117,81 @@ void PrepFile::SetResidues(ResidueMap residues)
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////
-void PrepFile::Read(std::ifstream &in_file)
+void PrepFile::ReadAllResidues(std::ifstream &in_file)
 {
     std::string header1, header2;
     getline(in_file, header1);
     getline(in_file, header2);
+
 
     PrepFileSpace::PrepFileResidue *residue = ProcessResidueSection(in_file);
     while (residue != NULL)
     {
         residues_[residue->name_] = residue;
         residue = ProcessResidueSection(in_file);
+    }
+}
+
+void PrepFile::ReadOnlyQueryResidues(std::ifstream &in_file, std::vector<std::string>& query_residue_names)
+{
+    std::string query_names_str;
+
+    std::string header1, header2;
+    getline(in_file, header1);
+    getline(in_file, header2);
+    //Have to reach the line containing residue name to tell if this residue should be read. However, residue processing starts from the residue title line, which is two lines above
+    //Sadly, for getline() there is no easy way back.
+    //So, the position of the title line is set as a stream pointer. When reading a residue, make the stream pointer go back to this checkpoint.
+    std::streampos one_line_before_residue_title;
+    one_line_before_residue_title = in_file.tellg();
+
+    std::string line_str;
+    getline(in_file, line_str);
+    getline(in_file, line_str);
+
+    std::stringstream temp_stream;
+    std::string resname,intx,kform;
+    getline(in_file, line_str);
+    temp_stream << line_str;
+    temp_stream >> resname >> intx >> kform;
+
+    PrepFileSpace::PrepFileResidue *residue;
+    if (std::find(query_residue_names.begin(), query_residue_names.end(), resname) != query_residue_names.end() ) 
+    {
+	in_file.seekg(one_line_before_residue_title);  //go back to one line before residue title, so the rest of the codes works correctly 
+        residue = ProcessResidueSection(in_file);
+        residues_[residue->name_] = residue;
+	one_line_before_residue_title = in_file.tellg();
+    }
+    resname.clear();
+    intx.clear();
+    kform.clear();
+    while (getline(in_file, line_str))
+    {
+        if (line_str.find("STOP") != std::string::npos)
+	{
+	    break;
+	}
+	if (line_str.find("DONE") != std::string::npos)
+	{
+	    one_line_before_residue_title = in_file.tellg();	
+	    getline(in_file, line_str);
+	    getline(in_file, line_str);
+	    getline(in_file, line_str);
+	    std::stringstream line_stream;
+	    line_stream << line_str;
+	    line_stream >> resname >> intx >> kform;
+	}
+        if (std::find(query_residue_names.begin(), query_residue_names.end(), resname) != query_residue_names.end() ) 
+        {
+	    in_file.seekg(one_line_before_residue_title);  //go back to one line before residue title, so the rest of the codes works correctly 
+            residue = ProcessResidueSection(in_file);
+            residues_[residue->name_] = residue;
+	    one_line_before_residue_title = in_file.tellg();
+	}
+        resname.clear();
+	intx.clear();
+	kform.clear();
     }
 }
 
@@ -205,6 +283,8 @@ void PrepFile::BuildPrepFile(std::ofstream &stream)
     }
     stream << "STOP";
 }
+
+
 
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //

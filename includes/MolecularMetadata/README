@@ -1,0 +1,57 @@
+File README in includes/MolecularMetadata begun on 2018-09-13 by BLFoley
+
+This directory holds metadata for the molecular information handled by GMML.
+
+It is not necessarily
+a place for general force-field or similar data.  Rather, it is a place for 
+storing information needed for GMML to perform certain molecular functions
+without having to rely on external sources of information.
+
+Storing these data in tables and other data structures rather than in lengthy
+lists of logic (such as 'if', 'case', etc.) results in code that is easier to
+understand and maintain.
+
+Scripts are used to generate the code for three reasons:
+
+1.  The sources of some information are external to the GMML code.  
+
+    Of course, one might argue that GMML should simply read those files,
+    and GMML does this in lots of cases, but dependencies on input files 
+    leads to other problems, such as needing to hard-code paths to the
+    files or require environment variables like GMMLHOME. 
+
+2.  The desired data structures might change.  Changing a script is 
+    easier than writing one just so you can translate all the data.
+
+3.  In some cases, the amount of information is huge, and encoding
+    it into a given data structure is non-trivial to do manually.
+
+
+Examples of Metadata use:
+
+1.  Metadata simplifies tagging, which makes lots of other coding easier.
+    Here, the tags get associated with atoms, molecules, residues, etc.
+
+    Here's a specific situation:
+
+    One part of the code detects a sugar and identifies it as DGlcpa1-OH.  It 
+    is part of a larger structure containing many residues, some of which are 
+    carbohydrates.  Another function needs to calculate ring pucker on all the 
+    pyranoses.  But, that function needs a way to know which residues are 
+    pyranoses.  It is a simple thing for that function to query the Metadata 
+    with a list of residues to find the ones that are 'pyranose'.
+
+2.  It can hold information commonly needed when considering molecular data.
+
+    Examples of this type of information:
+
+    * Van der Waals radii for detecting atoms that are possibly bonded or
+      might be clashing.
+
+    * Possible hybridizations of atomss for detecting geometries that are
+      very unlikely.
+
+    * The formal charge of a residue.
+
+    * Atomic masses for calculating center of mass.
+

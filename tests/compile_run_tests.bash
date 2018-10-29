@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Manually change this number as you add tests:
-number_of_tests=6
+number_of_tests=7 # put back to 8 if detect sugars is reinstated as a test
 tests_passed=0
 
 # Required for compiling
@@ -100,7 +100,40 @@ else
 fi
 rm ring_shape_detection ring_shape_detection.txt ring_conformations.txt > /dev/null 2>&1
 
-############# Allow git push ########################
+###################### Test 07 ######################
+printf "Testing buildBySequence... "
+g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/buildBySequence.cc -lgmml -o buildBySequence
+./buildBySequence > /dev/null 2>&1
+if [ -f buildBySequence.pdb ]; then
+    if ! cmp buildBySequence.pdb tests/correct_outputs/buildBySequence.pdb > /dev/null 2>&1; then
+        printf "Test FAILED!.\n"
+    else
+        printf "Test passed.\n"
+        ((tests_passed++))
+    fi
+else
+    printf "Test FAILED!.\n"
+fi
+rm buildBySequence.pdb buildBySequence > /dev/null 2>&1
+
+###################### Test 08 ######################
+#printf "Testing detectSugars... "
+#g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/detect_sugars.cc -lgmml -o detect_sugars 
+#./detect_sugars tests/inputs/4mbz.pdb > detected_sugars.txt
+#if [ -f detected_sugars.txt ]; then
+#    if ! cmp detected_sugars.txt tests/correct_outputs/detected_sugars.txt > /dev/null 2>&1; then
+#        printf "Test FAILED!.\n"
+#    else
+#        printf "Test passed.\n"
+#        ((tests_passed++))
+#    fi
+#else
+#    #printf "Test FAILED!.\n"
+#fi
+#rm detected_sugars.txt ring_conformations.txt detect_sugars > /dev/null 2>&1
+
+
+# ############# Allow git push ########################
 if [[ $tests_passed -eq $number_of_tests ]]; then
    exit 0 #All tests passed
 else

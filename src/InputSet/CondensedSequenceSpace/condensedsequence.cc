@@ -6,6 +6,7 @@
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
+#include <iostream>
 
 using CondensedSequenceSpace::CondensedSequence;
 
@@ -57,29 +58,43 @@ void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
     // in residue GlcNAc. To combat this, the searching will look for GlcNAc first
     // and if it isn't found, it will then look for GlcN.
     std::vector<std::string> svg_residue_names = {
+        "",
+        "All",
+        "Alt",
+        "Ara",
+        "Fru",
+        "Fuc",
 		"GlcNAc", "GlcA", "GlcN"/* Has some extra code to add. */, "Glc",
 		"GalA", "GalNAc", "GalN", "Gal",
+        "Gul",
+        "Ido",
+        "IdoA",
+        "KDN",
+        "KDO",
+        "Lyx",
 		"ManNAc", "ManA", "ManN", "Man",
 		"Neu5Ac", "NeuNAc",
 		"Neu5Gc", "NeuNGc",
-		"Fuc",
-		"IdoA",
-		"KDN",
+        "Psi",
+        "Qui",
+        "Rha",
+        "Rib"
+        "Sor",
+        "Tag",
+        "Tal",
 		"Xyl",
 	};
 
 	// Declare the BOX shape vector.
     std::vector<std::string> box_shape_residue_names = {
+        "",
 		"OH", "OME", "OtBu",
 		"R", "Fak"
     };
 
 	// Declare the OTHER shape vector.
     std::vector<std::string> other_shape_residue_names = {
-		"Fru",
-		"Tag",
-		"Psi",
-		"Sor"
+        "",
     };
 
     // Declare an empty std::stringstream, which is used to generate what will go into
@@ -260,22 +275,24 @@ void CondensedSequence::AddToken(gmml::CondensedSequenceTokenType token)
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
-int CondensedSequence::InsertNodeInCondensedSequenceResidueTree(CondensedSequenceResidue *condensed_residue, int parent_node_id)
+int CondensedSequence::InsertNodeInCondensedSequenceResidueTree(CondensedSequenceResidue *condensed_residue, int parent_node_id, int bond_id)
 {
-    if(parent_node_id != -1 && parent_node_id >= (int)condensed_sequence_residue_tree_.size())
+    if(parent_node_id != gmml::iNotSet && parent_node_id >= (int)condensed_sequence_residue_tree_.size())
         throw std::invalid_argument("ArrayTree::insert - invalid parent index(" + gmml::ConvertT(parent_node_id) + ")");
 //    condensed_sequence_residue_tree_.push_back(std::make_pair(condensed_residue, parent_node_id));
     condensed_residue->SetParentId(parent_node_id);
+    condensed_residue->SetBondId(bond_id);
     condensed_sequence_residue_tree_.push_back(condensed_residue);
     return condensed_sequence_residue_tree_.size() - 1;
 }
 
-int CondensedSequence::InsertNodeInCondensedSequenceGlycam06ResidueTree(CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_glycam06_residue, int parent_node_id)
+int CondensedSequence::InsertNodeInCondensedSequenceGlycam06ResidueTree(CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_glycam06_residue, int parent_node_id, int bond_id)
 {
-    if(parent_node_id != -1 && parent_node_id >= (int)condensed_sequence_glycam06_residue_tree_.size())
+    if(parent_node_id != gmml::iNotSet && parent_node_id >= (int)condensed_sequence_glycam06_residue_tree_.size())
         throw std::invalid_argument("ArrayTree::insert - invalid parent index(" + gmml::ConvertT(parent_node_id) + ")");
 //    condensed_sequence_glycam06_residue_tree_.push_back(std::make_pair(condensed_tree_residue, parent_node_id));
     condensed_glycam06_residue->SetParentId(parent_node_id);
+    condensed_glycam06_residue->SetBondId(bond_id);
     condensed_sequence_glycam06_residue_tree_.push_back(condensed_glycam06_residue);
     return condensed_sequence_glycam06_residue_tree_.size() - 1;
 }
@@ -352,7 +369,8 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
         return;
 
     std::stack<int> residue_stack;
-    residue_stack.push(this->InsertNodeInCondensedSequenceResidueTree(*current_residue));
+    residue_stack.push(this->InsertNodeInCondensedSequenceResidueTree(*current_residue, gmml::iNotSet, gmml::iNotSet));
+    int bond_count = 0;  //Added by Yao 08/03/2018. Whenever a parent-child relationship is found, there is a new bond. This int count the index of the new bond to be added, and becomes its label.
     while(++current_token != tokens_.rend())
     {
         switch(*current_token)
@@ -372,7 +390,8 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
                     throw CondensedSequenceProcessingException("Invalid sequence of residues");
                 if(residue_stack.empty())
                     throw CondensedSequenceProcessingException("Invalid sequence");
-                residue_stack.push(this->InsertNodeInCondensedSequenceResidueTree(*current_residue, residue_stack.top()));
+                residue_stack.push(this->InsertNodeInCondensedSequenceResidueTree(*current_residue, residue_stack.top(), bond_count));
+		bond_count++;
                 break;
             }
             case gmml::CONDENSED_SEQUENCE_RESIDUE:
@@ -382,9 +401,10 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
                     throw CondensedSequenceProcessingException("Invalid sequence of residues");
                 if(residue_stack.empty())
                     throw CondensedSequenceProcessingException("Invalid sequence");
-                int parent = this->InsertNodeInCondensedSequenceResidueTree(*current_residue, residue_stack.top());
+                int parent = this->InsertNodeInCondensedSequenceResidueTree(*current_residue, residue_stack.top(), bond_count);
                 residue_stack.pop();
                 residue_stack.push(parent);
+		bond_count++;
                 break;
             }
         }
@@ -399,15 +419,25 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
     {
         int parent = residue_tree.at(i)->GetParentId();
         CondensedSequenceResidue* residue = residue_tree.at(i);
-        if(parent != -1)
+        if(parent != gmml::iNotSet)
         {
             int oxygen_position = residue->GetOxygenPosition();
             open_valences[parent].push_back(oxygen_position);
         }
-    }
 
+        CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = residue->GetDerivatives();
+        for(CondensedSequenceResidue::DerivativeMap::iterator it = condensed_residue_derivatives.begin(); it != condensed_residue_derivatives.end(); ++it)
+        {
+            int derivative_index = it->first;
+	    std::string derivative_name = it->second;
+	    if (derivative_name != "D"){  //Deoxy shouldn't be considered as open valence
+	        open_valences[i].push_back(derivative_index);
+	    }
+	}
+    }
     std::string terminal = residue_tree.at(0)->GetName();
-    this->InsertNodeInCondensedSequenceGlycam06ResidueTree(new CondensedSequenceSpace::CondensedSequenceGlycam06Residue(this->GetGlycam06TerminalResidueCodeOfTerminalResidue(terminal)));
+    this->InsertNodeInCondensedSequenceGlycam06ResidueTree(new CondensedSequenceSpace::CondensedSequenceGlycam06Residue(this->GetGlycam06TerminalResidueCodeOfTerminalResidue(terminal)),
+    gmml::iNotSet, gmml::iNotSet);
 
     int current_derivative_count = 0;
     std::vector<int> derivatives = std::vector<int>(residue_tree.size(), 0);
@@ -415,6 +445,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
     {
         derivatives[i] = current_derivative_count;
         CondensedSequenceResidue* condensed_residue = residue_tree.at(i);
+	int condensed_residue_bond_id = condensed_residue->GetBondId();
         int parent = residue_tree.at(i)->GetParentId();
 
 
@@ -425,18 +456,20 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
 
         try
         {
+	    int glycam_06_residue_bond_id = condensed_residue_bond_id + current_derivative_count;
             CondensedSequenceSpace::CondensedSequenceGlycam06Residue* tree_residue = new CondensedSequenceSpace::CondensedSequenceGlycam06Residue(this->GetGlycam06ResidueCodeOfCondensedResidue(
                                                                                                         condensed_residue, open_valences[i])
                                                                                                     , anomeric_carbon, oxygen_position);
 
-            int residue_index = this->InsertNodeInCondensedSequenceGlycam06ResidueTree(tree_residue, parent + derivatives[parent]);
+            int residue_index = this->InsertNodeInCondensedSequenceGlycam06ResidueTree(tree_residue, parent + derivatives[parent], glycam_06_residue_bond_id);
 
             CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = condensed_residue->GetDerivatives();
             for(CondensedSequenceResidue::DerivativeMap::iterator it = condensed_residue_derivatives.begin(); it != condensed_residue_derivatives.end(); ++it)
             {
+		glycam_06_residue_bond_id++;
                 std::string derivative_name = it->second;
                 int derivative_index = it->first;
-                this->InsertNodeInCondensedSequenceGlycam06ResidueTree(this->GetCondensedSequenceDerivativeGlycam06Residue(derivative_name, derivative_index), residue_index);
+                this->InsertNodeInCondensedSequenceGlycam06ResidueTree(this->GetCondensedSequenceDerivativeGlycam06Residue(derivative_name, derivative_index), residue_index, glycam_06_residue_bond_id);
                 current_derivative_count++;
             }
         }
@@ -445,7 +478,7 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
             CondensedSequenceSpace::CondensedSequenceGlycam06Residue* tree_residue = new CondensedSequenceSpace::CondensedSequenceGlycam06Residue(condensed_residue->GetName().substr(0,3)
                                                                                                     , anomeric_carbon, oxygen_position);
 
-            this->InsertNodeInCondensedSequenceGlycam06ResidueTree(tree_residue, parent + derivatives[parent]);
+            this->InsertNodeInCondensedSequenceGlycam06ResidueTree(tree_residue, parent + derivatives[parent], gmml::iNotSet);
 
             std::cout << "Invalid residue in the sequence (" << condensed_residue->GetName().substr(0,3) << ")" << std::endl;
             throw CondensedSequenceProcessingException("Invalid residue in the sequence (" + condensed_residue->GetName().substr(0,3) + ")");
@@ -461,10 +494,14 @@ std::string CondensedSequence::GetGlycam06TerminalResidueCodeOfTerminalResidue(s
         return "OME";
     else if(terminal_residue_name.compare("OtBu") == 0 || terminal_residue_name.compare("TBT") == 0)
         return "TBT";
+    else if (terminal_residue_name.compare("UNK") == 0)
+	return "UNK";
     else if(gmml::AminoacidGlycamLookup(terminal_residue_name).aminoacid_name_.compare("") != 0 ||
             gmml::AminoacidGlycamLookup(terminal_residue_name).glycam_name_.compare("") != 0)
         return gmml::AminoacidGlycamLookup(terminal_residue_name).glycam_name_;
-    throw CondensedSequenceProcessingException("Invalid aglycon " + terminal_residue_name);
+    else {
+        throw CondensedSequenceProcessingException("Invalid aglycon " + terminal_residue_name);
+    }
 }
 
 std::string CondensedSequence::GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequenceResidue *condensed_residue, std::vector<int> open_valences)
@@ -599,14 +636,19 @@ std::string CondensedSequence::GetThirdLetterOfGlycam06ResidueCode(std::string c
 
 CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::GetCondensedSequenceDerivativeGlycam06Residue(std::string derivative_name, int derivative_index)
 {
+    //Oxygen names are usually OK, but why does an SO3 have a C atom? Here basicaaly oxygen_name = tail atom name, carbon_name = head atom name. Right now, the carbon_name has to be hard-coded.
     std::string oxygen_name = "O" + gmml::ConvertT<int>(derivative_index);
-    std::string carbon_name = "C" + gmml::ConvertT<int>(derivative_index);;
+    //std::string carbon_name = "C" + gmml::ConvertT<int>(derivative_index); //Can't always use C* as head atom name.
     if(derivative_name.compare("S") == 0)
-        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("SO3", carbon_name, oxygen_name, true);
+        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("SO3", "S1", oxygen_name, true);
     else if(derivative_name.compare("Me") == 0)
-        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("MEX", carbon_name, oxygen_name, true);
+        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("MEX", "CH3", oxygen_name, true);
     else if(derivative_name.compare("A") == 0)
-        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("ACX", carbon_name, oxygen_name, true);
+        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("ACX", "C1A", oxygen_name, true);
+    else if(derivative_name.compare("D") == 0)
+	//D means deoxy.This derivative is not a template, but an action, of removing the oxygen this derivative attaches to. Here I create a false glycam06 residue for this purpose later on.
+	return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("Deoxy", "Deoxy",oxygen_name, true);
+    //Later PO3 might need to be added, but now I dont' now the name of its head atom yet.
     throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
 }
 

@@ -115,7 +115,16 @@ std::string Residue::GetId()
 {
     return id_;
 }
-
+//Added by Yao on 06/13/2018
+bool Residue::GetIsSugarDerivative()
+{
+    return is_sugar_derivative_;
+}
+//Added by Yao on 06/30/2018
+bool Residue::GetIsAglycon()
+{
+    return is_aglycon_;
+}
  //Added by ayush on 11/20/17 for residuenode in assembly
 MolecularModeling::ResidueNode* Residue::GetNode()
 {
@@ -223,6 +232,15 @@ void Residue::ReplaceAtomCoordinates(AtomVector *newAtoms)
 void Residue::SetNode(MolecularModeling::ResidueNode* node)
 {
     node_ = node;
+}
+//Added by Yao 06/13/2018
+void Residue::SetIsSugarDerivative(bool is_derivative)
+{   
+    is_sugar_derivative_ = is_derivative;
+}
+void Residue::SetIsAglycon(bool is_aglycon)
+{
+    is_aglycon_ = is_aglycon;
 }
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //

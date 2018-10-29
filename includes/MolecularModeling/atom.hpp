@@ -11,14 +11,13 @@
 #include "moleculardynamicatom.hpp"
 #include "quantommechanicatom.hpp"
 #include "dockingatom.hpp"
-#include "atomnode.hpp"
-#include "residue.hpp"
+#include "oligosaccharidedetectionatom.hpp"
 
 namespace MolecularModeling
 {
-    // class Residue;
-    // class AtomNode;
-    class Atom : public MolecularDynamicAtom, public QuantomMechanicAtom, public DockingAtom
+    class Residue;
+    class AtomNode;
+    class Atom : public MolecularDynamicAtom, public QuantomMechanicAtom, public DockingAtom, public OligoSaccharideDetectionAtom
     {
         public:
             //////////////////////////////////////////////////////////
@@ -77,6 +76,11 @@ namespace MolecularModeling
             * @return coordinates_ attribute of the current object of this class
             */
             CoordinateVector GetCoordinates() const;
+            /*! \fn
+            * An accessor function in order to access to the first coordinate
+            * @return coordinates_.at(0) attribute of the current object of this class
+            */
+            GeometryTopology::Coordinate* GetCoordinate();
             /*! \fn
             * An accessor function in order to access to the chemical_type
             * @return chemical_type_ attribute of the current object of this class

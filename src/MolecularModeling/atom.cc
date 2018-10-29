@@ -1,4 +1,12 @@
 #include "../../includes/MolecularModeling/atom.hpp"
+#include "../../includes/MolecularModeling/quantommechanicatom.hpp"
+#include "../../includes/MolecularModeling/moleculardynamicatom.hpp"
+#include "../../includes/MolecularModeling/dockingatom.hpp"
+#include "../../includes/MolecularModeling/oligosaccharidedetectionatom.hpp"
+#include "../../includes/MolecularModeling/atomnode.hpp"
+#include "../../includes/MolecularModeling/residue.hpp"
+#include "cmath"
+#include <sstream>
 
 using MolecularModeling::Atom;
 //////////////////////////////////////////////////////////
@@ -85,6 +93,13 @@ Atom::CoordinateVector Atom::GetCoordinates() const
 	return this->coordinates_;
 } // end GetCoordinates
 
+// Most of the time, you just want the first coordinate
+GeometryTopology::Coordinate* Atom::GetCoordinate()
+{
+    return this->coordinates_.at(0);
+} // end GetCoordinate
+
+
 std::string Atom::GetChemicalType() const
 {
  	return this->chemical_type_;
@@ -120,11 +135,11 @@ unsigned long long Atom::GetIndex() const
 	return this->index_;
 } // end GetIndex
 
-//Added by ayush on 13/11/17 for molecules in assembly to set the atom type as an attribute like O,H
+//Added by ayush on 13/11/17 for molecules in assembly to set the atom type as an attribute like O,H, etc.
 
 std::string Atom::GetAtomType() const
 {
-	return atom_type_;
+	return this->atom_type_;
 }
 
 //Added by Dave on 03/23/18 for adding B Factor to ontology

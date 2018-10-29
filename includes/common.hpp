@@ -97,7 +97,8 @@ namespace gmml
                                       "GLU", "GLN", "PRO", "HIS", "CYS",
                                       "VAL", "LEU", "THR", "SER", "LYS",
                                       "MET", "TYR", "TRP", "PHE", "SEC",
-                                      "ILE", "CYX", "HID", "HIE" };
+                                      "ILE", "CYX", "HID", "HIE", "NLN",
+                                      "OLY", "OLS", "OLT"};
 
     const int PROTEINSSIZE = ( sizeof( PROTEINS ) / sizeof( PROTEINS[ 0 ] ) );
 
@@ -359,6 +360,8 @@ namespace gmml
         {"GlcNS", "Y", 36},
         {"U", "045", 37},
         {"S", "245", 38},
+		{"KDN", "KN", 39},
+		{"KDO", "KO", 40},
     };
 
     const int RESIDUENAMECODELOOKUPSIZE = (sizeof(RESIDUENAMECODELOOKUP)/sizeof(RESIDUENAMECODELOOKUP[0]));

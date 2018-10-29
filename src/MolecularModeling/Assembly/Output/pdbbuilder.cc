@@ -76,7 +76,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card_direction, int connect_card_existance)
 {
-    std::cout << "Creating PDB file" << std::endl;
+//    std::cout << "Creating PDB file" << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating PDB file ...");
     PdbFileSpace::PdbFile* pdb_file = new PdbFileSpace::PdbFile();
     PdbFileSpace::PdbTitleSection* title_card = new PdbFileSpace::PdbTitleSection();
@@ -84,6 +84,7 @@ PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card
     // Set pdb_file title card
     pdb_file->SetTitle(title_card);
 
+//std::cout << "hey1" << std::endl;
     PdbFileSpace::PdbModelSection* model_card = new PdbFileSpace::PdbModelSection();
     PdbFileSpace::PdbModelSection::PdbModelCardMap models = PdbFileSpace::PdbModelSection::PdbModelCardMap();
     PdbFileSpace::PdbModelCard* model = new PdbFileSpace::PdbModelCard();
@@ -92,28 +93,36 @@ PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card
     int serial_number = 1;
     int sequence_number = 1;
 
+//std::cout << "hey2" << std::endl;
     AssemblytoPdbSequenceNumberMap assembly_to_sequence_number_map = AssemblytoPdbSequenceNumberMap();
+//std::cout << "hey2.1" << std::endl;
     AssemblytoPdbSerialNumberMap assembly_to_serial_number_map = AssemblytoPdbSerialNumberMap();
+//std::cout << "hey2.2" << std::endl;
     ExtractPdbModelSectionFromAssembly(residue_set, serial_number, sequence_number, model_index_, assembly_to_sequence_number_map,
                                     assembly_to_serial_number_map);
 
+//std::cout << "hey3" << std::endl;
     PdbFileSpace::PdbLinkSection* link_card = new PdbFileSpace::PdbLinkSection();
+    //The follwing line might be commented out for my testing purpose, definitely shouldn'be committed/pushed. If you see it commented out, please uncomment it.
     ExtractPdbLinkSectionFromAssembly(link_card, model_index_, assembly_to_sequence_number_map, link_card_direction);
     link_card->SetRecordName("LINK");
     pdb_file->SetLinks(link_card);
 
+//std::cout << "hey4" << std::endl;
     if(connect_card_existance == 1)
     {
         PdbFileSpace::PdbConnectSection* connect_card = new PdbFileSpace::PdbConnectSection();
+    //The follwing line might be commented out for my testing purpose, definitely shouldn'be committed/pushed. If you see it commented out, please uncomment it.
         ExtractPdbConnectSectionFromAssembly(connect_card, assembly_to_serial_number_map);
         pdb_file->SetConnectivities(connect_card);
     }
     model->SetModelResidueSet(residue_set);
     models[1] = model;
     model_card->SetModels(models);
+//std::cout << "hey5" << std::endl;
     pdb_file->SetModels(model_card);
 
-    std::cout << "PDB file created" << std::endl;
+//    std::cout << "PDB file created" << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "PDB file created");
     return pdb_file;
 }
@@ -137,7 +146,8 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
         PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
         PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomCardMap het_atom_map = PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomCardMap();
         PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector het_atom_vector = PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
-        ResidueVector residues = assembly->GetResidues();
+        //ResidueVector residues = assembly->GetResidues();
+        ResidueVector residues = this->GetResidues();
         for(ResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
         {
             Residue* residue = (*it1);
@@ -274,6 +284,16 @@ void Assembly::ExtractPdbLinkSectionFromAssembly(PdbFileSpace::PdbLinkSection* l
                     {
                         if(residue->GetId().compare(neighbor_residue->GetId()) != 0)
                         {
+			    //my code
+				if (residue->GetId().empty()) {
+				}
+			    std::vector <std::string> ResidueIdSplit = gmml::Split(residue->GetId(),"_");
+			    std::vector <std::string> NeighborResidueIdSplit = gmml::Split(neighbor_residue->GetId(),"_");
+			    std::string ResidueNumber = ResidueIdSplit.at(2);
+			    std::string NeighborResidueNumber = NeighborResidueIdSplit.at(2);
+			
+			    if (ResidueNumber.compare(NeighborResidueNumber) != 0) // if this pair is not the two partial occupancies of the same residue
+			    {//my code
                             visited_links.push_back(atom->GetId());
                             visited_links.push_back(neighbor->GetId());
                             PdbFileSpace::PdbLinkCardResidue* link_residue1 = new PdbFileSpace::PdbLinkCardResidue();
@@ -300,6 +320,7 @@ void Assembly::ExtractPdbLinkSectionFromAssembly(PdbFileSpace::PdbLinkSection* l
                             pdb_link->SetLinkLength(distance);
 
                             link_vector.push_back(pdb_link);
+			    }//my code
                         }
                     }
                 }

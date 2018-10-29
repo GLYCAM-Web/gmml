@@ -142,8 +142,9 @@ void Assembly::AdjustCharge(Residue *residue, Residue *parent_residue, int branc
         }
         if(carbon != NULL)
         {
-            if(residue->GetName().compare("MEX") == 0)
+            if(residue->GetName().compare("MEX") == 0){
                 carbon->MolecularDynamicAtom::SetCharge(carbon->MolecularDynamicAtom::GetCharge() - 0.039);
+	    }
             if(residue->GetName().compare("ACX") == 0)
                 carbon->MolecularDynamicAtom::SetCharge(carbon->MolecularDynamicAtom::GetCharge() + 0.008);
         }

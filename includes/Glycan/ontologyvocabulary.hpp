@@ -56,6 +56,7 @@ namespace Ontology
     const std::string hasSugarName = "gmmo:hasSugarName";
     const std::string hasTitle = "gmmo:hasTitle";
     const std::string hasAuthors = "gmmo:hasAuthors";
+    const std::string hasJournal = "gmmo:hasJournal";
     const std::string hasDOI = "gmmo:hasDOI";
     const std::string hasPMID = "gmmo:hasPMID";
     const std::string hasResolution = "gmmo:hasResolution";

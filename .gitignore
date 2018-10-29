@@ -1,5 +1,6 @@
 *.o
 *.so
+*.gch
 Makefile
 gmml.pro
 libgmml.so.1
@@ -7,3 +8,6 @@ libgmml.so.1.0
 libgmml.so.1.0.0
 DOXY_DOCUMENTS
 log.log
+*.swp
+*.dum
+programs/GlycoproteinBuilder
