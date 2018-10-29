@@ -655,7 +655,8 @@ CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::Get
 CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSequence::GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree)
 {
     CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles = CondensedSequenceRotamersAndGlycosidicAnglesInfo();
-    int linkage_index = 0;
+    //int linkage_index = 0;
+    int linkage_index = -1; //For testing front end. -- Yao 
     for(unsigned int i = 0; i < residue_tree.size(); i++)
     {
         int parent = residue_tree.at(i)->GetParentId();
