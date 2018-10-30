@@ -46,7 +46,7 @@ cd $GEMSHOME/
  rm -f ./gmml/bin/libgmml.so
  rm -f ./gmml/bin/libgmml.so.1
  rm -f ./gmml/bin/libgmml.so.1.0
- rm -f ./gmml.i
+ rm -f gmml.i
  ./make.sh no_clean wrap
 cd -
 
