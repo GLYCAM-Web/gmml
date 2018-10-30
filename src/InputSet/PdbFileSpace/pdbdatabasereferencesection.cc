@@ -64,6 +64,20 @@ void PdbDatabaseReferenceSection::AddDatabaseReferences(PdbDatabaseReference *da
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
 
+std::string PdbDatabaseReferenceSection::GetUniprotIDs()
+{
+  std::string UniprotIDs = "";
+  for (DatabaseReferenceVector::iterator it = database_reference_.begin(); it != database_reference_.end(); it++)
+  {
+    PdbFileSpace::PdbDatabaseReference* thisReference = *it;
+    if(thisReference->GetDatabase() == "UNP   ")
+    {
+      UniprotIDs = UniprotIDs + thisReference->GetDatabaseAccession() + " ";
+    }
+  }
+  return UniprotIDs;
+}
+
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////

@@ -1460,6 +1460,11 @@ namespace MolecularModeling
               */
             void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle, std::stringstream& cycle_stream);
             /*! \fn
+              * A function in order to discard rings/cycles that have double bonds
+              * @param cycles A map between the string version of atoms of cycles and the list of cycle atom objects
+              */
+            void FilterCyclesWithDoubleBonds(CycleMap &cycles);
+            /*! \fn
               * A function in order to discard rings/cycles that are only made from carbons atoms
               * @param cycles A map between the string version of atoms of cycles and the list of cycle atom objects
               */

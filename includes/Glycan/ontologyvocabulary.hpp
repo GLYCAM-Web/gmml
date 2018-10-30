@@ -64,6 +64,7 @@ namespace Ontology
     const std::string hasPMID = "gmmo:hasPMID";
     const std::string hasResolution = "gmmo:hasResolution";
     const std::string hasBFactor = "gmmo:hasBFactor";
+    const std::string hasProteinID = "gmmo:hasProteinID";
 
     /* Datatype Properties */
     const std::string input_file_path = "gmmo:filePath";

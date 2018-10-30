@@ -7856,7 +7856,7 @@ void PdbFile::PrintOntology(std::stringstream& ont_stream)
   
   //Return Protein Acession Number
   //TODO add check to make sure that it is the Uniprot database reference
-  //gmml::AddLiteral( uriStr, Ontology::ProteinID, this->database_reference_->GetDatabaseIDCode(), ont_stream );
+  gmml::AddLiteral( uriStr, Ontology::hasProteinID, this->database_reference_->GetUniprotIDs(), ont_stream );
 
   //Return Title
   gmml::AddLiteral( uriStr, Ontology::hasTitle, this->title_->GetTitle(), ont_stream );
