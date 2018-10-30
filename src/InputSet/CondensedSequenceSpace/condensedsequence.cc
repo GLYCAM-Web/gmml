@@ -655,14 +655,14 @@ CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::Get
 CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSequence::GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree)
 {
     CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles = CondensedSequenceRotamersAndGlycosidicAnglesInfo();
-    int linkage_index = 0;
+    //int linkage_index = 0;
     //int linkage_index = -1; //For testing front end. -- Yao 
     for(unsigned int i = 0; i < residue_tree.size(); i++)
     {
         int parent = residue_tree.at(i)->GetParentId();
         if(parent >= 0)
         {
-            linkage_index++;
+            //linkage_index++;
             CondensedSequenceResidue* residue = residue_tree.at(i);
             std::string residue_absolute_name = residue->GetName().substr(0, 3) + residue->GetName().substr(4);
             char ring_letter = residue->GetName()[3];
@@ -894,6 +894,7 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                 }
             }
         }
+        linkage_index++;
     }
     return rotamers_glycosidic_angles;
 }
