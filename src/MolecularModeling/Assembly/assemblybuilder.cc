@@ -120,16 +120,16 @@ bool Assembly::CheckCondensedSequenceSanity(std::string sequence, CondensedSeque
 }
 
 Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree, 
-										PrepFileSpace::PrepFile* prep_file)
+                                                                         PrepFileSpace::PrepFile* prep_file)
 {
     //Sorting query_residue_names to remove duplicate residue names.
     std::vector<std::string> query_residue_names = std::vector<std::string>();
-    for (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = glycam06_residue_tree.begin(); it != glycam06_residue_tree.end(); it++){
-
-	CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam06_residue = *it;
-	std::string residue_name = glycam06_residue->GetName();
-	query_residue_names.push_back(residue_name);
-    }	
+    for (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = glycam06_residue_tree.begin(); it != glycam06_residue_tree.end(); it++)
+    {
+        CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam06_residue = *it;
+        std::string residue_name = glycam06_residue->GetName();
+        query_residue_names.push_back(residue_name);
+    }
 
     std::set<std::string> query_residue_names_unique = std::set<std::string>();
     query_residue_names_unique.insert(query_residue_names.begin(), query_residue_names.end());
@@ -141,99 +141,112 @@ Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (Condens
     //Getting all residue names in prep file
     for (PrepFileSpace::PrepFile::ResidueMap::iterator it = prep_residue_map.begin(); it != prep_residue_map.end(); it++)
     {
-	std::string prep_residue_name = it-> first;
-	all_prep_residue_names.push_back(prep_residue_name);
+        std::string prep_residue_name = it-> first;
+        all_prep_residue_names.push_back(prep_residue_name);
     }
     //Check each prep file residue, if their name match query residue name, build assembly residue from this prep residue, and add assembly residue to a template assembly.
     for (std::set<std::string>::iterator it = query_residue_names_unique.begin(); it != query_residue_names_unique.end(); it++)
     {
-	if (std::find(all_prep_residue_names.begin(), all_prep_residue_names.end(), *it) != all_prep_residue_names.end() )
- 	{
-	    PrepFileSpace::PrepFileResidue* prep_residue = prep_residue_map[*it];
-	    Residue* assembly_residue = new Residue();
-	    assembly_residue->BuildResidueFromPrepFileResidue(prep_residue); 
-	    template_assembly_residues.push_back(assembly_residue);
-	}
-	else{
-	    std::cout << "Warning: Cannot find prep file residue with the name: " << *it << std::endl;
-	    std::cout << "Either the prep file doesn't have it, or this is not a regular residue at all. For example,\"Deoxy\" means removing parent oxygen it attaches to. " << std::endl;
-	}
+        if (std::find(all_prep_residue_names.begin(), all_prep_residue_names.end(), *it) != all_prep_residue_names.end() )
+        {
+            PrepFileSpace::PrepFileResidue* prep_residue = prep_residue_map[*it];
+            Residue* assembly_residue = new Residue();
+            assembly_residue->BuildResidueFromPrepFileResidue(prep_residue);
+            template_assembly_residues.push_back(assembly_residue);
+        }
+        else
+        {
+            std::cout << "Warning: Cannot find prep file residue with the name: " << *it << std::endl;
+            std::cout << "Either the prep file doesn't have it, or this is not a regular residue at all. For example,\"Deoxy\" means removing parent oxygen it attaches to. " << std::endl;
+        }
     }
 
     template_assembly->SetResidues(template_assembly_residues);
 
     //Tag cycle atoms and sidechain atoms based on MolecularMetadata lookup map
-    for( ResidueVector::iterator it = template_assembly_residues.begin(); it != template_assembly_residues.end(); it++ ) {
-	MolecularModeling::Residue* residue = (*it);
-	std::string residue_name = residue->GetName();
-	gmml::AtomVector all_atoms = residue->GetAtoms();
-	std::pair<std::multimap<std::string, std::string>::const_iterator, std::multimap<std::string, std::string>::const_iterator> key_range = gmml::MolecularMetadata::GLYCAM::Glycam06NamesToTypesLookupMap.			equal_range(residue_name);
-
-	if (key_range.first == key_range.second){
-	    std::cout << "Warning: no match exists in metadata map for template residue " << residue_name << std::endl;
-	    std::cout << "Cannot tag ring/sidechain atoms for this residue. This might affect accuracy of setting geometry." << std::endl;
-	}
-	else{
-	    std::vector<std::string> all_types = std::vector<std::string>();
-	    for (std::multimap<std::string, std::string>::const_iterator it = key_range.first; it != key_range.second; it++){
-		std::string type =  it->second;
-		all_types.push_back(type);
-	    }
-	    bool is_sugar = false;
-	    std::string ring_atom_str = "";
-	    //If template residue is a aldofuranose, ring atom is: C1,C2,C3,C4,O4
-	    if (std::find(all_types.begin(), all_types.end(), "aldose") != all_types.end() && std::find(all_types.begin(), all_types.end(), "furanose") != all_types.end()){
-		ring_atom_str = "C1_C2_C3_C4_O4";
-		is_sugar = true;
-	    }
-	    //aldopyranose: C1,C2,C3,C4,C5,O5
-	    if (std::find(all_types.begin(), all_types.end(), "aldose") != all_types.end() && std::find(all_types.begin(), all_types.end(), "pyranose") != all_types.end()){
-		ring_atom_str = "C1_C2_C3_C4_C5_O5";
-		is_sugar = true;
-	    }
-	    //ketofuranose: C2,C3,C4,C5,O5
-	    if (std::find(all_types.begin(), all_types.end(), "ketose") != all_types.end() && std::find(all_types.begin(), all_types.end(), "furanose") != all_types.end()){
-		ring_atom_str = "C2_C3_C4_C5_O5";
-		is_sugar = true;
-	    }
-	    //ketopyranose: C2,C3,C4,C5,C6,O5 (shouldnt' it be O6?)
-	    if (std::find(all_types.begin(), all_types.end(), "ketose") != all_types.end() && std::find(all_types.begin(), all_types.end(), "pyranose") != all_types.end()){
-		ring_atom_str = "C2_C3_C4_C5_C6_O6";
-		is_sugar = true;
-	    }
-	    //ulosonate: C2,C3,C4,C5,C6,O5 , just like ketopyranose (shouldn't it be O6?)
-	    if (std::find(all_types.begin(), all_types.end(), "ulosonate") != all_types.end()){
-		ring_atom_str = "C2_C3_C4_C5_C6_O6";
-		is_sugar = true;
-	    }
-		for (gmml::AtomVector::iterator it2 = all_atoms.begin(); it2 != all_atoms.end(); it2++){
-		    MolecularModeling::Atom* atom = *it2;
-		    std::string atom_name = atom->GetName();
-		    if (ring_atom_str.find(atom_name) != std::string::npos){
-			atom -> SetIsCycle(true);
-		    }
-		    else if (is_sugar){
-			atom -> SetIsSideChain(true);
-		    }
-		}
-	}
+    for( ResidueVector::iterator it = template_assembly_residues.begin(); it != template_assembly_residues.end(); it++ )
+    {
+        MolecularModeling::Residue* residue = (*it);
+        std::string residue_name = residue->GetName();
+        gmml::AtomVector all_atoms = residue->GetAtoms();
+        gmml::MolecularMetadata::GLYCAM::Glycam06NamesToTypesLookupContainer glycam06_NamesToTypesMetadata;
+        std::vector<std::string> all_types = glycam06_NamesToTypesMetadata.GetTypesForResidue(residue_name);
+//      std::pair<std::multimap<std::string, std::string>::const_iterator, std::multimap<std::string, std::string>::const_iterator> key_range = gmml::MolecularMetadata::GLYCAM::Glycam06NamesToTypesLookupMap.equal_range(residue_name);
+//        if (key_range.first == key_range.second)
+//        {
+//            std::cout << "Warning: no match exists in metadata map for template residue " << residue_name << std::endl;
+//            std::cout << "Cannot tag ring/sidechain atoms for this residue. This might affect accuracy of setting geometry." << std::endl;
+//        }
+//        else
+//        {
+//            std::vector<std::string> all_types = std::vector<std::string>();
+//            for (std::multimap<std::string, std::string>::const_iterator it = key_range.first; it != key_range.second; it++)
+//            {
+//                std::string type =  it->second;
+//                all_types.push_back(type);
+//            }
+        if (all_types.empty())
+        {
+            std::cout << "Warning: no match exists in metadata map for template residue " << residue_name << "\n"
+                      << "Cannot tag ring/sidechain atoms for this residue. This might affect accuracy of setting geometry." << std::endl;
+        }
+        else
+        {
+            bool is_sugar = false;
+            std::string ring_atom_str = "";
+            //If template residue is a aldofuranose, ring atom is: C1,C2,C3,C4,O4
+            if (std::find(all_types.begin(), all_types.end(), "aldose") != all_types.end() && std::find(all_types.begin(), all_types.end(), "furanose") != all_types.end()){
+                ring_atom_str = "C1_C2_C3_C4_O4";
+                is_sugar = true;
+            }
+            //aldopyranose: C1,C2,C3,C4,C5,O5
+            if (std::find(all_types.begin(), all_types.end(), "aldose") != all_types.end() && std::find(all_types.begin(), all_types.end(), "pyranose") != all_types.end()){
+                ring_atom_str = "C1_C2_C3_C4_C5_O5";
+                is_sugar = true;
+            }
+            //ketofuranose: C2,C3,C4,C5,O5
+            if (std::find(all_types.begin(), all_types.end(), "ketose") != all_types.end() && std::find(all_types.begin(), all_types.end(), "furanose") != all_types.end()){
+                ring_atom_str = "C2_C3_C4_C5_O5";
+                is_sugar = true;
+            }
+            //ketopyranose: C2,C3,C4,C5,C6,O5 (shouldnt' it be O6?)
+            if (std::find(all_types.begin(), all_types.end(), "ketose") != all_types.end() && std::find(all_types.begin(), all_types.end(), "pyranose") != all_types.end()){
+                ring_atom_str = "C2_C3_C4_C5_C6_O6";
+                is_sugar = true;
+            }
+            //ulosonate: C2,C3,C4,C5,C6,O5 , just like ketopyranose (shouldn't it be O6?)
+            if (std::find(all_types.begin(), all_types.end(), "ulosonate") != all_types.end()){
+                ring_atom_str = "C2_C3_C4_C5_C6_O6";
+                is_sugar = true;
+            }
+            for (gmml::AtomVector::iterator it2 = all_atoms.begin(); it2 != all_atoms.end(); it2++){
+                MolecularModeling::Atom* atom = *it2;
+                std::string atom_name = atom->GetName();
+                if (ring_atom_str.find(atom_name) != std::string::npos){
+                    atom -> SetIsCycle(true);
+                }
+                else if (is_sugar){
+                    atom -> SetIsSideChain(true);
+                }
+            }
+        }
     }
-//testing
-/*
+    //testing
+    /*
 for (ResidueVector::iterator it3 = template_assembly_residues.begin(); it3 != template_assembly_residues.end(); it3++){
     std:: cout << "Residues: " << (*it3)->GetName() <<std::endl;
     gmml::AtomVector atoms = (*it3)->GetAtoms();
     for (gmml::AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end();it4++){
-	if ((*it4) ->GetIsCycle()){
-	    std::cout << "is cycle: " << (*it4)->GetName() << std::endl;
-	} 
-	if ((*it4)->GetIsSideChain()){
-	    //std::cout << "is sidechain: " << (*it4)->GetName()<< std::endl;
-	}
+    if ((*it4) ->GetIsCycle()){
+        std::cout << "is cycle: " << (*it4)->GetName() << std::endl;
+    }
+    if ((*it4)->GetIsSideChain()){
+        //std::cout << "is sidechain: " << (*it4)->GetName()<< std::endl;
+    }
     }
 }
 */
-//testing
+    //testing
 
     return template_assembly;
     
