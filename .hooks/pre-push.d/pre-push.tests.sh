@@ -36,16 +36,18 @@ cd -
 check_gemshome $gemshome 
 
 #Compile gmml if not compiled:
-echo "Pulling any gmml changes"
+echo "Pulling all changes"
 git pull
 echo "Compiling gmml with ./make.sh no_clean no_wrap"
 cd $GEMSHOME/
+ git pull
  #Add these removes so the tests don't pass on an old version of the library
  rm -f ./gmml/bin/libgmml.so.1.0.0
  rm -f ./gmml/bin/libgmml.so
  rm -f ./gmml/bin/libgmml.so.1
  rm -f ./gmml/bin/libgmml.so.1.0
- ./make.sh no_clean no_wrap
+ rm -rf gmml_wrap.cxx gmml_wrap.o gmml.py gmml.pyc _gmml.so
+ ./make.sh no_clean wrap
 cd -
 
 echo "Running mandatory tests..."
@@ -54,10 +56,7 @@ cd $GEMSHOME/gmml/tests/
  result=$? # record the exit status from compile_run_tests.bash
 cd -
 if [ $result -eq 0 ] ; then
-    echo  "GMML level tests have passed. Wrapping and doing gems level tests."
-    cd $GEMSHOME/
-     git pull
-     ./make.sh no_clean wrap
+    echo  "GMML level tests have passed. Doing gems level tests."
     cd $GEMSHOME/tests/
      bash run_tests.sh
      gems_tests_result=$? # record the exit status of previous command
