@@ -6,6 +6,7 @@
 #include <regex>
 // Query function includes:
 #include "../../MolecularModeling/atom.hpp"
+#include "../../MolecularModeling/residue.hpp"
 #include "glycam06residueinfo.hpp"
 
 namespace gmml
@@ -56,7 +57,7 @@ public:
     //                      QUERY FUNCTIONS                 //
     //////////////////////////////////////////////////////////
     // Pass in the two atoms on either side the residue-residue linkage
-    inline DihedralAngleDataVector GetEntriesForLinkage( MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom linking_atom2)
+    inline DihedralAngleDataVector GetEntriesForLinkage( MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2)
     {
         DihedralAngleDataVector matching_entries;
         Glycam06NamesToTypesLookupContainer metadata_residueNamesToTypes;

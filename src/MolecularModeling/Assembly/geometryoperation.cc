@@ -66,6 +66,8 @@
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
 
 #include <unistd.h>
 #include <errno.h>
@@ -174,6 +176,7 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
     //Likewise, GetAtomType() is also overloaded.
     //In my situation, I called MolecularModeling::MolecularModelingAtom::SetAtomType(), but later called MolecularModeling::Atom::GetAtomType(). The result is empty.
     //We need to talk about this later
+    /*
     std::string tail_atom_type = tail_atom->MolecularDynamicAtom::GetAtomType();
     std::string head_atom_type = head_atom_of_child_residue->MolecularDynamicAtom::GetAtomType();
     std::string tail_atom_hybridization = "";
@@ -200,6 +203,19 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
             head_tail_bond_length = entry.length_;
         }
     }
+   */   //Above code replaced by Oliver 2018-10-26 with the code below that uses the new metadata classes:
+    std::string tail_atom_type = tail_atom->MolecularDynamicAtom::GetAtomType();
+    std::string head_atom_type = head_atom_of_child_residue->MolecularDynamicAtom::GetAtomType();
+
+    gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfoContainer amberAtomTypeInfoContainer;
+    gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfo entry = amberAtomTypeInfoContainer.GetEntryWithAtomType(head_atom_type);
+    std::string head_atom_hybridization = entry.hybridization_;
+    //entry = amberAtomTypeInfoContainer.GetEntryWithAtomType(tail_atom_type);
+    //std::string tail_atom_hybridization = entry.hybridization_; // OG: This is never used...
+
+    gmml::MolecularMetadata::GLYCAM::BondLengthByTypePairContainer bondLengthByTypePairContainer;
+    double head_tail_bond_length = bondLengthByTypePairContainer.GetBondLengthForAtomTypes(tail_atom_type, head_atom_type);
+    // End Oliver 2018-10-26 replacement code
 
     GeometryTopology::Coordinate* head_atom_coordinate = head_atom_of_child_residue->GetCoordinates().at(0);
     GeometryTopology::Coordinate* tail_head_atom_bond_vector = new GeometryTopology::Coordinate();

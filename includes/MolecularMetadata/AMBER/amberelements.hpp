@@ -4,73 +4,73 @@
 /* File amberelements.hpp begun on 16 June 2018 by BLFoley */
 
 #include <string>
-#include <map>
-#include <set>
+#include <vector>
+//#include <set>
 
 namespace gmml
 {
-    namespace MolecularMetadata
-    {
-        namespace AMBER
-        {
-            struct AmberElement
-            {
-                std::string element_;  // The element symbol
-                double mass_;     // The mass, in amu, used by most/all of Amber
-            };
+namespace MolecularMetadata
+{
+namespace AMBER
+{
+struct AmberElement
+{
+    std::string element_;  // The element symbol
+    double mass_;     // The mass, in amu, used by most/all of Amber
+};
 
-        class AmberElementContainer
-        {
-        public:
+class AmberElementContainer
+{
+public:
 
-            //////////////////////////////////////////////////////////
-            //                       CONSTRUCTOR                    //
-            //////////////////////////////////////////////////////////
-            /*! \fn
+    //////////////////////////////////////////////////////////
+    //                       CONSTRUCTOR                    //
+    //////////////////////////////////////////////////////////
+    /*! \fn
             * Default constructor
             */
-            AmberElementContainer(); // Calls an initializer?
+    AmberElementContainer(); // Calls an initializer?
 
-            //////////////////////////////////////////////////////////
-            //                         TYPEDEFS                     //
-            //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    //                         TYPEDEFS                     //
+    //////////////////////////////////////////////////////////
 
-            typedef std::vector<AmberElement> AmberElementVector;
+    typedef std::vector<AmberElement> AmberElementVector;
 
-            //////////////////////////////////////////////////////////
-            //                      QUERY FUNCTIONS                 //
-            //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    //                      QUERY FUNCTIONS                 //
+    //////////////////////////////////////////////////////////
 
-            inline AmberElement GetEntryOfElement(std::string query)
+    inline AmberElement GetEntryOfElement(std::string query)
+    {
+        AmberElement matching_entry;
+        // can overload the == operator for the struct to compare type_, and do a oneliner std::find, or this:
+        for (const auto& entry : amberElementVector_)
+        {
+            if (entry.element_.compare(query)==0)
             {
-                AmberElement matching_entry;
-                // can overload the == operator for the struct to compare type_, and do a oneliner std::find, or this:
-                for (const auto& entry : amberElementVector_)
-                {
-                    if (entry.element_.compare(query)==0)
-                    {
-                        matching_entry.push_back(entry);
-                    }
-                }
-                return matching_entry;
+                matching_entry = entry;
             }
-            inline double GetMassOfElement(std::string query)
-            {
-                double return_mass;
-                // can overload the == operator for the struct to compare type_, and do a oneliner std::find, or this:
-                for (const auto& entry : amberElementVector_)
-                {
-                    if (entry.element_.compare(query)==0)
-                    {
-                        return_mass = entry.mass_;
-                    }
-                }
-                return return_mass;
-            }
-        private:
-            AmberElementVector amberElementVector_;
-        };
         }
+        return matching_entry;
     }
+    inline double GetMassOfElement(std::string query)
+    {
+        double return_mass;
+        // can overload the == operator for the struct to compare type_, and do a oneliner std::find, or this:
+        for (const auto& entry : amberElementVector_)
+        {
+            if (entry.element_.compare(query)==0)
+            {
+                return_mass = entry.mass_;
+            }
+        }
+        return return_mass;
+    }
+private:
+    AmberElementVector amberElementVector_;
+};
+}
+}
 }
 #endif // AMBER_ELEMENTS_META_HPP

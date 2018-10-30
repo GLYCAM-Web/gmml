@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "common.hpp"
 
 namespace gmml
 {
@@ -39,12 +40,12 @@ public:
     //                      QUERY FUNCTIONS                 //
     //////////////////////////////////////////////////////////
 
-    inline BondLengthByTypePairVector GetEntriesWithTypes(std::string query1, std::string query2)
+    inline double GetBondLengthForAtomTypes(std::string query1, std::string query2)
     {
-        double matching_entry_bond_length = gmml::dNotSet;
+        double matching_entry_bond_length = gmml::BOND_LENGTH;
         // can overload the == operator for the struct to compare type_, and do a oneliner std::find, or this:
         for (const auto& entry : bondLengthByTypePairVector_)
-        {
+        {   //Search bidirectionally e.g Cg-Os, Os-Cg
             if ( ( (entry.type1_.compare(query1)==0) && (entry.type2_.compare(query2)==0) ) ||
                  ( (entry.type1_.compare(query2)==0) && (entry.type2_.compare(query1)==0) )
                  )

@@ -32,7 +32,7 @@ public:
     /*! \fn
               * Default constructor
               */
-    AmberAtomTypeInfoContainer(); // Calls an initializer?
+    AmberAtomTypeInfoContainer();
 
     //////////////////////////////////////////////////////////
     //                         TYPEDEFS                     //
@@ -44,7 +44,7 @@ public:
     //                      QUERY FUNCTIONS                 //
     //////////////////////////////////////////////////////////
 
-    inline AmberAtomTypeInfoVector GetEntryWithType(std::string query) // Don't inline this
+    inline AmberAtomTypeInfo GetEntryWithAtomType(std::string query)
     {
         AmberAtomTypeInfo matching_entry;
         // can overload the == operator for the struct to compare type_, and do a oneliner std::find, or this:
@@ -56,6 +56,19 @@ public:
             }
         }
         return matching_entry;
+    }
+    inline std::string GetElementForAtomType(std::string query)
+    {
+        std::string element_of_matching_entry = "";
+        // can overload the == operator for the struct to compare type_, and do a oneliner std::find, or this:
+        for (const auto& entry : amberAtomTypeInfoVector_)
+        {
+            if (entry.type_.compare(query)==0)
+            {
+                element_of_matching_entry = entry.element_;
+            }
+        }
+        return element_of_matching_entry;
     }
 private:
     AmberAtomTypeInfoVector amberAtomTypeInfoVector_;
