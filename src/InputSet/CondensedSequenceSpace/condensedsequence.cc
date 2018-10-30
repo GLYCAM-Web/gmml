@@ -655,8 +655,8 @@ CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::Get
 CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSequence::GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree)
 {
     CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles = CondensedSequenceRotamersAndGlycosidicAnglesInfo();
-    //int linkage_index = 0;
-    int linkage_index = -1; //For testing front end. -- Yao 
+    int linkage_index = 0;
+    //int linkage_index = -1; //For testing front end. -- Yao 
     for(unsigned int i = 0; i < residue_tree.size(); i++)
     {
         int parent = residue_tree.at(i)->GetParentId();
@@ -840,7 +840,7 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                             }
                             break;
                     }
-                    linkage_index++;
+                    //linkage_index++;  //For temporary testing
                     std::stringstream der_rotamers_name;
                     der_rotamers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration()
                                       << "[" << derivative_index << derivative_name << "]";
