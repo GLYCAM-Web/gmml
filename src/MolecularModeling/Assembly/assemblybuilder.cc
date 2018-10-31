@@ -1302,6 +1302,12 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
     std::cout << "Building Assembly From Condensed Sequence......" << std::endl;
     CondensedSequenceSpace::CondensedSequence sequence (condensed_sequence);
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = sequence.GetCondensedSequenceGlycam06ResidueTree();
+    
+    CondensedSequenceSpace::CondensedSequence::CondensedSequenceResidueTree res_tree = sequence.GetCondensedSequenceResidueTree();
+    CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo info = sequence.GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(res_tree);
+    for (unsigned int i = 0; i< info.size(); i++){
+	std::cout << "info index: " << i << ";" << "rot name: " << info[i].first << "linkage index: " << info[i].second->GetLinkageIndex() << std::endl;
+    }
 
     MolecularModeling::Assembly::TemplateAssembly* template_assembly = this-> BuildTemplateAssemblyFromPrepFile (glycam06_residues, prep_file);
 
