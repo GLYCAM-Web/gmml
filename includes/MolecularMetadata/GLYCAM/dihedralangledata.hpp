@@ -22,23 +22,21 @@ struct DihedralAngleData
     std::string linking_atom2_ ;
     std::string dihedral_angle_name_ ;
     double default_angle_value_ ;
-    double lower_range_ ;
-    double upper_range_ ;
+    double lower_deviation_ ;
+    double upper_deviation_ ;
     std::string name_ ;
     int index_ ; // if two entries match the criteria, and have the same index, the later entry should overwrite the earlier.
     std::string residue1_condition_ ;
     std::string residue2_condition_ ;
     std::string atom4_ ; // I always want rotation to be in the direction of protein->glycan and within glycan from reducing terminal to non-reducing.
-    std::string atom3_ ;
+    std::string atom3_ ; // This is just a visual reminder for me to do that, as I naturally think in linkage direction i.e. 1->4 linkage.
     std::string atom2_ ;
     std::string atom1_ ;
-
 } ;
 
 class DihedralAngleDataContainer
 {
 public:
-
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
@@ -80,16 +78,19 @@ public:
                 }
             }
         }
+        // Not yet implemented: If two entries have same index number, delete the earlier entry.
         return matching_entries;
     }
 private:
     //////////////////////////////////////////////////////////
     //                    PRIVATE FUNCTIONS                 //
     //////////////////////////////////////////////////////////
+    // Some entries have conditions for the first or second residue to have a particular type (aka tag).
+    // Most entries have "none" for condition. This checks first if condition is "none", and therefore satisfied.
+    // Otherwise (else if) it checks if any of the residue_types match the condition for the entry, e.g. gauche_effect=galacto.
     inline bool checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::string entry_condition)
     {
         bool conditionSatisfied = false;
-
         if (entry_condition.compare("none")==0)
         {
             conditionSatisfied = true;
