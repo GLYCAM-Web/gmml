@@ -226,6 +226,8 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   ///FILTERING OUT OXYGENLESS CYCLES
   FilterAllCarbonCycles( cycles );
 
+  
+
   ///ANOMERIC CARBON DETECTION and SORTING
   std::cout << std::endl << "Cycles after discarding rings that are all-carbon" << std::endl;
   std::vector< std::string > anomeric_carbons_status = std::vector< std::string >();
@@ -254,6 +256,13 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     }
   }
   cycles = sorted_cycles;
+  FilterCyclesWithDoubleBonds( cycles );
+  std::cout << std::endl << "Cycles after discarding rings containing C-C double bonds" << std::endl;
+  for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ ) {
+    std::string cycle_atoms_str = ( *it ).first;
+    std::cout << cycle_atoms_str << std::endl;
+  }
+  
   //Reorder the cycles to match the order they appear in input pdb file.
   //A map of the index of the first cycle atom, and the AtomVector cycle.
   std::map <unsigned long long, std::pair<std::string, AtomVector> > ordered_cycles_map =  std::map <unsigned long long,std::pair <std::string, AtomVector> >();
@@ -502,7 +511,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     std::cout << std::endl;
 std::string original_residue_id = mono->cycle_atoms_.at(0)->GetResidue()->GetId();//GetName();
 std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName();
-    if( mono->sugar_name_.monosaccharide_stereochemistry_name_.compare( "" ) == 0 && mono->sugar_name_.monosaccharide_name_.compare( "" ) == 0 ) 
+    if( mono->sugar_name_.monosaccharide_stereochemistry_name_.compare( "" ) == 0 && mono->sugar_name_.monosaccharide_name_.compare( "" ) == 0 )
     {
       //Rob wanted closest match removed; this is a quick and dirty fix, TODO we still would like to report close matches.
       //
@@ -520,14 +529,14 @@ std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName()
       Glycan::Note* matching_note = new Glycan::Note();
       matching_note->type_ = Glycan::COMMENT;
       matching_note->category_ = Glycan::MONOSACCHARIDE;
-      
+
       std::stringstream ss;
-      // if( mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare( "" ) != 0 ) 
+      // if( mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare( "" ) != 0 )
       // {
         ss << "No match found for "; //<<  THIS NEEDS TO BE RESIDUE NAME mono->sugar_name_.monosaccharide_stereochemistry_short_name_
         ss << original_residue_id;
         ss << ". close matches: ";
-        for( std::vector< Glycan::SugarName >::iterator ite = closest_matches.begin(); ite != closest_matches.end(); ite++ ) 
+        for( std::vector< Glycan::SugarName >::iterator ite = closest_matches.begin(); ite != closest_matches.end(); ite++ )
         {
           Glycan::SugarName sn = ( *ite );
           if( ite == closest_matches.end() - 1 ) {
@@ -536,24 +545,24 @@ std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName()
             ss << sn.monosaccharide_stereochemistry_short_name_ << ", ";
           }
         }
-      // } 
-      // else 
+      // }
+      // else
       // {
       //   ss << "No exact match for: " << mono->sugar_name_.monosaccharide_stereochemistry_name_;
       // }
-      
+
       matching_note->description_ = ss.str();
       this->AddNote( matching_note );
 
 
-      if( mono->sugar_name_.monosaccharide_stereochemistry_name_.compare( "" ) == 0 ) 
+      if( mono->sugar_name_.monosaccharide_stereochemistry_name_.compare( "" ) == 0 )
       {
         mono->sugar_name_.monosaccharide_stereochemistry_name_ = "Unknown";
         mono->sugar_name_.monosaccharide_stereochemistry_short_name_ = "Unknown";
         mono->sugar_name_.monosaccharide_name_ = "Unknown";
         mono->sugar_name_.monosaccharide_short_name_ = "Unknown";
-      } 
-      else 
+      }
+      else
       {
         std::cout << "No exact match found for the chemical code, the following information comes from one of the closest matches:" << std::endl;
       }
@@ -574,7 +583,7 @@ std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName()
     }
 
     ///ADDING NOTES/ISSUES OF RESIDUE NAMING
-    
+
     std::vector<std::string> pdb_codes = gmml::Split(mono->sugar_name_.pdb_code_, ",");
     if( pdb_codes.size() > 0 ) {
       std::string pdb_code = "";
@@ -586,20 +595,20 @@ std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName()
           break;
         }
       }
-      if( !found_code ) 
+      if( !found_code )
       {
         Glycan::Note* residue_naming_note = new Glycan::Note();
         residue_naming_note->category_ = Glycan::RESIDUE_NAME;
         std::stringstream res_ss;
-        if( mono->sugar_name_.pdb_code_.compare( "" ) == 0 ) 
+        if( mono->sugar_name_.pdb_code_.compare( "" ) == 0 )
         {
           residue_naming_note->type_ = Glycan::WARNING;
           res_ss << "PDB 3 letter code not found for " << mono->sugar_name_.monosaccharide_short_name_;
-        } 
-        else 
+        }
+        else
         {
           residue_naming_note->type_ = Glycan::ERROR;
-          res_ss << "Residue name, " << original_residue_id << ", in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match to PDB code: " << mono->sugar_name_.pdb_code_;
+          res_ss << "Residue name, " << original_residue << " (" << original_residue_id << "), in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_;
         }
         residue_naming_note->description_ = res_ss.str();
         this->AddNote(residue_naming_note);
@@ -610,8 +619,8 @@ std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName()
     std::cout << "Stereochemistry short name: " << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << std::endl;
     std::cout << "Complete name: " << mono->sugar_name_.monosaccharide_name_ << std::endl;
     std::cout << "Short name: " << mono->sugar_name_.monosaccharide_short_name_ << std::endl;
-    
-    
+
+
     //Added for the PDB to create their own SNFGs
     std::string monoSNFGName =  mono->sugar_name_.monosaccharide_short_name_;
     if(monoSNFGName[0] == mono->sugar_name_.isomer_[0])
@@ -671,7 +680,7 @@ std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName()
     for(int i = 0; i < oligo->child_oligos_linkages_.size(); i++)
     {
       std::cout << oligo->child_oligos_linkages_[i] << "  ";
-    }    
+    }
     std::cout << "\n";
   }
   // gmml::log(__LINE__, __FILE__,  gmml::INF, "Done printing oligos ..." );
@@ -921,6 +930,57 @@ void Assembly::ReturnCycleAtoms(std::string src_id, MolecularModeling::Atom *cur
     }
     ReturnCycleAtoms(src_id, parent, atom_parent_map, cycle, cycle_stream);
 }
+void Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
+{
+  gmml::log(__LINE__, __FILE__,  gmml::INF, "In Filter Double bond function");
+  std::map<std::string, bool> to_be_deleted_cycles = std::map<std::string, bool>();
+    bool all_single_bonds = true;
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        std::string cycle_str = (*it).first;
+        AtomVector cycle_atoms = (*it).second;
+        all_single_bonds = true;
+        std::stringstream debugStr;
+        debugStr << cycle_atoms.size();
+        gmml::log(__LINE__, __FILE__,  gmml::INF, cycle_str);
+        gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
+        for(int it1 = 0; it1 != cycle_atoms.size() -1; it1++)
+        {
+            
+            MolecularModeling::Atom* atom1 = cycle_atoms[it1];
+            gmml::log(__LINE__, __FILE__,  gmml::INF, atom1->GetId());
+            MolecularModeling::Atom* atom2;
+            bool doubleBond = false;
+            if(it1 == 0)
+            {
+              atom2 = cycle_atoms[cycle_atoms.size()-1];
+            }
+            else
+            {
+              atom2 = cycle_atoms[it1+1];
+            }
+            doubleBond = guessIfC_CDoubleBond(atom1, atom2);
+            if(doubleBond == true)
+            {
+                all_single_bonds = false;
+                break;
+            }
+        }
+        if(all_single_bonds == false)
+            to_be_deleted_cycles[cycle_str] = true;
+    }
+    CycleMap all_single_bond_filtered_cycles = CycleMap();
+    for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
+    {
+        std::string cycle_str = (*it).first;
+        AtomVector cycle_atoms = (*it).second;
+        if(to_be_deleted_cycles.find(cycle_str) == to_be_deleted_cycles.end())
+            all_single_bond_filtered_cycles[cycle_str] = cycle_atoms;
+    }
+    cycles.clear();
+    cycles = all_single_bond_filtered_cycles;
+}
+
 
 void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
 {
@@ -3018,20 +3078,20 @@ void Assembly::UpdateComplexSugarChemicalCode( Glycan::Monosaccharide * mono ) {
     }
 }
 
-void Assembly::UpdatePdbCode( Glycan::Monosaccharide * mono ) 
+void Assembly::UpdatePdbCode( Glycan::Monosaccharide * mono )
 {
   std::string code = mono->chemical_code_->toString();
-  for( int i = 0; i < gmml::COMPLEXSUGARNAMELOOKUPSIZE; i++ ) 
+  for( int i = 0; i < gmml::COMPLEXSUGARNAMELOOKUPSIZE; i++ )
   {
-    if( code.compare( gmml::COMPLEXSUGARNAMELOOKUP[ i ].chemical_code_string_ ) == 0 ) 
+    if( code.compare( gmml::COMPLEXSUGARNAMELOOKUP[ i ].chemical_code_string_ ) == 0 )
     {
       mono->sugar_name_.pdb_code_ = gmml::COMPLEXSUGARNAMELOOKUP[ i ].pdb_code_;
       return;
     }
   }
-  for( int i = 0; i < gmml::SUGARNAMELOOKUPSIZE; i++ ) 
+  for( int i = 0; i < gmml::SUGARNAMELOOKUPSIZE; i++ )
   {
-    if( code.compare( gmml::SUGARNAMELOOKUP[ i ].chemical_code_string_ ) == 0 ) 
+    if( code.compare( gmml::SUGARNAMELOOKUP[ i ].chemical_code_string_ ) == 0 )
     {
       mono->sugar_name_.pdb_code_ = gmml::SUGARNAMELOOKUP[ i ].pdb_code_;
       return;
@@ -3961,7 +4021,7 @@ double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan
   gmml::log(__LINE__, __FILE__, gmml::INF, O5->GetId());
   gmml::log(__LINE__, __FILE__, gmml::INF, "C1");
   gmml::log(__LINE__, __FILE__, gmml::INF, C1->GetId());
-    
+
   //Find glycosidicO
   AtomVector C1_neighbors = C1->GetNode()->GetNodeNeighbors();
   for (AtomVector::iterator it = C1_neighbors.begin(); it != C1_neighbors.end(); ++it)
