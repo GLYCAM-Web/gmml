@@ -49,4 +49,5 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C.", "OG"     , "chi2" , -60.0  ,  60.0  ,  60.0  , ""   , 10 , "none"   , "amino-acid"            ,  "OG" , "CG" , "CB" , "CA"  }, // Ser/Thr
         { "C.", "OH"     , "chi2" , -60.0  ,  60.0  ,  60.0  , ""   , 10 , "none"   , "amino-acid"            ,  "OH" , "CG" , "CB" , "CA"  }, // Tyr
         //{ "C2", "O8"   , "omg7" ,    };
+    };
 }
