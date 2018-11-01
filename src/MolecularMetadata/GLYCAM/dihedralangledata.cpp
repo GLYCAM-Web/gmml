@@ -31,10 +31,10 @@ using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataContainer;
 DihedralAngleDataContainer::DihedralAngleDataContainer()
 {   // const AmberAtomTypeInfo Glycam06j1AtomTypes[] =
     dihedralAngleDataVector_ =
-    {
+    {    // Regex:       , name                                                                                 // Atom names this applies to
         { "C1", ".."     , "phi"  , 180.0  ,  20.0  ,  20.0  , "t"  , 1  , "none"   , "none"                  ,  "C2" , "C1" , "O." , "C."  }, // phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
         { "C2", ".."     , "phi"  , 180.0  ,  20.0  ,  20.0  , "t"  , 1  , "none"   , "none"                  ,  "C1" , "C2" , "O." , "C."  }, // phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
-        { "C2", ".."     , "phi"  , -60.0  ,  20.0  ,  20.0  , "-g" , 2  , "ketose" , "none"                  ,  "C1" , "C2" , "O." , "C."  },
+        { "C2", ".."     , "phi"  , -60.0  ,  20.0  ,  20.0  , "-g" , 2  , "ulose"  , "none"                  ,  "C1" , "C2" , "O." , "C."  },
 
         { "C.", "O[1-5]" , "psi"  ,   0.0  ,  20.0  ,  20.0  , "t"  , 3  , "none"   , "none"                  ,  "C." , "O." , "C." , "H."  }, // psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)
         { "C.", "O[6-9]" , "psi"  , 180.0  ,  20.0  ,  20.0  , "t"  , 3  , "none"   , "none"                  ,  "C." , "O." , "C." , "C."  },
@@ -42,12 +42,11 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C.", "O6"     , "omg"  , -60.0  ,  20.0  ,  20.0  , "gg" , 4  , "none"   , "none"                  ,  "O6" , "C6" , "C5" , "O5"  }, // omg is O6-C5-C5-O5
         { "C.", "O6"     , "omg"  ,  60.0  ,  20.0  ,  20.0  , "gt" , 5  , "none"   , "none"                  ,  "O6" , "C6" , "C5" , "O5"  },
         { "C.", "O6"     , "omg"  , 180.0  ,  20.0  ,  20.0  , "tg" , 6  , "none"   , "gauche-effect=galacto" ,  "O6" , "C6" , "C5" , "O5"  }, // need to add this tag
-        { "C.", ".."     , "chi1" , -60.0  ,  20.0  ,  20.0  , ""   , 7  , "none"   , "protein"               ,  "CG" , "CB" , "CA" , "N"   },
-        { "C.", ".."     , "chi1" ,  60.0  ,  20.0  ,  20.0  , ""   , 8  , "none"   , "protein"               ,  "CG" , "CB" , "CA" , "N"   },
-        { "C.", ".."     , "chi1" , 180.0  ,  20.0  ,  20.0  , ""   , 9  , "none"   , "protein"               ,  "CG" , "CB" , "CA" , "N"   },
-        { "C.", "ND2"    , "chi2" , -60.0  ,  60.0  ,  60.0  , ""   , 10 , "none"   , "protein"               ,  "ND2", "CG" , "CB" , "CA"  }, // Asn
-        { "C.", "OG"     , "chi2" , -60.0  ,  60.0  ,  60.0  , ""   , 10 , "none"   , "protein"               ,  "OG" , "CG" , "CB" , "CA"  }, // Ser/Thr
-        { "C.", "OH"     , "chi2" , -60.0  ,  60.0  ,  60.0  , ""   , 10 , "none"   , "protein"               ,  "OH" , "CG" , "CB" , "CA"  }, // Tyr
-        //{ "C2", "O8"   , "omg7" ,
-    };
+        { "C.", ".."     , "chi1" , -60.0  ,  20.0  ,  20.0  , ""   , 7  , "none"   , "amino-acid"            ,  "CG" , "CB" , "CA" , "N"   },
+        { "C.", ".."     , "chi1" ,  60.0  ,  20.0  ,  20.0  , ""   , 8  , "none"   , "amino-acid"            ,  "CG" , "CB" , "CA" , "N"   },
+        { "C.", ".."     , "chi1" , 180.0  ,  20.0  ,  20.0  , ""   , 9  , "none"   , "amino-acid"            ,  "CG" , "CB" , "CA" , "N"   },
+        { "C.", "ND2"    , "chi2" , -60.0  ,  60.0  ,  60.0  , ""   , 10 , "none"   , "amino-acid"            ,  "ND2", "CG" , "CB" , "CA"  }, // Asn
+        { "C.", "OG"     , "chi2" , -60.0  ,  60.0  ,  60.0  , ""   , 10 , "none"   , "amino-acid"            ,  "OG" , "CG" , "CB" , "CA"  }, // Ser/Thr
+        { "C.", "OH"     , "chi2" , -60.0  ,  60.0  ,  60.0  , ""   , 10 , "none"   , "amino-acid"            ,  "OH" , "CG" , "CB" , "CA"  }, // Tyr
+        //{ "C2", "O8"   , "omg7" ,    };
 }
