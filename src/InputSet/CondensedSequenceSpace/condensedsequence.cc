@@ -655,16 +655,18 @@ CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::Get
 CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSequence::GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree)
 {
     CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles = CondensedSequenceRotamersAndGlycosidicAnglesInfo();
-    int linkage_index = 0;
-    //int linkage_index = -1; //For testing front end. -- Yao 
+    //int linkage_index = 0;
+    int linkage_index = -1; //For testing front end. -- Yao 
     for(unsigned int i = 0; i < residue_tree.size(); i++)
     {
         int parent = residue_tree.at(i)->GetParentId();
         if(parent >= 0)
         {
-            linkage_index++;
+            //linkage_index++;
+            std::cout << "linkage index at beginning of loop: " << linkage_index << std::endl;
             CondensedSequenceResidue* residue = residue_tree.at(i);
             std::string residue_absolute_name = residue->GetName().substr(0, 3) + residue->GetName().substr(4);
+	    std::cout << "current residue name: " << residue_absolute_name << std::endl;
             char ring_letter = residue->GetName()[3];
             std::vector<std::pair<std::string, std::vector<std::string> > > possible_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
             std::vector<std::pair<std::string, std::vector<std::string> > > selected_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
@@ -782,6 +784,7 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                             }
                             break;
                     }
+                    std::cout << "Index when about to be added: " << linkage_index << std::endl;
                     RotamersAndGlycosidicAnglesInfo* info = new RotamersAndGlycosidicAnglesInfo(linkage_index, possible_rotamers, selected_rotamers, enabled_glycosidic_angles);
                     RotamerNameInfoPair pair_info = std::make_pair(rotamers_name.str(), info);
 
@@ -894,6 +897,8 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                 }
             }
         }
+        linkage_index++;
+        std::cout << "linkage index outside of loop, about to increment: " << linkage_index << std::endl;
     }
     return rotamers_glycosidic_angles;
 }

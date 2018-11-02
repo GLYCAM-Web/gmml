@@ -18,9 +18,9 @@
 ## Before getting to docs for the main contents, we will make some
 ## declarations and do some preliminary stuff in a convenient location
 ##
-GMMLOUTPATH='includes/MolecularMetadata/GLYCAM'
+GMMLOUTPATH='src/MolecularMetadata/GLYCAM'
 OUTPATH="../../../../../${GMMLOUTPATH}"
-OUTFILE='glycam06residueinfo.hpp' ## name of c++ file to write
+OUTFILE='glycam06residueinfo.cpp' ## name of c++ file to write
 if [ -e ${OUTPATH}/${OUTFILE} ] ; then
    echo "
 
@@ -76,8 +76,7 @@ fi
 ##
 ## Start by writing header-type info to the hpp file
 ##
-echo "#ifndef GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP
-#define GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP
+echo "#include \"../../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp\"
 
 /** \\file:  ${GMMLOUTPATH}/${OUTFILE}
  * GLYCAM06 metadata for residues
@@ -95,31 +94,16 @@ echo "#ifndef GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP
  * See that and associated scripts for more information.
  */
 
-#include <string>
-#include <map>
+//////////////////////////////////////////////////////////
+//                       CONSTRUCTOR                    //
+//////////////////////////////////////////////////////////
 
-namespace gmml
+using gmml::MolecularMetadata::GLYCAM::Glycam06NamesToTypesLookupContainer;
+
+Glycam06NamesToTypesLookupContainer::Glycam06NamesToTypesLookupContainer()
 {
-    namespace MolecularMetadata
-    {
-        namespace GLYCAM
-        {
-        /**
-         *   Glycam06NamesToTypesLookupMap
-         *
-         *   The first string is the name-code for a residue.  It is typically
-         *   three or four characters long.
-         *
-         *     Examples:  OME, 0GA, WYB, ZOLT YuAP
-         *
-         *   The second string is a type or attribute appropriate to that residue.
-         *
-         *     Examples:  monosaccharide, derivative, aglycon, protonated, pyranose
-         *
-         *   See the scripts that generate this file for further documentation.
-         */
-          const std::multimap<std::string, std::string> Glycam06NamesToTypesLookupMap=
-            {" > ${OUTPATH}/${OUTFILE}
+    glycam06NamesToTypesLookupMap_ =
+    {" > ${OUTPATH}/${OUTFILE}
 
 ##
 ## Add the data for the map
@@ -149,9 +133,5 @@ while [ "${i}" -lt "${NumSets}" ] ; do
 done
 ## Close this data set
 echo "
-            }; // close Glycam06NamesToTypesLookupMap
-        }
-    }
-} // close namespace
-
-#endif // GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP" >> ${OUTPATH}/${OUTFILE}
+    }; // close Glycam06NamesToTypesLookupMap
+}" >> ${OUTPATH}/${OUTFILE}
