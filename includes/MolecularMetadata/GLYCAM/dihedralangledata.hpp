@@ -24,8 +24,8 @@ struct DihedralAngleData
     double default_angle_value_ ;
     double lower_deviation_ ;
     double upper_deviation_ ;
-    std::string name_ ;
-    int index_ ; // if two entries match the criteria, and have the same index, the later entry should overwrite the earlier.
+    std::string rotamer_name_ ;
+    double index_ ; // if two entries match the criteria, and have the same index, the later entry should overwrite the earlier.
     std::string residue1_condition_ ;
     std::string residue2_condition_ ;
     std::string atom1_ ;
@@ -65,20 +65,20 @@ public:
         for (const auto& entry : dihedralAngleDataVector_)
         {
             // Create a regex of each entry's linking_atom1_ and 2_. These are regex queries.
-            std::cout << "Compare entry " << entry.linking_atom1_ << "-" << entry.linking_atom2_ << " : " << linking_atom1->GetName() << "-" << linking_atom2->GetName() <<"\n";
+            //std::cout << "Compare entry " << entry.linking_atom1_ << "-" << entry.linking_atom2_ << " : " << linking_atom1->GetName() << "-" << linking_atom2->GetName() <<"\n";
             std::regex regex1(entry.linking_atom1_, std::regex_constants::ECMAScript);
             std::regex regex2(entry.linking_atom2_, std::regex_constants::ECMAScript);
             // If metadata entry matches (regex query) to the two linking atom names
             if ( (std::regex_search(linking_atom1->GetName(), regex1)) && (std::regex_search(linking_atom2->GetName(), regex2)) )
             {
-                std::cout << "Checking for conditions: " << entry.residue1_condition_ << " + " << entry.residue2_condition_ << "\n";
+               // std::cout << "Checking for conditions: " << entry.residue1_condition_ << " + " << entry.residue2_condition_ << "\n";
                 // Some entries have conditions for the residue, that they have certain tags. Make sure any conditions are met:
                 std::vector<std::string> residue1_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom1->GetResidue()->GetName());
                 std::vector<std::string> residue2_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom2->GetResidue()->GetName());
                 if ( (checkIfResidueConditionsAreSatisfied(residue1_types, entry.residue1_condition_))
                   && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_condition_)) )
                 {
-                    std::cout << "Entry added\n";
+               //    std::cout << "Entry added: " << entry.linking_atom1_ << "-" << entry.linking_atom2_ << "\n";
                     matching_entries.push_back(entry);
                 }
             }
