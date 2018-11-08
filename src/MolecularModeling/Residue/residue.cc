@@ -13,7 +13,10 @@ using MolecularModeling::Residue;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Residue::Residue() {}
+Residue::Residue()
+{
+    index_ = this->generateIndex();
+}
 
 Residue::Residue(MolecularModeling::Assembly *assembly, std::string name)
 {
