@@ -4,9 +4,9 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include "../../includes/MolecularModeling/atom.hpp"
-#include "../../includes/MolecularModeling/residue.hpp"
-#include "../../includes/MolecularModeling/molecule.hpp"
+#include "../../../includes/MolecularModeling/atom.hpp"
+#include "../../../includes/MolecularModeling/residue.hpp"
+#include "../../../includes/MolecularModeling/molecule.hpp"
 
 namespace GraphDS
 {

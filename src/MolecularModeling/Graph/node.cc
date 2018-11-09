@@ -1,8 +1,7 @@
 #include "../../includes/MolecularModeling/Graph/node.hpp"
-#include "../../includes/MolecularModeling/atom.hpp"
-#include "../../includes/MolecularModeling/residue.hpp"
-#include "../../includes/MolecularModeling/molecule.hpp"
-
+//#include "../../includes/MolecularModeling/atom.hpp"
+//#include "../../includes/MolecularModeling/residue.hpp"
+//#include "../../includes/MolecularModeling/molecule.hpp"
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
