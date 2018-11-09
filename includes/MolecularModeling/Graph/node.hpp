@@ -44,6 +44,7 @@ namespace GraphDS
             Node(MolecularModeling::Molecule* molecule);
             Node(MolecularModeling::Molecule& molecule);
 
+
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////

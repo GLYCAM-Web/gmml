@@ -5,8 +5,10 @@
 #include <iostream>
 #include <vector>
 
+#include "node.hpp"
+
 namespace GraphDS
-{   class Node;
+{
     class Edge
     {
         public:
@@ -31,7 +33,7 @@ namespace GraphDS
             /*! \fn
               * Parameterized constructor
               */
-            Edge(Node* srcNode,Node* dstNode);
+            Edge(GraphDS::Node* srcNode,GraphDS::Node* dstNode);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -40,13 +42,13 @@ namespace GraphDS
               * An accessor function in order to access source node of an edge.
               * @return srcNode_ attribute of the current object of the edge class
               */
-            Node* GetSourceNode();
+            GraphDS::Node* GetSourceNode();
 
             /*! \fn
               * An accessor function in order to access destination node of an edge.
               * @return orgNode_ attribute of the current object of the edge class
               */
-            Node* GetDestinationNode();
+            GraphDS::Node* GetDestinationNode();
 
             /*! \fn
               * An accessor function in order to access labels of the edge.
@@ -69,14 +71,14 @@ namespace GraphDS
               * Set the srcNode_ attribute of the current edge
               * @param srcNode The originating node attribute of the current edge object
               */
-            void SetSourceNode(Node* srcNode);
+            void SetSourceNode(GraphDS::Node* srcNode);
 
             /*! \fn
               * A mutator function in order to set the destination node of the current edge object
               * Set the dstNode_ attribute of the current edge
               * @param dstNode The destination node attribute of the current edge object
               */
-            void SetDestinationNode(Node* dstNode);
+            void SetDestinationNode(GraphDS::Node* dstNode);
 
             /*! \fn
               * A mutator function in order to set the label of the current edge object
@@ -116,8 +118,8 @@ namespace GraphDS
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-           Node* srcNode_;                     /*!< Pointer to a originating node of type Node class >*/
-           Node* dstNode_;                     /*!< Pointer to a destination node of type Node class >*/
+           GraphDS::Node* srcNode_;                     /*!< Pointer to a originating node of type Node class >*/
+           GraphDS::Node* dstNode_;                     /*!< Pointer to a destination node of type Node class >*/
            LabelVector labels_;                /*!< Label assigned to the edge between two node >*/
            double weight_;                     /*!<  Weight between between two node/ Length of Edge >*/
     };

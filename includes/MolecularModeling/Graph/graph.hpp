@@ -6,9 +6,11 @@
 #include <fstream>
 #include <vector>
 
+#include "node.hpp"
+#include "edge.hpp"
+
 namespace GraphDS
-{   class Node;
-    class Edge;
+{
     class Graph
     {
         public:
@@ -18,8 +20,8 @@ namespace GraphDS
             /*! \typedef
              * List of nodes in a Graph
              */
-            typedef std::vector<Node*> NodeVector;
-            typedef std::vector<Edge*> EdgeVector;
+            typedef std::vector<GraphDS::Node*> NodeVector;
+            typedef std::vector<GraphDS::Edge*> EdgeVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -69,27 +71,27 @@ namespace GraphDS
               * Set the node_ attributes of the current graph object
               * @param node_ The node attribute of the current graph object
               */
-           void AddNewNode(Node* newNode);
+           void AddNewNode(GraphDS::Node* newNode);
 
            /*! \fn
              * A function to remove an existing new node from the Graph
              * Remove the node_ attributes of the current graph object
              * @param node_ The node attribute of the current graph object
              */
-          void RemoveNode(Node* delNode);
+          void RemoveNode(GraphDS::Node* delNode);
 
            /*! \fn
              * A function to add an edge between two nodes of the current graph object of this class
              * @param node_ The node attribute of the current graph object
              */
-          void AddEdge(Node* firstNode, Node* secondNode);
+          void AddEdge(GraphDS::Node* firstNode, GraphDS::Node* secondNode);
 
            /*! \fn
              * A function to find a node in the current graph object using the node id
              * @return node_ attribute of the current graph object of this class
              */
 
-           Node* FindNodeById(std::string node_id);
+           GraphDS::Node* FindNodeById(std::string node_id);
 
             /////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
