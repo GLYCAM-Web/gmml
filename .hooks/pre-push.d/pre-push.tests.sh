@@ -37,7 +37,7 @@ check_gemshome $gemshome
 
 #Compile gmml if not compiled:
 echo "Pulling all changes"
-if  ! git pull ; then
+if ! git pull ; then
     echo "Could not pull gmml"
     exit 1
 fi
