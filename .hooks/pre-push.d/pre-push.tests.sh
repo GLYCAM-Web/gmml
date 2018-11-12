@@ -67,9 +67,16 @@ if [ $result -eq 0 ] ; then
          exit 1
      else
          echo "GEMS level tests have passed. Checking glycoprotein builder."
+         if [ ! -d "$GEMSHOME/gmml/programs/" ]; then
+            mkdir $GEMSHOME/gmml/programs/
+         fi
          if [ ! -d "$GEMSHOME/gmml/programs/GlycoproteinBuilder" ]; then
              cd $GEMSHOME/gmml/programs/
              git clone https://github.com/gitoliver/GlycoProteinBuilder.git GlycoproteinBuilder
+         fi
+         if [ ! -d "$GEMSHOME/gmml/programs/GlycoproteinBuilder" ]; then
+             echo "$GEMSHOME/gmml/programs/GlycoproteinBuilder does not exist and cannot be cloned. Push cancelled"
+             exit 1
          fi
          cd $GEMSHOME/gmml/programs/GlycoproteinBuilder
          git pull

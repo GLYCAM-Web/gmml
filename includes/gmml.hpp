@@ -179,4 +179,5 @@ typedef GeometryTopology::Coordinate Vector;
 typedef std::vector<std::string> StringVector;
 typedef std::vector<MolecularModeling::ResidueNode*> ResidueNodeVector;
 
+
 #endif // GMML_HPP
