@@ -37,13 +37,17 @@ check_gemshome $gemshome
 
 #Compile gmml if not compiled:
 echo "Pulling all changes"
-if ! git pull ; then
+git pull
+result=$? # record the exit status of previous command
+if [ $result -eq 1 ] ; then
     echo "Could not pull gmml"
     exit 1
 fi
 echo "Compiling gmml with ./make.sh no_clean no_wrap"
 cd $GEMSHOME/
- if ! git pull; then
+ git pull
+ result=$? # record the exit status of previous command
+ if [ $result -eq 1 ] ; then
      echo "Could not pull gems"
      exit 1
  fi
@@ -85,8 +89,10 @@ if [ $result -eq 0 ] ; then
              exit 1
          fi
          cd $GEMSHOME/gmml/programs/GlycoproteinBuilder
-         if ! git pull ; then
-             echo "Could not pull glycoproteinbuilder"
+         git pull
+         result=$? # record the exit status of previous command
+         if [ $result -eq 1 ] ; then
+             echo "Could not pull glycoprotein builder"
              exit 1
          fi
          make clean
