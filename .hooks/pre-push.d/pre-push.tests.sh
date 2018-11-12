@@ -37,10 +37,16 @@ check_gemshome $gemshome
 
 #Compile gmml if not compiled:
 echo "Pulling all changes"
-git pull
+if ! [ git pull ]; then
+    echo "Could not pull gmml"
+    exit 1
+fi
 echo "Compiling gmml with ./make.sh no_clean no_wrap"
 cd $GEMSHOME/
- git pull
+ if [ ! git pull ]; then
+     echo "Could not pull gems"
+     exit 1
+ fi
  #Add these removes so the tests don't pass on an old version of the library
  rm -f ./gmml/bin/libgmml.so.1.0.0
  rm -f ./gmml/bin/libgmml.so
@@ -79,7 +85,10 @@ if [ $result -eq 0 ] ; then
              exit 1
          fi
          cd $GEMSHOME/gmml/programs/GlycoproteinBuilder
-         git pull
+         if [ ! git pull ]; then
+             echo "Could not pull glycoproteinbuilder"
+             exit 1
+         fi
          make clean
          make
          ./run_tests.sh
