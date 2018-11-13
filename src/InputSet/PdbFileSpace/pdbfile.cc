@@ -7848,6 +7848,7 @@ void PdbFile::PrintOntology(std::stringstream& ont_stream)
   std::stringstream uri;
   uri << Ontology::ONT_PREFIX << header_->GetIdentifierCode();
   std::string uriStr = uri.str();
+  std::transform(uriStr.begin(), uriStr.end(), uriStr.begin(), ::tolower);
 
   gmml::AddLiteral( uriStr, Ontology::TYPE, Ontology::PDB, ont_stream );
   
