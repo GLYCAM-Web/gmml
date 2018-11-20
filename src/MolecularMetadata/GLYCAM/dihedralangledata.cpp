@@ -51,8 +51,8 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C.", "ND2"    , "chi1" , -60.0  ,  20.0  ,  20.0  , ""   ,  3.1 , "none"   , "amino-acid"            ,  "CG" , "CB" , "CA" , "N"   },
         { "C.", "ND2"    , "chi1" ,  60.0  ,  20.0  ,  20.0  , ""   ,  3.2 , "none"   , "amino-acid"            ,  "CG" , "CB" , "CA" , "N"   },
         { "C.", "ND2"    , "chi1" , 180.0  ,  20.0  ,  20.0  , ""   ,  3.3 , "none"   , "amino-acid"            ,  "CG" , "CB" , "CA" , "N"   },
-        { "C.", "ND2"    , "chi2" , -60.0  ,  60.0  ,  60.0  , ""   ,  4.1 , "none"   , "amino-acid"            ,  "ND2", "CG" , "CB" , "CA"  },
-        { "C.", "ND2"    , "psi"  , -60.0  ,  60.0  ,  60.0  , ""   ,  2.1 , "none"   , "amino-acid"            ,  "C." , "ND2", "CG" , "CB"  },
+        { "C.", "ND2"    , "chi2" , -60.0  ,  20.0  ,  20.0  , ""   ,  4.1 , "none"   , "amino-acid"            ,  "ND2", "CG" , "CB" , "CA"  },
+        { "C.", "ND2"    , "psi"  , -60.0  ,  20.0  ,  20.0  , ""   ,  2.1 , "none"   , "amino-acid"            ,  "C." , "ND2", "CG" , "CB"  },
         { "C1", "ND2"    , "phi"  , 180.0  ,  20.0  ,  20.0  , "t"  ,  1.1 , "none"   , "amino-acid"            ,  "C." , "C." , "ND2", "CG"  },
 
         // THR // Values not checked
@@ -66,15 +66,15 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C.", "OG"     , "chi1" , -60.0  ,  20.0  ,  20.0  , ""   ,  3.1 , "none"   , "amino-acid"            ,  "OG" , "CB" , "CA" , "N"   },
         { "C.", "OG"     , "chi1" ,  60.0  ,  20.0  ,  20.0  , ""   ,  3.2 , "none"   , "amino-acid"            ,  "OG" , "CB" , "CA" , "N"   },
         { "C.", "OG"     , "chi1" , 180.0  ,  20.0  ,  20.0  , ""   ,  3.3 , "none"   , "amino-acid"            ,  "OG" , "CB" , "CA" , "N"   },
-        { "C.", "OG"     , "psi"  , -60.0  ,  60.0  ,  60.0  , ""   ,  2.1 , "none"   , "amino-acid"            ,  "C." , "OG" , "CB" , "CA"  },
+        { "C.", "OG"     , "psi"  , -60.0  ,  20.0  ,  20.0  , ""   ,  2.1 , "none"   , "amino-acid"            ,  "C." , "OG" , "CB" , "CA"  },
         { "C.", "OG"     , "phi"  , 180.0  ,  20.0  ,  20.0  , "t"  ,  1.1 , "none"   , "amino-acid"            ,  "C." , "C." , "OG1", "CB"  },
 
          // TYR // Values not checked
         { "C.", "OH"     , "chi1" , -60.0  ,  20.0  ,  20.0  , ""   ,  6.1 , "none"   , "amino-acid"            ,  "CG" , "CB" , "CA" , "N"   },
         { "C.", "OH"     , "chi1" ,  60.0  ,  20.0  ,  20.0  , ""   ,  6.2 , "none"   , "amino-acid"            ,  "CG" , "CB" , "CA" , "N"   },
         { "C.", "OH"     , "chi1" , 180.0  ,  20.0  ,  20.0  , ""   ,  6.3 , "none"   , "amino-acid"            ,  "CG" , "CB" , "CA" , "N"   },
-        { "C.", "OH"     , "chi2" , -60.0  ,  60.0  ,  60.0  , ""   ,  7.1 , "none"   , "amino-acid"            ,  "CD1", "CG" , "CB" , "CA"  },
-        { "C.", "OH"     , "psi"  , -60.0  ,  60.0  ,  60.0  , ""   ,  2.1 , "none"   , "amino-acid"            ,  "C." , "OH" , "CZ" , "CE1" },
+        { "C.", "OH"     , "chi2" , -60.0  ,  20.0  ,  20.0  , ""   ,  7.1 , "none"   , "amino-acid"            ,  "CD1", "CG" , "CB" , "CA"  },
+        { "C.", "OH"     , "psi"  , -60.0  ,  20.0  ,  20.0  , ""   ,  2.1 , "none"   , "amino-acid"            ,  "C." , "OH" , "CZ" , "CE1" },
         { "C.", "OH"     , "phi"  , 180.0  ,  20.0  ,  20.0  , "t"  ,  1.1 , "none"   , "amino-acid"            ,  "C." , "C." , "OH ", "CZ"  },
 
     };
