@@ -67,12 +67,15 @@ void PdbDatabaseReferenceSection::AddDatabaseReferences(PdbDatabaseReference *da
 std::string PdbDatabaseReferenceSection::GetUniprotIDs()
 {
   std::string UniprotIDs = "";
-  for (DatabaseReferenceVector::iterator it = database_reference_.begin(); it != database_reference_.end(); it++)
+  if(database_reference_.size() > 0)
   {
-    PdbFileSpace::PdbDatabaseReference* thisReference = *it;
-    if(thisReference->GetDatabase() == "UNP   ")
+    for (DatabaseReferenceVector::iterator it = database_reference_.begin(); it != database_reference_.end(); it++)
     {
-      UniprotIDs = UniprotIDs + thisReference->GetDatabaseAccession() + " ";
+      PdbFileSpace::PdbDatabaseReference* thisReference = *it;
+      if(thisReference->GetDatabase() == "UNP   ")
+      {
+        UniprotIDs = UniprotIDs + thisReference->GetDatabaseAccession() + " ";
+      }
     }
   }
   return UniprotIDs;

@@ -17,6 +17,7 @@ namespace Glycan
             std::vector<Oligosaccharide*> child_oligos_;        /*!< The oligosacchrides that are attached to the current oligosaccharide >*/
             std::vector<std::string> child_oligos_linkages_;    /*!< The linkages between the current oligosaccharide and oligosacchrides that are attached to it. i.e. C4_13_4GB_?_2_?_?_1-O4_23_4GB_?_2_?_?_1-C1_24_0MA_?_3_?_?_1 >*/
             std::string oligosaccharide_name_;                  /*!< The complete name sequence of the oligosacchride >*/
+            std::vector<std::string> sorted_monos;              /*!< The monosaccharides sorted in the order they are printed in the sequence >*/
             std::string oligosaccharide_linkages_;              /*!< The complete sequence of the linkages of the oligosacchride >*/
             std::string oligosaccharide_residue_linkages_;      /*!< The complete sequence of the residue linkages of the oligosacchride >*/
             std::string terminal_;                              /*!< The terminal residue name of the oligosacchride >*/
@@ -112,9 +113,9 @@ gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_linkages_ );
                     gmml::log(__LINE__, __FILE__,  gmml::INF, " This.size another time ..." );
                     if(oligo_linkages_tokens.size() == 0 && oligosaccharide_name_.compare("") != 0){
                         if(atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
-                            residue_links_stream << root_residue_name << "(" << root_residue_number  << "_" << root_->bfmp_ring_conformation_ << ")" ;
+                            residue_links_stream << root_residue_name << "(" << root_residue_number  << "_" << /*root_->bfmp_ring_conformation_ <<*/ ")" ;
                         else
-                            residue_links_stream << root_residue_name << "(" << root_residue_number <<  "_" << atom_id_tokens.at(3) << "_" << root_->bfmp_ring_conformation_ << ")" ;
+                            residue_links_stream << root_residue_name << "(" << root_residue_number <<  "_" << atom_id_tokens.at(3) << "_" << /*root_->bfmp_ring_conformation_ <<*/ ")" ;
                      }
                 }
 
@@ -430,8 +431,10 @@ gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_linkages_ );
                         Oligosaccharide* child_oligo = child_oligos_.at(index_min);
                         Monosaccharide* mono2 = child_oligo->root_;
 
-                        std::string mono1_bfmp = mono1->bfmp_ring_conformation_;
-                        std::string mono2_bfmp = mono2->bfmp_ring_conformation_;
+                        // std::string mono1_bfmp = mono1->bfmp_ring_conformation_;
+                        // std::string mono2_bfmp = mono2->bfmp_ring_conformation_;
+                        std::string mono1_bfmp = "";
+                        std::string mono2_bfmp = "";
 
                         std::vector<std::string> tokens = gmml::Split(child_oligos_linkages_.at(index_min), "-");
 
