@@ -226,7 +226,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   ///FILTERING OUT OXYGENLESS CYCLES
   FilterAllCarbonCycles( cycles );
 
-  
+
 
   ///ANOMERIC CARBON DETECTION and SORTING
   std::cout << std::endl << "Cycles after discarding rings that are all-carbon" << std::endl;
@@ -262,7 +262,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     std::string cycle_atoms_str = ( *it ).first;
     std::cout << cycle_atoms_str << std::endl;
   }
-  
+
   //Reorder the cycles to match the order they appear in input pdb file.
   //A map of the index of the first cycle atom, and the AtomVector cycle.
   std::map <unsigned long long, std::pair<std::string, AtomVector> > ordered_cycles_map =  std::map <unsigned long long,std::pair <std::string, AtomVector> >();
@@ -394,6 +394,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 
     ///DERIVATIVE/MODIFICATION PATTERN EXTRACTION
     ExtractDerivatives( mono );
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Done with derivatives");
 
     ///IF NO DERIVATIVES THEN NO NEED TO ITERATE THROUGH WHATS NOT THERE
     /// Also, this now prints Ring Position instead of Position. e.g: -1, a( 1 ), 2, 3, 4, 5, +1, +2, +3
@@ -406,18 +407,25 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     }
 
     ///GENERATING COMPLETE NAME
+    gmml::log(__LINE__, __FILE__, gmml::INF, "About to generate name");
     if (!plus_sides.empty()){
+      gmml::log(__LINE__, __FILE__, gmml::INF, "PlusSides is not 0");
     if( plus_sides.size() <= 1 ) {
       ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
+      gmml::log(__LINE__, __FILE__, gmml::INF, "About to UpdateComplexSugarChemicalCode");
       UpdateComplexSugarChemicalCode( mono );
+      gmml::log(__LINE__, __FILE__, gmml::INF, "About to UpdatePDBCode");
       UpdatePdbCode( mono );
+      gmml::log(__LINE__, __FILE__, gmml::INF, "About to UpdateComplete Sugar Name");
       GenerateCompleteSugarName( mono );
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Done Updating ");
     } else {
       if( plus_sides.size() == 3 ) {
         std::vector< std::string >::iterator index_it;
         if( ( index_it = find( mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "+1" ) ) != mono->chemical_code_->right_up_.end() ) {
           ///CHECKING R or S
           std::stringstream plus_one;
+          gmml::log(__LINE__, __FILE__, gmml::INF, "About to calculate orientation");
           std::string orientation = CalculateRSOrientations( mono->cycle_atoms_.at( mono->cycle_atoms_.size() - 2 ), plus_sides.at( 0 ), plus_sides.at( 1 ) );
           plus_one << "+1" << orientation;
           ( *index_it ) = plus_one.str();
@@ -457,6 +465,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         }
       }
       ///UPDATING CHEMICAL CODE
+      gmml::log(__LINE__, __FILE__, gmml::INF, "About to update codes");
       UpdateComplexSugarChemicalCode( mono );
       UpdatePdbCode( mono );
 
@@ -635,6 +644,7 @@ std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName()
     {
       monoSNFGName.erase(3,1);
     }
+    mono->SNFG_name_ = monoSNFGName;
     std::cout << "SNFG Name: " << monoSNFGName << std::endl;
 
     std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
@@ -686,7 +696,9 @@ std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName()
   // gmml::log(__LINE__, __FILE__,  gmml::INF, "Done printing oligos ..." );
 
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
+  // gmml::log(__LINE__, __FILE__,  gmml::INF, "About to get notes");
   std::vector< Glycan::Note* > notes = this->GetNotes();
+  // gmml::log(__LINE__, __FILE__,  gmml::INF, "Done getting notes");
   if( !notes.empty() ) {
     std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
     std::cout << std::endl << "NOTES/ISSUES:" << std::endl;
@@ -946,7 +958,7 @@ void Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
         gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
         for(int it1 = 0; it1 != cycle_atoms.size() -1; it1++)
         {
-            
+
             MolecularModeling::Atom* atom1 = cycle_atoms[it1];
             gmml::log(__LINE__, __FILE__,  gmml::INF, atom1->GetId());
             MolecularModeling::Atom* atom2;
@@ -1946,9 +1958,11 @@ void Assembly::ExtractDerivatives(Glycan::Monosaccharide * mono)
                     if((value = CheckxCOO(target, mono->cycle_atoms_str_/*, pattern_atoms*/)).compare("") != 0)///xC-(O,O) and xC-(O,OH)
                         break;
                 }
+                gmml::log(__LINE__, __FILE__, gmml::INF, "Done checking formulas");
             }
             if(value.compare("") != 0)///if any pattern matched add it to the index-derivative map
             {
+              gmml::log(__LINE__, __FILE__, gmml::INF, "Makes it here");
                 if(index == 0)
                     key = "-1";
                 else
@@ -1967,6 +1981,7 @@ void Assembly::ExtractDerivatives(Glycan::Monosaccharide * mono)
                     }
 
                 }
+                gmml::log(__LINE__, __FILE__, gmml::INF, "And then here");
                 mono->derivatives_map_[key] = value;
             }
         }
@@ -2744,8 +2759,13 @@ void Assembly::GenerateCompleteSugarName(Glycan::Monosaccharide *mono)
         ///moving a, b or x to after the bracket: short-name + [...] + a/b/x and removing ", " from the end of bracket stream
         int condensed_name_size = sn.size();
         std::string condensed_name = sn;
-        std::string new_name_part1 = condensed_name.substr(0, (condensed_name_size - 1));///short_name
-        char new_name_part2 = condensed_name.at(condensed_name_size - 1);///a/b/x
+        std::string new_name_part1 = "";
+        char new_name_part2 = ' ';
+        if(condensed_name_size > 0)
+        {
+          new_name_part1 = condensed_name.substr(0, (condensed_name_size - 1));///short_name
+          new_name_part2 = condensed_name.at(condensed_name_size - 1);///a/b/x
+        }
         short_name << new_name_part1 << "[" << in_bracket.str().substr(0, in_bracket.str().size() - 1) << "]" << new_name_part2;
 
         mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
@@ -3995,10 +4015,10 @@ double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan
   gmml::log(__LINE__, __FILE__, gmml::INF, "CalculatingPhiAngle");
   //(O5-C1-O-Cx') {Ring oxygen of child_oligo}-{child_atom_id}-{glycosidic_atom_id}-{parent_atom_id}
 
-  MolecularModeling::Atom* O5;
-  MolecularModeling::Atom* C1;
-  MolecularModeling::Atom* glycosidicO;
-  MolecularModeling::Atom* Cx;
+  MolecularModeling::Atom* O5 = NULL;
+  MolecularModeling::Atom* C1 = NULL;
+  MolecularModeling::Atom* glycosidicO = NULL;
+  MolecularModeling::Atom* Cx = NULL;
 
   //Get Anomeric Carbon and ring oxygen
   for(std::vector<MolecularModeling::Atom*>::iterator it = child_oligo->root_->cycle_atoms_.begin();
@@ -4008,7 +4028,7 @@ double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan
     std::string this_element = this_cycle_atom->GetElementSymbol();
     std::string this_atom_id = this_cycle_atom->GetId();
 
-    if (this_atom_id.find("O5_") != std::string::npos)
+    if (this_atom_id.find("O") != std::string::npos)
     {
       O5 = this_cycle_atom;
     }
@@ -4016,6 +4036,11 @@ double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan
     {
       C1 = this_cycle_atom;
     }
+  }
+  if((O5 == NULL)||(C1 == NULL))
+  {
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "O5 or C1 is null in calculate Phi Angle");
+    return -9999;
   }
   gmml::log(__LINE__, __FILE__, gmml::INF, "O5");
   gmml::log(__LINE__, __FILE__, gmml::INF, O5->GetId());
@@ -4033,6 +4058,11 @@ double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan
       glycosidicO = this_neighbor;
     }
   }
+  if(glycosidicO == NULL)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "glycosidicO is null in calculate Phi Angle");
+    return -9999;
+  }
   gmml::log(__LINE__, __FILE__, gmml::INF, "glycosidicO");
   gmml::log(__LINE__, __FILE__, gmml::INF, glycosidicO->GetId());
 
@@ -4047,6 +4077,11 @@ double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan
       Cx = this_neighbor;
     }
   }
+  if(Cx == NULL)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "Cx is null in calculate Phi Angle");
+    return -9999;
+  }
   gmml::log(__LINE__, __FILE__, gmml::INF, "Cx");
   gmml::log(__LINE__, __FILE__, gmml::INF, Cx->GetId());
 
@@ -4059,10 +4094,10 @@ double Assembly::CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::st
 {
   //(C1-O-Cx'-C[x-1]') {child_atom_id}-{glycosidic_atom_id}-{parent_atom_id}-{parent_atom_id - 1}
 
-  MolecularModeling::Atom* C1;
-  MolecularModeling::Atom* glycosidicO;
-  MolecularModeling::Atom* Cx;
-  MolecularModeling::Atom* Cx_1;
+  MolecularModeling::Atom* C1 = NULL;
+  MolecularModeling::Atom* glycosidicO = NULL;
+  MolecularModeling::Atom* Cx = NULL;
+  MolecularModeling::Atom* Cx_1 = NULL;
 
   //Get Anomeric Carbon
   for(std::vector<MolecularModeling::Atom*>::iterator it = child_oligo->root_->cycle_atoms_.begin();
@@ -4074,6 +4109,11 @@ double Assembly::CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::st
     {
       C1 = this_cycle_atom;
     }
+  }
+  if(C1 == NULL)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "C1 is null in calculate Psi Angle");
+    return -9999;
   }
 
   //Find glycosidicO
@@ -4087,6 +4127,11 @@ double Assembly::CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::st
       glycosidicO = this_neighbor;
     }
   }
+  if(glycosidicO == NULL)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "glycosidicO is null in calculate Psi Angle");
+    return -9999;
+  }
 
   //Get Cx
   AtomVector glycosidicO_neighbors = glycosidicO->GetNode()->GetNodeNeighbors();
@@ -4099,6 +4144,11 @@ double Assembly::CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::st
       Cx = this_neighbor;
     }
   }
+  if(Cx == NULL)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "Cx is null in calculate Psi Angle");
+    return -9999;
+  }
 
   //Get Cx-1
   AtomVector Cx_neighbors = Cx->GetNode()->GetNodeNeighbors();
@@ -4108,10 +4158,20 @@ double Assembly::CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::st
     std::string this_atom_id = this_neighbor->GetId();
     int Cx_atom_number = parent_atom_id.at(1) - '0';
     int this_atom_number = this_atom_id.at(1) - '0';
-    if ( (Cx_atom_number - 1) == this_atom_number)
+    if ((Cx_atom_number != 1) && ((Cx_atom_number - 1) == this_atom_number))
     {
       Cx_1 = this_neighbor;
     }
+    else if((Cx_atom_number == 1) && ((Cx_atom_number + 1) == this_atom_number))
+    {
+      Cx_1 = this_neighbor;
+    }
+  }
+  if(Cx_1 == NULL)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::INF, Cx->GetId());
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "Cx_1 is null in calculate Psi Angle");
+    return -9999;
   }
 
   return CalculateTorsionAngleByAtoms(C1, glycosidicO, Cx, Cx_1);
@@ -4121,12 +4181,13 @@ double Assembly::CalculateOmegaAngle(Glycan::Oligosaccharide* parent_oligo, std:
 {
   //(O-C6'-C5'-O5') {glycosidic_atom_id}-{parent_atom_id}-{Carbon 5 in parent oligo}-{Ring oxygen in parent_oligo}
 
-  MolecularModeling::Atom* glycosidicO;
-  MolecularModeling::Atom* C6prime;
-  MolecularModeling::Atom* C5prime;
-  MolecularModeling::Atom* O5prime;
+  MolecularModeling::Atom* glycosidicO = NULL;
+  MolecularModeling::Atom* C6prime = NULL;
+  MolecularModeling::Atom* C5prime = NULL;
+  MolecularModeling::Atom* O5prime = NULL;
 
   //Get C5' and O5' first
+  gmml::log(__LINE__, __FILE__,  gmml::INF, "Get C5' and O5' first");
   for(std::vector<MolecularModeling::Atom*>::iterator it = parent_oligo->root_->cycle_atoms_.begin();
       it != parent_oligo->root_->cycle_atoms_.end(); ++it)
   {
@@ -4136,18 +4197,24 @@ double Assembly::CalculateOmegaAngle(Glycan::Oligosaccharide* parent_oligo, std:
     std::string this_element = this_cycle_atom->GetElementSymbol();
     if (this_atom_number == 5)
     {
-      if (this_element == "C")
+      if (this_atom_id.find("C") != std::string::npos)
       {
         C5prime = this_cycle_atom;
       }
-      else if (this_element == "O")
-      {
-        O5prime = this_cycle_atom;
-      }
     }
+    if (this_atom_id.find("O") != std::string::npos)
+    {
+      O5prime = this_cycle_atom;
+    }
+  }
+  if ((C5prime == NULL)||(O5prime == NULL))
+  {
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "O5prime or C5prime is null in calculate Omega Angle");
+    return -9999;
   }
 
   //Get C6'
+  gmml::log(__LINE__, __FILE__,  gmml::INF, "Get C6'");
   AtomVector C5prime_neighbors = C5prime->GetNode()->GetNodeNeighbors();
   for (AtomVector::iterator it = C5prime_neighbors.begin(); it != C5prime_neighbors.end(); ++it)
   {
@@ -4158,8 +4225,13 @@ double Assembly::CalculateOmegaAngle(Glycan::Oligosaccharide* parent_oligo, std:
       C6prime = this_neighbor;
     }
   }
-
+  if(C6prime == NULL)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "C6prime is null in calculate Omega Angle");
+    return -9999;
+  }
   //Get glycosidic oxygen
+  gmml::log(__LINE__, __FILE__,  gmml::INF, "Get glycosidic oxygen");
   AtomVector C6prime_neighbors = C6prime->GetNode()->GetNodeNeighbors();
   for (AtomVector::iterator it = C6prime_neighbors.begin(); it != C6prime_neighbors.end(); ++it)
   {
@@ -4170,6 +4242,11 @@ double Assembly::CalculateOmegaAngle(Glycan::Oligosaccharide* parent_oligo, std:
       glycosidicO = this_neighbor;
     }
   }
-
+  if(glycosidicO == NULL)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "glycosidicO is null in calculate Omega Angle");
+    return -9999;
+  }
+  gmml::log(__LINE__, __FILE__,  gmml::INF, "About to calcuate torsion");
   return CalculateTorsionAngleByAtoms(glycosidicO, C6prime, C5prime, O5prime);
 }

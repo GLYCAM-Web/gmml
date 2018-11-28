@@ -1010,7 +1010,7 @@ namespace MolecularModeling
             * @param oligo_uri The URI for the Oligosaccharide instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32_oligo1
             * @param res_uri The URI for the current monosaccharide to be checked for derivatives
             */
-            void CheckDerivativesAndPopulate(std::stringstream& oligo_sequence_stream, std::string mono_short_name, std::string oligo_uri, std::string res_uri);
+            void CheckDerivativesAndPopulate(std::stringstream& oligo_sequence_stream, std::string mono_short_name, std::string oligo_uri, std::string res_uri, std::string monoSNFG);
 
             /*! \fn
             * A function in order to check if the monosaccharide has derivates
@@ -1040,7 +1040,7 @@ namespace MolecularModeling
             * @param side_or_ring_atoms The list of side atoms and ring atoms of a monosaccharide
             */
             void PopulateMonosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::string oligo_uri, std::string id_prefix,
-                                        Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms);
+                                        Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms, std::string pdb_uri);
             /*! \fn
             * A function in order to populate the RingAtom class of the ontology
             * @param ring_atom_stream The output stream of RingAtom triples to be added to the main output stream

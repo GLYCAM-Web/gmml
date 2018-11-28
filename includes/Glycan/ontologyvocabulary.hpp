@@ -39,6 +39,8 @@ namespace Ontology
     /* Object Properties */
     const std::string hasAtom = "gmmo:hasAtom";
     const std::string hasChild = "gmmo:hasChild";
+    const std::string hasChildMono = "gmmo:hasChildMono";
+    const std::string hasParentMono = "gmmo:hasParentMono";
     const std::string hasChildAtomLinkage = "gmmo:hasChildAtomLinkage";
     const std::string hasParentAtomLinkage = "gmmo:hasParentAtomLinkage";
     const std::string hasGlycosidicLinkage = "gmmo:hasGlycosidicLinkage";
@@ -47,6 +49,8 @@ namespace Ontology
     const std::string hasGlycosidicOmegaAngle = "gmmo:hasGlycosidicOmegaAngle";
     const std::string hasNeighbor = "gmmo:hasNeighbor";
     const std::string hasOligo = "gmmo:hasOligo";
+    const std::string hasMono = "gmmo:hasMono";
+    const std::string hasSNFGName = "gmmo:hasSNFGName";
     const std::string hasTerminal = "gmmo:hasTerminal";
     const std::string hasSequenceResidue = "gmmo:hasSequenceResidue";
     const std::string isConnectedTo = "gmmo:isConnectedTo";
