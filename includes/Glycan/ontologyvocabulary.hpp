@@ -47,6 +47,7 @@ namespace Ontology
     const std::string hasGlycosidicOmegaAngle = "gmmo:hasGlycosidicOmegaAngle";
     const std::string hasNeighbor = "gmmo:hasNeighbor";
     const std::string hasOligo = "gmmo:hasOligo";
+    const std::string hasMono = "gmmo:hasMono";
     const std::string hasTerminal = "gmmo:hasTerminal";
     const std::string hasSequenceResidue = "gmmo:hasSequenceResidue";
     const std::string isConnectedTo = "gmmo:isConnectedTo";
@@ -57,6 +58,7 @@ namespace Ontology
     const std::string hasCore = "gmmo:hasCore";
     const std::string hasSideAtom = "gmmo:hasSideAtom";
     const std::string hasSugarName = "gmmo:hasSugarName";
+    const std::string hasSNFGName = "gmmo:hasSNFGName";
     const std::string hasTitle = "gmmo:hasTitle";
     const std::string hasAuthors = "gmmo:hasAuthors";
     const std::string hasJournal = "gmmo:hasJournal";

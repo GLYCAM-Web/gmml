@@ -23,6 +23,7 @@ namespace Glycan
 	    MolecularModeling::Atom* anomeric_carbon_location = NULL;
             std::string bfmp_ring_conformation_;                                /*!< The ring conformation of the monosaccharide, currently detected by an external program (BFMP) >*/
             float b_factor_;                                                    /*!< The Average B Factor of the monosaccharide >*/
+            std::string SNFG_name_;
             /*! \fn
               * Default constructor
               */

@@ -1040,7 +1040,7 @@ namespace MolecularModeling
             * @param side_or_ring_atoms The list of side atoms and ring atoms of a monosaccharide
             */
             void PopulateMonosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::string oligo_uri, std::string id_prefix,
-                                        Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms);
+                                        Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms, std::string pdb_uri);
             /*! \fn
             * A function in order to populate the RingAtom class of the ontology
             * @param ring_atom_stream The output stream of RingAtom triples to be added to the main output stream

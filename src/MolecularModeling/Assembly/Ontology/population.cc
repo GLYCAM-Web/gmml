@@ -245,7 +245,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
             }
 
             Glycan::Monosaccharide* mono = oligo->root_;
-            PopulateMonosaccharide(mono_stream, oligo_stream, oligo_uri, id_prefix, mono, side_or_ring_atoms);
+            PopulateMonosaccharide(mono_stream, oligo_stream, oligo_uri, id_prefix, mono, side_or_ring_atoms, pdb_uri);
 
             std::vector<Glycan::Oligosaccharide*> child_oligos = oligo->child_oligos_;
             PopulateOligosaccharide(pdb_stream, oligo_stream, oligo_sequence_stream, mono_stream, linkage_stream, pdb_uri, id_prefix, link_id, child_oligos, side_or_ring_atoms, visited_oligos, mono_to_short_name_map, oligo_to_res_uri_map, root_oligo_id);
@@ -543,7 +543,7 @@ int Assembly::ExtractLinkageCarbonIndex(Glycan::Oligosaccharide* oligo, std::str
 }
 
 void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::stringstream& oligo_stream, std::string oligo_uri, std::string id_prefix, Glycan::Monosaccharide* mono,
-                                      std::vector<std::string>& side_or_ring_atoms)
+                                      std::vector<std::string>& side_or_ring_atoms, std::string pdb_uri)
 {
     std::stringstream object;
     std::string mono_resource = "";
@@ -553,9 +553,9 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
 
     mono_resource = CreateURIResource(gmml::OntMonosaccharide, mono->mono_id, id_prefix, "");
     mono_uri = CreateURI(mono_resource);
-
+    
     gmml::AddTriple(oligo_uri, Ontology::hasCore, mono_uri, oligo_stream);
-
+    gmml::AddTriple(pdb_uri, Ontology::hasMono, mono_uri, oligo_stream);
     //    mono_stream << Ontology::ENTITY_COMMENT << mono_resource << std::endl;
     gmml::AddTriple(mono_uri, Ontology::TYPE, Ontology::Monosaccharide, mono_stream);
     gmml::AddLiteral(mono_uri, Ontology::id, mono_resource, mono_stream);
@@ -597,7 +597,7 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
       }
       gmml::AddLiteral(mono_uri, Ontology::bfmp_ring_conformation, bfmp, mono_stream);
     }
-
+    gmml::AddLiteral(mono_uri, Ontology::hasSNFGName, mono->SNFG_name_, mono_stream);
     Glycan::SugarName sugar_name = mono->sugar_name_;
     PopulateSugarName(mono_stream, id_prefix, mono_uri, mono->mono_id, sugar_name);
     mono_stream << ring_atom_stream.str();

@@ -627,7 +627,7 @@ std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName()
     {
       monoSNFGName.erase(0,1);
     }
-    if(monoSNFGName[monoSNFGName.length()-1] == mono->sugar_name_.configuration_[0])
+    if((monoSNFGName[monoSNFGName.length()-1] == mono->sugar_name_.configuration_[0]) && (monoSNFGName[monoSNFGName.length()-2] != 'N'))
     {
       monoSNFGName.erase(monoSNFGName.length()-1,1);
     }
@@ -636,6 +636,7 @@ std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName()
       monoSNFGName.erase(3,1);
     }
     std::cout << "SNFG Name: " << monoSNFGName << std::endl;
+    mono->SNFG_name_ = monoSNFGName;
 
     std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
 
