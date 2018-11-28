@@ -4,7 +4,7 @@
  * GLYCAM06 metadata for residues
  *
  * This file was generated automatically on:
- *     Die Okt 30 16:10:24 CET 2018
+ *     Don Nov  1 11:11:54 CET 2018
  *
  * by a script named:
  *     /bin/bash
@@ -66,7 +66,7 @@ Glycam06NamesToTypesLookupContainer::Glycam06NamesToTypesLookupContainer()
         { "NNLN"    ,  "amino-acid"                             } , 
         { "NNLN"    ,  "N-linking"                              } , 
         { "NNLN"    ,  "N-terminal"                             } , 
-//    Names:    OLP  OLS  OLT    
+//    Names:    OLP  OLS  OLT  OLY    
 //    Types:    amino-acid O-linking mid-chain  
         { "OLP"     ,  "amino-acid"                             } , 
         { "OLP"     ,  "O-linking"                              } , 
@@ -77,7 +77,10 @@ Glycam06NamesToTypesLookupContainer::Glycam06NamesToTypesLookupContainer()
         { "OLT"     ,  "amino-acid"                             } , 
         { "OLT"     ,  "O-linking"                              } , 
         { "OLT"     ,  "mid-chain"                              } , 
-//    Names:    COLP  COLS COLT  
+        { "OLY"     ,  "amino-acid"                             } , 
+        { "OLY"     ,  "O-linking"                              } , 
+        { "OLY"     ,  "mid-chain"                              } , 
+//    Names:    COLP COLS COLT COLY  
 //    Types:    amino-acid O-linking C-terminal  
         { "COLP"    ,  "amino-acid"                             } , 
         { "COLP"    ,  "O-linking"                              } , 
@@ -88,7 +91,10 @@ Glycam06NamesToTypesLookupContainer::Glycam06NamesToTypesLookupContainer()
         { "COLT"    ,  "amino-acid"                             } , 
         { "COLT"    ,  "O-linking"                              } , 
         { "COLT"    ,  "C-terminal"                             } , 
-//    Names:    NOLP  NOLS  NOLT  
+        { "COLY"    ,  "amino-acid"                             } , 
+        { "COLY"    ,  "O-linking"                              } , 
+        { "COLY"    ,  "C-terminal"                             } , 
+//    Names:    NOLP  NOLS  NOLT  NOLY  
 //    Types:    amino-acid O-linking N-terminal  
         { "NOLP"    ,  "amino-acid"                             } , 
         { "NOLP"    ,  "O-linking"                              } , 
@@ -99,6 +105,9 @@ Glycam06NamesToTypesLookupContainer::Glycam06NamesToTypesLookupContainer()
         { "NOLT"    ,  "amino-acid"                             } , 
         { "NOLT"    ,  "O-linking"                              } , 
         { "NOLT"    ,  "N-terminal"                             } , 
+        { "NOLY"    ,  "amino-acid"                             } , 
+        { "NOLY"    ,  "O-linking"                              } , 
+        { "NOLY"    ,  "N-terminal"                             } , 
 //    Names:    OME ROH TBT  
 //    Types:    aglycon  
         { "OME"     ,  "aglycon"                                } , 

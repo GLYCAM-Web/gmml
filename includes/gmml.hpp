@@ -177,5 +177,7 @@ typedef std::vector<MolecularModeling::Residue*> ResidueVector;
 typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
 typedef GeometryTopology::Coordinate Vector;
 typedef std::vector<std::string> StringVector;
+typedef std::vector<MolecularModeling::ResidueNode*> ResidueNodeVector;
+
 
 #endif // GMML_HPP
