@@ -82,12 +82,12 @@ double Cell::GetCellLength()
 
 double Cell::GetCellWidth()
 {
-    max_corner_->GetY() - min_corner_->GetY();
+    return max_corner_->GetY() - min_corner_->GetY();
 }
 
 double Cell::GetCellHeight()
 {
-    max_corner_->GetZ() - min_corner_->GetZ();
+    return max_corner_->GetZ() - min_corner_->GetZ();
 }
 
 GeometryTopology::Grid* Cell::GetGrid()
