@@ -636,7 +636,7 @@ std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName()
     {
       monoSNFGName.erase(0,1);
     }
-    if((monoSNFGName[monoSNFGName.length()-1] == mono->sugar_name_.configuration_[0]) && (monoSNFGName[monoSNFGName.length()-2] != 'N'))
+    if(((monoSNFGName[monoSNFGName.length()-1] == mono->sugar_name_.configuration_[0]) && (monoSNFGName[monoSNFGName.length()-2] != 'N')) || (monoSNFGName[monoSNFGName.length()-1] == 'x'))
     {
       monoSNFGName.erase(monoSNFGName.length()-1,1);
     }
@@ -685,14 +685,14 @@ std::string original_residue = mono->cycle_atoms_.at(0)->GetResidue()->GetName()
     }
     gmml::log(__LINE__, __FILE__,  gmml::INF, "About to print Oligos");
     oligo->Print( std::cout );
-    std::cout << "Reside Linkages: " << oligo->oligosaccharide_residue_linkages_ << "\n";
-    std::cout << "Linkages: " << oligo->oligosaccharide_linkages_ << "\n";
-    std::cout << "Child linkages:\n";
-    for(int i = 0; i < oligo->child_oligos_linkages_.size(); i++)
-    {
-      std::cout << oligo->child_oligos_linkages_[i] << "  ";
-    }
-    std::cout << "\n";
+    // std::cout << "Reside Linkages: " << oligo->oligosaccharide_residue_linkages_ << "\n";
+    // std::cout << "Linkages: " << oligo->oligosaccharide_linkages_ << "\n";
+    // std::cout << "Child linkages:\n";
+    // for(int i = 0; i < oligo->child_oligos_linkages_.size(); i++)
+    // {
+    //   std::cout << oligo->child_oligos_linkages_[i] << "  ";
+    // }
+    // std::cout << "\n";
   }
   // gmml::log(__LINE__, __FILE__,  gmml::INF, "Done printing oligos ..." );
 
