@@ -962,183 +962,147 @@ void PdbFile::SetPath(std::string pdb_path)
 }
 void PdbFile::SetHeader(PdbFileSpace::PdbHeaderCard *header)
 {
-    header_ = new PdbFileSpace::PdbHeaderCard();
     header_ = header;
 
 }
 void PdbFile::SetObsolete(PdbFileSpace::PdbObsoleteSection *obsolete)
 {
-    obsolete_ = new PdbFileSpace::PdbObsoleteSection();
     obsolete_ = obsolete;
 }
 void PdbFile::SetTitle(PdbFileSpace::PdbTitleSection *title)
 {
-    title_ = new PdbFileSpace::PdbTitleSection();
     title_ = title;
 }
 void PdbFile::SetSplit(PdbFileSpace::PdbSplitSection *split)
 {
-    split_ = new PdbFileSpace::PdbSplitSection();
     split_ = split;
 }
 void PdbFile::SetCaveat(PdbFileSpace::PdbCaveatSection *caveat)
 {
-    caveat_ = new PdbFileSpace::PdbCaveatSection();
     caveat_ = caveat;
 }
 void PdbFile::SetCompound(PdbFileSpace::PdbCompoundSection *compound)
 {
-    compound_ = new PdbFileSpace::PdbCompoundSection();
     compound_ = compound;
 }
 void PdbFile::SetSourceCards(PdbFileSpace::PdbSourceSection *source)
 {
-    source_ = new PdbFileSpace::PdbSourceSection();
     source_ = source;
 }
 void PdbFile::SetKeywords(PdbFileSpace::PdbKeywordsSection *keywords)
 {
-    keywords_ = new PdbFileSpace::PdbKeywordsSection();
     keywords_ = keywords;
 }
 void PdbFile::SetExperimentalData(PdbFileSpace::PdbExperimentalDataSection *experimental_data)
 {
-    experimental_data_ = new PdbFileSpace::PdbExperimentalDataSection();
     experimental_data_ = experimental_data;
 }
 void PdbFile::SetNumberOfModels(PdbFileSpace::PdbNumModelCard *number_of_models)
 {
-    number_of_models_ = new PdbFileSpace::PdbNumModelCard();
     number_of_models_ = number_of_models;
 }
 void PdbFile::SetModelType(PdbFileSpace::PdbModelTypeSection *model_type)
 {
-    model_type_ = new PdbFileSpace::PdbModelTypeSection();
     model_type_ = model_type;
 }
 void PdbFile::SetAuthor(PdbFileSpace::PdbAuthorSection *author)
 {
-    author_ = new PdbFileSpace::PdbAuthorSection();
     author_ = author;
 }
 void PdbFile::SetRevisionDataCards(PdbFileSpace::PdbRevisionDataSection *revision_data)
 {
-    revision_data_ = new PdbFileSpace::PdbRevisionDataSection();
     revision_data_ = revision_data;
 }
 void PdbFile::SetSupersededEntriesCards(PdbFileSpace::PdbSupersededEntriesSection *superseded_entries)
 {
-    superseded_entries_ = new PdbFileSpace::PdbSupersededEntriesSection();
     superseded_entries_ = superseded_entries;
 }
 void PdbFile::SetJournal(PdbFileSpace::PdbJournalSection *journal)
 {
-    journal_ = new PdbFileSpace::PdbJournalSection();
     journal_ = journal;
 }
 void PdbFile::SetRemarks(PdbFileSpace::PdbRemarkSection *remark_cards)
 {
-    remark_cards_ = new PdbFileSpace::PdbRemarkSection();
     remark_cards_ = remark_cards;
 }
 void PdbFile::SetDatabaseReferences(PdbFileSpace::PdbDatabaseReferenceSection *database_reference)
 {
-    database_reference_ = new PdbFileSpace::PdbDatabaseReferenceSection();
     database_reference_ = database_reference;
 }
 void PdbFile::SetSequenceAdvanced(PdbFileSpace::PdbSequenceAdvancedSection *sequence_advanced)
 {
-    sequence_advanced_ = new PdbFileSpace::PdbSequenceAdvancedSection();
     sequence_advanced_ = sequence_advanced;
 }
 void PdbFile::SetResiduesSequence(PdbFileSpace::PdbResidueSequenceSection *residues_sequence)
 {
-    residues_sequence_ = new PdbFileSpace::PdbResidueSequenceSection();
     residues_sequence_ = residues_sequence;
 }
 void PdbFile::SetResidueModification(PdbFileSpace::PdbResidueModificationSection *residue_modification_cards)
 {
-    residue_modification_cards_ = new PdbFileSpace::PdbResidueModificationSection();
     residue_modification_cards_ = residue_modification_cards;
 }
 void PdbFile::SetHeterogens(PdbFileSpace::PdbHeterogenSection *heterogen_cards)
 {
-    heterogen_cards_ = new PdbFileSpace::PdbHeterogenSection();
     heterogen_cards_ = heterogen_cards;
 }
 void PdbFile::SetHeterogensName(PdbFileSpace::PdbHeterogenNameSection *heterogens_name)
 {
-    heterogen_name_cards_ = new PdbFileSpace::PdbHeterogenNameSection();
     heterogen_name_cards_ = heterogens_name;
 }
 void PdbFile::SetHeterogenSynonyms(PdbFileSpace::PdbHeterogenSynonymSection *heterogen_synonym_cards)
 {
-    heterogen_synonym_cards_ = new PdbFileSpace::PdbHeterogenSynonymSection();
     heterogen_synonym_cards_ = heterogen_synonym_cards;
 }
 void PdbFile::SetFormulas(PdbFileSpace::PdbFormulaSection *formulas)
 {
-    formulas_ = new PdbFileSpace::PdbFormulaSection();
     formulas_ = formulas;
 }
 void PdbFile::SetHelixes(PdbFileSpace::PdbHelixSection *helixes)
 {
-    helix_cards_ = new PdbFileSpace::PdbHelixSection();
     helix_cards_ = helixes;
 }
 void PdbFile::SetSheets(PdbFileSpace::PdbSheetSection *sheet_cards)
 {
-    sheet_cards_ = new PdbFileSpace::PdbSheetSection();
     sheet_cards_ = sheet_cards;
 }
 void PdbFile::SetDisulfideBonds(PdbFileSpace::PdbDisulfideBondSection *disulfide_bonds)
 {
-    disulfide_bonds_ = new PdbFileSpace::PdbDisulfideBondSection();\
     disulfide_bonds_ = disulfide_bonds;
 }
 void PdbFile::SetLinks(PdbFileSpace::PdbLinkSection *links)
 {
-    link_cards_ = new PdbFileSpace::PdbLinkSection();
     link_cards_ = links;
 }
 void PdbFile::SetCISPeptide(PdbFileSpace::PdbCISPeptideSection *cis_peptide)
 {
-    cis_peptide_ = new PdbFileSpace::PdbCISPeptideSection();
     cis_peptide_ = cis_peptide;
 }
 void PdbFile::SetSites(PdbFileSpace::PdbSiteSection *site_cards)
 {
-    site_cards_ = new PdbFileSpace::PdbSiteSection();
     site_cards_ = site_cards;
 }
 void PdbFile::SetCrystallography(PdbFileSpace::PdbCrystallographicCard *crystallography)
 {
-    crystallography_ = new PdbFileSpace::PdbCrystallographicCard();
     crystallography_ = crystallography;
 }
 void PdbFile::SetOrigins(PdbFileSpace::PdbOriginXnSection *origins)
 {
-    origins_ = new PdbFileSpace::PdbOriginXnSection();
     origins_ = origins;
 }
 void PdbFile::SetScales(PdbFileSpace::PdbScaleNSection *scales)
 {
-    scales_ = new PdbFileSpace::PdbScaleNSection();
     scales_ = scales;
 }
 void PdbFile::SetMatrices(PdbFileSpace::PdbMatrixNSection *matrices)
 {
-    matrices_ = new PdbFileSpace::PdbMatrixNSection();
     matrices_ = matrices;
 }
 void PdbFile::SetModels(PdbFileSpace::PdbModelSection *models)
 {
-    models_ = new PdbFileSpace::PdbModelSection();
     models_ = models;
 }
 void PdbFile::SetConnectivities(PdbFileSpace::PdbConnectSection *connectivities)
 {
-    connectivities_ = new PdbFileSpace::PdbConnectSection();
     connectivities_ = connectivities;
 }
 void PdbFile::SetSerialNumberMapping(PdbSerialNumberMapping serial_number_mapping)
@@ -3239,7 +3203,6 @@ void PdbFile::UpdateConnectCard()
 }
 void PdbFile::SetMasterCard(PdbFileSpace::PdbMasterCard *master)
 {
-    master_ = new PdbFileSpace::PdbMasterCard();
     master_ = master;
 }
 //////////////////////////////////////////////////////////
@@ -7848,37 +7811,50 @@ void PdbFile::PrintOntology(std::stringstream& ont_stream)
   std::stringstream uri;
   uri << Ontology::ONT_PREFIX << header_->GetIdentifierCode();
   std::string uriStr = uri.str();
-
+  std::transform(uriStr.begin(), uriStr.end(), uriStr.begin(), ::tolower);
+  
   gmml::AddLiteral( uriStr, Ontology::TYPE, Ontology::PDB, ont_stream );
   
   //Return PDB_ID
-  gmml::AddLiteral( uriStr, Ontology::id, this->header_->GetIdentifierCode(), ont_stream );
+  if(header_ != NULL)
+    gmml::AddLiteral( uriStr, Ontology::id, this->header_->GetIdentifierCode(), ont_stream );
   
   //Return Protein Acession Number
   //TODO add check to make sure that it is the Uniprot database reference
-  //gmml::AddLiteral( uriStr, Ontology::ProteinID, this->database_reference_->GetDatabaseIDCode(), ont_stream );
+  if(database_reference_ != NULL)
+    gmml::AddLiteral( uriStr, Ontology::hasProteinID, this->database_reference_->GetUniprotIDs(), ont_stream );
 
   //Return Title
-  gmml::AddLiteral( uriStr, Ontology::hasTitle, this->title_->GetTitle(), ont_stream );
+  if(title_ != NULL)
+    gmml::AddLiteral( uriStr, Ontology::hasTitle, this->title_->GetTitle(), ont_stream );
 
   //Return Authors
-  gmml::AddLiteral( uriStr, Ontology::hasAuthors, this->author_->GetAuthor(), ont_stream );
+  if(author_ != NULL)
+    gmml::AddLiteral( uriStr, Ontology::hasAuthors, this->author_->GetAuthor(), ont_stream );
 
-  //Return JOURNAL
-  gmml::AddLiteral( uriStr, Ontology::hasJournal, this->journal_->GetReference(), ont_stream );
 
-  //Return DOI
-  gmml::AddLiteral( uriStr, Ontology::hasDOI, this->journal_->GetDOI(), ont_stream );
+  if(journal_ != NULL)
+  {
+      //Return JOURNAL
+      gmml::AddLiteral( uriStr, Ontology::hasJournal, this->journal_->GetReference(), ont_stream );
 
-  //Return PMID
-  gmml::AddLiteral( uriStr, Ontology::hasPMID, this->journal_->GetPMID(), ont_stream );
+      //Return DOI
+      gmml::AddLiteral( uriStr, Ontology::hasDOI, this->journal_->GetDOI(), ont_stream );
 
-  //Return Resolution
-  gmml::AddDecimal( uriStr, Ontology::hasResolution, this->remark_cards_->GetResolution(), ont_stream );
+      //Return PMID
+      gmml::AddLiteral( uriStr, Ontology::hasPMID, this->journal_->GetPMID(), ont_stream );
+  }
   
-  //Return B Factor
-  gmml::AddDecimal( uriStr, Ontology::hasBFactor, this->remark_cards_->GetBFactor(), ont_stream );
 
+  
+  if(remark_cards_ != NULL)
+  {
+    //Return Resolution
+    gmml::AddDecimal( uriStr, Ontology::hasResolution, this->remark_cards_->GetResolution(), ont_stream );
+    
+    //Return B Factor
+    gmml::AddDecimal( uriStr, Ontology::hasBFactor, this->remark_cards_->GetBFactor(), ont_stream );
+  }
 }
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //

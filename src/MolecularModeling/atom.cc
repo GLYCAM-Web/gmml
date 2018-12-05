@@ -252,7 +252,7 @@ void Atom::FindConnectedAtoms(AtomVector& visitedAtoms)
 		}
 		if(!alreadyVisited)
 		{
-			(*neighbor)->FindConnectedAtoms(visitedAtoms); // recursive function call
+            (*neighbor)->FindConnectedAtoms(visitedAtoms); // recursive function call
 		}
 	}
 } // end FindConnectedAtoms

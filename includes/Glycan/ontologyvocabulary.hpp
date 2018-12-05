@@ -39,11 +39,17 @@ namespace Ontology
     /* Object Properties */
     const std::string hasAtom = "gmmo:hasAtom";
     const std::string hasChild = "gmmo:hasChild";
+    const std::string hasChildMono = "gmmo:hasChildMono";
+    const std::string hasParentMono = "gmmo:hasParentMono";
     const std::string hasChildAtomLinkage = "gmmo:hasChildAtomLinkage";
     const std::string hasParentAtomLinkage = "gmmo:hasParentAtomLinkage";
     const std::string hasGlycosidicLinkage = "gmmo:hasGlycosidicLinkage";
+    const std::string hasGlycosidicPhiAngle = "gmmo:hasGlycosidicPhiAngle";
+    const std::string hasGlycosidicPsiAngle = "gmmo:hasGlycosidicPsiAngle";
+    const std::string hasGlycosidicOmegaAngle = "gmmo:hasGlycosidicOmegaAngle";
     const std::string hasNeighbor = "gmmo:hasNeighbor";
     const std::string hasOligo = "gmmo:hasOligo";
+    const std::string hasMono = "gmmo:hasMono";
     const std::string hasTerminal = "gmmo:hasTerminal";
     const std::string hasSequenceResidue = "gmmo:hasSequenceResidue";
     const std::string isConnectedTo = "gmmo:isConnectedTo";
@@ -54,6 +60,7 @@ namespace Ontology
     const std::string hasCore = "gmmo:hasCore";
     const std::string hasSideAtom = "gmmo:hasSideAtom";
     const std::string hasSugarName = "gmmo:hasSugarName";
+    const std::string hasSNFGName = "gmmo:hasSNFGName";
     const std::string hasTitle = "gmmo:hasTitle";
     const std::string hasAuthors = "gmmo:hasAuthors";
     const std::string hasJournal = "gmmo:hasJournal";
@@ -61,6 +68,7 @@ namespace Ontology
     const std::string hasPMID = "gmmo:hasPMID";
     const std::string hasResolution = "gmmo:hasResolution";
     const std::string hasBFactor = "gmmo:hasBFactor";
+    const std::string hasProteinID = "gmmo:hasProteinID";
 
     /* Datatype Properties */
     const std::string input_file_path = "gmmo:filePath";

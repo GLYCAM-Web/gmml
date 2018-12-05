@@ -1776,6 +1776,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
             PdbFileSpace::PdbFile::PdbAtomCardVector* atoms = residue_atoms_map[residue_key];
             Residue* residue = new Residue();
             residue->SetAssembly(this);
+            
 
             for(PdbFileSpace::PdbFile::PdbAtomCardVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
             {
@@ -1793,6 +1794,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
 
                 Atom* new_atom = new Atom();
                 residue->SetName(residue_name);
+                
                 std::string atom_name = atom->GetAtomName();
                 new_atom->SetName(atom_name);
                 float atom_b_factor = atom->GetAtomTempretureFactor();
@@ -1960,6 +1962,29 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                 residue->AddAtom(new_atom);
             }
             this->AddResidue(residue);
+            if( (residue->GetName() == "ALA") ||
+                (residue->GetName() == "ARG") ||
+                (residue->GetName() == "ASN") ||
+                (residue->GetName() == "ASP") ||
+                (residue->GetName() == "CYS") ||
+                (residue->GetName() == "GLU") ||
+                (residue->GetName() == "GLN") ||
+                (residue->GetName() == "GLY") ||
+                (residue->GetName() == "HIS") ||
+                (residue->GetName() == "ILE") ||
+                (residue->GetName() == "LEU") ||
+                (residue->GetName() == "LYS") ||
+                (residue->GetName() == "MET") ||
+                (residue->GetName() == "PHE") ||
+                (residue->GetName() == "PRO") ||
+                (residue->GetName() == "SER") ||
+                (residue->GetName() == "THR") ||
+                (residue->GetName() == "TRP") ||
+                (residue->GetName() == "TYR") ||
+                (residue->GetName() == "VAL") )
+            {
+              residue->SetChemicalType("Amino Acid");
+            }
         }
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)

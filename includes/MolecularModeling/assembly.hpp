@@ -1010,7 +1010,7 @@ namespace MolecularModeling
             * @param oligo_uri The URI for the Oligosaccharide instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32_oligo1
             * @param res_uri The URI for the current monosaccharide to be checked for derivatives
             */
-            void CheckDerivativesAndPopulate(std::stringstream& oligo_sequence_stream, std::string mono_short_name, std::string oligo_uri, std::string res_uri);
+            void CheckDerivativesAndPopulate(std::stringstream& oligo_sequence_stream, std::string mono_short_name, std::string oligo_uri, std::string res_uri, std::string monoSNFG);
 
             /*! \fn
             * A function in order to check if the monosaccharide has derivates
@@ -1040,7 +1040,7 @@ namespace MolecularModeling
             * @param side_or_ring_atoms The list of side atoms and ring atoms of a monosaccharide
             */
             void PopulateMonosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::string oligo_uri, std::string id_prefix,
-                                        Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms);
+                                        Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms, std::string pdb_uri);
             /*! \fn
             * A function in order to populate the RingAtom class of the ontology
             * @param ring_atom_stream The output stream of RingAtom triples to be added to the main output stream
@@ -1394,6 +1394,11 @@ namespace MolecularModeling
             * @param monos The monosaccharide vector that makes up the oligosaccharide
             */
             void CalculateOligosaccharideBFactor(Glycan::Oligosaccharide* oligo, std::vector<Glycan::Monosaccharide*> monos);
+            double CalculateOmegaAngle(Glycan::Oligosaccharide* parent_oligo, std::string parent_atom_id, std::string glycosidic_atom_id);
+            double CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
+            double CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
+            bool guessIfC_CDoubleBond(MolecularModeling::Atom* carbon1, MolecularModeling::Atom* carbon2);
+
 
             /*! \fn
               * A function in order to extract and print out all saccharides ring atoms information
@@ -1455,6 +1460,11 @@ namespace MolecularModeling
               * @param cycle_stream The cycle path that has been back traversed so far
               */
             void ReturnCycleAtoms(std::string src_id, Atom* current_atom, AtomIdAtomMap& atom_parent_map, AtomVector& cycle, std::stringstream& cycle_stream);
+            /*! \fn
+              * A function in order to discard rings/cycles that have double bonds
+              * @param cycles A map between the string version of atoms of cycles and the list of cycle atom objects
+              */
+            void FilterCyclesWithDoubleBonds(CycleMap &cycles);
             /*! \fn
               * A function in order to discard rings/cycles that are only made from carbons atoms
               * @param cycles A map between the string version of atoms of cycles and the list of cycle atom objects

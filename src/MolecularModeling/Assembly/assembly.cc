@@ -72,6 +72,8 @@
 #include <errno.h>
 #include <string.h>
 
+int local_debug = 0;
+
 using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
@@ -432,10 +434,21 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAt
 {
     AtomVector all_atoms_of_assembly = AtomVector();
     AssemblyVector assemblies = this->GetAssemblies();
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Assemblies size: ");
+      gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(assemblies.size()));
+    }
+    
     for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
     {
         Assembly* assembly = (*it);
         AtomVector atoms_of_assembly = assembly->GetAllAtomsOfAssembly();
+        if ( local_debug > 0 )
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, "Atomvector size: ");
+          gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(atoms_of_assembly.size()));
+        }
         for(AtomVector::iterator it1 = atoms_of_assembly.begin(); it1 != atoms_of_assembly.end(); it1++)
         {
             Atom* atom = (*it1);
@@ -443,17 +456,24 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAt
         }
     }
     ResidueVector residues = this->GetResidues();
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Residue vector size: ");
+      gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(residues.size()));
+    }
     for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
     {
         Residue* residue = (*it);
-        if(residue->GetName().compare("HOH") != 0)
+        if((residue->GetName().compare("HOH") != 0) && (residue->CheckIfProtein() != true))
         {
             AtomVector atoms = residue->GetAtoms();
             for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
             {
                 Atom* atom = (*it1);
-                if(atom->GetDescription().find("Het;") != std::string::npos)
-                    all_atoms_of_assembly.push_back(atom);
+                // if(atom->GetDescription().find("Het;") != std::string::npos)
+                // There is a bug in this code somewhere, so I commented it out
+                // Won't find monosaccharides in monosaccharide only pdbs.
+                all_atoms_of_assembly.push_back(atom);
             }
         }
     }
