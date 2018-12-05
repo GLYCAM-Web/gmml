@@ -4,14 +4,10 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include "../../../includes/MolecularModeling/atom.hpp"
-#include "../../../includes/MolecularModeling/residue.hpp"
-#include "../../../includes/MolecularModeling/molecule.hpp"
 
 namespace GraphDS
-{
-    class Edge;
-    class Node
+{   template<class N> class Edge;
+    template<class N> class Node
     {
         public:
             //////////////////////////////////////////////////////////
@@ -20,12 +16,12 @@ namespace GraphDS
             /*! \typedef
              * List of edges connecting to node
              */
-            typedef std::vector<Edge*> EdgeVector;
+            typedef typename std::vector<Edge<N>*> EdgeVector;
 
             /*! \typedef
              * List of tags assigned to a node
              */
-            typedef std::vector<std::string> TagsVector;
+            typedef typename std::vector<std::string> TagsVector;
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
@@ -34,16 +30,13 @@ namespace GraphDS
               */
             Node();
 
+            //////////////////////////////////////////////////////////
+            //                       DECONSTRUCTOR                    //
+            //////////////////////////////////////////////////////////
             /*! \fn
-              * Parameterized constructor
+              * Default deconstructor
               */
-            Node(Node* atom);
-            Node(MolecularModeling::Atom& atom);
-            Node(MolecularModeling::Residue* residue);
-            Node(MolecularModeling::Residue& residue);
-            Node(MolecularModeling::Molecule* molecule);
-            Node(MolecularModeling::Molecule& molecule);
-
+            ~Node();
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -52,19 +45,7 @@ namespace GraphDS
               * An accessor function in order to access a node.
               * @return node_atom_ attribute of the current object of this node class
               */
-            MolecularModeling::Atom* GetAtomNode();
-
-            /*! \fn
-              * An accessor function in order to access a node.
-              * @return node_residue_ attribute of the current object of this node class
-              */
-            MolecularModeling::Residue* GetResidueNode();
-
-            /*! \fn
-              * An accessor function in order to access a node.
-              * @return node_molecule_ attribute of the current object of this node class
-              */
-            MolecularModeling::Molecule* GetMoleculeNode();
+            N* GetNode();
 
             /*! \fn
               * An accessor function in order to access to the graph node id
@@ -95,25 +76,11 @@ namespace GraphDS
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
             /*! \fn
-              * A mutator function in order to set the atom to the current node object
-              * Set the node_atom_ attribute of the current node of type atom
-              * @param node_atom The atom attribute of the current object
+              * A mutator function in order to set the node of any type to the current node object
+              * Set the node_ attribute of the current node
+              * @param node The node type attribute of the current object
               */
-            void SetAtomNode(MolecularModeling::Atom* node_atom);
-
-            /*! \fn
-              * A mutator function in order to set the residue to the current node object
-              * Set the node_residue_ attribute of the current node of type residue
-              * @param node_residue The residue attribute of the current object
-              */
-            void SetResidueNode(MolecularModeling::Residue* node_residue);
-
-            /*! \fn
-              * A mutator function in order to set the molecule to the current node object
-              * Set the node_molecule_ attribute of the current node of type molecule
-              * @param node_molecule The molecule attribute of the current object
-              */
-            void SetMoleculeNode(MolecularModeling::Molecule* node_molecule);
+            void SetNode(N* node);
 
             /*! \fn
               * A mutator function in order to set the id of the current node object
@@ -149,7 +116,7 @@ namespace GraphDS
               * A mutator function to add an edge incoming/outgoing to the current node object
               * @param edge The edge object of class Edge
               */
-            void AddEdge(Edge* edge);
+            void AddEdge(Edge<N>* edge);
 
             /*! \fn
               * A mutator function in order to add a tag to the current node object
@@ -170,15 +137,14 @@ namespace GraphDS
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-           MolecularModeling::Atom* node_atom_;                        /*!< Pointer to a node of type Atom >*/
-           MolecularModeling::Residue* node_residue_;                  /*!< Pointer to a node of type Residue >*/
-           MolecularModeling::Molecule* node_molecule_;                /*!< Pointer to a node of type Molecule >*/
-           std::string node_id_;                    /*!< An identifier for a graph node which a unqiue index for each atom in an assembly >*/
+
+           N* node_;                                 /*!< A template node of type atom/residue/molecule etc. >*/
+           std::string node_id_;                    /*!< An identifier for a graph node which a unqiue index >*/
            bool is_visited_;                        /*!< Status of the current node visited/unvisited >*/
            EdgeVector edgeList_;                    /*!< List of nodes adjacent to the current node >*/
            TagsVector tags_;                        /*!< List of tags assigned to the node >*/
           };
 }
 
-
+#include "../../../src/MolecularModeling/Graph/node.cc"
 #endif // NODE_HPP

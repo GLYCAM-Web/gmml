@@ -1,45 +1,50 @@
-#include "../../includes/MolecularModeling/Graph/edge.hpp"
-#include "../../includes/MolecularModeling/Graph/node.hpp"
-#include "../../includes/MolecularModeling/Graph/graph.hpp"
+#include "../../../includes/MolecularModeling/Graph/edge.hpp"
+#include "../../../includes/MolecularModeling/Graph/node.hpp"
+#include "../../../includes/MolecularModeling/Graph/graph.hpp"
 
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-GraphDS::Graph::Graph(){}
+template < class N >
+GraphDS::Graph<N>::Graph(){}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-GraphDS::Graph::NodeVector GraphDS::Graph::GetGraphNodeList()
+template < class N >
+typename GraphDS::Graph<N>::NodeVector GraphDS::Graph<N>::GetGraphNodeList()
 {\
-    return this->graphNodeList_;
+    return graphNodeList_;
 }
 
-GraphDS::Graph::EdgeVector GraphDS::Graph::GetGraphEdgeList()
+template < class N >
+typename GraphDS::Graph<N>::EdgeVector GraphDS::Graph<N>::GetGraphEdgeList()
 {\
-    return this->graphEdgeList_;
+    return graphEdgeList_;
 }
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
 
-void GraphDS::Graph::SetGraphNodeList(NodeVector nodeList)
+template < class N >
+void GraphDS::Graph<N>::SetGraphNodeList(NodeVector nodeList)
 {
     graphNodeList_.clear();
-    for(GraphDS::Graph::NodeVector::iterator it = nodeList.begin(); it != nodeList.end(); it++)
+    for(typename GraphDS::Graph<N>::NodeVector::iterator it = nodeList.begin(); it != nodeList.end(); it++)
     {
         graphNodeList_.push_back(*it);
     }
 }
 
-void GraphDS::Graph::SetGraphEdgeList(EdgeVector edgeList)
+template < class N >
+void GraphDS::Graph<N>::SetGraphEdgeList(EdgeVector edgeList)
 {
     graphEdgeList_.clear();
-    for(GraphDS::Graph::EdgeVector::iterator it = edgeList.begin(); it != edgeList.end(); it++)
+    for(typename GraphDS::Graph<N>::EdgeVector::iterator it = edgeList.begin(); it != edgeList.end(); it++)
     {
         graphEdgeList_.push_back(*it);
     }
@@ -50,14 +55,16 @@ void GraphDS::Graph::SetGraphEdgeList(EdgeVector edgeList)
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 
-void GraphDS::Graph::AddNewNode(Node *newNode)
+template < class N >
+void GraphDS::Graph<N>::AddNewNode(Node<N> *newNode)
 {
     graphNodeList_.push_back(newNode);
 }
 
-void GraphDS::Graph::AddEdge(Node* firstNode, Node* secondNode)
+template < class N >
+void GraphDS::Graph<N>::AddEdge(Node<N>* firstNode, Node<N>* secondNode)
 {
-    Edge *newEdge = new Edge(firstNode, secondNode);
+    Edge<N>* newEdge = new Edge<N>(firstNode, secondNode);
     graphEdgeList_.push_back(newEdge);
 }
 //////////////////////////////////////////////////////////

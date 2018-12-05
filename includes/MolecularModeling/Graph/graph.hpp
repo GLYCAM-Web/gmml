@@ -11,7 +11,7 @@
 
 namespace GraphDS
 {
-    class Graph
+ template < class N > class Graph
     {
         public:
             //////////////////////////////////////////////////////////
@@ -20,8 +20,8 @@ namespace GraphDS
             /*! \typedef
              * List of nodes in a Graph
              */
-            typedef std::vector<GraphDS::Node*> NodeVector;
-            typedef std::vector<GraphDS::Edge*> EdgeVector;
+            typedef typename std::vector<GraphDS::Node<N>*> NodeVector;
+            typedef typename std::vector<GraphDS::Edge<N>*> EdgeVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -71,27 +71,27 @@ namespace GraphDS
               * Set the node_ attributes of the current graph object
               * @param node_ The node attribute of the current graph object
               */
-           void AddNewNode(GraphDS::Node* newNode);
+           void AddNewNode(GraphDS::Node<N>* newNode);
 
            /*! \fn
              * A function to remove an existing new node from the Graph
              * Remove the node_ attributes of the current graph object
              * @param node_ The node attribute of the current graph object
              */
-          void RemoveNode(GraphDS::Node* delNode);
+          void RemoveNode(GraphDS::Node<N>* delNode);
 
            /*! \fn
              * A function to add an edge between two nodes of the current graph object of this class
              * @param node_ The node attribute of the current graph object
              */
-          void AddEdge(GraphDS::Node* firstNode, GraphDS::Node* secondNode);
+          void AddEdge(GraphDS::Node<N>* firstNode, GraphDS::Node<N>* secondNode);
 
            /*! \fn
              * A function to find a node in the current graph object using the node id
              * @return node_ attribute of the current graph object of this class
              */
 
-           GraphDS::Node* FindNodeById(std::string node_id);
+           GraphDS::Node<N>* FindNodeById(std::string node_id);
 
             /////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -111,5 +111,5 @@ namespace GraphDS
             EdgeVector graphEdgeList_;         /*!< List of all edges in the graph >*/
     };
 }
-
+#include "../../../src/MolecularModeling/Graph/graph.cc"
 #endif // GRAPH_HPP
