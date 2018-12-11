@@ -7809,7 +7809,9 @@ void PdbFile::PrintOntology(std::stringstream& ont_stream)
 {
   //Match formatting of Ontology
   std::stringstream uri;
-  uri << Ontology::ONT_PREFIX << header_->GetIdentifierCode();
+  uri << Ontology::ONT_PREFIX <<;
+  if(header_ != NULL) 
+    uri << header_->GetIdentifierCode();
   std::string uriStr = uri.str();
   std::transform(uriStr.begin(), uriStr.end(), uriStr.begin(), ::tolower);
   
