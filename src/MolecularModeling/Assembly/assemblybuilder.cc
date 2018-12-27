@@ -850,6 +850,11 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 	        if (std::find(all_atoms_in_residue.begin(), all_atoms_in_residue.end(), neighbor_atom) == all_atoms_in_residue.end()){
 		    MolecularModeling::Atom* head_atom_of_child_residue = neighbor_atom;
 		    MolecularModeling::Residue* child_residue = head_atom_of_child_residue->GetResidue();
+		    //It has been observed that coordinates shift abnormally,so I added code that print coordinate of tail and head atom for tracking.Now is before moving:
+		    std::cout << "Coordinate of parent tail atom before moving: " <<  parent_residue->GetName() << "-" << tail_atom->GetName() << ": (" << tail_atom->GetCoordinates().at(0)->GetX() << "," <<
+		    tail_atom->GetCoordinates().at(0)->GetY() << "," << tail_atom->GetCoordinates().at(0)->GetZ() << ")    " << std::endl; 
+		    std::cout << "Coordinate of child atom before moving: " <<  child_residue->GetName() << "-" << head_atom_of_child_residue->GetName() << ": (" << head_atom_of_child_residue->GetCoordinates().at(0)->GetX() << "," <<
+		    head_atom_of_child_residue->GetCoordinates().at(0)->GetY() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetZ() << ")    " << std::endl; 
 		    gmml::AtomVector all_atoms_in_child_residue = child_residue->GetAtoms();
 		    //Right now, all residues are at the position of the template residue. That is, they are all around the orgin and stacked upon each other.
 		    //SetResidueResidueBondDistance function: takes a pair of parent tail/child head atoms as argument. This function keeps the parent residue intact,but
@@ -986,6 +991,12 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 			    this->SetDihedral(omega_atom_1, omega_atom_2, omega_atom_3, omega_atom_4, dihedral_omega);
 			}
 		    }//else Done setting phi,psi, omega(if exists)
+		    //It has be found out that coordinates shift abnormally with each move. Now print out the coordinates for testing after moving:
+std::cout << "Coordinate of parent tail atom after moving: " <<  parent_residue->GetName() << "-" << tail_atom->GetName() << ": (" << tail_atom->GetCoordinates().at(0)->GetX() << "," <<
+                    tail_atom->GetCoordinates().at(0)->GetY() << "," << tail_atom->GetCoordinates().at(0)->GetZ() << ")    " << std::endl;
+                    std::cout << "Coordinate of child atom after moving: " <<  child_residue->GetName() << "-" << head_atom_of_child_residue->GetName() << ": (" << head_atom_of_child_residue->GetCoordinates().at(0)->GetX() << "," <<
+                    head_atom_of_child_residue->GetCoordinates().at(0)->GetY() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetZ() << ")    " << std::endl;
+
 		    //Start new recursion
 		    MolecularModeling::Residue* new_parent_residue = child_residue;
 		    this->RecursivelySetGeometry(new_parent_residue);
