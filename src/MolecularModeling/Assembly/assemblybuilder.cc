@@ -994,8 +994,7 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 		    //It has be found out that coordinates shift abnormally with each move. Now print out the coordinates for testing after moving:
 std::cout << "Coordinate of parent tail atom after moving: " <<  parent_residue->GetName() << "-" << tail_atom->GetName() << ": (" << tail_atom->GetCoordinates().at(0)->GetX() << "," <<
                     tail_atom->GetCoordinates().at(0)->GetY() << "," << tail_atom->GetCoordinates().at(0)->GetZ() << ")    " << std::endl;
-                    std::cout << "Coordinate of child atom after moving: " <<  child_residue->GetName() << "-" << head_atom_of_child_residue->GetName() << ": (" << head_atom_of_child_residue->GetCoordinates().at(0)->GetX() << "," <<
-                    head_atom_of_child_residue->GetCoordinates().at(0)->GetY() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetZ() << ")    " << std::endl;
+                    std::cout << "Coordinate of child atom after moving: " <<  child_residue->GetName() << "-" << head_atom_of_child_residue->GetName() << ": (" << head_atom_of_child_residue->GetCoordinates().at(0)->GetX() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetY() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetZ() << ")    " << std::endl << std::endl;
 
 		    //Start new recursion
 		    MolecularModeling::Residue* new_parent_residue = child_residue;
@@ -1201,6 +1200,7 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
     //For each combination, rotate accordingly
     for (unsigned int i = 0; i < all_combinations.size(); i++){
 	combination& rotation_set = all_combinations[i];
+	std::cout << "Begin rotation set: " << std::endl;
 	for (combination::iterator it = rotation_set.begin(); it != rotation_set.end(); it++){
 	    gmml::AtomVector* dihedral_atoms = it->first;
 	    GeometryTopology::Coordinate* pivot_point = dihedral_atoms->at(1)->GetCoordinates().at(0);
@@ -1216,20 +1216,26 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
 		original_coordinates.push_back(atoms_to_rotate[j]->GetCoordinates().at(0));
 	    }
 	    double rotation_value = it->second;
+	    std::cout << dihedral_atoms->at(0)->GetName() << "-" << dihedral_atoms->at(1)->GetName() << "-" << dihedral_atoms->at(2)->GetName() << "-" << dihedral_atoms->at(3)->GetName() << "," << rotation_value << " degrees" << std::endl;
 	    GeometryOperation::Geometry rotation_operation = GeometryOperation::Geometry();
 	    //Perform rotation, but return rotated coordinates rather than actually perform rotation
 	    GeometryTopology::Coordinate::CoordinateVector rotated_coordinates = rotation_operation.RotateCoordinates(pivot_point, rotation_axis, rotation_value, original_coordinates);
 	    //Reset atom coordinates to the rotated coordinated set
+	    std::cout << "Rotated atoms for this torsion: " << std::endl;
 	    for (unsigned int j = 0; j < atoms_to_rotate.size(); j++){
 		GeometryTopology::Coordinate::CoordinateVector new_coordinates = GeometryTopology::Coordinate::CoordinateVector();
 		new_coordinates.push_back(rotated_coordinates[j]);
+		std::cout << atoms_to_rotate[j]->GetResidue()->GetName() << "-" << atoms_to_rotate[j]->GetName() << " previously at " << atoms_to_rotate[j]->GetCoordinates().at(0)->GetX() << "," << atoms_to_rotate[j]->GetCoordinates().at(0)->GetY() << "," << atoms_to_rotate[j]->GetCoordinates().at(0)->GetZ();
 		atoms_to_rotate[j]->SetCoordinates(new_coordinates);
+	        std::cout << " now at " << atoms_to_rotate[j]->GetCoordinates().at(0)->GetX() << "," << atoms_to_rotate[j]->GetCoordinates().at(0)->GetY() << "," << atoms_to_rotate[j]->GetCoordinates().at(0)->GetZ() << std::endl;
 
 	    }
 	    
 	}//rotate each combination
 	//After setting coordinates, compute clash score.
 	double clash_score = gmml::CalculateAtomicOverlaps(all_atoms_in_assembly, all_atoms_in_assembly);
+	std::cout << "Computed clash score for this set is: " << clash_score << std::endl;
+	std::cout << "End rotation model. " << std::endl << std::endl;
 	//If current clash score is lower than current minimum, overwrite lowest clash score, and best coordinate set.
 	if (clash_score < least_clash_coordinate.first){
 	    least_clash_coordinate.first = clash_score;
@@ -1240,6 +1246,11 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
 	    }
 	}
 	
+    }
+    std::cout << "Best set of coordinates: " << std::endl;
+    std::cout << "Clash score: " << least_clash_coordinate.first << std::endl;
+    for (unsigned int j = 0; j < all_atoms_in_assembly.size(); j++){
+	std::cout << all_atoms_in_assembly[j]->GetName() << " " << least_clash_coordinate.second[j]->GetX() << "," << least_clash_coordinate.second[j]->GetY() << "," << least_clash_coordinate.second[j]->GetZ() << std::endl;
     }
     //Return best set of coordinate
     return least_clash_coordinate.second;
