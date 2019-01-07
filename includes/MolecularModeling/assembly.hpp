@@ -407,14 +407,14 @@ namespace MolecularModeling
 	      * This function is called by the new version of "BuildAssemblyFromCondensedSequence" function, after FindClashingResidues.
 	      * @param all_clashing_residues A ResidueVector containing all the clashing residues. It is the output of FindClashingResidues
 	      */
-	    std::map<MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> > FindPathToCommonAncestors(ResidueVector& all_clashing_residues);
+	    std::vector<MolecularModeling::Assembly::ResidueVector> FindPathToCommonAncestors(ResidueVector& all_clashing_residues);
 	    /*! \fn
 	      * A function that resolves clashes in assembly atoms.
 	      * This is an orchestrator function that calls FindAllOmegaTorsionsInPathway and FindBestSetOfTorsions
 	      * @param fused_clashing_paths A map between a common ancestor residue(branching residue), and the residue vector containg all residues in a clashing pathway. 
 	      * @param index_dihedral_map See above RecursivelyTagDihedrals @param documentation
 	      */
-	    void ResolveClashes(std::map<MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> >& fused_clashing_paths, 
+	    void ResolveClashes(std::vector<MolecularModeling::Assembly::ResidueVector>& fused_clashing_paths, 
 					std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& index_dihedral_map);
 
 	    /*! \fn
