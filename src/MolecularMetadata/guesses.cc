@@ -10,11 +10,14 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
   bool areCloseEnough = false;
   bool haveAll120angles = false;
   bool areTrigonalPlanar = false;
-  int local_debug = 1;
+  int local_debug = -1;
   std::stringstream debugStr;
-  gmml::log(__LINE__, __FILE__,  gmml::INF, "In Guess Function");
-  gmml::log(__LINE__, __FILE__,  gmml::INF, carbon1->GetName());
-  gmml::log(__LINE__, __FILE__,  gmml::INF, carbon2->GetName());
+  if(local_debug > 0)
+  {
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "In Guess Function");
+    gmml::log(__LINE__, __FILE__,  gmml::INF, carbon1->GetName());
+    gmml::log(__LINE__, __FILE__,  gmml::INF, carbon2->GetName());
+  }
   std::string carbon1name = carbon1->GetName();
   std::string carbon2name = carbon2->GetName();
   //Check if both Carbon
