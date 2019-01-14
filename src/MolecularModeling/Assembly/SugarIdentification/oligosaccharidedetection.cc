@@ -666,29 +666,31 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 
     // std::cout << mono->sugar_name_.pdb_code_ << "\n";
     // std::cout << mono->cycle_atoms_[0]->GetResidue()->GetName()<< "\n";
-    if(mono->sugar_name_.pdb_code_.find(mono->residue_name_) == std::string::npos)
+    if(CCD_Path != " ")
     {
-      if(this->source_file_.find(mono->residue_name_) ==  std::string::npos) //For CCD Lookup, if the residue name matches the file name we are already looking it up.  Prevents infinite loop for unidentified CCD sugars
+      if(mono->sugar_name_.pdb_code_.find(mono->residue_name_) == std::string::npos)
       {
-        std::cout << this->source_file_ << ": " << mono->residue_name_ << "\n";
-        GetAuthorNaming(amino_lib_files, mono, CCD_Path);
-        Glycan::Note* mismatch_note = new Glycan::Note();
-        mismatch_note->type_ = Glycan::ERROR;
-        mismatch_note->category_ = Glycan::DER_MOD;
-        std::stringstream note;
-        note << "Residue name, " << mono->cycle_atoms_[0]->GetResidue()->GetName() << " (" << mono->cycle_atoms_[0]->GetResidue()->GetId() << "), in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_;
-        mismatch_note->description_ = note.str();
-        this->AddNote(mismatch_note);
-        
+        if(this->source_file_.find(mono->residue_name_) ==  std::string::npos) //For CCD Lookup, if the residue name matches the file name we are already looking it up.  Prevents infinite loop for unidentified CCD sugars
+        {
+          std::cout << this->source_file_ << ": " << mono->residue_name_ << "\n";
+          GetAuthorNaming(amino_lib_files, mono, CCD_Path);
+          Glycan::Note* mismatch_note = new Glycan::Note();
+          mismatch_note->type_ = Glycan::ERROR;
+          mismatch_note->category_ = Glycan::DER_MOD;
+          std::stringstream note;
+          note << "Residue name, " << mono->cycle_atoms_[0]->GetResidue()->GetName() << " (" << mono->cycle_atoms_[0]->GetResidue()->GetId() << "), in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_;
+          mismatch_note->description_ = note.str();
+          this->AddNote(mismatch_note);
+          
+          mono->createAuthorSNFGname();
+        }  
+      }
+      else
+      {
+        mono->author_sugar_name_ = mono->sugar_name_;
         mono->createAuthorSNFGname();
-      }  
+      }
     }
-    else
-    {
-      mono->author_sugar_name_ = mono->sugar_name_;
-      mono->createAuthorSNFGname();
-    }
-
 
 
     // //Added for the PDB to create their own SNFGs
