@@ -1011,7 +1011,7 @@ namespace MolecularModeling
             * @param oligo_uri The URI for the Oligosaccharide instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32_oligo1
             * @param res_uri The URI for the current monosaccharide to be checked for derivatives
             */
-            void CheckDerivativesAndPopulate(std::stringstream& oligo_sequence_stream, std::string mono_short_name, std::string oligo_uri, std::string res_uri, std::string monoSNFG);
+            void CheckDerivativesAndPopulate(std::stringstream& oligo_sequence_stream, std::string mono_short_name, std::string oligo_uri, std::string res_uri, std::string monoSNFG, Glycan::Monosaccharide* mono);
 
             /*! \fn
             * A function in order to check if the monosaccharide has derivates

@@ -32,6 +32,7 @@ namespace Glycan
     std::string oligosaccharide_terminal_;              /*!< The terminal residue name of the oligosacchride with linkage >*/
     float oligosaccharide_b_factor_;                     /*!< The b_factor for the oligosaccharide >*/
     std::vector<Glycan::Monosaccharide*> mono_nodes_;
+    int number_branches_;
     MolecularModeling::Assembly* assembly_;
     std::vector<Note*> oligo_notes_;
     Oligosaccharide();

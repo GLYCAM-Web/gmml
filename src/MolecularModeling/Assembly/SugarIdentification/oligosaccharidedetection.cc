@@ -666,10 +666,11 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 
     // std::cout << mono->sugar_name_.pdb_code_ << "\n";
     // std::cout << mono->cycle_atoms_[0]->GetResidue()->GetName()<< "\n";
-    if(mono->sugar_name_.pdb_code_.find(mono->cycle_atoms_[0]->GetResidue()->GetName()) == std::string::npos)
+    if(mono->sugar_name_.pdb_code_.find(mono->residue_name_) == std::string::npos)
     {
-      if(this->source_file_.find(mono->cycle_atoms_[0]->GetResidue()->GetName()) !=  std::string::npos)
+      if(this->source_file_.find(mono->residue_name_) ==  std::string::npos) //For CCD Lookup, if the residue name matches the file name we are already looking it up.  Prevents infinite loop for unidentified CCD sugars
       {
+        std::cout << this->source_file_ << ": " << mono->residue_name_ << "\n";
         GetAuthorNaming(amino_lib_files, mono, CCD_Path);
         Glycan::Note* mismatch_note = new Glycan::Note();
         mismatch_note->type_ = Glycan::ERROR;
@@ -678,11 +679,14 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         note << "Residue name, " << mono->cycle_atoms_[0]->GetResidue()->GetName() << " (" << mono->cycle_atoms_[0]->GetResidue()->GetId() << "), in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_;
         mismatch_note->description_ = note.str();
         this->AddNote(mismatch_note);
+        
+        mono->createAuthorSNFGname();
       }  
     }
     else
     {
       mono->author_sugar_name_ = mono->sugar_name_;
+      mono->createAuthorSNFGname();
     }
 
 
@@ -4807,14 +4811,22 @@ void Assembly::GetAuthorNaming(std::vector< std::string > amino_lib_files, Glyca
   // Find the Sugars.
   std::vector<Glycan::Oligosaccharide*> authorOligos = CCDassembly.ExtractSugars(amino_lib_files, false, false, CCD_Path);
   //The vector is really just a monosaccharide
-  if(authorOligos[0]->root_->sugar_name_.pdb_code_ == "")
+  if(authorOligos.size() > 0)
   {
-    authorOligos[0]->root_->sugar_name_.pdb_code_ = residueName;
+    Glycan::Oligosaccharide* authorOligo = authorOligos[0];
+    if(authorOligo->mono_nodes_.size() > 0)
+    {
+      if(authorOligos[0]->mono_nodes_[0]->sugar_name_.pdb_code_ == "")
+      {
+        authorOligos[0]->mono_nodes_[0]->sugar_name_.pdb_code_ = residueName;
+      }
+      mono->author_sugar_name_ = authorOligos[0]->mono_nodes_[0]->sugar_name_;
+    }
+    if(local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__,  gmml::INF, "Author Name");
+      gmml::log(__LINE__, __FILE__,  gmml::INF, mono->author_sugar_name_.monosaccharide_name_);
+    }
   }
-  mono->author_sugar_name_ = authorOligos[0]->root_->sugar_name_;
-  if(local_debug > 0)
-  {
-    gmml::log(__LINE__, __FILE__,  gmml::INF, "Author Name");
-    gmml::log(__LINE__, __FILE__,  gmml::INF, mono->author_sugar_name_.monosaccharide_name_);
-  }
+
 }

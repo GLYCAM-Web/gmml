@@ -43,7 +43,9 @@ namespace Glycan
       bool is_root_;
       bool is_counted_;
       int oligosaccharide_index_;
+      int oligo_branch_index_;
       Glycan::Oligosaccharide* oligo_parent_;
+      std::string residue_name_;
       /*! \fn
         * Default constructor
         */

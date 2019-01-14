@@ -22,9 +22,13 @@ Monosaccharide::Monosaccharide(const Monosaccharide &mono)
 
 Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<MolecularModeling::Atom*>& cycle_atoms, MolecularModeling::Assembly* this_assembly, std::string CCD_Path)
 {
+  residue_name_ = cycle_atoms[0]->GetResidue()->GetName();
+  std::cout << residue_name_ << "\n";
   is_visited_ = false;
   is_root_ = false;
   is_counted_ = false;
+  anomeric_carbon_pointer_ = NULL;
+  sugar_name_ = {"","","","","","","","","",""};
   //Set cycle atoms
   for (std::vector<MolecularModeling::Atom*>::iterator it = cycle_atoms.begin(); it != cycle_atoms.end(); it++ )
   {
@@ -154,6 +158,8 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
       // GetAuthorNaming(amino_lib_files, mono, CCD_Path);
     }
   }
+  // createAuthorSNFGname();
+  createSNFGname();
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -172,17 +178,20 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
 void Glycan::Monosaccharide::createSNFGname()
 {//Added for the PDB to create their own SNFGs
   std::string monoSNFGName =  sugar_name_.monosaccharide_short_name_;
-  if(monoSNFGName[0] == sugar_name_.isomer_[0])
+  if(monoSNFGName.size() > 0)
   {
-    monoSNFGName.erase(0,1);
-  }
-  if(((monoSNFGName[monoSNFGName.length()-1] == sugar_name_.configuration_[0]) && (monoSNFGName[monoSNFGName.length()-2] != 'N')) || (monoSNFGName[monoSNFGName.length()-1] == 'x'))
-  {
-    monoSNFGName.erase(monoSNFGName.length()-1,1);
-  }
-  if(monoSNFGName[3] == tolower(sugar_name_.ring_type_[0]))
-  {
-    monoSNFGName.erase(3,1);
+    if(monoSNFGName[0] == sugar_name_.isomer_[0])
+    {
+      monoSNFGName.erase(0,1);
+    }
+    if(((monoSNFGName[monoSNFGName.length()-1] == sugar_name_.configuration_[0]) && (monoSNFGName[monoSNFGName.length()-2] != 'N')) || (monoSNFGName[monoSNFGName.length()-1] == 'x'))
+    {
+      monoSNFGName.erase(monoSNFGName.length()-1,1);
+    }
+    if(monoSNFGName[3] == tolower(sugar_name_.ring_type_[0]))
+    {
+      monoSNFGName.erase(3,1);
+    }
   }
   SNFG_name_ = monoSNFGName;
 }
@@ -190,17 +199,20 @@ void Glycan::Monosaccharide::createSNFGname()
 void Glycan::Monosaccharide::createAuthorSNFGname()
 {//Added for the PDB to create their own SNFGs
   std::string monoSNFGName =  author_sugar_name_.monosaccharide_short_name_;
-  if(monoSNFGName[0] == author_sugar_name_.isomer_[0])
+  if(monoSNFGName.size() > 0)
   {
-    monoSNFGName.erase(0,1);
-  }
-  if(((monoSNFGName[monoSNFGName.length()-1] == author_sugar_name_.configuration_[0]) && (monoSNFGName[monoSNFGName.length()-2] != 'N')) || (monoSNFGName[monoSNFGName.length()-1] == 'x'))
-  {
-    monoSNFGName.erase(monoSNFGName.length()-1,1);
-  }
-  if(monoSNFGName[3] == tolower(author_sugar_name_.ring_type_[0]))
-  {
-    monoSNFGName.erase(3,1);
+    if(monoSNFGName[0] == author_sugar_name_.isomer_[0])
+    {
+      monoSNFGName.erase(0,1);
+    }
+    if(((monoSNFGName[monoSNFGName.length()-1] == author_sugar_name_.configuration_[0]) && (monoSNFGName[monoSNFGName.length()-2] != 'N')) || (monoSNFGName[monoSNFGName.length()-1] == 'x'))
+    {
+      monoSNFGName.erase(monoSNFGName.length()-1,1);
+    }
+    if(monoSNFGName[3] == tolower(author_sugar_name_.ring_type_[0]))
+    {
+      monoSNFGName.erase(3,1);
+    }
   }
   author_SNFG_name_ = monoSNFGName;
 }
