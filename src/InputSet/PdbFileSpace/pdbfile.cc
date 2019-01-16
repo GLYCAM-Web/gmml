@@ -229,6 +229,12 @@ PdbFile::PdbFile(const std::string &pdb_file)
     {
         throw PdbFileProcessingException(__LINE__, "Reading PDB file exception");
     }
+    if(header_ != NULL)
+    {
+      std::string PDBname = header_->GetIdentifierCode();
+      gmml::log(__LINE__, __FILE__,  gmml::INF, PDBname);
+    }
+    
     in_file.close();            /// Close the pdb files
 }
 PdbFile* PdbFile::LoadPdbFile()
@@ -3504,13 +3510,13 @@ bool PdbFile::ParseCards(std::ifstream &in_stream)
     }
     else
     {
-        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
+        // gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
+        // std::cout << "Wrong input file format" << std::endl;
         std::stringstream ss;
         ss << record_name << " is an Unknown record name.";
         gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
         std::cout << ss.str() << std::endl;
-        return false;
+        // return false;
     }
     return true;
 }
@@ -7809,7 +7815,17 @@ void PdbFile::PrintOntology(std::stringstream& ont_stream)
 {
   //Match formatting of Ontology
   std::stringstream uri;
-  uri << Ontology::ONT_PREFIX << header_->GetIdentifierCode();
+  uri << Ontology::ONT_PREFIX;
+  if(header_ != NULL)
+  {
+    uri << header_->GetIdentifierCode();
+  }
+  else
+  {
+    std::string file = gmml::Split(path_.substr(path_.find_last_of('/') + 1), ".").at(0);
+    // std::transform(file.begin(), file.end(),file.begin(), ::toupper);
+    uri << file;
+  }
   std::string uriStr = uri.str();
   std::transform(uriStr.begin(), uriStr.end(), uriStr.begin(), ::tolower);
   

@@ -138,17 +138,19 @@ using OffFileSpace::OffFile;
         {
             MolecularModeling::Residue* residue = (*it);
             AtomVector all_atoms_of_residue = residue->GetAtoms();
+/*
+This whole loop seems to be unused
             for(AtomVector::iterator it2 = all_atoms_of_residue.begin(); it2 != all_atoms_of_residue.end(); ++it2)
             {
                 MolecularModeling::Atom* atom = (*it2);
-                  int main_atom_index;
+                  // int main_atom_index=0; // commented because not used
                     //adding the bonding atom index to 
                     std::map<int,int>::iterator it = atom_index_map_.find(atom->GetIndex());
                     if(it != atom_index_map_.end()){
                         main_atom_index = atom_index_map_[atom->GetIndex()];
-                    } 
-              }
-
+                        } 
+            }
+*/
           }
         }
 
@@ -258,7 +260,7 @@ using OffFileSpace::OffFile;
                 for(OffFileAtomVector::iterator it = all_atoms_of_residue.begin(); it != all_atoms_of_residue.end(); it++)
                 {
                     atom_counter++;
-                    OffFileSpace::OffFileAtom* atom = *it;
+//  unused                    OffFileSpace::OffFileAtom* atom = *it;
                     stream << " \"" << "R" << "\"" << " " << residue->GetListingIndex() << " " << "\"" << "A" << "\"" << " " << atom_counter << std::endl;
                 }
             }

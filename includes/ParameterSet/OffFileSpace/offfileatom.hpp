@@ -152,16 +152,16 @@ namespace OffFileSpace
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
             //////////////////////////////////////////////////////////
-            std::string name_;              /*!< Atom name: Set by the 1st column of the atom section of a off file */
-            std::string type_;              /*!< Atom type; Set by the 2nd column of the atom section of a off file */
-            int residue_index_;             /*!< Residue index that the atom belongs to; Set by the 4th column of the atom section of a off file*/
-            int atom_index_;                /*!< Index of the atom in the belonging residue; Set by the 6th column of the atom section of a off file */
-            int atomic_number_;             /*!< Atomic number of the atom; Set by the 7th column of the atom section of a off file */
-            double charge_;                 /*!< Charge of the atom; Set by the 8th column of the atom section of a off file */
+            std::string name_="";        /*!< Atom name: Set by the 1st column of the atom section of a off file */
+            std::string type_="";        /*!< Atom type; Set by the 2nd column of the atom section of a off file */
+            int residue_index_=(-1);     /*!< Residue index that the atom belongs to; Set by the 4th column of the atom section of a off file*/
+            int atom_index_=(-1);        /*!< Index of the atom in the belonging residue; Set by the 6th column of the atom section of a off file */
+            int atomic_number_=(0);      /*!< Atomic number of the atom; Set by the 7th column of the atom section of a off file */
+            double charge_=(0.0);        /*!< Charge of the atom; Set by the 8th column of the atom section of a off file */
             GeometryTopology::Coordinate coordinate_;         /*!< Coordinate of the atom; Set by the corresponding line in the positions section of a off file */
             std::vector<int> bonded_atoms_indices_; 		/*!< List of atom indices that are bonded to the atom;
                                                             Set by the corresponding atom index in the connectivity section of a off file */
-            int atom_order_;                /*!< Order of atoms of the residue in the atom section; Set by a line counter iterates on lines of the atom section of a off file */
+            int atom_order_=(0);             /*!< Order of atoms of the residue in the atom section; Set by a line counter iterates on lines of the atom section of a off file */
     };
 }
 

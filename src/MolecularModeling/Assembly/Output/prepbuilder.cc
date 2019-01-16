@@ -99,7 +99,7 @@ PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::strin
         prep_residue->SetOutputFormat(PrepFileSpace::kFormatted);
 
         AtomVector assembly_atoms = assembly_residue->GetAtoms();
-        CoordinateVector cartesian_coordinate_list = CoordinateVector();
+        GeometryTopology::Coordinate::CoordinateVector cartesian_coordinate_list;
         int atom_index = 1;
         PrepFileSpace::PrepFileResidue::Loop loops = PrepFileSpace::PrepFileResidue::Loop();
         std::vector<int> bond_index = std::vector<int>();
@@ -143,7 +143,7 @@ PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::strin
         std::vector<gmml::TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index);
         for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
         {
-            CoordinateVector coordinate_list = CoordinateVector();
+            GeometryTopology::Coordinate::CoordinateVector coordinate_list;
 
             Atom* assembly_atom = (*it1);
             PrepFileSpace::PrepFileAtom* prep_atom = new PrepFileSpace::PrepFileAtom();
@@ -168,8 +168,9 @@ PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::strin
             coordinate_list.push_back(cartesian_coordinate_list.at(parent_index));
             cartesian_coordinate_list.push_back(assembly_atom->GetCoordinates().at(model_index_));
 
-            GeometryTopology::Coordinate* internal_coordinate = gmml::ConvertCartesianCoordinate2InternalCoordinate(assembly_atom->GetCoordinates().at(model_index_),
-                                                                                                  coordinate_list);
+            GeometryTopology::Coordinate* internal_coordinate = new GeometryTopology::Coordinate();
+            internal_coordinate = internal_coordinate->GeometryTopology::Coordinate::ConvertCartesianCoordinate2InternalCoordinate(
+                assembly_atom->GetCoordinates().at(model_index_), coordinate_list);
             prep_atom->SetBondLength(internal_coordinate->GetX());
             prep_atom->SetAngle(internal_coordinate->GetY());
             prep_atom->SetDihedral(internal_coordinate->GetZ());
