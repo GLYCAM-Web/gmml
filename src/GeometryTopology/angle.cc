@@ -1,48 +1,48 @@
-#include "../../../includes/GeometryTopology/InternalCoordinate/dihedral.hpp"
+#include "../../includes/GeometryTopology/angle.hpp"
 
-using GeometryTopology::Dihedral;
+using GeometryTopology::Angle;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Dihedral::Dihedral() {}
+Angle::Angle() {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-Dihedral::CoordinateVector Dihedral::GetCoordinates()
+GeometryTopology::Coordinate::CoordinateVector Angle::GetCoordinates()
 {
     return coordinates_;
 }
-double Dihedral::GetTorsion()
+double Angle::GetAngle()
 {
-    return torsion_;
+    return angle_;
 }
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void Dihedral::SetCoordinates(CoordinateVector coordinates)
+void Angle::SetCoordinates(GeometryTopology::Coordinate::CoordinateVector coordinates)
 {
     coordinates_.clear();
-    for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+    for(GeometryTopology::Coordinate::CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
     {
         coordinates_.push_back(*it);
     }
 }
-void Dihedral::AddCoordinate(Coordinate *coordinate)
+void Angle::AddCoordinate(Coordinate *coordinate)
 {
     coordinates_.push_back(coordinate);
 }
-void Dihedral::SetTorsion(double torsion)
+void Angle::SetAngle(double angle)
 {
-    torsion_ = torsion;
+    angle_ = angle;
 }
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void Dihedral::Print(std::ostream &out)
+void Angle::Print(std::ostream &out)
 {
     out << "";
 }

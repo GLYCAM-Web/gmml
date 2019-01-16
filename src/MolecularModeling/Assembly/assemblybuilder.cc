@@ -78,7 +78,7 @@
 #include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
-#include "../../../includes/MolecularModeling/GeometryOperation/geometry.hpp"
+#include "../../../includes/GeometryTopology/rotation.hpp"
 #include "../../../includes/MolecularModeling/overlaps.hpp"  //Added by Yao 07/27/2018
 
 #include <unistd.h>
@@ -1189,7 +1189,7 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
     //For each combination, rotate coordinates accordingly, then compute clash score. If clash score is lower than the current minimum, record the current set of coordinate as the least-clashing
     //coordinate set
     //Make a pair. Pair.first is clash score, pair.second is coordinate set
-    std::pair <double, GeometryOperation::Geometry::CoordinateVector> least_clash_coordinate = std::pair <double, GeometryOperation::Geometry::CoordinateVector>();
+    std::pair <double, GeometryTopology::Coordinate::CoordinateVector> least_clash_coordinate = std::pair <double, GeometryTopology::Coordinate::CoordinateVector>();
     gmml::AtomVector all_atoms_in_assembly = this->GetAllAtomsOfAssembly();
     //Compute rotation score using the originial coordinate. Initiate least_clash_coordinate to contain this original state.
     double initial_clash_score = gmml::CalculateAtomicOverlaps(all_atoms_in_assembly, all_atoms_in_assembly);
@@ -1218,7 +1218,7 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
 	    }
 	    double rotation_value = it->second;
 	    std::cout << dihedral_atoms->at(0)->GetName() << "-" << dihedral_atoms->at(1)->GetName() << "-" << dihedral_atoms->at(2)->GetName() << "-" << dihedral_atoms->at(3)->GetName() << "," << rotation_value << " degrees" << std::endl;
-	    GeometryOperation::Geometry rotation_operation = GeometryOperation::Geometry();
+	    GeometryTopology::Rotation rotation_operation = GeometryTopology::Rotation();
 	    //Perform rotation, but return rotated coordinates rather than actually perform rotation
 	    GeometryTopology::Coordinate::CoordinateVector rotated_coordinates = rotation_operation.RotateCoordinates(pivot_point, rotation_axis, rotation_value, original_coordinates);
 	    //Reset atom coordinates to the rotated coordinated set
@@ -1392,7 +1392,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
 
                 // Build residue from prep residue
                 sequence_number++;
-                CoordinateVector cartesian_coordinate_list = CoordinateVector();
+                GeometryTopology::Coordinate::CoordinateVector cartesian_coordinate_list = GeometryTopology::Coordinate::CoordinateVector();
                 Residue* assembly_residue = new Residue();
                 assembly_residue->SetAssembly(this);
                 std::string prep_residue_name = prep_residue->GetName();
@@ -1460,7 +1460,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
 
                     if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
                     {
-                        std::vector<GeometryTopology::Coordinate*> coordinate_list = std::vector<GeometryTopology::Coordinate*>();
+                        GeometryTopology::Coordinate::CoordinateVector coordinate_list;
+                        //std::vector<GeometryTopology::Coordinate*> coordinate_list = std::vector<GeometryTopology::Coordinate*>();
                         int index = std::distance(prep_atoms.begin(), it1);
                         if(index == 0)
                         {
@@ -1494,8 +1495,11 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
                             coordinate_list.push_back(parent_coordinate);
                         }
                         GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate();
-                        coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
-                                                                                         prep_atom->GetAngle(), prep_atom->GetDihedral());
+                        double bond_length = prep_atom->GetBondLength();
+                        double angle_value = prep_atom->GetAngle();
+                        double dihedral_value = prep_atom->GetDihedral();
+                        coordinate = coordinate->ConvertInternalCoordinate2CartesianCoordinate(
+                            coordinate_list, bond_length, angle_value, dihedral_value);
                         cartesian_coordinate_list.push_back(coordinate);
 
                         assembly_atom->AddCoordinate(coordinate);
@@ -1681,7 +1685,7 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
     std::vector<double> angle_index_per_dihedral = std::vector<double> (all_dihedral_rotation_values.size(), gmml::dNotSet);
     working_assembly ->GenerateAllTorsionCombinations(all_dihedral_rotation_values, 0, all_rotation_combinations, angle_index_per_dihedral);
     //Rotate according to each combination
-    std::vector<GeometryOperation::Geometry::CoordinateVector> rotamer_coordinate_sets = std::vector<GeometryOperation::Geometry::CoordinateVector>();
+    std::vector<GeometryTopology::Coordinate::CoordinateVector> rotamer_coordinate_sets = std::vector<GeometryTopology::Coordinate::CoordinateVector>();
     for (unsigned int i = 0; i < all_rotation_combinations.size(); i++){
 	combination& rotamer_rotation_set = all_rotation_combinations[i];
 	for (unsigned int j = 0; j < rotamer_rotation_set.size(); j++){
@@ -1691,7 +1695,7 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
 	    working_assembly ->SetDihedral(dihedral_atoms->at(0), dihedral_atoms->at(1), dihedral_atoms->at(2), dihedral_atoms->at(3), rotation_value);
 	}
 	//Copy current coordinate objects 
-	GeometryOperation::Geometry::CoordinateVector new_rotamer_coordinate_set = GeometryOperation::Geometry::CoordinateVector();
+	GeometryTopology::Coordinate::CoordinateVector new_rotamer_coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
 	gmml::AtomVector all_atoms_of_assembly = working_assembly->GetAllAtomsOfAssembly();
 	for (unsigned int j = 0; j < all_atoms_of_assembly.size(); j++){
 	    GeometryTopology::Coordinate* original_coordinate = all_atoms_of_assembly[j]->GetCoordinates().at(0);
@@ -1704,11 +1708,11 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
     gmml::AtomVector all_atoms_of_assembly = working_assembly->GetAllAtomsOfAssembly();
     //Empty current atoms coordinates
     for (unsigned int i = 0; i < all_atoms_of_assembly.size(); i++){
-	all_atoms_of_assembly[i]->SetCoordinates(GeometryOperation::Geometry::CoordinateVector());
+	all_atoms_of_assembly[i]->SetCoordinates(GeometryTopology::Coordinate::CoordinateVector());
     }
     //Add each rotamer coordinate set one by one to atoms in assembly
     for (unsigned int i = 0; i < rotamer_coordinate_sets.size(); i++){
-	GeometryOperation::Geometry::CoordinateVector& rotamer_set = rotamer_coordinate_sets[i];
+	GeometryTopology::Coordinate::CoordinateVector& rotamer_set = rotamer_coordinate_sets[i];
 	for (unsigned int j = 0; j < rotamer_set.size(); j++){
 	   all_atoms_of_assembly[j]->AddCoordinate(rotamer_set[j]); 
 	}
@@ -1726,7 +1730,7 @@ void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<s
 {
     std::cout << "Building assembly from pdb file ..." << std::endl;
 //    std::cout << "Reading PDB file into PdbFileSpace::PdbFile structure." << std::endl;
-    PdbFileSpace::PdbFile* pdb_file;
+    PdbFileSpace::PdbFile* pdb_file=NULL;
     try
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "Reading PDB file into PdbFileSpace::PdbFile structure ...");
@@ -2457,7 +2461,8 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::Topolo
             assembly_atom->SetResidue(assembly_residue);
             assembly_atom->SetName(topology_atom->GetAtomName());
 
-            std::vector<GeometryTopology::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
+            GeometryTopology::Coordinate::CoordinateVector coord_file_coordinates = coordinate_file->GetCoordinates();
+            //std::vector<GeometryTopology::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
             assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index-1));
             assembly_residue->AddAtom(assembly_atom);
         }
@@ -2509,9 +2514,9 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile *prep_file, std
     for(PrepFileSpace::PrepFile::ResidueMap::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
     {
         sequence_number++;
-        CoordinateVector cartesian_coordinate_list = CoordinateVector();
-        int head_atom_index = INFINITY;
-        int tail_atom_index = -INFINITY;
+        GeometryTopology::Coordinate::CoordinateVector cartesian_coordinate_list = GeometryTopology::Coordinate::CoordinateVector();
+        int head_atom_index = (int) INFINITY;
+        int tail_atom_index = (int) -INFINITY;
         Atom* head_atom = new Atom();
         Atom* tail_atom = new Atom();
 
@@ -2568,7 +2573,8 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile *prep_file, std
 
             if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
             {
-                std::vector<GeometryTopology::Coordinate*> coordinate_list = std::vector<GeometryTopology::Coordinate*>();
+                GeometryTopology::Coordinate::CoordinateVector coordinate_list;
+                //std::vector<GeometryTopology::Coordinate*> coordinate_list = std::vector<GeometryTopology::Coordinate*>();
                 int index = std::distance(prep_atoms.begin(), it1);
                 if(index == 0)
                 {
@@ -2601,9 +2607,18 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile *prep_file, std
                     coordinate_list.push_back(grandparent_coordinate);
                     coordinate_list.push_back(parent_coordinate);
                 }
-                GeometryTopology::Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
-                                                                                             prep_atom->GetAngle(), prep_atom->GetDihedral());
+                GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate();
+                double bond_length = prep_atom->GetBondLength();
+                double angle_value = prep_atom->GetAngle();
+                double dihedral_value = prep_atom->GetDihedral();
+                coordinate = coordinate->ConvertInternalCoordinate2CartesianCoordinate(
+                    coordinate_list, bond_length, angle_value, dihedral_value);
                 cartesian_coordinate_list.push_back(coordinate);
+//original
+                //GeometryTopology::Coordinate* coordinate = GeometryTopology::Coordinate::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
+                                                                                             //prep_atom->GetAngle(), prep_atom->GetDihedral());
+                //cartesian_coordinate_list.push_back(coordinate);
+//
 
                 assembly_atom->AddCoordinate(coordinate);
             }

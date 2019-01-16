@@ -1,30 +1,21 @@
-#ifndef GEOMETRY_HPP
-#define GEOMETRY_HPP
+#ifndef GEOMETRY_TOPOLOGY_ROTATION_HPP
+#define GEOMETRY_TOPOLOGY_ROTATION_HPP
 
 #include <iostream>
-#include "../../../includes/GeometryTopology/coordinate.hpp"
+#include "coordinate.hpp"
 
-namespace GeometryOperation
+namespace GeometryTopology
 {
-    class Geometry
+    class Rotation
     {
         public:
-            //////////////////////////////////////////////////////////
-            //                    TYPE DEFINITION                   //
-            //////////////////////////////////////////////////////////
-
-            /*! \typedef
-            * List of GeometryTopology::Coordinates
-            */
-            typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
-
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             /*! \fn
               * Default constructor
               */
-            Geometry();
+            Rotation();
 
             //////////////////////////////////////////////////////////
             //                           ACCESSOR                   //
@@ -47,7 +38,7 @@ namespace GeometryOperation
               * @param coordinate_set List of coordinates that need to be rotated by an angle
               * @return A list of coordinates rotated by an angle
               */
-            CoordinateVector RotateCoordinates(GeometryTopology::Coordinate* pivot_point,GeometryTopology::Coordinate* direction_point,double rotation_angle,CoordinateVector coordinate_set);
+            GeometryTopology::Coordinate::CoordinateVector RotateCoordinates(GeometryTopology::Coordinate* pivot_point,GeometryTopology::Coordinate* direction_point,double rotation_angle,GeometryTopology::Coordinate::CoordinateVector coordinate_set);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
@@ -59,4 +50,4 @@ namespace GeometryOperation
             //////////////////////////////////////////////////////////
         };
 }
-#endif // GEOMETRY_HPP
+#endif // GEOMETRY_TOPOLOGY_ROTATION_HPP

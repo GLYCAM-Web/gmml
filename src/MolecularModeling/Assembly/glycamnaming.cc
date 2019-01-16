@@ -461,6 +461,15 @@ void Assembly::UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue
 }
 
 
+/*! \todo  Give this function a return value.
+
+Here is the error:
+
+src/MolecularModeling/Assembly/glycamnaming.cc: In member function 'bool MolecularModeling::Assembly::PatternMatching(MolecularModeling::Residue*, MolecularModeling::Assembly::ResidueVector, gmml::GlycamAtomNameMap&, gmml::GlycamAtomNameMap&)':
+src/MolecularModeling/Assembly/glycamnaming.cc:568:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+ */
 bool Assembly::PatternMatching(Residue *residue, ResidueVector query_residues, gmml::GlycamAtomNameMap &pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map)
 {
     CreatePrunedMatchingGraph(residue, query_residues);
