@@ -1047,7 +1047,7 @@ void Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
           gmml::log(__LINE__, __FILE__,  gmml::INF, cycle_str);
           gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
         }
-        for(int it1 = 0; it1 != cycle_atoms.size() -1; it1++)
+        for(int it1 = 0; it1 != (int) cycle_atoms.size() -1; it1++)
         {
 
             MolecularModeling::Atom* atom1 = cycle_atoms[it1];
@@ -4538,6 +4538,15 @@ void Assembly::CalculateOligosaccharideBFactor(Glycan::Oligosaccharide* oligo, s
 //I know there is a better way to do this and assign Phi/Psi/Omega values to the oligosaccharide struct, but for now it just needs to be done quickly
 //See Figure 1 in Vina Carb paper by our group if confused about which atoms are chosen and why
 //Dave 9/27/18
+/*! \todo Fix unused parent_oligo variable
+
+Here is the error:
+
+src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc: At global scope:
+src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc:4014:61: warning: unused parameter 'parent_oligo' [-Wunused-parameter]
+ double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id)
+                                                             ^
+*/
 double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id)
 {
   int local_debug = -1;

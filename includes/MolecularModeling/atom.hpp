@@ -24,10 +24,6 @@ namespace MolecularModeling
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
             /*! \typedef
-            * List of GeometryTopology::Coordinates
-            */
-            typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
-            /*! \typedef
             * List of Atoms
             */
             typedef std::vector<Atom*> AtomVector;
@@ -41,7 +37,7 @@ namespace MolecularModeling
             /*! \fn
             * Constructors
             */
-            Atom(MolecularModeling::Residue* residue, std::string name, CoordinateVector coordinates);
+            Atom(MolecularModeling::Residue* residue, std::string name, GeometryTopology::Coordinate::CoordinateVector coordinates);
             Atom(MolecularModeling::Residue* residue, std::string name, GeometryTopology::Coordinate coordinate);
             /*! \fn
             * Copy constructor(*)
@@ -75,7 +71,7 @@ namespace MolecularModeling
             * An accessor function in order to access to the coordinates
             * @return coordinates_ attribute of the current object of this class
             */
-            CoordinateVector GetCoordinates() const;
+            GeometryTopology::Coordinate::CoordinateVector GetCoordinates() const;
             /*! \fn
             * An accessor function in order to access to the first coordinate
             * @return coordinates_.at(0) attribute of the current object of this class
@@ -150,7 +146,7 @@ namespace MolecularModeling
             * Set the coordinates_ attribute of the current atom
             * @param coordinates The coordinates attribute of the current object
             */
-            void SetCoordinates(CoordinateVector coordinates);
+            void SetCoordinates(GeometryTopology::Coordinate::CoordinateVector coordinates);
             /*! \fn
             * A function in order to add the coordinate to the current object
             * Set the coordinates_ attribute of the current atom
@@ -231,6 +227,11 @@ namespace MolecularModeling
             * @param coordinate The GeometryTopology::Coordinate used to get the distance from this Atom's Coordinates.
             */
             double GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate);
+            /* Calls a function in coordinate.hpp */
+            GeometryTopology::Coordinate get_cartesian_point_from_internal_coords(
+                 MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c,
+                 double theta_Degrees, double phi_Degrees, double distance_Angstrom);
+
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -256,7 +257,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             MolecularModeling::Residue* residue_;                 /*!< A pointer back to the residue that this atom belongs to >*/
             std::string name_;                 /*!< Name of the atom >*/
-            CoordinateVector coordinates_;     /*!< Position of the atom >*/
+            GeometryTopology::Coordinate::CoordinateVector coordinates_;     /*!< Position of the atom >*/
             std::string chemical_type_;        /*!< A descriptor to determines the chemical type of the atom >*/
             std::string description_;          /*!< Short description of the atom >*/
             std::string element_symbol_;       /*!< Element symbol of the atom >*/
@@ -272,7 +273,7 @@ namespace MolecularModeling
             //                   HELPER FUNCTIONS                   //
             //////////////////////////////////////////////////////////
             void Copy(const Atom* atom);
-            void SetAttributes( MolecularModeling::Residue* residue, std::string name, CoordinateVector coordinates,
+            void SetAttributes( MolecularModeling::Residue* residue, std::string name, GeometryTopology::Coordinate::CoordinateVector coordinates,
                                 std::string chemical_type, std::string description, std::string element_symbol,
                                 AtomNode* atomnode, std::string id, bool is_ring, std::string atom_type);
     };

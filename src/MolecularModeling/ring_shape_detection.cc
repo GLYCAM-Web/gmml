@@ -26,14 +26,14 @@ constexpr auto PI = 3.14159265358979323846;
 // This should not be in Assembly. Overloading to handle legacy code. Returning string so people can do as they wish.
 std::string glylib::CalculateRingShapeBFMP( Glycan::Monosaccharide* mono )
 {
-  CoordinateVector ring_coordinates = gmml::GetCycleAtomCoordinates( mono );
+  GeometryTopology::Coordinate::CoordinateVector ring_coordinates = gmml::GetCycleAtomCoordinates( mono );
   std::string bfmp = CalculateRingShapeBFMP(ring_coordinates);
   // OG is wondering why Monosaccharide isn't a class with Get'ers and Set'ers.
   mono->bfmp_ring_conformation_ = bfmp;
   return bfmp;
 }
 
-std::string glylib::CalculateRingShapeBFMP(CoordinateVector ring_coordinates, int cut_off)
+std::string glylib::CalculateRingShapeBFMP(GeometryTopology::Coordinate::CoordinateVector ring_coordinates, int cut_off)
 {
     //****************************************************//
     //****************** canonicals.txt ******************//
@@ -91,7 +91,7 @@ std::string glylib::CalculateRingShapeBFMP(CoordinateVector ring_coordinates, in
     i = 0;
     j = 0;
     glylib::PlaneVector fifteen_planes;
-    CoordinateVector four;
+    GeometryTopology::Coordinate::CoordinateVector four;
     double dihedral;
     int no = 4; // just no?
     for(i = 0; i < 15; i++)
@@ -122,8 +122,8 @@ std::string glylib::CalculateRingShapeBFMP(CoordinateVector ring_coordinates, in
     tendihedrals=(double*)calloc(0,sizeof(double));
     double *sortdihedrals;
     sortdihedrals=(double*)calloc(0,sizeof(double));
-    double *threedihedrals;
-    threedihedrals=(double*)calloc(3,sizeof(double));
+    //double *threedihedrals; // commented out because not used
+    //threedihedrals=(double*)calloc(3,sizeof(double));
 
     // cut_off = 10; // OG make this a passed variable with a 10 default
     int cut_off1 = (0 - cut_off);
@@ -592,7 +592,7 @@ if(focheck ==1){
             i=i+5;
         }//while (i<fiveplanes*5)
 
-        CoordinateVector five;
+        GeometryTopology::Coordinate::CoordinateVector five;
         //coord_3D **five;
         //five=(coord_3D**)calloc(6,sizeof(coord_3D*));
         plane *fiveatomplane;
@@ -982,7 +982,7 @@ double glylib::calculateTorsionAngle(GeometryTopology::Coordinate *coord1, Geome
     return (current_dihedral * (180 / PI ) ); // Convert to DEGREES
 }
 
-glylib::plane glylib::get_plane_for_ring(int n, CoordinateVector r)
+glylib::plane glylib::get_plane_for_ring(int n, GeometryTopology::Coordinate::CoordinateVector r)
 {
     int jval[n];
     int l;
@@ -1123,13 +1123,13 @@ FILE* glylib::myfopen(const char *myfilename,const char *myopentype)
 }
 
 // This doesn't belong here, but Glycan::Monsaccharide is a messy struct.
-CoordinateVector gmml::GetCycleAtomCoordinates( Glycan::Monosaccharide* mono ) {
-    CoordinateVector coordinates;
+GeometryTopology::Coordinate::CoordinateVector gmml::GetCycleAtomCoordinates( Glycan::Monosaccharide* mono ) {
+    GeometryTopology::Coordinate::CoordinateVector coordinates;
     for( AtomVector::iterator it1 = mono->cycle_atoms_.begin(); it1 != mono->cycle_atoms_.end(); ++it1 )
     {
         MolecularModeling::Atom* atom = ( *it1 );
-        CoordinateVector atom_coordinates = atom->GetCoordinates();
-        for( CoordinateVector::iterator it2 = atom_coordinates.begin(); it2 != atom_coordinates.end(); ++it2 )
+        GeometryTopology::Coordinate::CoordinateVector atom_coordinates = atom->GetCoordinates();
+        for( GeometryTopology::Coordinate::CoordinateVector::iterator it2 = atom_coordinates.begin(); it2 != atom_coordinates.end(); ++it2 )
         {
             coordinates.push_back( ( *it2 ) );
         }

@@ -45,7 +45,6 @@ namespace MolecularModeling
             typedef std::vector<Assembly*> AssemblyVector;
             typedef std::vector<Residue*> ResidueVector;
             typedef std::vector<Atom*> AtomVector;
-            typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
             typedef std::map<std::string, gmml::GraphSearchNodeStatus> AtomStatusMap;
             typedef std::map<std::string, Atom*> AtomIdAtomMap;
 //            typedef std::vector<AtomVector> AtomVectorVector;
@@ -188,13 +187,13 @@ namespace MolecularModeling
               * A function to return all coordinates of all atoms in all residues and assemblies of an assembly
               * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
               */
-            CoordinateVector GetAllCoordinates();
+            GeometryTopology::Coordinate::CoordinateVector GetAllCoordinates();
             /*! \fn
              * A function to extract all the coordinates of all the cycle atoms of the monosaccharide.
              * @param mono The Monosaccharide object
              * @return coordinates The CoordinateVector with all the Coordinates
              */
-            CoordinateVector GetCycleAtomCoordinates( Glycan::Monosaccharide* mono );
+            GeometryTopology::Coordinate::CoordinateVector GetCycleAtomCoordinates( Glycan::Monosaccharide* mono );
             /*! \fn
               * A function to return all issues/notes within an assembly
               * @return List of all notes of an assembly
@@ -1850,7 +1849,7 @@ namespace MolecularModeling
              * @param CoordinateIndex The index of the coordinate set that should be extracted
              * @return Vector of pointers to the coordinates for the vector of atoms, in the same order as the vector of atoms.
              */
-            CoordinateVector GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex);
+            GeometryTopology::Coordinate::CoordinateVector GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex);
 
             /*! \fn                                                                          //Added by ayush on 06/16/18 for OffFile
               * A function that create an OFF file from Assembly
