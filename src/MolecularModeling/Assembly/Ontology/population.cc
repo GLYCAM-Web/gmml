@@ -877,13 +877,19 @@ void Assembly::PopulateSideAtom(std::stringstream& side_atom_stream, std::string
 
         if(object.str().compare("1") == 0)
         {
-            if(mono->derivatives_map_.find("a") != mono->derivatives_map_.end())
-                gmml::AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
+            // if(mono->derivatives_map_.find("a") != mono->derivatives_map_.end())
+            std::vector<std::pair<std::string, std::string> >::iterator thisPosition = std::find_if( mono->derivatives_map_.begin(), mono->derivatives_map_.end(),
+              [&](const std::pair<std::string, std::string>& element){ return element.first == "a";} );
+            if(thisPosition != mono->derivatives_map_.end())
+                gmml::AddLiteral(side_uri, Ontology::derivative, (*thisPosition).second, side_atom_stream);
         }
         else
         {
-            if(mono->derivatives_map_.find(object.str()) != mono->derivatives_map_.end())
-                gmml::AddLiteral(side_uri, Ontology::derivative, mono->derivatives_map_[object.str()], side_atom_stream);
+          std::vector<std::pair<std::string, std::string> >::iterator thisPosition = std::find_if( mono->derivatives_map_.begin(), mono->derivatives_map_.end(),
+              [&](const std::pair<std::string, std::string>& element){ return element.first == object.str() ;} );
+            // if(mono->derivatives_map_.find(object.str()) != mono->derivatives_map_.end())
+            if(thisPosition != mono->derivatives_map_.end())
+                gmml::AddLiteral(side_uri, Ontology::derivative, (*thisPosition).second, side_atom_stream);
         }
 
         std::string neighbor_resource = "";

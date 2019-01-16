@@ -1819,6 +1819,8 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                 new_atom->SetName(atom_name);
                 float atom_b_factor = atom->GetAtomTempretureFactor();
                 new_atom->SetBFactor(atom_b_factor);
+                std::string atom_element = atom->GetAtomElementSymbol();
+                new_atom->SetElementSymbol(atom_element);
                 // std::stringstream test;
                 // test << atom_b_factor;
                 //gmml::log(__LINE__, __FILE__, gmml::INF, test.str());

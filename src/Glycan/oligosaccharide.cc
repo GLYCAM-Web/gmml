@@ -56,7 +56,9 @@ void Glycan::Oligosaccharide::Print(std::ostream& out)
   std::stringstream ss;
   if(terminal_.compare("") != 0)
   {
-    if(root_->derivatives_map_.find("-1") == root_->derivatives_map_.end())
+    if(std::find_if( root_->derivatives_map_.begin(), root_->derivatives_map_.end(),
+      [](const std::pair<std::string, std::string>& element){ return element.first == "-1";}) == root_->derivatives_map_.end() )
+    // if(root_->derivatives_map_.find("-1") == root_->derivatives_map_.end())
     {
       ss << "1-" << terminal_;
     }

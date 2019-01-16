@@ -29,7 +29,7 @@ namespace Glycan
       ChemicalCode* author_chemical_code_;                                        /*!< The chemical code structure of the monosacchride based on the author's residue naming (Glycode: http://glycam.org/docs/gmml/2016/03/31/glycode-internal-monosaccharide-representation/)>*/
       SugarName sugar_name_;                                              /*!< The sugar name object assigned to the monosacchride >*/
       SugarName author_sugar_name_;                                       /*!< The sugar name object assigned to the residue name given by the author >*/
-      std::map<std::string, std::string> derivatives_map_;                /*!< A mapping between the monosacchride's atom position/index and the derivative/modification attached to it >*/
+      std::vector<std::pair<std::string, std::string> > derivatives_map_; /*!< A mapping between the monosacchride's atom position/index and the derivative/modification attached to it >*/
       std::string cycle_atoms_str_;                                       /*!< The string version of atom identifiers of the ring of the monosacchride >*/
       std::string anomeric_status_;                                       /*!< The detection status of the anomeric carbon >*/
       MolecularModeling::Atom* anomeric_carbon_pointer_ = NULL;
@@ -66,6 +66,8 @@ namespace Glycan
       void SetCompleteSideGroupAtoms(std::vector<MolecularModeling::Atom*>& SideAtomArm, MolecularModeling::Atom* working_atom, std::vector<MolecularModeling::Atom*>& cycle_atoms, std::vector<MolecularModeling::Atom*>& visited_atoms);
       void CheckIfSideChainIsTerminal(MolecularModeling::Atom* starting_atom, std::vector<MolecularModeling::Atom*> & cycle_and_visited_atoms, bool & is_terminal);
       void ExtractDerivatives(MolecularModeling::Assembly* this_assembly);
+      std::string GetFormula(MolecularModeling::Atom* target);
+      void CountElements(MolecularModeling::Atom* thisAtom, std::vector<std::pair<std::string, int> >& elementVector);
       std::vector<MolecularModeling::Atom*> ExtractAdditionalSideAtoms();
       void GenerateCompleteName(std::vector<MolecularModeling::Atom*> &plus_sides, Glycan::Monosaccharide* this_mono, MolecularModeling::Assembly* this_assembly);
       void GenerateCompleteSugarName(MolecularModeling::Assembly* this_assembly);

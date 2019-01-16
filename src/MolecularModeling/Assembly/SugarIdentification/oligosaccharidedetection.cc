@@ -430,7 +430,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     // ///IF NO DERIVATIVES THEN NO NEED TO ITERATE THROUGH WHATS NOT THERE
     // /// Also, this now prints Ring Position instead of Position. e.g: -1, a( 1 ), 2, 3, 4, 5, +1, +2, +3
     if( !mono->derivatives_map_.empty() ) {
-      for( std::map< std::string, std::string >::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++ ) {
+      for( std::vector<std::pair< std::string, std::string> >::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++ ) {
         std::string key = ( *it1 ).first;
         std::string value = ( *it1 ).second;
         std::cout << "Carbon at Ring Position " << key << " is attached to " << value << std::endl;

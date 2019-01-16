@@ -837,11 +837,21 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
         key = "a";
       else
         key = gmml::ConvertT(index + 1);
-      derivatives_map_[key] = value;
+      derivatives_map_.push_back({key, value});
     }
     else
     {
-      //TODO add function to add formula of unknown derivative
+      // if(index == 0)
+      //   key = "a";
+      // else
+      //   key = gmml::ConvertT(index + 1);
+      // 
+      // //TODO add function to add formula of unknown derivative
+      // value = GetFormula(target);
+      // if(value.compare("") != 0)
+      // {
+      //   derivatives_map_.push_back({key, value});
+      // }
     }
   }
   for(std::vector<std::vector<MolecularModeling::Atom*>>::iterator it = side_atoms_.begin(); it != side_atoms_.end(); it++) ///iterate on side atoms
@@ -943,11 +953,101 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
               break;
           }
         }
-        derivatives_map_[key] = value;
+        derivatives_map_.push_back({key, value});
       }
       else
       {
-        //Add function to get the formula of the derivative
+        // if(index == 0)
+        //   key = "-1";
+        // else
+        // {
+        //   switch (side_branch_last_carbon_index)
+        //   {
+        //     case 0:
+        //       key = "+1";
+        //       break;
+        //     case 1:
+        //       key = "+2";
+        //       break;
+        //     case 2:
+        //       key = "+3";
+        //       break;
+        //   }
+        // }
+        // //Add function to get the formula of the derivative
+        // value = GetFormula(target);
+        // if(value.compare("") != 0)
+        // {
+        //   derivatives_map_.push_back({key, value});
+        // }
+      }
+    }
+  }
+}
+
+std::string Glycan::Monosaccharide::GetFormula(MolecularModeling::Atom* target)//
+{
+  std::string thisDerivative = "";
+  std::vector<std::pair<std::string, int> > elementVector;
+  std::vector<MolecularModeling::Atom*> t_neighbors = target->GetNode()->GetNodeNeighbors();
+  target->GetNode()->SetIsVisited(true);
+  for(std::vector<MolecularModeling::Atom*>::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
+  {
+    MolecularModeling::Atom* t_neighbor = (*it1);
+    if((cycle_atoms_str_.find(t_neighbor->GetId()) == std::string::npos) && (t_neighbor->GetElementSymbol() != "H"))//this neighbor isn't in the ring or the hydrogen
+    {
+      CountElements(t_neighbor, elementVector);
+    }
+  }
+  for(std::vector<std::pair<std::string, int> >::iterator it = elementVector.begin(); it != elementVector.end(); it++)
+  {
+    std::string thisElement = (*it).first;
+    int thisElementCount = (*it).second;
+    if(thisElementCount > 0)
+    {
+      thisDerivative = thisDerivative + thisElement + std::to_string(thisElementCount);
+    }
+  }
+  gmml::log(__LINE__, __FILE__, gmml::INF, thisDerivative);
+  return thisDerivative;
+}
+
+void Glycan::Monosaccharide::CountElements(MolecularModeling::Atom* thisAtom, std::vector<std::pair<std::string, int> >& elementVector)
+{
+  if(elementVector.size() == 0)
+  {
+    elementVector = {{"C", 0}, {"H", 0}, {"Ac", 0},{"Ag", 0},{"Al", 0},{"Am", 0},{"Ar", 0},{"As", 0},{"At", 0},{"Au", 0},
+                     {"B", 0}, {"Ba", 0},{"Be", 0},{"Bh", 0},{"Bi", 0},{"Bk", 0},{"Br", 0},{"Ca", 0},{"Cd", 0},{"Ce", 0}, 
+                     {"Cf", 0},{"Cl", 0},{"Cm", 0},{"Co", 0},{"Cr", 0},{"Cs", 0},{"Cu", 0},{"Dd", 0},{"Dy", 0},{"Er", 0}, 
+                     {"Es", 0},{"Eu", 0},{"F", 0}, {"Fe", 0},{"Fm", 0},{"Fr", 0},{"Ga", 0},{"Gd", 0},{"Ge", 0},{"He", 0}, 
+                     {"Hf", 0},{"Hg", 0},{"Ho", 0},{"Hs", 0},{"I", 0}, {"In", 0},{"Ir", 0},{"K", 0}, {"Kr", 0},{"La", 0},
+                     {"Li", 0},{"Lr", 0},{"Lu", 0},{"Md", 0},{"Mg", 0},{"Mn", 0},{"Mo", 0},{"Mt", 0},{"N", 0}, {"Na", 0}, 
+                     {"Nb", 0},{"Nd", 0},{"Ne", 0},{"Ni", 0},{"No", 0},{"Np", 0},{"O", 0}, {"Os", 0},{"P", 0}, {"Pa", 0}, 
+                     {"Pb", 0},{"Pd", 0},{"Pm", 0},{"Po", 0},{"Pr", 0},{"Pt", 0},{"Pu", 0},{"Ra", 0},{"Rb", 0},{"Re", 0}, 
+                     {"Rf", 0},{"Rh", 0},{"Rn", 0},{"Ru", 0},{"S", 0}, {"Sb", 0},{"Sc", 0},{"Se", 0},{"Sg", 0},{"Si", 0}, 
+                     {"Sm", 0},{"Sn", 0},{"Sr", 0},{"Ta", 0},{"Tb", 0},{"Tc", 0},{"Te", 0},{"Th", 0},{"Ti", 0},{"Tl", 0}, 
+                     {"Tm", 0},{"U", 0}, {"V", 0}, {"W", 0}, {"Xe", 0},{"Y", 0}, {"Yb", 0},{"Zn", 0},{"Zr", 0}};
+  }
+  std::string this_atom_element = thisAtom->GetElementSymbol();
+  for(std::vector<std::pair<std::string, int> >::iterator it = elementVector.begin(); it != elementVector.end(); it++)
+  {
+    if(this_atom_element == (*it).first)
+    {
+      (*it).second ++;
+      gmml::log(__LINE__, __FILE__, gmml::INF, thisAtom->GetId());
+      break;
+    }
+  }
+  thisAtom->GetNode()->SetIsVisited(true);
+  std::vector<MolecularModeling::Atom*> thisAtomNeighbors = thisAtom->GetNode()->GetNodeNeighbors();
+  if(thisAtomNeighbors.size() > 1)
+  {
+    for(std::vector<MolecularModeling::Atom*>::iterator it = thisAtomNeighbors.begin(); it != thisAtomNeighbors.end(); it++)
+    {
+      MolecularModeling::Atom* thisNeighbor = (*it);
+      if (!thisNeighbor->GetNode()->GetIsVisited())
+      {
+        CountElements(thisNeighbor, elementVector);
       }
     }
   }
@@ -1123,11 +1223,13 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
     std::stringstream head;
     std::stringstream tail;
     bool minus_one = false;
-    if(derivatives_map_.find("-1") != derivatives_map_.end())
+    if(std::find_if( derivatives_map_.begin(), derivatives_map_.end(),
+      [](const std::pair<std::string, std::string>& element){ return element.first == "-1";} ) == derivatives_map_.end())
+    // if(derivatives_map_.find("-1") != derivatives_map_.end())
     {
         minus_one = true;
     }
-    for(std::map<std::string, std::string>::iterator it1 = derivatives_map_.begin(); it1 != derivatives_map_.end(); it1++)
+    for(std::vector<std::pair<std::string, std::string> >::iterator it1 = derivatives_map_.begin(); it1 != derivatives_map_.end(); it1++)
     {
         std::string key = (*it1).first;
         std::string value = (*it1).second;
@@ -1288,7 +1390,7 @@ void Glycan::Monosaccharide::UpdatePdbCode()
 
 void Glycan::Monosaccharide::UpdateComplexSugarChemicalCode() 
 {
-  for( std::map< std::string, std::string >::iterator it1 = derivatives_map_.begin(); it1 != derivatives_map_.end(); it1++ ) 
+  for( std::vector<std::pair< std::string, std::string> >::iterator it1 = derivatives_map_.begin(); it1 != derivatives_map_.end(); it1++ ) 
   {
     std::string key = ( *it1 ).first;
     std::string value = ( *it1 ).second;
