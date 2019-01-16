@@ -412,3 +412,9 @@ using OffFileSpace::OffFile;
     //////////////////////////////////////////////////////////
     //                     DISPLAY FUNCTIONS                //
     //////////////////////////////////////////////////////////
+
+
+    void OffFile::Print(std::ostream& out)
+    {
+        out << "Printing OffFile Details"<<std::endl;
+    }

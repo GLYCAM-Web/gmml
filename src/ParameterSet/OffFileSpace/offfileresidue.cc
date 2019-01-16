@@ -183,4 +183,6 @@ void OffFileResidue::SetListingIndex(int listing_index)
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
 void OffFileResidue::Print(std::ostream& out)
-{}
+{
+    out << "Printing OffFile Residue Details"<<std::endl;
+}

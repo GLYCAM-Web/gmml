@@ -6,11 +6,11 @@
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-template < class N >
-GraphDS::Edge<N>::Edge(){}
 
-template < class N >
-GraphDS::Edge<N>::Edge(GraphDS::Node<N>* srcNode,GraphDS::Node<N>* dstNode)
+GraphDS::Edge::Edge(){}
+
+
+GraphDS::Edge::Edge(GraphDS::Node* srcNode,GraphDS::Node* dstNode)
 {
     this->srcNode_=srcNode;
     this->dstNode_=dstNode;
@@ -20,26 +20,26 @@ GraphDS::Edge<N>::Edge(GraphDS::Node<N>* srcNode,GraphDS::Node<N>* dstNode)
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-template < class N >
-GraphDS::Node<N>* GraphDS::Edge<N>::GetSourceNode()
+
+GraphDS::Node* GraphDS::Edge::GetSourceNode()
 {
     return srcNode_;
 }
 
-template < class N >
-GraphDS::Node<N>* GraphDS::Edge<N>::GetDestinationNode()
+
+GraphDS::Node* GraphDS::Edge::GetDestinationNode()
 {
     return dstNode_;
 }
 
-template < class N >
-typename GraphDS::Edge<N>::LabelVector GraphDS::Edge<N>::GetEdgeLabels()
+
+typename GraphDS::Edge::LabelVector GraphDS::Edge::GetEdgeLabels()
 {
     return labels_;
 }
 
-template < class N >
-double GraphDS::Edge<N>::GetEdgeWeight()
+
+double GraphDS::Edge::GetEdgeWeight()
 {
     return weight_;
 }
@@ -48,30 +48,30 @@ double GraphDS::Edge<N>::GetEdgeWeight()
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
 
-template < class N >
-void GraphDS::Edge<N>::SetSourceNode(GraphDS::Node<N>* srcNode)
+
+void GraphDS::Edge::SetSourceNode(GraphDS::Node* srcNode)
 {
     this->srcNode_= srcNode;
 }
 
-template < class N >
-void GraphDS::Edge<N>::SetDestinationNode(GraphDS::Node<N>* dstNode)
+
+void GraphDS::Edge::SetDestinationNode(GraphDS::Node* dstNode)
 {
     this->dstNode_= dstNode;
 }
 
-template < class N >
-void GraphDS::Edge<N>::SetEdgeLabels(GraphDS::Edge<N>::LabelVector labels)
+
+void GraphDS::Edge::SetEdgeLabels(GraphDS::Edge::LabelVector labels)
 {
     this->labels_.clear();
-    for(GraphDS::Edge<N>::LabelVector::iterator it = labels.begin(); it != labels.end(); it++)
+    for(GraphDS::Edge::LabelVector::iterator it = labels.begin(); it != labels.end(); it++)
     {
         labels_.push_back(*it);
     }
 }
 
-template < class N >
-void GraphDS::Edge<N>::SetEdgeWeight(double weight)
+
+void GraphDS::Edge::SetEdgeWeight(double weight)
 {
     this->weight_= weight;
 }
@@ -79,8 +79,8 @@ void GraphDS::Edge<N>::SetEdgeWeight(double weight)
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 
-template < class N >
-void GraphDS::Edge<N>::AddEdgeLabel(std::string label)
+
+void GraphDS::Edge::AddEdgeLabel(std::string label)
 {
         labels_.push_back(label);
 }
@@ -88,4 +88,8 @@ void GraphDS::Edge<N>::AddEdgeLabel(std::string label)
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
 
+void GraphDS::Edge::Print(std::ostream &out)
+{
 
+    std::cout<<"Printing Edge details"<<std::endl;
+}

@@ -4,45 +4,55 @@
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-template<class N>
-GraphDS::Node<N>::Node(): is_visited_(false){}
+
+GraphDS::Node::Node() {
+
+    this->is_visited_=false;
+    this->node_id_=this->GenerateNodeID();
+}
 
 //////////////////////////////////////////////////////////
 //                       DECONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-template<class N>
-GraphDS::Node<N>::~Node(){}
+
+GraphDS::Node::~Node(){}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-template<class N>
-N* GraphDS::Node<N>::GetNode()
+
+void* GraphDS::Node::GetNodeValue()
 {
-    return node_;
+    return node_value_;
 }
 
-template<class N>
-std::string GraphDS::Node<N>::GetNodeId()
+
+std::string GraphDS::Node::GetNodeType()
+{
+    return node_type_;
+}
+
+
+std::string GraphDS::Node::GetNodeId()
 {
     return node_id_;
 }
 
-template<class N>
-bool GraphDS::Node<N>::GetIsVisited()
+
+bool GraphDS::Node::GetIsVisited()
 {
     return is_visited_;
 }
 
-template<class N>
- typename GraphDS::Node<N>::EdgeVector GraphDS::Node<N>::GetEdgeList()
+
+ GraphDS::Node::EdgeVector GraphDS::Node::GetEdgeList()
 {
     return edgeList_;
 }
 
-template<class N>
-typename GraphDS::Node<N>::TagsVector GraphDS::Node<N>::GetTagList()
+
+ GraphDS::Node::TagsVector GraphDS::Node::GetTagList()
 {
     return tags_;
 }
@@ -51,38 +61,43 @@ typename GraphDS::Node<N>::TagsVector GraphDS::Node<N>::GetTagList()
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
 
-template<class N>
-void GraphDS::Node<N>::SetNode(N* node)
+
+void GraphDS::Node::SetNodeValue(void* node_value)
 {
-    this->node_= node;
+    this->node_value_= node_value;
 }
 
-template<class N>
-void GraphDS::Node<N>::SetNodeId(long node_id)
+void GraphDS::Node::SetNodeType(std::string node_type)
+{
+    this->node_type_= node_type;
+}
+
+
+void GraphDS::Node::SetNodeId(std::string node_id)
 {
     this->node_id_= node_id;
 }
 
-template<class N>
-void GraphDS::Node<N>::SetIsVisited(bool is_visited)
+
+void GraphDS::Node::SetIsVisited(bool is_visited)
 {
     this->is_visited_=is_visited;
 }
 
-template<class N>
-void GraphDS::Node<N>::SetEdgeList(EdgeVector edgeList)
+
+void GraphDS::Node::SetEdgeList(EdgeVector edgeList)
 {
     this->edgeList_.clear();
-    for(typename GraphDS::Node<N>::EdgeVector::iterator it = edgeList.begin(); it != edgeList.end(); it++) {
+    for(typename GraphDS::Node::EdgeVector::iterator it = edgeList.begin(); it != edgeList.end(); it++) {
         this->edgeList_.push_back(*it);
     }
 }
 
-template<class N>
-void GraphDS::Node<N>::SetTagList(TagsVector tags)
+
+void GraphDS::Node::SetTagList(TagsVector tags)
 {
     this->tags_.clear();
-    for(typename GraphDS::Node<N>::TagsVector::iterator it = tags.begin(); it != tags.end(); it++) {
+    for(typename GraphDS::Node::TagsVector::iterator it = tags.begin(); it != tags.end(); it++) {
         this->tags_.push_back(*it);
     }
 }
@@ -91,21 +106,31 @@ void GraphDS::Node<N>::SetTagList(TagsVector tags)
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 
-template<class N>
-void GraphDS::Node<N>::AddEdge(Edge<N> *edge)
+
+void GraphDS::Node::AddEdge(Edge *edge)
 {
     edgeList_.push_back(edge);
 }
 
-template<class N>
-void GraphDS::Node<N>::AddTag(std::string tag)
+
+void GraphDS::Node::AddTag(std::string tag)
 {
     tags_.push_back(tag);
+}
+
+std::string GraphDS::Node::GenerateNodeID()
+{
+    static unsigned long long NodeIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
+    NodeIndex++; // makes copy of NodeIndex, increments the real NodeIndex
+    return "Node_"+std::to_string(NodeIndex); // returns the value in the copy
 }
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
 
-template<class N>
-void GraphDS::Node<N>::Print(std::ostream &out)
-{}
+
+void GraphDS::Node::Print(std::ostream &out)
+{
+    std::cout<<"Printing Node details"<<std::endl;
+    std::cout<<"Node ID:"<<node_id_<<std::endl;
+}

@@ -11,7 +11,7 @@
 
 namespace GraphDS
 {
- template < class N > class Graph
+class Graph
     {
         public:
             //////////////////////////////////////////////////////////
@@ -20,8 +20,8 @@ namespace GraphDS
             /*! \typedef
              * List of nodes in a Graph
              */
-            typedef typename std::vector<GraphDS::Node<N>*> NodeVector;
-            typedef typename std::vector<GraphDS::Edge<N>*> EdgeVector;
+            typedef std::vector<GraphDS::Node*> NodeVector;
+            typedef std::vector<GraphDS::Edge*> EdgeVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -47,6 +47,12 @@ namespace GraphDS
                */
              EdgeVector GetGraphEdgeList();
 
+             /*! \fn
+               * An accessor function in order to access the name of the graph
+               * @return  graph_name_ attribute of the current object of Graph class
+               */
+             std::string GetGraphName();
+
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -63,6 +69,12 @@ namespace GraphDS
                */
              void SetGraphEdgeList(EdgeVector edgeList);
 
+             /*! \fn
+               * A mutator function in order to set the Graph name
+               * @param graph_name string graph name from the user
+               */
+             void SetGraphName(std::string graph_name);
+
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
@@ -71,27 +83,32 @@ namespace GraphDS
               * Set the node_ attributes of the current graph object
               * @param node_ The node attribute of the current graph object
               */
-           void AddNewNode(GraphDS::Node<N>* newNode);
+           void AddNewNode(GraphDS::Node* newNode);
 
            /*! \fn
              * A function to remove an existing new node from the Graph
              * Remove the node_ attributes of the current graph object
              * @param node_ The node attribute of the current graph object
              */
-          void RemoveNode(GraphDS::Node<N>* delNode);
+          void RemoveNode(GraphDS::Node* delNode);
 
            /*! \fn
              * A function to add an edge between two nodes of the current graph object of this class
              * @param node_ The node attribute of the current graph object
              */
-          void AddEdge(GraphDS::Node<N>* firstNode, GraphDS::Node<N>* secondNode);
+          void AddEdge(GraphDS::Node* firstNode, GraphDS::Node* secondNode);
 
            /*! \fn
              * A function to find a node in the current graph object using the node id
              * @return node_ attribute of the current graph object of this class
              */
 
-           GraphDS::Node<N>* FindNodeById(std::string node_id);
+           GraphDS::Node* FindNodeById(std::string node_id);
+
+           /*! \fn
+           * A function to generate the ID for a Graph.
+           */
+           std::string GenerateGraphID();
 
             /////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -109,7 +126,8 @@ namespace GraphDS
             //////////////////////////////////////////////////////////
             NodeVector graphNodeList_;         /*!< List of all nodes in the graph >*/
             EdgeVector graphEdgeList_;         /*!< List of all edges in the graph >*/
+            std::string graph_id_;             /*!< An identifier for a graph which is a unqiue ID >*/
+            std::string graph_name_;           /*!< Name of the Graph assigned >*/
     };
 }
-#include "../../../src/MolecularModeling/Graph/graph.cc"
 #endif // GRAPH_HPP

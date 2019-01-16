@@ -7,66 +7,133 @@
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-template < class N >
-GraphDS::Graph<N>::Graph(){}
+
+GraphDS::Graph::Graph()
+{
+    this->graph_id_ = this->GenerateGraphID();
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-template < class N >
-typename GraphDS::Graph<N>::NodeVector GraphDS::Graph<N>::GetGraphNodeList()
+
+GraphDS::Graph::NodeVector GraphDS::Graph::GetGraphNodeList()
 {\
     return graphNodeList_;
 }
 
-template < class N >
-typename GraphDS::Graph<N>::EdgeVector GraphDS::Graph<N>::GetGraphEdgeList()
+
+GraphDS::Graph::EdgeVector GraphDS::Graph::GetGraphEdgeList()
 {\
     return graphEdgeList_;
+}
+
+
+std::string GraphDS::Graph::GetGraphName()
+{
+    return graph_name_;
 }
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
 
-template < class N >
-void GraphDS::Graph<N>::SetGraphNodeList(NodeVector nodeList)
+
+void GraphDS::Graph::SetGraphNodeList(NodeVector nodeList)
 {
     graphNodeList_.clear();
-    for(typename GraphDS::Graph<N>::NodeVector::iterator it = nodeList.begin(); it != nodeList.end(); it++)
+    for( GraphDS::Graph::NodeVector::iterator it = nodeList.begin(); it != nodeList.end(); it++)
     {
         graphNodeList_.push_back(*it);
     }
 }
 
-template < class N >
-void GraphDS::Graph<N>::SetGraphEdgeList(EdgeVector edgeList)
+
+void GraphDS::Graph::SetGraphEdgeList(EdgeVector edgeList)
 {
     graphEdgeList_.clear();
-    for(typename GraphDS::Graph<N>::EdgeVector::iterator it = edgeList.begin(); it != edgeList.end(); it++)
+    for( GraphDS::Graph::EdgeVector::iterator it = edgeList.begin(); it != edgeList.end(); it++)
     {
         graphEdgeList_.push_back(*it);
     }
 }
 
+void GraphDS::Graph::SetGraphName(std::string graph_name)
+{
+       graph_name_=graph_name;
+}
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 
-template < class N >
-void GraphDS::Graph<N>::AddNewNode(Node<N> *newNode)
+
+void GraphDS::Graph::AddNewNode(Node *newNode)
 {
     graphNodeList_.push_back(newNode);
 }
 
-template < class N >
-void GraphDS::Graph<N>::AddEdge(Node<N>* firstNode, Node<N>* secondNode)
+
+void GraphDS::Graph::AddEdge(Node* firstNode, Node* secondNode)
 {
-    Edge<N>* newEdge = new Edge<N>(firstNode, secondNode);
+    Edge* newEdge = new Edge(firstNode, secondNode);
     graphEdgeList_.push_back(newEdge);
+    firstNode->AddEdge(newEdge);
+}
+
+void GraphDS::Graph::RemoveNode(GraphDS::Node *delNode)
+{
+    for(GraphDS::Graph::NodeVector::iterator it = graphNodeList_.begin(); it != graphNodeList_.end(); it++)
+    {
+
+            GraphDS::Node* current_node = (*it);
+            if(current_node->GetNodeId().compare(delNode->GetNodeId()) != 0)
+                 graphNodeList_.erase(it);
+    }
+}
+
+GraphDS::Node* GraphDS::Graph::FindNodeById(std::string node_id)
+{
+    for(GraphDS::Graph::NodeVector::iterator it = graphNodeList_.begin(); it != graphNodeList_.end(); it++)
+    {
+            GraphDS::Node* current_node=NULL;
+
+            current_node = (*it);
+            if(current_node->GetNodeId().compare(node_id) != 0)
+                return current_node;
+            else
+                return current_node;
+    }
+}
+
+std::string GraphDS::Graph::GenerateGraphID()
+{
+    static unsigned int GraphIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
+    GraphIndex++; // makes copy of GraphIndex, increments the real GraphIndex
+    return "Graph_"+std::to_string(GraphIndex); // returns the value in the copy
 }
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
+
+
+void GraphDS::Graph::Print(std::ostream &out)
+{
+    out<<"Printing Graph details"<<std::endl;
+
+    out<<"Format: Node -->Connected Nodes"<<std::endl;
+    for(GraphDS::Graph::NodeVector::iterator it = graphNodeList_.begin(); it != graphNodeList_.end(); it++)
+    {
+            GraphDS::Node* current_node=(*it);
+            out<< current_node->GetNodeId();
+
+            for( GraphDS::Graph::EdgeVector::iterator it1 = graphEdgeList_.begin(); it1 != graphEdgeList_.end(); it1++)
+            {
+                GraphDS::Edge *current_edge = (*it1);
+                out<<"--> "<<current_edge->GetDestinationNode()->GetNodeId();
+            }
+            out<<std::endl;
+
+    }
+}
