@@ -107,6 +107,9 @@ std::vector<double> Assembly::CalculateBondlengthsStatisticsBasedOnOntologyInfo(
     sparql << query.str();
     sparql.close();
 
+
+/*! \todo  Get rid of all very local paths/references like this one:
+ */
     system("/home/delaram/virtuoso-7.2.4/bin/isql 1111 dba dba \< bonds.sparql \>  bond_results.txt");
     remove("bonds.sparql");
 
@@ -198,6 +201,8 @@ std::vector<double> Assembly::CalculateBondAnglesStatisticsBasedOnOntologyInfo(s
     sparql << query.str();
     sparql.close();
 
+/*! \todo  Get rid of all very local paths/references like this one:
+ */
     system("/home/delaram/virtuoso-7.2.4/bin/isql 1111 dba dba \< bond_angles.sparql \>  bond_angle_results.txt");
     remove("bond_angles.sparql");
 

@@ -78,7 +78,7 @@
 #include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
-#include "../../../includes/MolecularModeling/GeometryOperation/geometry.hpp"
+#include "../../../includes/GeometryTopology/rotation.hpp"
 #include "../../../includes/MolecularModeling/overlaps.hpp"  //Added by Yao 07/27/2018
 
 #include <unistd.h>
@@ -850,6 +850,11 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 	        if (std::find(all_atoms_in_residue.begin(), all_atoms_in_residue.end(), neighbor_atom) == all_atoms_in_residue.end()){
 		    MolecularModeling::Atom* head_atom_of_child_residue = neighbor_atom;
 		    MolecularModeling::Residue* child_residue = head_atom_of_child_residue->GetResidue();
+		    //It has been observed that coordinates shift abnormally,so I added code that print coordinate of tail and head atom for tracking.Now is before moving:
+		    std::cout << "Coordinate of parent tail atom before moving: " <<  parent_residue->GetName() << "-" << tail_atom->GetName() << ": (" << tail_atom->GetCoordinates().at(0)->GetX() << "," <<
+		    tail_atom->GetCoordinates().at(0)->GetY() << "," << tail_atom->GetCoordinates().at(0)->GetZ() << ")    " << std::endl; 
+		    std::cout << "Coordinate of child atom before moving: " <<  child_residue->GetName() << "-" << head_atom_of_child_residue->GetName() << ": (" << head_atom_of_child_residue->GetCoordinates().at(0)->GetX() << "," <<
+		    head_atom_of_child_residue->GetCoordinates().at(0)->GetY() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetZ() << ")    " << std::endl; 
 		    gmml::AtomVector all_atoms_in_child_residue = child_residue->GetAtoms();
 		    //Right now, all residues are at the position of the template residue. That is, they are all around the orgin and stacked upon each other.
 		    //SetResidueResidueBondDistance function: takes a pair of parent tail/child head atoms as argument. This function keeps the parent residue intact,but
@@ -986,6 +991,11 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 			    this->SetDihedral(omega_atom_1, omega_atom_2, omega_atom_3, omega_atom_4, dihedral_omega);
 			}
 		    }//else Done setting phi,psi, omega(if exists)
+		    //It has be found out that coordinates shift abnormally with each move. Now print out the coordinates for testing after moving:
+std::cout << "Coordinate of parent tail atom after moving: " <<  parent_residue->GetName() << "-" << tail_atom->GetName() << ": (" << tail_atom->GetCoordinates().at(0)->GetX() << "," <<
+                    tail_atom->GetCoordinates().at(0)->GetY() << "," << tail_atom->GetCoordinates().at(0)->GetZ() << ")    " << std::endl;
+                    std::cout << "Coordinate of child atom after moving: " <<  child_residue->GetName() << "-" << head_atom_of_child_residue->GetName() << ": (" << head_atom_of_child_residue->GetCoordinates().at(0)->GetX() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetY() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetZ() << ")    " << std::endl << std::endl;
+
 		    //Start new recursion
 		    MolecularModeling::Residue* new_parent_residue = child_residue;
 		    this->RecursivelySetGeometry(new_parent_residue);
@@ -1032,16 +1042,23 @@ MolecularModeling::Assembly::ResidueVector Assembly::FindClashingResidues()
 	    }
 	}
     }
+    std::cout << "All clashing residues were identified in this order:" << std::endl; 
+    for (MolecularModeling::Assembly::ResidueVector::iterator it = clashing_residues.begin(); it != clashing_residues.end(); it++){
+	std::cout << (*it)->GetIndex() << "---" << (*it)->GetName() << std::endl;
+    }
+    std::cout << "\n";
     return clashing_residues;
 }
 
-std::map<MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> > Assembly::FindPathToCommonAncestors(MolecularModeling::Assembly::ResidueVector& all_clashing_residues)
+std::vector<MolecularModeling::Assembly::ResidueVector> Assembly::FindPathToCommonAncestors(MolecularModeling::Assembly::ResidueVector& all_clashing_residues)
 {
     std::vector<MolecularModeling::Assembly::ResidueVector> all_clashing_residue_parent_paths = std::vector<MolecularModeling::Assembly::ResidueVector> ();
     MolecularModeling::Assembly::ResidueVector visited_residues = MolecularModeling::Assembly::ResidueVector();
     //Starting from each residue, construct a pathway until a branching point(a residue with multiple tail atoms), add residue in this pathway to a ResidueVector
+    std::cout << "Building pathways from clashing residues.Now the order they appear in the residue vector is: " << std::endl;
     for (MolecularModeling::Assembly::ResidueVector::iterator it = all_clashing_residues.begin(); it != all_clashing_residues.end(); it++){
 	MolecularModeling::Residue* clashing_residue = *it;
+        std::cout << (*it)->GetIndex() << "---" << (*it)->GetName() << std::endl;
 	if (!clashing_residue->GetIsAglycon() && std::find(visited_residues.begin(), visited_residues.end(), clashing_residue) == visited_residues.end() ){
 	    MolecularModeling::Residue* current_residue = clashing_residue;
 	    MolecularModeling::Assembly::ResidueVector path = MolecularModeling::Assembly::ResidueVector();
@@ -1053,6 +1070,11 @@ std::map<MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::R
 		if (current_residue->GetIsAglycon() || std::find(visited_residues.begin(), visited_residues.end(), current_residue) != visited_residues.end()){
 		    visited_residues.push_back(current_residue);
 		    path.push_back(current_residue);
+		    std::cout << "A new clashing path identified: " << std::endl;
+		    for (MolecularModeling::Assembly::ResidueVector::iterator it = path.begin(); it != path.end(); it++){
+			std::cout << (*it)->GetName() << std::endl;
+		    }
+		    std::cout << std::endl;
 		    all_clashing_residue_parent_paths.push_back(path);
 		    break;
 		}
@@ -1073,57 +1095,46 @@ std::map<MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::R
 
 	}
     }
-    //Make a fused map
-    //This map contains the last element of that pathway(common ancestor) as key. Of course, a common ancestor can lead to multiple pathways, so a vector of pathways (vector<ResidueVector>)
-    //is the value.
-    std::map <MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> > fused_paths = std::map <MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> >();
-    MolecularModeling::Assembly::ResidueVector all_ancestors = MolecularModeling::Assembly::ResidueVector();
-    for (unsigned int i = 0; i < all_clashing_residue_parent_paths.size(); i++){
-	MolecularModeling::Assembly::ResidueVector path = all_clashing_residue_parent_paths[i];
-	MolecularModeling::Residue* path_ancestor = path.back();
-	fused_paths[path_ancestor].push_back(path);
-    }
-    return fused_paths;
+    return all_clashing_residue_parent_paths;
 }
 
-void Assembly::ResolveClashes(std::map<MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> >& fused_clashing_paths,
+void Assembly::ResolveClashes(std::vector<MolecularModeling::Assembly::ResidueVector>& fused_clashing_paths,
 			     std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& index_dihedral_map)
 {
     //For each common ancestor, go through all its clashing pathways one by one.
-    for (std::map<MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> >::iterator it = fused_clashing_paths.begin(); it != fused_clashing_paths.end(); it++){
-	//MolecularModeling::Residue* common_ancestor = it->first; unused parameter
-	std::vector<MolecularModeling::Assembly::ResidueVector> clashing_pathways = it->second;
-	for (unsigned int i = 0; i < clashing_pathways.size(); i++){
-	    MolecularModeling::Assembly::ResidueVector pathway = clashing_pathways[i];
-	    //Find all omega torsion in the pathway, these are available for rotation in clash resolution process
-	    std::vector <gmml::AtomVector*> all_omega_dihedrals = this->FindAllOmegaTorsionsInPathway(pathway, index_dihedral_map);
-	    //If availble dihedrals are found, initiate clash resolution process
-	    if (!all_omega_dihedrals.empty()){
-		//By limited grid search, find the set of coordinate resulting in least clash
-	        GeometryTopology::Coordinate::CoordinateVector least_clash_coordinates_for_this_pathway = this->FindBestSetOfTorsions(all_omega_dihedrals);
-	 	//For each atom in assembly, set coordinate according to the best set of coordiante found. This will crudely resolve clashes.
-		gmml::AtomVector all_atoms_in_assembly = this->GetAllAtomsOfAssembly();
-		for (unsigned int j = 0; j < all_atoms_in_assembly.size(); j++){
-		    GeometryTopology::Coordinate* new_coordinate = least_clash_coordinates_for_this_pathway[j]; 
-		    GeometryTopology::Coordinate::CoordinateVector new_coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
-		    new_coordinate_set.push_back(new_coordinate);
-		    all_atoms_in_assembly[j]->SetCoordinates(new_coordinate_set);
-		}
+    std::cout << "Print out this map again in ResolveClashes(), compare the order of elements to previous printing statement: " << std::endl;
+    for (std::vector<MolecularModeling::Assembly::ResidueVector>::iterator it = fused_clashing_paths.begin(); it != fused_clashing_paths.end(); it++){
+	std::vector <gmml::AtomVector*> all_omega_dihedrals = this->FindAllOmegaTorsionsInPathway(*it, index_dihedral_map);
+        //If availble dihedrals are found, initiate clash resolution process
+	if (!all_omega_dihedrals.empty()){
+            //By limited grid search, find the set of coordinate resulting in least clash
+            GeometryTopology::Coordinate::CoordinateVector least_clash_coordinates_for_this_pathway = this->FindBestSetOfTorsions(all_omega_dihedrals);
+            //For each atom in assembly, set coordinate according to the best set of coordiante found. This will crudely resolve clashes.
+	    gmml::AtomVector all_atoms_in_assembly = this->GetAllAtomsOfAssembly();
+	    for (unsigned int j = 0; j < all_atoms_in_assembly.size(); j++){
+	        GeometryTopology::Coordinate* new_coordinate = least_clash_coordinates_for_this_pathway[j]; 
+	        GeometryTopology::Coordinate::CoordinateVector new_coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+	        new_coordinate_set.push_back(new_coordinate);
+	        all_atoms_in_assembly[j]->SetCoordinates(new_coordinate_set);
 	    }
-	}
+        }
     }
 }
 
 std::vector< gmml::AtomVector* > Assembly::FindAllOmegaTorsionsInPathway (MolecularModeling::Assembly::ResidueVector& pathway, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& 
 									  index_dihedral_map)
 {
+    std::cout << "Now print out this pathway in reverse in FindAllOmegaTorsionsInPathway()" << std::endl;
     //Identify all head atoms present in pathway
     gmml::AtomVector all_head_atoms_in_pathway = gmml::AtomVector();
     for (MolecularModeling::Assembly::ResidueVector::reverse_iterator it = pathway.rbegin(); it != pathway.rend(); it++){
+	std::cout << (*it)->GetName() << "--" ;
 	gmml::AtomVector head_atoms_in_residue = (*it)->GetHeadAtoms();
 	for (gmml::AtomVector::iterator it2 = head_atoms_in_residue.begin(); it2 != head_atoms_in_residue.end(); it2++){
+	    std::cout << "head atom: " << (*it2)->GetName();
 	    all_head_atoms_in_pathway.push_back(*it2);
 	}
+        std::cout << std::endl;
     }
     //Identify all tail atoms connected to the head atoms in pathway.
     gmml::AtomVector all_tail_atoms_in_pathway = gmml::AtomVector();
@@ -1178,7 +1189,7 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
     //For each combination, rotate coordinates accordingly, then compute clash score. If clash score is lower than the current minimum, record the current set of coordinate as the least-clashing
     //coordinate set
     //Make a pair. Pair.first is clash score, pair.second is coordinate set
-    std::pair <double, GeometryOperation::Geometry::CoordinateVector> least_clash_coordinate = std::pair <double, GeometryOperation::Geometry::CoordinateVector>();
+    std::pair <double, GeometryTopology::Coordinate::CoordinateVector> least_clash_coordinate = std::pair <double, GeometryTopology::Coordinate::CoordinateVector>();
     gmml::AtomVector all_atoms_in_assembly = this->GetAllAtomsOfAssembly();
     //Compute rotation score using the originial coordinate. Initiate least_clash_coordinate to contain this original state.
     double initial_clash_score = gmml::CalculateAtomicOverlaps(all_atoms_in_assembly, all_atoms_in_assembly);
@@ -1190,6 +1201,7 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
     //For each combination, rotate accordingly
     for (unsigned int i = 0; i < all_combinations.size(); i++){
 	combination& rotation_set = all_combinations[i];
+	std::cout << "Begin rotation set: " << std::endl;
 	for (combination::iterator it = rotation_set.begin(); it != rotation_set.end(); it++){
 	    gmml::AtomVector* dihedral_atoms = it->first;
 	    GeometryTopology::Coordinate* pivot_point = dihedral_atoms->at(1)->GetCoordinates().at(0);
@@ -1205,20 +1217,26 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
 		original_coordinates.push_back(atoms_to_rotate[j]->GetCoordinates().at(0));
 	    }
 	    double rotation_value = it->second;
-	    GeometryOperation::Geometry rotation_operation = GeometryOperation::Geometry();
+	    std::cout << dihedral_atoms->at(0)->GetName() << "-" << dihedral_atoms->at(1)->GetName() << "-" << dihedral_atoms->at(2)->GetName() << "-" << dihedral_atoms->at(3)->GetName() << "," << rotation_value << " degrees" << std::endl;
+	    GeometryTopology::Rotation rotation_operation = GeometryTopology::Rotation();
 	    //Perform rotation, but return rotated coordinates rather than actually perform rotation
 	    GeometryTopology::Coordinate::CoordinateVector rotated_coordinates = rotation_operation.RotateCoordinates(pivot_point, rotation_axis, rotation_value, original_coordinates);
 	    //Reset atom coordinates to the rotated coordinated set
+	    std::cout << "Rotated atoms for this torsion: " << std::endl;
 	    for (unsigned int j = 0; j < atoms_to_rotate.size(); j++){
 		GeometryTopology::Coordinate::CoordinateVector new_coordinates = GeometryTopology::Coordinate::CoordinateVector();
 		new_coordinates.push_back(rotated_coordinates[j]);
+		std::cout << atoms_to_rotate[j]->GetResidue()->GetName() << "-" << atoms_to_rotate[j]->GetName() << " previously at " << atoms_to_rotate[j]->GetCoordinates().at(0)->GetX() << "," << atoms_to_rotate[j]->GetCoordinates().at(0)->GetY() << "," << atoms_to_rotate[j]->GetCoordinates().at(0)->GetZ();
 		atoms_to_rotate[j]->SetCoordinates(new_coordinates);
+	        std::cout << " now at " << atoms_to_rotate[j]->GetCoordinates().at(0)->GetX() << "," << atoms_to_rotate[j]->GetCoordinates().at(0)->GetY() << "," << atoms_to_rotate[j]->GetCoordinates().at(0)->GetZ() << std::endl;
 
 	    }
 	    
 	}//rotate each combination
 	//After setting coordinates, compute clash score.
 	double clash_score = gmml::CalculateAtomicOverlaps(all_atoms_in_assembly, all_atoms_in_assembly);
+	std::cout << "Computed clash score for this set is: " << clash_score << std::endl;
+	std::cout << "End rotation model. " << std::endl << std::endl;
 	//If current clash score is lower than current minimum, overwrite lowest clash score, and best coordinate set.
 	if (clash_score < least_clash_coordinate.first){
 	    least_clash_coordinate.first = clash_score;
@@ -1229,6 +1247,11 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
 	    }
 	}
 	
+    }
+    std::cout << "Best set of coordinates: " << std::endl;
+    std::cout << "Clash score: " << least_clash_coordinate.first << std::endl;
+    for (unsigned int j = 0; j < all_atoms_in_assembly.size(); j++){
+	std::cout << all_atoms_in_assembly[j]->GetName() << " " << least_clash_coordinate.second[j]->GetX() << "," << least_clash_coordinate.second[j]->GetY() << "," << least_clash_coordinate.second[j]->GetZ() << std::endl;
     }
     //Return best set of coordinate
     return least_clash_coordinate.second;
@@ -1305,9 +1328,6 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
     
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceResidueTree res_tree = sequence.GetCondensedSequenceResidueTree();
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo info = sequence.GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(res_tree);
-    for (unsigned int i = 0; i< info.size(); i++){
-	std::cout << "info index: " << i << ";" << "rot name: " << info[i].first << "linkage index: " << info[i].second->GetLinkageIndex() << std::endl;
-    }
 
     MolecularModeling::Assembly::TemplateAssembly* template_assembly = this-> BuildTemplateAssemblyFromPrepFile (glycam06_residues, prep_file);
 
@@ -1335,7 +1355,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
     }
     //Find and resolve clashes below(crudely)
     MolecularModeling::Assembly::ResidueVector clashing_residues = this->FindClashingResidues();
-    std::map <MolecularModeling::Residue*, std::vector<MolecularModeling::Assembly::ResidueVector> > clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues); 
+    std::vector<MolecularModeling::Assembly::ResidueVector> clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues); 
     this-> ResolveClashes(clashing_residue_parent_paths, index_dihedral_map);
 }
 
@@ -1372,7 +1392,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
 
                 // Build residue from prep residue
                 sequence_number++;
-                CoordinateVector cartesian_coordinate_list = CoordinateVector();
+                GeometryTopology::Coordinate::CoordinateVector cartesian_coordinate_list = GeometryTopology::Coordinate::CoordinateVector();
                 Residue* assembly_residue = new Residue();
                 assembly_residue->SetAssembly(this);
                 std::string prep_residue_name = prep_residue->GetName();
@@ -1440,7 +1460,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
 
                     if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
                     {
-                        std::vector<GeometryTopology::Coordinate*> coordinate_list = std::vector<GeometryTopology::Coordinate*>();
+                        GeometryTopology::Coordinate::CoordinateVector coordinate_list;
+                        //std::vector<GeometryTopology::Coordinate*> coordinate_list = std::vector<GeometryTopology::Coordinate*>();
                         int index = std::distance(prep_atoms.begin(), it1);
                         if(index == 0)
                         {
@@ -1474,8 +1495,11 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
                             coordinate_list.push_back(parent_coordinate);
                         }
                         GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate();
-                        coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
-                                                                                         prep_atom->GetAngle(), prep_atom->GetDihedral());
+                        double bond_length = prep_atom->GetBondLength();
+                        double angle_value = prep_atom->GetAngle();
+                        double dihedral_value = prep_atom->GetDihedral();
+                        coordinate = coordinate->ConvertInternalCoordinate2CartesianCoordinate(
+                            coordinate_list, bond_length, angle_value, dihedral_value);
                         cartesian_coordinate_list.push_back(coordinate);
 
                         assembly_atom->AddCoordinate(coordinate);
@@ -1661,7 +1685,7 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
     std::vector<double> angle_index_per_dihedral = std::vector<double> (all_dihedral_rotation_values.size(), gmml::dNotSet);
     working_assembly ->GenerateAllTorsionCombinations(all_dihedral_rotation_values, 0, all_rotation_combinations, angle_index_per_dihedral);
     //Rotate according to each combination
-    std::vector<GeometryOperation::Geometry::CoordinateVector> rotamer_coordinate_sets = std::vector<GeometryOperation::Geometry::CoordinateVector>();
+    std::vector<GeometryTopology::Coordinate::CoordinateVector> rotamer_coordinate_sets = std::vector<GeometryTopology::Coordinate::CoordinateVector>();
     for (unsigned int i = 0; i < all_rotation_combinations.size(); i++){
 	combination& rotamer_rotation_set = all_rotation_combinations[i];
 	for (unsigned int j = 0; j < rotamer_rotation_set.size(); j++){
@@ -1671,7 +1695,7 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
 	    working_assembly ->SetDihedral(dihedral_atoms->at(0), dihedral_atoms->at(1), dihedral_atoms->at(2), dihedral_atoms->at(3), rotation_value);
 	}
 	//Copy current coordinate objects 
-	GeometryOperation::Geometry::CoordinateVector new_rotamer_coordinate_set = GeometryOperation::Geometry::CoordinateVector();
+	GeometryTopology::Coordinate::CoordinateVector new_rotamer_coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
 	gmml::AtomVector all_atoms_of_assembly = working_assembly->GetAllAtomsOfAssembly();
 	for (unsigned int j = 0; j < all_atoms_of_assembly.size(); j++){
 	    GeometryTopology::Coordinate* original_coordinate = all_atoms_of_assembly[j]->GetCoordinates().at(0);
@@ -1684,11 +1708,11 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
     gmml::AtomVector all_atoms_of_assembly = working_assembly->GetAllAtomsOfAssembly();
     //Empty current atoms coordinates
     for (unsigned int i = 0; i < all_atoms_of_assembly.size(); i++){
-	all_atoms_of_assembly[i]->SetCoordinates(GeometryOperation::Geometry::CoordinateVector());
+	all_atoms_of_assembly[i]->SetCoordinates(GeometryTopology::Coordinate::CoordinateVector());
     }
     //Add each rotamer coordinate set one by one to atoms in assembly
     for (unsigned int i = 0; i < rotamer_coordinate_sets.size(); i++){
-	GeometryOperation::Geometry::CoordinateVector& rotamer_set = rotamer_coordinate_sets[i];
+	GeometryTopology::Coordinate::CoordinateVector& rotamer_set = rotamer_coordinate_sets[i];
 	for (unsigned int j = 0; j < rotamer_set.size(); j++){
 	   all_atoms_of_assembly[j]->AddCoordinate(rotamer_set[j]); 
 	}
@@ -1706,7 +1730,7 @@ void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<s
 {
     std::cout << "Building assembly from pdb file ..." << std::endl;
 //    std::cout << "Reading PDB file into PdbFileSpace::PdbFile structure." << std::endl;
-    PdbFileSpace::PdbFile* pdb_file;
+    PdbFileSpace::PdbFile* pdb_file=NULL;
     try
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "Reading PDB file into PdbFileSpace::PdbFile structure ...");
@@ -1776,6 +1800,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
             PdbFileSpace::PdbFile::PdbAtomCardVector* atoms = residue_atoms_map[residue_key];
             Residue* residue = new Residue();
             residue->SetAssembly(this);
+            
 
             for(PdbFileSpace::PdbFile::PdbAtomCardVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
             {
@@ -1793,6 +1818,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
 
                 Atom* new_atom = new Atom();
                 residue->SetName(residue_name);
+                
                 std::string atom_name = atom->GetAtomName();
                 new_atom->SetName(atom_name);
                 float atom_b_factor = atom->GetAtomTempretureFactor();
@@ -1960,6 +1986,29 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                 residue->AddAtom(new_atom);
             }
             this->AddResidue(residue);
+            if( (residue->GetName() == "ALA") ||
+                (residue->GetName() == "ARG") ||
+                (residue->GetName() == "ASN") ||
+                (residue->GetName() == "ASP") ||
+                (residue->GetName() == "CYS") ||
+                (residue->GetName() == "GLU") ||
+                (residue->GetName() == "GLN") ||
+                (residue->GetName() == "GLY") ||
+                (residue->GetName() == "HIS") ||
+                (residue->GetName() == "ILE") ||
+                (residue->GetName() == "LEU") ||
+                (residue->GetName() == "LYS") ||
+                (residue->GetName() == "MET") ||
+                (residue->GetName() == "PHE") ||
+                (residue->GetName() == "PRO") ||
+                (residue->GetName() == "SER") ||
+                (residue->GetName() == "THR") ||
+                (residue->GetName() == "TRP") ||
+                (residue->GetName() == "TYR") ||
+                (residue->GetName() == "VAL") )
+            {
+              residue->SetChemicalType("Amino Acid");
+            }
         }
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
@@ -2410,7 +2459,8 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::Topolo
             assembly_atom->SetResidue(assembly_residue);
             assembly_atom->SetName(topology_atom->GetAtomName());
 
-            std::vector<GeometryTopology::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
+            GeometryTopology::Coordinate::CoordinateVector coord_file_coordinates = coordinate_file->GetCoordinates();
+            //std::vector<GeometryTopology::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
             assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index-1));
             assembly_residue->AddAtom(assembly_atom);
         }
@@ -2462,9 +2512,9 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile *prep_file, std
     for(PrepFileSpace::PrepFile::ResidueMap::iterator it = prep_residues.begin(); it != prep_residues.end(); it++)
     {
         sequence_number++;
-        CoordinateVector cartesian_coordinate_list = CoordinateVector();
-        int head_atom_index = INFINITY;
-        int tail_atom_index = -INFINITY;
+        GeometryTopology::Coordinate::CoordinateVector cartesian_coordinate_list = GeometryTopology::Coordinate::CoordinateVector();
+        int head_atom_index = (int) INFINITY;
+        int tail_atom_index = (int) -INFINITY;
         Atom* head_atom = new Atom();
         Atom* tail_atom = new Atom();
 
@@ -2521,7 +2571,8 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile *prep_file, std
 
             if(prep_residue->GetCoordinateType() == PrepFileSpace::kINT)
             {
-                std::vector<GeometryTopology::Coordinate*> coordinate_list = std::vector<GeometryTopology::Coordinate*>();
+                GeometryTopology::Coordinate::CoordinateVector coordinate_list;
+                //std::vector<GeometryTopology::Coordinate*> coordinate_list = std::vector<GeometryTopology::Coordinate*>();
                 int index = std::distance(prep_atoms.begin(), it1);
                 if(index == 0)
                 {
@@ -2554,9 +2605,18 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile *prep_file, std
                     coordinate_list.push_back(grandparent_coordinate);
                     coordinate_list.push_back(parent_coordinate);
                 }
-                GeometryTopology::Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
-                                                                                             prep_atom->GetAngle(), prep_atom->GetDihedral());
+                GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate();
+                double bond_length = prep_atom->GetBondLength();
+                double angle_value = prep_atom->GetAngle();
+                double dihedral_value = prep_atom->GetDihedral();
+                coordinate = coordinate->ConvertInternalCoordinate2CartesianCoordinate(
+                    coordinate_list, bond_length, angle_value, dihedral_value);
                 cartesian_coordinate_list.push_back(coordinate);
+//original
+                //GeometryTopology::Coordinate* coordinate = GeometryTopology::Coordinate::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
+                                                                                             //prep_atom->GetAngle(), prep_atom->GetDihedral());
+                //cartesian_coordinate_list.push_back(coordinate);
+//
 
                 assembly_atom->AddCoordinate(coordinate);
             }

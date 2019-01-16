@@ -72,6 +72,8 @@
 #include <errno.h>
 #include <string.h>
 
+int local_debug = 0;
+
 using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
@@ -432,10 +434,21 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAt
 {
     AtomVector all_atoms_of_assembly = AtomVector();
     AssemblyVector assemblies = this->GetAssemblies();
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Assemblies size: ");
+      gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(assemblies.size()));
+    }
+    
     for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
     {
         Assembly* assembly = (*it);
         AtomVector atoms_of_assembly = assembly->GetAllAtomsOfAssembly();
+        if ( local_debug > 0 )
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, "Atomvector size: ");
+          gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(atoms_of_assembly.size()));
+        }
         for(AtomVector::iterator it1 = atoms_of_assembly.begin(); it1 != atoms_of_assembly.end(); it1++)
         {
             Atom* atom = (*it1);
@@ -443,17 +456,24 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAt
         }
     }
     ResidueVector residues = this->GetResidues();
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Residue vector size: ");
+      gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(residues.size()));
+    }
     for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
     {
         Residue* residue = (*it);
-        if(residue->GetName().compare("HOH") != 0)
+        if((residue->GetName().compare("HOH") != 0) && (residue->CheckIfProtein() != true))
         {
             AtomVector atoms = residue->GetAtoms();
             for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
             {
                 Atom* atom = (*it1);
-                if(atom->GetDescription().find("Het;") != std::string::npos)
-                    all_atoms_of_assembly.push_back(atom);
+                // if(atom->GetDescription().find("Het;") != std::string::npos)
+                // There is a bug in this code somewhere, so I commented it out
+                // Won't find monosaccharides in monosaccharide only pdbs.
+                all_atoms_of_assembly.push_back(atom);
             }
         }
     }
@@ -495,20 +515,20 @@ Assembly::ResidueVector Assembly::GetAllProteinResiduesOfAssembly()
     }
     return protein_residues;
 }
-Assembly::CoordinateVector Assembly::GetAllCoordinates()
+GeometryTopology::Coordinate::CoordinateVector Assembly::GetAllCoordinates()
 {
-    CoordinateVector coordinates = CoordinateVector();
+    GeometryTopology::Coordinate::CoordinateVector coordinates;
     for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
     {
         Assembly* assembly = (*it);
-        CoordinateVector assembly_coordinate = assembly->GetAllCoordinates();
+        GeometryTopology::Coordinate::CoordinateVector assembly_coordinate = assembly->GetAllCoordinates();
         if(assembly_coordinate.size() == 0)
         {
             std::cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << std::endl;
             gmml::log(__LINE__, __FILE__, gmml::ERR, "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)");
-            return CoordinateVector();
+            return GeometryTopology::Coordinate::CoordinateVector();
         }
-        for(CoordinateVector::iterator it1 = assembly_coordinate.begin(); it1 != assembly_coordinate.end(); it1++)
+        for(GeometryTopology::Coordinate::CoordinateVector::iterator it1 = assembly_coordinate.begin(); it1 != assembly_coordinate.end(); it1++)
         {
             coordinates.push_back(*it1);
         }
@@ -524,7 +544,7 @@ Assembly::CoordinateVector Assembly::GetAllCoordinates()
             {
                 std::cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << std::endl;
                 gmml::log(__LINE__, __FILE__, gmml::ERR, "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)");
-                return CoordinateVector();
+                return GeometryTopology::Coordinate::CoordinateVector();
             }
             else
             {
@@ -535,12 +555,12 @@ Assembly::CoordinateVector Assembly::GetAllCoordinates()
     return coordinates;
 }
 
-Assembly::CoordinateVector Assembly::GetCycleAtomCoordinates( Glycan::Monosaccharide* mono ) {
-  CoordinateVector coordinates;
+GeometryTopology::Coordinate::CoordinateVector Assembly::GetCycleAtomCoordinates( Glycan::Monosaccharide* mono ) {
+  GeometryTopology::Coordinate::CoordinateVector coordinates;
   for( AtomVector::iterator it1 = mono->cycle_atoms_.begin(); it1 != mono->cycle_atoms_.end(); it1++ ) {
     MolecularModeling::Atom* atom = ( *it1 );
-    CoordinateVector atom_coordinates = atom->GetCoordinates();
-    for( CoordinateVector::iterator it2 = atom_coordinates.begin(); it2 != atom_coordinates.end(); it2++ ) {
+    GeometryTopology::Coordinate::CoordinateVector atom_coordinates = atom->GetCoordinates();
+    for( GeometryTopology::Coordinate::CoordinateVector::iterator it2 = atom_coordinates.begin(); it2 != atom_coordinates.end(); it2++ ) {
       coordinates.push_back( ( *it2 ) );
     }
   }
@@ -1127,13 +1147,13 @@ bool Assembly::CheckIfAtomExistInAssembly(MolecularModeling::Atom* toCheckAtom)
 
  //Added by ayush on 04/16/18 for TopologyFix in assembly
 
-Assembly::CoordinateVector Assembly::GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex)
+GeometryTopology::Coordinate::CoordinateVector Assembly::GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex)
 {
-    CoordinateVector coordinatesByIndex= CoordinateVector();
+    GeometryTopology::Coordinate::CoordinateVector coordinatesByIndex;
     for( AtomVector::iterator it1 = atomList.begin(); it1 != atomList.end(); it1++ ) {
       MolecularModeling::Atom* atom = ( *it1 );
-      CoordinateVector atom_coordinates = atom->GetCoordinates();
-      if(CoordinateIndex < atom_coordinates.size())
+      GeometryTopology::Coordinate::CoordinateVector atom_coordinates = atom->GetCoordinates();
+      if(CoordinateIndex < (int) atom_coordinates.size())
       {
         GeometryTopology::Coordinate* coordinate = atom_coordinates[CoordinateIndex];
         coordinatesByIndex.push_back(coordinate);

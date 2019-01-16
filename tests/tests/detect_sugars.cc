@@ -47,7 +47,7 @@ int main(int argc, char* argv[]) {
     // Build by Distance
     assembly.BuildStructureByDistance(10);
     // Find the Sugars.
-    assembly.ExtractSugars(aminolibs);
+    assembly.ExtractSugars(aminolibs, false, true);
     // YAY! We made it!
     return EXIT_SUCCESS;
 }
