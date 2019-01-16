@@ -1,48 +1,48 @@
-#include "../../../includes/GeometryTopology/InternalCoordinate/angle.hpp"
+#include "../../includes/GeometryTopology/distance.hpp"
 
-using GeometryTopology::Angle;
+using GeometryTopology::Distance;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Angle::Angle() {}
+Distance::Distance() {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-Angle::CoordinateVector Angle::GetCoordinates()
+GeometryTopology::Coordinate::CoordinateVector Distance::GetCoordinates()
 {
     return coordinates_;
 }
-double Angle::GetAngle()
+double Distance::GetLength()
 {
-    return angle_;
+    return length_;
 }
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void Angle::SetCoordinates(CoordinateVector coordinates)
+void Distance::SetCoordinates(GeometryTopology::Coordinate::CoordinateVector coordinates)
 {
     coordinates_.clear();
-    for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+    for(GeometryTopology::Coordinate::CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
     {
         coordinates_.push_back(*it);
     }
 }
-void Angle::AddCoordinate(Coordinate *coordinate)
+void Distance::AddCoordinate(Coordinate *coordinate)
 {
     coordinates_.push_back(coordinate);
 }
-void Angle::SetAngle(double angle)
+void Distance::SetLenght(double length)
 {
-    angle_ = angle;
+    length_ = length;
 }
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void Angle::Print(std::ostream &out)
+void Distance::Print(std::ostream &out)
 {
     out << "";
 }

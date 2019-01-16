@@ -8,7 +8,7 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
   bool bothCarbon = false;
   bool areNeighbors = false;
   bool areCloseEnough = false;
-  bool haveAll120angles = false;
+  //bool haveAll120angles = false;  // commented out because set but not used
   bool areTrigonalPlanar = false;
   int local_debug = 1;
   std::stringstream debugStr;
@@ -103,7 +103,7 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
             }
             if((MolecularModeling::Assembly::CalculateBondAngleByAtoms(thisC2Neighbor, carbon2, carbon1) < 130) && (MolecularModeling::Assembly::CalculateBondAngleByAtoms(thisC2Neighbor, carbon2, carbon1) > 110) && (MolecularModeling::Assembly::CalculateBondAngleByAtoms(thisC1Neighbor, carbon2, carbon1) < 130) && (MolecularModeling::Assembly::CalculateBondAngleByAtoms(thisC1Neighbor, carbon2, carbon1) > 110))
             {
-              haveAll120angles = true;
+            //  haveAll120angles = true;  // commenting out because not used
               if(local_debug > 0)
               {
                 debugStr << carbon1->GetId() << " and " << carbon2->GetId() << " and " << thisC2Neighbor->GetId() << " form an angle between 115 and 125 degrees\n";
@@ -113,7 +113,7 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
             }
             else
             {
-              haveAll120angles = false;
+          //    haveAll120angles = false;  // commenting out because not used
             }
           
             //If all 4 torsion angles are about 0 (+-5?)
