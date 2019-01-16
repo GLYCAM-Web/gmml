@@ -33,6 +33,8 @@ OffFileSpace::OffFileAtom* OffFileResidue::GetAtomByIndex(int index)
     return atoms_[index];
 }
 
+/*
+>>>>>>> 59b93388cbe59d7a2ba06f22b8a076e9d6382f44
 /// Return an atom belonging to the residue by a given order number
 OffFileSpace::OffFileAtom* OffFileResidue::GetAtomByOrder(int order)
 {
@@ -43,6 +45,9 @@ OffFileSpace::OffFileAtom* OffFileResidue::GetAtomByOrder(int order)
     }
     return NULL;
 }
+<<<<<<< HEAD
+=======
+*/
 
 /// Return the box angle of the residue
 double OffFileResidue::GetBoxAngle()
@@ -80,6 +85,8 @@ int OffFileResidue::GetTailAtomIndex()
     return tail_atom_index_;
 }
 
+/*
+>>>>>>> 59b93388cbe59d7a2ba06f22b8a076e9d6382f44
 OffFileSpace::OffFileAtom* OffFileResidue::GetOffAtomByAtomName(std::string atom_name)
 {
     for(OffFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
@@ -90,6 +97,9 @@ OffFileSpace::OffFileAtom* OffFileResidue::GetOffAtomByAtomName(std::string atom
     }
     return NULL;
 }
+<<<<<<< HEAD
+=======
+*/
 int OffFileResidue::GetListingIndex()
 {
     return listing_index_;
@@ -104,6 +114,8 @@ void OffFileResidue::SetName(std::string name)
     name_ = name;
 }
 
+/*
+>>>>>>> 59b93388cbe59d7a2ba06f22b8a076e9d6382f44
 /// Set the atom map belonging to the residue mapped to their insertion order
 void OffFileResidue::SetAtoms(OffFileResidue::AtomMap& atoms)
 {
@@ -113,12 +125,14 @@ void OffFileResidue::SetAtoms(OffFileResidue::AtomMap& atoms)
         atoms_[it->second->GetAtomOrder()] = it->second;
     }
 }
+<<<<<<< HEAD
 
 /// Add a new atom to map of the residue
 void OffFileResidue::AddAtom(OffFileSpace::OffFileAtom* atom)
 {
     atoms_[atom->GetAtomOrder()] = atom;
-}
+=======
+*/
 /// Add a new atom to map of the residue
 void OffFileResidue::AddAtom(OffFileSpace::OffFileAtom* atom)
 {
@@ -169,6 +183,4 @@ void OffFileResidue::SetListingIndex(int listing_index)
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
 void OffFileResidue::Print(std::ostream& out)
-{
-    out << "Printing OffFile Residue Details"<<std::endl;
-}
+{}
