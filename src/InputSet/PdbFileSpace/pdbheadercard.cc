@@ -6,7 +6,7 @@ using PdbFileSpace::PdbHeaderCard;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbHeaderCard::PdbHeaderCard() : record_name_("HEADER"), classification_(""), deposition_date_(""), identifier_code_(""){}
+PdbHeaderCard::PdbHeaderCard() : record_name_("HEADER"), classification_(" "), deposition_date_(" "), identifier_code_(" "){}
 
 PdbHeaderCard::PdbHeaderCard(const std::string &record_name, const std::string &classification, const std::string &deposition_date, const std::string &identifier_code)
 {
@@ -18,6 +18,10 @@ PdbHeaderCard::PdbHeaderCard(const std::string &record_name, const std::string &
 
 PdbHeaderCard::PdbHeaderCard(std::stringstream& stream_block)
 {
+  record_name_ = "";
+  classification_ = "";
+  deposition_date_ = "";
+  identifier_code_ = "";
     std::string line;
     getline(stream_block, line);
     std::string temp = line;

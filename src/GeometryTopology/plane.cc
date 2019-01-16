@@ -10,28 +10,28 @@ Plane::Plane() {}
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
-gmml::Vector Plane::GetV1()
+GeometryTopology::Coordinate Plane::GetV1()
 {
     return v1_;
 }
 
-gmml::Vector Plane::GetV2()
+GeometryTopology::Coordinate Plane::GetV2()
 {
     return v2_;
 }
 
-gmml::Vector Plane::GetUnitNormalVector()
+GeometryTopology::Coordinate Plane::GetUnitNormalVector()
 {
-    gmml::Vector v1 =  gmml::Vector(v1_.GetX(), v1_.GetY(), v1_.GetZ());
-    gmml::Vector v2 =  gmml::Vector(v2_.GetX(), v2_.GetY(), v2_.GetZ());
+    GeometryTopology::Coordinate v1 =  GeometryTopology::Coordinate(v1_.GetX(), v1_.GetY(), v1_.GetZ());
+    GeometryTopology::Coordinate v2 =  GeometryTopology::Coordinate(v2_.GetX(), v2_.GetY(), v2_.GetZ());
     v1.CrossProduct(v2);
     v1.Normalize();
-    return gmml::Vector(v1.GetX(), v1.GetY(), v1.GetZ());
+    return GeometryTopology::Coordinate(v1.GetX(), v1.GetY(), v1.GetZ());
 }
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
-void Plane::SetV1(gmml::Vector v1)
+void Plane::SetV1(GeometryTopology::Coordinate v1)
 {
     v1_.SetX(v1.GetX());
     v1_.SetY(v1.GetY());
@@ -43,7 +43,7 @@ void Plane::SetV1(double x, double y, double z)
     v1_.SetY(y);
     v1_.SetZ(z);
 }
-void Plane::SetV2(gmml::Vector v2)
+void Plane::SetV2(GeometryTopology::Coordinate v2)
 {
     v2_.SetX(v2.GetX());
     v2_.SetY(v2.GetY());

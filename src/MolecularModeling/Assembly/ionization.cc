@@ -152,7 +152,7 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
                     GeometryTopology::Grid* grid = new GeometryTopology::Grid(this, minimum_boundary, maximum_boundary, ion_radius, ion_charge);
                     grid->CalculateCellsCharge();
                     grid->CalculateCellsPotentialEnergy(ion_radius);
-                    CoordinateVector best_positions = grid->GetBestPositions(ion_charge);
+                    GeometryTopology::Coordinate::CoordinateVector best_positions = grid->GetBestPositions(ion_charge);
 
                     if(best_positions.size() == 0)
                     {
@@ -185,7 +185,7 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
                         residue_id << ion->GetName() << "_" << gmml::BLANK_SPACE << "_" << (i+1) << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << id_;
                         ion->SetId(residue_id.str());
 
-                        CoordinateVector atom_coordinates = CoordinateVector();
+                        GeometryTopology::Coordinate::CoordinateVector atom_coordinates;
                         atom_coordinates.push_back(best_position);
                         Atom* ion_atom = new Atom(ion, lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetName(), atom_coordinates);
                         ion_atom->MolecularDynamicAtom::SetAtomType(lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetType());
@@ -266,7 +266,7 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
                     GeometryTopology::Grid* grid = new GeometryTopology::Grid(this, minimum_boundary, maximum_boundary, ion_radius, ion_charge);
                     grid->CalculateCellsCharge();
                     grid->CalculateCellsPotentialEnergy(ion_radius);
-                    CoordinateVector best_positions = grid->GetBestPositions(ion_charge);
+                    GeometryTopology::Coordinate::CoordinateVector best_positions = grid->GetBestPositions(ion_charge);
 
                     if(best_positions.size() == 0)
                     {
@@ -299,7 +299,7 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
                         residue_id << ion->GetName() << "_" << gmml::BLANK_SPACE << "_" << (i+1) << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << id_;
                         ion->SetId(residue_id.str());
 
-                        CoordinateVector atom_coordinates = CoordinateVector();
+                        GeometryTopology::Coordinate::CoordinateVector atom_coordinates;
                         atom_coordinates.push_back(best_position);
                         Atom* ion_atom = new Atom(ion, lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetName(), atom_coordinates);
                         ion_atom->MolecularDynamicAtom::SetAtomType(lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetType());

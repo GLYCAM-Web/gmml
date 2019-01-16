@@ -6,7 +6,6 @@
 //*******************************************
 
 typedef std::vector<MolecularModeling::Atom*> AtomVector;
-typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
 typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
 
 //*******************************************

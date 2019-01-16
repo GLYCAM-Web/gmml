@@ -182,5 +182,14 @@ void OffFileResidue::SetListingIndex(int listing_index)
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
-void OffFileResidue::Print(std::ostream& out)
-{}
+/*! \todo  Fix the error message below about the next line 
+
+src/ParameterSet/OffFileSpace/offfileresidue.cc:185:42: warning: unused parameter 'out' [-Wunused-parameter]
+ void OffFileResidue::Print(std::ostream& out)
+                                          ^
+
+Assuming unused....
+
+*/
+//void OffFileResidue::Print(std::ostream& out)
+//{}
