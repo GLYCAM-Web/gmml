@@ -67,9 +67,11 @@ namespace Glycan
     void createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> detected_monos, gmml::ResidueNameMap dataset_residue_names,
                                       int& number_of_covalent_links, int& number_of_probable_non_covalent_complexes);
     std::vector<Glycan::Oligosaccharide*> createOligosaccharides(std::vector<Glycan::Monosaccharide*> detected_monos);
+    void indexMonos(Glycan::Monosaccharide* thisMono, int thisIndex);
     void traverseGraph(Glycan::Monosaccharide* thisMono, Glycan::Oligosaccharide* thisOligo);
     void getBranchMaxLengths(Glycan::Monosaccharide* this_mono, std::vector<int> &branchLengths);
     void cleanCountedBranches(Glycan::Monosaccharide* this_mono);
+    void reindexRGroups(Glycan::Oligosaccharide* this_Oligo);
     std::string CheckTerminals(MolecularModeling::Atom* target, std::vector<MolecularModeling::Atom*>& terminal_atoms);
     void CheckLinkageNote(Glycan::Monosaccharide* mono1, Glycan::Monosaccharide* mono2, std::string linkage, std::vector<std::string>& checked_linkages);
     void BuildOligosaccharideTreeStructure(Glycan::Monosaccharide *key, std::vector<Glycan::Monosaccharide*> values, Glycan::Oligosaccharide *oligo,

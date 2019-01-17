@@ -1602,6 +1602,20 @@ namespace MolecularModeling
               */
             void AddModificationRuleTwoInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern_at_minus_one, std::string long_name_pattern_at_plus_one,
                                             std::string cond_name_pattern, std::stringstream& tail, bool minus_one, std::stringstream& in_bracket);
+                                            
+            /*! \fn
+              * A function in order to add unknown derivative info to the name of the sugar
+              * @param key The index of the atom which is a key in the derivative map
+              * @param pattern The pattern of the modification which is based on the value in the derivative map
+              * @param mono The monosaccharide object
+              * @param long_name_pattern The long name pattern of the modification pattern which should be added to the sugar's long name
+              * @param cond_name_pattern The short name pattern of the modification pattern which should be added to the sugar's short name
+              * @param head The stream that will be added to the beginning of monosaccharide name and will be updated by this function
+              * @param minus_one A boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              * @param in_bracket The boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              */                                
+            void AddUnknownDerivativeRuleInfo(std::string key, std::string pattern, Glycan::Monosaccharide *mono, std::string long_name_pattern, 
+                                              std::string cond_name_pattern, std::stringstream &head, bool minus_one, std::stringstream &in_bracket);                                
             /*! \fn
               * A function in order to add the derivative info to the name of the sugar based on the first group of rules (Error Position -> 5(r6),4(r5) )
               * @param key The index of the atom which is a key in the derivative map

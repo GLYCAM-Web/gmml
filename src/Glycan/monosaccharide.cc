@@ -839,19 +839,33 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
         key = gmml::ConvertT(index + 1);
       derivatives_map_.push_back({key, value});
     }
-    else
+    else if(index != 0)
     {
-      // if(index == 0)
-      //   key = "a";
-      // else
-      //   key = gmml::ConvertT(index + 1);
-      // 
-      // //TODO add function to add formula of unknown derivative
-      // value = GetFormula(target);
-      // if(value.compare("") != 0)
-      // {
-      //   derivatives_map_.push_back({key, value});
-      // }
+      key = gmml::ConvertT(index + 1);
+      
+      //TODO add function to add formula of unknown derivative
+      value = GetFormula(target);
+      if(value.compare("") != 0)
+      {
+        if(((index == 4) && (this->sugar_name_.ring_type_.compare("F") == 0)) ||
+           ((index == 5) && (this->sugar_name_.ring_type_.compare("P") == 0)))
+        {
+          if (value != "C1O1")
+          {
+            gmml::log(__LINE__, __FILE__, gmml::INF, key);
+            gmml::log(__LINE__, __FILE__, gmml::INF, value);
+            unknown_derivates_.push_back({key, value});
+            derivatives_map_.push_back({key, ""});
+          }
+        }
+        else if(index != 4 && index !=5 && index != 0)
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, key);
+          gmml::log(__LINE__, __FILE__, gmml::INF, value);
+          unknown_derivates_.push_back({key, value});
+          derivatives_map_.push_back({key, ""});
+        }
+      }
     }
   }
   for(std::vector<std::vector<MolecularModeling::Atom*>>::iterator it = side_atoms_.begin(); it != side_atoms_.end(); it++) ///iterate on side atoms
@@ -957,29 +971,45 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
       }
       else
       {
-        // if(index == 0)
-        //   key = "-1";
-        // else
-        // {
-        //   switch (side_branch_last_carbon_index)
-        //   {
-        //     case 0:
-        //       key = "+1";
-        //       break;
-        //     case 1:
-        //       key = "+2";
-        //       break;
-        //     case 2:
-        //       key = "+3";
-        //       break;
-        //   }
-        // }
-        // //Add function to get the formula of the derivative
-        // value = GetFormula(target);
-        // if(value.compare("") != 0)
-        // {
-        //   derivatives_map_.push_back({key, value});
-        // }
+        if(index == 0)
+          key = "-1";
+        else
+        {
+          switch (side_branch_last_carbon_index)
+          {
+            case 0:
+              key = "+1";
+              break;
+            case 1:
+              key = "+2";
+              break;
+            case 2:
+              key = "+3";
+              break;
+          }
+        }
+        //Add function to get the formula of the derivative
+        value = GetFormula(target);
+        if(value.compare("") != 0)
+        {
+          if(key != "-1")
+          {
+            if(((index == 3) && (this->sugar_name_.ring_type_.compare("F") == 0)) ||
+               ((index == 4) && (this->sugar_name_.ring_type_.compare("P") == 0)))
+            {
+              if (value != "C1O1")
+              {
+                unknown_derivates_.push_back({key, value});
+                derivatives_map_.push_back({key, ""});
+              }
+            }
+          }
+          else
+          {
+            unknown_derivates_.push_back({key, value});
+            derivatives_map_.push_back({key, ""});
+          }
+        }
       }
     }
   }
@@ -1003,13 +1033,20 @@ std::string Glycan::Monosaccharide::GetFormula(MolecularModeling::Atom* target)/
   {
     std::string thisElement = (*it).first;
     int thisElementCount = (*it).second;
-    if(thisElementCount > 0)
+    if((thisElementCount > 0) && (thisElement != "H"))//Not counting Hydrogens
     {
       thisDerivative = thisDerivative + thisElement + std::to_string(thisElementCount);
     }
   }
-  gmml::log(__LINE__, __FILE__, gmml::INF, thisDerivative);
-  return thisDerivative;
+  if(thisDerivative != "O1")
+  {
+    gmml::log(__LINE__, __FILE__, gmml::INF, thisDerivative);
+    return thisDerivative;
+  }
+  else
+  {
+    return "";
+  }
 }
 
 void Glycan::Monosaccharide::CountElements(MolecularModeling::Atom* thisAtom, std::vector<std::pair<std::string, int> >& elementVector)
@@ -1034,7 +1071,7 @@ void Glycan::Monosaccharide::CountElements(MolecularModeling::Atom* thisAtom, st
     if(this_atom_element == (*it).first)
     {
       (*it).second ++;
-      gmml::log(__LINE__, __FILE__, gmml::INF, thisAtom->GetId());
+      // gmml::log(__LINE__, __FILE__, gmml::INF, thisAtom->GetId());
       break;
     }
   }
@@ -1045,7 +1082,7 @@ void Glycan::Monosaccharide::CountElements(MolecularModeling::Atom* thisAtom, st
     for(std::vector<MolecularModeling::Atom*>::iterator it = thisAtomNeighbors.begin(); it != thisAtomNeighbors.end(); it++)
     {
       MolecularModeling::Atom* thisNeighbor = (*it);
-      if (!thisNeighbor->GetNode()->GetIsVisited())
+      if (!thisNeighbor->GetNode()->GetIsVisited() && !thisNeighbor->GetIsCycle())
       {
         CountElements(thisNeighbor, elementVector);
       }
@@ -1238,6 +1275,20 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
         std::string long_name_pattern_at_minus_one = "";
         std::string long_name_pattern_at_plus_one = "";
         std::string pattern = "";
+        
+        std::string unknownDerivativePattern = "", unknownDerivativeKey = "";
+        for(std::vector<std::pair<std::string, std::string> >::iterator it = this->unknown_derivates_.begin(); it != this->unknown_derivates_.end(); it++)
+        {
+          std::string thisKey = (*it).first;
+          std::string thisPattern = (*it).second;
+          if(thisKey == key)
+          {
+            unknownDerivativeKey = thisKey;
+            unknownDerivativePattern = thisPattern;
+            break;
+          }
+        }
+        
         if(value.compare("xCH-N") == 0)
         {
             long_name_pattern = "-osamine";
@@ -1245,77 +1296,77 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
             pattern = "CH-N";
             this_assembly->AddModificationRuleOneInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, tail, minus_one, in_bracket);
         }
-        if(value.compare("xC-N-C=OCH3") == 0)
+        else if(value.compare("xC-N-C=OCH3") == 0)
         {
             long_name_pattern = "N-acetyl-";
             cond_name_pattern = "NAc";
             pattern = "C-N-C=OCH3";
             this_assembly->AddModificationRuleOneInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, tail, minus_one, in_bracket);
         }
-        if(value.compare("xC-N-C=OCH2OH") == 0)
+        else if(value.compare("xC-N-C=OCH2OH") == 0)
         {
             long_name_pattern = "N-glycolyl-";
             cond_name_pattern = "NGc";
             pattern = "C-N-C=OCH2OH";
             this_assembly->AddModificationRuleOneInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, tail, minus_one, in_bracket);
         }
-        if(value.compare("xC-N-SO3") == 0)
+        else if(value.compare("xC-N-SO3") == 0)
         {
             long_name_pattern = "N-sulfo-";
             cond_name_pattern = "NS";
             pattern = "C-N-SO3";
             this_assembly->AddModificationRuleOneInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, tail, minus_one, in_bracket);
         }
-        if(value.compare("xC-N-PO3") == 0)
+        else if(value.compare("xC-N-PO3") == 0)
         {
             long_name_pattern = "N-phospho-";
             cond_name_pattern = "NP";
             pattern = "C-N-PO3";
             this_assembly->AddModificationRuleOneInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, tail, minus_one, in_bracket);
         }
-        if(value.compare("xC-N-CH3") == 0)
+        else if(value.compare("xC-N-CH3") == 0)
         {
             long_name_pattern = "N-methyl-";
             cond_name_pattern = "NMe";
             pattern = "C-N-CH3";
             this_assembly->AddModificationRuleOneInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, tail, minus_one, in_bracket);
         }
-        if(value.compare("xC-O-C=OCH3") == 0)
+        else if(value.compare("xC-O-C=OCH3") == 0)
         {
             long_name_pattern = "-acetyl-";
             cond_name_pattern = "Ac";
             pattern = "C-O-C=OCH3";
             this_assembly->AddDerivativeRuleInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, minus_one, in_bracket);
         }
-        if(value.compare("xC-O-C=OCH2OH") == 0)
+        else if(value.compare("xC-O-C=OCH2OH") == 0)
         {
             long_name_pattern = "-glycolyl-";
             cond_name_pattern = "Gc";
             pattern = "C-O-C=OCH2OH";
             this_assembly->AddDerivativeRuleInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, minus_one, in_bracket);
         }
-        if(value.compare("xC-O-SO3") == 0)
+        else if(value.compare("xC-O-SO3") == 0)
         {
             long_name_pattern = "-sulfo-";
             cond_name_pattern = "S";
             pattern = "C-O-SO3";
             this_assembly->AddDerivativeRuleInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, minus_one, in_bracket);
         }
-        if(value.compare("xC-O-PO3") == 0)
+        else if(value.compare("xC-O-PO3") == 0)
         {
             long_name_pattern = "-phospho-";
             cond_name_pattern = "P";
             pattern = "C-O-PO3";
             this_assembly->AddDerivativeRuleInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, minus_one, in_bracket);
         }
-        if(value.compare("xC-O-CH3") == 0)
+        else if(value.compare("xC-O-CH3") == 0)
         {
             long_name_pattern = "-methyl-";
             cond_name_pattern = "Me";
             pattern = "C-O-CH3";
             this_assembly->AddDerivativeRuleInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, minus_one, in_bracket);
         }
-        if(value.compare("xC-(O,OH)") == 0)
+        else if(value.compare("xC-(O,OH)") == 0)
         {
             long_name_pattern_at_minus_one = "-ulosonic acid";
             long_name_pattern_at_plus_one = "-uronic acid";
@@ -1323,13 +1374,25 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
             pattern = "C-(O,OH)";
             this_assembly->AddModificationRuleTwoInfo(key, pattern, this, long_name_pattern_at_minus_one, long_name_pattern_at_plus_one, cond_name_pattern, tail, minus_one, in_bracket);
         }
-        if(value.compare("xC-(O,O)") == 0)
+        else if(value.compare("xC-(O,O)") == 0)
         {
             long_name_pattern_at_minus_one = "-ulosonate";
             long_name_pattern_at_plus_one = "-uronate";
             cond_name_pattern = "A";
             pattern = "C-(O,O)";
             this_assembly->AddModificationRuleTwoInfo(key, pattern, this, long_name_pattern_at_minus_one, long_name_pattern_at_plus_one, cond_name_pattern, tail, minus_one, in_bracket);
+        }
+        else if(unknownDerivativePattern != "")
+        {
+          this->on_R_++;
+          std::string Rnum;
+          Rnum = std::to_string(on_R_);
+          long_name_pattern = "-<" + unknownDerivativePattern + ">-";
+          cond_name_pattern = "<R" + Rnum + ">";
+          pattern = unknownDerivativePattern;
+          gmml::log(__LINE__, __FILE__, gmml::INF, key);
+          
+          this_assembly->AddUnknownDerivativeRuleInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, minus_one, in_bracket);
         }
     }
     if(in_bracket.str().size() != 0)

@@ -234,6 +234,27 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
             {
               gmml::AddLiteral(oligo_uri, Ontology::author_oligo_name, author_oligo_iupac, oligo_sequence_stream);
             }
+            if(oligo_iupac.find("<R"))
+            {
+              int numR = 0;
+              for(std::vector<Glycan::Monosaccharide*>::reverse_iterator rit = oligo->mono_nodes_.rbegin(); rit != oligo->mono_nodes_.rend(); rit++)
+              {
+                Glycan::Monosaccharide* thisMono = *rit;
+                if(thisMono->on_R_ > 0)
+                {
+                  for(std::vector<std::pair<std::string, std::string> >::iterator derivative = thisMono->unknown_derivates_.begin(); derivative != thisMono->unknown_derivates_.end(); derivative++)
+                  {
+                    numR++;
+                    if((*derivative).second != "")
+                    {
+                      std::stringstream RgroupStream;
+                      RgroupStream << oligo_uri << "_R" << numR;
+                      gmml::AddLiteral(RgroupStream.str(), Ontology::hasFormula,(*derivative).second, oligo_sequence_stream); 
+                    }
+                  }
+                }
+              }
+            }
             // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
             float o_b_factor = oligo->oligosaccharide_b_factor_;
             // std::stringstream bfss;

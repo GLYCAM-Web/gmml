@@ -250,6 +250,14 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   AtomVector AllAnomericCarbons = AtomVector();
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
   {
+    AtomVector cycle_atoms = ( *it ).second;
+    for (std::vector<MolecularModeling::Atom*>::iterator it = cycle_atoms.begin(); it != cycle_atoms.end(); it++ )
+    {
+      (*it)-> SetIsCycle(true);
+    }
+  }
+  for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
+  {
     std::string cycle_atoms_str = ( *it ).first;
     AtomVector cycle_atoms = ( *it ).second;
     Glycan::Monosaccharide* mono = new Glycan::Monosaccharide(&cycle_atoms_str, cycle_atoms, this, CCD_Path);
@@ -433,7 +441,8 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       for( std::vector<std::pair< std::string, std::string> >::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++ ) {
         std::string key = ( *it1 ).first;
         std::string value = ( *it1 ).second;
-        std::cout << "Carbon at Ring Position " << key << " is attached to " << value << std::endl;
+        if(value != "")
+          std::cout << "Carbon at Ring Position " << key << " is attached to " << value << std::endl;
       }
     }
   //
@@ -674,15 +683,18 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         {
           std::cout << this->source_file_ << ": " << mono->residue_name_ << "\n";
           GetAuthorNaming(amino_lib_files, mono, CCD_Path);
-          Glycan::Note* mismatch_note = new Glycan::Note();
-          mismatch_note->type_ = Glycan::ERROR;
-          mismatch_note->category_ = Glycan::DER_MOD;
-          std::stringstream note;
-          note << "Residue name, " << mono->cycle_atoms_[0]->GetResidue()->GetName() << " (" << mono->cycle_atoms_[0]->GetResidue()->GetId() << "), in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_;
-          mismatch_note->description_ = note.str();
-          this->AddNote(mismatch_note);
-          
           mono->createAuthorSNFGname();
+          
+          if(mono->sugar_name_.monosaccharide_name_ != mono->author_sugar_name_.monosaccharide_name_)
+          {
+            Glycan::Note* mismatch_note = new Glycan::Note();
+            mismatch_note->type_ = Glycan::ERROR;
+            mismatch_note->category_ = Glycan::DER_MOD;
+            std::stringstream note;
+            note << "Residue name, " << mono->cycle_atoms_[0]->GetResidue()->GetName() << " (" << mono->cycle_atoms_[0]->GetResidue()->GetId() << "), in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_;
+            mismatch_note->description_ = note.str();
+            this->AddNote(mismatch_note);
+          }
         }  
       }
       else
@@ -2876,98 +2888,160 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
 //     }
 // }
 
-void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern, std::string cond_name_pattern, std::stringstream& head,
-                                          std::stringstream& tail, bool minus_one, std::stringstream& in_bracket)
+void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern, 
+                                          std::string cond_name_pattern, std::stringstream& head,std::stringstream& tail, bool minus_one, 
+                                          std::stringstream& in_bracket)
 {
-    std::stringstream ss;
-    ss << pattern;
-    if(key.compare("a") == 0)
+  std::stringstream ss;
+  ss << pattern;
+  if(key.compare("a") == 0)
+  {
+    ss << " is at warning position: anomeric";
+    gmml::log(__LINE__, __FILE__,  gmml::WAR, ss.str());
+    Glycan::Note* der_mod_note = new Glycan::Note();
+    der_mod_note->type_ = Glycan::WARNING;
+    der_mod_note->category_ = Glycan::DER_MOD;
+    std::stringstream note;
+    note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
+    der_mod_note->description_ = note.str();
+    this->AddNote(der_mod_note);
+    std::cout << ss.str() << std::endl;
+  }
+  else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
+          find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "-1") == mono->chemical_code_->right_down_.end() &&
+          find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "-1") == mono->chemical_code_->right_up_.end() &&
+          mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+  {
+    if(long_name_pattern.compare("-osamine") == 0)
+        tail << long_name_pattern;
+    else
+        head << long_name_pattern;
+    std::stringstream short_name;
+    if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
     {
-        ss << " is at warning position: anomeric";
-        gmml::log(__LINE__, __FILE__,  gmml::WAR, ss.str());
-        Glycan::Note* der_mod_note = new Glycan::Note();
-        der_mod_note->type_ = Glycan::WARNING;
-        der_mod_note->category_ = Glycan::DER_MOD;
-        std::stringstream note;
-        note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
-        der_mod_note->description_ = note.str();
-        this->AddNote(der_mod_note);
-        std::cout << ss.str() << std::endl;
+      ///moving a, b or x to after the N expression: short-name + Condensed name pattern + a/b/x
+      int stereo_condensed_name_size = mono->sugar_name_.monosaccharide_stereochemistry_short_name_.size();
+      std::string stereo_condensed_name = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
+      std::string new_name_part1 = stereo_condensed_name.substr(0, (stereo_condensed_name_size - 1));///short_name
+      char new_name_part2 = stereo_condensed_name.at(stereo_condensed_name_size - 1);///a/b/x
+      short_name << new_name_part1 << cond_name_pattern << new_name_part2;
+      mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
     }
-    else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
-            find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "-1") == mono->chemical_code_->right_down_.end() &&
-            find(mono->chemical_code_->right_up_.begin(), mono->chemical_code_->right_up_.end(), "-1") == mono->chemical_code_->right_up_.end() &&
-            mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+  }
+  else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
+  {
+    if(!minus_one)
+      ss << " is at error position: 4";
+    else
+      ss << " is at error position: 5";
+    gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
+    Glycan::Note* der_mod_note = new Glycan::Note();
+    der_mod_note->type_ = Glycan::ERROR;
+    der_mod_note->category_ = Glycan::DER_MOD;
+    std::stringstream note;
+    note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
+    der_mod_note->description_ = note.str();
+    this->AddNote(der_mod_note);
+    std::cout << ss.str() << std::endl;
+  }
+  else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
+  {
+    if(!minus_one)
+      ss << " is at error position: 5";
+    else
+      ss << " is at error position: 6";
+    gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
+    Glycan::Note* der_mod_note = new Glycan::Note();
+    der_mod_note->type_ = Glycan::ERROR;
+    der_mod_note->category_ = Glycan::DER_MOD;
+    std::stringstream note;
+    note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
+    der_mod_note->description_ = note.str();
+    this->AddNote(der_mod_note);
+    std::cout << ss.str() << std::endl;
+  }
+  else
+  {
+    if(!minus_one)
     {
-        if(long_name_pattern.compare("-osamine") == 0)
-            tail << long_name_pattern;
-        else
-            head << long_name_pattern;
-        std::stringstream short_name;
-        if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
-        {
-            ///moving a, b or x to after the N expression: short-name + Condensed name pattern + a/b/x
-            int stereo_condensed_name_size = mono->sugar_name_.monosaccharide_stereochemistry_short_name_.size();
-            std::string stereo_condensed_name = mono->sugar_name_.monosaccharide_stereochemistry_short_name_;
-            std::string new_name_part1 = stereo_condensed_name.substr(0, (stereo_condensed_name_size - 1));///short_name
-            char new_name_part2 = stereo_condensed_name.at(stereo_condensed_name_size - 1);///a/b/x
-            short_name << new_name_part1 << cond_name_pattern << new_name_part2;
-
-            mono->sugar_name_.monosaccharide_short_name_ = short_name.str();
-        }
-    }
-    else if(mono->sugar_name_.ring_type_.compare("F") == 0 && key.compare("4") == 0)
-    {
-        if(!minus_one)
-            ss << " is at error position: 4";
-        else
-            ss << " is at error position: 5";
-        gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
-        Glycan::Note* der_mod_note = new Glycan::Note();
-        der_mod_note->type_ = Glycan::ERROR;
-        der_mod_note->category_ = Glycan::DER_MOD;
-        std::stringstream note;
-        note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
-        der_mod_note->description_ = note.str();
-        this->AddNote(der_mod_note);
-        std::cout << ss.str() << std::endl;
-    }
-    else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
-    {
-        if(!minus_one)
-            ss << " is at error position: 5";
-        else
-            ss << " is at error position: 6";
-        gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
-        Glycan::Note* der_mod_note = new Glycan::Note();
-        der_mod_note->type_ = Glycan::ERROR;
-        der_mod_note->category_ = Glycan::DER_MOD;
-        std::stringstream note;
-        note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
-        der_mod_note->description_ = note.str();
-        this->AddNote(der_mod_note);
-        std::cout << ss.str() << std::endl;
+      if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
+        in_bracket << mono->cycle_atoms_.size() - 1 + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+      else
+        in_bracket << key << cond_name_pattern << ",";
     }
     else
     {
-        if(!minus_one)
-        {
-            if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                in_bracket << mono->cycle_atoms_.size() - 1 + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
-            else
-                in_bracket << key << cond_name_pattern << ",";
-        }
-        else
-        {
-            if(key.compare("-1") == 0)
-                in_bracket << "1" << cond_name_pattern << ",";
-            else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                in_bracket << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
-            else
-                in_bracket << gmml::ConvertString<int>(key) + 1 << cond_name_pattern << ",";
-        }
+      if(key.compare("-1") == 0)
+        in_bracket << "1" << cond_name_pattern << ",";
+      else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
+        in_bracket << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+      else
+        in_bracket << gmml::ConvertString<int>(key) + 1 << cond_name_pattern << ",";
     }
+  }
 }
+
+void Assembly::AddUnknownDerivativeRuleInfo(std::string key, std::string pattern, Glycan::Monosaccharide *mono, std::string long_name_pattern, 
+                                  std::string cond_name_pattern, std::stringstream &head, bool minus_one, std::stringstream &in_bracket)
+{
+  std::stringstream ss;
+  ss << pattern;
+  if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
+  {
+    if(!minus_one)
+    {
+      if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
+        head << mono->cycle_atoms_.size() - 1 + gmml::ConvertString<int>(key) << long_name_pattern;
+      else if(key.compare("a") != 0)
+        head << gmml::ConvertString<int>(key) + 1 << long_name_pattern;
+    }
+    else
+    {
+      if(key.compare("-1") == 0)
+        head << "1" << long_name_pattern;
+      else if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
+        head << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) << long_name_pattern;
+      else if(key.compare("a") != 0)
+        head << gmml::ConvertString<int>(key) + 1 << long_name_pattern;
+    }
+  }
+  if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
+  {
+    if(!minus_one)
+    {
+      if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
+      {
+        in_bracket << mono->cycle_atoms_.size() - 1 + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+        gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
+      }
+      else if(key.compare("a") != 0)
+      {
+        in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+        gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
+      }
+    }
+    else
+    {
+      if(key.compare("-1") == 0)
+      {
+        in_bracket << "1" << cond_name_pattern << ",";
+        gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
+      }
+      else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
+      {
+        in_bracket << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+        gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
+      }
+      else if(key.compare("a") != 0)
+      {
+        in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+        gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
+      }
+    }
+  }
+}
+
+
 void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glycan::Monosaccharide *mono, std::string long_name_pattern, std::string cond_name_pattern, std::stringstream &head,
                                      bool minus_one, std::stringstream &in_bracket)
 {
@@ -2982,7 +3056,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             //            else if(key.compare("a") == 0)
             //                head << "2" << long_name_pattern;
             else if(key.compare("a") != 0)
-                head << gmml::ConvertString<int>(key) << long_name_pattern;
+                head << gmml::ConvertString<int>(key) + 1 << long_name_pattern;
         }
         else
         {
@@ -3035,22 +3109,37 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             if(!minus_one)
             {
                 if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                    in_bracket << mono->cycle_atoms_.size() - 1 + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+                {
+                  in_bracket << mono->cycle_atoms_.size() - 1 + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+                  gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
+                }
                 //                else if(key.compare("a") == 0)
                 //                    in_bracket << "2" << cond_name_pattern << ",";
                 else if(key.compare("a") != 0)
-                    in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+                {
+                  in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+                  gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
+                }
             }
             else
             {
                 if(key.compare("-1") == 0)
-                    in_bracket << "1" << cond_name_pattern << ",";
+                {
+                  in_bracket << "1" << cond_name_pattern << ",";
+                  gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
+                }
                 else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                    in_bracket << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+                {
+                  in_bracket << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+                  gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
+                }
                 //                else if(key.compare("a") == 0)
                 //                    in_bracket << "2" << cond_name_pattern << ",";
                 else if(key.compare("a") != 0)
-                    in_bracket << gmml::ConvertString<int>(key) + 1 << cond_name_pattern << ",";
+                {
+                  in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+                  gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
+                }
             }
         }
     }
@@ -3637,6 +3726,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vect
       Glycan::Oligosaccharide* this_Oligo = new Glycan::Oligosaccharide(this);
       gmml::log(__LINE__, __FILE__, gmml::INF, this_mono->sugar_name_.monosaccharide_short_name_);
       this_Oligo->traverseGraph(this_mono, this_Oligo);
+      this_Oligo->reindexRGroups(this_Oligo);
       detected_oligos.push_back(this_Oligo);
       std::string iupac = "Oligo IUPAC Name: " + this_Oligo->IUPAC_name_;
       gmml::log(__LINE__, __FILE__, gmml::INF, iupac);

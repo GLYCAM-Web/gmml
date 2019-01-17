@@ -30,6 +30,7 @@ namespace Glycan
       SugarName sugar_name_;                                              /*!< The sugar name object assigned to the monosacchride >*/
       SugarName author_sugar_name_;                                       /*!< The sugar name object assigned to the residue name given by the author >*/
       std::vector<std::pair<std::string, std::string> > derivatives_map_; /*!< A mapping between the monosacchride's atom position/index and the derivative/modification attached to it >*/
+      std::vector<std::pair<std::string, std::string> > unknown_derivates_; /*!< Added so the unknown derivates don't mess up naming based on derivatives_map_ >*/
       std::string cycle_atoms_str_;                                       /*!< The string version of atom identifiers of the ring of the monosacchride >*/
       std::string anomeric_status_;                                       /*!< The detection status of the anomeric carbon >*/
       MolecularModeling::Atom* anomeric_carbon_pointer_ = NULL;
@@ -42,10 +43,12 @@ namespace Glycan
       bool is_visited_;
       bool is_root_;
       bool is_counted_;
+      bool is_indexed_;
       int oligosaccharide_index_;
       int oligo_branch_index_;
       Glycan::Oligosaccharide* oligo_parent_;
       std::string residue_name_;
+      int on_R_ = 0;
       /*! \fn
         * Default constructor
         */
