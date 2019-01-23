@@ -1,91 +1,91 @@
-#include <math.h>
+// Please keep these calls in alphabetical order to avoid duplication
+#include <cstdlib> //Yao: to use the exit() function. Right now, rather than throwing exceptions, I use exit().
+#include <errno.h>
 #include <fstream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <set>
-#include <queue>
-#include <stack>
-#include <sstream>
-#include <string>
-#include <iostream>
 #include <iostream>
 #include <iterator> //Added by Yao 07/23/2018
+#include <math.h>
+#include <queue>
+#include <set>
+#include <sstream>
+#include <stack>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string>
+#include <string.h>
+#include <unistd.h>
 
-#include "../../../includes/InputSet/PdbFileSpace/inputfile.hpp"
-#include "../../../includes/MolecularModeling/assembly.hpp"
-#include "../../../includes/MolecularModeling/residue.hpp"
-#include "../../../includes/MolecularModeling/residuenode.hpp"
-#include "../../../includes/MolecularModeling/atom.hpp"
-#include "../../../includes/MolecularModeling/atomnode.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyatom.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologybond.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyangle.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
-#include "../../../includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
-#include "../../../includes/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmastercard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp"
-#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
-#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
-#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
-#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfile.hpp"
-#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp"
-#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp"
-#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp"
-#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
-#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp"
+// Please keep these calls in directory & alphabetical order to avoid duplication
+//    Please put files not ib a subdirectory first
+//    Then add subdirectories in alphabetical order
+//    Apply those two rules recursively
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
-#include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
-#include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
+#include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/rotation.hpp"
+#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
+#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
+#include "../../../includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
+#include "../../../includes/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/inputfile.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbmastercard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
+#include "../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
+#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
+#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
+#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
+#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp"
+#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
+#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
+#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
+#include "../../../includes/InputSet/TopologyFileSpace/topologyangle.hpp"
+#include "../../../includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
+#include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
+#include "../../../includes/InputSet/TopologyFileSpace/topologyatom.hpp"
+#include "../../../includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
+#include "../../../includes/InputSet/TopologyFileSpace/topologybond.hpp"
+#include "../../../includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
+#include "../../../includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
+#include "../../../includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
+#include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
+#include "../../../includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
+#include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
+#include "../../../includes/MolecularModeling/assembly.hpp"
+#include "../../../includes/MolecularModeling/atom.hpp"
+#include "../../../includes/MolecularModeling/atomnode.hpp"
 #include "../../../includes/MolecularModeling/overlaps.hpp"  //Added by Yao 07/27/2018
+#include "../../../includes/MolecularModeling/residue.hpp"
+#include "../../../includes/MolecularModeling/residuenode.hpp"
+#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
+#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
+#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.hpp"
+#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
+#include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "../../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
+#include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfile.hpp"
+#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp"
+#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp"
+#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp"
+#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp"
+#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
 
-#include <unistd.h>
-#include <errno.h>
-#include <string.h>
-#include <iostream>
-#include <cstdlib> //Yao: to use the exit() function. Right now, rather than throwing exceptions, I use exit().
 
 using MolecularModeling::Assembly;
 
@@ -671,7 +671,8 @@ void Assembly::RecursivelyTagDihedrals(MolecularModeling::Residue* parent_residu
                     //If child is a derivative, set only one dihedral: HX-CX-OX(tail atom)-head atom. Set this to 0 degree, making the derivative head eclipse the hydrogen. This is a general solution for bad derivative angles
                     //This torsion closely resembles the psi torsion for regular sugar-sugar connection.
                     if (child_residue->GetIsSugarDerivative()){
-                        std::cout << "Setting derivative psi torsion for residue: " << child_residue->GetName() <<std::endl;
+//! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented. 
+// std::cout << "Setting derivative psi torsion for residue: " << child_residue->GetName() <<std::endl;
                         MolecularModeling::Atom* derivative_atom_4 = head_atom_of_child_residue;
                         MolecularModeling::Atom* derivative_atom_3 = tail_atom;
                         MolecularModeling::Atom* derivative_atom_2 = non_hydrogen_tail_atom_neighbor;
@@ -687,7 +688,8 @@ void Assembly::RecursivelyTagDihedrals(MolecularModeling::Residue* parent_residu
    			    //std::cout << "SetPsiDihedral: cannot find all four psi atoms. Skipping." << std::endl;
                         }
                         else {
-                            std::cout << "Derivative psi: " << derivative_atom_1->GetName() << "-" << derivative_atom_2->GetName() << "-" << derivative_atom_3->GetName() << "-" << derivative_atom_4->GetName() <<std::endl;
+//! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented. 
+// std::cout << "Derivative psi: " << derivative_atom_1->GetName() << "-" << derivative_atom_2->GetName() << "-" << derivative_atom_3->GetName() << "-" << derivative_atom_4->GetName() <<std::endl;
                             gmml::AtomVector* psi_atoms = new gmml::AtomVector();
                             psi_atoms->push_back(derivative_atom_1);
                             psi_atoms->push_back(derivative_atom_2);
@@ -851,10 +853,9 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 		    MolecularModeling::Atom* head_atom_of_child_residue = neighbor_atom;
 		    MolecularModeling::Residue* child_residue = head_atom_of_child_residue->GetResidue();
 		    //It has been observed that coordinates shift abnormally,so I added code that print coordinate of tail and head atom for tracking.Now is before moving:
-		    std::cout << "Coordinate of parent tail atom before moving: " <<  parent_residue->GetName() << "-" << tail_atom->GetName() << ": (" << tail_atom->GetCoordinates().at(0)->GetX() << "," <<
-		    tail_atom->GetCoordinates().at(0)->GetY() << "," << tail_atom->GetCoordinates().at(0)->GetZ() << ")    " << std::endl; 
-		    std::cout << "Coordinate of child atom before moving: " <<  child_residue->GetName() << "-" << head_atom_of_child_residue->GetName() << ": (" << head_atom_of_child_residue->GetCoordinates().at(0)->GetX() << "," <<
-		    head_atom_of_child_residue->GetCoordinates().at(0)->GetY() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetZ() << ")    " << std::endl; 
+//! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented. 
+// std::cout << "Coordinate of parent tail atom before moving: " <<  parent_residue->GetName() << "-" << tail_atom->GetName() << ": (" << tail_atom->GetCoordinates().at(0)->GetX() << "," << tail_atom->GetCoordinates().at(0)->GetY() << "," << tail_atom->GetCoordinates().at(0)->GetZ() << ")    " << std::endl; 
+// std::cout << "Coordinate of child atom before moving: " <<  child_residue->GetName() << "-" << head_atom_of_child_residue->GetName() << ": (" << head_atom_of_child_residue->GetCoordinates().at(0)->GetX() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetY() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetZ() << ")    " << std::endl; 
 		    gmml::AtomVector all_atoms_in_child_residue = child_residue->GetAtoms();
 		    //Right now, all residues are at the position of the template residue. That is, they are all around the orgin and stacked upon each other.
 		    //SetResidueResidueBondDistance function: takes a pair of parent tail/child head atoms as argument. This function keeps the parent residue intact,but
@@ -992,9 +993,9 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
 			}
 		    }//else Done setting phi,psi, omega(if exists)
 		    //It has be found out that coordinates shift abnormally with each move. Now print out the coordinates for testing after moving:
-std::cout << "Coordinate of parent tail atom after moving: " <<  parent_residue->GetName() << "-" << tail_atom->GetName() << ": (" << tail_atom->GetCoordinates().at(0)->GetX() << "," <<
-                    tail_atom->GetCoordinates().at(0)->GetY() << "," << tail_atom->GetCoordinates().at(0)->GetZ() << ")    " << std::endl;
-                    std::cout << "Coordinate of child atom after moving: " <<  child_residue->GetName() << "-" << head_atom_of_child_residue->GetName() << ": (" << head_atom_of_child_residue->GetCoordinates().at(0)->GetX() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetY() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetZ() << ")    " << std::endl << std::endl;
+//! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented. 
+// std::cout << "Coordinate of parent tail atom after moving: " <<  parent_residue->GetName() << "-" << tail_atom->GetName() << ": (" << tail_atom->GetCoordinates().at(0)->GetX() << "," << tail_atom->GetCoordinates().at(0)->GetY() << "," << tail_atom->GetCoordinates().at(0)->GetZ() << ")    " << std::endl;
+// std::cout << "Coordinate of child atom after moving: " <<  child_residue->GetName() << "-" << head_atom_of_child_residue->GetName() << ": (" << head_atom_of_child_residue->GetCoordinates().at(0)->GetX() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetY() << "," << head_atom_of_child_residue->GetCoordinates().at(0)->GetZ() << ")    " << std::endl << std::endl;
 
 		    //Start new recursion
 		    MolecularModeling::Residue* new_parent_residue = child_residue;
@@ -1042,11 +1043,12 @@ MolecularModeling::Assembly::ResidueVector Assembly::FindClashingResidues()
 	    }
 	}
     }
-    std::cout << "All clashing residues were identified in this order:" << std::endl; 
-    for (MolecularModeling::Assembly::ResidueVector::iterator it = clashing_residues.begin(); it != clashing_residues.end(); it++){
-	std::cout << (*it)->GetIndex() << "---" << (*it)->GetName() << std::endl;
-    }
-    std::cout << "\n";
+//! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented. 
+// std::cout << "All clashing residues were identified in this order:" << std::endl; 
+// for (MolecularModeling::Assembly::ResidueVector::iterator it = clashing_residues.begin(); it != clashing_residues.end(); it++){
+// std::cout << (*it)->GetIndex() << "---" << (*it)->GetName() << std::endl;
+// }
+// std::cout << "\n";
     return clashing_residues;
 }
 
@@ -1344,14 +1346,15 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 	MolecularModeling::Residue* corresponding_assembly_residue = it->second.second;
         //The atom and the only atom without a parent is the absolute parent(terminal).
         if (glycam_06_res->GetParentId() == gmml::iNotSet && glycam_06_res->GetName() != "Deoxy"){
-            MolecularModeling::Residue* root = corresponding_assembly_residue;
-            this->RecursivelySetGeometry(root);
-	    //The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
-	    //Linkage index is incremented inside function once a linkage has been processed.
-	    int linkage_index = 0;
-            this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
+          MolecularModeling::Residue* root = corresponding_assembly_residue;
+//  TURN OFF GEOMETRY OPS
+          this->RecursivelySetGeometry(root);
+//          The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
+//          Linkage index is incremented inside function once a linkage has been processed.
+          int linkage_index = 0;
+          this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
 	    break;
-        }
+         }
     }
     //Find and resolve clashes below(crudely)
     MolecularModeling::Assembly::ResidueVector clashing_residues = this->FindClashingResidues();

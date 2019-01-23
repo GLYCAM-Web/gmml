@@ -233,6 +233,7 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
                 head_neighbor_bond_vector->SetX(neighbor_coordinate->GetX() - head_atom_coordinate->GetX());
                 head_neighbor_bond_vector->SetY(neighbor_coordinate->GetY() - head_atom_coordinate->GetY());
                 head_neighbor_bond_vector->SetZ(neighbor_coordinate->GetZ() - head_atom_coordinate->GetZ());
+                head_neighbor_bond_vector->Normalize();
                 head_atom_bonds.push_back(head_neighbor_bond_vector);
             }
         }

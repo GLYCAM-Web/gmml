@@ -6,6 +6,7 @@
 #include <math.h>
 #include <map>
 #include <set>
+#include <limits>
 
 #include "GeometryTopology/coordinate.hpp"
 #include "Glycan/sugarname.hpp"
@@ -47,7 +48,6 @@ namespace gmml
     const double dSulfurCutoff = 2.5;
     const double PI_RADIAN = 4.0*atan(1.0);
     const double PI_DEGREE = 180.0;
-    const double EPSILON = 0.001;
     const double dCutOff = 1.65;
     const double BOND_LENGTH = 1.4;
     const double ROTATION_ANGLE = 109.5;
@@ -56,10 +56,13 @@ namespace gmml
     const char BLANK_SPACE = '?';
     const double MINIMUM_RADIUS = 0.6;
     const double DEFAULT_RADIUS = 1.35;
-    const double DIST_EPSILON = 0.000001;
     const int MAX_PDB_ATOM = 99999;
     const double CHARGE_DIVIDER = 18.2223;
     const double CARBON_SURFACE_AREA = 36.31681103;
+    const double EPSILON = 0.001; // \todo determine where/if this is used.  Only for PDB-type data, likely.
+    const double DIST_EPSILON = 0.000001; // \todo determine where/if this is used, and if the following would be better.
+    const double Float_Machine_Epsilon = std::numeric_limits<float>::epsilon( );
+    const double Double_Machine_Epsilon = std::numeric_limits<double>::epsilon( );
 
     // Ionizing
     const double DEFAULT_GRID_LENGTH = 2;//0.5;

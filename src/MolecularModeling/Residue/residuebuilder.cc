@@ -110,18 +110,19 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
             unsigned int index = distance(prep_atoms.begin(), it1);
             if(index == 0)
             {
-std::cout << "Starting to get Cartesian coordinates from internal coords for serial number:  " << std::endl;
-std::cout << "    Index is 0 " << std::endl;
-std::cout << "    Serial number:  " << serial_number << " ;  Prep Name:  " << prep_atom->GetName() << " ;  Assembly Name:  " << assembly_atom->GetName() << std::endl;
+//! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented. 
+// std::cout << "Starting to get Cartesian coordinates from internal coords for serial number:  " << std::endl;
+// std::cout << "    Index is 0 " << std::endl;
+// std::cout << "    Serial number:  " << serial_number << " ;  Prep Name:  " << prep_atom->GetName() << " ;  Assembly Name:  " << assembly_atom->GetName() << std::endl;
             }
             if(index == 1)
             {
                 int parent_index = parent_atoms.at(index)->GetIndex() - 1;
                 GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                 coordinate_list.push_back(parent_coordinate);
-std::cout << "Starting to get Cartesian coordinates from internal coords for serial number:  " << std::endl;
-std::cout << "    Index is 1 " << std::endl;
-std::cout << "    Serial number:  " << serial_number << " ;  Prep Name:  " << prep_atom->GetName() << " ;  Assembly Name:  " << assembly_atom->GetName() << std::endl;
+// std::cout << "Starting to get Cartesian coordinates from internal coords for serial number:  " << std::endl;
+// std::cout << "    Index is 1 " << std::endl;
+// std::cout << "    Serial number:  " << serial_number << " ;  Prep Name:  " << prep_atom->GetName() << " ;  Assembly Name:  " << assembly_atom->GetName() << std::endl;
             }
             if(index == 2)
             {
@@ -131,9 +132,9 @@ std::cout << "    Serial number:  " << serial_number << " ;  Prep Name:  " << pr
                 GeometryTopology::Coordinate* parent_coordinate = cartesian_coordinate_list.at(parent_index);
                 coordinate_list.push_back(grandparent_coordinate);
                 coordinate_list.push_back(parent_coordinate);
-std::cout << "Starting to get Cartesian coordinates from internal coords for serial number:  " << std::endl;
-std::cout << "    Index is 2 " << std::endl;
-std::cout << "    Serial number:  " << serial_number << " ;  Prep Name:  " << prep_atom->GetName() << " ;  Assembly Name:  " << assembly_atom->GetName() << std::endl;
+// std::cout << "Starting to get Cartesian coordinates from internal coords for serial number:  " << std::endl;
+// std::cout << "    Index is 2 " << std::endl;
+// std::cout << "    Serial number:  " << serial_number << " ;  Prep Name:  " << prep_atom->GetName() << " ;  Assembly Name:  " << assembly_atom->GetName() << std::endl;
             }
             if(index > 2)
             {
@@ -146,45 +147,62 @@ std::cout << "    Serial number:  " << serial_number << " ;  Prep Name:  " << pr
                 coordinate_list.push_back(great_grandparent_coordinate);
                 coordinate_list.push_back(grandparent_coordinate);
                 coordinate_list.push_back(parent_coordinate);
-std::cout << "Starting to get Cartesian coordinates from internal coords for serial number:  " << std::endl;
-std::cout << "  Index is greater than 2  ;  in prep residue:  " << prep_residue->GetName() << std::endl;
-std::cout << "    Serial number:  " << serial_number << " ;  Prep Name:  " << prep_atom->GetName() << " ;  Assembly Name:  " << assembly_atom->GetName() << std::endl;
-std::cout << "    Parent Name & index  : " << parent_atoms.at(index)->GetName() << "  " << parent_index << std::endl;
-std::cout << "       X:   " << parent_coordinate->GetX() << std::endl;
-std::cout << "       y:   " << parent_coordinate->GetY() << std::endl;
-std::cout << "       Z:   " << parent_coordinate->GetZ() << std::endl;
-std::cout << "    G Parent Name  & index : " << parent_atoms.at(parent_index)->GetName() << "  " << grandparent_index << std::endl;
-std::cout << "       X:   " << grandparent_coordinate->GetX() << std::endl;
-std::cout << "       y:   " << grandparent_coordinate->GetY() << std::endl;
-std::cout << "       Z:   " << grandparent_coordinate->GetZ() << std::endl;
-std::cout << "    G G Parent Name  & index : " << parent_atoms.at(grandparent_index)->GetName()  << "  " << great_grandparent_index << std::endl;
-std::cout << "       X:   " << great_grandparent_coordinate->GetX() << std::endl;
-std::cout << "       y:   " << great_grandparent_coordinate->GetY() << std::endl;
-std::cout << "       Z:   " << great_grandparent_coordinate->GetZ() << std::endl;
+// std::cout << "Starting to get Cartesian coordinates from internal coords for serial number:  " << std::endl;
+// std::cout << "  Index is greater than 2  ;  in prep residue:  " << prep_residue->GetName() << std::endl;
+// std::cout << "    Serial number:  " << serial_number << " ;  Prep Name:  " << prep_atom->GetName() << " ;  Assembly Name:  " << assembly_atom->GetName() << std::endl;
+// std::cout << "    Parent Name & index  : " << parent_atoms.at(index)->GetName() << "  " << parent_index << std::endl;
+// std::cout << "       X:   " << parent_coordinate->GetX() << std::endl;
+// std::cout << "       y:   " << parent_coordinate->GetY() << std::endl;
+// std::cout << "       Z:   " << parent_coordinate->GetZ() << std::endl;
+// std::cout << "    G Parent Name  & index : " << parent_atoms.at(parent_index)->GetName() << "  " << grandparent_index << std::endl;
+// std::cout << "       X:   " << grandparent_coordinate->GetX() << std::endl;
+// std::cout << "       y:   " << grandparent_coordinate->GetY() << std::endl;
+// std::cout << "       Z:   " << grandparent_coordinate->GetZ() << std::endl;
+// std::cout << "    G G Parent Name  & index : " << parent_atoms.at(grandparent_index)->GetName()  << "  " << great_grandparent_index << std::endl;
+// std::cout << "       X:   " << great_grandparent_coordinate->GetX() << std::endl;
+// std::cout << "       y:   " << great_grandparent_coordinate->GetY() << std::endl;
+// std::cout << "       Z:   " << great_grandparent_coordinate->GetZ() << std::endl;
             }
-std::cout << "    My Prep Entry Info follows: " << std::endl;
-std::cout << "       Bond:      " << prep_atom->GetBondLength()  << std::endl;
-std::cout << "       Angle:     " << prep_atom->GetAngle()  << std::endl;
-std::cout << "       Dihedral:  " << prep_atom->GetDihedral()  << std::endl;
-std::cout << "    These coordinates are BEFORE the function : " << std::endl;
-std::cout << "the size is:  "  << coordinate_list.size() << std::endl;
-if ( coordinate_list.size() > 2 ) {
-std::cout << "       [0]   X:   " << coordinate_list[0]->GetX() << std::endl;
-std::cout << "             y:   " << coordinate_list[0]->GetY() << std::endl;
-std::cout << "             Z:   " << coordinate_list[0]->GetZ() << std::endl;
-std::cout << "       [1]   X:   " << coordinate_list[1]->GetX() << std::endl;
-std::cout << "             y:   " << coordinate_list[1]->GetY() << std::endl;
-std::cout << "             Z:   " << coordinate_list[1]->GetZ() << std::endl;
-std::cout << "       [2]   X:   " << coordinate_list[2]->GetX() << std::endl;
-std::cout << "             y:   " << coordinate_list[2]->GetY() << std::endl;
-std::cout << "             Z:   " << coordinate_list[2]->GetZ() << std::endl;
-}
+// std::cout << "    My Prep Entry Info follows: " << std::endl;
+// std::cout << "       Bond:      " << prep_atom->GetBondLength()  << std::endl;
+// std::cout << "       Angle:     " << prep_atom->GetAngle()  << std::endl;
+// std::cout << "       Dihedral:  " << prep_atom->GetDihedral()  << std::endl;
+// std::cout << "    These coordinates are BEFORE the function : " << std::endl;
+// std::cout << "the size is:  "  << coordinate_list.size() << std::endl;
+// if ( coordinate_list.size() > 2 ) {
+// std::cout << "       [0]   X:   " << coordinate_list[0]->GetX() << std::endl;
+// std::cout << "             y:   " << coordinate_list[0]->GetY() << std::endl;
+// std::cout << "             Z:   " << coordinate_list[0]->GetZ() << std::endl;
+// std::cout << "       [1]   X:   " << coordinate_list[1]->GetX() << std::endl;
+// std::cout << "             y:   " << coordinate_list[1]->GetY() << std::endl;
+// std::cout << "             Z:   " << coordinate_list[1]->GetZ() << std::endl;
+// std::cout << "       [2]   X:   " << coordinate_list[2]->GetX() << std::endl;
+// std::cout << "             y:   " << coordinate_list[2]->GetY() << std::endl;
+// std::cout << "             Z:   " << coordinate_list[2]->GetZ() << std::endl;
+// }
             GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate();
+            GeometryTopology::Coordinate rawcoordinate;
             double bond_length = prep_atom->GetBondLength();
             double angle_value = prep_atom->GetAngle();
             double dihedral_value = prep_atom->GetDihedral();
+
+            if(index > 200000 )  // normally > 2
+            {
+            rawcoordinate = rawcoordinate.get_cartesian_point_from_internal_coords(
+                coordinate_list[0], coordinate_list[1], coordinate_list[2], dihedral_value, angle_value, bond_length);
+// std::cout << "   The NEW RAW coords are:  " << std::endl;
+// std::cout << "         X  :  " << rawcoordinate.GetX() << std::endl;
+// std::cout << "         Y  :  " << rawcoordinate.GetY() << std::endl;
+// std::cout << "         Z  :  " << rawcoordinate.GetZ() << std::endl;
+            coordinate->SetX(rawcoordinate.GetX());
+            coordinate->SetY(rawcoordinate.GetY());
+            coordinate->SetZ(rawcoordinate.GetZ());
+            }
+            else 
+            {
             coordinate = coordinate->ConvertInternalCoordinate2CartesianCoordinate(
-                coordinate_list, bond_length, angle_value, dihedral_value);
+               coordinate_list, bond_length, angle_value, dihedral_value);
+            }
             cartesian_coordinate_list.push_back(coordinate);
            // GeometryTopology::Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(
             //            coordinate_list,
@@ -193,10 +211,10 @@ std::cout << "             Z:   " << coordinate_list[2]->GetZ() << std::endl;
                //         prep_atom->GetDihedral());
       //      cartesian_coordinate_list.push_back(coordinate);
             assembly_atom->AddCoordinate(coordinate);
-std::cout << "    My NEW coordinates are : " << std::endl;
-std::cout << "       X:   " << coordinate->GetX() << std::endl;
-std::cout << "       y:   " << coordinate->GetY() << std::endl;
-std::cout << "       Z:   " << coordinate->GetZ() << std::endl;
+// std::cout << "    My NEW coordinates are : " << std::endl;
+// std::cout << "       X:   " << coordinate->GetX() << std::endl;
+// std::cout << "       y:   " << coordinate->GetY() << std::endl;
+// std::cout << "       Z:   " << coordinate->GetZ() << std::endl;
         }
         else if(prep_residue->GetCoordinateType() == PrepFileSpace::kXYZ)
         {
