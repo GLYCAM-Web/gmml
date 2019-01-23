@@ -29,6 +29,7 @@
 #include "../InputSet/PdbFileSpace/pdbmodelsection.hpp"
 #include "../InputSet/PdbFileSpace/pdbmodelcard.hpp"
 #include "../Glycan/oligosaccharide.hpp"
+#include "../Glycan/monosaccharide.hpp"
 #include "../Glycan/note.hpp"
 #include "../InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../InputSet/PdbFileSpace/inputfile.hpp"
@@ -929,7 +930,7 @@ namespace MolecularModeling
             /*! \fn
             * A wrapper function for the next function. I do this to make the vector of monosaccharides external. I want to do some manipulations to them.
             */
-            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false);
+            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false, std::string CCD_Path = " ");
             /*! \fn
             * A function in order to extract all the saccharide structures
             * @param amino_lib_files The list of paths to amino library files, used for identifying terminal residues
@@ -937,7 +938,7 @@ namespace MolecularModeling
             * @param populate_ontology A flag to prompt ontology population
             * @return oligosaccharides A list of extarcted oligosaccharide structures
             */
-            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, std::vector<Glycan::Monosaccharide*>& monos, bool glyporbity_report = false, bool populate_ontology = false);
+            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, std::vector<Glycan::Monosaccharide*>& monos, bool glyporbity_report = false, bool populate_ontology = false, std::string CCD_Path = " ");
 
             /*! \fn
             * A funstion in order to initiate population of turtle formatted triples (subject-predicate-object) for creating the GMMO ontology
@@ -1009,7 +1010,7 @@ namespace MolecularModeling
             * @param oligo_uri The URI for the Oligosaccharide instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32_oligo1
             * @param res_uri The URI for the current monosaccharide to be checked for derivatives
             */
-            void CheckDerivativesAndPopulate(std::stringstream& oligo_sequence_stream, std::string mono_short_name, std::string oligo_uri, std::string res_uri, std::string monoSNFG);
+            void CheckDerivativesAndPopulate(std::stringstream& oligo_sequence_stream, std::string mono_short_name, std::string oligo_uri, std::string res_uri, std::string monoSNFG, Glycan::Monosaccharide* mono);
 
             /*! \fn
             * A function in order to check if the monosaccharide has derivates
@@ -1397,6 +1398,7 @@ namespace MolecularModeling
             double CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
             double CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
             bool guessIfC_CDoubleBond(MolecularModeling::Atom* carbon1, MolecularModeling::Atom* carbon2);
+            void GetAuthorNaming(std::vector< std::string > amino_lib_files, Glycan::Monosaccharide* mono, std::string CCD_Path);
 
 
             /*! \fn
@@ -1406,7 +1408,7 @@ namespace MolecularModeling
 /** \addtogroup Verifiers_and_Issue_Resolvers
                * @{
                */
-            void ExtractRingAtomsInformation();
+            // void ExtractRingAtomsInformation();
             /*! \fn
               * A function in order to detect cycles in the molecular graph using the exhaustive ring perception algorithm
               * The algorithm is derived from http://pubs.acs.org/doi/pdf/10.1021/ci960322f
@@ -1482,7 +1484,8 @@ namespace MolecularModeling
               * @param cycle_atom_str The string version of atom identifiers of the cycle
               * @return o_neighbor The anomeric carbon which is the neighbor of oxygen
               */
-            Atom* FindAnomericCarbon(Glycan::Note* anomeric_carbons_note, std::vector<std::string>& anomeric_carbons_status, AtomVector cycle, std::string cycle_atoms_str);
+              //Moved to Monosaccharide class
+            // Atom* FindAnomericCarbon(Glycan::Note* anomeric_carbons_note, std::vector<std::string>& anomeric_carbons_status, AtomVector cycle, std::string cycle_atoms_str);
             /*! \fn
               * A function in order to sort atom objects of the cycle starting from the anomeric carbon of the ring (ring oxygen will be last atom)
               * @param cycle The list of cycle atoms
@@ -1503,19 +1506,22 @@ namespace MolecularModeling
               * @param cycle_atom_str The string version of atom identifiers of the cycle
               * @return orientations The list of side atoms orinetations
               */
-            std::vector<std::string> GetSideGroupOrientations(Glycan::Monosaccharide* mono, std::string cycle_atoms_str);
+              //Moved to monosaccharide class
+            // std::vector<std::string> GetSideGroupOrientations(Glycan::Monosaccharide* mono, std::string cycle_atoms_str);
 
 	    /*! \fn
 	      *  A function to start complete side group atoms detection from all side chains detected.
 	      * @param mono A vector of all monosaccharides detected in input file.
 	      */
-	    void InitiateDetectionOfCompleteSideGroupAtoms (std::vector<Glycan::Monosaccharide*> monos);
+        //Moved to monosaccharide class
+	    // void InitiateDetectionOfCompleteSideGroupAtoms (std::vector<Glycan::Monosaccharide*> monos);
 	    /*! \fn
 	      * A function in order to check if plus one side atom belongs to the current monosaccharide ,called within GetSideGroupOrientations.
 	      * @param SideAtomArm,a reference to the vector element housing this side chain atoms(i.e. Monosaccharide.side_atoms_).
 	      * @param working_atom The atom whose node neighbors are currently being checked for attached anomeric carbons.
 	      */
-	    bool CheckIfPlusOneSideAtomBelongsToCurrentMonosaccharide(AtomVector& SideAtomArm, AtomVector & cycle_atoms, Atom* working_atom);
+        //Moved to monosaccharide class
+	    // bool CheckIfPlusOneSideAtomBelongsToCurrentMonosaccharide(AtomVector& SideAtomArm, AtomVector & cycle_atoms, Atom* working_atom);
 	    /*! \fn
 	      * A function in order to obtain complete side group atoms in a monosaccharide,involving recursive calls. Called within GetSideGroupOrientations.
 	      * @param SideAtomArm, a reference to the vector element housing this side chain atoms(i.e. Monosaccharide.side_atoms_).
@@ -1523,7 +1529,8 @@ namespace MolecularModeling
 	      * @param cycle_atoms, AtomVector of the ring atoms of the current monosaccharide, used to prevent recursion from proceeding towards the ring.
 	      * @param visited_atoms, AtomVector of atoms that have served as working atoms, used to prevent recursion from going backwards.
 	      */
-	    void SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_atom, AtomVector & cycle_atoms, AtomVector & visited_atoms);
+        //Moved to monosaccharide class
+	    // void SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_atom, AtomVector & cycle_atoms, AtomVector & visited_atoms);
 	    /*! \fn
 	      * A function to make all atoms of a monosaccharide a new residue, replacing the corresponding old one in input file. This is to solve the problem wher one residue contains more than one sugar.
 	      * @param monos a vector of Monosaccharide*, containing all identified monosaccharides in the input files.
@@ -1534,7 +1541,8 @@ namespace MolecularModeling
               * @param starting_atom A pointer to the atom where recursive checking initiates.
               * @param current_cycle_and_visited_atoms The cycle whose side chains are being extracted.Recursion shall not proceed towards it.
               */
-            void CheckIfSideChainIsTerminal(Atom* starting_atom, AtomVector & current_cycle_and_visited_atoms, bool & is_terminal);
+              //Moved to monosaccharide class
+            // void CheckIfSideChainIsTerminal(Atom* starting_atom, AtomVector & current_cycle_and_visited_atoms, bool & is_terminal);
 
 /** \addtogroup Manipulators
                * @{
@@ -1544,24 +1552,28 @@ namespace MolecularModeling
               * @param orientations The list of side atoms orinetations
               * @return code The chemical code of the monosaccharide structure
               */
-            Glycan::ChemicalCode* BuildChemicalCode(std::vector<std::string> orientations);
+              //moved to monosaccharide class
+            // Glycan::ChemicalCode* BuildChemicalCode(std::vector<std::string> orientations);
             /*! \fn
               * A function in order to extract additional side atoms of the saccharide (+2 and +3 positions)
               * @param mono The monosaccharide object
               * @return plus_sides The list of additional side atoms of the monosaccharide
               */
-            AtomVector ExtractAdditionalSideAtoms(Glycan::Monosaccharide* mono);
+              //Moved to monosaccharide class
+            // AtomVector ExtractAdditionalSideAtoms(Glycan::Monosaccharide* mono);
             /*! \fn
               * A function in order to extract the probable derivatives that are attached to the side atoms of the ring and sets the derivative_map attribute of the monosaccharide
               * Entry examples for the derivative map: [-1, derivative pattern] [a, derivative pattern] [2, derivative pattern] ... [+1, derivative pattern] [+2, derivative pattern]
               * @param mono The monosaccharide object
               */
-            void ExtractDerivatives(Glycan::Monosaccharide* mono);
+              //Moved to monosaccharide class
+            // void ExtractDerivatives(Glycan::Monosaccharide* mono);
             /*! \fn
               * A function in order to generate a complete name for the monosaccharide structure based on its derivatives
               * @param mono The monosaccharide object
               */
-            void GenerateCompleteSugarName(Glycan::Monosaccharide* mono);
+              //Moved to monosaccharide class
+            // void GenerateCompleteSugarName(Glycan::Monosaccharide* mono);
             /*! \fn
               * A function in order to add the modification info to the name of the sugar based on the first group of rules (No Bracket -> 2(r:6&!-1), Warning position -> a, Error Position -> 5(r6),4(r5) )
               * @param key The index of the atom which is a key in the derivative map
@@ -1590,6 +1602,20 @@ namespace MolecularModeling
               */
             void AddModificationRuleTwoInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern_at_minus_one, std::string long_name_pattern_at_plus_one,
                                             std::string cond_name_pattern, std::stringstream& tail, bool minus_one, std::stringstream& in_bracket);
+                                            
+            /*! \fn
+              * A function in order to add unknown derivative info to the name of the sugar
+              * @param key The index of the atom which is a key in the derivative map
+              * @param pattern The pattern of the modification which is based on the value in the derivative map
+              * @param mono The monosaccharide object
+              * @param long_name_pattern The long name pattern of the modification pattern which should be added to the sugar's long name
+              * @param cond_name_pattern The short name pattern of the modification pattern which should be added to the sugar's short name
+              * @param head The stream that will be added to the beginning of monosaccharide name and will be updated by this function
+              * @param minus_one A boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              * @param in_bracket The boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
+              */                                
+            void AddUnknownDerivativeRuleInfo(std::string key, std::string pattern, Glycan::Monosaccharide *mono, std::string long_name_pattern, 
+                                              std::string cond_name_pattern, std::stringstream &head, bool minus_one, std::stringstream &in_bracket);                                
             /*! \fn
               * A function in order to add the derivative info to the name of the sugar based on the first group of rules (Error Position -> 5(r6),4(r5) )
               * @param key The index of the atom which is a key in the derivative map
@@ -1607,12 +1633,14 @@ namespace MolecularModeling
               * A function in order to update the chemical code structure of a complex monosaccharide (monosaccharide with side atoms at position +2 and +3)
               * @param mono The monosaccharide object
               */
-            void UpdateComplexSugarChemicalCode(Glycan::Monosaccharide* mono);
+              //Moved to monosaccharide class
+            // void UpdateComplexSugarChemicalCode(Glycan::Monosaccharide* mono);
             /*! /fn
               * A function used to update the PDB code of a complex monosaccharide after derivatives have been found.
               * @param mono The monosaccharide object
               */
-            void UpdatePdbCode( Glycan::Monosaccharide * mono );
+              //Moved to monosaccharide class
+            // void UpdatePdbCode( Glycan::Monosaccharide * mono );
             /*! \fn
               * A function in order to extract oligosacchride structure based on the linkages between monosacchrides
               * @param monos The list of extracted monosaccharide object
@@ -1621,6 +1649,12 @@ namespace MolecularModeling
               * @param number_of_probable_non_covalent_complex Number of sugars that might be non-covalantly interacting with a protein
               * @return oligosacchrides The list of extracted oligosacchrides
               */
+              void createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> detected_monos,
+                                                            gmml::ResidueNameMap dataset_residue_names,
+                                                            int& number_of_covalent_links,
+                                                            int& number_of_probable_non_covalent_complexes);
+            std::vector<Glycan::Oligosaccharide*> createOligosaccharides(std::vector<Glycan::Monosaccharide*> detected_monos);
+
             OligosaccharideVector ExtractOligosaccharides(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names,
                                                           int& number_of_covalent_links, int& number_of_probable_non_covalent_complexes);
 /** @}*/

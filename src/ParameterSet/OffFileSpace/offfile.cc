@@ -414,3 +414,9 @@ This whole loop seems to be unused
     //////////////////////////////////////////////////////////
     //                     DISPLAY FUNCTIONS                //
     //////////////////////////////////////////////////////////
+
+
+    void OffFile::Print(std::ostream& out)
+    {
+        out << "Printing OffFile Details"<<std::endl;
+    }

@@ -176,7 +176,7 @@ namespace OffFileSpace
             //                         ATTRIBUTES                   //
             //////////////////////////////////////////////////////////
             std::string name_;          /*!< Residue name.Set by each line of the index section of a Off file */
-            OffFileAtomVector atoms_;             /*!< List of atoms belonging to the residue mapped to their order numbers; set by various sections (atom, connectivity, positions) of a Off file*/
+            OffFileAtomVector atoms_;   /*!< List of atoms belonging to the residue mapped to their order numbers; set by various sections (atom, connectivity, positions) of a Off file*/
             double box_angle_;          /*!< Box angle; set by the 2nd line of the boundbox section of a Off file*/
             double box_length_;         /*!< Box length; set by the 3rd line of the boundbox section of a Off file*/
             double box_width_;          /*!< Box width; set by the 4th line of the boundbox section of a Off file*/
