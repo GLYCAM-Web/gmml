@@ -4,21 +4,13 @@
 #include <string>
 #include <iostream>
 #include <vector>
-#include "../coordinate.hpp"
+#include "coordinate.hpp"
 
 namespace GeometryTopology
 {
     class Angle
     {
         public:
-            //////////////////////////////////////////////////////////
-            //                    TYPE DEFINITION                   //
-            //////////////////////////////////////////////////////////
-            /*! \typedef
-              * Vector of coordinates
-              */
-            typedef std::vector<Coordinate*> CoordinateVector;
-
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
@@ -37,7 +29,7 @@ namespace GeometryTopology
               * An accessor function in order to access to the coordinates
               * @return coordinates_ attribute of the current object of this class
               */
-            CoordinateVector GetCoordinates();
+            GeometryTopology::Coordinate::CoordinateVector GetCoordinates();
             /*! \fn
               * An accessor function in order to access to the angle
               * @return angle_ attribute of the current object of this class
@@ -55,7 +47,7 @@ namespace GeometryTopology
               * Set the coordinates_ attribute of the current angle
               * @param cordinates The coordinates attribute of the current object
               */
-            void SetCoordinates(CoordinateVector coordinates);
+            void SetCoordinates(GeometryTopology::Coordinate::CoordinateVector coordinates);
             /*! \fn
               * A function in order to add the coordinate to the current object
               * Set the coordinates_ attribute of the current angle
@@ -83,7 +75,7 @@ namespace GeometryTopology
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            CoordinateVector coordinates_;              /*!< Vector of three coordinates representing an angle between three points >*/
+            GeometryTopology::Coordinate::CoordinateVector coordinates_;              /*!< Vector of three coordinates representing an angle between three points >*/
             double angle_;                              /*!< Value of angle between three points >*/
 
     };

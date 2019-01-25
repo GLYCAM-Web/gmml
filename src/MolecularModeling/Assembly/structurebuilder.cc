@@ -245,7 +245,7 @@ void* BuildStructureByDistanceThread(void* args){
     }
 
     //    std::cout << "Thread" << ti << " END" << std::endl;
-    pthread_exit((void*) ti);
+    pthread_exit((void*) &ti);
 }
 
 void* BuildStructureByDistanceByOptimizedThread(void* args){//This function should be changed to use atomic informatic to build structure by distance more intelligently
@@ -344,7 +344,7 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){//This function shou
     }
 
     //    std::cout << "Thread" << ti << " END" << std::endl;
-    pthread_exit((void*) ti);
+    pthread_exit((void*) &ti);
 }
 
 void* BuildStructureByDistanceByMatrixThread(void* args){
@@ -406,7 +406,7 @@ void* BuildStructureByDistanceByMatrixThread(void* args){
         }
         atom->SetNode(atom_node);
     }
-    pthread_exit((void*) ti);
+    pthread_exit((void*) &ti);
 }
 
 void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
@@ -483,7 +483,7 @@ void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
             }
         }
     }
-    pthread_exit((void*) ti);
+    pthread_exit((void*) &ti);
 }
 
 // MATRIX VERSION

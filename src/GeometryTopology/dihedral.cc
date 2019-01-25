@@ -1,48 +1,48 @@
-#include "../../../includes/GeometryTopology/InternalCoordinate/distance.hpp"
+#include "../../includes/GeometryTopology/dihedral.hpp"
 
-using GeometryTopology::Distance;
+using GeometryTopology::Dihedral;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Distance::Distance() {}
+Dihedral::Dihedral() {}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-Distance::CoordinateVector Distance::GetCoordinates()
+GeometryTopology::Coordinate::CoordinateVector Dihedral::GetCoordinates()
 {
     return coordinates_;
 }
-double Distance::GetLength()
+double Dihedral::GetTorsion()
 {
-    return length_;
+    return torsion_;
 }
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void Distance::SetCoordinates(CoordinateVector coordinates)
+void Dihedral::SetCoordinates(GeometryTopology::Coordinate::CoordinateVector coordinates)
 {
     coordinates_.clear();
-    for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+    for(GeometryTopology::Coordinate::CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
     {
         coordinates_.push_back(*it);
     }
 }
-void Distance::AddCoordinate(Coordinate *coordinate)
+void Dihedral::AddCoordinate(Coordinate *coordinate)
 {
     coordinates_.push_back(coordinate);
 }
-void Distance::SetLenght(double length)
+void Dihedral::SetTorsion(double torsion)
 {
-    length_ = length;
+    torsion_ = torsion;
 }
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void Distance::Print(std::ostream &out)
+void Dihedral::Print(std::ostream &out)
 {
     out << "";
 }

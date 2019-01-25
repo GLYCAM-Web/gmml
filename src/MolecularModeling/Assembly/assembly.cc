@@ -515,20 +515,20 @@ Assembly::ResidueVector Assembly::GetAllProteinResiduesOfAssembly()
     }
     return protein_residues;
 }
-Assembly::CoordinateVector Assembly::GetAllCoordinates()
+GeometryTopology::Coordinate::CoordinateVector Assembly::GetAllCoordinates()
 {
-    CoordinateVector coordinates = CoordinateVector();
+    GeometryTopology::Coordinate::CoordinateVector coordinates;
     for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
     {
         Assembly* assembly = (*it);
-        CoordinateVector assembly_coordinate = assembly->GetAllCoordinates();
+        GeometryTopology::Coordinate::CoordinateVector assembly_coordinate = assembly->GetAllCoordinates();
         if(assembly_coordinate.size() == 0)
         {
             std::cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << std::endl;
             gmml::log(__LINE__, __FILE__, gmml::ERR, "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)");
-            return CoordinateVector();
+            return GeometryTopology::Coordinate::CoordinateVector();
         }
-        for(CoordinateVector::iterator it1 = assembly_coordinate.begin(); it1 != assembly_coordinate.end(); it1++)
+        for(GeometryTopology::Coordinate::CoordinateVector::iterator it1 = assembly_coordinate.begin(); it1 != assembly_coordinate.end(); it1++)
         {
             coordinates.push_back(*it1);
         }
@@ -544,7 +544,7 @@ Assembly::CoordinateVector Assembly::GetAllCoordinates()
             {
                 std::cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << std::endl;
                 gmml::log(__LINE__, __FILE__, gmml::ERR, "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)");
-                return CoordinateVector();
+                return GeometryTopology::Coordinate::CoordinateVector();
             }
             else
             {
@@ -555,12 +555,12 @@ Assembly::CoordinateVector Assembly::GetAllCoordinates()
     return coordinates;
 }
 
-Assembly::CoordinateVector Assembly::GetCycleAtomCoordinates( Glycan::Monosaccharide* mono ) {
-  CoordinateVector coordinates;
+GeometryTopology::Coordinate::CoordinateVector Assembly::GetCycleAtomCoordinates( Glycan::Monosaccharide* mono ) {
+  GeometryTopology::Coordinate::CoordinateVector coordinates;
   for( AtomVector::iterator it1 = mono->cycle_atoms_.begin(); it1 != mono->cycle_atoms_.end(); it1++ ) {
     MolecularModeling::Atom* atom = ( *it1 );
-    CoordinateVector atom_coordinates = atom->GetCoordinates();
-    for( CoordinateVector::iterator it2 = atom_coordinates.begin(); it2 != atom_coordinates.end(); it2++ ) {
+    GeometryTopology::Coordinate::CoordinateVector atom_coordinates = atom->GetCoordinates();
+    for( GeometryTopology::Coordinate::CoordinateVector::iterator it2 = atom_coordinates.begin(); it2 != atom_coordinates.end(); it2++ ) {
       coordinates.push_back( ( *it2 ) );
     }
   }
@@ -1147,13 +1147,13 @@ bool Assembly::CheckIfAtomExistInAssembly(MolecularModeling::Atom* toCheckAtom)
 
  //Added by ayush on 04/16/18 for TopologyFix in assembly
 
-Assembly::CoordinateVector Assembly::GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex)
+GeometryTopology::Coordinate::CoordinateVector Assembly::GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex)
 {
-    CoordinateVector coordinatesByIndex= CoordinateVector();
+    GeometryTopology::Coordinate::CoordinateVector coordinatesByIndex;
     for( AtomVector::iterator it1 = atomList.begin(); it1 != atomList.end(); it1++ ) {
       MolecularModeling::Atom* atom = ( *it1 );
-      CoordinateVector atom_coordinates = atom->GetCoordinates();
-      if(CoordinateIndex < atom_coordinates.size())
+      GeometryTopology::Coordinate::CoordinateVector atom_coordinates = atom->GetCoordinates();
+      if(CoordinateIndex < (int) atom_coordinates.size())
       {
         GeometryTopology::Coordinate* coordinate = atom_coordinates[CoordinateIndex];
         coordinatesByIndex.push_back(coordinate);

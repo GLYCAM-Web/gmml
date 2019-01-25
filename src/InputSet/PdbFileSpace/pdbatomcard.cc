@@ -137,6 +137,10 @@ PdbAtomCard::PdbAtomCard(std::string &line)
 
     temp = line.substr(76, 2);
     temp = gmml::Trim(temp);
+    if(temp.size() == 2)
+    {
+      temp[1] = std::tolower(temp[1]);
+    }
     atom_element_symbol_ = temp;
 
     temp = line.substr(78, 2);

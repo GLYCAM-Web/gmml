@@ -20,6 +20,7 @@ namespace GeometryTopology
             //                       Constructor                    //
             //////////////////////////////////////////////////////////
             Grid();
+           /*! \todo Figure out if this function really should use ion_radius.  */
             Grid(MolecularModeling::Assembly* assembly, Coordinate* min, Coordinate* max, double ion_radius, double ion_charge);
             Grid(MolecularModeling::Assembly* assembly, Coordinate* min, Coordinate* max, double cell_length, double cell_width, double cell_height);
             Grid(Grid &grid);

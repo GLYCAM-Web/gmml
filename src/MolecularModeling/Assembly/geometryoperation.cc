@@ -233,6 +233,7 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
                 head_neighbor_bond_vector->SetX(neighbor_coordinate->GetX() - head_atom_coordinate->GetX());
                 head_neighbor_bond_vector->SetY(neighbor_coordinate->GetY() - head_atom_coordinate->GetY());
                 head_neighbor_bond_vector->SetZ(neighbor_coordinate->GetZ() - head_atom_coordinate->GetZ());
+                head_neighbor_bond_vector->Normalize();
                 head_atom_bonds.push_back(head_neighbor_bond_vector);
             }
         }
@@ -1428,8 +1429,8 @@ void Assembly::GetCenterOfGeometry(GeometryTopology::Coordinate *center_of_geome
     double sumX = 0.0;
     double sumY = 0.0;
     double sumZ = 0.0;
-    CoordinateVector all_coords = this->GetAllCoordinates();
-    for(CoordinateVector::iterator it = all_coords.begin(); it != all_coords.end(); it++)
+    GeometryTopology::Coordinate::CoordinateVector all_coords = this->GetAllCoordinates();
+    for(GeometryTopology::Coordinate::CoordinateVector::iterator it = all_coords.begin(); it != all_coords.end(); it++)
     {
         GeometryTopology::Coordinate coord = *it;
         sumX += coord.GetX();
