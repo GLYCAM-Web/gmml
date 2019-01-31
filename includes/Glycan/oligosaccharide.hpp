@@ -33,6 +33,7 @@ namespace Glycan
     float oligosaccharide_b_factor_;                     /*!< The b_factor for the oligosaccharide >*/
     std::vector<Glycan::Monosaccharide*> mono_nodes_;
     int number_branches_;
+    int on_index_;
     MolecularModeling::Assembly* assembly_;
     std::vector<Note*> oligo_notes_;
     Oligosaccharide();
@@ -67,7 +68,9 @@ namespace Glycan
     void createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> detected_monos, gmml::ResidueNameMap dataset_residue_names,
                                       int& number_of_covalent_links, int& number_of_probable_non_covalent_complexes);
     std::vector<Glycan::Oligosaccharide*> createOligosaccharides(std::vector<Glycan::Monosaccharide*> detected_monos);
-    void indexMonos(Glycan::Monosaccharide* thisMono, int thisIndex);
+    std::vector<Glycan::Monosaccharide*> indexMono(Glycan::Monosaccharide* thisMono, int thisIndex, std::vector<Glycan::Monosaccharide*> &branchedMonos);
+    void indexMonosaccharides();
+    void indexBranches(std::vector<Glycan::Monosaccharide*> branchedMonos);
     void traverseGraph(Glycan::Monosaccharide* thisMono, Glycan::Oligosaccharide* thisOligo);
     void getBranchMaxLengths(Glycan::Monosaccharide* this_mono, std::vector<int> &branchLengths);
     void cleanCountedBranches(Glycan::Monosaccharide* this_mono);
@@ -81,7 +84,6 @@ namespace Glycan
     std::string CheckOMETerminal(MolecularModeling::Atom* target, std::vector<MolecularModeling::Atom*> & terminal_atoms);
     std::string CheckROHTerminal(MolecularModeling::Atom* target, std::vector<MolecularModeling::Atom*> & terminal_atoms);
     std::string CheckTBTTerminal(MolecularModeling::Atom* target, std::vector<MolecularModeling::Atom*> & terminal_atoms);
-
   };
 }
 

@@ -58,7 +58,7 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
   }
 
   //Get Distance; if < 1.48 (my guess from double bond meta data) it may be a double bond.
-  if ((carbon1->GetDistanceToAtom(carbon2) < 1.48))
+  if ((carbon1->GetDistanceToAtom(carbon2) < 1.33))
   {
     areCloseEnough = true;
     if(local_debug > 0)
