@@ -94,32 +94,32 @@ using Glycan::Monosaccharide;
 //    ///Creating a new assembly only from the ring atoms for external detect shape program
 //    Assembly* detect_shape_assembly = new Assembly();
 //    detect_shape_assembly->AddResidue(cycle.at(0)->GetResidue());
-
+//
 //    Residue* detect_shape_residue = detect_shape_assembly->GetResidues().at(0);
 //    for(unsigned int i = 0; i < cycle.size(); i++)
 //    {
 //        std::string name = cycle.at(i)->GetName();
 //        std::string id = cycle.at(i)->GetId();
-
+//
 //        ///Preparing atom name and id for detect shape program. It doesn't work with atoms containing special characters: C', C* etc
 //        //        replace( id.begin(), id.end(), '?', 'n'); // replace all '?' with 'n'
 //        gmml::FindReplaceString(id, "\'", "");
 //        gmml::FindReplaceString(id, ",", "");
 //        gmml::FindReplaceString(name, "*", "");
 //        replace( id.begin(), id.end(), '*', 's'); // replace all '*' with ''
-
+//
 //        //        replace( name.begin(), name.end(), '?', 'n'); // replace all '?' with 'n'
 //        gmml::FindReplaceString(name, "\'", "");
 //        gmml::FindReplaceString(name, ",", "");
 //        gmml::FindReplaceString(name, "*", "");
-
-
+//
+//
 //        cycle.at(i)->SetName(name);
 //        cycle.at(i)->SetId(id);
 //    }
 //    detect_shape_residue->SetAtoms(cycle); //Commented out, suspected bug.
 //    //detect_shape_residue->SetAtoms(detect_shape_assembly-> GetAllAtomsOfAssembly());
-
+//
 //		// First need to get environment variable GEMSHOME
 //		std::string gemshome( getenv( "GEMSHOME" ) );
 //		// Concatenate GEMSHOME to name of all files used for BFMP detect shape program.
@@ -130,11 +130,11 @@ using Glycan::Monosaccharide;
 //		std::string canonicals = gemshome + "/apps/BFMP/canonicals.txt";
 //		// This file doesn't get concatenated to GEMSHOME because BFMP program generates it in the PWD
 //		std::string ring_conformations = "ring_conformations.txt";
-
+//
 //    ///Write a new PDB file from the new assembly
 //    PdbFileSpace::PdbFile* pdb = detect_shape_assembly->BuildPdbFileStructureFromAssembly();
 //    pdb->Write( temp_gmml_PDB );
-
+//
 //    ///Converting the written PDB file to format readable by detect_shape program
 //    std::string line = "";
 //    std::ifstream gmml_pdb ( temp_gmml_PDB.c_str() );
@@ -154,7 +154,7 @@ using Glycan::Monosaccharide;
 //        detect_shape_pdb.close();
 //    }
 //    else std::cout << "Unable to open " << temp_detect_shape_PDB << " file" << std::endl;
-
+//
 //    ///Writing a configuration file for the second argument of the detect_sugar program
 //    std::ofstream detect_shape_configuration ( temp_config.c_str() );
 //    detect_shape_configuration << "Atom" << std::endl;
@@ -167,14 +167,14 @@ using Glycan::Monosaccharide;
 //    detect_shape_configuration << "Path" << std::endl;
 //    detect_shape_configuration << canonicals << std::endl;
 //    detect_shape_configuration.close();
-
+//
 //    ///Calling detect_shape program
 //    // The better way to do this would be to pass the bfmp code the six cartesian
 //    // coords it needs and call it as a part of the library.  not sure how much
 //    // work it would take to do this, but it would be better.
 //		std::string command = detect_shape + " " + temp_detect_shape_PDB + " " + temp_config + " > /dev/null";
 //		system( command.c_str() );
-
+//
 //    ///Adding the BFMP ring conformation information gained from the detect_sugar program to the monosaccharide
 //    std::ifstream shape_detection_result ( ring_conformations.c_str() );
 //    line = "";
@@ -190,7 +190,7 @@ using Glycan::Monosaccharide;
 //        shape_detection_result.close();
 //    }
 //    else std::cout << "Unable to open " << ring_conformations << " file from detect shape program" << std::endl;
-
+//
 //    ///Deleting temporary files
 //    remove( temp_detect_shape_PDB.c_str() );
 //    remove( temp_gmml_PDB.c_str() );
@@ -232,9 +232,20 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 
   ///FILTERING OUT OXYGENLESS CYCLES
   FilterAllCarbonCycles( cycles );
+  std::cout << std::endl << "Cycles after discarding rings that are all-carbon" << std::endl;
+  for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
+  {
+    std::string cycle_atoms_str = ( *it ).first;
+    std::cout << cycle_atoms_str << std::endl;
+  }
 
-  //FILTERING OUT CYCLES WITH DOUBLE BONDS
-  FilterCyclesWithDoubleBonds( cycles );
+  //FILTERING OUT CYCLES WITH DOUBLE BONDS and add them to new cyclemap
+  CycleMap double_bond_cycles = FilterCyclesWithDoubleBonds( cycles );
+  
+  
+  //TODO figure out what to do with double bonded cycles
+  
+  
   std::cout << std::endl << "Cycles after discarding rings containing C-C double bonds" << std::endl;
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
   {
@@ -243,7 +254,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
 
   ///ANOMERIC CARBON DETECTION and SORTING
-  std::cout << std::endl << "Cycles after discarding rings that are all-carbon" << std::endl;
+  // std::cout << std::endl << "Cycles after discarding rings that are all-carbon" << std::endl;
   std::vector< std::string > anomeric_carbons_status = std::vector< std::string >();
   std::vector< Glycan::Note* > anomeric_notes = std::vector< Glycan::Note* >();
   CycleMap sorted_cycles = CycleMap();
@@ -392,6 +403,34 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     mono_id_++;
     mono->mono_id_ = mono_id_;
     *it = mono;
+  }
+
+  //Checking if any sugar named residue is not detected
+  Assembly::ResidueVector all_residues = GetAllResiduesOfAssembly();
+  for(Assembly::ResidueVector::iterator it = all_residues.begin(); it != all_residues.end(); it++)
+  {
+    MolecularModeling::Residue* this_residue = *it;
+    std::string residue_name = this_residue->GetName();
+    Glycan::SugarName residue_sugar_name = gmml::ResidueSugarNameLookup(residue_name);
+    Glycan::SugarName residue_complex_sugar_name = gmml::ResidueComplexSugarNameLookup(residue_name);
+    if((residue_sugar_name.pdb_code_ != "") || (residue_complex_sugar_name.pdb_code_ != "")) //This is a sugar residue
+    {
+      if (this_residue->GetIsSugar() == false)
+      {
+        if(this_residue->GetId()[12] == '?')//alternate atomic locations caused new residues that weren't assigned as sugars.  A ? at 12 in the ID 
+                                            //means it isnt an atom with alternate coordinates
+        {
+          Glycan::Note* undetected_note = new Glycan::Note();
+          undetected_note->type_ = Glycan::ERROR;
+          undetected_note->category_ = Glycan::RESIDUE_NAME;
+          std::stringstream note;
+          note << "Residue " << this_residue->GetName() << " (" << this_residue->GetId();
+          note << "), in PDB file indicates a sugar residue, but no sugar was detected.";
+          undetected_note->description_ = note.str();
+          this->AddNote(undetected_note);
+        }
+      }
+    }
   }
 
   ///CREATING TREE-LIKE STRUCTURE OF OLIGOSACCHARIDE
@@ -665,7 +704,7 @@ void Assembly::ReturnCycleAtoms(std::string src_id, MolecularModeling::Atom *cur
     }
     ReturnCycleAtoms(src_id, parent, atom_parent_map, cycle, cycle_stream);
 }
-void Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
+Assembly::CycleMap Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
 {
   int local_debug = -1;
   if (local_debug > 0)
@@ -715,15 +754,24 @@ void Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
             to_be_deleted_cycles[cycle_str] = true;
     }
     CycleMap all_single_bond_filtered_cycles = CycleMap();
+    CycleMap all_double_bond_cycles = CycleMap();
     for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
     {
         std::string cycle_str = (*it).first;
         AtomVector cycle_atoms = (*it).second;
         if(to_be_deleted_cycles.find(cycle_str) == to_be_deleted_cycles.end())
-            all_single_bond_filtered_cycles[cycle_str] = cycle_atoms;
+        {
+          all_single_bond_filtered_cycles[cycle_str] = cycle_atoms;
+        }
+            
+        else
+        {
+          all_double_bond_cycles[cycle_str] = cycle_atoms;
+        }
     }
     cycles.clear();
     cycles = all_single_bond_filtered_cycles;
+    return all_double_bond_cycles;
 }
 
 

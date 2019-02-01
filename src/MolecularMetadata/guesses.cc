@@ -63,7 +63,7 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
     areCloseEnough = true;
     if(local_debug > 0)
     {
-      debugStr << carbon1->GetId() << " and " << carbon2->GetId() << " are less than 1.48 angstroms apart\n";
+      debugStr << carbon1->GetId() << " and " << carbon2->GetId() << " are less than 1.33 angstroms apart\n";
       gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
       debugStr.str("");
     }

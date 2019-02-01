@@ -28,16 +28,56 @@ PdbAtomSection::PdbAtomSection(std::stringstream &stream_block, std::string inde
             gmml::Trim(record_name_);
             is_record_name_set=true;
         }
-
+        std::string this_atom_name = line.substr(12, 4);
+        this_atom_name = gmml::Trim(this_atom_name);
+        std::string alternate_id = line.substr(16,1);
+        alternate_id = gmml::Trim(alternate_id);
+        
         PdbFileSpace::PdbAtomCard* atom_card = new PdbFileSpace::PdbAtomCard(line);
-        //int ch = 65 + ConvertString<int>(Split(index, "_")[1]);
-        atom_card->SetAtomCardIndexInResidueSet(index);
-        //atom->SetAtomChainId((char)ch);
-        atom_cards_[atom_card->GetAtomSerialNumber()] = atom_card;
-        ordered_atom_cards_.push_back(atom_card);
-
-        getline(stream_block, line);
-        temp = line;
+        if(alternate_id.empty())
+        {
+          //int ch = 65 + ConvertString<int>(Split(index, "_")[1]);
+          atom_card->SetAtomCardIndexInResidueSet(index);
+          //atom->SetAtomChainId((char)ch);
+          atom_cards_[atom_card->GetAtomSerialNumber()] = atom_card;
+          ordered_atom_cards_.push_back(atom_card);
+          
+          getline(stream_block, line);
+          temp = line;
+        }
+        else //There are alternate coordinates that need to be added to the atom that was just created.
+        {
+          // gmml::log(__LINE__, __FILE__, gmml::INF, alternate_id + line.substr(17,3));
+          getline(stream_block, line);
+          std::string next_atom_name;
+          if(!gmml::Trim(line).empty())
+          {  
+            next_atom_name = line.substr(12, 4);
+            next_atom_name = gmml::Trim(next_atom_name);
+            alternate_id = line.substr(16,1);
+            // gmml::log(__LINE__, __FILE__, gmml::INF, alternate_id + line.substr(17,3));
+            alternate_id = gmml::Trim(alternate_id);
+          }
+          while((!alternate_id.empty()) && (this_atom_name == next_atom_name) && (!gmml::Trim(line).empty()))
+          {
+            PdbFileSpace::PdbAtomCard* alternate_atom_card = new PdbFileSpace::PdbAtomCard(line);
+            atom_card->AddAlternateLocation(alternate_atom_card);
+            // gmml::log(__LINE__, __FILE__, gmml::INF, "Added atom to alternate vector");
+            getline(stream_block, line);
+            next_atom_name = line.substr(12, 4);
+            next_atom_name = gmml::Trim(next_atom_name);
+            alternate_id = line.substr(16,1);
+            alternate_id = gmml::Trim(alternate_id);
+          }
+          
+          
+          getline(stream_block, line);
+          temp = line;
+          atom_card->SetAtomCardIndexInResidueSet(index);
+          //atom->SetAtomChainId((char)ch);
+          atom_cards_[atom_card->GetAtomSerialNumber()] = atom_card;
+          ordered_atom_cards_.push_back(atom_card);
+        }
     }
 }
 

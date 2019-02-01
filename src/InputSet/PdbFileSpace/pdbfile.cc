@@ -210,20 +210,22 @@ PdbFile::PdbFile(const std::string &pdb_file)
         }
     }
     in_file.close();
-    if(temp.find("END") == std::string::npos || temp.compare("END") != 0)
-    {
-        std::ofstream out_file;
-        out_file.open(pdb_file.c_str());
-        out_file << ss.str() << "END";
-        out_file.close();
-    }
-    else
-    {
-        std::ofstream out_file;
-        out_file.open(pdb_file.c_str());
-        out_file << ss.str() << temp;
-        out_file.close();
-    }
+    //I think this erases PDb files sometimes, as they only have "END"
+    //Dave 2/1/19
+    // if(temp.find("END") == std::string::npos || temp.compare("END") != 0)
+    // {
+    //     std::ofstream out_file;
+    //     out_file.open(pdb_file.c_str());
+    //     out_file << ss.str() << "END";
+    //     out_file.close();
+    // }
+    // else
+    // {
+    //     std::ofstream out_file;
+    //     out_file.open(pdb_file.c_str());
+    //     out_file << ss.str() << temp;
+    //     out_file.close();
+    // }
     in_file.open(pdb_file.c_str());
     if(!Read(in_file))
     {

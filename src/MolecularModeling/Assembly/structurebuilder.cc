@@ -311,6 +311,9 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){//This function shou
         for(Assembly::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
         {
             MolecularModeling::Atom* neighbor_atom = (*it1);
+            
+            //TODO change cutoff based on atom elements && see if commenting out the xyz check below speeds up the building (so far the tests say it does)
+            
             // X distance
             if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
             {

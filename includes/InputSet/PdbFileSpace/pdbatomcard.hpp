@@ -215,6 +215,12 @@ namespace PdbFileSpace
               * @param atom_card_index_in_residue_sequence The atom card index in a residue set of the current object
               */
             void SetAtomCardIndexInResidueSet(std::string atom_card_index_in_residue_sequence);
+            /*! \fn
+              * A mutator function in order to add alternate atomic coordinates to the current object
+              * Add to the alternate_atom_locations_ attribute of the current pdb atom
+              * @param alternate_atom The atom card index in a residue set of the current object
+              */
+            void AddAlternateLocation(PdbAtomCard* alternate_atom);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -243,6 +249,8 @@ namespace PdbFileSpace
             std::string atom_element_symbol_;                   /*!< Atom element symbol */
             std::string atom_charge_;                           /*!< Atom charge */
             std::string atom_card_index_in_residue_sequence_;
+            std::vector<PdbAtomCard*> alternate_atom_locations_;   /*!< Alternate atom locations, as a vector of atom cards, as there is 
+                                                                  more information that may be needed (such as ID (A,B,C, etc), %occupancy, etc) */
     };
 }
 

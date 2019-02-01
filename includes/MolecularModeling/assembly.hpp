@@ -1414,7 +1414,7 @@ namespace MolecularModeling
               * The algorithm is derived from http://pubs.acs.org/doi/pdf/10.1021/ci960322f
               * @return cycles A map between the string version of atoms of cycles and the list of cycle atom objects
               */
-            CycleMap DetectCyclesByExhaustiveRingPerception();
+            Assembly::CycleMap DetectCyclesByExhaustiveRingPerception();
             /*! \fn
               * A function in order to prune the graph (recursively removing nodes with zero or 1 neighbors)
               * @param all_atoms The list of atoms of the graph which is going to be updated by the function
@@ -1465,7 +1465,7 @@ namespace MolecularModeling
               * A function in order to discard rings/cycles that have double bonds
               * @param cycles A map between the string version of atoms of cycles and the list of cycle atom objects
               */
-            void FilterCyclesWithDoubleBonds(CycleMap &cycles);
+            CycleMap FilterCyclesWithDoubleBonds(CycleMap &cycles);
             /*! \fn
               * A function in order to discard rings/cycles that are only made from carbons atoms
               * @param cycles A map between the string version of atoms of cycles and the list of cycle atom objects

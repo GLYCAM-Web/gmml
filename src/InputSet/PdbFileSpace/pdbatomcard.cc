@@ -273,6 +273,11 @@ void PdbAtomCard::SetAtomCardIndexInResidueSet(std::string atom_card_index_in_re
     atom_card_index_in_residue_sequence_ = atom_card_index_in_residue_sequence;
 }
 
+void PdbAtomCard::AddAlternateLocation(PdbAtomCard* alternate_atom)
+{
+  alternate_atom_locations_.push_back(alternate_atom);
+}
+
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
