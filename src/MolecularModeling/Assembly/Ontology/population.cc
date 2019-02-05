@@ -753,6 +753,14 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
     gmml::AddLiteral(mono_uri, Ontology::hasOligoParent, oligo_uri, mono_stream);
     int Index = mono->oligosaccharide_index_;
     gmml::AddLiteral(mono_uri, Ontology::hasIndex, std::to_string(Index), mono_stream);
+    if(checkIfNucleotide(mono))
+    {
+      gmml::AddTriple(mono_uri, Ontology::isNucleotide, "true", mono_stream);
+    }
+    else
+    {
+      gmml::AddTriple(mono_uri, Ontology::isNucleotide, "false", mono_stream);
+    }
     // gmml::AddLiteral(mono_uri, Ontology::hasSNFGName, mono->SNFG_name_, mono_stream);
     //    gmml::AddLiteral(mono_uri, Ontology::LABEL, mono_resource, mono_stream);
 
@@ -826,7 +834,7 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
           break;
       }
     }
-    
+    gmml::AddLiteral(mono_uri, Ontology::author_mono_name, mono->author_sugar_name_.monosaccharide_name_, mono_stream);
     Glycan::SugarName sugar_name = mono->sugar_name_;
     PopulateSugarName(mono_stream, id_prefix, mono_uri, mono->mono_id_, sugar_name);
     mono_stream << ring_atom_stream.str();
@@ -999,6 +1007,7 @@ void Assembly::PopulateSugarName(std::stringstream& mono_stream, std::string id_
     gmml::AddLiteral(sugar_name_uri, Ontology::mono_stereo_name, sugar_name.monosaccharide_stereochemistry_name_, sugar_name_stream);
     gmml::AddLiteral(sugar_name_uri, Ontology::mono_stereo_short_name, sugar_name.monosaccharide_stereochemistry_short_name_, sugar_name_stream);
     gmml::AddLiteral(sugar_name_uri, Ontology::mono_name, sugar_name.monosaccharide_name_, sugar_name_stream);
+    
     gmml::AddLiteral(sugar_name_uri, Ontology::mono_short_name, sugar_name.monosaccharide_short_name_, sugar_name_stream);
     gmml::AddLiteral(sugar_name_uri, Ontology::isomer, sugar_name.isomer_, sugar_name_stream);
     if(sugar_name.configuration_.compare("a") == 0)

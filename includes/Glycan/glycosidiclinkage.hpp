@@ -16,7 +16,7 @@ namespace Glycan
   class GlycosidicLinkage
   {
   public:
-    Monosaccharide* reducing_mono_;
+    Monosaccharide* reducing_mono_ = NULL;
     Monosaccharide* non_reducing_mono_;
     Monosaccharide* non_reducing_mono_2_; //In case of anomeric-anomeric linkage
     bool anomeric_anomeric_linkage_;

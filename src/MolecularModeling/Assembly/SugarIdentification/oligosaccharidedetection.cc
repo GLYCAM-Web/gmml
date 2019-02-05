@@ -8,6 +8,7 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <sys/stat.h>
 
 #include "../../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../../includes/MolecularModeling/residue.hpp"
@@ -386,7 +387,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
             mismatch_note->type_ = Glycan::ERROR;
             mismatch_note->category_ = Glycan::DER_MOD;
             std::stringstream note;
-            note << "Residue name, " << mono->cycle_atoms_[0]->GetResidue()->GetName() << " (" << mono->cycle_atoms_[0]->GetResidue()->GetId() << "), in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_;
+            note << "Residue name, " << mono->cycle_atoms_[0]->GetResidue()->GetName() << " (" << mono->cycle_atoms_[0]->GetResidue()->GetId() << "), in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_ << ". " << mono->sugar_name_.monosaccharide_name_ << " vs. " << mono->author_sugar_name_.monosaccharide_name_;
             mismatch_note->description_ = note.str();
             this->AddNote(mismatch_note);
           }
@@ -2668,7 +2669,7 @@ void Assembly::AddUnknownDerivativeRuleInfo(std::string key, std::string pattern
       if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
         head << mono->cycle_atoms_.size() - 1 + gmml::ConvertString<int>(key) << long_name_pattern;
       else if(key.compare("a") != 0)
-        head << gmml::ConvertString<int>(key) + 1 << long_name_pattern;
+        head << gmml::ConvertString<int>(key) << long_name_pattern;
     }
     else
     {
@@ -2677,7 +2678,7 @@ void Assembly::AddUnknownDerivativeRuleInfo(std::string key, std::string pattern
       else if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
         head << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) << long_name_pattern;
       else if(key.compare("a") != 0)
-        head << gmml::ConvertString<int>(key) + 1 << long_name_pattern;
+        head << gmml::ConvertString<int>(key) << long_name_pattern;
     }
   }
   if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
@@ -3381,17 +3382,25 @@ std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vect
       for(std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> >::iterator monoNeighbor = this_mono->mono_neighbors_.begin(); monoNeighbor != this_mono->mono_neighbors_.end(); monoNeighbor++)
       {
         Glycan::GlycosidicLinkage* thisLinkage = (*monoNeighbor).first;
+        // Glycan::Monosaccharide* thisNeighbor= (*monoNeighbor).second;
         std::stringstream ss;
-        ss << this_mono->cycle_atoms_[0]->GetResidue()->GetId() << " is being compared to " << thisLinkage->non_reducing_mono_->cycle_atoms_[0]->GetResidue()->GetId() << " and the linkage type is " << thisLinkage->inverse_linkage_type_;
-        gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
-        if(this_mono->cycle_atoms_[0]->GetResidue()->GetId() == thisLinkage->non_reducing_mono_->cycle_atoms_[0]->GetResidue()->GetId())
-        {//if this mono has a mono neighbor at the anomeric carbon, it can't be the root (attached to terminal)
-          gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the non reducing mono");
-          this_mono->is_root_ = false;
+        if(thisLinkage->reducing_mono_ != NULL)
+        {
+          ss << this_mono->cycle_atoms_[0]->GetResidue()->GetId() << " is being compared to " << thisLinkage->non_reducing_mono_->cycle_atoms_[0]->GetResidue()->GetId() << " and the linkage type is " << thisLinkage->inverse_linkage_type_;
+          gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+          if(this_mono->cycle_atoms_[0]->GetResidue()->GetId() == thisLinkage->non_reducing_mono_->cycle_atoms_[0]->GetResidue()->GetId())
+          {//if this mono has a mono neighbor at the anomeric carbon, it can't be the root (attached to terminal)
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the non reducing mono");
+            this_mono->is_root_ = false;
+          }
+          else
+          {
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the reducing mono");
+          }
         }
         else
         {
-          gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the reducing mono");
+          //TODO handle anomeric-anomeric; they both think they are the root and you get stuck in an infinite loop
         }
       }
     }
@@ -4581,29 +4590,39 @@ void Assembly::GetAuthorNaming(std::vector< std::string > amino_lib_files, Glyca
   char CCDhash = residueName[0];
   std::stringstream CCDfilepath;
   CCDfilepath << CCD_Path << "/" << CCDhash << "/" << residueName << "/" << residueName << ".pdb";
+  
   // Initialize an Assembly from the PDB file.
-  MolecularModeling::Assembly CCDassembly(CCDfilepath.str(), gmml::PDB);
-  // Build by Distance
-  CCDassembly.BuildStructureByDistance(10);
-  // Find the Sugars.
-  std::vector<Glycan::Oligosaccharide*> authorOligos = CCDassembly.ExtractSugars(amino_lib_files, false, false, CCD_Path);
-  //The vector is really just a monosaccharide
-  if(authorOligos.size() > 0)
-  {
-    Glycan::Oligosaccharide* authorOligo = authorOligos[0];
-    if(authorOligo->mono_nodes_.size() > 0)
+  
+  //The next two lines are the fastest way to check if a file exists according to https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
+  struct stat buffer; 
+  if( stat( CCDfilepath.str().c_str(), &buffer ) == 0 )
+  {  
+    MolecularModeling::Assembly CCDassembly(CCDfilepath.str(), gmml::PDB);
+    // Build by Distance
+    CCDassembly.BuildStructureByDistance(10);
+    // Find the Sugars.
+    std::vector<Glycan::Oligosaccharide*> authorOligos = CCDassembly.ExtractSugars(amino_lib_files, false, false, CCD_Path);
+    //The vector is really just a monosaccharide
+    if(authorOligos.size() > 0)
     {
-      if(authorOligos[0]->mono_nodes_[0]->sugar_name_.pdb_code_ == "")
+      Glycan::Oligosaccharide* authorOligo = authorOligos[0];
+      if(authorOligo->mono_nodes_.size() > 0)
       {
-        authorOligos[0]->mono_nodes_[0]->sugar_name_.pdb_code_ = residueName;
+        if(authorOligos[0]->mono_nodes_[0]->sugar_name_.pdb_code_ == "")
+        {
+          if(mono->sugar_name_.monosaccharide_name_ == authorOligos[0]->mono_nodes_[0]->sugar_name_.monosaccharide_name_)//should have the formula for R groups so will be an "exact" match
+          {
+            mono->sugar_name_.pdb_code_ = residueName;
+          }
+          authorOligos[0]->mono_nodes_[0]->sugar_name_.pdb_code_ = residueName;
+        }
+        mono->author_sugar_name_ = authorOligos[0]->mono_nodes_[0]->sugar_name_;
       }
-      mono->author_sugar_name_ = authorOligos[0]->mono_nodes_[0]->sugar_name_;
-    }
-    if(local_debug > 0)
-    {
-      gmml::log(__LINE__, __FILE__,  gmml::INF, "Author Name");
-      gmml::log(__LINE__, __FILE__,  gmml::INF, mono->author_sugar_name_.monosaccharide_name_);
+      if(local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Author Name");
+        gmml::log(__LINE__, __FILE__,  gmml::INF, mono->author_sugar_name_.monosaccharide_name_);
+      }
     }
   }
-
 }
