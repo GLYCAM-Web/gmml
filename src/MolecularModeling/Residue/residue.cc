@@ -349,7 +349,7 @@ bool Residue::GraphPredictionBasedElementLabeling()
 
 Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
 {
-    int degree = INFINITY;
+    int degree = (int) INFINITY;
     AtomVector lowest_degree_atoms = AtomVector();
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
@@ -382,9 +382,14 @@ double Residue::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
 
 bool Residue::CheckIfProtein()
 {
+  int local_debug = -1;
     if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), this->GetName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
     {
-        return true;
+      if (local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Protein Found");
+      }
+      return true;
     }
     return false;
 }
@@ -511,7 +516,7 @@ GeometryTopology::Coordinate Residue::GetGeometricCenter()
 
 MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
 {
-    MolecularModeling::Atom* return_atom;
+    MolecularModeling::Atom* return_atom=NULL;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
@@ -525,7 +530,7 @@ MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
 
 MolecularModeling::Atom* Residue::GetAtom(unsigned long long query_index)
 {
-    MolecularModeling::Atom* return_atom;
+    MolecularModeling::Atom* return_atom=NULL;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
@@ -539,7 +544,7 @@ MolecularModeling::Atom* Residue::GetAtom(unsigned long long query_index)
 
 MolecularModeling::Atom* Residue::GetAtomWithId(std::string query_id)
 {
-    MolecularModeling::Atom* return_atom;
+    MolecularModeling::Atom* return_atom=NULL;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {

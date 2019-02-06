@@ -27,7 +27,7 @@ namespace Ontology
     const std::string RingAtom = "gmmo:RingAtom";
     const std::string SideAtom = "gmmo:SideAtom";
     const std::string Linkage = "gmmo:Linkage";
-    const std::string Monosaccharide = "gmmo:Monosaccharide";
+    const std::string monosaccharide = "gmmo:Monosaccharide";
     const std::string Oligosaccharide = "gmmo:Oligosaccharide";
     const std::string Terminal = "gmmo:Terminal";
     const std::string Note = "gmmo:Note";
@@ -39,11 +39,17 @@ namespace Ontology
     /* Object Properties */
     const std::string hasAtom = "gmmo:hasAtom";
     const std::string hasChild = "gmmo:hasChild";
+    const std::string hasChildMono = "gmmo:hasChildMono";
+    const std::string hasParentMono = "gmmo:hasParentMono";
     const std::string hasChildAtomLinkage = "gmmo:hasChildAtomLinkage";
     const std::string hasParentAtomLinkage = "gmmo:hasParentAtomLinkage";
     const std::string hasGlycosidicLinkage = "gmmo:hasGlycosidicLinkage";
+    const std::string hasGlycosidicPhiAngle = "gmmo:hasGlycosidicPhiAngle";
+    const std::string hasGlycosidicPsiAngle = "gmmo:hasGlycosidicPsiAngle";
+    const std::string hasGlycosidicOmegaAngle = "gmmo:hasGlycosidicOmegaAngle";
     const std::string hasNeighbor = "gmmo:hasNeighbor";
     const std::string hasOligo = "gmmo:hasOligo";
+    const std::string hasMono = "gmmo:hasMono";
     const std::string hasTerminal = "gmmo:hasTerminal";
     const std::string hasSequenceResidue = "gmmo:hasSequenceResidue";
     const std::string isConnectedTo = "gmmo:isConnectedTo";
@@ -54,6 +60,10 @@ namespace Ontology
     const std::string hasCore = "gmmo:hasCore";
     const std::string hasSideAtom = "gmmo:hasSideAtom";
     const std::string hasSugarName = "gmmo:hasSugarName";
+    const std::string hasSNFGName = "gmmo:hasSNFGName";
+    const std::string hasIndex = "gmmo:hasIndex";
+    const std::string hasOligoParent = "gmmo:hasOligoParent";
+    const std::string hasAuthorSNFGName = "gmmo:hasAuthorSNFGName";
     const std::string hasTitle = "gmmo:hasTitle";
     const std::string hasAuthors = "gmmo:hasAuthors";
     const std::string hasJournal = "gmmo:hasJournal";
@@ -61,6 +71,8 @@ namespace Ontology
     const std::string hasPMID = "gmmo:hasPMID";
     const std::string hasResolution = "gmmo:hasResolution";
     const std::string hasBFactor = "gmmo:hasBFactor";
+    const std::string hasProteinID = "gmmo:hasProteinID";
+    const std::string hasFormula = "gmmo:hasFormula";
 
     /* Datatype Properties */
     const std::string input_file_path = "gmmo:filePath";
@@ -76,10 +88,16 @@ namespace Ontology
     const std::string sequence_linkage = "gmmo:sequenceLinkage";
     const std::string isomer = "gmmo:isomer";
     const std::string mono_name = "gmmo:monosaccharideName";
+    const std::string author_mono_name = "gmmo:authorMonosaccharideName";
     const std::string mono_short_name = "gmmo:monosaccharideShortName";
+    const std::string author_mono_short_name = "gmmo:authorMonosaccharideShortName";
     const std::string mono_stereo_name = "gmmo:monosaccharideStereochemName";
+    const std::string author_mono_stereo_name = "gmmo:authorMonosaccharideStereochemName";
     const std::string mono_stereo_short_name = "gmmo:monosaccharideStereochemShortName";
+    const std::string author_mono_stereo_short_name = "gmmo:authorMonosaccharideStereochemShortName";
     const std::string oligo_name = "gmmo:oligoName";
+    const std::string oligo_IUPAC_name = "gmmo:oligoIUPACname";
+    const std::string author_oligo_name = "gmmo:authorOligoName";
     const std::string oligo_sequence_name = "gmmo:oligoSequenceName";
     const std::string oligo_residue_linkages = "gmmo:oligoResidueLinks";
     const std::string oligo_b_factor = "gmmo:oligoBFactor";

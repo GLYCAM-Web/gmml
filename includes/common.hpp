@@ -6,6 +6,7 @@
 #include <math.h>
 #include <map>
 #include <set>
+#include <limits>
 
 #include "GeometryTopology/coordinate.hpp"
 #include "Glycan/sugarname.hpp"
@@ -20,8 +21,7 @@ namespace gmml
     typedef std::map<std::string, std::vector<std::string> > AtomMatchingMap;
     typedef std::map<std::string, std::vector<std::string> > GlycamResidueNamingMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
-    typedef GeometryTopology::Coordinate Vector;
-	typedef std::vector<MolecularModeling::Atom*> AtomVector;
+    typedef std::vector<MolecularModeling::Atom*> AtomVector;
 
     //*******************************************
 
@@ -48,7 +48,6 @@ namespace gmml
     const double dSulfurCutoff = 2.5;
     const double PI_RADIAN = 4.0*atan(1.0);
     const double PI_DEGREE = 180.0;
-    const double EPSILON = 0.001;
     const double dCutOff = 1.65;
     const double BOND_LENGTH = 1.4;
     const double ROTATION_ANGLE = 109.5;
@@ -57,10 +56,13 @@ namespace gmml
     const char BLANK_SPACE = '?';
     const double MINIMUM_RADIUS = 0.6;
     const double DEFAULT_RADIUS = 1.35;
-    const double DIST_EPSILON = 0.000001;
     const int MAX_PDB_ATOM = 99999;
     const double CHARGE_DIVIDER = 18.2223;
     const double CARBON_SURFACE_AREA = 36.31681103;
+    const double EPSILON = 0.001; // \todo determine where/if this is used.  Only for PDB-type data, likely.
+    const double DIST_EPSILON = 0.000001; // \todo determine where/if this is used, and if the following would be better.
+    const double Float_Machine_Epsilon = std::numeric_limits<float>::epsilon( );
+    const double Double_Machine_Epsilon = std::numeric_limits<double>::epsilon( );
 
     // Ionizing
     const double DEFAULT_GRID_LENGTH = 2;//0.5;
@@ -389,11 +391,11 @@ namespace gmml
         {"", "", "", "", "", "", "", "", "", ""},
         ///Alpha D Aldohexapyranoses
         {"_2_3_4P_a", "a-D-ribopyranose", "DRibpa", "D", "", "P", "a", "", "", "RIB"},
-        {"_3_4^2P_a", "a-D-arabinopyranose" , "DArapa", "D", "", "P", "a", "", "", ""},
+        {"_3_4^2P_a", "a-D-arabinopyranose" , "DArapa", "D", "", "P", "a", "", "", "64K"},
         {"_2_4^3P_a", "a-D-xylopyranose",	"DXylpa", "D", "", "P", "a", "", "", "XYZ"},
         {"_4^2^3P_a",	"a-D-lyxopyranose", "DLyxpa", "D", "", "P", "a", "", "", "LDY"},
         {"_2_3_4P_a^+1", "a-D-allopyranose", "DAllpa", "D", "", "P", "a", "", "", "AFD"},
-        {"_3_4^2P_a^+1", "a-D-altropyranose", "DAltpa", "D", "", "P", "a", "", "", ""},
+        {"_3_4^2P_a^+1", "a-D-altropyranose", "DAltpa", "D", "", "P", "a", "", "", "SHD"},
         {"_2_4^3P_a^+1", "a-D-glucopyranose",	"DGlcpa", "D", "", "P", "a", "", "", "GLC"},
         {"_4^2^3P_a^+1", "a-D-mannopyranose", "DManpa", "D", "", "P", "a", "", "", "MAN"},
         {"_2_3^4P_a^+1", "a-D-gulopyranose", "DGulpa", "D", "", "P", "a", "", "", ""},
@@ -461,8 +463,8 @@ namespace gmml
         {"_4^2^3P_a^+1d", "a-D-rhamnoopyranose", "DRhapa", "D", "", "P", "a", "", "", ""},
         {"_4^23dP^a^+1d", "b-D-ascarylopyranose", "", "D", "", "P", "b", "", "", ""},
         {"_4^23dP_a^+1d", "a-D-ascarylopyranose", "","D", "", "P", "a", "", "", ""},
-        {"_32dF^a^+1", "b-D-deoxyribofuranose", "", "D", "", "P", "b", "", "", ""},
-        {"_32dF_a^+1", "a-D-deoxyribofuranose", "", "D", "", "P", "a", "", "", ""},
+        {"_32dF^a^+1", "b-D-deoxyribofuranose", "DRibf[2D]b", "D", "", "P", "b", "", "", ""},
+        {"_32dF_a^+1", "a-D-deoxyribofuranose", "DRibf[2D]a", "D", "", "P", "a", "", "", ""},
         {"_23dF^a^+1" ,"b-D-cordycepofuranose", "", "D", "", "P", "b", "", "", ""},
         {"_23dF_a^+1", "a-D-cordycepofuranose", "", "D", "", "P", "a", "", "", ""},
 
@@ -540,8 +542,8 @@ namespace gmml
         {"_2_3^4P_+1d^a", "a-L-rhamnoopyranose", "LRhapa", "L", "", "P", "a", "", "", ""},
         {"_2^43dP_+1d_a", "b-L-ascarylopyranose", "", "L", "", "P", "b", "", "", ""},
         {"_2^43dP_+1d^a", "a-L-ascarylopyranose", "", "L", "", "P", "a", "", "", ""},
-        {"^32dF_a_+1", "b-L-deoxyribofuranose", "", "L", "", "F", "b", "", "", ""},
-        {"^32dF_+1^a", "a-L-deoxyribofuranose", "", "L", "", "F", "a", "", "", ""},
+        {"^32dF_a_+1", "b-L-deoxyribofuranose", "LRibf[2D]b", "L", "", "F", "b", "", "", ""},
+        {"^32dF_+1^a", "a-L-deoxyribofuranose", "LRibf[2D]a", "L", "", "F", "a", "", "", ""},
         {"^23dF_a_+1" ,"b-L-cordycepofuranose", "", "L", "", "F", "b", "", "", ""},
         {"^23dF_+1^a", "a-L-cordycepofuranose", "", "L", "", "F", "a", "", "", ""},
 
@@ -597,7 +599,7 @@ namespace gmml
         {"_2^43dP^+1d", "x-D-abequopyranose", "DAbepx", "D", "", "P", "", "", "", ""},
         {"_4^2^3P^+1d", "x-D-rhamnoopyranose", "DRhapx", "D", "", "P", "", "", "", ""},
         {"_4^23dP^+1d", "x-D-ascarylopyranose", "", "D", "", "P", "", "", "", ""},
-        {"_32dF^+1", "x-D-deoxyribofuranose", "", "D", "", "P", "", "", "", ""},
+        {"_32dF^+1", "x-D-deoxyribofuranose", "DRibf[2D]x", "D", "", "P", "", "", "", ""},
         {"_23dF^+1", "x-D-cordycepofuranose", "", "D", "", "P", "", "", "", ""},
 
         ///X L Aldohexapyranoses
@@ -651,7 +653,7 @@ namespace gmml
         {"_4^23dP_+1d", "x-L-abequopyranose", "LAbepx", "L", "", "P", "", "", "", ""},
         {"_2_3^4P_+1d", "x-L-rhamnoopyranose", "LRhapx", "L", "", "P", "", "", "", ""},
         {"_2^43dP_+1d", "x-L-ascarylopyranose", "", "L", "", "P", "", "", "", ""},
-        {"^32dF_+1", "x-L-deoxyribofuranose", "", "L", "", "P", "", "", "", ""},
+        {"^32dF_+1", "x-L-deoxyribofuranose", "LRibf[2D]x", "L", "", "P", "", "", "", ""},
         {"^23dF_+1", "x-L-cordycepofuranose", "", "L", "", "P", "", "", "", ""}
     };
 

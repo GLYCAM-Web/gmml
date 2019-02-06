@@ -1,4 +1,5 @@
 //Author: Dave Montgomery
+// This is a class created to use PrintOntology at the assembly level
 #ifndef INPUT_FILE_HPP
 #define INPUT_FILE_HPP
 

@@ -147,6 +147,32 @@ namespace GeometryTopology
             void TranslateAll(CoordinateVector coordinate_set, double margin, int pos);
             void RotateAngularAll(CoordinateVector coordinate_set, double angle, int pos);
             void RotateTorsionalAll(CoordinateVector coordinate_set, double torsion, int pos);
+            /*! \fn
+             *  Subtract coordinates
+             *  @param two coordinates
+             *  @return coordinate
+             *
+             * I found that Coordinate has a subtract operator, but I cannot get it to work as I want. 
+             * I already made this, and it works so...
+             */
+            Coordinate subtract_coordinates(Coordinate minuaend, Coordinate subtrahend);
+            Coordinate get_cartesian_point_from_internal_coords(
+                       Coordinate a, Coordinate b, Coordinate c, 
+                       double theta_Degrees, double phi_Degrees, double distance_Angstrom);
+            /*! \fn
+             * Convert internal coordinate to the corresponding cartesian coordinate
+             * @param coordinate_list List of at most three internal coordinates in order to calculate 
+             * the cartesian coordinate of the given internal coordinate (distance, angle, torsion)
+             * @param distance X value of the internal coordinate
+             * @param angle Y value of the interanl coordinate
+             * @param torsion Z value of the internal coordinate
+             * @return Cartesian coordinate of the internal coordinate (distance, angle, torsion)
+             */
+            Coordinate* ConvertInternalCoordinate2CartesianCoordinate(
+                       CoordinateVector coordinate_list, 
+                       double distance, double angle, double torsion);
+            Coordinate* ConvertCartesianCoordinate2InternalCoordinate(
+                       Coordinate* coordinate, CoordinateVector coordinate_list);
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////

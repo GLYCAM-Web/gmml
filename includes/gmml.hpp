@@ -114,9 +114,9 @@
 #include "GeometryTopology/plane.hpp"
 #include "GeometryTopology/cell.hpp"
 #include "GeometryTopology/grid.hpp"
-#include "GeometryTopology/InternalCoordinate/angle.hpp"
-#include "GeometryTopology/InternalCoordinate/dihedral.hpp"
-#include "GeometryTopology/InternalCoordinate/distance.hpp"
+#include "GeometryTopology/angle.hpp"
+#include "GeometryTopology/dihedral.hpp"
+#include "GeometryTopology/distance.hpp"
 #include "Glycan/chemicalcode.hpp"
 #include "Glycan/monosaccharide.hpp"
 #include "Glycan/note.hpp"
@@ -143,6 +143,9 @@
 #include "MolecularModeling/residuenode.hpp"
 #include "MolecularModeling/superimposition.hpp"
 #include "MolecularModeling/molecule.hpp"
+#include "MolecularModeling/Graph/node.hpp"
+#include "MolecularModeling/Graph/edge.hpp"
+#include "MolecularModeling/Graph/graph.hpp"
 #include "MolecularModeling/ring_shape_detection.hpp"
 #include "ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
@@ -172,10 +175,8 @@
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp"
 
 typedef std::vector<MolecularModeling::Atom*> AtomVector;
-typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
 typedef std::vector<MolecularModeling::Residue*> ResidueVector;
 typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
-typedef GeometryTopology::Coordinate Vector;
 typedef std::vector<std::string> StringVector;
 typedef std::vector<MolecularModeling::ResidueNode*> ResidueNodeVector;
 

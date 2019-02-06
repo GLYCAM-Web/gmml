@@ -229,6 +229,12 @@ PdbFile::PdbFile(const std::string &pdb_file)
     {
         throw PdbFileProcessingException(__LINE__, "Reading PDB file exception");
     }
+    if(header_ != NULL)
+    {
+      std::string PDBname = header_->GetIdentifierCode();
+      gmml::log(__LINE__, __FILE__,  gmml::INF, PDBname);
+    }
+    
     in_file.close();            /// Close the pdb files
 }
 PdbFile* PdbFile::LoadPdbFile()
@@ -3504,13 +3510,13 @@ bool PdbFile::ParseCards(std::ifstream &in_stream)
     }
     else
     {
-        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
+        // gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
+        // std::cout << "Wrong input file format" << std::endl;
         std::stringstream ss;
         ss << record_name << " is an Unknown record name.";
         gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
         std::cout << ss.str() << std::endl;
-        return false;
+        // return false;
     }
     return true;
 }
@@ -7809,39 +7815,62 @@ void PdbFile::PrintOntology(std::stringstream& ont_stream)
 {
   //Match formatting of Ontology
   std::stringstream uri;
-  uri << Ontology::ONT_PREFIX << header_->GetIdentifierCode();
+  uri << Ontology::ONT_PREFIX;
+  if(header_ != NULL)
+  {
+    uri << header_->GetIdentifierCode();
+  }
+  else
+  {
+    std::string file = gmml::Split(path_.substr(path_.find_last_of('/') + 1), ".").at(0);
+    // std::transform(file.begin(), file.end(),file.begin(), ::toupper);
+    uri << file;
+  }
   std::string uriStr = uri.str();
-
+  std::transform(uriStr.begin(), uriStr.end(), uriStr.begin(), ::tolower);
+  
   gmml::AddLiteral( uriStr, Ontology::TYPE, Ontology::PDB, ont_stream );
   
   //Return PDB_ID
-  gmml::AddLiteral( uriStr, Ontology::id, this->header_->GetIdentifierCode(), ont_stream );
+  if(header_ != NULL)
+    gmml::AddLiteral( uriStr, Ontology::id, this->header_->GetIdentifierCode(), ont_stream );
   
   //Return Protein Acession Number
   //TODO add check to make sure that it is the Uniprot database reference
-  //gmml::AddLiteral( uriStr, Ontology::ProteinID, this->database_reference_->GetDatabaseIDCode(), ont_stream );
+  if(database_reference_ != NULL)
+    gmml::AddLiteral( uriStr, Ontology::hasProteinID, this->database_reference_->GetUniprotIDs(), ont_stream );
 
   //Return Title
-  gmml::AddLiteral( uriStr, Ontology::hasTitle, this->title_->GetTitle(), ont_stream );
+  if(title_ != NULL)
+    gmml::AddLiteral( uriStr, Ontology::hasTitle, this->title_->GetTitle(), ont_stream );
 
   //Return Authors
-  gmml::AddLiteral( uriStr, Ontology::hasAuthors, this->author_->GetAuthor(), ont_stream );
+  if(author_ != NULL)
+    gmml::AddLiteral( uriStr, Ontology::hasAuthors, this->author_->GetAuthor(), ont_stream );
 
-  //Return JOURNAL
-  gmml::AddLiteral( uriStr, Ontology::hasJournal, this->journal_->GetReference(), ont_stream );
 
-  //Return DOI
-  gmml::AddLiteral( uriStr, Ontology::hasDOI, this->journal_->GetDOI(), ont_stream );
+  if(journal_ != NULL)
+  {
+      //Return JOURNAL
+      gmml::AddLiteral( uriStr, Ontology::hasJournal, this->journal_->GetReference(), ont_stream );
 
-  //Return PMID
-  gmml::AddLiteral( uriStr, Ontology::hasPMID, this->journal_->GetPMID(), ont_stream );
+      //Return DOI
+      gmml::AddLiteral( uriStr, Ontology::hasDOI, this->journal_->GetDOI(), ont_stream );
 
-  //Return Resolution
-  gmml::AddDecimal( uriStr, Ontology::hasResolution, this->remark_cards_->GetResolution(), ont_stream );
+      //Return PMID
+      gmml::AddLiteral( uriStr, Ontology::hasPMID, this->journal_->GetPMID(), ont_stream );
+  }
   
-  //Return B Factor
-  gmml::AddDecimal( uriStr, Ontology::hasBFactor, this->remark_cards_->GetBFactor(), ont_stream );
 
+  
+  if(remark_cards_ != NULL)
+  {
+    //Return Resolution
+    gmml::AddDecimal( uriStr, Ontology::hasResolution, this->remark_cards_->GetResolution(), ont_stream );
+    
+    //Return B Factor
+    gmml::AddDecimal( uriStr, Ontology::hasBFactor, this->remark_cards_->GetBFactor(), ont_stream );
+  }
 }
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //

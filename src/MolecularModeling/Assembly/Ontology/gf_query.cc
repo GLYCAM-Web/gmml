@@ -1,9 +1,12 @@
 #include "../../../../includes/MolecularModeling/assembly.hpp"
 
+//For an example query with some explaination, see the bottom of this file.  For sparql query information, see https://www.w3.org/TR/rdf-sparql-query/ (It is not the greatest documentation but it helps)
+
+
 std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo, std::string url, std::string output_file_type)
-{
-  std::stringstream query;
+{ // This function runs a full query on a single result, which is unique given the pdb_id, oligo_sequence, and oligo (which is the oligosaccharide number in the PDB in case it has identical sugars found)
   
+  std::stringstream query;
   query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
   query << " DISTINCT ?residue_links ?glycosidic_linkage ?title ?resolution ?Mean_B_Factor"
            "?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI"
@@ -14,8 +17,6 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
   query << "?pdb_file     :identifier    \"" << pdb_id << "\";\n";
   query << "              :hasOligo      ?oligo.\n";
   query << "FILTER regex(?oligo, \"" << oligo << "$\")\n";
-  // gmml::FindReplaceString(oligo_sequence, "[", "\\\\[");
-  // gmml::FindReplaceString(oligo_sequence, "]", "\\\\]");
   gmml::FindReplaceString(oligo_sequence, "-OH", "-ROH");
   query << "?oligo        :oligoName     \"" << oligo_sequence << "\".\n";
   query << "?pdb_file     :hasTitle               ?title;\n";
@@ -58,7 +59,10 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
 
 
 std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
-{
+{   //This function runs a basic query, looking only for ?pdb (PDB_ID), ?oligo (Oligosaccharides are assigned numbers when they are found, ie oligo_1), 
+    //and ?oligo_sequence (Condensed sequence).  These three variables together are unique for each result.  This function also takes in all of the possible
+    //filter variables to return filtered results when updating via ajax
+    
     std::stringstream query;
     std::stringstream search;
     search << searchType;
@@ -167,7 +171,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
 }
 
 std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, std::string sortBy, std::string url, std::string output_file_type)
-{
+{ // This query creates a list of unique PDB_IDs given all of the user specified filters, and returns a CSV which is downloaded 
   std::stringstream query;
   std::stringstream search;
   search << searchType;
@@ -271,7 +275,7 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
 }
 
 std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, std::string sortBy, std::string url, std::string output_file_type)
-{
+{ //This is a complete (and therefore slow) query that is a combination of moreQuery() and QueryOntology().  It filters the database by user input, and returns a CSV with all of the data for download.
   std::stringstream query;
   std::stringstream search;
   search << searchType;
@@ -392,7 +396,14 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
   return FormulateCURLGF(output_file_type, query.str(), url);
 
 }
-// 
+
+// To test new queries, you should go to your dev site's online virtuoso query.
+// To find the IP address of your Virtuoso database, run docker inspect (YOUR_USERNAME)_gw_virt | grep IPAddress
+// Then go to that IP address, followed by :8890/sparql.  SO for me that's http://172.16.3.8:8890/sparql
+// To query our ontology, you need to use the prefixes below.  This tells the ontology what the vocabulary means.
+// SELECT is all of the data you want to pull out, and each variable must be present in the WHERE{} part of the query.
+// Below is a sample query, and above if you follow the code it generates a couple other queries.
+//
 // PREFIX : <http://gmmo.uga.edu/#>
 // PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 // PREFIX owl: <http://www.w3.org/2002/07/owl#>
