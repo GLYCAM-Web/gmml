@@ -387,7 +387,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
             mismatch_note->type_ = Glycan::ERROR;
             mismatch_note->category_ = Glycan::DER_MOD;
             std::stringstream note;
-            note << "Residue name, " << mono->cycle_atoms_[0]->GetResidue()->GetName() << " (" << mono->cycle_atoms_[0]->GetResidue()->GetId() << "), in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_ << ". " << mono->sugar_name_.monosaccharide_name_ << " vs. " << mono->author_sugar_name_.monosaccharide_name_;
+            note << "Residue name, " << mono->cycle_atoms_[0]->GetResidue()->GetName() << " (" << mono->cycle_atoms_[0]->GetResidue()->GetId() << "), in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_ << ". "/* << mono->sugar_name_.monosaccharide_name_ << " vs. " << mono->author_sugar_name_.monosaccharide_name_*/;
             mismatch_note->description_ = note.str();
             this->AddNote(mismatch_note);
           }
@@ -3374,7 +3374,6 @@ std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vect
     {
       this_mono->is_root_ = true;
       this_mono->is_visited_ = false;
-      //TODO add terminal
     }
     else
     {
@@ -3382,7 +3381,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vect
       for(std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> >::iterator monoNeighbor = this_mono->mono_neighbors_.begin(); monoNeighbor != this_mono->mono_neighbors_.end(); monoNeighbor++)
       {
         Glycan::GlycosidicLinkage* thisLinkage = (*monoNeighbor).first;
-        // Glycan::Monosaccharide* thisNeighbor= (*monoNeighbor).second;
+        Glycan::Monosaccharide* thisNeighbor= (*monoNeighbor).second;
         std::stringstream ss;
         if(thisLinkage->reducing_mono_ != NULL)
         {
@@ -3400,7 +3399,26 @@ std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vect
         }
         else
         {
+          ss << this_mono->cycle_atoms_[0]->GetResidue()->GetId() << " and " << thisNeighbor->cycle_atoms_[0]->GetResidue()->GetId() << " have a linkage of " << thisLinkage->linkage_type_;
+          gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+          gmml::log(__LINE__, __FILE__,  gmml::INF, "This linkage is anomeric-anomeric");
           //TODO handle anomeric-anomeric; they both think they are the root and you get stuck in an infinite loop
+          if((thisNeighbor->mono_neighbors_.size() == 1) && (this_mono->mono_neighbors_.size() == 1))//just a disaccharide
+          {
+            if(thisNeighbor->is_root_)
+            {
+              this_mono->is_root_ = false;
+            }
+            if(thisLinkage->linkage_type_ == "1-2")
+            {
+              gmml::log(__LINE__, __FILE__,  gmml::INF, "This is a 1-2 anomeric linkage, so the other mono is the root");
+              this_mono->is_root_ = false;
+            }
+          }
+          else if((thisNeighbor->mono_neighbors_.size() == 1) && (this_mono->mono_neighbors_.size() > 1))//other neighbor is the 'terminal'
+          {
+            this_mono->is_root_ = false;
+          }
         }
       }
     }
@@ -3409,6 +3427,24 @@ std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vect
       gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the root");
       Glycan::Oligosaccharide* this_Oligo = new Glycan::Oligosaccharide(this);
       gmml::log(__LINE__, __FILE__, gmml::INF, this_mono->sugar_name_.monosaccharide_short_name_);
+      this_Oligo->traverseGraph(this_mono, this_Oligo);
+      this_Oligo->reindexRGroups(this_Oligo);
+      this_Oligo->indexMonosaccharides();
+      detected_oligos.push_back(this_Oligo);
+      std::string iupac = "Oligo IUPAC Name: " + this_Oligo->IUPAC_name_;
+      gmml::log(__LINE__, __FILE__, gmml::INF, iupac);
+      std::string oligoname =  "Oligo Name: " +this_Oligo->oligosaccharide_name_;
+      gmml::log(__LINE__, __FILE__, gmml::INF, oligoname);
+    }
+  }
+  for(std::vector<Glycan::Monosaccharide*>::iterator it = detected_monos.begin(); it != detected_monos.end(); it++)
+  {
+    Glycan::Monosaccharide* this_mono = *it;
+    if(this_mono->oligo_parent_ == NULL)
+    {
+      this_mono->is_root_ = true;
+      Glycan::Oligosaccharide* this_Oligo = new Glycan::Oligosaccharide(this);
+      //TODO the below function does not work correctly for cyclic oligosaccharides; write a new one or fix it
       this_Oligo->traverseGraph(this_mono, this_Oligo);
       this_Oligo->reindexRGroups(this_Oligo);
       this_Oligo->indexMonosaccharides();
@@ -4322,7 +4358,7 @@ src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc:4
  double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id)
                                                              ^
 */
-double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id)
+double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id)
 {
   int local_debug = -1;
   if(local_debug > 0)

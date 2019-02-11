@@ -17,9 +17,9 @@ namespace Glycan
   {
   public:
     Monosaccharide* reducing_mono_ = NULL;
-    Monosaccharide* non_reducing_mono_;
-    Monosaccharide* non_reducing_mono_2_; //In case of anomeric-anomeric linkage
-    bool anomeric_anomeric_linkage_;
+    Monosaccharide* non_reducing_mono_ = NULL;
+    Monosaccharide* non_reducing_mono_2_ = NULL; //In case of anomeric-anomeric linkage
+    bool anomeric_anomeric_linkage_ = false;
     std::string linkage_type_; //ie "1-4"
     std::string inverse_linkage_type_; //ie "4-1" needed for writing as you travel in reverse
     double phi_angle_;

@@ -580,3 +580,9 @@ void Assembly::DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomId
     }
     atom_status_map[atom->GetId()] = gmml::DONE;
 }
+
+// bool Assembly::isCyclicOligosaccharide(Glycan::Oligosaccharide* oligo)
+// {
+// 
+// 
+// }

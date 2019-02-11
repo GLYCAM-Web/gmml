@@ -725,7 +725,7 @@ namespace MolecularModeling
               * Exports data from assembly data structure into library file structure
               */
             LibraryFileSpace::LibraryFile* BuildLibraryFileStructureFromAssembly();
-            /*! \fn
+            /*! \fn 
               * A function to build a graph structure (bonding information) for the current object of central data structure
               * @param building_option A building option that can be selected from BuildingStructureOption enumerator
               * @param options List of additional options that can be defined by user
@@ -1052,7 +1052,7 @@ namespace MolecularModeling
             * @param ring_atom An Assembly Atom object to be used for populating the RingAtom triples
             * @param side_or_ring_atoms The list of side atoms and ring atoms of a monosaccharide
             */
-            void PopulateRingAtom(std::stringstream& ring_atom_stream, std::string id_prefix, std::string ring_uri, std::string ring_resource, int ring_index, Atom* ring_atom,
+            void PopulateRingAtom(std::stringstream& ring_atom_stream, std::string id_prefix, std::string ring_uri, std::string ring_resource, unsigned int ring_index, Atom* ring_atom,
                                   Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms);
             /*! \fn
             * A function in order to populate the SideAtom class of the ontology
@@ -1396,8 +1396,9 @@ namespace MolecularModeling
             void CalculateOligosaccharideBFactor(Glycan::Oligosaccharide* oligo, std::vector<Glycan::Monosaccharide*> monos);
             double CalculateOmegaAngle(Glycan::Oligosaccharide* parent_oligo, std::string parent_atom_id, std::string glycosidic_atom_id);
             double CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
-            double CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
+            double CalculatePhiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
             bool guessIfC_CDoubleBond(MolecularModeling::Atom* carbon1, MolecularModeling::Atom* carbon2);
+            double guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2);
             void GetAuthorNaming(std::vector< std::string > amino_lib_files, Glycan::Monosaccharide* mono, std::string CCD_Path);
             bool checkIfNucleotide(Glycan::Monosaccharide* mono);
 
