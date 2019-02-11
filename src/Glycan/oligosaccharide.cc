@@ -2295,8 +2295,6 @@ void Glycan::Oligosaccharide::getBranchMaxLengths(Glycan::Monosaccharide* this_m
         exit:
           int i=1; //need something here for goto to work
       }
-      exit:
-      int i = 1;//need something here for goto to work
     }
     else if(!this_mono_neighbor->is_counted_)
     {
