@@ -212,6 +212,12 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     return oligos; // Oliver thinks Yao hosed ontology::analysis. This might fix it?
 }
 
+//A function for PDB integration of gmml where they can feed a stringstream of atom cards and get a list of oligosaccharide names
+std::vector<std::string> Assembly::PDBExtractSugars(std::stringstream atomStream, std::vector< std::string > amino_lib_files, std::string CCD_Path)
+{
+  
+}
+
 std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology, std::string CCD_Path)
 {
   int local_debug = -1;

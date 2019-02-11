@@ -90,6 +90,9 @@ namespace MolecularModeling
               */
             Assembly(std::vector<std::vector<std::string> > file_paths, std::vector<gmml::InputFileType> types);
             Assembly(Assembly* assembly);
+            
+            //An assembly built from a stringstream of atoms in PDB format
+            Assembly(std::stringstream atomStream);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -939,6 +942,8 @@ namespace MolecularModeling
             * @return oligosaccharides A list of extarcted oligosaccharide structures
             */
             OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, std::vector<Glycan::Monosaccharide*>& monos, bool glyporbity_report = false, bool populate_ontology = false, std::string CCD_Path = " ");
+
+            std::vector<std::string> PDBExtractSugars(std::stringstream atomStream, std::vector< std::string > amino_lib_files, std::string CCD_Path);
 
             /*! \fn
             * A funstion in order to initiate population of turtle formatted triples (subject-predicate-object) for creating the GMMO ontology
