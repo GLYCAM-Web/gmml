@@ -2292,6 +2292,8 @@ void Glycan::Oligosaccharide::getBranchMaxLengths(Glycan::Monosaccharide* this_m
             break;
           }
         }
+        exit:
+          int i=1; //need something here for goto to work
       }
       exit:
       int i = 1;//need something here for goto to work
