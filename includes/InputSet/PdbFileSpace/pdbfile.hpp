@@ -150,7 +150,7 @@ namespace PdbFileSpace
               * Constructor
               * @param atomStream A stringstream of atom cards
               */
-            PdbFile(std::stringstream atomStream);
+            // PdbFile(std::stringstream atomStream);
             
             /*! \fn
               * Load PDB file

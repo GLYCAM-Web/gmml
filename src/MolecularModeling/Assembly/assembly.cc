@@ -222,10 +222,10 @@ Assembly::Assembly(std::vector<std::vector<std::string> > file_paths, std::vecto
     model_index_ = 0;
 }
 
-Assembly::Assembly(std::stringstream atomStream)
-{
-  
-}
+// Assembly::Assembly(std::stringstream atomStream)
+// {
+// 
+// }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////

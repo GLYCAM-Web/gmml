@@ -240,49 +240,49 @@ PdbFile::PdbFile(const std::string &pdb_file)
     in_file.close();            /// Close the pdb files
 }
 
-PdbFile::PdbFile(std::stringstream atomStream)
-{
-  path_ = "";
-  header_ = NULL;
-  obsolete_ = NULL;
-  title_ = NULL;
-  split_ = NULL;
-  caveat_ = NULL;
-  compound_ = NULL;
-  source_ = NULL;
-  keywords_ = NULL;
-  experimental_data_ = NULL;
-  number_of_models_ = NULL;
-  model_type_ = NULL;
-  author_ = NULL;
-  revision_data_ = NULL;
-  superseded_entries_ = NULL;
-  journal_ = NULL;
-  remark_cards_ = NULL;
-  database_reference_ = NULL;
-  sequence_advanced_ = NULL;
-  residues_sequence_ = NULL;
-  residue_modification_cards_ = NULL;
-  heterogen_cards_ = NULL;
-  heterogen_name_cards_ = NULL;
-  heterogen_synonym_cards_ = NULL;
-  formulas_ = NULL;
-  helix_cards_ = NULL;
-  sheet_cards_ = NULL;
-  disulfide_bonds_ = NULL;
-  link_cards_ = NULL;
-  cis_peptide_ = NULL;
-  site_cards_ = NULL;
-  crystallography_ = NULL;
-  origins_ = NULL;
-  scales_ = NULL;
-  matrices_ = NULL;
-  models_ = NULL;
-  connectivities_ = NULL;
-  serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
-  sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
-  master_ = NULL;
-}
+// PdbFile::PdbFile(std::stringstream atomStream)
+// {
+//   path_ = "";
+//   header_ = NULL;
+//   obsolete_ = NULL;
+//   title_ = NULL;
+//   split_ = NULL;
+//   caveat_ = NULL;
+//   compound_ = NULL;
+//   source_ = NULL;
+//   keywords_ = NULL;
+//   experimental_data_ = NULL;
+//   number_of_models_ = NULL;
+//   model_type_ = NULL;
+//   author_ = NULL;
+//   revision_data_ = NULL;
+//   superseded_entries_ = NULL;
+//   journal_ = NULL;
+//   remark_cards_ = NULL;
+//   database_reference_ = NULL;
+//   sequence_advanced_ = NULL;
+//   residues_sequence_ = NULL;
+//   residue_modification_cards_ = NULL;
+//   heterogen_cards_ = NULL;
+//   heterogen_name_cards_ = NULL;
+//   heterogen_synonym_cards_ = NULL;
+//   formulas_ = NULL;
+//   helix_cards_ = NULL;
+//   sheet_cards_ = NULL;
+//   disulfide_bonds_ = NULL;
+//   link_cards_ = NULL;
+//   cis_peptide_ = NULL;
+//   site_cards_ = NULL;
+//   crystallography_ = NULL;
+//   origins_ = NULL;
+//   scales_ = NULL;
+//   matrices_ = NULL;
+//   models_ = NULL;
+//   connectivities_ = NULL;
+//   serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
+//   sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
+//   master_ = NULL;
+// }
 
 PdbFile* PdbFile::LoadPdbFile()
 {
