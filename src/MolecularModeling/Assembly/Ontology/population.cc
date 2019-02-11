@@ -278,7 +278,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
               {
                 MonoNum = thisMono->oligosaccharide_index_;
                 // root_oligo_id = thisMono->mono_id_;
-              // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
+                // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
                 PopulateLinkage(linkage_stream, oligo, oligo_uri, id_prefix, link_id, visited_oligos);
                 // gmml::log(__LINE__, __FILE__,  gmml::INF, "About to populate sequence linkages");
                 parent_mono_resource = CreateURIResource(gmml::OntOligosaccharide, MonoNum, id_prefix, "");
@@ -508,7 +508,7 @@ void Assembly::PopulateLinkage(std::stringstream& linkage_stream, Glycan::Oligos
 
         gmml::AddLiteral(linkage_uri, Ontology::hasChildMono, child_oligo->root_->sugar_name_.monosaccharide_short_name_, linkage_stream);
         gmml::AddLiteral(linkage_uri, Ontology::hasParentMono, oligo->root_->sugar_name_.monosaccharide_short_name_, linkage_stream);
-        double glycosidic_phi_angle = CalculatePhiAngle(oligo, child_oligo, parent_atom_id, child_atom_id, glycosidic_atom_id);
+        double glycosidic_phi_angle = CalculatePhiAngle(child_oligo, parent_atom_id, child_atom_id, glycosidic_atom_id);
         glycosidic_phi_angle = gmml::ConvertRadian2Degree(glycosidic_phi_angle);
         if(local_debug > 0)
         {
@@ -841,7 +841,7 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
 
 }
 
-void Assembly::PopulateRingAtom(std::stringstream& ring_atom_stream, std::string id_prefix, std::string ring_uri, std::string ring_resource, int ring_index, Atom* ring_atom, Glycan::Monosaccharide* mono,
+void Assembly::PopulateRingAtom(std::stringstream& ring_atom_stream, std::string id_prefix, std::string ring_uri, std::string ring_resource, unsigned int ring_index, Atom* ring_atom, Glycan::Monosaccharide* mono,
                                 std::vector<std::string>& side_or_ring_atoms)
 {
   if(ring_index <= mono->side_atoms_.size())
