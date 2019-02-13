@@ -149,19 +149,20 @@ PdbAtomCard::PdbAtomCard(std::string &line)
 }
 PdbAtomCard::PdbAtomCard(char residue_chain_id, std::string atom_name,
                         std::string residue_name, int residue_sequence_number,
-                        char residue_insertion_code, char atom_alternate_location) :
+                        char residue_insertion_code, char atom_alternate_location, std::vector<PdbAtomCard*> alternate_atom_locations) :
     atom_name_(atom_name), atom_alternate_location_(atom_alternate_location),
     atom_residue_name_(residue_name), atom_chain_id_(residue_chain_id),
-    atom_residue_sequence_number_(residue_sequence_number), atom_insertion_code_(residue_insertion_code) {}
+    atom_residue_sequence_number_(residue_sequence_number), atom_insertion_code_(residue_insertion_code),
+    alternate_atom_locations_(alternate_atom_locations) {}
 
 PdbAtomCard::PdbAtomCard(int atom_serial_number, std::string atom_name, char atom_alternate_location,
                         std::string residue_name, char chain_id, int residue_sequence_number,
                         char insertion_code, GeometryTopology::Coordinate coordinate, double occupancy,
-                        double tempreture_factor, std::string element_symbol, std::string charge) :
+                        double tempreture_factor, std::string element_symbol, std::string charge, std::vector<PdbAtomCard*> alternate_atom_locations) :
     atom_serial_number_(atom_serial_number), atom_name_(atom_name), atom_alternate_location_(atom_alternate_location), atom_residue_name_(residue_name),
     atom_chain_id_(chain_id), atom_residue_sequence_number_(residue_sequence_number), atom_insertion_code_(insertion_code),
     atom_orthogonal_coordinate_(coordinate), atom_occupancy_(occupancy), atom_temperature_factor_(tempreture_factor), atom_element_symbol_(element_symbol),
-    atom_charge_(charge) {}
+    atom_charge_(charge), alternate_atom_locations_(alternate_atom_locations) {}
 
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
@@ -216,6 +217,11 @@ std::string PdbAtomCard::GetAtomCharge(){
 std::string PdbAtomCard::GetAtomCardIndexInResidueSet()
 {
     return atom_card_index_in_residue_sequence_;
+}
+
+std::vector<PdbAtomCard*> PdbAtomCard::GetAlternateAtomCards()
+{
+  return alternate_atom_locations_;
 }
 
 //////////////////////////////////////////////////////////

@@ -34,7 +34,7 @@ PdbAtomSection::PdbAtomSection(std::stringstream &stream_block, std::string inde
         alternate_id = gmml::Trim(alternate_id);
         
         PdbFileSpace::PdbAtomCard* atom_card = new PdbFileSpace::PdbAtomCard(line);
-        if(alternate_id.empty())
+        if((alternate_id.empty()) || (alternate_id == "A"))
         {
           //int ch = 65 + ConvertString<int>(Split(index, "_")[1]);
           atom_card->SetAtomCardIndexInResidueSet(index);
@@ -45,38 +45,43 @@ PdbAtomSection::PdbAtomSection(std::stringstream &stream_block, std::string inde
           getline(stream_block, line);
           temp = line;
         }
-        else //There are alternate coordinates that need to be added to the atom that was just created.
+        else //These are alternate coordinates that need to be added to the correct atom
         {
-          // gmml::log(__LINE__, __FILE__, gmml::INF, alternate_id + line.substr(17,3));
-          getline(stream_block, line);
-          std::string next_atom_name;
-          if(!gmml::Trim(line).empty())
-          {  
-            next_atom_name = line.substr(12, 4);
-            next_atom_name = gmml::Trim(next_atom_name);
-            alternate_id = line.substr(16,1);
-            // gmml::log(__LINE__, __FILE__, gmml::INF, alternate_id + line.substr(17,3));
-            alternate_id = gmml::Trim(alternate_id);
-          }
-          while((!alternate_id.empty()) && (this_atom_name == next_atom_name) && (!gmml::Trim(line).empty()))
-          {
-            PdbFileSpace::PdbAtomCard* alternate_atom_card = new PdbFileSpace::PdbAtomCard(line);
-            atom_card->AddAlternateLocation(alternate_atom_card);
-            // gmml::log(__LINE__, __FILE__, gmml::INF, "Added atom to alternate vector");
-            getline(stream_block, line);
-            next_atom_name = line.substr(12, 4);
-            next_atom_name = gmml::Trim(next_atom_name);
-            alternate_id = line.substr(16,1);
-            alternate_id = gmml::Trim(alternate_id);
-          }
           
+          for(std::vector<PdbAtomCard*>::reverse_iterator rit = ordered_atom_cards_.rbegin(); rit != ordered_atom_cards_.rend(); rit++)
+          {
+            PdbAtomCard* thisAtomCard = *rit;
+            // gmml::log(__LINE__, __FILE__, gmml::INF, thisAtomCard->GetAtomName() + " " + atom_card->GetAtomName());
+            if(thisAtomCard->GetAtomName() == atom_card->GetAtomName())
+            {
+              // gmml::log(__LINE__, __FILE__, gmml::INF, thisAtomCard->GetAtomResidueName() + " " + atom_card->GetAtomResidueName());
+              if(thisAtomCard->GetAtomResidueName() == atom_card->GetAtomResidueName())
+              {
+                // gmml::log(__LINE__, __FILE__, gmml::INF,thisAtomCard->GetAtomChainId()  + " " + atom_card->GetAtomChainId());
+                // if(thisAtomCard->GetAtomChainId() == atom_card->GetAtomChainId())
+                // {
+                // gmml::log(__LINE__, __FILE__, gmml::INF,thisAtomCard->GetAtomResidueSequenceNumber()  + " " + atom_card->GetAtomResidueSequenceNumber());
+                  // if(thisAtomCard->GetAtomResidueSequenceNumber() == atom_card->GetAtomResidueSequenceNumber())
+                  // {
+                    // gmml::log(__LINE__, __FILE__, gmml::INF, "Added card");
+                    thisAtomCard->AddAlternateLocation(atom_card);
+                    // std::stringstream test;
+                    // test << thisAtomCard->GetAlternateAtomCards().size();
+                    // gmml::log(__LINE__, __FILE__, gmml::INF, test.str());
+                    atom_card->AddAlternateLocation(thisAtomCard);
+                    break;
+                  // }
+                // }
+              }
+            }
+          }
           
           getline(stream_block, line);
           temp = line;
-          atom_card->SetAtomCardIndexInResidueSet(index);
-          //atom->SetAtomChainId((char)ch);
-          atom_cards_[atom_card->GetAtomSerialNumber()] = atom_card;
-          ordered_atom_cards_.push_back(atom_card);
+          // atom_card->SetAtomCardIndexInResidueSet(index);
+          // //atom->SetAtomChainId((char)ch);
+          // atom_cards_[atom_card->GetAtomSerialNumber()] = atom_card;
+          // ordered_atom_cards_.push_back(atom_card);
         }
     }
 }

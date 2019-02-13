@@ -46,7 +46,7 @@ namespace PdbFileSpace
               */
             PdbAtomCard(int atom_serial_number, std::string atom_name, char atom_alternate_location, std::string residue_name, char chain_id,
                     int residue_sequence_number, char insertion_code, GeometryTopology::Coordinate coordinate, double occupancy, double tempreture_factor,
-                    std::string element_symbol, std::string charge);
+                    std::string element_symbol, std::string charge, std::vector<PdbAtomCard*> alternate_atom_locations ={});
             /*! \fn
               * Constructor with required parameters
               * @param chain_id
@@ -57,7 +57,7 @@ namespace PdbFileSpace
               * @param atom_alternate_location
               */
             PdbAtomCard(char chain_id, std::string atom_name, std::string residue_name, int residue_sequence_number, char residue_insertion_code,
-                    char atom_alternate_location);
+                    char atom_alternate_location, std::vector<PdbAtomCard*> alternate_atom_locations ={});
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -130,6 +130,8 @@ namespace PdbFileSpace
               * @return atom_card_index_in_residue_set_ attribute of the current object of this class
               */
             std::string GetAtomCardIndexInResidueSet();
+            
+            std::vector<PdbAtomCard*> GetAlternateAtomCards();
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
