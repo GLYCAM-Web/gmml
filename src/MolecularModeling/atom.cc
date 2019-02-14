@@ -7,7 +7,6 @@
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/GeometryTopology/coordinate.hpp"
 #include "cmath"
-#include <sstream>
 
 using MolecularModeling::Atom;
 //////////////////////////////////////////////////////////

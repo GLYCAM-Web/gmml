@@ -90,6 +90,9 @@ namespace MolecularModeling
               */
             Assembly(std::vector<std::vector<std::string> > file_paths, std::vector<gmml::InputFileType> types);
             Assembly(Assembly* assembly);
+            
+            //An assembly built from a stringstream of atoms in PDB format
+            // Assembly(std::stringstream atomStream);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -725,7 +728,7 @@ namespace MolecularModeling
               * Exports data from assembly data structure into library file structure
               */
             LibraryFileSpace::LibraryFile* BuildLibraryFileStructureFromAssembly();
-            /*! \fn
+            /*! \fn 
               * A function to build a graph structure (bonding information) for the current object of central data structure
               * @param building_option A building option that can be selected from BuildingStructureOption enumerator
               * @param options List of additional options that can be defined by user
@@ -940,6 +943,8 @@ namespace MolecularModeling
             */
             OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, std::vector<Glycan::Monosaccharide*>& monos, bool glyporbity_report = false, bool populate_ontology = false, std::string CCD_Path = " ");
 
+            // std::vector<std::string> PDBExtractSugars(std::stringstream atomStream, std::vector< std::string > amino_lib_files, std::string CCD_Path);
+
             /*! \fn
             * A funstion in order to initiate population of turtle formatted triples (subject-predicate-object) for creating the GMMO ontology
             * @param outfile The output stream of the ontology file
@@ -1052,7 +1057,7 @@ namespace MolecularModeling
             * @param ring_atom An Assembly Atom object to be used for populating the RingAtom triples
             * @param side_or_ring_atoms The list of side atoms and ring atoms of a monosaccharide
             */
-            void PopulateRingAtom(std::stringstream& ring_atom_stream, std::string id_prefix, std::string ring_uri, std::string ring_resource, int ring_index, Atom* ring_atom,
+            void PopulateRingAtom(std::stringstream& ring_atom_stream, std::string id_prefix, std::string ring_uri, std::string ring_resource, unsigned int ring_index, Atom* ring_atom,
                                   Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms);
             /*! \fn
             * A function in order to populate the SideAtom class of the ontology
@@ -1396,9 +1401,11 @@ namespace MolecularModeling
             void CalculateOligosaccharideBFactor(Glycan::Oligosaccharide* oligo, std::vector<Glycan::Monosaccharide*> monos);
             double CalculateOmegaAngle(Glycan::Oligosaccharide* parent_oligo, std::string parent_atom_id, std::string glycosidic_atom_id);
             double CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
-            double CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
+            double CalculatePhiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
             bool guessIfC_CDoubleBond(MolecularModeling::Atom* carbon1, MolecularModeling::Atom* carbon2);
+            double guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2);
             void GetAuthorNaming(std::vector< std::string > amino_lib_files, Glycan::Monosaccharide* mono, std::string CCD_Path);
+            bool checkIfNucleotide(Glycan::Monosaccharide* mono);
 
 
             /*! \fn
@@ -1414,7 +1421,7 @@ namespace MolecularModeling
               * The algorithm is derived from http://pubs.acs.org/doi/pdf/10.1021/ci960322f
               * @return cycles A map between the string version of atoms of cycles and the list of cycle atom objects
               */
-            CycleMap DetectCyclesByExhaustiveRingPerception();
+            Assembly::CycleMap DetectCyclesByExhaustiveRingPerception();
             /*! \fn
               * A function in order to prune the graph (recursively removing nodes with zero or 1 neighbors)
               * @param all_atoms The list of atoms of the graph which is going to be updated by the function
@@ -1465,7 +1472,7 @@ namespace MolecularModeling
               * A function in order to discard rings/cycles that have double bonds
               * @param cycles A map between the string version of atoms of cycles and the list of cycle atom objects
               */
-            void FilterCyclesWithDoubleBonds(CycleMap &cycles);
+            CycleMap FilterCyclesWithDoubleBonds(CycleMap &cycles);
             /*! \fn
               * A function in order to discard rings/cycles that are only made from carbons atoms
               * @param cycles A map between the string version of atoms of cycles and the list of cycle atom objects

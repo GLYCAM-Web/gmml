@@ -23,6 +23,7 @@ Monosaccharide::Monosaccharide(const Monosaccharide &mono)
 Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<MolecularModeling::Atom*>& cycle_atoms, MolecularModeling::Assembly* this_assembly, std::string CCD_Path)
 {
   residue_name_ = cycle_atoms[0]->GetResidue()->GetName();
+  cycle_atoms[0]->GetResidue()->SetIsSugar(true);
   std::cout << residue_name_ << "\n";
   is_visited_ = false;
   is_root_ = false;
@@ -882,17 +883,17 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
     //         target = sides.at(0);///first index of each side is for carbon atoms in the std::vector<std::vector<MolecularModeling::Atom*>> structure
     // }
     // //WHERE ARE ALL OF THE OTHER SIDE ATOMS?!?!?!?!?!?!?!?!?!??!
-    // if(it == side_atoms_.end() - 1)//side atoms of last carbon of the ring
-    // {
-    //     if(sides.at(0) != NULL)
-    //     {
-    //         for(side_branch_last_carbon_index = sides.size() - 1; sides.at(side_branch_last_carbon_index) == NULL; side_branch_last_carbon_index-- )
-    //         {
+    if(it == side_atoms_.end() - 1)//side atoms of last carbon of the ring
+    {
+        if(sides.at(0) != NULL)
+        {
+            for(side_branch_last_carbon_index = sides.size() - 1; sides.at(side_branch_last_carbon_index) == NULL; side_branch_last_carbon_index-- )
+            {
     //           target = sides.at(side_branch_last_carbon_index);
-    //         }
-    //
-    //     }
-    // }
+            }
+    
+        }
+    }
     // else
     // {
     if(sides.at(0) != NULL)
@@ -1275,7 +1276,8 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
         std::string long_name_pattern_at_minus_one = "";
         std::string long_name_pattern_at_plus_one = "";
         std::string pattern = "";
-        
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Naming by pettern below");
+        gmml::log(__LINE__, __FILE__,  gmml::INF, value);
         std::string unknownDerivativePattern = "", unknownDerivativeKey = "";
         for(std::vector<std::pair<std::string, std::string> >::iterator it = this->unknown_derivates_.begin(); it != this->unknown_derivates_.end(); it++)
         {

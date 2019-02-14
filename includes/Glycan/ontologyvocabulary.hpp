@@ -73,6 +73,7 @@ namespace Ontology
     const std::string hasBFactor = "gmmo:hasBFactor";
     const std::string hasProteinID = "gmmo:hasProteinID";
     const std::string hasFormula = "gmmo:hasFormula";
+    const std::string isNucleotide = "gmmo:isNucleotide";
 
     /* Datatype Properties */
     const std::string input_file_path = "gmmo:filePath";

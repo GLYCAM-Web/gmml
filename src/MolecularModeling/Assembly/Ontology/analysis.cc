@@ -520,3 +520,38 @@ void Assembly::CalculateGlyprobityGeometryOutliers(Glycan::Monosaccharide* mono)
     }
     std::cout << std::endl << bond_lengths_stream.str() << std::endl << bond_angles_stream.str() << "<--------------------->" << std::endl << std::endl;
 }
+
+bool Assembly::checkIfNucleotide(Glycan::Monosaccharide* mono)
+{
+  std::vector<std::string> nucleotides {"C", "G", "A", "T", "U", 
+                                        "DC", "DG", "DA", "DT", "DU", 
+                                        "CTP", "GTP", "ATP", "TTP", "UTP", 
+                                        "CDP", "GDP", "ADP", "TDP", "UDP"
+                                       };
+  if(mono->cycle_atoms_[0] != NULL)
+  {
+    if(std::find(nucleotides.begin(), nucleotides.end(), mono->cycle_atoms_[0]->GetResidue()->GetName()) != nucleotides.end())
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else if(mono->cycle_atoms_[1] != NULL)
+  {
+    if(std::find(nucleotides.begin(), nucleotides.end(), mono->cycle_atoms_[1]->GetResidue()->GetName()) != nucleotides.end())
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+  else
+  {
+    return false;
+  }
+}

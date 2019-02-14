@@ -58,12 +58,12 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
   }
 
   //Get Distance; if < 1.48 (my guess from double bond meta data) it may be a double bond.
-  if ((carbon1->GetDistanceToAtom(carbon2) < 1.48))
+  if ((carbon1->GetDistanceToAtom(carbon2) < 1.39))
   {
     areCloseEnough = true;
     if(local_debug > 0)
     {
-      debugStr << carbon1->GetId() << " and " << carbon2->GetId() << " are less than 1.48 angstroms apart\n";
+      debugStr << carbon1->GetId() << " and " << carbon2->GetId() << " are less than 1.39 angstroms apart\n";
       gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
       debugStr.str("");
     }
@@ -184,4 +184,61 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
   }
 
   return false;
+}
+
+const std::map<std::string, std::pair<double, double> > bondLengthMap = 
+{
+  {"CC", std::make_pair(1.22, 1.67)},
+  {"CO", std::make_pair(1.07975, 1.67025)},
+  {"OC", std::make_pair(1.07975, 1.67025)},
+  {"CN", std::make_pair(1.26, 1.55)},
+  {"NC", std::make_pair(1.26, 1.55)},
+  {"OP", std::make_pair(1.35, 1.776)},
+  {"PO", std::make_pair(1.35, 1.776)},
+  {"OS", std::make_pair(1.43, 1.78)},
+  {"SO", std::make_pair(1.43, 1.78)},
+  {"NS", std::make_pair(1.62, 1.77)},
+  {"SN", std::make_pair(1.62, 1.77)}
+};
+
+double MolecularModeling::Assembly::guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2)
+{//Using PDB bond length statistics provided by Chenghua on 2/5/19
+  
+  // std::map<std::string, std::pair<double, double> > bondLengthMap;
+  // //String for Atom Types IE CC, then max and min bond lengths in pair
+  // 
+  // bondLengthMap["CC"] = std::make_pair(1.22, 1.67);
+  // 
+  // bondLengthMap["CO"] = std::make_pair(1.07975, 1.67025);
+  // bondLengthMap["OC"] = std::make_pair(1.07975, 1.67025);
+  // 
+  // bondLengthMap["CN"] = std::make_pair(1.26, 1.55);
+  // bondLengthMap["NC"] = std::make_pair(1.26, 1.55);
+  // 
+  // bondLengthMap["OP"] = std::make_pair(1.35, 1.776);
+  // bondLengthMap["PO"] = std::make_pair(1.35, 1.776);
+  // 
+  // bondLengthMap["OS"] = std::make_pair(1.43, 1.78);
+  // bondLengthMap["SO"] = std::make_pair(1.43, 1.78);
+  // 
+  // bondLengthMap["NS"] = std::make_pair(1.62, 1.77);
+  // bondLengthMap["SN"] = std::make_pair(1.62, 1.77);
+  
+  std::string bothAtoms = atom1->GetElementSymbol() + atom2->GetElementSymbol();
+  
+  if(bondLengthMap.find(bothAtoms) != bondLengthMap.end())
+  {
+    double cutoffDistance = bondLengthMap.at(bothAtoms).second;
+    // std::stringstream logStream;
+    // logStream << "Using binding cutoff of " << cutoffDistance;
+    // gmml::log(__LINE__, __FILE__,  gmml::INF, logStream.str());
+    return cutoffDistance;
+  }
+  else
+  {
+    // gmml::log(__LINE__, __FILE__,  gmml::INF, "Using default binding cutoff of 1.65");
+    return gmml::dCutOff;
+  }
+  
+  
 }
