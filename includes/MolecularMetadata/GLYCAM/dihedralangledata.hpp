@@ -24,10 +24,15 @@ struct DihedralAngleData
     double default_angle_value_ ;
     double lower_deviation_ ;
     double upper_deviation_ ;
+    double weight_;
+    std::string rotamer_type_ ; // permutation or conformer
     std::string rotamer_name_ ;
-    double index_ ; // if two entries match the criteria, and have the same index, the later entry should overwrite the earlier.
-    std::string residue1_condition_ ;
-    std::string residue2_condition_ ;
+    int number_of_bonds_from_anomeric_carbon_;
+    int index_ ; // Used to indicate whether multiple entries are meant to overwrite each other or generate an additional angle
+    StringVector residue1_conditions_ ;
+    StringVector residue2_conditions_ ;
+//    std::string residue1_conditions_ ;
+//    std::string residue2_conditions_ ;
     std::string atom1_ ;
     std::string atom2_ ;
     std::string atom3_ ;
@@ -75,8 +80,8 @@ public:
                 // Some entries have conditions for the residue, that they have certain tags. Make sure any conditions are met:
                 std::vector<std::string> residue1_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom1->GetResidue()->GetName());
                 std::vector<std::string> residue2_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom2->GetResidue()->GetName());
-                if ( (checkIfResidueConditionsAreSatisfied(residue1_types, entry.residue1_condition_))
-                  && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_condition_)) )
+                if ( (checkIfResidueConditionsAreSatisfied(residue1_types, entry.residue1_conditions_))
+                  && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_conditions_)) )
                 {
                //    std::cout << "Entry added: " << entry.linking_atom1_ << "-" << entry.linking_atom2_ << "\n";
                     matching_entries.push_back(entry);
@@ -103,19 +108,35 @@ private:
     // Some entries have conditions for the first or second residue to have a particular type (aka tag).
     // Most entries have "none" for condition. This checks first if condition is "none", and therefore satisfied.
     // Otherwise (else if) it checks if any of the residue_types match the condition for the entry, e.g. gauche_effect=galacto.
-    inline bool checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::string entry_condition)
+    inline bool checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::vector<std::string> entry_conditions)
     {
-        bool conditionSatisfied = false;
-        if (entry_condition.compare("none")==0)
+        for (const auto& entry_condition : entry_conditions)
         {
-            conditionSatisfied = true;
+            if (entry_condition.compare("none")==0)
+            {
+                return true;
+            }
+            else if (!(std::find(residue_types.begin(), residue_types.end(), entry_condition) != residue_types.end()))
+            {
+                return false; //If any condition isn't satisified. return false.
+            }
         }
-        else if (std::find(residue_types.begin(), residue_types.end(), entry_condition) != residue_types.end())
-        {
-            conditionSatisfied = true;
-        }
-        return conditionSatisfied;
+        std::cout << "Logic error in dihedralangledata.hpp::checkIfResidueConditionsAreSatisfied" << std::endl;
     }
+
+//    inline bool checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::string entry_condition)
+//    {
+//        bool conditionSatisfied = false;
+//        if (entry_condition.compare("none")==0)
+//        {
+//            conditionSatisfied = true;
+//        }
+//        else if (std::find(residue_types.begin(), residue_types.end(), entry_condition) != residue_types.end())
+//        {
+//            conditionSatisfied = true;
+//        }
+//        return conditionSatisfied;
+//    }
 
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
