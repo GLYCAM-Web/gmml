@@ -260,23 +260,7 @@ double Atom::GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate)
 	return sqrt((x * x) + (y * y) + (z * z));
 } // end GetDistanceToCoordinate
 
-GeometryTopology::Coordinate Atom::get_cartesian_point_from_internal_coords(
-        MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c,
-        double theta_Degrees, double phi_Degrees, double distance_Angstrom)
-{
-        GeometryTopology::Coordinate x = (a->GetCoordinates().at(0));
-        GeometryTopology::Coordinate y = (b->GetCoordinates().at(0)); 
-        GeometryTopology::Coordinate z = (c->GetCoordinates().at(0));
-        GeometryTopology::Coordinate new_coordinate;
-     
-        new_coordinate = new_coordinate.get_cartesian_point_from_internal_coords(
-           x, y, z, theta_Degrees, phi_Degrees, distance_Angstrom);
-        std::cout << "\n";
-        new_coordinate.Print();
-        std::cout << "\n";
 
-        return new_coordinate;
-}
 
 
 //////////////////////////////////////////////////////////

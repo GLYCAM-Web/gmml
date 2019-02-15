@@ -227,10 +227,7 @@ namespace MolecularModeling
             * @param coordinate The GeometryTopology::Coordinate used to get the distance from this Atom's Coordinates.
             */
             double GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate);
-            /* Calls a function in coordinate.hpp */
-            GeometryTopology::Coordinate get_cartesian_point_from_internal_coords(
-                 MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c,
-                 double theta_Degrees, double phi_Degrees, double distance_Angstrom);
+
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
