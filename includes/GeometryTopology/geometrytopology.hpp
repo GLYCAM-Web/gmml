@@ -9,5 +9,11 @@
 #include "grid.hpp"
 #include "plane.hpp"
 
+namespace GeometryTopology
+{
+Coordinate get_cartesian_point_from_internal_coords(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c,
+     double theta_Degrees, double phi_Degrees, double distance_Angstrom);
+
+}
 
 #endif // GEOMETRY_TOPOLOGY_HPP
