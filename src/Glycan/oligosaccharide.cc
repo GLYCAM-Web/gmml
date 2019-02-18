@@ -2725,6 +2725,7 @@ std::string Glycan::Oligosaccharide::CheckTerminals(MolecularModeling::Atom* tar
   }
   else
   {
+    
       return "Unknown";
   }
 }
