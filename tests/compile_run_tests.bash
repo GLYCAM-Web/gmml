@@ -117,20 +117,20 @@ fi
 rm buildBySequence.pdb buildBySequence > /dev/null 2>&1
 
 ###################### Test 08 ######################
-#printf "Testing detectSugars... "
-#g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/detect_sugars.cc -lgmml -o detect_sugars 
-#./detect_sugars tests/inputs/4mbz.pdb > detected_sugars.txt
-#if [ -f detected_sugars.txt ]; then
-#    if ! cmp detected_sugars.txt tests/correct_outputs/detected_sugars.txt > /dev/null 2>&1; then
-#        printf "Test FAILED!.\n"
-#    else
-#        printf "Test passed.\n"
-#        ((tests_passed++))
-#    fi
-#else
-#    #printf "Test FAILED!.\n"
-#fi
-#rm detected_sugars.txt ring_conformations.txt detect_sugars > /dev/null 2>&1
+printf "Testing detectSugars... "
+g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/detect_sugars.cc -lgmml -o detect_sugars 
+./detect_sugars tests/inputs/4mbz.pdb > detected_sugars.txt
+if [ -f detected_sugars.txt ]; then
+    if ! cmp detected_sugars.txt tests/correct_outputs/detected_sugars.txt > /dev/null 2>&1; then
+        printf "Test FAILED!.\n"
+    else
+        printf "Test passed.\n"
+        ((tests_passed++))
+    fi
+else
+    printf "Test FAILED!.\n"
+fi
+rm detected_sugars.txt ring_conformations.txt detect_sugars > /dev/null 2>&1
 
 
 # ############# Allow git push ########################
