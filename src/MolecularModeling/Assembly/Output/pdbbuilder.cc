@@ -104,12 +104,12 @@ PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card
     pdb_file->SetLinks(link_card);
 
     //Right now I'm using the code to do something where writing CONECT is a problem
-    if(connect_card_existance == 1)
+    /*if(connect_card_existance == 1)
     {
         PdbFileSpace::PdbConnectSection* connect_card = new PdbFileSpace::PdbConnectSection();
         ExtractPdbConnectSectionFromAssembly(connect_card, assembly_to_serial_number_map);
         pdb_file->SetConnectivities(connect_card);
-    }
+    }*/
     model->SetModelResidueSet(residue_set);
     models[1] = model;
     model_card->SetModels(models);
