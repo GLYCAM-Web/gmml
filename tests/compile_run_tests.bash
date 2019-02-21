@@ -126,7 +126,7 @@ if [ -f detected_sugars.txt ]; then
    else
        printf "Test passed.\n"
        ((tests_passed++))
-       rm detected_sugars.txt ring_conformations.txt detect_sugars > /dev/null 2>&1
+       rm gmmo.ttl detected_sugars.txt ring_conformations.txt detect_sugars > /dev/null 2>&1
    fi
 else
    printf "Test FAILED!.\n"
@@ -134,6 +134,7 @@ fi
 
 # ############# Allow git push ########################
 if [[ $tests_passed -eq $number_of_tests ]]; then
+   rm log.log > /dev/null 2>&1
    exit 0 #All tests passed
 else
    exit 1
