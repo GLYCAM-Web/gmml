@@ -25,7 +25,7 @@
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
-//#include "../../../includes/GeometryTopology/geometrytopology.hpp"
+#include "../../../includes/GeometryTopology/geometrytopology.hpp"
 #include "../../../includes/GeometryTopology/coordinate.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
