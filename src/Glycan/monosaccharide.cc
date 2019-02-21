@@ -24,7 +24,7 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
 {
   residue_name_ = cycle_atoms[0]->GetResidue()->GetName();
   cycle_atoms[0]->GetResidue()->SetIsSugar(true);
-  std::cout << residue_name_ << "\n";
+  // std::cout << residue_name_ << "\n";
   is_visited_ = false;
   is_root_ = false;
   is_counted_ = false;
@@ -1192,56 +1192,56 @@ void Glycan::Monosaccharide::GenerateCompleteName(std::vector<MolecularModeling:
       ///UPDATING CHEMICAL CODE
       this_mono->UpdateComplexSugarChemicalCode();
       this_mono->UpdatePdbCode();
-      std::cout << "Complex structure side group atoms: " << std::endl;
-      // gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex structure side group atoms: ");
-      for( std::vector< std::vector<MolecularModeling::Atom*> >::iterator it1 = this_mono->side_atoms_.begin(); it1 != this_mono->side_atoms_.end(); it1++ ) 
-      {
-        std::stringstream complex_sugar_side;
-        std::vector<MolecularModeling::Atom*> sides = ( *it1 );
-        if( it1 == this_mono->side_atoms_.begin() ) 
-        {///side atoms of anomeric carbon
-          if( sides.at( 0 ) != NULL && sides.at( 1 ) != NULL ) 
-          {
-            complex_sugar_side << "[1] -> " << sides.at( 0 )->GetId() << ", " << sides.at( 1 )->GetId();
-            std::cout << complex_sugar_side.str() << std::endl;
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
-          } 
-          else if( sides.at( 1 ) != NULL ) 
-          {
-            complex_sugar_side << "[1] -> " << sides.at( 1 )->GetId();
-            std::cout << complex_sugar_side.str() << std::endl;
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
-          } 
-          else if( sides.at(0) != NULL ) 
-          {
-            complex_sugar_side << "[1] -> " << sides.at( 0 )->GetId();
-            std::cout << complex_sugar_side.str() << std::endl;
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
-          }
-        } 
-        else if( it1 == this_mono->side_atoms_.end() - 1 ) 
-        {//side atoms of last carbon of the ring
-          complex_sugar_side << "[" << this_mono->cycle_atoms_.size() - 1 << "]";
-          for( unsigned int i = 0; i < plus_sides.size() ; i++ ) 
-          {
-            complex_sugar_side << " -> " << sides.at( i )->GetId();
-          }
-          std::cout << complex_sugar_side.str() << std::endl;
-          // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
-        }
-        else if( sides.at( 1 ) != NULL ) 
-        {
-          int cycle_atom_index = distance( this_mono->side_atoms_.begin(), it1 );
-          complex_sugar_side << "[" << cycle_atom_index + 1 << "] -> " << sides.at( 1 )->GetId();
-          std::cout << complex_sugar_side.str() << std::endl;
-          // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
-        }
-      }
-      std::cout << std::endl << "Complex sugar chemical code:" << std::endl;
-      // gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex sugar chemical code:");
-      // gmml::log(__LINE__, __FILE__,  gmml::INF, chemical_code_->toString());
-      chemical_code_->Print( std::cout );
-      std::cout << chemical_code_->toString();
+      // std::cout << "Complex structure side group atoms: " << std::endl;
+      // // gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex structure side group atoms: ");
+      // for( std::vector< std::vector<MolecularModeling::Atom*> >::iterator it1 = this_mono->side_atoms_.begin(); it1 != this_mono->side_atoms_.end(); it1++ ) 
+      // {
+      //   std::stringstream complex_sugar_side;
+      //   std::vector<MolecularModeling::Atom*> sides = ( *it1 );
+      //   if( it1 == this_mono->side_atoms_.begin() ) 
+      //   {///side atoms of anomeric carbon
+      //     if( sides.at( 0 ) != NULL && sides.at( 1 ) != NULL ) 
+      //     {
+      //       complex_sugar_side << "[1] -> " << sides.at( 0 )->GetId() << ", " << sides.at( 1 )->GetId();
+      //       std::cout << complex_sugar_side.str() << std::endl;
+      //       // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+      //     } 
+      //     else if( sides.at( 1 ) != NULL ) 
+      //     {
+      //       complex_sugar_side << "[1] -> " << sides.at( 1 )->GetId();
+      //       std::cout << complex_sugar_side.str() << std::endl;
+      //       // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+      //     } 
+      //     else if( sides.at(0) != NULL ) 
+      //     {
+      //       complex_sugar_side << "[1] -> " << sides.at( 0 )->GetId();
+      //       std::cout << complex_sugar_side.str() << std::endl;
+      //       // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+      //     }
+      //   } 
+      //   else if( it1 == this_mono->side_atoms_.end() - 1 ) 
+      //   {//side atoms of last carbon of the ring
+      //     complex_sugar_side << "[" << this_mono->cycle_atoms_.size() - 1 << "]";
+      //     for( unsigned int i = 0; i < plus_sides.size() ; i++ ) 
+      //     {
+      //       complex_sugar_side << " -> " << sides.at( i )->GetId();
+      //     }
+      //     std::cout << complex_sugar_side.str() << std::endl;
+      //     // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+      //   }
+      //   else if( sides.at( 1 ) != NULL ) 
+      //   {
+      //     int cycle_atom_index = distance( this_mono->side_atoms_.begin(), it1 );
+      //     complex_sugar_side << "[" << cycle_atom_index + 1 << "] -> " << sides.at( 1 )->GetId();
+      //     std::cout << complex_sugar_side.str() << std::endl;
+      //     // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
+      //   }
+      // }
+      // std::cout << std::endl << "Complex sugar chemical code:" << std::endl;
+      // // gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex sugar chemical code:");
+      // // gmml::log(__LINE__, __FILE__,  gmml::INF, chemical_code_->toString());
+      // chemical_code_->Print( std::cout );
+      // std::cout << chemical_code_->toString();
       ///FINDING COMPLEX CHEMICAL CODE IN COMPLEX SUGAR NAME LOOKUP TABLE
       this_mono->sugar_name_ = gmml::ComplexSugarNameLookup( this_mono->chemical_code_->toString() );
       // gmml::log(__LINE__, __FILE__, gmml::INF,  std::to_string(plus_sides.size()));

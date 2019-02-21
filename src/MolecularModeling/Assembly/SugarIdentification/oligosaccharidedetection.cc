@@ -201,12 +201,12 @@ using Glycan::Monosaccharide;
 
 //This is a wrapper of the original ExtractSugars function. I want to make the vector of monosaccharides external, so I can do some manipulations on them.
 //Other users call this wrapper.
-std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, bool glyprobity_report, bool populate_ontology, std::string CCD_Path )
+std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, bool glyprobity_report, bool populate_ontology, bool individualOntologies, std::string CCD_Path )
 {
 
     std::vector<Glycan::Monosaccharide*> monos = std::vector<Glycan::Monosaccharide*>();
 
-    OligosaccharideVector oligos = Assembly::ExtractSugars( amino_lib_files, monos, glyprobity_report,  populate_ontology, CCD_Path );
+    OligosaccharideVector oligos = Assembly::ExtractSugars( amino_lib_files, monos, glyprobity_report,  populate_ontology, individualOntologies, CCD_Path );
 
 
     return oligos; // Oliver thinks Yao hosed ontology::analysis. This might fix it?
@@ -218,7 +218,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 // 
 // }
 
-std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology, std::string CCD_Path)
+std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology, bool individualOntologies, std::string CCD_Path)
 {
   int local_debug = -1;
   gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap( amino_lib_files );
@@ -255,11 +255,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   
   
   std::cout << std::endl << "Cycles after discarding rings containing C-C double bonds" << std::endl;
-  for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
-  {
-    std::string cycle_atoms_str = ( *it ).first;
-    std::cout << cycle_atoms_str << std::endl;
-  }
+  
 
   ///ANOMERIC CARBON DETECTION and SORTING
   // std::cout << std::endl << "Cycles after discarding rings that are all-carbon" << std::endl;
@@ -461,7 +457,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   {
     Glycan::Oligosaccharide* thisOligo = *it;
     std::cout << "Oligo IUPAC Name:       " << thisOligo->IUPAC_name_ << "\n";
-    std::cout << "Oligo author IUPAC Name:" << thisOligo->author_IUPAC_name_ << "\n";
+    // std::cout << "Oligo author IUPAC Name:" << thisOligo->author_IUPAC_name_ << "\n";
     std::cout << "Oligo Name:             ";
     thisOligo->Print( std::cout );
   }
@@ -495,33 +491,36 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
 
   ///POPULATING GMMO ONTOLOGY
-  if( populate_ontology ) {
-    if( testOligos.size() > 0 ) {
-      std::string gmmo = this->GetSourceFile();
-      gmmo = gmmo.substr(0,gmmo.size()-4) + ".ttl";
-      gmmo.insert(gmmo.size()-8, gmmo.substr(gmmo.size()-7, 2));
-      gmmo.insert(gmmo.size()-8, "/");
-      std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
-      // struct stat statbuf;
-      // if(stat(gmmoDirectory.c_str(), &statbuf) != -1)
-      // {
-      //   if(!S_ISDIR(statbuf.st_mode))
-      //   {
-          mkdir(gmmoDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
-      //   }
-      // }
+  if( populate_ontology ) 
+  {
+    if( testOligos.size() > 0 ) 
+    {
       std::ofstream out_file;
-      // out_file.open( gmmo.c_str(), std::fstream::app );
-      out_file.open( gmmo.c_str(), std::fstream::out | std::fstream::trunc);
-
-      // std::ifstream in( gmmo );///Checking if the file is empty
-      // size_t out_file_size = 0;
-      // in.seekg( 0,std::ios_base::end );
-      // out_file_size = in.tellg();
-      // in.close();
-      // if( out_file_size == 0 ) {///If the file is empty add the prefixes first
+      if(individualOntologies)
+      {
+        std::string gmmo = this->GetSourceFile();
+        gmmo = gmmo.substr(0,gmmo.size()-4) + ".ttl";
+        gmmo.insert(gmmo.size()-8, gmmo.substr(gmmo.size()-7, 2));
+        gmmo.insert(gmmo.size()-8, "/");
+        std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
+        mkdir(gmmoDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
+        out_file.open( gmmo.c_str(), std::fstream::out | std::fstream::trunc);
         out_file << Ontology::TTL_FILE_PREFIX << std::endl;
-      // }
+      }
+      else
+      {
+        std::string gmmo = "gmmo.ttl";
+        out_file.open( gmmo.c_str(), std::fstream::app );
+        std::ifstream in( gmmo );///Checking if the file is empty
+        size_t out_file_size = 0;
+        in.seekg( 0,std::ios_base::end );
+        out_file_size = in.tellg();
+        in.close();
+        if( out_file_size == 0 ) ///If the file is empty add the prefixes first
+        {
+          out_file << Ontology::TTL_FILE_PREFIX << std::endl;
+        }
+      }
       // this->PopulateOntology( out_file, oligosaccharides );
       this->PopulateOntology( out_file, testOligos );
       out_file.close();
@@ -4653,7 +4652,7 @@ void Assembly::GetAuthorNaming(std::vector< std::string > amino_lib_files, Glyca
     // Build by Distance
     CCDassembly.BuildStructureByDistance(10);
     // Find the Sugars.
-    std::vector<Glycan::Oligosaccharide*> authorOligos = CCDassembly.ExtractSugars(amino_lib_files, false, false, CCD_Path);
+    std::vector<Glycan::Oligosaccharide*> authorOligos = CCDassembly.ExtractSugars(amino_lib_files, false, false, false, CCD_Path);
     //The vector is really just a monosaccharide
     if(authorOligos.size() > 0)
     {

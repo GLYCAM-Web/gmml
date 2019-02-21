@@ -933,7 +933,7 @@ namespace MolecularModeling
             /*! \fn
             * A wrapper function for the next function. I do this to make the vector of monosaccharides external. I want to do some manipulations to them.
             */
-            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false, std::string CCD_Path = " ");
+            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false, bool individualOntologies = false, std::string CCD_Path = " ");
             /*! \fn
             * A function in order to extract all the saccharide structures
             * @param amino_lib_files The list of paths to amino library files, used for identifying terminal residues
@@ -941,7 +941,7 @@ namespace MolecularModeling
             * @param populate_ontology A flag to prompt ontology population
             * @return oligosaccharides A list of extarcted oligosaccharide structures
             */
-            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, std::vector<Glycan::Monosaccharide*>& monos, bool glyporbity_report = false, bool populate_ontology = false, std::string CCD_Path = " ");
+            OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, std::vector<Glycan::Monosaccharide*>& monos, bool glyporbity_report = false, bool populate_ontology = false, bool individualOntologies = false, std::string CCD_Path = " ");
 
             // std::vector<std::string> PDBExtractSugars(std::stringstream atomStream, std::vector< std::string > amino_lib_files, std::string CCD_Path);
 
