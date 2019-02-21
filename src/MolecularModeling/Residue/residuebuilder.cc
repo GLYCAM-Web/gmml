@@ -25,6 +25,7 @@
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
+//#include "../../../includes/GeometryTopology/geometrytopology.hpp"
 #include "../../../includes/GeometryTopology/coordinate.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
@@ -188,8 +189,8 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
 
             if(index > 200000 )  // normally > 2
             {
-            rawcoordinate = rawcoordinate.get_cartesian_point_from_internal_coords(
-                coordinate_list[0], coordinate_list[1], coordinate_list[2], dihedral_value, angle_value, bond_length);
+           // rawcoordinate =  GeometryTopology::get_cartesian_point_from_internal_coords(
+            //    coordinate_list[0], coordinate_list[1], coordinate_list[2], dihedral_value, angle_value, bond_length);
 // std::cout << "   The NEW RAW coords are:  " << std::endl;
 // std::cout << "         X  :  " << rawcoordinate.GetX() << std::endl;
 // std::cout << "         Y  :  " << rawcoordinate.GetY() << std::endl;
@@ -198,7 +199,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
             coordinate->SetY(rawcoordinate.GetY());
             coordinate->SetZ(rawcoordinate.GetZ());
             }
-            else 
+            else
             {
             coordinate = coordinate->ConvertInternalCoordinate2CartesianCoordinate(
                coordinate_list, bond_length, angle_value, dihedral_value);

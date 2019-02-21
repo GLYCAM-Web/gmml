@@ -249,14 +249,14 @@ void Atom::FindConnectedAtoms(AtomVector& visitedAtoms)
 
 double Atom::GetDistanceToAtom(Atom* otherAtom)
 {
-	return GetDistanceToCoordinate(otherAtom->GetCoordinates().at(0));
+    return GetDistanceToCoordinate(otherAtom->GetCoordinate());
 } // end GetDistanceToAtom
 
 double Atom::GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate)
 {
-	double x = (this->GetCoordinates().at(0)->GetX() - coordinate->GetX());
-	double y = (this->GetCoordinates().at(0)->GetY() - coordinate->GetY());
-	double z = (this->GetCoordinates().at(0)->GetZ() - coordinate->GetZ());
+    double x = (this->GetCoordinate()->GetX() - coordinate->GetX());
+    double y = (this->GetCoordinate()->GetY() - coordinate->GetY());
+    double z = (this->GetCoordinate()->GetZ() - coordinate->GetZ());
 	return sqrt((x * x) + (y * y) + (z * z));
 } // end GetDistanceToCoordinate
 

@@ -314,12 +314,6 @@ void Coordinate::RotateTorsionalAll(CoordinateVector coordinate_set, double tors
     }
 }
 
-Coordinate Coordinate::subtract_coordinates(Coordinate minuaend, Coordinate subtrahend)
-{
-        Coordinate new_coordinate ( 
-            (minuaend.GetX()-subtrahend.GetX()), (minuaend.GetY()-subtrahend.GetY()), (minuaend.GetZ()-subtrahend.GetZ()) );
-        return new_coordinate;
-}
 
 Coordinate* Coordinate::ConvertInternalCoordinate2CartesianCoordinate(
             Coordinate::CoordinateVector coordinate_list, double distance, double angle, double torsion)

@@ -1,19 +1,21 @@
-#ifndef GEOMETRY_TOPOLOGY_HPP
-#define GEOMETRY_TOPOLOGY_HPP
+#ifndef GEOMETRYTOPOLOGY_HPP
+#define GEOMETRYTOPOLOGY_HPP
 
-#include "angle.hpp"
-#include "cell.hpp"
+
+
 #include "coordinate.hpp"
-#include "dihedral.hpp"
-#include "distance.hpp"
-#include "grid.hpp"
-#include "plane.hpp"
+#include "utils.hpp"
+
 
 namespace GeometryTopology
 {
-Coordinate get_cartesian_point_from_internal_coords(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c,
-     double theta_Degrees, double phi_Degrees, double distance_Angstrom);
+
+Coordinate get_cartesian_point_from_internal_coords(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c, double theta_Degrees, double phi_Degrees, double distance_Angstrom);
+
+Coordinate get_cartesian_point_from_internal_coords(Coordinate a, Coordinate b, Coordinate c, double theta_Degrees, double phi_Degrees, double distance_Angstrom);
+
+Coordinate subtract_coordinates(Coordinate minuaend, Coordinate subtrahend);
 
 }
 
-#endif // GEOMETRY_TOPOLOGY_HPP
+#endif // GEOMETRYTOPOLOGY_HPP

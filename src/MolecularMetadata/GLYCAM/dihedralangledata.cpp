@@ -5,6 +5,77 @@
 //////////////////////////////////////////////////////////
 
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataContainer;
+using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
+
+//////////////////////////////////////////////////////////
+//                      QUERY FUNCTIONS                 //
+//////////////////////////////////////////////////////////
+// Pass in the two atoms on either side the residue-residue linkage
+DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage( MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2)
+{
+    DihedralAngleDataVector matching_entries;
+    Glycam06NamesToTypesLookupContainer metadata_residueNamesToTypes;
+    // Go through each entry in the metadata
+    for (const auto& entry : dihedralAngleDataVector_)
+    {
+        // Create a regex of each entry's linking_atom1_ and 2_. These are regex queries.
+        //std::cout << "Compare entry " << entry.linking_atom1_ << "-" << entry.linking_atom2_ << " : " << linking_atom1->GetName() << "-" << linking_atom2->GetName() <<"\n";
+        std::regex regex1(entry.linking_atom1_, std::regex_constants::ECMAScript);
+        std::regex regex2(entry.linking_atom2_, std::regex_constants::ECMAScript);
+        // If metadata entry matches (regex query) to the two linking atom names
+        if ( (std::regex_search(linking_atom1->GetName(), regex1)) && (std::regex_search(linking_atom2->GetName(), regex2)) )
+        {
+            // Some entries have conditions for the residue, that they have certain tags. Make sure any conditions are met:
+            std::vector<std::string> residue1_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom1->GetResidue()->GetName());
+            std::vector<std::string> residue2_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom2->GetResidue()->GetName());
+            if ( (checkIfResidueConditionsAreSatisfied(residue1_types, entry.residue1_conditions_))
+              && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_conditions_)) )
+            {
+           //    std::cout << "Entry added: " << entry.linking_atom1_ << "-" << entry.linking_atom2_ << "\n";
+                matching_entries.push_back(entry);
+            }
+        }
+//            std::string str("1231");
+//            std::regex r("^(\\d)\\d"); // entire match will be 2 numbers
+//            std::smatch m;
+//            std::regex_search(str, m, r);
+        //for(auto v: m) std::cout << v << std::endl;
+//            std::smatch results1;
+//            std::string string1 = linking_atom2->GetName();
+//            bool well = std::regex_search(string1, results1, regex1);
+//            std::cout << well << "\n";
+//            for(auto v: results1) std::cout << v << std::endl;
+    }
+    // Not yet implemented: If two entries have same index number, delete the earlier entry.
+    return matching_entries;
+}
+//////////////////////////////////////////////////////////
+//                    PRIVATE FUNCTIONS                 //
+//////////////////////////////////////////////////////////
+// Some entries have conditions for the first or second residue to have a particular type (aka tag).
+// Most entries have "none" for condition. This checks first if condition is "none", and therefore satisfied.
+// Otherwise (else if) it checks if any of the residue_types match the condition for the entry, e.g. gauche_effect=galacto.
+bool DihedralAngleDataContainer::checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::vector<std::string> entry_conditions)
+{
+    for (const auto& entry_condition : entry_conditions)
+    {
+        if (entry_condition.compare("none")==0)
+        {
+            return true;
+        }
+        else if (!(std::find(residue_types.begin(), residue_types.end(), entry_condition) != residue_types.end()))
+        {
+            std::cout << "Did not find the condition in residue tags" << std::endl;
+            return false; //If any condition isn't satisified. return false.
+        }
+    }
+    std::cout << "Logic error in dihedralangledata.hpp::checkIfResidueConditionsAreSatisfied" << std::endl;
+    return false;
+}
+
+//////////////////////////////////////////////////////////
+//                    INITIALIZER                       //
+//////////////////////////////////////////////////////////
 
 // Struct is copied here for reference.
 //struct DihedralAngleData
@@ -41,7 +112,7 @@ using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataContainer;
 DihedralAngleDataContainer::DihedralAngleDataContainer()
 {   // const AmberAtomTypeInfo Glycam06j1AtomTypes[] =
     dihedralAngleDataVector_ =
-    {    // Regex:       , name                                                                                 // Atom names this applies to
+    { //Regex1, Regex2   , Name   , Angle  , Upper  , Lower  , Weight, Entry Type    , Tag  , D , R , Residue 1 type , Residue 2 type,           , Atom names                                                               // Atom names this applies to
         { "C1", "O[1-9]" , "phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"aldose"}     , {"none"}                  ,  "C2" , "C1" , "O." , "C."  }, // phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
         { "C2", "O[1-9]" , "phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"none"}                  ,  "C3" , "C2" , "O." , "C."  }, // phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
         { "C2", "O[1-9]" , "phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 2 , {"ulosonate", "alpha"}  , {"none"}         ,  "C3" , "C2" , "O." , "C."  },
