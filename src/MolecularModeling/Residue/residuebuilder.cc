@@ -189,20 +189,20 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
 
             if(index > 200000 )  // normally > 2
             {
-           // rawcoordinate =  GeometryTopology::get_cartesian_point_from_internal_coords(
-            //    coordinate_list[0], coordinate_list[1], coordinate_list[2], dihedral_value, angle_value, bond_length);
-// std::cout << "   The NEW RAW coords are:  " << std::endl;
-// std::cout << "         X  :  " << rawcoordinate.GetX() << std::endl;
-// std::cout << "         Y  :  " << rawcoordinate.GetY() << std::endl;
-// std::cout << "         Z  :  " << rawcoordinate.GetZ() << std::endl;
-            coordinate->SetX(rawcoordinate.GetX());
-            coordinate->SetY(rawcoordinate.GetY());
-            coordinate->SetZ(rawcoordinate.GetZ());
+                rawcoordinate =  GeometryTopology::get_cartesian_point_from_internal_coords(
+                            coordinate_list[0], coordinate_list[1], coordinate_list[2], dihedral_value, angle_value, bond_length);
+                // std::cout << "   The NEW RAW coords are:  " << std::endl;
+                // std::cout << "         X  :  " << rawcoordinate.GetX() << std::endl;
+                // std::cout << "         Y  :  " << rawcoordinate.GetY() << std::endl;
+                // std::cout << "         Z  :  " << rawcoordinate.GetZ() << std::endl;
+                coordinate->SetX(rawcoordinate.GetX());
+                coordinate->SetY(rawcoordinate.GetY());
+                coordinate->SetZ(rawcoordinate.GetZ());
             }
             else
             {
-            coordinate = coordinate->ConvertInternalCoordinate2CartesianCoordinate(
-               coordinate_list, bond_length, angle_value, dihedral_value);
+                coordinate = coordinate->ConvertInternalCoordinate2CartesianCoordinate(
+                            coordinate_list, bond_length, angle_value, dihedral_value);
             }
             cartesian_coordinate_list.push_back(coordinate);
            // GeometryTopology::Coordinate* coordinate = gmml::ConvertInternalCoordinate2CartesianCoordinate(
