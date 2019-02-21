@@ -135,6 +135,11 @@ MolecularModeling::ResidueNode* Residue::GetNode()
 {
         return node_;
 }
+//Added by Dave 2/1/19
+bool Residue::GetIsSugar()
+{
+    return is_sugar_;
+}
 
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
@@ -247,6 +252,11 @@ void Residue::SetIsAglycon(bool is_aglycon)
 {
     is_aglycon_ = is_aglycon;
 }
+void Residue::SetIsSugar(bool is_sugar)
+{
+  is_sugar_ = is_sugar;
+}
+
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
@@ -523,6 +533,8 @@ MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
         if ((*it)->GetName().compare(query_name)==0)
         {
             return_atom = (*it);
+            std::cout << "Returning " << std::endl;
+            std::cout << return_atom->GetId() << std::endl;
         }
     }
     return return_atom; // may be unset

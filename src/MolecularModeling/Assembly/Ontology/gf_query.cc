@@ -425,3 +425,31 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
 // ?oligo :oligoBFactor ?oligo_mean_B_Factor.
 // }
 // ORDER BY DESC(?resolution)
+
+
+//Here's another that I ran for Rob to get all PDBs with non furanose (!regex line) sugars with unercognized side chains (symbolized as <R)
+// 
+// PREFIX : <http://gmmo.uga.edu/#>
+// PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+// PREFIX owl: <http://www.w3.org/2002/07/owl#>
+// PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+// PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+// SELECT DISTINCT ?pdb ?oligo (group_concat(distinct ?oligo_sequence;separator="\n") as ?Oligosaccharides)
+// WHERE
+// {
+// ?pdb_file :identifier ?pdb.
+// ?pdb_file :hasOligo ?oligo.
+// ?oligo :oligoName ?oligo_sequence.
+// FILTER regex(?oligo_sequence, ".*<R.*")
+// FILTER (!regex(?oligo_sequence, ".*f.*"))
+// }
+
+//More filters that I am saving here just in case
+// ?oligo :oligoIUPACname ?oligo_IUPAC.
+// FILTER regex(?oligo_sequence, ".*-Unknown$")
+// FILTER (!regex(?oligo_sequence, ".*<R.*"))
+// FILTER (!regex(?oligo_IUPAC, "- Unknown$"))
+// FILTER (!regex(?oligo_IUPAC, "-$"))
+// FILTER (!regex(?oligo_IUPAC, "-ASN$"))
+// FILTER (!regex(?oligo_IUPAC, "-THR$"))
+// FILTER (!regex(?oligo_IUPAC, "-SER$"))

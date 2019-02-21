@@ -309,6 +309,17 @@ namespace gmml
         }
         return SUGARNAMELOOKUP[0];
     }
+    
+    inline Glycan::SugarName ResidueSugarNameLookup(std::string residue)
+    {
+        for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)
+        {
+            if(residue.compare(SUGARNAMELOOKUP[i].pdb_code_) == 0){
+                return SUGARNAMELOOKUP[i];
+            }
+        }
+        return SUGARNAMELOOKUP[0];
+    }
 
     /*! \fn
       * A function in order to search the stereochemistry lookup table and identify the closest match for the sugar structure based on the given string version of the chemical code structure
@@ -452,6 +463,16 @@ namespace gmml
         for(int i = 0; i < COMPLEXSUGARNAMELOOKUPSIZE; i++)
         {
             if(code.compare(COMPLEXSUGARNAMELOOKUP[i].chemical_code_string_) == 0)
+                return COMPLEXSUGARNAMELOOKUP[i];
+        }
+        return COMPLEXSUGARNAMELOOKUP[0];
+    }
+    
+    inline Glycan::SugarName ResidueComplexSugarNameLookup(std::string residue)
+    {
+        for(int i = 0; i < COMPLEXSUGARNAMELOOKUPSIZE; i++)
+        {
+            if(residue.compare(COMPLEXSUGARNAMELOOKUP[i].pdb_code_) == 0)
                 return COMPLEXSUGARNAMELOOKUP[i];
         }
         return COMPLEXSUGARNAMELOOKUP[0];

@@ -110,6 +110,7 @@
 #include "InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
+#include "GeometryTopology/geometrytopology.hpp"
 #include "GeometryTopology/coordinate.hpp"
 #include "GeometryTopology/plane.hpp"
 #include "GeometryTopology/cell.hpp"

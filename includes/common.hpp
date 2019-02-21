@@ -22,6 +22,7 @@ namespace gmml
     typedef std::map<std::string, std::vector<std::string> > GlycamResidueNamingMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
     typedef std::vector<MolecularModeling::Atom*> AtomVector;
+    typedef std::vector<std::string> StringVector;
 
     //*******************************************
 
@@ -370,9 +371,16 @@ namespace gmml
 
     const AminoacidGlycamMap AMINOACIDGLYCAMLOOKUP[] = {
         {"", ""},
-        {"ASN", "NLN"},
-        {"THR", "OLT"},
-        {"SER", "OLS"}
+        {"ASN", "NLN"},//Asparagine (N-Linked)
+        {"THR", "OLT"},//Threonine (O-Linked)
+        {"SER", "OLS"},//Serine (O-Linked)
+        {"LYZ", ""},//hydroxylysine (O-Linked)
+        {"HYP", ""},//hydroxyproline (O-Linked)
+        {"TYR", ""},//Tyrosine (O-Linked)
+        {"CYS", ""},//Cysteine (S-Linked)
+        {"TRP", ""},//Tryptophan (C-Linked)
+        {"LYS", ""},//Lysine (glycation)
+        {"HIS", ""},//Histidine (glycation)
     };
 
     const int AMINOACIDGLYCAMLOOKUPSIZE = (sizeof(AMINOACIDGLYCAMLOOKUP)/sizeof(AMINOACIDGLYCAMLOOKUP[0]));

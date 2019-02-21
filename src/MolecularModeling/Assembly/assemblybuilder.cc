@@ -171,20 +171,20 @@ Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (Condens
         gmml::AtomVector all_atoms = residue->GetAtoms();
         gmml::MolecularMetadata::GLYCAM::Glycam06NamesToTypesLookupContainer glycam06_NamesToTypesMetadata;
         std::vector<std::string> all_types = glycam06_NamesToTypesMetadata.GetTypesForResidue(residue_name);
-//      std::pair<std::multimap<std::string, std::string>::const_iterator, std::multimap<std::string, std::string>::const_iterator> key_range = gmml::MolecularMetadata::GLYCAM::Glycam06NamesToTypesLookupMap.equal_range(residue_name);
-//        if (key_range.first == key_range.second)
-//        {
-//            std::cout << "Warning: no match exists in metadata map for template residue " << residue_name << std::endl;
-//            std::cout << "Cannot tag ring/sidechain atoms for this residue. This might affect accuracy of setting geometry." << std::endl;
-//        }
-//        else
-//        {
-//            std::vector<std::string> all_types = std::vector<std::string>();
-//            for (std::multimap<std::string, std::string>::const_iterator it = key_range.first; it != key_range.second; it++)
-//            {
-//                std::string type =  it->second;
-//                all_types.push_back(type);
-//            }
+        //      std::pair<std::multimap<std::string, std::string>::const_iterator, std::multimap<std::string, std::string>::const_iterator> key_range = gmml::MolecularMetadata::GLYCAM::Glycam06NamesToTypesLookupMap.equal_range(residue_name);
+        //        if (key_range.first == key_range.second)
+        //        {
+        //            std::cout << "Warning: no match exists in metadata map for template residue " << residue_name << std::endl;
+        //            std::cout << "Cannot tag ring/sidechain atoms for this residue. This might affect accuracy of setting geometry." << std::endl;
+        //        }
+        //        else
+        //        {
+        //            std::vector<std::string> all_types = std::vector<std::string>();
+        //            for (std::multimap<std::string, std::string>::const_iterator it = key_range.first; it != key_range.second; it++)
+        //            {
+        //                std::string type =  it->second;
+        //                all_types.push_back(type);
+        //            }
         if (all_types.empty())
         {
             std::cout << "Warning: no match exists in metadata map for template residue " << residue_name << "\n"
@@ -233,20 +233,20 @@ Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (Condens
     }
     //testing
     /*
-for (ResidueVector::iterator it3 = template_assembly_residues.begin(); it3 != template_assembly_residues.end(); it3++){
-    std:: cout << "Residues: " << (*it3)->GetName() <<std::endl;
-    gmml::AtomVector atoms = (*it3)->GetAtoms();
-    for (gmml::AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end();it4++){
-    if ((*it4) ->GetIsCycle()){
-        std::cout << "is cycle: " << (*it4)->GetName() << std::endl;
+    for (ResidueVector::iterator it3 = template_assembly_residues.begin(); it3 != template_assembly_residues.end(); it3++){
+        std:: cout << "Residues: " << (*it3)->GetName() <<std::endl;
+        gmml::AtomVector atoms = (*it3)->GetAtoms();
+        for (gmml::AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end();it4++){
+        if ((*it4) ->GetIsCycle()){
+            std::cout << "is cycle: " << (*it4)->GetName() << std::endl;
+        }
+        if ((*it4)->GetIsSideChain()){
+            //std::cout << "is sidechain: " << (*it4)->GetName()<< std::endl;
+        }
+        }
     }
-    if ((*it4)->GetIsSideChain()){
-        //std::cout << "is sidechain: " << (*it4)->GetName()<< std::endl;
-    }
-    }
-}
-*/
-    //testing
+    */
+        //testing
 
     return template_assembly;
     
@@ -1724,7 +1724,7 @@ void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<s
                                         std::vector<std::string> other_lib_files, std::vector<std::string> prep_files, std::string parameter_file)
 {
     std::cout << "Building assembly from pdb file ..." << std::endl;
-//    std::cout << "Reading PDB file into PdbFileSpace::PdbFile structure." << std::endl;
+    //    std::cout << "Reading PDB file into PdbFileSpace::PdbFile structure." << std::endl;
     PdbFileSpace::PdbFile* pdb_file=NULL;
     try
     {
@@ -1742,7 +1742,7 @@ void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<s
 void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files,
                                         std::vector<std::string> other_lib_files, std::vector<std::string> prep_files, std::string parameter_file)
 {
-//    std::cout << "Building assembly from pdb file ..." << std::endl;
+  //    std::cout << "Building assembly from pdb file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
     try
     {

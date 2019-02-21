@@ -48,6 +48,9 @@ int main(int argc, char* argv[]) {
     assembly.BuildStructureByDistance(10);
     // Find the Sugars.
     assembly.ExtractSugars(aminolibs, false, true);
+    //Note that to have individual ontology (.ttl) files or to have CCD lookup, you must provide 
+    //a bool (true) for individual ontologies, and the path to the CCD which right now is just in my home directory
+    
     // YAY! We made it!
     return EXIT_SUCCESS;
 }
