@@ -1248,11 +1248,34 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::indexMono(Glycan::
           {
             equalNeighborsLengths.push_back(branchMaxLengths[i]);
             int branchesOfThisLength = std::count(branchMaxLengths.begin(), branchMaxLengths.end(), branchMaxLengths[i]);
-            if(branchesOfThisLength > 1)
+            if(thisMono->is_root_)
             {
-              numEqualNeighbors += branchesOfThisLength;
+              if(branchesOfThisLength > 1)
+              {
+                numEqualNeighbors += branchesOfThisLength;
+              }
+            }
+            else
+            {
+              if(branchMaxLengths[i] == 1 && branchesOfThisLength > 2)
+              {
+                numEqualNeighbors += branchesOfThisLength;
+              }
+              else if(branchMaxLengths[i] != 1 && branchesOfThisLength > 1)
+              {
+                numEqualNeighbors += branchesOfThisLength;
+              }
             }
           }
+          // if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) //if this length is not already considered
+          // {
+          //   equalNeighborsLengths.push_back(branchMaxLengths[i]);
+          //   int branchesOfThisLength = std::count(branchMaxLengths.begin(), branchMaxLengths.end(), branchMaxLengths[i]);
+          //   if(branchesOfThisLength > 1)
+          //   {
+          //     numEqualNeighbors += branchesOfThisLength;
+          //   }
+          // }
         }
         if(numEqualNeighbors == 0)
         {
@@ -1365,11 +1388,34 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::indexMono(Glycan::
         {
           equalNeighborsLengths.push_back(branchMaxLengths[i]);
           int branchesOfThisLength = std::count(branchMaxLengths.begin(), branchMaxLengths.end(), branchMaxLengths[i]);
-          if(branchesOfThisLength > 1)
+          if(thisMono->is_root_)
           {
-            numEqualNeighbors += branchesOfThisLength;
+            if(branchesOfThisLength > 1)
+            {
+              numEqualNeighbors += branchesOfThisLength;
+            }
+          }
+          else
+          {
+            if(branchMaxLengths[i] == 1 && branchesOfThisLength > 2)
+            {
+              numEqualNeighbors += branchesOfThisLength;
+            }
+            else if(branchMaxLengths[i] != 1 && branchesOfThisLength > 1)
+            {
+              numEqualNeighbors += branchesOfThisLength;
+            }
           }
         }
+        // if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) //if this length is not already considered
+        // {
+        //   equalNeighborsLengths.push_back(branchMaxLengths[i]);
+        //   int branchesOfThisLength = std::count(branchMaxLengths.begin(), branchMaxLengths.end(), branchMaxLengths[i]);
+        //   if(branchesOfThisLength > 1)
+        //   {
+        //     numEqualNeighbors += branchesOfThisLength;
+        //   }
+        // }
       }
       if(numEqualNeighbors == 0)
       {
@@ -1825,6 +1871,7 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
         // testLog << i << ", " << branchMaxLengths[i];
         // gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
         // testLog.str(std::string());//clear stringstream
+        
         if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) //if this length is not already considered
         {
           equalNeighborsLengths.push_back(branchMaxLengths[i]);
@@ -2001,24 +2048,15 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
       {
         equalNeighborsLengths.push_back(branchMaxLengths[i]);
         int branchesOfThisLength = std::count(branchMaxLengths.begin(), branchMaxLengths.end(), branchMaxLengths[i]);
-        if(thisMono->is_root_)
+        if(branchMaxLengths[i] == 1 && branchesOfThisLength > 2)
         {
-          if(branchesOfThisLength > 1)
-          {
-            numEqualNeighbors += branchesOfThisLength;
-          }
+          numEqualNeighbors += branchesOfThisLength;
         }
-        else
+        else if(branchMaxLengths[i] != 1 && branchesOfThisLength > 1)
         {
-          if(branchMaxLengths[i] == 1 && branchesOfThisLength > 2)
-          {
-            numEqualNeighbors += branchesOfThisLength;
-          }
-          else if(branchMaxLengths[i] != 1 && branchesOfThisLength > 1)
-          {
-            numEqualNeighbors += branchesOfThisLength;
-          }
+          numEqualNeighbors += branchesOfThisLength;
         }
+        
       }
     }
     if(numEqualNeighbors == 0)
@@ -2259,13 +2297,13 @@ void Glycan::Oligosaccharide::getBranchMaxLengths(Glycan::Monosaccharide* this_m
             {
               std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> monoNeighborNeighborPair = *monoNeighborNeighbor;
               Glycan::Monosaccharide* this_neighbor_neighbor = monoNeighborNeighborPair.second;
-              std::stringstream ss;
-              ss << this_mono_neighbor->cycle_atoms_[0]->GetResidue()->GetId() << " " << this_neighbor_neighbor->cycle_atoms_[0]->GetResidue()->GetId();
+              // std::stringstream ss;
+              // ss << this_mono_neighbor->cycle_atoms_[0]->GetResidue()->GetId() << " " << this_neighbor_neighbor->cycle_atoms_[0]->GetResidue()->GetId();
               // gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
               if(!this_neighbor_neighbor->is_counted_) // if it isn't the previous mono
               {
-                std::stringstream ss;
-                ss << this_mono_neighbor->sugar_name_.monosaccharide_short_name_ << " " << this_neighbor_neighbor->sugar_name_.monosaccharide_short_name_;
+                // std::stringstream ss;
+                // ss << this_mono_neighbor->sugar_name_.monosaccharide_short_name_ << " " << this_neighbor_neighbor->sugar_name_.monosaccharide_short_name_;
                 // gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
                 this_neighbor_neighbor->is_counted_ = true;
                 branchLengths[branchIndex] = branchLengths[branchIndex] + 1;
@@ -2274,7 +2312,7 @@ void Glycan::Oligosaccharide::getBranchMaxLengths(Glycan::Monosaccharide* this_m
               }
               else
               {
-                goto exit;
+                // goto exit;
                 countedNeighbors++;
               }
             }
@@ -2292,8 +2330,8 @@ void Glycan::Oligosaccharide::getBranchMaxLengths(Glycan::Monosaccharide* this_m
             break;
           }
         }
-        exit:
-          int i=1; //need something here for goto to work
+        // exit:
+        //   int i=1; //need something here for goto to work
       }
     }
     else if(!this_mono_neighbor->is_counted_)

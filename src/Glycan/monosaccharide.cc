@@ -341,7 +341,7 @@ MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Not
 
 std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(MolecularModeling::Assembly* this_assembly)
 {
-  //9/14/18 Removed side atom initialization in this function and either moved it to detectSideGroups() or used Yao's InitiateDetectionOfCompleteSideGroupAtoms()
+  //9/14/18 Removed side atom initialization in this function and either moved it to Yao's InitiateDetectionOfCompleteSideGroupAtoms()
   // Dave
   int local_debug = -1;
   int model_index_ = this_assembly->GetModelIndex();

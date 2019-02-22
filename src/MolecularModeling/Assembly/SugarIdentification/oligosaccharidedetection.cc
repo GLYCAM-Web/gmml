@@ -3111,14 +3111,14 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
           break;
       }
     }
-    for(std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> >::iterator monoNeighbor = mono1->mono_neighbors_.begin(); monoNeighbor != mono1->mono_neighbors_.end(); monoNeighbor++)
-    {
-      std::stringstream ss;
-      Glycan::Monosaccharide* thisNeighbor = (monoNeighbor->second);
-      Glycan::GlycosidicLinkage* thisLinkage = (monoNeighbor->first);
-      ss << mono1->cycle_atoms_[0]->GetResidue()->GetId() << " is connected to " << thisNeighbor->cycle_atoms_[0]->GetResidue()->GetId() << " via " << thisLinkage->linkage_type_;
-      gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
-    }
+    // for(std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> >::iterator monoNeighbor = mono1->mono_neighbors_.begin(); monoNeighbor != mono1->mono_neighbors_.end(); monoNeighbor++)
+    // {
+    //   std::stringstream ss;
+    //   Glycan::Monosaccharide* thisNeighbor = (monoNeighbor->second);
+    //   Glycan::GlycosidicLinkage* thisLinkage = (monoNeighbor->first);
+    //   ss << mono1->cycle_atoms_[0]->GetResidue()->GetId() << " is connected to " << thisNeighbor->cycle_atoms_[0]->GetResidue()->GetId() << " via " << thisLinkage->linkage_type_;
+    //   gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+    // }
 
   }
   // gmml::log(__LINE__, __FILE__,  gmml::INF, " Done iterating list" );
