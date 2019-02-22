@@ -533,6 +533,8 @@ MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
         if ((*it)->GetName().compare(query_name)==0)
         {
             return_atom = (*it);
+            std::cout << "Returning " << std::endl;
+            std::cout << return_atom->GetId() << std::endl;
         }
     }
     return return_atom; // may be unset

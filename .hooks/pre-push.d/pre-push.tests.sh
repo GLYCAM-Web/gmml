@@ -105,6 +105,7 @@ if [ $result -eq 0 ] ; then
          else
              echo "The tests in $GEMSHOME/gmml/programs/GlycoproteinBuilder have failed. Check $GEMSHOME/gmml/programs/GlycoproteinBuilder/run_tests.sh" 
              echo "Push cancelled."
+             exit 1
          fi
      fi
 else
