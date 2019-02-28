@@ -398,8 +398,14 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       }
       else
       {
-        mono->author_sugar_name_ = mono->sugar_name_;
-        mono->createAuthorSNFGname();
+        if(this->source_file_.find(mono->residue_name_) ==  std::string::npos) //For CCD Lookup, if the residue name matches the file name we are already looking it up.  Prevents infinite loop for unidentified CCD sugars
+        {
+          std::cout << this->source_file_ << ": " << mono->residue_name_ << "\n";
+          GetAuthorNaming(amino_lib_files, mono, CCD_Path);
+          mono->createAuthorSNFGname();
+        }
+        // mono->author_sugar_name_ = mono->sugar_name_;
+        // mono->createAuthorSNFGname();
       }
     }
     std::cout << "SNFG Name: " << mono->SNFG_name_ << "\n";

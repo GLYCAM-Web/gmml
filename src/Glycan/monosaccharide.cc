@@ -1085,7 +1085,10 @@ void Glycan::Monosaccharide::CountElements(MolecularModeling::Atom* thisAtom, st
       MolecularModeling::Atom* thisNeighbor = (*it);
       if (!thisNeighbor->GetNode()->GetIsVisited() && !thisNeighbor->GetIsCycle())
       {
-        CountElements(thisNeighbor, elementVector);
+        if(!thisNeighbor->GetResidue()->CheckIfProtein())
+          CountElements(thisNeighbor, elementVector);
+        else
+          gmml::log(__LINE__, __FILE__, gmml::ERR, "Ran into a protein counting elements");
       }
     }
   }

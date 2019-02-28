@@ -1186,7 +1186,7 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::indexMono(Glycan::
     // std::stringstream testLog;
     // testLog << "Mono: " << thisMono->cycle_atoms_[0]->GetResidue()->GetId();
     // testLog << ", Index: " << thisIndex;  
-    // thisMono->oligosaccharide_index_ = thisIndex;
+    thisMono->oligosaccharide_index_ = thisIndex;
     // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
     // testLog.str(std::string());//clear stringstream
     if(thisMono->mono_neighbors_.size() == 0)
