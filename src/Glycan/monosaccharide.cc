@@ -161,6 +161,12 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
   }
   // createAuthorSNFGname();
   createSNFGname();
+  if(sugar_name_.pdb_code_ == "")
+  {
+    std::stringstream ss;
+    ss << "Chemical code: " << chemical_code_->toString() << " not found for " << residue_name_;
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+  }
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //

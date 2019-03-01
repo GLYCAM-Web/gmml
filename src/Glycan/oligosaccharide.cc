@@ -2046,17 +2046,22 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
       // testLog.str(std::string());//clear stringstream
       if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) //if this length is not already considered
       {
-        equalNeighborsLengths.push_back(branchMaxLengths[i]);
+        // equalNeighborsLengths.push_back(branchMaxLengths[i]);
         int branchesOfThisLength = std::count(branchMaxLengths.begin(), branchMaxLengths.end(), branchMaxLengths[i]);
         if(branchMaxLengths[i] == 1 && branchesOfThisLength > 2)
         {
           numEqualNeighbors += branchesOfThisLength;
+          equalNeighborsLengths.push_back(branchMaxLengths[i]);
         }
         else if(branchMaxLengths[i] != 1 && branchesOfThisLength > 1)
         {
           numEqualNeighbors += branchesOfThisLength;
+          equalNeighborsLengths.push_back(branchMaxLengths[i]);
         }
-        
+        // else if(thisMono->is_root_ && branchMaxLengths[i] ==1 && branchesOfThisLength > 1)
+        // {
+        //   numEqualNeighbors += branchesOfThisLength;
+        // }
       }
     }
     if(numEqualNeighbors == 0)
@@ -2116,11 +2121,21 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
       //TODO:  fix the logic of this function; the loop has to be within the if statement
       //handle branch ordering
       std::vector<std::string> linkageStringVector;
+      for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
+      {
+        linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+      }
+      std::vector<bool> isNeighborNamed(thisMono->mono_neighbors_.size(), false);
       int shortestBranchLocation = std::distance(branchMaxLengths.begin(), std::min_element(branchMaxLengths.begin(), branchMaxLengths.end()));
       countedBackwards = false;
       for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
       {
         shortestBranchLocation = std::distance(branchMaxLengths.begin(), std::min_element(branchMaxLengths.begin(), branchMaxLengths.end()));
+        if(isNeighborNamed[shortestBranchLocation])
+        {
+          branchMaxLengths[shortestBranchLocation] = 9999;
+          shortestBranchLocation = std::distance(branchMaxLengths.begin(), std::min_element(branchMaxLengths.begin(), branchMaxLengths.end()));
+        }
         if(std::count(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[shortestBranchLocation]) == 0) //no other branches of this length
         {
           linkageStringVector.push_back("0");
@@ -2162,6 +2177,7 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
               thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
               // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
             }
+            isNeighborNamed[shortestBranchLocation] = true;
           }
           else
           {
@@ -2171,79 +2187,154 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
         }
         else
         {
-          int equalBranchLength = branchMaxLengths[shortestBranchLocation];
-          if((branchMaxLengths[i] == equalBranchLength) && (!thisMono->mono_neighbors_[i].second->is_visited_))
+          std::vector<std::string> equalLinkageStringVector;
+          for(unsigned int j = 0; j < thisMono->mono_neighbors_.size(); j++)
           {
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId());
-            linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+            if(branchMaxLengths[j] == branchMaxLengths[shortestBranchLocation])
+            {
+              equalLinkageStringVector.push_back(linkageStringVector[j]);
+            }
           }
-          else if((branchMaxLengths[i] == equalBranchLength)&& (thisMono->mono_neighbors_[i].second->is_visited_))
+          for(unsigned int j = 0; j < equalLinkageStringVector.size(); j++)
           {
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId());
-            linkageStringVector.push_back("0");
+            // gmml::log(__LINE__, __FILE__,  gmml::INF, linkageStringVector[i]);
+            int highestIndexLocation = std::distance(equalLinkageStringVector.begin(), std::max_element(equalLinkageStringVector.begin(), equalLinkageStringVector.end()));
+            if(!thisMono->mono_neighbors_[highestIndexLocation].second->is_visited_)
+            {
+              if(thisMono->is_root_ && i < thisMono->mono_neighbors_.size() - 1)
+              {
+                thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+                                          thisOligo->IUPAC_name_;
+                thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+                                                thisOligo->author_IUPAC_name_;
+              }
+              else if((i < thisMono->mono_neighbors_.size() - 1) && (countedBackwards))
+              {
+                // gmml::log(__LINE__, __FILE__,  gmml::INF, "Counted Backwards");
+                thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+                                          thisOligo->IUPAC_name_;
+                thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+                                                thisOligo->author_IUPAC_name_;
+              }
+              else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
+              {
+                // gmml::log(__LINE__, __FILE__,  gmml::INF, "Didn't count Backwards");
+                thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+                                         thisOligo->IUPAC_name_;
+                thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+                                         thisOligo->author_IUPAC_name_;
+              }
+              else
+              {
+                thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
+                                         thisOligo->IUPAC_name_;
+                thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
+                                         thisOligo->author_IUPAC_name_;
+              }
+              // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+              thisMono->is_visited_ = true;
+              thisOligo->mono_nodes_.push_back(thisMono->mono_neighbors_[highestIndexLocation].second);
+              traverseGraph(thisMono->mono_neighbors_[highestIndexLocation].second, thisOligo);
+              if(thisMono->is_root_ && i < thisMono->mono_neighbors_.size() - 1)
+              {
+                thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
+                thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
+              }
+              else if((i < thisMono->mono_neighbors_.size() - 1) && (countedBackwards))
+              {
+                thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
+                thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
+                // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+              }
+              else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
+              {
+                thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
+                thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
+                // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+              }
+            }
+            else
+            {
+              countedBackwards = true;
+            }
+            equalLinkageStringVector[highestIndexLocation] = "0"; //small number string so it moves to the next lowest linkage
+            i++;
+            isNeighborNamed[highestIndexLocation] = true;
           }
-          else
-          {
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId());
-            linkageStringVector.push_back("0");
-          }
-          branchMaxLengths[shortestBranchLocation] = 9999;
         }
-      }
-      //go through vector
-      // gmml::log(__LINE__, __FILE__,  gmml::INF, std::to_string(linkageStringVector.size()));
-      countedBackwards = false;
-      for(unsigned int i = 0; i < linkageStringVector.size(); i++)
-      {
-        // gmml::log(__LINE__, __FILE__,  gmml::INF, linkageStringVector[i]);
-        int highestIndexLocation = std::distance(linkageStringVector.begin(), std::max_element(linkageStringVector.begin(), linkageStringVector.end()));
-        if(!thisMono->mono_neighbors_[highestIndexLocation].second->is_visited_)
-        {        
-          if((i < thisMono->mono_neighbors_.size() - 1) && (countedBackwards))
-          {
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, "Counted Backwards");
-            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
-                                      thisOligo->IUPAC_name_;
-            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
-                                            thisOligo->author_IUPAC_name_;
-          }
-          else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
-          {
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, "Didn't count Backwards");
-            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
-                                     thisOligo->IUPAC_name_;
-            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
-                                     thisOligo->author_IUPAC_name_;
-          }
-          else
-          {
-            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
-                                     thisOligo->IUPAC_name_;
-            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
-                                     thisOligo->author_IUPAC_name_;
-          }
-          // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
-          thisMono->is_visited_ = true;
-          thisOligo->mono_nodes_.push_back(thisMono->mono_neighbors_[highestIndexLocation].second);
-          traverseGraph(thisMono->mono_neighbors_[highestIndexLocation].second, thisOligo);
-          if((i < thisMono->mono_neighbors_.size() - 1) && (countedBackwards))
-          {
-            thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
-            thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
-          }
-          else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
-          {
-            thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
-            thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
-          }
-        }
-        else
-        {
-          countedBackwards = true;
-        }
-        linkageStringVector[highestIndexLocation] = "0"; //small number string so it moves to the next lowest linkage
+      //     int equalBranchLength = branchMaxLengths[shortestBranchLocation];
+      //     if((branchMaxLengths[i] == equalBranchLength) && (!thisMono->mono_neighbors_[i].second->is_visited_))
+      //     {
+      //       // gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId());
+      //       linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+      //     }
+      //     else if((branchMaxLengths[i] == equalBranchLength)&& (thisMono->mono_neighbors_[i].second->is_visited_))
+      //     {
+      //       // gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId());
+      //       linkageStringVector.push_back("0");
+      //     }
+      //     else
+      //     {
+      //       // gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId());
+      //       linkageStringVector.push_back("0");
+      //     }
+      //     branchMaxLengths[shortestBranchLocation] = 9999;
+      //   }
+      // }
+      // //go through vector
+      // // gmml::log(__LINE__, __FILE__,  gmml::INF, std::to_string(linkageStringVector.size()));
+      // countedBackwards = false;
+      // for(unsigned int i = 0; i < linkageStringVector.size(); i++)
+      // {
+      //   // gmml::log(__LINE__, __FILE__,  gmml::INF, linkageStringVector[i]);
+      //   int highestIndexLocation = std::distance(linkageStringVector.begin(), std::max_element(linkageStringVector.begin(), linkageStringVector.end()));
+      //   if(!thisMono->mono_neighbors_[highestIndexLocation].second->is_visited_)
+      //   {        
+      //     if((i < thisMono->mono_neighbors_.size() - 1) && (countedBackwards))
+      //     {
+      //       // gmml::log(__LINE__, __FILE__,  gmml::INF, "Counted Backwards");
+      //       thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+      //                                 thisOligo->IUPAC_name_;
+      //       thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+      //                                       thisOligo->author_IUPAC_name_;
+      //     }
+      //     else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
+      //     {
+      //       // gmml::log(__LINE__, __FILE__,  gmml::INF, "Didn't count Backwards");
+      //       thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+      //                                thisOligo->IUPAC_name_;
+      //       thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+      //                                thisOligo->author_IUPAC_name_;
+      //     }
+      //     else
+      //     {
+      //       thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
+      //                                thisOligo->IUPAC_name_;
+      //       thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
+      //                                thisOligo->author_IUPAC_name_;
+      //     }
+      //     // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+      //     thisMono->is_visited_ = true;
+      //     thisOligo->mono_nodes_.push_back(thisMono->mono_neighbors_[highestIndexLocation].second);
+      //     traverseGraph(thisMono->mono_neighbors_[highestIndexLocation].second, thisOligo);
+      //     if((i < thisMono->mono_neighbors_.size() - 1) && (countedBackwards))
+      //     {
+      //       thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
+      //       thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
+      //       // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+      //     }
+      //     else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
+      //     {
+      //       thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
+      //       thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
+      //       // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+      //     }
+      //   }
+      //   else
+      //   {
+      //     countedBackwards = true;
+      //   }
+      //   linkageStringVector[highestIndexLocation] = "0"; //small number string so it moves to the next lowest linkage
       }
     }
   }
