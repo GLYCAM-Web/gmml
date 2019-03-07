@@ -49,6 +49,7 @@ namespace Glycan
       Glycan::Oligosaccharide* oligo_parent_ = NULL;
       std::string residue_name_;
       int on_R_ = 0;
+      MolecularModeling::Assembly* assembly_;
       /*! \fn
         * Default constructor
         */

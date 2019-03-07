@@ -984,15 +984,16 @@ namespace MolecularModeling
             /*! \fn
             * A function in order to populate the Linkage class of the ontology
             * @param linkage_stream The output stream of Linkage triples to be added to the main output stream
-            * @param oligo An Assembly Oligosaccharide structure to be used to create linkage instances
             * @param oligo_uri The URI for the Oligosaccharide instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32_oligo1
-            * @param id_prefix The specific prefix for the URIs related to a specific PDB. e.g 3H32_
-            * @param link_id The numeric id to be used for URI of a link
-            * @param visited_oligos The list of oligos (monos) that have been visited and processed by traversing the tree like structure of main oligosaccharide.
+            * @param parent_res_uri
+            * @param child_res_uri
+            * @param linkNum
+            * @param thisLinkage
+            * @param thisMono
+            * @param thisMonoNeighbor
             * each oligosaccharide has a core of monosaccharide. The collection of linked oligosaccharides forms the main oligosaccharide structure.
             */
-            void PopulateLinkage(std::stringstream& linkage_stream, Glycan::Oligosaccharide* oligo, std::string oligo_uri, std::string id_prefix, int& link_id,
-                                             std::vector<int>& visited_oligos);
+            void PopulateLinkage(std::stringstream& linkage_stream, std::string oligo_uri, std::string parent_res_uri, std::string child_res_uri, int& linkNum, Glycan::GlycosidicLinkage* thisLinkage, Glycan::Monosaccharide* thisMono, Glycan::Monosaccharide* thisMonoNeighbor);
             /*! \fn
             * A function in order to populate the Linkage class of the ontology
             * @param oligo_sequence_stream The output stream of SequenceLinkage triples to be added to the main output stream

@@ -31,6 +31,9 @@ namespace Glycan
     
     GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide* targetMono, std::string source_carbon_ID, std::string target_carbon_ID);
     //FUNCTIONS
+    double CalculatePhiAngle();
+    double CalculatePsiAngle();
+    double CalculateOmegaAngle();
     
   };
 }
