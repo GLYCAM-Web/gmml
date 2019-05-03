@@ -213,10 +213,18 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 }
 
 //A function for PDB integration of gmml where they can feed a stringstream of atom cards and get a list of oligosaccharide names
-// std::vector<std::string> Assembly::PDBExtractSugars(std::stringstream atomStream, std::vector< std::string > amino_lib_files, std::string CCD_Path)
-// {
-// 
-// }
+std::vector<std::string> Assembly::PDBExtractSugars(std::vector< std::string > amino_lib_files, std::string CCD_Path)
+{
+  std::vector<Glycan::Monosaccharide*> monos = std::vector<Glycan::Monosaccharide*>();
+  OligosaccharideVector oligos = Assembly::ExtractSugars( amino_lib_files, monos, false, false, false, CCD_Path );
+  std::vector<std::string> OligoNames;
+  for( OligosaccharideVector::iterator it = oligos.begin(); it != oligos.end(); it++ )
+  {
+    Glycan::Oligosaccharide* thisOligo = *it;
+    OligoNames.push_back(thisOligo->IUPAC_name_);
+  }
+  return OligoNames;
+}
 
 std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology, bool individualOntologies, std::string CCD_Path)
 {

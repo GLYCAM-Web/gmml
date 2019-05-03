@@ -92,7 +92,7 @@ namespace MolecularModeling
             Assembly(Assembly* assembly);
             
             //An assembly built from a stringstream of atoms in PDB format
-            // Assembly(std::stringstream atomStream);
+            Assembly(std::stringstream& atomStream);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -503,11 +503,19 @@ namespace MolecularModeling
                                           std::vector<std::string> other_lib_files = std::vector<std::string>(),
                                           std::vector<std::string> prep_files = std::vector<std::string>(),
                                           std::string parameter_file = "");
+            
+            /*! \fn
+              * A function to build a structure from a stringstream of atoms
+              * Imports data from stringstream into central data structure
+              * @param atomStream stringstream of atom cards from a pdb file
+              */
+            void BuildAssemblyFromAtomStream(std::stringstream& atomStream);
             /*! \fn
               * A function to build a structure from a single pdbqt file
               * Imports data from pdbqt file data structure into central data structure
               * @param pdbqt_file_path Path to a pdbqt file
               */
+              
             void BuildAssemblyFromPdbqtFile(std::string pdbqt_file_path, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single pdbqt file
@@ -943,7 +951,7 @@ namespace MolecularModeling
             */
             OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, std::vector<Glycan::Monosaccharide*>& monos, bool glyporbity_report = false, bool populate_ontology = false, bool individualOntologies = false, std::string CCD_Path = " ");
 
-            // std::vector<std::string> PDBExtractSugars(std::stringstream atomStream, std::vector< std::string > amino_lib_files, std::string CCD_Path);
+            std::vector<std::string> PDBExtractSugars(std::vector< std::string > amino_lib_files, std::string CCD_Path);
 
             /*! \fn
             * A funstion in order to initiate population of turtle formatted triples (subject-predicate-object) for creating the GMMO ontology

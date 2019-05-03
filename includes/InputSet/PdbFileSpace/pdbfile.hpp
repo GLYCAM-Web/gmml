@@ -150,7 +150,7 @@ namespace PdbFileSpace
               * Constructor
               * @param atomStream A stringstream of atom cards
               */
-            // PdbFile(std::stringstream atomStream);
+            PdbFile(std::stringstream& atomStream);
             
             /*! \fn
               * Load PDB file
@@ -805,6 +805,18 @@ namespace PdbFileSpace
               * @param in_file A stream contains whole contents of a pdb file
               */
             bool Read(std::ifstream& in_file);
+            /*! \fn
+              * A function to parse the contents of a given stringstream of atoms
+              * Parse the given stream and set the attributes of the current object accordingly
+              * @param atomstream A stringstream contains atoms cards of a pdb file
+              */
+            bool Read(std::stringstream& atomstream);
+            /*! \fn
+              * A function to parse the contents of a given stringstream of atoms
+              * @param atomstream A stream contains atom cards of a pdb file
+              * @return Boolean value that indicates parsing has been done successfully or not
+              */
+            bool ParseAtomStream(std::stringstream& atomstream);
             /*! \fn
               * A function to parse the contents of a given stream of a file
               * @param in_stream A stream contains whole contents of a pdb file
