@@ -1593,11 +1593,12 @@ void Glycan::Monosaccharide::CheckMonoNaming(std::string original_residue, std::
       if( sugar_name_.monosaccharide_stereochemistry_name_.compare( "" ) == 0 )
       {
         //TODO call a formula generating function
-        sugar_name_.monosaccharide_stereochemistry_name_ = "Unknown";
-        sugar_name_.monosaccharide_stereochemistry_short_name_ = "Unknown";
-        sugar_name_.monosaccharide_name_ = "Unknown";
-        sugar_name_.monosaccharide_short_name_ = "Unknown";
+        sugar_name_.monosaccharide_stereochemistry_name_ = cycle_atoms_[0]->GetResidue()->GetName();
+        sugar_name_.monosaccharide_stereochemistry_short_name_ = cycle_atoms_[0]->GetResidue()->GetName();
+        sugar_name_.monosaccharide_name_ = cycle_atoms_[0]->GetResidue()->GetName();
+        sugar_name_.monosaccharide_short_name_ = cycle_atoms_[0]->GetResidue()->GetName();
       }
+      
       // else
       // {
       //   std::cout << "No exact match found for the chemical code, the following information comes from one of the closest matches:" << std::endl;
