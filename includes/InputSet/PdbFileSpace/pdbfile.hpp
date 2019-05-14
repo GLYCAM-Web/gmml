@@ -1095,6 +1095,11 @@ namespace PdbFileSpace
               */
             /// Writers
             /*! \fn
+              * A function to create an output pdb file in a stringstream
+              * @param  pdbstream Output pdb stringstream
+              */
+            void WriteToStringstream(std::ostringstream& pdbstream);
+            /*! \fn
               * A function to create an output pdb file with the given name
               * @param pdb_file Output pdb file name
               */
@@ -1109,7 +1114,7 @@ namespace PdbFileSpace
               * A function to write back all card of the pdb file into an output stream
               * @param out_stream Primary output stream to write into an output file
               */
-            void ResolveCards(std::ofstream& out_stream);
+            void ResolveCards(std::ostream& out_stream);
             /*! \fn
               * A function to write back all card of the pdb file into an output stream
               * @param out_stream Primary output stream to write into an output file
@@ -1120,198 +1125,198 @@ namespace PdbFileSpace
               * A function to write back header card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write header card
               */
-            void ResolveHeaderCard(std::ofstream& stream);
+            void ResolveHeaderCard(std::ostream& stream);
             /*! \fn
               * A function to write back obsolete card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write obsolete card
               */
-            void ResolveObsoleteCards(std::ofstream& stream);
+            void ResolveObsoleteCards(std::ostream& stream);
             /*! \fn
               * A function to write back title card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write title card
               */
-            void ResolveTitleCards(std::ofstream& stream);
+            void ResolveTitleCards(std::ostream& stream);
             /*! \fn
               * A function to write back split card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write split card
               */
-            void ResolveSplitCards(std::ofstream& stream);
+            void ResolveSplitCards(std::ostream& stream);
             /*! \fn
               * A function to write back caveat card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write caveat card
               */
-            void ResolveCaveatCards(std::ofstream& stream);
+            void ResolveCaveatCards(std::ostream& stream);
             /*! \fn
               * A function to write back compound card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write compound card
               */
-            void ResolveCompoundCards(std::ofstream& stream);
+            void ResolveCompoundCards(std::ostream& stream);
             /*! \fn
               * A function to write back source card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write source card
               */
-            void ResolveSourceCards(std::ofstream& stream);
+            void ResolveSourceCards(std::ostream& stream);
             /*! \fn
               * A function to write back keyword card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write keyword card
               */
-            void ResolveKeywordCards(std::ofstream& stream);
+            void ResolveKeywordCards(std::ostream& stream);
             /*! \fn
               * A function to write back expiration date card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write expiration date card
               */
-            void ResolveExperimentalDataCards(std::ofstream& stream);
+            void ResolveExperimentalDataCards(std::ostream& stream);
             /*! \fn
               * A function to write back num model card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write num model card
               */
-            void ResolveNumModelCard(std::ofstream& stream);
+            void ResolveNumModelCard(std::ostream& stream);
             /*! \fn
               * A function to write back model type card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write model type card
               */
-            void ResolveModelTypeCards(std::ofstream& stream);
+            void ResolveModelTypeCards(std::ostream& stream);
             /*! \fn
               * A function to write back author card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write author card
               */
-            void ResolveAuthorCards(std::ofstream& stream);
+            void ResolveAuthorCards(std::ostream& stream);
             /*! \fn
               * A function to write back revision date card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write revision date card
               */
-            void ResolveRevisionDataCards(std::ofstream& stream);
+            void ResolveRevisionDataCards(std::ostream& stream);
             /*! \fn
               * A function to write back superseded entries card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write superseded entries card
               */
-            void ResolveSupersededEntriesCards(std::ofstream& stream);
+            void ResolveSupersededEntriesCards(std::ostream& stream);
             /*! \fn
               * A function to write back journal card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write journal card
               */
-            void ResolveJournalCards(std::ofstream& stream);
+            void ResolveJournalCards(std::ostream& stream);
             /*! \fn
               * A function to write back remark card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write remark card
               */
-            void ResolveRemarkCards(std::ofstream& stream);
+            void ResolveRemarkCards(std::ostream& stream);
             /*! \fn
               * A function to write back database reference card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write database reference card
               */
-            void ResolveDatabaseReferenceCards(std::ofstream& stream);
+            void ResolveDatabaseReferenceCards(std::ostream& stream);
             /*! \fn
               * A function to write back sequence advanced card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write sequence advanced card
               */
-            void ResolveSequenceAdvancedCards(std::ofstream& stream);
+            void ResolveSequenceAdvancedCards(std::ostream& stream);
             /*! \fn
               * A function to write back sequence residue card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write sequence residue card
               */
-            void ResolveSequenceResidueCards(std::ofstream& stream);
+            void ResolveSequenceResidueCards(std::ostream& stream);
             /*! \fn
               * A function to write back modification residue card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write modification residue card
               */
-            void ResolveModificationResidueCards(std::ofstream& stream);
+            void ResolveModificationResidueCards(std::ostream& stream);
             /*! \fn
               * A function to write back heterogen card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write heterogen card
               */
-            void ResolveHeterogenCards(std::ofstream& stream);
+            void ResolveHeterogenCards(std::ostream& stream);
             /*! \fn
               * A function to write back heterogen name card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write heterogen name card
               */
-            void ResolveHeterogenNameCards(std::ofstream& stream);
+            void ResolveHeterogenNameCards(std::ostream& stream);
             /*! \fn
               * A function to write back heterogen synonym card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write heterogen synonym card
               */
-            void ResolveHeterogenSynonymCards(std::ofstream& stream);
+            void ResolveHeterogenSynonymCards(std::ostream& stream);
             /*! \fn
               * A function to write back formula card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write formula card
               */
-            void ResolveFormulaCards(std::ofstream& stream);
+            void ResolveFormulaCards(std::ostream& stream);
             /*! \fn
               * A function to write back helix card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write helix card
               */
-            void ResolveHelixCards(std::ofstream& stream);
+            void ResolveHelixCards(std::ostream& stream);
             /*! \fn
               * A function to write back sheet card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write sheet card
               */
-            void ResolveSheetCards(std::ofstream& stream);
+            void ResolveSheetCards(std::ostream& stream);
             /*! \fn
               * A function to write back disulfide bond card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write disulfide bond card
               */
-            void ResolveDisulfideBondCards(std::ofstream& stream);
+            void ResolveDisulfideBondCards(std::ostream& stream);
             /*! \fn
               * A function to write back link card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write link card
               */
-            void ResolveLinkCards(std::ofstream& stream);
+            void ResolveLinkCards(std::ostream& stream);
             /*! \fn
               * A function to write back cis peptide card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write cis peptide card
               */
-            void ResolveCISPeptideCards(std::ofstream& stream);
+            void ResolveCISPeptideCards(std::ostream& stream);
             /*! \fn
               * A function to write back site card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write site card
               */
-            void ResolveSiteCards(std::ofstream& stream);
+            void ResolveSiteCards(std::ostream& stream);
             /*! \fn
               * A function to write back crystallography card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write crystallography card
               */
-            void ResolveCrystallographyCard(std::ofstream& stream);
+            void ResolveCrystallographyCard(std::ostream& stream);
             /*! \fn
               * A function to write back origin card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write origin card
               */
-            void ResolveOriginCard(std::ofstream& stream);
+            void ResolveOriginCard(std::ostream& stream);
             /*! \fn
               * A function to write back scale card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write scale card
               */
-            void ResolveScaleCard(std::ofstream& stream);
+            void ResolveScaleCard(std::ostream& stream);
             /*! \fn
               * A function to write back matrix card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write matrix card
               */
-            void ResolveMatrixCards(std::ofstream& stream);
+            void ResolveMatrixCards(std::ostream& stream);
             /*! \fn
               * A function to write back model card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write model card
               */
-            void ResolveModelCards(std::ofstream& stream);
+            void ResolveModelCards(std::ostream& stream);
             /*! \fn
               * A function to write back model card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write model card
               * @param model_number Selected model number from the multiple models that are in a pdb file
               */
-            void ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int model_number = 1);
+            void ResolveModelCardWithTheGivenModelNumber(std::ostream& stream, int model_number = 1);
             /*! \fn
               * A function to write back connectivity card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write connectivity card
               */
-            void ResolveConnectivityCards(std::ofstream& stream);
+            void ResolveConnectivityCards(std::ostream& stream);
             /*! \fn
               * A function to write back master card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write master card
               */
-            void ResolveMasterCards(std::ofstream& stream);
+            void ResolveMasterCards(std::ostream& stream);
             /*! \fn
               * A function to write back end card of the pdb file into an output stream
               * @param stream Intermediate output stream in order to write end card
               */
-            void ResolveEndCard(std::ofstream& stream);
+            void ResolveEndCard(std::ostream& stream);
             /*! \fn
               * A function to write relevant bits of pdb file into an output stream formatted for the ontology
               * @param stream output stream in order to write ontology

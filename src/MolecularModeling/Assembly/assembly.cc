@@ -226,6 +226,11 @@ Assembly::Assembly(std::stringstream& atomStream)
 {
   BuildAssemblyFromAtomStream(atomStream);
 }
+
+Assembly::Assembly(std::vector<MolecularModeling::Residue*> residueVector)
+{
+  residues_ = residueVector;
+}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////

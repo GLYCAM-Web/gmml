@@ -147,7 +147,7 @@ void Assembly::PopulateOntology(std::ofstream& main_stream, OligosaccharideVecto
     // if(!residues.empty())
     // {
     //   gmml::log(__LINE__, __FILE__,  gmml::INF, "Populating residues");
-      PopulateResidue(pdb_stream, residue_stream, pdb_uri, id_prefix, residues, side_or_ring_atoms);
+      // PopulateResidue(pdb_stream, residue_stream, pdb_uri, id_prefix, residues, side_or_ring_atoms);
     // }
 
 
@@ -204,6 +204,8 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
       int oligoNum = 1;
         for(OligosaccharideVector::iterator it = oligos.begin(); it != oligos.end(); it++, oligoNum++)
         {
+          std::vector<MolecularModeling::Residue*> residueVector;
+          residueVector.clear();
           int linkNum = 0;
             Glycan::Oligosaccharide* oligo = (*it);
 
@@ -275,6 +277,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
             for(std::vector<Glycan::Monosaccharide*>::reverse_iterator rit = oligo->mono_nodes_.rbegin(); rit != oligo->mono_nodes_.rend(); rit++)
             {
               Glycan::Monosaccharide* thisMono = *rit;
+              residueVector.push_back(thisMono->cycle_atoms_[0]->GetResidue());
               if(thisMono->is_root_)
               {
                 MonoNum = thisMono->oligosaccharide_index_;
@@ -347,6 +350,14 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
               }
               
             }
+            
+            MolecularModeling::Assembly subAssembly(residueVector);
+            subAssembly.SetModelIndex(0);
+            PdbFileSpace::PdbFile* thisPDB = subAssembly.BuildPdbFileStructureFromAssembly();
+            std::ostringstream PDBstringstream;
+            thisPDB->WriteToStringstream(PDBstringstream);
+            gmml::AddLiteral(oligo_uri, "gmmo::PDBfile", PDBstringstream.str(), oligo_stream);
+            
             // if(oligo->child_oligos_.size() != 0 && (find(visited_oligos.begin(), visited_oligos.end(), oligo->root_->mono_id_) == visited_oligos.end()))
             // {
             //   // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
@@ -399,6 +410,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
             // std::vector<Glycan::Oligosaccharide*> child_oligos = oligo->child_oligos_;
             // PopulateOligosaccharide(pdb_stream, oligo_stream, oligo_sequence_stream, mono_stream, linkage_stream, pdb_uri, id_prefix, link_id, child_oligos, side_or_ring_atoms, visited_oligos, mono_to_short_name_map, oligo_to_res_uri_map, root_oligo_id);
         }
+        
     }
 }
 
@@ -886,16 +898,16 @@ void Assembly::PopulateRingAtom(std::stringstream& ring_atom_stream, std::string
 
     side_or_ring_atoms.push_back(ring_atom->GetId());
 
-    std::string neighbor_resource = "";
-    std::string neighbor_uri = "";
-    AtomVector neighbors = ring_atom->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
-    {
-        Atom* neighbor = (*it);
-        neighbor_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, neighbor->GetId());
-        neighbor_uri = CreateURI(neighbor_resource);
-        gmml::AddTriple(ring_uri, Ontology::hasNeighbor, neighbor_uri, ring_atom_stream);
-    }
+    // std::string neighbor_resource = "";
+    // std::string neighbor_uri = "";
+    // AtomVector neighbors = ring_atom->GetNode()->GetNodeNeighbors();
+    // for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
+    // {
+    //     Atom* neighbor = (*it);
+    //     neighbor_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, neighbor->GetId());
+    //     neighbor_uri = CreateURI(neighbor_resource);
+    //     gmml::AddTriple(ring_uri, Ontology::hasNeighbor, neighbor_uri, ring_atom_stream);
+    // }
 
     std::stringstream side_atom_stream;
     if((ring_atom->GetName().substr(0,1).compare("O") != 0 )) ///side atoms for the oxygen of the ring are not saved
@@ -970,16 +982,16 @@ void Assembly::PopulateSideAtom(std::stringstream& side_atom_stream, std::string
                 gmml::AddLiteral(side_uri, Ontology::derivative, (*thisPosition).second, side_atom_stream);
         }
 
-        std::string neighbor_resource = "";
-        std::string neighbor_uri = "";
-        AtomVector neighbors = side_atom->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
-        {
-            Atom* neighbor = (*it);
-            neighbor_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, neighbor->GetId());
-            neighbor_uri = CreateURI(neighbor_resource);
-            gmml::AddTriple(side_uri, Ontology::hasNeighbor, neighbor_uri, side_atom_stream);
-        }
+        // std::string neighbor_resource = "";
+        // std::string neighbor_uri = "";
+        // AtomVector neighbors = side_atom->GetNode()->GetNodeNeighbors();
+        // for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
+        // {
+        //     Atom* neighbor = (*it);
+        //     neighbor_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, neighbor->GetId());
+        //     neighbor_uri = CreateURI(neighbor_resource);
+        //     gmml::AddTriple(side_uri, Ontology::hasNeighbor, neighbor_uri, side_atom_stream);
+        // }
 
         side_or_ring_atoms.push_back(side_atom->GetId());
     }
@@ -1094,16 +1106,16 @@ void Assembly::PopulateAtom(std::stringstream& atom_stream, std::string atom_uri
     coord_stream << gmml::ConvertT<double>(coords->GetX()) << ", " << gmml::ConvertT<double>(coords->GetY()) << ", " << gmml::ConvertT<double>(coords->GetZ());
     gmml::AddLiteral(atom_uri, Ontology::coordinate, coord_stream.str(), atom_stream);
 
-    std::string neighbor_resource = "";
-    std::string neighbor_uri = "";
-    AtomVector neighbors = atom->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
-    {
-        Atom* neighbor = (*it);
-        neighbor_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, neighbor->GetId());
-        neighbor_uri = CreateURI(neighbor_resource);
-        gmml::AddTriple(atom_uri, Ontology::hasNeighbor, neighbor_uri, atom_stream);
-    }
+    // std::string neighbor_resource = "";
+    // std::string neighbor_uri = "";
+    // AtomVector neighbors = atom->GetNode()->GetNodeNeighbors();
+    // for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
+    // {
+    //     Atom* neighbor = (*it);
+    //     neighbor_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, neighbor->GetId());
+    //     neighbor_uri = CreateURI(neighbor_resource);
+    //     gmml::AddTriple(atom_uri, Ontology::hasNeighbor, neighbor_uri, atom_stream);
+    // }
 }
 
 void Assembly::CreateTitle(std::string pdb_resource, std::stringstream& pdb_stream)

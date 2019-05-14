@@ -93,6 +93,9 @@ namespace MolecularModeling
             
             //An assembly built from a stringstream of atoms in PDB format
             Assembly(std::stringstream& atomStream);
+            
+            //An assembly created by residues of another assembly
+            Assembly(std::vector<MolecularModeling::Residue*> residueVector);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
