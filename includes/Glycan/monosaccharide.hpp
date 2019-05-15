@@ -38,7 +38,7 @@ namespace Glycan
       float b_factor_;                                                    /*!< The Average B Factor of the monosaccharide >*/
       std::string SNFG_name_;
       std::string author_SNFG_name_;
-      std::vector<Note> mono_notes_;
+      std::vector<Note*> mono_notes_;
       std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> > mono_neighbors_;
       bool is_visited_;
       bool is_root_;

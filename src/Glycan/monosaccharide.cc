@@ -119,7 +119,7 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
   {
     n << sugar_name_.monosaccharide_short_name_ << ": " << anomeric_note->description_;
     anomeric_note->description_ = n.str();
-    mono_notes_.push_back( *anomeric_note );
+    mono_notes_.push_back(anomeric_note );
   }
   
   ///ADDING NOTES/ISSUES OF RESIDUE NAMING
@@ -154,7 +154,7 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
         res_ss << "Residue name, " << original_residue << " (" << original_residue_id << "), in input PDB file for " << sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << sugar_name_.pdb_code_;
       }
       residue_naming_note->description_ = res_ss.str();
-      mono_notes_.push_back(*residue_naming_note);
+      mono_notes_.push_back(residue_naming_note);
       // mono_notes_.push_back( residue_naming_note );
       // GetAuthorNaming(amino_lib_files, mono, CCD_Path);
     }
@@ -1588,7 +1588,7 @@ void Glycan::Monosaccharide::CheckMonoNaming(std::string original_residue, std::
       //   }
       // }
       // matching_note->description_ = ss.str();
-      // mono_notes_.push_back(*matching_note);
+      // mono_notes_.push_back(matching_note);
       // GetAuthorNaming(amino_lib_files, CCD_Path);
       if( sugar_name_.monosaccharide_stereochemistry_name_.compare( "" ) == 0 )
       {

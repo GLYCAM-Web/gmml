@@ -267,6 +267,15 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
             gmml::AddDecimal(oligo_uri, Ontology::oligo_b_factor, o_b_factor, oligo_stream);
             // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
 
+            NoteVector notes = oligo->oligo_notes_;
+            if(notes.size() != 0)
+            {
+                int note_id = 1;
+                // gmml::log(__LINE__, __FILE__,  gmml::INF, "Poulating notes");
+                std::string id_prefix = oligo_uri + "_";
+                PopulateNotes(oligo_stream, oligo_stream, oligo_uri, notes, id_prefix, note_id);
+            }
+
             std::string o_residue_links = oligo->oligosaccharide_residue_linkages_;
             // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
             if(o_residue_links.compare("") != 0)
@@ -868,6 +877,14 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
       }
     }
     gmml::AddLiteral(mono_uri, Ontology::author_mono_name, mono->author_sugar_name_.monosaccharide_name_, mono_stream);
+    NoteVector notes = mono->mono_notes_;
+    if(notes.size() != 0)
+    {
+        int note_id = 1;
+        // gmml::log(__LINE__, __FILE__,  gmml::INF, "Poulating notes");
+        std::string id_prefix = mono_uri + "_";
+        PopulateNotes(mono_stream, mono_stream, mono_uri, notes, id_prefix, note_id);
+    }
     Glycan::SugarName sugar_name = mono->sugar_name_;
     PopulateSugarName(mono_stream, id_prefix, mono_uri, mono->mono_id_, sugar_name);
     mono_stream << ring_atom_stream.str();

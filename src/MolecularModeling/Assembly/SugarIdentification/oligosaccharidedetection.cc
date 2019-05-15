@@ -401,7 +401,8 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
             std::stringstream note;
             note << "Residue name, " << mono->cycle_atoms_[0]->GetResidue()->GetName() << " (" << mono->cycle_atoms_[0]->GetResidue()->GetId() << "), in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_ << ". "/* << mono->sugar_name_.monosaccharide_name_ << " vs. " << mono->author_sugar_name_.monosaccharide_name_*/;
             mismatch_note->description_ = note.str();
-            this->AddNote(mismatch_note);
+            // this->AddNote(mismatch_note);
+            mono->mono_notes_.push_back(mismatch_note);
           }
         }
       }
@@ -2614,7 +2615,8 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     std::stringstream note;
     note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
     der_mod_note->description_ = note.str();
-    this->AddNote(der_mod_note);
+    // this->AddNote(der_mod_note);
+    mono->mono_notes_.push_back(der_mod_note);
     std::cout << ss.str() << std::endl;
   }
   else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
@@ -2651,7 +2653,8 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     std::stringstream note;
     note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
     der_mod_note->description_ = note.str();
-    this->AddNote(der_mod_note);
+    // this->AddNote(der_mod_note);
+    mono->mono_notes_.push_back(der_mod_note);
     std::cout << ss.str() << std::endl;
   }
   else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
@@ -2667,7 +2670,8 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     std::stringstream note;
     note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
     der_mod_note->description_ = note.str();
-    this->AddNote(der_mod_note);
+    // this->AddNote(der_mod_note);
+    mono->mono_notes_.push_back(der_mod_note);
     std::cout << ss.str() << std::endl;
   }
   else
@@ -2795,7 +2799,8 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             std::stringstream note;
             note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
             der_mod_note->description_ = note.str();
-            this->AddNote(der_mod_note);
+            // this->AddNote(der_mod_note);
+            mono->mono_notes_.push_back(der_mod_note);
             std::cout << ss.str() << std::endl;
         }
         else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
@@ -2811,7 +2816,8 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             std::stringstream note;
             note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
             der_mod_note->description_ = note.str();
-            this->AddNote(der_mod_note);
+            // this->AddNote(der_mod_note);
+            mono->mono_notes_.push_back(der_mod_note);
             std::cout << ss.str() << std::endl;
         }
         else
@@ -2935,7 +2941,8 @@ void Assembly::AddModificationRuleTwoInfo(std::string key, std::string pattern, 
     std::stringstream note;
     note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
     der_mod_note->description_ = note.str();
-    this->AddNote(der_mod_note);
+    // this->AddNote(der_mod_note);
+    mono->mono_notes_.push_back(der_mod_note);
     std::cout << ss.str() << std::endl;
     gmml::log(__LINE__, __FILE__,  gmml::WAR, ss.str());
 }
@@ -4307,7 +4314,9 @@ void Assembly::CheckLinkageNote(Glycan::Monosaccharide* mono1, Glycan::Monosacch
               		  	  	  << mono2->sugar_name_.monosaccharide_short_name_ << ". " << gmml::Split(linkage_tokens.at(0), "_").at(0) << "-" << gmml::Split(linkage_tokens.at(1), "_").at(0)
               		  	  	  << "-" << gmml::Split(linkage_tokens.at(2), "_").at(0);
             				linkage_note->description_ = n.str();
-            				this->AddNote(linkage_note);
+            				// this->AddNote(linkage_note);
+                    mono1->mono_notes_.push_back(linkage_note);
+                    mono2->mono_notes_.push_back(linkage_note);
         			}
 			}
 		}
