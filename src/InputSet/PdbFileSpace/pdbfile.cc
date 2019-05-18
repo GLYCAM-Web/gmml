@@ -210,32 +210,92 @@ PdbFile::PdbFile(const std::string &pdb_file)
         }
     }
     in_file.close();
-    if(temp.find("END") == std::string::npos || temp.compare("END") != 0)
-    {
-        std::ofstream out_file;
-        out_file.open(pdb_file.c_str());
-        out_file << ss.str() << "END";
-        out_file.close();
-    }
-    else
-    {
-        std::ofstream out_file;
-        out_file.open(pdb_file.c_str());
-        out_file << ss.str() << temp;
-        out_file.close();
-    }
+    //I think this erases PDb files sometimes, as they only have "END"
+    //Dave 2/1/19
+    // if(temp.find("END") == std::string::npos || temp.compare("END") != 0)
+    // {
+    //     std::ofstream out_file;
+    //     out_file.open(pdb_file.c_str());
+    //     out_file << ss.str() << "END";
+    //     out_file.close();
+    // }
+    // else
+    // {
+    //     std::ofstream out_file;
+    //     out_file.open(pdb_file.c_str());
+    //     out_file << ss.str() << temp;
+    //     out_file.close();
+    // }
     in_file.open(pdb_file.c_str());
     if(!Read(in_file))
     {
         throw PdbFileProcessingException(__LINE__, "Reading PDB file exception");
     }
+    if(header_ != NULL)
+    {
+      std::string PDBname = header_->GetIdentifierCode();
+      gmml::log(__LINE__, __FILE__,  gmml::INF, PDBname);
+    }
+    
     in_file.close();            /// Close the pdb files
 }
+
+PdbFile::PdbFile(std::stringstream& atomStream)
+{
+  path_ = "";
+  header_ = NULL;
+  obsolete_ = NULL;
+  title_ = NULL;
+  split_ = NULL;
+  caveat_ = NULL;
+  compound_ = NULL;
+  source_ = NULL;
+  keywords_ = NULL;
+  experimental_data_ = NULL;
+  number_of_models_ = NULL;
+  model_type_ = NULL;
+  author_ = NULL;
+  revision_data_ = NULL;
+  superseded_entries_ = NULL;
+  journal_ = NULL;
+  remark_cards_ = NULL;
+  database_reference_ = NULL;
+  sequence_advanced_ = NULL;
+  residues_sequence_ = NULL;
+  residue_modification_cards_ = NULL;
+  heterogen_cards_ = NULL;
+  heterogen_name_cards_ = NULL;
+  heterogen_synonym_cards_ = NULL;
+  formulas_ = NULL;
+  helix_cards_ = NULL;
+  sheet_cards_ = NULL;
+  disulfide_bonds_ = NULL;
+  link_cards_ = NULL;
+  cis_peptide_ = NULL;
+  site_cards_ = NULL;
+  crystallography_ = NULL;
+  origins_ = NULL;
+  scales_ = NULL;
+  matrices_ = NULL;
+  models_ = NULL;
+  connectivities_ = NULL;
+  serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
+  sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
+  master_ = NULL;
+  
+  if(!Read(atomStream))
+  {
+    throw PdbFileProcessingException(__LINE__, "Reading atom stringstream failed");
+  }
+  
+}
+
 PdbFile* PdbFile::LoadPdbFile()
 {
     PdbFile* pdb = new PdbFile();
     return pdb;
 }
+
 PdbFile* PdbFile::LoadPdbFile(const std::string &pdb_file)
 {
     PdbFile* pdb = new PdbFile(pdb_file);
@@ -962,183 +1022,147 @@ void PdbFile::SetPath(std::string pdb_path)
 }
 void PdbFile::SetHeader(PdbFileSpace::PdbHeaderCard *header)
 {
-    header_ = new PdbFileSpace::PdbHeaderCard();
     header_ = header;
 
 }
 void PdbFile::SetObsolete(PdbFileSpace::PdbObsoleteSection *obsolete)
 {
-    obsolete_ = new PdbFileSpace::PdbObsoleteSection();
     obsolete_ = obsolete;
 }
 void PdbFile::SetTitle(PdbFileSpace::PdbTitleSection *title)
 {
-    title_ = new PdbFileSpace::PdbTitleSection();
     title_ = title;
 }
 void PdbFile::SetSplit(PdbFileSpace::PdbSplitSection *split)
 {
-    split_ = new PdbFileSpace::PdbSplitSection();
     split_ = split;
 }
 void PdbFile::SetCaveat(PdbFileSpace::PdbCaveatSection *caveat)
 {
-    caveat_ = new PdbFileSpace::PdbCaveatSection();
     caveat_ = caveat;
 }
 void PdbFile::SetCompound(PdbFileSpace::PdbCompoundSection *compound)
 {
-    compound_ = new PdbFileSpace::PdbCompoundSection();
     compound_ = compound;
 }
 void PdbFile::SetSourceCards(PdbFileSpace::PdbSourceSection *source)
 {
-    source_ = new PdbFileSpace::PdbSourceSection();
     source_ = source;
 }
 void PdbFile::SetKeywords(PdbFileSpace::PdbKeywordsSection *keywords)
 {
-    keywords_ = new PdbFileSpace::PdbKeywordsSection();
     keywords_ = keywords;
 }
 void PdbFile::SetExperimentalData(PdbFileSpace::PdbExperimentalDataSection *experimental_data)
 {
-    experimental_data_ = new PdbFileSpace::PdbExperimentalDataSection();
     experimental_data_ = experimental_data;
 }
 void PdbFile::SetNumberOfModels(PdbFileSpace::PdbNumModelCard *number_of_models)
 {
-    number_of_models_ = new PdbFileSpace::PdbNumModelCard();
     number_of_models_ = number_of_models;
 }
 void PdbFile::SetModelType(PdbFileSpace::PdbModelTypeSection *model_type)
 {
-    model_type_ = new PdbFileSpace::PdbModelTypeSection();
     model_type_ = model_type;
 }
 void PdbFile::SetAuthor(PdbFileSpace::PdbAuthorSection *author)
 {
-    author_ = new PdbFileSpace::PdbAuthorSection();
     author_ = author;
 }
 void PdbFile::SetRevisionDataCards(PdbFileSpace::PdbRevisionDataSection *revision_data)
 {
-    revision_data_ = new PdbFileSpace::PdbRevisionDataSection();
     revision_data_ = revision_data;
 }
 void PdbFile::SetSupersededEntriesCards(PdbFileSpace::PdbSupersededEntriesSection *superseded_entries)
 {
-    superseded_entries_ = new PdbFileSpace::PdbSupersededEntriesSection();
     superseded_entries_ = superseded_entries;
 }
 void PdbFile::SetJournal(PdbFileSpace::PdbJournalSection *journal)
 {
-    journal_ = new PdbFileSpace::PdbJournalSection();
     journal_ = journal;
 }
 void PdbFile::SetRemarks(PdbFileSpace::PdbRemarkSection *remark_cards)
 {
-    remark_cards_ = new PdbFileSpace::PdbRemarkSection();
     remark_cards_ = remark_cards;
 }
 void PdbFile::SetDatabaseReferences(PdbFileSpace::PdbDatabaseReferenceSection *database_reference)
 {
-    database_reference_ = new PdbFileSpace::PdbDatabaseReferenceSection();
     database_reference_ = database_reference;
 }
 void PdbFile::SetSequenceAdvanced(PdbFileSpace::PdbSequenceAdvancedSection *sequence_advanced)
 {
-    sequence_advanced_ = new PdbFileSpace::PdbSequenceAdvancedSection();
     sequence_advanced_ = sequence_advanced;
 }
 void PdbFile::SetResiduesSequence(PdbFileSpace::PdbResidueSequenceSection *residues_sequence)
 {
-    residues_sequence_ = new PdbFileSpace::PdbResidueSequenceSection();
     residues_sequence_ = residues_sequence;
 }
 void PdbFile::SetResidueModification(PdbFileSpace::PdbResidueModificationSection *residue_modification_cards)
 {
-    residue_modification_cards_ = new PdbFileSpace::PdbResidueModificationSection();
     residue_modification_cards_ = residue_modification_cards;
 }
 void PdbFile::SetHeterogens(PdbFileSpace::PdbHeterogenSection *heterogen_cards)
 {
-    heterogen_cards_ = new PdbFileSpace::PdbHeterogenSection();
     heterogen_cards_ = heterogen_cards;
 }
 void PdbFile::SetHeterogensName(PdbFileSpace::PdbHeterogenNameSection *heterogens_name)
 {
-    heterogen_name_cards_ = new PdbFileSpace::PdbHeterogenNameSection();
     heterogen_name_cards_ = heterogens_name;
 }
 void PdbFile::SetHeterogenSynonyms(PdbFileSpace::PdbHeterogenSynonymSection *heterogen_synonym_cards)
 {
-    heterogen_synonym_cards_ = new PdbFileSpace::PdbHeterogenSynonymSection();
     heterogen_synonym_cards_ = heterogen_synonym_cards;
 }
 void PdbFile::SetFormulas(PdbFileSpace::PdbFormulaSection *formulas)
 {
-    formulas_ = new PdbFileSpace::PdbFormulaSection();
     formulas_ = formulas;
 }
 void PdbFile::SetHelixes(PdbFileSpace::PdbHelixSection *helixes)
 {
-    helix_cards_ = new PdbFileSpace::PdbHelixSection();
     helix_cards_ = helixes;
 }
 void PdbFile::SetSheets(PdbFileSpace::PdbSheetSection *sheet_cards)
 {
-    sheet_cards_ = new PdbFileSpace::PdbSheetSection();
     sheet_cards_ = sheet_cards;
 }
 void PdbFile::SetDisulfideBonds(PdbFileSpace::PdbDisulfideBondSection *disulfide_bonds)
 {
-    disulfide_bonds_ = new PdbFileSpace::PdbDisulfideBondSection();\
     disulfide_bonds_ = disulfide_bonds;
 }
 void PdbFile::SetLinks(PdbFileSpace::PdbLinkSection *links)
 {
-    link_cards_ = new PdbFileSpace::PdbLinkSection();
     link_cards_ = links;
 }
 void PdbFile::SetCISPeptide(PdbFileSpace::PdbCISPeptideSection *cis_peptide)
 {
-    cis_peptide_ = new PdbFileSpace::PdbCISPeptideSection();
     cis_peptide_ = cis_peptide;
 }
 void PdbFile::SetSites(PdbFileSpace::PdbSiteSection *site_cards)
 {
-    site_cards_ = new PdbFileSpace::PdbSiteSection();
     site_cards_ = site_cards;
 }
 void PdbFile::SetCrystallography(PdbFileSpace::PdbCrystallographicCard *crystallography)
 {
-    crystallography_ = new PdbFileSpace::PdbCrystallographicCard();
     crystallography_ = crystallography;
 }
 void PdbFile::SetOrigins(PdbFileSpace::PdbOriginXnSection *origins)
 {
-    origins_ = new PdbFileSpace::PdbOriginXnSection();
     origins_ = origins;
 }
 void PdbFile::SetScales(PdbFileSpace::PdbScaleNSection *scales)
 {
-    scales_ = new PdbFileSpace::PdbScaleNSection();
     scales_ = scales;
 }
 void PdbFile::SetMatrices(PdbFileSpace::PdbMatrixNSection *matrices)
 {
-    matrices_ = new PdbFileSpace::PdbMatrixNSection();
     matrices_ = matrices;
 }
 void PdbFile::SetModels(PdbFileSpace::PdbModelSection *models)
 {
-    models_ = new PdbFileSpace::PdbModelSection();
     models_ = models;
 }
 void PdbFile::SetConnectivities(PdbFileSpace::PdbConnectSection *connectivities)
 {
-    connectivities_ = new PdbFileSpace::PdbConnectSection();
     connectivities_ = connectivities;
 }
 void PdbFile::SetSerialNumberMapping(PdbSerialNumberMapping serial_number_mapping)
@@ -2412,7 +2436,7 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                             atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
-                                                            atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
+                                                            atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom->GetAlternateAtomCards());
                             updated_atoms[serial_number] = new_atom;
                             updated_atoms_vector.push_back(new_atom);
                             serial_number++;
@@ -2426,7 +2450,8 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
                     {
                         PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
+                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), 
+                                                            atom->GetAlternateAtomCards());
                         updated_atoms[serial_number] = updated_atom;
                         updated_atoms_vector.push_back(updated_atom);
                         serial_number++;
@@ -2454,7 +2479,7 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
                         sequence_number = atom->GetAtomResidueSequenceNumber() + offset;
                     PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
+                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), atom->GetAlternateAtomCards());
                     updated_atoms[serial_number] = updated_atom;
                     updated_atoms_vector.push_back(updated_atom);
                     serial_number++;
@@ -2484,7 +2509,7 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
-                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge());
+                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge(), heterogen_atom->GetAlternateAtomCards());
                 updated_heterogen_atoms[serial_number] = updated_heterogen_atom;
                 updated_heterogen_atoms_vector.push_back(updated_heterogen_atom);
                 serial_number++;
@@ -2571,7 +2596,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                             atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
-                                                            atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
+                                                            atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom->GetAlternateAtomCards());
                             updated_atoms[serial_number] = new_atom;
                             updated_atoms_vector.push_back(new_atom);
                             serial_number++;
@@ -2585,7 +2610,8 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                     {
                         PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
+                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), 
+                                                            atom->GetAlternateAtomCards());
                         updated_atoms[serial_number] = updated_atom;
                         updated_atoms_vector.push_back(updated_atom);
                         serial_number++;
@@ -2613,7 +2639,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                         sequence_number = atom->GetAtomResidueSequenceNumber() + offset;
                     PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
+                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), atom->GetAlternateAtomCards());
                     updated_atoms[serial_number] = updated_atom;
                     updated_atoms_vector.push_back(updated_atom);
                     serial_number++;
@@ -2643,7 +2669,8 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
-                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge());
+                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge(), 
+                                                              heterogen_atom->GetAlternateAtomCards());
                 updated_heterogen_atoms[serial_number] = updated_heterogen_atom;
                 updated_heterogen_atoms_vector.push_back(updated_heterogen_atom);
                 serial_number++;
@@ -2717,7 +2744,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                     }
                     PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
+                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), atom->GetAlternateAtomCards());
                     updated_atoms[serial_number] = updated_atom;
                     updated_atoms_vector.push_back(updated_atom);
                     serial_number++;
@@ -2746,7 +2773,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                             atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
-                                                            atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
+                                                            atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom->GetAlternateAtomCards());
                             updated_atoms[serial_number] = new_atom;
                             updated_atoms_vector.push_back(new_atom);
                             serial_number++;
@@ -2777,7 +2804,8 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                         }
                         PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
+                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), 
+                                                            atom->GetAlternateAtomCards());
                         updated_atoms[serial_number] = updated_atom;
                         updated_atoms_vector.push_back(updated_atom);
                         serial_number++;
@@ -2804,7 +2832,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                                                         atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                         atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                         atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
-                                                        atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
+                                                        atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom_of_residue->GetAlternateAtomCards());
                         updated_atoms[serial_number] = new_atom;
                         updated_atoms_vector.push_back(new_atom);
                         serial_number++;
@@ -2837,7 +2865,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
-                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge());
+                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge(), heterogen_atom->GetAlternateAtomCards());
                 updated_heterogen_atoms[serial_number] = updated_heterogen_atom;
                 updated_heterogen_atoms_vector.push_back(updated_heterogen_atom);
                 serial_number++;
@@ -2910,7 +2938,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                     }
                     PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
+                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), atom->GetAlternateAtomCards());
                     updated_atoms[serial_number] = updated_atom;
                     updated_atoms_vector.push_back(updated_atom);
                     serial_number++;
@@ -2939,7 +2967,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                                                             atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                             atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                             atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
-                                                            atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
+                                                            atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom->GetAlternateAtomCards());
                             updated_atoms[serial_number] = new_atom;
                             updated_atoms_vector.push_back(new_atom);
                             serial_number++;
@@ -2969,7 +2997,8 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                         }
                         PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
+                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), 
+                                                            atom->GetAlternateAtomCards());
                         updated_atoms[serial_number] = updated_atom;
                         updated_atoms_vector.push_back(updated_atom);
                         serial_number++;
@@ -2996,7 +3025,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                                                         atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
                                                         atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
                                                         atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
-                                                        atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge());
+                                                        atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom->GetAlternateAtomCards());
                         updated_atoms[serial_number] = new_atom;
                         updated_atoms_vector.push_back(new_atom);
                         serial_number++;
@@ -3029,7 +3058,8 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
-                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge());
+                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge(), 
+                                                              heterogen_atom->GetAlternateAtomCards());
                 updated_heterogen_atoms[serial_number] = updated_heterogen_atom;
                 updated_heterogen_atoms_vector.push_back(updated_heterogen_atom);
                 serial_number++;
@@ -3088,7 +3118,7 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
                     serial_number++;
                     PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), atom->GetAtomResidueSequenceNumber(), atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
+                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), atom->GetAlternateAtomCards());
                     atoms_second_part[serial_number] = updated_atom;
                     ordered_atoms_second_part.push_back(updated_atom);
                 }
@@ -3096,7 +3126,7 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
                 {
                     PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), atom->GetAtomResidueSequenceNumber(), atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
+                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), atom->GetAlternateAtomCards());
                     atoms_first_part[serial_number] = updated_atom;
                     ordered_atoms_first_part.push_back(updated_atom);
                     serial_number++;
@@ -3170,7 +3200,7 @@ void PdbFile::SplitAtomCardOfModelCardWithTheGivenModelNumber(char split_point_c
                     serial_number++;
                     PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), atom->GetAtomResidueSequenceNumber(), atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
+                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), atom->GetAlternateAtomCards());
                     atoms_second_part[serial_number] = updated_atom;
                     ordered_atoms_second_part.push_back(updated_atom);
                 }
@@ -3178,7 +3208,7 @@ void PdbFile::SplitAtomCardOfModelCardWithTheGivenModelNumber(char split_point_c
                 {
                     PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                         atom->GetAtomChainId(), atom->GetAtomResidueSequenceNumber(), atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge());
+                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), atom->GetAlternateAtomCards());
                     atoms_first_part[serial_number] = updated_atom;
                     ordered_atoms_first_part.push_back(updated_atom);
                     serial_number++;
@@ -3239,7 +3269,6 @@ void PdbFile::UpdateConnectCard()
 }
 void PdbFile::SetMasterCard(PdbFileSpace::PdbMasterCard *master)
 {
-    master_ = new PdbFileSpace::PdbMasterCard();
     master_ = master;
 }
 //////////////////////////////////////////////////////////
@@ -3250,6 +3279,32 @@ bool PdbFile::Read(std::ifstream &in_file)
     if(!this->ParseCards(in_file))
         return false;
 	return true;
+}
+
+bool PdbFile::Read(std::stringstream &atomstream)
+{
+  if(!this->ParseAtomStream(atomstream))
+    return false;
+  return true;
+}
+
+bool PdbFile::ParseAtomStream(std::stringstream &atomstream)
+{
+  //This function is to take an input of just atom cards in a stringstream and create a PdbFile object
+
+  std::string line;
+  getline(atomstream, line);
+  line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+  std::string record_name = line.substr(0,6);
+  record_name = gmml::Trim(record_name);
+  
+  models_ = new PdbFileSpace::PdbModelSection(atomstream);
+  
+  if(models_ == NULL)
+  {
+    return false;
+  }
+  return true;
 }
 
 bool PdbFile::ParseCards(std::ifstream &in_stream)
@@ -3541,13 +3596,13 @@ bool PdbFile::ParseCards(std::ifstream &in_stream)
     }
     else
     {
-        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
+        // gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
+        // std::cout << "Wrong input file format" << std::endl;
         std::stringstream ss;
         ss << record_name << " is an Unknown record name.";
         gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
         std::cout << ss.str() << std::endl;
-        return false;
+        // return false;
     }
     return true;
 }
@@ -5013,7 +5068,10 @@ bool PdbFile::ParseEndCard(std::ifstream& stream, std::string& line)
     // end_ = new PdbEndCard(stream_block);
     return true;
 }
-
+void PdbFile::WriteToStringstream(std::ostringstream& pdbstream)
+{
+  this->ResolveCards(pdbstream);
+}
 void PdbFile::Write(const std::string& pdb_file)
 {
     std::ofstream out_file;
@@ -5056,7 +5114,7 @@ void PdbFile::WriteWithTheGivenModelNumber(const std::string& pdb_file, int mode
     }
 }
 
-void PdbFile::ResolveCards(std::ofstream& out_stream)
+void PdbFile::ResolveCards(std::ostream& out_stream)
 {
     if(this->header_ != NULL)
     {
@@ -5360,7 +5418,7 @@ void PdbFile::ResolveCardsWithTheGivenModelNumber(std::ofstream& out_stream, int
     this->ResolveEndCard(out_stream);
 }
 
-void PdbFile::ResolveHeaderCard(std::ofstream& stream)
+void PdbFile::ResolveHeaderCard(std::ostream& stream)
 {
     stream << std::left << std::setw(6) << header_->GetRecordName()
            << std::left << std::setw(4) << " "
@@ -5372,7 +5430,7 @@ void PdbFile::ResolveHeaderCard(std::ofstream& stream)
            << std::endl;
 }
 
-void PdbFile::ResolveObsoleteCards(std::ofstream& stream)
+void PdbFile::ResolveObsoleteCards(std::ostream& stream)
 {
     stream << std::left << std::setw(6) << obsolete_->GetRecordName()
           << std::left << std::setw(2) << " "
@@ -5390,7 +5448,7 @@ void PdbFile::ResolveObsoleteCards(std::ofstream& stream)
           << std::endl;
 }
 
-void PdbFile::ResolveTitleCards(std::ofstream& stream)
+void PdbFile::ResolveTitleCards(std::ostream& stream)
 {
     const int MAX_TITLE_LENGTH_IN_LINE = 70;
     stream << std::left << std::setw(6) << title_->GetRecordName()
@@ -5430,7 +5488,7 @@ void PdbFile::ResolveTitleCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveSplitCards(std::ofstream& stream)
+void PdbFile::ResolveSplitCards(std::ostream& stream)
 {
      const int MAX_SPLIT_ID_IN_LINE = 79;
      stream << std::left << std::setw(6) << split_->GetRecordName()
@@ -5469,7 +5527,7 @@ void PdbFile::ResolveSplitCards(std::ofstream& stream)
      }
 }
 
-void PdbFile::ResolveCaveatCards(std::ofstream& stream)
+void PdbFile::ResolveCaveatCards(std::ostream& stream)
 {
     const int MAX_CAVEAT_LENGTH_IN_LINE = 70;
     stream << std::left << std::setw(6) << caveat_->GetRecordName()
@@ -5509,7 +5567,7 @@ void PdbFile::ResolveCaveatCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveCompoundCards(std::ofstream& stream)
+void PdbFile::ResolveCompoundCards(std::ostream& stream)
 {
     const int MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE = 70;
     stream << std::left << std::setw(6) << compound_->GetRecordName()
@@ -5890,7 +5948,7 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
 
 }
 
-void PdbFile::ResolveSourceCards(std::ofstream& stream)
+void PdbFile::ResolveSourceCards(std::ostream& stream)
 {
   int SOURCE_COUNT = 1;
   SourceCardVector source_cards = source_->GetSourceCards();
@@ -5915,7 +5973,7 @@ void PdbFile::ResolveSourceCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveKeywordCards(std::ofstream& stream)
+void PdbFile::ResolveKeywordCards(std::ostream& stream)
 {
   const int MAX_KEYWORDS_LENGTH_IN_LINE = 70;
   stream << std::left << std::setw(6) << keywords_->GetRecordName()
@@ -5955,7 +6013,7 @@ void PdbFile::ResolveKeywordCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveExperimentalDataCards(std::ofstream& stream)
+void PdbFile::ResolveExperimentalDataCards(std::ostream& stream)
 {
   const int MAX_EXPDTA_LENGTH_IN_LINE = 70;
   stream << std::left << std::setw(6) << experimental_data_->GetRecordName()
@@ -5994,7 +6052,7 @@ void PdbFile::ResolveExperimentalDataCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveNumModelCard(std::ofstream& stream)
+void PdbFile::ResolveNumModelCard(std::ostream& stream)
 {
     stream << std::left << std::setw(6) << number_of_models_->GetRecordName()
            << std::left << std::setw(4) << " ";
@@ -6006,7 +6064,7 @@ void PdbFile::ResolveNumModelCard(std::ofstream& stream)
            << std::endl;
 }
 
-void PdbFile::ResolveModelTypeCards(std::ofstream& stream)
+void PdbFile::ResolveModelTypeCards(std::ostream& stream)
 {
     stream << std::left << std::setw(6) << model_type_->GetRecordName()
            << std::left << std::setw(2) << " ";
@@ -6057,7 +6115,7 @@ void PdbFile::ResolveModelTypeCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveAuthorCards(std::ofstream& stream)
+void PdbFile::ResolveAuthorCards(std::ostream& stream)
 {
   const int MAX_AUTHOR_LENGTH_IN_LINE = 70;
   stream << std::left << std::setw(6) << author_->GetRecordName()
@@ -6096,7 +6154,7 @@ void PdbFile::ResolveAuthorCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveRevisionDataCards(std::ofstream& stream)
+void PdbFile::ResolveRevisionDataCards(std::ostream& stream)
 {
   int REVDAT_COUNT = 1;
   int REVDAT_NUM = 0;
@@ -6145,12 +6203,12 @@ void PdbFile::ResolveRevisionDataCards(std::ofstream& stream)
 
 }
 
-void PdbFile::ResolveSupersededEntriesCards(std::ofstream& stream)
+void PdbFile::ResolveSupersededEntriesCards(std::ostream& stream)
 {
 	stream << "";
 }
 
-void PdbFile::ResolveJournalCards(std::ofstream& stream)
+void PdbFile::ResolveJournalCards(std::ostream& stream)
 {
   const int MAX_JOURNAL_LENGTH_IN_LINE = 67;
   stream << std::left << std::setw(6) << journal_->GetRecordName()
@@ -6187,12 +6245,12 @@ void PdbFile::ResolveJournalCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveRemarkCards(std::ofstream& stream)
+void PdbFile::ResolveRemarkCards(std::ostream& stream)
 {
   stream << std::left << remark_cards_->GetRemarks();
 }
 
-void PdbFile::ResolveDatabaseReferenceCards(std::ofstream& stream)
+void PdbFile::ResolveDatabaseReferenceCards(std::ostream& stream)
 {
   DatabaseReferenceVector database_reference_cards = database_reference_->GetDatabaseReferences();
   for (DatabaseReferenceVector::iterator it = database_reference_cards.begin(); it != database_reference_cards.end(); it++)
@@ -6259,7 +6317,7 @@ void PdbFile::ResolveDatabaseReferenceCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveSequenceAdvancedCards(std::ofstream& stream)
+void PdbFile::ResolveSequenceAdvancedCards(std::ostream& stream)
 {
   SequenceAdvancedCardVector sequence_advanced_cards = sequence_advanced_->GetSequenceAdvancedCards();
   for (SequenceAdvancedCardVector::iterator it = sequence_advanced_cards.begin(); it != sequence_advanced_cards.end(); it++)
@@ -6288,7 +6346,7 @@ void PdbFile::ResolveSequenceAdvancedCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveSequenceResidueCards(std::ofstream& stream)
+void PdbFile::ResolveSequenceResidueCards(std::ostream& stream)
 {
     PdbFileSpace::PdbResidueSequenceSection::ResidueSequenceCardMap residue_sequence_map = residues_sequence_->GetResidueSequenceChain();
     for(PdbFileSpace::PdbResidueSequenceSection::ResidueSequenceCardMap::iterator it = residue_sequence_map.begin(); it != residue_sequence_map.end(); it++)
@@ -6376,7 +6434,7 @@ void PdbFile::ResolveSequenceResidueCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveModificationResidueCards(std::ofstream& stream)
+void PdbFile::ResolveModificationResidueCards(std::ostream& stream)
 {
     PdbFileSpace::PdbResidueModificationSection::ResidueModificationCardMap residue_modification_cards_map = residue_modification_cards_->GetResidueModificationCards();
     for(PdbFileSpace::PdbResidueModificationSection::ResidueModificationCardMap::iterator it = residue_modification_cards_map.begin(); it != residue_modification_cards_map.end(); it++)
@@ -6404,7 +6462,7 @@ void PdbFile::ResolveModificationResidueCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveHeterogenCards(std::ofstream& stream)
+void PdbFile::ResolveHeterogenCards(std::ostream& stream)
 {
     PdbFileSpace::PdbHeterogenSection::HeterogenCardMap heterogen_map = heterogen_cards_->GetHeterogenCards();
     for(PdbFileSpace::PdbHeterogenSection::HeterogenCardMap::iterator it = heterogen_map.begin(); it != heterogen_map.end(); it++)
@@ -6433,7 +6491,7 @@ void PdbFile::ResolveHeterogenCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveHeterogenNameCards(std::ofstream& stream)
+void PdbFile::ResolveHeterogenNameCards(std::ostream& stream)
 {
     PdbFileSpace::PdbHeterogenNameSection::HeterogenNameCardMap heterogen_name_map = heterogen_name_cards_->GetHeterogenNameCards();
     for(PdbFileSpace::PdbHeterogenNameSection::HeterogenNameCardMap::iterator it = heterogen_name_map.begin(); it != heterogen_name_map.end(); it++)
@@ -6495,7 +6553,7 @@ void PdbFile::ResolveHeterogenNameCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveHeterogenSynonymCards(std::ofstream& stream)
+void PdbFile::ResolveHeterogenSynonymCards(std::ostream& stream)
 {
     PdbFileSpace::PdbHeterogenSynonymSection::HeterogenSynonymCardMap heterogen_synonym_map = heterogen_synonym_cards_->GetHeterogensSynonymCards();
     for(PdbFileSpace::PdbHeterogenSynonymSection::HeterogenSynonymCardMap::iterator it = heterogen_synonym_map.begin(); it != heterogen_synonym_map.end(); it++)
@@ -6570,7 +6628,7 @@ void PdbFile::ResolveHeterogenSynonymCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveFormulaCards(std::ofstream& stream)
+void PdbFile::ResolveFormulaCards(std::ostream& stream)
 {
     PdbFileSpace::PdbFormulaSection::FormulaCardMap formula_map = formulas_->GetFormulaCards();
     for(PdbFileSpace::PdbFormulaSection::FormulaCardMap::iterator it = formula_map.begin(); it != formula_map.end(); it++)
@@ -6652,7 +6710,7 @@ void PdbFile::ResolveFormulaCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveHelixCards(std::ofstream& stream)
+void PdbFile::ResolveHelixCards(std::ostream& stream)
 {
     PdbFileSpace::PdbHelixSection::HelixCardMap helix_map = helix_cards_->GetHelixCards();
     int counter = helix_map.size();
@@ -6713,7 +6771,7 @@ void PdbFile::ResolveHelixCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveSheetCards(std::ofstream& stream)
+void PdbFile::ResolveSheetCards(std::ostream& stream)
 {
     PdbFileSpace::PdbSheetSection::SheetCardMap sheet_map = sheet_cards_->GetSheets();
     for(PdbFileSpace::PdbSheetSection::SheetCardMap::iterator it = sheet_map.begin(); it != sheet_map.end(); it++)
@@ -6823,7 +6881,7 @@ void PdbFile::ResolveSheetCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveDisulfideBondCards(std::ofstream& stream)
+void PdbFile::ResolveDisulfideBondCards(std::ostream& stream)
 {
     PdbFileSpace::PdbDisulfideBondSection::DisulfideResidueBondMap disulfide_bond_map = disulfide_bonds_->GetDisulfideResidueBonds();
     for(PdbFileSpace::PdbDisulfideBondSection::DisulfideResidueBondMap::iterator it = disulfide_bond_map.begin(); it != disulfide_bond_map.end(); it++)
@@ -6876,7 +6934,7 @@ void PdbFile::ResolveDisulfideBondCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveLinkCards(std::ofstream& stream)
+void PdbFile::ResolveLinkCards(std::ostream& stream)
 {
     PdbFileSpace::PdbLinkSection::LinkCardVector links = link_cards_->GetResidueLinkCards();
     for(PdbFileSpace::PdbLinkSection::LinkCardVector::iterator it = links.begin(); it != links.end(); it++)
@@ -6945,7 +7003,7 @@ void PdbFile::ResolveLinkCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveCISPeptideCards(std::ofstream& stream)
+void PdbFile::ResolveCISPeptideCards(std::ostream& stream)
 {
   CISPeptideCardVector cis_peptide_cards = cis_peptide_->GetCISPeptideCards();
   for (CISPeptideCardVector::iterator it = cis_peptide_cards.begin(); it != cis_peptide_cards.end(); it++)
@@ -6975,7 +7033,7 @@ void PdbFile::ResolveCISPeptideCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveSiteCards(std::ofstream& stream)
+void PdbFile::ResolveSiteCards(std::ostream& stream)
 {
     PdbFileSpace::PdbSiteSection::PdbSiteCardMap site_map = site_cards_->GetResidueSiteCards();
     for(PdbFileSpace::PdbSiteSection::PdbSiteCardMap::iterator it = site_map.begin(); it != site_map.end(); it++)
@@ -7097,7 +7155,7 @@ void PdbFile::ResolveSiteCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveCrystallographyCard(std::ofstream& stream)
+void PdbFile::ResolveCrystallographyCard(std::ostream& stream)
 {
     stream << std::left << std::setw(6) << crystallography_->GetRecordName();
     if(crystallography_->GetA() != gmml::dNotSet)
@@ -7134,7 +7192,7 @@ void PdbFile::ResolveCrystallographyCard(std::ofstream& stream)
            << std::endl;
 }
 
-void PdbFile::ResolveOriginCard(std::ofstream& stream)
+void PdbFile::ResolveOriginCard(std::ostream& stream)
 {
     PdbFileSpace::PdbOriginXnSection::OriginXnCardVector origins = origins_->GetOriginXN();
     for(PdbFileSpace::PdbOriginXnSection::OriginXnCardVector::iterator it = origins.begin(); it != origins.end(); it++)
@@ -7167,7 +7225,7 @@ void PdbFile::ResolveOriginCard(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveScaleCard(std::ofstream& stream)
+void PdbFile::ResolveScaleCard(std::ostream& stream)
 {
     PdbFileSpace::PdbScaleNSection::ScaleNCardVector scales = scales_->GetScaleNCard();
     for(PdbFileSpace::PdbScaleNSection::ScaleNCardVector::iterator it = scales.begin(); it != scales.end(); it++)
@@ -7199,7 +7257,7 @@ void PdbFile::ResolveScaleCard(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveMatrixCards(std::ofstream& stream)
+void PdbFile::ResolveMatrixCards(std::ostream& stream)
 {
     PdbFileSpace::PdbMatrixNSection::MatrixNVectorVector matrices = matrices_->GetMatrixN();
     int number_of_matrix_entries = matrices.at(0).size();
@@ -7246,7 +7304,7 @@ void PdbFile::ResolveMatrixCards(std::ofstream& stream)
 
 }
 
-void PdbFile::ResolveModelCards(std::ofstream& stream)
+void PdbFile::ResolveModelCards(std::ostream& stream)
 {
     PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     int number_of_models = models.size();
@@ -7575,7 +7633,7 @@ void PdbFile::ResolveModelCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int model_number)
+void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ostream& stream, int model_number)
 {
     PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     if(models.size() != 0)
@@ -7650,6 +7708,67 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
                 residue_name = atom->GetAtomResidueName();
                 chain_id = atom->GetAtomChainId();
                 residue_sequence_number = atom->GetAtomResidueSequenceNumber();
+                std::vector<PdbFileSpace::PdbAtomCard*> alternate_atom_cards = atom->GetAlternateAtomCards();
+                if(alternate_atom_cards.size() != 0)
+                {
+                  for(std::vector<PdbFileSpace::PdbAtomCard*>::iterator thisAltAtom = alternate_atom_cards.begin(); thisAltAtom != alternate_atom_cards.end(); thisAltAtom++)
+                  {
+                    atom = *thisAltAtom;
+                    stream << std::left << std::setw(6) << atom_card->GetRecordName();
+                    if(atom->GetAtomSerialNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(5) << atom->GetAtomSerialNumber();
+                    else
+                        stream << std::right << std::setw(5) << " ";
+                    stream << std::left << std::setw(1) << " "
+                           << std::left << std::setw(4) << atom->GetAtomName();
+                    if(atom->GetAtomAlternateLocation() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
+                    else
+                        stream << std::left << std::setw(1) << atom->GetAtomAlternateLocation();
+                    stream << std::right << std::setw(3) << atom->GetAtomResidueName()
+                           << std::left << std::setw(1) << " ";
+                    if(atom->GetAtomChainId() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
+                    else
+                        stream << std::left << std::setw(1) << atom->GetAtomChainId();
+                    if(atom->GetAtomResidueSequenceNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(4) << atom->GetAtomResidueSequenceNumber();
+                    else
+                        stream << std::right << std::setw(4) << " ";
+                    if(atom->GetAtomInsertionCode() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
+                    else
+                        stream << std::left << std::setw(1) << atom->GetAtomInsertionCode();
+                    stream << std::left << std::setw(3) << " ";
+                    if(atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
+                    {
+                        stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetX()
+                               << std::right << std::setw(8) << std::fixed << std::setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetY()
+                               << std::right << std::setw(8) << std::fixed << std::setprecision(3) << atom->GetAtomOrthogonalCoordinate().GetZ();
+                    }
+                    else
+                    {
+                        stream << std::right << std::setw(8) << " "
+                               << std::right << std::setw(8) << " "
+                               << std::right << std::setw(8) << " ";
+                    }
+                    if(atom->GetAtomOccupancy() != gmml::dNotSet)
+                        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << atom->GetAtomOccupancy();
+                    else
+                        stream << std::right << std::setw(6) << " ";
+                    if(atom->GetAtomTempretureFactor() != gmml::dNotSet)
+                        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << atom->GetAtomTempretureFactor();
+                    else
+                        stream << std::right << std::setw(6) << " ";
+                    stream << std::left << std::setw(10) << " "
+                           << std::right << std::setw(2) << atom->GetAtomElementSymbol()
+                           << std::left << std::setw(2) << atom->GetAtomCharge()
+                           << std::endl;
+                    serial_number = atom->GetAtomSerialNumber();
+                    residue_name = atom->GetAtomResidueName();
+                    chain_id = atom->GetAtomChainId();
+                  }
+                }
             }
             if(atoms_size != 0)
             {
@@ -7732,12 +7851,71 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
                        << std::right << std::setw(2) << heterogen_atom->GetAtomElementSymbol()
                        << std::left << std::setw(2) << heterogen_atom->GetAtomCharge()
                        << std::endl;
+                       
+                std::vector<PdbFileSpace::PdbAtomCard*> alternate_atom_cards = heterogen_atom->GetAlternateAtomCards();
+                if(alternate_atom_cards.size() != 0)
+                {
+                  for(std::vector<PdbFileSpace::PdbAtomCard*>::iterator thisAltAtom = alternate_atom_cards.begin(); thisAltAtom != alternate_atom_cards.end(); thisAltAtom++)
+                  {
+                    heterogen_atom = (*thisAltAtom);
+                    stream << std::left << std::setw(6) << heterogen_atom_card->GetRecordName();
+                    if(heterogen_atom->GetAtomSerialNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(5) << heterogen_atom->GetAtomSerialNumber();
+                    else
+                        stream << std::right << std::setw(5) << " ";
+                    stream << std::left << std::setw(1) << " "
+                           << std::left << std::setw(4) << heterogen_atom->GetAtomName();
+                    if(heterogen_atom->GetAtomAlternateLocation() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
+                    else
+                        stream << std::left << std::setw(1) << heterogen_atom->GetAtomAlternateLocation();
+                    stream << std::right << std::setw(3) << heterogen_atom->GetAtomResidueName()
+                           << std::left << std::setw(1) << " ";
+                    if(heterogen_atom->GetAtomChainId() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
+                    else
+                        stream << std::left << std::setw(1) << heterogen_atom->GetAtomChainId();
+                    if(heterogen_atom->GetAtomResidueSequenceNumber() != gmml::iNotSet)
+                        stream << std::right << std::setw(4) << heterogen_atom->GetAtomResidueSequenceNumber();
+                    else
+                        stream << std::right << std::setw(4) << " ";
+                    if(heterogen_atom->GetAtomInsertionCode() == gmml::BLANK_SPACE)
+                        stream << std::left << std::setw(1) << ' ';
+                    else
+                        stream << std::left << std::setw(1) << heterogen_atom->GetAtomInsertionCode();
+                    stream << std::left << std::setw(3) << " ";
+                    if(heterogen_atom->GetAtomOrthogonalCoordinate().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
+                    {
+                        stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetX()
+                               << std::right << std::setw(8) << std::fixed << std::setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetY()
+                               << std::right << std::setw(8) << std::fixed << std::setprecision(3) << heterogen_atom->GetAtomOrthogonalCoordinate().GetZ();
+                    }
+                    else
+                    {
+                        stream << std::right << std::setw(8) << " "
+                               << std::right << std::setw(8) << " "
+                               << std::right << std::setw(8) << " ";
+                    }
+                    if(heterogen_atom->GetAtomOccupancy() != gmml::dNotSet)
+                        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << heterogen_atom->GetAtomOccupancy();
+                    else
+                        stream << std::right << std::setw(6) << " ";
+                    if(heterogen_atom->GetAtomTempretureFactor() != gmml::dNotSet)
+                        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << heterogen_atom->GetAtomTempretureFactor();
+                    else
+                        stream << std::right << std::setw(6) << " ";
+                    stream << std::left << std::setw(10) << " "
+                           << std::right << std::setw(2) << heterogen_atom->GetAtomElementSymbol()
+                           << std::left << std::setw(2) << heterogen_atom->GetAtomCharge()
+                           << std::endl;
+                  }
+                }
             }
         }
     }
 }
 
-void PdbFile::ResolveConnectivityCards(std::ofstream& stream)
+void PdbFile::ResolveConnectivityCards(std::ostream& stream)
 {
     PdbFileSpace::PdbConnectSection::BondedAtomsSerialNumbersMap bonded_atoms = connectivities_->GetBondedAtomsSerialNumbers();
     for(PdbFileSpace::PdbConnectSection::BondedAtomsSerialNumbersMap::iterator it = bonded_atoms.begin(); it != bonded_atoms.end(); it++)
@@ -7818,7 +7996,7 @@ void PdbFile::ResolveConnectivityCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveMasterCards(std::ofstream& stream)
+void PdbFile::ResolveMasterCards(std::ostream& stream)
 {
   stream << std::left << std::setw(6) << master_->GetRecordName()
          << std::right << std::setw(4) << " "
@@ -7837,7 +8015,7 @@ void PdbFile::ResolveMasterCards(std::ofstream& stream)
          << std::endl;
 }
 
-void PdbFile::ResolveEndCard(std::ofstream& stream)
+void PdbFile::ResolveEndCard(std::ostream& stream)
 {
     stream << std::left << std::setw(6) << "END" << std::left << std::setw(74) << " " << std::endl;
 }
@@ -7846,39 +8024,62 @@ void PdbFile::PrintOntology(std::stringstream& ont_stream)
 {
   //Match formatting of Ontology
   std::stringstream uri;
-  uri << Ontology::ONT_PREFIX << header_->GetIdentifierCode();
+  uri << Ontology::ONT_PREFIX;
+  if(header_ != NULL)
+  {
+    uri << header_->GetIdentifierCode();
+  }
+  else
+  {
+    std::string file = gmml::Split(path_.substr(path_.find_last_of('/') + 1), ".").at(0);
+    // std::transform(file.begin(), file.end(),file.begin(), ::toupper);
+    uri << file;
+  }
   std::string uriStr = uri.str();
-
+  std::transform(uriStr.begin(), uriStr.end(), uriStr.begin(), ::tolower);
+  
   gmml::AddLiteral( uriStr, Ontology::TYPE, Ontology::PDB, ont_stream );
   
   //Return PDB_ID
-  gmml::AddLiteral( uriStr, Ontology::id, this->header_->GetIdentifierCode(), ont_stream );
+  if(header_ != NULL)
+    gmml::AddLiteral( uriStr, Ontology::id, this->header_->GetIdentifierCode(), ont_stream );
   
   //Return Protein Acession Number
   //TODO add check to make sure that it is the Uniprot database reference
-  //gmml::AddLiteral( uriStr, Ontology::ProteinID, this->database_reference_->GetDatabaseIDCode(), ont_stream );
+  if(database_reference_ != NULL)
+    gmml::AddLiteral( uriStr, Ontology::hasProteinID, this->database_reference_->GetUniprotIDs(), ont_stream );
 
   //Return Title
-  gmml::AddLiteral( uriStr, Ontology::hasTitle, this->title_->GetTitle(), ont_stream );
+  if(title_ != NULL)
+    gmml::AddLiteral( uriStr, Ontology::hasTitle, this->title_->GetTitle(), ont_stream );
 
   //Return Authors
-  gmml::AddLiteral( uriStr, Ontology::hasAuthors, this->author_->GetAuthor(), ont_stream );
+  if(author_ != NULL)
+    gmml::AddLiteral( uriStr, Ontology::hasAuthors, this->author_->GetAuthor(), ont_stream );
 
-  //Return JOURNAL
-  gmml::AddLiteral( uriStr, Ontology::hasJournal, this->journal_->GetReference(), ont_stream );
 
-  //Return DOI
-  gmml::AddLiteral( uriStr, Ontology::hasDOI, this->journal_->GetDOI(), ont_stream );
+  if(journal_ != NULL)
+  {
+      //Return JOURNAL
+      gmml::AddLiteral( uriStr, Ontology::hasJournal, this->journal_->GetReference(), ont_stream );
 
-  //Return PMID
-  gmml::AddLiteral( uriStr, Ontology::hasPMID, this->journal_->GetPMID(), ont_stream );
+      //Return DOI
+      gmml::AddLiteral( uriStr, Ontology::hasDOI, this->journal_->GetDOI(), ont_stream );
 
-  //Return Resolution
-  gmml::AddDecimal( uriStr, Ontology::hasResolution, this->remark_cards_->GetResolution(), ont_stream );
+      //Return PMID
+      gmml::AddLiteral( uriStr, Ontology::hasPMID, this->journal_->GetPMID(), ont_stream );
+  }
   
-  //Return B Factor
-  gmml::AddDecimal( uriStr, Ontology::hasBFactor, this->remark_cards_->GetBFactor(), ont_stream );
 
+  
+  if(remark_cards_ != NULL)
+  {
+    //Return Resolution
+    gmml::AddDecimal( uriStr, Ontology::hasResolution, this->remark_cards_->GetResolution(), ont_stream );
+    
+    //Return B Factor
+    gmml::AddDecimal( uriStr, Ontology::hasBFactor, this->remark_cards_->GetBFactor(), ont_stream );
+  }
 }
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //

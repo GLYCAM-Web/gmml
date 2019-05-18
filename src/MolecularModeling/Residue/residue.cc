@@ -13,7 +13,10 @@ using MolecularModeling::Residue;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Residue::Residue() {}
+Residue::Residue()
+{
+    index_ = this->generateIndex();
+}
 
 Residue::Residue(MolecularModeling::Assembly *assembly, std::string name)
 {
@@ -25,6 +28,7 @@ Residue::Residue(MolecularModeling::Assembly *assembly, std::string name)
     chemical_type_ = "";
     description_ = "";
     id_ = "";
+    index_ = this->generateIndex();
 }
 
 Residue::Residue(Residue *residue)
@@ -46,10 +50,11 @@ Residue::Residue(Residue *residue)
     chemical_type_ = residue->GetChemicalType();
     description_ = residue->GetDescription();
     id_ = residue->GetId();
+    index_ = this->generateIndex();
 }
 
-Residue::Residue(Residue& residue){
-
+Residue::Residue(Residue& residue)
+{
     Assembly *tempAssembly=residue.GetAssembly();
     this->assembly_=tempAssembly;
 
@@ -73,7 +78,7 @@ Residue::Residue(Residue& residue){
     this->chemical_type_ = residue.GetChemicalType();
     this->description_ = residue.GetDescription();
     this->id_ = residue.GetId();
-
+    index_ = this->generateIndex();
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -129,6 +134,11 @@ bool Residue::GetIsAglycon()
 MolecularModeling::ResidueNode* Residue::GetNode()
 {
         return node_;
+}
+//Added by Dave 2/1/19
+bool Residue::GetIsSugar()
+{
+    return is_sugar_;
 }
 
 //////////////////////////////////////////////////////////
@@ -242,6 +252,11 @@ void Residue::SetIsAglycon(bool is_aglycon)
 {
     is_aglycon_ = is_aglycon;
 }
+void Residue::SetIsSugar(bool is_sugar)
+{
+  is_sugar_ = is_sugar;
+}
+
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
@@ -344,7 +359,7 @@ bool Residue::GraphPredictionBasedElementLabeling()
 
 Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
 {
-    int degree = INFINITY;
+    int degree = (int) INFINITY;
     AtomVector lowest_degree_atoms = AtomVector();
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
@@ -377,9 +392,14 @@ double Residue::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
 
 bool Residue::CheckIfProtein()
 {
+  int local_debug = -1;
     if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), this->GetName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
     {
-        return true;
+      if (local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Protein Found");
+      }
+      return true;
     }
     return false;
 }
@@ -506,13 +526,14 @@ GeometryTopology::Coordinate Residue::GetGeometricCenter()
 
 MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
 {
-    MolecularModeling::Atom* return_atom;
+    MolecularModeling::Atom* return_atom=NULL;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
         if ((*it)->GetName().compare(query_name)==0)
         {
             return_atom = (*it);
+            //std::cout << "Returning: " << return_atom->GetId() << std::endl;
         }
     }
     return return_atom; // may be unset
@@ -520,7 +541,7 @@ MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
 
 MolecularModeling::Atom* Residue::GetAtom(unsigned long long query_index)
 {
-    MolecularModeling::Atom* return_atom;
+    MolecularModeling::Atom* return_atom=NULL;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
@@ -534,7 +555,7 @@ MolecularModeling::Atom* Residue::GetAtom(unsigned long long query_index)
 
 MolecularModeling::Atom* Residue::GetAtomWithId(std::string query_id)
 {
-    MolecularModeling::Atom* return_atom;
+    MolecularModeling::Atom* return_atom=NULL;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
@@ -546,6 +567,10 @@ MolecularModeling::Atom* Residue::GetAtomWithId(std::string query_id)
     return return_atom; // may be unset
 }
 
+unsigned long long Residue::GetIndex() const
+{
+    return this->index_;
+} // end GetIndex
 
 
 //////////////////////////////////////////////////////////
@@ -686,3 +711,9 @@ void Residue::WriteHetAtoms(std::ofstream& out)
         out << std::endl;
     }
 }
+
+unsigned long long Residue::generateIndex()
+{
+    static unsigned long long s_ResidueIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
+    return s_ResidueIndex++; // makes copy of s_AtomIndex, increments the real s_AtomIndex, then returns the value in the copy
+} // end generateAtomIndex

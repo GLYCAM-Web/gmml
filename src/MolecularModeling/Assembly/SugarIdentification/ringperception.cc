@@ -68,6 +68,8 @@
 #include <errno.h>
 #include <string.h>
 
+
+
 using MolecularModeling::Assembly;
 
 //////////////////////////////////////////////////////////
@@ -75,6 +77,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
+  int local_debug = 0;
     CycleMap cycles = CycleMap();
     AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
     std::vector<std::string> path_graph_edges = std::vector<std::string> (); ///The list of edges in the molecular graph
@@ -83,15 +86,32 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 
     ///Initializing the std::map
     std::map<std::string, Atom*> IdAtom = std::map<std::string, Atom*>(); ///A std::map from atom ID to Assembly atom object
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(atoms.size()));
+    } 
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
         IdAtom[atom->GetId()] = atom;
+        if ( local_debug > 0 )
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
+        }
+    }
+    
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "About to Prune Graph");
     }
     ///Pruning the graph (filter out atoms with less than 2 neighbors)
     PruneGraph(atoms);
 
     ///Converting the molecular graph into a path graph
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "About to Convert Graph");
+    }
     ConvertIntoPathGraph(path_graph_edges, path_graph_labels, atoms);
     std::vector<std::string> reduced_path_graph_edges = path_graph_edges;
     std::vector<std::string> reduced_path_graph_labels = path_graph_labels;
@@ -100,6 +120,10 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
     ///Reducing the path graph
     ///Whenever a walk a-b-c is found it should be reduced to a-c and the label should be changed from [a-b], [b-c] to [a-b-c]
     /// the node with lowest number of edges to other nodes should be examined first
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Reducing Path Graph");
+    }
     while(atoms.size() > 1 && path_graph_edges.size() != 0)
     {
         AtomVector::iterator common_atom_it;
@@ -133,7 +157,10 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
         path_graph_edges = reduced_path_graph_edges;
         path_graph_labels = reduced_path_graph_labels;
     }
-
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "About to Split Cycles");
+    }
     for(std::vector<std::string>::iterator it = cycless.begin(); it != cycless.end(); it++)
     {
         std::string cycle = (*it);
@@ -244,14 +271,26 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::vector<std::string> path_graph_labels, std::vector<std::string>& reduced_path_graph_edges,
                                std::vector<std::string>& reduced_path_graph_labels, std::string common_atom, std::vector<std::string>& cycles)
 {
+  int local_debug = 0;
     std::vector<int> to_be_deleted_edges = std::vector<int>();
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "About to start for loop in path graph reduction");
+      gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(path_graph_edges.size()));
+    }
+    int it1Counter = 0;
     for(std::vector<std::string>::iterator it = path_graph_edges.begin(); it != path_graph_edges.end() - 1; it++)
     {
         int source_index = distance(path_graph_edges.begin(), it);
         std::string source_edge = (*it);
         std::string source_label = path_graph_labels.at(source_index);
         std::vector<std::string> source_edge_atoms = gmml::Split(source_edge, ",");
-
+        int graphLength = path_graph_edges.size();
+        if ( local_debug > 0 )
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, "About to start nested loop");
+          gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(graphLength));
+        }
         for(std::vector<std::string>::iterator it1 = it + 1; it1 != path_graph_edges.end(); it1++)
         {
             bool walk_found = false;
@@ -263,9 +302,16 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
             std::stringstream new_label;
             if(source_edge_atoms.at(0).compare(source_edge_atoms.at(1)) != 0 && target_edge_atoms.at(0).compare(target_edge_atoms.at(1)) != 0)
             {///if the edges a != b and b != c, so there might be a walk a_b_c
-
+              if ( local_debug > 0 )
+              {
+                gmml::log(__LINE__, __FILE__, gmml::INF, "Looking for shorter walks");
+              }
                 if(source_edge_atoms.at(1).compare(target_edge_atoms.at(0)) == 0 && source_edge_atoms.at(1).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: a,b and b,c)
                 {
+                  if ( local_debug > 0 )
+                  {
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "a_b, b_c");
+                  }
                     new_edge << source_edge_atoms.at(0) << "," << target_edge_atoms.at(1);
                     new_label << source_label;
                     std::vector<std::string> target_path_values = gmml::Split(target_label,"-");
@@ -275,6 +321,10 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
                 }
                 else if(source_edge_atoms.at(1).compare(target_edge_atoms.at(1)) == 0 && source_edge_atoms.at(1).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: a,b and c,b)
                 {
+                  if ( local_debug > 0 )
+                  {
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "a_b, c_b");
+                  }
                     new_edge << source_edge_atoms.at(0) << "," << target_edge_atoms.at(0);
                     new_label << source_label;
                     std::vector<std::string> target_path_values = gmml::Split(target_label,"-");
@@ -284,6 +334,10 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
                 }
                 else if(source_edge_atoms.at(0).compare(target_edge_atoms.at(0)) == 0 && source_edge_atoms.at(0).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: b,a and b,c)
                 {
+                  if ( local_debug > 0 )
+                  {
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "b_a, b_c");
+                  }
                     new_edge << source_edge_atoms.at(1) << "," << target_edge_atoms.at(1);
                     std::vector<std::string> source_path_values = gmml::Split(source_label,"-");
                     for(int i = source_path_values.size() - 1 ; i >= 1; i--)
@@ -293,6 +347,10 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
                 }
                 else if(source_edge_atoms.at(0).compare(target_edge_atoms.at(1)) == 0 && source_edge_atoms.at(0).compare(common_atom) == 0)///if there is a walk a_b_c in the graph (edges: b,a and c,b)
                 {
+                  if ( local_debug > 0 )
+                  {
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "b_a, c_b");
+                  }
                     new_edge << source_edge_atoms.at(1) << "," << target_edge_atoms.at(0);
                     std::vector<std::string> source_path_values = gmml::Split(source_label,"-");
                     for(int i = source_path_values.size() - 1 ; i >= 0; i--)
@@ -310,6 +368,10 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
             }
             if(walk_found)
             {
+              if ( local_debug > 0 )
+              {
+                gmml::log(__LINE__, __FILE__, gmml::INF, "Walk Found");
+              }
                 ///checking the new edge for cycle
                 std::vector<std::string> new_edge_atoms = gmml::Split(new_edge.str(), ",");
                 if(new_edge_atoms.at(0).compare(new_edge_atoms.at(1)) == 0) ///edge is a,a
@@ -329,11 +391,20 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
                 if(find(to_be_deleted_edges.begin(), to_be_deleted_edges.end(), target_index) == to_be_deleted_edges.end())
                     to_be_deleted_edges.push_back(target_index);
             }
+            if ( local_debug > 0 )
+            {
+              gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(it1Counter));
+              it1Counter++;
+            }
         }
     }
 
     std::vector<std::string> temp_reduced_path_graph_edges = std::vector<std::string>();
     std::vector<std::string> temp_reduced_path_graph_labels = std::vector<std::string>();
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Last for loop in reduce path graph");
+    }
     for(unsigned int i = 0; i < reduced_path_graph_edges.size(); i++)
     {
         if(find(to_be_deleted_edges.begin(), to_be_deleted_edges.end(), i) == to_be_deleted_edges.end())
@@ -348,12 +419,22 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
 
 void Assembly::PruneGraph(AtomVector& all_atoms)
 {
+  
+  int local_debug = 0;
     AtomVector atoms_with_more_than_two_neighbors = AtomVector();
     std::vector<std::string> het_atom_ids = std::vector<std::string>();
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(all_atoms.size()));
+    }
     for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
         Atom* atom = *it;
         het_atom_ids.push_back(atom->GetId());
+        if ( local_debug > 0 )
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
+        }
     }
     for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
@@ -369,10 +450,15 @@ void Assembly::PruneGraph(AtomVector& all_atoms)
         if(count > 1)
             atoms_with_more_than_two_neighbors.push_back(atom);
     }
+    
     if(atoms_with_more_than_two_neighbors.size() != all_atoms.size())
     {
         all_atoms = atoms_with_more_than_two_neighbors;
         PruneGraph(all_atoms);
+    }
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Done with Prune Graph");
     }
     else
         return;
@@ -415,6 +501,8 @@ void Assembly::ConvertIntoPathGraph(std::vector<std::string>& path_graph_edges, 
 
 Assembly::CycleMap Assembly::DetectCyclesByDFS()
 {
+  
+  int local_debug = 0;
     int counter = 0;
 
     AtomStatusMap atom_status_map = AtomStatusMap();
@@ -444,7 +532,10 @@ Assembly::CycleMap Assembly::DetectCyclesByDFS()
     std::stringstream n_of_cycle;
     n_of_cycle << "Number of cycles found: " << counter;
     std::cout << n_of_cycle.str() << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, n_of_cycle.str());
+    if ( local_debug > 0 )
+    {
+      gmml::log(__LINE__, __FILE__,  gmml::INF, n_of_cycle.str());
+    }
     for(AtomIdAtomMap::iterator it = src_dest_map.begin(); it != src_dest_map.end(); it++)
     {
         std::string src_dest = (*it).first;
@@ -489,3 +580,9 @@ void Assembly::DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomId
     }
     atom_status_map[atom->GetId()] = gmml::DONE;
 }
+
+// bool Assembly::isCyclicOligosaccharide(Glycan::Oligosaccharide* oligo)
+// {
+// 
+// 
+// }

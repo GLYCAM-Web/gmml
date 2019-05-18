@@ -65,7 +65,9 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
-#include "../../../includes/MolecularMetadata/GLYCAM/glycam06.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
 
 #include <unistd.h>
 #include <errno.h>
@@ -174,73 +176,88 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
     //Likewise, GetAtomType() is also overloaded.
     //In my situation, I called MolecularModeling::MolecularModelingAtom::SetAtomType(), but later called MolecularModeling::Atom::GetAtomType(). The result is empty.
     //We need to talk about this later
-    std::string tail_atom_type = tail_atom->MolecularDynamicAtom::GetAtomType(); 
-    std::string head_atom_type = head_atom_of_child_residue->MolecularDynamicAtom::GetAtomType(); 
+    /*
+    std::string tail_atom_type = tail_atom->MolecularDynamicAtom::GetAtomType();
+    std::string head_atom_type = head_atom_of_child_residue->MolecularDynamicAtom::GetAtomType();
     std::string tail_atom_hybridization = "";
     std::string head_atom_hybridization = "";
     double head_tail_bond_length = gmml::BOND_LENGTH;
     //look up hybridization state based on atom type
     int GLYCAM06J1ATOMTYPESSIZE = sizeof(gmml::MolecularMetadata::GLYCAM::Glycam06j1AtomTypes)/sizeof(gmml::MolecularMetadata::GLYCAM::Glycam06j1AtomTypes[0]);
     for (int j = 0; j < GLYCAM06J1ATOMTYPESSIZE; j++){
-	gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfo entry = gmml::MolecularMetadata::GLYCAM::Glycam06j1AtomTypes[j];
-	if (tail_atom_type == entry.type_){
-	    tail_atom_hybridization = entry.hybridization_;
-	}
-	if (head_atom_type == entry.type_){
-	    head_atom_hybridization = entry.hybridization_;
-	}
+        gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfo entry = gmml::MolecularMetadata::GLYCAM::Glycam06j1AtomTypes[j];
+        if (tail_atom_type == entry.type_){
+            tail_atom_hybridization = entry.hybridization_;
+        }
+        if (head_atom_type == entry.type_){
+            head_atom_hybridization = entry.hybridization_;
+        }
     }
     
-   //look up bond length based on hybridization of head and tail. 
+    //look up bond length based on hybridization of head and tail.
     int GLYCAM06J1BONDLENGTHSSIZE = sizeof(gmml::MolecularMetadata::GLYCAM::Glycam06j1BondLengths)/sizeof(gmml::MolecularMetadata::GLYCAM::Glycam06j1BondLengths[0]);
     for (int j = 0; j < GLYCAM06J1BONDLENGTHSSIZE; j++){
-	gmml::MolecularMetadata::GLYCAM::BondLengthByTypePair entry = gmml::MolecularMetadata::GLYCAM::Glycam06j1BondLengths[j];    
-	//Search bidirectionally e.g Cg-Os, Os-Cg
-	if ( (tail_atom_type == entry.type1_ && head_atom_type == entry.type2_) || (tail_atom_type == entry.type2_ && head_atom_type == entry.type1_) ){ 
-	    head_tail_bond_length = entry.length_;
-	}
+        gmml::MolecularMetadata::GLYCAM::BondLengthByTypePair entry = gmml::MolecularMetadata::GLYCAM::Glycam06j1BondLengths[j];
+        //Search bidirectionally e.g Cg-Os, Os-Cg
+        if ( (tail_atom_type == entry.type1_ && head_atom_type == entry.type2_) || (tail_atom_type == entry.type2_ && head_atom_type == entry.type1_) ){
+            head_tail_bond_length = entry.length_;
+        }
     }
+   */   //Above code replaced by Oliver 2018-10-26 with the code below that uses the new metadata classes:
+    std::string tail_atom_type = tail_atom->MolecularDynamicAtom::GetAtomType();
+    std::string head_atom_type = head_atom_of_child_residue->MolecularDynamicAtom::GetAtomType();
+
+    gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfoContainer amberAtomTypeInfoContainer;
+    gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfo entry = amberAtomTypeInfoContainer.GetEntryWithAtomType(head_atom_type);
+    std::string head_atom_hybridization = entry.hybridization_;
+    //entry = amberAtomTypeInfoContainer.GetEntryWithAtomType(tail_atom_type);
+    //std::string tail_atom_hybridization = entry.hybridization_; // OG: This is never used...
+
+    gmml::MolecularMetadata::GLYCAM::BondLengthByTypePairContainer bondLengthByTypePairContainer;
+    double head_tail_bond_length = bondLengthByTypePairContainer.GetBondLengthForAtomTypes(tail_atom_type, head_atom_type);
+    // End Oliver 2018-10-26 replacement code
 
     GeometryTopology::Coordinate* head_atom_coordinate = head_atom_of_child_residue->GetCoordinates().at(0);
     GeometryTopology::Coordinate* tail_head_atom_bond_vector = new GeometryTopology::Coordinate();
-    //for sp3 and sp2 hybridzation, sum up all bond vectors between tail atom and neighbors excluding head. Then tail-head bond vector is the opposite of the sum. 
-	//Normallize length of tail-head bond vector to bond length
+    //for sp3 and sp2 hybridzation, sum up all bond vectors between tail atom and neighbors excluding head. Then tail-head bond vector is the opposite of the sum.
+    //Normallize length of tail-head bond vector to bond length
     //if (tail_atom_hybridization == "sp3" || tail_atom_hybridization == "sp2"){
     if (head_atom_hybridization == "sp3" || head_atom_hybridization == "sp2"){
-	gmml::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
-	std::vector<GeometryTopology::Coordinate*> head_atom_bonds = std::vector<GeometryTopology::Coordinate*>();
-	for(unsigned int i = 0; i < head_atom_neighbors.size(); i++){
-	    MolecularModeling::Atom* neighbor = head_atom_neighbors[i];
-	    if (neighbor != tail_atom){
-	        GeometryTopology::Coordinate* neighbor_coordinate = neighbor->GetCoordinates().at(0);
-		GeometryTopology::Coordinate* head_neighbor_bond_vector = new GeometryTopology::Coordinate();
-		head_neighbor_bond_vector->SetX(neighbor_coordinate->GetX() - head_atom_coordinate->GetX());	
-		head_neighbor_bond_vector->SetY(neighbor_coordinate->GetY() - head_atom_coordinate->GetY());	
-		head_neighbor_bond_vector->SetZ(neighbor_coordinate->GetZ() - head_atom_coordinate->GetZ());	
-		head_atom_bonds.push_back(head_neighbor_bond_vector);
-	    }
-	}
-	double total_x=0.0;
-	double total_y=0.0;
-	double total_z=0.0;
-	for (unsigned int j = 0; j < head_atom_bonds.size(); j++){
-	    total_x += head_atom_bonds[j]->GetX();
-	    total_y += head_atom_bonds[j]->GetY();
-	    total_z += head_atom_bonds[j]->GetZ();
-	} 
-	tail_head_atom_bond_vector->SetX(-1 * total_x);
-	tail_head_atom_bond_vector->SetY(-1 * total_y);
-	tail_head_atom_bond_vector->SetZ(-1 * total_z);
-	double vector_length = tail_head_atom_bond_vector-> length();
-	tail_head_atom_bond_vector->SetX(head_tail_bond_length * tail_head_atom_bond_vector->GetX() / vector_length);
-	tail_head_atom_bond_vector->SetY(head_tail_bond_length * tail_head_atom_bond_vector->GetY() / vector_length);
-	tail_head_atom_bond_vector->SetZ(head_tail_bond_length * tail_head_atom_bond_vector->GetZ() / vector_length);
+        gmml::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
+        std::vector<GeometryTopology::Coordinate*> head_atom_bonds = std::vector<GeometryTopology::Coordinate*>();
+        for(unsigned int i = 0; i < head_atom_neighbors.size(); i++){
+            MolecularModeling::Atom* neighbor = head_atom_neighbors[i];
+            if (neighbor != tail_atom){
+                GeometryTopology::Coordinate* neighbor_coordinate = neighbor->GetCoordinates().at(0);
+                GeometryTopology::Coordinate* head_neighbor_bond_vector = new GeometryTopology::Coordinate();
+                head_neighbor_bond_vector->SetX(neighbor_coordinate->GetX() - head_atom_coordinate->GetX());
+                head_neighbor_bond_vector->SetY(neighbor_coordinate->GetY() - head_atom_coordinate->GetY());
+                head_neighbor_bond_vector->SetZ(neighbor_coordinate->GetZ() - head_atom_coordinate->GetZ());
+                head_neighbor_bond_vector->Normalize();
+                head_atom_bonds.push_back(head_neighbor_bond_vector);
+            }
+        }
+        double total_x=0.0;
+        double total_y=0.0;
+        double total_z=0.0;
+        for (unsigned int j = 0; j < head_atom_bonds.size(); j++){
+            total_x += head_atom_bonds[j]->GetX();
+            total_y += head_atom_bonds[j]->GetY();
+            total_z += head_atom_bonds[j]->GetZ();
+        }
+        tail_head_atom_bond_vector->SetX(-1 * total_x);
+        tail_head_atom_bond_vector->SetY(-1 * total_y);
+        tail_head_atom_bond_vector->SetZ(-1 * total_z);
+        double vector_length = tail_head_atom_bond_vector-> length();
+        tail_head_atom_bond_vector->SetX(head_tail_bond_length * tail_head_atom_bond_vector->GetX() / vector_length);
+        tail_head_atom_bond_vector->SetY(head_tail_bond_length * tail_head_atom_bond_vector->GetY() / vector_length);
+        tail_head_atom_bond_vector->SetZ(head_tail_bond_length * tail_head_atom_bond_vector->GetZ() / vector_length);
     }//if sp3/sp2
 
     //Add in logics for sp, s hybridization later,but for now:
     else{
-	std::cout << "Grafting: tail atom is not sp3/sp2, no rule for rotation right now. Aborting." << std::endl;
-	std::exit(1);
+        std::cout << "Grafting: tail atom is not sp3/sp2, no rule for rotation right now. Aborting." << std::endl;
+        std::exit(1);
     }
 
     //Obtain relative tail position
@@ -257,8 +274,8 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
     //Translate coordinates of all atoms in child residue by translation vector.
     gmml::AtomVector child_residue_atoms = head_atom_of_child_residue->GetResidue()->GetAtoms();
     for (unsigned int i = 0; i < child_residue_atoms.size(); i++){
-	GeometryTopology::Coordinate* current_position = child_residue_atoms[i]->GetCoordinates().at(0); 
-	current_position->Translate(translation_vector->GetX(), translation_vector->GetY(), translation_vector->GetZ());
+        GeometryTopology::Coordinate* current_position = child_residue_atoms[i]->GetCoordinates().at(0);
+        current_position->Translate(translation_vector->GetX(), translation_vector->GetY(), translation_vector->GetZ());
     }
 }
 
@@ -1302,7 +1319,7 @@ double Assembly::CalculateBondAngleByAtoms(MolecularModeling::Atom *atom1, Molec
     return acos(b1->DotProduct((*b2)) / b1->length() / b2->length());
 }
 
-double Assembly::CalculateTorsionAngleByCoordinates(GeometryTopology::Coordinate* atom1_crd, GeometryTopology::Coordinate* atom2_crd, GeometryTopology::Coordinate* atom3_crd, GeometryTopology::Coordinate* atom4_crd)
+double Assembly::CalculateTorsionAngleByCoordinates(GeometryTopology::Coordinate* atom1_crd, GeometryTopology::Coordinate* atom2_crd, GeometryTopology::Coordinate* atom3_crd, GeometryTopology::Coordinate* atom4_crd) //This defines angles in radians!!!!!!!!
 {
     double current_dihedral = 0.0;
 
@@ -1328,33 +1345,65 @@ double Assembly::CalculateTorsionAngleByCoordinates(GeometryTopology::Coordinate
     return current_dihedral;
 }
 
+
+// atom1Coordinates << atom1->GetId() << "X: " << a1->GetX() << " Y: " << a1->GetY() << " Z: " << a1->GetZ();
+// gmml::log(__LINE__, __FILE__, gmml::INF, atom1Coordinates.str());
 double Assembly::CalculateTorsionAngleByAtoms(MolecularModeling::Atom *atom1, MolecularModeling::Atom *atom2, MolecularModeling::Atom *atom3, MolecularModeling::Atom *atom4)
 {
-    double current_dihedral = 0.0;
-    GeometryTopology::Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
-    GeometryTopology::Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
-    GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
-    GeometryTopology::Coordinate* a4 = atom4->GetCoordinates().at(model_index_);
+  
+  double current_dihedral = 0.0;
+  GeometryTopology::Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
+  GeometryTopology::Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
+  GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
+  GeometryTopology::Coordinate* a4 = atom4->GetCoordinates().at(model_index_);
 
-    GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*a2);
-    b1->operator -(*a1);
-    GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*a3);
-    b2->operator -(*a2);
-    GeometryTopology::Coordinate* b3 = new GeometryTopology::Coordinate(*a4);
-    b3->operator -(*a3);
-    GeometryTopology::Coordinate* b4 = new GeometryTopology::Coordinate(*b2);
-    b4->operator *(-1);
+  GeometryTopology::Coordinate b1 = a2;
+  b1.operator -(*a1);
+  GeometryTopology::Coordinate b2 = a3;
+  b2.operator -(*a2);
+  GeometryTopology::Coordinate b3 = a4;
+  b3.operator -(*a3);
+  GeometryTopology::Coordinate b4 = b2;
+  b4.operator *(-1);
 
-    GeometryTopology::Coordinate* b2xb3 = new GeometryTopology::Coordinate(*b2);
-    b2xb3->CrossProduct(*b3);
+  GeometryTopology::Coordinate b2xb3 = b2;
+  b2xb3.CrossProduct(b3);
 
-    GeometryTopology::Coordinate* b1_m_b2n = new GeometryTopology::Coordinate(*b1);
-    b1_m_b2n->operator *(b2->length());
+  GeometryTopology::Coordinate b1_m_b2n = b1;
+  b1_m_b2n.operator *(b2.length());
 
-    GeometryTopology::Coordinate* b1xb2 = new GeometryTopology::Coordinate(*b1);
-    b1xb2->CrossProduct(*b2);
+  GeometryTopology::Coordinate b1xb2 = b1;
+  b1xb2.CrossProduct(b2);
 
-    current_dihedral = atan2(b1_m_b2n->DotProduct(*b2xb3), b1xb2->DotProduct(*b2xb3));
+  current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
+    // 
+    // 
+    // double current_dihedral = 0.0;
+    // GeometryTopology::Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
+    // std::stringstream atom1Coordinates;
+    // GeometryTopology::Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
+    // GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
+    // GeometryTopology::Coordinate* a4 = atom4->GetCoordinates().at(model_index_);
+    // 
+    // GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*a2);
+    // b1->operator -(*a1);
+    // GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*a3);
+    // b2->operator -(*a2);
+    // GeometryTopology::Coordinate* b3 = new GeometryTopology::Coordinate(*a4);
+    // b3->operator -(*a3);
+    // GeometryTopology::Coordinate* b4 = new GeometryTopology::Coordinate(*b2);
+    // b4->operator *(-1);
+    // 
+    // GeometryTopology::Coordinate* b2xb3 = new GeometryTopology::Coordinate(*b2);
+    // b2xb3->CrossProduct(*b3);
+    // 
+    // GeometryTopology::Coordinate* b1_m_b2n = new GeometryTopology::Coordinate(*b1);
+    // b1_m_b2n->operator *(b2->length());
+    // 
+    // GeometryTopology::Coordinate* b1xb2 = new GeometryTopology::Coordinate(*b1);
+    // b1xb2->CrossProduct(*b2);
+    // 
+    // current_dihedral = atan2(b1_m_b2n->DotProduct(*b2xb3), b1xb2->DotProduct(*b2xb3));
     return current_dihedral;
 }
 
@@ -1380,8 +1429,8 @@ void Assembly::GetCenterOfGeometry(GeometryTopology::Coordinate *center_of_geome
     double sumX = 0.0;
     double sumY = 0.0;
     double sumZ = 0.0;
-    CoordinateVector all_coords = this->GetAllCoordinates();
-    for(CoordinateVector::iterator it = all_coords.begin(); it != all_coords.end(); it++)
+    GeometryTopology::Coordinate::CoordinateVector all_coords = this->GetAllCoordinates();
+    for(GeometryTopology::Coordinate::CoordinateVector::iterator it = all_coords.begin(); it != all_coords.end(); it++)
     {
         GeometryTopology::Coordinate coord = *it;
         sumX += coord.GetX();

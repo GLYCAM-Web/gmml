@@ -457,7 +457,7 @@ void Assembly::ExtractTopologyBondsFromAssembly(std::vector<std::vector<std::str
     if(find(inserted_bonds.begin(), inserted_bonds.end(), bond) == inserted_bonds.end() &&
             find(inserted_bonds.begin(), inserted_bonds.end(), reverse_bond) == inserted_bonds.end())
     {
-        TopologyFileSpace::TopologyBond* topology_bond;
+        TopologyFileSpace::TopologyBond* topology_bond=NULL;
         if(find(inserted_bonds.begin(), inserted_bonds.end(), bond) == inserted_bonds.end())
         {
             topology_bond = new TopologyFileSpace::TopologyBond(atom_pair_name, residue_names);
@@ -587,7 +587,7 @@ void Assembly::ExtractTopologyAnglesFromAssembly(Atom* assembly_atom, Atom* neig
     if(find(inserted_angles.begin(), inserted_angles.end(), angle) == inserted_angles.end() &&
             find(inserted_angles.begin(), inserted_angles.end(), reverse_angle) == inserted_angles.end())
     {
-        TopologyFileSpace::TopologyAngle* topology_angle;
+        TopologyFileSpace::TopologyAngle* topology_angle=NULL;
         if(find(inserted_angles.begin(), inserted_angles.end(), angle) == inserted_angles.end())
         {
             topology_angle = new TopologyFileSpace::TopologyAngle(angle_atom_names, residue_names);

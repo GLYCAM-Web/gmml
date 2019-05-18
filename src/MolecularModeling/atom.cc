@@ -5,8 +5,8 @@
 #include "../../includes/MolecularModeling/oligosaccharidedetectionatom.hpp"
 #include "../../includes/MolecularModeling/atomnode.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
+#include "../../includes/GeometryTopology/coordinate.hpp"
 #include "cmath"
-#include <sstream>
 
 using MolecularModeling::Atom;
 //////////////////////////////////////////////////////////
@@ -16,11 +16,11 @@ Atom::Atom()
 {
 	this->index_ = this->generateAtomIndex();
 	// Call to private helper function.
-	this->SetAttributes(NULL, "", CoordinateVector(), "", "", "", NULL, "", false, "");
+	this->SetAttributes(NULL, "", GeometryTopology::Coordinate::CoordinateVector(), "", "", "", NULL, "", false, "");
 	this->SetBFactor(0);
 } // end Default Constructor
 
-Atom::Atom(MolecularModeling::Residue* residue, std::string name, CoordinateVector coordinates)
+Atom::Atom(MolecularModeling::Residue* residue, std::string name, GeometryTopology::Coordinate::CoordinateVector coordinates)
 {
 	this->index_ = this->generateAtomIndex();
 	std::stringstream ss;
@@ -35,7 +35,7 @@ Atom::Atom(MolecularModeling::Residue* residue, std::string name, GeometryTopolo
 	this->index_ = this->generateAtomIndex();
 	std::stringstream ss;
 	ss << name << "_" << this->GetIndex() << "_" << residue->GetName() << "_?_1_?_?_1";
-	CoordinateVector coordinates;
+	GeometryTopology::Coordinate::CoordinateVector coordinates;
 	coordinates.push_back(new GeometryTopology::Coordinate(coordinate.GetX(), coordinate.GetY(), coordinate.GetZ()));
 	this->SetAttributes(residue, name, coordinates, "", "", "", NULL, ss.str(), false, "");
 } // end Constructor
@@ -46,6 +46,14 @@ Atom::Atom(const Atom* atom)
 	this->Copy(atom);
 } // end Copy Constructor(*)
 
+
+/*! \todo  Figure out why the constructor below gets the error below and fix it.
+ 
+src/MolecularModeling/atom.cc: In copy constructor 'MolecularModeling::Atom::Atom(const MolecularModeling::Atom&)':
+src/MolecularModeling/atom.cc:51:1: warning: base class 'class MolecularModeling::MolecularDynamicAtom' should be explicitly initialized in the copy constructor [-Wextra]
+ Atom::Atom(const Atom& atom)
+ ^
+*/
 // Added by Ayush
 Atom::Atom(const Atom& atom)
 {
@@ -56,24 +64,6 @@ Atom::Atom(const Atom& atom)
 //////////////////////////////////////////////////////////
 //                       DESTRUCTOR                     //
 //////////////////////////////////////////////////////////
-// Atom::~Atom()
-// {
-// 	for(CoordinateVector::iterator it = this->coordinates_.begin(); it != this->coordinates_.end(); it++)
-// 	{
-// 		GeometryTopology::Coordinate* coordinate = (*it);
-// 		if(coordinate != NULL)
-// 		{
-// 			delete coordinate;
-// 			coordinate = NULL;
-// 		}
-// 	}
-// 	//this->coordinates_.clear();
-// 	if(this->node_ != NULL)
-// 	{
-// 		delete this->node_;
-// 		this->node_ = NULL;
-// 	}
-// } // end destructor
 
 //////////////////////////////////////////////////////////
 //                         ACCESSORS                    //
@@ -88,7 +78,7 @@ std::string Atom::GetName() const
 	return this->name_;
 } // end GetName
 
-Atom::CoordinateVector Atom::GetCoordinates() const
+GeometryTopology::Coordinate::CoordinateVector Atom::GetCoordinates() const
 {
 	return this->coordinates_;
 } // end GetCoordinates
@@ -162,10 +152,10 @@ void Atom::SetName(std::string name)
 	this->name_ = name;
 } // end SetName
 
-void Atom::SetCoordinates(CoordinateVector coordinates)
+void Atom::SetCoordinates(GeometryTopology::Coordinate::CoordinateVector coordinates)
 {
 	// First need to delete any previous Coordinates, so we don't have any memory leaks.
-	for(CoordinateVector::iterator it = this->coordinates_.begin(); it != this->coordinates_.end(); it++ )
+	for(GeometryTopology::Coordinate::CoordinateVector::iterator it = this->coordinates_.begin(); it != this->coordinates_.end(); it++ )
 	{
 		GeometryTopology::Coordinate* coordinate = (*it);
 		if(coordinate != NULL)
@@ -175,7 +165,7 @@ void Atom::SetCoordinates(CoordinateVector coordinates)
 		}
 	}
 	this->coordinates_.clear();
-	for(CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++) {
+	for(GeometryTopology::Coordinate::CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++) {
 		this->coordinates_.push_back(*it);
 	}
 }// end SetCoordinates
@@ -252,23 +242,26 @@ void Atom::FindConnectedAtoms(AtomVector& visitedAtoms)
 		}
 		if(!alreadyVisited)
 		{
-			(*neighbor)->FindConnectedAtoms(visitedAtoms); // recursive function call
+            (*neighbor)->FindConnectedAtoms(visitedAtoms); // recursive function call
 		}
 	}
 } // end FindConnectedAtoms
 
 double Atom::GetDistanceToAtom(Atom* otherAtom)
 {
-	return GetDistanceToCoordinate(otherAtom->GetCoordinates().at(0));
+    return GetDistanceToCoordinate(otherAtom->GetCoordinate());
 } // end GetDistanceToAtom
 
 double Atom::GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate)
 {
-	double x = (this->GetCoordinates().at(0)->GetX() - coordinate->GetX());
-	double y = (this->GetCoordinates().at(0)->GetY() - coordinate->GetY());
-	double z = (this->GetCoordinates().at(0)->GetZ() - coordinate->GetZ());
+    double x = (this->GetCoordinate()->GetX() - coordinate->GetX());
+    double y = (this->GetCoordinate()->GetY() - coordinate->GetY());
+    double z = (this->GetCoordinate()->GetZ() - coordinate->GetZ());
 	return sqrt((x * x) + (y * y) + (z * z));
 } // end GetDistanceToCoordinate
+
+
+
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
@@ -279,8 +272,8 @@ void Atom::Print(std::ostream& out)
 	out << "Element: "      << this->GetElementSymbol() << std::endl;
 	out << "Atom Type: "    << this->GetAtomType() << std::endl;
 	out << "Coordinates: "  << std::endl;
-	Atom::CoordinateVector coordinates = this->GetCoordinates();
-	for(Atom::CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
+	GeometryTopology::Coordinate::CoordinateVector coordinates = this->GetCoordinates();
+	for(GeometryTopology::Coordinate::CoordinateVector::iterator it = coordinates.begin(); it != coordinates.end(); it++)
 	{
 		GeometryTopology::Coordinate* coordinate = (*it);
 		if(coordinate != NULL)
@@ -319,15 +312,15 @@ void Atom::Copy(const Atom* atom)
 		delete this->node_;
 	}
 	this->node_ = new MolecularModeling::AtomNode(atom->GetNode());
-	CoordinateVector atomCoordinates = atom->GetCoordinates();
-	for(CoordinateVector::iterator it = atomCoordinates.begin(); it != atomCoordinates.end(); it++ )
+	GeometryTopology::Coordinate::CoordinateVector atomCoordinates = atom->GetCoordinates();
+	for(GeometryTopology::Coordinate::CoordinateVector::iterator it = atomCoordinates.begin(); it != atomCoordinates.end(); it++ )
 	{
 		GeometryTopology::Coordinate* tempCoordinate = (*it);
 		this->coordinates_.push_back(new GeometryTopology::Coordinate(tempCoordinate));
 	}
 } // end Copy
 
-void Atom::SetAttributes(	MolecularModeling::Residue* residue, std::string name, CoordinateVector coordinates,
+void Atom::SetAttributes(	MolecularModeling::Residue* residue, std::string name, GeometryTopology::Coordinate::CoordinateVector coordinates,
 							std::string chemical_type, std::string description, std::string element_symbol,
 							MolecularModeling::AtomNode* node, std::string id, bool is_ring, std::string atom_type)
 {
@@ -365,7 +358,7 @@ void Atom::SetAttributes(	MolecularModeling::Residue* residue, std::string name,
 // 	out << "Element: "      << atom.GetElementSymbol() << std::endl;
 // 	out << "Atom Type: "    << atom.MolecularDynamicAtom::GetAtomType()	<< std::endl;
 // 	out << "Coordinates: "  << std::endl;
-// 	for( Atom::CoordinateVector::iterator it = atom.GetCoordinates().begin(); it != atom.GetCoordinates().end(); it++ )
+// 	for( CoordinateVector::iterator it = atom.GetCoordinates().begin(); it != atom.GetCoordinates().end(); it++ )
 // 	{
 // 		GeometryTopology::Coordinate * coordinate = (*it);
 // 		out << "\t";

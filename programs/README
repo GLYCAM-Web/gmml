@@ -1,0 +1,2 @@
+Programs that are based on GMML go in here. 
+Tests can be added to the pre-push script in gmml to stop pushing of changes that would break the programs.

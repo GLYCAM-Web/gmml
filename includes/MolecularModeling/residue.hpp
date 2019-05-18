@@ -92,16 +92,22 @@ namespace MolecularModeling
               * @return id_ attribute of the current object of this class
               */
             std::string GetId();
-
             /*! \fn                                                                              //Added by ayush on 11/20/17 for residuenodes in assembly
               * An accessor function in order to access to the node
               * @return node_ attribute of the current object of this class
               */
             ResidueNode* GetNode();
 
-	    bool GetIsSugarDerivative();
+            bool GetIsSugarDerivative();
 
-	    bool GetIsAglycon();
+            bool GetIsAglycon();
+            /*! \fn
+            * An accessor function in order to access to the index
+            * @return index_ attribute of the current object of this class
+            */
+            unsigned long long GetIndex() const;
+            
+            bool GetIsSugar();
 
 /** @}*/
             //////////////////////////////////////////////////////////
@@ -197,15 +203,18 @@ namespace MolecularModeling
               */
             void ReplaceAtomCoordinates(AtomVector *newAtoms);
 
-	    void SetIsSugarDerivative(bool is_derivative);
+            void SetIsSugarDerivative(bool is_derivative);
 
-	    void SetIsAglycon(bool is_aglycon);
+            void SetIsAglycon(bool is_aglycon);
+            
+            
+            void SetIsSugar(bool is_sugar);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
 	    
-	    void BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue);
+            void BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue);
             /// Check if all atoms in the residue have their element symbols --> Label directly (1st priority)
             bool CheckSymbolBasedElementLabeling();
             /// Check if all atoms in the residue have their atom type --> Element symbols come from parameter file (2nd priority)
@@ -243,6 +252,9 @@ namespace MolecularModeling
             void WriteHetAtoms(std::ofstream& out);
 
         private:
+
+            unsigned long long generateIndex();
+
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
@@ -254,10 +266,15 @@ namespace MolecularModeling
             std::string chemical_type_;         /*!< A descriptor in order to describe chemical type of the residue >*/
             std::string description_;           /*!< A short description of the residue >*/
             std::string id_;                    /*!< An identifier for a residue that is generated based on the type of the given file from which the structure has to be built >*/
+            unsigned long long index_;         /*!< A unqiue index for each residue in an assembly >*/
+
 	    //Added by Yao 06/13/2018
 	    bool is_sugar_derivative_ = false;
 	    bool is_aglycon_ = false;
             ResidueNode* node_;                 /*!< A Pointer to a node of the graph structure that indicates this residue >*/              //Added by ayush on 11/20/17 for residuenode in assembly
+            
+      //Added by Dave 2/1/19
+      bool is_sugar_ = false;
     };
  }
 

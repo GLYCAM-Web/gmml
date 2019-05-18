@@ -26,6 +26,10 @@ std::string MolecularModeling::OligoSaccharideDetectionAtom::GetNaming()
 {
     return naming_;
 }
+OligoSaccharideDetectionAtom::OligosaccharidePropertyTags MolecularModeling::OligoSaccharideDetectionAtom::GetAllOligosaccharidePropertyTags()
+{
+    return oligosaccharide_properties_;
+}
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -44,6 +48,22 @@ void MolecularModeling::OligoSaccharideDetectionAtom::SetIsAnomericCarbon(bool i
 void MolecularModeling::OligoSaccharideDetectionAtom::SetNaming(std::string naming)
 {
     naming_ = naming;
+}
+void MolecularModeling::OligoSaccharideDetectionAtom::AddOligosaccharidePropertyTag (std::pair<std::string, std::string> role_tag_pair)
+{
+    oligosaccharide_properties_.insert(role_tag_pair);
+}
+void MolecularModeling::OligoSaccharideDetectionAtom::RemoveOligosaccharidePropertyTag (std::pair<std::string, std::string> role_tag_pair)
+{
+    std::string role = role_tag_pair.first;
+    std::string tag = role_tag_pair.second;
+    for (OligosaccharidePropertyTags::iterator it = oligosaccharide_properties_.begin(); it != oligosaccharide_properties_.end(); it++ ){
+	std::string map_role = it->first;
+	std::string map_tag = it->second;
+	if (map_role == role && map_tag == tag){
+	    oligosaccharide_properties_.erase(it);
+	}
+    }
 }
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //

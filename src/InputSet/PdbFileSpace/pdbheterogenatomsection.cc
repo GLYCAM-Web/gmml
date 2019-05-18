@@ -26,16 +26,62 @@ PdbHeterogenAtomSection::PdbHeterogenAtomSection(std::stringstream &stream_block
             gmml::Trim(record_name_);
             is_record_name_set=true;
         }
-
+        
+        std::string this_atom_name = line.substr(12, 4);
+        this_atom_name = gmml::Trim(this_atom_name);
+        std::string alternate_id = line.substr(16,1);
+        alternate_id = gmml::Trim(alternate_id);
+          // gmml::log(__LINE__, __FILE__, gmml::INF, this_atom_name + alternate_id + line.substr(17,3));
         PdbAtomCard* atom = new PdbAtomCard(line);
-        //int ch = 97 + ConvertString<int>(Split(index,"_")[1]);
-        atom->SetAtomCardIndexInResidueSet(index);
-        //atom->SetAtomChainId((char)ch);
-        heterogen_atom_cards_[atom->GetAtomSerialNumber()] = atom;
-        ordered_heterogen_atom_cards_.push_back(atom);
+        if((alternate_id.empty()) || (alternate_id == "A"))
+        {
+          //int ch = 97 + ConvertString<int>(Split(index,"_")[1]);
+          atom->SetAtomCardIndexInResidueSet(index);
+          //atom->SetAtomChainId((char)ch);
+          heterogen_atom_cards_[atom->GetAtomSerialNumber()] = atom;
+          ordered_heterogen_atom_cards_.push_back(atom);
 
-        getline(stream_block, line);
-        temp = line;
+          getline(stream_block, line);
+          temp = line;
+        }
+        else //There are alternate coordinates that need to be added to the correct atom.
+        {
+          
+          for(std::vector<PdbAtomCard*>::reverse_iterator rit = ordered_heterogen_atom_cards_.rbegin(); rit != ordered_heterogen_atom_cards_.rend(); rit++)
+          {
+            PdbAtomCard* thisAtomCard = *rit;
+            // gmml::log(__LINE__, __FILE__, gmml::INF, thisAtomCard->GetAtomName() + " " + atom->GetAtomName());
+            if(thisAtomCard->GetAtomName() == atom->GetAtomName())
+            {
+              // gmml::log(__LINE__, __FILE__, gmml::INF, thisAtomCard->GetAtomResidueName() + " " + atom->GetAtomResidueName());
+              if(thisAtomCard->GetAtomResidueName() == atom->GetAtomResidueName())
+              {
+                // gmml::log(__LINE__, __FILE__, gmml::INF,thisAtomCard->GetAtomChainId()  + " " + atom->GetAtomChainId());
+                // if(thisAtomCard->GetAtomChainId() == atom->GetAtomChainId())
+                // {
+                // gmml::log(__LINE__, __FILE__, gmml::INF,thisAtomCard->GetAtomResidueSequenceNumber()  + " " + atom->GetAtomResidueSequenceNumber());
+                  // if(thisAtomCard->GetAtomResidueSequenceNumber() == atom->GetAtomResidueSequenceNumber())
+                  // {
+                    // gmml::log(__LINE__, __FILE__, gmml::INF, "Added card");
+                    thisAtomCard->AddAlternateLocation(atom);
+                    // std::stringstream test;
+                    // test << thisAtomCard->GetAlternateAtomCards().size();
+                    // gmml::log(__LINE__, __FILE__, gmml::INF, test.str());
+                    // atom->AddAlternateLocation(thisAtomCard);
+                    break;
+                  // }
+                // }
+              }
+            }
+          }
+          
+          getline(stream_block, line);
+          temp = line;
+          // atom->SetAtomCardIndexInResidueSet(index);
+          // //atom->SetAtomChainId((char)ch);
+          // heterogen_atom_cards_[atom->GetAtomSerialNumber()] = atom;
+          // ordered_heterogen_atom_cards_.push_back(atom);
+        }
     }
 }
 
