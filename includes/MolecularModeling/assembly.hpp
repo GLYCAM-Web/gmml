@@ -1294,7 +1294,7 @@ namespace MolecularModeling
             * @param searchTerm The search term submitted from GlyFinder
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
-            std::string QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type = "csv");
+            std::string QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError = -1, int isWarning = -1, int isComment = -1, int isLigand = -1, int isGlycomimetic = -1, int isNucleotide = -1, std::string aglycon ="", int page = 1, int resultsPerPage = 25, std::string sortBy ="", std::string url ="", std::string output_file_type = "csv");
 
             std::string MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo, std::string url, std::string output_file_type);
             
