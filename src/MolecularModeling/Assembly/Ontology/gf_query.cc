@@ -18,7 +18,7 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
   query << "              :hasOligo      ?oligo.\n";
   query << "FILTER regex(?oligo, \"" << oligo << "$\")\n";
   gmml::FindReplaceString(oligo_sequence, "-OH", "-ROH");
-  query << "?oligo        :oligoName     \"" << oligo_sequence << "\".\n";
+  query << "?oligo        :oligoIUPACname     \"" << oligo_sequence << "\".\n";
   query << "?pdb_file     :hasTitle               ?title;\n";
   query << "              :hasAuthors             ?authors.\n";
   query << "OPTIONAL {";
@@ -37,20 +37,21 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
   query << "?oligo        :oligoResidueLinks      ?residue_links.}\n";
   query << "OPTIONAL {";
   query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.}\n";
-  query << "?oligo        :PDBfile           ?pdb_coordinates.}\n";
+  query << "?oligo        :PDBfile           ?pdb_coordinates.\n";
+  query << "?oligo        :hasMono            ?mono.\n";
   // query << "OPTIONAL {";
   // query << "?linkage      :hasParent 	            ?oligo;\n";
   // query << "              :glycosidicLinkage      ?glycosidic_linkage.}\n";
   query << "OPTIONAL {";
-  query << "?pdb_file       :hasNote       ?errorNote.\n";
+  query << "?mono       :hasNote       ?errorNote.\n";
   query << "?errorNote	    :NoteType      \"error\".\n";
   query << "?errorNote      :description   ?error.}\n";
   query << "OPTIONAL {";
-  query << "?pdb_file       :hasNote       ?warningNote.\n";
+  query << "?mono       :hasNote       ?warningNote.\n";
   query << "?warningNote    :NoteType      \"warning\".\n";
   query << "?warningNote    :description   ?warning.}\n";
   query << "OPTIONAL {";
-  query << "?pdb_file       :hasNote       ?commentNote.\n";
+  query << "?mono       :hasNote       ?commentNote.\n";
   query << "?commentNote    :NoteType      \"comment\".\n";
   query << "?commentNote    :description   ?comment.}\n";
   //add info for coordinates here
