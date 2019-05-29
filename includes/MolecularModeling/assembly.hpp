@@ -90,10 +90,10 @@ namespace MolecularModeling
               */
             Assembly(std::vector<std::vector<std::string> > file_paths, std::vector<gmml::InputFileType> types);
             Assembly(Assembly* assembly);
-            
+
             //An assembly built from a stringstream of atoms in PDB format
             Assembly(std::stringstream& atomStream);
-            
+
             //An assembly created by residues of another assembly
             Assembly(std::vector<MolecularModeling::Residue*> residueVector);
 
@@ -355,9 +355,9 @@ namespace MolecularModeling
 
 	    /*! \fn
               * A function in order to build an assembly from a condensed sequence, using a prep file as source data
-              * Convert a condensed sequence into assembly residues/atoms. Set ResidueNode, AtomNode. Set default phi/psi/omega angles. Crude adjust torsion values to resolve clashes. 
+              * Convert a condensed sequence into assembly residues/atoms. Set ResidueNode, AtomNode. Set default phi/psi/omega angles. Crude adjust torsion values to resolve clashes.
               * @param condensed_sequence The condensed sequence string, for example DManpa1-4DGlcpb1-OH
-	      * @param prep_file A prep file object. 
+	      * @param prep_file A prep file object.
               */
 	    void BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file);	//Created by Yao 06/25/2018, replace old version above
 	    /*! \fn
@@ -378,10 +378,10 @@ namespace MolecularModeling
 	    std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >
 		 ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree, TemplateAssembly* template_assembly);
 	    /*! \fn
-	      * A function that sets residue node and atom node connections for assembly residues based on the parent/child head/tail atom relationship of the corresponding condensed 
+	      * A function that sets residue node and atom node connections for assembly residues based on the parent/child head/tail atom relationship of the corresponding condensed
 		sequence residue.
 	      * This function is called by the new version of "BuildAssemblyFromCondensedSequence" function. It's part of the build process.
-	      * @param condensed_sequence_assembly_residue_map This map is the output of "ConvertCondensedSequence2AssemblyResidues". It's a map between a glycam06 residue and its corresponding 
+	      * @param condensed_sequence_assembly_residue_map This map is the output of "ConvertCondensedSequence2AssemblyResidues". It's a map between a glycam06 residue and its corresponding
 		assembly residue
 	      */
 	    void SetGlycam06ResidueBonding(std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >& condensed_sequence_assembly_residue_map);
@@ -417,19 +417,19 @@ namespace MolecularModeling
 	    /*! \fn
 	      * A function that resolves clashes in assembly atoms.
 	      * This is an orchestrator function that calls FindAllOmegaTorsionsInPathway and FindBestSetOfTorsions
-	      * @param fused_clashing_paths A map between a common ancestor residue(branching residue), and the residue vector containg all residues in a clashing pathway. 
+	      * @param fused_clashing_paths A map between a common ancestor residue(branching residue), and the residue vector containg all residues in a clashing pathway.
 	      * @param index_dihedral_map See above RecursivelyTagDihedrals @param documentation
 	      */
-	    void ResolveClashes(std::vector<MolecularModeling::Assembly::ResidueVector>& fused_clashing_paths, 
+	    void ResolveClashes(std::vector<MolecularModeling::Assembly::ResidueVector>& fused_clashing_paths,
 					std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& index_dihedral_map);
 
 	    /*! \fn
 	      * A function that finds all omega torsions in  pathway
 	      * The output of this function is a set of omega dihedrals. They will be rotated subsequently to resolve clases(limited grid search)
-	      * @param pathway A residue vector containing a clashing path. The code finds dihedrals within this path. 
+	      * @param pathway A residue vector containing a clashing path. The code finds dihedrals within this path.
 	      * @param dihedral_map See above.
 	      */
-	    std::vector< gmml::AtomVector* > FindAllOmegaTorsionsInPathway (MolecularModeling::Assembly::ResidueVector& pathway, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& 
+	    std::vector< gmml::AtomVector* > FindAllOmegaTorsionsInPathway (MolecularModeling::Assembly::ResidueVector& pathway, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >&
 									    dihedral_map);
 	    /*! \fn
 	      * A function that returns the set of coordinates with the lowest clashes that the algorithm can generate.
@@ -443,7 +443,7 @@ namespace MolecularModeling
 	      * @param all_dihedral_rotation_values A vector of pair, each pair is an atomvector containing four atoms, and a vector of double containing allowable rotation values
 		e.g pair<C4-O4-C1-C2, -5,0,5>; pair <C5-C6-O6-C1, -5,0,5>
 	      * @param current_dihedral_index The index of the current dihedral in the vector "all_dihedral_rotation_values". To initiate recursion from the nth dihedral, supply n-1 as argument
-	      * @param container_for_combinations A vector of individual rotation combination. Each individual combination is a vector of pair<AtomVector*, double>. Each pair represents a 
+	      * @param container_for_combinations A vector of individual rotation combination. Each individual combination is a vector of pair<AtomVector*, double>. Each pair represents a
 	      * particular dihedral and its corresponding rotation value.
 	      * angle_index_per_dihedral A temporary container holding the rotation value at each dihedral. To initiate a new recursion, supply an empty vector.
 	      */
@@ -463,11 +463,11 @@ namespace MolecularModeling
 	    /*! \fn
 	      * This function is the backend code that handles the website build rotamer feature
 	      * @param working_assembly The assembly from whose atoms rotamers will be populated, typically "this" assembly.
-	      * @param rotamers_glycosidic_angles_info A vector of "linkages". A linkage is a bond between monosaccharide residues in an oligosaccharide. Each linkage contains 
-		phi,psi, and sometime omega torsions. Detailed documentation check typedef. 
+	      * @param rotamers_glycosidic_angles_info A vector of "linkages". A linkage is a bond between monosaccharide residues in an oligosaccharide. Each linkage contains
+		phi,psi, and sometime omega torsions. Detailed documentation check typedef.
 	      * @index_dihedral_map See above.
 	      */
-            void GenerateRotamersForCondensedSequence(Assembly* working_assembly, CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo 
+            void GenerateRotamersForCondensedSequence(Assembly* working_assembly, CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo
 							rotamers_glycosidic_angles_info, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& index_dihedral_map);
             void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void RemoveHydrogenAtAttachedPosition(Residue* residue, int branch_index);
@@ -506,7 +506,7 @@ namespace MolecularModeling
                                           std::vector<std::string> other_lib_files = std::vector<std::string>(),
                                           std::vector<std::string> prep_files = std::vector<std::string>(),
                                           std::string parameter_file = "");
-            
+
             /*! \fn
               * A function to build a structure from a stringstream of atoms
               * Imports data from stringstream into central data structure
@@ -518,7 +518,7 @@ namespace MolecularModeling
               * Imports data from pdbqt file data structure into central data structure
               * @param pdbqt_file_path Path to a pdbqt file
               */
-              
+
             void BuildAssemblyFromPdbqtFile(std::string pdbqt_file_path, std::string parameter_file = "");
             /*! \fn
               * A function to build a structure from a single pdbqt file
@@ -739,7 +739,7 @@ namespace MolecularModeling
               * Exports data from assembly data structure into library file structure
               */
             LibraryFileSpace::LibraryFile* BuildLibraryFileStructureFromAssembly();
-            /*! \fn 
+            /*! \fn
               * A function to build a graph structure (bonding information) for the current object of central data structure
               * @param building_option A building option that can be selected from BuildingStructureOption enumerator
               * @param options List of additional options that can be defined by user
@@ -1294,12 +1294,12 @@ namespace MolecularModeling
             * @param searchTerm The search term submitted from GlyFinder
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
-            std::string QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError = -1, int isWarning = -1, int isComment = -1, int isLigand = -1, int isGlycomimetic = -1, int isNucleotide = -1, std::string aglycon ="", int page = 1, int resultsPerPage = 25, std::string sortBy ="", std::string url ="", std::string output_file_type = "csv");
+            std::string QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError = -1, int isWarning = -1, int isComment = -1, int isLigand = -1, int isGlycomimetic = -1, int isNucleotide = -1, std::string aglycon ="", std::string count = "False", int page = 1, int resultsPerPage = 25, std::string sortBy ="", std::string url ="", std::string output_file_type = "csv");
 
             std::string MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo, std::string url, std::string output_file_type);
-            
+
             std::string ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, std::string sortBy, std::string url, std::string output_file_type);
-            
+
             std::string ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, std::string sortBy, std::string url, std::string output_file_type);
 
             /*! \fn
@@ -1621,7 +1621,7 @@ namespace MolecularModeling
               */
             void AddModificationRuleTwoInfo(std::string key, std::string pattern, Glycan::Monosaccharide* mono, std::string long_name_pattern_at_minus_one, std::string long_name_pattern_at_plus_one,
                                             std::string cond_name_pattern, std::stringstream& tail, bool minus_one, std::stringstream& in_bracket);
-                                            
+
             /*! \fn
               * A function in order to add unknown derivative info to the name of the sugar
               * @param key The index of the atom which is a key in the derivative map
@@ -1632,9 +1632,9 @@ namespace MolecularModeling
               * @param head The stream that will be added to the beginning of monosaccharide name and will be updated by this function
               * @param minus_one A boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
               * @param in_bracket The boolean value which indicates whether anomeric carbon is attached to a non-ring carbon
-              */                                
-            void AddUnknownDerivativeRuleInfo(std::string key, std::string pattern, Glycan::Monosaccharide *mono, std::string long_name_pattern, 
-                                              std::string cond_name_pattern, std::stringstream &head, bool minus_one, std::stringstream &in_bracket);                                
+              */
+            void AddUnknownDerivativeRuleInfo(std::string key, std::string pattern, Glycan::Monosaccharide *mono, std::string long_name_pattern,
+                                              std::string cond_name_pattern, std::stringstream &head, bool minus_one, std::stringstream &in_bracket);
             /*! \fn
               * A function in order to add the derivative info to the name of the sugar based on the first group of rules (Error Position -> 5(r6),4(r5) )
               * @param key The index of the atom which is a key in the derivative map
