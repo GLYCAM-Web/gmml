@@ -132,6 +132,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     query << "?oligo        :hasMono                ?mono.\n";
     query << "?oligo        :oligoIUPACname              ?oligo_sequence.\n";
     query << "FILTER (!regex(?oligo_sequence, \"" << "Unknown" << "\"))\n";
+    query << "FILTER (!regex(?oligo_sequence, \"" << "HEM" << "\"))\n";
     if(search.str()=="Oligo_REGEX")
     {
       gmml::FindReplaceString(searchTerm, "[", "\\\\[");
