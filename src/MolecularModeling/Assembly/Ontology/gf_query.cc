@@ -97,6 +97,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
          query << "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n";
       }
     }
+
     query << Ontology::WHERE_CLAUSE;
     query << "?pdb_file     :identifier             ?pdb.\n";
     if(search.str()=="PDB")
@@ -247,8 +248,6 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       }
       query << "OFFSET " << resultsPerPage*(page - 1) << "\n";
     }
-
-
 
     return FormulateCURLGF(output_file_type, query.str(), url);
 }
