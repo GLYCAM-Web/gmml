@@ -192,7 +192,9 @@ void Assembly::ExtractOligosaccharideNamingMap(gmml::GlycamResidueNamingMap& pdb
         int parent_index = condensed_sequence_glycam06_residue_tree.at(index)->GetParentId();
         int carbon_index = gmml::ConvertString<int>(condensed_sequence_glycam06_residue_tree.at(index)->GetAnomericCarbon().substr(1));
         MolecularModeling::Atom* carbon_atom = NULL;
-        if(oligosaccharide->root_->derivatives_map_.find("-1") == oligosaccharide->root_->derivatives_map_.end())
+        if(std::find_if( oligosaccharide->root_->derivatives_map_.begin(), oligosaccharide->root_->derivatives_map_.end(),
+                        [](const std::pair<std::string, std::string>& element){ return element.first == "-1";}) == oligosaccharide->root_->derivatives_map_.end() )
+        // if(oligosaccharide->root_->derivatives_map_.find("-1") == oligosaccharide->root_->derivatives_map_.end())
         {
             if((carbon_index == 6 || carbon_index == 7 || carbon_index == 8) && carbon_atom == NULL)
                 if(oligosaccharide->root_->sugar_name_.ring_type_.compare("P") == 0)
@@ -459,6 +461,15 @@ void Assembly::UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue
 }
 
 
+/*! \todo  Give this function a return value.
+
+Here is the error:
+
+src/MolecularModeling/Assembly/glycamnaming.cc: In member function 'bool MolecularModeling::Assembly::PatternMatching(MolecularModeling::Residue*, MolecularModeling::Assembly::ResidueVector, gmml::GlycamAtomNameMap&, gmml::GlycamAtomNameMap&)':
+src/MolecularModeling/Assembly/glycamnaming.cc:568:1: warning: no return statement in function returning non-void [-Wreturn-type]
+ }
+ ^
+ */
 bool Assembly::PatternMatching(Residue *residue, ResidueVector query_residues, gmml::GlycamAtomNameMap &pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map)
 {
     CreatePrunedMatchingGraph(residue, query_residues);

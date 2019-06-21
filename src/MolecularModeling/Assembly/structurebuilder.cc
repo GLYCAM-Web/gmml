@@ -245,10 +245,10 @@ void* BuildStructureByDistanceThread(void* args){
     }
 
     //    std::cout << "Thread" << ti << " END" << std::endl;
-    pthread_exit((void*) ti);
+    pthread_exit((void*) &ti);
 }
 
-void* BuildStructureByDistanceByOptimizedThread(void* args){
+void* BuildStructureByDistanceByOptimizedThread(void* args){//This function should be changed to use atomic informatic to build structure by distance more intelligently
 
     MolecularModeling::DistanceCalculationThreadArgument* arg = (MolecularModeling::DistanceCalculationThreadArgument*)args;
     double cutoff = arg->cutoff;
@@ -311,6 +311,10 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){
         for(Assembly::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
         {
             MolecularModeling::Atom* neighbor_atom = (*it1);
+            
+            //TODO change cutoff based on atom elements
+            cutoff = arg->a->guessBondLengthByAtomType(atom, neighbor_atom);
+            
             // X distance
             if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
             {
@@ -344,7 +348,7 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){
     }
 
     //    std::cout << "Thread" << ti << " END" << std::endl;
-    pthread_exit((void*) ti);
+    pthread_exit((void*) &ti);
 }
 
 void* BuildStructureByDistanceByMatrixThread(void* args){
@@ -406,7 +410,7 @@ void* BuildStructureByDistanceByMatrixThread(void* args){
         }
         atom->SetNode(atom_node);
     }
-    pthread_exit((void*) ti);
+    pthread_exit((void*) &ti);
 }
 
 void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
@@ -483,7 +487,7 @@ void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
             }
         }
     }
-    pthread_exit((void*) ti);
+    pthread_exit((void*) &ti);
 }
 
 // MATRIX VERSION
@@ -604,20 +608,33 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
 ///First and second version
 void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, int model_index)
 {
+  int local_debug = 0;
     std::cout << "Building structure by distance ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
     model_index_ = model_index;
 
     pthread_t threads[number_of_threads];
     MolecularModeling::DistanceCalculationThreadArgument arg[number_of_threads];
+    if (local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "About to start for loop");
+    }
     for(int i = 0; i < number_of_threads; i++)
     {
+      if (local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(i));
+      }
         arg[i] = MolecularModeling::DistanceCalculationThreadArgument(i, number_of_threads, model_index, cutoff, this);
         //        pthread_create(&threads[i], NULL, &BuildStructureByDistanceThread, &arg[i]); ///First version. Workload of threads are not equal
         pthread_create(&threads[i], NULL, &BuildStructureByDistanceByOptimizedThread, &arg[i]); ///Second version. Workload of threads are roughly equal.
     }
     for(int i = 0; i < number_of_threads; i++)
     {
+      if (local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(i));
+      }
         pthread_join(threads[i], NULL);
     }
 }

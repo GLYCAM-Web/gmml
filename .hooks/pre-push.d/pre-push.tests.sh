@@ -36,16 +36,28 @@ cd -
 check_gemshome $gemshome 
 
 #Compile gmml if not compiled:
-echo "Pulling any gmml changes"
+echo "Pulling all changes"
 git pull
+result=$? # record the exit status of previous command
+if [ $result -eq 1 ] ; then
+    echo "Could not pull gmml"
+    exit 1
+fi
 echo "Compiling gmml with ./make.sh no_clean no_wrap"
 cd $GEMSHOME/
+ git pull
+ result=$? # record the exit status of previous command
+ if [ $result -eq 1 ] ; then
+     echo "Could not pull gems"
+     exit 1
+ fi
  #Add these removes so the tests don't pass on an old version of the library
  rm -f ./gmml/bin/libgmml.so.1.0.0
  rm -f ./gmml/bin/libgmml.so
  rm -f ./gmml/bin/libgmml.so.1
  rm -f ./gmml/bin/libgmml.so.1.0
- ./make.sh no_clean no_wrap
+ rm -rf gmml_wrap.cxx gmml_wrap.o gmml.py gmml.pyc _gmml.so
+ ./make.sh no_clean wrap
 cd -
 
 echo "Running mandatory tests..."
@@ -54,10 +66,7 @@ cd $GEMSHOME/gmml/tests/
  result=$? # record the exit status from compile_run_tests.bash
 cd -
 if [ $result -eq 0 ] ; then
-    echo  "GMML level tests have passed. Wrapping and doing gems level tests."
-    cd $GEMSHOME/
-     git pull
-     ./make.sh no_clean wrap
+    echo  "GMML level tests have passed. Doing gems level tests."
     cd $GEMSHOME/tests/
      bash run_tests.sh
      gems_tests_result=$? # record the exit status of previous command
@@ -68,12 +77,24 @@ if [ $result -eq 0 ] ; then
          exit 1
      else
          echo "GEMS level tests have passed. Checking glycoprotein builder."
+         if [ ! -d "$GEMSHOME/gmml/programs/" ]; then
+            mkdir $GEMSHOME/gmml/programs/
+         fi
          if [ ! -d "$GEMSHOME/gmml/programs/GlycoproteinBuilder" ]; then
              cd $GEMSHOME/gmml/programs/
              git clone https://github.com/gitoliver/GlycoProteinBuilder.git GlycoproteinBuilder
          fi
+         if [ ! -d "$GEMSHOME/gmml/programs/GlycoproteinBuilder" ]; then
+             echo "$GEMSHOME/gmml/programs/GlycoproteinBuilder does not exist and cannot be cloned. Push cancelled"
+             exit 1
+         fi
          cd $GEMSHOME/gmml/programs/GlycoproteinBuilder
          git pull
+         result=$? # record the exit status of previous command
+         if [ $result -eq 1 ] ; then
+             echo "Could not pull glycoprotein builder"
+             exit 1
+         fi
          make clean
          make
          ./run_tests.sh
@@ -84,6 +105,7 @@ if [ $result -eq 0 ] ; then
          else
              echo "The tests in $GEMSHOME/gmml/programs/GlycoproteinBuilder have failed. Check $GEMSHOME/gmml/programs/GlycoproteinBuilder/run_tests.sh" 
              echo "Push cancelled."
+             exit 1
          fi
      fi
 else

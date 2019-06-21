@@ -117,13 +117,13 @@ NAMES[${i}]=" NNLN  "
 ## O-linking to peptides/proteins
 i=$((i+1))
 TYPES[${i}]=" amino-acid O-linking mid-chain "
-NAMES[${i}]=" OLP  OLS  OLT   "
+NAMES[${i}]=" OLP  OLS  OLT  OLY   "
 i=$((i+1))
 TYPES[${i}]=" amino-acid O-linking C-terminal "
-NAMES[${i}]=" COLP  COLS COLT "
+NAMES[${i}]=" COLP COLS COLT COLY "
 i=$((i+1))
 TYPES[${i}]=" amino-acid O-linking N-terminal "
-NAMES[${i}]=" NOLP  NOLS  NOLT "
+NAMES[${i}]=" NOLP  NOLS  NOLT  NOLY "
 
 ###################################
 ##  Aglycons

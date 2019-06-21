@@ -1,6 +1,6 @@
-#include "../../../includes/MolecularModeling/GeometryOperation/geometry.hpp"
-#include "../../../includes/utils.hpp"
-#include "../../../includes/GeometryTopology/coordinate.hpp"
+#include "../../includes/GeometryTopology/rotation.hpp"
+#include "../../includes/GeometryTopology/coordinate.hpp"
+#include "../../includes/utils.hpp"
 
 #include <iostream>
 #include <math.h>
@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-GeometryOperation::Geometry::Geometry(){}
+GeometryTopology::Rotation::Rotation(){}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -21,7 +21,7 @@ GeometryOperation::Geometry::Geometry(){}
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-GeometryOperation::Geometry::CoordinateVector GeometryOperation::Geometry::RotateCoordinates(GeometryTopology::Coordinate* pivot_point,GeometryTopology::Coordinate* direction_point,double rotation_angle,GeometryOperation::Geometry::CoordinateVector coordinate_set)
+GeometryTopology::Coordinate::CoordinateVector GeometryTopology::Rotation::RotateCoordinates(GeometryTopology::Coordinate* pivot_point,GeometryTopology::Coordinate* direction_point,double rotation_angle,GeometryTopology::Coordinate::CoordinateVector coordinate_set)
 {
      //Please refer https://sites.google.com/site/glennmurray/Home/rotation-matrices-and-formulas/rotation-about-an-arbitrary-axis-in-3-dimensions for the technique used in coordinate rotation with respect to arbitrary axis.
 
@@ -62,8 +62,8 @@ GeometryOperation::Geometry::CoordinateVector GeometryOperation::Geometry::Rotat
         double oneMinusCosT = 1 - cosT;
         double sinT = sin(angle);
 
-        GeometryOperation::Geometry::CoordinateVector rotated_coordinate_set;
-        for(CoordinateVector::iterator it = coordinate_set.begin(); it != coordinate_set.end(); it++)
+        GeometryTopology::Coordinate::CoordinateVector rotated_coordinate_set;
+        for(GeometryTopology::Coordinate::CoordinateVector::iterator it = coordinate_set.begin(); it != coordinate_set.end(); it++)
         {
             GeometryTopology::Coordinate* coordinate = (*it);
 

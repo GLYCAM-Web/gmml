@@ -655,15 +655,20 @@ CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::Get
 CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSequence::GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree)
 {
     CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles = CondensedSequenceRotamersAndGlycosidicAnglesInfo();
-    int linkage_index = 0;
+    //int linkage_index = 0;
+    int linkage_index = -1; //For testing front end. -- Yao 
     for(unsigned int i = 0; i < residue_tree.size(); i++)
     {
         int parent = residue_tree.at(i)->GetParentId();
         if(parent >= 0)
         {
             linkage_index++;
+            std::cout << "linkage index at beginning of loop: " << linkage_index << std::endl;
             CondensedSequenceResidue* residue = residue_tree.at(i);
             std::string residue_absolute_name = residue->GetName().substr(0, 3) + residue->GetName().substr(4);
+	    std::cout << "current residue name: " << residue_absolute_name << std::endl;
+            std::string parent_res_name = residue_tree[parent]->GetName();
+            std::cout << "parent res name: " << parent_res_name << std::endl;
             char ring_letter = residue->GetName()[3];
             std::vector<std::pair<std::string, std::vector<std::string> > > possible_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
             std::vector<std::pair<std::string, std::vector<std::string> > > selected_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
@@ -672,11 +677,20 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
             enabled_glycosidic_angles.push_back(std::make_pair("psi", gmml::dNotSet));
             if(ring_letter == 'p')
             {
-                if(parent > 0)
+                if(parent >= 0) //For the first sugar residue, its parent is the aglycon,whose index is 0. So parent > 0 prevents addition of 1st sugar-aglycon bond into vector.
                 {
 
                     CondensedSequenceResidue* parent_residue = residue_tree.at(parent);
-                    std::string parent_residue_absolute_name = parent_residue->GetName().substr(0,3) + parent_residue->GetName().substr(4);
+                    std::string parent_residue_absolute_name = "";
+                    //If parent is something like an aglycon, OH, for example, its residue name is too short for substr(4), which causes segfault.
+                    //Below I added an if statement that if length of parent residue name is lower than 5, copy parent residue name. Otherwise, do the regular substring manipulation.
+		    if (parent_residue->GetName().length() < 5){
+			parent_residue_absolute_name = parent_residue->GetName();
+                    }
+                    else{
+                        parent_residue_absolute_name = parent_residue->GetName().substr(0,3) + parent_residue->GetName().substr(4);
+                    }
+                    std::cout << "second parent name: " << parent_residue_absolute_name << std::endl;
                     std::stringstream rotamers_name;
                     rotamers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration() << residue->GetAnomericCarbon() << "-" <<
                                      residue->GetOxygenPosition() << parent_residue->GetIsomer() << parent_residue->GetName() << parent_residue->GetConfiguration();
@@ -839,7 +853,7 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                             }
                             break;
                     }
-                    linkage_index++;
+                    //linkage_index++;  //Do not increment bond index upon derivative
                     std::stringstream der_rotamers_name;
                     der_rotamers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration()
                                       << "[" << derivative_index << derivative_name << "]";

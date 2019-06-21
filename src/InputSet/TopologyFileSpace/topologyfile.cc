@@ -1721,7 +1721,7 @@ std::vector<T> TopologyFile::PartitionLine(std::string line, std::string format)
             double base = gmml::ConvertString<double>(gmml::Split(token, "E")[0]);
             int power = gmml::ConvertString<int>(gmml::Split(token, "E")[1]);
             std::stringstream temp, format;
-            double result = base * pow10(power);
+            double result = base * pow(10, power);
             format << std::setw(16) << std::fixed << std::setprecision(8);
             temp << format.str() << result;
             T item = gmml::ConvertString<T>(temp.str());

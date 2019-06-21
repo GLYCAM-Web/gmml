@@ -55,13 +55,14 @@ PdbRemarkSection::PdbRemarkSection(std::stringstream &stream_block)
                     int start = line.find(":") + 1;
                     std::string tmp_b_factor = line.substr(start,80-start);
                     gmml::Trim( tmp_b_factor );
-                    // if(tmp_b_factor != "NULL") {
-                    //     this->SetBFactor( std::stof( tmp_b_factor ) );
-                    // }
+                    if(tmp_b_factor == "NULL") {
+                        this->SetBFactor(0);
+                    }
                     try {
                         this->SetBFactor( std::stof( tmp_b_factor ) );
                     } catch(const std::invalid_argument& error) {
                         gmml::log(__LINE__, __FILE__, gmml::ERR, "MEAN B VALUE is not a valid float value. Value:\t" + tmp_b_factor);
+                        this->SetBFactor(0);
                     }
                 }
                 getline(stream_block,line);

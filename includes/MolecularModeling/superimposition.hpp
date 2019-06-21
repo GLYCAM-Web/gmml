@@ -9,16 +9,15 @@
 //*******************************************
 
 typedef std::vector<MolecularModeling::Atom*> AtomVector;
-typedef std::vector<GeometryTopology::Coordinate*> CoordinateVector;
 typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
 
 //*******************************************
 
 namespace gmml
 {
-    CoordinateVector GetCoordinatesInAtomVector(AtomVector *atoms);
+    GeometryTopology::Coordinate::CoordinateVector GetCoordinatesInAtomVector(AtomVector *atoms);
 
-    CoordinateVector GetCoordinatesInAssemblyVector(AssemblyVector *assemblies);
+    GeometryTopology::Coordinate::CoordinateVector GetCoordinatesInAssemblyVector(AssemblyVector *assemblies);
 
     void GenerateMatrixFromAssembyCoordinates(MolecularModeling::Assembly *assembly, Eigen::Matrix3Xd *matrix);
 
@@ -28,15 +27,15 @@ namespace gmml
 
     //void ReplaceAtomVectorCoordinatesFromMatrix(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
 
-    void GenerateMatrixFromCoordinates(CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix);
+    void GenerateMatrixFromCoordinates(GeometryTopology::Coordinate::CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix);
 
-    void ReplaceCoordinatesFromMatrix(CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix);
+    void ReplaceCoordinatesFromMatrix(GeometryTopology::Coordinate::CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix);
 
     Eigen::Affine3d Find3DAffineTransform(Eigen::Matrix3Xd in, Eigen::Matrix3Xd out);
 
-    void Superimpose(CoordinateVector moving, CoordinateVector target);
+    void Superimpose(GeometryTopology::Coordinate::CoordinateVector moving, GeometryTopology::Coordinate::CoordinateVector target);
 
-    void Superimpose(CoordinateVector moving, CoordinateVector target, CoordinateVector alsoMoving);
+    void Superimpose(GeometryTopology::Coordinate::CoordinateVector moving, GeometryTopology::Coordinate::CoordinateVector target, GeometryTopology::Coordinate::CoordinateVector alsoMoving);
 
     void Superimpose(AtomVector moving, AtomVector target);
 

@@ -22,6 +22,25 @@
 namespace gmml
 {
     /*! \fn
+      * Convert degree to radian
+      * @param degree Magnitude of an angle in degree
+      * @return Magnitude of the given angle in radian
+      */
+    inline double ConvertDegree2Radian(double degree)
+    {
+        return degree/PI_DEGREE*gmml::PI_RADIAN;
+    }
+    /*! \fn
+      * Convert radian to degree
+      * @param radian Magnitude of an angle in radian
+      * @return Magnitude of the given angle in degree
+      */
+    inline double ConvertRadian2Degree(double radian)
+    {
+        return radian*PI_DEGREE/PI_RADIAN;
+    }
+
+    /*! \fn
       * Removes spaces on both sides of the string.
       * @param str String with spaces either in the beginning or at the end
       * @return Given string without spaces appeared in the beginning or at the end in the original one
@@ -276,236 +295,6 @@ namespace gmml
     }
 
     /*! \fn
-      * Convert degree to radian
-      * @param degree Magnitude of an angle in degree
-      * @return Magnitude of the given angle in radian
-      */
-    inline double ConvertDegree2Radian(double degree)
-    {
-        return degree/PI_DEGREE*gmml::PI_RADIAN;
-    }
-
-    /*! \fn
-      * Convert radian to degree
-      * @param radian Magnitude of an angle in radian
-      * @return Magnitude of the given angle in degree
-      */
-    inline double ConvertRadian2Degree(double radian)
-    {
-        return radian*PI_DEGREE/PI_RADIAN;
-    }
-
-    // I found that Coordinate has a subtract operator, but I cannot get it to work as I want. I already made this, and it works so...
-    inline GeometryTopology::Coordinate subtract_coordinates(GeometryTopology::Coordinate minuaend, GeometryTopology::Coordinate subtrahend)
-    {
-        GeometryTopology::Coordinate new_coordinate ( (minuaend.GetX()-subtrahend.GetX()), (minuaend.GetY()-subtrahend.GetY()), (minuaend.GetZ()-subtrahend.GetZ()) );
-        return new_coordinate;
-    }
-
-    inline GeometryTopology::Coordinate get_cartesian_point_from_internal_coords(GeometryTopology::Coordinate a, GeometryTopology::Coordinate b, GeometryTopology::Coordinate c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
-    {     // theta is the angle between 3 atoms. Phi is the torsion between 4 atoms.
-
-       //Convert from Degrees to Radians
-       //double theta_Radians = ( (theta_Degrees * PI_RADIAN) / 180 );
-        //double phi_Radians = ( (phi_Degrees * PI_RADIAN) / 180 );
-        double theta_Radians = ConvertDegree2Radian(theta_Degrees);
-        double phi_Radians = ConvertDegree2Radian(phi_Degrees);
-
-        Vector lmn_x, lmn_y, lmn_z;
-        double x_p, y_p, z_p;
-
-        Vector cb = subtract_coordinates(b, c);
-        Vector ba = subtract_coordinates(a, b);
-
-        lmn_y = ba;
-        lmn_y.CrossProduct(cb);
-        lmn_y.Normalize();
-
-        lmn_z = cb;
-        lmn_z.Normalize();
-
-        lmn_x = lmn_z;
-        lmn_x.CrossProduct(lmn_y);
-
-        x_p = distance_Angstrom *  sin(theta_Radians) * cos(phi_Radians);
-        y_p = distance_Angstrom * sin(theta_Radians) * sin(phi_Radians);
-        z_p = distance_Angstrom * cos(theta_Radians);
-
-        GeometryTopology::Coordinate new_coordinate ( lmn_x.GetX()*x_p + lmn_y.GetX()*y_p + lmn_z.GetX()*z_p + c.GetX(),
-                                                      lmn_x.GetY()*x_p + lmn_y.GetY()*y_p + lmn_z.GetY()*z_p + c.GetY(),
-                                                      lmn_x.GetZ()*x_p + lmn_y.GetZ()*y_p + lmn_z.GetZ()*z_p + c.GetZ());
-
-        return new_coordinate;
-      /*  return (GeometryTopology::Coordinate)
-        {
-            lmn_x.GetX()*x_p + lmn_y.GetX()*y_p + lmn_z.GetX()*z_p + c.GetX(),
-            lmn_x.GetY()*x_p + lmn_y.GetY()*y_p + lmn_z.GetY()*z_p + c.GetY(),
-            lmn_x.GetZ()*x_p + lmn_y.GetZ()*y_p + lmn_z.GetZ()*z_p + c.GetZ()
-        };
-                */
-    }
-
-    inline GeometryTopology::Coordinate get_cartesian_point_from_internal_coords(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
-    {
-        GeometryTopology::Coordinate new_coordinate = get_cartesian_point_from_internal_coords(a->GetCoordinates().at(0), b->GetCoordinates().at(0), c->GetCoordinates().at(0), theta_Degrees, phi_Degrees, distance_Angstrom);
-        return new_coordinate;
-        //return {new_coordinate.GetX(), new_coordinate.GetY(), new_coordinate.GetZ()};
-    }
-
-    /*! \fn
-      * Convert internal coordinate to the corresponding cartesian coordinate
-      * @param coordinate_list List of at most three internal coordinates in order to calculate the cartesian coordinate of the given internal coordinate (distance, angle, torsion)
-      * @param distance X value of the internal coordinate
-      * @param angle Y value of the interanl coordinate
-      * @param torsion Z value of the internal coordinate
-      * @return Cartesian coordinate of the internal coordinate (distance, angle, torsion)
-      */
-    inline GeometryTopology::Coordinate* ConvertInternalCoordinate2CartesianCoordinate(std::vector<GeometryTopology::Coordinate*> coordinate_list, double distance, double angle, double torsion)
-    {
-        if(coordinate_list.size() == 0)
-        {
-            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate();
-            return coordinate;
-        }
-        if(coordinate_list.size() == 1)
-        {
-            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(coordinate_list.at(0)->GetX() + distance, 0.0, 0.0);
-            return coordinate;
-        }
-        if(coordinate_list.size() == 2)
-        {
-            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(coordinate_list.at(1)->GetX() - cos(gmml::ConvertDegree2Radian(angle) * distance),
-                                                                        sin(gmml::ConvertDegree2Radian(angle)) * distance, 0.0);
-            return coordinate;
-        }
-        else
-        {
-            torsion = gmml::PI_DEGREE - torsion;
-
-            GeometryTopology::Coordinate great_grandparent_vector = GeometryTopology::Coordinate(coordinate_list.at(0)->GetX(), coordinate_list.at(0)->GetY(), coordinate_list.at(0)->GetZ());
-            GeometryTopology::Coordinate grandparent_vector = GeometryTopology::Coordinate(coordinate_list.at(1)->GetX(), coordinate_list.at(1)->GetY(), coordinate_list.at(1)->GetZ());
-            GeometryTopology::Coordinate parent_vector = GeometryTopology::Coordinate(coordinate_list.at(2)->GetX(), coordinate_list.at(2)->GetY(), coordinate_list.at(2)->GetZ());
-
-            GeometryTopology::Coordinate v1 = GeometryTopology::Coordinate(great_grandparent_vector);
-            GeometryTopology::Coordinate v2 = GeometryTopology::Coordinate(grandparent_vector);
-
-            v1.operator-(grandparent_vector);
-            v2.operator-(parent_vector);
-
-            v1.Normalize();
-            v2.Normalize();
-
-            if(abs(v1.GetX() + v2.GetX()) < gmml::EPSILON &&
-                    abs(v1.GetY() + v2.GetY()) < gmml::EPSILON &&
-                    abs(v1.GetZ() + v2.GetZ()) < gmml::EPSILON)
-            {
-                great_grandparent_vector.Translate(10.0, -1.0, 3);
-                v1 = GeometryTopology::Coordinate(grandparent_vector);
-                v1.operator-(great_grandparent_vector);
-            }
-
-            GeometryTopology::Coordinate v1_cross_v2 = GeometryTopology::Coordinate(v1);
-            v1_cross_v2.CrossProduct(v2);
-            v1_cross_v2.Normalize();
-            double matrix[3][4];
-            matrix[0][1] = v1_cross_v2.GetX();
-            matrix[1][1] = v1_cross_v2.GetY();
-            matrix[2][1] = v1_cross_v2.GetZ();
-
-            matrix[0][2] = v2.GetX();
-            matrix[1][2] = v2.GetY();
-            matrix[2][2] = v2.GetZ();
-
-            GeometryTopology::Coordinate v1_cross_v2_cross_v2 = GeometryTopology::Coordinate(v1_cross_v2);
-            v1_cross_v2_cross_v2.CrossProduct(v2);
-
-            matrix[0][0] = v1_cross_v2_cross_v2.GetX();
-            matrix[1][0] = v1_cross_v2_cross_v2.GetY();
-            matrix[2][0] = v1_cross_v2_cross_v2.GetZ();
-
-            matrix[0][3] = parent_vector.GetX();
-            matrix[1][3] = parent_vector.GetY();
-            matrix[2][3] = parent_vector.GetZ();
-
-            GeometryTopology::Coordinate v = GeometryTopology::Coordinate(distance * sin(ConvertDegree2Radian(angle)) * cos(ConvertDegree2Radian(torsion)),
-                                                                          distance * sin(ConvertDegree2Radian(angle)) * sin(ConvertDegree2Radian(torsion)),
-                                                                          distance * cos(ConvertDegree2Radian(angle)));
-
-            GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate(matrix[0][0] * v.GetX() + matrix[0][1] * v.GetY() + matrix[0][2] * v.GetZ() + matrix[0][3],
-                                                                                        matrix[1][0] * v.GetX() + matrix[1][1] * v.GetY() + matrix[1][2] * v.GetZ() + matrix[1][3],
-                                                                                        matrix[2][0] * v.GetX() + matrix[2][1] * v.GetY() + matrix[2][2] * v.GetZ() + matrix[2][3]);
-            return coordinate;
-        }
-    }
-
-    inline GeometryTopology::Coordinate* ConvertCartesianCoordinate2InternalCoordinate(GeometryTopology::Coordinate* coordinate, std::vector<GeometryTopology::Coordinate*> coordinate_list)
-    {
-        if(coordinate_list.size() == 0)
-            return new GeometryTopology::Coordinate();
-        if(coordinate_list.size() == 1)
-        {
-            GeometryTopology::Coordinate parent_vector = GeometryTopology::Coordinate(*coordinate_list.at(0));
-            double distance = coordinate->Distance(parent_vector);
-            return new GeometryTopology::Coordinate(distance, 0.0, 0.0);
-        }
-        if(coordinate_list.size() == 2)
-        {
-            GeometryTopology::Coordinate grandparent_vector = GeometryTopology::Coordinate(*coordinate_list.at(0));
-            GeometryTopology::Coordinate parent_vector = GeometryTopology::Coordinate(*coordinate_list.at(1));
-            double distance = coordinate->Distance(parent_vector);
-
-            GeometryTopology::Coordinate dist_current_parent_vector = GeometryTopology::Coordinate(*coordinate);
-            GeometryTopology::Coordinate dist_grandparent_parent_vector = GeometryTopology::Coordinate(grandparent_vector);
-            dist_current_parent_vector.operator -(parent_vector);
-            dist_grandparent_parent_vector.operator -(parent_vector);
-            double dist_current_parent = dist_current_parent_vector.length();
-            double dist_grandparent_parent = dist_grandparent_parent_vector.length();
-            double dist_current_parent_dot_grandparent_parent = dist_current_parent_vector.DotProduct(dist_grandparent_parent_vector);
-            double angle = ConvertRadian2Degree(acos(dist_current_parent_dot_grandparent_parent/(dist_current_parent * dist_grandparent_parent)));
-
-            return new GeometryTopology::Coordinate(distance, angle, 0.0);
-        }
-        else
-        {
-            GeometryTopology::Coordinate greatgrandparent_vector = GeometryTopology::Coordinate(*coordinate_list.at(0));
-            GeometryTopology::Coordinate grandparent_vector = GeometryTopology::Coordinate(*coordinate_list.at(1));
-            GeometryTopology::Coordinate parent_vector = GeometryTopology::Coordinate(*coordinate_list.at(2));
-            double distance = coordinate->Distance(parent_vector);
-
-            GeometryTopology::Coordinate dist_current_parent_vector = GeometryTopology::Coordinate(*coordinate);
-            GeometryTopology::Coordinate dist_grandparent_parent_vector = GeometryTopology::Coordinate(grandparent_vector);
-            dist_current_parent_vector.operator -(parent_vector);
-            dist_grandparent_parent_vector.operator -(parent_vector);
-            double dist_current_parent = dist_current_parent_vector.length();
-            double dist_grandparent_parent = dist_grandparent_parent_vector.length();
-            double dist_current_parent_dot_grandparent_parent = dist_current_parent_vector.DotProduct(dist_grandparent_parent_vector);
-            double angle = ConvertRadian2Degree(acos(dist_current_parent_dot_grandparent_parent/(dist_current_parent * dist_grandparent_parent)));
-
-            GeometryTopology::Coordinate dist_parent_current_vector = GeometryTopology::Coordinate(parent_vector);
-            dist_parent_current_vector.operator -(*coordinate);
-            GeometryTopology::Coordinate dist_grandparent_parent_vector_1 = GeometryTopology::Coordinate(grandparent_vector);
-            dist_grandparent_parent_vector_1.operator -(parent_vector);
-            GeometryTopology::Coordinate dist_greatgrandparent_grandparent_vector = GeometryTopology::Coordinate(greatgrandparent_vector);
-            dist_greatgrandparent_grandparent_vector.operator -(grandparent_vector);
-            GeometryTopology::Coordinate dist_grandparent_parent_cross_dist_greatgrandparent_grandparent_vector =
-                    GeometryTopology::Coordinate(dist_grandparent_parent_vector);
-            dist_grandparent_parent_cross_dist_greatgrandparent_grandparent_vector.CrossProduct(dist_greatgrandparent_grandparent_vector);
-            GeometryTopology::Coordinate dist_parent_current_cross_dist_grandparent_parent_vector = GeometryTopology::Coordinate(dist_parent_current_vector);
-            dist_parent_current_cross_dist_grandparent_parent_vector.CrossProduct(dist_grandparent_parent_vector_1);
-            GeometryTopology::Coordinate dist_parent_current_multiply_dist_grandparent_parent_vector = GeometryTopology::Coordinate(dist_parent_current_vector);
-            dist_parent_current_multiply_dist_grandparent_parent_vector.operator *(dist_grandparent_parent_vector.length());
-
-            double torsion = ConvertRadian2Degree(
-                        atan2(dist_parent_current_multiply_dist_grandparent_parent_vector.DotProduct(
-                                  dist_grandparent_parent_cross_dist_greatgrandparent_grandparent_vector),
-                              dist_parent_current_cross_dist_grandparent_parent_vector.DotProduct(
-                                  dist_grandparent_parent_cross_dist_greatgrandparent_grandparent_vector)));
-
-            return new GeometryTopology::Coordinate(distance, angle, torsion);
-        }
-    }
-
-    /*! \fn
       * A function in order to look up the stereochemistry name of the sugar structure based on the given string version of the chemical code structure
       * @param code The string chemical code structure
       * @return SUGARNAMELOOKUP The matched row of the lookup table with the given code
@@ -515,6 +304,17 @@ namespace gmml
         for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)
         {
             if(code.compare(SUGARNAMELOOKUP[i].chemical_code_string_) == 0){
+                return SUGARNAMELOOKUP[i];
+            }
+        }
+        return SUGARNAMELOOKUP[0];
+    }
+    
+    inline Glycan::SugarName ResidueSugarNameLookup(std::string residue)
+    {
+        for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)
+        {
+            if(residue.compare(SUGARNAMELOOKUP[i].pdb_code_) == 0){
                 return SUGARNAMELOOKUP[i];
             }
         }
@@ -663,6 +463,16 @@ namespace gmml
         for(int i = 0; i < COMPLEXSUGARNAMELOOKUPSIZE; i++)
         {
             if(code.compare(COMPLEXSUGARNAMELOOKUP[i].chemical_code_string_) == 0)
+                return COMPLEXSUGARNAMELOOKUP[i];
+        }
+        return COMPLEXSUGARNAMELOOKUP[0];
+    }
+    
+    inline Glycan::SugarName ResidueComplexSugarNameLookup(std::string residue)
+    {
+        for(int i = 0; i < COMPLEXSUGARNAMELOOKUPSIZE; i++)
+        {
+            if(residue.compare(COMPLEXSUGARNAMELOOKUP[i].pdb_code_) == 0)
                 return COMPLEXSUGARNAMELOOKUP[i];
         }
         return COMPLEXSUGARNAMELOOKUP[0];

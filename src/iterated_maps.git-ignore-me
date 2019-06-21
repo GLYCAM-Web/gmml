@@ -1,0 +1,29 @@
+MolecularModeling/Assembly/glycamnaming.cc:            for(std::map<std::string, Residue*>::iterator it1 = residue_set.begin(); it1 != residue_set.end(); it1++)
+MolecularModeling/Assembly/selection.cc:    //        for(std::map<std::string, std::vector<std::string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
+MolecularModeling/Assembly/selection.cc:            for(std::map<std::string, std::vector<std::string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
+MolecularModeling/Assembly/selection.cc:                    for(std::map<std::string, std::vector<std::string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
+MolecularModeling/Assembly/selection.cc:                        for(std::map<std::string, std::vector<std::string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
+MolecularModeling/Assembly/SugarIdentification/ringperception.cc:                std::map<std::string, Atom*>::iterator mit = IdAtom.find(atom_str);
+MolecularModeling/Assembly/SugarIdentification/ringperception.cc:                std::map<std::string, Atom*>::iterator mit = IdAtom.find(atom_str);
+MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc:  for (std::map <unsigned long long, std::pair<std::string, AtomVector> >::iterator it = ordered_cycles_map.begin(); it != ordered_cycles_map.end(); it++){
+MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc:      for( std::map< std::string, std::string >::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++ ) {
+MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc:    for(std::map<std::string, std::string>::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++)
+MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc:    for( std::map< std::string, std::string >::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++ ) {
+MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc:            for(std::map<MolecularModeling::Atom*, MolecularModeling::Atom*>::iterator map_it = target_parent_map.begin(); map_it != target_parent_map.end(); map_it++)
+MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc:    for(std::map<Glycan::Monosaccharide*, std::vector<Glycan::Monosaccharide*> >::iterator it = monos_table.begin(); it != monos_table.end(); it++)
+MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc:    for(std::map<Glycan::Monosaccharide*, std::vector<Glycan::Monosaccharide*> >::iterator it = monos_table.begin(); it != monos_table.end(); it++)
+MolecularModeling/Assembly/assemblybuilder.cc:		    for (std::map<Atom*, AtomNode*>::iterator it = new_atom_template_node_map.begin(); it != new_atom_template_node_map.end(); it++){
+MolecularModeling/Assembly/assemblybuilder.cc:     for (std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >::iterator it = index_condensed_sequence_assembly_residue_map.begin() ;
+MolecularModeling/Assembly/assemblybuilder.cc:    for (std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >::iterator it = index_condensed_sequence_assembly_residue_map.begin() ;
+MolecularModeling/Assembly/assemblybuilder.cc:	for (std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >::iterator it2 = index_condensed_sequence_assembly_residue_map.begin() ;
+MolecularModeling/Assembly/assemblybuilder.cc:    for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>::iterator map_it = condensed_assembly_residue_map.begin(); 
+MolecularModeling/Assembly/assemblybuilder.cc:    for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> ::iterator it = condensed_assembly_residue_map.begin();
+MolecularModeling/Assembly/assemblybuilder.cc:    for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>::iterator it =condensed_assembly_residue_map.begin();
+MolecularModeling/Assembly/assemblybuilder.cc:	for (std::map<MolecularModeling::Atom*, MolecularModeling::Atom*>::iterator tail_head_mapit = parent_tail_child_head_map.begin(); 
+MolecularModeling/Assembly/assemblybuilder.cc:	for (std::map<MolecularModeling::Atom*, MolecularModeling::Atom*>::iterator it2 = parent_tail_child_head_map.begin(); it2 != parent_tail_child_head_map.end(); it2++){
+MolecularModeling/Assembly/assemblybuilder.cc:	for (std::map<MolecularModeling::Atom*, MolecularModeling::Atom*>::iterator it2 = parent_tail_child_head_map.begin(); it2 != parent_tail_child_head_map.end(); it2++){
+MolecularModeling/Assembly/assemblybuilder.cc:	for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*>::iterator mapit = 
+MolecularModeling/Assembly/assemblybuilder.cc:    for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >::iterator it = 
+MolecularModeling/Assembly/Output/topologybuilder.cc:    for(std::map<std::string, std::vector<std::string> >::iterator it = excluded_atom_list_map.begin(); it != excluded_atom_list_map.end(); it++)
+ParameterSet/OffFileSpace/offfile.cc:                std::map<int,int>::iterator it1,it2;
+ParameterSet/OffFileSpace/offfile.cc:                    std::map<int,int>::iterator it = atom_index_map_.find(atom->GetIndex());
