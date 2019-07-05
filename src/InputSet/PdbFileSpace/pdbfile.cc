@@ -239,49 +239,55 @@ PdbFile::PdbFile(const std::string &pdb_file)
     in_file.close();            /// Close the pdb files
 }
 
-// PdbFile::PdbFile(std::stringstream atomStream)
-// {
-//   path_ = "";
-//   header_ = NULL;
-//   obsolete_ = NULL;
-//   title_ = NULL;
-//   split_ = NULL;
-//   caveat_ = NULL;
-//   compound_ = NULL;
-//   source_ = NULL;
-//   keywords_ = NULL;
-//   experimental_data_ = NULL;
-//   number_of_models_ = NULL;
-//   model_type_ = NULL;
-//   author_ = NULL;
-//   revision_data_ = NULL;
-//   superseded_entries_ = NULL;
-//   journal_ = NULL;
-//   remark_cards_ = NULL;
-//   database_reference_ = NULL;
-//   sequence_advanced_ = NULL;
-//   residues_sequence_ = NULL;
-//   residue_modification_cards_ = NULL;
-//   heterogen_cards_ = NULL;
-//   heterogen_name_cards_ = NULL;
-//   heterogen_synonym_cards_ = NULL;
-//   formulas_ = NULL;
-//   helix_cards_ = NULL;
-//   sheet_cards_ = NULL;
-//   disulfide_bonds_ = NULL;
-//   link_cards_ = NULL;
-//   cis_peptide_ = NULL;
-//   site_cards_ = NULL;
-//   crystallography_ = NULL;
-//   origins_ = NULL;
-//   scales_ = NULL;
-//   matrices_ = NULL;
-//   models_ = NULL;
-//   connectivities_ = NULL;
-//   serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
-//   sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
-//   master_ = NULL;
-// }
+PdbFile::PdbFile(std::stringstream& atomStream)
+{
+  path_ = "";
+  header_ = NULL;
+  obsolete_ = NULL;
+  title_ = NULL;
+  split_ = NULL;
+  caveat_ = NULL;
+  compound_ = NULL;
+  source_ = NULL;
+  keywords_ = NULL;
+  experimental_data_ = NULL;
+  number_of_models_ = NULL;
+  model_type_ = NULL;
+  author_ = NULL;
+  revision_data_ = NULL;
+  superseded_entries_ = NULL;
+  journal_ = NULL;
+  remark_cards_ = NULL;
+  database_reference_ = NULL;
+  sequence_advanced_ = NULL;
+  residues_sequence_ = NULL;
+  residue_modification_cards_ = NULL;
+  heterogen_cards_ = NULL;
+  heterogen_name_cards_ = NULL;
+  heterogen_synonym_cards_ = NULL;
+  formulas_ = NULL;
+  helix_cards_ = NULL;
+  sheet_cards_ = NULL;
+  disulfide_bonds_ = NULL;
+  link_cards_ = NULL;
+  cis_peptide_ = NULL;
+  site_cards_ = NULL;
+  crystallography_ = NULL;
+  origins_ = NULL;
+  scales_ = NULL;
+  matrices_ = NULL;
+  models_ = NULL;
+  connectivities_ = NULL;
+  serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
+  sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
+  master_ = NULL;
+  
+  if(!Read(atomStream))
+  {
+    throw PdbFileProcessingException(__LINE__, "Reading atom stringstream failed");
+  }
+  
+}
 
 PdbFile* PdbFile::LoadPdbFile()
 {
@@ -3274,6 +3280,32 @@ bool PdbFile::Read(std::ifstream &in_file)
 	return true;
 }
 
+bool PdbFile::Read(std::stringstream &atomstream)
+{
+  if(!this->ParseAtomStream(atomstream))
+    return false;
+  return true;
+}
+
+bool PdbFile::ParseAtomStream(std::stringstream &atomstream)
+{
+  //This function is to take an input of just atom cards in a stringstream and create a PdbFile object
+
+  std::string line;
+  getline(atomstream, line);
+  line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+  std::string record_name = line.substr(0,6);
+  record_name = gmml::Trim(record_name);
+  
+  models_ = new PdbFileSpace::PdbModelSection(atomstream);
+  
+  if(models_ == NULL)
+  {
+    return false;
+  }
+  return true;
+}
+
 bool PdbFile::ParseCards(std::ifstream &in_stream)
 {
     std::string line;
@@ -5035,7 +5067,10 @@ bool PdbFile::ParseEndCard(std::ifstream& stream, std::string& line)
     // end_ = new PdbEndCard(stream_block);
     return true;
 }
-
+void PdbFile::WriteToStringstream(std::ostringstream& pdbstream)
+{
+  this->ResolveCards(pdbstream);
+}
 void PdbFile::Write(const std::string& pdb_file)
 {
     std::ofstream out_file;
@@ -5078,7 +5113,7 @@ void PdbFile::WriteWithTheGivenModelNumber(const std::string& pdb_file, int mode
     }
 }
 
-void PdbFile::ResolveCards(std::ofstream& out_stream)
+void PdbFile::ResolveCards(std::ostream& out_stream)
 {
     if(this->header_ != NULL)
     {
@@ -5382,7 +5417,7 @@ void PdbFile::ResolveCardsWithTheGivenModelNumber(std::ofstream& out_stream, int
     this->ResolveEndCard(out_stream);
 }
 
-void PdbFile::ResolveHeaderCard(std::ofstream& stream)
+void PdbFile::ResolveHeaderCard(std::ostream& stream)
 {
     stream << std::left << std::setw(6) << header_->GetRecordName()
            << std::left << std::setw(4) << " "
@@ -5394,7 +5429,7 @@ void PdbFile::ResolveHeaderCard(std::ofstream& stream)
            << std::endl;
 }
 
-void PdbFile::ResolveObsoleteCards(std::ofstream& stream)
+void PdbFile::ResolveObsoleteCards(std::ostream& stream)
 {
     stream << std::left << std::setw(6) << obsolete_->GetRecordName()
           << std::left << std::setw(2) << " "
@@ -5412,7 +5447,7 @@ void PdbFile::ResolveObsoleteCards(std::ofstream& stream)
           << std::endl;
 }
 
-void PdbFile::ResolveTitleCards(std::ofstream& stream)
+void PdbFile::ResolveTitleCards(std::ostream& stream)
 {
     const int MAX_TITLE_LENGTH_IN_LINE = 70;
     stream << std::left << std::setw(6) << title_->GetRecordName()
@@ -5452,7 +5487,7 @@ void PdbFile::ResolveTitleCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveSplitCards(std::ofstream& stream)
+void PdbFile::ResolveSplitCards(std::ostream& stream)
 {
      const int MAX_SPLIT_ID_IN_LINE = 79;
      stream << std::left << std::setw(6) << split_->GetRecordName()
@@ -5491,7 +5526,7 @@ void PdbFile::ResolveSplitCards(std::ofstream& stream)
      }
 }
 
-void PdbFile::ResolveCaveatCards(std::ofstream& stream)
+void PdbFile::ResolveCaveatCards(std::ostream& stream)
 {
     const int MAX_CAVEAT_LENGTH_IN_LINE = 70;
     stream << std::left << std::setw(6) << caveat_->GetRecordName()
@@ -5531,7 +5566,7 @@ void PdbFile::ResolveCaveatCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveCompoundCards(std::ofstream& stream)
+void PdbFile::ResolveCompoundCards(std::ostream& stream)
 {
     const int MAX_LENGTH_OF_COMPOUND_SPEC_IN_LINE = 70;
     stream << std::left << std::setw(6) << compound_->GetRecordName()
@@ -5912,7 +5947,7 @@ void PdbFile::ResolveCompoundCards(std::ofstream& stream)
 
 }
 
-void PdbFile::ResolveSourceCards(std::ofstream& stream)
+void PdbFile::ResolveSourceCards(std::ostream& stream)
 {
   int SOURCE_COUNT = 1;
   SourceCardVector source_cards = source_->GetSourceCards();
@@ -5937,7 +5972,7 @@ void PdbFile::ResolveSourceCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveKeywordCards(std::ofstream& stream)
+void PdbFile::ResolveKeywordCards(std::ostream& stream)
 {
   const int MAX_KEYWORDS_LENGTH_IN_LINE = 70;
   stream << std::left << std::setw(6) << keywords_->GetRecordName()
@@ -5977,7 +6012,7 @@ void PdbFile::ResolveKeywordCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveExperimentalDataCards(std::ofstream& stream)
+void PdbFile::ResolveExperimentalDataCards(std::ostream& stream)
 {
   const int MAX_EXPDTA_LENGTH_IN_LINE = 70;
   stream << std::left << std::setw(6) << experimental_data_->GetRecordName()
@@ -6016,7 +6051,7 @@ void PdbFile::ResolveExperimentalDataCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveNumModelCard(std::ofstream& stream)
+void PdbFile::ResolveNumModelCard(std::ostream& stream)
 {
     stream << std::left << std::setw(6) << number_of_models_->GetRecordName()
            << std::left << std::setw(4) << " ";
@@ -6028,7 +6063,7 @@ void PdbFile::ResolveNumModelCard(std::ofstream& stream)
            << std::endl;
 }
 
-void PdbFile::ResolveModelTypeCards(std::ofstream& stream)
+void PdbFile::ResolveModelTypeCards(std::ostream& stream)
 {
     stream << std::left << std::setw(6) << model_type_->GetRecordName()
            << std::left << std::setw(2) << " ";
@@ -6079,7 +6114,7 @@ void PdbFile::ResolveModelTypeCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveAuthorCards(std::ofstream& stream)
+void PdbFile::ResolveAuthorCards(std::ostream& stream)
 {
   const int MAX_AUTHOR_LENGTH_IN_LINE = 70;
   stream << std::left << std::setw(6) << author_->GetRecordName()
@@ -6118,7 +6153,7 @@ void PdbFile::ResolveAuthorCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveRevisionDataCards(std::ofstream& stream)
+void PdbFile::ResolveRevisionDataCards(std::ostream& stream)
 {
   int REVDAT_COUNT = 1;
   int REVDAT_NUM = 0;
@@ -6167,12 +6202,12 @@ void PdbFile::ResolveRevisionDataCards(std::ofstream& stream)
 
 }
 
-void PdbFile::ResolveSupersededEntriesCards(std::ofstream& stream)
+void PdbFile::ResolveSupersededEntriesCards(std::ostream& stream)
 {
 	stream << "";
 }
 
-void PdbFile::ResolveJournalCards(std::ofstream& stream)
+void PdbFile::ResolveJournalCards(std::ostream& stream)
 {
   const int MAX_JOURNAL_LENGTH_IN_LINE = 67;
   stream << std::left << std::setw(6) << journal_->GetRecordName()
@@ -6209,12 +6244,12 @@ void PdbFile::ResolveJournalCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveRemarkCards(std::ofstream& stream)
+void PdbFile::ResolveRemarkCards(std::ostream& stream)
 {
   stream << std::left << remark_cards_->GetRemarks();
 }
 
-void PdbFile::ResolveDatabaseReferenceCards(std::ofstream& stream)
+void PdbFile::ResolveDatabaseReferenceCards(std::ostream& stream)
 {
   DatabaseReferenceVector database_reference_cards = database_reference_->GetDatabaseReferences();
   for (DatabaseReferenceVector::iterator it = database_reference_cards.begin(); it != database_reference_cards.end(); it++)
@@ -6281,7 +6316,7 @@ void PdbFile::ResolveDatabaseReferenceCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveSequenceAdvancedCards(std::ofstream& stream)
+void PdbFile::ResolveSequenceAdvancedCards(std::ostream& stream)
 {
   SequenceAdvancedCardVector sequence_advanced_cards = sequence_advanced_->GetSequenceAdvancedCards();
   for (SequenceAdvancedCardVector::iterator it = sequence_advanced_cards.begin(); it != sequence_advanced_cards.end(); it++)
@@ -6310,7 +6345,7 @@ void PdbFile::ResolveSequenceAdvancedCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveSequenceResidueCards(std::ofstream& stream)
+void PdbFile::ResolveSequenceResidueCards(std::ostream& stream)
 {
     PdbFileSpace::PdbResidueSequenceSection::ResidueSequenceCardMap residue_sequence_map = residues_sequence_->GetResidueSequenceChain();
     for(PdbFileSpace::PdbResidueSequenceSection::ResidueSequenceCardMap::iterator it = residue_sequence_map.begin(); it != residue_sequence_map.end(); it++)
@@ -6398,7 +6433,7 @@ void PdbFile::ResolveSequenceResidueCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveModificationResidueCards(std::ofstream& stream)
+void PdbFile::ResolveModificationResidueCards(std::ostream& stream)
 {
     PdbFileSpace::PdbResidueModificationSection::ResidueModificationCardMap residue_modification_cards_map = residue_modification_cards_->GetResidueModificationCards();
     for(PdbFileSpace::PdbResidueModificationSection::ResidueModificationCardMap::iterator it = residue_modification_cards_map.begin(); it != residue_modification_cards_map.end(); it++)
@@ -6426,7 +6461,7 @@ void PdbFile::ResolveModificationResidueCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveHeterogenCards(std::ofstream& stream)
+void PdbFile::ResolveHeterogenCards(std::ostream& stream)
 {
     PdbFileSpace::PdbHeterogenSection::HeterogenCardMap heterogen_map = heterogen_cards_->GetHeterogenCards();
     for(PdbFileSpace::PdbHeterogenSection::HeterogenCardMap::iterator it = heterogen_map.begin(); it != heterogen_map.end(); it++)
@@ -6455,7 +6490,7 @@ void PdbFile::ResolveHeterogenCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveHeterogenNameCards(std::ofstream& stream)
+void PdbFile::ResolveHeterogenNameCards(std::ostream& stream)
 {
     PdbFileSpace::PdbHeterogenNameSection::HeterogenNameCardMap heterogen_name_map = heterogen_name_cards_->GetHeterogenNameCards();
     for(PdbFileSpace::PdbHeterogenNameSection::HeterogenNameCardMap::iterator it = heterogen_name_map.begin(); it != heterogen_name_map.end(); it++)
@@ -6517,7 +6552,7 @@ void PdbFile::ResolveHeterogenNameCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveHeterogenSynonymCards(std::ofstream& stream)
+void PdbFile::ResolveHeterogenSynonymCards(std::ostream& stream)
 {
     PdbFileSpace::PdbHeterogenSynonymSection::HeterogenSynonymCardMap heterogen_synonym_map = heterogen_synonym_cards_->GetHeterogensSynonymCards();
     for(PdbFileSpace::PdbHeterogenSynonymSection::HeterogenSynonymCardMap::iterator it = heterogen_synonym_map.begin(); it != heterogen_synonym_map.end(); it++)
@@ -6592,7 +6627,7 @@ void PdbFile::ResolveHeterogenSynonymCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveFormulaCards(std::ofstream& stream)
+void PdbFile::ResolveFormulaCards(std::ostream& stream)
 {
     PdbFileSpace::PdbFormulaSection::FormulaCardMap formula_map = formulas_->GetFormulaCards();
     for(PdbFileSpace::PdbFormulaSection::FormulaCardMap::iterator it = formula_map.begin(); it != formula_map.end(); it++)
@@ -6674,7 +6709,7 @@ void PdbFile::ResolveFormulaCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveHelixCards(std::ofstream& stream)
+void PdbFile::ResolveHelixCards(std::ostream& stream)
 {
     PdbFileSpace::PdbHelixSection::HelixCardMap helix_map = helix_cards_->GetHelixCards();
     int counter = helix_map.size();
@@ -6735,7 +6770,7 @@ void PdbFile::ResolveHelixCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveSheetCards(std::ofstream& stream)
+void PdbFile::ResolveSheetCards(std::ostream& stream)
 {
     PdbFileSpace::PdbSheetSection::SheetCardMap sheet_map = sheet_cards_->GetSheets();
     for(PdbFileSpace::PdbSheetSection::SheetCardMap::iterator it = sheet_map.begin(); it != sheet_map.end(); it++)
@@ -6845,7 +6880,7 @@ void PdbFile::ResolveSheetCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveDisulfideBondCards(std::ofstream& stream)
+void PdbFile::ResolveDisulfideBondCards(std::ostream& stream)
 {
     PdbFileSpace::PdbDisulfideBondSection::DisulfideResidueBondMap disulfide_bond_map = disulfide_bonds_->GetDisulfideResidueBonds();
     for(PdbFileSpace::PdbDisulfideBondSection::DisulfideResidueBondMap::iterator it = disulfide_bond_map.begin(); it != disulfide_bond_map.end(); it++)
@@ -6898,7 +6933,7 @@ void PdbFile::ResolveDisulfideBondCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveLinkCards(std::ofstream& stream)
+void PdbFile::ResolveLinkCards(std::ostream& stream)
 {
     PdbFileSpace::PdbLinkSection::LinkCardVector links = link_cards_->GetResidueLinkCards();
     for(PdbFileSpace::PdbLinkSection::LinkCardVector::iterator it = links.begin(); it != links.end(); it++)
@@ -6967,7 +7002,7 @@ void PdbFile::ResolveLinkCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveCISPeptideCards(std::ofstream& stream)
+void PdbFile::ResolveCISPeptideCards(std::ostream& stream)
 {
   CISPeptideCardVector cis_peptide_cards = cis_peptide_->GetCISPeptideCards();
   for (CISPeptideCardVector::iterator it = cis_peptide_cards.begin(); it != cis_peptide_cards.end(); it++)
@@ -6997,7 +7032,7 @@ void PdbFile::ResolveCISPeptideCards(std::ofstream& stream)
   }
 }
 
-void PdbFile::ResolveSiteCards(std::ofstream& stream)
+void PdbFile::ResolveSiteCards(std::ostream& stream)
 {
     PdbFileSpace::PdbSiteSection::PdbSiteCardMap site_map = site_cards_->GetResidueSiteCards();
     for(PdbFileSpace::PdbSiteSection::PdbSiteCardMap::iterator it = site_map.begin(); it != site_map.end(); it++)
@@ -7119,7 +7154,7 @@ void PdbFile::ResolveSiteCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveCrystallographyCard(std::ofstream& stream)
+void PdbFile::ResolveCrystallographyCard(std::ostream& stream)
 {
     stream << std::left << std::setw(6) << crystallography_->GetRecordName();
     if(crystallography_->GetA() != gmml::dNotSet)
@@ -7156,7 +7191,7 @@ void PdbFile::ResolveCrystallographyCard(std::ofstream& stream)
            << std::endl;
 }
 
-void PdbFile::ResolveOriginCard(std::ofstream& stream)
+void PdbFile::ResolveOriginCard(std::ostream& stream)
 {
     PdbFileSpace::PdbOriginXnSection::OriginXnCardVector origins = origins_->GetOriginXN();
     for(PdbFileSpace::PdbOriginXnSection::OriginXnCardVector::iterator it = origins.begin(); it != origins.end(); it++)
@@ -7189,7 +7224,7 @@ void PdbFile::ResolveOriginCard(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveScaleCard(std::ofstream& stream)
+void PdbFile::ResolveScaleCard(std::ostream& stream)
 {
     PdbFileSpace::PdbScaleNSection::ScaleNCardVector scales = scales_->GetScaleNCard();
     for(PdbFileSpace::PdbScaleNSection::ScaleNCardVector::iterator it = scales.begin(); it != scales.end(); it++)
@@ -7221,7 +7256,7 @@ void PdbFile::ResolveScaleCard(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveMatrixCards(std::ofstream& stream)
+void PdbFile::ResolveMatrixCards(std::ostream& stream)
 {
     PdbFileSpace::PdbMatrixNSection::MatrixNVectorVector matrices = matrices_->GetMatrixN();
     int number_of_matrix_entries = matrices.at(0).size();
@@ -7268,7 +7303,7 @@ void PdbFile::ResolveMatrixCards(std::ofstream& stream)
 
 }
 
-void PdbFile::ResolveModelCards(std::ofstream& stream)
+void PdbFile::ResolveModelCards(std::ostream& stream)
 {
     PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     int number_of_models = models.size();
@@ -7599,7 +7634,7 @@ void PdbFile::ResolveModelCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int model_number)
+void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ostream& stream, int model_number)
 {
     PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     if(models.size() != 0)
@@ -7881,7 +7916,7 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ofstream& stream, int
     }
 }
 
-void PdbFile::ResolveConnectivityCards(std::ofstream& stream)
+void PdbFile::ResolveConnectivityCards(std::ostream& stream)
 {
     PdbFileSpace::PdbConnectSection::BondedAtomsSerialNumbersMap bonded_atoms = connectivities_->GetBondedAtomsSerialNumbers();
     for(PdbFileSpace::PdbConnectSection::BondedAtomsSerialNumbersMap::iterator it = bonded_atoms.begin(); it != bonded_atoms.end(); it++)
@@ -7962,7 +7997,7 @@ void PdbFile::ResolveConnectivityCards(std::ofstream& stream)
     }
 }
 
-void PdbFile::ResolveMasterCards(std::ofstream& stream)
+void PdbFile::ResolveMasterCards(std::ostream& stream)
 {
   stream << std::left << std::setw(6) << master_->GetRecordName()
          << std::right << std::setw(4) << " "
@@ -7981,7 +8016,7 @@ void PdbFile::ResolveMasterCards(std::ofstream& stream)
          << std::endl;
 }
 
-void PdbFile::ResolveEndCard(std::ofstream& stream)
+void PdbFile::ResolveEndCard(std::ostream& stream)
 {
     stream << std::left << std::setw(6) << "END" << std::left << std::setw(74) << " " << std::endl;
 }

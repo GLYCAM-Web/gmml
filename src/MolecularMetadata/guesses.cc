@@ -180,6 +180,8 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
 
   if((bothCarbon == true) && (areNeighbors ==true) && (areCloseEnough == true) && (areTrigonalPlanar == true))
   {
+    // debugStr << carbon1->GetId() << " and " << carbon2->GetId() << " have a double bond";
+    // gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
     return true;
   }
 

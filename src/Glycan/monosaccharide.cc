@@ -119,7 +119,7 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
   {
     n << sugar_name_.monosaccharide_short_name_ << ": " << anomeric_note->description_;
     anomeric_note->description_ = n.str();
-    mono_notes_.push_back( *anomeric_note );
+    mono_notes_.push_back(anomeric_note );
   }
   
   ///ADDING NOTES/ISSUES OF RESIDUE NAMING
@@ -154,13 +154,19 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
         res_ss << "Residue name, " << original_residue << " (" << original_residue_id << "), in input PDB file for " << sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << sugar_name_.pdb_code_;
       }
       residue_naming_note->description_ = res_ss.str();
-      mono_notes_.push_back(*residue_naming_note);
+      mono_notes_.push_back(residue_naming_note);
       // mono_notes_.push_back( residue_naming_note );
       // GetAuthorNaming(amino_lib_files, mono, CCD_Path);
     }
   }
   // createAuthorSNFGname();
   createSNFGname();
+  if(sugar_name_.pdb_code_ == "")
+  {
+    std::stringstream ss;
+    ss << "Chemical code: " << chemical_code_->toString() << " not found for " << residue_name_;
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+  }
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -341,7 +347,7 @@ MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Not
 
 std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(MolecularModeling::Assembly* this_assembly)
 {
-  //9/14/18 Removed side atom initialization in this function and either moved it to detectSideGroups() or used Yao's InitiateDetectionOfCompleteSideGroupAtoms()
+  //9/14/18 Removed side atom initialization in this function and either moved it to Yao's InitiateDetectionOfCompleteSideGroupAtoms()
   // Dave
   int local_debug = -1;
   int model_index_ = this_assembly->GetModelIndex();
@@ -1085,7 +1091,10 @@ void Glycan::Monosaccharide::CountElements(MolecularModeling::Atom* thisAtom, st
       MolecularModeling::Atom* thisNeighbor = (*it);
       if (!thisNeighbor->GetNode()->GetIsVisited() && !thisNeighbor->GetIsCycle())
       {
-        CountElements(thisNeighbor, elementVector);
+        if(!thisNeighbor->GetResidue()->CheckIfProtein())
+          CountElements(thisNeighbor, elementVector);
+        else
+          gmml::log(__LINE__, __FILE__, gmml::ERR, "Ran into a protein counting elements");
       }
     }
   }
@@ -1579,16 +1588,17 @@ void Glycan::Monosaccharide::CheckMonoNaming(std::string original_residue, std::
       //   }
       // }
       // matching_note->description_ = ss.str();
-      // mono_notes_.push_back(*matching_note);
+      // mono_notes_.push_back(matching_note);
       // GetAuthorNaming(amino_lib_files, CCD_Path);
       if( sugar_name_.monosaccharide_stereochemistry_name_.compare( "" ) == 0 )
       {
         //TODO call a formula generating function
-        sugar_name_.monosaccharide_stereochemistry_name_ = "Unknown";
-        sugar_name_.monosaccharide_stereochemistry_short_name_ = "Unknown";
-        sugar_name_.monosaccharide_name_ = "Unknown";
-        sugar_name_.monosaccharide_short_name_ = "Unknown";
+        sugar_name_.monosaccharide_stereochemistry_name_ = cycle_atoms_[0]->GetResidue()->GetName();
+        sugar_name_.monosaccharide_stereochemistry_short_name_ = cycle_atoms_[0]->GetResidue()->GetName();
+        sugar_name_.monosaccharide_name_ = cycle_atoms_[0]->GetResidue()->GetName();
+        sugar_name_.monosaccharide_short_name_ = cycle_atoms_[0]->GetResidue()->GetName();
       }
+      
       // else
       // {
       //   std::cout << "No exact match found for the chemical code, the following information comes from one of the closest matches:" << std::endl;

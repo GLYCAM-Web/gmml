@@ -59,19 +59,19 @@ bool DihedralAngleDataContainer::checkIfResidueConditionsAreSatisfied(std::vecto
 {
     for (const auto& entry_condition : entry_conditions)
     {   // If no condition, return true. If can't find the condition in the list return false, otherwise, having found the condition(s), return true.
-        std::cout << "Condition: " << entry_condition << std::endl;
+       // std::cout << "Condition: " << entry_condition << std::endl;
         if (entry_condition.compare("none")==0)
         {
-            std::cout << "Returning true as conditions are none" << std::endl;
+        //    std::cout << "Returning true as conditions are none" << std::endl;
             return true;
         }
         else if (!(std::find(residue_types.begin(), residue_types.end(), entry_condition) != residue_types.end()))
         {
-            std::cout << "Returning false as did not find the condition in residue tags" << std::endl;
+        //    std::cout << "Returning false as did not find the condition in residue tags" << std::endl;
             return false; //If any condition isn't satisified. return false.
         }
     }
-    std::cout << "Found all conditions in dihedralangledata.hpp::checkIfResidueConditionsAreSatisfied" << std::endl;
+  //  std::cout << "Found all conditions in dihedralangledata.hpp::checkIfResidueConditionsAreSatisfied" << std::endl;
     return true;
 }
 
