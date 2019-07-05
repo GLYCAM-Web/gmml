@@ -379,6 +379,7 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
 		    assembly_residue_parent->AddAtom(hydrogen_to_add);
 		    for (unsigned int k = 0; k < parent_neighbors.size(); k++){
 			parent_neighbors[k]->GetNode()->AddNodeNeighbor(hydrogen_to_add);
+		    	parent_node->AddNodeNeighbor(parent_neighbors[k]);    
 		    }
 		    hydrogen_to_add->AddCoordinate(parent_oxygen_to_remove->GetCoordinates().at(0));
 		    hydrogen_to_add->SetNode(parent_node);

@@ -301,6 +301,45 @@ void Assembly::ExtractOligosaccharideNamingMap(gmml::GlycamResidueNamingMap& pdb
     }
 }
 
+void Assembly::TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file){
+    for(AssemblyVector::iterator it = this->GetAssemblies().begin(); it != this->GetAssemblies().end(); it++)
+        (*it)->UpdateResidueName2GlycamName(residue_glycam_map, prep_file);
+
+    PrepFileSpace::PrepFile* prep = new PrepFileSpace::PrepFile(prep_file);
+    PrepFileSpace::PrepFile::ResidueMap prep_residues = prep->GetResidues();
+    ResidueVector residues = this->GetResidues();
+
+    for (ResidueVector::iterator it2 = residues.begin(); it2 != residues.end(); it2++){
+	Residue* residue = *it2;
+	std::string residue_name = residue->GetName();
+        std::string residue_id = residue->GetId();
+	if(residue_glycam_map.find(residue_id) != residue_glycam_map.end()){
+	    std::vector<std::string> glycam_names = residue_glycam_map[residue_id];
+	    std::string real_glycam_name = "";
+	    if (glycam_names.size() == 1) //if residue_id and glycam names is one to one relationship
+            {
+                real_glycam_name = residue_glycam_map[residue_id][0];
+            }
+            else if (glycam_names.size() > 1) // if not one to one
+            {
+                //prevent residue from being named to its attached aglycones,whose names are also in the name vector
+                std::vector<std::string> known_aglycon_names = std::vector<std::string>();
+                known_aglycon_names.push_back("ROH");
+                known_aglycon_names.push_back("OME");
+                for (std::vector<std::string>::iterator it3= glycam_names.begin(); it3!= glycam_names.end(); it3++){
+                    //if this name is not a known aglycone
+                    if (std::find(known_aglycon_names.begin(),known_aglycon_names.end(),*it3) == known_aglycon_names.end()){
+                        real_glycam_name = *it3 ;
+                    }
+                }
+            }
+	    std::cout << "Real glycam name for " << residue_name << " is: " << real_glycam_name << std::endl;
+	    residue->SetName(real_glycam_name);
+
+	    //Right now cannot handle X configuration, exit when this happens    
+	}
+    }
+}
 void Assembly::UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file)
 {
     for(AssemblyVector::iterator it = this->GetAssemblies().begin(); it != this->GetAssemblies().end(); it++)

@@ -923,6 +923,7 @@ namespace MolecularModeling
                                                  CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree,
                                                 int& index);
             void UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
+            void TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
 
             /// Pattern mathing
             bool PatternMatching(Residue* residue, ResidueVector query_residues, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
