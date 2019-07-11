@@ -5,7 +5,7 @@
 
 #include "coordinate.hpp"
 #include "utils.hpp"
-
+#include "../Eigen_Algebra_Template_Library/Geometry"
 
 namespace GeometryTopology
 {
@@ -16,6 +16,17 @@ Coordinate get_cartesian_point_from_internal_coords(Coordinate a, Coordinate b, 
 
 Coordinate subtract_coordinates(Coordinate minuaend, Coordinate subtrahend);
 
+double calculateDistanceFromPointToLineBetweenTwoPoints(Coordinate queryPoint, Coordinate linePointA, Coordinate linePointB);
+
+
 }
 
 #endif // GEOMETRYTOPOLOGY_HPP
+
+//Eigen:
+//Vector3d v(1,2,3);
+//Vector3d w(0,1,2);
+//cout << "Dot product: " << v.dot(w) << endl;
+//cout << "Cross product:\n" << v.cross(w) << endl;
+// Eigen::ParametrizedLine calculateParametrizedLineFrom3DPoints(Coordinate originCoord, Coordinate otherCoord);
+
