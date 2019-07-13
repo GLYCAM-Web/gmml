@@ -303,8 +303,10 @@ This whole loop seems to be unused
                 AtomVector head_atoms_of_residue= residue->GetHeadAtoms();
                 AtomVector tail_atoms_of_residue= residue->GetTailAtoms();
 
-                int c1x[head_atoms_of_residue.size()]={0};
-                int c2x[tail_atoms_of_residue.size()]={0};
+                //int c1x[head_atoms_of_residue.size()]={0};
+                //int c2x[tail_atoms_of_residue.size()]={0};
+		std::vector<int> c1x(head_atoms_of_residue.size(), 0);
+		std::vector<int> c2x(tail_atoms_of_residue.size(), 0);
 
                 int c1x_count=0;
                 int c2x_count=0;

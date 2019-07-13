@@ -369,24 +369,37 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
 	    std::string parent_oxygen_name = deoxy_derivative->GetParentOxygen();
 	    MolecularModeling::Residue* assembly_residue_parent = index_condensed_sequence_assembly_residue_map[parent_index].second;
 	    gmml::AtomVector parent_atoms = assembly_residue_parent->GetAtoms();
+
 	    for (unsigned int j = 0; j< parent_atoms.size(); j++){
 		if (parent_atoms[j]->GetName() == parent_oxygen_name){
 		    MolecularModeling::Atom* parent_oxygen_to_remove = parent_atoms[j];
-		    MolecularModeling::AtomNode* parent_node = parent_oxygen_to_remove->GetNode();
-		    gmml::AtomVector parent_neighbors = parent_node->GetNodeNeighbors();
+		    gmml::AtomVector parent_neighbors = parent_oxygen_to_remove->GetNode()->GetNodeNeighbors();
 		    MolecularModeling::Atom* hydrogen_to_add = new Atom();
+		    MolecularModeling::AtomNode* new_hydrogen_node = new MolecularModeling::AtomNode();
+		    hydrogen_to_add->SetNode(new_hydrogen_node);
+		    new_hydrogen_node->SetAtom(hydrogen_to_add);
 		    hydrogen_to_add->SetResidue(assembly_residue_parent);
 		    assembly_residue_parent->AddAtom(hydrogen_to_add);
+		    MolecularModeling::Atom* parent_neighbor_hydrogen_neighbor = NULL;
+		    MolecularModeling::Atom* parent_neighbor_ring_carbon = NULL;
+
 		    for (unsigned int k = 0; k < parent_neighbors.size(); k++){
-			parent_neighbors[k]->GetNode()->AddNodeNeighbor(hydrogen_to_add);
-		    	parent_node->AddNodeNeighbor(parent_neighbors[k]);    
+			if (parent_neighbors[k]->GetIsCycle()){  //When the neighbor of the oxygen to be removed is the ring carbon
+			    parent_neighbor_ring_carbon = parent_neighbors[k];
+			    parent_neighbor_ring_carbon->GetNode()->AddNodeNeighbor(hydrogen_to_add);
+			    parent_neighbor_ring_carbon->SetCharge(parent_neighbor_ring_carbon->GetCharge() + parent_oxygen_to_remove->GetCharge()); //Add oxygen charge to ring carbon
+			}
+			else {  //When the neighbor of the oxyben to be removed is the attached hydroxyl hydrogen
+			    parent_neighbor_hydrogen_neighbor = parent_neighbors[k];
+			    parent_neighbor_ring_carbon->SetCharge(parent_neighbor_ring_carbon->GetCharge() + parent_neighbor_hydrogen_neighbor->GetCharge()); //Add side group H charge to ring carbon
+			    assembly_residue_parent->RemoveAtom(parent_neighbor_hydrogen_neighbor);
+			}
 		    }
+
 		    hydrogen_to_add->AddCoordinate(parent_oxygen_to_remove->GetCoordinates().at(0));
-		    hydrogen_to_add->SetNode(parent_node);
-		    parent_node->SetAtom(hydrogen_to_add);
 		    hydrogen_to_add->SetName("Hd");
 		    hydrogen_to_add->MolecularDynamicAtom::SetAtomType("H1");
-		    hydrogen_to_add->SetCharge(0.0000);
+		    hydrogen_to_add->SetCharge(0.0000);  //According to GLYCAM06, the charge of aliphatic oxygen is zero. 
 		    hydrogen_to_add->SetElementSymbol("H");
 		    std::string new_hydrogen_atom_id = parent_oxygen_to_remove->GetId();
 		    new_hydrogen_atom_id.replace(0,parent_oxygen_name.size(),"Hd");
@@ -1050,10 +1063,8 @@ std::vector<MolecularModeling::Assembly::ResidueVector> Assembly::FindPathToComm
     std::vector<MolecularModeling::Assembly::ResidueVector> all_clashing_residue_parent_paths = std::vector<MolecularModeling::Assembly::ResidueVector> ();
     MolecularModeling::Assembly::ResidueVector visited_residues = MolecularModeling::Assembly::ResidueVector();
     //Starting from each residue, construct a pathway until a branching point(a residue with multiple tail atoms), add residue in this pathway to a ResidueVector
-    std::cout << "Building pathways from clashing residues.Now the order they appear in the residue vector is: " << std::endl;
     for (MolecularModeling::Assembly::ResidueVector::iterator it = all_clashing_residues.begin(); it != all_clashing_residues.end(); it++){
 	MolecularModeling::Residue* clashing_residue = *it;
-        std::cout << (*it)->GetIndex() << "---" << (*it)->GetName() << std::endl;
 	if (!clashing_residue->GetIsAglycon() && std::find(visited_residues.begin(), visited_residues.end(), clashing_residue) == visited_residues.end() ){
 	    MolecularModeling::Residue* current_residue = clashing_residue;
 	    MolecularModeling::Assembly::ResidueVector path = MolecularModeling::Assembly::ResidueVector();
@@ -1065,11 +1076,6 @@ std::vector<MolecularModeling::Assembly::ResidueVector> Assembly::FindPathToComm
 		if (current_residue->GetIsAglycon() || std::find(visited_residues.begin(), visited_residues.end(), current_residue) != visited_residues.end()){
 		    visited_residues.push_back(current_residue);
 		    path.push_back(current_residue);
-		    std::cout << "A new clashing path identified: " << std::endl;
-		    for (MolecularModeling::Assembly::ResidueVector::iterator it = path.begin(); it != path.end(); it++){
-			std::cout << (*it)->GetName() << std::endl;
-		    }
-		    std::cout << std::endl;
 		    all_clashing_residue_parent_paths.push_back(path);
 		    break;
 		}
@@ -1097,7 +1103,6 @@ void Assembly::ResolveClashes(std::vector<MolecularModeling::Assembly::ResidueVe
 			     std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& index_dihedral_map)
 {
     //For each common ancestor, go through all its clashing pathways one by one.
-    std::cout << "Print out this map again in ResolveClashes(), compare the order of elements to previous printing statement: " << std::endl;
     for (std::vector<MolecularModeling::Assembly::ResidueVector>::iterator it = fused_clashing_paths.begin(); it != fused_clashing_paths.end(); it++){
 	std::vector <gmml::AtomVector*> all_omega_dihedrals = this->FindAllOmegaTorsionsInPathway(*it, index_dihedral_map);
         //If availble dihedrals are found, initiate clash resolution process
@@ -1119,17 +1124,13 @@ void Assembly::ResolveClashes(std::vector<MolecularModeling::Assembly::ResidueVe
 std::vector< gmml::AtomVector* > Assembly::FindAllOmegaTorsionsInPathway (MolecularModeling::Assembly::ResidueVector& pathway, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& 
 									  index_dihedral_map)
 {
-    std::cout << "Now print out this pathway in reverse in FindAllOmegaTorsionsInPathway()" << std::endl;
     //Identify all head atoms present in pathway
     gmml::AtomVector all_head_atoms_in_pathway = gmml::AtomVector();
     for (MolecularModeling::Assembly::ResidueVector::reverse_iterator it = pathway.rbegin(); it != pathway.rend(); it++){
-	std::cout << (*it)->GetName() << "--" ;
 	gmml::AtomVector head_atoms_in_residue = (*it)->GetHeadAtoms();
 	for (gmml::AtomVector::iterator it2 = head_atoms_in_residue.begin(); it2 != head_atoms_in_residue.end(); it2++){
-	    std::cout << "head atom: " << (*it2)->GetName();
 	    all_head_atoms_in_pathway.push_back(*it2);
 	}
-        std::cout << std::endl;
     }
     //Identify all tail atoms connected to the head atoms in pathway.
     gmml::AtomVector all_tail_atoms_in_pathway = gmml::AtomVector();
@@ -1196,7 +1197,6 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
     //For each combination, rotate accordingly
     for (unsigned int i = 0; i < all_combinations.size(); i++){
 	combination& rotation_set = all_combinations[i];
-	std::cout << "Begin rotation set: " << std::endl;
 	for (combination::iterator it = rotation_set.begin(); it != rotation_set.end(); it++){
 	    gmml::AtomVector* dihedral_atoms = it->first;
 	    GeometryTopology::Coordinate* pivot_point = dihedral_atoms->at(1)->GetCoordinates().at(0);
@@ -1212,26 +1212,20 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
 		original_coordinates.push_back(atoms_to_rotate[j]->GetCoordinates().at(0));
 	    }
 	    double rotation_value = it->second;
-	    std::cout << dihedral_atoms->at(0)->GetName() << "-" << dihedral_atoms->at(1)->GetName() << "-" << dihedral_atoms->at(2)->GetName() << "-" << dihedral_atoms->at(3)->GetName() << "," << rotation_value << " degrees" << std::endl;
 	    GeometryTopology::Rotation rotation_operation = GeometryTopology::Rotation();
 	    //Perform rotation, but return rotated coordinates rather than actually perform rotation
 	    GeometryTopology::Coordinate::CoordinateVector rotated_coordinates = rotation_operation.RotateCoordinates(pivot_point, rotation_axis, rotation_value, original_coordinates);
 	    //Reset atom coordinates to the rotated coordinated set
-	    std::cout << "Rotated atoms for this torsion: " << std::endl;
 	    for (unsigned int j = 0; j < atoms_to_rotate.size(); j++){
 		GeometryTopology::Coordinate::CoordinateVector new_coordinates = GeometryTopology::Coordinate::CoordinateVector();
 		new_coordinates.push_back(rotated_coordinates[j]);
-		std::cout << atoms_to_rotate[j]->GetResidue()->GetName() << "-" << atoms_to_rotate[j]->GetName() << " previously at " << atoms_to_rotate[j]->GetCoordinates().at(0)->GetX() << "," << atoms_to_rotate[j]->GetCoordinates().at(0)->GetY() << "," << atoms_to_rotate[j]->GetCoordinates().at(0)->GetZ();
 		atoms_to_rotate[j]->SetCoordinates(new_coordinates);
-	        std::cout << " now at " << atoms_to_rotate[j]->GetCoordinates().at(0)->GetX() << "," << atoms_to_rotate[j]->GetCoordinates().at(0)->GetY() << "," << atoms_to_rotate[j]->GetCoordinates().at(0)->GetZ() << std::endl;
 
 	    }
 	    
 	}//rotate each combination
 	//After setting coordinates, compute clash score.
 	double clash_score = gmml::CalculateAtomicOverlaps(all_atoms_in_assembly, all_atoms_in_assembly);
-	std::cout << "Computed clash score for this set is: " << clash_score << std::endl;
-	std::cout << "End rotation model. " << std::endl << std::endl;
 	//If current clash score is lower than current minimum, overwrite lowest clash score, and best coordinate set.
 	if (clash_score < least_clash_coordinate.first){
 	    least_clash_coordinate.first = clash_score;
@@ -1243,42 +1237,10 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::FindBestSetOfTorsions(s
 	}
 	
     }
-    std::cout << "Best set of coordinates: " << std::endl;
-    std::cout << "Clash score: " << least_clash_coordinate.first << std::endl;
-    for (unsigned int j = 0; j < all_atoms_in_assembly.size(); j++){
-	std::cout << all_atoms_in_assembly[j]->GetName() << " " << least_clash_coordinate.second[j]->GetX() << "," << least_clash_coordinate.second[j]->GetY() << "," << least_clash_coordinate.second[j]->GetZ() << std::endl;
-    }
     //Return best set of coordinate
     return least_clash_coordinate.second;
 }
-/*
-std::vector<std::map<gmml::AtomVector*, double> > Assembly::GenerateAllTorsionCombinations(std::vector< gmml::AtomVector* >& selected_dihedrals, std::vector<double>& rotation_values)
-{
-std::cout << "Generating combs" << std::endl;
-    std::vector<std::map<gmml::AtomVector*, double> > all_combinations = std::vector<std::map<gmml::AtomVector*, double> >();
-    all_combinations.resize(pow(rotation_values.size(), selected_dihedrals.size()));
-    for (unsigned int i = 0; i < selected_dihedrals.size(); i++){
-	gmml::AtomVector* dihedral = selected_dihedrals[i];
-	all_combinations[0][dihedral] = rotation_values[0];
-    }
 
-    unsigned int combos_already_set = 1;
-    for (unsigned int dihedral_index = 0; dihedral_index < selected_dihedrals.size(); dihedral_index++){
-	int new_combos = 0;
-	for (unsigned int combo_index = 0; combo_index < combos_already_set; combo_index++){
-	    for (unsigned int rotation_value_index = 1; rotation_value_index < rotation_values.size(); rotation_value_index++){
-		int this_combo_index = combos_already_set + rotation_value_index;		
-		all_combinations[this_combo_index] = all_combinations[combo_index];
-		all_combinations[this_combo_index][selected_dihedrals[dihedral_index]] = rotation_values[rotation_value_index];
-		new_combos++;
-	    }
-	}
-	combos_already_set += new_combos;
-    }
-    return all_combinations;
-std::cout << "Done Generating combs" << std::endl;
-}
-*/
 void Assembly::GenerateAllTorsionCombinations(std::vector<std::pair<gmml::AtomVector*, std::vector<double> > >& all_dihedral_rotation_values, unsigned int current_dihedral_index ,
 						std::vector<std::vector<std::pair<gmml::AtomVector*, double> > >& container_for_combinations, std::vector<double>& angle_index_per_dihedral)
 {

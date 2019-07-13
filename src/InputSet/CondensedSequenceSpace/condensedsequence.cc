@@ -663,12 +663,9 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
         if(parent >= 0)
         {
             linkage_index++;
-            std::cout << "linkage index at beginning of loop: " << linkage_index << std::endl;
             CondensedSequenceResidue* residue = residue_tree.at(i);
             std::string residue_absolute_name = residue->GetName().substr(0, 3) + residue->GetName().substr(4);
-	    std::cout << "current residue name: " << residue_absolute_name << std::endl;
             std::string parent_res_name = residue_tree[parent]->GetName();
-            std::cout << "parent res name: " << parent_res_name << std::endl;
             char ring_letter = residue->GetName()[3];
             std::vector<std::pair<std::string, std::vector<std::string> > > possible_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
             std::vector<std::pair<std::string, std::vector<std::string> > > selected_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
