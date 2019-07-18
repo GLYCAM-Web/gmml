@@ -25,9 +25,10 @@ namespace Glycan
     double phi_angle_;
     double psi_angle_;
     double omega_angle_;
-    MolecularModeling::Atom* reducing_mono_carbon_;
-    MolecularModeling::Atom* non_reducing_mono_carbon_;
-    MolecularModeling::Atom* non_reducing_mono_2_carbon_;
+    MolecularModeling::Atom* reducing_mono_carbon_ = NULL;
+    MolecularModeling::Atom* non_reducing_mono_carbon_ = NULL;
+    MolecularModeling::Atom* non_reducing_mono_2_carbon_ = NULL;
+    MolecularModeling::Atom* glycosidic_oxygen_ = NULL;
     
     GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide* targetMono, std::string source_carbon_ID, std::string target_carbon_ID);
     //FUNCTIONS
