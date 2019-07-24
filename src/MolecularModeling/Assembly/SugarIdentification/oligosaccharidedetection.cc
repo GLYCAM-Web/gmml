@@ -237,7 +237,6 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
       //Mono Index
       thisOutput.indices.push_back(std::make_pair(std::to_string(thisMono->oligosaccharide_index_), thisMono->cycle_atoms_[0]->GetResidue()->GetId()));
       //Mono connectivity
-      //TODO unbreak this; Maybe fix glycosidic linkage class? :'(
       thisMono->mono_neighbors_.shrink_to_fit();
       for (std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> >::iterator it2 = thisMono->mono_neighbors_.begin(); it2 != thisMono->mono_neighbors_.end(); it2++)
       {
@@ -294,10 +293,7 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
             residue_links_vector.push_back(thisID);
           }
             thisOutput.residue_links.push_back(residue_links_vector);
-      
       }
-    
-      
       //Errors at the mono level
       for(std::vector<Glycan::Note*>::iterator it3 = thisMono->mono_notes_.begin(); it3 != thisMono->mono_notes_.end(); it3++)
       {
@@ -305,8 +301,6 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
         std::string thisNoteString = thisNote->type_ + ": " + thisNote->description_;
         thisOutput.error_warning_messages.push_back(thisNoteString);
       }
-    
-      
     }
     //Errors at the Oligo level
     for(std::vector<Glycan::Note*>::iterator it = thisOligo->oligo_notes_.begin(); it != thisOligo->oligo_notes_.end(); it++)
@@ -3458,7 +3452,7 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
       if(isRoot)
       {
         Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide(this);
-        CalculateOligosaccharideBFactor(oligo, detected_monos);
+        // CalculateOligosaccharideBFactor(oligo, detected_monos);
         BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
         oligo->terminal_ = terminal_residue_name;
         oligosaccharides.push_back(oligo);
@@ -3484,7 +3478,7 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
           if((*it1).find(anomeric_linkage.str()) != std::string::npos)///mono is attached to another mono through anomeric
           {
             Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide(this);
-            CalculateOligosaccharideBFactor(oligo, detected_monos);
+            // CalculateOligosaccharideBFactor(oligo, detected_monos);
             BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
             oligosaccharides.push_back(oligo);
             break;
@@ -3923,7 +3917,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
             if(key->is_root_)
             {
                 Glycan::Oligosaccharide* oligo = key->oligo_parent_;
-                CalculateOligosaccharideBFactor(oligo, monos);
+                // CalculateOligosaccharideBFactor(oligo, monos);
                 BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
                 oligo->terminal_ = terminal_residue_name;
                 oligosaccharides.push_back(oligo);
@@ -3950,7 +3944,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
                     if((*it1).find(anomeric_linkage.str()) != std::string::npos)///mono is attached to another mono through anomeric
                     {
                         Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide(this);
-                        CalculateOligosaccharideBFactor(oligo, monos);
+                        // CalculateOligosaccharideBFactor(oligo, monos);
                         BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
                         oligosaccharides.push_back(oligo);
                         break;
@@ -4451,7 +4445,7 @@ void Assembly::BuildOligosaccharideTreeStructure(Glycan::Monosaccharide *key, st
                 {
                     //std::cout << "key id " << key->mono_id_  << ", value id " << value_mono->mono_id_ << std::endl;
                     Glycan::Oligosaccharide* child_oligo = new Glycan::Oligosaccharide(this);
-                    CalculateOligosaccharideBFactor(child_oligo, values);
+                    // CalculateOligosaccharideBFactor(child_oligo, values);
                     std::vector<Glycan::Monosaccharide*> value_mono_values = monos_table[value_mono];
                     visited_linkages.push_back(link);
                     //std::cout << "call " << value_mono->mono_id_ << std::endl;

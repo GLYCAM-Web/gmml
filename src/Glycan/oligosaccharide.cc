@@ -1093,7 +1093,7 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
       if(isRoot)
       {
         Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide();
-        CalculateOligosaccharideBFactor(oligo, detected_monos);
+        // CalculateOligosaccharideBFactor(oligo, detected_monos);
         BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
         oligo->terminal_ = terminal_residue_name;
         oligosaccharides.push_back(oligo);
@@ -1119,7 +1119,7 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
           if((*it1).find(anomeric_linkage.str()) != std::string::npos)///mono is attached to another mono through anomeric
           {
             Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide();
-            CalculateOligosaccharideBFactor(oligo, detected_monos);
+            // CalculateOligosaccharideBFactor(oligo, detected_monos);
             BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
             oligosaccharides.push_back(oligo);
             break;
@@ -1170,6 +1170,8 @@ std::vector<Glycan::Oligosaccharide*> Glycan::Oligosaccharide::createOligosaccha
       // gmml::log(__LINE__, __FILE__, gmml::INF, this_mono->sugar_name_.monosaccharide_short_name_);
       traverseGraph(this_mono, this_Oligo);
       reindexRGroups(this_Oligo);
+      CalculateOligosaccharideBFactor(this_Oligo);
+      std::cout << this_Oligo->oligosaccharide_b_factor_ << "\n";
       detected_oligos.push_back(this_Oligo);
       // std::string iupac = "Oligo IUPAC Name: " + this_Oligo->IUPAC_name_;
       // gmml::log(__LINE__, __FILE__, gmml::INF, iupac);
@@ -2951,7 +2953,7 @@ void Glycan::Oligosaccharide::BuildOligosaccharideTreeStructure(Glycan::Monosacc
                 {
                     //std::cout << "key id " << key->mono_id_  << ", value id " << value_mono->mono_id_ << std::endl;
                     Glycan::Oligosaccharide* child_oligo = new Glycan::Oligosaccharide();
-                    CalculateOligosaccharideBFactor(child_oligo, values);
+                    // CalculateOligosaccharideBFactor(child_oligo, values);
                     std::vector<Glycan::Monosaccharide*> value_mono_values = monos_table[value_mono];
                     visited_linkages.push_back(link);
                     //std::cout << "call " << value_mono->mono_id_ << std::endl;
@@ -2966,11 +2968,11 @@ void Glycan::Oligosaccharide::BuildOligosaccharideTreeStructure(Glycan::Monosacc
     }
 }
 
-void Glycan::Oligosaccharide::CalculateOligosaccharideBFactor(Glycan::Oligosaccharide* oligo, std::vector<Glycan::Monosaccharide*> monos)
+void Glycan::Oligosaccharide::CalculateOligosaccharideBFactor(Glycan::Oligosaccharide* oligo)
 {
   float total_b_factor = 0;
-  int num_monos = 0;
-  for (std::vector<Glycan::Monosaccharide*>::iterator it = monos.begin(); it != monos.end(); it++)
+  int num_monos = oligo->mono_nodes_.size();
+  for (std::vector<Glycan::Monosaccharide*>::iterator it = oligo->mono_nodes_.begin(); it != oligo->mono_nodes_.end(); it++)
   {
     Glycan::Monosaccharide* mono = (*it);
     float this_b_factor = mono->b_factor_;

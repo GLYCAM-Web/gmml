@@ -73,7 +73,18 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
   //Assign Chemical Code, and SugarNames
   chemical_code_ = BuildChemicalCode(orientations);
   sugar_name_ = gmml::SugarStereoChemistryNameLookup(chemical_code_->toString());
+  GenerateCompleteName(plus_sides, this, this_assembly);
   
+  //Check if Residue name matches; if not use the CCD to create author_sugar_name_
+  std::string original_residue = cycle_atoms_.at(0)->GetResidue()->GetName();
+  std::string original_residue_id = cycle_atoms_.at(0)->GetResidue()->GetId();
+  CheckMonoNaming(original_residue, original_residue_id);
+  
+  // std::vector< std::string > idealOrientations = GetSideGroupOrientations(CCD_cycle_atoms);
+  // author_chemical_code_ = BuildChemicalCode(idealOrientations);
+  // author_sugar_name_ = gmml::SugarStereoChemistryNameLookup(chemical_code_->toString());
+  
+  this->InitiateDetectionOfCompleteSideGroupAtoms ();
   ///CALCULATING B FACTOR
   float total_b_factor = 0;
   int num_atoms =0;
@@ -102,16 +113,6 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
   }
   b_factor_ = total_b_factor/num_atoms;
   
-  GenerateCompleteName(plus_sides, this, this_assembly);
-  
-  //Check if Residue name matches; if not use the CCD to create author_sugar_name_
-  std::string original_residue = cycle_atoms_.at(0)->GetResidue()->GetName();
-  std::string original_residue_id = cycle_atoms_.at(0)->GetResidue()->GetId();
-  CheckMonoNaming(original_residue, original_residue_id);
-  
-  // std::vector< std::string > idealOrientations = GetSideGroupOrientations(CCD_cycle_atoms);
-  // author_chemical_code_ = BuildChemicalCode(idealOrientations);
-  // author_sugar_name_ = gmml::SugarStereoChemistryNameLookup(chemical_code_->toString());
   
   //Add notes
   std::stringstream n;
@@ -777,7 +778,7 @@ void Glycan::Monosaccharide::CheckIfSideChainIsTerminal(MolecularModeling::Atom*
 
 void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* this_assembly)
 {
-  int local_debug = -1;
+  int local_debug = 1;
   if (local_debug > 0)
   {
     std::stringstream debugStr;
@@ -854,18 +855,18 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
       value = GetFormula(target);
       if(value.compare("") != 0)
       {
-        if(((index == 4) && (this->sugar_name_.ring_type_.compare("F") == 0)) ||
-           ((index == 5) && (this->sugar_name_.ring_type_.compare("P") == 0)))
+        if(((index == 3) && (this->sugar_name_.ring_type_.compare("F") == 0)) ||
+           ((index == 4) && (this->sugar_name_.ring_type_.compare("P") == 0)))
         {
           if (value != "C1O1")
           {
-            // gmml::log(__LINE__, __FILE__, gmml::INF, key);
-            // gmml::log(__LINE__, __FILE__, gmml::INF, value);
+            gmml::log(__LINE__, __FILE__, gmml::INF, key);
+            gmml::log(__LINE__, __FILE__, gmml::INF, value);
             unknown_derivates_.push_back({key, value});
             derivatives_map_.push_back({key, ""});
           }
         }
-        else if(index != 4 && index !=5 && index != 0)
+        else if(index != 3 && index !=4 && index != 0)
         {
           // gmml::log(__LINE__, __FILE__, gmml::INF, key);
           // gmml::log(__LINE__, __FILE__, gmml::INF, value);
@@ -995,7 +996,6 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
               break;
           }
         }
-        //Add function to get the formula of the derivative
         value = GetFormula(target);
         if(value.compare("") != 0)
         {

@@ -90,6 +90,7 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
     {
       gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(atoms.size()));
     } 
+    AtomVector new_atoms;
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
@@ -98,7 +99,13 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
         {
           gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
         }
+        //Adding becuase hydrogens can break cycle detection
+        if(atom->GetElementSymbol() != "H")
+        {
+          new_atoms.push_back(atom);
+        }
     }
+    atoms = new_atoms;
     
     if ( local_debug > 0 )
     {
