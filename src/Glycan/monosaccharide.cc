@@ -104,6 +104,74 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
   
   GenerateCompleteName(plus_sides, this, this_assembly);
   
+  if(sugar_name_.chemical_code_string_ == "")
+  {//No match in lookup table, check if its from Deoxy groups
+    
+    Glycan::ChemicalCode new_code = *chemical_code_;
+    std::cout << "Old code" << chemical_code_->toString() << "\n";
+    std::vector<std::string> v(1, "");
+    new_code.left_middle_ = v;
+    new_code.right_middle_ = v;
+    
+    std::vector<std::string> deoxy_locations;
+    if(!chemical_code_->left_middle_.empty())
+    {
+      for(unsigned int i = 0; i < chemical_code_->left_middle_.size(); i++)
+      {
+        // std::cout << chemical_code_->left_middle_[i] << "\n";
+        deoxy_locations.push_back(chemical_code_->left_middle_[i].substr(0,1));
+      }
+    }
+    if(!chemical_code_->right_middle_.empty())
+    {
+      for(unsigned int i = 0; i < chemical_code_->right_middle_.size(); i++)
+      {
+        // std::cout << chemical_code_->right_middle_[i] << "\n";
+        deoxy_locations.push_back(chemical_code_->right_middle_[i].substr(0,1));
+      }
+    }
+    std::sort(deoxy_locations.begin(), deoxy_locations.end());
+    for(unsigned int i = 0; i < deoxy_locations.size(); i++)
+    {
+      // std::cout << "Deoxy at: " << deoxy_locations[i] << "\n";
+      new_code.left_up_.push_back(deoxy_locations[i]);
+      derivatives_map_.push_back(std::make_pair(deoxy_locations[i], "xCHH"));
+    }
+    std::sort(derivatives_map_.begin(), derivatives_map_.end());
+    std::sort(new_code.left_up_.begin(), new_code.left_up_.end());
+    // for(std::vector<std::string>::iterator it = chemical_code_->left_down_.begin(); it != chemical_code_->left_down_.end(); it++)
+    // {
+    //     std::cout << "left down: " << (*it) << "\n";
+    // }
+    // for(std::vector<std::string>::iterator it = chemical_code_->left_up_.begin(); it != chemical_code_->left_up_.end(); it++)
+    // {
+    //     std::cout << "left up: " << (*it) << "\n";
+    // }
+    // for(std::vector<std::string>::iterator it = chemical_code_->right_down_.begin(); it != chemical_code_->right_down_.end(); it++)
+    // {
+    //     std::cout << "right down: " << (*it) << "\n";
+    // }
+    // for(std::vector<std::string>::iterator it = chemical_code_->right_up_.begin(); it != chemical_code_->right_up_.end(); it++)
+    // {
+    //     std::cout << "right up: " << (*it) << "\n";
+    // }
+    // std::cout << "new code: " << new_code.toString() << "\n";
+    
+    
+    Glycan::SugarName base_name = gmml::SugarStereoChemistryNameLookup( new_code.toString() );
+    // std::cout << "new name: " << base_name.monosaccharide_stereochemistry_short_name_ << "\n";
+    sugar_name_ = base_name;
+    this->UpdateComplexSugarChemicalCode();
+    this->UpdatePdbCode();
+    this->GenerateCompleteSugarName(this_assembly);
+    
+    // addDeoxyToName(base_name, chemical_code_, deoxy_locations);
+    
+    //this will create the correct name for the sugar, but the chemical code will not match, and will be incorrect, as it will have ^n at the deoxy locations.
+    // sugar_name_ = base_name;
+    
+  }
+  
   //Check if Residue name matches; if not use the CCD to create author_sugar_name_
   std::string original_residue = cycle_atoms_.at(0)->GetResidue()->GetName();
   std::string original_residue_id = cycle_atoms_.at(0)->GetResidue()->GetId();
@@ -1393,6 +1461,13 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
             pattern = "C-(O,O)";
             this_assembly->AddModificationRuleTwoInfo(key, pattern, this, long_name_pattern_at_minus_one, long_name_pattern_at_plus_one, cond_name_pattern, tail, minus_one, in_bracket);
         }
+        else if(value.compare("xCHH") == 0)
+        {//Deoxy
+            long_name_pattern = "-deoxy-";
+            cond_name_pattern = "H";
+            pattern = "CHH";
+            this_assembly->AddDerivativeRuleInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, minus_one, in_bracket);
+        }
         else if(unknownDerivativePattern != "")
         {
           this->on_R_++;
@@ -1523,6 +1598,10 @@ void Glycan::Monosaccharide::UpdateComplexSugarChemicalCode()
       {
         code = key + "A";
       }
+      else if( value.compare( "xCHH" ) == 0 )
+      {
+        code = key + "xCHH";
+      }
       std::vector< std::string >::iterator index_it;
       if( ( key.compare( "a" ) == 0 ) || ( key.compare( "-1" ) == 0 ) || ( key.compare( "+1" ) == 0 ) || ( key.compare( "+2" )== 0 ) || ( key.compare( "+3" ) == 0 ) ) 
       {
@@ -1605,6 +1684,38 @@ void Glycan::Monosaccharide::CheckMonoNaming(std::string original_residue, std::
       // }
     }
 }
+
+// void Glycan::Monosaccharide::addDeoxyToName(Glycan::SugarName base_name, Glycan::ChemicalCode chemical_code, std::vector<int> deoxy_locations)
+// {
+//   //Figure out how to modify all parts of the sugar name (base_name) correctly for the deoxy locations specified in deoxy_locations
+// 
+//   //Following the logic in GenerateCompleteSugarName
+// 
+//   //chemical_code_string_ won't change for now at least
+// 
+//   //monosaccharide_stereochemistry_name_
+// 
+//   if(base_name.monosaccharide_stereochemistry_name_ != "")
+//   {
+// 
+//   }
+// 
+//   //monosaccharide_stereochemistry_short_name_
+// 
+//   //isomer_ does not change
+// 
+//   //name_
+// 
+//   //ring_type_ doesn not change
+// 
+//   //configuration_ does not change
+// 
+//   //monosaccharide_name_
+// 
+//   //monosaccharide_short_name_
+// 
+//   //pdb_code_
+// }
 
 Glycan::ChemicalCode* Glycan::Monosaccharide::BuildChemicalCode(std::vector<std::string> orientations)
 {

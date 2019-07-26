@@ -78,6 +78,7 @@ namespace Glycan
       void UpdatePdbCode();
       void UpdateComplexSugarChemicalCode() ;
       void CheckMonoNaming(std::string original_residue, std::string original_residue_id);
+      // void addDeoxyToName(Glycan::SugarName base_name, Glycan::ChemicalCode chemical_code, std::vector<int> deoxy_locations);
       Glycan::ChemicalCode* BuildChemicalCode(std::vector<std::string> orientations);
 
 
