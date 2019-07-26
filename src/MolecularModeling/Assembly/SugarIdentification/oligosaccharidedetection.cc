@@ -2856,6 +2856,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
 {
     std::stringstream ss;
     ss << pattern;
+    std::cout << key << ": " << pattern << "\n";
     if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
     {
         if(!minus_one)
@@ -2876,7 +2877,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             //            else if(key.compare("a") == 0)
             //                head << "2" << long_name_pattern;
             else if(key.compare("a") != 0)
-                head << gmml::ConvertString<int>(key) + 1 << long_name_pattern;
+                head << gmml::ConvertString<int>(key) /*+ 1*/ << long_name_pattern;
         }
     }
     if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
