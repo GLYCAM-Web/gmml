@@ -142,7 +142,8 @@ if [[ $tests_passed -eq $number_of_tests ]]; then
    printf "All tests passed.\n"
    exit 0
 else
-   printf "\nError:  Only $tests_passed tests passed!\n\n"
+   printf "\nError:  Only $tests_passed tests passed!\n"
+   printf   "        Examine file log.log to investigate the failures.\n\n"
    exit 1
 fi
 
