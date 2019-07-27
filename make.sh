@@ -167,9 +167,11 @@ fi
 #########              SKIP THE REST - srb             #########
 ################################################################
 
+ echo ""
  echo "gmml compilation is finished."
  echo "The next step is testing; do this:"
  echo "cd tests; compile_run_tests.bash"
+ echo ""
 exit
 
 ################################################################
