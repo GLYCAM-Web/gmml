@@ -4,7 +4,7 @@
 
 
 #include "coordinate.hpp"
-#include "utils.hpp"
+#include "../utils.hpp"
 
 
 namespace GeometryTopology
