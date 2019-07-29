@@ -213,10 +213,113 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 }
 
 //A function for PDB integration of gmml where they can feed a stringstream of atom cards and get a list of oligosaccharide names
-// std::vector<std::string> Assembly::PDBExtractSugars(std::stringstream atomStream, std::vector< std::string > amino_lib_files, std::string CCD_Path)
-// {
-// 
-// }
+std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSugars(std::vector< std::string > amino_lib_files, std::string CCD_Path)
+{
+  std::vector<Glycan::Monosaccharide*> monos = std::vector<Glycan::Monosaccharide*>();
+  OligosaccharideVector oligos = Assembly::ExtractSugars( amino_lib_files, monos, false, false, false, CCD_Path );
+  std::vector<gmml_api_output> api_output;
+  int i = 1;
+  oligos.shrink_to_fit();
+  for( OligosaccharideVector::iterator it = oligos.begin(); it != oligos.end(); it++ )
+  {
+    Glycan::Oligosaccharide* thisOligo = *it;
+    MolecularModeling::Assembly::gmml_api_output thisOutput;
+    thisOutput.linear_descriptors.push_back(std::make_pair("oligoName",  thisOligo->oligosaccharide_name_));
+    thisOutput.linear_descriptors.push_back(std::make_pair("oligoSequenceName",  thisOligo->oligosaccharide_name_));
+    thisOutput.linear_descriptors.push_back(std::make_pair("oligoIUPACname",  thisOligo->IUPAC_name_));
+    thisOutput.linear_descriptors.push_back(std::make_pair("authorOligo",  thisOligo->author_IUPAC_name_));
+    thisOligo->mono_nodes_.shrink_to_fit();
+    for(std::vector<Glycan::Monosaccharide*>::reverse_iterator rit = thisOligo->mono_nodes_.rbegin(); rit != thisOligo->mono_nodes_.rend();rit++)
+    {
+      Glycan::Monosaccharide* thisMono = *rit;
+      std::string monoID =  thisMono->cycle_atoms_[0]->GetResidue()->GetId();
+      std::cout << monoID << "\n";
+      //Mono Index
+      thisOutput.indices.push_back(std::make_pair(std::to_string(thisMono->oligosaccharide_index_), thisMono->cycle_atoms_[0]->GetResidue()->GetId()));
+      //Mono connectivity
+      //TODO unbreak this; Maybe fix glycosidic linkage class? :'(
+      thisMono->mono_neighbors_.shrink_to_fit();
+      for (std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> >::iterator it2 = thisMono->mono_neighbors_.begin(); it2 != thisMono->mono_neighbors_.end(); it2++)
+      {
+          Glycan::Monosaccharide* thisNeighbor = (*it2).second;
+          std::string neighborMonoID = thisNeighbor->cycle_atoms_[0]->GetResidue()->GetId();
+          Glycan::GlycosidicLinkage* thisLinkage = (*it2).first;      
+          int NeighborNum = thisNeighbor->oligosaccharide_index_;
+          //residue ID, atom name, residue ID2, atom name 2.
+          std::vector<std::string> residue_links_vector;
+          residue_links_vector.push_back(thisMono->cycle_atoms_[0]->GetResidue()->GetId());
+          std::string thisID;
+          std::size_t endAtomName;
+          if((thisLinkage->reducing_mono_ == thisMono) && (thisLinkage->glycosidic_oxygen_ != NULL))
+          {
+            thisID = thisLinkage->glycosidic_oxygen_->GetId();
+            endAtomName = thisID.find("_");
+            thisID = thisID.substr(0, endAtomName);
+            residue_links_vector.push_back(thisID);
+          }
+          else if((thisLinkage->non_reducing_mono_ == thisMono) && thisLinkage->non_reducing_mono_carbon_ != NULL)
+          {
+            thisID = thisLinkage->non_reducing_mono_carbon_->GetId();
+            endAtomName = thisID.find("_");
+            thisID = thisID.substr(0, endAtomName);
+            residue_links_vector.push_back(thisID);
+          }
+          else if((thisLinkage->non_reducing_mono_2_ == thisMono)  && thisLinkage->non_reducing_mono_2_carbon_ != NULL)
+          {
+            thisID = thisLinkage->non_reducing_mono_2_carbon_->GetId();
+            endAtomName = thisID.find("_");
+            thisID = thisID.substr(0, endAtomName);
+            residue_links_vector.push_back(thisID);
+          }
+          residue_links_vector.push_back(thisNeighbor->cycle_atoms_[0]->GetResidue()->GetId());
+          if((thisLinkage->reducing_mono_ == thisNeighbor) && (thisLinkage->glycosidic_oxygen_ != NULL))
+          {
+            thisID = thisLinkage->glycosidic_oxygen_->GetId();
+            endAtomName = thisID.find("_");
+            thisID = thisID.substr(0, endAtomName);
+            residue_links_vector.push_back(thisID);
+          }
+          else if((thisLinkage->non_reducing_mono_ == thisNeighbor) && thisLinkage->non_reducing_mono_carbon_ != NULL)
+          {
+            thisID = thisLinkage->non_reducing_mono_carbon_->GetId();
+            endAtomName = thisID.find("_");
+            thisID = thisID.substr(0, endAtomName);
+            residue_links_vector.push_back(thisID);
+          }
+          else if((thisLinkage->non_reducing_mono_2_ == thisNeighbor)  && thisLinkage->non_reducing_mono_2_carbon_ != NULL)
+          {
+            thisID = thisLinkage->non_reducing_mono_2_carbon_->GetId();
+            endAtomName = thisID.find("_");
+            thisID = thisID.substr(0, endAtomName);
+            residue_links_vector.push_back(thisID);
+          }
+            thisOutput.residue_links.push_back(residue_links_vector);
+      
+      }
+    
+      
+      //Errors at the mono level
+      for(std::vector<Glycan::Note*>::iterator it3 = thisMono->mono_notes_.begin(); it3 != thisMono->mono_notes_.end(); it3++)
+      {
+        Glycan::Note* thisNote = (*it3);
+        std::string thisNoteString = thisNote->type_ + ": " + thisNote->description_;
+        thisOutput.error_warning_messages.push_back(thisNoteString);
+      }
+    
+      
+    }
+    //Errors at the Oligo level
+    for(std::vector<Glycan::Note*>::iterator it = thisOligo->oligo_notes_.begin(); it != thisOligo->oligo_notes_.end(); it++)
+    {
+      Glycan::Note* thisNote = (*it);
+      std::string thisNoteString = thisNote->type_ + ": " + thisNote->description_;
+      thisOutput.error_warning_messages.push_back(thisNoteString);
+    }
+    api_output.push_back(thisOutput);
+    i++;
+  }
+  return api_output;
+}
 
 std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology, bool individualOntologies, std::string CCD_Path)
 {
@@ -393,7 +496,8 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
             std::stringstream note;
             note << "Residue name, " << mono->cycle_atoms_[0]->GetResidue()->GetName() << " (" << mono->cycle_atoms_[0]->GetResidue()->GetId() << "), in input PDB file for " << mono->sugar_name_.monosaccharide_short_name_ << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_ << ". "/* << mono->sugar_name_.monosaccharide_name_ << " vs. " << mono->author_sugar_name_.monosaccharide_name_*/;
             mismatch_note->description_ = note.str();
-            this->AddNote(mismatch_note);
+            // this->AddNote(mismatch_note);
+            mono->mono_notes_.push_back(mismatch_note);
           }
         }
       }
@@ -2606,7 +2710,8 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     std::stringstream note;
     note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
     der_mod_note->description_ = note.str();
-    this->AddNote(der_mod_note);
+    // this->AddNote(der_mod_note);
+    mono->mono_notes_.push_back(der_mod_note);
     std::cout << ss.str() << std::endl;
   }
   else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
@@ -2643,7 +2748,8 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     std::stringstream note;
     note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
     der_mod_note->description_ = note.str();
-    this->AddNote(der_mod_note);
+    // this->AddNote(der_mod_note);
+    mono->mono_notes_.push_back(der_mod_note);
     std::cout << ss.str() << std::endl;
   }
   else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
@@ -2659,7 +2765,8 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     std::stringstream note;
     note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
     der_mod_note->description_ = note.str();
-    this->AddNote(der_mod_note);
+    // this->AddNote(der_mod_note);
+    mono->mono_notes_.push_back(der_mod_note);
     std::cout << ss.str() << std::endl;
   }
   else
@@ -2749,6 +2856,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
 {
     std::stringstream ss;
     ss << pattern;
+    std::cout << key << ": " << pattern << "\n";
     if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
     {
         if(!minus_one)
@@ -2769,7 +2877,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             //            else if(key.compare("a") == 0)
             //                head << "2" << long_name_pattern;
             else if(key.compare("a") != 0)
-                head << gmml::ConvertString<int>(key) + 1 << long_name_pattern;
+                head << gmml::ConvertString<int>(key) /*+ 1*/ << long_name_pattern;
         }
     }
     if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
@@ -2787,7 +2895,8 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             std::stringstream note;
             note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
             der_mod_note->description_ = note.str();
-            this->AddNote(der_mod_note);
+            // this->AddNote(der_mod_note);
+            mono->mono_notes_.push_back(der_mod_note);
             std::cout << ss.str() << std::endl;
         }
         else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
@@ -2803,7 +2912,8 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             std::stringstream note;
             note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
             der_mod_note->description_ = note.str();
-            this->AddNote(der_mod_note);
+            // this->AddNote(der_mod_note);
+            mono->mono_notes_.push_back(der_mod_note);
             std::cout << ss.str() << std::endl;
         }
         else
@@ -2927,7 +3037,8 @@ void Assembly::AddModificationRuleTwoInfo(std::string key, std::string pattern, 
     std::stringstream note;
     note << mono->sugar_name_.monosaccharide_short_name_ << ": " << ss.str();
     der_mod_note->description_ = note.str();
-    this->AddNote(der_mod_note);
+    // this->AddNote(der_mod_note);
+    mono->mono_notes_.push_back(der_mod_note);
     std::cout << ss.str() << std::endl;
     gmml::log(__LINE__, __FILE__,  gmml::WAR, ss.str());
 }
@@ -4299,7 +4410,9 @@ void Assembly::CheckLinkageNote(Glycan::Monosaccharide* mono1, Glycan::Monosacch
               		  	  	  << mono2->sugar_name_.monosaccharide_short_name_ << ". " << gmml::Split(linkage_tokens.at(0), "_").at(0) << "-" << gmml::Split(linkage_tokens.at(1), "_").at(0)
               		  	  	  << "-" << gmml::Split(linkage_tokens.at(2), "_").at(0);
             				linkage_note->description_ = n.str();
-            				this->AddNote(linkage_note);
+            				// this->AddNote(linkage_note);
+                    mono1->mono_notes_.push_back(linkage_note);
+                    mono2->mono_notes_.push_back(linkage_note);
         			}
 			}
 		}

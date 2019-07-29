@@ -38,7 +38,7 @@ namespace Glycan
       float b_factor_;                                                    /*!< The Average B Factor of the monosaccharide >*/
       std::string SNFG_name_;
       std::string author_SNFG_name_;
-      std::vector<Note> mono_notes_;
+      std::vector<Note*> mono_notes_;
       std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> > mono_neighbors_;
       bool is_visited_;
       bool is_root_;
@@ -78,6 +78,7 @@ namespace Glycan
       void UpdatePdbCode();
       void UpdateComplexSugarChemicalCode() ;
       void CheckMonoNaming(std::string original_residue, std::string original_residue_id);
+      // void addDeoxyToName(Glycan::SugarName base_name, Glycan::ChemicalCode chemical_code, std::vector<int> deoxy_locations);
       Glycan::ChemicalCode* BuildChemicalCode(std::vector<std::string> orientations);
 
 

@@ -4,8 +4,8 @@
 
 
 #include "coordinate.hpp"
-#include "utils.hpp"
 #include "../Eigen_Algebra_Template_Library/Geometry"
+#include "../utils.hpp"
 
 namespace GeometryTopology
 {

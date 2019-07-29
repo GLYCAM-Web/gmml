@@ -253,7 +253,7 @@ namespace MolecularModeling
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             MolecularModeling::Residue* residue_;                 /*!< A pointer back to the residue that this atom belongs to >*/
-            std::string name_;                 /*!< Name of the atom >*/
+            std::string name_ = "";                 /*!< Name of the atom >*/
             GeometryTopology::Coordinate::CoordinateVector coordinates_;     /*!< Position of the atom >*/
             std::string chemical_type_;        /*!< A descriptor to determines the chemical type of the atom >*/
             std::string description_;          /*!< Short description of the atom >*/

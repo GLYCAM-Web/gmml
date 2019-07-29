@@ -1746,6 +1746,27 @@ void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<s
     this->BuildAssemblyFromPdbFile(pdb_file, amino_lib_files, glycam_lib_files, other_lib_files, prep_files, parameter_file);
 }
 
+void Assembly::BuildAssemblyFromAtomStream(std::stringstream& atomStream)
+{
+    std::cout << "Building assembly from stringstream ..." << std::endl;
+    //    std::cout << "Reading PDB file into PdbFileSpace::PdbFile structure." << std::endl;
+    PdbFileSpace::PdbFile* pdb_file=NULL;
+    try
+    {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Reading stringstream into PdbFileSpace::PdbFile structure ...");
+        pdb_file = new PdbFileSpace::PdbFile(atomStream);
+    }
+    catch(PdbFileSpace::PdbFileProcessingException &ex)
+    {
+        std::cout << "Generating PdbFileSpace::PdbFile structure from stringstream failed." << std::endl;
+    }
+    std::vector<std::string> amino_lib_files;
+    std::vector<std::string> glycam_lib_files;
+    std::vector<std::string> other_lib_files;
+    std::vector<std::string> prep_files;
+    std::string parameter_file;
+    this->BuildAssemblyFromPdbFile(pdb_file, amino_lib_files, glycam_lib_files, other_lib_files, prep_files, parameter_file);
+}
 
 void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files,
                                         std::vector<std::string> other_lib_files, std::vector<std::string> prep_files, std::string parameter_file)
