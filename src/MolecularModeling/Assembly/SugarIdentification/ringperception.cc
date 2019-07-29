@@ -86,6 +86,7 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 
     ///Initializing the std::map
     std::map<std::string, Atom*> IdAtom = std::map<std::string, Atom*>(); ///A std::map from atom ID to Assembly atom object
+    AtomVector newAtoms;
     if ( local_debug > 0 )
     {
       gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(atoms.size()));
@@ -98,8 +99,12 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
         {
           gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
         }
+        if(atom->GetId()[0] != 'H')
+        {
+          newAtoms.push_back(atom);
+        }
     }
-    
+    atoms = newAtoms;
     if ( local_debug > 0 )
     {
       gmml::log(__LINE__, __FILE__, gmml::INF, "About to Prune Graph");
