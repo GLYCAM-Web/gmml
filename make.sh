@@ -65,9 +65,9 @@ get_numprocs
 ################################################################
 
 #Cannot use server side hooks when hosting on git-hub.
-#Stuff in .git/hooks is ignored by git
-#Solution: The folder gmml/.hooks is tracked by git.
-# Copy gmml/.hooks to gmml/.git/hooks during installation
+#Stuff in .git/hooks is ignored by git.
+#Solution: The folder .hooks is tracked by git.
+# Copy .hooks to .git/hooks during installation.
 cp -r $GEMSHOME/gmml/.hooks/* $GEMSHOME/gmml/.git/hooks/
 #I don't think this is ideal, and is perhaps silly. OG Apr 2017.
 
