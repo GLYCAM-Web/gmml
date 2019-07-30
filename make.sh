@@ -14,41 +14,42 @@ echo ""
 ################################################################
 
 get_numprocs() {
-   if [ -z "$GEMSMAKEPROCS" ]; then
-	   NMP=4
-   elif ! [[ $GEMSMAKEPROCS =~ ^[0-9]+$ ]] ; then
-	   echo "GEMSMAKEPROCS is not a valid integer; setting to 4"
-	   NMP=4
-   elif [ "$GEMSMAKEPROCS" -eq "0" ] ; then
-	   echo "GEMSMAKEPROCS cannot be zero; setting to 4"
-	   NMP=4
-   else
-	   NMP=$GEMSMAKEPROCS
-   fi
+    if [ -z "$GEMSMAKEPROCS" ]; then
+        NMP=4
+    elif ! [[ $GEMSMAKEPROCS =~ ^[0-9]+$ ]] ; then
+        echo "Warning:  GEMSMAKEPROCS is not a valid integer; setting to 4"
+        NMP=4
+    elif [ "$GEMSMAKEPROCS" -eq "0" ] ; then
+        echo "Warning:  GEMSMAKEPROCS cannot be zero; setting to 4"
+        NMP=4
+    else
+        NMP=$GEMSMAKEPROCS
+    fi
 }
 
 check_gemshome() {
-   if [ -z "$GEMSHOME" ]; then
-      echo ""
-      echo "Your GEMSHOME environment variable is not set! It should be set to"
-      echo "$1"
-      exit 1
-   elif [ ! -d $GEMSHOME ]; then
-      echo ""
-      echo "Your GEMSHOME environment variable is set to $GEMSHOME -- this does"
-      echo "not appear to be a directory. It should be set to"
-      echo "$1"
-      exit 1
+    if [ -z "$GEMSHOME" ]; then
+        echo ""
+        echo "Error:  GEMSHOME environment variable is not set! It should be set to"
+        echo "$1"
+        exit 1
+    elif [ ! -d $GEMSHOME ]; then
+        echo ""
+        echo "Error:  GEMSHOME environment variable is set to $GEMSHOME -- this does"
+        echo "not appear to be a directory. It should be set to"
+        echo "$1"
+        exit 1
 # skip this since we are using GEMSHOME as a GMMLHOME.
-#   elif [ ! "$GEMSHOME" = "$1" -a ! "$GEMSHOME" = "${1}/" ]; then
-#      #try checking the inode incase there is a problem with symlinks
-#       if [ `stat -c "%i" $GEMSHOME` != `stat -c "%i" ${1}` ]; then
-#           echo ""
-#           echo "ERROR: GEMSHOME is expected to be $1 but it is currently"
-#           echo "$GEMSHOME    This will cause problems!"
-#           exit 1
-#       fi
-   fi
+#    elif [ ! "$GEMSHOME" = "$1" -a ! "$GEMSHOME" = "${1}/" ]; then
+#        #try checking the inode incase there is a problem with symlinks
+#        if [ `stat -c "%i" $GEMSHOME` != `stat -c "%i" ${1}` ]; then
+#            echo ""
+#            echo "Error:  GEMSHOME is expected to be $1 but it is currently"
+#            echo "$GEMSHOME"
+#            echo "        This will cause problems!"
+#            exit 1
+#        fi
+    fi
 }
 
 ################################################################
