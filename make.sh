@@ -64,29 +64,6 @@ get_numprocs
 ################################################################
 
 ################################################################
-#########                WRITE CONFIG.H                #########
-################################################################
-
-# NOTE: Inactive for now
-
-# Store the command
-#command=`echo "$0 $*"`
-
-# Write directories into config.h
-#printf "# Gems configuration file, created with: %s\n\n" $command > config.h
-#printf "###############################################################################\n\n" >> config.h
-#printf "# (1) Location of the installtion\n\n" >> config.h
-
-#printf "BASEDIR=%s\n" $GEMSHOME >> config.h
-#printf "BINDIR=%s/bin\n" $GEMSHOME >> config.h
-#printf "TESTDIR=%s/testbin\n" $GEMSHOME >> config.h
-#printf "APPDIR=%s/apps\n" $GEMSHOME >> config.h
-#printf "HOOKDIR=%s/hooks\n" $GEMSHOME >> config.h
-#printf "GMMLDIR=%s/gmml\n" $GEMSHOME >> config.h
-
-#printf "\n###############################################################################\n\n" >> config.h
-
-################################################################
 ##########               Print help message         ############
 ################################################################
 
@@ -111,8 +88,6 @@ fi
 #Changing the following options are for developers.
 TARGET_MAKE_FILE="Makefile"
 CLEAN="no"
-#WRAP_GMML="wrap"
-WRAP_GMML="no_wrap"
 DEBUG=""
 
 ################################################################
@@ -131,23 +106,11 @@ while [ ${i} -le $# ]; do
   i=$[$i+1]
 done
 
-# if [[ $# -eq 1 ]]; then
-#     CLEAN="$1"
-# elif [[ $# -eq 2 ]]; then
-#     CLEAN="$1"
-#     WRAP_GMML="$2"
-# fi
-
-printf "\nTARGET_MAKE_FILE: $TARGET_MAKE_FILE, CLEAN: $CLEAN, WRAP_GMML: $WRAP_GMML\n"
+printf "\nTARGET_MAKE_FILE: $TARGET_MAKE_FILE, CLEAN: $CLEAN\n"
 
 ################################################################
 #########                  COMPILE GMML                #########
 ################################################################
-
-#If wrapping later, check if PYTHON_HOME is set before compiling GMML
-if [[ "$WRAP_GMML" != "no_wrap" ]]; then
-    check_pythonhome
-fi
 
  # Always create a new gmml.pro and makefile
  ## This is going to be broken up to variables instead of being this long command. Just wanted to get a working version pushed up.
@@ -162,48 +125,16 @@ fi
  echo "Compiling gmml"
  make -j ${NMP} -f $TARGET_MAKE_FILE
 
-
-################################################################
-#########              SKIP THE REST - srb             #########
-################################################################
-
- echo ""
- echo "gmml compilation is finished."
- echo "The next step is testing; do this:"
- echo "cd tests; compile_run_tests.bash"
- echo ""
-exit
-
 ################################################################
 #########              WRAP UP TO GEMS                 #########
 ################################################################
 
-if [[ "$WRAP_GMML" != "no_wrap" ]]; then
+# Wrapping is performed in GEMS make.sh
 
-    if [[ -f "gmml.i" ]]; then
-        echo "Wrapping gmml library in python ..."
-        swig -c++ -python gmml.i
-    elif [[ -z "gmml.i" ]]; then
-        echo "Interface file for swig does not exist"
-    fi
+echo ""
+echo "gmml compilation is finished."
+echo "The next step is testing; do this:"
+echo "cd tests; compile_run_tests.bash"
+echo ""
+exit
 
-    PYTHON_FILE="$PYTHON_HOME/Python.h"
-    if [ -f $PYTHON_FILE ]; then
-        if [ -f "gmml_wrap.cxx" ]; then
-            echo "Compiling wrapped gmml library in python ..."
-            g++ -std=c++11 -O3 -fPIC -c gmml_wrap.cxx -I"$PYTHON_HOME"
-        else
-            echo "gmml_wrap.cxx does not exist"
-        fi
-    else
-        echo "PYTHON_HOME variable has not been set"
-    fi
-
-    if [[ -f "gmml_wrap.o" ]]; then
-        echo "Building python interface ..."
-        g++ -std=c++11 -shared gmml/build/*.o gmml_wrap.o -o _gmml.so
-    elif [[ -z "gmml_wrap.o" ]]; then
-        echo "gmml has not been compiled correctly"
-    fi
-
-fi
