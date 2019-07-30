@@ -89,10 +89,13 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
     {
         int index = 0;
         Glycan::Oligosaccharide* oligo = *it;
-        std::string oligo_name = oligo->oligosaccharide_name_;
+        //std::string oligo_name = oligo->oligosaccharide_name_;
+        std::string oligo_name = oligo->IUPAC_name_;
         //In case that there is no terminal attached to the reducing end adds a temporary terminal residue to make the sequence parser able to parse the sequence
         if(oligo->terminal_.compare("") == 0)
             oligo_name = oligo_name + "1-OH";
+
+std::cout << "oligo_name is" << oligo_name << std::endl;
         CondensedSequenceSpace::CondensedSequence* condensed_sequence = new CondensedSequenceSpace::CondensedSequence(oligo_name);
         //Gets the three letter code of all carbohydrates involved in current oligosaccharide
         CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();

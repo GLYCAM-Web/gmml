@@ -23,7 +23,8 @@ namespace Glycan
         GLYCOSIDIC,
         ANOMERIC,
         DER_MOD,
-        RESIDUE_NAME
+        RESIDUE_NAME,
+	IMPROPER_CONDENSED_SEQUENCE
     };
     struct Note {
             NoteType type_;             /*!< The type of the issue, it can be a comment, warning, error etc. >*/

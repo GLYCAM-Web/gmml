@@ -11,3 +11,4 @@ log.log
 *.swp
 *.dum
 programs/GlycoproteinBuilder
+*git-ignore-me*
