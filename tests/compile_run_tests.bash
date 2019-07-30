@@ -9,6 +9,8 @@ tests_passed=0
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../bin
 export LD_LIBRARY_PATH
 
+printf "$number_of_tests tests will be run.\n"
+
 ###################### Test 01 ###################### 
 printf "Testing create_Assembly_WritePDB... "
 g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/create_Assembly_WritePDB.cc -lgmml -o create_Assembly_WritePDB
@@ -78,7 +80,7 @@ rm overlaps overlaps.txt > /dev/null 2>&1
 printf "Testing to make sure there are no using namespace declarations... "
 namespace_count=$( grep -r --exclude-dir=Eigen_Algebra_Template_Library "using namespace" ../includes/ ../src/ | wc -l )
 if [[ $namespace_count -eq 0 ]]; then
-	printf "Test passed!\n"
+	printf "Test passed.\n"
 	((tests_passed++))
 else
 	printf "Test FAILED!\n"
@@ -132,11 +134,16 @@ else
    printf "Test FAILED!.\n"
 fi
 
+printf "Completed $number_of_tests tests.\n"
+
 # ############# Allow git push ########################
 if [[ $tests_passed -eq $number_of_tests ]]; then
    rm log.log > /dev/null 2>&1
-   exit 0 #All tests passed
+   printf "All tests passed.\n"
+   exit 0
 else
+   printf "\nError:  Only $tests_passed tests passed!\n"
+   printf   "        Examine file log.log to investigate the failures.\n\n"
    exit 1
 fi
 

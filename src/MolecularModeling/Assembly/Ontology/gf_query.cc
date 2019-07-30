@@ -253,7 +253,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     return FormulateCURLGF(output_file_type, query.str(), url);
 }
 
-std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, std::string sortBy, std::string url, std::string output_file_type)
+std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
 { // This query creates a list of unique PDB_IDs given all of the user specified filters, and returns a CSV which is downloaded
   std::stringstream query;
   std::stringstream search;
@@ -320,6 +320,47 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
     gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
     query << "VALUES ?oligo_sequence { \"" << searchTerm << "\" }\n";
   }
+  if(isLigand == 1)
+  {
+    query << "FILTER (!regex(?oligo_sequence, \"-ASN$\"))\n";
+    query << "FILTER (!regex(?oligo_sequence, \"-THR$\"))\n";
+    query << "FILTER (!regex(?oligo_sequence, \"-SER$\"))\n";
+    query << "FILTER (!regex(?oligo_sequence, \"-LYZ$\"))\n";
+    query << "FILTER (!regex(?oligo_sequence, \"-HYP$\"))\n";
+    query << "FILTER (!regex(?oligo_sequence, \"-TYR$\"))\n";
+    query << "FILTER (!regex(?oligo_sequence, \"-CYS$\"))\n";
+    query << "FILTER (!regex(?oligo_sequence, \"-TRP$\"))\n";
+    query << "FILTER (!regex(?oligo_sequence, \"-LYS$\"))\n";
+    query << "FILTER (!regex(?oligo_sequence, \"-HIS$\"))\n";
+  }
+  else if(isLigand == 0)
+  {
+    query << "FILTER (!regex(?oligo_sequence, \"-ROH$\"))\n";
+    query << "FILTER (!regex(?oligo_sequence, \"-OME$\"))\n";
+    query << "?oligo    :oligoSequenceName     ?sequenceName.\n";
+    query << "FILTER (!regex(?sequenceName, \"-Unknown$\"))\n";
+  }
+  if(isNucleotide == 1)
+  {
+    query << "?mono         :isNucleotide  \"true\"\n";
+  }
+  else if(isNucleotide == 0)
+  {
+    query << "?mono         :isNucleotide  \"false\"\n";
+  }
+  if(isGlycomimetic == 1)
+  {
+    query << "FILTER regex(?oligo_sequence, \"<R\")\n";
+  }
+  else if(isGlycomimetic == 0)
+  {
+    query << "FILTER (!regex(?oligo_sequence, \"<R\"))\n";
+  }
+
+  if(aglycon.length() > 0)
+  {
+    query << "FILTER regex(?oligo_sequence, \"" << aglycon << "$\")\n";
+  }
   if((oligo_b_factor_max != -1) | (oligo_b_factor_min != -1))
   {
     query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.\n";
@@ -357,7 +398,7 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
   return FormulateCURLGF(output_file_type, query.str(), url);
 }
 
-std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, std::string sortBy, std::string url, std::string output_file_type)
+std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
 { //This is a complete (and therefore slow) query that is a combination of moreQuery() and QueryOntology().  It filters the database by user input, and returns a CSV with all of the data for download.
   std::stringstream query;
   std::stringstream search;
@@ -434,6 +475,47 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
              query << "FILTER (" << oligo_b_factor_min << " < ?oligo_mean_B_Factor)\n";
            }
            query << "}\n";
+           if(isLigand == 1)
+           {
+             query << "FILTER (!regex(?oligo_sequence, \"-ASN$\"))\n";
+             query << "FILTER (!regex(?oligo_sequence, \"-THR$\"))\n";
+             query << "FILTER (!regex(?oligo_sequence, \"-SER$\"))\n";
+             query << "FILTER (!regex(?oligo_sequence, \"-LYZ$\"))\n";
+             query << "FILTER (!regex(?oligo_sequence, \"-HYP$\"))\n";
+             query << "FILTER (!regex(?oligo_sequence, \"-TYR$\"))\n";
+             query << "FILTER (!regex(?oligo_sequence, \"-CYS$\"))\n";
+             query << "FILTER (!regex(?oligo_sequence, \"-TRP$\"))\n";
+             query << "FILTER (!regex(?oligo_sequence, \"-LYS$\"))\n";
+             query << "FILTER (!regex(?oligo_sequence, \"-HIS$\"))\n";
+           }
+           else if(isLigand == 0)
+           {
+             query << "FILTER (!regex(?oligo_sequence, \"-ROH$\"))\n";
+             query << "FILTER (!regex(?oligo_sequence, \"-OME$\"))\n";
+             query << "?oligo    :oligoSequenceName     ?sequenceName.\n";
+             query << "FILTER (!regex(?sequenceName, \"-Unknown$\"))\n";
+           }
+           if(isNucleotide == 1)
+           {
+             query << "?mono         :isNucleotide  \"true\"\n";
+           }
+           else if(isNucleotide == 0)
+           {
+             query << "?mono         :isNucleotide  \"false\"\n";
+           }
+           if(isGlycomimetic == 1)
+           {
+             query << "FILTER regex(?oligo_sequence, \"<R\")\n";
+           }
+           else if(isGlycomimetic == 0)
+           {
+             query << "FILTER (!regex(?oligo_sequence, \"<R\"))\n";
+           }
+
+           if(aglycon.length() > 0)
+           {
+             query << "FILTER regex(?oligo_sequence, \"" << aglycon << "$\")\n";
+           }
            if(isError != 1)
            {
              query << "OPTIONAL {";

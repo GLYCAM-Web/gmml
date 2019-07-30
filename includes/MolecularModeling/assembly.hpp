@@ -61,7 +61,26 @@ namespace MolecularModeling
             typedef std::vector<AtomNode*>AtomNodeVector; //Added by ayush on 04/11/18 for TopologyFix in assembly
             typedef std::vector<ResidueNode*>ResidueNodeVector; //Added by ayush on 11/16/17 for identifying residuenodes in assembly
             typedef std::vector<MolecularModeling::Molecule*> MoleculeVector; //Added by ayush on 11/12/17 for molecules in assembly
-	    typedef Assembly TemplateAssembly; //typedef for marking a template assembly, which contains all necessary template residues extracted from 3D template library.
+	          typedef Assembly TemplateAssembly; //typedef for marking a template assembly, which contains all necessary template residues extracted from 3D template library.
+            typedef struct
+            {
+              // pair.first: descriptor type
+              // pair.second: descriptor name
+              std::vector<std::pair<std::string, std::string> > linear_descriptors;
+              
+              // pair.first: residue index
+              // pair.second: residue identifier
+              std::vector<std::pair<std::string, std::string> > indices;
+
+              // vector[0]: residue identifier 1
+              // vector[1]: atom name 1
+              // vector[2]: residue identifier 2
+              // vector[3]: atom name 2
+              std::vector<std::vector<std::string> > residue_links;
+
+              // not sure what kinds of error/warning messages gmml will provide
+              std::vector<std::string> error_warning_messages;
+            }gmml_api_output;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -955,7 +974,7 @@ namespace MolecularModeling
             */
             OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, std::vector<Glycan::Monosaccharide*>& monos, bool glyporbity_report = false, bool populate_ontology = false, bool individualOntologies = false, std::string CCD_Path = " ");
 
-            std::vector<std::string> PDBExtractSugars(std::vector< std::string > amino_lib_files, std::string CCD_Path);
+            std::vector<gmml_api_output> PDBExtractSugars(std::vector< std::string > amino_lib_files, std::string CCD_Path);
 
             /*! \fn
             * A funstion in order to initiate population of turtle formatted triples (subject-predicate-object) for creating the GMMO ontology
@@ -1299,9 +1318,9 @@ namespace MolecularModeling
 
             std::string MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo, std::string url, std::string output_file_type);
 
-            std::string ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, std::string sortBy, std::string url, std::string output_file_type);
+            std::string ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type);
 
-            std::string ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, std::string sortBy, std::string url, std::string output_file_type);
+            std::string ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type);
 
             /*! \fn
             * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
