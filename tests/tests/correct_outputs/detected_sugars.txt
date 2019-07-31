@@ -395,9 +395,9 @@ BFMP ring conformation: 	-		6d3(1.65057)		2d5(9.53659)
 
 
 Carbon at Ring Position 2 is attached to xC-N-C=OCH3
-Stereochemistry name: b-D-glucopyranose
+Stereochemistry name: N-acetyl-b-D-glucopyranose
 Stereochemistry short name: DGlcpb
-Complete name: N-acetyl-b-D-glucopyranose
+Complete name: N-acetyl-b-D-glucosamine
 Short name: DGlcpNAcb
 SNFG Name: GlcNAc
 -------------------------------------------------------------------------------------------------------------------------------------------

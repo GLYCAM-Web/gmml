@@ -186,6 +186,11 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
     // std::cout << "new name: " << base_name.monosaccharide_stereochemistry_short_name_ << "\n";
     sugar_name_ = base_name;
     this->UpdateComplexSugarChemicalCode();
+    Glycan::SugarName updated_name = gmml::ComplexSugarNameLookup(chemical_code_->toString());
+    if((updated_name.monosaccharide_name_ != "") && (updated_name.monosaccharide_name_ != sugar_name_.monosaccharide_name_))
+    {
+      sugar_name_ = updated_name;
+    }
     this->UpdatePdbCode();
     this->GenerateCompleteSugarName(this_assembly);
     
@@ -194,6 +199,10 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
     //this will create the correct name for the sugar, but the chemical code will not match, and will be incorrect, as it will have ^n at the deoxy locations.
     // sugar_name_ = base_name;
     
+  }
+  if((sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0) && (sugar_name_.monosaccharide_name_.compare("") == 0))
+  {
+    sugar_name_.monosaccharide_name_ = sugar_name_.monosaccharide_stereochemistry_name_;
   }
   
   //Check if Residue name matches; if not use the CCD to create author_sugar_name_
@@ -1236,6 +1245,11 @@ void Glycan::Monosaccharide::GenerateCompleteName(std::vector<MolecularModeling:
     {
       ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
       this_mono->UpdateComplexSugarChemicalCode();
+      Glycan::SugarName updated_name = gmml::ComplexSugarNameLookup(chemical_code_->toString());
+      if((updated_name.monosaccharide_name_ != "") && (updated_name.monosaccharide_name_ != sugar_name_.monosaccharide_name_))
+      {
+        sugar_name_ = updated_name;
+      }
       this_mono->UpdatePdbCode();
       this_mono->GenerateCompleteSugarName(this_assembly);
     } 
@@ -1295,6 +1309,11 @@ void Glycan::Monosaccharide::GenerateCompleteName(std::vector<MolecularModeling:
       }
       ///UPDATING CHEMICAL CODE
       this_mono->UpdateComplexSugarChemicalCode();
+      Glycan::SugarName updated_name = gmml::ComplexSugarNameLookup(chemical_code_->toString());
+      if((updated_name.monosaccharide_name_ != "") && (updated_name.monosaccharide_name_ != sugar_name_.monosaccharide_name_))
+      {
+        sugar_name_ = updated_name;
+      }
       this_mono->UpdatePdbCode();
       // std::cout << "Complex structure side group atoms: " << std::endl;
       // // gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex structure side group atoms: ");
@@ -1562,7 +1581,7 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
     if(sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
     {
         long_name << head.str() << sugar_name_.monosaccharide_stereochemistry_name_ << tail.str();
-        sugar_name_.monosaccharide_name_ = long_name.str();
+        sugar_name_.monosaccharide_stereochemistry_name_ = long_name.str();
     }
 }
 
