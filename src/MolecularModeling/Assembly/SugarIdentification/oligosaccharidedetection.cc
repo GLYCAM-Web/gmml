@@ -2970,8 +2970,8 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
         {
             if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
                 head << mono->cycle_atoms_.size() - 2 + std::stoi(key.substr(1,1)) << long_name_pattern;
-            //            else if(key.compare("a") == 0)
-            //                head << "2" << long_name_pattern;
+           else if(key.compare("a") == 0)
+               head << "1" << long_name_pattern;
             else if(key.compare("a") != 0)
                 head << gmml::ConvertString<int>(key) << long_name_pattern;
         }
@@ -2981,10 +2981,10 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
                 head << "1" << long_name_pattern;
             else if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
                 head << mono->cycle_atoms_.size() - 1 +  std::stoi(key.substr(1,1)) << long_name_pattern;
-            //            else if(key.compare("a") == 0)
-            //                head << "2" << long_name_pattern;
+           else if(key.compare("a") == 0)
+               head << "2" << long_name_pattern;
             else if(key.compare("a") != 0)
-                head << gmml::ConvertString<int>(key) /*+ 1*/ << long_name_pattern;
+                head << gmml::ConvertString<int>(key) + 1 << long_name_pattern;
         }
     }
     if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
@@ -3032,8 +3032,8 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
                   in_bracket << mono->cycle_atoms_.size() - 2 + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
                   gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
                 }
-                //                else if(key.compare("a") == 0)
-                //                    in_bracket << "2" << cond_name_pattern << ",";
+               else if(key.compare("a") == 0)
+                   in_bracket << "1" << cond_name_pattern << ",";
                 else if(key.compare("a") != 0)
                 {
                   in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";
@@ -3052,11 +3052,11 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
                   in_bracket << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) - 1 << cond_name_pattern << ",";
                   gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
                 }
-                //                else if(key.compare("a") == 0)
-                //                    in_bracket << "2" << cond_name_pattern << ",";
+               else if(key.compare("a") == 0)
+                   in_bracket << "2" << cond_name_pattern << ",";
                 else if(key.compare("a") != 0)
                 {
-                  in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+                  in_bracket << gmml::ConvertString<int>(key) + 1 << cond_name_pattern << ",";
                   gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
                 }
             }
@@ -3146,7 +3146,7 @@ void Assembly::AddModificationRuleTwoInfo(std::string key, std::string pattern, 
     der_mod_note->description_ = note.str();
     // this->AddNote(der_mod_note);
     mono->mono_notes_.push_back(der_mod_note);
-    std::cout << ss.str() << std::endl;
+    // std::cout << ss.str() << std::endl;
     gmml::log(__LINE__, __FILE__,  gmml::WAR, ss.str());
 }
 
