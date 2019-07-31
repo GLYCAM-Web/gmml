@@ -2918,7 +2918,7 @@ void Assembly::AddUnknownDerivativeRuleInfo(std::string key, std::string pattern
       else if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
         head << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) << long_name_pattern;
       else if(key.compare("a") != 0)
-        head << gmml::ConvertString<int>(key) << long_name_pattern;
+        head << gmml::ConvertString<int>(key) + 1 << long_name_pattern;
     }
   }
   if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
@@ -2950,7 +2950,7 @@ void Assembly::AddUnknownDerivativeRuleInfo(std::string key, std::string pattern
       }
       else if(key.compare("a") != 0)
       {
-        in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+        in_bracket << gmml::ConvertString<int>(key) + 1<< cond_name_pattern << ",";
         // gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
       }
     }
