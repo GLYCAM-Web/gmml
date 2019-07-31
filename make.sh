@@ -154,6 +154,6 @@ printf "DEBUG: $DEBUG\n\n"
 # Wrapping is performed in GEMS make.sh
 
 echo ""
-echo "GMML compilation is finished."
+echo "GMML compilation is finished at `date`".
 exit
 
