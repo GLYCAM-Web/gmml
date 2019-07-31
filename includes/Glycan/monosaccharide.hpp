@@ -30,7 +30,7 @@ namespace Glycan
       SugarName sugar_name_;                                              /*!< The sugar name object assigned to the monosacchride >*/
       SugarName author_sugar_name_;                                       /*!< The sugar name object assigned to the residue name given by the author >*/
       std::vector<std::pair<std::string, std::string> > derivatives_map_; /*!< A mapping between the monosacchride's atom position/index and the derivative/modification attached to it >*/
-      std::vector<std::pair<std::string, std::string> > unknown_derivates_; /*!< Added so the unknown derivates don't mess up naming based on derivatives_map_ >*/
+      std::vector<std::pair<std::string, std::string> > unknown_derivatives_; /*!< Added so the unknown derivates don't mess up naming based on derivatives_map_ >*/
       std::string cycle_atoms_str_;                                       /*!< The string version of atom identifiers of the ring of the monosacchride >*/
       std::string anomeric_status_;                                       /*!< The detection status of the anomeric carbon >*/
       MolecularModeling::Atom* anomeric_carbon_pointer_ = NULL;
