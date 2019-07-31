@@ -50,7 +50,7 @@ check_gemshome() {
 if [[ "$1" == "-help" ]] || [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
     echo ""
     echo "If you are a user then this $0 is not for you:"
-    echo "    go to the GEMS home dir; GEMS building will spawn GMML building."
+    echo "    go to the GEMS home dir; GEMS $0 will spawn GMML building."
     echo ""
     echo "This is for building GMML in isolation!"
     echo "    There is no wrapping and no connection to GEMS -"
@@ -98,7 +98,7 @@ cp -r $GEMSHOME/gmml/.hooks/* $GEMSHOME/gmml/.git/hooks/
 ################################################################
 
 #Changing the following options are for developers.
-CLEAN="no"
+CLEAN="no_clean"
 DEBUG="no_debug"
 TARGET_MAKE_FILE="Makefile"
 
@@ -118,8 +118,10 @@ while [ ${i} -le $# ]; do
     i=$[$i+1]
 done
 
-printf "\nTARGET_MAKE_FILE: $TARGET_MAKE_FILE, CLEAN: $CLEAN\n"
-printf "DEBUG: $DEBUG\n"
+printf "\nBuilding with these settings:\n"
+printf "TARGET_MAKE_FILE: $TARGET_MAKE_FILE\n"
+printf "CLEAN: $CLEAN\n"
+printf "DEBUG: $DEBUG\n\n"
 
 ################################################################
 #########                  COMPILE GMML                #########
@@ -131,6 +133,7 @@ printf "DEBUG: $DEBUG\n"
      DEBUGOPTIONS=''
  fi
 
+ echo "Generating GMML $TARGET_MAKE_FILE."
  # Always create a new gmml.pro and makefile
  ## This is going to be broken up to variables instead of being this long command. Just wanted to get a working version pushed up.
  qmake -project -t lib -o gmml.pro "QMAKE_CXXFLAGS += -Wall -W -std=c++11 ${DEBUGOPTIONS}" "QMAKE_CFLAGS += -Wall -W ${DEBUGOPTIONS}" "DEFINES += _REENTRANT" "CONFIG = no_lflag_merge" "unix:LIBS = -L/usr/lib/x86_64-linux-gnu -lpthread" "OBJECTS_DIR = build" "DESTDIR = lib" -r src/ includes/ -nopwd
@@ -141,7 +144,7 @@ printf "DEBUG: $DEBUG\n"
      qmake -o $TARGET_MAKE_FILE
  fi
 
- echo "Compiling gmml"
+ echo "Making GMML."
  make -j ${NMP} -f $TARGET_MAKE_FILE
 
 ################################################################
