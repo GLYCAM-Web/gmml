@@ -1,14 +1,5 @@
 #!/bin/bash
 
-echo "This is for building GMML in isolation!"
-echo "    There is no wrapping and no connection to GEMS -"
-echo "    although environment variables starting with GEMS are respected."
-echo ""
-echo "If you are a user then this is not for you:"
-echo "    go to the GEMS home dir; GEMS building will handle GMML internally."
-echo ""
-
-
 ################################################################
 #########                 FUNCTIONS                    #########
 ################################################################
@@ -56,6 +47,8 @@ check_gemshome() {
 #########                CHECK SETTINGS                #########
 ################################################################
 
+echo "Starting installation of GMML at `date`".
+
 gemshome=`pwd`
 check_gemshome $gemshome
 get_numprocs
@@ -76,14 +69,25 @@ cp -r $GEMSHOME/gmml/.hooks/* $GEMSHOME/gmml/.git/hooks/
 ################################################################
 
 if [[ "$1" == "-help" ]] || [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
+    echo ""
+    echo "If you are a user then this $0 is not for you:"
+    echo "    go to the GEMS home dir; GEMS building will spawn GMML building."
+    echo ""
+    echo "This is for building GMML in isolation!"
+    echo "    There is no wrapping and no connection to GEMS -"
+    echo "    although environment variables starting with GEMS are respected."
+    echo "After isolated GMML is built the next step is testing; do this:"
+    echo "cd tests; compile_run_tests.bash"
+    echo ""
+
     printf "*************************************************************\n"
-    printf "Usage: $0 clean_gmml? wrap_gmml?\n"
-    printf "Example: $0 clean no_wrap\n"
-    printf "Default: $0 no_clean wrap\n"
+    printf "Usage: $0 clean_gmml? debug_gmml?\n"
+    printf "Example: $0 clean no_debug\n"
+    printf "Default: $0 no_clean debug\n"
     printf "*************************************************************\n"
     printf "If selected the options do this:\n"
     printf "     1. Cleans gmml before making\n"
-    printf "     2. Wrap up via swig (wrapping required only for Gems)\n"
+    printf "     2. Adds compiler options for debugging\n"
     printf "*************************************************************\n"
     echo "Exiting."
     exit 1
@@ -147,9 +151,6 @@ printf "DEBUG: $DEBUG\n"
 # Wrapping is performed in GEMS make.sh
 
 echo ""
-echo "gmml compilation is finished."
-echo "The next step is testing; do this:"
-echo "cd tests; compile_run_tests.bash"
-echo ""
+echo "GMML compilation is finished."
 exit
 
