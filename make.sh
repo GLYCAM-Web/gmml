@@ -44,27 +44,6 @@ check_gemshome() {
 }
 
 ################################################################
-#########                CHECK SETTINGS                #########
-################################################################
-
-echo "Starting installation of GMML at `date`".
-
-gemshome=`pwd`
-check_gemshome $gemshome
-get_numprocs
-
-################################################################
-#########              CREATE CLIENT HOOKS             #########
-################################################################
-
-#Cannot use server side hooks when hosting on git-hub.
-#Stuff in .git/hooks is ignored by git.
-#Solution: The folder .hooks is tracked by git.
-# Copy .hooks to .git/hooks during installation.
-cp -r $GEMSHOME/gmml/.hooks/* $GEMSHOME/gmml/.git/hooks/
-#I don't think this is ideal, and is perhaps silly. OG Apr 2017.
-
-################################################################
 ##########               Print help message         ############
 ################################################################
 
@@ -92,6 +71,27 @@ if [[ "$1" == "-help" ]] || [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
     echo "Exiting."
     exit 1
 fi
+
+################################################################
+#########                CHECK SETTINGS                #########
+################################################################
+
+echo "Starting installation of GMML at `date`".
+
+gemshome=`pwd`
+check_gemshome $gemshome
+get_numprocs
+
+################################################################
+#########              CREATE CLIENT HOOKS             #########
+################################################################
+
+#Cannot use server side hooks when hosting on git-hub.
+#Stuff in .git/hooks is ignored by git.
+#Solution: The folder .hooks is tracked by git.
+# Copy .hooks to .git/hooks during installation.
+cp -r $GEMSHOME/gmml/.hooks/* $GEMSHOME/gmml/.git/hooks/
+#I don't think this is ideal, and is perhaps silly. OG Apr 2017.
 
 ################################################################
 #########                SET UP DEFAULTS               #########
