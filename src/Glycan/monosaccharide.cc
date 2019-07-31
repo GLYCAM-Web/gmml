@@ -108,12 +108,36 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
   {//No match in lookup table, check if its from Deoxy groups
     
     Glycan::ChemicalCode new_code = *chemical_code_;
-    std::cout << "Old code" << chemical_code_->toString() << "\n";
+    // std::cout << "Old code" << chemical_code_->toString() << "\n";
     std::vector<std::string> v(1, "");
     new_code.left_middle_ = v;
     new_code.right_middle_ = v;
     
     std::vector<std::string> deoxy_locations;
+    for(unsigned int i = 0; i < chemical_code_->right_up_.size(); i++)
+    {
+      if(((chemical_code_->right_up_[i].substr(0,1) == "+") ||
+         (chemical_code_->right_up_[i].substr(0,1) == "-")) &&
+         (chemical_code_->right_up_[i].find("d") != std::string::npos))
+      {
+        // std::cout << chemical_code_->right_up_[i] << "\n";
+        chemical_code_->right_up_[i] = chemical_code_->right_up_[i].substr(0,2);
+        // std::cout << chemical_code_->right_up_[i] << "\n";
+        derivatives_map_.push_back(std::make_pair(chemical_code_->right_up_[i].substr(0,2), "xCHH"));
+      }
+    }
+    for(unsigned int i = 0; i < chemical_code_->right_down_.size(); i++)
+    {
+      if(((chemical_code_->right_down_[i].substr(0,1) == "+") ||
+         (chemical_code_->right_down_[i].substr(0,1) == "-") )&&
+         (chemical_code_->right_down_[i].find("d") != std::string::npos))
+      {
+        // std::cout << chemical_code_->right_down_[i] << "\n";
+        chemical_code_->right_down_[i] = chemical_code_->right_down_[i].substr(0,2);
+        // std::cout << chemical_code_->right_down_[i] << "\n";
+        derivatives_map_.push_back(std::make_pair(chemical_code_->right_down_[i].substr(0,2), "xCHH"));
+      }
+    }
     if(!chemical_code_->left_middle_.empty())
     {
       for(unsigned int i = 0; i < chemical_code_->left_middle_.size(); i++)
@@ -1006,6 +1030,8 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
             break;
           if((value = this_assembly->CheckxC_NxO_C(target, cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-CH3
             break;
+          // if((value = this_assembly->CheckxC_NxO_CH3C_COO(target, cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-CH3C-C-(O,O/OH)
+          //   break;
         }
         if(t_neighbor->GetName().at(0) == 'O' && cycle_atoms_str_.find(t_neighbor->GetId()) == std::string::npos)///check formulas with oxygen
         {
