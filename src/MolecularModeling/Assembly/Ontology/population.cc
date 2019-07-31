@@ -248,7 +248,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
                   for(std::vector<std::pair<std::string, std::string> >::iterator derivative = thisMono->unknown_derivates_.begin(); derivative != thisMono->unknown_derivates_.end(); derivative++)
                   {
                     numR++;
-                    if((*derivative).second != "")
+                    if((*derivative).second != "" && thisMono->sugar_name_.monosaccharide_short_name_ != thisMono->cycle_atoms_[0]->GetResidue()->GetName())
                     {
                       std::stringstream RgroupStream;
                       RgroupStream << oligo_uri << "_R" << numR;
