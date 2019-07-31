@@ -1791,7 +1791,7 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
         // }
         //Rename sugar
         thisMono->GenerateCompleteSugarName(assembly_);
-        std::cout << thisMono->sugar_name_.monosaccharide_name_ << "\n";
+        // std::cout << thisMono->sugar_name_.monosaccharide_name_ << "\n";
       }
       // gmml::log(__LINE__, __FILE__,  gmml::INF, "Named terminal by Formula");
     }

@@ -2969,7 +2969,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
         if(!minus_one)
         {
             if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                head << mono->cycle_atoms_.size() - 2 + std::stoi(key.substr(1,1)) << long_name_pattern;
+                head << mono->cycle_atoms_.size() - 1 + std::stoi(key.substr(1,1)) << long_name_pattern;
            else if(key.compare("a") == 0)
                head << "1" << long_name_pattern;
             else if(key.compare("a") != 0)
@@ -2980,7 +2980,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             if(key.compare("-1") == 0)
                 head << "1" << long_name_pattern;
             else if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                head << mono->cycle_atoms_.size() - 1 +  std::stoi(key.substr(1,1)) << long_name_pattern;
+                head << mono->cycle_atoms_.size()  +  std::stoi(key.substr(1,1)) << long_name_pattern;
            else if(key.compare("a") == 0)
                head << "2" << long_name_pattern;
             else if(key.compare("a") != 0)
@@ -3029,7 +3029,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             {
                 if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
                 {
-                  in_bracket << mono->cycle_atoms_.size() - 2 + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+                  in_bracket << mono->cycle_atoms_.size() - 1 + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
                   gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
                 }
                else if(key.compare("a") == 0)
@@ -3049,7 +3049,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
                 }
                 else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
                 {
-                  in_bracket << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) - 1 << cond_name_pattern << ",";
+                  in_bracket << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
                   gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
                 }
                else if(key.compare("a") == 0)

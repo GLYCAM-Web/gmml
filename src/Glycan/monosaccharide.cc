@@ -114,28 +114,28 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
     new_code.right_middle_ = v;
     
     std::vector<std::string> deoxy_locations;
-    for(unsigned int i = 0; i < chemical_code_->right_up_.size(); i++)
+    for(unsigned int i = 0; i < new_code.right_up_.size(); i++)
     {
-      if(((chemical_code_->right_up_[i].substr(0,1) == "+") ||
-         (chemical_code_->right_up_[i].substr(0,1) == "-")) &&
-         (chemical_code_->right_up_[i].find("d") != std::string::npos))
+      if(((new_code.right_up_[i].substr(0,1) == "+") ||
+         (new_code.right_up_[i].substr(0,1) == "-")) &&
+         (new_code.right_up_[i].find("d") != std::string::npos))
       {
-        // std::cout << chemical_code_->right_up_[i] << "\n";
-        chemical_code_->right_up_[i] = chemical_code_->right_up_[i].substr(0,2);
-        // std::cout << chemical_code_->right_up_[i] << "\n";
-        derivatives_map_.push_back(std::make_pair(chemical_code_->right_up_[i].substr(0,2), "xCHH"));
+        // std::cout << new_code.right_up_[i] << "\n";
+        new_code.right_up_[i] = new_code.right_up_[i].substr(0,2);
+        std::cout << new_code.right_up_[i] << "\n";
+        derivatives_map_.push_back(std::make_pair(new_code.right_up_[i].substr(0,2), "xCHH"));
       }
     }
-    for(unsigned int i = 0; i < chemical_code_->right_down_.size(); i++)
+    for(unsigned int i = 0; i < new_code.right_down_.size(); i++)
     {
-      if(((chemical_code_->right_down_[i].substr(0,1) == "+") ||
-         (chemical_code_->right_down_[i].substr(0,1) == "-") )&&
-         (chemical_code_->right_down_[i].find("d") != std::string::npos))
+      if(((new_code.right_down_[i].substr(0,1) == "+") ||
+         (new_code.right_down_[i].substr(0,1) == "-") )&&
+         (new_code.right_down_[i].find("d") != std::string::npos))
       {
-        // std::cout << chemical_code_->right_down_[i] << "\n";
-        chemical_code_->right_down_[i] = chemical_code_->right_down_[i].substr(0,2);
-        // std::cout << chemical_code_->right_down_[i] << "\n";
-        derivatives_map_.push_back(std::make_pair(chemical_code_->right_down_[i].substr(0,2), "xCHH"));
+        // std::cout << new_code.right_down_[i] << "\n";
+        new_code.right_down_[i] = new_code.right_down_[i].substr(0,2);
+        std::cout << new_code.right_down_[i] << "\n";
+        derivatives_map_.push_back(std::make_pair(new_code.right_down_[i].substr(0,2), "xCHH"));
       }
     }
     if(!chemical_code_->left_middle_.empty())
@@ -1229,7 +1229,7 @@ std::vector<MolecularModeling::Atom*> Glycan::Monosaccharide::ExtractAdditionalS
 
 void Glycan::Monosaccharide::GenerateCompleteName(std::vector<MolecularModeling::Atom*> &plus_sides, Glycan::Monosaccharide* this_mono, MolecularModeling::Assembly* this_assembly)
 {
-  std::cout << plus_sides.size() << "plus atoms\n";
+  // std::cout << plus_sides.size() << "plus atoms\n";
   // if (!plus_sides.empty())
   // {
     if( plus_sides.size() <= 1 ) 
@@ -1374,7 +1374,7 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
       
       if(key == "-1")
       {
-        std::cout << "minus 1\n";
+        // std::cout << "minus 1\n";
         minus_one = true;
       }
     }
@@ -1384,16 +1384,16 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
       
       if(key == "-1")
       {
-        std::cout << "minus 1\n";
+        // std::cout << "minus 1\n";
         minus_one = true;
       }
     }
-    std::cout << derivatives_map_.size() << "derviates\n";
+    // std::cout << derivatives_map_.size() << "derivatives\n";
     for(std::vector<std::pair<std::string, std::string> >::iterator it1 = derivatives_map_.begin(); it1 != derivatives_map_.end(); it1++)
     {
         std::string key = (*it1).first;
         std::string value = (*it1).second;
-        std::cout << key << ": " << value << "\n";
+        // std::cout << key << ": " << value << "\n";
         std::string long_name_pattern = "";
         std::string cond_name_pattern = "";
         std::string long_name_pattern_at_minus_one = "";
@@ -1648,10 +1648,10 @@ void Glycan::Monosaccharide::UpdateComplexSugarChemicalCode()
       {
         code = key + "A";
       }
-      else if( value.compare( "xCHH" ) == 0 )
-      {
-        code = key + "xCHH";
-      }
+      // else if( value.compare( "xCHH" ) == 0 )
+      // {
+      //   code = key + "xCHH";
+      // }
       std::vector< std::string >::iterator index_it;
       if( ( key.compare( "a" ) == 0 ) || ( key.compare( "-1" ) == 0 ) || ( key.compare( "+1" ) == 0 ) || ( key.compare( "+2" )== 0 ) || ( key.compare( "+3" ) == 0 ) ) 
       {
