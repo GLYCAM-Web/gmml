@@ -119,6 +119,7 @@ while [ ${i} -le $# ]; do
 done
 
 printf "\nBuilding with these settings:\n"
+printf "GEMSHOME: $GEMSHOME\n"
 printf "TARGET_MAKE_FILE: $TARGET_MAKE_FILE\n"
 printf "CLEAN: $CLEAN\n"
 printf "DEBUG: $DEBUG\n\n"
