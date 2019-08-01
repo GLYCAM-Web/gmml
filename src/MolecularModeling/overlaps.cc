@@ -1,4 +1,4 @@
-#include "../includes/MolecularModeling/overlaps.hpp"
+#include "../../includes/MolecularModeling/overlaps.hpp"
 
 double gmml::CalculateAtomicOverlaps(AtomVector atomsA, AtomVector atomsB){
 
