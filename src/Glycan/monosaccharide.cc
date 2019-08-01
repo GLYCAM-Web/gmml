@@ -300,6 +300,10 @@ void Glycan::Monosaccharide::createSNFGname()
     {
       monoSNFGName.erase(3,1);
     }
+    if(monoSNFGName[monoSNFGName.length()-1] == 'H')
+    {
+      monoSNFGName.erase(monoSNFGName.length()-1,1);
+    }
   }
   SNFG_name_ = monoSNFGName;
 }
