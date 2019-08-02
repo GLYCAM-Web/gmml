@@ -53,8 +53,9 @@ if [[ "$1" == "-help" ]] || [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]; then
     echo "    go to the GEMS home dir; GEMS $0 will spawn GMML building."
     echo ""
     echo "This is for building GMML in isolation!"
-    echo "    There is no wrapping and no connection to GEMS -"
-    echo "    although environment variables starting with GEMS are respected."
+    echo "    There is no wrapping and no connection to GEMS "
+    echo "    although environment variables starting with GEMS are respected;"
+    echo "    GEMSHOME should be set to the parent of the gmml directory."
     echo "After isolated GMML is built the next step is testing; do this:"
     echo "cd tests; compile_run_tests.bash"
     echo ""
@@ -141,6 +142,7 @@ printf "DEBUG: $DEBUG\n\n"
  qmake -o $TARGET_MAKE_FILE
 
  if [ "$CLEAN" == "clean" ]; then
+     echo "Cleaning GMML."
      make -f $TARGET_MAKE_FILE distclean
      qmake -o $TARGET_MAKE_FILE
  fi
