@@ -2,11 +2,14 @@
 #define CONDENSEDSEQUENCERESIDUE_HPP
 
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <map>
+#include <vector>
 
 namespace CondensedSequenceSpace
 {
+    class CondensedSequence;
     class CondensedSequenceResidue
     {
         public:
@@ -22,7 +25,7 @@ namespace CondensedSequenceSpace
               * Default constructor
               */
             CondensedSequenceResidue();
-            CondensedSequenceResidue(std::string residue_string);
+            CondensedSequenceResidue(std::string residue_string, CondensedSequenceSpace::CondensedSequence* condensed_sequence);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -38,6 +41,7 @@ namespace CondensedSequenceSpace
             int GetOxygenPosition();
             DerivativeMap GetDerivatives();
             int GetParentId();
+	    std::vector<int> GetChildIds();
 	    int GetBondId(); //Added by Yao 08/03/2018. Bond Id is to label the index of the bond of a residue to its parent, starting from reducing end.Numbering starts from 0.
 /** @}*/
             //////////////////////////////////////////////////////////
@@ -54,6 +58,7 @@ namespace CondensedSequenceSpace
             void SetOxygenPosition(int oxygen_position);
             void SetDerivatives(DerivativeMap derivatives);
             void SetParentId(int parent_id);
+	    void AddChildId(int child_id);
 	    void SetBondId(int bond_id); //Added by Yao 08/03/2018. Bond Id is to label the index of the bond of a residue to its parent, starting from reducing end.Numbering starts from 0.
 /** @}*/
             //////////////////////////////////////////////////////////
@@ -82,6 +87,7 @@ namespace CondensedSequenceSpace
             int oxygen_position_;
             DerivativeMap derivatives_;
             int parent_id_;
+	    std::vector<int> child_ids_;
 	    int bond_id_;  //Added by Yao 08/03/2018. Bond Id is to label the index of the bond of a residue to its parent, starting from reducing end.Numbering starts from 0.
     };
 }
