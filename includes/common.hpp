@@ -469,12 +469,14 @@ namespace gmml
         {"_2^43dP_a^+1d", "a-D-abequopyranose",     "DAbepa",     "D", "", "P", "a", "", "", ""   },
         {"_4^2^3P^a^+1d", "b-D-rhamnoopyranose",    "DRhapb",     "D", "", "P", "b", "", "", ""   },
         {"_4^2^3P_a^+1d", "a-D-rhamnoopyranose",    "DRhapa",     "D", "", "P", "a", "", "", ""   },
-        {"_4^23dP^a^+1d", "b-D-ascarylopyranose",   "DAscb",      "D", "", "P", "b", "", "", ""   },
-        {"_4^23dP_a^+1d", "a-D-ascarylopyranose",   "DAsca",      "D", "", "P", "a", "", "", ""   },
+        {"_4^23dP^a^+1d", "b-D-tyvelopyranose",     "DTyvpb",     "D", "", "P", "b", "", "", ""   },
+        {"_4^23dP_a^+1d", "a-D-tyvelopyranose",     "DTyvpa",     "D", "", "P", "a", "", "", "TYV"},
         {"_32dF^a^+1",    "b-D-deoxyribofuranose",  "DRibf[2D]b", "D", "", "P", "b", "", "", ""   },
         {"_32dF_a^+1",    "a-D-deoxyribofuranose",  "DRibf[2D]a", "D", "", "P", "a", "", "", ""   },
         {"_23dF^a^+1",    "b-D-cordycepofuranose",  "DRibf[3D]b", "D", "", "P", "b", "", "", ""   },
         {"_23dF_a^+1",    "a-D-cordycepofuranose",  "DRibf[3D]a", "D", "", "P", "a", "", "", ""   },
+        {"_2_4^3P_a^+1d", "a-D-quinovopyranose",    "DQuipa",     "D", "", "P", "a", "", "", "G6D"},
+        {"_2_43dP_a^+1d", "a-D-paratopyranose",     "DParpa",     "D", "", "P", "a", "", "", "PZU"},
 
         ///Alpha L Aldohexapyranoses
         {"^2^3^4P^a",     "a-L-ribopyranose",       "LRibpa",     "L", "", "P", "a", "", "", ""   },
@@ -548,12 +550,13 @@ namespace gmml
         {"_4^23dP_a^+1d", "a-L-abequopyranose",     "LAbepa",     "L", "", "P", "a", "", "", ""},
         {"_2_3^4P_a_+1d", "b-L-rhamnoopyranose",    "LRhapb",     "L", "", "P", "b", "", "", ""},
         {"_2_3^4P_+1d^a", "a-L-rhamnoopyranose",    "LRhapa",     "L", "", "P", "a", "", "", "RAM"},
-        {"_2^43dP_+1d_a", "b-L-ascarylopyranose",   "LAscb",      "L", "", "P", "b", "", "", ""},
-        {"_2^43dP_+1d^a", "a-L-ascarylopyranose",   "LAsca",      "L", "", "P", "a", "", "", ""},
+        {"_2^43dP_+1d_a", "b-L-ascarylopyranose",   "LAscpb",     "L", "", "P", "b", "", "", ""},
+        {"_2^43dP_+1d^a", "a-L-ascarylopyranose",   "LAscpa",     "L", "", "P", "a", "", "", ""},
         {"^32dF_a_+1",    "b-L-deoxyribofuranose",  "LRibf[2D]b", "L", "", "F", "b", "", "", ""},
         {"^32dF_+1^a",    "a-L-deoxyribofuranose",  "LRibf[2D]a", "L", "", "F", "a", "", "", ""},
         {"^23dF_a_+1",    "b-L-cordycepofuranose",  "LRibf[3D]b", "L", "", "F", "b", "", "", ""},
         {"^23dF_+1^a",    "a-L-cordycepofuranose",  "LRibf[3D]a", "L", "", "F", "a", "", "", ""},
+        {"_3^42dP_+1d^a", "a-L-olivopyranose",      "LOlipa",     "L", "", "P", "a", "", "", "RAE"},
 
         ///Indeterminate Anomeric Oxygen
         ///X D Aldohexapyranoses
@@ -681,6 +684,9 @@ namespace gmml
         {"_2NAc^3^4P_a^+1", "a-D-galactopyranose", "DGalpa", "D","", "P", "a", "N-acetyl-a-D-galactosamine", "DGalpNAca", "A2G"},
         {"_2NAc_4^3P^a^+1", "b-D-glucopyranose", "DGlcpb", "D", "", "P", "b", "N-acetyl-b-D-glucosamine", "DGlcpNAcb", "NAG"},
         {"_2NAc^3^4P^a^+1", "b-D-galactopyranose", "DGalpb", "D", "", "P", "b", "N-acetyl-b-D-galactosamine", "DGalpNAcb", "NGA"},
+        {"_2NAc^3iprA^4P^a^+1", "b-D-muramic acid", "DMurpb", "D", "", "P", "b", "N-acetyl-b-D-muramic acid", "DMurpNAcb", "AMU"},
+        {"_2NAc^3iprA^4P_a^+1", "a-D-muramic acid", "DMurpa", "D", "", "P", "a", "N-acetyl-a-D-muramic acid", "DMurpNAca", "MUB"},
+        {"_2N^3iprA^4P^a^+1", "b-D-muramic acid", "DMurpb", "D", "", "P", "b", "b-D-muramic acid", "", "MUR"},
         ///Alpha D aldohexafuranoses
         {"_2_3F_a^+1R^+2", "a-D-allofuranose", "DAllfa", "D", "", "F", "a", "", "", ""},
         {"_3^2F_a^+1R^+2", "a-D-altrofuranose", "DAltfa", "D", "", "F", "a", "", "", ""},
@@ -699,9 +705,16 @@ namespace gmml
         {"_3^2F_+1R_+2^a", "b-D-idofuranose", "DIdofb", "D", "", "F", "b", "", "", ""},
         {"_2^3F_+1R_+2^a", "b-D-galactofuranose", "DGalfb", "D", "", "P", "b", "", "", "GZL"},
         {"^2^3F_+1R_+2^a", "b-D-talofuranose", "DTalfb", "D", "", "F", "b", "", "", ""},
+        ///Seven Carbons
+        //TODO fix the bug that causes these to have the same chemical code (GMH and 289)
+        // {"_4^2^3P_a^+1R^+2", "", "", "L", "", "P", "a", "L-glycero-a-D-mannoheptopyranose", "LDManHepa", "GMH"},
+        // {"_4^2^3P^a^+1R^+2", "", "", "L", "", "P", "b", "L-glycero-b-D-mannoheptopyranose", "LDManHepb", ""},
+        // {"", "", "", "D", "", "P", "a", "D-glycero-a-D-mannoheptopyranose", "DDManHepa", "289"},
         ///Eight carbons
         {"^3^42dP_a^-1A^+1R^+2", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-octulopyranosate", "DKDOpa", ""},
+        {"^3^42dP_a^-1AH^+1R^+2", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-octulopyranosate", "DKDOpa", ""},
         {"^3^42dP_-1A^a^+1R^+2", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-octulopyranosate", "DKDOpb", ""},
+        {"^3^42dP_-1AH^a^+1R^+2", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-octulopyranosate", "DKDOpb", ""},
         {"^32dF_a_+1R_+2R_+3^-1A", "", "", "D", "", "F", "a", "2-keto-3-deoxy-a-D-octulofuranosate", "DKDOfa", ""},
         {"^32dF_-1A_+1R_+2R_+3^a", "", "", "D", "", "F", "b", "2-keto-3-deoxy-b-D-octulofuranosate", "DKDOfb", ""},
         ///Nine carbons

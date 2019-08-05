@@ -512,6 +512,15 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         // mono->author_sugar_name_ = mono->sugar_name_;
         // mono->createAuthorSNFGname();
       }
+      //replace KDO/N with Kdo/n for the PDB (CCD is always included for the PDB runs)
+      if (mono->sugar_name_.monosaccharide_short_name_.find("KDO") != std::string::npos)
+      {
+        mono->sugar_name_.monosaccharide_short_name_.replace(1, 3, "Kdo");
+      }
+      else if (mono->sugar_name_.monosaccharide_short_name_.find("KDN") != std::string::npos)
+      {
+        mono->sugar_name_.monosaccharide_short_name_.replace(1, 3, "Kdn");
+      }
     }
     std::cout << "SNFG Name: " << mono->SNFG_name_ << "\n";
     std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------\n";
@@ -2546,6 +2555,104 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
         return "";
 }
 
+// std::string Assembly::CheckxC_NxO_CH3C_COO(MolecularModeling::Atom *target, std::string cycle_atoms_str, AtomVector& pattern_atoms)
+// {//isopropionic acid
+  // int local_debug = -1;
+  // std::stringstream pattern;
+  // pattern << "xC";
+  // MolecularModeling::Atom* N_or_O = NULL;
+  // AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+  // for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+  // {
+  //   MolecularModeling::Atom* t_neighbor = (*it);
+  //   if(cycle_atoms_str.find(t_neighbor->GetId()) == std::string::npos)
+  //   {
+  //     if(t_neighbor->GetName().at(0) != NxO)
+  //       pattern << t_neighbor->GetName().at(0);
+  //     else if(t_neighbor->GetName().at(0) == NxO && N_or_O != NULL)
+  //       pattern << t_neighbor->GetName().at(0);
+  //     else if(t_neighbor->GetName().at(0) == NxO && N_or_O == NULL)
+  //       N_or_O = t_neighbor;
+  //   }
+  // }
+  // if(N_or_O != NULL)
+  // {
+  //   MolecularModeling::Atom* C = NULL;
+  //   pattern << "-" << NxO;
+  //   AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
+  //   for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+  //   {
+  //     MolecularModeling::Atom* n_neighbor = (*it);
+  //     if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'C')
+  //       pattern << n_neighbor->GetName().at(0);
+  //     else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'C' && C != NULL)
+  //       pattern << n_neighbor->GetName().at(0);
+  //     else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'C' && C == NULL)
+  //       C = n_neighbor;
+  //   }
+  //   if(C != NULL)
+  //   {
+  //     pattern_atoms.push_back(C);
+  //     pattern << "-C";
+  //     AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
+  //     for(AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
+  //     {
+  //       MolecularModeling::Atom* c_neighbor = (*it);
+  //       if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0)
+  //         pattern << c_neighbor->GetName().at(0);
+  //     }
+  //   }
+  // }
+  // if (local_debug > 0)
+  // {
+  //   std::stringstream debugStr;
+  //   debugStr << "CheckxC_NxO_C:" << pattern.str() << std::endl;
+  //   gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
+  // }
+  // if(NxO == 'N')
+  // {
+  //   if(pattern.str().compare("xCH-N-CHHH") == 0 || 
+  //     pattern.str().compare("xCH-NH-CHHH") == 0 || 
+  //     pattern.str().compare("xCH-NH-C") == 0 || 
+  //     pattern.str().compare("xCH-N-C") == 0 ||
+  //     pattern.str().compare("xCHH-N-CHHH") == 0 || 
+  //     pattern.str().compare("xCHH-NH-CHHH") == 0 || 
+  //     pattern.str().compare("xCHH-NH-C") == 0 || 
+  //     pattern.str().compare("xCHH-N-C") == 0 ||
+  //     pattern.str().compare("xC-NH-CHHH") == 0 || 
+  //     pattern.str().compare("xC-NH-C") == 0 || 
+  //     pattern.str().compare("xC-N-CHHH") == 0 || 
+  //     pattern.str().compare("xC-N-C") == 0)
+  //   {
+  //     return "xC-N-CH3";
+  //   }
+  //   else
+  //     return "";
+  // }
+  // else if(NxO == 'O')
+  // {
+  //   if(pattern.str().compare("xCH-O-CHHH") == 0 || 
+  //     pattern.str().compare("xCH-OH-CHHH") == 0 || 
+  //     pattern.str().compare("xCH-OH-C") == 0 || 
+  //     pattern.str().compare("xCH-O-C") == 0 ||
+  //     pattern.str().compare("xCHH-O-CHHH") == 0 ||
+  //     pattern.str().compare("xCHH-OH-CHHH") == 0 || 
+  //     pattern.str().compare("xCHH-OH-C") == 0 || 
+  //     pattern.str().compare("xCHH-O-C") == 0 ||
+  //     pattern.str().compare("xC-OH-CHHH") == 0 || 
+  //     pattern.str().compare("xC-OH-C") == 0 || 
+  //     pattern.str().compare("xC-O-CHHH") == 0 || 
+  //     pattern.str().compare("xC-O-C") == 0)
+  //   {
+  //     return "xC-O-CH3";
+  //   }
+  //   else
+  //     return "";
+  // }
+  // else
+  //   return "";
+// }
+
 // void Assembly::GenerateCompleteSugarName(Glycan::Monosaccharide *mono)
 // {
 //     std::stringstream in_bracket;
@@ -2811,7 +2918,7 @@ void Assembly::AddUnknownDerivativeRuleInfo(std::string key, std::string pattern
       else if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
         head << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) << long_name_pattern;
       else if(key.compare("a") != 0)
-        head << gmml::ConvertString<int>(key) << long_name_pattern;
+        head << gmml::ConvertString<int>(key) + 1 << long_name_pattern;
     }
   }
   if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
@@ -2843,7 +2950,7 @@ void Assembly::AddUnknownDerivativeRuleInfo(std::string key, std::string pattern
       }
       else if(key.compare("a") != 0)
       {
-        in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+        in_bracket << gmml::ConvertString<int>(key) + 1<< cond_name_pattern << ",";
         // gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
       }
     }
@@ -2856,15 +2963,15 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
 {
     std::stringstream ss;
     ss << pattern;
-    std::cout << key << ": " << pattern << "\n";
+    // std::cout << key << ": " << pattern << "\n";
     if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
     {
         if(!minus_one)
         {
             if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                head << mono->cycle_atoms_.size() - 1 + gmml::ConvertString<int>(key) << long_name_pattern;
-            //            else if(key.compare("a") == 0)
-            //                head << "2" << long_name_pattern;
+                head << mono->cycle_atoms_.size() - 1 + std::stoi(key.substr(1,1)) << long_name_pattern;
+           else if(key.compare("a") == 0)
+               head << "1" << long_name_pattern;
             else if(key.compare("a") != 0)
                 head << gmml::ConvertString<int>(key) << long_name_pattern;
         }
@@ -2873,11 +2980,11 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             if(key.compare("-1") == 0)
                 head << "1" << long_name_pattern;
             else if(key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
-                head << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) << long_name_pattern;
-            //            else if(key.compare("a") == 0)
-            //                head << "2" << long_name_pattern;
+                head << mono->cycle_atoms_.size()  +  std::stoi(key.substr(1,1)) << long_name_pattern;
+           else if(key.compare("a") == 0)
+               head << "2" << long_name_pattern;
             else if(key.compare("a") != 0)
-                head << gmml::ConvertString<int>(key) /*+ 1*/ << long_name_pattern;
+                head << gmml::ConvertString<int>(key) + 1 << long_name_pattern;
         }
     }
     if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
@@ -2925,8 +3032,8 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
                   in_bracket << mono->cycle_atoms_.size() - 1 + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
                   gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
                 }
-                //                else if(key.compare("a") == 0)
-                //                    in_bracket << "2" << cond_name_pattern << ",";
+               else if(key.compare("a") == 0)
+                   in_bracket << "1" << cond_name_pattern << ",";
                 else if(key.compare("a") != 0)
                 {
                   in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";
@@ -2942,14 +3049,14 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
                 }
                 else if( key.compare("+1") == 0 || key.compare("+2") == 0 || key.compare("+3") == 0)
                 {
-                  in_bracket << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) -1 << cond_name_pattern << ",";
+                  in_bracket << mono->cycle_atoms_.size() + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
                   gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
                 }
-                //                else if(key.compare("a") == 0)
-                //                    in_bracket << "2" << cond_name_pattern << ",";
+               else if(key.compare("a") == 0)
+                   in_bracket << "2" << cond_name_pattern << ",";
                 else if(key.compare("a") != 0)
                 {
-                  in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";
+                  in_bracket << gmml::ConvertString<int>(key) + 1 << cond_name_pattern << ",";
                   gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
                 }
             }
@@ -3039,7 +3146,7 @@ void Assembly::AddModificationRuleTwoInfo(std::string key, std::string pattern, 
     der_mod_note->description_ = note.str();
     // this->AddNote(der_mod_note);
     mono->mono_notes_.push_back(der_mod_note);
-    std::cout << ss.str() << std::endl;
+    // std::cout << ss.str() << std::endl;
     gmml::log(__LINE__, __FILE__,  gmml::WAR, ss.str());
 }
 
