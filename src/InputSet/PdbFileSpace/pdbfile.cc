@@ -8,7 +8,6 @@
 #include <exception>
 #include <cctype>
 #include <string>
-
 #include "../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbheadercard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbobsoletesection.hpp"
@@ -7421,6 +7420,8 @@ void PdbFile::ResolveModelCards(std::ostream& stream)
                         stream << std::right << std::setw(5) << " ";
                     stream << std::left << std::setw(1) << " "
                            << std::left << std::setw(4) << heterogen_atom->GetAtomName();
+                    //stream << std::left << std::setw(2) << " "
+                           //<< std::left << std::setw(3) << heterogen_atom->GetAtomName(); //Temporarily commenting out the correct line to write out an incorrect file, which ADT needs.
                     if(heterogen_atom->GetAtomAlternateLocation() == gmml::BLANK_SPACE)
                         stream << std::left << std::setw(1) << ' ';
                     else
