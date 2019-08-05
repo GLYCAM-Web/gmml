@@ -35,6 +35,16 @@ namespace Glycan
               * @param category The NoteCat enumerator that has to be converted to string
               * @return String format of the given NoteCat enumerator
               */
+	    Note()  //Default constructor
+	    {
+	    }
+
+	    Note(NoteType type, NoteCat cat, std::string description)
+	    {
+		type_ = type;
+		category_ = cat;
+		description_ = description;
+	    }
            std::string ConvertGlycanNoteCat2String(NoteCat category)
             {
                 switch(category)

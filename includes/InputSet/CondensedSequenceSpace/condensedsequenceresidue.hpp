@@ -2,6 +2,7 @@
 #define CONDENSEDSEQUENCERESIDUE_HPP
 
 #include <string>
+#include <sstream>
 #include <iostream>
 #include <map>
 #include <vector>

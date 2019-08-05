@@ -26,12 +26,9 @@ CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string, C
     else
     {
         if(residue_string.empty()){
- 	    Glycan::Note* new_note = new Glycan::Note();
- 	    new_note->type_ = Glycan::NoteType::ERROR;
-            new_note->category_ = Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE;
+
 	    std::string error_notice = "Empty residue token detected, but can't determine its exact location in sequence string";
-	    new_note->description_ = error_notice;
-	    condensed_sequence->AddNoteToResponse(new_note);
+	    condensed_sequence->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, error_notice));
             throw CondensedSequenceProcessingException("Invalid residue in sequence");
 	}
 	
@@ -46,15 +43,9 @@ CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string, C
                 else if(isomer_letter == 'L' || isomer_letter == 'l')
                     this->isomer_ = "L";
                 else{
-		    Glycan::Note* new_note = new Glycan::Note();
- 		    new_note->type_ = Glycan::NoteType::ERROR;
-        	    new_note->category_ = Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE;
-		    std::string error_notice = "ERROR at residue ";
-		    error_notice += residue_string;
-		    error_notice += ": ";
-		    error_notice += " invalid isomer, must be either D/L";
-		    new_note->description_ = error_notice;
-		    condensed_sequence->AddNoteToResponse(new_note);
+		    std::stringstream error_notice;
+		    error_notice << "ERROR at residue " << residue_string << ": invalid isomer, must be either D/L";
+		    condensed_sequence->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, error_notice.str()));
 
                     //throw CondensedSequenceProcessingException("Invalid isomer in residue " + residue_string);
 	        }
@@ -70,28 +61,17 @@ CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string, C
                 else if(configuration_letter == 'X' || configuration_letter == 'x')
                     this->configuration_ = 'X';
                 else{
-		    Glycan::Note* new_note = new Glycan::Note();
- 		    new_note->type_ = Glycan::NoteType::ERROR;
-        	    new_note->category_ = Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE;
-		    std::string error_notice = "ERROR at residue ";
-		    error_notice += residue_string;
-		    error_notice += ": ";
-		    error_notice += " invalid anomeric configuration, must be either a/b/x";
-		    new_note->description_ = error_notice;
-		    condensed_sequence->AddNoteToResponse(new_note);
+		    std::stringstream error_notice;
+		    error_notice << "ERROR at residue " << residue_string << ": invalid anomeric configuration, must be either a/b/x";
+		    condensed_sequence->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, error_notice.str()));
                     //throw CondensedSequenceProcessingException("Invalid configuration in residue " + residue_string);
 	        }
 
                 if(!std::isdigit(residue_string[dash_index - 1])){
-		    Glycan::Note* new_note = new Glycan::Note();
- 		    new_note->type_ = Glycan::NoteType::ERROR;
-        	    new_note->category_ = Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE;
-		    std::string error_notice = "ERROR at residue ";
-		    error_notice += residue_string;
-		    error_notice += ": ";
-		    error_notice += " non-numeric anomeric position, usually 1 for aldose and 2 for ketose";
-		    new_note->description_ = error_notice;
-		    condensed_sequence->AddNoteToResponse(new_note);
+
+		    std::stringstream error_notice;
+		    error_notice << "ERROR at residue " << residue_string << ": non-numeric anomeric position, usually 1 for aldose and 2 for ketose";
+		    condensed_sequence->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, error_notice.str()));
                     //throw CondensedSequenceProcessingException("Invalid residue in sequence");
 	        }
 
@@ -102,15 +82,10 @@ CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string, C
                 if(dash_index != residue_string.size() - 1)
                 {
                     if(!std::isdigit(residue_string[dash_index + 1])){
-		        Glycan::Note* new_note = new Glycan::Note();
- 		        new_note->type_ = Glycan::NoteType::ERROR;
-        	        new_note->category_ = Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE;
-		        std::string error_notice = "ERROR at residue ";
-		        error_notice += residue_string;
-		        error_notice += ": ";
-		        error_notice += "missing open valence position.";
-		        new_note->description_ = error_notice;
-		        condensed_sequence->AddNoteToResponse(new_note);
+
+			std::stringstream error_notice;
+		        error_notice << "ERROR at residue " << residue_string << ": missing open valence position.";
+		        condensed_sequence->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, error_notice.str()));
                         //throw CondensedSequenceProcessingException("Invalid residue in sequence");
 		    }
 		    else{
@@ -119,16 +94,11 @@ CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string, C
                 }
 
                 else{
-		    Glycan::Note* new_note = new Glycan::Note();
- 		    new_note->type_ = Glycan::NoteType::WARNING;
-        	    new_note->category_ = Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE;
-		    std::string error_notice = "WARNING at residue ";
-		    error_notice += residue_string;
-		    error_notice += ": ";
-		    error_notice += "unresolved open valence position, since not exactly 1 character found after dash.Setting to default value 1.";
-		    error_notice += "Ignore this warning if this residue is connected to the aglycone";
-		    new_note->description_ = error_notice;
-		    condensed_sequence->AddNoteToResponse(new_note);
+
+		    std::stringstream error_notice;
+		    error_notice << "WARNING at residue " << residue_string << ": unresolved open valence position, since not exactly 1 character found after dash.Setting to default value 1.";
+		    error_notice << "Ignore this warning if this residue is connected to the aglycone";
+		    condensed_sequence->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, error_notice.str()));
 
                     this->oxygen_position_ = 1;
 	        }
@@ -137,7 +107,6 @@ CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string, C
                 size_t right_bracket = residue_string.find(']');
                 if(left_bracket == std::string::npos || right_bracket == std::string::npos){
                     this->name_ = residue_string.substr(1, dash_index - 3);
-std::cout << "Test name: " << this->name_ << std::endl;
 		}
                 else
                 {
@@ -147,17 +116,10 @@ std::cout << "Test name: " << this->name_ << std::endl;
                     for(std::vector<std::string>::iterator it = derivatives_tokens.begin(); it != derivatives_tokens.end(); ++it)
                     {
                         if(!std::isdigit(it->at(0))){
-			    Glycan::Note* new_note = new Glycan::Note();
- 			    new_note->type_ = Glycan::NoteType::ERROR;
-        		    new_note->category_ = Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE;
-			    std::string error_notice = "ERROR at residue ";
-			    error_notice += residue_string;
-			    error_notice += ": ";
-			    error_notice += "Illegal derivative position at ";
-			    error_notice += *it;
-			    error_notice += " ,derivative postion must be an integer.";
-			    new_note->description_ = error_notice;
-			    condensed_sequence->AddNoteToResponse(new_note);
+
+			    std::stringstream error_notice;
+			    error_notice << "ERROR at residue " << residue_string << ": Illegal derivative position at " << *it << " ,derivative postion must be an integer.";
+			    condensed_sequence->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, error_notice.str()));
                             //throw CondensedSequenceProcessingException("Invalid derivative position in sequence");
 		        }
 		        else{
