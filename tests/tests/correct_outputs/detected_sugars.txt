@@ -74,8 +74,8 @@ _3^4NAc2dP_a_+1R_+2R_+3^-1A
 BFMP ring conformation: 	1C4		5d2(0.59223)		1d4(2.29903)		3d6(2.82537)	
 
 
-Carbon at Ring Position 4 is attached to xC-N-C=OCH3
-Carbon at Ring Position -1 is attached to xC-(O,O)
+Carbon at Ring Position 4 is attached to -N-C=OCH3
+Carbon at Ring Position -1 is attached to -(O,O)
 Stereochemistry name: 
 Stereochemistry short name: 
 Complete name: N-acetyl-a-D-neuraminate
@@ -123,8 +123,8 @@ _3^4NAc2dP_a_+1R_+2R_+3^-1A
 BFMP ring conformation: 	1C4		1d4(0.816663)		5d2(1.03669)		3d6(1.81462)	
 
 
-Carbon at Ring Position 4 is attached to xC-N-C=OCH3
-Carbon at Ring Position -1 is attached to xC-(O,O)
+Carbon at Ring Position 4 is attached to -N-C=OCH3
+Carbon at Ring Position -1 is attached to -(O,O)
 Stereochemistry name: 
 Stereochemistry short name: 
 Complete name: N-acetyl-a-D-neuraminate
@@ -172,8 +172,8 @@ _3^4NAc2dP_a_+1R_+2R_+3^-1A
 BFMP ring conformation: 	1C4		1d4(1.21352)		3d6(3.20895)		5d2(4.37716)	
 
 
-Carbon at Ring Position 4 is attached to xC-N-C=OCH3
-Carbon at Ring Position -1 is attached to xC-(O,O)
+Carbon at Ring Position 4 is attached to -N-C=OCH3
+Carbon at Ring Position -1 is attached to -(O,O)
 Stereochemistry name: 
 Stereochemistry short name: 
 Complete name: N-acetyl-a-D-neuraminate
@@ -221,8 +221,8 @@ _3^4NAc2dP_a_+1R_+2R_+3^-1A
 BFMP ring conformation: 	1C4		3d6(1.3168)		1d4(3.62435)		5d2(5.02985)	
 
 
-Carbon at Ring Position 4 is attached to xC-N-C=OCH3
-Carbon at Ring Position -1 is attached to xC-(O,O)
+Carbon at Ring Position 4 is attached to -N-C=OCH3
+Carbon at Ring Position -1 is attached to -(O,O)
 Stereochemistry name: 
 Stereochemistry short name: 
 Complete name: N-acetyl-a-D-neuraminate
@@ -270,8 +270,8 @@ _3^4NAc2dP_a_+1R_+2R_+3^-1A
 BFMP ring conformation: 	1C4		3d6(0.0433759)		1d4(2.03452)		5d2(2.13177)	
 
 
-Carbon at Ring Position 4 is attached to xC-N-C=OCH3
-Carbon at Ring Position -1 is attached to xC-(O,O)
+Carbon at Ring Position 4 is attached to -N-C=OCH3
+Carbon at Ring Position -1 is attached to -(O,O)
 Stereochemistry name: 
 Stereochemistry short name: 
 Complete name: N-acetyl-a-D-neuraminate
@@ -319,8 +319,8 @@ _3^4NAc2dP_a_+1R_+2R_+3^-1A
 BFMP ring conformation: 	1C4		3d6(0.646624)		1d4(0.947768)		5d2(1.59285)	
 
 
-Carbon at Ring Position 4 is attached to xC-N-C=OCH3
-Carbon at Ring Position -1 is attached to xC-(O,O)
+Carbon at Ring Position 4 is attached to -N-C=OCH3
+Carbon at Ring Position -1 is attached to -(O,O)
 Stereochemistry name: 
 Stereochemistry short name: 
 Complete name: N-acetyl-a-D-neuraminate
@@ -368,8 +368,8 @@ _3^4NAc2dP_a_+1R_+2R_+3^-1A
 BFMP ring conformation: 	1C4		3d6(0.55621)		1d4(4.68145)		5d2(5.18342)	
 
 
-Carbon at Ring Position 4 is attached to xC-N-C=OCH3
-Carbon at Ring Position -1 is attached to xC-(O,O)
+Carbon at Ring Position 4 is attached to -N-C=OCH3
+Carbon at Ring Position -1 is attached to -(O,O)
 Stereochemistry name: 
 Stereochemistry short name: 
 Complete name: N-acetyl-a-D-neuraminate
@@ -394,7 +394,7 @@ _2NAc_4^3P^a^+1
 BFMP ring conformation: 	-		6d3(1.65057)		2d5(9.53659)	
 
 
-Carbon at Ring Position 2 is attached to xC-N-C=OCH3
+Carbon at Ring Position 2 is attached to -N-C=OCH3
 Stereochemistry name: N-acetyl-b-D-glucopyranose
 Stereochemistry short name: DGlcpb
 Complete name: N-acetyl-b-D-glucosamine
