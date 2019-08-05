@@ -365,7 +365,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
             PdbFileSpace::PdbFile* thisPDB = subAssembly.BuildPdbFileStructureFromAssembly();
             std::ostringstream PDBstringstream;
             thisPDB->WriteToStringstream(PDBstringstream);
-            gmml::AddLiteral(oligo_uri, "gmmo::PDBfile", PDBstringstream.str(), oligo_stream);
+            gmml::AddLiteral(oligo_uri, "gmmo:PDBfile", PDBstringstream.str(), oligo_stream);
             
             // if(oligo->child_oligos_.size() != 0 && (find(visited_oligos.begin(), visited_oligos.end(), oligo->root_->mono_id_) == visited_oligos.end()))
             // {
@@ -882,7 +882,7 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
     {
         int note_id = 1;
         // gmml::log(__LINE__, __FILE__,  gmml::INF, "Poulating notes");
-        std::string id_prefix = mono_uri + "_";
+        std::string id_prefix = mono_uri.substr(5,mono_uri.length()) + "_";
         PopulateNotes(mono_stream, mono_stream, mono_uri, notes, id_prefix, note_id);
     }
     Glycan::SugarName sugar_name = mono->sugar_name_;
