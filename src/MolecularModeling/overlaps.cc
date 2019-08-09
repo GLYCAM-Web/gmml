@@ -10,7 +10,7 @@ double gmml::CalculateAtomicOverlaps(AtomVector atomsA, AtomVector atomsB){
         {
             MolecularModeling::Atom *atomA = *it1;
             MolecularModeling::Atom *atomB = *it2;
-            if ( std::abs((atomA->GetCoordinates().at(0)->GetX() - atomB->GetCoordinates().at(0)->GetX())) < 1.2 ) // This is faster than calulating distance, and rules out tons of atom pairs.
+            if ( std::abs((atomA->GetCoordinates().at(0)->GetX() - atomB->GetCoordinates().at(0)->GetX())) < 3.6 ) // This is faster than calulating distance, and rules out tons of atom pairs.
             {
                 distance = atomA->GetDistanceToAtom(atomB);
                 if ( ( distance < 3.6 ) && ( distance > 0.0 ) ) //Close enough to overlap, but not the same atom
