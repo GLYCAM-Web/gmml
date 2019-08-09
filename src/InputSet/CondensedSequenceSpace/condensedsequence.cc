@@ -1,13 +1,16 @@
 #include <stdexcept>
 #include <stack>
+#include <iostream>
+#include <boost/algorithm/string.hpp>
+#include <map>
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+#include "../../../includes/InputSet/Utilities/response.hpp"
+#include "../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
-#include <iostream>
-
 using CondensedSequenceSpace::CondensedSequence;
 
 //////////////////////////////////////////////////////////
@@ -22,9 +25,13 @@ CondensedSequence::CondensedSequence(std::string sequence)
     residues_ = CondensedSequenceResidueVector();
     tokens_ = CondensedSequenceTokenTypeVector();
     condensed_sequence_residue_tree_ = CondensedSequenceResidueTree();
-    ParseCondensedSequence(sequence);
-    BuildArrayTreeOfCondensedSequenceResidue();
-    BuildArrayTreeOfCondensedSequenceGlycam06Residue(this->condensed_sequence_residue_tree_);
+    bool sequence_is_sane = ParseSequenceAndCheckSanity(sequence);
+    if (sequence_is_sane){  //Also if MD service is requested
+        bool MD_eligible = BuildArrayTreeOfCondensedSequenceGlycam06Residue(this->condensed_sequence_residue_tree_);
+	if (!MD_eligible){
+    	    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, "This sequence is not eligible for MD."));
+	}
+    }
 }
 
 //////////////////////////////////////////////////////////
@@ -45,6 +52,10 @@ CondensedSequence::CondensedSequenceResidueTree CondensedSequence::GetCondensedS
 CondensedSequence::CondensedSequenceGlycam06ResidueTree CondensedSequence::GetCondensedSequenceGlycam06ResidueTree()
 {
     return condensed_sequence_glycam06_residue_tree_;
+}
+InputOutput::Response CondensedSequence::GetResponse()  //This is for gems to obtain a copy of the response object
+{
+    return this->response_;
 }
 
 void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
@@ -247,6 +258,11 @@ void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
+void CondensedSequence::AddNoteToResponse(Glycan::Note* new_note)
+{
+    this->response_.AddNotice(new_note);
+}
+
 void CondensedSequence::SetResidues(CondensedSequenceResidueVector residues)
 {
     residues_.clear();
@@ -275,13 +291,96 @@ void CondensedSequence::AddToken(gmml::CondensedSequenceTokenType token)
 //////////////////////////////////////////////////////////
 //                        FUNCTIONS                     //
 //////////////////////////////////////////////////////////
+bool CondensedSequence::ParseSequenceAndCheckSanity(std::string sequence)
+{
+    ParseCondensedSequence(sequence, this);  //There is error checking in the condense residue constuctor class as well, but the code construct does not allow me to let this function return. 
+    std::string bad_residue_notice = "Bad residue information detected.Cannot proceed.See other notices.Aborted.";
+    std::string good_residue_notice = "Sequence is sane.";
+    bool residues_are_sane = this->CheckResidueTokenSanity();
+    if (!residues_are_sane){
+	this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, bad_residue_notice));
+        return false;
+    }
+
+    else {
+        int condensed_residue_tree_success_status = BuildArrayTreeOfCondensedSequenceResidue();
+        if (condensed_residue_tree_success_status != 0){
+	    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, bad_residue_notice));
+            return false;
+	}
+
+    	else{
+	    bool connections_are_sane = this->CheckLinkageAndDerivativeSanity();
+	    if (!connections_are_sane){
+	        this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, bad_residue_notice));
+	        return false;
+	    }
+
+	    else{
+	        this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::COMMENT, Glycan::NoteCat::GLYCOSIDIC, good_residue_notice));
+	        return true;
+	    }
+        }
+    }
+}
+
+bool CondensedSequence::CheckResidueTokenSanity()
+{
+    for (CondensedSequenceResidueVector::iterator res_it = this->residues_.begin(); res_it != this->residues_.end(); res_it++){
+
+	CondensedSequenceResidue* condensed_residue = *res_it;
+	std::string isomer = condensed_residue->GetIsomer();
+        std::string anomeric_configuration = condensed_residue->GetConfiguration();
+        std::string residue_name = condensed_residue->GetName();
+        int anomeric_position = condensed_residue->GetAnomericCarbon();
+
+	//Read in Metadata
+	//Search Metadata for residue name. If no match throw error.
+	//If there exists an entry, get its likely isomers, anomeric configuration,and anomeric configuration.
+	//Compare with input values. If does not match for isomer and anomeric configuration.Throw warning.For anomeric positon mismatch throw error.
+    }
+    return true;
+}
+
+bool CondensedSequence::CheckLinkageAndDerivativeSanity()
+{
+    for (CondensedSequenceResidueVector::iterator res_it = this->condensed_sequence_residue_tree_.begin(); res_it != this->condensed_sequence_residue_tree_.end(); res_it++){
+
+	CondensedSequenceResidue* condensed_residue = *res_it;
+        std::string residue_name = condensed_residue->GetName();
+	//Read in Metadata
+	//Search Medata with residue name(which is valid now) as key, get allowed open valence positions.
+	//Make a map<int, bool> that records wheter each available position is occupied.
+        CondensedSequenceResidue::DerivativeMap derivatives = condensed_residue->GetDerivatives();
+	//Check each derivative position. Throw error if attached to disallowed open valence positions.
+	//For legal derivatives, mark its position as occupied. 
+	std::vector<int> child_ids = condensed_residue->GetChildIds();
+	for (std::vector<int>::iterator child_it = child_ids.begin(); child_it != child_ids.end(); child_it++){
+	    int child_id = *child_it;
+	    CondensedSequenceResidue* child_residue = this->condensed_sequence_residue_tree_[child_id];
+	    int child_open_valence_position = child_residue->GetOxygenPosition();
+	    //If child open valence does not exist as key in map, then it's accessing disallowed positions. If that position is allowed by occupied, that's also an error. 
+	}
+    }
+    return true;
+}
 int CondensedSequence::InsertNodeInCondensedSequenceResidueTree(CondensedSequenceResidue *condensed_residue, int parent_node_id, int bond_id)
 {
-    if(parent_node_id != gmml::iNotSet && parent_node_id >= (int)condensed_sequence_residue_tree_.size())
-        throw std::invalid_argument("ArrayTree::insert - invalid parent index(" + gmml::ConvertT(parent_node_id) + ")");
-//    condensed_sequence_residue_tree_.push_back(std::make_pair(condensed_residue, parent_node_id));
+    if (parent_node_id >= (int)condensed_sequence_residue_tree_.size()){
+	std::stringstream note_str;
+	note_str << "Invalid parent index at residue " << condensed_residue->GetName() << ", parent index is " << parent_node_id;
+	this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, note_str.str()));
+
+	parent_node_id = gmml::iNotSet;
+        //throw std::invalid_argument("ArrayTree::insert - invalid parent index(" + gmml::ConvertT(parent_node_id) + ")");
+    }
+    //    condensed_sequence_residue_tree_.push_back(std::make_pair(condensed_residue, parent_node_id));
     condensed_residue->SetParentId(parent_node_id);
     condensed_residue->SetBondId(bond_id);
+
+    if (parent_node_id != gmml::iNotSet){
+        condensed_sequence_residue_tree_[parent_node_id]->AddChildId(condensed_sequence_residue_tree_.size());  //Not only child knows parent, parent also knows child. 
+    }
     condensed_sequence_residue_tree_.push_back(condensed_residue);
     return condensed_sequence_residue_tree_.size() - 1;
 }
@@ -297,7 +396,7 @@ int CondensedSequence::InsertNodeInCondensedSequenceGlycam06ResidueTree(Condense
     return condensed_sequence_glycam06_residue_tree_.size() - 1;
 }
 
-void CondensedSequence::ParseCondensedSequence(std::string sequence)
+bool CondensedSequence::ParseCondensedSequence(std::string sequence, CondensedSequence* condensed_sequence)
 {
     bool reading_residue = true;
     int start_index = 0;
@@ -315,7 +414,7 @@ void CondensedSequence::ParseCondensedSequence(std::string sequence)
                     end_index--;
                 }
                 std::string residue = sequence.substr(start_index, end_index - start_index + 1);
-                residues_.push_back(new CondensedSequenceResidue(residue));
+                residues_.push_back(new CondensedSequenceResidue(residue, this));
                 if(terminal)
                     start_index = i + 1;
                 else
@@ -355,18 +454,21 @@ void CondensedSequence::ParseCondensedSequence(std::string sequence)
     std::string terminal_residue = sequence.substr(sequence.find_last_of('-') + 1);
     if(terminal_residue.compare("") != 0)
     {
-        residues_.push_back(new CondensedSequenceResidue(terminal_residue));
+        residues_.push_back(new CondensedSequenceResidue(terminal_residue, this));
         tokens_.push_back(gmml::CONDENSED_SEQUENCE_RESIDUE);
     }
 }
 
-void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
+int CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
 {
     CondensedSequenceTokenTypeVector::reverse_iterator current_token = tokens_.rbegin();
     CondensedSequenceResidueVector::reverse_iterator current_residue = residues_.rbegin();
-
-    if(residues_.size() == 0)
-        return;
+    
+    int return_value = 0; //zero is success.Non zero is error. 
+    if(residues_.size() == 0){
+        return_value = 1;
+	this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, "Condensed sequence does not contain any detectable residues."));
+    }
 
     std::stack<int> residue_stack;
     residue_stack.push(this->InsertNodeInCondensedSequenceResidueTree(*current_residue, gmml::iNotSet, gmml::iNotSet));
@@ -377,8 +479,11 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
         {
             case gmml::CONDENSED_SEQUENCE_LEFT_BRACKET:
             {
-                if (residue_stack.empty())
-                    throw CondensedSequenceProcessingException("Invalid branching in sequence");
+                if (residue_stack.empty()){
+		    return_value = 1;
+		    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, "Invalid branching in sequence"));
+                    //throw CondensedSequenceProcessingException("Invalid branching in sequence");
+		}
                 residue_stack.pop();
                 break;
             }
@@ -386,33 +491,55 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
             {
                 ++current_token;
                 ++current_residue;
-                if(current_residue == residues_.rend())
-                    throw CondensedSequenceProcessingException("Invalid sequence of residues");
-                if(residue_stack.empty())
-                    throw CondensedSequenceProcessingException("Invalid sequence");
-                residue_stack.push(this->InsertNodeInCondensedSequenceResidueTree(*current_residue, residue_stack.top(), bond_count));
-		bond_count++;
+                if(current_residue == residues_.rend()){
+		    return_value = 1;
+		    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, "Invalid sequence of residues"));
+                    //throw CondensedSequenceProcessingException("Invalid sequence of residues");
+		}    
+                if(residue_stack.empty()){
+		    return_value = 1;
+		    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, "Invalid sequence"));
+                    //throw CondensedSequenceProcessingException("Invalid sequence");
+		}
+		if (current_residue != residues_.rend() && !residue_stack.empty()){
+                    residue_stack.push(this->InsertNodeInCondensedSequenceResidueTree(*current_residue, residue_stack.top(), bond_count));
+		    bond_count++;
+		}
                 break;
             }
             case gmml::CONDENSED_SEQUENCE_RESIDUE:
             {
                 current_residue++;
-                if(current_residue == residues_.rend())
-                    throw CondensedSequenceProcessingException("Invalid sequence of residues");
-                if(residue_stack.empty())
-                    throw CondensedSequenceProcessingException("Invalid sequence");
-                int parent = this->InsertNodeInCondensedSequenceResidueTree(*current_residue, residue_stack.top(), bond_count);
-                residue_stack.pop();
-                residue_stack.push(parent);
-		bond_count++;
+                if(current_residue == residues_.rend()){
+		    return_value = 1;
+		    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, "Invalid sequence of residues"));
+                    //throw CondensedSequenceProcessingException("Invalid sequence of residues");
+		}
+                if(residue_stack.empty()){
+		    return_value = 1;
+		    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, "Invalid sequence of residues"));
+                    //throw CondensedSequenceProcessingException("Invalid sequence");
+		}
+		if(current_residue != residues_.rend() && !residue_stack.empty()){
+                    int parent = this->InsertNodeInCondensedSequenceResidueTree(*current_residue, residue_stack.top(), bond_count);
+                    residue_stack.pop();
+                    residue_stack.push(parent);
+		    bond_count++;
+		}
                 break;
             }
         }
     }
+    return return_value;
 }
 
-void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree)
+MolecularModeling::Assembly* CondensedSequence::ConvertCondensedSequenceResidueTree2ResidueOnlyAssembly()
 {
+
+}
+bool CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree)
+{
+    bool MD_eligible = false;
     condensed_sequence_glycam06_residue_tree_ = CondensedSequenceGlycam06ResidueTree();
     std::vector<std::vector<int> > open_valences = std::vector<std::vector<int> >(residue_tree.size());
     for(unsigned int i = 0; i < residue_tree.size(); i++)
@@ -480,10 +607,17 @@ void CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
 
             this->InsertNodeInCondensedSequenceGlycam06ResidueTree(tree_residue, parent + derivatives[parent], gmml::iNotSet);
 
-            std::cout << "Invalid residue in the sequence (" << condensed_residue->GetName().substr(0,3) << ")" << std::endl;
-            throw CondensedSequenceProcessingException("Invalid residue in the sequence (" + condensed_residue->GetName().substr(0,3) + ")");
+            //std::cout << "Invalid residue in the sequence (" << condensed_residue->GetName().substr(0,3) << ")" << std::endl;
+	    std::stringstream notice;
+	    notice << "Residue Not eligible for MD: (" << condensed_residue->GetName().substr(0,3) << ")";
+	    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, notice.str()));
+
+	    MD_eligible = false;
+            //throw CondensedSequenceProcessingException("Invalid residue in the sequence (" + condensed_residue->GetName().substr(0,3) + ")");
         }
     }
+    MD_eligible = true;
+    return MD_eligible;
 }
 
 std::string CondensedSequence::GetGlycam06TerminalResidueCodeOfTerminalResidue(std::string terminal_residue_name)
@@ -530,8 +664,12 @@ std::string CondensedSequence::GetGlycam06ResidueCodeOfCondensedResidue(Condense
     std::bitset<10> open_valences_check = std::bitset<10>();
     for(unsigned int i = 0; i < open_valences.size(); i ++)
     {
-        if(open_valences[i] < 0 || open_valences[i] >= 10)
-            throw CondensedSequenceProcessingException("Invalid open valence");
+        if(open_valences[i] < 0 || open_valences[i] >= 10){
+	    std::stringstream notice; 
+	    notice << "Not eligible for MD: " << condensed_residue->GetName() << "unsupported open valence position: <0 or >= 10";
+	    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, notice.str()));
+            //throw CondensedSequenceProcessingException("Invalid open valence");
+	}
         open_valences_check.set(open_valences[i]);
     }
 
@@ -608,7 +746,10 @@ std::string CondensedSequence::GetFirstLetterOfGlycam06ResidueCode(std::bitset<1
         return "0";
     }
 
-    throw CondensedSequenceProcessingException("There is no code in the GLYCAM code set for residues with open valences at the given positions.");
+    std::string notice = "Not eligible for MD: There is no code in the GLYCAM code set for residues with open valences at the given positions.";
+    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, notice));
+
+    //throw CondensedSequenceProcessingException("There is no code in the GLYCAM code set for residues with open valences at the given positions.");
 }
 
 std::string CondensedSequence::GetSecondLetterOfGlycam06ResidueCode(std::string residue_name, std::string isomer)
@@ -621,7 +762,11 @@ std::string CondensedSequence::GetSecondLetterOfGlycam06ResidueCode(std::string 
             std::transform(code.begin(), code.end(), code.begin(), ::tolower);
         return code;
     }
-    throw CondensedSequenceProcessingException(residue_name + " is not a valid residue");
+
+    std::stringstream notice;
+    notice << "Not eligible for MD: " << residue_name << "This residue name has no corresponding entry in glycam06 force field.";
+    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, notice.str()));
+    //throw CondensedSequenceProcessingException(residue_name + " is not a valid residue");
 }
 
 std::string CondensedSequence::GetThirdLetterOfGlycam06ResidueCode(std::string configuration, std::string ring_type)
@@ -649,7 +794,184 @@ CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::Get
 	//D means deoxy.This derivative is not a template, but an action, of removing the oxygen this derivative attaches to. Here I create a false glycam06 residue for this purpose later on.
 	return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("Deoxy", "Deoxy",oxygen_name, true);
     //Later PO3 might need to be added, but now I dont' now the name of its head atom yet.
-    throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
+    std::stringstream notice;
+    notice << "Not eligible for MD: " << derivative_name << "This derivative name has no corresponding entry in glycam06 force field.";
+    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, notice.str()));
+    //throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
+}
+
+std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach reordering_approach, bool label)
+{
+    std::string labeled_sequence = "";
+    std::vector<int> longest_path;  //Elements in this vector is the residue ids on the longest path. Will be used or ignored based on reordering approach. See below.
+    int branch_depth = 0;
+    if (reordering_approach == CondensedSequence::Reordering_Approach::LONGEST_CHAIN){ //If reorder by longest chain, has to first find the longest chain.
+	this->FindLongestPath (longest_path);
+    }
+
+    this->RecursivelyBuildLabeledCondensedSequence(0, branch_depth, labeled_sequence, reordering_approach, longest_path, label);
+    //Starts with the first condensed residue in the vector, which is the aglycone. Then go recursively down the tree.
+    return labeled_sequence;
+}
+
+void CondensedSequence::FindLongestPath (std::vector<int>& longest_path)
+{
+    for (unsigned int i = 0; i < this->condensed_sequence_residue_tree_.size(); i++){
+	if (this->condensed_sequence_residue_tree_[i]->GetChildIds().size() == 0){
+	    CondensedSequenceSpace::CondensedSequenceResidue* current_residue = this->condensed_sequence_residue_tree_[i];  //This finds a non reducing end residue;
+	    std::vector<int> current_path = std::vector<int>();
+	    current_path.push_back(i); //i is the index of this non reducing end residue
+
+	    while(current_residue->GetParentId() != gmml::iNotSet){ //While loop stops at a residue that has no parent, which is the aglycone. 
+		current_path.push_back(current_residue->GetParentId());
+		current_residue = this->condensed_sequence_residue_tree_[current_residue->GetParentId()];
+
+		if (current_residue->GetParentId() == gmml::iNotSet){  //If the aglycone is reached.
+		    bool new_path_found = false;
+		    if (current_path.size() > longest_path.size()){  //If a longer path is found, overwrite the current longest path. 
+			new_path_found = true;
+		    }
+		    else if (current_path.size() == longest_path.size()){  //If the new path is exactly the same length, choose based on lower branch index at the first deverging point.
+			CondensedSequenceSpace::CondensedSequenceResidue* branching_residue = NULL;
+			for (int j=current_path.size()-1; j>=0; j--){  //reverse iterating the path to find the first branching point. 
+			    if (this->condensed_sequence_residue_tree_[current_path[j]]->GetChildIds().size() > 1){
+				branching_residue = this->condensed_sequence_residue_tree_[current_path[j]];
+				break;
+			    }
+			}	
+			if (branching_residue == NULL){
+			    std::cout << "Two paths at equal lengths are found. Can't decide which residue has lower branch index.This is a bug." << std::endl;
+			}
+			else{
+			    int current_path_branching_index = 0, longest_path_branching_index = 0;
+			    std::vector<int> child_ids = branching_residue->GetChildIds();
+			    for (std::vector<int>::iterator it = child_ids.begin(); it != child_ids.end(); it++){
+				int child_id = *it;
+				if (std::find(current_path.begin(), current_path.end(), child_id) != current_path.end()){
+				    current_path_branching_index = child_id;	    
+				}
+				if (std::find(longest_path.begin(), longest_path.end(), child_id) != longest_path.end()){
+				    longest_path_branching_index = child_id;	    
+				}
+			    }    
+			    if (current_path_branching_index < longest_path_branching_index){
+				new_path_found = true;
+			    }
+			}
+		    }
+		    if (new_path_found){
+			longest_path.clear();
+			for (unsigned int k=0; k<current_path.size(); k++){
+			    longest_path.push_back(current_path[k]);
+			}
+		    }
+		}
+	    }
+	}
+    }
+}
+
+void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_index, int& branch_depth, std::string& labeled_sequence, CondensedSequence::Reordering_Approach reordering_approach, std::vector<int>& longest_path, bool label)
+{
+    CondensedSequenceSpace::CondensedSequenceResidue* current_residue = this->condensed_sequence_residue_tree_[current_index];
+    if (current_index == 0){  //If current residue is aglycone
+
+	if (label){
+	//Insert residue label after residue name,example: Glcp&Label_residueId=1;a1-4
+            labeled_sequence.insert(0,";");  //semicolon is the right delimiter of a label;
+            labeled_sequence.insert(0,std::to_string(current_index));  //Add residue index to label
+            labeled_sequence.insert(0,"&Label=residue-"); //&Label is the left delimiter of a label.
+	}
+	//Done residue label
+
+	labeled_sequence.insert(0, current_residue->GetName());
+	labeled_sequence.insert(0, "-");
+    }
+
+    else{
+	if (label){
+	//Insert bond label.
+	    labeled_sequence.insert(0,";");
+	    labeled_sequence.insert(0,std::to_string(current_residue->GetBondId()));
+            labeled_sequence.insert(0,"&Label=link-");
+	}
+	//Done bond label
+
+	if (current_residue->GetParentId() != 0){  //The residues connected to the aglycone has OxygenPosition set to 1, actually there shouldn't be such a value.So ignore.
+
+            labeled_sequence.insert(0, std::to_string(current_residue->GetOxygenPosition()));
+            labeled_sequence.insert(0, "-");
+	}
+	
+	labeled_sequence.insert(0, std::to_string(current_residue->GetAnomericCarbon()));
+	labeled_sequence.insert(0, boost::algorithm::to_lower_copy(current_residue->GetConfiguration()));  //In residue class anomeric configuration is upper case. Convert to lower case. 
+
+	CondensedSequenceResidue::DerivativeMap derivatives = current_residue->GetDerivatives();
+	if (derivatives.size() > 0){
+	    labeled_sequence.insert(0, "]");
+	    for (CondensedSequenceResidue::DerivativeMap::reverse_iterator derivative_rit = derivatives.rbegin(); derivative_rit != derivatives.rend(); derivative_rit++){
+		labeled_sequence.insert(0,derivative_rit->second);
+		labeled_sequence.insert(0,std::to_string(derivative_rit->first));
+		labeled_sequence.insert(0,",");
+	    }
+	    labeled_sequence.erase(0,1);
+	    labeled_sequence.insert(0, "[");
+	}
+
+	//Insert residue label after residue name,example: Glcp&Label_residueId=1;a1-4
+	if (label){
+	    labeled_sequence.insert(0,";");  //semicolon is the right delimiter of a label;
+	    labeled_sequence.insert(0,std::to_string(current_index));  //Add residue index to label
+	    labeled_sequence.insert(0,"&Label=residue-"); //&Label is the left delimiter of a label.
+	    labeled_sequence.insert(0, current_residue->GetName());
+	    labeled_sequence.insert(0, current_residue->GetIsomer());
+	}
+	//Done residue label
+
+    }
+
+    std::vector<int> child_ids = current_residue->GetChildIds();
+
+    if (reordering_approach == CondensedSequence::Reordering_Approach::LOWEST_INDEX){ 
+	 //If sequence is to be reordered based on index, rearrange child in descending order based on parent open valene position.Use a temporary map for sorting.
+	std::map<int, int, std::greater<int> > openvalence_childid_map = std::map<int, int, std::greater<int> >();
+	for (std::vector<int>::iterator it= child_ids.begin(); it != child_ids.end(); it++){
+	    int child_id = *it;
+    	    CondensedSequenceSpace::CondensedSequenceResidue* child_residue = this->condensed_sequence_residue_tree_[child_id];
+	    int open_valence_position = child_residue->GetOxygenPosition();
+	    openvalence_childid_map[open_valence_position] = child_id;
+	}
+	child_ids.clear();
+	for (std::map<int, int>::iterator map_it = openvalence_childid_map.begin(); map_it != openvalence_childid_map.end(); map_it++){
+	    child_ids.push_back(map_it->second);  
+	}
+    }
+    else if (reordering_approach == CondensedSequence::Reordering_Approach::LONGEST_CHAIN){
+	//If sequence is to be reordered based on longest chain, sort main chain child to the end of vector, preserve the order of the rest
+	for (std::vector<int>::iterator it= child_ids.begin(); it != child_ids.end(); it++){
+	    int child_id = *it;
+	    if (std::find(longest_path.begin(), longest_path.end(), child_id) != longest_path.end()){
+		child_ids.erase(it);
+		child_ids.push_back(child_id);
+	    }
+	}
+    }
+
+    if (child_ids.size() == 0 && branch_depth > 0){  //No child means we're at a non-reducing end residue. if at a branch, add left bracket [
+	labeled_sequence.insert(0,"[");  //End of a branch
+	branch_depth --;
+    }
+
+
+    for (std::vector<int>::iterator it = child_ids.begin(); it != child_ids.end(); it++){
+	int child_id = *it;
+        if (child_ids.size() > 1 && it != child_ids.end()-1){
+ 	    branch_depth++;
+	    labeled_sequence.insert(0,"]");
+	}	
+        this->RecursivelyBuildLabeledCondensedSequence(*it, branch_depth, labeled_sequence, reordering_approach, longest_path, label);
+    }
+
 }
 
 CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSequence::GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree)
@@ -663,12 +985,9 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
         if(parent >= 0)
         {
             linkage_index++;
-            std::cout << "linkage index at beginning of loop: " << linkage_index << std::endl;
             CondensedSequenceResidue* residue = residue_tree.at(i);
             std::string residue_absolute_name = residue->GetName().substr(0, 3) + residue->GetName().substr(4);
-	    std::cout << "current residue name: " << residue_absolute_name << std::endl;
             std::string parent_res_name = residue_tree[parent]->GetName();
-            std::cout << "parent res name: " << parent_res_name << std::endl;
             char ring_letter = residue->GetName()[3];
             std::vector<std::pair<std::string, std::vector<std::string> > > possible_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
             std::vector<std::pair<std::string, std::vector<std::string> > > selected_rotamers = std::vector<std::pair<std::string, std::vector<std::string> > >();
@@ -690,7 +1009,6 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
                     else{
                         parent_residue_absolute_name = parent_residue->GetName().substr(0,3) + parent_residue->GetName().substr(4);
                     }
-                    std::cout << "second parent name: " << parent_residue_absolute_name << std::endl;
                     std::stringstream rotamers_name;
                     rotamers_name << residue->GetIsomer() << residue->GetName() << residue->GetConfiguration() << residue->GetAnomericCarbon() << "-" <<
                                      residue->GetOxygenPosition() << parent_residue->GetIsomer() << parent_residue->GetName() << parent_residue->GetConfiguration();

@@ -1093,7 +1093,7 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
       if(isRoot)
       {
         Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide();
-        CalculateOligosaccharideBFactor(oligo, detected_monos);
+        CalculateOligosaccharideBFactor(oligo, oligo->mono_nodes_);
         BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
         oligo->terminal_ = terminal_residue_name;
         oligosaccharides.push_back(oligo);
@@ -1119,7 +1119,7 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
           if((*it1).find(anomeric_linkage.str()) != std::string::npos)///mono is attached to another mono through anomeric
           {
             Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide();
-            CalculateOligosaccharideBFactor(oligo, detected_monos);
+            CalculateOligosaccharideBFactor(oligo, oligo->mono_nodes_);
             BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
             oligosaccharides.push_back(oligo);
             break;
@@ -1761,7 +1761,38 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
     if(terminal == " Unknown")
     {
       if(thisMono->anomeric_carbon_pointer_ != NULL)
+      {
         terminal = thisMono->GetFormula(thisMono->anomeric_carbon_pointer_);
+        //add terminal as derivative to this mono at anomeric carbon
+        for(std::vector<std::string>::iterator it = thisMono->chemical_code_->right_down_.begin(); it != thisMono->chemical_code_->right_down_.end(); it++)
+        {
+          if((*it).find("a")!= std::string::npos)
+          {
+            thisMono->unknown_derivatives_.push_back(std::make_pair("a", terminal));
+            thisMono->derivatives_map_.push_back(std::make_pair("a", ""));
+          }
+        }
+        for(std::vector<std::string>::iterator it = thisMono->chemical_code_->right_up_.begin(); it != thisMono->chemical_code_->right_up_.end(); it++)
+        {
+          if((*it).find("a")!= std::string::npos)
+          {
+            thisMono->unknown_derivatives_.push_back(std::make_pair("a", terminal));
+            thisMono->derivatives_map_.push_back(std::make_pair("a", ""));
+          }
+        }
+        // for(std::vector<std::pair<std::string, std::string> >::iterator it = thisMono->derivatives_map_.begin(); it != thisMono->derivatives_map_.end(); it++)
+        // {
+        //   std::string key = (*it).first();
+        //   std::string value = (*it).second();
+        //   if(key == "a")
+        //   {
+        //     value = terminal;
+        //   }
+        // }
+        //Rename sugar
+        thisMono->GenerateCompleteSugarName(assembly_);
+        // std::cout << thisMono->sugar_name_.monosaccharide_name_ << "\n";
+      }
       // gmml::log(__LINE__, __FILE__,  gmml::INF, "Named terminal by Formula");
     }
     std::string anomeric_carbon_id;
@@ -2951,7 +2982,7 @@ void Glycan::Oligosaccharide::BuildOligosaccharideTreeStructure(Glycan::Monosacc
                 {
                     //std::cout << "key id " << key->mono_id_  << ", value id " << value_mono->mono_id_ << std::endl;
                     Glycan::Oligosaccharide* child_oligo = new Glycan::Oligosaccharide();
-                    CalculateOligosaccharideBFactor(child_oligo, values);
+                    // CalculateOligosaccharideBFactor(child_oligo, values);
                     std::vector<Glycan::Monosaccharide*> value_mono_values = monos_table[value_mono];
                     visited_linkages.push_back(link);
                     //std::cout << "call " << value_mono->mono_id_ << std::endl;
