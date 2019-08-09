@@ -142,6 +142,7 @@ printf "DEBUG: $DEBUG\n\n"
  qmake -o $TARGET_MAKE_FILE
 
  if [ "$CLEAN" == "clean" ]; then
+     echo ""
      echo "Cleaning GMML."
      make -f $TARGET_MAKE_FILE distclean
      qmake -o $TARGET_MAKE_FILE
