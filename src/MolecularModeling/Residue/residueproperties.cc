@@ -1,4 +1,4 @@
-#include "../../includes/MolecularModeling/residueproperties.hpp"
+#include "../../../includes/MolecularModeling/residueproperties.hpp"
 
 using MolecularModeling::ResidueProperties;
 
