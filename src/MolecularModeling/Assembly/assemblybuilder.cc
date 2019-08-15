@@ -1021,40 +1021,40 @@ MolecularModeling::Assembly::ResidueVector Assembly::FindClashingResidues()
     unsigned int actual_bond_count = 0;  //How many bonds does a particular atom have, according to atomnode information
     //Exhaustively compare two different atoms in assembly, using two nested for loops
     for (gmml::AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end() -1; it++){
-	MolecularModeling::Atom* current_atom = *it;
-	bond_by_distance_count = 0;
-	for (gmml::AtomVector::iterator it1 = it +1; it1 != all_atoms_of_assembly.end(); it1++){
-	    if (it1 != it){
-	        MolecularModeling::Atom* another_atom = *it1;
-		//First compare X,Y,Z distance of two atoms. If they are really far apart, one dimension comparison is sufficient to exclude. In this way don't have to calculate distance for 
-		//each pair
-	        if ((current_atom->GetCoordinates().at(0)->GetX() - another_atom->GetCoordinates().at(0)->GetX()) < gmml::dCutOff){
-		    if (current_atom->GetCoordinates().at(0)->GetY() - another_atom->GetCoordinates().at(0)->GetY() < gmml::dCutOff){
-		        if (current_atom->GetCoordinates().at(0)->GetZ() - another_atom->GetCoordinates().at(0)->GetZ() < gmml::dCutOff){
-			    //If distance as each dimension is within cutoff, then calculate 3D distance
-			    if (current_atom->GetCoordinates().at(0)->Distance(*(another_atom->GetCoordinates().at(0)) ) < gmml::dCutOff){
-			        bond_by_distance_count++;
-			    }
-		        }
-		    }
-	        }
-	    }
-	}
-	actual_bond_count = current_atom->GetNode()->GetNodeNeighbors().size();
-	//If bond by distance gives more bonds than the number of bonds in atom node, then this atom is clashing with other atoms. This residue is a clashing residue
-	if (bond_by_distance_count > actual_bond_count){
-	    //If multiple atoms in a residue is clashing, prevent duplicate tagging of the corresponding residue as clashing
-	    if (std::find (clashing_residues.begin(), clashing_residues.end(), current_atom->GetResidue()) == clashing_residues.end()){
-	        clashing_residues.push_back(current_atom->GetResidue());
-	    }
-	}
+        MolecularModeling::Atom* current_atom = *it;
+        bond_by_distance_count = 0;
+        for (gmml::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++){
+            if (it1 != it){
+                MolecularModeling::Atom* another_atom = *it1;
+                //First compare X,Y,Z distance of two atoms. If they are really far apart, one dimension comparison is sufficient to exclude. In this way don't have to calculate distance for
+                //each pair
+                if (abs(current_atom->GetCoordinate()->GetX() - another_atom->GetCoordinate()->GetX()) < gmml::dCutOff){
+                    if (abs(current_atom->GetCoordinate()->GetY() - another_atom->GetCoordinate()->GetY()) < gmml::dCutOff){
+                        if (abs(current_atom->GetCoordinate()->GetZ() - another_atom->GetCoordinate()->GetZ()) < gmml::dCutOff){
+                            //If distance as each dimension is within cutoff, then calculate 3D distance
+                            if (current_atom->GetCoordinate()->Distance(*(another_atom->GetCoordinate()) ) < gmml::dCutOff){
+                                bond_by_distance_count++;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        actual_bond_count = current_atom->GetNode()->GetNodeNeighbors().size();
+        //If bond by distance gives more bonds than the number of bonds in atom node, then this atom is clashing with other atoms. This residue is a clashing residue
+        if (bond_by_distance_count > actual_bond_count){
+            //If multiple atoms in a residue is clashing, prevent duplicate tagging of the corresponding residue as clashing
+            if (std::find (clashing_residues.begin(), clashing_residues.end(), current_atom->GetResidue()) == clashing_residues.end()){
+                clashing_residues.push_back(current_atom->GetResidue());
+            }
+        }
     }
-//! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented. 
-// std::cout << "All clashing residues were identified in this order:" << std::endl; 
-// for (MolecularModeling::Assembly::ResidueVector::iterator it = clashing_residues.begin(); it != clashing_residues.end(); it++){
-// std::cout << (*it)->GetIndex() << "---" << (*it)->GetName() << std::endl;
-// }
-// std::cout << "\n";
+    //! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented.
+    // std::cout << "All clashing residues were identified in this order:" << std::endl;
+    // for (MolecularModeling::Assembly::ResidueVector::iterator it = clashing_residues.begin(); it != clashing_residues.end(); it++){
+    // std::cout << (*it)->GetIndex() << "---" << (*it)->GetName() << std::endl;
+    // }
+    // std::cout << "\n";
     return clashing_residues;
 }
 
