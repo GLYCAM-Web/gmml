@@ -1,4 +1,4 @@
-#include "../includes/MolecularModeling/superimposition.hpp"
+#include "../../includes/MolecularModeling/superimposition.hpp"
 
 
 GeometryTopology::Coordinate::CoordinateVector gmml::GetCoordinatesInAtomVector(AtomVector *atoms)

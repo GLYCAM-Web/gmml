@@ -1,4 +1,4 @@
-#include "../../../../includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
