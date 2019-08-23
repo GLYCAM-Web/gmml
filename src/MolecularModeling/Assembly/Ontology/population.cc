@@ -245,10 +245,10 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
                 Glycan::Monosaccharide* thisMono = *rit;
                 if(thisMono->on_R_ > 0)
                 {
-                  for(std::vector<std::pair<std::string, std::string> >::iterator derivative = thisMono->unknown_derivates_.begin(); derivative != thisMono->unknown_derivates_.end(); derivative++)
+                  for(std::vector<std::pair<std::string, std::string> >::iterator derivative = thisMono->unknown_derivatives_.begin(); derivative != thisMono->unknown_derivatives_.end(); derivative++)
                   {
                     numR++;
-                    if((*derivative).second != "")
+                    if((*derivative).second != "" && thisMono->sugar_name_.monosaccharide_short_name_ != thisMono->cycle_atoms_[0]->GetResidue()->GetName())
                     {
                       std::stringstream RgroupStream;
                       RgroupStream << oligo_uri << "_R" << numR;
@@ -365,7 +365,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
             PdbFileSpace::PdbFile* thisPDB = subAssembly.BuildPdbFileStructureFromAssembly();
             std::ostringstream PDBstringstream;
             thisPDB->WriteToStringstream(PDBstringstream);
-            gmml::AddLiteral(oligo_uri, "gmmo::PDBfile", PDBstringstream.str(), oligo_stream);
+            gmml::AddLiteral(oligo_uri, "gmmo:PDBfile", PDBstringstream.str(), oligo_stream);
             
             // if(oligo->child_oligos_.size() != 0 && (find(visited_oligos.begin(), visited_oligos.end(), oligo->root_->mono_id_) == visited_oligos.end()))
             // {
@@ -853,7 +853,7 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
     int numR;
     if(mono->on_R_ > 0)
     {
-      for(std::vector<std::pair<std::string, std::string> >::iterator derivative = mono->unknown_derivates_.begin(); derivative != mono->unknown_derivates_.end(); derivative++)
+      for(std::vector<std::pair<std::string, std::string> >::iterator derivative = mono->unknown_derivatives_.begin(); derivative != mono->unknown_derivatives_.end(); derivative++)
       {
         std::size_t found = mono->sugar_name_.monosaccharide_short_name_.find("<", offset);
         if(found != std::string::npos)
@@ -882,7 +882,7 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
     {
         int note_id = 1;
         // gmml::log(__LINE__, __FILE__,  gmml::INF, "Poulating notes");
-        std::string id_prefix = mono_uri + "_";
+        std::string id_prefix = mono_uri.substr(5,mono_uri.length()) + "_";
         PopulateNotes(mono_stream, mono_stream, mono_uri, notes, id_prefix, note_id);
     }
     Glycan::SugarName sugar_name = mono->sugar_name_;

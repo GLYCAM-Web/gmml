@@ -19,13 +19,15 @@ using Glycan::GlycosidicLinkage;
 //////////////////////////////////////////////////////////
 GlycosidicLinkage::GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide* targetMono, std::string source_carbon_ID, std::string target_carbon_ID)
 {
-  int local_debug = -1;
+  int local_debug = 0;
   if(local_debug > 0)
   {
-    gmml::log(__LINE__, __FILE__, gmml::INF, sourceMono->anomeric_carbon_pointer_->GetId());
-    gmml::log(__LINE__, __FILE__, gmml::INF, source_carbon_ID);
-    gmml::log(__LINE__, __FILE__, gmml::INF, targetMono->anomeric_carbon_pointer_->GetId());
-    gmml::log(__LINE__, __FILE__, gmml::INF, target_carbon_ID);
+    if(sourceMono->anomeric_carbon_pointer_ != NULL)
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Source Mono Anomeric Carbon: " + sourceMono->anomeric_carbon_pointer_->GetId());
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Source Carbon ID " + source_carbon_ID);
+    if(targetMono->anomeric_carbon_pointer_ != NULL)
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Target Mono Anomeric Carbon: " + targetMono->anomeric_carbon_pointer_->GetId());
+    gmml::log(__LINE__, __FILE__, gmml::INF,  "Target Carbon ID " +target_carbon_ID);
   }
   reducing_mono_ = NULL;
   non_reducing_mono_ = NULL;
@@ -37,10 +39,14 @@ GlycosidicLinkage::GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide*
   for(std::vector<MolecularModeling::Atom*>::iterator it = sourceMono->cycle_atoms_.begin(); it != sourceMono->cycle_atoms_.end(); it++)
   {
     MolecularModeling::Atom* thisAtom = *it;
-    if(thisAtom->GetId() == source_carbon_ID)
+    if(thisAtom->GetId() == source_carbon_ID && sourceMono->anomeric_carbon_pointer_ != NULL)
     {
-      if(thisAtom == sourceMono->anomeric_carbon_pointer_)
+      if(thisAtom->GetId() == sourceMono->anomeric_carbon_pointer_->GetId())
       {
+          if(local_debug > 0)
+          {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Source Mono Anomeric Carbon in Linkage");
+          }
         non_reducing_mono_ = sourceMono;
         non_reducing_mono_carbon_ = thisAtom;
       }
@@ -49,10 +55,14 @@ GlycosidicLinkage::GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide*
   for(std::vector<MolecularModeling::Atom*>::iterator it = targetMono->cycle_atoms_.begin(); it != targetMono->cycle_atoms_.end(); it++)
   {
     MolecularModeling::Atom* thisAtom = *it;
-    if(thisAtom->GetId() == target_carbon_ID)
+    if(thisAtom->GetId() == target_carbon_ID && targetMono->anomeric_carbon_pointer_ != NULL)
     {
-      if(thisAtom == targetMono->anomeric_carbon_pointer_)
+      if(thisAtom->GetId() == targetMono->anomeric_carbon_pointer_->GetId())
       {
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, "Target Mono Anomeric Carbon in Linkage");
+        }
         if(non_reducing_mono_ == NULL)
         {
           non_reducing_mono_ = targetMono;
@@ -177,6 +187,10 @@ double Glycan::GlycosidicLinkage::CalculatePhiAngle()
     // gmml::log(__LINE__, __FILE__, gmml::INF, glycosidicO->GetId());
     gmml::log(__LINE__, __FILE__, gmml::ERR, "glycosidicO is null in calculate Phi Angle");
     return -9999;
+  }
+  else
+  {
+    glycosidic_oxygen_ = glycosidicO;
   }
 
   //Get Cx

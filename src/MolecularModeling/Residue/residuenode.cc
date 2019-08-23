@@ -1,6 +1,6 @@
-#include "../../includes/MolecularModeling/atom.hpp"
-#include "../../includes/MolecularModeling/residue.hpp"
-#include "../../includes/MolecularModeling/residuenode.hpp"
+#include "../../../includes/MolecularModeling/atom.hpp"
+#include "../../../includes/MolecularModeling/residue.hpp"
+#include "../../../includes/MolecularModeling/residuenode.hpp"
 
 #include <cstddef>
 #include <iostream>

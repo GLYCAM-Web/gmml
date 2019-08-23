@@ -50,7 +50,7 @@ using OffFileSpace::OffFile;
             WriteHierarchySection(out_file,this->off_file_residues_);
             WriteNameSection(out_file);
             WritePositionSection(out_file,residues, CoordinateIndex);
-           WriteResidueConnectSection(out_file,residues);
+            WriteResidueConnectSection(out_file,residues);
             WriteResiduesSection(out_file,residues);
             WriteSolventCapSection(out_file);
             WriteVelocitiesSection(out_file,this->off_file_residues_);
@@ -303,8 +303,10 @@ This whole loop seems to be unused
                 AtomVector head_atoms_of_residue= residue->GetHeadAtoms();
                 AtomVector tail_atoms_of_residue= residue->GetTailAtoms();
 
-                int c1x[head_atoms_of_residue.size()]={0};
-                int c2x[tail_atoms_of_residue.size()]={0};
+                //int c1x[head_atoms_of_residue.size()]={0};
+                //int c2x[tail_atoms_of_residue.size()]={0};
+		std::vector<int> c1x(head_atoms_of_residue.size(), 0);
+		std::vector<int> c2x(tail_atoms_of_residue.size(), 0);
 
                 int c1x_count=0;
                 int c2x_count=0;

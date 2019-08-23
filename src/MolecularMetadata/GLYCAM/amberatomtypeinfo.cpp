@@ -1,4 +1,4 @@
-#include "../../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
