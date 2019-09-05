@@ -965,11 +965,22 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
                         if (psi_atom_1 != NULL && psi_atom_2 != NULL && psi_atom_3 != NULL && psi_atom_4 != NULL )
                         {
                             // OG 2019.09.05 quickfix:
+                            // The psi angle is ok for 2 bond linkages (e.g. 1-2, 1-4 etc) but for 3 bond and longer we use
+                            // different atoms and different psi values. First I get the correct atom, and then I set dihedral to 180 instead of 0.
                             double dihedral_psi = 0.0; //default value for most linkages
+                            // Check if this is a 3-bond or longer linkage:
                             std::regex regex_query("O[6-9]", std::regex_constants::ECMAScript);
                             if (std::regex_search(tail_atom->GetName(), regex_query) ) // if tail atom name matches "O[6-9]"
                             {
                                 dihedral_psi = 180.0;
+                                //Psi atom 1 should be a non-hydrogen neighbor of the neighbor of tail atom (neighbor of neighbor of tail oxygen), for example: psi C5-C6-O6-C1
+                                for (unsigned int k = 0; k < psi_atom_2_neighbors.size(); k++)
+                                {   // If not a hydrogen and not psi_atom_3
+                                    if((psi_atom_2_neighbors[k]->GetName().substr(0,1) != "H") && (psi_atom_2_neighbors[k] != psi_atom_3))
+                                    {
+                                        psi_atom_1 = psi_atom_2_neighbors[k];
+                                    }
+                                }
                             }
                             // End OG 2019.09.05 quickfix
                             this->SetDihedral(psi_atom_1, psi_atom_2, psi_atom_3, psi_atom_4, dihedral_psi);
