@@ -6,6 +6,7 @@
 #include <iterator> //Added by Yao 07/23/2018
 #include <math.h>
 #include <queue>
+#include <regex> // Added by OG 2019.09.05
 #include <set>
 #include <sstream>
 #include <stack>
@@ -853,162 +854,170 @@ void Assembly::RecursivelySetGeometry (MolecularModeling::Residue* parent_residu
     gmml::AtomVector all_tail_atoms = parent_residue->GetTailAtoms();
     gmml::AtomVector all_head_atoms = parent_residue->GetHeadAtoms();
     for (unsigned int i = 0; i < all_tail_atoms.size(); i++){
-	MolecularModeling::Atom* tail_atom = all_tail_atoms[i];
-	//For non-reducing terminal/derivative residues, tail atom equals head atom. In this case, the tail atoms aren't really connecting to a child residue.
-	//If this is the case, stop recursion from further going down the oligosaccharide tree through such tail atoms. 
-	//This if statement below makes sure a tail atom is a head atom at the same time.If so, skip any operations.
-	if ( parent_residue->GetIsAglycon() || std::find(all_head_atoms.begin(),all_head_atoms.end(),tail_atom) == all_head_atoms.end()){
-	    gmml::AtomVector tail_atom_neighbors = tail_atom->GetNode()->GetNodeNeighbors();
-	    gmml::AtomVector all_atoms_in_residue = parent_residue->GetAtoms();
-	    for (unsigned int j = 0; j < tail_atom_neighbors.size(); j++){
-	        MolecularModeling::Atom* neighbor_atom = tail_atom_neighbors[j];
-	        //if a neighbor is outside of a parent residue, it must be the head atom of a child residue.There should only exist one such atom, otherwise, something is amiss.
-	        if (std::find(all_atoms_in_residue.begin(), all_atoms_in_residue.end(), neighbor_atom) == all_atoms_in_residue.end()){
-		    MolecularModeling::Atom* head_atom_of_child_residue = neighbor_atom;
-		    MolecularModeling::Residue* child_residue = head_atom_of_child_residue->GetResidue();
-		    gmml::AtomVector all_atoms_in_child_residue = child_residue->GetAtoms();
-		    //Right now, all residues are at the position of the template residue. That is, they are all around the orgin and stacked upon each other.
-		    //SetResidueResidueBondDistance function: takes a pair of parent tail/child head atoms as argument. This function keeps the parent residue intact,but
-		    //finds out the new position of child head atom, and move atoms of child residue accordingly.(i.e. grafting)
-		    this->SetResidueResidueBondDistance(tail_atom, head_atom_of_child_residue);
-		
-		    //Set C-O(tail atom)-C(head atom ) angle to 120 deg. The first C is the neighbor of tail atom that is not the head atom && not a hydrogen
-		    //The only exception is ROH, where you have to use that hydrogen
-		    //Right now,rely on the first letter of atom name to determine element type (if hydrogen or not). Better solution is the rule class.
-		    MolecularModeling::Atom* non_hydrogen_tail_atom_neighbor = NULL;
-		    for (unsigned int k = 0; k < tail_atom_neighbors.size(); k++){
-		        if (parent_residue->GetName() == "ROH" && tail_atom_neighbors[k] != head_atom_of_child_residue)
-		   	    non_hydrogen_tail_atom_neighbor = tail_atom_neighbors[k];
+        MolecularModeling::Atom* tail_atom = all_tail_atoms[i];
+        //For non-reducing terminal/derivative residues, tail atom equals head atom. In this case, the tail atoms aren't really connecting to a child residue.
+        //If this is the case, stop recursion from further going down the oligosaccharide tree through such tail atoms.
+        //This if statement below makes sure a tail atom is a head atom at the same time.If so, skip any operations.
+        if ( parent_residue->GetIsAglycon() || std::find(all_head_atoms.begin(),all_head_atoms.end(),tail_atom) == all_head_atoms.end()){
+            gmml::AtomVector tail_atom_neighbors = tail_atom->GetNode()->GetNodeNeighbors();
+            gmml::AtomVector all_atoms_in_residue = parent_residue->GetAtoms();
+            for (unsigned int j = 0; j < tail_atom_neighbors.size(); j++){
+                MolecularModeling::Atom* neighbor_atom = tail_atom_neighbors[j];
+                //if a neighbor is outside of a parent residue, it must be the head atom of a child residue.There should only exist one such atom, otherwise, something is amiss.
+                if (std::find(all_atoms_in_residue.begin(), all_atoms_in_residue.end(), neighbor_atom) == all_atoms_in_residue.end()){
+                    MolecularModeling::Atom* head_atom_of_child_residue = neighbor_atom;
+                    MolecularModeling::Residue* child_residue = head_atom_of_child_residue->GetResidue();
+                    gmml::AtomVector all_atoms_in_child_residue = child_residue->GetAtoms();
+                    //Right now, all residues are at the position of the template residue. That is, they are all around the orgin and stacked upon each other.
+                    //SetResidueResidueBondDistance function: takes a pair of parent tail/child head atoms as argument. This function keeps the parent residue intact,but
+                    //finds out the new position of child head atom, and move atoms of child residue accordingly.(i.e. grafting)
+                    this->SetResidueResidueBondDistance(tail_atom, head_atom_of_child_residue);
 
-		        else if (tail_atom_neighbors[k] != head_atom_of_child_residue && tail_atom_neighbors[k]->GetName().substr(0,1) != "H"){
-		            non_hydrogen_tail_atom_neighbor = tail_atom_neighbors[k];
-		        }
-		    }
+                    //Set C-O(tail atom)-C(head atom ) angle to 120 deg. The first C is the neighbor of tail atom that is not the head atom && not a hydrogen
+                    //The only exception is ROH, where you have to use that hydrogen
+                    //Right now,rely on the first letter of atom name to determine element type (if hydrogen or not). Better solution is the rule class.
+                    MolecularModeling::Atom* non_hydrogen_tail_atom_neighbor = NULL;
+                    for (unsigned int k = 0; k < tail_atom_neighbors.size(); k++){
+                        if (parent_residue->GetName() == "ROH" && tail_atom_neighbors[k] != head_atom_of_child_residue)
+                            non_hydrogen_tail_atom_neighbor = tail_atom_neighbors[k];
 
-		    //Exit if atom 1 cannot be be found
-		    if (non_hydrogen_tail_atom_neighbor != NULL){ 
-		        const double angle_to_set = 109.4;	//assuming sp3 tetrahedral
-		        this->SetAngle(non_hydrogen_tail_atom_neighbor, tail_atom, head_atom_of_child_residue, angle_to_set);
-		    }
-		
-		    //If child is a derivative, set only one dihedral: HX-CX-OX(tail atom)-head atom. Set this to 0 degree, making the derivative head eclipse the hydrogen. This is a general solution for bad derivative angles
-		    //This torsion closely resembles the psi torsion for regular sugar-sugar connection.
-		    if (child_residue->GetIsSugarDerivative()){
-		        MolecularModeling::Atom* derivative_atom_4 = head_atom_of_child_residue;
-		        MolecularModeling::Atom* derivative_atom_3 = tail_atom;
-		        MolecularModeling::Atom* derivative_atom_2 = non_hydrogen_tail_atom_neighbor;
-		        MolecularModeling::Atom* derivative_atom_1 = NULL;
-		        gmml::AtomVector derivative_atom_2_neighbors = derivative_atom_2->GetNode()->GetNodeNeighbors();
-		        //Derivative atom 1 should be a exocyclic (normally hydrogen) neighbor of the neighbor of tail atom (neighbor of neighbor of tail oxygen), for example: H4-C4-O4-C1
-		        for (unsigned int k = 0; k < derivative_atom_2_neighbors.size(); k++){
-			    if (!derivative_atom_2_neighbors[k]->GetIsCycle() && derivative_atom_2_neighbors[k] != derivative_atom_3){
-			        derivative_atom_1 = derivative_atom_2_neighbors[k];
-			    }
-		        }
-			if (derivative_atom_1 != NULL && derivative_atom_2 != NULL && derivative_atom_3 != NULL && derivative_atom_4 != NULL ){
+                        else if (tail_atom_neighbors[k] != head_atom_of_child_residue && tail_atom_neighbors[k]->GetName().substr(0,1) != "H"){
+                            non_hydrogen_tail_atom_neighbor = tail_atom_neighbors[k];
+                        }
+                    }
+
+                    //Exit if atom 1 cannot be be found
+                    if (non_hydrogen_tail_atom_neighbor != NULL){
+                        const double angle_to_set = 109.4;	//assuming sp3 tetrahedral
+                        this->SetAngle(non_hydrogen_tail_atom_neighbor, tail_atom, head_atom_of_child_residue, angle_to_set);
+                    }
+
+                    //If child is a derivative, set only one dihedral: HX-CX-OX(tail atom)-head atom. Set this to 0 degree, making the derivative head eclipse the hydrogen. This is a general solution for bad derivative angles
+                    //This torsion closely resembles the psi torsion for regular sugar-sugar connection.
+                    if (child_residue->GetIsSugarDerivative()){
+                        MolecularModeling::Atom* derivative_atom_4 = head_atom_of_child_residue;
+                        MolecularModeling::Atom* derivative_atom_3 = tail_atom;
+                        MolecularModeling::Atom* derivative_atom_2 = non_hydrogen_tail_atom_neighbor;
+                        MolecularModeling::Atom* derivative_atom_1 = NULL;
+                        gmml::AtomVector derivative_atom_2_neighbors = derivative_atom_2->GetNode()->GetNodeNeighbors();
+                        //Derivative atom 1 should be a exocyclic (normally hydrogen) neighbor of the neighbor of tail atom (neighbor of neighbor of tail oxygen), for example: H4-C4-O4-C1
+                        for (unsigned int k = 0; k < derivative_atom_2_neighbors.size(); k++){
+                            if (!derivative_atom_2_neighbors[k]->GetIsCycle() && derivative_atom_2_neighbors[k] != derivative_atom_3){
+                                derivative_atom_1 = derivative_atom_2_neighbors[k];
+                            }
+                        }
+                        if (derivative_atom_1 != NULL && derivative_atom_2 != NULL && derivative_atom_3 != NULL && derivative_atom_4 != NULL ){
                             const double derivative_psi = 0.0;
                             this->SetDihedral(derivative_atom_1, derivative_atom_2, derivative_atom_3, derivative_atom_4, derivative_psi);
                         }
 
-			
-		    }
-		    //Otherwise,attempt setting dihedrals
-		    else{
-		        //Set Dihedral phi:
-		        MolecularModeling::Atom* phi_atom_1 = non_hydrogen_tail_atom_neighbor;	
-		        MolecularModeling::Atom* phi_atom_2 = tail_atom;	
-		        MolecularModeling::Atom* phi_atom_3 = head_atom_of_child_residue;	
-		        MolecularModeling::Atom* phi_atom_4 = NULL;
 
-		        gmml::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
-		        std::string anomeric_carbon_index_str = head_atom_of_child_residue->GetName().substr(1,1); //The "1" in C1, the "2" in C2
-		        std::stringstream s1;
-		        s1 << anomeric_carbon_index_str;
-		        int anomeric_carbon_index;
-		        s1 >> anomeric_carbon_index;
-		        for (unsigned int k = 0; k< head_atom_neighbors.size(); k++){
-			    MolecularModeling::Atom* neighbor = head_atom_neighbors[k];
-			
-			    //Phi_atom_4 should be C anomeric plus 1. For example, if anomeric is C1, then C2. If anomeirc is C2, then C3. Set this dihedral to 180 deg.
-			    //For now: If child residue is furanose,keto pyranose i.e. sialic acid etc, phi_atom_4 is C1. If is other pyronaoses,phi_atom_4 should be a hydrogen
-			    if ( neighbor->GetIsCycle() && neighbor != tail_atom){
-			        std::string neighbor_index_str = neighbor->GetName().substr(1,1);
-			        std::stringstream s2;
-			        s2 << neighbor_index_str;
-			        int neighbor_index;
-			        s2 >> neighbor_index;
-			        if(neighbor_index == anomeric_carbon_index + 1){
-			            phi_atom_4 = head_atom_neighbors[k];
-			        }
-			    }
-		        }//for
-		
-			//If phi_atom_4 cannot be found, exit.
-		        if (phi_atom_4 != NULL && phi_atom_3 != NULL && phi_atom_2 != NULL && phi_atom_1 != NULL ){
-			    const double dihedral_phi = 180.0;
-			    this->SetDihedral(phi_atom_1, phi_atom_2, phi_atom_3, phi_atom_4, dihedral_phi);
-		        }
-		        //Set psi, for example: psi H4-C4-O4-C1 to 0 deg
-		        MolecularModeling::Atom* psi_atom_4 = head_atom_of_child_residue;
-		        MolecularModeling::Atom* psi_atom_3 = tail_atom;
-		        MolecularModeling::Atom* psi_atom_2 = non_hydrogen_tail_atom_neighbor;
-		        MolecularModeling::Atom* psi_atom_1 = NULL;
-		        gmml::AtomVector psi_atom_2_neighbors = psi_atom_2->GetNode()->GetNodeNeighbors();
-		        //Psi atom 1 should be a exocyclic (normally hydrogen) neighbor of the neighbor of tail atom (neighbor of neighbor of tail oxygen), for example: psi H4-C4-O4-C1
-		        for (unsigned int k = 0; k < psi_atom_2_neighbors.size(); k++){
-			    if (!psi_atom_2_neighbors[k]->GetIsCycle() && psi_atom_2_neighbors[k] != psi_atom_3){
-			        psi_atom_1 = psi_atom_2_neighbors[k];
-			    }
-		        }
+                    }
+                    //Otherwise,attempt setting dihedrals
+                    else{
+                        //Set Dihedral phi:
+                        MolecularModeling::Atom* phi_atom_1 = non_hydrogen_tail_atom_neighbor;
+                        MolecularModeling::Atom* phi_atom_2 = tail_atom;
+                        MolecularModeling::Atom* phi_atom_3 = head_atom_of_child_residue;
+                        MolecularModeling::Atom* phi_atom_4 = NULL;
 
-		        if (psi_atom_1 != NULL && psi_atom_2 != NULL && psi_atom_3 != NULL && psi_atom_4 != NULL ){
-		            const double dihedral_psi = 0.0;
-		            this->SetDihedral(psi_atom_1, psi_atom_2, psi_atom_3, psi_atom_4, dihedral_psi);
-		        }
-		
-		        //Set Omega (if exists) , for example, C4-C5-C6-O6. Set this to 180 deg
-			
-		        MolecularModeling::Atom* omega_atom_4 = psi_atom_3;
-		        MolecularModeling::Atom* omega_atom_3 = psi_atom_2;
-		        MolecularModeling::Atom* omega_atom_2 = NULL;
-		        MolecularModeling::Atom* omega_atom_1 = NULL;
-		        //omega atom 3 should be a exocyclic non-hydrogen(probably carbon) atom that 's connects to the atoms that connects to tail atom (neighbor of neighbor of tail oxygen)
-		        //If such an atom is already on the ring, then there is no omega angle. If it is exocyclic, then omega exists.
-		        if (omega_atom_3->GetIsCycle()){
-			    //std::cout << "Tail atom is directly attached to ring atom. So omega does not exist. Skip setting omega." << std::endl;
-		        }
-		        else{
-			    //Choose omega atom 2 from the neighbors of omega atom 3. It can't be omega_atom_4, and it shouldn't be a hydrogen
-		            gmml::AtomVector omega_atom_3_neighbors = omega_atom_3->GetNode()->GetNodeNeighbors();
-		            for (gmml::AtomVector::iterator atom_it4 = omega_atom_3_neighbors.begin(); atom_it4 != omega_atom_3_neighbors.end(); atom_it4++){
-			        MolecularModeling::Atom* neighbor = *atom_it4;
-			        if (neighbor->GetElementSymbol() != "H" && neighbor != omega_atom_4){
-			            omega_atom_2 = neighbor;
-			        }
-		            }
-		        }
-		        //Once omega atom 2 is identified, get its non-hydrogen node neighbor, this should be omega atom 1.
-		        if (omega_atom_2 !=NULL){	//if there is such an exocyclic atom, then omega atom 2 exists.
-			    gmml::AtomVector omega_atom_2_neighbors = omega_atom_2->GetNode()->GetNodeNeighbors();
-			    for (gmml::AtomVector::iterator atom_it5 = omega_atom_2_neighbors.begin(); atom_it5 != omega_atom_2_neighbors.end(); atom_it5++){
-			        MolecularModeling::Atom* neighbor = *atom_it5;
-			        if (neighbor->GetElementSymbol() != "H" && neighbor != omega_atom_3){
-				    omega_atom_1 = neighbor;
-			        }
-			    }
-		        }
-			if ( omega_atom_4 != NULL && omega_atom_3 != NULL && omega_atom_2 != NULL && omega_atom_1 != NULL ) {
-			    const double dihedral_omega = -60.0;
-			    this->SetDihedral(omega_atom_1, omega_atom_2, omega_atom_3, omega_atom_4, dihedral_omega);
-			}
-		    }//else Done setting phi,psi, omega(if exists)
+                        gmml::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
+                        std::string anomeric_carbon_index_str = head_atom_of_child_residue->GetName().substr(1,1); //The "1" in C1, the "2" in C2
+                        std::stringstream s1;
+                        s1 << anomeric_carbon_index_str;
+                        int anomeric_carbon_index;
+                        s1 >> anomeric_carbon_index;
+                        for (unsigned int k = 0; k< head_atom_neighbors.size(); k++){
+                            MolecularModeling::Atom* neighbor = head_atom_neighbors[k];
 
-		    //Start new recursion
-		    MolecularModeling::Residue* new_parent_residue = child_residue;
-		    this->RecursivelySetGeometry(new_parent_residue);
-	        }//if
-	    }//for
-	}//if
+                            //Phi_atom_4 should be C anomeric plus 1. For example, if anomeric is C1, then C2. If anomeirc is C2, then C3. Set this dihedral to 180 deg.
+                            //For now: If child residue is furanose,keto pyranose i.e. sialic acid etc, phi_atom_4 is C1. If is other pyronaoses,phi_atom_4 should be a hydrogen
+                            if ( neighbor->GetIsCycle() && neighbor != tail_atom){
+                                std::string neighbor_index_str = neighbor->GetName().substr(1,1);
+                                std::stringstream s2;
+                                s2 << neighbor_index_str;
+                                int neighbor_index;
+                                s2 >> neighbor_index;
+                                if(neighbor_index == anomeric_carbon_index + 1){
+                                    phi_atom_4 = head_atom_neighbors[k];
+                                }
+                            }
+                        }//for
+
+                        //If phi_atom_4 cannot be found, exit.
+                        if (phi_atom_4 != NULL && phi_atom_3 != NULL && phi_atom_2 != NULL && phi_atom_1 != NULL ){
+                            const double dihedral_phi = 180.0;
+                            this->SetDihedral(phi_atom_1, phi_atom_2, phi_atom_3, phi_atom_4, dihedral_phi);
+                        }
+                        //Set psi, for example: psi H4-C4-O4-C1 to 0 deg
+                        MolecularModeling::Atom* psi_atom_4 = head_atom_of_child_residue;
+                        MolecularModeling::Atom* psi_atom_3 = tail_atom;
+                        MolecularModeling::Atom* psi_atom_2 = non_hydrogen_tail_atom_neighbor;
+                        MolecularModeling::Atom* psi_atom_1 = NULL;
+                        gmml::AtomVector psi_atom_2_neighbors = psi_atom_2->GetNode()->GetNodeNeighbors();
+                        //Psi atom 1 should be a exocyclic (normally hydrogen) neighbor of the neighbor of tail atom (neighbor of neighbor of tail oxygen), for example: psi H4-C4-O4-C1
+                        for (unsigned int k = 0; k < psi_atom_2_neighbors.size(); k++){
+                            if (!psi_atom_2_neighbors[k]->GetIsCycle() && psi_atom_2_neighbors[k] != psi_atom_3){
+                                psi_atom_1 = psi_atom_2_neighbors[k];
+                            }
+                        }
+
+                        if (psi_atom_1 != NULL && psi_atom_2 != NULL && psi_atom_3 != NULL && psi_atom_4 != NULL )
+                        {
+                            // OG 2019.09.05 quickfix:
+                            double dihedral_psi = 0.0; //default value for most linkages
+                            std::regex regex_query("O[6-9]", std::regex_constants::ECMAScript);
+                            if (std::regex_search(tail_atom->GetName(), regex_query) ) // if tail atom name matches "O[6-9]"
+                            {
+                                dihedral_psi = 180.0;
+                            }
+                            // End OG 2019.09.05 quickfix
+                            this->SetDihedral(psi_atom_1, psi_atom_2, psi_atom_3, psi_atom_4, dihedral_psi);
+                        }
+
+                        //Set Omega (if exists) , for example, C4-C5-C6-O6. Set this to 180 deg
+
+                        MolecularModeling::Atom* omega_atom_4 = psi_atom_3;
+                        MolecularModeling::Atom* omega_atom_3 = psi_atom_2;
+                        MolecularModeling::Atom* omega_atom_2 = NULL;
+                        MolecularModeling::Atom* omega_atom_1 = NULL;
+                        //omega atom 3 should be a exocyclic non-hydrogen(probably carbon) atom that 's connects to the atoms that connects to tail atom (neighbor of neighbor of tail oxygen)
+                        //If such an atom is already on the ring, then there is no omega angle. If it is exocyclic, then omega exists.
+                        if (omega_atom_3->GetIsCycle()){
+                            //std::cout << "Tail atom is directly attached to ring atom. So omega does not exist. Skip setting omega." << std::endl;
+                        }
+                        else{
+                            //Choose omega atom 2 from the neighbors of omega atom 3. It can't be omega_atom_4, and it shouldn't be a hydrogen
+                            gmml::AtomVector omega_atom_3_neighbors = omega_atom_3->GetNode()->GetNodeNeighbors();
+                            for (gmml::AtomVector::iterator atom_it4 = omega_atom_3_neighbors.begin(); atom_it4 != omega_atom_3_neighbors.end(); atom_it4++){
+                                MolecularModeling::Atom* neighbor = *atom_it4;
+                                if (neighbor->GetElementSymbol() != "H" && neighbor != omega_atom_4){
+                                    omega_atom_2 = neighbor;
+                                }
+                            }
+                        }
+                        //Once omega atom 2 is identified, get its non-hydrogen node neighbor, this should be omega atom 1.
+                        if (omega_atom_2 !=NULL){	//if there is such an exocyclic atom, then omega atom 2 exists.
+                            gmml::AtomVector omega_atom_2_neighbors = omega_atom_2->GetNode()->GetNodeNeighbors();
+                            for (gmml::AtomVector::iterator atom_it5 = omega_atom_2_neighbors.begin(); atom_it5 != omega_atom_2_neighbors.end(); atom_it5++){
+                                MolecularModeling::Atom* neighbor = *atom_it5;
+                                if (neighbor->GetElementSymbol() != "H" && neighbor != omega_atom_3){
+                                    omega_atom_1 = neighbor;
+                                }
+                            }
+                        }
+                        if ( omega_atom_4 != NULL && omega_atom_3 != NULL && omega_atom_2 != NULL && omega_atom_1 != NULL ) {
+                            const double dihedral_omega = -60.0;
+                            this->SetDihedral(omega_atom_1, omega_atom_2, omega_atom_3, omega_atom_4, dihedral_omega);
+                        }
+                    }//else Done setting phi,psi, omega(if exists)
+
+                    //Start new recursion
+                    MolecularModeling::Residue* new_parent_residue = child_residue;
+                    this->RecursivelySetGeometry(new_parent_residue);
+                }//if
+            }//for
+        }//if
 
     }//for
 }
