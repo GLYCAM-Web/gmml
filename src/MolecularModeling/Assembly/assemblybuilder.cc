@@ -1288,32 +1288,32 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 
     MolecularModeling::Assembly::TemplateAssembly* template_assembly = this-> BuildTemplateAssemblyFromPrepFile (glycam06_residues, prep_file);
 
-    std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> > glycam06_assembly_residue_map = 
-    this -> ConvertCondensedSequence2AssemblyResidues (glycam06_residues, template_assembly);
+    std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> > glycam06_assembly_residue_map =
+            this -> ConvertCondensedSequence2AssemblyResidues (glycam06_residues, template_assembly);
 
     this -> SetGlycam06ResidueBonding (glycam06_assembly_residue_map);
 
     std::multimap<int, std::pair<gmml::AtomVector*, std::string> > index_dihedral_map = std::multimap<int, std::pair<gmml::AtomVector*, std::string> >();
-    for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >::iterator it = 
-	glycam06_assembly_residue_map.begin(); it != glycam06_assembly_residue_map.end(); it++){
+    for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >::iterator it =
+         glycam06_assembly_residue_map.begin(); it != glycam06_assembly_residue_map.end(); it++){
 
-	CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam_06_res = it->second.first;
-	MolecularModeling::Residue* corresponding_assembly_residue = it->second.second;
+        CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam_06_res = it->second.first;
+        MolecularModeling::Residue* corresponding_assembly_residue = it->second.second;
         //The atom and the only atom without a parent is the absolute parent(terminal).
         if (glycam_06_res->GetParentId() == gmml::iNotSet && glycam_06_res->GetName() != "Deoxy"){
-          MolecularModeling::Residue* root = corresponding_assembly_residue;
-//  TURN OFF GEOMETRY OPS
-          this->RecursivelySetGeometry(root);
-//          The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
-//          Linkage index is incremented inside function once a linkage has been processed.
-          int linkage_index = 0;
-          this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
-	    break;
-         }
+            MolecularModeling::Residue* root = corresponding_assembly_residue;
+            //  TURN OFF GEOMETRY OPS
+            this->RecursivelySetGeometry(root);
+            //          The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
+            //          Linkage index is incremented inside function once a linkage has been processed.
+            int linkage_index = 0;
+            this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
+            break;
+        }
     }
     //Find and resolve clashes below(crudely)
     MolecularModeling::Assembly::ResidueVector clashing_residues = this->FindClashingResidues();
-    std::vector<MolecularModeling::Assembly::ResidueVector> clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues); 
+    std::vector<MolecularModeling::Assembly::ResidueVector> clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues);
     this-> ResolveClashes(clashing_residue_parent_paths, index_dihedral_map);
 }
 
