@@ -8,10 +8,11 @@
 
 //*******************************************
 
-typedef std::vector<MolecularModeling::Atom*> AtomVector;
-typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
+//typedef std::vector<Atom*> AtomVector;
 
 //*******************************************
+using namespace MolecularModeling;
+typedef std::vector<Assembly*> AssemblyVector;
 
 namespace gmml
 {
@@ -19,9 +20,9 @@ namespace gmml
 
     GeometryTopology::Coordinate::CoordinateVector GetCoordinatesInAssemblyVector(AssemblyVector *assemblies);
 
-    void GenerateMatrixFromAssembyCoordinates(MolecularModeling::Assembly *assembly, Eigen::Matrix3Xd *matrix);
+    void GenerateMatrixFromAssembyCoordinates(Assembly *assembly, Eigen::Matrix3Xd *matrix);
 
-    void ReplaceAssemblyCoordinatesFromMatrix(MolecularModeling::Assembly *assembly, Eigen::Matrix3Xd *matrix);
+    void ReplaceAssemblyCoordinatesFromMatrix(Assembly *assembly, Eigen::Matrix3Xd *matrix);
 
     //void GenerateMatrixFromAtomVectorCoordinates(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
 
@@ -41,11 +42,11 @@ namespace gmml
 
     void Superimpose(AtomVector moving, AtomVector target, AtomVector alsoMoving);
 
-    void Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target);
+    void Superimpose(Assembly *moving, Assembly *target);
 
-    void Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, MolecularModeling::Assembly *alsoMoving);
+    void Superimpose(Assembly *moving, Assembly *target, Assembly *alsoMoving);
 
-    void Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, AssemblyVector *alsoMoving);
+    void Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving);
     // A function to test Find3DAffineTransform()
     // void TestFind3DAffineTransform();
 }

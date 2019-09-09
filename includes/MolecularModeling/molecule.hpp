@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "atom.hpp"
 
 
 namespace MolecularModeling
@@ -17,7 +18,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            typedef std::vector<Atom*> AtomVector;
+          //  typedef std::vector<Atom*> AtomVector;
             typedef std::vector<Residue*> ResidueVector;
 
             //////////////////////////////////////////////////////////
@@ -42,7 +43,7 @@ namespace MolecularModeling
               * An accessor function in order to access to the atoms of the current molecule object
               * @return molecule_atoms_ attribute of the current object of this class
               */
-            AtomVector GetMoleculeAtoms();
+            MolecularModeling::AtomVector GetMoleculeAtoms();
 
             /*! \fn
               * An accessor function in order to access to the residues of the current molecule object
@@ -96,7 +97,7 @@ namespace MolecularModeling
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             int molecule_index_;                            /*!< An index of the molecule in an assembly >*/
-            AtomVector molecule_atoms_;                     /*!< List of all atoms in the current molecule object >*/
+            MolecularModeling::AtomVector molecule_atoms_;                     /*!< List of all atoms in the current molecule object >*/
             ResidueVector molecule_residues_;               /*!< List of residues involved in the current object of molecule >*/
     };
 }

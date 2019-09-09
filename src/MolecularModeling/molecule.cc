@@ -18,7 +18,7 @@ int Molecule::GetMoleculeIndex()
     return molecule_index_;
 }
 
-Molecule::AtomVector Molecule::GetMoleculeAtoms()
+ MolecularModeling::AtomVector Molecule::GetMoleculeAtoms()
 {
     return molecule_atoms_;
 }

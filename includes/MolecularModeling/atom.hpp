@@ -17,6 +17,8 @@ namespace MolecularModeling
 {
     class Residue;
     class AtomNode;
+    class Atom;
+    typedef std::vector<MolecularModeling::Atom*> AtomVector; // Do this here so it can be used within the class, and is known
     class Atom : public MolecularDynamicAtom, public QuantomMechanicAtom, public DockingAtom, public OligoSaccharideDetectionAtom
     {
         public:
@@ -26,7 +28,7 @@ namespace MolecularModeling
             /*! \typedef
             * List of Atoms
             */
-            typedef std::vector<Atom*> AtomVector;
+            //typedef std::vector<Atom*> AtomVector;
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTORS                   //
             //////////////////////////////////////////////////////////
@@ -280,5 +282,4 @@ namespace MolecularModeling
     //			This would allow someone to do: std::cout << AtomObject << std::endl;
     // std::ostream& operator<<( std::ostream& out, const Atom& atom );
 }
-
 #endif // ATOM_HPP

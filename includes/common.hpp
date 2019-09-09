@@ -21,7 +21,6 @@ namespace gmml
     typedef std::map<std::string, std::vector<std::string> > AtomMatchingMap;
     typedef std::map<std::string, std::vector<std::string> > GlycamResidueNamingMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
-    typedef std::vector<MolecularModeling::Atom*> AtomVector;
     typedef std::vector<std::string> StringVector;
 
     //*******************************************

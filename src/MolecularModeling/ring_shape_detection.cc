@@ -1125,7 +1125,7 @@ FILE* glylib::myfopen(const char *myfilename,const char *myopentype)
 // This doesn't belong here, but Glycan::Monsaccharide is a messy struct.
 GeometryTopology::Coordinate::CoordinateVector gmml::GetCycleAtomCoordinates( Glycan::Monosaccharide* mono ) {
     GeometryTopology::Coordinate::CoordinateVector coordinates;
-    for( AtomVector::iterator it1 = mono->cycle_atoms_.begin(); it1 != mono->cycle_atoms_.end(); ++it1 )
+    for( MolecularModeling::AtomVector::iterator it1 = mono->cycle_atoms_.begin(); it1 != mono->cycle_atoms_.end(); ++it1 )
     {
         MolecularModeling::Atom* atom = ( *it1 );
         GeometryTopology::Coordinate::CoordinateVector atom_coordinates = atom->GetCoordinates();

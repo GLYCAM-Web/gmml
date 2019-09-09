@@ -284,7 +284,7 @@ int Assembly::GetModelIndex()
     return model_index_;
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssembly()
 {
     AtomVector all_atoms_of_assembly = AtomVector();
     AssemblyVector assemblies = this->GetAssemblies();
@@ -312,7 +312,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
     return all_atoms_of_assembly;
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinBackbone()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinBackbone()
 { // written by OG, so syntax a bit different from other functions.
 
     AtomVector selection_from_assembly = AtomVector();
@@ -328,7 +328,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinBackbone()
     return selection_from_assembly;
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinSidechain()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinSidechain()
 { // written by OG, so syntax a bit different from other functions.
 
     AtomVector selection_from_assembly = AtomVector();
@@ -344,7 +344,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinSidechain()
     return selection_from_assembly;
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinResidues()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinResidues()
 { // written by OG, so syntax a bit different from other functions.
     AtomVector selection_from_assembly = AtomVector();
     AssemblyVector assemblies = this->GetAssemblies();
@@ -388,7 +388,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinResidues()
     return selection_from_assembly;
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyNotWithinProteinResidues()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyNotWithinProteinResidues()
 { // written by OG, so syntax a bit different from other functions.
     AtomVector selection_from_assembly = AtomVector();
     AssemblyVector assemblies = this->GetAssemblies();
@@ -439,7 +439,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyNotWithinProteinResidues()
 }
 
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms()
 {
     AtomVector all_atoms_of_assembly = AtomVector();
     AssemblyVector assemblies = this->GetAssemblies();
@@ -1056,7 +1056,7 @@ void Assembly::AddMolecule(MolecularModeling::Molecule *molecule)
 
 
  //Added by ayush on 04/11/18 for TopologyFix in assembly
-Assembly::AtomVector Assembly::GetAllBondedAtomsByStartDirection(MolecularModeling::Atom* start_atom, MolecularModeling::Atom* direction_atom , AtomVector ignore_list)
+MolecularModeling::AtomVector Assembly::GetAllBondedAtomsByStartDirection(MolecularModeling::Atom* start_atom, MolecularModeling::Atom* direction_atom , AtomVector ignore_list)
 {
 
         if(start_atom == NULL || direction_atom == NULL){

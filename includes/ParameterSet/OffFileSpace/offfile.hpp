@@ -25,7 +25,6 @@ namespace OffFileSpace
             //////////////////////////////////////////////////////////
 
             typedef std::vector<MolecularModeling::Residue*> ResidueVector;
-            typedef std::vector<MolecularModeling::Atom*> AtomVector;
             typedef std::vector<OffFileSpace::OffFileResidue*> OffFileResidueVector;
             typedef std::vector<OffFileSpace::OffFileAtom*> OffFileAtomVector;
             typedef std::map<int, int>AtomIndexMap;

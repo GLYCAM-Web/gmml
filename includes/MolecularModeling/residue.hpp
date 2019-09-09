@@ -27,7 +27,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            typedef std::vector<Atom*> AtomVector;
+           // typedef std::vector<Atom*> AtomVector;
             typedef std::vector<std::string> StringVector;
 	    typedef PrepFileSpace::PrepFileResidue PrepFileResidue;
             //////////////////////////////////////////////////////////

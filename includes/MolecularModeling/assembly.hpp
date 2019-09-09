@@ -34,6 +34,8 @@
 #include "../InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../InputSet/PdbFileSpace/inputfile.hpp"
 #include "molecule.hpp"
+#include "atom.hpp"
+
 namespace MolecularModeling
 {
     class Assembly
@@ -44,7 +46,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             typedef std::vector<Assembly*> AssemblyVector;
             typedef std::vector<Residue*> ResidueVector;
-            typedef std::vector<Atom*> AtomVector;
+//            typedef std::vector<Atom*> AtomVector;
             typedef std::map<std::string, gmml::GraphSearchNodeStatus> AtomStatusMap;
             typedef std::map<std::string, Atom*> AtomIdAtomMap;
 //            typedef std::vector<AtomVector> AtomVectorVector;
@@ -421,7 +423,7 @@ namespace MolecularModeling
 	        is pointer to an AtomVector containing the four atoms of a dihedral. String is the dihedral type, either phi, psi or omega.
 	      * @param linkage_index An integer that equals the current bond index, starting from the reducing end.
 	      */
-	    void RecursivelyTagDihedrals (MolecularModeling::Residue* parent_residue, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& index_dihedral_map, int& linkage_index);
+        void RecursivelyTagDihedrals (MolecularModeling::Residue* parent_residue, std::multimap<int, std::pair<AtomVector*, std::string> >& index_dihedral_map, int& linkage_index);
 	    /*! \fn
 	      * A function that find residues that clash with other residues in an assembly.
 	      * This function is called by the new version of "BuildAssemblyFromCondensedSequence" function, after RecursivelySetGeometry. It follows up setting geometry, and initiate the attempt  		     to crudely resolve clashes resulting from default geometry setttings
@@ -440,7 +442,7 @@ namespace MolecularModeling
 	      * @param index_dihedral_map See above RecursivelyTagDihedrals @param documentation
 	      */
 	    void ResolveClashes(std::vector<MolecularModeling::Assembly::ResidueVector>& fused_clashing_paths,
-					std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& index_dihedral_map);
+                    std::multimap<int, std::pair<AtomVector*, std::string> >& index_dihedral_map);
 
 	    /*! \fn
 	      * A function that finds all omega torsions in  pathway
@@ -448,14 +450,14 @@ namespace MolecularModeling
 	      * @param pathway A residue vector containing a clashing path. The code finds dihedrals within this path.
 	      * @param dihedral_map See above.
 	      */
-	    std::vector< gmml::AtomVector* > FindAllOmegaTorsionsInPathway (MolecularModeling::Assembly::ResidueVector& pathway, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >&
+        std::vector< AtomVector* > FindAllOmegaTorsionsInPathway (MolecularModeling::Assembly::ResidueVector& pathway, std::multimap<int, std::pair<AtomVector*, std::string> >&
 									    dihedral_map);
 	    /*! \fn
 	      * A function that returns the set of coordinates with the lowest clashes that the algorithm can generate.
 	      * This function is called by ResolveClashes
 	      * @param available_dihedrals a vector of AtomVector*. Each AtomVector contains four atoms for a dihdral.
 	      */
-	    GeometryTopology::Coordinate::CoordinateVector FindBestSetOfTorsions(std::vector<gmml::AtomVector*>& available_dihedrals);
+        GeometryTopology::Coordinate::CoordinateVector FindBestSetOfTorsions(std::vector<AtomVector*>& available_dihedrals);
 	    /*! \fn
 	      * A function that takes in all dihedrals, and their corresponding rotation values. Exhaustively generates individual sets of rotation values.
 	      * This function is called in the "FindBestSetOfTorsions" function
@@ -466,8 +468,8 @@ namespace MolecularModeling
 	      * particular dihedral and its corresponding rotation value.
 	      * angle_index_per_dihedral A temporary container holding the rotation value at each dihedral. To initiate a new recursion, supply an empty vector.
 	      */
-	    void GenerateAllTorsionCombinations (std::vector<std::pair<gmml::AtomVector*, std::vector<double> > >& all_dihedral_rotation_values, unsigned int current_dihedral_index ,
-						 std::vector<std::vector<std::pair<gmml::AtomVector*, double> > >& container_for_combinations,
+        void GenerateAllTorsionCombinations (std::vector<std::pair<AtomVector*, std::vector<double> > >& all_dihedral_rotation_values, unsigned int current_dihedral_index ,
+                         std::vector<std::vector<std::pair<AtomVector*, double> > >& container_for_combinations,
 						 std::vector<double>& angle_index_per_dihedral);
 
 	    /*! \fn
@@ -487,7 +489,7 @@ namespace MolecularModeling
 	      * @index_dihedral_map See above.
 	      */
             void GenerateRotamersForCondensedSequence(Assembly* working_assembly, CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo
-							rotamers_glycosidic_angles_info, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& index_dihedral_map);
+                            rotamers_glycosidic_angles_info, std::multimap<int, std::pair<AtomVector*, std::string> >& index_dihedral_map);
             void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void RemoveHydrogenAtAttachedPosition(Residue* residue, int branch_index);
             void SetDerivativeAngle(Residue* residue, Residue* parent_residue, int branch_index);
@@ -2003,7 +2005,7 @@ namespace MolecularModeling
     {
         public:
             BacktrackingElements(gmml::GlycamAtomNameMap pdb_glycam_map, gmml::GlycamAtomNameMap glycam_atom_map,
-                                 Assembly::AtomVector atoms, int index, std::queue<Atom*> to_visit = std::queue<Atom*>())
+                                 AtomVector atoms, int index, std::queue<Atom*> to_visit = std::queue<Atom*>())
             {
                 pdb_glycam_map_ = pdb_glycam_map;
                 glycam_atom_map_ = glycam_atom_map;
@@ -2014,7 +2016,7 @@ namespace MolecularModeling
 
             gmml::GlycamAtomNameMap pdb_glycam_map_;
             gmml::GlycamAtomNameMap glycam_atom_map_;
-            Assembly::AtomVector atoms_;
+            AtomVector atoms_;
             std::queue<Atom*> to_visit_;
             int index_;
     };

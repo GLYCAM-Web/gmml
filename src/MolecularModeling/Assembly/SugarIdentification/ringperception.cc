@@ -79,19 +79,19 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
   int local_debug = 0;
     CycleMap cycles = CycleMap();
-    AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
+    MolecularModeling::AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
     std::vector<std::string> path_graph_edges = std::vector<std::string> (); ///The list of edges in the molecular graph
     std::vector<std::string> path_graph_labels = std::vector<std::string> (); ///The list of labels of edges in the molecular graph
     std::vector<std::string> cycless = std::vector<std::string>();
 
     ///Initializing the std::map
     std::map<std::string, Atom*> IdAtom = std::map<std::string, Atom*>(); ///A std::map from atom ID to Assembly atom object
-    AtomVector newAtoms;
+    MolecularModeling::AtomVector newAtoms;
     if ( local_debug > 0 )
     {
       gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(atoms.size()));
     } 
-    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
         IdAtom[atom->GetId()] = atom;
@@ -131,9 +131,9 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
     }
     while(atoms.size() > 1 && path_graph_edges.size() != 0)
     {
-        AtomVector::iterator common_atom_it;
+        MolecularModeling::AtomVector::iterator common_atom_it;
         bool neighbor_counter_update = true;
-        for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+        for(MolecularModeling::AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
         {
             common_atom_it = it;
             int counter = 0;
@@ -172,7 +172,7 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
         std::vector<std::string> splitted_cycle = gmml::Split(cycle, "-");
         if(splitted_cycle.size() <= 7)
         {
-            AtomVector atomvector = AtomVector();
+            MolecularModeling::AtomVector atomvector = MolecularModeling::AtomVector();
             std::stringstream ss;
             for(std::vector<std::string>::iterator it1 = splitted_cycle.begin(); it1 != splitted_cycle.end() - 1; it1++)
             {
@@ -191,14 +191,14 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 
     /*
     CycleMap cycles = CycleMap();
-    AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
+    MolecularModeling::AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
     std::vector<std::string> path_graph_edges = std::vector<std::string> (); ///The list of edges in the molecular graph
     std::vector<std::string> path_graph_labels = std::vector<std::string> (); ///The list of labels of edges in the molecular graph
     std::vector<std::string> cycless = std::vector<std::string>();
 
     ///Initializing the std::map
     std::map<std::string, Atom*> IdAtom = std::map<std::string, Atom*>(); ///A std::map from atom ID to Assembly aTom object
-    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
         IdAtom[atom->GetId()] = atom;
@@ -218,9 +218,9 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
     /// the node with lowest number of connected edges should be examined first
     while(atoms.size() > 1 && path_graph_edges.size() != 0)
     {
-        AtomVector::iterator common_atom_it;
+        MolecularModeling::AtomVector::iterator common_atom_it;
         bool neighbor_counter_update = true;
-        for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+        for(MolecularModeling::AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
         {
             common_atom_it = it;
             int counter = 0;
@@ -255,7 +255,7 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
         std::vector<std::string> splitted_cycle = gmml::Split(cycle, "-");
         if(splitted_cycle.size() <= 7)
         {
-            AtomVector atomvector = AtomVector();
+            MolecularModeling::AtomVector atomvector = MolecularModeling::AtomVector();
             std::stringstream ss;
             for(std::vector<std::string>::iterator it1 = splitted_cycle.begin(); it1 != splitted_cycle.end() - 1; it1++)
             {
@@ -422,17 +422,17 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
     reduced_path_graph_labels = temp_reduced_path_graph_labels;
 }
 
-void Assembly::PruneGraph(AtomVector& all_atoms)
+void Assembly::PruneGraph(MolecularModeling::AtomVector& all_atoms)
 {
   
   int local_debug = 0;
-    AtomVector atoms_with_more_than_two_neighbors = AtomVector();
+    MolecularModeling::AtomVector atoms_with_more_than_two_neighbors = MolecularModeling::AtomVector();
     std::vector<std::string> het_atom_ids = std::vector<std::string>();
     if ( local_debug > 0 )
     {
       gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(all_atoms.size()));
     }
-    for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
         Atom* atom = *it;
         het_atom_ids.push_back(atom->GetId());
@@ -441,7 +441,7 @@ void Assembly::PruneGraph(AtomVector& all_atoms)
           gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
         }
     }
-    for(AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
         Atom* atom = (*it);
         AtomNode* node = atom->GetNode();
@@ -469,20 +469,20 @@ void Assembly::PruneGraph(AtomVector& all_atoms)
         return;
 }
 
-void Assembly::ConvertIntoPathGraph(std::vector<std::string>& path_graph_edges, std::vector<std::string>& path_graph_labels, AtomVector atoms)
+void Assembly::ConvertIntoPathGraph(std::vector<std::string>& path_graph_edges, std::vector<std::string>& path_graph_labels, MolecularModeling::AtomVector atoms)
 {
     std::vector<std::string> atoms_id = std::vector<std::string>();
-    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = *it;
         atoms_id.push_back(atom->GetId());
     }
-    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
         AtomNode* node = atom->GetNode();
-        AtomVector neighbors = node->GetNodeNeighbors();
-        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        MolecularModeling::AtomVector neighbors = node->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
         {
             Atom* neighbor = (*it1);
             if(find(atoms_id.begin(), atoms_id.end(), neighbor->GetId()) != atoms_id.end())
@@ -513,11 +513,11 @@ Assembly::CycleMap Assembly::DetectCyclesByDFS()
     AtomStatusMap atom_status_map = AtomStatusMap();
     AtomIdAtomMap atom_parent_map = AtomIdAtomMap();
     AtomIdAtomMap src_dest_map = AtomIdAtomMap();
-    AtomVector cycle = AtomVector();
+    MolecularModeling::AtomVector cycle = MolecularModeling::AtomVector();
     CycleMap cycles = CycleMap();
 
-    AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
-    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    MolecularModeling::AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
+    for(MolecularModeling::AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
         atom_status_map[atom->GetId()] = gmml::UNVISITED;
@@ -525,7 +525,7 @@ Assembly::CycleMap Assembly::DetectCyclesByDFS()
         parent->SetId("null");
         atom_parent_map[atom->GetId()] = parent;
     }
-    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
         if(atom_status_map[atom->GetId()] == gmml::UNVISITED)
@@ -554,13 +554,13 @@ Assembly::CycleMap Assembly::DetectCyclesByDFS()
     return cycles;
 }
 
-void Assembly::DFSVisit(AtomVector atoms, AtomStatusMap& atom_status_map, AtomIdAtomMap& atom_parent_map, Atom *atom, int& counter, AtomIdAtomMap& src_dest_map)
+void Assembly::DFSVisit(MolecularModeling::AtomVector atoms, AtomStatusMap& atom_status_map, AtomIdAtomMap& atom_parent_map, Atom *atom, int& counter, AtomIdAtomMap& src_dest_map)
 {
     atom_status_map[atom->GetId()] = gmml::VISITED;
     AtomNode* node = atom->GetNode();
-    AtomVector neighbors = node->GetNodeNeighbors();
+    MolecularModeling::AtomVector neighbors = node->GetNodeNeighbors();
 
-    for(AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
     {
         Atom* neighbor = (*it);
         if(neighbor->GetDescription().find("Het;") != std::string::npos)

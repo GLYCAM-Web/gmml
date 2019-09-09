@@ -73,7 +73,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-Assembly::AtomVector Assembly::Select(std::string pattern)
+MolecularModeling::AtomVector Assembly::Select(std::string pattern)
 {
     AtomVector selection = AtomVector();
 

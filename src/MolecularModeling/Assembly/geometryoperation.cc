@@ -223,7 +223,7 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
     //Normallize length of tail-head bond vector to bond length
     //if (tail_atom_hybridization == "sp3" || tail_atom_hybridization == "sp2"){
     if (head_atom_hybridization == "sp3" || head_atom_hybridization == "sp2"){
-        gmml::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
+        MolecularModeling::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
         std::vector<GeometryTopology::Coordinate*> head_atom_bonds = std::vector<GeometryTopology::Coordinate*>();
         for(unsigned int i = 0; i < head_atom_neighbors.size(); i++){
             MolecularModeling::Atom* neighbor = head_atom_neighbors[i];
@@ -272,7 +272,7 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
     translation_vector->SetY(current_tail_atom_position->GetY() - relative_tail_atom_position->GetY());
     translation_vector->SetZ(current_tail_atom_position->GetZ() - relative_tail_atom_position->GetZ());
     //Translate coordinates of all atoms in child residue by translation vector.
-    gmml::AtomVector child_residue_atoms = head_atom_of_child_residue->GetResidue()->GetAtoms();
+    MolecularModeling::AtomVector child_residue_atoms = head_atom_of_child_residue->GetResidue()->GetAtoms();
     for (unsigned int i = 0; i < child_residue_atoms.size(); i++){
         GeometryTopology::Coordinate* current_position = child_residue_atoms[i]->GetCoordinates().at(0);
         current_position->Translate(translation_vector->GetX(), translation_vector->GetY(), translation_vector->GetZ());

@@ -72,11 +72,11 @@ using OffFileSpace::OffFile;
                 off_file_residue->SetName(name);
                 off_file_residue->SetListingIndex(ResidueIndex);
                 
-                  AtomVector all_atoms_of_residue = assembly_residue->GetAtoms();
+                  MolecularModeling::AtomVector all_atoms_of_residue = assembly_residue->GetAtoms();
 
                 int AtomIndex=0;
 
-                for(AtomVector::iterator it = all_atoms_of_residue.begin(); it != all_atoms_of_residue.end(); it++)
+                for(MolecularModeling::AtomVector::iterator it = all_atoms_of_residue.begin(); it != all_atoms_of_residue.end(); it++)
                 {
                     AtomIndex++;
                     BoundingAtomIndex++;
@@ -111,8 +111,8 @@ using OffFileSpace::OffFile;
 
                 /*
                 //for adding head and tail atoms of residues
-                AtomVector head_atoms_of_residue= assembly_residue->GetHeadAtoms();
-                AtomVector tail_atoms_of_residue= assembly_residue->GetTailAtoms();
+                MolecularModeling::AtomVector head_atoms_of_residue= assembly_residue->GetHeadAtoms();
+                MolecularModeling::AtomVector tail_atoms_of_residue= assembly_residue->GetTailAtoms();
 
                 std::map<int,int>::iterator it1,it2;
                 int head_temp_index= head_atoms_of_residue.at(0)->GetIndex();
@@ -137,10 +137,10 @@ using OffFileSpace::OffFile;
         for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
         {
             MolecularModeling::Residue* residue = (*it);
-            AtomVector all_atoms_of_residue = residue->GetAtoms();
+            MolecularModeling::AtomVector all_atoms_of_residue = residue->GetAtoms();
 /*
 This whole loop seems to be unused
-            for(AtomVector::iterator it2 = all_atoms_of_residue.begin(); it2 != all_atoms_of_residue.end(); ++it2)
+            for(MolecularModeling::AtomVector::iterator it2 = all_atoms_of_residue.begin(); it2 != all_atoms_of_residue.end(); ++it2)
             {
                 MolecularModeling::Atom* atom = (*it2);
                   // int main_atom_index=0; // commented because not used
@@ -222,19 +222,19 @@ This whole loop seems to be unused
     {
         stream << "!entry." << unit_name_ << ".unit.connectivity table  int atom1x  int atom2x  int flags" << std::endl;
 
-        gmml::AtomVector center_atoms_visited = gmml::AtomVector();
+        MolecularModeling::AtomVector center_atoms_visited = MolecularModeling::AtomVector();
 
                 for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
                 {
                     MolecularModeling::Residue* residue = (*it);
-                    AtomVector all_atoms_of_residue = residue->GetAtoms();
-                    for(AtomVector::iterator it2 = all_atoms_of_residue.begin(); it2 != all_atoms_of_residue.end(); it2++)
+                    MolecularModeling::AtomVector all_atoms_of_residue = residue->GetAtoms();
+                    for(MolecularModeling::AtomVector::iterator it2 = all_atoms_of_residue.begin(); it2 != all_atoms_of_residue.end(); it2++)
                     {
                         MolecularModeling::Atom* atom = (*it2);
 
                         center_atoms_visited.push_back(atom);
-                        AtomVector bonded_atoms = atom->GetNode()->GetNodeNeighbors();
-                        for(AtomVector::iterator it3 = bonded_atoms.begin(); it3 != bonded_atoms.end(); it3++)
+                        MolecularModeling::AtomVector bonded_atoms = atom->GetNode()->GetNodeNeighbors();
+                        for(MolecularModeling::AtomVector::iterator it3 = bonded_atoms.begin(); it3 != bonded_atoms.end(); it3++)
                         {
                             MolecularModeling::Atom* bonded_atom = (*it3);
                                 if (std::find(center_atoms_visited.begin(), center_atoms_visited.end(), bonded_atom) == center_atoms_visited.end())
@@ -280,8 +280,8 @@ This whole loop seems to be unused
             {
 
                 MolecularModeling::Residue* residue = (*it);
-                AtomVector all_atoms_of_residue = residue->GetAtoms();
-                for(AtomVector::iterator it = all_atoms_of_residue.begin(); it != all_atoms_of_residue.end(); it++)
+                MolecularModeling::AtomVector all_atoms_of_residue = residue->GetAtoms();
+                for(MolecularModeling::AtomVector::iterator it = all_atoms_of_residue.begin(); it != all_atoms_of_residue.end(); it++)
                 {
                     MolecularModeling::Atom* atom = *it;
                     GeometryTopology::Coordinate coordinate = atom->GetCoordinates().at(CoordinateIndex);
@@ -300,8 +300,8 @@ This whole loop seems to be unused
 
                 MolecularModeling::Residue* residue = (*it);
 
-                AtomVector head_atoms_of_residue= residue->GetHeadAtoms();
-                AtomVector tail_atoms_of_residue= residue->GetTailAtoms();
+                MolecularModeling::AtomVector head_atoms_of_residue= residue->GetHeadAtoms();
+                MolecularModeling::AtomVector tail_atoms_of_residue= residue->GetTailAtoms();
 
                 //int c1x[head_atoms_of_residue.size()]={0};
                 //int c2x[tail_atoms_of_residue.size()]={0};
@@ -310,7 +310,7 @@ This whole loop seems to be unused
 
                 int c1x_count=0;
                 int c2x_count=0;
-                for(AtomVector::iterator it1 = head_atoms_of_residue.begin(); it1 != head_atoms_of_residue.end(); it1++)
+                for(MolecularModeling::AtomVector::iterator it1 = head_atoms_of_residue.begin(); it1 != head_atoms_of_residue.end(); it1++)
                 {
                     MolecularModeling::Atom* atom = *it1;
                     c1x[c1x_count]=atom_bonding_map_[atom->GetIndex()];
@@ -318,7 +318,7 @@ This whole loop seems to be unused
                     c1x_count++;
                 }
 
-                 for(AtomVector::iterator it2 = tail_atoms_of_residue.begin(); it2!= tail_atoms_of_residue.end(); it2++)
+                 for(MolecularModeling::AtomVector::iterator it2 = tail_atoms_of_residue.begin(); it2!= tail_atoms_of_residue.end(); it2++)
                 {
                    MolecularModeling::Atom* atom = *it2;
                     c2x[c2x_count]=atom_bonding_map_[atom->GetIndex()];
@@ -375,7 +375,7 @@ This whole loop seems to be unused
                     name= residue->GetName();
                     seq++;
                     childseq= residue->GetAtoms().size()+1;
-                    //AtomVector head_atoms_of_residue = residue->GetHeadAtoms();
+                    //MolecularModeling::AtomVector head_atoms_of_residue = residue->GetHeadAtoms();
                     //MolecularModeling::Atom* current_atom =head_atoms_of_residue[0];
                     MolecularModeling::Atom* current_atom = residue->GetAtoms().at(0);
 		    //Yao: Don't determine starting atom index from head atoms. Instead, search for AtomIndex = 1 in an offfile atom object, or use the index of an element in this ResidueVector.
