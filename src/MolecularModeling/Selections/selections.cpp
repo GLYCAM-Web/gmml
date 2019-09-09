@@ -1,9 +1,9 @@
 #include "../../../includes/MolecularModeling/Selections/selections.h"
 
-AtomVector selection::AtomsWithinDistanceOf(MolecularModeling::Atom *query_atom, double distance, AtomVector atoms)
+MolecularModeling::AtomVector selection::AtomsWithinDistanceOf(MolecularModeling::Atom *query_atom, double distance, MolecularModeling::AtomVector atoms)
 {
-    AtomVector atoms_within_distance;
-    for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); ++it1)
+    MolecularModeling::AtomVector atoms_within_distance;
+    for(MolecularModeling::AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); ++it1)
     {
         MolecularModeling::Atom *atom1 = (*it1);
         if (atom1->GetDistanceToAtom(query_atom) < distance )
@@ -16,11 +16,11 @@ AtomVector selection::AtomsWithinDistanceOf(MolecularModeling::Atom *query_atom,
 
 // I want a generic recursive function, where I can pass in the condition(s). Lots of Repeating code here.
 // This one was written before the others. Could update with previous atom being passed in, though that makes the initial call confusing...
-void selection::FindAtomsConnectingResidues(Atom *current_atom, Residue *second_residue, AtomVector *connecting_atoms, bool *found_neighbor)
+void selection::FindAtomsConnectingResidues(MolecularModeling::Atom *current_atom, MolecularModeling::Residue *second_residue, MolecularModeling::AtomVector *connecting_atoms, bool *found_neighbor)
 {
     current_atom->SetDescription("VisitedByFindAtomsConnectingResidues");
-    AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
+    MolecularModeling::AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
+    for(MolecularModeling::AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
     {
         MolecularModeling::Atom *neighbor = *it1;
         if(neighbor->GetResidue()->GetId().compare(second_residue->GetId())==0) // Should be using indices for Residues too.
@@ -40,7 +40,7 @@ void selection::FindAtomsConnectingResidues(Atom *current_atom, Residue *second_
 }
 
 // Will not ignore fused rings. Explores everything to find all cycle points. Looks for cycle point closest to start atom.
-bool selection::FindCyclePoint(Atom *previous_atom, Atom *current_atom, AtomVector *atom_path, bool *found_cycle_point, Atom *&cycle_point)
+bool selection::FindCyclePoint(MolecularModeling::Atom *previous_atom, MolecularModeling::Atom *current_atom, MolecularModeling::AtomVector *atom_path, bool *found_cycle_point, MolecularModeling::Atom *&cycle_point)
 {
     // I wish there was a more solid way to check element type. But here we go, I definitely don't want cycles involving hydrogens (they only every form one bond, unless
     // bond by distance has bonded them).
@@ -52,8 +52,8 @@ bool selection::FindCyclePoint(Atom *previous_atom, Atom *current_atom, AtomVect
 //        std::cout << "Found cycle points is currently: " << std::boolalpha << *found_cycle_point << std::endl;
 
         atom_path->push_back(current_atom);
-        AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
+        MolecularModeling::AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
         {
             MolecularModeling::Atom *neighbor = *it1;
             // If not previous atom and not from a different residue
@@ -95,10 +95,10 @@ bool selection::FindCyclePoint(Atom *previous_atom, Atom *current_atom, AtomVect
 }
 
 // If current_atom is connected only to atoms that have zero other intra residue connections, it is a rotation point
-bool selection::FindRotationPointsForNonCycles(Atom *previous_atom, Atom *current_atom, AtomVector *rotation_points)
+bool selection::FindRotationPointsForNonCycles(MolecularModeling::Atom *previous_atom, MolecularModeling::Atom *current_atom, MolecularModeling::AtomVector *rotation_points)
 {
-    AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
-    AtomVector intra_node_neighbors;
+    MolecularModeling::AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
+    MolecularModeling::AtomVector intra_node_neighbors;
     for (auto &neighbor : neighbors)
     { // If not previous atom and not from a different residue
         if ( (neighbor->GetIndex() != previous_atom->GetIndex()) && (current_atom->GetResidue()->GetId().compare(neighbor->GetResidue()->GetId())==0))
@@ -109,8 +109,8 @@ bool selection::FindRotationPointsForNonCycles(Atom *previous_atom, Atom *curren
     bool found_rotation_point = true;
     for (auto &neighbor : intra_node_neighbors)
     {
-        AtomVector neighbor_neighbors = neighbor->GetNode()->GetNodeNeighbors();
-        AtomVector intra_node_neighbor_neighbors;
+        MolecularModeling::AtomVector neighbor_neighbors = neighbor->GetNode()->GetNodeNeighbors();
+        MolecularModeling::AtomVector intra_node_neighbor_neighbors;
         for (auto &neighbor_neighbor : neighbor_neighbors)
         {
             if ( (neighbor_neighbor->GetIndex() != current_atom->GetIndex()) && (current_atom->GetResidue()->GetId().compare(neighbor_neighbor->GetResidue()->GetId())==0))
@@ -138,12 +138,12 @@ bool selection::FindRotationPointsForNonCycles(Atom *previous_atom, Atom *curren
 }
 
 
-bool selection::FindPathBetweenTwoAtoms(Atom *current_atom, Atom *target_atom, AtomVector *atom_path, bool *found)
+bool selection::FindPathBetweenTwoAtoms(MolecularModeling::Atom *current_atom, MolecularModeling::Atom *target_atom, MolecularModeling::AtomVector *atom_path, bool *found)
 {
     //atom_path->push_back(current_atom);
     current_atom->SetDescription("VistedByFindPathBetweenTwoAtoms");
-    AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
+    MolecularModeling::AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
+    for(MolecularModeling::AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
     {
         MolecularModeling::Atom *neighbor = *it1;
         if(neighbor->GetIndex() == target_atom->GetIndex())
@@ -165,12 +165,12 @@ bool selection::FindPathBetweenTwoAtoms(Atom *current_atom, Atom *target_atom, A
     return *found;
 }
 
-void selection::ClearAtomDescriptions(Residue *residue)
+void selection::ClearAtomDescriptions(MolecularModeling::Residue *residue)
 {
-    AtomVector atoms = residue->GetAtoms();
-    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
+    MolecularModeling::AtomVector atoms = residue->GetAtoms();
+    for(MolecularModeling::AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
-        Atom *atom = *it;
+        MolecularModeling::Atom *atom = *it;
         atom->SetDescription("");
     }
     return;
@@ -188,17 +188,17 @@ __/  \__/  \__
         \__ Res4
  Res2 __/
 */
-AtomVector selection::FindCyclePoints(Atom *atom)
+MolecularModeling::AtomVector selection::FindCyclePoints(MolecularModeling::Atom *atom)
 {
 //    std::cout << "Entered FindCyclePoints with " << atom->GetId() << std::endl;
-    AtomVector rotation_points;
-    AtomVector atom_path;
+    MolecularModeling::AtomVector rotation_points;
+    MolecularModeling::AtomVector atom_path;
     bool found = false;
     if(atom->GetResidue()->CheckIfProtein())
     {
-        Atom *caAtom = atom->GetResidue()->GetAtom("CA");
+        MolecularModeling::Atom *caAtom = atom->GetResidue()->GetAtom("CA");
         // Find any cycle points. Note: starting from connection point to other residue
-        Atom *cycle_point;
+        MolecularModeling::Atom *cycle_point;
         found = false;
         atom_path.clear();
         // This should only find cycles in Tyr, Trp etc. Not Asn, Ser, Thr as there aren't any unless bonding is messed up.
@@ -218,7 +218,7 @@ AtomVector selection::FindCyclePoints(Atom *atom)
     }
     else // Non protein.
     {
-        Atom *rotation_point;
+        MolecularModeling::Atom *rotation_point;
         atom_path.clear();
         found = false;
         //Find path to first cycle atom, i.e. anomeric carbon
@@ -239,9 +239,9 @@ AtomVector selection::FindCyclePoints(Atom *atom)
 // Oh gawd this code is horrible.
 // The logic for selecting the atom to define a dihedral is messy.
 // Comparing strings is messy when I really care about the number of e.g. C2 Vs O5, but need to factor in a C2 vs O comparision
-Atom* selection::FindCyclePointNeighbor(const AtomVector atom_path, Atom *cycle_point)
+MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeling::AtomVector atom_path, MolecularModeling::Atom *cycle_point)
 {
-    Atom *selected_neighbor;
+    MolecularModeling::Atom *selected_neighbor;
     if (cycle_point->GetName().compare("CA")==0) // This is a protein, and we always want the N atom.
     {
         selected_neighbor = cycle_point->GetResidue()->GetAtom("N");
@@ -256,12 +256,12 @@ Atom* selection::FindCyclePointNeighbor(const AtomVector atom_path, Atom *cycle_
     }
     else // This bit is overdone now, as I was looking for higher numbered atoms of C1, but now I know I always want C2, so put that above.
     {
-        AtomVector neighbors = cycle_point->GetNode()->GetNodeNeighbors();
+        MolecularModeling::AtomVector neighbors = cycle_point->GetNode()->GetNodeNeighbors();
         // Ok must first get a list of neighbors that weren't in the connection path
-        AtomVector good_neighbors; // Couldn't think of a better name. Everybody needs these.
-        for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
+        MolecularModeling::AtomVector good_neighbors; // Couldn't think of a better name. Everybody needs these.
+        for(MolecularModeling::AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
         {
-            Atom *neighbor = *it1;
+            MolecularModeling::Atom *neighbor = *it1;
             if ( ! (std::find(atom_path.begin(), atom_path.end(), neighbor) != atom_path.end()) ) // If we've NOT been at this atom on way to cycle point
             {
                 if ( neighbor->GetName().at(0) != 'H' ) // Don't find hydrogens. Later we swap out to use a hydrogen to define a dihedral, but that's a very specific one.
@@ -272,9 +272,9 @@ Atom* selection::FindCyclePointNeighbor(const AtomVector atom_path, Atom *cycle_
         }
         selected_neighbor = good_neighbors.at(0); // Set to any to start. If there are not good_neighbors then you deserve to crash and burn
        // std::cout << "Good neighbors are: ";
-        for(AtomVector::iterator it1 = good_neighbors.begin(); it1 != good_neighbors.end(); ++it1)
+        for(MolecularModeling::AtomVector::iterator it1 = good_neighbors.begin(); it1 != good_neighbors.end(); ++it1)
         {
-            Atom *neighbor = *it1;
+            MolecularModeling::Atom *neighbor = *it1;
           //  std::cout << neighbor->GetName() << " ,";
             if(selected_neighbor->GetName().size() >= 2)
             {
@@ -293,11 +293,11 @@ Atom* selection::FindCyclePointNeighbor(const AtomVector atom_path, Atom *cycle_
     return selected_neighbor;
 }
 
-//Atom* selection::FindAtomNeighborThatMatchesQuery(Atom *atom, std::string query)
+//MolecularModeling::Atom* selection::FindAtomNeighborThatMatchesQuery(MolecularModeling::Atom *atom, std::string query)
 //{
-//    Atom *selected_atom;
+//    MolecularModeling::Atom *selected_atom;
 //    std::regex regex(query, std::regex_constants::ECMAScript);
-//    AtomVector neighbors = atom->GetNode()->GetNodeNeighbors();
+//    MolecularModeling::AtomVector neighbors = atom->GetNode()->GetNodeNeighbors();
 //    for (const auto& neighbor : neighbors)
 //    {
 //        if (std::regex_search(neighbor->GetName(), regex))
@@ -309,13 +309,13 @@ Atom* selection::FindCyclePointNeighbor(const AtomVector atom_path, Atom *cycle_
 //    return selected_atom;
 //}
 
-//AtomVector selection::FindBondedAtomsThatMatchQuery(Atom *anomeric_carbon, std::vector<std::regex> atom_name_queries)
+//MolecularModeling::AtomVector selection::FindBondedAtomsThatMatchQuery(MolecularModeling::Atom *anomeric_carbon, std::vector<std::regex> atom_name_queries)
 //{
 //    // Jesus.
 //    // Get every atom in Residue1 and Residue2.
 //    // Get every atom that matches first atom in query
 
-//    AtomVector found_atom_path;
+//    MolecularModeling::AtomVector found_atom_path;
 //    bool success = false;
 //    int depth = 0;
 //     selection::seek_neighbors_with_regex_query(anomeric_carbon, &found_atom_path, depth, atom_name_queries, &success);
@@ -337,12 +337,12 @@ Atom* selection::FindCyclePointNeighbor(const AtomVector atom_path, Atom *cycle_
 ////    }
 //}
 
-//Atom* selection::FindClosestNeighbor
+//MolecularModeling::Atom* selection::FindClosestNeighbor
 
-//void selection::seek_neighbors_with_regex_query(Atom *current_atom, AtomVector *found_atom_path, int depth, std::vector<std::regex> atom_name_queries, bool &success)
+//void selection::seek_neighbors_with_regex_query(MolecularModeling::Atom *current_atom, MolecularModeling::AtomVector *found_atom_path, int depth, std::vector<std::regex> atom_name_queries, bool &success)
 //{
 //    std::regex current_regex = atom_name_queries.at(depth);
-//    AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
+//    MolecularModeling::AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
 //    for (const auto& neighbor : neighbors)
 //    {
 //        if (std::regex_search(neighbor->GetName(), current_regex))

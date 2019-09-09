@@ -69,6 +69,9 @@
 #include <string.h>
 
 using MolecularModeling::Assembly;
+using MolecularModeling::Residue;
+using MolecularModeling::Atom;
+using MolecularModeling::AtomVector;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //

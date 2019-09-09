@@ -5,11 +5,14 @@
  * Starts/ends at the CA atoms in proteins. Looks for cycles (as they aren't rotatable).
  * Stores each rotatable bond as a rotatable_dihedral object.
  */
-#include "gmml.hpp"
+//#include "gmml.hpp"
 #include "../../MolecularModeling/atom.hpp"
 #include "../../MolecularModeling/residue.hpp"
 #include "../../MolecularModeling/Selections/selections.h"
 #include "rotatable_dihedral.h"
+
+using MolecularModeling::Residue;
+using MolecularModeling::ResidueVector;
 
 typedef std::vector<Rotatable_dihedral> RotatableDihedralVector;
 

@@ -77,7 +77,7 @@ double Rotatable_dihedral::GetPreviousDihedralAngle()
     return previous_dihedral_angle_;
 }
 
-gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Rotatable_dihedral::GetMetadata()
+DihedralAngleDataVector Rotatable_dihedral::GetMetadata()
 {
     return assigned_metadata_;
 }
@@ -207,13 +207,13 @@ double Rotatable_dihedral::RandomizeDihedralAngleWithinRanges(std::vector<std::p
     return this->RandomizeDihedralAngleWithinRange(ranges.at(range_selection).first, ranges.at(range_selection).second);
 }
 
-void Rotatable_dihedral::SetMetadata(gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadataVector)
+void Rotatable_dihedral::SetMetadata(DihedralAngleDataVector metadataVector)
 {
     assigned_metadata_ = metadataVector;
     this->UpdateAtomsIfPsi();
 }
 
-void Rotatable_dihedral::AddMetadata(gmml::MolecularMetadata::GLYCAM::DihedralAngleData metadata)
+void Rotatable_dihedral::AddMetadata(DihedralAngleData metadata)
 {
     assigned_metadata_.push_back(metadata);
     this->UpdateAtomsIfPsi();

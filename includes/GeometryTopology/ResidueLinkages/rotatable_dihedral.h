@@ -6,11 +6,17 @@
  */
 #include <random>
 #include "pcg_random.hpp"
-#include "gmml.hpp"
+//#include "gmml.hpp"
+#include "utils.hpp"
 #include "../atom.hpp"
+#include "../atomnode.hpp" // For UpdateAtomsIfPsi
 #include "../residue.hpp"
+#include "../../MolecularMetadata/GLYCAM/dihedralangledata.hpp"
 
-using namespace MolecularModeling;
+using MolecularModeling::Atom;
+using MolecularModeling::AtomVector;
+using gmml::MolecularMetadata::GLYCAM::DihedralAngleData;
+using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
 
 class Rotatable_dihedral
 {
@@ -38,7 +44,7 @@ public:
     AtomVector GetAtoms() const;
     AtomVector GetAtomsThatMove();
     double GetPreviousDihedralAngle();
-    gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector GetMetadata();
+    DihedralAngleDataVector GetMetadata();
 
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
@@ -65,8 +71,8 @@ public:
     // ALTER CONSTRUCTOR SO THESE  next two ARE PRIVATE?
 
     // A residue-residue linkage will have metadata for each rotatable_dihedral. Multiple rotamers means multiple entries.
-    void SetMetadata(gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadataVector);
-    void AddMetadata(gmml::MolecularMetadata::GLYCAM::DihedralAngleData metadata);
+    void SetMetadata(DihedralAngleDataVector metadataVector);
+    void AddMetadata(DihedralAngleData metadata);
 
     // Set according to default values in metadata
     void SetDihedralAngleUsingMetadata(bool use_ranges = false);
@@ -107,7 +113,7 @@ private:
     AtomVector atoms_that_move_;
     // I often want to reset a dihedral angle after rotating it, so recording the previous angle makes this easy.
     double previous_dihedral_angle_;
-    gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector assigned_metadata_;
+    DihedralAngleDataVector assigned_metadata_;
 
 };
 

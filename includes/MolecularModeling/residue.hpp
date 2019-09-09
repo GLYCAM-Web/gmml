@@ -21,6 +21,8 @@ namespace MolecularModeling
     class Atom;
     class ResidueNode;
     class PrepFileResidue;
+    class Residue; // Forward declare for the vector typedef
+    typedef std::vector<MolecularModeling::Residue*> ResidueVector;
     class Residue : public ResidueProperties
     {
         public:
