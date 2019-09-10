@@ -8,7 +8,7 @@
 //#include "gmml.hpp"
 #include "../../MolecularModeling/atom.hpp"
 #include "../../MolecularModeling/residue.hpp"
-#include "../../MolecularModeling/Selections/selections.h"
+#include "../../MolecularModeling/Selections/selections.hpp"
 #include "rotatable_dihedral.h"
 
 using MolecularModeling::Residue;

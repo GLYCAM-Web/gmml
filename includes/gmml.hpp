@@ -145,6 +145,7 @@
 #include "MolecularModeling/Graph/node.hpp"
 #include "MolecularModeling/Graph/edge.hpp"
 #include "MolecularModeling/Graph/graph.hpp"
+#include "MolecularModeling/Selections/selections.hpp"
 #include "MolecularModeling/ring_shape_detection.hpp"
 #include "ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "ParameterSet/LibraryFileSpace/libraryfileatom.hpp"

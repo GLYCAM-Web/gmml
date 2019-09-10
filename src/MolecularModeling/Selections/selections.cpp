@@ -1,4 +1,4 @@
-#include "../../../includes/MolecularModeling/Selections/selections.h"
+#include "../../../includes/MolecularModeling/Selections/selections.hpp"
 
 MolecularModeling::AtomVector selection::AtomsWithinDistanceOf(MolecularModeling::Atom *query_atom, double distance, MolecularModeling::AtomVector atoms)
 {
