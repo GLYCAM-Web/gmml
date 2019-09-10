@@ -78,7 +78,7 @@ rm overlaps overlaps.txt > /dev/null 2>&1
 
 ###################### Test 05 ######################
 printf "Testing to make sure there are no using namespace declarations... "
-namespace_count=$( grep -r --exclude-dir=Eigen_Algebra_Template_Library "using namespace" ../includes/ ../src/ | wc -l )
+namespace_count=$( grep -r --exclude-dir=External_Libraries "using namespace" ../includes/ ../src/ | wc -l )
 if [[ $namespace_count -eq 0 ]]; then
 	printf "Test passed.\n"
 	((tests_passed++))
