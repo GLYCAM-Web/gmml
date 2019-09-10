@@ -34,18 +34,23 @@
 #include "../InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../InputSet/PdbFileSpace/inputfile.hpp"
 #include "molecule.hpp"
-#include "atom.hpp"
+//#include "residue.hpp"
+//#include "atom.hpp"
+//#include "atomnode.hpp"
+#include "residuenode.hpp"
 
 namespace MolecularModeling
 {
+    class Assembly;
+    typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
     class Assembly
     {
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            typedef std::vector<Assembly*> AssemblyVector;
-            typedef std::vector<Residue*> ResidueVector;
+     //       typedef std::vector<Assembly*> AssemblyVector;
+     //       typedef std::vector<Residue*> ResidueVector;
 //            typedef std::vector<Atom*> AtomVector;
             typedef std::map<std::string, gmml::GraphSearchNodeStatus> AtomStatusMap;
             typedef std::map<std::string, Atom*> AtomIdAtomMap;
@@ -60,9 +65,9 @@ namespace MolecularModeling
             typedef std::map<std::string, std::string> DerivativeModificationMap;
             typedef std::vector<std::vector<std::string> > AttachedGlycanStructuresVector;
             typedef std::vector<Glycan::Note*> NoteVector;
-            typedef std::vector<AtomNode*>AtomNodeVector; //Added by ayush on 04/11/18 for TopologyFix in assembly
-            typedef std::vector<ResidueNode*>ResidueNodeVector; //Added by ayush on 11/16/17 for identifying residuenodes in assembly
-            typedef std::vector<MolecularModeling::Molecule*> MoleculeVector; //Added by ayush on 11/12/17 for molecules in assembly
+         //   typedef std::vector<AtomNode*>AtomNodeVector; //Added by ayush on 04/11/18 for TopologyFix in assembly
+          //  typedef std::vector<ResidueNode*>ResidueNodeVector; //Added by ayush on 11/16/17 for identifying residuenodes in assembly
+     //       typedef std::vector<MolecularModeling::Molecule*> MoleculeVector; //Added by ayush on 11/12/17 for molecules in assembly
 	          typedef Assembly TemplateAssembly; //typedef for marking a template assembly, which contains all necessary template residues extracted from 3D template library.
             typedef struct
             {
@@ -82,7 +87,7 @@ namespace MolecularModeling
 
               // not sure what kinds of error/warning messages gmml will provide
               std::vector<std::string> error_warning_messages;
-            }gmml_api_output;
+            } gmml_api_output;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -214,13 +219,13 @@ namespace MolecularModeling
               * A function to return all coordinates of all atoms in all residues and assemblies of an assembly
               * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
               */
-            GeometryTopology::Coordinate::CoordinateVector GetAllCoordinates();
+            GeometryTopology::CoordinateVector GetAllCoordinates();
             /*! \fn
              * A function to extract all the coordinates of all the cycle atoms of the monosaccharide.
              * @param mono The Monosaccharide object
              * @return coordinates The CoordinateVector with all the Coordinates
              */
-            GeometryTopology::Coordinate::CoordinateVector GetCycleAtomCoordinates( Glycan::Monosaccharide* mono );
+            GeometryTopology::CoordinateVector GetCycleAtomCoordinates( Glycan::Monosaccharide* mono );
             /*! \fn
               * A function to return all issues/notes within an assembly
               * @return List of all notes of an assembly
@@ -434,14 +439,14 @@ namespace MolecularModeling
 	      * This function is called by the new version of "BuildAssemblyFromCondensedSequence" function, after FindClashingResidues.
 	      * @param all_clashing_residues A ResidueVector containing all the clashing residues. It is the output of FindClashingResidues
 	      */
-	    std::vector<MolecularModeling::Assembly::ResidueVector> FindPathToCommonAncestors(ResidueVector& all_clashing_residues);
+        std::vector<ResidueVector> FindPathToCommonAncestors(ResidueVector& all_clashing_residues);
 	    /*! \fn
 	      * A function that resolves clashes in assembly atoms.
 	      * This is an orchestrator function that calls FindAllOmegaTorsionsInPathway and FindBestSetOfTorsions
 	      * @param fused_clashing_paths A map between a common ancestor residue(branching residue), and the residue vector containg all residues in a clashing pathway.
 	      * @param index_dihedral_map See above RecursivelyTagDihedrals @param documentation
 	      */
-	    void ResolveClashes(std::vector<MolecularModeling::Assembly::ResidueVector>& fused_clashing_paths,
+        void ResolveClashes(std::vector<ResidueVector>& fused_clashing_paths,
                     std::multimap<int, std::pair<AtomVector*, std::string> >& index_dihedral_map);
 
 	    /*! \fn
@@ -450,14 +455,14 @@ namespace MolecularModeling
 	      * @param pathway A residue vector containing a clashing path. The code finds dihedrals within this path.
 	      * @param dihedral_map See above.
 	      */
-        std::vector< AtomVector* > FindAllOmegaTorsionsInPathway (MolecularModeling::Assembly::ResidueVector& pathway, std::multimap<int, std::pair<AtomVector*, std::string> >&
+        std::vector< AtomVector* > FindAllOmegaTorsionsInPathway (ResidueVector& pathway, std::multimap<int, std::pair<AtomVector*, std::string> >&
 									    dihedral_map);
 	    /*! \fn
 	      * A function that returns the set of coordinates with the lowest clashes that the algorithm can generate.
 	      * This function is called by ResolveClashes
 	      * @param available_dihedrals a vector of AtomVector*. Each AtomVector contains four atoms for a dihdral.
 	      */
-        GeometryTopology::Coordinate::CoordinateVector FindBestSetOfTorsions(std::vector<AtomVector*>& available_dihedrals);
+        GeometryTopology::CoordinateVector FindBestSetOfTorsions(std::vector<AtomVector*>& available_dihedrals);
 	    /*! \fn
 	      * A function that takes in all dihedrals, and their corresponding rotation values. Exhaustively generates individual sets of rotation values.
 	      * This function is called in the "FindBestSetOfTorsions" function
@@ -1904,7 +1909,7 @@ namespace MolecularModeling
              * @param CoordinateIndex The index of the coordinate set that should be extracted
              * @return Vector of pointers to the coordinates for the vector of atoms, in the same order as the vector of atoms.
              */
-            GeometryTopology::Coordinate::CoordinateVector GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex);
+            GeometryTopology::CoordinateVector GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex);
 
             /*! \fn                                                                          //Added by ayush on 06/16/18 for OffFile
               * A function that create an OFF file from Assembly

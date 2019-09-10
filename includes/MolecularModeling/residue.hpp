@@ -20,7 +20,7 @@ namespace MolecularModeling
     class Assembly;
     class Atom;
     class ResidueNode;
-    class PrepFileResidue;
+    //class PrepFileResidue; //This is not in the MolecularModeling namespace
     class Residue; // Forward declare for the vector typedef
     typedef std::vector<MolecularModeling::Residue*> ResidueVector;
     class Residue : public ResidueProperties
@@ -31,7 +31,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
            // typedef std::vector<Atom*> AtomVector;
             typedef std::vector<std::string> StringVector;
-	    typedef PrepFileSpace::PrepFileResidue PrepFileResidue;
+        //typedef PrepFileSpace::PrepFileResidue PrepFileResidue; // What was this doing? Ah ok, it was bandaging a deeper issue.
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
@@ -216,7 +216,7 @@ namespace MolecularModeling
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
 	    
-            void BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue);
+            void BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *prep_residue);
             /// Check if all atoms in the residue have their element symbols --> Label directly (1st priority)
             bool CheckSymbolBasedElementLabeling();
             /// Check if all atoms in the residue have their atom type --> Element symbols come from parameter file (2nd priority)

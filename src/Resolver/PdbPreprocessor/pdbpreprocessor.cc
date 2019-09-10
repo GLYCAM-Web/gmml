@@ -1494,8 +1494,8 @@ gmml::ResidueNameAtomNamesMap PdbPreprocessor::GetAllAtomNamesOfResidueNamesFrom
         {
             std::string residue_name = (*it1).first;
             PrepFileSpace::PrepFileResidue* residue = (*it1).second;
-            PrepFileSpace::PrepFileResidue::PrepFileAtomVector atoms = residue->GetAtoms();
-            for(PrepFileSpace::PrepFileResidue::PrepFileAtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            PrepFileSpace::PrepFileAtomVector atoms = residue->GetAtoms();
+            for(PrepFileSpace::PrepFileAtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
             {
                 PrepFileSpace::PrepFileAtom* atom = (*it2);
                 std::string atom_name = atom->GetName();
@@ -3509,8 +3509,8 @@ bool PdbPreprocessor::ExtractResidueInfo(std::string pdb_file_path, std::vector<
             else if (prep_residues.find(residue->GetResidueName()) != prep_residues.end())
             {
                 PrepFileSpace::PrepFileResidue* prep_residue = prep_residues[residue->GetResidueName()];
-                PrepFileSpace::PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
-                for(PrepFileSpace::PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+                PrepFileSpace::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+                for(PrepFileSpace::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
                 {
                     PrepFileSpace::PrepFileAtom* prep_atom = (*it1);
                     residue_charge += prep_atom->GetCharge();
@@ -3550,7 +3550,7 @@ bool PdbPreprocessor::ExtractResidueInfo(PdbFileSpace::PdbFile *pdb_file, std::v
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
 
     LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms;
-    PrepFileSpace::PrepFileResidue::PrepFileAtomVector prep_atoms;
+    PrepFileSpace::PrepFileAtomVector prep_atoms;
     for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
     {
         double residue_charge = 0.0;
@@ -3581,7 +3581,7 @@ bool PdbPreprocessor::ExtractResidueInfo(PdbFileSpace::PdbFile *pdb_file, std::v
         {
             PrepFileSpace::PrepFileResidue* prep_residue = prep_residues[residue->GetResidueName()];
             prep_atoms = prep_residue->GetAtoms();
-            for(PrepFileSpace::PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+            for(PrepFileSpace::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
             {
                 PrepFileSpace::PrepFileAtom* prep_atom = (*it1);
                 residue_charge += prep_atom->GetCharge();
@@ -3620,7 +3620,7 @@ double PdbPreprocessor::CalculateModelCharge(std::string pdb_file_path, std::vec
         PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
 
         LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms;
-        PrepFileSpace::PrepFileResidue::PrepFileAtomVector prep_atoms;
+        PrepFileSpace::PrepFileAtomVector prep_atoms;
         for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
         {
             PdbFileSpace::PdbResidue* residue = *it;
@@ -3651,7 +3651,7 @@ double PdbPreprocessor::CalculateModelCharge(std::string pdb_file_path, std::vec
             {
                 PrepFileSpace::PrepFileResidue* prep_residue = prep_residues[residue->GetResidueName()];
                 prep_atoms = prep_residue->GetAtoms();
-                for(PrepFileSpace::PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+                for(PrepFileSpace::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
                 {
                     PrepFileSpace::PrepFileAtom* prep_atom = (*it1);
                     model_charge += prep_atom->GetCharge();
@@ -3686,7 +3686,7 @@ double PdbPreprocessor::CalculateModelCharge(PdbFileSpace::PdbFile* pdb_file, st
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
 
     LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms;
-    PrepFileSpace::PrepFileResidue::PrepFileAtomVector prep_atoms;
+    PrepFileSpace::PrepFileAtomVector prep_atoms;
     for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
     {
         PdbFileSpace::PdbResidue* residue = *it;
@@ -3717,7 +3717,7 @@ double PdbPreprocessor::CalculateModelCharge(PdbFileSpace::PdbFile* pdb_file, st
         {
             PrepFileSpace::PrepFileResidue* prep_residue = prep_residues[residue->GetResidueName()];
             prep_atoms = prep_residue->GetAtoms();
-            for(PrepFileSpace::PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+            for(PrepFileSpace::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
             {
                 PrepFileSpace::PrepFileAtom* prep_atom = (*it1);
                 model_charge += prep_atom->GetCharge();

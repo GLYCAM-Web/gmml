@@ -10,13 +10,14 @@ namespace MolecularModeling
 {
     class Residue;
     class Atom;
+    class ResidueNode; // Forward declare for the typedef:
+    typedef std::vector<ResidueNode*> ResidueNodeVector;
     class ResidueNode
     {
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            typedef std::vector<ResidueNode*> ResidueNodeVector;
             typedef std::vector<Atom*> ResidueNodeConnectingAtomVector;
 
             //////////////////////////////////////////////////////////

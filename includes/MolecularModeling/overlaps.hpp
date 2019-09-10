@@ -1,15 +1,8 @@
 #ifndef OVERLAPS_HPP
 #define OVERLAPS_HPP
 
-//#include "assembly.hpp"
 #include "atom.hpp"
 #include "common.hpp"
-//*******************************************
-
-//typedef std::vector<MolecularModeling::Atom*> AtomVector;
-//typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
-
-//*******************************************
 
 namespace gmml
 {
@@ -21,4 +14,4 @@ namespace gmml
 }
 
 
-#endif // SUPERIMPOSITION_HPP
+#endif // OVERLAPS_HPP

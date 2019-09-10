@@ -2420,7 +2420,7 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
                     if(located)
                     {
                         // TODO: update coordinates with respect to it2
-                        GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                        GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
                         GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                             coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
@@ -2580,7 +2580,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                     if(located)
                     {
                         // TODO: update coordinates with respect to it2
-                        GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                        GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
                         GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                             coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
@@ -2756,7 +2756,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                     if(located)
                     {
                         // TODO: update coordinates with respect to it2
-                        GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                        GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
                         GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                             coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
@@ -2815,7 +2815,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                 if(it2 == --ordered_atoms.end() && located)
                 {
                     // TODO: update coordinates with respect to it2
-                    GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                    GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
                     GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
                     for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
@@ -2950,7 +2950,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                     if(located)
                     {
                         // TODO: update coordinates with respect to it2
-                        GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                        GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
                         GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                             coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
@@ -3008,7 +3008,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                 if(it2 == --ordered_atoms.end() && located)
                 {
                     // TODO: update coordinates with respect to it2
-                    GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                    GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
                     GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
                     for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));

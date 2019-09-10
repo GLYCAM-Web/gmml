@@ -9,13 +9,15 @@
 
 namespace GeometryTopology
 {
+    class Coordinate;
+    typedef std::vector<Coordinate*> CoordinateVector;
     class Coordinate
     {
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            typedef std::vector<Coordinate*> CoordinateVector;
+
             //////////////////////////////////////////////////////////
             //                       Constructor                    //
             //////////////////////////////////////////////////////////

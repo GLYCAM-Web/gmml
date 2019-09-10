@@ -6,43 +6,46 @@
 #include "assembly.hpp"
 #include "atom.hpp"
 
-typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
-
 namespace gmml
 {
-    GeometryTopology::Coordinate::CoordinateVector GetCoordinatesInAtomVector(MolecularModeling::AtomVector *atoms);
 
-    GeometryTopology::Coordinate::CoordinateVector GetCoordinatesInAssemblyVector(AssemblyVector *assemblies);
+using MolecularModeling::AtomVector;
+using MolecularModeling::AssemblyVector;
+using MolecularModeling::Assembly;
 
-    void GenerateMatrixFromAssembyCoordinates(MolecularModeling::Assembly *assembly, Eigen::Matrix3Xd *matrix);
+GeometryTopology::CoordinateVector GetCoordinatesInAtomVector(AtomVector *atoms);
 
-    void ReplaceAssemblyCoordinatesFromMatrix(MolecularModeling::Assembly *assembly, Eigen::Matrix3Xd *matrix);
+GeometryTopology::CoordinateVector GetCoordinatesInAssemblyVector(AssemblyVector *assemblies);
 
-    //void GenerateMatrixFromAtomVectorCoordinates(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
+void GenerateMatrixFromAssembyCoordinates(Assembly *assembly, Eigen::Matrix3Xd *matrix);
 
-    //void ReplaceAtomVectorCoordinatesFromMatrix(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
+void ReplaceAssemblyCoordinatesFromMatrix(Assembly *assembly, Eigen::Matrix3Xd *matrix);
 
-    void GenerateMatrixFromCoordinates(GeometryTopology::Coordinate::CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix);
+//void GenerateMatrixFromAtomVectorCoordinates(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
 
-    void ReplaceCoordinatesFromMatrix(GeometryTopology::Coordinate::CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix);
+//void ReplaceAtomVectorCoordinatesFromMatrix(AtomVector *atoms, Eigen::Matrix3Xd *matrix);
 
-    Eigen::Affine3d Find3DAffineTransform(Eigen::Matrix3Xd in, Eigen::Matrix3Xd out);
+void GenerateMatrixFromCoordinates(GeometryTopology::CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix);
 
-    void Superimpose(GeometryTopology::Coordinate::CoordinateVector moving, GeometryTopology::Coordinate::CoordinateVector target);
+void ReplaceCoordinatesFromMatrix(GeometryTopology::CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix);
 
-    void Superimpose(GeometryTopology::Coordinate::CoordinateVector moving, GeometryTopology::Coordinate::CoordinateVector target, GeometryTopology::Coordinate::CoordinateVector alsoMoving);
+Eigen::Affine3d Find3DAffineTransform(Eigen::Matrix3Xd in, Eigen::Matrix3Xd out);
 
-    void Superimpose(MolecularModeling::AtomVector moving, MolecularModeling::AtomVector target);
+void Superimpose(GeometryTopology::CoordinateVector moving, GeometryTopology::CoordinateVector target);
 
-    void Superimpose(MolecularModeling::AtomVector moving, MolecularModeling::AtomVector target, MolecularModeling::AtomVector alsoMoving);
+void Superimpose(GeometryTopology::CoordinateVector moving, GeometryTopology::CoordinateVector target, GeometryTopology::CoordinateVector alsoMoving);
 
-    void Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target);
+void Superimpose(AtomVector moving, AtomVector target);
 
-    void Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, MolecularModeling::Assembly *alsoMoving);
+void Superimpose(AtomVector moving, AtomVector target, AtomVector alsoMoving);
 
-    void Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, AssemblyVector *alsoMoving);
-    // A function to test Find3DAffineTransform()
-    // void TestFind3DAffineTransform();
+void Superimpose(Assembly *moving, Assembly *target);
+
+void Superimpose(Assembly *moving, Assembly *target, Assembly *alsoMoving);
+
+void Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving);
+// A function to test Find3DAffineTransform()
+// void TestFind3DAffineTransform();
 }
 
 

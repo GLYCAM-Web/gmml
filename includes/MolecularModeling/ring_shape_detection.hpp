@@ -35,9 +35,9 @@ namespace glylib
     typedef std::vector<plane> PlaneVector;
     double get_signed_distance_from_point_to_plane(plane p, GeometryTopology::Coordinate pt);
     vectormag_3D get_crossprod(vectormag_3D a, vectormag_3D b);
-    std::string calculateRingShapeBFMP(GeometryTopology::Coordinate::CoordinateVector ring_coordinates, int cut_off = 10);
+    std::string calculateRingShapeBFMP(GeometryTopology::CoordinateVector ring_coordinates, int cut_off = 10);
     double calculateTorsionAngle(GeometryTopology::Coordinate *coord1, GeometryTopology::Coordinate *coord2, GeometryTopology::Coordinate *coord3, GeometryTopology::Coordinate *coord4);
-    plane get_plane_for_ring(int n, GeometryTopology::Coordinate::CoordinateVector r);
+    plane get_plane_for_ring(int n, GeometryTopology::CoordinateVector r);
     FILE *myfopen(const char* Name,const char* option); ///< Opens a file with error checking.
     //****************************************************//
 
@@ -51,13 +51,13 @@ namespace glylib
     //************* The BFMP function ********************//
 
     std::string CalculateRingShapeBFMP( Glycan::Monosaccharide* mono );
-    std::string CalculateRingShapeBFMP(GeometryTopology::Coordinate::CoordinateVector ring_coordinates, int cut_off = 10);
+    std::string CalculateRingShapeBFMP(GeometryTopology::CoordinateVector ring_coordinates, int cut_off = 10);
     //****************************************************//
 }
 
 // This doesn't belong here. Doesn't belong in Assembly (where I took it from), it belongs in Monosaccharide right? Except that's not a class.
 namespace gmml
 {
-    GeometryTopology::Coordinate::CoordinateVector GetCycleAtomCoordinates( Glycan::Monosaccharide* mono );
+    GeometryTopology::CoordinateVector GetCycleAtomCoordinates( Glycan::Monosaccharide* mono );
 }
 #endif // ring_shape_detection_HPP

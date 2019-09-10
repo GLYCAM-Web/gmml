@@ -539,8 +539,8 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
 
   //Checking if any sugar named residue is not detected
-  Assembly::ResidueVector all_residues = GetAllResiduesOfAssembly();
-  for(Assembly::ResidueVector::iterator it = all_residues.begin(); it != all_residues.end(); it++)
+  MolecularModeling::ResidueVector all_residues = GetAllResiduesOfAssembly();
+  for(MolecularModeling::ResidueVector::iterator it = all_residues.begin(); it != all_residues.end(); it++)
   {
     MolecularModeling::Residue* this_residue = *it;
     std::string residue_name = this_residue->GetName();

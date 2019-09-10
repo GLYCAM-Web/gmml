@@ -27,7 +27,7 @@ MolecularModeling::Residue* ResidueNode::GetResidue()
     return residue_;
 }
 
-ResidueNode::ResidueNodeVector ResidueNode::GetResidueNodeNeighbors()
+MolecularModeling::ResidueNodeVector ResidueNode::GetResidueNodeNeighbors()
 {
     return residuenode_neighbors_;
 }

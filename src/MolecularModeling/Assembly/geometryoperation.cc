@@ -1429,8 +1429,8 @@ void Assembly::GetCenterOfGeometry(GeometryTopology::Coordinate *center_of_geome
     double sumX = 0.0;
     double sumY = 0.0;
     double sumZ = 0.0;
-    GeometryTopology::Coordinate::CoordinateVector all_coords = this->GetAllCoordinates();
-    for(GeometryTopology::Coordinate::CoordinateVector::iterator it = all_coords.begin(); it != all_coords.end(); it++)
+    GeometryTopology::CoordinateVector all_coords = this->GetAllCoordinates();
+    for(GeometryTopology::CoordinateVector::iterator it = all_coords.begin(); it != all_coords.end(); it++)
     {
         GeometryTopology::Coordinate coord = *it;
         sumX += coord.GetX();

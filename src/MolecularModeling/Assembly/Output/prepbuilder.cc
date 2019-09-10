@@ -88,7 +88,7 @@ PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::strin
         std::vector<std::string> inserted_improper_dihedral_types = std::vector<std::string>();
         std::vector<std::vector<std::string> > inserted_improper_dihedrals = std::vector<std::vector<std::string> >();
         PrepFileSpace::PrepFileResidue* prep_residue = new PrepFileSpace::PrepFileResidue();
-        PrepFileSpace::PrepFileResidue::PrepFileAtomVector prep_atoms = PrepFileSpace::PrepFileResidue::PrepFileAtomVector();
+        PrepFileSpace::PrepFileAtomVector prep_atoms = PrepFileSpace::PrepFileAtomVector();
         prep_residue->SetTitle(assembly_residue->GetName());
         prep_residue->SetName(assembly_residue->GetName());
         prep_residue->SetGeometryType(PrepFileSpace::kGeometryCorrect);
@@ -99,7 +99,7 @@ PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::strin
         prep_residue->SetOutputFormat(PrepFileSpace::kFormatted);
 
         AtomVector assembly_atoms = assembly_residue->GetAtoms();
-        GeometryTopology::Coordinate::CoordinateVector cartesian_coordinate_list;
+        GeometryTopology::CoordinateVector cartesian_coordinate_list;
         int atom_index = 1;
         PrepFileSpace::PrepFileResidue::Loop loops = PrepFileSpace::PrepFileResidue::Loop();
         std::vector<int> bond_index = std::vector<int>();
@@ -143,7 +143,7 @@ PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::strin
         std::vector<gmml::TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index);
         for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
         {
-            GeometryTopology::Coordinate::CoordinateVector coordinate_list;
+            GeometryTopology::CoordinateVector coordinate_list;
 
             Atom* assembly_atom = (*it1);
             PrepFileSpace::PrepFileAtom* prep_atom = new PrepFileSpace::PrepFileAtom();

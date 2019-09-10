@@ -8,18 +8,19 @@
 #include <cstddef>
 #include <iostream>
 #include "atom.hpp" // For AtomVector.
+#include "generictypedefs.hpp"
 
 namespace MolecularModeling
 {
     class Atom;
+    class AtomNode; // Forward declare for the typedef:
+    typedef std::vector<AtomNode*>AtomNodeVector;
     class AtomNode
     {
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-    //        typedef std::vector<MolecularModeling::Atom*> AtomVector;
-            typedef std::vector<bool> BooleanVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //

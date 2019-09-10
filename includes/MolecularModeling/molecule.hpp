@@ -6,12 +6,15 @@
 #include <fstream>
 #include <vector>
 #include "atom.hpp"
+#include "residue.hpp"
 
 
 namespace MolecularModeling
 {
     class Atom;
     class Residue;
+    class Molecule; // Forward declare for the vector typedef:
+    typedef std::vector<MolecularModeling::Molecule*> MoleculeVector;
     class Molecule
     {
         public:
@@ -19,7 +22,7 @@ namespace MolecularModeling
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
           //  typedef std::vector<Atom*> AtomVector;
-            typedef std::vector<Residue*> ResidueVector;
+          //  typedef std::vector<Residue*> ResidueVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -43,7 +46,7 @@ namespace MolecularModeling
               * An accessor function in order to access to the atoms of the current molecule object
               * @return molecule_atoms_ attribute of the current object of this class
               */
-            MolecularModeling::AtomVector GetMoleculeAtoms();
+           AtomVector GetMoleculeAtoms();
 
             /*! \fn
               * An accessor function in order to access to the residues of the current molecule object
@@ -97,7 +100,7 @@ namespace MolecularModeling
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
             int molecule_index_;                            /*!< An index of the molecule in an assembly >*/
-            MolecularModeling::AtomVector molecule_atoms_;                     /*!< List of all atoms in the current molecule object >*/
+            AtomVector molecule_atoms_;                     /*!< List of all atoms in the current molecule object >*/
             ResidueVector molecule_residues_;               /*!< List of residues involved in the current object of molecule >*/
     };
 }

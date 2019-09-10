@@ -2,6 +2,7 @@
 #define GMML_HPP
 
 #include "common.hpp"
+#include "generictypedefs.hpp"
 #include "utils.hpp"
 #include "InputSet/CifFileSpace/ciffile.hpp"
 #include "InputSet/CifFileSpace/ciffileatom.hpp"
@@ -172,10 +173,6 @@
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp"
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp"
 
-//typedef std::vector<MolecularModeling::Atom*> AtomVector;
-typedef std::vector<MolecularModeling::Residue*> ResidueVector;
-typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
-typedef std::vector<std::string> StringVector;
 typedef std::vector<MolecularModeling::ResidueNode*> ResidueNodeVector;
 
 

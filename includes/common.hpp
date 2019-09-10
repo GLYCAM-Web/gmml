@@ -8,6 +8,7 @@
 #include <set>
 #include <limits>
 
+#include "generictypedefs.hpp"
 #include "GeometryTopology/coordinate.hpp"
 #include "Glycan/sugarname.hpp"
 #include "MolecularModeling/atom.hpp"
@@ -21,7 +22,6 @@ namespace gmml
     typedef std::map<std::string, std::vector<std::string> > AtomMatchingMap;
     typedef std::map<std::string, std::vector<std::string> > GlycamResidueNamingMap;
     typedef std::map<std::string, std::vector<std::string> > ResidueNameAtomNamesMap;
-    typedef std::vector<std::string> StringVector;
 
     //*******************************************
 

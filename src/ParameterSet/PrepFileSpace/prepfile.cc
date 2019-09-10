@@ -234,8 +234,8 @@ void PrepFile::BuildPrepFile(std::ofstream &stream)
                << residue->GetStringFormatOfGeometryType() << " " << residue->GetStringFormatOfDummyAtomOmission() << " "
                << residue->GetDummyAtomType() << " " << residue->GetStringFormatOfDummyAtomPosition() << std::endl
                << std::right << std::setw(8) << std::fixed << std::setprecision(3) << residue->GetCharge() << std::endl;
-        PrepFileSpace::PrepFileResidue::PrepFileAtomVector atoms = residue->GetAtoms();
-        for(PrepFileSpace::PrepFileResidue::PrepFileAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
+        PrepFileSpace::PrepFileAtomVector atoms = residue->GetAtoms();
+        for(PrepFileSpace::PrepFileAtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
         {
             PrepFileAtom* atom = (*it1);
             stream << std::right << std::setw(2) << atom->GetIndex() << " " << std::left << std::setw(4) << atom->GetName() << " " << std::left << std::setw(3) << atom->GetType() << " "
