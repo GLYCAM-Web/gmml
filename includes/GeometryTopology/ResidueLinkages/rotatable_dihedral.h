@@ -5,7 +5,7 @@
  * and, if moved, the previous dihedral angle, which allows me to reset easily.
  */
 #include <random>
-#include "pcg_random.hpp"
+#include "../External_Libraries/PCG/pcg_random.hpp"
 //#include "gmml.hpp"
 #include "utils.hpp"
 #include "../atom.hpp"
