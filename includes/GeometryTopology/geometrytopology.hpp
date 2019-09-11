@@ -1,11 +1,8 @@
 #ifndef GEOMETRYTOPOLOGY_HPP
 #define GEOMETRYTOPOLOGY_HPP
 
-
-
+#include "../MolecularModeling/atom.hpp"
 #include "coordinate.hpp"
-#include "../External_Libraries/Eigen_Algebra_Template_Library/Geometry"
-#include "../utils.hpp"
 
 namespace GeometryTopology
 {

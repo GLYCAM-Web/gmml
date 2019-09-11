@@ -1,12 +1,9 @@
 #ifndef SELECTIONS_H
 #define SELECTIONS_H
 
-//#include "../../../includes/gmml.hpp"
-//#include "gmml.hpp"
 #include "../atom.hpp"
 #include "../atomnode.hpp"
 #include "../residue.hpp"
-#include <regex>
 
 namespace selection
 {

@@ -4,13 +4,9 @@
  * This class stores the four atoms that define a dihedral angle, the atoms that move when it is rotated
  * and, if moved, the previous dihedral angle, which allows me to reset easily.
  */
-#include <random>
-#include "../External_Libraries/PCG/pcg_random.hpp"
-//#include "gmml.hpp"
-#include "utils.hpp"
-#include "../atom.hpp"
-#include "../atomnode.hpp" // For UpdateAtomsIfPsi
-#include "../residue.hpp"
+
+#include "../../MolecularModeling/atom.hpp"
+#include "../../MolecularModeling/residue.hpp"
 #include "../../MolecularMetadata/GLYCAM/dihedralangledata.hpp"
 
 using MolecularModeling::Atom;
@@ -18,6 +14,8 @@ using MolecularModeling::AtomVector;
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleData;
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
 
+class Rotatable_dihedral;
+typedef std::vector<Rotatable_dihedral> RotatableDihedralVector;
 class Rotatable_dihedral
 {
 public:
@@ -25,7 +23,6 @@ public:
     //                    TYPE DEFINITION                   //
     //////////////////////////////////////////////////////////
 
-    typedef std::vector<Rotatable_dihedral> RotatableDihedralVector;
 
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //

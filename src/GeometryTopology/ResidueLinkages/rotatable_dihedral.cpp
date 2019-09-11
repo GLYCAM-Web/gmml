@@ -1,4 +1,8 @@
+#include <random>
 #include "../../../includes/GeometryTopology/ResidueLinkages/rotatable_dihedral.h"
+#include "../../../includes/MolecularModeling/atomnode.hpp" // For UpdateAtomsIfPsi
+#include "../../../includes/utils.hpp"
+#include "../../../includes/External_Libraries/PCG/pcg_random.hpp"
 
 // Seed with a real random value, if available
 static pcg_extras::seed_seq_from<std::random_device> seed_source;

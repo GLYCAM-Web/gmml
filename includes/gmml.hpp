@@ -116,6 +116,8 @@
 #include "GeometryTopology/plane.hpp"
 #include "GeometryTopology/cell.hpp"
 #include "GeometryTopology/grid.hpp"
+#include "GeometryTopology/ResidueLinkages/residue_linkage.h"
+#include "GeometryTopology/ResidueLinkages/rotatable_dihedral.h"
 #include "Glycan/chemicalcode.hpp"
 #include "Glycan/monosaccharide.hpp"
 #include "Glycan/note.hpp"

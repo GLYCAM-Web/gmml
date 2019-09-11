@@ -14,17 +14,15 @@
 using MolecularModeling::Residue;
 using MolecularModeling::ResidueVector;
 
-typedef std::vector<Rotatable_dihedral> RotatableDihedralVector;
 
+class Residue_linkage;
+typedef std::vector<Rotatable_dihedral> RotatableDihedralVector;
 class Residue_linkage
 {
 public:
     //////////////////////////////////////////////////////////
     //                    TYPE DEFINITION                   //
     //////////////////////////////////////////////////////////
-
-//    typedef std::vector<Rotatable_dihedral> RotatableDihedralVector;
-//    typedef std::vector<Residue_linkage> ResidueLinkageVector;
 
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
