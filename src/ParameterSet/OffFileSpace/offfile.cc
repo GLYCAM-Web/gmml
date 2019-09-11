@@ -36,16 +36,16 @@ using OffFileSpace::OffFile;
 
             std::ofstream out_file;
             out_file.open(file_name.c_str());
-            ResidueVector residues = assembly->GetResidues();
+            MolecularModeling::ResidueVector residues = assembly->GetResidues();
             unit_name_=assembly->GetName();
             out_file << "!!index array str" << std::endl;
             out_file << " \"" << unit_name_ << "\"" << std::endl;
             PopulateOffFileResiduesFromAssembly(residues,CoordinateIndex);
             WriteAtomSection(out_file,this->off_file_residues_);
             WriteAtomPertInfoSection(out_file,this->off_file_residues_);
-            WriteBoundBoxSection(out_file,assembly);
+            WriteBoundBoxSection(out_file);
             WriteChildSequenceSection(out_file,this->off_file_residues_);
-            WriteConnectSection(out_file,this->off_file_residues_);
+            WriteConnectSection(out_file);
             WriteConnectivitySection(out_file,residues);
             WriteHierarchySection(out_file,this->off_file_residues_);
             WriteNameSection(out_file);
@@ -58,11 +58,11 @@ using OffFileSpace::OffFile;
 
     }
 
-    void OffFileSpace::OffFile::PopulateOffFileResiduesFromAssembly(ResidueVector assembly_residues,int CoordinateIndex)
+    void OffFileSpace::OffFile::PopulateOffFileResiduesFromAssembly(MolecularModeling::ResidueVector assembly_residues,int CoordinateIndex)
     {
             int ResidueIndex=0;
              int BoundingAtomIndex=0;
-            for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+            for(MolecularModeling::ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
             {
                 ResidueIndex++;
                 OffFileResidue* off_file_residue = new OffFileResidue();
@@ -134,10 +134,10 @@ using OffFileSpace::OffFile;
 
 
             //For populating the bounding information 
-        for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
-        {
-            MolecularModeling::Residue* residue = (*it);
-            MolecularModeling::AtomVector all_atoms_of_residue = residue->GetAtoms();
+        //for(MolecularModeling::ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+        //{
+            //MolecularModeling::Residue* residue = (*it);
+            //MolecularModeling::AtomVector all_atoms_of_residue = residue->GetAtoms();
 /*
 This whole loop seems to be unused
             for(MolecularModeling::AtomVector::iterator it2 = all_atoms_of_residue.begin(); it2 != all_atoms_of_residue.end(); ++it2)
@@ -151,7 +151,7 @@ This whole loop seems to be unused
                         } 
             }
 */
-          }
+         // }
         }
 
     void OffFileSpace::OffFile::WriteAtomSection(std::ofstream &stream, OffFileResidueVector off_file_residues)
@@ -194,7 +194,7 @@ This whole loop seems to be unused
         }
     }
 
-    void OffFileSpace::OffFile::WriteBoundBoxSection(std::ofstream& stream, MolecularModeling::Assembly* assembly)
+    void OffFileSpace::OffFile::WriteBoundBoxSection(std::ofstream& stream)
     {
             stream << "!entry." << unit_name_ << ".unit.boundbox array dbl" << std::endl;
             stream << " " << "-1.000000" << std::endl;
@@ -212,19 +212,19 @@ This whole loop seems to be unused
             stream << " " << residue_count+1 << std::endl;
     }
 
-    void OffFileSpace::OffFile::WriteConnectSection(std::ofstream& stream, OffFileResidueVector off_file_residues)
+    void OffFileSpace::OffFile::WriteConnectSection(std::ofstream& stream)
     {
             stream << "!entry." << unit_name_ << ".unit.connect array int" << std::endl;
             stream << " " << 0 << std::endl;
             stream << " " << 0 << std::endl;
     }
-    void OffFileSpace::OffFile::WriteConnectivitySection(std::ofstream& stream, ResidueVector assembly_residues)
+    void OffFileSpace::OffFile::WriteConnectivitySection(std::ofstream& stream, MolecularModeling::ResidueVector assembly_residues)
     {
         stream << "!entry." << unit_name_ << ".unit.connectivity table  int atom1x  int atom2x  int flags" << std::endl;
 
         MolecularModeling::AtomVector center_atoms_visited = MolecularModeling::AtomVector();
 
-                for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+                for(MolecularModeling::ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
                 {
                     MolecularModeling::Residue* residue = (*it);
                     MolecularModeling::AtomVector all_atoms_of_residue = residue->GetAtoms();
@@ -272,11 +272,11 @@ This whole loop seems to be unused
     }
 
 
-    void OffFileSpace::OffFile::WritePositionSection(std::ofstream& stream, ResidueVector assembly_residues, int CoordinateIndex)
+    void OffFileSpace::OffFile::WritePositionSection(std::ofstream& stream, MolecularModeling::ResidueVector assembly_residues, int CoordinateIndex)
     {
         stream << "!entry." << unit_name_ << ".unit.positions table  dbl x  dbl y  dbl z" << std::endl;
 
-            for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+            for(MolecularModeling::ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
             {
 
                 MolecularModeling::Residue* residue = (*it);
@@ -292,10 +292,10 @@ This whole loop seems to be unused
     }
 
 
-    void OffFileSpace::OffFile::WriteResidueConnectSection(std::ofstream& stream, ResidueVector assembly_residues)
+    void OffFileSpace::OffFile::WriteResidueConnectSection(std::ofstream& stream, MolecularModeling::ResidueVector assembly_residues)
     {    
         stream << "!entry." << unit_name_ << ".unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x" << std::endl;
-        for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+        for(MolecularModeling::ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
             {
 
                 MolecularModeling::Residue* residue = (*it);
@@ -359,7 +359,7 @@ This whole loop seems to be unused
     }
     
 
-    void OffFileSpace::OffFile::WriteResiduesSection(std::ofstream& stream, ResidueVector assembly_residues)
+    void OffFileSpace::OffFile::WriteResiduesSection(std::ofstream& stream, MolecularModeling::ResidueVector assembly_residues)
     {
             std::string name;
             unsigned int seq=0;
@@ -369,7 +369,7 @@ This whole loop seems to be unused
             unsigned int imagingx;
 
             stream << "!entry." << unit_name_ << ".unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx" << std::endl;
-            for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
+            for(MolecularModeling::ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
                 {
                     MolecularModeling::Residue* residue = (*it);
                     name= residue->GetName();
