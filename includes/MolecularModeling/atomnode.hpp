@@ -8,7 +8,7 @@
 #include <cstddef>
 #include <iostream>
 #include "atom.hpp" // For AtomVector.
-#include "generictypedefs.hpp"
+#include "../generictypedefs.hpp"
 
 namespace MolecularModeling
 {

@@ -1,4 +1,6 @@
 #include "../../includes/MolecularModeling/overlaps.hpp"
+#include "../../includes/MolecularModeling/atom.hpp"
+#include "../../includes/common.hpp"
 
 double gmml::CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB){
 
@@ -25,6 +27,7 @@ double gmml::CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, Molec
     }
     return (totalOverlap / gmml::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
 }
+
 
 double gmml::CalculateAtomicOverlaps(MolecularModeling::Atom *atomA, MolecularModeling::Atom *atomB, double radiusA, double radiusB)
 {

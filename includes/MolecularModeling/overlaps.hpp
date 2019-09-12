@@ -1,8 +1,16 @@
 #ifndef OVERLAPS_HPP
 #define OVERLAPS_HPP
 
-#include "atom.hpp"
-#include "common.hpp"
+//#include "atom.hpp"
+//#include "../common.hpp"
+#include <vector>
+
+// Wondering about forward declaring versus #including atom.hpp
+namespace MolecularModeling
+{
+class Atom;
+typedef std::vector<MolecularModeling::Atom*> AtomVector;
+}
 
 namespace gmml
 {
