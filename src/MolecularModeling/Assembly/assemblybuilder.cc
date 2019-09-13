@@ -1396,7 +1396,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             Residue* root = corresponding_assembly_residue;
             //  TURN OFF GEOMETRY OPS
             this->RecursivelySetAngleGeometry(root);
-            this->RecursivelySetDihedralAngleGeometry(root);
+            this->SetDihedralAngleGeometryWithMetadata();
+            //this->RecursivelySetDihedralAngleGeometry(root);
             //          The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
             //          Linkage index is incremented inside function once a linkage has been processed.
             int linkage_index = 0;

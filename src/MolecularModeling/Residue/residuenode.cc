@@ -32,15 +32,15 @@ MolecularModeling::ResidueNodeVector ResidueNode::GetResidueNodeNeighbors()
     return residuenode_neighbors_;
 }
 
-MolecularModeling::ResidueVector GetResidueNeighbors()
+MolecularModeling::ResidueVector ResidueNode::GetResidueNeighbors()
 {
     MolecularModeling::ResidueVector neighbors;
-    MolecularModeling::ResidueNodeVector neighboringNodes = this->GetResidueNodeNeighbors ;
+    MolecularModeling::ResidueNodeVector neighboringNodes = this->GetResidueNodeNeighbors();
     for(auto &node : neighboringNodes)
     {
         neighbors.push_back(node->GetResidue());
     }
-    return residueNeighbors;
+    return neighbors;
 }
 
 ResidueNode::ResidueNodeConnectingAtomVector ResidueNode::GetResidueNodeConnectingAtoms()

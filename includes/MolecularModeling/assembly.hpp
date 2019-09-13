@@ -39,8 +39,8 @@
 //#include "atomnode.hpp"
 #include "residuenode.hpp"
 
-class ResidueLinkage;
-typedef std::vector<ResidueLinkage> ResidueLinkageVector;
+class Residue_linkage;
+typedef std::vector<Residue_linkage> ResidueLinkageVector;
 
 namespace MolecularModeling
 {
