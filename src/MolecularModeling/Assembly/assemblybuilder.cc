@@ -252,7 +252,7 @@ Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (Condens
         }
     }
     */
-        //testing
+    //testing
 
     return template_assembly;
     
@@ -264,165 +264,165 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
     
     ResidueVector all_template_residues = template_assembly->GetResidues();
     ResidueVector newly_added_residues = ResidueVector();
-    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*> condensed_sequence_child_parent_map = 
-	std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*>();
+    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*> condensed_sequence_child_parent_map =
+            std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*>();
 
     std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> > index_condensed_sequence_assembly_residue_map =
-    std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> >();
+            std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> >();
     std::map<Atom*, AtomNode*> new_atom_template_node_map = std::map<Atom*, AtomNode*>();
 
     int atom_serial_number = 1;
-    for (unsigned int i = 0; i< glycam06_residue_tree.size(); i++) 
+    for (unsigned int i = 0; i< glycam06_residue_tree.size(); i++)
     {
-	CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_sequence_residue = glycam06_residue_tree[i];
+        CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_sequence_residue = glycam06_residue_tree[i];
         std::string condensed_sequence_residue_name = condensed_sequence_residue->GetName();
-	if (condensed_sequence_residue_name != "Deoxy"){
-	    int residue_serial_number = i;
-	    for (unsigned int j = 0; j < all_template_residues.size(); j++){
-	        //Copy residues
-	        if (condensed_sequence_residue_name == all_template_residues[j]->GetName())
-	        {
-		    Residue* template_residue = all_template_residues[j];
-		    Residue* assembly_residue = new Residue();
-		    //Set the first residue in the tree to be the aglycon.
-		    if (i == 0){
-		        assembly_residue->SetIsAglycon(true);
-		    }
-		    assembly_residue->SetIsSugarDerivative (condensed_sequence_residue->GetIsDerivative());
-		    assembly_residue->SetNode(NULL);	//When residue object is constructed, its node attribute is not set to NULL, causing it to contain garbage node address.So I need to do this.
-		    this->AddResidue(assembly_residue);
-		    assembly_residue->SetAssembly(this);
-		    assembly_residue->SetName(template_residue->GetName());
-		    std::stringstream id_stream;
-		    id_stream << template_residue->GetName() << "_" << residue_serial_number << "_" << template_residue->GetId() << std::endl;
-		    //std::string residue_id = template_residue->GetName() + "_" + serial_number_stream.str() + "_" + template_residue->GetId();
-		    assembly_residue->SetId (id_stream.str());
-		    index_condensed_sequence_assembly_residue_map[residue_serial_number].first = condensed_sequence_residue;
-		    index_condensed_sequence_assembly_residue_map[residue_serial_number].second = assembly_residue;
-		    newly_added_residues.push_back(assembly_residue);
-	
-		    //Copy atoms in residue
-            AtomVector all_template_atoms = template_residue->GetAtoms();
-		    for (unsigned int k = 0; k < all_template_atoms.size(); k++)
-		    {
-		        Atom* template_atom = all_template_atoms[k];
-		        Atom* template_atom_copy = new Atom();
-		        assembly_residue->AddAtom(template_atom_copy);
-		        template_atom_copy->SetResidue(assembly_residue);
-		        template_atom_copy->SetName(template_atom->GetName());
-		        template_atom_copy->SetNaming(template_atom->GetNaming());
-		        template_atom_copy->SetElementSymbol(template_atom->GetElementSymbol());
-                //Attention: SetAtomType()function is overloaded as Atom::SetAtomType() and MolecularModeling::MolecularDynamicAtom::SetAtomType(). You don't really know which one to use.
-	    		//Likiwise, GetAtomType() is also overloaded.
-                    //In my situation, I called MolecularModeling::MolecularModelingAtom::SetAtomType(), but later called Atom::GetAtomType(). The result is empty.
-            		//We need to talk about this later
-		        template_atom_copy->MolecularDynamicAtom::SetAtomType(template_atom->MolecularDynamicAtom::GetAtomType());
-		        template_atom_copy->SetCharge(template_atom->GetCharge());
-	    		//Create coordinate object for new atom
-		        GeometryTopology::Coordinate* copy_coordinate = new GeometryTopology::Coordinate(template_atom->GetCoordinates().at(0));
-		        template_atom_copy->AddCoordinate(copy_coordinate);
-		        std::stringstream atom_id_stream;
-		        atom_id_stream << template_atom->GetName() << "_" << atom_serial_number << "_" << template_residue->GetName() << "_" << "A" << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
-		        template_atom_copy->SetId(atom_id_stream.str());
-	    		//Tag cycle/sidechain atoms
-		        template_atom_copy->MolecularModeling::OligoSaccharideDetectionAtom::SetIsCycle(template_atom->GetIsCycle());
-		        template_atom_copy->MolecularModeling::OligoSaccharideDetectionAtom::SetIsSideChain(template_atom->GetIsSideChain());
+        if (condensed_sequence_residue_name != "Deoxy"){
+            int residue_serial_number = i;
+            for (unsigned int j = 0; j < all_template_residues.size(); j++){
+                //Copy residues
+                if (condensed_sequence_residue_name == all_template_residues[j]->GetName())
+                {
+                    Residue* template_residue = all_template_residues[j];
+                    Residue* assembly_residue = new Residue();
+                    //Set the first residue in the tree to be the aglycon.
+                    if (i == 0){
+                        assembly_residue->SetIsAglycon(true);
+                    }
+                    assembly_residue->SetIsSugarDerivative (condensed_sequence_residue->GetIsDerivative());
+                    assembly_residue->SetNode(NULL);	//When residue object is constructed, its node attribute is not set to NULL, causing it to contain garbage node address.So I need to do this.
+                    this->AddResidue(assembly_residue);
+                    assembly_residue->SetAssembly(this);
+                    assembly_residue->SetName(template_residue->GetName());
+                    std::stringstream id_stream;
+                    id_stream << template_residue->GetName() << "_" << residue_serial_number << "_" << template_residue->GetId() << std::endl;
+                    //std::string residue_id = template_residue->GetName() + "_" + serial_number_stream.str() + "_" + template_residue->GetId();
+                    assembly_residue->SetId (id_stream.str());
+                    index_condensed_sequence_assembly_residue_map[residue_serial_number].first = condensed_sequence_residue;
+                    index_condensed_sequence_assembly_residue_map[residue_serial_number].second = assembly_residue;
+                    newly_added_residues.push_back(assembly_residue);
 
-                AtomVector template_head_atoms = template_residue->GetHeadAtoms();
-		        if (std::find(template_head_atoms.begin(), template_head_atoms.end(), template_atom) != template_head_atoms.end() ){
-			    assembly_residue->AddHeadAtom(template_atom_copy);
-		        }
-                AtomVector template_tail_atoms = template_residue->GetTailAtoms();
-		        if (std::find(template_tail_atoms.begin(), template_tail_atoms.end(), template_atom) != template_tail_atoms.end() ){
-			    assembly_residue->AddTailAtom(template_atom_copy);
-		        }
-		        AtomNode* template_atom_node = template_atom ->GetNode(); 
-		        new_atom_template_node_map [template_atom_copy] = template_atom_node;
-		        atom_serial_number++;
-		    }
-		    //Copy atom nodes
-		    for (std::map<Atom*, AtomNode*>::iterator it = new_atom_template_node_map.begin(); it != new_atom_template_node_map.end(); it++){
-		        Atom* new_atom = it->first;
-		        AtomNode* template_node = it ->second;
-		        AtomNode* new_atom_node = new AtomNode();
-		        new_atom_node->SetAtom(new_atom);
-		        new_atom->SetNode(new_atom_node);
-		        std::vector<std::string> all_node_neighbor_names = std::vector<std::string>();
-                AtomVector template_node_neighbors = template_node->GetNodeNeighbors();
-                for (AtomVector::iterator it2 = template_node_neighbors.begin(); it2 != template_node_neighbors.end(); it2++){
-			    all_node_neighbor_names.push_back((*it2)->GetName());
-		        }
-                AtomVector atoms_in_new_residue = new_atom->GetResidue()->GetAtoms();
-                for (AtomVector::iterator it2 = atoms_in_new_residue.begin(); it2 != atoms_in_new_residue.end(); it2++){
-			    Atom* new_atom_in_residue = *it2;
-			    std::string atom_name = new_atom_in_residue->GetName(); 
-			    if (std::find(all_node_neighbor_names.begin(), all_node_neighbor_names.end(), atom_name) != all_node_neighbor_names.end()){
-			        new_atom_node->AddNodeNeighbor(new_atom_in_residue);
-			    }
+                    //Copy atoms in residue
+                    AtomVector all_template_atoms = template_residue->GetAtoms();
+                    for (unsigned int k = 0; k < all_template_atoms.size(); k++)
+                    {
+                        Atom* template_atom = all_template_atoms[k];
+                        Atom* template_atom_copy = new Atom();
+                        assembly_residue->AddAtom(template_atom_copy);
+                        template_atom_copy->SetResidue(assembly_residue);
+                        template_atom_copy->SetName(template_atom->GetName());
+                        template_atom_copy->SetNaming(template_atom->GetNaming());
+                        template_atom_copy->SetElementSymbol(template_atom->GetElementSymbol());
+                        //Attention: SetAtomType()function is overloaded as Atom::SetAtomType() and MolecularModeling::MolecularDynamicAtom::SetAtomType(). You don't really know which one to use.
+                        //Likiwise, GetAtomType() is also overloaded.
+                        //In my situation, I called MolecularModeling::MolecularModelingAtom::SetAtomType(), but later called Atom::GetAtomType(). The result is empty.
+                        //We need to talk about this later
+                        template_atom_copy->MolecularDynamicAtom::SetAtomType(template_atom->MolecularDynamicAtom::GetAtomType());
+                        template_atom_copy->SetCharge(template_atom->GetCharge());
+                        //Create coordinate object for new atom
+                        GeometryTopology::Coordinate* copy_coordinate = new GeometryTopology::Coordinate(template_atom->GetCoordinates().at(0));
+                        template_atom_copy->AddCoordinate(copy_coordinate);
+                        std::stringstream atom_id_stream;
+                        atom_id_stream << template_atom->GetName() << "_" << atom_serial_number << "_" << template_residue->GetName() << "_" << "A" << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
+                        template_atom_copy->SetId(atom_id_stream.str());
+                        //Tag cycle/sidechain atoms
+                        template_atom_copy->MolecularModeling::OligoSaccharideDetectionAtom::SetIsCycle(template_atom->GetIsCycle());
+                        template_atom_copy->MolecularModeling::OligoSaccharideDetectionAtom::SetIsSideChain(template_atom->GetIsSideChain());
 
-		        }
+                        AtomVector template_head_atoms = template_residue->GetHeadAtoms();
+                        if (std::find(template_head_atoms.begin(), template_head_atoms.end(), template_atom) != template_head_atoms.end() ){
+                            assembly_residue->AddHeadAtom(template_atom_copy);
+                        }
+                        AtomVector template_tail_atoms = template_residue->GetTailAtoms();
+                        if (std::find(template_tail_atoms.begin(), template_tail_atoms.end(), template_atom) != template_tail_atoms.end() ){
+                            assembly_residue->AddTailAtom(template_atom_copy);
+                        }
+                        AtomNode* template_atom_node = template_atom ->GetNode();
+                        new_atom_template_node_map [template_atom_copy] = template_atom_node;
+                        atom_serial_number++;
+                    }
+                    //Copy atom nodes
+                    for (std::map<Atom*, AtomNode*>::iterator it = new_atom_template_node_map.begin(); it != new_atom_template_node_map.end(); it++){
+                        Atom* new_atom = it->first;
+                        AtomNode* template_node = it ->second;
+                        AtomNode* new_atom_node = new AtomNode();
+                        new_atom_node->SetAtom(new_atom);
+                        new_atom->SetNode(new_atom_node);
+                        std::vector<std::string> all_node_neighbor_names = std::vector<std::string>();
+                        AtomVector template_node_neighbors = template_node->GetNodeNeighbors();
+                        for (AtomVector::iterator it2 = template_node_neighbors.begin(); it2 != template_node_neighbors.end(); it2++){
+                            all_node_neighbor_names.push_back((*it2)->GetName());
+                        }
+                        AtomVector atoms_in_new_residue = new_atom->GetResidue()->GetAtoms();
+                        for (AtomVector::iterator it2 = atoms_in_new_residue.begin(); it2 != atoms_in_new_residue.end(); it2++){
+                            Atom* new_atom_in_residue = *it2;
+                            std::string atom_name = new_atom_in_residue->GetName();
+                            if (std::find(all_node_neighbor_names.begin(), all_node_neighbor_names.end(), atom_name) != all_node_neighbor_names.end()){
+                                new_atom_node->AddNodeNeighbor(new_atom_in_residue);
+                            }
 
-		    }
-	        }
-	    }
-	}//if not "Deoxy" false residue
+                        }
+
+                    }
+                }
+            }
+        }//if not "Deoxy" false residue
     }
-	//Dealing with deoxy residue
+    //Dealing with deoxy residue
     for (unsigned int i = 0; i< glycam06_residue_tree.size(); i++){
-	if (glycam06_residue_tree[i]->GetName() == "Deoxy"){
-	    CondensedSequenceSpace::CondensedSequenceGlycam06Residue* deoxy_derivative = glycam06_residue_tree[i];
-	    int parent_index = deoxy_derivative->GetParentId();
-	    std::string parent_oxygen_name = deoxy_derivative->GetParentOxygen();
-        Residue* assembly_residue_parent = index_condensed_sequence_assembly_residue_map[parent_index].second;
-        AtomVector parent_atoms = assembly_residue_parent->GetAtoms();
+        if (glycam06_residue_tree[i]->GetName() == "Deoxy"){
+            CondensedSequenceSpace::CondensedSequenceGlycam06Residue* deoxy_derivative = glycam06_residue_tree[i];
+            int parent_index = deoxy_derivative->GetParentId();
+            std::string parent_oxygen_name = deoxy_derivative->GetParentOxygen();
+            Residue* assembly_residue_parent = index_condensed_sequence_assembly_residue_map[parent_index].second;
+            AtomVector parent_atoms = assembly_residue_parent->GetAtoms();
 
-	    for (unsigned int j = 0; j< parent_atoms.size(); j++){
-		if (parent_atoms[j]->GetName() == parent_oxygen_name){
-            Atom* parent_oxygen_to_remove = parent_atoms[j];
-            AtomVector parent_neighbors = parent_oxygen_to_remove->GetNode()->GetNodeNeighbors();
-            Atom* hydrogen_to_add = new Atom();
-            AtomNode* new_hydrogen_node = new AtomNode();
-		    hydrogen_to_add->SetNode(new_hydrogen_node);
-		    new_hydrogen_node->SetAtom(hydrogen_to_add);
-		    hydrogen_to_add->SetResidue(assembly_residue_parent);
-		    assembly_residue_parent->AddAtom(hydrogen_to_add);
-            Atom* parent_neighbor_hydrogen_neighbor = NULL;
-            Atom* parent_neighbor_ring_carbon = NULL;
+            for (unsigned int j = 0; j< parent_atoms.size(); j++){
+                if (parent_atoms[j]->GetName() == parent_oxygen_name){
+                    Atom* parent_oxygen_to_remove = parent_atoms[j];
+                    AtomVector parent_neighbors = parent_oxygen_to_remove->GetNode()->GetNodeNeighbors();
+                    Atom* hydrogen_to_add = new Atom();
+                    AtomNode* new_hydrogen_node = new AtomNode();
+                    hydrogen_to_add->SetNode(new_hydrogen_node);
+                    new_hydrogen_node->SetAtom(hydrogen_to_add);
+                    hydrogen_to_add->SetResidue(assembly_residue_parent);
+                    assembly_residue_parent->AddAtom(hydrogen_to_add);
+                    Atom* parent_neighbor_hydrogen_neighbor = NULL;
+                    Atom* parent_neighbor_ring_carbon = NULL;
 
-		    for (unsigned int k = 0; k < parent_neighbors.size(); k++){
-			if (parent_neighbors[k]->GetIsCycle()){  //When the neighbor of the oxygen to be removed is the ring carbon
-			    parent_neighbor_ring_carbon = parent_neighbors[k];
-			    parent_neighbor_ring_carbon->GetNode()->AddNodeNeighbor(hydrogen_to_add);
-			    parent_neighbor_ring_carbon->SetCharge(parent_neighbor_ring_carbon->GetCharge() + parent_oxygen_to_remove->GetCharge()); //Add oxygen charge to ring carbon
-			}
-			else {  //When the neighbor of the oxyben to be removed is the attached hydroxyl hydrogen
-			    parent_neighbor_hydrogen_neighbor = parent_neighbors[k];
-			    parent_neighbor_ring_carbon->SetCharge(parent_neighbor_ring_carbon->GetCharge() + parent_neighbor_hydrogen_neighbor->GetCharge()); //Add side group H charge to ring carbon
-			    assembly_residue_parent->RemoveAtom(parent_neighbor_hydrogen_neighbor);
-			}
-		    }
+                    for (unsigned int k = 0; k < parent_neighbors.size(); k++){
+                        if (parent_neighbors[k]->GetIsCycle()){  //When the neighbor of the oxygen to be removed is the ring carbon
+                            parent_neighbor_ring_carbon = parent_neighbors[k];
+                            parent_neighbor_ring_carbon->GetNode()->AddNodeNeighbor(hydrogen_to_add);
+                            parent_neighbor_ring_carbon->SetCharge(parent_neighbor_ring_carbon->GetCharge() + parent_oxygen_to_remove->GetCharge()); //Add oxygen charge to ring carbon
+                        }
+                        else {  //When the neighbor of the oxyben to be removed is the attached hydroxyl hydrogen
+                            parent_neighbor_hydrogen_neighbor = parent_neighbors[k];
+                            parent_neighbor_ring_carbon->SetCharge(parent_neighbor_ring_carbon->GetCharge() + parent_neighbor_hydrogen_neighbor->GetCharge()); //Add side group H charge to ring carbon
+                            assembly_residue_parent->RemoveAtom(parent_neighbor_hydrogen_neighbor);
+                        }
+                    }
 
-		    hydrogen_to_add->AddCoordinate(parent_oxygen_to_remove->GetCoordinates().at(0));
-		    hydrogen_to_add->SetName("Hd");
-		    hydrogen_to_add->MolecularDynamicAtom::SetAtomType("H1");
-		    hydrogen_to_add->SetCharge(0.0000);  //According to GLYCAM06, the charge of aliphatic oxygen is zero. 
-		    hydrogen_to_add->SetElementSymbol("H");
-		    std::string new_hydrogen_atom_id = parent_oxygen_to_remove->GetId();
-		    new_hydrogen_atom_id.replace(0,parent_oxygen_name.size(),"Hd");
-		    hydrogen_to_add->SetId(new_hydrogen_atom_id);
-            AtomVector original_parent_tail_atoms = assembly_residue_parent->GetTailAtoms();
-            AtomVector updated_parent_tail_atoms = AtomVector();
-		    for (unsigned int k = 0; k < original_parent_tail_atoms.size(); k++){
-			if (original_parent_tail_atoms[k] != parent_oxygen_to_remove){
-                Atom* remaining_tail_atom = original_parent_tail_atoms[k];
-			    updated_parent_tail_atoms.push_back(remaining_tail_atom);
-			}
-		    }
-		    assembly_residue_parent->SetTailAtoms(updated_parent_tail_atoms);
-		    assembly_residue_parent->RemoveAtom(parent_oxygen_to_remove);
-		}
-	    }
-	}
+                    hydrogen_to_add->AddCoordinate(parent_oxygen_to_remove->GetCoordinates().at(0));
+                    hydrogen_to_add->SetName("Hd");
+                    hydrogen_to_add->MolecularDynamicAtom::SetAtomType("H1");
+                    hydrogen_to_add->SetCharge(0.0000);  //According to GLYCAM06, the charge of aliphatic oxygen is zero.
+                    hydrogen_to_add->SetElementSymbol("H");
+                    std::string new_hydrogen_atom_id = parent_oxygen_to_remove->GetId();
+                    new_hydrogen_atom_id.replace(0,parent_oxygen_name.size(),"Hd");
+                    hydrogen_to_add->SetId(new_hydrogen_atom_id);
+                    AtomVector original_parent_tail_atoms = assembly_residue_parent->GetTailAtoms();
+                    AtomVector updated_parent_tail_atoms = AtomVector();
+                    for (unsigned int k = 0; k < original_parent_tail_atoms.size(); k++){
+                        if (original_parent_tail_atoms[k] != parent_oxygen_to_remove){
+                            Atom* remaining_tail_atom = original_parent_tail_atoms[k];
+                            updated_parent_tail_atoms.push_back(remaining_tail_atom);
+                        }
+                    }
+                    assembly_residue_parent->SetTailAtoms(updated_parent_tail_atoms);
+                    assembly_residue_parent->RemoveAtom(parent_oxygen_to_remove);
+                }
+            }
+        }
     }
 
     return index_condensed_sequence_assembly_residue_map;
@@ -433,161 +433,161 @@ void Assembly::SetGlycam06ResidueBonding (std::map<int, std::pair<CondensedSeque
 {
     //index_condensed_sequence_assembly_residue_map : map <int ,pair <06 residue, assembly residue> >. The int key is to maintain the order of residue in 06 residue tree.
     std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> condensed_assembly_residue_map =
-    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*>();
+            std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*>();
 
-    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree> condensed_residue_chilren_map = 
-	std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree> ();
+    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree> condensed_residue_chilren_map =
+            std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree> ();
 
-    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree> condensed_residue_parent_map = 
-	std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree> ();
+    std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree> condensed_residue_parent_map =
+            std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree> ();
 
     //Setting condensed_assembly_residue_map, and initiate the values of the other two maps above to empty.
-     for (std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> >::iterator it = index_condensed_sequence_assembly_residue_map.begin() ;
+    for (std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> >::iterator it = index_condensed_sequence_assembly_residue_map.begin() ;
          it != index_condensed_sequence_assembly_residue_map.end(); it++){
-	condensed_assembly_residue_map[it->second.first] = it->second.second;
-	condensed_residue_chilren_map[it->second.first] = CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree();
-	condensed_residue_parent_map[it->second.first] = CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree();
+        condensed_assembly_residue_map[it->second.first] = it->second.second;
+        condensed_residue_chilren_map[it->second.first] = CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree();
+        condensed_residue_parent_map[it->second.first] = CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree();
     }
     //Associating a condensed sequence residue with its children and/or parent, using two nested iterations through index_condensed_sequence_assembly_residue_map;
     for (std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> >::iterator it = index_condensed_sequence_assembly_residue_map.begin() ;
-	 it != index_condensed_sequence_assembly_residue_map.end(); it++){
-	int index1 = it -> first;
-	CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam_06_residue = it->second.first;
-    for (std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> >::iterator it2 = index_condensed_sequence_assembly_residue_map.begin() ;
-	     it2 != index_condensed_sequence_assembly_residue_map.end(); it2++){
-	    int index2 = it2 -> first;
-	    CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam_06_residue_II = it2->second.first;
-	    if (glycam_06_residue_II -> GetParentId() == index1){	//If "glycam_06_residue_II" 's parent is "glycam_06_residue", or the latter is the child of the former
-		condensed_residue_chilren_map[glycam_06_residue].push_back(glycam_06_residue_II);
-	    }
-	    if (glycam_06_residue -> GetParentId() == index2){		//If "glycam_06_residue" 's parent is ""glycam_06_residue_II""
-		condensed_residue_parent_map[glycam_06_residue].push_back(glycam_06_residue_II);
-	    }
-	    
-	}
+         it != index_condensed_sequence_assembly_residue_map.end(); it++){
+        int index1 = it -> first;
+        CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam_06_residue = it->second.first;
+        for (std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> >::iterator it2 = index_condensed_sequence_assembly_residue_map.begin() ;
+             it2 != index_condensed_sequence_assembly_residue_map.end(); it2++){
+            int index2 = it2 -> first;
+            CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam_06_residue_II = it2->second.first;
+            if (glycam_06_residue_II -> GetParentId() == index1){	//If "glycam_06_residue_II" 's parent is "glycam_06_residue", or the latter is the child of the former
+                condensed_residue_chilren_map[glycam_06_residue].push_back(glycam_06_residue_II);
+            }
+            if (glycam_06_residue -> GetParentId() == index2){		//If "glycam_06_residue" 's parent is ""glycam_06_residue_II""
+                condensed_residue_parent_map[glycam_06_residue].push_back(glycam_06_residue_II);
+            }
+
+        }
     }
 
     //Will set head and tail atoms based on child-parent relationship in the big for loop below.So now empty whatever the default setting is.
     //Moreover, prep file defaults can sometimes be WRONG!!!!!!!!!!!!!!!!!!!!!
     for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*>::iterator map_it = condensed_assembly_residue_map.begin();
-	 map_it != condensed_assembly_residue_map.end(); map_it++){
-    Residue* residue = map_it->second;
-    residue->SetHeadAtoms(AtomVector());
-    residue->SetTailAtoms(AtomVector());
+         map_it != condensed_assembly_residue_map.end(); map_it++){
+        Residue* residue = map_it->second;
+        residue->SetHeadAtoms(AtomVector());
+        residue->SetTailAtoms(AtomVector());
     }
 
     //Set Assembly Residue Nodes based on information extracted from condensed sequence.
     for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> ::iterator it = condensed_assembly_residue_map.begin();
-		it != condensed_assembly_residue_map.end(); it++){
-	CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_residue = it->first;
-    Residue* corresponding_assembly_residue = it->second;
-	ResidueVector corresponding_assembly_residue_neighbors = ResidueVector();
-	//find all assembly residue children for "corresponding_assembly_residue"
-	CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_residue_children = condensed_residue_chilren_map[condensed_residue];
-	for (unsigned int i = 0; i < condensed_residue_children.size(); i++){
+         it != condensed_assembly_residue_map.end(); it++){
+        CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_residue = it->first;
+        Residue* corresponding_assembly_residue = it->second;
+        ResidueVector corresponding_assembly_residue_neighbors = ResidueVector();
+        //find all assembly residue children for "corresponding_assembly_residue"
+        CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_residue_children = condensed_residue_chilren_map[condensed_residue];
+        for (unsigned int i = 0; i < condensed_residue_children.size(); i++){
 
-        Residue* corresponding_assembly_residue_child = condensed_assembly_residue_map[condensed_residue_children[i] ];
-	    corresponding_assembly_residue_neighbors.push_back(corresponding_assembly_residue_child); 
-	}
+            Residue* corresponding_assembly_residue_child = condensed_assembly_residue_map[condensed_residue_children[i] ];
+            corresponding_assembly_residue_neighbors.push_back(corresponding_assembly_residue_child);
+        }
 
-	//find all assembly residue parents for "corresponing_assembly_residue"
-	CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_residue_parents = condensed_residue_parent_map[condensed_residue];
-	for (unsigned int i = 0; i < condensed_residue_parents.size(); i++){
-        Residue* corresponding_assembly_residue_parent = condensed_assembly_residue_map[condensed_residue_parents[i] ];
-	    corresponding_assembly_residue_neighbors.push_back(corresponding_assembly_residue_parent); 
-	}
+        //find all assembly residue parents for "corresponing_assembly_residue"
+        CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_residue_parents = condensed_residue_parent_map[condensed_residue];
+        for (unsigned int i = 0; i < condensed_residue_parents.size(); i++){
+            Residue* corresponding_assembly_residue_parent = condensed_assembly_residue_map[condensed_residue_parents[i] ];
+            corresponding_assembly_residue_neighbors.push_back(corresponding_assembly_residue_parent);
+        }
 
-	//Create Residue Nodes and add Node neighbors
-	ResidueNode* corresponding_assembly_residue_node = NULL;
-	if (corresponding_assembly_residue->GetNode() == NULL){
-	    corresponding_assembly_residue_node = new ResidueNode();
-	    corresponding_assembly_residue_node->SetResidue(corresponding_assembly_residue);
-	    corresponding_assembly_residue->SetNode(corresponding_assembly_residue_node);
-	}
-	else{
-	    corresponding_assembly_residue_node = corresponding_assembly_residue->GetNode();
-	}
-	
-	ResidueNodeVector existing_assembly_residue_neighbor_nodes = corresponding_assembly_residue_node->GetResidueNodeNeighbors();
-	//Iterate through all neighboring residues, and bond this neighbor to curent assembly residue.
-	for (unsigned int i = 0; i < corresponding_assembly_residue_neighbors.size(); i++){
-        Residue* neighbor = corresponding_assembly_residue_neighbors[i];
-	    ResidueNode* neighbor_node = NULL;
-	    if (neighbor->GetNode() == NULL){
-		neighbor_node = new ResidueNode();
-		neighbor_node->SetResidue(neighbor);
-		neighbor->SetNode(neighbor_node);
-	    }
-	    else{
-		neighbor_node = neighbor->GetNode();
-	    }
+        //Create Residue Nodes and add Node neighbors
+        ResidueNode* corresponding_assembly_residue_node = NULL;
+        if (corresponding_assembly_residue->GetNode() == NULL){
+            corresponding_assembly_residue_node = new ResidueNode();
+            corresponding_assembly_residue_node->SetResidue(corresponding_assembly_residue);
+            corresponding_assembly_residue->SetNode(corresponding_assembly_residue_node);
+        }
+        else{
+            corresponding_assembly_residue_node = corresponding_assembly_residue->GetNode();
+        }
 
-	    if (std::find(existing_assembly_residue_neighbor_nodes.begin(), existing_assembly_residue_neighbor_nodes.end(), neighbor_node) == existing_assembly_residue_neighbor_nodes.end() ){
-	        corresponding_assembly_residue_node->AddResidueNodeNeighbor(neighbor_node);
-	    }
+        ResidueNodeVector existing_assembly_residue_neighbor_nodes = corresponding_assembly_residue_node->GetResidueNodeNeighbors();
+        //Iterate through all neighboring residues, and bond this neighbor to curent assembly residue.
+        for (unsigned int i = 0; i < corresponding_assembly_residue_neighbors.size(); i++){
+            Residue* neighbor = corresponding_assembly_residue_neighbors[i];
+            ResidueNode* neighbor_node = NULL;
+            if (neighbor->GetNode() == NULL){
+                neighbor_node = new ResidueNode();
+                neighbor_node->SetResidue(neighbor);
+                neighbor->SetNode(neighbor_node);
+            }
+            else{
+                neighbor_node = neighbor->GetNode();
+            }
 
-	    ResidueNodeVector existing_neighbor_neighbor_nodes = neighbor_node->GetResidueNodeNeighbors();
-	    if (std::find(existing_neighbor_neighbor_nodes.begin(),existing_neighbor_neighbor_nodes.end(), corresponding_assembly_residue_node) == existing_neighbor_neighbor_nodes.end() ){
-	    	neighbor_node->AddResidueNodeNeighbor(corresponding_assembly_residue_node);
-	    }
-	}//for
+            if (std::find(existing_assembly_residue_neighbor_nodes.begin(), existing_assembly_residue_neighbor_nodes.end(), neighbor_node) == existing_assembly_residue_neighbor_nodes.end() ){
+                corresponding_assembly_residue_node->AddResidueNodeNeighbor(neighbor_node);
+            }
+
+            ResidueNodeVector existing_neighbor_neighbor_nodes = neighbor_node->GetResidueNodeNeighbors();
+            if (std::find(existing_neighbor_neighbor_nodes.begin(),existing_neighbor_neighbor_nodes.end(), corresponding_assembly_residue_node) == existing_neighbor_neighbor_nodes.end() ){
+                neighbor_node->AddResidueNodeNeighbor(corresponding_assembly_residue_node);
+            }
+        }//for
 
     }//for
-  
+
     //Set Residue Node Connecting Atoms, and set a bond between connecting connecting atoms in adjacent residue nodes.
     for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*>::iterator it =condensed_assembly_residue_map.begin();
-                it != condensed_assembly_residue_map.end(); it++){
-	CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_residue = it->first;
+         it != condensed_assembly_residue_map.end(); it++){
+        CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_residue = it->first;
         Residue* corresponding_assembly_residue = it->second;
-	CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_residue_children = condensed_residue_chilren_map[condensed_residue];
+        CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_residue_children = condensed_residue_chilren_map[condensed_residue];
 
-    std::map<Atom*, Atom*> parent_tail_child_head_map = std::map<Atom*, Atom*>();
-	//find out the name of parent oxygen
-	for (unsigned int i = 0; i < condensed_residue_children.size(); i++){
-	    CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_residue_child = condensed_residue_children[i];
-	    std::string parent_oxygen_name = condensed_residue_child -> GetParentOxygen();
-	    std::string anomeric_carbon_name = condensed_residue_child-> GetAnomericCarbon();
-        Residue* assembly_residue_child = condensed_assembly_residue_map[condensed_residue_child];
+        std::map<Atom*, Atom*> parent_tail_child_head_map = std::map<Atom*, Atom*>();
+        //find out the name of parent oxygen
+        for (unsigned int i = 0; i < condensed_residue_children.size(); i++){
+            CondensedSequenceSpace::CondensedSequenceGlycam06Residue* condensed_residue_child = condensed_residue_children[i];
+            std::string parent_oxygen_name = condensed_residue_child -> GetParentOxygen();
+            std::string anomeric_carbon_name = condensed_residue_child-> GetAnomericCarbon();
+            Residue* assembly_residue_child = condensed_assembly_residue_map[condensed_residue_child];
 
-        AtomVector all_atoms_in_assembly_residue = corresponding_assembly_residue->GetAtoms();
-        AtomVector all_atoms_in_child_assembly_residue = assembly_residue_child->GetAtoms();
-	    for (unsigned int j = 0; j < all_atoms_in_assembly_residue.size(); j++){
-		if (all_atoms_in_assembly_residue[j]->GetName() == parent_oxygen_name){
-		    for (unsigned int k = 0; k < all_atoms_in_child_assembly_residue.size(); k++){
-			if (all_atoms_in_child_assembly_residue[k]->GetName() == anomeric_carbon_name){
-                Atom* parent_tail_atom = all_atoms_in_assembly_residue[j];
-                Atom* child_head_atom = all_atoms_in_child_assembly_residue[k];
-			    parent_tail_child_head_map[parent_tail_atom] = child_head_atom;
-			}
-		    }
-		}
-	    }
-	}
+            AtomVector all_atoms_in_assembly_residue = corresponding_assembly_residue->GetAtoms();
+            AtomVector all_atoms_in_child_assembly_residue = assembly_residue_child->GetAtoms();
+            for (unsigned int j = 0; j < all_atoms_in_assembly_residue.size(); j++){
+                if (all_atoms_in_assembly_residue[j]->GetName() == parent_oxygen_name){
+                    for (unsigned int k = 0; k < all_atoms_in_child_assembly_residue.size(); k++){
+                        if (all_atoms_in_child_assembly_residue[k]->GetName() == anomeric_carbon_name){
+                            Atom* parent_tail_atom = all_atoms_in_assembly_residue[j];
+                            Atom* child_head_atom = all_atoms_in_child_assembly_residue[k];
+                            parent_tail_child_head_map[parent_tail_atom] = child_head_atom;
+                        }
+                    }
+                }
+            }
+        }
 
-	//Also set a bond between child anomeric carbon and linking parent tail atom.
-    for (std::map<Atom*, Atom*>::iterator tail_head_mapit = parent_tail_child_head_map.begin();
-		tail_head_mapit != parent_tail_child_head_map.end(); tail_head_mapit++){
-        Atom* parent_tail_atom = tail_head_mapit->first;
-        Atom* child_head_atom = tail_head_mapit->second;
-	    //Add parent tail to child head's node neighbors.
-	    AtomNode* head_atom_node = NULL;
-	    if (child_head_atom->GetNode() == NULL){
-	        head_atom_node = new AtomNode();
-	        head_atom_node->SetAtom(child_head_atom);
-	        child_head_atom->SetNode(head_atom_node);
-	    }
-	    else
-		head_atom_node = child_head_atom->GetNode();
+        //Also set a bond between child anomeric carbon and linking parent tail atom.
+        for (std::map<Atom*, Atom*>::iterator tail_head_mapit = parent_tail_child_head_map.begin();
+             tail_head_mapit != parent_tail_child_head_map.end(); tail_head_mapit++){
+            Atom* parent_tail_atom = tail_head_mapit->first;
+            Atom* child_head_atom = tail_head_mapit->second;
+            //Add parent tail to child head's node neighbors.
+            AtomNode* head_atom_node = NULL;
+            if (child_head_atom->GetNode() == NULL){
+                head_atom_node = new AtomNode();
+                head_atom_node->SetAtom(child_head_atom);
+                child_head_atom->SetNode(head_atom_node);
+            }
+            else
+                head_atom_node = child_head_atom->GetNode();
 
-        AtomVector existing_head_atom_neighbors = head_atom_node->GetNodeNeighbors();
-	    if (std::find (existing_head_atom_neighbors.begin(), existing_head_atom_neighbors.end(), parent_tail_atom) == 
-	         existing_head_atom_neighbors.end() ){
-		head_atom_node->AddNodeNeighbor(parent_tail_atom);
-	    }
-			    
-	    //Add child head to parent tail's node neighbors.
-	    AtomNode*tail_atom_node = NULL;
-	    if (parent_tail_atom->GetNode() == NULL){
+            AtomVector existing_head_atom_neighbors = head_atom_node->GetNodeNeighbors();
+            if (std::find (existing_head_atom_neighbors.begin(), existing_head_atom_neighbors.end(), parent_tail_atom) ==
+                    existing_head_atom_neighbors.end() ){
+                head_atom_node->AddNodeNeighbor(parent_tail_atom);
+            }
+
+            //Add child head to parent tail's node neighbors.
+            AtomNode*tail_atom_node = NULL;
+            if (parent_tail_atom->GetNode() == NULL){
                 tail_atom_node = new AtomNode();
                 tail_atom_node->SetAtom(parent_tail_atom);
                 parent_tail_atom->SetNode(tail_atom_node);
@@ -596,62 +596,62 @@ void Assembly::SetGlycam06ResidueBonding (std::map<int, std::pair<CondensedSeque
                 tail_atom_node = parent_tail_atom->GetNode();
 
             AtomVector existing_tail_atom_neighbors = tail_atom_node->GetNodeNeighbors();
-            if (std::find (existing_tail_atom_neighbors.begin(), existing_tail_atom_neighbors.end(), child_head_atom) == 
-                existing_tail_atom_neighbors.end() ){
+            if (std::find (existing_tail_atom_neighbors.begin(), existing_tail_atom_neighbors.end(), child_head_atom) ==
+                    existing_tail_atom_neighbors.end() ){
                 tail_atom_node->AddNodeNeighbor(child_head_atom);
             }
-	}
+        }
 
-	//Add all tail/head atoms to corresponding residue's tail/head atoms, as well as corresponding residueNode connecting atoms
-    for (std::map<Atom*, Atom*>::iterator it2 = parent_tail_child_head_map.begin(); it2 != parent_tail_child_head_map.end(); it2++){
-        Atom* parent_tail_atom = it2->first;
-        Atom* child_head_atom = it2->second;
-        Residue* parent_residue = parent_tail_atom->GetResidue();
-        Residue* child_residue = child_head_atom->GetResidue();
-	    parent_residue->AddTailAtom(parent_tail_atom);
-	    parent_residue->GetNode()->AddResidueNodeConnectingAtom(parent_tail_atom);
-	    child_residue->AddHeadAtom(child_head_atom);
-	    child_residue->GetNode()->AddResidueNodeConnectingAtom(child_head_atom);
-	}
-	//If child residue is derivative, adjust charge
-    for (std::map<Atom*, Atom*>::iterator it2 = parent_tail_child_head_map.begin(); it2 != parent_tail_child_head_map.end(); it2++){
-        Atom* parent_tail_atom = it2->first;
-        Atom* child_head_atom = it2->second;
-        Residue* parent_residue = parent_tail_atom->GetResidue();
-        Residue* child_residue = child_head_atom->GetResidue();
-	    if (child_residue->GetIsSugarDerivative()){
-        AtomVector all_parent_tail_atoms = parent_residue->GetTailAtoms();
-		for (unsigned int i = 0; i < all_parent_tail_atoms.size(); i++){
-		    if (all_parent_tail_atoms[i] == parent_tail_atom){
-			unsigned int branch_index = i;
-			this->AdjustCharge(child_residue, parent_residue, branch_index);
-		    }
-		}
-	    } 
-	}
-	
+        //Add all tail/head atoms to corresponding residue's tail/head atoms, as well as corresponding residueNode connecting atoms
+        for (std::map<Atom*, Atom*>::iterator it2 = parent_tail_child_head_map.begin(); it2 != parent_tail_child_head_map.end(); it2++){
+            Atom* parent_tail_atom = it2->first;
+            Atom* child_head_atom = it2->second;
+            Residue* parent_residue = parent_tail_atom->GetResidue();
+            Residue* child_residue = child_head_atom->GetResidue();
+            parent_residue->AddTailAtom(parent_tail_atom);
+            parent_residue->GetNode()->AddResidueNodeConnectingAtom(parent_tail_atom);
+            child_residue->AddHeadAtom(child_head_atom);
+            child_residue->GetNode()->AddResidueNodeConnectingAtom(child_head_atom);
+        }
+        //If child residue is derivative, adjust charge
+        for (std::map<Atom*, Atom*>::iterator it2 = parent_tail_child_head_map.begin(); it2 != parent_tail_child_head_map.end(); it2++){
+            Atom* parent_tail_atom = it2->first;
+            Atom* child_head_atom = it2->second;
+            Residue* parent_residue = parent_tail_atom->GetResidue();
+            Residue* child_residue = child_head_atom->GetResidue();
+            if (child_residue->GetIsSugarDerivative()){
+                AtomVector all_parent_tail_atoms = parent_residue->GetTailAtoms();
+                for (unsigned int i = 0; i < all_parent_tail_atoms.size(); i++){
+                    if (all_parent_tail_atoms[i] == parent_tail_atom){
+                        unsigned int branch_index = i;
+                        this->AdjustCharge(child_residue, parent_residue, branch_index);
+                    }
+                }
+            }
+        }
+
     }//for
-	//The for loop above set parent residue tail atoms and child head atoms. But if a residue is either at reducing or non-reducing terminal:
-	//If a residue is the reducing terminal/aglycon, at this point it doesn't have head atoms set, since it has no parent. Set head atom equals tail atom.	
-	//If a residue is the non-reducing terminal, at this point it doesn't have tail atoms set, since it has no child. Set tail atom eqals head atom.
+    //The for loop above set parent residue tail atoms and child head atoms. But if a residue is either at reducing or non-reducing terminal:
+    //If a residue is the reducing terminal/aglycon, at this point it doesn't have head atoms set, since it has no parent. Set head atom equals tail atom.
+    //If a residue is the non-reducing terminal, at this point it doesn't have tail atoms set, since it has no child. Set tail atom eqals head atom.
     for (std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*>::iterator mapit =
-		condensed_assembly_residue_map.begin(); mapit != condensed_assembly_residue_map.end(); mapit++){
+         condensed_assembly_residue_map.begin(); mapit != condensed_assembly_residue_map.end(); mapit++){
         Residue* residue = mapit->second;
         AtomVector head_atoms = residue->GetHeadAtoms();
         AtomVector tail_atoms = residue->GetTailAtoms();
-	    //If this residue is reducing terminal, head atom is not set. Set below:
-	    if (head_atoms.empty() && !tail_atoms.empty()){
-		residue->SetHeadAtoms(tail_atoms);
-	    }
-	    //If this residue is non-reducing terminal, tail atom is not set. Set below:
-	    if (!head_atoms.empty() && tail_atoms.empty()){
-		residue->SetTailAtoms(head_atoms);
-	    }
-	    //If both not set, something is wrong. Print warning message:
-	    if (head_atoms.empty() && tail_atoms.empty()){
-		std::cout << "Warning: " << "Both head and tail atoms are not set(empty) for residue " << residue->GetName() << std::endl;
-	    }
-	}
+        //If this residue is reducing terminal, head atom is not set. Set below:
+        if (head_atoms.empty() && !tail_atoms.empty()){
+            residue->SetHeadAtoms(tail_atoms);
+        }
+        //If this residue is non-reducing terminal, tail atom is not set. Set below:
+        if (!head_atoms.empty() && tail_atoms.empty()){
+            residue->SetTailAtoms(head_atoms);
+        }
+        //If both not set, something is wrong. Print warning message:
+        if (head_atoms.empty() && tail_atoms.empty()){
+            std::cout << "Warning: " << "Both head and tail atoms are not set(empty) for residue " << residue->GetName() << std::endl;
+        }
+    }
 
 }//SetGlycam06ResidueBonding
 
@@ -662,7 +662,7 @@ void Assembly::RecursivelyTagDihedrals(Residue* parent_residue, std::multimap<in
     for (unsigned int i = 0; i < all_tail_atoms.size(); i++){
         Atom* tail_atom = all_tail_atoms[i];
         //For non-reducing terminal/derivative residues, tail atom equals head atom. In this case, the tail atoms aren't really connecting to a child residue.
-        //If this is the case, stop recursion from further going down the oligosaccharide tree through such tail atoms. 
+        //If this is the case, stop recursion from further going down the oligosaccharide tree through such tail atoms.
         //This if statement below makes sure a tail atom is a head atom at the same time.If so, skip any operations.
         if ( parent_residue->GetIsAglycon() || std::find(all_head_atoms.begin(),all_head_atoms.end(),tail_atom) == all_head_atoms.end()){
             AtomVector tail_atom_neighbors = tail_atom->GetNode()->GetNodeNeighbors();
@@ -691,8 +691,8 @@ void Assembly::RecursivelyTagDihedrals(Residue* parent_residue, std::multimap<in
                     //If child is a derivative, set only one dihedral: HX-CX-OX(tail atom)-head atom. Set this to 0 degree, making the derivative head eclipse the hydrogen. This is a general solution for bad derivative angles
                     //This torsion closely resembles the psi torsion for regular sugar-sugar connection.
                     if (child_residue->GetIsSugarDerivative()){
-//! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented. 
-// std::cout << "Setting derivative psi torsion for residue: " << child_residue->GetName() <<std::endl;
+                        //! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented.
+                        // std::cout << "Setting derivative psi torsion for residue: " << child_residue->GetName() <<std::endl;
                         Atom* derivative_atom_4 = head_atom_of_child_residue;
                         Atom* derivative_atom_3 = tail_atom;
                         Atom* derivative_atom_2 = non_hydrogen_tail_atom_neighbor;
@@ -705,19 +705,19 @@ void Assembly::RecursivelyTagDihedrals(Residue* parent_residue, std::multimap<in
                             }
                         }
                         if (derivative_atom_1 == NULL || derivative_atom_2 == NULL || derivative_atom_3 == NULL || derivative_atom_4 == NULL ){
-   			    //std::cout << "SetPsiDihedral: cannot find all four psi atoms. Skipping." << std::endl;
+                            //std::cout << "SetPsiDihedral: cannot find all four psi atoms. Skipping." << std::endl;
                         }
                         else {
-//! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented. 
-// std::cout << "Derivative psi: " << derivative_atom_1->GetName() << "-" << derivative_atom_2->GetName() << "-" << derivative_atom_3->GetName() << "-" << derivative_atom_4->GetName() <<std::endl;
+                            //! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented.
+                            // std::cout << "Derivative psi: " << derivative_atom_1->GetName() << "-" << derivative_atom_2->GetName() << "-" << derivative_atom_3->GetName() << "-" << derivative_atom_4->GetName() <<std::endl;
                             AtomVector* psi_atoms = new AtomVector();
                             psi_atoms->push_back(derivative_atom_1);
                             psi_atoms->push_back(derivative_atom_2);
                             psi_atoms->push_back(derivative_atom_3);
                             psi_atoms->push_back(derivative_atom_4);
-                std::pair<AtomVector*, std::string> dihedral_type_pair = std::make_pair(psi_atoms, "psi");
-                std::pair<int, std::pair<AtomVector*, std::string> > linkage_index_dihedral_type_pair = std::make_pair(linkage_index, dihedral_type_pair);
-			    index_dihedral_map.insert(linkage_index_dihedral_type_pair);
+                            std::pair<AtomVector*, std::string> dihedral_type_pair = std::make_pair(psi_atoms, "psi");
+                            std::pair<int, std::pair<AtomVector*, std::string> > linkage_index_dihedral_type_pair = std::make_pair(linkage_index, dihedral_type_pair);
+                            index_dihedral_map.insert(linkage_index_dihedral_type_pair);
                         }
 
 
@@ -763,9 +763,9 @@ void Assembly::RecursivelyTagDihedrals(Residue* parent_residue, std::multimap<in
                             phi_atoms->push_back(phi_atom_2);
                             phi_atoms->push_back(phi_atom_3);
                             phi_atoms->push_back(phi_atom_4);
-                std::pair<AtomVector*, std::string> dihedral_type_pair = std::make_pair(phi_atoms, "phi");
-                std::pair<int, std::pair<AtomVector*, std::string> > linkage_index_dihedral_type_pair = std::make_pair(linkage_index, dihedral_type_pair);
-			    index_dihedral_map.insert(linkage_index_dihedral_type_pair);
+                            std::pair<AtomVector*, std::string> dihedral_type_pair = std::make_pair(phi_atoms, "phi");
+                            std::pair<int, std::pair<AtomVector*, std::string> > linkage_index_dihedral_type_pair = std::make_pair(linkage_index, dihedral_type_pair);
+                            index_dihedral_map.insert(linkage_index_dihedral_type_pair);
                         }
                         //Set psi, for example: psi H4-C4-O4-C1 to 0 deg
                         Atom* psi_atom_4 = head_atom_of_child_residue;
@@ -789,13 +789,13 @@ void Assembly::RecursivelyTagDihedrals(Residue* parent_residue, std::multimap<in
                             psi_atoms->push_back(psi_atom_2);
                             psi_atoms->push_back(psi_atom_3);
                             psi_atoms->push_back(psi_atom_4);
-                std::pair<AtomVector*, std::string> dihedral_type_pair = std::make_pair(psi_atoms, "psi");
+                            std::pair<AtomVector*, std::string> dihedral_type_pair = std::make_pair(psi_atoms, "psi");
                             std::pair<int, std::pair<AtomVector*, std::string> > linkage_index_dihedral_type_pair = std::make_pair(linkage_index, dihedral_type_pair);
                             index_dihedral_map.insert(linkage_index_dihedral_type_pair);
                         }
 
                         //Set Omega (if exists) , for example, C4-C5-C6-O6. Set this to 180 deg
-//Set Omega (if exists) , for example, C4-C5-C6-O6. Set this to 180 deg
+                        //Set Omega (if exists) , for example, C4-C5-C6-O6. Set this to 180 deg
 
                         Atom* omega_atom_4 = psi_atom_3;
                         Atom* omega_atom_3 = psi_atom_2;
@@ -836,7 +836,7 @@ void Assembly::RecursivelyTagDihedrals(Residue* parent_residue, std::multimap<in
                             omega_atoms->push_back(omega_atom_2);
                             omega_atoms->push_back(omega_atom_3);
                             omega_atoms->push_back(omega_atom_4);
-                std::pair<AtomVector*, std::string> dihedral_type_pair = std::make_pair(omega_atoms, "omega");
+                            std::pair<AtomVector*, std::string> dihedral_type_pair = std::make_pair(omega_atoms, "omega");
                             std::pair<int, std::pair<AtomVector*, std::string> > linkage_index_dihedral_type_pair = std::make_pair(linkage_index, dihedral_type_pair);
                             index_dihedral_map.insert(linkage_index_dihedral_type_pair);
                         }
@@ -844,7 +844,7 @@ void Assembly::RecursivelyTagDihedrals(Residue* parent_residue, std::multimap<in
                     }//else Done setting phi,psi, omega(if exists)
                     //Start new recursion
                     Residue* new_parent_residue = child_residue;
-		    linkage_index++;
+                    linkage_index++;
                     this->RecursivelyTagDihedrals(new_parent_residue, index_dihedral_map, linkage_index);
                 }//if
             }//for
@@ -854,7 +854,7 @@ void Assembly::RecursivelyTagDihedrals(Residue* parent_residue, std::multimap<in
 
 }
 
-void Assembly::RecursivelySetGeometry (Residue* parent_residue)
+void Assembly::RecursivelySetAngleGeometry (Residue* parent_residue)
 {
     AtomVector all_tail_atoms = parent_residue->GetTailAtoms();
     AtomVector all_head_atoms = parent_residue->GetHeadAtoms();
@@ -872,7 +872,6 @@ void Assembly::RecursivelySetGeometry (Residue* parent_residue)
                 if (std::find(all_atoms_in_residue.begin(), all_atoms_in_residue.end(), neighbor_atom) == all_atoms_in_residue.end()){
                     Atom* head_atom_of_child_residue = neighbor_atom;
                     Residue* child_residue = head_atom_of_child_residue->GetResidue();
-                    AtomVector all_atoms_in_child_residue = child_residue->GetAtoms();
                     //Right now, all residues are at the position of the template residue. That is, they are all around the orgin and stacked upon each other.
                     //SetResidueResidueBondDistance function: takes a pair of parent tail/child head atoms as argument. This function keeps the parent residue intact,but
                     //finds out the new position of child head atom, and move atoms of child residue accordingly.(i.e. grafting)
@@ -896,9 +895,44 @@ void Assembly::RecursivelySetGeometry (Residue* parent_residue)
                         const double angle_to_set = 109.4;	//assuming sp3 tetrahedral
                         this->SetAngle(non_hydrogen_tail_atom_neighbor, tail_atom, head_atom_of_child_residue, angle_to_set);
                     }
+                    //Start new recursion
+                    Residue* new_parent_residue = child_residue;
+                    this->RecursivelySetAngleGeometry(new_parent_residue);
+                }
+            }
+        }
+    }
+}
 
+void Assembly::RecursivelySetDihedralAngleGeometry (Residue* parent_residue)
+{
+    AtomVector all_tail_atoms = parent_residue->GetTailAtoms();
+    AtomVector all_head_atoms = parent_residue->GetHeadAtoms();
+    for (unsigned int i = 0; i < all_tail_atoms.size(); i++){
+        Atom* tail_atom = all_tail_atoms[i];
+        //For non-reducing terminal/derivative residues, tail atom equals head atom. In this case, the tail atoms aren't really connecting to a child residue.
+        //If this is the case, stop recursion from further going down the oligosaccharide tree through such tail atoms.
+        //This if statement below makes sure a tail atom is a head atom at the same time.If so, skip any operations.
+        if ( parent_residue->GetIsAglycon() || std::find(all_head_atoms.begin(),all_head_atoms.end(),tail_atom) == all_head_atoms.end()){
+            AtomVector tail_atom_neighbors = tail_atom->GetNode()->GetNodeNeighbors();
+            AtomVector all_atoms_in_residue = parent_residue->GetAtoms();
+            for (unsigned int j = 0; j < tail_atom_neighbors.size(); j++){
+                Atom* neighbor_atom = tail_atom_neighbors[j];
+                //if a neighbor is outside of a parent residue, it must be the head atom of a child residue.There should only exist one such atom, otherwise, something is amiss.
+                if (std::find(all_atoms_in_residue.begin(), all_atoms_in_residue.end(), neighbor_atom) == all_atoms_in_residue.end()){
+                    Atom* head_atom_of_child_residue = neighbor_atom;
+                    Residue* child_residue = head_atom_of_child_residue->GetResidue();
                     //If child is a derivative, set only one dihedral: HX-CX-OX(tail atom)-head atom. Set this to 0 degree, making the derivative head eclipse the hydrogen. This is a general solution for bad derivative angles
                     //This torsion closely resembles the psi torsion for regular sugar-sugar connection.
+                    Atom* non_hydrogen_tail_atom_neighbor = NULL;
+                    for (unsigned int k = 0; k < tail_atom_neighbors.size(); k++){
+                        if (parent_residue->GetName() == "ROH" && tail_atom_neighbors[k] != head_atom_of_child_residue)
+                            non_hydrogen_tail_atom_neighbor = tail_atom_neighbors[k];
+
+                        else if (tail_atom_neighbors[k] != head_atom_of_child_residue && tail_atom_neighbors[k]->GetName().substr(0,1) != "H"){
+                            non_hydrogen_tail_atom_neighbor = tail_atom_neighbors[k];
+                        }
+                    }
                     if (child_residue->GetIsSugarDerivative()){
                         Atom* derivative_atom_4 = head_atom_of_child_residue;
                         Atom* derivative_atom_3 = tail_atom;
@@ -915,11 +949,10 @@ void Assembly::RecursivelySetGeometry (Residue* parent_residue)
                             const double derivative_psi = 0.0;
                             this->SetDihedral(derivative_atom_1, derivative_atom_2, derivative_atom_3, derivative_atom_4, derivative_psi);
                         }
-
-
                     }
                     //Otherwise,attempt setting dihedrals
-                    else{
+                    else
+                    {
                         //Set Dihedral phi:
                         Atom* phi_atom_1 = non_hydrogen_tail_atom_neighbor;
                         Atom* phi_atom_2 = tail_atom;
@@ -1030,7 +1063,7 @@ void Assembly::RecursivelySetGeometry (Residue* parent_residue)
 
                     //Start new recursion
                     Residue* new_parent_residue = child_residue;
-                    this->RecursivelySetGeometry(new_parent_residue);
+                    this->RecursivelySetDihedralAngleGeometry(new_parent_residue);
                 }//if
             }//for
         }//if
@@ -1089,100 +1122,100 @@ std::vector<ResidueVector> Assembly::FindPathToCommonAncestors(ResidueVector& al
     ResidueVector visited_residues = ResidueVector();
     //Starting from each residue, construct a pathway until a branching point(a residue with multiple tail atoms), add residue in this pathway to a ResidueVector
     for (ResidueVector::iterator it = all_clashing_residues.begin(); it != all_clashing_residues.end(); it++){
-    Residue* clashing_residue = *it;
-	if (!clashing_residue->GetIsAglycon() && std::find(visited_residues.begin(), visited_residues.end(), clashing_residue) == visited_residues.end() ){
-        Residue* current_residue = clashing_residue;
-        ResidueVector path = ResidueVector();
-	    //Going from the non-reducing end(starting from clashing residue) towards the reducing end using head atom -> parent tail atom relationship
-	    while (true){
-		//If the code has reached the aglycon, or has reached a residue that's already visited. Then this residue is the endpoint of a clashing pathway.
-		//It's either the aglycon, or a residue with multiple branches. This is the last element is a clashing pathway residue vector, and is called 
-		//"common ancestor" in another function somewhere downstream. Termination condition is reached, break out of while loop
-		if (current_residue->GetIsAglycon() || std::find(visited_residues.begin(), visited_residues.end(), current_residue) != visited_residues.end()){
-		    visited_residues.push_back(current_residue);
-		    path.push_back(current_residue);
-		    all_clashing_residue_parent_paths.push_back(path);
-		    break;
-		}
-		//Otherwise, add the current residue to clashing pathway and keep going upward.
-		else{
-		    visited_residues.push_back(current_residue);
-		    path.push_back(current_residue);
-            AtomVector head_atom_neighbors = current_residue->GetHeadAtoms().at(0)->GetNode()->GetNodeNeighbors();
-		    for (unsigned int i = 0; i < head_atom_neighbors.size(); i++){
-            Atom* neighbor = head_atom_neighbors[i];
-			if (neighbor->GetResidue() != current_residue){
-                Residue* parent_residue = neighbor->GetResidue();
-			    current_residue = parent_residue;
-		        }
-		    }
-		}
-	    }
+        Residue* clashing_residue = *it;
+        if (!clashing_residue->GetIsAglycon() && std::find(visited_residues.begin(), visited_residues.end(), clashing_residue) == visited_residues.end() ){
+            Residue* current_residue = clashing_residue;
+            ResidueVector path = ResidueVector();
+            //Going from the non-reducing end(starting from clashing residue) towards the reducing end using head atom -> parent tail atom relationship
+            while (true){
+                //If the code has reached the aglycon, or has reached a residue that's already visited. Then this residue is the endpoint of a clashing pathway.
+                //It's either the aglycon, or a residue with multiple branches. This is the last element is a clashing pathway residue vector, and is called
+                //"common ancestor" in another function somewhere downstream. Termination condition is reached, break out of while loop
+                if (current_residue->GetIsAglycon() || std::find(visited_residues.begin(), visited_residues.end(), current_residue) != visited_residues.end()){
+                    visited_residues.push_back(current_residue);
+                    path.push_back(current_residue);
+                    all_clashing_residue_parent_paths.push_back(path);
+                    break;
+                }
+                //Otherwise, add the current residue to clashing pathway and keep going upward.
+                else{
+                    visited_residues.push_back(current_residue);
+                    path.push_back(current_residue);
+                    AtomVector head_atom_neighbors = current_residue->GetHeadAtoms().at(0)->GetNode()->GetNodeNeighbors();
+                    for (unsigned int i = 0; i < head_atom_neighbors.size(); i++){
+                        Atom* neighbor = head_atom_neighbors[i];
+                        if (neighbor->GetResidue() != current_residue){
+                            Residue* parent_residue = neighbor->GetResidue();
+                            current_residue = parent_residue;
+                        }
+                    }
+                }
+            }
 
-	}
+        }
     }
     return all_clashing_residue_parent_paths;
 }
 
 void Assembly::ResolveClashes(std::vector<ResidueVector>& fused_clashing_paths,
-                 std::multimap<int, std::pair<AtomVector*, std::string> >& index_dihedral_map)
+                              std::multimap<int, std::pair<AtomVector*, std::string> >& index_dihedral_map)
 {
     //For each common ancestor, go through all its clashing pathways one by one.
     for (std::vector<ResidueVector>::iterator it = fused_clashing_paths.begin(); it != fused_clashing_paths.end(); it++){
-    std::vector <AtomVector*> all_omega_dihedrals = this->FindAllOmegaTorsionsInPathway(*it, index_dihedral_map);
+        std::vector <AtomVector*> all_omega_dihedrals = this->FindAllOmegaTorsionsInPathway(*it, index_dihedral_map);
         //If availble dihedrals are found, initiate clash resolution process
-	if (!all_omega_dihedrals.empty()){
+        if (!all_omega_dihedrals.empty()){
             //By limited grid search, find the set of coordinate resulting in least clash
             GeometryTopology::CoordinateVector least_clash_coordinates_for_this_pathway = this->FindBestSetOfTorsions(all_omega_dihedrals);
             //For each atom in assembly, set coordinate according to the best set of coordiante found. This will crudely resolve clashes.
-        AtomVector all_atoms_in_assembly = this->GetAllAtomsOfAssembly();
-	    for (unsigned int j = 0; j < all_atoms_in_assembly.size(); j++){
-	        GeometryTopology::Coordinate* new_coordinate = least_clash_coordinates_for_this_pathway[j]; 
-            GeometryTopology::CoordinateVector new_coordinate_set = GeometryTopology::CoordinateVector();
-	        new_coordinate_set.push_back(new_coordinate);
-	        all_atoms_in_assembly[j]->SetCoordinates(new_coordinate_set);
-	    }
+            AtomVector all_atoms_in_assembly = this->GetAllAtomsOfAssembly();
+            for (unsigned int j = 0; j < all_atoms_in_assembly.size(); j++){
+                GeometryTopology::Coordinate* new_coordinate = least_clash_coordinates_for_this_pathway[j];
+                GeometryTopology::CoordinateVector new_coordinate_set = GeometryTopology::CoordinateVector();
+                new_coordinate_set.push_back(new_coordinate);
+                all_atoms_in_assembly[j]->SetCoordinates(new_coordinate_set);
+            }
         }
     }
 }
 
 std::vector< AtomVector* > Assembly::FindAllOmegaTorsionsInPathway (ResidueVector& pathway, std::multimap<int, std::pair<AtomVector*, std::string> >&
-									  index_dihedral_map)
+                                                                    index_dihedral_map)
 {
     //Identify all head atoms present in pathway
     AtomVector all_head_atoms_in_pathway = AtomVector();
     for (ResidueVector::reverse_iterator it = pathway.rbegin(); it != pathway.rend(); it++){
-    AtomVector head_atoms_in_residue = (*it)->GetHeadAtoms();
-    for (AtomVector::iterator it2 = head_atoms_in_residue.begin(); it2 != head_atoms_in_residue.end(); it2++){
-	    all_head_atoms_in_pathway.push_back(*it2);
-	}
+        AtomVector head_atoms_in_residue = (*it)->GetHeadAtoms();
+        for (AtomVector::iterator it2 = head_atoms_in_residue.begin(); it2 != head_atoms_in_residue.end(); it2++){
+            all_head_atoms_in_pathway.push_back(*it2);
+        }
     }
     //Identify all tail atoms connected to the head atoms in pathway.
     AtomVector all_tail_atoms_in_pathway = AtomVector();
     for (AtomVector::iterator it = all_head_atoms_in_pathway.begin(); it != all_head_atoms_in_pathway.end(); it++){
-    Atom* head_atom = *it;
-    AtomVector head_atom_neighbors = head_atom->GetNode()->GetNodeNeighbors();
-    for (AtomVector::iterator it2 = head_atom_neighbors.begin(); it2 != head_atom_neighbors.end(); it2++){
-        Atom* neighbor = *it2;
-	    if (neighbor->GetResidue() != head_atom->GetResidue()){
-        Atom* connected_tail_atom = neighbor;
-		all_tail_atoms_in_pathway.push_back(connected_tail_atom);
-	    }
-	}
+        Atom* head_atom = *it;
+        AtomVector head_atom_neighbors = head_atom->GetNode()->GetNodeNeighbors();
+        for (AtomVector::iterator it2 = head_atom_neighbors.begin(); it2 != head_atom_neighbors.end(); it2++){
+            Atom* neighbor = *it2;
+            if (neighbor->GetResidue() != head_atom->GetResidue()){
+                Atom* connected_tail_atom = neighbor;
+                all_tail_atoms_in_pathway.push_back(connected_tail_atom);
+            }
+        }
     }
     //Phi,psi, or omega torsion angles all contain the tail atom. So, look at each tail atom:
     std::vector<AtomVector*>  omega_torsions_in_pathway = std::vector<AtomVector*>();
     for (AtomVector::iterator it = all_tail_atoms_in_pathway.begin(); it != all_tail_atoms_in_pathway.end(); it++){
-    Atom* tail_atom = *it;
-	//From all available dihedrals:
-    for (std::multimap<int, std::pair<AtomVector*, std::string> >::iterator it2 = index_dihedral_map.begin(); it2 != index_dihedral_map.end(); it2++){
-        AtomVector* dihedral_atoms = it2->second.first;
-	    std::string dihedral_type = it2->second.second;
-	    //If a dihedral contains a tail atom in the pathway, and has type "psi" or "omega", this is the dihedral we want. Later perform grid search on these torsion to alleviate clashes.
-	    if (std::find(dihedral_atoms->begin(), dihedral_atoms->end(), tail_atom) != dihedral_atoms->end() && (dihedral_type == "psi" || dihedral_type == "omega")){
-		omega_torsions_in_pathway.push_back(dihedral_atoms);
-	    }
-	}
+        Atom* tail_atom = *it;
+        //From all available dihedrals:
+        for (std::multimap<int, std::pair<AtomVector*, std::string> >::iterator it2 = index_dihedral_map.begin(); it2 != index_dihedral_map.end(); it2++){
+            AtomVector* dihedral_atoms = it2->second.first;
+            std::string dihedral_type = it2->second.second;
+            //If a dihedral contains a tail atom in the pathway, and has type "psi" or "omega", this is the dihedral we want. Later perform grid search on these torsion to alleviate clashes.
+            if (std::find(dihedral_atoms->begin(), dihedral_atoms->end(), tail_atom) != dihedral_atoms->end() && (dihedral_type == "psi" || dihedral_type == "omega")){
+                omega_torsions_in_pathway.push_back(dihedral_atoms);
+            }
+        }
     }
     return omega_torsions_in_pathway;
 }
@@ -1198,9 +1231,9 @@ GeometryTopology::CoordinateVector Assembly::FindBestSetOfTorsions(std::vector<A
     //Pair.first is an AtomVector* containing the four atoms of a dihedral. Pair.second is a vector of double. In this function, it's always "rotation_values"
     std::vector<std::pair<AtomVector*, std::vector<double> > > all_dihedral_rotation_values = std::vector<std::pair<AtomVector*, std::vector<double> > >();
     for (unsigned int i = 0; i < available_dihedrals.size(); i++){
-    AtomVector* dihedral_atoms = available_dihedrals[i];
-	std::vector<double> possible_rotation_values = rotation_values;
-	all_dihedral_rotation_values.push_back(std::make_pair(dihedral_atoms, possible_rotation_values));
+        AtomVector* dihedral_atoms = available_dihedrals[i];
+        std::vector<double> possible_rotation_values = rotation_values;
+        all_dihedral_rotation_values.push_back(std::make_pair(dihedral_atoms, possible_rotation_values));
     }
     //For the vector of pair generated above, go through each dihedral, expand their rotation angles in the form of recursive for loops. Exhaustively list each possibility as a "combination"
     typedef std::vector<std::pair<AtomVector*, double> > combination;
@@ -1216,81 +1249,81 @@ GeometryTopology::CoordinateVector Assembly::FindBestSetOfTorsions(std::vector<A
     double initial_clash_score = gmml::CalculateAtomicOverlaps(all_atoms_in_assembly, all_atoms_in_assembly);
     least_clash_coordinate.first = initial_clash_score;
     for (unsigned int i = 0; i < all_atoms_in_assembly.size(); i++){
-    Atom* atom = all_atoms_in_assembly[i];
-	least_clash_coordinate.second.push_back( new GeometryTopology::Coordinate(atom->GetCoordinates().at(0)));
+        Atom* atom = all_atoms_in_assembly[i];
+        least_clash_coordinate.second.push_back( new GeometryTopology::Coordinate(atom->GetCoordinates().at(0)));
     }
     //For each combination, rotate accordingly
     for (unsigned int i = 0; i < all_combinations.size(); i++){
-	combination& rotation_set = all_combinations[i];
-	for (combination::iterator it = rotation_set.begin(); it != rotation_set.end(); it++){
-        AtomVector* dihedral_atoms = it->first;
-	    GeometryTopology::Coordinate* pivot_point = dihedral_atoms->at(1)->GetCoordinates().at(0);
-	    GeometryTopology::Coordinate* rotation_axis = new GeometryTopology::Coordinate();
-	    rotation_axis->SetX(dihedral_atoms->at(2)->GetCoordinates().at(0)->GetX() - dihedral_atoms->at(1)->GetCoordinates().at(0)->GetX());
-	    rotation_axis->SetY(dihedral_atoms->at(2)->GetCoordinates().at(0)->GetY() - dihedral_atoms->at(1)->GetCoordinates().at(0)->GetY());
-	    rotation_axis->SetZ(dihedral_atoms->at(2)->GetCoordinates().at(0)->GetZ() - dihedral_atoms->at(1)->GetCoordinates().at(0)->GetZ());
-        AtomVector atoms_to_rotate = AtomVector();
-	    atoms_to_rotate.push_back(dihedral_atoms->at(1));
-	    dihedral_atoms->at(2)->FindConnectedAtoms(atoms_to_rotate);
-        GeometryTopology::CoordinateVector original_coordinates = GeometryTopology::CoordinateVector();
-	    for (unsigned int j = 0; j < atoms_to_rotate.size(); j++){
-		original_coordinates.push_back(atoms_to_rotate[j]->GetCoordinates().at(0));
-	    }
-	    double rotation_value = it->second;
-	    GeometryTopology::Rotation rotation_operation = GeometryTopology::Rotation();
-	    //Perform rotation, but return rotated coordinates rather than actually perform rotation
-        GeometryTopology::CoordinateVector rotated_coordinates = rotation_operation.RotateCoordinates(pivot_point, rotation_axis, rotation_value, original_coordinates);
-	    //Reset atom coordinates to the rotated coordinated set
-	    for (unsigned int j = 0; j < atoms_to_rotate.size(); j++){
-        GeometryTopology::CoordinateVector new_coordinates = GeometryTopology::CoordinateVector();
-		new_coordinates.push_back(rotated_coordinates[j]);
-		atoms_to_rotate[j]->SetCoordinates(new_coordinates);
+        combination& rotation_set = all_combinations[i];
+        for (combination::iterator it = rotation_set.begin(); it != rotation_set.end(); it++){
+            AtomVector* dihedral_atoms = it->first;
+            GeometryTopology::Coordinate* pivot_point = dihedral_atoms->at(1)->GetCoordinates().at(0);
+            GeometryTopology::Coordinate* rotation_axis = new GeometryTopology::Coordinate();
+            rotation_axis->SetX(dihedral_atoms->at(2)->GetCoordinates().at(0)->GetX() - dihedral_atoms->at(1)->GetCoordinates().at(0)->GetX());
+            rotation_axis->SetY(dihedral_atoms->at(2)->GetCoordinates().at(0)->GetY() - dihedral_atoms->at(1)->GetCoordinates().at(0)->GetY());
+            rotation_axis->SetZ(dihedral_atoms->at(2)->GetCoordinates().at(0)->GetZ() - dihedral_atoms->at(1)->GetCoordinates().at(0)->GetZ());
+            AtomVector atoms_to_rotate = AtomVector();
+            atoms_to_rotate.push_back(dihedral_atoms->at(1));
+            dihedral_atoms->at(2)->FindConnectedAtoms(atoms_to_rotate);
+            GeometryTopology::CoordinateVector original_coordinates = GeometryTopology::CoordinateVector();
+            for (unsigned int j = 0; j < atoms_to_rotate.size(); j++){
+                original_coordinates.push_back(atoms_to_rotate[j]->GetCoordinates().at(0));
+            }
+            double rotation_value = it->second;
+            GeometryTopology::Rotation rotation_operation = GeometryTopology::Rotation();
+            //Perform rotation, but return rotated coordinates rather than actually perform rotation
+            GeometryTopology::CoordinateVector rotated_coordinates = rotation_operation.RotateCoordinates(pivot_point, rotation_axis, rotation_value, original_coordinates);
+            //Reset atom coordinates to the rotated coordinated set
+            for (unsigned int j = 0; j < atoms_to_rotate.size(); j++){
+                GeometryTopology::CoordinateVector new_coordinates = GeometryTopology::CoordinateVector();
+                new_coordinates.push_back(rotated_coordinates[j]);
+                atoms_to_rotate[j]->SetCoordinates(new_coordinates);
 
-	    }
-	    
-	}//rotate each combination
-	//After setting coordinates, compute clash score.
-	double clash_score = gmml::CalculateAtomicOverlaps(all_atoms_in_assembly, all_atoms_in_assembly);
-	//If current clash score is lower than current minimum, overwrite lowest clash score, and best coordinate set.
-	if (clash_score < least_clash_coordinate.first){
-	    least_clash_coordinate.first = clash_score;
-	    for (unsigned int j = 0; j < all_atoms_in_assembly.size(); j++){
-	        least_clash_coordinate.second[j]->SetX(all_atoms_in_assembly[j]->GetCoordinates().at(0)->GetX());
-	        least_clash_coordinate.second[j]->SetY(all_atoms_in_assembly[j]->GetCoordinates().at(0)->GetY());
-	        least_clash_coordinate.second[j]->SetZ(all_atoms_in_assembly[j]->GetCoordinates().at(0)->GetZ());
-	    }
-	}
-	
+            }
+
+        }//rotate each combination
+        //After setting coordinates, compute clash score.
+        double clash_score = gmml::CalculateAtomicOverlaps(all_atoms_in_assembly, all_atoms_in_assembly);
+        //If current clash score is lower than current minimum, overwrite lowest clash score, and best coordinate set.
+        if (clash_score < least_clash_coordinate.first){
+            least_clash_coordinate.first = clash_score;
+            for (unsigned int j = 0; j < all_atoms_in_assembly.size(); j++){
+                least_clash_coordinate.second[j]->SetX(all_atoms_in_assembly[j]->GetCoordinates().at(0)->GetX());
+                least_clash_coordinate.second[j]->SetY(all_atoms_in_assembly[j]->GetCoordinates().at(0)->GetY());
+                least_clash_coordinate.second[j]->SetZ(all_atoms_in_assembly[j]->GetCoordinates().at(0)->GetZ());
+            }
+        }
+
     }
     //Return best set of coordinate
     return least_clash_coordinate.second;
 }
 
 void Assembly::GenerateAllTorsionCombinations(std::vector<std::pair<AtomVector*, std::vector<double> > >& all_dihedral_rotation_values, unsigned int current_dihedral_index ,
-                        std::vector<std::vector<std::pair<AtomVector*, double> > >& container_for_combinations, std::vector<double>& angle_index_per_dihedral)
+                                              std::vector<std::vector<std::pair<AtomVector*, double> > >& container_for_combinations, std::vector<double>& angle_index_per_dihedral)
 {
     //For each dihedral to populate, get all its allowed rotation values
     std::vector<double>& rotation_values = all_dihedral_rotation_values[current_dihedral_index].second;
     //For each rotation value
     for (unsigned int j = 0; j < rotation_values.size(); j++){
-	//Record the current rotation value of the current dihedral to the temporary container "angle_index_per_dihedral"
+        //Record the current rotation value of the current dihedral to the temporary container "angle_index_per_dihedral"
         angle_index_per_dihedral[current_dihedral_index] = rotation_values[j];
-	//If the current dihedral is not the last one to rotate, move the recursive process to the next dihedral
+        //If the current dihedral is not the last one to rotate, move the recursive process to the next dihedral
         if (current_dihedral_index != all_dihedral_rotation_values.size() -1){
-	    unsigned int next_dihedral_index = current_dihedral_index + 1;
-	    this->GenerateAllTorsionCombinations(all_dihedral_rotation_values, next_dihedral_index, container_for_combinations, angle_index_per_dihedral);
-	}
-	//If the current dihedral is already the last dihedral, the code has reached the "dead end" of nested for loop.Now look at the temporary container for the rotation value at each
-	//dihedral. These become a new combination.
-	else{
-        std::vector<std::pair<AtomVector*, double> > new_combination = std::vector<std::pair<AtomVector*, double> >();
-	    for (unsigned int dihedral_position = 0; dihedral_position < angle_index_per_dihedral.size(); dihedral_position++){
-        AtomVector* dihedral = all_dihedral_rotation_values[dihedral_position].first;
-	        double torsion_value_at_this_dihedral = angle_index_per_dihedral[dihedral_position];
-		new_combination.push_back(std::make_pair(dihedral, torsion_value_at_this_dihedral));
-	    }
-	    container_for_combinations.push_back(new_combination);
-	}
+            unsigned int next_dihedral_index = current_dihedral_index + 1;
+            this->GenerateAllTorsionCombinations(all_dihedral_rotation_values, next_dihedral_index, container_for_combinations, angle_index_per_dihedral);
+        }
+        //If the current dihedral is already the last dihedral, the code has reached the "dead end" of nested for loop.Now look at the temporary container for the rotation value at each
+        //dihedral. These become a new combination.
+        else{
+            std::vector<std::pair<AtomVector*, double> > new_combination = std::vector<std::pair<AtomVector*, double> >();
+            for (unsigned int dihedral_position = 0; dihedral_position < angle_index_per_dihedral.size(); dihedral_position++){
+                AtomVector* dihedral = all_dihedral_rotation_values[dihedral_position].first;
+                double torsion_value_at_this_dihedral = angle_index_per_dihedral[dihedral_position];
+                new_combination.push_back(std::make_pair(dihedral, torsion_value_at_this_dihedral));
+            }
+            container_for_combinations.push_back(new_combination);
+        }
     }
 }
 
@@ -1308,8 +1341,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
     CondensedSequenceSpace::CondensedSequence sequence (condensed_sequence);
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = sequence.GetCondensedSequenceGlycam06ResidueTree();
     
-//    CondensedSequenceSpace::CondensedSequence::CondensedSequenceResidueTree res_tree = sequence.GetCondensedSequenceResidueTree();
-//    CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo info = sequence.GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(res_tree);
+    //    CondensedSequenceSpace::CondensedSequence::CondensedSequenceResidueTree res_tree = sequence.GetCondensedSequenceResidueTree();
+    //    CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo info = sequence.GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(res_tree);
 
     Assembly::TemplateAssembly* template_assembly = this-> BuildTemplateAssemblyFromPrepFile (glycam06_residues, prep_file);
 
@@ -1328,7 +1361,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
         if (glycam_06_res->GetParentId() == gmml::iNotSet && glycam_06_res->GetName() != "Deoxy"){
             Residue* root = corresponding_assembly_residue;
             //  TURN OFF GEOMETRY OPS
-            this->RecursivelySetGeometry(root);
+            this->RecursivelySetAngleGeometry(root);
+            this->RecursivelySetDihedralAngleGeometry(root);
             //          The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
             //          Linkage index is incremented inside function once a linkage has been processed.
             int linkage_index = 0;
@@ -1391,7 +1425,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
                     ss << prep_residue_name << "-";
                 PrepFileSpace::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
                 for(PrepFileSpace::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
-                 {
+                {
                     PrepFileSpace::PrepFileAtom* prep_atom = (*it1);
                     std::string atom_name = prep_atom->GetName();
                     if(prep_atom->GetType() != "DU")
@@ -1482,7 +1516,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
                         double angle_value = prep_atom->GetAngle();
                         double dihedral_value = prep_atom->GetDihedral();
                         coordinate = coordinate->ConvertInternalCoordinate2CartesianCoordinate(
-                            coordinate_list, bond_length, angle_value, dihedral_value);
+                                    coordinate_list, bond_length, angle_value, dihedral_value);
                         cartesian_coordinate_list.push_back(coordinate);
 
                         assembly_atom->AddCoordinate(coordinate);
@@ -1566,7 +1600,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
                     linkage_name << assembly_residue->GetName() << assembly_residue->GetHeadAtoms().at(0)->GetName().at(1) << "-" <<
                                     parent_residue->GetTailAtoms().at(branch_index)->GetName().at(1) << parent_residue->GetName();
                     if(linkage_name.str().find("0SA2-8") != std::string::npos ||
-                                                linkage_name.str().find("0SB2-8") != std::string::npos)
+                            linkage_name.str().find("0SB2-8") != std::string::npos)
                     {
                         this->SetPhiTorsion(assembly_residue, parent_residue, branch_index, gmml::EXTERNAL28LINKAGEROTAMERS[0][0]);
                         this->SetPsiTorsion(assembly_residue, parent_residue, branch_index, gmml::EXTERNAL28LINKAGEROTAMERS[0][1], false);
@@ -1596,71 +1630,71 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
 }
 
 void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly, CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo 
-                            rotamers_glycosidic_angles_info, std::multimap<int, std::pair<AtomVector*, std::string> >& index_dihedral_map)
+                                                     rotamers_glycosidic_angles_info, std::multimap<int, std::pair<AtomVector*, std::string> >& index_dihedral_map)
 {
     std::vector<std::pair<AtomVector*, std::vector<double> > > all_dihedral_rotation_values = std::vector<std::pair<AtomVector*, std::vector<double> > >();
     typedef std::multimap<int, std::pair<AtomVector*, std::string> > index_torsion_map;
     //Go through each linkage, look at its phi,psi and omega(if exists)
     for(unsigned int i = 0; i < rotamers_glycosidic_angles_info.size(); i++){
-	CondensedSequenceSpace::RotamersAndGlycosidicAnglesInfo* linkage_info = rotamers_glycosidic_angles_info[i].second; 
-	int linkage_index = linkage_info->GetLinkageIndex();
-	std::pair<index_torsion_map::iterator, index_torsion_map::iterator > current_linkage_dihedral_range = index_dihedral_map.equal_range(linkage_index);
-	//First, check for torsions explicitly set by the user. Apply user settting instead of default setting.
-	std::vector<std::pair<std::string, double> > user_defined_angles = linkage_info->GetEnabledGlycosidicAngles();
-	//Use a string to record what type of torsions are being set. For example, if phi and psi are explicitly set, user_defined_angle_types = "phipsi"
-	std::string user_defined_angle_types = std::string();
-	for (unsigned int j = 0; j < user_defined_angles.size(); j++){
-	    std::string& dihedral_type = user_defined_angles[j].first;
-	    double& rotation_value = user_defined_angles[j].second;
-	    for (index_torsion_map::iterator it = current_linkage_dihedral_range.first; it != current_linkage_dihedral_range.second; it++){
-		std::string& map_dihedral_type = it->second.second;
-		if (map_dihedral_type == dihedral_type){
-            AtomVector* dihedral_atoms = it->second.first;
-		    std::vector<double> rotation_values = std::vector<double>(1,rotation_value);
-		    all_dihedral_rotation_values.push_back(std::make_pair(dihedral_atoms, rotation_values));
-		    user_defined_angle_types += map_dihedral_type;
-		}
-	    }
-	}
-	//Then, go through all rotamers, including user-defined and default torsions
-	std::vector<std::pair<std::string,std::vector<std::string> > > selected_rotamers = linkage_info->GetSelectedRotamers();
-	for (unsigned int j = 0; j < selected_rotamers.size(); j++){
-	    std::string& dihedral_type = selected_rotamers[j].first;
-	    //If a torsion is not being explicitly set:
-	    if (user_defined_angle_types.find(dihedral_type) == std::string::npos){
-		std::vector<std::string>& rotamer_names = selected_rotamers[j].second;
-		std::vector<double> rotation_values = std::vector<double>();
-		//This should be put into metadata one day.
-		for (unsigned int k = 0; k < rotamer_names.size(); k++){
-		    if (rotamer_names[k] == "gg"){
-			rotation_values.push_back(-60.0);
-		    }
-		    if (rotamer_names[k] == "gt"){
-			rotation_values.push_back(60.0);
-		    }
-		    if (rotamer_names[k] == "tg"){
-			rotation_values.push_back(180.0);
-		    }
-		    if (rotamer_names[k] == "g"){
-			rotation_values.push_back(60.0);
-		    }
-		    if (rotamer_names[k] == "t"){
-			rotation_values.push_back(180.0);
-		    }
-		    if (rotamer_names[k] == "-g"){
-			rotation_values.push_back(-60.0);
-		    }
-		}
-		for (index_torsion_map::iterator it = current_linkage_dihedral_range.first; it != current_linkage_dihedral_range.second; it++){
-		    std::string& map_dihedral_type = it->second.second;
-		    if (map_dihedral_type == dihedral_type){
-            AtomVector* dihedral_atoms = it->second.first;
-			all_dihedral_rotation_values.push_back(std::make_pair(dihedral_atoms,rotation_values));
-		    }
-		}
-	    }
-	}
-	
+        CondensedSequenceSpace::RotamersAndGlycosidicAnglesInfo* linkage_info = rotamers_glycosidic_angles_info[i].second;
+        int linkage_index = linkage_info->GetLinkageIndex();
+        std::pair<index_torsion_map::iterator, index_torsion_map::iterator > current_linkage_dihedral_range = index_dihedral_map.equal_range(linkage_index);
+        //First, check for torsions explicitly set by the user. Apply user settting instead of default setting.
+        std::vector<std::pair<std::string, double> > user_defined_angles = linkage_info->GetEnabledGlycosidicAngles();
+        //Use a string to record what type of torsions are being set. For example, if phi and psi are explicitly set, user_defined_angle_types = "phipsi"
+        std::string user_defined_angle_types = std::string();
+        for (unsigned int j = 0; j < user_defined_angles.size(); j++){
+            std::string& dihedral_type = user_defined_angles[j].first;
+            double& rotation_value = user_defined_angles[j].second;
+            for (index_torsion_map::iterator it = current_linkage_dihedral_range.first; it != current_linkage_dihedral_range.second; it++){
+                std::string& map_dihedral_type = it->second.second;
+                if (map_dihedral_type == dihedral_type){
+                    AtomVector* dihedral_atoms = it->second.first;
+                    std::vector<double> rotation_values = std::vector<double>(1,rotation_value);
+                    all_dihedral_rotation_values.push_back(std::make_pair(dihedral_atoms, rotation_values));
+                    user_defined_angle_types += map_dihedral_type;
+                }
+            }
+        }
+        //Then, go through all rotamers, including user-defined and default torsions
+        std::vector<std::pair<std::string,std::vector<std::string> > > selected_rotamers = linkage_info->GetSelectedRotamers();
+        for (unsigned int j = 0; j < selected_rotamers.size(); j++){
+            std::string& dihedral_type = selected_rotamers[j].first;
+            //If a torsion is not being explicitly set:
+            if (user_defined_angle_types.find(dihedral_type) == std::string::npos){
+                std::vector<std::string>& rotamer_names = selected_rotamers[j].second;
+                std::vector<double> rotation_values = std::vector<double>();
+                //This should be put into metadata one day.
+                for (unsigned int k = 0; k < rotamer_names.size(); k++){
+                    if (rotamer_names[k] == "gg"){
+                        rotation_values.push_back(-60.0);
+                    }
+                    if (rotamer_names[k] == "gt"){
+                        rotation_values.push_back(60.0);
+                    }
+                    if (rotamer_names[k] == "tg"){
+                        rotation_values.push_back(180.0);
+                    }
+                    if (rotamer_names[k] == "g"){
+                        rotation_values.push_back(60.0);
+                    }
+                    if (rotamer_names[k] == "t"){
+                        rotation_values.push_back(180.0);
+                    }
+                    if (rotamer_names[k] == "-g"){
+                        rotation_values.push_back(-60.0);
+                    }
+                }
+                for (index_torsion_map::iterator it = current_linkage_dihedral_range.first; it != current_linkage_dihedral_range.second; it++){
+                    std::string& map_dihedral_type = it->second.second;
+                    if (map_dihedral_type == dihedral_type){
+                        AtomVector* dihedral_atoms = it->second.first;
+                        all_dihedral_rotation_values.push_back(std::make_pair(dihedral_atoms,rotation_values));
+                    }
+                }
+            }
+        }
+
     }
     //Generate All Rotation Combinations
     typedef std::vector<std::pair<AtomVector*, double> > combination;
@@ -1670,35 +1704,35 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
     //Rotate according to each combination
     std::vector<GeometryTopology::CoordinateVector> rotamer_coordinate_sets = std::vector<GeometryTopology::CoordinateVector>();
     for (unsigned int i = 0; i < all_rotation_combinations.size(); i++){
-	combination& rotamer_rotation_set = all_rotation_combinations[i];
-	for (unsigned int j = 0; j < rotamer_rotation_set.size(); j++){
-        std::pair<AtomVector*, double>& dihedral_rotation_value_pair = rotamer_rotation_set[j];
-        AtomVector* dihedral_atoms = dihedral_rotation_value_pair.first;
-	    double rotation_value = dihedral_rotation_value_pair.second;
-	    working_assembly ->SetDihedral(dihedral_atoms->at(0), dihedral_atoms->at(1), dihedral_atoms->at(2), dihedral_atoms->at(3), rotation_value);
-	}
-	//Copy current coordinate objects 
-    GeometryTopology::CoordinateVector new_rotamer_coordinate_set = GeometryTopology::CoordinateVector();
-    AtomVector all_atoms_of_assembly = working_assembly->GetAllAtomsOfAssembly();
-	for (unsigned int j = 0; j < all_atoms_of_assembly.size(); j++){
-	    GeometryTopology::Coordinate* original_coordinate = all_atoms_of_assembly[j]->GetCoordinates().at(0);
-	    GeometryTopology::Coordinate* copied_coordinate = new GeometryTopology::Coordinate(original_coordinate);
-	    new_rotamer_coordinate_set.push_back(copied_coordinate);
-	}
-	rotamer_coordinate_sets.push_back(new_rotamer_coordinate_set);
+        combination& rotamer_rotation_set = all_rotation_combinations[i];
+        for (unsigned int j = 0; j < rotamer_rotation_set.size(); j++){
+            std::pair<AtomVector*, double>& dihedral_rotation_value_pair = rotamer_rotation_set[j];
+            AtomVector* dihedral_atoms = dihedral_rotation_value_pair.first;
+            double rotation_value = dihedral_rotation_value_pair.second;
+            working_assembly ->SetDihedral(dihedral_atoms->at(0), dihedral_atoms->at(1), dihedral_atoms->at(2), dihedral_atoms->at(3), rotation_value);
+        }
+        //Copy current coordinate objects
+        GeometryTopology::CoordinateVector new_rotamer_coordinate_set = GeometryTopology::CoordinateVector();
+        AtomVector all_atoms_of_assembly = working_assembly->GetAllAtomsOfAssembly();
+        for (unsigned int j = 0; j < all_atoms_of_assembly.size(); j++){
+            GeometryTopology::Coordinate* original_coordinate = all_atoms_of_assembly[j]->GetCoordinates().at(0);
+            GeometryTopology::Coordinate* copied_coordinate = new GeometryTopology::Coordinate(original_coordinate);
+            new_rotamer_coordinate_set.push_back(copied_coordinate);
+        }
+        rotamer_coordinate_sets.push_back(new_rotamer_coordinate_set);
     }
     
     AtomVector all_atoms_of_assembly = working_assembly->GetAllAtomsOfAssembly();
     //Empty current atoms coordinates
     for (unsigned int i = 0; i < all_atoms_of_assembly.size(); i++){
-    all_atoms_of_assembly[i]->SetCoordinates(GeometryTopology::CoordinateVector());
+        all_atoms_of_assembly[i]->SetCoordinates(GeometryTopology::CoordinateVector());
     }
     //Add each rotamer coordinate set one by one to atoms in assembly
     for (unsigned int i = 0; i < rotamer_coordinate_sets.size(); i++){
-    GeometryTopology::CoordinateVector& rotamer_set = rotamer_coordinate_sets[i];
-	for (unsigned int j = 0; j < rotamer_set.size(); j++){
-	   all_atoms_of_assembly[j]->AddCoordinate(rotamer_set[j]); 
-	}
+        GeometryTopology::CoordinateVector& rotamer_set = rotamer_coordinate_sets[i];
+        for (unsigned int j = 0; j < rotamer_set.size(); j++){
+            all_atoms_of_assembly[j]->AddCoordinate(rotamer_set[j]);
+        }
     }
     
     
@@ -1751,7 +1785,7 @@ void Assembly::BuildAssemblyFromAtomStream(std::stringstream& atomStream)
 void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files,
                                         std::vector<std::string> other_lib_files, std::vector<std::string> prep_files, std::string parameter_file)
 {
-  //    std::cout << "Building assembly from pdb file ..." << std::endl;
+    //    std::cout << "Building assembly from pdb file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
     try
     {
@@ -1993,27 +2027,27 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
             }
             this->AddResidue(residue);
             if( (residue->GetName() == "ALA") ||
-                (residue->GetName() == "ARG") ||
-                (residue->GetName() == "ASN") ||
-                (residue->GetName() == "ASP") ||
-                (residue->GetName() == "CYS") ||
-                (residue->GetName() == "GLU") ||
-                (residue->GetName() == "GLN") ||
-                (residue->GetName() == "GLY") ||
-                (residue->GetName() == "HIS") ||
-                (residue->GetName() == "ILE") ||
-                (residue->GetName() == "LEU") ||
-                (residue->GetName() == "LYS") ||
-                (residue->GetName() == "MET") ||
-                (residue->GetName() == "PHE") ||
-                (residue->GetName() == "PRO") ||
-                (residue->GetName() == "SER") ||
-                (residue->GetName() == "THR") ||
-                (residue->GetName() == "TRP") ||
-                (residue->GetName() == "TYR") ||
-                (residue->GetName() == "VAL") )
+                    (residue->GetName() == "ARG") ||
+                    (residue->GetName() == "ASN") ||
+                    (residue->GetName() == "ASP") ||
+                    (residue->GetName() == "CYS") ||
+                    (residue->GetName() == "GLU") ||
+                    (residue->GetName() == "GLN") ||
+                    (residue->GetName() == "GLY") ||
+                    (residue->GetName() == "HIS") ||
+                    (residue->GetName() == "ILE") ||
+                    (residue->GetName() == "LEU") ||
+                    (residue->GetName() == "LYS") ||
+                    (residue->GetName() == "MET") ||
+                    (residue->GetName() == "PHE") ||
+                    (residue->GetName() == "PRO") ||
+                    (residue->GetName() == "SER") ||
+                    (residue->GetName() == "THR") ||
+                    (residue->GetName() == "TRP") ||
+                    (residue->GetName() == "TYR") ||
+                    (residue->GetName() == "VAL") )
             {
-              residue->SetChemicalType("Amino Acid");
+                residue->SetChemicalType("Amino Acid");
             }
         }
     }
@@ -2527,7 +2561,7 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile *prep_file, std
         Residue* assembly_residue = new Residue();
         assembly_residue->SetAssembly(this);
         PrepFileSpace::PrepFileResidue* prep_residue = (*it).second;
-	std::string prep_residue_name = prep_residue->GetName();
+        std::string prep_residue_name = prep_residue->GetName();
         assembly_residue->SetName(prep_residue_name);
         std::stringstream id;
         id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
@@ -2616,13 +2650,13 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile *prep_file, std
                 double angle_value = prep_atom->GetAngle();
                 double dihedral_value = prep_atom->GetDihedral();
                 coordinate = coordinate->ConvertInternalCoordinate2CartesianCoordinate(
-                    coordinate_list, bond_length, angle_value, dihedral_value);
+                            coordinate_list, bond_length, angle_value, dihedral_value);
                 cartesian_coordinate_list.push_back(coordinate);
-//original
+                //original
                 //GeometryTopology::Coordinate* coordinate = GeometryTopology::Coordinate::ConvertInternalCoordinate2CartesianCoordinate(coordinate_list, prep_atom->GetBondLength(),
-                                                                                             //prep_atom->GetAngle(), prep_atom->GetDihedral());
+                //prep_atom->GetAngle(), prep_atom->GetDihedral());
                 //cartesian_coordinate_list.push_back(coordinate);
-//
+                //
 
                 assembly_atom->AddCoordinate(coordinate);
             }

@@ -418,7 +418,8 @@ namespace MolecularModeling
 	      * @param parent_residue The current residue along the recursion process. It's named parent_residue, because this function next goes through one of its child residues,
 		which becomes the next parent residue. Termination condition: the current parent_residue has no child, or tail atom equals head atom(dead end).
 	      */
-	    void RecursivelySetGeometry (MolecularModeling::Residue* parent_residue);
+        void RecursivelySetAngleGeometry (MolecularModeling::Residue* parent_residue);
+        void RecursivelySetDihedralAngleGeometry(MolecularModeling::Residue* parent_residue);
 	    /*! \fn
 	      * A function that recursively go through an oligosaccharide tree structure from the reducing end, tagging dihedrals without performing any rotation. This function has the same code
 		organization as RecursivelySetGeometry. RecursivelySetGeometry sets torsion without tagging, but this function tags without performing any rotation.
