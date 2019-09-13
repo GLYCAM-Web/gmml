@@ -16,7 +16,7 @@ using MolecularModeling::ResidueVector;
 
 
 class Residue_linkage;
-typedef std::vector<Rotatable_dihedral> RotatableDihedralVector;
+typedef std::vector<Residue_linkage> ResidueLinkageVector;
 class Residue_linkage
 {
 public:
