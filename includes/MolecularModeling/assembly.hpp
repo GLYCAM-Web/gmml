@@ -39,6 +39,9 @@
 //#include "atomnode.hpp"
 #include "residuenode.hpp"
 
+class ResidueLinkage;
+typedef std::vector<ResidueLinkage> ResidueLinkageVector;
+
 namespace MolecularModeling
 {
     class Assembly;
@@ -420,6 +423,8 @@ namespace MolecularModeling
 	      */
         void RecursivelySetAngleGeometry (MolecularModeling::Residue* parent_residue);
         void RecursivelySetDihedralAngleGeometry(MolecularModeling::Residue* parent_residue);
+        void SetDihedralAngleGeometryWithMetadata();
+        void FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Residue *to_this_residue2, ResidueLinkageVector *residue_linkages);
 	    /*! \fn
 	      * A function that recursively go through an oligosaccharide tree structure from the reducing end, tagging dihedrals without performing any rotation. This function has the same code
 		organization as RecursivelySetGeometry. RecursivelySetGeometry sets torsion without tagging, but this function tags without performing any rotation.

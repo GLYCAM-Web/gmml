@@ -905,11 +905,41 @@ void Assembly::RecursivelySetAngleGeometry (Residue* parent_residue)
     }
 }
 
+//ResidueVector neighbors = parent_residue->GetNode()->GetResidueNeighbors();
+//for(auto &neighbor : neighbors)
+//{
+
+//}
+
+void Assembly::FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Residue *to_this_residue2, ResidueLinkageVector *residue_linkages)
+{
+    ResidueVector neighbors = to_this_residue2->GetNode()->GetResidueNeighbors();
+    for(auto &neighbor : neighbors)
+    {
+        if(neighbor->GetIndex() != from_this_residue1->GetIndex()) // If not the previous residue
+        {
+            residue_linkages->emplace_back(neighbor, to_this_residue2);
+        }
+    }
+    for(auto &neighbor : neighbors)
+    {
+        if(neighbor->GetIndex() != from_this_residue1->GetIndex())
+        {
+            this->FigureOutResidueLinkagesInGlycan(to_this_residue2, neighbor, residue_linkages);
+        }
+    }
+    return;
+}
+
+void Assembly::SetDihedralAngleGeometryWithMetadata()
+{
+    ResidueLinkageVector all_residue_linkages;
+    this->FigureOutResidueLinkagesInGlycan(this->GetResidues().at(0), this->GetResidues().at(0), &all_residue_linkages);
+}
+
+// By Yao, Oliver wishes to replace  with SetDihedralAngleGeometryWithMetadata
 void Assembly::RecursivelySetDihedralAngleGeometry (Residue* parent_residue)
 {
-
-    Residue_linkage
-
     AtomVector all_tail_atoms = parent_residue->GetTailAtoms();
     AtomVector all_head_atoms = parent_residue->GetHeadAtoms();
     for (unsigned int i = 0; i < all_tail_atoms.size(); i++){
