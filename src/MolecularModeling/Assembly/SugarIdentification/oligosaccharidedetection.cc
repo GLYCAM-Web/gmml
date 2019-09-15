@@ -4897,7 +4897,7 @@ void Assembly::GetAuthorNaming(std::vector< std::string > amino_lib_files, Glyca
         MolecularModeling::Atom* thisAtom = *it;
         if(thisAtom->GetElementSymbol() == "H")
         {
-          thisResidue->RemoveAtom(thisAtom);
+          thisResidue->RemoveAtom(thisAtom, true);
         }
       }
     }
