@@ -256,7 +256,6 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){//This function shou
     int ti = arg->thread_index;
     int t = arg->number_of_threads;
 
-
     //    std::cout << "Thread" << ti << " start" << std::endl;
     Assembly::AtomVector all_atoms_of_assembly = arg->a->GetAllAtomsOfAssembly();
     int atoms_size = all_atoms_of_assembly.size();
@@ -266,6 +265,7 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){//This function shou
     int end_index = 0;
     int begin_index = 0;
     int i = 1;
+
     for(i = 1; i < ti+1; i++)
     {
         begin_index = begin_index + (i*increase_factor);
@@ -293,6 +293,7 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){//This function shou
                 break;
             }
         }
+
         int index = distance(all_atoms_of_assembly.begin(), it);
         MolecularModeling::Atom* atom = (*it);
         MolecularModeling::AtomNode* atom_node;
@@ -313,7 +314,7 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){//This function shou
             MolecularModeling::Atom* neighbor_atom = (*it1);
             
             //TODO change cutoff based on atom elements
-            cutoff = arg->a->guessBondLengthByAtomType(atom, neighbor_atom);
+            //cutoff = arg->a->guessBondLengthByAtomType(atom, neighbor_atom);
             
             // X distance
             if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
@@ -608,6 +609,7 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
 ///First and second version
 void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, int model_index)
 {
+std::cout << "Cutoff is: " << cutoff << std::endl;
   int local_debug = 0;
     std::cout << "Building structure by distance ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");

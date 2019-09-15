@@ -227,7 +227,28 @@ namespace MolecularModeling
             * @param coordinate The GeometryTopology::Coordinate used to get the distance from this Atom's Coordinates.
             */
             double GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate);
-
+	    /*! \fn
+	    * A function to determine the chirality of this atom
+	    */
+	    std::string DetermineChirality(); //Added by Yao 08/26/2019
+	    std::multimap<int, Atom*> GetAtomicNumbersOfNeighbors(AtomVector& neighbors, AtomVector& visited_atoms); //A helper function for chirality determination
+	    int CompareBranches(std::vector<int>& vec1, std::vector<int>& vec2);
+	    std::vector<std::vector<int> > SortBranchesInDescendingOrder(std::vector<std::vector<int> >& originally_ordered_branches);
+	    std::vector<std::pair<Atom*, int> > SortPrimaryNeighborBranchesInDescendingOrder(std::map<Atom*, std::vector<std::vector<int> > >& comparison_result_tracker);
+	    int CompareTwoSetsOfBranches(std::vector<std::vector<int> > set1, std::vector<std::vector<int> > set2);
+	    std::map<std::vector<int>, std::vector<int> > MakeDuplicateRanksHigherRankIndicesMap(std::vector<int> &ranks);
+	    std::vector<std::vector<int> > ObtainBranchInfo (std::vector<AtomVector>& branches, AtomVector& visited_atoms);
+	    std::vector<AtomVector> MakeNextLevelOfBranches(std::vector<AtomVector>& current_branches, AtomVector& visited_atoms);
+	    void RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int> >& duplicate_higher_indices_map, std::vector<int>& ranks,
+  	      AtomVector visited_atoms, std::map<Atom*, std::vector<AtomVector> >& comparison_progress_tracker);
+	    std::map<std::vector<int>, std::vector<int> > ComparePrimaryNeighbors(std::vector<int>& ranks);
+	    void InitializeComparisonTracker(std::map<std::vector<int>, std::vector<int> >& duplicate_value_indices_versus_higher_rank_indices, AtomVector& visisted_atoms,
+	      std::map<Atom*, std::vector<AtomVector> >& comparison_progress_tracker);
+	    
+	    std::string DetermineRSAssignment(AtomVector& ordered_primary_neighbors, Atom* fake_hydrogen);
+	    double GetDihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4);
+	    AtomVector GetRankedPrimaryNeighbors(std::vector<int>& ranks);
+	    Atom PlaceFakeHydrogen();
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

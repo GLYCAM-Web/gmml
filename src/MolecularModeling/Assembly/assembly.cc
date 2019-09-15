@@ -630,6 +630,11 @@ void Assembly::AddAssembly(Assembly *assembly)
 void Assembly::RemoveAssembly(Assembly *assembly)
 {
     assemblies_.erase(std::remove(assemblies_.begin(), assemblies_.end(), assembly), assemblies_.end());
+    //Following code added by Yao 08/20/2019. In addtion to removing assembly, also remove its residues& atoms from current assembly.
+    ResidueVector all_residues = assembly->GetResidues();
+    for (ResidueVector::iterator resit = all_residues.begin(); resit != all_residues.end(); resit++){
+	this->RemoveResidue(*resit);
+    }
 }
 
 void Assembly::UpdateIds(std::string new_id)

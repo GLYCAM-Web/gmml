@@ -6,6 +6,9 @@
 #include <vector>
 #include <queue>
 #include <algorithm> // added for std::erase remove
+#include "boost/graph/adjacency_list.hpp"
+#include "boost/graph/vf2_sub_graph_iso.hpp"
+#include "boost/property_map/property_map.hpp"
 
 #include "../GeometryTopology/coordinate.hpp"
 #include "../GeometryTopology/plane.hpp"
@@ -61,7 +64,7 @@ namespace MolecularModeling
             typedef std::vector<AtomNode*>AtomNodeVector; //Added by ayush on 04/11/18 for TopologyFix in assembly
             typedef std::vector<ResidueNode*>ResidueNodeVector; //Added by ayush on 11/16/17 for identifying residuenodes in assembly
             typedef std::vector<MolecularModeling::Molecule*> MoleculeVector; //Added by ayush on 11/12/17 for molecules in assembly
-	          typedef Assembly TemplateAssembly; //typedef for marking a template assembly, which contains all necessary template residues extracted from 3D template library.
+	    typedef Assembly TemplateAssembly; //typedef for marking a template assembly, which contains all necessary template residues extracted from 3D template library.
             typedef struct
             {
               // pair.first: descriptor type
@@ -488,6 +491,7 @@ namespace MolecularModeling
 	      */
             void GenerateRotamersForCondensedSequence(Assembly* working_assembly, CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo
 							rotamers_glycosidic_angles_info, std::multimap<int, std::pair<gmml::AtomVector*, std::string> >& index_dihedral_map);
+	    void Grafting(MolecularModeling::Atom* parent_tail_atom, MolecularModeling::Atom* child_head_atom, double head_tail_bond_length);  //Added by Yao 08/20/2019. 
             void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
             void RemoveHydrogenAtAttachedPosition(Residue* residue, int branch_index);
             void SetDerivativeAngle(Residue* residue, Residue* parent_residue, int branch_index);
@@ -499,6 +503,7 @@ namespace MolecularModeling
             void SetPsiTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion, bool crystallographic_definition = true);
             void SetOmegaTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion, int type = 6);
             void SetOmegaDerivativeTorsion(Residue* residue, Residue* parent_residue, int branch_index, double torsion);
+	    double GetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::Atom *atom2, MolecularModeling::Atom *atom3, MolecularModeling::Atom *atom4); //Yao 09/07/2019
             void SetDihedral(Atom* atom1, Atom* atom2, Atom* atom3, Atom* atom4, double torsion);
             void SetAngle(Atom* atom1, Atom* atom2, Atom* atom3, double angle);
             /*! \fn
@@ -591,6 +596,7 @@ namespace MolecularModeling
 	      * @param query_residue_names the names of all residues needed
 	      */
 	    TemplateAssembly* BuildTemplateAssemblyFromPrepFile (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree, PrepFileSpace::PrepFile* prep_file);
+	    TemplateAssembly* BuildTemplateAssemblyFromPrepFile (std::vector<std::string>& query_residue_names, PrepFileSpace::PrepFile* prep_file);
             /*! \fn
               * A function to build a structure from a single prep file
               * Imports data from prep file data structure into central data structure
@@ -948,12 +954,24 @@ namespace MolecularModeling
 /** \addtogroup Manipulators
                * @{
                */
-            gmml::GlycamResidueNamingMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides);
+            gmml::GlycamResidueNamingMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides, std::map<Glycan::Oligosaccharide*, std::vector<std::string> >& oligo_id_map,
+									std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map);
             void ExtractOligosaccharideNamingMap(gmml::GlycamResidueNamingMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
                                                  CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree,
-                                                int& index);
+                                                int& index, std::map<Glycan::Oligosaccharide*, std::vector<std::string> >& oligo_id_map, Glycan::Oligosaccharide* root_oligo,
+						std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map);
             void UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
             void TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
+	    void RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map, std::string prep_file);
+	    int  RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& target_atoms, AtomVector& template_atoms,std::map<Atom*, std::string>& target_atom_label_map, 
+						    std::map<Atom*, std::string>& template_atom_label_map, std::vector<std::pair<Atom*, Atom*> >& target_template_vertex_match, 
+						    std::vector<std::pair<Atom*, Atom*> >& template_target_vertex_match, 
+						    std::vector<std::vector<std::pair<Atom*, Atom*> > >& all_isomorphisms);
+	    bool AllAtomEdgesMatch(Atom* target_atom, Atom* template_atom, std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map);
+	    bool AtomVertexMatch(Atom* target_atom, Atom* template_atom, std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map);
+	    void RemoveDownstreamMatches(Atom* target_atom, std::vector<std::pair<Atom*, Atom*> >& target_template_vertex_match,
+                                std::vector<std::pair<Atom*, Atom*> >& template_target_vertex_match);
+	    bool IfVertexAlreadyMatched(Atom* vertex_atom, std::vector< std::pair<Atom*, Atom*> >& match_map);
 
             /// Pattern mathing
             bool PatternMatching(Residue* residue, ResidueVector query_residues, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
