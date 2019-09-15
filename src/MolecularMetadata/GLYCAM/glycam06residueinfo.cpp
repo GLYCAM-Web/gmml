@@ -1,4 +1,4 @@
-#include "../../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
 
 /** \file:  src/MolecularMetadata/GLYCAM/glycam06residueinfo.cpp
  * GLYCAM06 metadata for residues

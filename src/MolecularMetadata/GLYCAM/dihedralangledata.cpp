@@ -1,4 +1,4 @@
-#include "../../../../includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //

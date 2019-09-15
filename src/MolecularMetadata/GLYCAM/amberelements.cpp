@@ -1,4 +1,4 @@
-#include "../../../../includes/MolecularMetadata/AMBER/amberelements.hpp"
+#include "../../../includes/MolecularMetadata/AMBER/amberelements.hpp"
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //

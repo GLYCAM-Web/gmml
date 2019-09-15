@@ -147,26 +147,26 @@ using Glycan::Monosaccharide;
 //            getline(gmml_pdb, line);
 //            if(line.find("HETATM") != std::string::npos)
 //            {
-//                detect_shape_pdb << line << std::endl;
+//                detect_shape_pdb << line << "\n";
 //            }
 //            n++;
 //        }
 //        gmml_pdb.close();
 //        detect_shape_pdb.close();
 //    }
-//    else std::cout << "Unable to open " << temp_detect_shape_PDB << " file" << std::endl;
+//    else std::cout << "Unable to open " << temp_detect_shape_PDB << " file" << "\n";
 //
 //    ///Writing a configuration file for the second argument of the detect_sugar program
 //    std::ofstream detect_shape_configuration ( temp_config.c_str() );
-//    detect_shape_configuration << "Atom" << std::endl;
+//    detect_shape_configuration << "Atom" << "\n";
 //    for(unsigned int i = 0; i < cycle.size(); i++)
 //    {
-//        detect_shape_configuration << cycle.at(i)->GetName() << std::endl;
+//        detect_shape_configuration << cycle.at(i)->GetName() << "\n";
 //    }
-//    detect_shape_configuration << "Residue" << std::endl;
-//    detect_shape_configuration << "1" << std::endl;
-//    detect_shape_configuration << "Path" << std::endl;
-//    detect_shape_configuration << canonicals << std::endl;
+//    detect_shape_configuration << "Residue" << "\n";
+//    detect_shape_configuration << "1" << "\n";
+//    detect_shape_configuration << "Path" << "\n";
+//    detect_shape_configuration << canonicals << "\n";
 //    detect_shape_configuration.close();
 //
 //    ///Calling detect_shape program
@@ -190,7 +190,7 @@ using Glycan::Monosaccharide;
 //            mono->bfmp_ring_conformation_ = line_tokens.at(1);
 //        shape_detection_result.close();
 //    }
-//    else std::cout << "Unable to open " << ring_conformations << " file from detect shape program" << std::endl;
+//    else std::cout << "Unable to open " << ring_conformations << " file from detect shape program" << "\n";
 //
 //    ///Deleting temporary files
 //    remove( temp_detect_shape_PDB.c_str() );
@@ -325,17 +325,17 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 {
   int local_debug = -1;
   gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap( amino_lib_files );
-  std::cout << std::endl << "Extracting Sugars\n";
+  std::cout << "\n" << "Extracting Sugars\n";
   
   ///CYCLE DETECTION
   CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
 
   ///PRINTING ALL DETECTED CYCLES
-  std::cout << std::endl << "All detected cycles\n";
+  std::cout << "\n" << "All detected cycles\n";
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
   {
     std::string cycle_atoms_str = ( *it ).first;
-    std::cout << cycle_atoms_str << std::endl;
+    std::cout << cycle_atoms_str << "\n";
   }
 
   ///FILTERING OUT FUSED CYCLES. aka Cycles that are sharing an edge
@@ -343,11 +343,11 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 
   ///FILTERING OUT OXYGENLESS CYCLES
   FilterAllCarbonCycles( cycles );
-  std::cout << std::endl << "Cycles after discarding rings that are all-carbon" << std::endl;
+  std::cout << "\n" << "Cycles after discarding rings that are all-carbon" << "\n";
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
   {
     std::string cycle_atoms_str = ( *it ).first;
-    std::cout << cycle_atoms_str << std::endl;
+    std::cout << cycle_atoms_str << "\n";
   }
 
   //FILTERING OUT CYCLES WITH DOUBLE BONDS and add them to new cyclemap
@@ -357,11 +357,11 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   //TODO figure out what to do with double bonded cycles
   
   
-  std::cout << std::endl << "Cycles after discarding rings containing C-C double bonds" << std::endl;
+  std::cout << "\n" << "Cycles after discarding rings containing C-C double bonds" << "\n";
   
 
   ///ANOMERIC CARBON DETECTION and SORTING
-  // std::cout << std::endl << "Cycles after discarding rings that are all-carbon" << std::endl;
+  // std::cout << "\n" << "Cycles after discarding rings that are all-carbon" << "\n";
   std::vector< std::string > anomeric_carbons_status = std::vector< std::string >();
   std::vector< Glycan::Note* > anomeric_notes = std::vector< Glycan::Note* >();
   CycleMap sorted_cycles = CycleMap();
@@ -381,7 +381,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     Glycan::Monosaccharide* mono = new Glycan::Monosaccharide(&cycle_atoms_str, cycle_atoms, this, CCD_Path);
     mono->assembly_ = this;
     monos.push_back(mono);
-    std::cout << cycle_atoms_str << std::endl; ///e.g. C1_3810_NAG_A_1521_?_?_1-O5_3821_NAG_A_1521_?_?_1-C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
+    std::cout << cycle_atoms_str << "\n"; ///e.g. C1_3810_NAG_A_1521_?_?_1-O5_3821_NAG_A_1521_?_?_1-C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
   }
   std::map <unsigned long long, Glycan::Monosaccharide* > ordered_monos_map =  std::map <unsigned long long, Glycan::Monosaccharide*>();
   for (std::vector <Glycan::Monosaccharide*>::iterator it = monos.begin(); it != monos.end(); it++)
@@ -397,15 +397,15 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
 
   // ///CREATING MONOSACCHARIDE STRUCTURE. Ring atoms, side atoms, chemical code (Glycode), modifications/derivatives, names
-  std::cout << std::endl << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << std::endl;
+  std::cout << "\n" << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << "\n";
   int mono_id_ = 0;
   for (std::vector<Glycan::Monosaccharide*>::iterator it = ordered_monos.begin(); it != ordered_monos.end(); it++)
   {
     Glycan::Monosaccharide* mono = *it;
-    std::cout << "Ring atoms: " << mono->cycle_atoms_str_ << std::endl;
+    std::cout << "Ring atoms: " << mono->cycle_atoms_str_ << "\n";
 
     ///PRINTING ASSIGNED SIDE ATOMS
-    std::cout << "Side group atoms: " << std::endl;
+    std::cout << "Side group atoms: " << "\n";
     for( std::vector< AtomVector >::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++ )
     {
       AtomVector sides = ( *it1 );
@@ -413,15 +413,15 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       {
         if( sides.at( 0 ) != NULL && sides.at( 1 ) != NULL )
         {
-          std::cout << "[1] -> " << sides.at( 0 )->GetId() << ", " << sides.at( 1 )->GetId() << std::endl;
+          std::cout << "[1] -> " << sides.at( 0 )->GetId() << ", " << sides.at( 1 )->GetId() << "\n";
         }
         else if( sides.at( 1 ) != NULL )
         {
-          std::cout << "[1] -> " << sides.at( 1 )->GetId() << std::endl;
+          std::cout << "[1] -> " << sides.at( 1 )->GetId() << "\n";
         }
         else if( sides.at( 0 ) != NULL )
         {
-          std::cout << "[1] -> " << sides.at( 0 )->GetId() << std::endl;
+          std::cout << "[1] -> " << sides.at( 0 )->GetId() << "\n";
         }
       }
       else if( it1 == mono->side_atoms_.end() - 1 ) //side atoms of last carbon of the
@@ -429,28 +429,28 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         std::cout << "[" << mono->cycle_atoms_.size() - 1 << "] -> ";
         if( sides.at( 0 ) != NULL )
         {
-          std::cout << sides.at( 0 )->GetId() << std::endl;
+          std::cout << sides.at( 0 )->GetId() << "\n";
         }
       }
       else if( sides.at( 1 ) != NULL )
       {
         int cycle_atom_index = distance( mono->side_atoms_.begin(), it1 );
-        std::cout << "[" << cycle_atom_index + 1 << "] -> " << sides.at( 1 )->GetId() << std::endl;
+        std::cout << "[" << cycle_atom_index + 1 << "] -> " << sides.at( 1 )->GetId() << "\n";
       }
     }
 
     ///PRINTING ANOMERIC STATUS
-    std::cout << mono->anomeric_status_ << mono->cycle_atoms_.at( 0 )->GetId() << std::endl;
-    std::cout << std::endl << "Ring Stereo chemistry chemical code:"  << std::endl;
+    std::cout << mono->anomeric_status_ << mono->cycle_atoms_.at( 0 )->GetId() << "\n";
+    std::cout << "\n" << "Ring Stereo chemistry chemical code:"  << "\n";
     std::cout << mono->chemical_code_->toString() << "\n";
     mono->chemical_code_->Print( std::cout );
-    std::cout << std::endl;
+    std::cout << "\n";
     // Actually, it only works for hexoses, so this should read "!=6" rather than ">5"
     if( mono->cycle_atoms_.size() > 5 )
     {
       if( mono->bfmp_ring_conformation_.compare( "" ) != 0 )
       {
-        std::cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << std::endl << std::endl; ///Part of Glyprobity report
+        std::cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << "\n" << "\n"; ///Part of Glyprobity report
       }
     }
 
@@ -462,8 +462,17 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       {
         std::string key = ( *it1 ).first;
         std::string value = ( *it1 ).second;
+        std::string trimmedValue;
+        if(value.substr(0,2) == "xC")
+        {
+          trimmedValue = value.substr(2,value.size()-1);
+        }
+        else
+        {
+          trimmedValue = value;
+        }
         if(value != "")
-          std::cout << "Carbon at Ring Position " << key << " is attached to " << value << std::endl;
+          std::cout << "Carbon at Ring Position " << key << " is attached to " << trimmedValue << "\n";
       }
     }
     ///GLYPROBITY REPORT (GEOMETRY OUTLIERS)
@@ -472,10 +481,10 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     }
 
     ///PRINTING NAMES OF MONOSACCHARIDE
-    std::cout << "Stereochemistry name: " << mono->sugar_name_.monosaccharide_stereochemistry_name_ << std::endl;
-    std::cout << "Stereochemistry short name: " << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << std::endl;
-    std::cout << "Complete name: " << mono->sugar_name_.monosaccharide_name_ << std::endl;
-    std::cout << "Short name: " << mono->sugar_name_.monosaccharide_short_name_ << std::endl;
+    std::cout << "Stereochemistry name: " << mono->sugar_name_.monosaccharide_stereochemistry_name_ << "\n";
+    std::cout << "Stereochemistry short name: " << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "\n";
+    std::cout << "Complete name: " << mono->sugar_name_.monosaccharide_name_ << "\n";
+    std::cout << "Short name: " << mono->sugar_name_.monosaccharide_short_name_ << "\n";
 
     //Check author's naming vs what's detected
     if(CCD_Path != " ")
@@ -558,7 +567,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
 
   ///CREATING TREE-LIKE STRUCTURE OF OLIGOSACCHARIDE
-  std::cout << std::endl << "Oligosaccharides:" << std::endl;
+  std::cout << "\n" << "Oligosaccharides:" << "\n";
   int number_of_covalent_links = 0;
   int number_of_probable_non_covalent_complexes = 0;
   // std::vector< Glycan::Oligosaccharide* > oligosaccharides = ExtractOligosaccharides( ordered_monos, dataset_residue_names, number_of_covalent_links, number_of_probable_non_covalent_complexes );
@@ -585,29 +594,29 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
   std::vector< Glycan::Note* > notes = this->GetNotes();
   if( !notes.empty() ) {
-    std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
-    std::cout << std::endl << "NOTES/ISSUES:" << std::endl;
+    std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
+    std::cout << "\n" << "NOTES/ISSUES:" << "\n";
     for( std::vector< Glycan::Note* >::iterator note_it = notes.begin(); note_it != notes.end(); note_it++ ) {
       Glycan::Note* note = ( *note_it );
-      std::cout << std::endl << "Category: " << note->ConvertGlycanNoteCat2String( note->category_ ) << std::endl;
-      std::cout << "Type: " << note->ConvertGlycanNoteType2String( note->type_ ) << std::endl;
-      std::cout << "Description: " << note->description_ << std::endl;
+      std::cout << "\n" << "Category: " << note->ConvertGlycanNoteCat2String( note->category_ ) << "\n";
+      std::cout << "Type: " << note->ConvertGlycanNoteType2String( note->type_ ) << "\n";
+      std::cout << "Description: " << note->description_ << "\n";
     }
-    std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+    std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
   }
 
   ///PRINTING STATISTICAL REPORT OF GLYPROBITY
   if( glyprobity_report ) {
-    std::cout << std::endl << "GLYPROBITY REPORT" << std::endl;
-    std::cout << "<-------Topology------>" << std::endl;
-    std::cout << "Monosaccharide detected: " << monos.size() << std::endl;
-    std::cout << "Residue Distribution " << std::endl;
-    std::cout << " Monosaccharides: " << number_of_monosaccharides << std::endl;
-    std::cout << " Oligosaccharides: " << number_of_oligosaccharides << std::endl;
-    std::cout << "Carbohydrate Context " << std::endl;
-    std::cout << " Covalently linked to protein: " << number_of_covalent_links << std::endl;
-    std::cout << " Non-covalent complex: " << number_of_probable_non_covalent_complexes << std::endl;
-    std::cout << "<--------------------->" << std::endl;
+    std::cout << "\n" << "GLYPROBITY REPORT" << "\n";
+    std::cout << "<-------Topology------>" << "\n";
+    std::cout << "Monosaccharide detected: " << monos.size() << "\n";
+    std::cout << "Residue Distribution " << "\n";
+    std::cout << " Monosaccharides: " << number_of_monosaccharides << "\n";
+    std::cout << " Oligosaccharides: " << number_of_oligosaccharides << "\n";
+    std::cout << "Carbohydrate Context " << "\n";
+    std::cout << " Covalently linked to protein: " << number_of_covalent_links << "\n";
+    std::cout << " Non-covalent complex: " << number_of_probable_non_covalent_complexes << "\n";
+    std::cout << "<--------------------->" << "\n";
   }
 
   ///POPULATING GMMO ONTOLOGY
@@ -625,7 +634,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
         mkdir(gmmoDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
         out_file.open( gmmo.c_str(), std::fstream::out | std::fstream::trunc);
-        out_file << Ontology::TTL_FILE_PREFIX << std::endl;
+        out_file << Ontology::TTL_FILE_PREFIX << "\n";
       }
       else
       {
@@ -638,7 +647,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         in.close();
         if( out_file_size == 0 ) ///If the file is empty add the prefixes first
         {
-          out_file << Ontology::TTL_FILE_PREFIX << std::endl;
+          out_file << Ontology::TTL_FILE_PREFIX << "\n";
         }
       }
       // this->PopulateOntology( out_file, oligosaccharides );
@@ -799,7 +808,7 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
 //         }
 //     }
 //     cycles = sorted_cycles;
-//     std::cout << std::endl << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << std::endl;
+//     std::cout << "\n" << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << "\n";
 //     gmml::log(__LINE__, __FILE__,  gmml::INF, "Detailed information of sorted cycles after discarding fused or oxygenless rings: ");
 //
 //     for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
@@ -812,7 +821,7 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
 //
 //         std::stringstream ring_atoms;
 //         ring_atoms << "Ring atoms: " << cycle_atoms_str;
-//         std::cout << ring_atoms.str() << std::endl;
+//         std::cout << ring_atoms.str() << "\n";
 //         gmml::log(__LINE__, __FILE__,  gmml::INF, ring_atoms.str());
 //
 //         std::stringstream ring_atom_names;
@@ -826,7 +835,7 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
 //             else
 //                 ring_atom_names << atom_tokens.at(0) << ",";
 //         }
-//         std::cout << ring_atom_names.str() << std::endl;
+//         std::cout << ring_atom_names.str() << "\n";
 //         gmml::log(__LINE__, __FILE__,  gmml::INF, ring_atom_names.str());
 //     }
 // }
@@ -1943,7 +1952,7 @@ std::string Assembly::CheckxC_N(MolecularModeling::Atom* target, std::string cyc
     if (local_debug > 0)
     {
       std::stringstream debugStr;
-      debugStr << "CheckxC_N:" << pattern.str() << std::endl;
+      debugStr << "CheckxC_N:" << pattern.str() << "\n";
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
     }
     if(pattern.str().compare("xCH-NHH") == 0 || pattern.str().compare("xC-N") == 0 || pattern.str().compare("xCHH-NHH") == 0 || pattern.str().compare("xCH-N") == 0  ||
@@ -2038,7 +2047,7 @@ std::string Assembly::CheckxC_NxO_CO_C(MolecularModeling::Atom *target, std::str
     if (local_debug > 0)
     {
       std::stringstream debugStr;
-      debugStr << "CheckxC_NxO_CO_C:" << pattern.str() << std::endl;
+      debugStr << "CheckxC_NxO_CO_C:" << pattern.str() << "\n";
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
     }
     if(NxO == 'N')
@@ -2165,7 +2174,7 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
     if (local_debug > 0)
     {
       std::stringstream debugStr;
-      debugStr << "CheckxC_NxO_CO_CO:" << pattern.str() << std::endl;
+      debugStr << "CheckxC_NxO_CO_CO:" << pattern.str() << "\n";
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
     }
     if(NxO == 'N')
@@ -2289,7 +2298,7 @@ std::string Assembly::CheckxC_NxO_SO3(MolecularModeling::Atom *target, std::stri
     if (local_debug > 0)
     {
       std::stringstream debugStr;
-      debugStr << "CheckxC_NxO_SO3:" << pattern.str() << std::endl;
+      debugStr << "CheckxC_NxO_SO3:" << pattern.str() << "\n";
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
     }
     if(NxO == 'N')
@@ -2402,7 +2411,7 @@ std::string Assembly::CheckxC_NxO_PO3(MolecularModeling::Atom *target, std::stri
     if (local_debug > 0)
     {
       std::stringstream debugStr;
-      debugStr << "CheckxC_NxO_PO3:" << pattern.str() << std::endl;
+      debugStr << "CheckxC_NxO_PO3:" << pattern.str() << "\n";
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
     }
     if(NxO == 'N')
@@ -2477,7 +2486,7 @@ std::string Assembly::CheckxC_NxO_C(MolecularModeling::Atom *target, std::string
     if (local_debug > 0)
     {
       std::stringstream debugStr;
-      debugStr << "CheckxC_NxO_C:" << pattern.str() << std::endl;
+      debugStr << "CheckxC_NxO_C:" << pattern.str() << "\n";
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
     }
     if(NxO == 'N')
@@ -2544,7 +2553,7 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
     if (local_debug > 0)
     {
       std::stringstream debugStr;
-      debugStr << "CheckxCOO:" << pattern.str() << std::endl;
+      debugStr << "CheckxCOO:" << pattern.str() << "\n";
       gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
     }
     if(pattern.str().compare("xCOO") == 0 || pattern.str().compare("xCHOO") == 0)
@@ -2606,7 +2615,7 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
   // if (local_debug > 0)
   // {
   //   std::stringstream debugStr;
-  //   debugStr << "CheckxC_NxO_C:" << pattern.str() << std::endl;
+  //   debugStr << "CheckxC_NxO_C:" << pattern.str() << "\n";
   //   gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
   // }
   // if(NxO == 'N')
@@ -2819,7 +2828,7 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     der_mod_note->description_ = note.str();
     // this->AddNote(der_mod_note);
     mono->mono_notes_.push_back(der_mod_note);
-    std::cout << ss.str() << std::endl;
+    std::cout << ss.str() << "\n";
   }
   else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
           find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "-1") == mono->chemical_code_->right_down_.end() &&
@@ -2857,7 +2866,7 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     der_mod_note->description_ = note.str();
     // this->AddNote(der_mod_note);
     mono->mono_notes_.push_back(der_mod_note);
-    std::cout << ss.str() << std::endl;
+    std::cout << ss.str() << "\n";
   }
   else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
   {
@@ -2874,7 +2883,7 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     der_mod_note->description_ = note.str();
     // this->AddNote(der_mod_note);
     mono->mono_notes_.push_back(der_mod_note);
-    std::cout << ss.str() << std::endl;
+    std::cout << ss.str() << "\n";
   }
   else
   {
@@ -3004,7 +3013,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             der_mod_note->description_ = note.str();
             // this->AddNote(der_mod_note);
             mono->mono_notes_.push_back(der_mod_note);
-            std::cout << ss.str() << std::endl;
+            std::cout << ss.str() << "\n";
         }
         else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
         {
@@ -3021,7 +3030,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             der_mod_note->description_ = note.str();
             // this->AddNote(der_mod_note);
             mono->mono_notes_.push_back(der_mod_note);
-            std::cout << ss.str() << std::endl;
+            std::cout << ss.str() << "\n";
         }
         else
         {
@@ -3086,7 +3095,7 @@ void Assembly::AddModificationRuleTwoInfo(std::string key, std::string pattern, 
             ss << " is at error position: " << gmml::ConvertString<int>(key) + 1;
             der_mod_note->type_ = Glycan::ERROR;
         }
-        std::cout << ss.str() << std::endl;
+        std::cout << ss.str() << "\n";
         gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
         tail << long_name_pattern_at_minus_one;
 
@@ -3146,7 +3155,7 @@ void Assembly::AddModificationRuleTwoInfo(std::string key, std::string pattern, 
     der_mod_note->description_ = note.str();
     // this->AddNote(der_mod_note);
     mono->mono_notes_.push_back(der_mod_note);
-    // std::cout << ss.str() << std::endl;
+    // std::cout << ss.str() << "\n";
     gmml::log(__LINE__, __FILE__,  gmml::WAR, ss.str());
 }
 
@@ -3439,7 +3448,7 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
               std::stringstream ss;
               ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
               gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-              std::cout << ss.str() << std::endl;
+              std::cout << ss.str() << "\n";
               terminal_residue_name = "";
             }
           }
@@ -3530,7 +3539,7 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
                 std::stringstream ss;
                 ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
                 gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-                std::cout << ss.str() << std::endl;
+                std::cout << ss.str() << "\n";
                 terminal_residue_name = "";
               }
             }
@@ -3566,7 +3575,7 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
       if(isRoot)
       {
         Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide(this);
-        CalculateOligosaccharideBFactor(oligo, detected_monos);
+        CalculateOligosaccharideBFactor(oligo,  oligo->mono_nodes_);
         BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
         oligo->terminal_ = terminal_residue_name;
         oligosaccharides.push_back(oligo);
@@ -3592,7 +3601,7 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
           if((*it1).find(anomeric_linkage.str()) != std::string::npos)///mono is attached to another mono through anomeric
           {
             Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide(this);
-            CalculateOligosaccharideBFactor(oligo, detected_monos);
+            CalculateOligosaccharideBFactor(oligo,  oligo->mono_nodes_);
             BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
             oligosaccharides.push_back(oligo);
             break;
@@ -3903,7 +3912,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
                             std::stringstream ss;
                             ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
                             gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-                            std::cout << ss.str() << std::endl;
+                            std::cout << ss.str() << "\n";
                             terminal_residue_name = "";
                         }
                     }
@@ -3995,7 +4004,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
                                 std::stringstream ss;
                                 ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
                                 gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-                                std::cout << ss.str() << std::endl;
+                                std::cout << ss.str() << "\n";
                                 terminal_residue_name = "";
                             }
                         }
@@ -4031,7 +4040,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
             if(key->is_root_)
             {
                 Glycan::Oligosaccharide* oligo = key->oligo_parent_;
-                CalculateOligosaccharideBFactor(oligo, monos);
+                CalculateOligosaccharideBFactor(oligo, oligo->mono_nodes_);
                 BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
                 oligo->terminal_ = terminal_residue_name;
                 oligosaccharides.push_back(oligo);
@@ -4058,7 +4067,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
                     if((*it1).find(anomeric_linkage.str()) != std::string::npos)///mono is attached to another mono through anomeric
                     {
                         Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide(this);
-                        CalculateOligosaccharideBFactor(oligo, monos);
+                        CalculateOligosaccharideBFactor(oligo, oligo->mono_nodes_);
                         BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
                         oligosaccharides.push_back(oligo);
                         break;
@@ -4446,7 +4455,7 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector
               }
               else
               {
-	                std::cout << "This return." << std::endl;
+	                std::cout << "This return." << "\n";
                   return target_o_neighbor->GetResidue()->GetName();
               }
           }
@@ -4549,7 +4558,7 @@ void Assembly::BuildOligosaccharideTreeStructure(Glycan::Monosaccharide *key, st
                 int it_index = distance(values.begin(), it);
                 std::vector<std::string> key_mono_linkages = monos_table_linkages[key];
                 /*for(int i = 0; i < key_mono_linkages.size(); i++ )  {
-                    std::cout << "HELP US!" << key_mono_linkages.at( i ) << std::endl;
+                    std::cout << "HELP US!" << key_mono_linkages.at( i ) << "\n";
                 }*/
                 std::string link = key_mono_linkages.at(it_index);
                 std::stringstream reverse_link;
@@ -4557,12 +4566,12 @@ void Assembly::BuildOligosaccharideTreeStructure(Glycan::Monosaccharide *key, st
                 if(find(visited_linkages.begin(), visited_linkages.end(), link) == visited_linkages.end() &&
                         find(visited_linkages.begin(), visited_linkages.end(), reverse_link.str()) == visited_linkages.end())
                 {
-                    //std::cout << "key id " << key->mono_id_  << ", value id " << value_mono->mono_id_ << std::endl;
+                    //std::cout << "key id " << key->mono_id_  << ", value id " << value_mono->mono_id_ << "\n";
                     Glycan::Oligosaccharide* child_oligo = new Glycan::Oligosaccharide(this);
-                    CalculateOligosaccharideBFactor(child_oligo, values);
+                    // CalculateOligosaccharideBFactor(child_oligo, values);
                     std::vector<Glycan::Monosaccharide*> value_mono_values = monos_table[value_mono];
                     visited_linkages.push_back(link);
-                    //std::cout << "call " << value_mono->mono_id_ << std::endl;
+                    //std::cout << "call " << value_mono->mono_id_ << "\n";
                     BuildOligosaccharideTreeStructure(value_mono, value_mono_values, child_oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
                     oligo->child_oligos_.push_back(child_oligo);
                     oligo->child_oligos_linkages_.push_back(link);
@@ -4876,6 +4885,23 @@ void Assembly::GetAuthorNaming(std::vector< std::string > amino_lib_files, Glyca
   if( stat( CCDfilepath.str().c_str(), &buffer ) == 0 )
   {  
     MolecularModeling::Assembly CCDassembly(CCDfilepath.str(), gmml::PDB);
+    
+    //TODO Remove H atoms from CCD PDB files; They are screwing up too much in the sugar naming (AH vs A in the chemical_code_)    
+    std::vector<MolecularModeling::Residue*> residues = CCDassembly.GetAllResiduesOfAssembly();
+    for(std::vector<MolecularModeling::Residue*>::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+      MolecularModeling::Residue* thisResidue = (*it);
+      std::vector<MolecularModeling::Atom*> atoms = thisResidue->GetAtoms();
+      for (std::vector<MolecularModeling::Atom*>::iterator it = atoms.begin(); it != atoms.end(); it++)
+      {
+        MolecularModeling::Atom* thisAtom = *it;
+        if(thisAtom->GetElementSymbol() == "H")
+        {
+          thisResidue->RemoveAtom(thisAtom);
+        }
+      }
+    }
+  
     // Build by Distance
     CCDassembly.BuildStructureByDistance(10);
     // Find the Sugars.
