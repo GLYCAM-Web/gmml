@@ -609,7 +609,6 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
 ///First and second version
 void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, int model_index)
 {
-std::cout << "Cutoff is: " << cutoff << std::endl;
   int local_debug = 0;
     std::cout << "Building structure by distance ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
