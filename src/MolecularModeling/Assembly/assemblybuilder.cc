@@ -1318,29 +1318,14 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 
     this -> SetGlycam06ResidueBonding (glycam06_assembly_residue_map);
 
-<<<<<<< HEAD
     std::multimap<int, std::pair<gmml::AtomVector*, std::string> > index_dihedral_map;
     for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >::iterator it = 
 	glycam06_assembly_residue_map.begin(); it != glycam06_assembly_residue_map.end(); it++){
-=======
-    std::multimap<int, std::pair<gmml::AtomVector*, std::string> > index_dihedral_map = std::multimap<int, std::pair<gmml::AtomVector*, std::string> >();
-    for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >::iterator it =
-         glycam06_assembly_residue_map.begin(); it != glycam06_assembly_residue_map.end(); it++){
->>>>>>> ff2f065e381d2e1a209c5d67fca282a4406c5330
 
         CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam_06_res = it->second.first;
         MolecularModeling::Residue* corresponding_assembly_residue = it->second.second;
         //The atom and the only atom without a parent is the absolute parent(terminal).
         if (glycam_06_res->GetParentId() == gmml::iNotSet && glycam_06_res->GetName() != "Deoxy"){
-<<<<<<< HEAD
-          MolecularModeling::Residue* root = corresponding_assembly_residue;
-//  TURN OFF GEOMETRY OPS
-          this->RecursivelySetGeometry(root);
-	  int linkage_index = 0;
-	  this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
-	  break;
-         }
-=======
             MolecularModeling::Residue* root = corresponding_assembly_residue;
             //  TURN OFF GEOMETRY OPS
             this->RecursivelySetGeometry(root);
@@ -1350,7 +1335,6 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
             break;
         }
->>>>>>> ff2f065e381d2e1a209c5d67fca282a4406c5330
     }
 
     //Find and resolve clashes below(crudely)
