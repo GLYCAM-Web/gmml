@@ -1395,9 +1395,16 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             //  TURN OFF GEOMETRY OPS
             this->RecursivelySetAngleGeometry(root);
             this->SetDihedralAngleGeometryWithMetadata();
-            //this->RecursivelySetDihedralAngleGeometry(root);
+            //this->RecursivelySetDihedralAngleGeometry(root); // replaced by SetDihedralAngleGeometryWithMetadata. OG 2019.09.
             //          The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
             //          Linkage index is incremented inside function once a linkage has been processed.
+
+
+            // OG 2019.09:
+            // This next part should be replaced. The metadata contains the tags, and should be edited to include a linkage_index
+            // However, the ResolveClashes function uses the index_dihedral_map, so that must be replaced at the same time.
+
+
             int linkage_index = 0;
             this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
             break;
