@@ -49,8 +49,8 @@ bool selection::FindCyclePoint(MolecularModeling::Atom *previous_atom, Molecular
     {
         // Need this to explore everything. It will find same cycle point more than once, but that doesn't matter.
         current_atom->SetDescription("VisitedByFindCyclePoint");
-//        std::cout << "Checking neighbors of " << current_atom->GetName() << "\n";
-//        std::cout << "Found cycle points is currently: " << std::boolalpha << *found_cycle_point << std::endl;
+     //   std::cout << "Checking neighbors of " << current_atom->GetName() << "\n";
+     //   std::cout << "Found cycle points is currently: " << std::boolalpha << *found_cycle_point << std::endl;
 
         atom_path->push_back(current_atom);
         MolecularModeling::AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
@@ -61,7 +61,7 @@ bool selection::FindCyclePoint(MolecularModeling::Atom *previous_atom, Molecular
             if ( (neighbor->GetIndex() != previous_atom->GetIndex()) && (current_atom->GetResidue()->GetId().compare(neighbor->GetResidue()->GetId())==0))
                 //if ( neighbor->GetIndex() != previous_atom->GetIndex() ) // Good for testing multiple cycles
             {
-//                std::cout << "Coming from previous atom " << previous_atom->GetName() << " we see bonding: " << current_atom->GetName() << "->" << neighbor->GetName() << "\n";
+            //   std::cout << "Coming from previous atom " << previous_atom->GetName() << " we see bonding: " << current_atom->GetName() << "->" << neighbor->GetName() << "\n";
                 if ( std::find(atom_path->begin(), atom_path->end(), neighbor) != atom_path->end() ) // If we've been at this atom before
                 {
 //                    std::cout << "Found a potential cycle point! Found cycle point already is: " << std::boolalpha << *found_cycle_point << std::endl;
@@ -98,44 +98,51 @@ bool selection::FindCyclePoint(MolecularModeling::Atom *previous_atom, Molecular
 // If current_atom is connected only to atoms that have zero other intra residue connections, it is a rotation point
 bool selection::FindRotationPointsForNonCycles(MolecularModeling::Atom *previous_atom, MolecularModeling::Atom *current_atom, MolecularModeling::AtomVector *rotation_points)
 {
-    MolecularModeling::AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
-    MolecularModeling::AtomVector intra_node_neighbors;
-    for (auto &neighbor : neighbors)
-    { // If not previous atom and not from a different residue
-        if ( (neighbor->GetIndex() != previous_atom->GetIndex()) && (current_atom->GetResidue()->GetId().compare(neighbor->GetResidue()->GetId())==0))
-        {
-            intra_node_neighbors.push_back(neighbor);
-        }
-    }
-    bool found_rotation_point = true;
-    for (auto &neighbor : intra_node_neighbors)
-    {
-        MolecularModeling::AtomVector neighbor_neighbors = neighbor->GetNode()->GetNodeNeighbors();
-        MolecularModeling::AtomVector intra_node_neighbor_neighbors;
-        for (auto &neighbor_neighbor : neighbor_neighbors)
-        {
-            if ( (neighbor_neighbor->GetIndex() != current_atom->GetIndex()) && (current_atom->GetResidue()->GetId().compare(neighbor_neighbor->GetResidue()->GetId())==0))
-            {
-                intra_node_neighbor_neighbors.push_back(neighbor);
-            }
-        }
-        if (intra_node_neighbor_neighbors.size() > 0 )
-        {
-            found_rotation_point = false;
-        }
-    }
-    if ( found_rotation_point ) // Deadend Chitchatchoes
-    {
-        rotation_points->push_back(current_atom);
-    }
-    else // Keep looking for the ends
-    {
-        for (auto &neighbor : intra_node_neighbors)
-        {
-            selection::FindRotationPointsForNonCycles(current_atom, neighbor, rotation_points);
-        }
-    }
-    return (!rotation_points->empty()); // return false if rotation_points is empty
+    // My problem with the below is we are now dealing with non-protein, non-cycles that we don't have any metadata for.
+    // Rather than figure out how each bond would rotate, deal with branching etc, I'll just leave it all rigid for now.
+
+//    MolecularModeling::AtomVector neighbors = current_atom->GetNode()->GetNodeNeighbors();
+//    MolecularModeling::AtomVector intra_node_neighbors;
+//    for (auto &neighbor : neighbors)
+//    { // If not previous atom and not from a different residue
+//        if ( (neighbor->GetIndex() != previous_atom->GetIndex()) && (current_atom->GetResidue()->GetId().compare(neighbor->GetResidue()->GetId())==0))
+//        {
+//            intra_node_neighbors.push_back(neighbor);
+//        }
+//    }
+//    bool found_rotation_point = true;
+//    for (auto &neighbor : intra_node_neighbors)
+//    {
+//        MolecularModeling::AtomVector neighbor_neighbors = neighbor->GetNode()->GetNodeNeighbors();
+//        MolecularModeling::AtomVector intra_node_neighbor_neighbors;
+//        for (auto &neighbor_neighbor : neighbor_neighbors)
+//        {
+//            if ( (neighbor_neighbor->GetIndex() != current_atom->GetIndex()) && (current_atom->GetResidue()->GetId().compare(neighbor_neighbor->GetResidue()->GetId())==0))
+//            {
+//                intra_node_neighbor_neighbors.push_back(neighbor);
+//            }
+//        }
+//        if (intra_node_neighbor_neighbors.size() > 0 )
+//        {
+//            found_rotation_point = false;
+//        }
+//    }
+//    if ( found_rotation_point ) // Deadend Chitchatchoes. And we aren't right at the beginning looking down a deadend branch.
+//    {
+//        rotation_points->push_back(current_atom);
+//        //std::cout << "Pushed back: " << current_atom->GetId();
+//    }
+//    else // Keep looking for the ends
+//    {
+//        for (auto &neighbor : intra_node_neighbors)
+//        {
+//            // Only want one dead end for now, can't handle mulitple ones yet. Also, don't land on a dead end. Should not happen except at very start of recursion e.g(otherRes-C(=O)-CH3)
+//            //std::cout << neighbor->GetId() << "neighbor of\n" << current_atom->GetId() << "has " << neighbor->GetNode()->GetIntraNodeNeighbors().size()  << " intranode neih\n";
+//            if ( (rotation_points->empty()) && (neighbor->GetNode()->GetNodeNeighbors().size() > 1) )
+//                selection::FindRotationPointsForNonCycles(current_atom, neighbor, rotation_points);
+//        }
+//    }
+//    return (!rotation_points->empty()); // return false if rotation_points is empty
 }
 
 
@@ -184,14 +191,17 @@ __/  \__/  \__
   \__/  \__/
   If the above was within one residue.
 
-  2) fail to find both connections of the middle Res here:
+  2) fail to find both connections of Res4 here:
  Res1 __
         \__ Res4
  Res2 __/
+
+  3) It's ok with fuzed rings!
+
 */
 MolecularModeling::AtomVector selection::FindCyclePoints(MolecularModeling::Atom *atom)
 {
-//    std::cout << "Entered FindCyclePoints with " << atom->GetId() << std::endl;
+    std::cout << "Entered FindCyclePoints with " << atom->GetId() << std::endl;
     MolecularModeling::AtomVector rotation_points;
     MolecularModeling::AtomVector atom_path;
     bool found = false;
@@ -217,12 +227,35 @@ MolecularModeling::AtomVector selection::FindCyclePoints(MolecularModeling::Atom
         // Always want this at the end of the vector
         rotation_points.push_back(caAtom);
     }
-    else // Non protein.
+//    else if(atom->GetResidue()->GetIsAglycon() || atom->GetResidue()->GetIsSugarDerivative())
+//    {
+//        std::cout << "Break now1?" << std::endl;
+//        // Here is where I should look for cycles in derivatives and aglycons. This is the tough one, as who knows that's there.
+//        // If I could code a generic function that handles all cases, I could replace the other code here...
+//        // It would have to find atoms that connect to other residues. Find the branch points, handle multiple fuzed/unconnected rings.
+//        // ...
+//        // For now, something crap:
+//        MolecularModeling::Atom *rotation_point;
+//        atom_path.clear();
+//        found = false;
+//        //Find path to first cycle atom, i.e. anomeric carbon
+//        std::cout << "Non-protein, checking for cycles..." << std::endl;
+//        if(selection::FindCyclePoint(atom, atom, &atom_path, &found, rotation_point))
+//        {
+//            rotation_points.push_back(rotation_point);
+//        }
+
+//        rotation_points.push_back(atom);
+//        rotation_points.push_back(atom->GetNode()->GetNodeNeighbors().at(0));
+//        std::cout << "Break now1now?" << std::endl;
+//    }
+    else // Non protein, but not tagged as glycon or sugar derivative. Into weirdness.
     {
         MolecularModeling::Atom *rotation_point;
         atom_path.clear();
         found = false;
         //Find path to first cycle atom, i.e. anomeric carbon
+        std::cout << "Non-protein, checking for cycles..." << std::endl;
         if(selection::FindCyclePoint(atom, atom, &atom_path, &found, rotation_point))
         {
             rotation_points.push_back(rotation_point);
@@ -230,7 +263,11 @@ MolecularModeling::AtomVector selection::FindCyclePoints(MolecularModeling::Atom
         // Ok, deal with non-protein non-cycles
         else
         { // Look for atom(s) with neighbors with no other neighbors within residue
-            selection::FindRotationPointsForNonCycles(atom, atom, &rotation_points);
+            std::cout << "Dealing with non protein non-cycle" << std::endl;
+            //selection::FindRotationPointsForNonCycles(atom, atom, &rotation_points);
+            // I can't deal with non protein non cycles yet. How would I incode all the generic metadata?
+            // Just set it all as rigid, and use the connecting atom as the "cycle point".
+            rotation_points.push_back(atom);
         }
     }
     return rotation_points;
@@ -260,9 +297,10 @@ MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeli
         MolecularModeling::AtomVector neighbors = cycle_point->GetNode()->GetNodeNeighbors();
         // Ok must first get a list of neighbors that weren't in the connection path
         MolecularModeling::AtomVector good_neighbors; // Couldn't think of a better name. Everybody needs these.
-        for(MolecularModeling::AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
+        //for(MolecularModeling::AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
+        for(auto &neighbor : neighbors)
         {
-            MolecularModeling::Atom *neighbor = *it1;
+           // MolecularModeling::Atom *neighbor = *it1;
             if ( ! (std::find(atom_path.begin(), atom_path.end(), neighbor) != atom_path.end()) ) // If we've NOT been at this atom on way to cycle point
             {
                 if ( neighbor->GetName().at(0) != 'H' ) // Don't find hydrogens. Later we swap out to use a hydrogen to define a dihedral, but that's a very specific one.
@@ -270,6 +308,21 @@ MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeli
                     good_neighbors.push_back(neighbor);
                 }
             }
+        }
+        if(good_neighbors.size()==0) // Ok take hydrogens then.
+        {
+            for(auto &neighbor : neighbors)
+            {
+                if ( ! (std::find(atom_path.begin(), atom_path.end(), neighbor) != atom_path.end()) ) // If we've NOT been at this atom on way to cycle point
+                {
+                    good_neighbors.push_back(neighbor);
+                }
+
+            }
+        }
+        if(good_neighbors.size()==0)
+        {
+            std::cout << "About to segfault in MolecularModeling/Selections/selections.cpp selection::FindCyclePointNeighbor" << std::endl;
         }
         selected_neighbor = good_neighbors.at(0); // Set to any to start. If there are not good_neighbors then you deserve to crash and burn
        // std::cout << "Good neighbors are: ";
@@ -290,7 +343,7 @@ MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeli
         }
       //  std::cout << "\n";
     }
-   // std::cout << "Returning with neighbor: " << selected_neighbor->GetName() << "\n";
+    std::cout << "Returning with neighbor: " << selected_neighbor->GetName() << "\n";
     return selected_neighbor;
 }
 

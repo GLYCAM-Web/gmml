@@ -227,7 +227,8 @@ void Rotatable_dihedral::SetDihedralAngleUsingMetadata(bool use_ranges)
 {
     if (assigned_metadata_.empty())
     {
-        std::cout << "Error in Rotatable_dihedral::SetDihedralAngleUsingMetadata; no metadata has been set.\n";
+        std::cout << "Error in Rotatable_dihedral::SetDihedralAngleUsingMetadata; no metadata has been set for:.\n"
+                  << atom1_->GetId() << atom2_->GetId() << atom3_->GetId() << atom4_->GetId();
     }
     else if(assigned_metadata_.size() == 1)
     {
@@ -307,9 +308,9 @@ void Rotatable_dihedral::UpdateAtomsIfPsi()
             {
                 if(neighbor->GetName().at(0)=='H')
                 {
-//                    std::cout << "In ";
-//                    this->Print();
-//                    std::cout << "Replaced atom4_ with " << neighbor->GetId() << "\n";
+                    std::cout << "In ";
+                    this->Print();
+                    std::cout << "Replaced atom4_ with " << neighbor->GetId() << "\n";
                     atom4_ = neighbor;
                 }
             }

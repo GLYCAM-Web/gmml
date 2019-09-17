@@ -905,12 +905,6 @@ void Assembly::RecursivelySetAngleGeometry (Residue* parent_residue)
     }
 }
 
-//ResidueVector neighbors = parent_residue->GetNode()->GetResidueNeighbors();
-//for(auto &neighbor : neighbors)
-//{
-
-//}
-
 void Assembly::FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Residue *to_this_residue2, ResidueLinkageVector *residue_linkages)
 {
     ResidueVector neighbors = to_this_residue2->GetNode()->GetResidueNeighbors();
@@ -935,6 +929,10 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
 {
     ResidueLinkageVector all_residue_linkages;
     this->FigureOutResidueLinkagesInGlycan(this->GetResidues().at(0), this->GetResidues().at(0), &all_residue_linkages);
+    for(auto &linkage : all_residue_linkages)
+    {
+        linkage.SetDefaultDihedralAnglesUsingMetadata();
+    }
 }
 
 // By Yao, Oliver wishes to replace  with SetDihedralAngleGeometryWithMetadata
@@ -1396,6 +1394,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             Residue* root = corresponding_assembly_residue;
             //  TURN OFF GEOMETRY OPS
             this->RecursivelySetAngleGeometry(root);
+            std::cout << "Done setting angle stuff" << std::endl;
             this->SetDihedralAngleGeometryWithMetadata();
             //this->RecursivelySetDihedralAngleGeometry(root);
             //          The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
