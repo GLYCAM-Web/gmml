@@ -346,21 +346,21 @@ bool CondensedSequence::CheckLinkageAndDerivativeSanity()
 {
     for (CondensedSequenceResidueVector::iterator res_it = this->condensed_sequence_residue_tree_.begin(); res_it != this->condensed_sequence_residue_tree_.end(); res_it++){
 
-	CondensedSequenceResidue* condensed_residue = *res_it;
+        CondensedSequenceResidue* condensed_residue = *res_it;
         std::string residue_name = condensed_residue->GetName();
-	//Read in Metadata
-	//Search Medata with residue name(which is valid now) as key, get allowed open valence positions.
-	//Make a map<int, bool> that records wheter each available position is occupied.
+        //Read in Metadata
+        //Search Medata with residue name(which is valid now) as key, get allowed open valence positions.
+        //Make a map<int, bool> that records wheter each available position is occupied.
         CondensedSequenceResidue::DerivativeMap derivatives = condensed_residue->GetDerivatives();
-	//Check each derivative position. Throw error if attached to disallowed open valence positions.
-	//For legal derivatives, mark its position as occupied. 
-	std::vector<int> child_ids = condensed_residue->GetChildIds();
-	for (std::vector<int>::iterator child_it = child_ids.begin(); child_it != child_ids.end(); child_it++){
-	    int child_id = *child_it;
-	    CondensedSequenceResidue* child_residue = this->condensed_sequence_residue_tree_[child_id];
-	    int child_open_valence_position = child_residue->GetOxygenPosition();
-	    //If child open valence does not exist as key in map, then it's accessing disallowed positions. If that position is allowed by occupied, that's also an error. 
-	}
+        //Check each derivative position. Throw error if attached to disallowed open valence positions.
+        //For legal derivatives, mark its position as occupied.
+        std::vector<int> child_ids = condensed_residue->GetChildIds();
+        for (std::vector<int>::iterator child_it = child_ids.begin(); child_it != child_ids.end(); child_it++){
+            int child_id = *child_it;
+            CondensedSequenceResidue* child_residue = this->condensed_sequence_residue_tree_[child_id];
+            int child_open_valence_position = child_residue->GetOxygenPosition();
+            //If child open valence does not exist as key in map, then it's accessing disallowed positions. If that position is allowed by occupied, that's also an error.
+        }
     }
     return true;
 }
@@ -800,7 +800,7 @@ CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::Get
     //throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
     // If none of the above, return something:
     std::cout << "WARNING: There is no derivative in the GLYCAM code set represented by the letter " << derivative_name << "\n";
-    return CondensedSequenceSpace::CondensedSequenceGlycam06Residue("UNK", "UNK", oxygen_name, true);
+    return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("UNK", "UNK", oxygen_name, true);
 }
 
 std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach reordering_approach, bool label)
