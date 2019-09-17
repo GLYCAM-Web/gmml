@@ -792,12 +792,15 @@ CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::Get
         return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("ACX", "C1A", oxygen_name, true);
     else if(derivative_name.compare("D") == 0)
 	//D means deoxy.This derivative is not a template, but an action, of removing the oxygen this derivative attaches to. Here I create a false glycam06 residue for this purpose later on.
-	return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("Deoxy", "Deoxy",oxygen_name, true);
+        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("Deoxy", "Deoxy",oxygen_name, true);
     //Later PO3 might need to be added, but now I dont' now the name of its head atom yet.
     std::stringstream notice;
     notice << "Not eligible for MD: " << derivative_name << "This derivative name has no corresponding entry in glycam06 force field.";
     this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, notice.str()));
     //throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
+    // If none of the above, return something:
+    std::cout << "WARNING: There is no derivative in the GLYCAM code set represented by the letter " << derivative_name << "\n";
+    return CondensedSequenceSpace::CondensedSequenceGlycam06Residue("UNK", "UNK", oxygen_name, true);
 }
 
 std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach reordering_approach, bool label)
