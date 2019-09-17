@@ -967,12 +967,11 @@ void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_ind
 
 
     for (std::vector<int>::iterator it = child_ids.begin(); it != child_ids.end(); it++){
-        int child_id = *it;
-        if (child_ids.size() > 1 && child_id != child_ids.end()-1){
+        if (child_ids.size() > 1 && it != child_ids.end()-1){
             branch_depth++;
             labeled_sequence.insert(0,"]");
         }
-        this->RecursivelyBuildLabeledCondensedSequence(child_id, branch_depth, labeled_sequence, reordering_approach, longest_path, label);
+        this->RecursivelyBuildLabeledCondensedSequence(*it, branch_depth, labeled_sequence, reordering_approach, longest_path, label);
     }
 
 }
