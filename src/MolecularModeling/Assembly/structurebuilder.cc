@@ -316,13 +316,13 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){//This function shou
             cutoff = arg->a->guessBondLengthByAtomType(atom, neighbor_atom);
             
             // X distance
-            if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
+            if(abs(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX()) < cutoff)
             {
                 // Y distance
-                if(atom->GetCoordinates().at(model_index)->GetY() - neighbor_atom->GetCoordinates().at(model_index)->GetY() < cutoff)
+                if(abs(atom->GetCoordinates().at(model_index)->GetY() - neighbor_atom->GetCoordinates().at(model_index)->GetY()) < cutoff)
                 {
                     // Z distance
-                    if(atom->GetCoordinates().at(model_index)->GetZ() - neighbor_atom->GetCoordinates().at(model_index)->GetZ() < cutoff)
+                    if(abs(atom->GetCoordinates().at(model_index)->GetZ() - neighbor_atom->GetCoordinates().at(model_index)->GetZ()) < cutoff)
                     {
                         if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
                         {
