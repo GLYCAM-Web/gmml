@@ -399,7 +399,7 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
 			else {  //When the neighbor of the oxyben to be removed is the attached hydroxyl hydrogen
 			    parent_neighbor_hydrogen_neighbor = parent_neighbors[k];
 			    parent_neighbor_ring_carbon->SetCharge(parent_neighbor_ring_carbon->GetCharge() + parent_neighbor_hydrogen_neighbor->GetCharge()); //Add side group H charge to ring carbon
-			    assembly_residue_parent->RemoveAtom(parent_neighbor_hydrogen_neighbor, true);
+			    assembly_residue_parent->RemoveAtom(parent_neighbor_hydrogen_neighbor);
 			}
 		    }
 
@@ -420,7 +420,7 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
 			}
 		    }
 		    assembly_residue_parent->SetTailAtoms(updated_parent_tail_atoms);
-		    assembly_residue_parent->RemoveAtom(parent_oxygen_to_remove, true);
+		    assembly_residue_parent->RemoveAtom(parent_oxygen_to_remove);
 		}
 	    }
 	}

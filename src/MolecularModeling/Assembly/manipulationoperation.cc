@@ -109,7 +109,7 @@ void Assembly::RemoveHydrogenAtAttachedPosition(Residue *residue, int branch_ind
             }
 
         }
-        residue->RemoveAtom(hydrogen, true);
+        residue->RemoveAtom(hydrogen);
     }
 }
 

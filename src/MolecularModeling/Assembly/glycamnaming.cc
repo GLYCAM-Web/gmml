@@ -630,6 +630,7 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
 
 			if (downstream_match_status == 4){
 			    at_least_one_isomorphism_found_downstream = true;
+        	            this->RemoveDownstreamMatches(target_atom, target_template_vertex_match, template_target_vertex_match);
 			} 
 			if (mapit != last_element_position){
 		            matched_template_neighbors.push_back(template_atom_to_match);			
@@ -639,10 +640,6 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
 		        match_status_tracker[next_target_atom] = false;
 		    }
 
-		    if (downstream_match_status <= 4){
-			//Do not remove downstream matches here
-        	        //this->RemoveDownstreamMatches(target_atom, target_template_vertex_match, template_target_vertex_match);
-		    }
 		}
 
 	        forloop_start_position++;

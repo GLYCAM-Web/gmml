@@ -145,7 +145,7 @@ namespace MolecularModeling
               * Set the atoms_ attribute of the current residue
               * @param atom The atom of the current object
               */
-            void RemoveAtom(Atom* atom, bool remove_bonds);
+            void RemoveAtom(Atom* atom, bool remove_bonds = true);
             /*! \fn
               * A mutator function in order to set the head atoms of the current object
               * Set the head_atoms_ attribute of the current residue
