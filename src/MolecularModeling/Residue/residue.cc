@@ -164,7 +164,7 @@ void Residue::AddAtom(MolecularModeling::Atom *atom)
 {
     atoms_.push_back(atom);
 }
-void Residue::RemoveAtom(MolecularModeling::Atom *atom)
+void Residue::RemoveAtom(MolecularModeling::Atom *atom, bool remove_bonds)
 {
     AtomVector newAtoms = AtomVector();
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
@@ -172,8 +172,11 @@ void Residue::RemoveAtom(MolecularModeling::Atom *atom)
         MolecularModeling::Atom* a = *it;
         if(a->GetId().compare(atom->GetId()) != 0)
         {
-            if(a->GetNode() != NULL)
-                a->GetNode()->RemoveNodeNeighbor(atom);
+	    if (remove_bonds){
+                if(a->GetNode() != NULL){  
+                    a->GetNode()->RemoveNodeNeighbor(atom);
+	        }
+	    }
             newAtoms.push_back(a);
         }
     }

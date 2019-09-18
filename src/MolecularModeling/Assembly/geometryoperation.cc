@@ -217,48 +217,48 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
     double head_tail_bond_length = bondLengthByTypePairContainer.GetBondLengthForAtomTypes(tail_atom_type, head_atom_type);
     // End Oliver 2018-10-26 replacement code
 
-    GeometryTopology::Coordinate* head_atom_coordinate = head_atom_of_child_residue->GetCoordinates().at(0);
-    GeometryTopology::Coordinate* tail_head_atom_bond_vector = new GeometryTopology::Coordinate();
     //for sp3 and sp2 hybridzation, sum up all bond vectors between tail atom and neighbors excluding head. Then tail-head bond vector is the opposite of the sum.
     //Normallize length of tail-head bond vector to bond length
     //if (tail_atom_hybridization == "sp3" || tail_atom_hybridization == "sp2"){
     if (head_atom_hybridization == "sp3" || head_atom_hybridization == "sp2"){
-        MolecularModeling::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
-        std::vector<GeometryTopology::Coordinate*> head_atom_bonds = std::vector<GeometryTopology::Coordinate*>();
-        for(unsigned int i = 0; i < head_atom_neighbors.size(); i++){
-            MolecularModeling::Atom* neighbor = head_atom_neighbors[i];
-            if (neighbor != tail_atom){
-                GeometryTopology::Coordinate* neighbor_coordinate = neighbor->GetCoordinates().at(0);
-                GeometryTopology::Coordinate* head_neighbor_bond_vector = new GeometryTopology::Coordinate();
-                head_neighbor_bond_vector->SetX(neighbor_coordinate->GetX() - head_atom_coordinate->GetX());
-                head_neighbor_bond_vector->SetY(neighbor_coordinate->GetY() - head_atom_coordinate->GetY());
-                head_neighbor_bond_vector->SetZ(neighbor_coordinate->GetZ() - head_atom_coordinate->GetZ());
-                head_neighbor_bond_vector->Normalize();
-                head_atom_bonds.push_back(head_neighbor_bond_vector);
-            }
-        }
-        double total_x=0.0;
-        double total_y=0.0;
-        double total_z=0.0;
-        for (unsigned int j = 0; j < head_atom_bonds.size(); j++){
-            total_x += head_atom_bonds[j]->GetX();
-            total_y += head_atom_bonds[j]->GetY();
-            total_z += head_atom_bonds[j]->GetZ();
-        }
-        tail_head_atom_bond_vector->SetX(-1 * total_x);
-        tail_head_atom_bond_vector->SetY(-1 * total_y);
-        tail_head_atom_bond_vector->SetZ(-1 * total_z);
-        double vector_length = tail_head_atom_bond_vector-> length();
-        tail_head_atom_bond_vector->SetX(head_tail_bond_length * tail_head_atom_bond_vector->GetX() / vector_length);
-        tail_head_atom_bond_vector->SetY(head_tail_bond_length * tail_head_atom_bond_vector->GetY() / vector_length);
-        tail_head_atom_bond_vector->SetZ(head_tail_bond_length * tail_head_atom_bond_vector->GetZ() / vector_length);
-    }//if sp3/sp2
-
-    //Add in logics for sp, s hybridization later,but for now:
-    else{
-        std::cout << "Grafting: tail atom is not sp3/sp2, no rule for rotation right now. Aborting." << std::endl;
-        std::exit(1);
+	this->Grafting (tail_atom ,head_atom_of_child_residue, head_tail_bond_length);
     }
+}
+
+void Assembly::Grafting (MolecularModeling::Atom* tail_atom, MolecularModeling::Atom* head_atom_of_child_residue, double head_tail_bond_length)
+{
+
+    GeometryTopology::Coordinate* head_atom_coordinate = head_atom_of_child_residue->GetCoordinates().at(0);
+    GeometryTopology::Coordinate* tail_head_atom_bond_vector = new GeometryTopology::Coordinate();
+    gmml::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
+    std::vector<GeometryTopology::Coordinate*> head_atom_bonds = std::vector<GeometryTopology::Coordinate*>();
+    for(unsigned int i = 0; i < head_atom_neighbors.size(); i++){
+        MolecularModeling::Atom* neighbor = head_atom_neighbors[i];
+        if (neighbor != tail_atom){
+            GeometryTopology::Coordinate* neighbor_coordinate = neighbor->GetCoordinates().at(0);
+            GeometryTopology::Coordinate* head_neighbor_bond_vector = new GeometryTopology::Coordinate();
+            head_neighbor_bond_vector->SetX(neighbor_coordinate->GetX() - head_atom_coordinate->GetX());
+            head_neighbor_bond_vector->SetY(neighbor_coordinate->GetY() - head_atom_coordinate->GetY());
+            head_neighbor_bond_vector->SetZ(neighbor_coordinate->GetZ() - head_atom_coordinate->GetZ());
+            head_neighbor_bond_vector->Normalize();
+            head_atom_bonds.push_back(head_neighbor_bond_vector);
+        }
+    }
+    double total_x=0.0;
+    double total_y=0.0;
+    double total_z=0.0;
+    for (unsigned int j = 0; j < head_atom_bonds.size(); j++){
+        total_x += head_atom_bonds[j]->GetX();
+        total_y += head_atom_bonds[j]->GetY();
+        total_z += head_atom_bonds[j]->GetZ();
+    }
+    tail_head_atom_bond_vector->SetX(-1 * total_x);
+    tail_head_atom_bond_vector->SetY(-1 * total_y);
+    tail_head_atom_bond_vector->SetZ(-1 * total_z);
+    double vector_length = tail_head_atom_bond_vector-> length();
+    tail_head_atom_bond_vector->SetX(head_tail_bond_length * tail_head_atom_bond_vector->GetX() / vector_length);
+    tail_head_atom_bond_vector->SetY(head_tail_bond_length * tail_head_atom_bond_vector->GetY() / vector_length);
+    tail_head_atom_bond_vector->SetZ(head_tail_bond_length * tail_head_atom_bond_vector->GetZ() / vector_length);
 
     //Obtain relative tail position
     GeometryTopology::Coordinate* relative_tail_atom_position = new GeometryTopology::Coordinate();
@@ -1201,6 +1201,36 @@ void Assembly::SetOmegaDerivativeTorsion(MolecularModeling::Residue *residue, Mo
 //}
 
 // Changed to not leak memory by Oliver on July 3rd, 2018. See above for old code.
+double Assembly::GetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::Atom *atom2, MolecularModeling::Atom *atom3, MolecularModeling::Atom *atom4)
+{
+    double current_dihedral = 0.0;
+    GeometryTopology::Coordinate* a1 = atom1->GetCoordinates().at(0);
+    GeometryTopology::Coordinate* a2 = atom2->GetCoordinates().at(0);
+    GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(0);
+    GeometryTopology::Coordinate* a4 = atom4->GetCoordinates().at(0);
+
+    GeometryTopology::Coordinate b1 = a2;
+    b1.operator -(*a1);
+    GeometryTopology::Coordinate b2 = a3;
+    b2.operator -(*a2);
+    GeometryTopology::Coordinate b3 = a4;
+    b3.operator -(*a3);
+    GeometryTopology::Coordinate b4 = b2;
+    b4.operator *(-1);
+
+    GeometryTopology::Coordinate b2xb3 = b2;
+    b2xb3.CrossProduct(b3);
+
+    GeometryTopology::Coordinate b1_m_b2n = b1;
+    b1_m_b2n.operator *(b2.length());
+
+    GeometryTopology::Coordinate b1xb2 = b1;
+    b1xb2.CrossProduct(b2);
+
+    current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
+    return current_dihedral /3.1415 * 180;
+}
+
 void Assembly::SetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::Atom *atom2, MolecularModeling::Atom *atom3, MolecularModeling::Atom *atom4, double torsion)
 {
     double current_dihedral = 0.0;

@@ -126,10 +126,9 @@ bool Assembly::CheckCondensedSequenceSanity(std::string sequence, CondensedSeque
     return true;
 }
 
-Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree, 
+Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree,
                                                                          PrepFileSpace::PrepFile* prep_file)
 {
-    //Sorting query_residue_names to remove duplicate residue names.
     std::vector<std::string> query_residue_names = std::vector<std::string>();
     for (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = glycam06_residue_tree.begin(); it != glycam06_residue_tree.end(); it++)
     {
@@ -137,9 +136,16 @@ Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (Condens
         std::string residue_name = glycam06_residue->GetName();
         query_residue_names.push_back(residue_name);
     }
+    return this->BuildTemplateAssemblyFromPrepFile (query_residue_names, prep_file);
 
+}
+
+Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (std::vector<std::string>& query_residue_names, PrepFileSpace::PrepFile* prep_file)
+{
+    //Sorting query_residue_names to remove duplicate residue names.
     std::set<std::string> query_residue_names_unique = std::set<std::string>();
     query_residue_names_unique.insert(query_residue_names.begin(), query_residue_names.end());
+
     TemplateAssembly* template_assembly = new TemplateAssembly();
 
     ResidueVector template_assembly_residues = ResidueVector();
@@ -1105,24 +1111,22 @@ void Assembly::RecursivelySetDihedralAngleGeometry (Residue* parent_residue)
 
 ResidueVector Assembly::FindClashingResidues()
 {
-    ResidueVector clashing_residues = ResidueVector();
+    ResidueVector clashing_residues;
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
-    unsigned int bond_by_distance_count = 0;  //How many bonds does a particular atom have, according to bond by distance
-    unsigned int actual_bond_count = 0;  //How many bonds does a particular atom have, according to atomnode information
     //Exhaustively compare two different atoms in assembly, using two nested for loops
     for (AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end() -1; it++){
         Atom* current_atom = *it;
-        bond_by_distance_count = 0;
-        for (AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++){
+        unsigned int bond_by_distance_count = 0;  //How many bonds does a particular atom have, according to bond by distance
+        for (AtomVector::iterator it1 = it +1; it1 != all_atoms_of_assembly.end(); it1++){
             if (it1 != it){
                 Atom* another_atom = *it1;
                 //First compare X,Y,Z distance of two atoms. If they are really far apart, one dimension comparison is sufficient to exclude. In this way don't have to calculate distance for
                 //each pair
-                if (abs(current_atom->GetCoordinate()->GetX() - another_atom->GetCoordinate()->GetX()) < gmml::dCutOff){
-                    if (abs(current_atom->GetCoordinate()->GetY() - another_atom->GetCoordinate()->GetY()) < gmml::dCutOff){
-                        if (abs(current_atom->GetCoordinate()->GetZ() - another_atom->GetCoordinate()->GetZ()) < gmml::dCutOff){
+                if (std::abs(current_atom->GetCoordinates().at(0)->GetX() - another_atom->GetCoordinates().at(0)->GetX()) < gmml::dCutOff){
+                    if (std::abs(current_atom->GetCoordinates().at(0)->GetY() - another_atom->GetCoordinates().at(0)->GetY()) < gmml::dCutOff){
+                        if (std::abs(current_atom->GetCoordinates().at(0)->GetZ() - another_atom->GetCoordinates().at(0)->GetZ()) < gmml::dCutOff){
                             //If distance as each dimension is within cutoff, then calculate 3D distance
-                            if (current_atom->GetCoordinate()->Distance(*(another_atom->GetCoordinate()) ) < gmml::dCutOff){
+                            if (current_atom->GetCoordinates().at(0)->Distance(*(another_atom->GetCoordinates().at(0)) ) < gmml::dCutOff){
                                 bond_by_distance_count++;
                             }
                         }
@@ -1130,7 +1134,7 @@ ResidueVector Assembly::FindClashingResidues()
                 }
             }
         }
-        actual_bond_count = current_atom->GetNode()->GetNodeNeighbors().size();
+        unsigned int actual_bond_count = current_atom->GetNode()->GetNodeNeighbors().size();
         //If bond by distance gives more bonds than the number of bonds in atom node, then this atom is clashing with other atoms. This residue is a clashing residue
         if (bond_by_distance_count > actual_bond_count){
             //If multiple atoms in a residue is clashing, prevent duplicate tagging of the corresponding residue as clashing
@@ -1383,9 +1387,15 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 
     this -> SetGlycam06ResidueBonding (glycam06_assembly_residue_map);
 
+<<<<<<< HEAD
     std::multimap<int, std::pair<AtomVector*, std::string> > index_dihedral_map = std::multimap<int, std::pair<AtomVector*, std::string> >();
     for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> >::iterator it =
          glycam06_assembly_residue_map.begin(); it != glycam06_assembly_residue_map.end(); it++){
+=======
+    std::multimap<int, std::pair<gmml::AtomVector*, std::string> > index_dihedral_map;
+    for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >::iterator it = 
+	glycam06_assembly_residue_map.begin(); it != glycam06_assembly_residue_map.end(); it++){
+>>>>>>> refs/remotes/origin/gmml-dev
 
         CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam_06_res = it->second.first;
         Residue* corresponding_assembly_residue = it->second.second;
@@ -1410,6 +1420,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             break;
         }
     }
+
     //Find and resolve clashes below(crudely)
     ResidueVector clashing_residues = this->FindClashingResidues();
     std::vector<ResidueVector> clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues);
@@ -1840,7 +1851,6 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
             parameter = new ParameterFileSpace::ParameterFile(parameter_file);
             atom_type_map = parameter->GetAtomTypes();
         }
-
         LibraryFileSpace::LibraryFile::ResidueMap lib_residues = LibraryFileSpace::LibraryFile::ResidueMap();
         PrepFileSpace::PrepFile::ResidueMap prep_residues = PrepFileSpace::PrepFile::ResidueMap();
         std::vector<std::string> lib_files = std::vector<std::string>();

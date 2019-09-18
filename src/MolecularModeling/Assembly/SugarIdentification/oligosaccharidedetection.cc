@@ -4115,10 +4115,7 @@ void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide
 	  if ( !(*it2).empty() ){
 	      for (std::vector<Atom*>::iterator it3= (*it2).begin(); it3 != (*it2).end(); it3++){
 		  if ( (*it3) != NULL){
-		      if ((*it3)->GetResidue()->GetName() == NewResidueForThisMonosaccharide->GetName()){  //Added this extra if statement, to exclude the atom that's in the monosaccharide
-												           //class but actually shouldn't be in the residue (i.e. the glycosidic oxygen).
-                          AllAtomsInThisMonosaccharide.push_back(*it3);
-		      }
+                      AllAtomsInThisMonosaccharide.push_back(*it3);
 		  }
 	      }
 	  }

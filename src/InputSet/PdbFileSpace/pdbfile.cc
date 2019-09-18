@@ -178,7 +178,6 @@ PdbFile::PdbFile(const std::string &pdb_file)
     serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
     sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
     master_ = NULL;
-
     std::ifstream in_file;
     if(std::ifstream(pdb_file.c_str()))
     {
