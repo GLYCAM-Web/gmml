@@ -440,21 +440,12 @@ void Assembly::RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& ol
 	std::vector<std::vector<std::pair<Atom*, Atom*> > > all_isomorphisms;
         this->RecursiveMoleculeSubgraphMatching(target_start_atom, target_atoms, template_atoms, target_atom_label_map, template_atom_label_map, 
 						target_template_vertex_match, template_target_vertex_match,all_isomorphisms);
-	//Test print out all atom matches.Disable before pushing
-	/*std::cout << "Number of isomorphsms: " << all_isomorphisms.size() << std::endl;
-	if (!all_isomorphisms.empty()){
-	    for (std::vector<std::vector<std::pair<Atom*, Atom*> > >::iterator it =  all_isomorphisms.begin(); it != all_isomorphisms.end(); it++){
-		std::vector<std::pair<Atom*, Atom*> > iso = *it;
-		for (std::vector<std::pair<Atom*, Atom*> >::iterator it2 = iso.begin(); it2 != iso.end(); it2++){
-		    std::cout << "Match result: " << it2->first->GetName() << "-" << target_atom_label_map[it2->first] << " is matched to " <<
-		    it2->second->GetName() << "-" << template_atom_label_map[it2->second] << std::endl;
-		}
-	    }
-	}*/
+
+	std::cout << all_isomorphisms.size() << " matches found." << std::endl;
 	if (all_isomorphisms.empty()){
 	    std::cout << "Isomorphism matching failed, cannot rename atoms." << std::endl;
 	}
-	else if (all_isomorphisms.size() >= 1){
+	else if (all_isomorphisms.size() == 1){
 	    std::vector<std::pair<Atom*, Atom*> > first_isomorphism = all_isomorphisms[0]; 
 	    for (unsigned int i = 0; i < first_isomorphism.size(); i++){
 		first_isomorphism[i].first->SetName(first_isomorphism[i].second->GetName()); 
@@ -462,6 +453,15 @@ void Assembly::RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& ol
 	}
 	else if (all_isomorphisms.size() > 1){
 	    std::cout << "Warning: multiple matches detected, applied the first match." << std::endl;
+	    for (std::vector<std::vector<std::pair<Atom*, Atom*> > >::iterator isos = all_isomorphisms.begin(); isos != all_isomorphisms.end(); isos++){
+		std::cout << "Match " << std::distance(all_isomorphisms.begin(), isos) << std::endl;
+		std::cout << "-----------------------" << std::endl;
+		std::vector<std::pair<Atom*, Atom*> >& current_iso = *isos;
+		for (std::vector<std::pair<Atom*, Atom*> >::iterator iso_it = current_iso.begin(); iso_it != current_iso.end(); iso_it++){
+		    std::cout << iso_it->first->GetName() << " is matched to " << iso_it->second->GetName() << std::endl;
+		}
+		std::cout << "-----------------------" << std::endl;
+	    }
 	}
 	
     }
@@ -503,6 +503,49 @@ void Assembly::RemoveDownstreamMatches(Atom* target_atom, std::vector<std::pair<
     template_target_vertex_match.erase(template_atom_match_position, template_target_vertex_match.end());
 }
 
+bool Assembly::IfMatchScenarioAlreadyExists(std::vector< std::pair<Atom*, Atom*> >& target_template_vertex_match, 
+				    std::vector<std::vector<std::pair<Atom*, Atom*> > >& all_isomorphisms)
+{
+    bool match_already_exists = false;
+    for (std::vector<std::vector<std::pair<Atom*, Atom*> > >::iterator existing_isos_it = all_isomorphisms.begin();
+	  existing_isos_it != all_isomorphisms.end(); existing_isos_it++){
+
+	std::vector<std::pair<Atom*, Atom*> >& current_existing_match = *existing_isos_it;
+	bool current_existing_match_identical_to_current_match = true;	
+
+	for (std::vector< std::pair<Atom*, Atom*> >::iterator current_match_it = target_template_vertex_match.begin();
+	      current_match_it != target_template_vertex_match.end(); current_match_it++){
+	    Atom* current_match_target = current_match_it->first;    
+	    Atom* current_match_template = current_match_it->second;    
+	    bool current_match_pair_duplicate = false;
+
+	    for (std::vector<std::pair<Atom*, Atom*> >::iterator existing_match_it = current_existing_match.begin(); 
+		existing_match_it != current_existing_match.end(); existing_match_it++){
+
+		Atom* existing_match_target = existing_match_it->first;
+		Atom* existing_match_template = existing_match_it->second;
+
+		if (current_match_target == existing_match_target && current_match_template == existing_match_template){
+		    current_match_pair_duplicate = true;
+		    break;
+		}
+	    }
+
+	    if (!current_match_pair_duplicate){
+		current_existing_match_identical_to_current_match = false;
+		break;
+	    }
+	}
+
+	if (current_existing_match_identical_to_current_match){
+	    match_already_exists = true;
+	    break;
+	}
+    }
+
+    return match_already_exists;
+}
+
 int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& target_atoms, AtomVector& template_atoms, 
 						std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map,
 						std::vector< std::pair<Atom*, Atom*> >& target_template_vertex_match, std::vector< std::pair<Atom*, Atom*> >& template_target_vertex_match,
@@ -511,8 +554,18 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
     //std::cout << std::endl;
     //std::cout << "Recursion starts. Target atom " << target_atom->GetName() << " has label: " << target_atom_label_map[target_atom] << std::endl;
 
+    /*Return value:
+    0-Target vertex already matched.(Current not implemented, returns 5 when it's supposed to return 0)
+    1-Template vertex already matched
+    2-No equivalent template vertex exists(does not satisfy either vertex or edge equivalence)
+    3-At least one equivalent template vertex exists, but a irreconcilable mismatches occured downstream.
+    4-An isomorphism is found downstream
+    5-A partial match is in progress, i.e. so far all vertex matches, but has not yet reached a complete isomorphism.
+    1-3 are mismatch, 0,4-5 are successful match.
+    */
+
     if (this->IfVertexAlreadyMatched(target_atom,  target_template_vertex_match)){
-	return 5;  //Target vertex already matched by a previous pathway
+	return 5;  //Actually should return 0. Target vertex already matched by a previous pathway
     }
 
     if (template_atoms.size() == 1){
@@ -525,14 +578,15 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
     for (AtomVector::iterator template_atom_it = template_atoms.begin(); template_atom_it !=  template_atoms.end(); template_atom_it++){
 	Atom* template_atom = *template_atom_it;
 	//std::cout << "Test if template atom: " << template_atom->GetName() << "-" << template_atom_label_map[template_atom] << " matches" << std::endl;
-	if (this->AtomVertexMatch(target_atom, template_atom, target_atom_label_map, template_atom_label_map) && 
-	    this->AllAtomEdgesMatch(target_atom, template_atom, target_atom_label_map, template_atom_label_map)){
-	   template_atoms_equivalent.push_back(template_atom);
+	if (this->AtomVertexMatch(target_atom, template_atom, target_atom_label_map, template_atom_label_map)){  
+	    if (this->AllAtomEdgesMatch(target_atom, template_atom, target_atom_label_map, template_atom_label_map)){
+		template_atoms_equivalent.push_back(template_atom);
+	    }
 	}
     }
 
     if (template_atoms_equivalent.empty()){
-	return 2;
+	return 2; //No equivalent template vertex exists.
     }
 
     bool at_least_one_isomorphism_found_downstream = false;
@@ -548,9 +602,13 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
 
 	if (target_template_vertex_match.size() == target_atoms.size()){
 	    //std::cout << "All target atoms match! " << std::endl;
+	    bool match_scenario_already_exits = this-> IfMatchScenarioAlreadyExists(target_template_vertex_match, all_isomorphisms);
+	    if (!match_scenario_already_exits){
+	        all_isomorphisms.push_back(target_template_vertex_match);
+	    }
+
 	    downstream_match_exists = true;
-	    all_isomorphisms.push_back(target_template_vertex_match);
-	    return 4;
+	    return 4; //An isomorphism match is found.
 	}
 
 	AtomVector target_atom_neighbors = target_atom->GetNode()->GetNodeNeighbors(); 
@@ -563,7 +621,7 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
 	}
 	//If current target atom match, but there are no unmatched neighbor (i.e. all neighbors matched or dead end), downstream match is deemed successful.
 	if (unmatched_target_neighbors.empty()){
-	    return 5;
+	    return 5;//If an isomorphism isn't found above, and there is no downstream neighbors to match(dead end), it is a partial match. 
 	}
 
 	AtomVector template_atom_neighbors = template_atom->GetNode()->GetNodeNeighbors();
@@ -576,7 +634,7 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
         }
 	//If there are less unmatched template neighbor than are there unmatched targets, downstream matching is guaranteed to fail. No need to actually calculate.
 	if (unmatched_template_neighbors.size() < unmatched_target_neighbors.size()){
-	    return 3;
+	    return 3;//Current target vertex match, but downstream mismatch is impossible. 
 	}
 
 	AtomVector matched_template_neighbors;
@@ -710,7 +768,7 @@ bool Assembly::AllAtomEdgesMatch(Atom* target_atom, Atom* template_atom, std::ma
     AtomVector all_template_edges = template_atom->GetNode()->GetNodeNeighbors();
 
     for (AtomVector::iterator template_edge_it = all_template_edges.begin(); template_edge_it != all_template_edges.end(); template_edge_it++){
-	Atom* template_edge = *template_edge_it;
+	//Atom* template_edge = *template_edge_it;
 	//std::cout << "All template edges: " << template_edge->GetName() << "-" << template_atom_label_map[template_edge] << std::endl;
     }
 
