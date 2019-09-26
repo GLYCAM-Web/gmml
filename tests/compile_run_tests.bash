@@ -10,7 +10,6 @@ LD_LIBRARY_PATH=$LD_LIBRARY_PATH:../bin
 export LD_LIBRARY_PATH
 
 printf "$number_of_tests tests will be run.\n"
-
 ###################### Test 01 ###################### 
 printf "Testing create_Assembly_WritePDB... "
 g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/create_Assembly_WritePDB.cc -lgmml -o create_Assembly_WritePDB
@@ -133,8 +132,24 @@ if [ -f detected_sugars.txt ]; then
 else
    printf "Test FAILED!.\n"
 fi
+###################### Test 09 ######################
+printf "Testing pdb2glycam and molecule subgraph matching... "
+g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/pdb2glycam.cc -lgmml -o pdb2glycam
+./pdb2glycam tests/inputs/pdb2glycam_4YG0.pdb
+if [ -f pdb2glycam_output.pdb ]; then
+    if !cmp pdb2glycam_output.pdb tests/correct_outputs/pdb2glycam_4YG0_output.pdb > /dev/null 2>&1; then
+	printf "Test FAILED!.\n"
+    else
+	printf "Test passed.\n"
+	((tests_passed++))
+    fi
+else
+    printf "Test FAILED!.\n"
+fi
+rm pdb2glycam_output.pdb pdb2glycam > /dev/null 2>&1
 
 printf "Completed $number_of_tests tests.\n"
+#####################################################
 
 # ############# Allow git push ########################
 if [[ $tests_passed -eq $number_of_tests ]]; then
