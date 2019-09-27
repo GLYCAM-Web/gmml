@@ -9,8 +9,10 @@
 
 #include "../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../includes/MolecularModeling/residue.hpp"
+#include "../../../includes/MolecularModeling/residuenode.hpp"
 #include "../../../includes/MolecularModeling/atom.hpp"
 #include "../../../includes/MolecularModeling/atomnode.hpp"
+#include "../../../includes/MolecularModeling/molecule.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
@@ -65,8 +67,6 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
-#include "../../../includes/MolecularModeling/residuenode.hpp"         //Added by ayush on 11/16/17 for identifying residuenodes in assembly
-#include "../../../includes/MolecularModeling/molecule.hpp"            //Added by ayush on 11/12/17 for molecules in assembly
 
 #include <unistd.h>
 #include <errno.h>
@@ -75,7 +75,7 @@
 int local_debug = 0;
 
 using MolecularModeling::Assembly;
-
+using MolecularModeling::ResidueNode;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
