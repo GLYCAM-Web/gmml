@@ -503,7 +503,8 @@ public:
           * @index_dihedral_map See above.
           */
     void GenerateRotamersForCondensedSequence(Assembly* working_assembly, CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo
-                                              void Grafting(MolecularModeling::Atom* parent_tail_atom, MolecularModeling::Atom* child_head_atom, double head_tail_bond_length);  //Added by Yao 08/20/2019.
+                                              rotamers_glycosidic_angles_info, std::multimap<int, std::pair<AtomVector*, std::string> >& index_dihedral_map);
+    void Grafting(MolecularModeling::Atom* parent_tail_atom, MolecularModeling::Atom* child_head_atom, double head_tail_bond_length);  //Added by Yao 08/20/2019.
     void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
     void RemoveHydrogenAtAttachedPosition(Residue* residue, int branch_index);
     void SetDerivativeAngle(Residue* residue, Residue* parent_residue, int branch_index);

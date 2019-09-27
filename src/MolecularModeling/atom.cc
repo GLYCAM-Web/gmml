@@ -334,14 +334,14 @@ std::string Atom::DetermineChirality() //Added by Yao 08/26/3019 Return values a
 Atom Atom::PlaceFakeHydrogen()
 {
     Atom fake_hydrogen = Atom();
-    GeometryTopology::Coordinate::CoordinateVector coordinates;
+    GeometryTopology::CoordinateVector coordinates;
     GeometryTopology::Coordinate* coord = new GeometryTopology::Coordinate();
 
     double total_x=0.0;
     double total_y=0.0;
     double total_z=0.0;
 
-    gmml::AtomVector primary_neighbors = this->GetNode()->GetNodeNeighbors();
+    MolecularModeling::AtomVector primary_neighbors = this->GetNode()->GetNodeNeighbors();
     for (AtomVector::iterator atom_it = primary_neighbors.begin(); atom_it != primary_neighbors.end(); atom_it++){
 	//std::cout << "Bonded neighbor: " << (*atom_it)->GetName() << std::endl;
 	//std::cout << "Coordinate" << (*atom_it)->GetCoordinates().at(0)->GetX() << "," << (*atom_it)->GetCoordinates().at(0)->GetY() << "," << (*atom_it)->GetCoordinates().at(0)->GetZ() << std::endl;
@@ -370,7 +370,7 @@ Atom Atom::PlaceFakeHydrogen()
     return fake_hydrogen;
 }
 
-gmml::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& ranks)
+MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& ranks)
 {
     std::map<std::vector<int>, std::vector<int> > duplicate_value_indices_versus_higher_rank_indices = this-> ComparePrimaryNeighbors(ranks);
     AtomVector primary_neighbors = this->GetNode()->GetNodeNeighbors();
@@ -495,7 +495,7 @@ gmml::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& ranks)
     }
 }
 
-std::string Atom::DetermineRSAssignment(gmml::AtomVector& ordered_primary_neighbors, Atom* fake_hydrogen)
+std::string Atom::DetermineRSAssignment(MolecularModeling::AtomVector& ordered_primary_neighbors, Atom* fake_hydrogen)
 {
     Atom* smallest_atom = NULL;
     Atom* second_smallest = NULL;
@@ -569,8 +569,8 @@ double Atom::GetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::Atom
     return current_dihedral;
 }
 
-void Atom::InitializeComparisonTracker(std::map<std::vector<int>, std::vector<int> >& duplicate_value_indices_versus_higher_rank_indices, gmml::AtomVector& visited_atoms,
-  std::map<Atom*, std::vector<gmml::AtomVector> >& comparison_progress_tracker)
+void Atom::InitializeComparisonTracker(std::map<std::vector<int>, std::vector<int> >& duplicate_value_indices_versus_higher_rank_indices, MolecularModeling::AtomVector& visited_atoms,
+  std::map<Atom*, std::vector<MolecularModeling::AtomVector> >& comparison_progress_tracker)
 {
     AtomVector primary_neighbors = this->GetNode()->GetNodeNeighbors();
     for (std::map<std::vector<int>, std::vector<int> >::iterator mapit = duplicate_value_indices_versus_higher_rank_indices.begin(); mapit !=
@@ -627,7 +627,7 @@ std::map<std::vector<int>, std::vector<int> > Atom::ComparePrimaryNeighbors(std:
 }
 
 void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int> >& duplicate_higher_indices_map, std::vector<int>& ranks, 
-  gmml::AtomVector visited_atoms, std::map<Atom*, std::vector<AtomVector> >& comparison_progress_tracker)
+  MolecularModeling::AtomVector visited_atoms, std::map<Atom*, std::vector<AtomVector> >& comparison_progress_tracker)
 {
     //std::cout << "Recursively compare branches: " << std::endl;
     AtomVector primary_neighbors = this->GetNode()->GetNodeNeighbors();
@@ -833,7 +833,7 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
 
 }
 
-std::vector<gmml::AtomVector> Atom::MakeNextLevelOfBranches(std::vector<gmml::AtomVector>& current_branches, gmml::AtomVector& visited_atoms)
+std::vector<MolecularModeling::AtomVector> Atom::MakeNextLevelOfBranches(std::vector<MolecularModeling::AtomVector>& current_branches, MolecularModeling::AtomVector& visited_atoms)
 {
     std::vector<AtomVector> new_branches = std::vector<AtomVector>();
     for (std::vector<AtomVector>::iterator branch_it = current_branches.begin(); branch_it != current_branches.end(); branch_it++){
@@ -860,7 +860,7 @@ std::vector<gmml::AtomVector> Atom::MakeNextLevelOfBranches(std::vector<gmml::At
     return new_branches;
 }
 
-std::vector<std::vector<int> > Atom::ObtainBranchInfo (std::vector<gmml::AtomVector>& branches, gmml::AtomVector& visited_atoms)
+std::vector<std::vector<int> > Atom::ObtainBranchInfo (std::vector<MolecularModeling::AtomVector>& branches, MolecularModeling::AtomVector& visited_atoms)
 {
     std::vector<std::vector<int> > branch_info;
     for (std::vector<AtomVector>::iterator branch_it = branches.begin(); branch_it != branches.end(); branch_it++){
