@@ -230,7 +230,7 @@ void Assembly::Grafting (MolecularModeling::Atom* tail_atom, MolecularModeling::
 
     GeometryTopology::Coordinate* head_atom_coordinate = head_atom_of_child_residue->GetCoordinates().at(0);
     GeometryTopology::Coordinate* tail_head_atom_bond_vector = new GeometryTopology::Coordinate();
-    gmml::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
+    MolecularModeling::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
     std::vector<GeometryTopology::Coordinate*> head_atom_bonds = std::vector<GeometryTopology::Coordinate*>();
     for(unsigned int i = 0; i < head_atom_neighbors.size(); i++){
         MolecularModeling::Atom* neighbor = head_atom_neighbors[i];

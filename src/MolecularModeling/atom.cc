@@ -865,6 +865,8 @@ std::vector<std::vector<int> > Atom::ObtainBranchInfo (std::vector<MolecularMode
     std::vector<std::vector<int> > branch_info;
     for (std::vector<AtomVector>::iterator branch_it = branches.begin(); branch_it != branches.end(); branch_it++){
         AtomVector individual_branch = *branch_it;
+	//TODO:Right now each neighbor is counted only once, regardless of the bond type. Need to find double/triple bonded neighbors and count
+	//that neighbor multiple times. 
         std::multimap<int, Atom*> neighbor_atomic_number_map = this->GetAtomicNumbersOfNeighbors(individual_branch, visited_atoms);
 
         for (std::multimap<int, Atom*>::iterator nanm_it = neighbor_atomic_number_map.begin(); nanm_it != neighbor_atomic_number_map.end(); nanm_it ++){
@@ -922,10 +924,10 @@ std::map<std::vector<int>, std::vector<int> > Atom::MakeDuplicateRanksHigherRank
 std::vector<std::pair<Atom*, int> > Atom::SortPrimaryNeighborBranchesInDescendingOrder(std::map<Atom*, std::vector<std::vector<int> > >& comparison_result_tracker)
 {
     //std::cout << "Compare primary neighbors: " << std::endl;
-    for (std::map<Atom*, std::vector<std::vector<int> > >::iterator m = comparison_result_tracker.begin(); m != comparison_result_tracker.end(); m++ ){
+    /*for (std::map<Atom*, std::vector<std::vector<int> > >::iterator m = comparison_result_tracker.begin(); m != comparison_result_tracker.end(); m++ ){
 	std::cout << m->first->GetName() << ",";	
     }
-    std::cout << std::endl;
+    std::cout << std::endl;*/
 
     AtomVector descent_sorted_primary_neighbor;
     std::map<Atom*, std::vector<std::vector<int> > >::iterator begin_it = comparison_result_tracker.begin();

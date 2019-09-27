@@ -1387,16 +1387,9 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 
     this -> SetGlycam06ResidueBonding (glycam06_assembly_residue_map);
 
-<<<<<<< HEAD
     std::multimap<int, std::pair<AtomVector*, std::string> > index_dihedral_map = std::multimap<int, std::pair<AtomVector*, std::string> >();
     for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> >::iterator it =
          glycam06_assembly_residue_map.begin(); it != glycam06_assembly_residue_map.end(); it++){
-=======
-    std::multimap<int, std::pair<gmml::AtomVector*, std::string> > index_dihedral_map;
-    for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, MolecularModeling::Residue*> >::iterator it = 
-	glycam06_assembly_residue_map.begin(); it != glycam06_assembly_residue_map.end(); it++){
->>>>>>> refs/remotes/origin/gmml-dev
-
         CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam_06_res = it->second.first;
         Residue* corresponding_assembly_residue = it->second.second;
         //The atom and the only atom without a parent is the absolute parent(terminal).
@@ -1404,8 +1397,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             Residue* root = corresponding_assembly_residue;
             //  TURN OFF GEOMETRY OPS
             this->RecursivelySetAngleGeometry(root);
-            this->SetDihedralAngleGeometryWithMetadata();
-            //this->RecursivelySetDihedralAngleGeometry(root); // replaced by SetDihedralAngleGeometryWithMetadata. OG 2019.09.
+            //this->SetDihedralAngleGeometryWithMetadata(); // Removed for current push. Need to tag dihedrals. Also need to resolve clashes.
+            this->RecursivelySetDihedralAngleGeometry(root); // replaced by SetDihedralAngleGeometryWithMetadata. OG 2019.09.
             //          The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
             //          Linkage index is incremented inside function once a linkage has been processed.
 

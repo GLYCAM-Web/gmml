@@ -201,7 +201,7 @@ __/  \__/  \__
 */
 MolecularModeling::AtomVector selection::FindCyclePoints(MolecularModeling::Atom *atom)
 {
-    std::cout << "Entered FindCyclePoints with " << atom->GetId() << std::endl;
+//    std::cout << "Entered FindCyclePoints with " << atom->GetId() << std::endl;
     MolecularModeling::AtomVector rotation_points;
     MolecularModeling::AtomVector atom_path;
     bool found = false;
@@ -255,7 +255,7 @@ MolecularModeling::AtomVector selection::FindCyclePoints(MolecularModeling::Atom
         atom_path.clear();
         found = false;
         //Find path to first cycle atom, i.e. anomeric carbon
-        std::cout << "Non-protein, checking for cycles..." << std::endl;
+ //       std::cout << "Non-protein, checking for cycles..." << std::endl;
         if(selection::FindCyclePoint(atom, atom, &atom_path, &found, rotation_point))
         {
             rotation_points.push_back(rotation_point);
@@ -263,7 +263,7 @@ MolecularModeling::AtomVector selection::FindCyclePoints(MolecularModeling::Atom
         // Ok, deal with non-protein non-cycles
         else
         { // Look for atom(s) with neighbors with no other neighbors within residue
-            std::cout << "Dealing with non protein non-cycle" << std::endl;
+ //           std::cout << "Dealing with non protein non-cycle" << std::endl;
             //selection::FindRotationPointsForNonCycles(atom, atom, &rotation_points);
             // I can't deal with non protein non cycles yet. How would I incode all the generic metadata?
             // Just set it all as rigid, and use the connecting atom as the "cycle point".
@@ -343,7 +343,7 @@ MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeli
         }
       //  std::cout << "\n";
     }
-    std::cout << "Returning with neighbor: " << selected_neighbor->GetName() << "\n";
+//    std::cout << "Returning with neighbor: " << selected_neighbor->GetName() << "\n";
     return selected_neighbor;
 }
 

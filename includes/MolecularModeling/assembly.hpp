@@ -982,6 +982,8 @@ public:
                                            std::vector<std::vector<std::pair<Atom*, Atom*> > >& all_isomorphisms);
     bool AllAtomEdgesMatch(Atom* target_atom, Atom* template_atom, std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map);
     bool AtomVertexMatch(Atom* target_atom, Atom* template_atom, std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map);
+    bool IfMatchScenarioAlreadyExists(std::vector< std::pair<Atom*, Atom*> >& target_template_vertex_match,
+                                        std::vector<std::vector<std::pair<Atom*, Atom*> > >& all_isomorphisms);
     void RemoveDownstreamMatches(Atom* target_atom, std::vector<std::pair<Atom*, Atom*> >& target_template_vertex_match,
                                  std::vector<std::pair<Atom*, Atom*> >& template_target_vertex_match);
     bool IfVertexAlreadyMatched(Atom* vertex_atom, std::vector< std::pair<Atom*, Atom*> >& match_map);
@@ -992,7 +994,9 @@ public:
     void PruneLabelGraphByNeighboringLabels(Residue* query_residue);
     void CreatePrunedMatchingGraph(Residue *residue, ResidueVector query_residues);
 
-    /*! \fn
+
+
+            /*! \fn
             * A wrapper function for the next function. I do this to make the vector of monosaccharides external. I want to do some manipulations to them.
             */
     OligosaccharideVector ExtractSugars(std::vector<std::string> amino_lib_files, bool glyporbity_report = false, bool populate_ontology = false, bool individualOntologies = false, std::string CCD_Path = " ");

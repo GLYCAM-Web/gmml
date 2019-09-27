@@ -308,9 +308,9 @@ void Rotatable_dihedral::UpdateAtomsIfPsi()
             {
                 if(neighbor->GetName().at(0)=='H')
                 {
-                    std::cout << "In ";
-                    this->Print();
-                    std::cout << "Replaced atom4_ with " << neighbor->GetId() << "\n";
+//                    std::cout << "In ";
+//                    this->Print();
+//                    std::cout << "Replaced atom4_ with " << neighbor->GetId() << "\n";
                     atom4_ = neighbor;
                 }
             }

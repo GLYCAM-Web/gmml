@@ -766,10 +766,10 @@ void Assembly::AddNote(Glycan::Note *note)
 
 
 //Added by ayush on 11/16/17 for residuenodes in assembly
-void Assembly::SetResidueNodes(ResidueNodeVector residuenodes)
+void Assembly::SetResidueNodes(MolecularModeling::ResidueNodeVector residuenodes)
 {
     residuenodes_.clear();
-    for(ResidueNodeVector::iterator it = residuenodes.begin(); it != residuenodes.end(); it++)
+    for(MolecularModeling::ResidueNodeVector::iterator it = residuenodes.begin(); it != residuenodes.end(); it++)
     {
         residuenodes_.push_back(*it);
     }
@@ -983,13 +983,13 @@ MolecularModeling::ResidueNodeVector Assembly::GenerateResidueNodesInAssembly()
     }
 
     //For adding residuenode neighbours
-    for(ResidueNodeVector::iterator it3 = residuenodes_.begin(); it3 != residuenodes_.end(); it3++)
+    for(MolecularModeling::ResidueNodeVector::iterator it3 = residuenodes_.begin(); it3 != residuenodes_.end(); it3++)
     {
-            ResidueNode* residuenode = (*it3);
+            MolecularModeling::ResidueNode* residuenode = (*it3);
 
-             AtomVector residue_connecting_atoms = residuenode->GetResidueNodeConnectingAtoms();
+            MolecularModeling::AtomVector residue_connecting_atoms = residuenode->GetResidueNodeConnectingAtoms();
 
-            for(AtomVector::iterator it4 = residue_connecting_atoms.begin(); it4 != residue_connecting_atoms.end(); it4++)
+            for(MolecularModeling::AtomVector::iterator it4 = residue_connecting_atoms.begin(); it4 != residue_connecting_atoms.end(); it4++)
             {
                 Atom* connecting_atom = (*it4);
 
@@ -1019,7 +1019,7 @@ void Assembly::GenerateMoleculesInAssembly()
 {
     int moleculecount=0;
 
-    for(ResidueNodeVector::iterator it = residuenodes_.begin(); it != residuenodes_.end(); it++)
+    for(MolecularModeling::ResidueNodeVector::iterator it = residuenodes_.begin(); it != residuenodes_.end(); it++)
     {
          MolecularModeling::ResidueNode* residuenode = (*it);
          if(residuenode->GetIsVisited()==false)
@@ -1036,9 +1036,9 @@ void Assembly::GenerateMoleculesInAssembly()
 void Assembly::GenerateMoleculesDFSUtil(MolecularModeling::ResidueNode* DFSresiduenode)
 {
         DFSresiduenode->SetIsVisited(true);
-        ResidueNodeVector residuenode_neighbors=DFSresiduenode->GetResidueNodeNeighbors();
+        MolecularModeling::ResidueNodeVector residuenode_neighbors=DFSresiduenode->GetResidueNodeNeighbors();
 
-        for(ResidueNodeVector::iterator it2 = residuenode_neighbors.begin(); it2 != residuenode_neighbors.end(); it2++)
+        for(MolecularModeling::ResidueNodeVector::iterator it2 = residuenode_neighbors.begin(); it2 != residuenode_neighbors.end(); it2++)
         {
                MolecularModeling::ResidueNode* current_residuenode_neighbor = (*it2);
                if(current_residuenode_neighbor->GetIsVisited()==false)
