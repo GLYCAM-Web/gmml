@@ -101,6 +101,20 @@ using MolecularModeling::AtomVector;
 //////////////////////////////////////////////////////////
 bool Assembly::CheckCondensedSequenceSanity(std::string sequence, CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& prep_residues)
 {
+    if (sequence.empty()) // Is sequence an empty string?
+    {
+        std::cout << "The input sequence (" << sequence << ") is empty" << std::endl;
+        return false;
+    }
+    std::vector<char> badChars = {'\'', '(', ')'}; // Does sequence contain any characters it doesn't? Can expand this list as needed.
+    for (auto badChar : badChars)
+    {
+        if (sequence.find(badChar) != std::string::npos)
+        {
+            std::cout << "The input sequence (" << sequence << ") is contains a bad character: " << badChar << std::endl;
+            return false;
+        }
+    }
     try
     {
         CondensedSequenceSpace::CondensedSequence* condensed_sequence = new CondensedSequenceSpace::CondensedSequence(sequence);
