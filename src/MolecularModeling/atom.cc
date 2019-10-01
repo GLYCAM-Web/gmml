@@ -261,6 +261,26 @@ double Atom::GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate)
 	return sqrt((x * x) + (y * y) + (z * z));
 } // end GetDistanceToCoordinate
 
+bool Atom::CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom)
+{
+    bool withinDistance = false;
+    if (std::abs(this->GetCoordinate()->GetX() - otherAtom->GetCoordinate()->GetX()) < gmml::dCutOff)
+    {
+        if (std::abs(this->GetCoordinate()->GetY() - otherAtom->GetCoordinate()->GetY()) < gmml::dCutOff)
+        {
+            if (std::abs(this->GetCoordinate()->GetZ() - otherAtom->GetCoordinate()->GetZ()) < gmml::dCutOff)
+            {
+                //If each dimension is within cutoff, then calculate 3D distance
+                if (this->GetDistanceToAtom(otherAtom) < gmml::dCutOff)
+                {
+                    withinDistance = true;
+                }
+            }
+        }
+    }
+    return withinDistance;
+}
+
 std::string Atom::DetermineChirality() //Added by Yao 08/26/3019 Return values are R,S,A. A = achiral
 {
     AtomVector primary_neighbors = this->GetNode()->GetNodeNeighbors();

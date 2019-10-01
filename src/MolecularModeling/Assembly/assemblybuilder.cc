@@ -1148,28 +1148,19 @@ ResidueVector Assembly::FindClashingResidues()
     for (AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end() -1; it++){
         Atom* current_atom = *it;
         unsigned int bond_by_distance_count = 0;  //How many bonds does a particular atom have, according to bond by distance
-        for (AtomVector::iterator it1 = it +1; it1 != all_atoms_of_assembly.end(); it1++){
-            if (it1 != it){
-                Atom* another_atom = *it1;
-                //First compare X,Y,Z distance of two atoms. If they are really far apart, one dimension comparison is sufficient to exclude. In this way don't have to calculate distance for
-                //each pair
-                if (std::abs(current_atom->GetCoordinates().at(0)->GetX() - another_atom->GetCoordinates().at(0)->GetX()) < gmml::dCutOff){
-                    if (std::abs(current_atom->GetCoordinates().at(0)->GetY() - another_atom->GetCoordinates().at(0)->GetY()) < gmml::dCutOff){
-                        if (std::abs(current_atom->GetCoordinates().at(0)->GetZ() - another_atom->GetCoordinates().at(0)->GetZ()) < gmml::dCutOff){
-                            //If distance as each dimension is within cutoff, then calculate 3D distance
-                            if (current_atom->GetCoordinates().at(0)->Distance(*(another_atom->GetCoordinates().at(0)) ) < gmml::dCutOff){
-                                bond_by_distance_count++;
-                            }
-                        }
-                    }
-                }
+        for (AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++){
+            Atom* another_atom = *it1;
+            if(current_atom->CheckIfOtherAtomIsWithinBondingDistance(another_atom))
+            {
+                ++bond_by_distance_count;
             }
         }
         unsigned int actual_bond_count = current_atom->GetNode()->GetNodeNeighbors().size();
         //If bond by distance gives more bonds than the number of bonds in atom node, then this atom is clashing with other atoms. This residue is a clashing residue
         if (bond_by_distance_count > actual_bond_count){
             //If multiple atoms in a residue is clashing, prevent duplicate tagging of the corresponding residue as clashing
-            if (std::find (clashing_residues.begin(), clashing_residues.end(), current_atom->GetResidue()) == clashing_residues.end()){
+            if (std::find (clashing_residues.begin(), clashing_residues.end(), current_atom->GetResidue()) == clashing_residues.end())
+            {
                 clashing_residues.push_back(current_atom->GetResidue());
             }
         }

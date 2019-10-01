@@ -229,6 +229,12 @@ namespace MolecularModeling
             * @param coordinate The GeometryTopology::Coordinate used to get the distance from this Atom's Coordinates.
             */
             double GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate);
+            /*! \fn
+            * A function to check if another atom is within bonding distance
+            * @param otherAtom The other atom.
+            */
+            bool CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom);
+
 	    /*! \fn
 	    * A function to determine the chirality of this atom
 	    */
