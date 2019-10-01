@@ -715,6 +715,14 @@ void Residue::WriteHetAtoms(std::ofstream& out)
     }
 }
 
+//////////////////////////////////////////////////////////
+//                   OVERLOADED OPERATORS               //
+//////////////////////////////////////////////////////////
+bool Residue::operator== (const Residue &otherResidue)
+{
+    return (this->GetIndex() == otherResidue.GetIndex());
+}
+
 unsigned long long Residue::generateIndex()
 {
     static unsigned long long s_ResidueIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.

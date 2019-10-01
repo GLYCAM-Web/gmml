@@ -270,6 +270,8 @@ namespace MolecularModeling
             //				Atom object to an already initialized Atom object.
             // void operator=(const Atom&);
             // void operator=(const Atom*);
+            bool operator== (const Atom &otherAtom);
+
 
         private:
             //////////////////////////////////////////////////////////

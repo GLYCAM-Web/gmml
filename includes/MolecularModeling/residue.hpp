@@ -253,6 +253,11 @@ namespace MolecularModeling
             void WriteHetResidues(std::ofstream& out);
             void WriteHetAtoms(std::ofstream& out);
 
+            //////////////////////////////////////////////////////////
+            //                   OVERLOADED OPERATORS               //
+            //////////////////////////////////////////////////////////
+            bool operator== (const Residue &otherResidue);
+
         private:
 
             unsigned long long generateIndex();
