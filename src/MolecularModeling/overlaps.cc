@@ -5,12 +5,10 @@
 double gmml::CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB){
 
     double distance = 0.0, totalOverlap = 0.0;
-    for(MolecularModeling::AtomVector::iterator it1 = atomsA.begin(); it1 != atomsA.end(); ++it1)
+    for(auto &atomA : atomsA)
     {
-        for(MolecularModeling::AtomVector::iterator it2 = atomsB.begin(); it2 != atomsB.end(); ++it2)
+        for(auto &atomB : atomsB)
         {
-            MolecularModeling::Atom *atomA = *it1;
-            MolecularModeling::Atom *atomB = *it2;
             if ( std::abs((atomA->GetCoordinates().at(0)->GetX() - atomB->GetCoordinates().at(0)->GetX())) < 3.6 ) // This is faster than calulating distance, and rules out tons of atom pairs.
             {
                 distance = atomA->GetDistanceToAtom(atomB);

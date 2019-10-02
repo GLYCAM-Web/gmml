@@ -105,9 +105,9 @@ void Residue_linkage::DetermineAtomsThatMove()
     }
 }
 
-void Residue_linkage::Wiggle(int *output_pdb_id, double overlapTolerance, int interval)
+void Residue_linkage::simpleWiggle(AtomVector atomSet1, AtomVector atomSet2, int *output_pdb_id, double overlapTolerance, int interval)
 {
-    double current_overlap = this->Calculate_bead_overlaps();
+    double current_overlap = gmml::CalculateAtomicOverlaps(atomSet1, atomSet2);
     double lowest_overlap = current_overlap;
     // Reverse as convention is Glc1-4Gal and I want to wiggle in opposite direction i.e. from first rotatable bond in Asn outwards
     RotatableDihedralVector reversed_rotatable_bond_vector = linkage.GetRotatableDihedrals();
@@ -127,7 +127,7 @@ void Residue_linkage::Wiggle(int *output_pdb_id, double overlapTolerance, int in
                 rotatable_dihedral.SetDihedralAngle(current_dihedral);
                 //GlycosylationSite::write_pdb_file(this->GetGlycoprotein(), *output_pdb_id, "wiggle", lowest_overlap);
                 //++(*output_pdb_id);
-                current_overlap = this->Calculate_bead_overlaps();
+                current_overlap = gmml::CalculateAtomicOverlaps(atomSet1, atomSet2);
               //  std::cout << this->GetResidueNumber() << ": current dihedral : overlap " << current_dihedral << " : " << current_overlap << ". Best dihedral : overlap: " << best_dihedral_angle << " : "<< lowest_overlap << "\n";
                 if (lowest_overlap >= (current_overlap + 0.01)) // 0.01 otherwise rounding errors
                 {
@@ -152,7 +152,7 @@ void Residue_linkage::Wiggle(int *output_pdb_id, double overlapTolerance, int in
         //std::cout << "Setting best angle as " << best_dihedral_angle << "\n";
         rotatable_dihedral.SetDihedralAngle(best_dihedral_angle);
         // std::cout << "\n";
-        if(lowest_overlap <= tolerance) return;
+        if(lowest_overlap <= overlapTolerance) return;
     }
     return; // Note possibility of earlier return above
 }

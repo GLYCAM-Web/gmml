@@ -53,6 +53,7 @@ public:
     void SetDihedralAnglesToPrevious();
     void SetRandomDihedralAngles();
     void DetermineAtomsThatMove();
+    void simpleWiggle(AtomVector atomSet1, AtomVector atomSet2, int *output_pdb_id, double overlapTolerance = 0.01, int interval = 5);
 
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
