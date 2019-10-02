@@ -230,7 +230,7 @@ void Assembly::Grafting (MolecularModeling::Atom* tail_atom, MolecularModeling::
 
     GeometryTopology::Coordinate* head_atom_coordinate = head_atom_of_child_residue->GetCoordinates().at(0);
     GeometryTopology::Coordinate* tail_head_atom_bond_vector = new GeometryTopology::Coordinate();
-    gmml::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
+    MolecularModeling::AtomVector head_atom_neighbors = head_atom_of_child_residue->GetNode()->GetNodeNeighbors();
     std::vector<GeometryTopology::Coordinate*> head_atom_bonds = std::vector<GeometryTopology::Coordinate*>();
     for(unsigned int i = 0; i < head_atom_neighbors.size(); i++){
         MolecularModeling::Atom* neighbor = head_atom_neighbors[i];
@@ -272,7 +272,7 @@ void Assembly::Grafting (MolecularModeling::Atom* tail_atom, MolecularModeling::
     translation_vector->SetY(current_tail_atom_position->GetY() - relative_tail_atom_position->GetY());
     translation_vector->SetZ(current_tail_atom_position->GetZ() - relative_tail_atom_position->GetZ());
     //Translate coordinates of all atoms in child residue by translation vector.
-    gmml::AtomVector child_residue_atoms = head_atom_of_child_residue->GetResidue()->GetAtoms();
+    MolecularModeling::AtomVector child_residue_atoms = head_atom_of_child_residue->GetResidue()->GetAtoms();
     for (unsigned int i = 0; i < child_residue_atoms.size(); i++){
         GeometryTopology::Coordinate* current_position = child_residue_atoms[i]->GetCoordinates().at(0);
         current_position->Translate(translation_vector->GetX(), translation_vector->GetY(), translation_vector->GetZ());
@@ -1459,8 +1459,8 @@ void Assembly::GetCenterOfGeometry(GeometryTopology::Coordinate *center_of_geome
     double sumX = 0.0;
     double sumY = 0.0;
     double sumZ = 0.0;
-    GeometryTopology::Coordinate::CoordinateVector all_coords = this->GetAllCoordinates();
-    for(GeometryTopology::Coordinate::CoordinateVector::iterator it = all_coords.begin(); it != all_coords.end(); it++)
+    GeometryTopology::CoordinateVector all_coords = this->GetAllCoordinates();
+    for(GeometryTopology::CoordinateVector::iterator it = all_coords.begin(); it != all_coords.end(); it++)
     {
         GeometryTopology::Coordinate coord = *it;
         sumX += coord.GetX();

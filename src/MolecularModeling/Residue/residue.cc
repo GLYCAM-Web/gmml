@@ -96,15 +96,15 @@ std::string Residue::GetNumber()
     StringVector id = gmml::Split(id_, "_");
     return id.at(2); // This is silly, why not add residue number to class? OG: I know right?
 }
-Residue::AtomVector Residue::GetAtoms()
+MolecularModeling::AtomVector Residue::GetAtoms()
 {
     return atoms_;
 }
-Residue::AtomVector Residue::GetHeadAtoms()
+MolecularModeling::AtomVector Residue::GetHeadAtoms()
 {
     return head_atoms_;
 }
-Residue::AtomVector Residue::GetTailAtoms()
+MolecularModeling::AtomVector Residue::GetTailAtoms()
 {
     return tail_atoms_;
 }
@@ -360,7 +360,7 @@ bool Residue::GraphPredictionBasedElementLabeling()
     return flag;
 }
 
-Residue::AtomVector Residue::GetAtomsWithLowestIntraDegree()
+MolecularModeling::AtomVector Residue::GetAtomsWithLowestIntraDegree()
 {
     int degree = (int) INFINITY;
     AtomVector lowest_degree_atoms = AtomVector();
@@ -486,7 +486,7 @@ bool Residue::CheckIfWater() {
     int numberOfRingAtoms = 0;
     AtomVector atoms = this->GetAtoms();
 
-    for(MolecularModeling::Assembly::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); atom++)
+    for(MolecularModeling::MolecularModeling::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); atom++)
     {
         if ( (*atom)->GetIsRing() )
         {
@@ -513,7 +513,7 @@ GeometryTopology::Coordinate Residue::GetGeometricCenter()
     }
 
     double sumX = 0.0, sumY = 0.0, sumZ = 0.0;
-    for(MolecularModeling::Assembly::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); ++atom)
+    for(MolecularModeling::AtomVector::iterator atom = atoms.begin(); atom != atoms.end(); ++atom)
     {
        // std::cout << "atoms size is " << atoms.size() << " for " << (*atom)->GetId() << std::endl;
         sumX += (*atom)->GetCoordinates().at(0)->GetX();
@@ -713,6 +713,14 @@ void Residue::WriteHetAtoms(std::ofstream& out)
         }
         out << std::endl;
     }
+}
+
+//////////////////////////////////////////////////////////
+//                   OVERLOADED OPERATORS               //
+//////////////////////////////////////////////////////////
+bool Residue::operator== (const Residue &otherResidue)
+{
+    return (this->GetIndex() == otherResidue.GetIndex());
 }
 
 unsigned long long Residue::generateIndex()

@@ -1063,7 +1063,7 @@ int Assembly::CountNumberOfAtoms()
     for(ResidueVector:: iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
     {
         Residue* residue = (*it1);
-        Residue::AtomVector atoms = residue->GetAtoms();
+        MolecularModeling::AtomVector atoms = residue->GetAtoms();
         counter += atoms.size();
     }
     return counter;
@@ -2191,7 +2191,7 @@ std::vector<std::vector<std::string> > Assembly::CreateAllAtomTypePermutationsfo
     return all_permutations;
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithAtLeastThreeNeighbors()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyWithAtLeastThreeNeighbors()
 {
     AtomVector all_atoms = GetAllAtomsOfAssembly();
     AtomVector atoms_with_at_least_three_neighbors = AtomVector();
@@ -2299,7 +2299,7 @@ int Assembly::CountMaxNumberOfAtomsInLargestResidue()
     for(ResidueVector:: iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
     {
         Residue* residue = (*it1);
-        Residue::AtomVector atoms = residue->GetAtoms();
+        MolecularModeling::AtomVector atoms = residue->GetAtoms();
         if(max <= atoms.size())
             max = atoms.size();
     }

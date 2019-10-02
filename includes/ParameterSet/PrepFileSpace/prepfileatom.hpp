@@ -8,6 +8,8 @@
 
 namespace PrepFileSpace
 {
+    class PrepFileAtom; // Forward declare for the vector typedef:
+    typedef std::vector<PrepFileAtom*> PrepFileAtomVector;
     class PrepFileAtom
     {
         public:

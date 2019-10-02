@@ -37,8 +37,8 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
   }
 
   //See if they are neighbors
-  MolecularModeling::Assembly::AtomVector neighbors = carbon1->GetNode()->GetNodeNeighbors();
-  for(MolecularModeling::Assembly::AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
+  MolecularModeling::AtomVector neighbors = carbon1->GetNode()->GetNodeNeighbors();
+  for(MolecularModeling::AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
   {
     MolecularModeling::Atom* thisNeighbor = *it;
     if(thisNeighbor->GetId() == carbon2->GetId())
@@ -74,8 +74,8 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
   }
 
   //Check geometry;
-  MolecularModeling::Assembly::AtomVector carbon1neighbors = carbon1->GetNode()->GetNodeNeighbors();
-  MolecularModeling::Assembly::AtomVector carbon2neighbors = carbon2->GetNode()->GetNodeNeighbors();
+  MolecularModeling::AtomVector carbon1neighbors = carbon1->GetNode()->GetNodeNeighbors();
+  MolecularModeling::AtomVector carbon2neighbors = carbon2->GetNode()->GetNodeNeighbors();
 
   if((carbon1neighbors.size() < 4) && (carbon2neighbors.size() < 4))//If both have three or less neighbors
   {
@@ -85,12 +85,12 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
       gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
       debugStr.str("");
     }
-    for(MolecularModeling::Assembly::AtomVector::iterator it = carbon1neighbors.begin(); it != carbon1neighbors.end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = carbon1neighbors.begin(); it != carbon1neighbors.end(); it++)
     {
       MolecularModeling::Atom* thisC1Neighbor = *it;
       if(thisC1Neighbor->GetId() != carbon2->GetId())
       {
-        for(MolecularModeling::Assembly::AtomVector::iterator it2 = carbon2neighbors.begin(); it2 != carbon2neighbors.end(); it2++)
+        for(MolecularModeling::AtomVector::iterator it2 = carbon2neighbors.begin(); it2 != carbon2neighbors.end(); it2++)
         {
           MolecularModeling::Atom* thisC2Neighbor = *it2;
           if(thisC2Neighbor->GetId() != carbon1->GetId())

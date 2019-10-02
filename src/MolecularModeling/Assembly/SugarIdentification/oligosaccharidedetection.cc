@@ -89,8 +89,8 @@ using Glycan::Monosaccharide;
 // as it was causing segfaults and also removing all sidechain atoms from the assembly. Davis thinks this will be a problem
 // when we go to build the ontology again, as it needs Detect Shape. I (Oliver) intend to comment out the below, and set up
 // gmml to use the BFMP code I ported into gmml. See ring_shape_detection.hpp in MolecularModeling folder.
-//void Assembly::DetectShape(AtomVector cycle, Glycan::Monosaccharide* mono)
-//void Assembly::GetRingShapeBFMP_deprecatedExternalProgramCall(AtomVector cycle, Glycan::Monosaccharide* mono)
+//void Assembly::DetectShape(MolecularModeling::AtomVector cycle, Glycan::Monosaccharide* mono)
+//void Assembly::GetRingShapeBFMP_deprecatedExternalProgramCall(MolecularModeling::AtomVector cycle, Glycan::Monosaccharide* mono)
 //{
 //    ///Creating a new assembly only from the ring atoms for external detect shape program
 //    Assembly* detect_shape_assembly = new Assembly();
@@ -365,10 +365,10 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   std::vector< std::string > anomeric_carbons_status = std::vector< std::string >();
   std::vector< Glycan::Note* > anomeric_notes = std::vector< Glycan::Note* >();
   CycleMap sorted_cycles = CycleMap();
-  AtomVector AllAnomericCarbons = AtomVector();
+  MolecularModeling::AtomVector AllAnomericCarbons = MolecularModeling::AtomVector();
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
   {
-    AtomVector cycle_atoms = ( *it ).second;
+    MolecularModeling::AtomVector cycle_atoms = ( *it ).second;
     for (std::vector<MolecularModeling::Atom*>::iterator it = cycle_atoms.begin(); it != cycle_atoms.end(); it++ )
     {
       (*it)-> SetIsCycle(true);
@@ -377,7 +377,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
   {
     std::string cycle_atoms_str = ( *it ).first;
-    AtomVector cycle_atoms = ( *it ).second;
+    MolecularModeling::AtomVector cycle_atoms = ( *it ).second;
     Glycan::Monosaccharide* mono = new Glycan::Monosaccharide(&cycle_atoms_str, cycle_atoms, this, CCD_Path);
     mono->assembly_ = this;
     monos.push_back(mono);
@@ -406,9 +406,9 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 
     ///PRINTING ASSIGNED SIDE ATOMS
     std::cout << "Side group atoms: " << "\n";
-    for( std::vector< AtomVector >::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++ )
+    for( std::vector< MolecularModeling::AtomVector >::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++ )
     {
-      AtomVector sides = ( *it1 );
+      MolecularModeling::AtomVector sides = ( *it1 );
       if( it1 == mono->side_atoms_.begin() ) //side atoms of anomeric carbon
       {
         if( sides.at( 0 ) != NULL && sides.at( 1 ) != NULL )
@@ -539,8 +539,8 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
 
   //Checking if any sugar named residue is not detected
-  Assembly::ResidueVector all_residues = GetAllResiduesOfAssembly();
-  for(Assembly::ResidueVector::iterator it = all_residues.begin(); it != all_residues.end(); it++)
+  MolecularModeling::ResidueVector all_residues = GetAllResiduesOfAssembly();
+  for(MolecularModeling::ResidueVector::iterator it = all_residues.begin(); it != all_residues.end(); it++)
   {
     MolecularModeling::Residue* this_residue = *it;
     std::string residue_name = this_residue->GetName();
@@ -714,15 +714,15 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
                     if(mono2_carbon_index == parent_c_index + '0' && mono1_carbon_index == child_c_index + '0')///indeces matched the indeces of the given disaccharide
                     {
                         found_disaccharide = true;
-                        AtomVector mono1_ring_atoms = corresponding_first_oligo->root_->cycle_atoms_;
+                        MolecularModeling::AtomVector mono1_ring_atoms = corresponding_first_oligo->root_->cycle_atoms_;
 
                         ///Preparing atoms for phi and psi angle
                         MolecularModeling::Atom* phi_atom1 = mono1_ring_atoms.at(mono1_ring_atoms.size() - 1); ///O5 or N5
                         MolecularModeling::Atom* phi_atom2 = new MolecularModeling::Atom(); ///C1
                         phi_atom2 = corresponding_first_oligo->root_->cycle_atoms_.at(0); ///anomeric carbon
                         MolecularModeling::Atom* phi_atom3 = NULL;
-                        AtomVector phi_atom2_neighbors = phi_atom2->GetNode()->GetNodeNeighbors();
-                        for(AtomVector::iterator it3 = phi_atom2_neighbors.begin(); it3 != phi_atom2_neighbors.end(); it3++)
+                        MolecularModeling::AtomVector phi_atom2_neighbors = phi_atom2->GetNode()->GetNodeNeighbors();
+                        for(MolecularModeling::AtomVector::iterator it3 = phi_atom2_neighbors.begin(); it3 != phi_atom2_neighbors.end(); it3++)
                         {
                             MolecularModeling::Atom* atom2_neighbor= (*it3);
                             ///If the neighbor id is the same as the linkage intermediate atom id
@@ -735,8 +735,8 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
                         if(phi_atom3 != NULL)
                         {
                             MolecularModeling::Atom* phi_atom4 = NULL;
-                            AtomVector phi_atom3_neighbors = phi_atom3->GetNode()->GetNodeNeighbors();
-                            for(AtomVector::iterator it4 = phi_atom3_neighbors.begin(); it4 != phi_atom3_neighbors.end(); it4++)
+                            MolecularModeling::AtomVector phi_atom3_neighbors = phi_atom3->GetNode()->GetNodeNeighbors();
+                            for(MolecularModeling::AtomVector::iterator it4 = phi_atom3_neighbors.begin(); it4 != phi_atom3_neighbors.end(); it4++)
                             {
                                 MolecularModeling::Atom* atom3_neighbor= (*it4);
                                 ///If the neighbor id is the same as the linkage carbon at second mono side (first linkage atom from second mono side)
@@ -745,10 +745,10 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
                                     phi_atom4 = atom3_neighbor; ///Cx
                                     phi_angle = CalculateTorsionAngleByAtoms(phi_atom1, phi_atom2, phi_atom3, phi_atom4); /// ϕ (O5′-C1′-Ox-Cx)
                                     gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(phi_angle));
-                                    AtomVector phi_atom4_neighbors = phi_atom4->GetNode()->GetNodeNeighbors();
+                                    MolecularModeling::AtomVector phi_atom4_neighbors = phi_atom4->GetNode()->GetNodeNeighbors();
 
                                     int atom4_index = gmml::ConvertString<int>(gmml::Split(phi_atom4->GetName(), "C*,\'").at(0));
-                                    for(AtomVector::iterator it5 = phi_atom4_neighbors.begin(); it5 != phi_atom4_neighbors.end(); it5++)
+                                    for(MolecularModeling::AtomVector::iterator it5 = phi_atom4_neighbors.begin(); it5 != phi_atom4_neighbors.end(); it5++)
                                     {
                                         MolecularModeling::Atom* atom4_neighbor = (*it5);
                                         std::string neighbor_name = atom4_neighbor->GetName();
@@ -795,13 +795,13 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
 //     for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
 //     {
 //         std::string cycle_atoms_str = (*it).first;
-//         AtomVector cycle_atoms = (*it).second;
+//         MolecularModeling::AtomVector cycle_atoms = (*it).second;
 //         Glycan::Note* anomeric_note = new Glycan::Note();
 //         MolecularModeling::Atom* anomeric = Glycan::Monosaccharide::FindAnomericCarbon(anomeric_note, anomeric_carbons_status, cycle_atoms, cycle_atoms_str);
 //
 //         if(anomeric != NULL)
 //         {
-//             AtomVector sorted_cycle_atoms = AtomVector();
+//             MolecularModeling::AtomVector sorted_cycle_atoms = MolecularModeling::AtomVector();
 //             std::stringstream sorted_cycle_stream;
 //             sorted_cycle_atoms = SortCycle( cycle_atoms, anomeric, sorted_cycle_stream );
 //             sorted_cycles[sorted_cycle_stream.str()] = sorted_cycle_atoms;
@@ -817,7 +817,7 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
 //         int status_index = distance(cycles.begin(), it);
 //         mono->anomeric_status_ = anomeric_carbons_status.at(status_index);
 //         std::string cycle_atoms_str = (*it).first;
-//         AtomVector cycle = (*it).second;
+//         MolecularModeling::AtomVector cycle = (*it).second;
 //
 //         std::stringstream ring_atoms;
 //         ring_atoms << "Ring atoms: " << cycle_atoms_str;
@@ -826,7 +826,7 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
 //
 //         std::stringstream ring_atom_names;
 //         ring_atom_names << "Ring atom names: " ;
-//         for(AtomVector::iterator it1 = cycle.begin(); it1 != cycle.end(); it1++)
+//         for(MolecularModeling::AtomVector::iterator it1 = cycle.begin(); it1 != cycle.end(); it1++)
 //         {
 //             MolecularModeling::Atom* atom = (*it1);
 //             std::vector<std::string> atom_tokens = gmml::Split(atom->GetId(), "_");
@@ -840,7 +840,7 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
 //     }
 // }
 
-void Assembly::ReturnCycleAtoms(std::string src_id, MolecularModeling::Atom *current_atom, AtomIdAtomMap &atom_parent_map, AtomVector &cycle, std::stringstream &cycle_stream)
+void Assembly::ReturnCycleAtoms(std::string src_id, MolecularModeling::Atom *current_atom, AtomIdAtomMap &atom_parent_map, MolecularModeling::AtomVector &cycle, std::stringstream &cycle_stream)
 {
     cycle.push_back(current_atom);
     cycle_stream << current_atom->GetId() << "-";
@@ -865,7 +865,7 @@ Assembly::CycleMap Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
     for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
     {
         std::string cycle_str = (*it).first;
-        AtomVector cycle_atoms = (*it).second;
+        MolecularModeling::AtomVector cycle_atoms = (*it).second;
         all_single_bonds = true;
         std::stringstream debugStr;
         debugStr << cycle_atoms.size();
@@ -907,7 +907,7 @@ Assembly::CycleMap Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
     for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
     {
         std::string cycle_str = (*it).first;
-        AtomVector cycle_atoms = (*it).second;
+        MolecularModeling::AtomVector cycle_atoms = (*it).second;
         if(to_be_deleted_cycles.find(cycle_str) == to_be_deleted_cycles.end())
         {
           all_single_bond_filtered_cycles[cycle_str] = cycle_atoms;
@@ -931,9 +931,9 @@ void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
     for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
     {
         std::string cycle_str = (*it).first;
-        AtomVector cycle_atoms = (*it).second;
+        MolecularModeling::AtomVector cycle_atoms = (*it).second;
         all_carbons = true;
-        for(AtomVector::iterator it1 = cycle_atoms.begin(); it1 != cycle_atoms.end(); it1++)
+        for(MolecularModeling::AtomVector::iterator it1 = cycle_atoms.begin(); it1 != cycle_atoms.end(); it1++)
         {
             MolecularModeling::Atom* atom = (*it1);
             if(atom->GetName().find("C") == std::string::npos)
@@ -949,7 +949,7 @@ void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
     for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
     {
         std::string cycle_str = (*it).first;
-        AtomVector cycle_atoms = (*it).second;
+        MolecularModeling::AtomVector cycle_atoms = (*it).second;
         if(to_be_deleted_cycles.find(cycle_str) == to_be_deleted_cycles.end())
             all_carbons_filtered_cycles[cycle_str] = cycle_atoms;
     }
@@ -963,7 +963,7 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
     for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
     {
         std::string cycle_i_str = (*it).first; ///cycle i will be compared with all the other cycles
-        AtomVector cycle_i_atoms = (*it).second;
+        MolecularModeling::AtomVector cycle_i_atoms = (*it).second;
         for(CycleMap::iterator it1 = cycles.begin(); it1 != cycles.end(); it1++)
         {
             if(it != it1)
@@ -1001,7 +1001,7 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
     for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
     {
         std::string cycle_str = (*it).first;
-        AtomVector cycle_atoms = (*it).second;
+        MolecularModeling::AtomVector cycle_atoms = (*it).second;
         if(to_be_deleted_cycles.find(cycle_str) == to_be_deleted_cycles.end())
             fused_filtered_cycles[cycle_str] = cycle_atoms;
     }
@@ -1009,22 +1009,22 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
     cycles = fused_filtered_cycles;
 }
 
-// MolecularModeling::Atom* Assembly::FindAnomericCarbon( Glycan::Note* anomeric_note, std::vector< std::string > & anomeric_carbons_status, AtomVector cycle, std::string cycle_atoms_str ) {
+// MolecularModeling::Atom* Assembly::FindAnomericCarbon( Glycan::Note* anomeric_note, std::vector< std::string > & anomeric_carbons_status, MolecularModeling::AtomVector cycle, std::string cycle_atoms_str ) {
 //   MolecularModeling::Atom* anomeric_carbon = new MolecularModeling::Atom();
-//   for( AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++ ) {
+//   for( MolecularModeling::AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++ ) {
 //     MolecularModeling::Atom* cycle_atom = ( *it );
 //
 //     if( ( cycle_atom->GetName().substr( 0, 1 ).compare( "O" ) == 0 ) ) {///find oxygen in ring
 //       //                && isdigit(gmml::ConvertString<char>(cycle_atom->GetName().substr(1,1)))))
 //       MolecularModeling::AtomNode* node = cycle_atom->GetNode();
-//       AtomVector neighbors = node->GetNodeNeighbors();
+//       MolecularModeling::AtomVector neighbors = node->GetNodeNeighbors();
 //
 //       ///Check the first neighbor of oxygen
 //       MolecularModeling::Atom* o_neighbor1 = neighbors.at( 0 );
 //       MolecularModeling::AtomNode* o_neighbor1_node = o_neighbor1->GetNode();
-//       AtomVector o_neighbor1_neighbors = o_neighbor1_node->GetNodeNeighbors();
+//       MolecularModeling::AtomVector o_neighbor1_neighbors = o_neighbor1_node->GetNodeNeighbors();
 //
-//       for( AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has another oxygen or nitrogen neighbor
+//       for( MolecularModeling::AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has another oxygen or nitrogen neighbor
 //         MolecularModeling::Atom* o_neighbor1_neighbor = ( *it1 );
 //
 //         if( cycle_atoms_str.find( o_neighbor1_neighbor->GetId() ) == std::string::npos ///if the neighbor is not one of the cycle atoms
@@ -1041,9 +1041,9 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
 //       ///Check the second neighbor of oxygen
 //       MolecularModeling::Atom* o_neighbor2 = neighbors.at( 1 );
 //       MolecularModeling::AtomNode* o_neighbor2_node = o_neighbor2->GetNode();
-//       AtomVector o_neighbor2_neighbors = o_neighbor2_node->GetNodeNeighbors();
+//       MolecularModeling::AtomVector o_neighbor2_neighbors = o_neighbor2_node->GetNodeNeighbors();
 //
-//       for( AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++ ) {///check if neighbor2 of oxygen has another oxygen or nitrogen neighbor
+//       for( MolecularModeling::AtomVector::iterator it2 = o_neighbor2_neighbors.begin(); it2 != o_neighbor2_neighbors.end(); it2++ ) {///check if neighbor2 of oxygen has another oxygen or nitrogen neighbor
 //         MolecularModeling::Atom* o_neighbor2_neighbor = ( *it2 );
 //
 //         if( cycle_atoms_str.find( o_neighbor2_neighbor->GetId() ) == std::string::npos
@@ -1091,7 +1091,7 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
 //
 //       ///Check non-ring neighbors of oxygen neighbors (the one without non-ring carbon is anomeric)
 //       bool neighbor2_is_anomeric = false;
-//       for( AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has non-ring carbon neighbor
+//       for( MolecularModeling::AtomVector::iterator it1 = o_neighbor1_neighbors.begin(); it1 != o_neighbor1_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has non-ring carbon neighbor
 //         MolecularModeling::Atom* neighbor1_neighbor = ( *it1 );
 //         if( cycle_atoms_str.find( neighbor1_neighbor->GetId()) == std::string::npos ///if the neighbor is not one of the cycle atoms
 //                 && ( neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "C" ) == 0 ) ) {///if first element is "C"
@@ -1100,7 +1100,7 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
 //         }
 //       }
 //       bool neighbor1_is_anomeric = false;
-//       for( AtomVector::iterator it1 = o_neighbor2_neighbors.begin(); it1 != o_neighbor2_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has non-ring carbon neighbor
+//       for( MolecularModeling::AtomVector::iterator it1 = o_neighbor2_neighbors.begin(); it1 != o_neighbor2_neighbors.end(); it1++ ) {///check if neighbor1 of oxygen has non-ring carbon neighbor
 //         MolecularModeling::Atom* neighbor2_neighbor = ( *it1 );
 //         if( cycle_atoms_str.find( neighbor2_neighbor->GetId()) == std::string::npos ///if the neighbor is not one of the cycle atoms
 //                 && ( neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "C" ) == 0 ) ) {///if first element is "C"
@@ -1129,10 +1129,10 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
 //   return NULL;
 // }
 
-Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::Atom *anomeric_atom, std::stringstream& sorted_cycle_stream)
+MolecularModeling::AtomVector Assembly::SortCycle(MolecularModeling::AtomVector cycle, MolecularModeling::Atom *anomeric_atom, std::stringstream& sorted_cycle_stream)
 {
-    AtomVector sorted_cycle = AtomVector();
-    for(AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
+    MolecularModeling::AtomVector sorted_cycle = MolecularModeling::AtomVector();
+    for(MolecularModeling::AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
     {
         MolecularModeling::Atom* atom = (*it);
         unsigned int index = distance(cycle.begin(), it);
@@ -1146,7 +1146,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
                 MolecularModeling::Atom* a0 = cycle.at(0);
                 if(a0->GetName().substr(0,1).compare("O") == 0)///a0 is oxygen so the std::vector is in reverse order
                 {
-                    for(AtomVector::iterator it1 = it - 1; it1 != cycle.begin(); it1--)///atoms before the anomeric atom in reverse order
+                    for(MolecularModeling::AtomVector::iterator it1 = it - 1; it1 != cycle.begin(); it1--)///atoms before the anomeric atom in reverse order
                     {
                         MolecularModeling::Atom* a = (*it1);
                         sorted_cycle.push_back(a);
@@ -1159,7 +1159,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
                 }
                 else
                 {
-                    for(AtomVector::iterator it1 = cycle.begin(); it1 != it; it1++)///atoms before the anomeric atom from beginning of std::vector
+                    for(MolecularModeling::AtomVector::iterator it1 = cycle.begin(); it1 != it; it1++)///atoms before the anomeric atom from beginning of std::vector
                     {
                         MolecularModeling::Atom* a = (*it1);
                         sorted_cycle.push_back(a);
@@ -1176,7 +1176,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
                 MolecularModeling::Atom* next_atom = cycle.at(index + 1);
                 if(next_atom->GetName().substr(0,1).compare("O") == 0)///next atom is oxygen so the std::vector is in reverse order
                 {
-                    for(AtomVector::iterator it1 = it; it1 != cycle.begin(); it1--) ///atoms befor anomeric atom down to beginning of the std::vector
+                    for(MolecularModeling::AtomVector::iterator it1 = it; it1 != cycle.begin(); it1--) ///atoms befor anomeric atom down to beginning of the std::vector
                     {
                         MolecularModeling::Atom* a_before = (*it1);
                         sorted_cycle.push_back(a_before);
@@ -1186,7 +1186,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
                     sorted_cycle.push_back((*cycle.begin()));
                     sorted_cycle_stream << (*cycle.begin())->GetId() << "-";
                     (*cycle.begin())->SetIsRing(true);
-                    for(AtomVector::iterator it2 = cycle.end() - 1; it2 != it; it2--)///atoms from end of the std::vector down to anomeric atom
+                    for(MolecularModeling::AtomVector::iterator it2 = cycle.end() - 1; it2 != it; it2--)///atoms from end of the std::vector down to anomeric atom
                     {
                         MolecularModeling::Atom* atom_after = (*it2);
                         sorted_cycle.push_back(atom_after);
@@ -1199,14 +1199,14 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
                 }
                 else///oxygen is before the anomeric atom so the std::vector is in normal order
                 {
-                    for(AtomVector::iterator it1 = it; it1 != cycle.end(); it1++) ///atoms after anomeric atom to the end of the std::vector
+                    for(MolecularModeling::AtomVector::iterator it1 = it; it1 != cycle.end(); it1++) ///atoms after anomeric atom to the end of the std::vector
                     {
                         MolecularModeling::Atom* atom_after = (*it1);
                         sorted_cycle.push_back(atom_after);
                         atom_after->SetIsRing(true);
                         sorted_cycle_stream << atom_after->GetId() << "-";
                     }
-                    for(AtomVector::iterator it2 = cycle.begin(); it2 != it; it2++)///atoms befor the anomeric atom from beginning of std::vector
+                    for(MolecularModeling::AtomVector::iterator it2 = cycle.begin(); it2 != it; it2++)///atoms befor the anomeric atom from beginning of std::vector
                     {
                         MolecularModeling::Atom* atom_before = (*it2);
                         sorted_cycle.push_back(atom_before);
@@ -1230,9 +1230,9 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //   int local_debug = -1;
 //     std::vector<std::string> orientations = std::vector<std::string>();
 //     std::vector<AtomVector> side_atoms = std::vector<AtomVector>();
-//     AtomVector default_atom_vector = AtomVector(3, NULL);
+//     MolecularModeling::AtomVector default_atom_vector = MolecularModeling::AtomVector(3, NULL);
 //
-//     for(AtomVector::iterator it = mono->cycle_atoms_.begin(); it != mono->cycle_atoms_.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
+//     for(MolecularModeling::AtomVector::iterator it = mono->cycle_atoms_.begin(); it != mono->cycle_atoms_.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
 //     {
 //       orientations.push_back("N");
 //       side_atoms.push_back(default_atom_vector);
@@ -1259,9 +1259,9 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //
 //       ///Calculating the orientation of the side atoms
 //       MolecularModeling::AtomNode* node = current_atom->GetNode();
-//       AtomVector neighbors = node->GetNodeNeighbors();
+//       MolecularModeling::AtomVector neighbors = node->GetNodeNeighbors();
 //       int not_h_neighbors = 0;
-//       for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+//       for(MolecularModeling::AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
 //       {
 //         MolecularModeling::Atom* neighbor = (*it1);
 //         std::string neighbor_id = neighbor->GetId();
@@ -1273,7 +1273,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //       }
 //       if(not_h_neighbors != 0)
 //       {
-//         for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+//         for(MolecularModeling::AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
 //         {
 //           MolecularModeling::Atom* neighbor = (*it1);
 //           std::string neighbor_id = neighbor->GetId();
@@ -1385,10 +1385,10 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //             {
 //               ///Check if neighbor of neighbor is oxygen or nitrogen
 //               MolecularModeling::AtomNode* neighbor_node = neighbor->GetNode();
-//               AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
+//               MolecularModeling::AtomVector neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
 //               int o_neighbors = 0;
 //               int not_h_neighbors = 0;
-//               for(AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
+//               for(MolecularModeling::AtomVector::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
 //               {
 //                 MolecularModeling::Atom* neighbor_of_neighbor = (*it2);
 //                 std::string neighbor_of_neighbor_id = neighbor_of_neighbor->GetId();
@@ -1446,8 +1446,8 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //     // {
 //     //   for (std::vector<AtomVector>::iterator sideAtomVectorIT = side_atoms.begin(); sideAtomVectorIT != side_atoms.end(); sideAtomVectorIT ++)
 //     //   {
-//     //     AtomVector sideAtomVector = (*sideAtomVectorIT);
-//     //     for (AtomVector::iterator sideAtomIT = sideAtomVector.begin(); sideAtomIT != sideAtomVector.end(); sideAtomIT++)
+//     //     MolecularModeling::AtomVector sideAtomVector = (*sideAtomVectorIT);
+//     //     for (MolecularModeling::AtomVector::iterator sideAtomIT = sideAtomVector.begin(); sideAtomIT != sideAtomVector.end(); sideAtomIT++)
 //     //     {
 //     //       MolecularModeling::Atom* sideAtom = (*sideAtomIT);
 //     //       std::stringstream debugStr;
@@ -1464,20 +1464,20 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 // {
 //     for (std::vector<Glycan::Monosaccharide*>::iterator it1= monos.begin(); it1 != monos.end(); it1++){
 //         Glycan::Monosaccharide* mono = *it1;
-//         AtomVector& cycle_atoms = mono->cycle_atoms_;
+//         MolecularModeling::AtomVector& cycle_atoms = mono->cycle_atoms_;
 //
 //         for (std::vector<AtomVector>::iterator it2 = mono->side_atoms_.begin(); it2 != mono->side_atoms_.end(); it2++){
-//             AtomVector& SideAtomArm = *it2;
-//             AtomVector all_plus_one_side_atoms = AtomVector();
-//             for (AtomVector::iterator it3 = SideAtomArm.begin(); it3 != SideAtomArm.end(); it3++){
+//             MolecularModeling::AtomVector& SideAtomArm = *it2;
+//             MolecularModeling::AtomVector all_plus_one_side_atoms = MolecularModeling::AtomVector();
+//             for (MolecularModeling::AtomVector::iterator it3 = SideAtomArm.begin(); it3 != SideAtomArm.end(); it3++){
 //                 if ((*it3) != NULL){
 //                     all_plus_one_side_atoms.push_back(*it3);
 //                 }
 //             }
 //
-//             for (AtomVector::iterator it4= all_plus_one_side_atoms.begin(); it4 != all_plus_one_side_atoms.end(); it4++ ){
+//             for (MolecularModeling::AtomVector::iterator it4= all_plus_one_side_atoms.begin(); it4 != all_plus_one_side_atoms.end(); it4++ ){
 //                 Atom* plus_one_side_atom = *it4;
-//                 AtomVector visited_atoms = AtomVector();
+//                 MolecularModeling::AtomVector visited_atoms = MolecularModeling::AtomVector();
 //                 if ( this->CheckIfPlusOneSideAtomBelongsToCurrentMonosaccharide(SideAtomArm, cycle_atoms, plus_one_side_atom) ){
 //                       this->SetCompleteSideGroupAtoms (SideAtomArm, plus_one_side_atom, cycle_atoms ,visited_atoms);
 //                 }
@@ -1487,12 +1487,12 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //     }//for
 // }//InitiateDetectionOfCompleteSideGroupAtoms
 //
-// bool Assembly::CheckIfPlusOneSideAtomBelongsToCurrentMonosaccharide (AtomVector& SideAtomArm, AtomVector& cycle_atoms, Atom* working_atom )
+// bool Assembly::CheckIfPlusOneSideAtomBelongsToCurrentMonosaccharide (MolecularModeling::AtomVector& SideAtomArm, MolecularModeling::AtomVector& cycle_atoms, Atom* working_atom )
 // {
 //     bool belongs_to_current_monosaccharide = true;
-//         AtomVector working_node_neighbors = working_atom -> GetNode() -> GetNodeNeighbors();
-//         AtomVector attached_anomeric_carbons = AtomVector();
-//         for (AtomVector::iterator it = working_node_neighbors.begin(); it != working_node_neighbors.end(); it++){
+//         MolecularModeling::AtomVector working_node_neighbors = working_atom -> GetNode() -> GetNodeNeighbors();
+//         MolecularModeling::AtomVector attached_anomeric_carbons = MolecularModeling::AtomVector();
+//         for (MolecularModeling::AtomVector::iterator it = working_node_neighbors.begin(); it != working_node_neighbors.end(); it++){
 //             if (*it != NULL){
 // 	        Atom* working_node_neighbor = *it;
 // 	        if (working_node_neighbor->GetIsAnomericCarbon()){
@@ -1508,7 +1508,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //         if (attached_anomeric_carbons.size() == 1){
 //             if (std::find(cycle_atoms.begin(),cycle_atoms.end(),attached_anomeric_carbons.at(0)) != cycle_atoms.end()){ //if the anomeric carbon is from the current monosaccharide
 // 	        bool sidechain_is_terminal = true;
-// 	        AtomVector cycle_and_visisted_atoms = cycle_atoms;
+// 	        MolecularModeling::AtomVector cycle_and_visisted_atoms = cycle_atoms;
 // 	        CheckIfSideChainIsTerminal(working_atom,cycle_and_visisted_atoms,sidechain_is_terminal);
 //
 // 	        if (!sidechain_is_terminal ){
@@ -1523,21 +1523,21 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 // }
 //
 //
-// void Assembly::SetCompleteSideGroupAtoms(AtomVector& SideAtomArm, Atom* working_atom, AtomVector& cycle_atoms, AtomVector& visited_atoms)
+// void Assembly::SetCompleteSideGroupAtoms(MolecularModeling::AtomVector& SideAtomArm, Atom* working_atom, MolecularModeling::AtomVector& cycle_atoms, MolecularModeling::AtomVector& visited_atoms)
 // {
-//     AtomVector working_node_neighbors = working_atom -> GetNode() -> GetNodeNeighbors();
-//     for (AtomVector::iterator it = working_node_neighbors.begin(); it != working_node_neighbors.end(); it++){  //Detect atoms that should be added to the current side chain arm.
+//     MolecularModeling::AtomVector working_node_neighbors = working_atom -> GetNode() -> GetNodeNeighbors();
+//     for (MolecularModeling::AtomVector::iterator it = working_node_neighbors.begin(); it != working_node_neighbors.end(); it++){  //Detect atoms that should be added to the current side chain arm.
 // 	Atom* working_node_neighbor = *it;
 //         if (working_node_neighbor != NULL){
 // 	    if ( !working_node_neighbor->GetIsCycle() &&
 // 		 std::find(visited_atoms.begin(), visited_atoms.end(), working_node_neighbor) == visited_atoms.end() &&
 // 		 !working_node_neighbor->GetResidue()->CheckIfProtein() ){	//If not part of another side chain && not part of cycle && not visited && is not protein (NLN,LNK etc)
-// 		AtomVector working_node_neighbor_neighbors = AtomVector();
+// 		AtomVector working_node_neighbor_neighbors = MolecularModeling::AtomVector();
 //     		std::string working_neighbor_name = working_node_neighbor-> GetName();
 //
 // 	        if ( working_neighbor_name.substr(0,1) == "O" || working_neighbor_name.substr(0,1) == "N" || working_neighbor_name.substr(0,1) == "S") { //if this neighbor is an O,N or S
-// 		    AtomVector attached_anomeric_carbons = AtomVector();
-// 		    for (AtomVector::iterator it2 = working_node_neighbor_neighbors.begin(); it2 != working_node_neighbor_neighbors.end(); it2++){
+// 		    MolecularModeling::AtomVector attached_anomeric_carbons = MolecularModeling::AtomVector();
+// 		    for (MolecularModeling::AtomVector::iterator it2 = working_node_neighbor_neighbors.begin(); it2 != working_node_neighbor_neighbors.end(); it2++){
 // 		        if (*it2 != NULL ){
 // 			    if ( (*it2)-> GetIsAnomericCarbon() ){
 // 		                attached_anomeric_carbons.push_back(*it2); //Check how many anomeric carbons this working neighbor is attacheed to, should be either 0,1,2.
@@ -1554,7 +1554,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 // 			// if the workin atom IS INDEED the anomeric carbon the neighbor is attached to, the current side chain doesn't get this oxygen, unless this is a terminal hydroxyl.
 //
 // 			/*else {
-// 			    AtomVector cycle_and_visited_atoms = AtomVector();
+// 			    MolecularModeling::AtomVector cycle_and_visited_atoms = MolecularModeling::AtomVector();
 // 			    cycle_and_visited_atoms.push_back(attached_anomeric_carbons.front() );
 // 			    bool side_chain_is_terminal = true;
 // 			    CheckIfSideChainIsTerminal (working_node_neighbor, cycle_and_visited_atoms, side_chain_is_terminal);
@@ -1703,14 +1703,14 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //     return code;
 // }
 
-// Assembly::AtomVector Assembly::ExtractAdditionalSideAtoms(Glycan::Monosaccharide *mono)
+// MolecularModeling::AtomVector Assembly::ExtractAdditionalSideAtoms(Glycan::Monosaccharide *mono)
 // {
-//     AtomVector plus_sides = AtomVector();
+//     MolecularModeling::AtomVector plus_sides = MolecularModeling::AtomVector();
 //     if(mono->side_atoms_.at(mono->side_atoms_.size() - 1).at(0) != NULL)///if there exist a +1 carbon atom. in side_atoms_ structure (std::vector<AtomVector>) the first index of the last element is dedicated to +1 atom
 //     {
 //         plus_sides.push_back(mono->side_atoms_.at(mono->side_atoms_.size() - 1).at(0));
-//         AtomVector plus_one_atom_neighbors = mono->side_atoms_.at(mono->side_atoms_.size() - 1).at(0)->GetNode()->GetNodeNeighbors();
-//         for(AtomVector::iterator it1 = plus_one_atom_neighbors.begin(); it1 != plus_one_atom_neighbors.end(); it1++)
+//         MolecularModeling::AtomVector plus_one_atom_neighbors = mono->side_atoms_.at(mono->side_atoms_.size() - 1).at(0)->GetNode()->GetNodeNeighbors();
+//         for(MolecularModeling::AtomVector::iterator it1 = plus_one_atom_neighbors.begin(); it1 != plus_one_atom_neighbors.end(); it1++)
 //         {
 //             if((*it1)->GetName().at(0) == 'C' && mono->cycle_atoms_str_.find((*it1)->GetId()) == std::string::npos)///+2 carbon atom found
 //             {
@@ -1718,8 +1718,8 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //                 plus_sides.push_back(plus_two);
 //                 mono->side_atoms_.at(mono->side_atoms_.size() - 1).at(1) = plus_two;///in side_atoms_ structure (std::vector<AtomVector>) the second index of the last element is dedicated to +2 atom
 //
-//                 AtomVector plus_two_atom_neighbors = plus_two->GetNode()->GetNodeNeighbors();
-//                 for(AtomVector::iterator it2 = plus_two_atom_neighbors.begin(); it2 != plus_two_atom_neighbors.end(); it2++)
+//                 MolecularModeling::AtomVector plus_two_atom_neighbors = plus_two->GetNode()->GetNodeNeighbors();
+//                 for(MolecularModeling::AtomVector::iterator it2 = plus_two_atom_neighbors.begin(); it2 != plus_two_atom_neighbors.end(); it2++)
 //                 {
 //                     MolecularModeling::Atom* plus_three = (*it2);
 //                     if(plus_three->GetName().at(0) == 'C' && plus_three->GetId().compare(mono->side_atoms_.at(mono->side_atoms_.size() - 1).at(0)->GetId()) != 0)///+3 carbon atom found
@@ -1745,23 +1745,23 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //       debugStr << "On monosaccharide: " << mono->mono_id_;
 //       gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
 //     }
-//     for(AtomVector::iterator it = mono->cycle_atoms_.begin(); it != mono->cycle_atoms_.end() - 1; it++) ///iterate on cycle atoms except the oxygen of the ring
+//     for(MolecularModeling::AtomVector::iterator it = mono->cycle_atoms_.begin(); it != mono->cycle_atoms_.end() - 1; it++) ///iterate on cycle atoms except the oxygen of the ring
 //     {
 //         int index = distance(mono->cycle_atoms_.begin(), it);
 //         MolecularModeling::Atom* target = (*it);
 //         std::string key = "";
 //         std::string value = "";
-//         AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+//         MolecularModeling::AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
 //         if (local_debug > 0)
 //         {
 //           std::stringstream debugStr;
 //           debugStr << "On atom: " << target->GetName();
 //           gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
 //         }
-//         for(AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
+//         for(MolecularModeling::AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
 //         {
 //
-//             AtomVector pattern_atoms = AtomVector();
+//             MolecularModeling::AtomVector pattern_atoms = MolecularModeling::AtomVector();
 //             MolecularModeling::Atom* t_neighbor = (*it1);
 //             if(local_debug > 0)
 //             {
@@ -1813,7 +1813,7 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //     {
 //         int index = distance(mono->side_atoms_.begin(), it);
 //         int side_branch_last_carbon_index = 0;
-//         AtomVector sides = (*it);
+//         MolecularModeling::AtomVector sides = (*it);
 //         MolecularModeling::Atom* target = NULL;
 //         std::string key = "";
 //         std::string value = "";
@@ -1847,10 +1847,10 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //         }
 //         if(target != NULL)
 //         {
-//             AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
-//             for(AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
+//             MolecularModeling::AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+//             for(MolecularModeling::AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
 //             {
-//                 AtomVector pattern_atoms = AtomVector();
+//                 MolecularModeling::AtomVector pattern_atoms = MolecularModeling::AtomVector();
 //                 MolecularModeling::Atom* t_neighbor = (*it1);
 //                 if (local_debug > 0)
 //                 {
@@ -1918,14 +1918,14 @@ Assembly::AtomVector Assembly::SortCycle(AtomVector cycle, MolecularModeling::At
 //     }
 // }
 
-std::string Assembly::CheckxC_N(MolecularModeling::Atom* target, std::string cycle_atoms_str/*, AtomVector& pattern_atoms*/)
+std::string Assembly::CheckxC_N(MolecularModeling::Atom* target, std::string cycle_atoms_str/*, MolecularModeling::AtomVector& pattern_atoms*/)
 {
     int local_debug = -1;
     std::stringstream pattern;
     pattern << "xC";
     MolecularModeling::Atom* N = NULL;
-    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
+    MolecularModeling::AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(MolecularModeling::AtomVector::iterator it1 = t_neighbors.begin(); it1 != t_neighbors.end(); it1++)
     {
         MolecularModeling::Atom* t_neighbor = (*it1);
         if(cycle_atoms_str.find(t_neighbor->GetId()) == std::string::npos)
@@ -1941,8 +1941,8 @@ std::string Assembly::CheckxC_N(MolecularModeling::Atom* target, std::string cyc
     if(N != NULL)
     {
         pattern << "-N";
-        AtomVector n_neighbors = N->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+        MolecularModeling::AtomVector n_neighbors = N->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
         {
             MolecularModeling::Atom* n_neighbor = (*it);
             if(n_neighbor->GetId().compare(target->GetId()) != 0)
@@ -1962,14 +1962,14 @@ std::string Assembly::CheckxC_N(MolecularModeling::Atom* target, std::string cyc
         return "";
 }
 
-std::string Assembly::CheckxC_NxO_CO_C(MolecularModeling::Atom *target, std::string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
+std::string Assembly::CheckxC_NxO_CO_C(MolecularModeling::Atom *target, std::string cycle_atoms_str, char NxO, MolecularModeling::AtomVector& pattern_atoms)
 {
     int local_debug = -1;
     std::stringstream pattern;
     pattern << "xC";
     MolecularModeling::Atom* N_or_O = NULL;
-    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+    MolecularModeling::AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(MolecularModeling::AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
     {
         MolecularModeling::Atom* t_neighbor = (*it);
         if(cycle_atoms_str.find(t_neighbor->GetId()) == std::string::npos)
@@ -1986,8 +1986,8 @@ std::string Assembly::CheckxC_NxO_CO_C(MolecularModeling::Atom *target, std::str
     {
         MolecularModeling::Atom* C = NULL;
         pattern << "-" << NxO;
-        AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+        MolecularModeling::AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
         {
             MolecularModeling::Atom* n_neighbor = (*it);
             if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'C')
@@ -2003,8 +2003,8 @@ std::string Assembly::CheckxC_NxO_CO_C(MolecularModeling::Atom *target, std::str
             MolecularModeling::Atom* CC = NULL;
             MolecularModeling::Atom* CO = NULL;
             pattern << "-C";
-            AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
+            MolecularModeling::AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
+            for(MolecularModeling::AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* c_neighbor = (*it);
                 if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 && c_neighbor->GetName().at(0) != 'C' && c_neighbor->GetName().at(0) != 'O')
@@ -2022,8 +2022,8 @@ std::string Assembly::CheckxC_NxO_CO_C(MolecularModeling::Atom *target, std::str
             {
                 pattern_atoms.push_back(CO);
                 pattern << "O";
-                AtomVector co_neighbors = CO->GetNode()->GetNodeNeighbors();
-                for(AtomVector::iterator it = co_neighbors.begin(); it != co_neighbors.end(); it++)
+                MolecularModeling::AtomVector co_neighbors = CO->GetNode()->GetNodeNeighbors();
+                for(MolecularModeling::AtomVector::iterator it = co_neighbors.begin(); it != co_neighbors.end(); it++)
                 {
                     MolecularModeling::Atom* co_neighbor = (*it);
                     if(co_neighbor->GetId().compare(C->GetId()) != 0)
@@ -2034,8 +2034,8 @@ std::string Assembly::CheckxC_NxO_CO_C(MolecularModeling::Atom *target, std::str
             {
                 pattern_atoms.push_back(CC);
                 pattern << "-C";
-                AtomVector cc_neighbors = CC->GetNode()->GetNodeNeighbors();
-                for(AtomVector::iterator it = cc_neighbors.begin(); it != cc_neighbors.end(); it++)
+                MolecularModeling::AtomVector cc_neighbors = CC->GetNode()->GetNodeNeighbors();
+                for(MolecularModeling::AtomVector::iterator it = cc_neighbors.begin(); it != cc_neighbors.end(); it++)
                 {
                     MolecularModeling::Atom* cc_neighbor = (*it);
                     if(cc_neighbor->GetId().compare(C->GetId()) != 0)
@@ -2072,14 +2072,14 @@ std::string Assembly::CheckxC_NxO_CO_C(MolecularModeling::Atom *target, std::str
         return "";
 }
 
-std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
+std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::string cycle_atoms_str, char NxO, MolecularModeling::AtomVector& pattern_atoms)
 {
     int local_debug = -1;
     std::stringstream pattern;
     pattern << "xC";
     MolecularModeling::Atom* N_or_O = NULL;
-    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+    MolecularModeling::AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(MolecularModeling::AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
     {
         MolecularModeling::Atom* t_neighbor = (*it);
         if(cycle_atoms_str.find(t_neighbor->GetId()) == std::string::npos)
@@ -2096,8 +2096,8 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
     {
         MolecularModeling::Atom* C = NULL;
         pattern << "-" << NxO;
-        AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+        MolecularModeling::AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
         {
             MolecularModeling::Atom* n_neighbor = (*it);
             if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'C')
@@ -2113,8 +2113,8 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
             MolecularModeling::Atom* CC = NULL;
             MolecularModeling::Atom* CO = NULL;
             pattern << "-C";
-            AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
+            MolecularModeling::AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
+            for(MolecularModeling::AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* c_neighbor = (*it);
                 if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 && c_neighbor->GetName().at(0) != 'C' && c_neighbor->GetName().at(0) != 'O')
@@ -2132,8 +2132,8 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
             {
                 pattern_atoms.push_back(CO);
                 pattern << "O";
-                AtomVector co_neighbors = CO->GetNode()->GetNodeNeighbors();
-                for(AtomVector::iterator it = co_neighbors.begin(); it != co_neighbors.end(); it++)
+                MolecularModeling::AtomVector co_neighbors = CO->GetNode()->GetNodeNeighbors();
+                for(MolecularModeling::AtomVector::iterator it = co_neighbors.begin(); it != co_neighbors.end(); it++)
                 {
                     MolecularModeling::Atom* co_neighbor = (*it);
                     if(co_neighbor->GetId().compare(C->GetId()) != 0)
@@ -2145,8 +2145,8 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
                 pattern_atoms.push_back(CC);
                 MolecularModeling::Atom* O = NULL;
                 pattern << "-C";
-                AtomVector cc_neighbors = CC->GetNode()->GetNodeNeighbors();
-                for(AtomVector::iterator it = cc_neighbors.begin(); it != cc_neighbors.end(); it++)
+                MolecularModeling::AtomVector cc_neighbors = CC->GetNode()->GetNodeNeighbors();
+                for(MolecularModeling::AtomVector::iterator it = cc_neighbors.begin(); it != cc_neighbors.end(); it++)
                 {
                     MolecularModeling::Atom* cc_neighbor = (*it);
                     if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetName().at(0) != 'O')
@@ -2160,8 +2160,8 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
                 {
                     pattern_atoms.push_back(O);
                     pattern << "-O";
-                    AtomVector o_neighbors = O->GetNode()->GetNodeNeighbors();
-                    for(AtomVector::iterator it = o_neighbors.begin(); it != o_neighbors.end(); it++)
+                    MolecularModeling::AtomVector o_neighbors = O->GetNode()->GetNodeNeighbors();
+                    for(MolecularModeling::AtomVector::iterator it = o_neighbors.begin(); it != o_neighbors.end(); it++)
                     {
                         MolecularModeling::Atom* o_neighbor = (*it);
                         if(o_neighbor->GetId().compare(CC->GetId()) != 0)
@@ -2210,14 +2210,14 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
         return "";
 }
 
-std::string Assembly::CheckxC_NxO_SO3(MolecularModeling::Atom *target, std::string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
+std::string Assembly::CheckxC_NxO_SO3(MolecularModeling::Atom *target, std::string cycle_atoms_str, char NxO, MolecularModeling::AtomVector& pattern_atoms)
 {
     int local_debug = -1;
     std::stringstream pattern;
     pattern << "xC";
     MolecularModeling::Atom* N_or_O = NULL;
-    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+    MolecularModeling::AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(MolecularModeling::AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
     {
         MolecularModeling::Atom* t_neighbor = (*it);
         if(cycle_atoms_str.find(t_neighbor->GetId()) == std::string::npos)
@@ -2234,8 +2234,8 @@ std::string Assembly::CheckxC_NxO_SO3(MolecularModeling::Atom *target, std::stri
     {
         MolecularModeling::Atom* S = NULL;
         pattern << "-" << NxO;
-        AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+        MolecularModeling::AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
         {
             MolecularModeling::Atom* n_neighbor = (*it);
             if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'S')
@@ -2252,8 +2252,8 @@ std::string Assembly::CheckxC_NxO_SO3(MolecularModeling::Atom *target, std::stri
             MolecularModeling::Atom* O2 = NULL;
             MolecularModeling::Atom* O3 = NULL;
             pattern << "-S";
-            AtomVector s_neighbors = S->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator it = s_neighbors.begin(); it != s_neighbors.end(); it++)
+            MolecularModeling::AtomVector s_neighbors = S->GetNode()->GetNodeNeighbors();
+            for(MolecularModeling::AtomVector::iterator it = s_neighbors.begin(); it != s_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* s_neighbor = (*it);
                 if(s_neighbor->GetId().compare(N_or_O->GetId()) != 0 && s_neighbor->GetName().at(0) != 'O')
@@ -2271,22 +2271,22 @@ std::string Assembly::CheckxC_NxO_SO3(MolecularModeling::Atom *target, std::stri
                 pattern_atoms.push_back(O2);
                 pattern_atoms.push_back(O3);
                 pattern << "OOO";
-                AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
-                for(AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
+                MolecularModeling::AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
+                for(MolecularModeling::AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
                 {
                     MolecularModeling::Atom* o1_neighbor = (*it);
                     if(o1_neighbor->GetId().compare(S->GetId()) != 0)
                         pattern << o1_neighbor->GetName().at(0);
                 }
-                AtomVector o2_neighbors = O2->GetNode()->GetNodeNeighbors();
-                for(AtomVector::iterator it = o2_neighbors.begin(); it != o2_neighbors.end(); it++)
+                MolecularModeling::AtomVector o2_neighbors = O2->GetNode()->GetNodeNeighbors();
+                for(MolecularModeling::AtomVector::iterator it = o2_neighbors.begin(); it != o2_neighbors.end(); it++)
                 {
                     MolecularModeling::Atom* o2_neighbor = (*it);
                     if(o2_neighbor->GetId().compare(S->GetId()) != 0)
                         pattern << o2_neighbor->GetName().at(0);
                 }
-                AtomVector o3_neighbors = O3->GetNode()->GetNodeNeighbors();
-                for(AtomVector::iterator it = o3_neighbors.begin(); it != o3_neighbors.end(); it++)
+                MolecularModeling::AtomVector o3_neighbors = O3->GetNode()->GetNodeNeighbors();
+                for(MolecularModeling::AtomVector::iterator it = o3_neighbors.begin(); it != o3_neighbors.end(); it++)
                 {
                     MolecularModeling::Atom* o3_neighbor = (*it);
                     if(o3_neighbor->GetId().compare(S->GetId()) != 0)
@@ -2323,14 +2323,14 @@ std::string Assembly::CheckxC_NxO_SO3(MolecularModeling::Atom *target, std::stri
         return "";
 }
 
-std::string Assembly::CheckxC_NxO_PO3(MolecularModeling::Atom *target, std::string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
+std::string Assembly::CheckxC_NxO_PO3(MolecularModeling::Atom *target, std::string cycle_atoms_str, char NxO, MolecularModeling::AtomVector& pattern_atoms)
 {
     int local_debug = -1;
     std::stringstream pattern;
     pattern << "xC";
     MolecularModeling::Atom* N_or_O = NULL;
-    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+    MolecularModeling::AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(MolecularModeling::AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
     {
         MolecularModeling::Atom* t_neighbor = (*it);
         if(cycle_atoms_str.find(t_neighbor->GetId()) == std::string::npos)
@@ -2347,8 +2347,8 @@ std::string Assembly::CheckxC_NxO_PO3(MolecularModeling::Atom *target, std::stri
     {
         MolecularModeling::Atom* P = NULL;
         pattern << "-" << NxO;
-        AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+        MolecularModeling::AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
         {
             MolecularModeling::Atom* n_neighbor = (*it);
             if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'P')
@@ -2365,8 +2365,8 @@ std::string Assembly::CheckxC_NxO_PO3(MolecularModeling::Atom *target, std::stri
             MolecularModeling::Atom* O2 = NULL;
             MolecularModeling::Atom* O3 = NULL;
             pattern << "-P";
-            AtomVector p_neighbors = P->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator it = p_neighbors.begin(); it != p_neighbors.end(); it++)
+            MolecularModeling::AtomVector p_neighbors = P->GetNode()->GetNodeNeighbors();
+            for(MolecularModeling::AtomVector::iterator it = p_neighbors.begin(); it != p_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* p_neighbor = (*it);
                 if(p_neighbor->GetId().compare(N_or_O->GetId()) != 0 && p_neighbor->GetName().at(0) != 'O')
@@ -2384,22 +2384,22 @@ std::string Assembly::CheckxC_NxO_PO3(MolecularModeling::Atom *target, std::stri
                 pattern_atoms.push_back(O2);
                 pattern_atoms.push_back(O3);
                 pattern << "OOO";
-                AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
-                for(AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
+                MolecularModeling::AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
+                for(MolecularModeling::AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
                 {
                     MolecularModeling::Atom* o1_neighbor = (*it);
                     if(o1_neighbor->GetId().compare(P->GetId()) != 0)
                         pattern << o1_neighbor->GetName().at(0);
                 }
-                AtomVector o2_neighbors = O2->GetNode()->GetNodeNeighbors();
-                for(AtomVector::iterator it = o2_neighbors.begin(); it != o2_neighbors.end(); it++)
+                MolecularModeling::AtomVector o2_neighbors = O2->GetNode()->GetNodeNeighbors();
+                for(MolecularModeling::AtomVector::iterator it = o2_neighbors.begin(); it != o2_neighbors.end(); it++)
                 {
                     MolecularModeling::Atom* o2_neighbor = (*it);
                     if(o2_neighbor->GetId().compare(P->GetId()) != 0)
                         pattern << o2_neighbor->GetName().at(0);
                 }
-                AtomVector o3_neighbors = O3->GetNode()->GetNodeNeighbors();
-                for(AtomVector::iterator it = o3_neighbors.begin(); it != o3_neighbors.end(); it++)
+                MolecularModeling::AtomVector o3_neighbors = O3->GetNode()->GetNodeNeighbors();
+                for(MolecularModeling::AtomVector::iterator it = o3_neighbors.begin(); it != o3_neighbors.end(); it++)
                 {
                     MolecularModeling::Atom* o3_neighbor = (*it);
                     if(o3_neighbor->GetId().compare(P->GetId()) != 0)
@@ -2435,14 +2435,14 @@ std::string Assembly::CheckxC_NxO_PO3(MolecularModeling::Atom *target, std::stri
         return "";
 }
 
-std::string Assembly::CheckxC_NxO_C(MolecularModeling::Atom *target, std::string cycle_atoms_str, char NxO, AtomVector& pattern_atoms)
+std::string Assembly::CheckxC_NxO_C(MolecularModeling::Atom *target, std::string cycle_atoms_str, char NxO, MolecularModeling::AtomVector& pattern_atoms)
 {
     int local_debug = -1;
     std::stringstream pattern;
     pattern << "xC";
     MolecularModeling::Atom* N_or_O = NULL;
-    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+    MolecularModeling::AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(MolecularModeling::AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
     {
         MolecularModeling::Atom* t_neighbor = (*it);
         if(cycle_atoms_str.find(t_neighbor->GetId()) == std::string::npos)
@@ -2459,8 +2459,8 @@ std::string Assembly::CheckxC_NxO_C(MolecularModeling::Atom *target, std::string
     {
         MolecularModeling::Atom* C = NULL;
         pattern << "-" << NxO;
-        AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+        MolecularModeling::AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
         {
             MolecularModeling::Atom* n_neighbor = (*it);
             if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'C')
@@ -2474,8 +2474,8 @@ std::string Assembly::CheckxC_NxO_C(MolecularModeling::Atom *target, std::string
         {
             pattern_atoms.push_back(C);
             pattern << "-C";
-            AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
+            MolecularModeling::AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
+            for(MolecularModeling::AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* c_neighbor = (*it);
                 if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0)
@@ -2511,15 +2511,15 @@ std::string Assembly::CheckxC_NxO_C(MolecularModeling::Atom *target, std::string
         return "";
 }
 
-std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cycle_atoms_str/*, AtomVector& pattern_atoms*/)
+std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cycle_atoms_str/*, MolecularModeling::AtomVector& pattern_atoms*/)
 {
   int local_debug = -1;
     std::stringstream pattern;
     pattern << "xC";
     MolecularModeling::Atom* O1 = NULL;
     MolecularModeling::Atom* O2 = NULL;
-    AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+    MolecularModeling::AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(MolecularModeling::AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
     {
         MolecularModeling::Atom* t_neighbor = (*it);
         if(cycle_atoms_str.find(t_neighbor->GetId()) == std::string::npos)
@@ -2535,15 +2535,15 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
     if(O1 != NULL && O2 != NULL)
     {
         pattern << "OO";
-        AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
+        MolecularModeling::AtomVector o1_neighbors = O1->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it = o1_neighbors.begin(); it != o1_neighbors.end(); it++)
         {
             MolecularModeling::Atom* o1_neighbor = (*it);
             if(o1_neighbor->GetId().compare(target->GetId()) != 0)
                 pattern << o1_neighbor->GetName().at(0);
         }
-        AtomVector o2_neighbors = O2->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = o2_neighbors.begin(); it != o2_neighbors.end(); it++)
+        MolecularModeling::AtomVector o2_neighbors = O2->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it = o2_neighbors.begin(); it != o2_neighbors.end(); it++)
         {
             MolecularModeling::Atom* o2_neighbor = (*it);
             if(o2_neighbor->GetId().compare(target->GetId()) != 0)
@@ -2564,14 +2564,14 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
         return "";
 }
 
-// std::string Assembly::CheckxC_NxO_CH3C_COO(MolecularModeling::Atom *target, std::string cycle_atoms_str, AtomVector& pattern_atoms)
+// std::string Assembly::CheckxC_NxO_CH3C_COO(MolecularModeling::Atom *target, std::string cycle_atoms_str, MolecularModeling::AtomVector& pattern_atoms)
 // {//isopropionic acid
   // int local_debug = -1;
   // std::stringstream pattern;
   // pattern << "xC";
   // MolecularModeling::Atom* N_or_O = NULL;
-  // AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
-  // for(AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
+  // MolecularModeling::AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+  // for(MolecularModeling::AtomVector::iterator it = t_neighbors.begin(); it != t_neighbors.end(); it++)
   // {
   //   MolecularModeling::Atom* t_neighbor = (*it);
   //   if(cycle_atoms_str.find(t_neighbor->GetId()) == std::string::npos)
@@ -2588,8 +2588,8 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
   // {
   //   MolecularModeling::Atom* C = NULL;
   //   pattern << "-" << NxO;
-  //   AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
-  //   for(AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
+  //   MolecularModeling::AtomVector n_neighbors = N_or_O->GetNode()->GetNodeNeighbors();
+  //   for(MolecularModeling::AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
   //   {
   //     MolecularModeling::Atom* n_neighbor = (*it);
   //     if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'C')
@@ -2603,8 +2603,8 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
   //   {
   //     pattern_atoms.push_back(C);
   //     pattern << "-C";
-  //     AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
-  //     for(AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
+  //     MolecularModeling::AtomVector c_neighbors = C->GetNode()->GetNodeNeighbors();
+  //     for(MolecularModeling::AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
   //     {
   //       MolecularModeling::Atom* c_neighbor = (*it);
   //       if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0)
@@ -3727,7 +3727,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
         for(std::vector<AtomVector>::iterator it1 = mono1->side_atoms_.begin(); it1 != mono1->side_atoms_.end(); it1++) ///iterate on side atoms
         {
             int index = distance(mono1->side_atoms_.begin(), it1);
-            AtomVector sides = (*it1);
+            MolecularModeling::AtomVector sides = (*it1);
             std::map<MolecularModeling::Atom*, MolecularModeling::Atom*> target_parent_map = std::map<MolecularModeling::Atom*, MolecularModeling::Atom*>(); /// A map of target atom to it's parent atom. Target atom is a non ring oxygen or nitrogen
 
             if(it1 == mono1->side_atoms_.begin())///side atoms of anomeric
@@ -3737,13 +3737,13 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
             }
             else if(it1 == mono1->side_atoms_.end() - 1) ///side atoms of last carbon of the ring
             {
-                for(AtomVector::iterator last_c_side_it = sides.begin(); last_c_side_it != sides.end(); last_c_side_it++)
+                for(MolecularModeling::AtomVector::iterator last_c_side_it = sides.begin(); last_c_side_it != sides.end(); last_c_side_it++)
                 {
                     MolecularModeling::Atom* side_of_last_carbon = (*last_c_side_it);
                     if(side_of_last_carbon != NULL)
                     {
-                        AtomVector last_c_side_neighbors = side_of_last_carbon->GetNode()->GetNodeNeighbors();
-                        for(AtomVector::iterator it2 = last_c_side_neighbors.begin(); it2 != last_c_side_neighbors.end(); it2++)
+                        MolecularModeling::AtomVector last_c_side_neighbors = side_of_last_carbon->GetNode()->GetNodeNeighbors();
+                        for(MolecularModeling::AtomVector::iterator it2 = last_c_side_neighbors.begin(); it2 != last_c_side_neighbors.end(); it2++)
                         {
                             if((*it2)->GetId().at(0) == 'O' || (*it2)->GetId().at(0) == 'N')
                             {
@@ -3765,8 +3765,8 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
                 bool found_in_other_mono = false;
                 MolecularModeling::Atom* target = (*map_it).first;
                 MolecularModeling::Atom* target_parent = (*map_it).second;
-                AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
-                for(AtomVector::iterator it2 = t_neighbors.begin(); it2 != t_neighbors.end(); it2++)
+                MolecularModeling::AtomVector t_neighbors = target->GetNode()->GetNodeNeighbors();
+                for(MolecularModeling::AtomVector::iterator it2 = t_neighbors.begin(); it2 != t_neighbors.end(); it2++)
                 {
                     MolecularModeling::Atom* t_neighbor = (*it2);
                     if(t_neighbor->GetId().compare(target_parent->GetId()) != 0)///making sure neighbor is not the parent of target atom
@@ -3776,10 +3776,10 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
                             if(it3 != it)///Cheking monos other than the current mono
                             {
                                 Glycan::Monosaccharide* mono2 = (*it3);
-                                AtomVector mono2_sides = mono2->side_atoms_.at(mono2->side_atoms_.size() - 1); ///side of last ring carbon
+                                MolecularModeling::AtomVector mono2_sides = mono2->side_atoms_.at(mono2->side_atoms_.size() - 1); ///side of last ring carbon
 
                                 bool found_in_side = false;
-                                for(AtomVector::iterator mono2_last_c_side_it = mono2_sides.begin(); mono2_last_c_side_it != mono2_sides.end(); mono2_last_c_side_it++)
+                                for(MolecularModeling::AtomVector::iterator mono2_last_c_side_it = mono2_sides.begin(); mono2_last_c_side_it != mono2_sides.end(); mono2_last_c_side_it++)
                                 {
                                     MolecularModeling::Atom* mono2_last_c_side = (*mono2_last_c_side_it);
                                     if(mono2_last_c_side != NULL)
@@ -3839,7 +3839,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
             std::stringstream anomeric_linkage;
             anomeric_linkage << key->cycle_atoms_.at(0)->GetId() << "-";
             std::vector<std::string> mono_linkages = monos_table_linkages[key];
-            AtomVector terminal_atoms = AtomVector();
+            MolecularModeling::AtomVector terminal_atoms = MolecularModeling::AtomVector();
             if(values.size() == 0) ///mono is not attached to any other mono
             {
                 MolecularModeling::Atom* anomeric_o = NULL;
@@ -3870,7 +3870,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
                 MolecularModeling::Atom* anomeric_o = NULL;
                 MolecularModeling::Atom* o_neighbor_1 = NULL;
                 MolecularModeling::Atom* o_neighbor_2 = NULL;
-                AtomVector o_neighbors = AtomVector();
+                MolecularModeling::AtomVector o_neighbors = MolecularModeling::AtomVector();
                 if(key->side_atoms_.at(0).at(1) != NULL)///Getting the information of anomeric oxygen's neighbors is needed for choosing the root
                 {
                     anomeric_o = key->side_atoms_.at(0).at(1);
@@ -3938,7 +3938,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
                 MolecularModeling::Atom* anomeric_o = NULL;
                 MolecularModeling::Atom* o_neighbor_1 = NULL;
                 MolecularModeling::Atom* o_neighbor_2 = NULL;
-                AtomVector o_neighbors = AtomVector();
+                MolecularModeling::AtomVector o_neighbors = MolecularModeling::AtomVector();
                 if(key->side_atoms_.at(0).at(1) != NULL)///Getting the information of anomeric oxygen's neighbors is needed for choosing the root
                 {
                     anomeric_o = key->side_atoms_.at(0).at(1);
@@ -4136,19 +4136,19 @@ void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide
 
 }//UpdateMonosaccharides2Residues
 
-std::string Assembly::CheckOMETerminal(MolecularModeling::Atom* target, AtomVector& terminal_atoms)
+std::string Assembly::CheckOMETerminal(MolecularModeling::Atom* target, MolecularModeling::AtomVector& terminal_atoms)
 {
-    terminal_atoms = AtomVector();
-    AtomVector atoms_1 = AtomVector();
-    AtomVector atoms_2 = AtomVector();
+    terminal_atoms = MolecularModeling::AtomVector();
+    MolecularModeling::AtomVector atoms_1 = MolecularModeling::AtomVector();
+    MolecularModeling::AtomVector atoms_2 = MolecularModeling::AtomVector();
     std::stringstream pattern;
     pattern << "O";
     atoms_1.push_back(target);
     atoms_2.push_back(target);
     MolecularModeling::Atom* C1 = NULL;
     MolecularModeling::Atom* C2 = NULL;
-    AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it = o_neighbors.begin(); it != o_neighbors.end(); it++)
+    MolecularModeling::AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(MolecularModeling::AtomVector::iterator it = o_neighbors.begin(); it != o_neighbors.end(); it++)
     {
         MolecularModeling::Atom* o_neighbor = (*it);
 
@@ -4162,8 +4162,8 @@ std::string Assembly::CheckOMETerminal(MolecularModeling::Atom* target, AtomVect
     {
         temp << pattern.str() << "-C";
         atoms_1.push_back(C1);
-        AtomVector c1_neighbors = C1->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = c1_neighbors.begin(); it != c1_neighbors.end(); it++)
+        MolecularModeling::AtomVector c1_neighbors = C1->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it = c1_neighbors.begin(); it != c1_neighbors.end(); it++)
         {
             MolecularModeling::Atom* c1_neighbor = (*it);
             if(c1_neighbor->GetId().compare(target->GetId()) != 0)
@@ -4182,8 +4182,8 @@ std::string Assembly::CheckOMETerminal(MolecularModeling::Atom* target, AtomVect
     {
         pattern << "-C";
         atoms_2.push_back(C2);
-        AtomVector c2_neighbors = C2->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = c2_neighbors.begin(); it != c2_neighbors.end(); it++)
+        MolecularModeling::AtomVector c2_neighbors = C2->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it = c2_neighbors.begin(); it != c2_neighbors.end(); it++)
         {
             MolecularModeling::Atom* c2_neighbor = (*it);
             if(c2_neighbor->GetId().compare(target->GetId()) != 0)
@@ -4201,10 +4201,10 @@ std::string Assembly::CheckOMETerminal(MolecularModeling::Atom* target, AtomVect
     return "";
 }
 
-std::string Assembly::CheckROHTerminal(MolecularModeling::Atom* target, AtomVector& terminal_atoms)
+std::string Assembly::CheckROHTerminal(MolecularModeling::Atom* target, MolecularModeling::AtomVector& terminal_atoms)
 {
-    terminal_atoms = AtomVector();
-    AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
+    terminal_atoms = MolecularModeling::AtomVector();
+    MolecularModeling::AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
     if(o_neighbors.size() == 1)
     {
         terminal_atoms.push_back(target);
@@ -4230,19 +4230,19 @@ std::string Assembly::CheckROHTerminal(MolecularModeling::Atom* target, AtomVect
     return "";
 }
 
-std::string Assembly::CheckTBTTerminal(MolecularModeling::Atom *target, AtomVector& terminal_atoms)
+std::string Assembly::CheckTBTTerminal(MolecularModeling::Atom *target, MolecularModeling::AtomVector& terminal_atoms)
 {
-    terminal_atoms = AtomVector();
-    AtomVector atoms_1 = AtomVector();
-    AtomVector atoms_2 = AtomVector();
+    terminal_atoms = MolecularModeling::AtomVector();
+    MolecularModeling::AtomVector atoms_1 = MolecularModeling::AtomVector();
+    MolecularModeling::AtomVector atoms_2 = MolecularModeling::AtomVector();
     std::stringstream pattern;
     pattern << "O";
     atoms_1.push_back(target);
     atoms_2.push_back(target);
     MolecularModeling::Atom* C1 = NULL;
     MolecularModeling::Atom* C2 = NULL;
-    AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
-    for(AtomVector::iterator it = o_neighbors.begin(); it != o_neighbors.end(); it++)
+    MolecularModeling::AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
+    for(MolecularModeling::AtomVector::iterator it = o_neighbors.begin(); it != o_neighbors.end(); it++)
     {
         MolecularModeling::Atom* o_neighbor = (*it);
         if(o_neighbor->GetName().at(0) == 'C' && C1 == NULL && C2 == NULL)
@@ -4258,8 +4258,8 @@ std::string Assembly::CheckTBTTerminal(MolecularModeling::Atom *target, AtomVect
         MolecularModeling::Atom* C1C3 = NULL;
         temp << pattern.str() << "-" << "C";
         atoms_1.push_back(C1);
-        AtomVector c1_neighbors = C1->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = c1_neighbors.begin(); it != c1_neighbors.end(); it++)
+        MolecularModeling::AtomVector c1_neighbors = C1->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it = c1_neighbors.begin(); it != c1_neighbors.end(); it++)
         {
             MolecularModeling::Atom* c1_neighbor = (*it);
             if(c1_neighbor->GetId().compare(target->GetId()) != 0 && c1_neighbor->GetName().at(0) == 'C' && C1C1 == NULL)
@@ -4273,8 +4273,8 @@ std::string Assembly::CheckTBTTerminal(MolecularModeling::Atom *target, AtomVect
         {
             temp << "C";
             atoms_1.push_back(C1C1);
-            AtomVector c1c1_neighbors = C1C1->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator it = c1c1_neighbors.begin(); it != c1c1_neighbors.end(); it++)
+            MolecularModeling::AtomVector c1c1_neighbors = C1C1->GetNode()->GetNodeNeighbors();
+            for(MolecularModeling::AtomVector::iterator it = c1c1_neighbors.begin(); it != c1c1_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* c1c1_neighbor = (*it);
                 if(c1c1_neighbor->GetId().compare(C1->GetId()) != 0)
@@ -4285,8 +4285,8 @@ std::string Assembly::CheckTBTTerminal(MolecularModeling::Atom *target, AtomVect
             }
             temp << "C";
             atoms_1.push_back(C1C2);
-            AtomVector c1c2_neighbors = C1C2->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator it = c1c2_neighbors.begin(); it != c1c2_neighbors.end(); it++)
+            MolecularModeling::AtomVector c1c2_neighbors = C1C2->GetNode()->GetNodeNeighbors();
+            for(MolecularModeling::AtomVector::iterator it = c1c2_neighbors.begin(); it != c1c2_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* c1c2_neighbor = (*it);
                 if(c1c2_neighbor->GetId().compare(C1->GetId()) != 0)
@@ -4297,8 +4297,8 @@ std::string Assembly::CheckTBTTerminal(MolecularModeling::Atom *target, AtomVect
             }
             temp << "C";
             atoms_1.push_back(C1C3);
-            AtomVector c1c3_neighbors = C1C3->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator it = c1c3_neighbors.begin(); it != c1c3_neighbors.end(); it++)
+            MolecularModeling::AtomVector c1c3_neighbors = C1C3->GetNode()->GetNodeNeighbors();
+            for(MolecularModeling::AtomVector::iterator it = c1c3_neighbors.begin(); it != c1c3_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* c1c3_neighbor = (*it);
                 if(c1c3_neighbor->GetId().compare(C1->GetId()) != 0)
@@ -4321,8 +4321,8 @@ std::string Assembly::CheckTBTTerminal(MolecularModeling::Atom *target, AtomVect
         MolecularModeling::Atom* C2C3 = NULL;
         pattern << "-" << "C";
         atoms_2.push_back(C2);
-        AtomVector c2_neighbors = C2->GetNode()->GetNodeNeighbors();
-        for(AtomVector::iterator it = c2_neighbors.begin(); it != c2_neighbors.end(); it++)
+        MolecularModeling::AtomVector c2_neighbors = C2->GetNode()->GetNodeNeighbors();
+        for(MolecularModeling::AtomVector::iterator it = c2_neighbors.begin(); it != c2_neighbors.end(); it++)
         {
             MolecularModeling::Atom* c2_neighbor = (*it);
             if(c2_neighbor->GetId().compare(target->GetId()) != 0 && c2_neighbor->GetName().at(0) == 'C' && C2C1 == NULL)
@@ -4336,8 +4336,8 @@ std::string Assembly::CheckTBTTerminal(MolecularModeling::Atom *target, AtomVect
         {
             pattern << "C";
             atoms_2.push_back(C2C1);
-            AtomVector c2c1_neighbors = C2C1->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator it = c2c1_neighbors.begin(); it != c2c1_neighbors.end(); it++)
+            MolecularModeling::AtomVector c2c1_neighbors = C2C1->GetNode()->GetNodeNeighbors();
+            for(MolecularModeling::AtomVector::iterator it = c2c1_neighbors.begin(); it != c2c1_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* c2c1_neighbor = (*it);
                 if(c2c1_neighbor->GetId().compare(C2->GetId()) != 0)
@@ -4348,8 +4348,8 @@ std::string Assembly::CheckTBTTerminal(MolecularModeling::Atom *target, AtomVect
             }
             pattern << "C";
             atoms_2.push_back(C2C2);
-            AtomVector c2c2_neighbors = C2C2->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator it = c2c2_neighbors.begin(); it != c2c2_neighbors.end(); it++)
+            MolecularModeling::AtomVector c2c2_neighbors = C2C2->GetNode()->GetNodeNeighbors();
+            for(MolecularModeling::AtomVector::iterator it = c2c2_neighbors.begin(); it != c2c2_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* c2c2_neighbor = (*it);
                 if(c2c2_neighbor->GetId().compare(C2->GetId()) != 0)
@@ -4360,8 +4360,8 @@ std::string Assembly::CheckTBTTerminal(MolecularModeling::Atom *target, AtomVect
             }
             pattern << "C";
             atoms_2.push_back(C2C3);
-            AtomVector c2c3_neighbors = C2C3->GetNode()->GetNodeNeighbors();
-            for(AtomVector::iterator it = c2c3_neighbors.begin(); it != c2c3_neighbors.end(); it++)
+            MolecularModeling::AtomVector c2c3_neighbors = C2C3->GetNode()->GetNodeNeighbors();
+            for(MolecularModeling::AtomVector::iterator it = c2c3_neighbors.begin(); it != c2c3_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* c2c3_neighbor = (*it);
                 if(c2c3_neighbor->GetId().compare(C2->GetId()) != 0)
@@ -4380,11 +4380,11 @@ std::string Assembly::CheckTBTTerminal(MolecularModeling::Atom *target, AtomVect
     return "";
 }
 
-std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, AtomVector& terminal_atoms)
+std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, MolecularModeling::AtomVector& terminal_atoms)
 {
     if(target !=NULL)
     {
-      AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
+      MolecularModeling::AtomVector o_neighbors = target->GetNode()->GetNodeNeighbors();
     	//I have encounter the situation where a NLN is recognized as ROH, because the anomeric nitrogen has hydrogen and satisfies the criteria for ROH.
     	// So, I added codes to check if terminal is protein.
     	bool non_protein_terminal = true;
@@ -4653,8 +4653,8 @@ double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* child_oligo, std::st
     gmml::log(__LINE__, __FILE__, gmml::INF, C1->GetId());
   }
   //Find glycosidicO
-  AtomVector C1_neighbors = C1->GetNode()->GetNodeNeighbors();
-  for (AtomVector::iterator it = C1_neighbors.begin(); it != C1_neighbors.end(); ++it)
+  MolecularModeling::AtomVector C1_neighbors = C1->GetNode()->GetNodeNeighbors();
+  for (MolecularModeling::AtomVector::iterator it = C1_neighbors.begin(); it != C1_neighbors.end(); ++it)
   {
     MolecularModeling::Atom* this_neighbor = (*it);
     std::string this_atom_id = this_neighbor->GetId();
@@ -4671,8 +4671,8 @@ double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* child_oligo, std::st
   }
 
   //Get Cx
-  AtomVector glycosidicO_neighbors = glycosidicO->GetNode()->GetNodeNeighbors();
-  for (AtomVector::iterator it = glycosidicO_neighbors.begin(); it != glycosidicO_neighbors.end(); ++it)
+  MolecularModeling::AtomVector glycosidicO_neighbors = glycosidicO->GetNode()->GetNodeNeighbors();
+  for (MolecularModeling::AtomVector::iterator it = glycosidicO_neighbors.begin(); it != glycosidicO_neighbors.end(); ++it)
   {
     MolecularModeling::Atom* this_neighbor = (*it);
     std::string this_atom_id = this_neighbor->GetId();
@@ -4723,8 +4723,8 @@ double Assembly::CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::st
   }
 
   //Find glycosidicO
-  AtomVector C1_neighbors = C1->GetNode()->GetNodeNeighbors();
-  for (AtomVector::iterator it = C1_neighbors.begin(); it != C1_neighbors.end(); ++it)
+  MolecularModeling::AtomVector C1_neighbors = C1->GetNode()->GetNodeNeighbors();
+  for (MolecularModeling::AtomVector::iterator it = C1_neighbors.begin(); it != C1_neighbors.end(); ++it)
   {
     MolecularModeling::Atom* this_neighbor = (*it);
     std::string this_atom_id = this_neighbor->GetId();
@@ -4740,8 +4740,8 @@ double Assembly::CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::st
   }
 
   //Get Cx
-  AtomVector glycosidicO_neighbors = glycosidicO->GetNode()->GetNodeNeighbors();
-  for (AtomVector::iterator it = glycosidicO_neighbors.begin(); it != glycosidicO_neighbors.end(); ++it)
+  MolecularModeling::AtomVector glycosidicO_neighbors = glycosidicO->GetNode()->GetNodeNeighbors();
+  for (MolecularModeling::AtomVector::iterator it = glycosidicO_neighbors.begin(); it != glycosidicO_neighbors.end(); ++it)
   {
     MolecularModeling::Atom* this_neighbor = (*it);
     std::string this_atom_id = this_neighbor->GetId();
@@ -4757,8 +4757,8 @@ double Assembly::CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::st
   }
 
   //Get Cx-1
-  AtomVector Cx_neighbors = Cx->GetNode()->GetNodeNeighbors();
-  for (AtomVector::iterator it = Cx_neighbors.begin(); it != Cx_neighbors.end(); ++it)
+  MolecularModeling::AtomVector Cx_neighbors = Cx->GetNode()->GetNodeNeighbors();
+  for (MolecularModeling::AtomVector::iterator it = Cx_neighbors.begin(); it != Cx_neighbors.end(); ++it)
   {
     MolecularModeling::Atom* this_neighbor = (*it);
     std::string this_atom_id = this_neighbor->GetId();
@@ -4828,8 +4828,8 @@ double Assembly::CalculateOmegaAngle(Glycan::Oligosaccharide* parent_oligo, std:
   {
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Get C6'");
   }
-  AtomVector C5prime_neighbors = C5prime->GetNode()->GetNodeNeighbors();
-  for (AtomVector::iterator it = C5prime_neighbors.begin(); it != C5prime_neighbors.end(); ++it)
+  MolecularModeling::AtomVector C5prime_neighbors = C5prime->GetNode()->GetNodeNeighbors();
+  for (MolecularModeling::AtomVector::iterator it = C5prime_neighbors.begin(); it != C5prime_neighbors.end(); ++it)
   {
     MolecularModeling::Atom* this_neighbor = (*it);
     std::string this_atom_id = this_neighbor->GetId();
@@ -4848,8 +4848,8 @@ double Assembly::CalculateOmegaAngle(Glycan::Oligosaccharide* parent_oligo, std:
   {
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Get glycosidic oxygen");
   }
-  AtomVector C6prime_neighbors = C6prime->GetNode()->GetNodeNeighbors();
-  for (AtomVector::iterator it = C6prime_neighbors.begin(); it != C6prime_neighbors.end(); ++it)
+  MolecularModeling::AtomVector C6prime_neighbors = C6prime->GetNode()->GetNodeNeighbors();
+  for (MolecularModeling::AtomVector::iterator it = C6prime_neighbors.begin(); it != C6prime_neighbors.end(); ++it)
   {
     MolecularModeling::Atom* this_neighbor = (*it);
     std::string this_atom_id = this_neighbor->GetId();

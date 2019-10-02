@@ -346,21 +346,21 @@ bool CondensedSequence::CheckLinkageAndDerivativeSanity()
 {
     for (CondensedSequenceResidueVector::iterator res_it = this->condensed_sequence_residue_tree_.begin(); res_it != this->condensed_sequence_residue_tree_.end(); res_it++){
 
-	CondensedSequenceResidue* condensed_residue = *res_it;
+        CondensedSequenceResidue* condensed_residue = *res_it;
         std::string residue_name = condensed_residue->GetName();
-	//Read in Metadata
-	//Search Medata with residue name(which is valid now) as key, get allowed open valence positions.
-	//Make a map<int, bool> that records wheter each available position is occupied.
+        //Read in Metadata
+        //Search Medata with residue name(which is valid now) as key, get allowed open valence positions.
+        //Make a map<int, bool> that records wheter each available position is occupied.
         CondensedSequenceResidue::DerivativeMap derivatives = condensed_residue->GetDerivatives();
-	//Check each derivative position. Throw error if attached to disallowed open valence positions.
-	//For legal derivatives, mark its position as occupied. 
-	std::vector<int> child_ids = condensed_residue->GetChildIds();
-	for (std::vector<int>::iterator child_it = child_ids.begin(); child_it != child_ids.end(); child_it++){
-	    int child_id = *child_it;
-	    CondensedSequenceResidue* child_residue = this->condensed_sequence_residue_tree_[child_id];
-	    int child_open_valence_position = child_residue->GetOxygenPosition();
-	    //If child open valence does not exist as key in map, then it's accessing disallowed positions. If that position is allowed by occupied, that's also an error. 
-	}
+        //Check each derivative position. Throw error if attached to disallowed open valence positions.
+        //For legal derivatives, mark its position as occupied.
+        std::vector<int> child_ids = condensed_residue->GetChildIds();
+        for (std::vector<int>::iterator child_it = child_ids.begin(); child_it != child_ids.end(); child_it++){
+            int child_id = *child_it;
+            CondensedSequenceResidue* child_residue = this->condensed_sequence_residue_tree_[child_id];
+            int child_open_valence_position = child_residue->GetOxygenPosition();
+            //If child open valence does not exist as key in map, then it's accessing disallowed positions. If that position is allowed by occupied, that's also an error.
+        }
     }
     return true;
 }
@@ -792,12 +792,15 @@ CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::Get
         return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("ACX", "C1A", oxygen_name, true);
     else if(derivative_name.compare("D") == 0)
 	//D means deoxy.This derivative is not a template, but an action, of removing the oxygen this derivative attaches to. Here I create a false glycam06 residue for this purpose later on.
-	return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("Deoxy", "Deoxy",oxygen_name, true);
+        return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("Deoxy", "Deoxy",oxygen_name, true);
     //Later PO3 might need to be added, but now I dont' now the name of its head atom yet.
     std::stringstream notice;
     notice << "Not eligible for MD: " << derivative_name << "This derivative name has no corresponding entry in glycam06 force field.";
     this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, notice.str()));
     //throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
+    // If none of the above, return something:
+    std::cout << "WARNING: There is no derivative in the GLYCAM code set represented by the letter " << derivative_name << "\n";
+    return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("UNK", "UNK", oxygen_name, true);
 }
 
 std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach reordering_approach, bool label)
@@ -817,57 +820,57 @@ std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::
 void CondensedSequence::FindLongestPath (std::vector<int>& longest_path)
 {
     for (unsigned int i = 0; i < this->condensed_sequence_residue_tree_.size(); i++){
-	if (this->condensed_sequence_residue_tree_[i]->GetChildIds().size() == 0){
-	    CondensedSequenceSpace::CondensedSequenceResidue* current_residue = this->condensed_sequence_residue_tree_[i];  //This finds a non reducing end residue;
-	    std::vector<int> current_path = std::vector<int>();
-	    current_path.push_back(i); //i is the index of this non reducing end residue
+        if (this->condensed_sequence_residue_tree_[i]->GetChildIds().size() == 0){
+            CondensedSequenceSpace::CondensedSequenceResidue* current_residue = this->condensed_sequence_residue_tree_[i];  //This finds a non reducing end residue;
+            std::vector<int> current_path = std::vector<int>();
+            current_path.push_back(i); //i is the index of this non reducing end residue
 
-	    while(current_residue->GetParentId() != gmml::iNotSet){ //While loop stops at a residue that has no parent, which is the aglycone. 
-		current_path.push_back(current_residue->GetParentId());
-		current_residue = this->condensed_sequence_residue_tree_[current_residue->GetParentId()];
+            while(current_residue->GetParentId() != gmml::iNotSet){ //While loop stops at a residue that has no parent, which is the aglycone.
+                current_path.push_back(current_residue->GetParentId());
+                current_residue = this->condensed_sequence_residue_tree_[current_residue->GetParentId()];
 
-		if (current_residue->GetParentId() == gmml::iNotSet){  //If the aglycone is reached.
-		    bool new_path_found = false;
-		    if (current_path.size() > longest_path.size()){  //If a longer path is found, overwrite the current longest path. 
-			new_path_found = true;
-		    }
-		    else if (current_path.size() == longest_path.size()){  //If the new path is exactly the same length, choose based on lower branch index at the first deverging point.
-			CondensedSequenceSpace::CondensedSequenceResidue* branching_residue = NULL;
-			for (int j=current_path.size()-1; j>=0; j--){  //reverse iterating the path to find the first branching point. 
-			    if (this->condensed_sequence_residue_tree_[current_path[j]]->GetChildIds().size() > 1){
-				branching_residue = this->condensed_sequence_residue_tree_[current_path[j]];
-				break;
-			    }
-			}	
-			if (branching_residue == NULL){
-			    std::cout << "Two paths at equal lengths are found. Can't decide which residue has lower branch index.This is a bug." << std::endl;
-			}
-			else{
-			    int current_path_branching_index = 0, longest_path_branching_index = 0;
-			    std::vector<int> child_ids = branching_residue->GetChildIds();
-			    for (std::vector<int>::iterator it = child_ids.begin(); it != child_ids.end(); it++){
-				int child_id = *it;
-				if (std::find(current_path.begin(), current_path.end(), child_id) != current_path.end()){
-				    current_path_branching_index = child_id;	    
-				}
-				if (std::find(longest_path.begin(), longest_path.end(), child_id) != longest_path.end()){
-				    longest_path_branching_index = child_id;	    
-				}
-			    }    
-			    if (current_path_branching_index < longest_path_branching_index){
-				new_path_found = true;
-			    }
-			}
-		    }
-		    if (new_path_found){
-			longest_path.clear();
-			for (unsigned int k=0; k<current_path.size(); k++){
-			    longest_path.push_back(current_path[k]);
-			}
-		    }
-		}
-	    }
-	}
+                if (current_residue->GetParentId() == gmml::iNotSet){  //If the aglycone is reached.
+                    bool new_path_found = false;
+                    if (current_path.size() > longest_path.size()){  //If a longer path is found, overwrite the current longest path.
+                        new_path_found = true;
+                    }
+                    else if (current_path.size() == longest_path.size()){  //If the new path is exactly the same length, choose based on lower branch index at the first deverging point.
+                        CondensedSequenceSpace::CondensedSequenceResidue* branching_residue = NULL;
+                        for (int j=current_path.size()-1; j>=0; j--){  //reverse iterating the path to find the first branching point.
+                            if (this->condensed_sequence_residue_tree_[current_path[j]]->GetChildIds().size() > 1){
+                                branching_residue = this->condensed_sequence_residue_tree_[current_path[j]];
+                                break;
+                            }
+                        }
+                        if (branching_residue == NULL){
+                            std::cout << "Two paths at equal lengths are found. Can't decide which residue has lower branch index.This is a bug." << std::endl;
+                        }
+                        else{
+                            int current_path_branching_index = 0, longest_path_branching_index = 0;
+                            std::vector<int> child_ids = branching_residue->GetChildIds();
+                            for (std::vector<int>::iterator it = child_ids.begin(); it != child_ids.end(); it++){
+                                int child_id = *it;
+                                if (std::find(current_path.begin(), current_path.end(), child_id) != current_path.end()){
+                                    current_path_branching_index = child_id;
+                                }
+                                if (std::find(longest_path.begin(), longest_path.end(), child_id) != longest_path.end()){
+                                    longest_path_branching_index = child_id;
+                                }
+                            }
+                            if (current_path_branching_index < longest_path_branching_index){
+                                new_path_found = true;
+                            }
+                        }
+                    }
+                    if (new_path_found){
+                        longest_path.clear();
+                        for (unsigned int k=0; k<current_path.size(); k++){
+                            longest_path.push_back(current_path[k]);
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -876,99 +879,98 @@ void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_ind
     CondensedSequenceSpace::CondensedSequenceResidue* current_residue = this->condensed_sequence_residue_tree_[current_index];
     if (current_index == 0){  //If current residue is aglycone
 
-	if (label){
-	//Insert residue label after residue name,example: Glcp&Label_residueId=1;a1-4
+        if (label){
+            //Insert residue label after residue name,example: Glcp&Label_residueId=1;a1-4
             labeled_sequence.insert(0,";");  //semicolon is the right delimiter of a label;
             labeled_sequence.insert(0,std::to_string(current_index));  //Add residue index to label
             labeled_sequence.insert(0,"&Label=residue-"); //&Label is the left delimiter of a label.
-	}
-	//Done residue label
+        }
+        //Done residue label
 
-	labeled_sequence.insert(0, current_residue->GetName());
-	labeled_sequence.insert(0, "-");
+        labeled_sequence.insert(0, current_residue->GetName());
+        labeled_sequence.insert(0, "-");
     }
 
     else{
-	if (label){
-	//Insert bond label.
-	    labeled_sequence.insert(0,";");
-	    labeled_sequence.insert(0,std::to_string(current_residue->GetBondId()));
+        if (label){
+            //Insert bond label.
+            labeled_sequence.insert(0,";");
+            labeled_sequence.insert(0,std::to_string(current_residue->GetBondId()));
             labeled_sequence.insert(0,"&Label=link-");
-	}
-	//Done bond label
+        }
+        //Done bond label
 
-	if (current_residue->GetParentId() != 0){  //The residues connected to the aglycone has OxygenPosition set to 1, actually there shouldn't be such a value.So ignore.
+        if (current_residue->GetParentId() != 0){  //The residues connected to the aglycone has OxygenPosition set to 1, actually there shouldn't be such a value.So ignore.
 
             labeled_sequence.insert(0, std::to_string(current_residue->GetOxygenPosition()));
             labeled_sequence.insert(0, "-");
-	}
-	
-	labeled_sequence.insert(0, std::to_string(current_residue->GetAnomericCarbon()));
-	labeled_sequence.insert(0, boost::algorithm::to_lower_copy(current_residue->GetConfiguration()));  //In residue class anomeric configuration is upper case. Convert to lower case. 
+        }
 
-	CondensedSequenceResidue::DerivativeMap derivatives = current_residue->GetDerivatives();
-	if (derivatives.size() > 0){
-	    labeled_sequence.insert(0, "]");
-	    for (CondensedSequenceResidue::DerivativeMap::reverse_iterator derivative_rit = derivatives.rbegin(); derivative_rit != derivatives.rend(); derivative_rit++){
-		labeled_sequence.insert(0,derivative_rit->second);
-		labeled_sequence.insert(0,std::to_string(derivative_rit->first));
-		labeled_sequence.insert(0,",");
-	    }
-	    labeled_sequence.erase(0,1);
-	    labeled_sequence.insert(0, "[");
-	}
+        labeled_sequence.insert(0, std::to_string(current_residue->GetAnomericCarbon()));
+        labeled_sequence.insert(0, boost::algorithm::to_lower_copy(current_residue->GetConfiguration()));  //In residue class anomeric configuration is upper case. Convert to lower case.
 
-	//Insert residue label after residue name,example: Glcp&Label_residueId=1;a1-4
-	if (label){
-	    labeled_sequence.insert(0,";");  //semicolon is the right delimiter of a label;
-	    labeled_sequence.insert(0,std::to_string(current_index));  //Add residue index to label
-	    labeled_sequence.insert(0,"&Label=residue-"); //&Label is the left delimiter of a label.
-	    labeled_sequence.insert(0, current_residue->GetName());
-	    labeled_sequence.insert(0, current_residue->GetIsomer());
-	}
-	//Done residue label
+        CondensedSequenceResidue::DerivativeMap derivatives = current_residue->GetDerivatives();
+        if (derivatives.size() > 0){
+            labeled_sequence.insert(0, "]");
+            for (CondensedSequenceResidue::DerivativeMap::reverse_iterator derivative_rit = derivatives.rbegin(); derivative_rit != derivatives.rend(); derivative_rit++){
+                labeled_sequence.insert(0,derivative_rit->second);
+                labeled_sequence.insert(0,std::to_string(derivative_rit->first));
+                labeled_sequence.insert(0,",");
+            }
+            labeled_sequence.erase(0,1);
+            labeled_sequence.insert(0, "[");
+        }
+
+        //Insert residue label after residue name,example: Glcp&Label_residueId=1;a1-4
+        if (label){
+            labeled_sequence.insert(0,";");  //semicolon is the right delimiter of a label;
+            labeled_sequence.insert(0,std::to_string(current_index));  //Add residue index to label
+            labeled_sequence.insert(0,"&Label=residue-"); //&Label is the left delimiter of a label.
+            labeled_sequence.insert(0, current_residue->GetName());
+            labeled_sequence.insert(0, current_residue->GetIsomer());
+        }
+        //Done residue label
 
     }
 
     std::vector<int> child_ids = current_residue->GetChildIds();
 
-    if (reordering_approach == CondensedSequence::Reordering_Approach::LOWEST_INDEX){ 
-	 //If sequence is to be reordered based on index, rearrange child in descending order based on parent open valene position.Use a temporary map for sorting.
-	std::map<int, int, std::greater<int> > openvalence_childid_map = std::map<int, int, std::greater<int> >();
-	for (std::vector<int>::iterator it= child_ids.begin(); it != child_ids.end(); it++){
-	    int child_id = *it;
-    	    CondensedSequenceSpace::CondensedSequenceResidue* child_residue = this->condensed_sequence_residue_tree_[child_id];
-	    int open_valence_position = child_residue->GetOxygenPosition();
-	    openvalence_childid_map[open_valence_position] = child_id;
-	}
-	child_ids.clear();
-	for (std::map<int, int>::iterator map_it = openvalence_childid_map.begin(); map_it != openvalence_childid_map.end(); map_it++){
-	    child_ids.push_back(map_it->second);  
-	}
+    if (reordering_approach == CondensedSequence::Reordering_Approach::LOWEST_INDEX){
+        //If sequence is to be reordered based on index, rearrange child in descending order based on parent open valene position.Use a temporary map for sorting.
+        std::map<int, int, std::greater<int> > openvalence_childid_map = std::map<int, int, std::greater<int> >();
+        for (std::vector<int>::iterator it= child_ids.begin(); it != child_ids.end(); it++){
+            int child_id = *it;
+            CondensedSequenceSpace::CondensedSequenceResidue* child_residue = this->condensed_sequence_residue_tree_[child_id];
+            int open_valence_position = child_residue->GetOxygenPosition();
+            openvalence_childid_map[open_valence_position] = child_id;
+        }
+        child_ids.clear();
+        for (std::map<int, int>::iterator map_it = openvalence_childid_map.begin(); map_it != openvalence_childid_map.end(); map_it++){
+            child_ids.push_back(map_it->second);
+        }
     }
     else if (reordering_approach == CondensedSequence::Reordering_Approach::LONGEST_CHAIN){
-	//If sequence is to be reordered based on longest chain, sort main chain child to the end of vector, preserve the order of the rest
-	for (std::vector<int>::iterator it= child_ids.begin(); it != child_ids.end(); it++){
-	    int child_id = *it;
-	    if (std::find(longest_path.begin(), longest_path.end(), child_id) != longest_path.end()){
-		child_ids.erase(it);
-		child_ids.push_back(child_id);
-	    }
-	}
+        //If sequence is to be reordered based on longest chain, sort main chain child to the end of vector, preserve the order of the rest
+        for (std::vector<int>::iterator it= child_ids.begin(); it != child_ids.end(); it++){
+            int child_id = *it;
+            if (std::find(longest_path.begin(), longest_path.end(), child_id) != longest_path.end()){
+                child_ids.erase(it);
+                child_ids.push_back(child_id);
+            }
+        }
     }
 
     if (child_ids.size() == 0 && branch_depth > 0){  //No child means we're at a non-reducing end residue. if at a branch, add left bracket [
-	labeled_sequence.insert(0,"[");  //End of a branch
-	branch_depth --;
+        labeled_sequence.insert(0,"[");  //End of a branch
+        branch_depth --;
     }
 
 
     for (std::vector<int>::iterator it = child_ids.begin(); it != child_ids.end(); it++){
-	int child_id = *it;
         if (child_ids.size() > 1 && it != child_ids.end()-1){
- 	    branch_depth++;
-	    labeled_sequence.insert(0,"]");
-	}	
+            branch_depth++;
+            labeled_sequence.insert(0,"]");
+        }
         this->RecursivelyBuildLabeledCondensedSequence(*it, branch_depth, labeled_sequence, reordering_approach, longest_path, label);
     }
 

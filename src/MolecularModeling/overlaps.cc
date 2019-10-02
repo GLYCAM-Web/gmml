@@ -1,12 +1,13 @@
 #include "../../includes/MolecularModeling/overlaps.hpp"
+#include "../../includes/MolecularModeling/atom.hpp"
+#include "../../includes/common.hpp"
 
-double gmml::CalculateAtomicOverlaps(AtomVector atomsA, AtomVector atomsB){
+double gmml::CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB){
 
     double distance = 0.0, totalOverlap = 0.0;
-
-    for(AtomVector::iterator it1 = atomsA.begin(); it1 != atomsA.end(); ++it1)
+    for(MolecularModeling::AtomVector::iterator it1 = atomsA.begin(); it1 != atomsA.end(); ++it1)
     {
-        for(AtomVector::iterator it2 = atomsB.begin(); it2 != atomsB.end(); ++it2)
+        for(MolecularModeling::AtomVector::iterator it2 = atomsB.begin(); it2 != atomsB.end(); ++it2)
         {
             MolecularModeling::Atom *atomA = *it1;
             MolecularModeling::Atom *atomB = *it2;
@@ -24,8 +25,9 @@ double gmml::CalculateAtomicOverlaps(AtomVector atomsA, AtomVector atomsB){
             }
         }
     }
-    return (totalOverlap / CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
+    return (totalOverlap / gmml::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
 }
+
 
 double gmml::CalculateAtomicOverlaps(MolecularModeling::Atom *atomA, MolecularModeling::Atom *atomB, double radiusA, double radiusB)
 {
@@ -53,7 +55,7 @@ double gmml::CalculateAtomicOverlaps(MolecularModeling::Atom *atomA, MolecularMo
     double overlap = 0.0;
     if (radiusA + radiusB > distance + 0.6){ // 0.6 overlap is deemed acceptable. (Copying chimera:)
         // Eqn 1, Rychkov and Petukhov, J. Comput. Chem., 2006, Joint Neighbours. Each atom against each atom, so overlap can be "double" counted. See paper.
-        overlap = ( 2 * (PI_RADIAN) * radiusA* ( radiusA - distance / 2 - ( ( (radiusA*radiusA) - (radiusB*radiusB) ) / (2 * distance) ) ) );
+        overlap = ( 2 * (gmml::PI_RADIAN) * radiusA* ( radiusA - distance / 2 - ( ( (radiusA*radiusA) - (radiusB*radiusB) ) / (2 * distance) ) ) );
     }
     //std::cout << "Non-normalized Overlap=" << totalOverlap << std::endl;
     return overlap;

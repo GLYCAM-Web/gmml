@@ -169,11 +169,11 @@ void* BuildStructureByDistanceThread(void* args){
     int t = arg->number_of_threads;
 
     //    std::cout << "Thread" << ti << " start" << std::endl;
-    Assembly::AtomVector all_atoms_of_assembly = arg->a->GetAllAtomsOfAssembly();
+    MolecularModeling::AtomVector all_atoms_of_assembly = arg->a->GetAllAtomsOfAssembly();
     int atoms_size = all_atoms_of_assembly.size();
     int i = ti * (atoms_size/t);
 
-    for(Assembly::AtomVector::iterator it = all_atoms_of_assembly.begin() + ti * (atoms_size/t); ; it++)
+    for(MolecularModeling::AtomVector::iterator it = all_atoms_of_assembly.begin() + ti * (atoms_size/t); ; it++)
     {
         if(ti + 1 < t)
         {
@@ -209,7 +209,7 @@ void* BuildStructureByDistanceThread(void* args){
         //        std::cout << "Thread" << ti << " atom id " << i << std::endl;
         i++;
         pthread_mutex_unlock(&mutex1);
-        for(Assembly::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
+        for(MolecularModeling::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
         {
             MolecularModeling::Atom* neighbor_atom = (*it1);
             // X distance
@@ -257,7 +257,7 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){//This function shou
     int t = arg->number_of_threads;
 
     //    std::cout << "Thread" << ti << " start" << std::endl;
-    Assembly::AtomVector all_atoms_of_assembly = arg->a->GetAllAtomsOfAssembly();
+    MolecularModeling::AtomVector all_atoms_of_assembly = arg->a->GetAllAtomsOfAssembly();
     int atoms_size = all_atoms_of_assembly.size();
 
     int increase_factor = 0;
@@ -272,7 +272,7 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){//This function shou
     }
     end_index = begin_index + (i*increase_factor);
 
-    for(Assembly::AtomVector::iterator it = all_atoms_of_assembly.begin() + begin_index; ; it++)
+    for(MolecularModeling::AtomVector::iterator it = all_atoms_of_assembly.begin() + begin_index; ; it++)
     {
         if(ti + 1 < t)///if it's not the last thread
         {
@@ -309,7 +309,7 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){//This function shou
         atom_node->SetId(index);
         //        std::cout << "Thread" << ti << " atom id " << i << std::endl;
         pthread_mutex_unlock(&mutex1);
-        for(Assembly::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
+        for(MolecularModeling::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
         {
             MolecularModeling::Atom* neighbor_atom = (*it1);
             
@@ -317,13 +317,13 @@ void* BuildStructureByDistanceByOptimizedThread(void* args){//This function shou
             cutoff = arg->a->guessBondLengthByAtomType(atom, neighbor_atom);
             
             // X distance
-            if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
+            if(abs(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX()) < cutoff)
             {
                 // Y distance
-                if(atom->GetCoordinates().at(model_index)->GetY() - neighbor_atom->GetCoordinates().at(model_index)->GetY() < cutoff)
+                if(abs(atom->GetCoordinates().at(model_index)->GetY() - neighbor_atom->GetCoordinates().at(model_index)->GetY()) < cutoff)
                 {
                     // Z distance
-                    if(atom->GetCoordinates().at(model_index)->GetZ() - neighbor_atom->GetCoordinates().at(model_index)->GetZ() < cutoff)
+                    if(abs(atom->GetCoordinates().at(model_index)->GetZ() - neighbor_atom->GetCoordinates().at(model_index)->GetZ()) < cutoff)
                     {
                         if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
                         {
@@ -358,10 +358,10 @@ void* BuildStructureByDistanceByMatrixThread(void* args){
     int ti = arg->thread_index;
     double cutoff = arg->cutoff;
     int model_index = arg->model_index;
-    Assembly::AtomVector* first_chunk = arg->first_chunk;
-    Assembly::AtomVector* second_chunk = arg->second_chunk;
+    MolecularModeling::AtomVector* first_chunk = arg->first_chunk;
+    MolecularModeling::AtomVector* second_chunk = arg->second_chunk;
 
-    for(Assembly::AtomVector::iterator it = first_chunk->begin(); it != first_chunk->end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = first_chunk->begin(); it != first_chunk->end(); it++)
     {
         int index = distance(first_chunk->begin(), it);
         MolecularModeling::Atom* atom = (*it);
@@ -377,7 +377,7 @@ void* BuildStructureByDistanceByMatrixThread(void* args){
             atom_node = atom->GetNode();
         atom_node->SetId(index);
         pthread_mutex_unlock(&mutex1);
-        for(Assembly::AtomVector::iterator it1 = second_chunk->begin(); it1 != second_chunk->end(); it1++)
+        for(MolecularModeling::AtomVector::iterator it1 = second_chunk->begin(); it1 != second_chunk->end(); it1++)
         {
             MolecularModeling::Atom* neighbor_atom = (*it1);
             // X distance
@@ -420,19 +420,19 @@ void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
     int ti = arg->thread_index;
     double cutoff = arg->cutoff;
     int model_index = arg->model_index;
-    Assembly::AtomVector* first_chunk = arg->first_chunk;
-    Assembly::AtomVector* second_chunk = arg->second_chunk;
+    MolecularModeling::AtomVector* first_chunk = arg->first_chunk;
+    MolecularModeling::AtomVector* second_chunk = arg->second_chunk;
     int j = ti * 10;
 
-    std::vector<Assembly::AtomVector*> chunks = std::vector<Assembly::AtomVector*>();
+    std::vector<MolecularModeling::AtomVector*> chunks = std::vector<MolecularModeling::AtomVector*>();
     chunks.push_back(first_chunk);
     chunks.push_back(second_chunk);
     for(int i = 0; i < 2; i++)
     {
-        Assembly::AtomVector* chunk = chunks.at(i);
+        MolecularModeling::AtomVector* chunk = chunks.at(i);
         if(chunk->size() != 0)
         {
-            for(Assembly::AtomVector::iterator it = chunk->begin(); it != chunk->end(); it++)
+            for(MolecularModeling::AtomVector::iterator it = chunk->begin(); it != chunk->end(); it++)
             {
                 MolecularModeling::Atom* atom = (*it);
                 //                    std::cout << "chunk" << i << " start " << atom->GetId() << std::endl;
@@ -451,7 +451,7 @@ void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
                 if(it != chunk->end())
                 {
                     pthread_mutex_unlock(&mutex1);
-                    for(Assembly::AtomVector::iterator it1 = it+1; it1 != chunk->end(); it1++)
+                    for(MolecularModeling::AtomVector::iterator it1 = it+1; it1 != chunk->end(); it1++)
                     {
                         MolecularModeling::Atom* neighbor_atom = (*it1);
                         // X distance
@@ -499,7 +499,7 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
     model_index_ = model_index;
 
-    Assembly::AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
+    MolecularModeling::AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int atoms_size = all_atoms_of_assembly.size();
 
     number_of_threads = 5;

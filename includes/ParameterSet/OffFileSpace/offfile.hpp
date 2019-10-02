@@ -3,10 +3,10 @@
 
 #include <string>
 #include <map>
-#include <iostream>
+#include <iosfwd>
 #include <vector>
 #include "../../common.hpp"
-#include "../../gmml.hpp"
+//#include "../../gmml.hpp"
 #include "../../MolecularModeling/assembly.hpp"
 #include "../../MolecularModeling/residue.hpp"
 #include "../../MolecularModeling/atom.hpp"
@@ -24,8 +24,7 @@ namespace OffFileSpace
             //                     TYPE DEFINITION                  //
             //////////////////////////////////////////////////////////
 
-            typedef std::vector<MolecularModeling::Residue*> ResidueVector;
-            typedef std::vector<MolecularModeling::Atom*> AtomVector;
+            //typedef std::vector<MolecularModeling::Residue*> ResidueVector;
             typedef std::vector<OffFileSpace::OffFileResidue*> OffFileResidueVector;
             typedef std::vector<OffFileSpace::OffFileAtom*> OffFileAtomVector;
             typedef std::map<int, int>AtomIndexMap;
@@ -66,7 +65,7 @@ namespace OffFileSpace
               * @param CoordinateIndex The coodinate index of the coordinate vector
               * return off_file_residues_ The off file residues of the current off assembly
               */
-            void PopulateOffFileResiduesFromAssembly(ResidueVector assembly_residues,int CoordinateIndex);
+            void PopulateOffFileResiduesFromAssembly(MolecularModeling::ResidueVector assembly_residues,int CoordinateIndex);
             /*! \fn
               * A function to write an assembly in Off file format
               * @param out_stream Output stream
@@ -89,7 +88,7 @@ namespace OffFileSpace
               * A function in order to write the bound box section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WriteBoundBoxSection(std::ofstream& stream, MolecularModeling::Assembly* assembly);
+            void WriteBoundBoxSection(std::ofstream& stream);
 
             /*! \fn
               * A function in order to write the child sequence section of a specified residue into an output stream
@@ -101,13 +100,13 @@ namespace OffFileSpace
               * A function in order to write the connect section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WriteConnectSection(std::ofstream& stream, OffFileResidueVector off_file_residues);
+            void WriteConnectSection(std::ofstream& stream);
 
             /*! \fn
               * A function in order to write the connectivity section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WriteConnectivitySection(std::ofstream& stream,ResidueVector assembly_residues);
+            void WriteConnectivitySection(std::ofstream& stream, MolecularModeling::ResidueVector assembly_residues);
 
             /*! \fn
               * A function in order to write the hierarchy section of a specified residue into an output stream
@@ -125,19 +124,19 @@ namespace OffFileSpace
               * A function in order to write the position section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WritePositionSection(std::ofstream& stream,ResidueVector assembly_residues, int CoordinateIndex);
+            void WritePositionSection(std::ofstream& stream, MolecularModeling::ResidueVector assembly_residues, int CoordinateIndex);
 
             /*! \fn
               * A function in order to write the residue connect section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WriteResidueConnectSection(std::ofstream& stream, ResidueVector assembly_residues);
+            void WriteResidueConnectSection(std::ofstream& stream, MolecularModeling::ResidueVector assembly_residues);
 
             /*! \fn
               * A function in order to write the residues section of a specified residue into an output stream
               * @param stream Output stream
               */
-            void WriteResiduesSection(std::ofstream& stream, ResidueVector assembly_residues);
+            void WriteResiduesSection(std::ofstream& stream, MolecularModeling::ResidueVector assembly_residues);
 
             /*! \fn
               * A function in order to write the solvent cap section of a specified residue into an output stream

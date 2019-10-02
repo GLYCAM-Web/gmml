@@ -69,11 +69,14 @@
 #include <string.h>
 
 using MolecularModeling::Assembly;
+using MolecularModeling::Residue;
+using MolecularModeling::Atom;
+using MolecularModeling::AtomVector;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-Assembly::AtomVector Assembly::Select(std::string pattern)
+MolecularModeling::AtomVector Assembly::Select(std::string pattern)
 {
     AtomVector selection = AtomVector();
 

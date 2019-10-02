@@ -316,7 +316,7 @@ void Coordinate::RotateTorsionalAll(CoordinateVector coordinate_set, double tors
 
 
 Coordinate* Coordinate::ConvertInternalCoordinate2CartesianCoordinate(
-            Coordinate::CoordinateVector coordinate_list, double distance, double angle, double torsion)
+            CoordinateVector coordinate_list, double distance, double angle, double torsion)
 {
         if(coordinate_list.size() == 0)
         {
@@ -481,7 +481,7 @@ Coordinate* Coordinate::ConvertInternalCoordinate2CartesianCoordinate(
             return coordinate;
         }
 }
-Coordinate* Coordinate::ConvertCartesianCoordinate2InternalCoordinate(Coordinate* coordinate, Coordinate::CoordinateVector coordinate_list)
+Coordinate* Coordinate::ConvertCartesianCoordinate2InternalCoordinate(Coordinate* coordinate, CoordinateVector coordinate_list)
 {
         if(coordinate_list.size() == 0)
             return new Coordinate();

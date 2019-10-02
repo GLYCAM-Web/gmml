@@ -37,7 +37,7 @@ using MolecularModeling::Residue;
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
+void Residue::BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *prep_residue)
 {
     std::cout << "Building residue from prep residue ..." << std::endl;
     std::cout << "prep res name: " << prep_residue->GetName() << std::endl;
@@ -49,8 +49,8 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
     int tail_atom_index = (int) -INFINITY;
     Atom* head_atom = new Atom();
     Atom* tail_atom = new Atom();
-    PrepFileResidue::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
-    PrepFileResidue::PrepFileAtomVector parent_atoms = prep_residue->GetAtomsParentVector();
+    PrepFileSpace::PrepFileAtomVector prep_atoms = prep_residue->GetAtoms();
+    PrepFileSpace::PrepFileAtomVector parent_atoms = prep_residue->GetAtomsParentVector();
     std::map<PrepFileSpace::PrepFileAtom*,Atom*> prep_assembly_atom_map = std::map<PrepFileSpace::PrepFileAtom*,Atom*>();	//associates a prep atom with corresponding assembly atom
     std::map<Atom*,PrepFileSpace::PrepFileAtom*> assembly_prep_parent_atom_map = std::map<Atom*,PrepFileSpace::PrepFileAtom*>();	//associates an assembly atom with corresonding prep atom parent.
     //eventually: assembly atom -> prep parent -> assembly parent
@@ -58,7 +58,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
     std::stringstream residue_id;
     //Set id for testing purpose
     //residue_id << prep_residue->GetName() <<"_" << " " << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
-    for(PrepFileResidue::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
+    for(PrepFileSpace::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
     {
         serial_number++;
         PrepFileSpace::PrepFileAtom* prep_atom = (*it1);
@@ -246,8 +246,8 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileResidue *prep_residue)
     this->AddTailAtom(tail_atom);
 
     //Convert prep residue loop indices into nodes
-    PrepFileResidue::Loop all_loops = prep_residue->GetLoops();
-    for (PrepFileResidue::Loop::iterator it = all_loops.begin(); it != all_loops.end(); it++)
+    PrepFileSpace::PrepFileResidue::Loop all_loops = prep_residue->GetLoops();
+    for (PrepFileSpace::PrepFileResidue::Loop::iterator it = all_loops.begin(); it != all_loops.end(); it++)
     {
         int from = it->first;
         int to = it->second;
