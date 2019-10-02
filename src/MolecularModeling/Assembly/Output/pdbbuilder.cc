@@ -74,8 +74,11 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card_direction, int connect_card_existance)
+PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card_direction, int connect_card_existance, int model_index)
 {
+    if (model_index == -1) // -1 is the default set in header file, if that's not changed, then use model_index_. Can't pass in model_index_ as default for reasons.
+        model_index = model_index_;
+
 //    std::cout << "Creating PDB file" << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating PDB file ...");
     PdbFileSpace::PdbFile* pdb_file = new PdbFileSpace::PdbFile();
@@ -94,12 +97,12 @@ PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card
 
     AssemblytoPdbSequenceNumberMap assembly_to_sequence_number_map = AssemblytoPdbSequenceNumberMap();
     AssemblytoPdbSerialNumberMap assembly_to_serial_number_map = AssemblytoPdbSerialNumberMap();
-    ExtractPdbModelSectionFromAssembly(residue_set, serial_number, sequence_number, model_index_, assembly_to_sequence_number_map,
+    ExtractPdbModelSectionFromAssembly(residue_set, serial_number, sequence_number, model_index, assembly_to_sequence_number_map,
                                     assembly_to_serial_number_map);
 
     PdbFileSpace::PdbLinkSection* link_card = new PdbFileSpace::PdbLinkSection();
     //The follwing line might be commented out for my testing purpose, definitely shouldn'be committed/pushed. If you see it commented out, please uncomment it.
-    ExtractPdbLinkSectionFromAssembly(link_card, model_index_, assembly_to_sequence_number_map, link_card_direction);
+    ExtractPdbLinkSectionFromAssembly(link_card, model_index, assembly_to_sequence_number_map, link_card_direction);
     link_card->SetRecordName("LINK");
     pdb_file->SetLinks(link_card);
 

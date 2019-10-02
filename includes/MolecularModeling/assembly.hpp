@@ -628,7 +628,7 @@ public:
               * Exports data from assembly data structure into pdb file structure
               * @param link_card_direction An integer to define the direction in the link cards (-1: O -> C and 1: C -> O)
               */
-    PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1, int connect_card_existance = 1);
+    PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1, int connect_card_existance = 1, int model_index = -1 );
     /*! \fn
               * A function to build a pdbqt file structure from the current assembly object
               * Exports data from assembly data structure into pdbqt file structure
