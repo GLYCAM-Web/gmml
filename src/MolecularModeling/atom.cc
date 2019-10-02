@@ -1149,6 +1149,10 @@ bool Atom::operator== (const Atom &otherAtom)
     return (this->GetIndex() == otherAtom.GetIndex());
 }
 
+bool Atom::operator!= (const Atom &otherAtom)
+{
+    return (this->GetIndex() != otherAtom.GetIndex());
+}
 //////////////////////////////////////////////////////////
 //                   HELPER FUNCTIONS                   //
 //////////////////////////////////////////////////////////
