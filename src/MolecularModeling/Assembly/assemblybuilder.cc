@@ -1803,7 +1803,8 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
 void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files,
                                         std::vector<std::string> other_lib_files, std::vector<std::string> prep_files, std::string parameter_file)
 {
-    std::cout << "Building assembly from pdb file ..." << std::endl;
+    // std::cout << "Building assembly from pdb file ..." << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
     //    std::cout << "Reading PDB file into PdbFileSpace::PdbFile structure." << std::endl;
     PdbFileSpace::PdbFile* pdb_file=NULL;
     try

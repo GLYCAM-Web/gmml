@@ -182,7 +182,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     if(std::ifstream(pdb_file.c_str()))
     {
         gmml::log(__LINE__, __FILE__,  gmml::INF, "Opening PDB file ...");
-        std::cout << "Opening PDB file ..." << std::endl;
+        // std::cout << "Opening PDB file ..." << std::endl;
         in_file.open(pdb_file.c_str());
     }
     else
@@ -5041,7 +5041,7 @@ bool PdbFile::ParseEndCard(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::INF, "End of file" );
-        std::cout << "End of file" << std::endl;
+        // std::cout << "End of file" << std::endl;
         return true;
     }
 

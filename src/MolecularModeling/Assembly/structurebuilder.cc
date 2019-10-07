@@ -610,7 +610,7 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
 void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, int model_index)
 {
   int local_debug = 0;
-    std::cout << "Building structure by distance ..." << std::endl;
+    // std::cout << "Building structure by distance ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
     model_index_ = model_index;
 
