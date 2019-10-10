@@ -215,6 +215,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 //A function for PDB integration of gmml where they can feed a stringstream of atom cards and get a list of oligosaccharide names
 std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSugars(std::vector< std::string > amino_lib_files, std::string CCD_Path)
 {
+  int local_debug = -1;
   std::vector<Glycan::Monosaccharide*> monos = std::vector<Glycan::Monosaccharide*>();
   OligosaccharideVector oligos = Assembly::ExtractSugars( amino_lib_files, monos, false, false, false, CCD_Path );
   std::vector<gmml_api_output> api_output;
@@ -232,8 +233,11 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
     for(std::vector<Glycan::Monosaccharide*>::reverse_iterator rit = thisOligo->mono_nodes_.rbegin(); rit != thisOligo->mono_nodes_.rend();rit++)
     {
       Glycan::Monosaccharide* thisMono = *rit;
-      std::string monoID =  thisMono->cycle_atoms_[0]->GetResidue()->GetId();
-      std::cout << monoID << "\n";
+      if(local_debug > 0)
+      {
+        std::string monoID =  thisMono->cycle_atoms_[0]->GetResidue()->GetId();
+        std::cout << monoID << "\n";
+      }
       //Mono Index
       thisOutput.indices.push_back(std::make_pair(std::to_string(thisMono->oligosaccharide_index_), thisMono->cycle_atoms_[0]->GetResidue()->GetId()));
       //Mono connectivity
@@ -325,17 +329,25 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 {
   int local_debug = -1;
   gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap( amino_lib_files );
-  std::cout << "\n" << "Extracting Sugars\n";
-  
+  if(local_debug > 0)
+  {
+    std::cout << "\n" << "Extracting Sugars\n";
+  }
   ///CYCLE DETECTION
   CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
 
   ///PRINTING ALL DETECTED CYCLES
-  std::cout << "\n" << "All detected cycles\n";
+  if(local_debug > 0)
+  {
+    std::cout << "\n" << "All detected cycles\n";
+  }
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
   {
     std::string cycle_atoms_str = ( *it ).first;
-    std::cout << cycle_atoms_str << "\n";
+    if(local_debug > 0)
+    {
+      std::cout << cycle_atoms_str << "\n";
+    }
   }
 
   ///FILTERING OUT FUSED CYCLES. aka Cycles that are sharing an edge
@@ -343,25 +355,27 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 
   ///FILTERING OUT OXYGENLESS CYCLES
   FilterAllCarbonCycles( cycles );
-  std::cout << "\n" << "Cycles after discarding rings that are all-carbon" << "\n";
-  for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
+  if(local_debug > 0)
   {
-    std::string cycle_atoms_str = ( *it ).first;
-    std::cout << cycle_atoms_str << "\n";
+    std::cout << "\n" << "Cycles after discarding rings that are all-carbon" << "\n";
+    for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
+    {
+      std::string cycle_atoms_str = ( *it ).first;
+      std::cout << cycle_atoms_str << "\n";
+    }
   }
-
   //FILTERING OUT CYCLES WITH DOUBLE BONDS and add them to new cyclemap
   CycleMap double_bond_cycles = FilterCyclesWithDoubleBonds( cycles );
   
   
   //TODO figure out what to do with double bonded cycles
   
-  
-  std::cout << "\n" << "Cycles after discarding rings containing C-C double bonds" << "\n";
-  
+  if(local_debug > 0)
+  {
+    std::cout << "\n" << "Cycles after discarding rings containing C-C double bonds" << "\n";
+  }
 
   ///ANOMERIC CARBON DETECTION and SORTING
-  // std::cout << "\n" << "Cycles after discarding rings that are all-carbon" << "\n";
   std::vector< std::string > anomeric_carbons_status = std::vector< std::string >();
   std::vector< Glycan::Note* > anomeric_notes = std::vector< Glycan::Note* >();
   CycleMap sorted_cycles = CycleMap();
@@ -381,7 +395,12 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     Glycan::Monosaccharide* mono = new Glycan::Monosaccharide(&cycle_atoms_str, cycle_atoms, this, CCD_Path);
     mono->assembly_ = this;
     monos.push_back(mono);
-    std::cout << cycle_atoms_str << "\n"; ///e.g. C1_3810_NAG_A_1521_?_?_1-O5_3821_NAG_A_1521_?_?_1-C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
+    if(local_debug > 0)
+    {
+      std::cout << cycle_atoms_str << "\n"; 
+      ///e.g. C1_3810_NAG_A_1521_?_?_1-O5_3821_NAG_A_1521_?_?_1-
+      ///C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
+    }
   }
   std::map <unsigned long long, Glycan::Monosaccharide* > ordered_monos_map =  std::map <unsigned long long, Glycan::Monosaccharide*>();
   for (std::vector <Glycan::Monosaccharide*>::iterator it = monos.begin(); it != monos.end(); it++)
@@ -397,95 +416,105 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
 
   // ///CREATING MONOSACCHARIDE STRUCTURE. Ring atoms, side atoms, chemical code (Glycode), modifications/derivatives, names
-  std::cout << "\n" << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << "\n";
+  if(local_debug > 0)
+  {
+    std::cout << "\n" << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << "\n";
+  }
   int mono_id_ = 0;
   for (std::vector<Glycan::Monosaccharide*>::iterator it = ordered_monos.begin(); it != ordered_monos.end(); it++)
   {
     Glycan::Monosaccharide* mono = *it;
-    std::cout << "Ring atoms: " << mono->cycle_atoms_str_ << "\n";
-
-    ///PRINTING ASSIGNED SIDE ATOMS
-    std::cout << "Side group atoms: " << "\n";
-    for( std::vector< MolecularModeling::AtomVector >::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++ )
+    if(local_debug > 0)
     {
-      MolecularModeling::AtomVector sides = ( *it1 );
-      if( it1 == mono->side_atoms_.begin() ) //side atoms of anomeric carbon
+      std::cout << "Ring atoms: " << mono->cycle_atoms_str_ << "\n";
+
+      ///PRINTING ASSIGNED SIDE ATOMS
+      std::cout << "Side group atoms: " << "\n";
+      for( std::vector< MolecularModeling::AtomVector >::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++ )
       {
-        if( sides.at( 0 ) != NULL && sides.at( 1 ) != NULL )
+        MolecularModeling::AtomVector sides = ( *it1 );
+        if( it1 == mono->side_atoms_.begin() ) //side atoms of anomeric carbon
         {
-          std::cout << "[1] -> " << sides.at( 0 )->GetId() << ", " << sides.at( 1 )->GetId() << "\n";
+          if( sides.at( 0 ) != NULL && sides.at( 1 ) != NULL )
+          {
+            std::cout << "[1] -> " << sides.at( 0 )->GetId() << ", " << sides.at( 1 )->GetId() << "\n";
+          }
+          else if( sides.at( 1 ) != NULL )
+          {
+            std::cout << "[1] -> " << sides.at( 1 )->GetId() << "\n";
+          }
+          else if( sides.at( 0 ) != NULL )
+          {
+            std::cout << "[1] -> " << sides.at( 0 )->GetId() << "\n";
+          }
+        }
+        else if( it1 == mono->side_atoms_.end() - 1 ) //side atoms of last carbon of the
+        {
+          std::cout << "[" << mono->cycle_atoms_.size() - 1 << "] -> ";
+          if( sides.at( 0 ) != NULL )
+          {
+            std::cout << sides.at( 0 )->GetId() << "\n";
+          }
         }
         else if( sides.at( 1 ) != NULL )
         {
-          std::cout << "[1] -> " << sides.at( 1 )->GetId() << "\n";
-        }
-        else if( sides.at( 0 ) != NULL )
-        {
-          std::cout << "[1] -> " << sides.at( 0 )->GetId() << "\n";
+          int cycle_atom_index = distance( mono->side_atoms_.begin(), it1 );
+          std::cout << "[" << cycle_atom_index + 1 << "] -> " << sides.at( 1 )->GetId() << "\n";
         }
       }
-      else if( it1 == mono->side_atoms_.end() - 1 ) //side atoms of last carbon of the
-      {
-        std::cout << "[" << mono->cycle_atoms_.size() - 1 << "] -> ";
-        if( sides.at( 0 ) != NULL )
-        {
-          std::cout << sides.at( 0 )->GetId() << "\n";
-        }
-      }
-      else if( sides.at( 1 ) != NULL )
-      {
-        int cycle_atom_index = distance( mono->side_atoms_.begin(), it1 );
-        std::cout << "[" << cycle_atom_index + 1 << "] -> " << sides.at( 1 )->GetId() << "\n";
-      }
-    }
 
-    ///PRINTING ANOMERIC STATUS
-    std::cout << mono->anomeric_status_ << mono->cycle_atoms_.at( 0 )->GetId() << "\n";
-    std::cout << "\n" << "Ring Stereo chemistry chemical code:"  << "\n";
-    std::cout << mono->chemical_code_->toString() << "\n";
-    mono->chemical_code_->Print( std::cout );
-    std::cout << "\n";
-    // Actually, it only works for hexoses, so this should read "!=6" rather than ">5"
-    if( mono->cycle_atoms_.size() > 5 )
-    {
-      if( mono->bfmp_ring_conformation_.compare( "" ) != 0 )
+      ///PRINTING ANOMERIC STATUS
+      std::cout << mono->anomeric_status_ << mono->cycle_atoms_.at( 0 )->GetId() << "\n";
+      std::cout << "\n" << "Ring Stereo chemistry chemical code:"  << "\n";
+      std::cout << mono->chemical_code_->toString() << "\n";
+      mono->chemical_code_->Print( std::cout );
+      std::cout << "\n";
+      // Actually, it only works for hexoses, so this should read "!=6" rather than ">5"
+      if( mono->cycle_atoms_.size() > 5 )
       {
-        std::cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << "\n" << "\n"; ///Part of Glyprobity report
+        if( mono->bfmp_ring_conformation_.compare( "" ) != 0 )
+        {
+          std::cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << "\n" << "\n"; ///Part of Glyprobity report
+        }
       }
-    }
 
-    // ///IF NO DERIVATIVES THEN NO NEED TO ITERATE THROUGH WHATS NOT THERE
-    // /// Also, this now prints Ring Position instead of Position. e.g: -1, a( 1 ), 2, 3, 4, 5, +1, +2, +3
-    if( !mono->derivatives_map_.empty() )
-    {
-      for( std::vector<std::pair< std::string, std::string> >::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++ )
+      // ///IF NO DERIVATIVES THEN NO NEED TO ITERATE THROUGH WHATS NOT THERE
+      // /// Also, this now prints Ring Position instead of Position. e.g: -1, a( 1 ), 2, 3, 4, 5, +1, +2, +3
+      if( !mono->derivatives_map_.empty() )
       {
-        std::string key = ( *it1 ).first;
-        std::string value = ( *it1 ).second;
-        std::string trimmedValue;
-        if(value.substr(0,2) == "xC")
+        for( std::vector<std::pair< std::string, std::string> >::iterator it1 = mono->derivatives_map_.begin(); it1 != mono->derivatives_map_.end(); it1++ )
         {
-          trimmedValue = value.substr(2,value.size()-1);
+          std::string key = ( *it1 ).first;
+          std::string value = ( *it1 ).second;
+          std::string trimmedValue;
+          if(value.substr(0,2) == "xC")
+          {
+            trimmedValue = value.substr(2,value.size()-1);
+          }
+          else
+          {
+            trimmedValue = value;
+          }
+          if(value != "")
+            std::cout << "Carbon at Ring Position " << key << " is attached to " << trimmedValue << "\n";
         }
-        else
-        {
-          trimmedValue = value;
-        }
-        if(value != "")
-          std::cout << "Carbon at Ring Position " << key << " is attached to " << trimmedValue << "\n";
       }
     }
+    
     ///GLYPROBITY REPORT (GEOMETRY OUTLIERS)
     if( glyprobity_report ) {
       CalculateGlyprobityGeometryOutliers( mono );
     }
 
     ///PRINTING NAMES OF MONOSACCHARIDE
-    std::cout << "Stereochemistry name: " << mono->sugar_name_.monosaccharide_stereochemistry_name_ << "\n";
-    std::cout << "Stereochemistry short name: " << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "\n";
-    std::cout << "Complete name: " << mono->sugar_name_.monosaccharide_name_ << "\n";
-    std::cout << "Short name: " << mono->sugar_name_.monosaccharide_short_name_ << "\n";
-
+    if(local_debug > 0)
+    {
+      std::cout << "Stereochemistry name: " << mono->sugar_name_.monosaccharide_stereochemistry_name_ << "\n";
+      std::cout << "Stereochemistry short name: " << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "\n";
+      std::cout << "Complete name: " << mono->sugar_name_.monosaccharide_name_ << "\n";
+      std::cout << "Short name: " << mono->sugar_name_.monosaccharide_short_name_ << "\n";
+    }
+    
     //Check author's naming vs what's detected
     if(CCD_Path != " ")
     {
@@ -493,7 +522,10 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       {
         if(this->source_file_.find(mono->residue_name_) ==  std::string::npos) //For CCD Lookup, if the residue name matches the file name we are already looking it up.  Prevents infinite loop for unidentified CCD sugars
         {
-          std::cout << this->source_file_ << ": " << mono->residue_name_ << "\n";
+          if(local_debug > 0)
+          {
+            std::cout << this->source_file_ << ": " << mono->residue_name_ << "\n";
+          }
           GetAuthorNaming(amino_lib_files, mono, CCD_Path);
           mono->createAuthorSNFGname();
 
@@ -514,7 +546,10 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       {
         if(this->source_file_.find(mono->residue_name_) ==  std::string::npos) //For CCD Lookup, if the residue name matches the file name we are already looking it up.  Prevents infinite loop for unidentified CCD sugars
         {
-          std::cout << this->source_file_ << ": " << mono->residue_name_ << "\n";
+          if(local_debug > 0)
+          {
+            std::cout << this->source_file_ << ": " << mono->residue_name_ << "\n";
+          }
           GetAuthorNaming(amino_lib_files, mono, CCD_Path);
           mono->createAuthorSNFGname();
         }
@@ -531,8 +566,11 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         mono->sugar_name_.monosaccharide_short_name_.replace(1, 3, "Kdn");
       }
     }
-    std::cout << "SNFG Name: " << mono->SNFG_name_ << "\n";
-    std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------\n";
+    if(local_debug > 0)
+    {
+      std::cout << "SNFG Name: " << mono->SNFG_name_ << "\n";
+      std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------\n";
+    }
     mono_id_++;
     mono->mono_id_ = mono_id_;
     *it = mono;
@@ -567,7 +605,10 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
 
   ///CREATING TREE-LIKE STRUCTURE OF OLIGOSACCHARIDE
-  std::cout << "\n" << "Oligosaccharides:" << "\n";
+  if(local_debug > 0)
+  {
+    std::cout << "\n" << "Oligosaccharides:" << "\n";
+  }
   int number_of_covalent_links = 0;
   int number_of_probable_non_covalent_complexes = 0;
   // std::vector< Glycan::Oligosaccharide* > oligosaccharides = ExtractOligosaccharides( ordered_monos, dataset_residue_names, number_of_covalent_links, number_of_probable_non_covalent_complexes );
@@ -576,49 +617,56 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   // Glycan::Oligosaccharide* testOligo = new Glycan::Oligosaccharide();
   std::vector<Glycan::Oligosaccharide*> testOligos = createOligosaccharides(ordered_monos);
   testOligos = ExtractOligosaccharides( ordered_monos, dataset_residue_names, number_of_covalent_links, number_of_probable_non_covalent_complexes );
-  std::cout << std::to_string(testOligos.size()) << "\n";
+  if(local_debug > 0)
+  {
+    std::cout << std::to_string(testOligos.size()) << "\n";
+  }
   // testOligo.createOligosaccharideGraphs(ordered_monos);
 
   ///BUILDING OLIGOSACCHARIDE SEQUENCE
   int number_of_oligosaccharides = 0;
   int number_of_monosaccharides = 0;
-  for(std::vector< Glycan::Oligosaccharide* >::iterator it = testOligos.begin(); it != testOligos.end(); it++)
+  if(local_debug > 0)
   {
-    Glycan::Oligosaccharide* thisOligo = *it;
-    std::cout << "Oligo IUPAC Name:       " << thisOligo->IUPAC_name_ << "\n";
-    // std::cout << "Oligo author IUPAC Name:" << thisOligo->author_IUPAC_name_ << "\n";
-    std::cout << "Oligo Name:             ";
-    thisOligo->Print( std::cout );
+    for(std::vector< Glycan::Oligosaccharide* >::iterator it = testOligos.begin(); it != testOligos.end(); it++)
+    {
+      Glycan::Oligosaccharide* thisOligo = *it;
+      std::cout << "Oligo IUPAC Name:       " << thisOligo->IUPAC_name_ << "\n";
+      // std::cout << "Oligo author IUPAC Name:" << thisOligo->author_IUPAC_name_ << "\n";
+      std::cout << "Oligo Name:             ";
+      thisOligo->Print( std::cout );
+    }
   }
-
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
   std::vector< Glycan::Note* > notes = this->GetNotes();
-  if( !notes.empty() ) {
-    std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
-    std::cout << "\n" << "NOTES/ISSUES:" << "\n";
-    for( std::vector< Glycan::Note* >::iterator note_it = notes.begin(); note_it != notes.end(); note_it++ ) {
-      Glycan::Note* note = ( *note_it );
-      std::cout << "\n" << "Category: " << note->ConvertGlycanNoteCat2String( note->category_ ) << "\n";
-      std::cout << "Type: " << note->ConvertGlycanNoteType2String( note->type_ ) << "\n";
-      std::cout << "Description: " << note->description_ << "\n";
+  if(local_debug > 0)
+  {
+    if( !notes.empty() ) {
+      std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
+      std::cout << "\n" << "NOTES/ISSUES:" << "\n";
+      for( std::vector< Glycan::Note* >::iterator note_it = notes.begin(); note_it != notes.end(); note_it++ ) {
+        Glycan::Note* note = ( *note_it );
+        std::cout << "\n" << "Category: " << note->ConvertGlycanNoteCat2String( note->category_ ) << "\n";
+        std::cout << "Type: " << note->ConvertGlycanNoteType2String( note->type_ ) << "\n";
+        std::cout << "Description: " << note->description_ << "\n";
+      }
+      std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
     }
-    std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
-  }
 
-  ///PRINTING STATISTICAL REPORT OF GLYPROBITY
-  if( glyprobity_report ) {
-    std::cout << "\n" << "GLYPROBITY REPORT" << "\n";
-    std::cout << "<-------Topology------>" << "\n";
-    std::cout << "Monosaccharide detected: " << monos.size() << "\n";
-    std::cout << "Residue Distribution " << "\n";
-    std::cout << " Monosaccharides: " << number_of_monosaccharides << "\n";
-    std::cout << " Oligosaccharides: " << number_of_oligosaccharides << "\n";
-    std::cout << "Carbohydrate Context " << "\n";
-    std::cout << " Covalently linked to protein: " << number_of_covalent_links << "\n";
-    std::cout << " Non-covalent complex: " << number_of_probable_non_covalent_complexes << "\n";
-    std::cout << "<--------------------->" << "\n";
+    ///PRINTING STATISTICAL REPORT OF GLYPROBITY
+    if( glyprobity_report ) {
+      std::cout << "\n" << "GLYPROBITY REPORT" << "\n";
+      std::cout << "<-------Topology------>" << "\n";
+      std::cout << "Monosaccharide detected: " << monos.size() << "\n";
+      std::cout << "Residue Distribution " << "\n";
+      std::cout << " Monosaccharides: " << number_of_monosaccharides << "\n";
+      std::cout << " Oligosaccharides: " << number_of_oligosaccharides << "\n";
+      std::cout << "Carbohydrate Context " << "\n";
+      std::cout << " Covalently linked to protein: " << number_of_covalent_links << "\n";
+      std::cout << " Non-covalent complex: " << number_of_probable_non_covalent_complexes << "\n";
+      std::cout << "<--------------------->" << "\n";
+    }
   }
-
   ///POPULATING GMMO ONTOLOGY
   if( populate_ontology ) 
   {
@@ -2814,6 +2862,7 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
                                           std::string cond_name_pattern, std::stringstream& head,std::stringstream& tail, bool minus_one,
                                           std::stringstream& in_bracket)
 {
+  int local_debug = -1;
   std::stringstream ss;
   ss << pattern;
   if(key.compare("a") == 0)
@@ -2828,7 +2877,10 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     der_mod_note->description_ = note.str();
     // this->AddNote(der_mod_note);
     mono->mono_notes_.push_back(der_mod_note);
-    std::cout << ss.str() << "\n";
+    if(local_debug > 0)
+    {
+      std::cout << ss.str() << "\n";
+    }
   }
   else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
           find(mono->chemical_code_->right_down_.begin(), mono->chemical_code_->right_down_.end(), "-1") == mono->chemical_code_->right_down_.end() &&
@@ -2866,7 +2918,10 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     der_mod_note->description_ = note.str();
     // this->AddNote(der_mod_note);
     mono->mono_notes_.push_back(der_mod_note);
-    std::cout << ss.str() << "\n";
+    if(local_debug > 0)
+    {
+      std::cout << ss.str() << "\n";
+    }
   }
   else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
   {
@@ -2883,7 +2938,10 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     der_mod_note->description_ = note.str();
     // this->AddNote(der_mod_note);
     mono->mono_notes_.push_back(der_mod_note);
-    std::cout << ss.str() << "\n";
+    if(local_debug > 0)
+    {
+      std::cout << ss.str() << "\n";
+    }
   }
   else
   {
@@ -2970,6 +3028,7 @@ void Assembly::AddUnknownDerivativeRuleInfo(std::string key, std::string pattern
 void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glycan::Monosaccharide *mono, std::string long_name_pattern, std::string cond_name_pattern, std::stringstream &head,
                                      bool minus_one, std::stringstream &in_bracket)
 {
+  int local_debug = -1;
     std::stringstream ss;
     ss << pattern;
     // std::cout << key << ": " << pattern << "\n";
