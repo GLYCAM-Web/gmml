@@ -250,8 +250,10 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
                     numR++;
                     if((*derivative).second != "" && thisMono->sugar_name_.monosaccharide_short_name_ != thisMono->cycle_atoms_[0]->GetResidue()->GetName())
                     {
-                      std::stringstream RgroupStream;
+                      std::stringstream RgroupStream, RnumStream;
                       RgroupStream << oligo_uri << "_R" << numR;
+                      RnumStream << "gmmo:has" << "R" << numR;
+                      gmml::AddLiteral(oligo_uri, RnumStream.str(), RgroupStream.str(), oligo_sequence_stream); 
                       gmml::AddLiteral(RgroupStream.str(), Ontology::hasFormula,(*derivative).second, oligo_sequence_stream); 
                     }
                   }
@@ -866,8 +868,10 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
             
           if((*derivative).second != "")
           {
-            std::stringstream RgroupStream;
+            std::stringstream RgroupStream, RnumStream;
             RgroupStream << mono_uri << "_R" << numR;
+            RnumStream << "gmmo:hasR" << numR;
+            gmml::AddLiteral(mono_uri, RnumStream.str(), RgroupStream.str(), mono_stream); 
             gmml::AddLiteral(RgroupStream.str(), Ontology::hasFormula,(*derivative).second, mono_stream); 
           }
           offset = found;
