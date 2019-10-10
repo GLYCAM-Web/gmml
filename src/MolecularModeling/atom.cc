@@ -286,7 +286,7 @@ std::string Atom::DetermineChirality() //Added by Yao 08/26/3019 Return values a
 	    return this->DetermineRSAssignment(ordered_primary_neighbors, NULL);
 	}
 	else {
-	    std::cout << "Primary neighbors not unique" << std::endl;
+	    //std::cout << "Primary neighbors not unique" << std::endl;
 	    return "A";
 	}
     } 
@@ -402,8 +402,10 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
         bool dead_end = true;
 	std::vector<unsigned int> empty_count (duplicate_value_indices_versus_higher_rank_indices.size(), 0);
         for (std::map<std::vector<int>, std::vector<int> >::iterator mapit = duplicate_value_indices_versus_higher_rank_indices.begin(); mapit !=
-          duplicate_value_indices_versus_higher_rank_indices.end(); mapit++){
+            duplicate_value_indices_versus_higher_rank_indices.end(); mapit++){
 
+	    int map_index = std::distance(duplicate_value_indices_versus_higher_rank_indices.begin(), mapit);
+	    //std::cout << "Map index : " << map_index << std::endl;
 	    std::vector<int> duplicate_indices = mapit->first;
             std::vector<int> higher_rank_indices = mapit->second;
             for (std::vector<int>::iterator int_it = duplicate_indices.begin(); int_it != duplicate_indices.end(); int_it++){
@@ -415,15 +417,17 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
                 neighbors.erase(std::find(neighbors.begin(), neighbors.end(),this));
 
 	        if (neighbors.empty()){
-		    empty_count[index]++;
+		    empty_count[map_index]++;
 	        }
 	    }
+	    //std::cout << "Empty count is: " << empty_count[map_index] << std::endl; 
 		
 	}
 
         for (std::map<std::vector<int>, std::vector<int> >::iterator mapit = duplicate_value_indices_versus_higher_rank_indices.begin(); mapit !=
           duplicate_value_indices_versus_higher_rank_indices.end(); mapit++){
 
+	    int map_index = std::distance(duplicate_value_indices_versus_higher_rank_indices.begin(), mapit);
 	    std::vector<int> duplicate_indices = mapit->first;
 	    std::vector<int> higher_rank_indices = mapit->second;
             for (std::vector<int>::iterator int_it = duplicate_indices.begin(); int_it != duplicate_indices.end(); int_it++){
@@ -433,8 +437,9 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
                 Atom* atom = *(atomit);
                 AtomVector neighbors = atom->GetNode()->GetNodeNeighbors();
                 neighbors.erase(std::find(neighbors.begin(), neighbors.end(),this));
-                if (neighbors.empty() && empty_count[index] < duplicate_indices.size()){
+                if (neighbors.empty() && empty_count[map_index] < duplicate_indices.size()){
 		    //Although neighbors have identical ranking at the moment, if a neighbor has no downstream neighbor, it is smaller than other neighbors. 
+		    //std::cout << "Adjusting rank, which shouldn't happen." << std::endl;
 		    ranks[index]++;
 		    for (std::vector<int>::iterator int_it2 = higher_rank_indices.begin(); int_it2 != higher_rank_indices.end(); int_it2++){
 			ranks[*int_it2]++;
@@ -449,8 +454,8 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
         }
 	
 	for (unsigned int s = 0; s < ranks.size(); s++){
-	    std::cout << "Test before recursion, corresponding atom is: " << primary_neighbors[s]->GetName() << std::endl;
-	    std::cout << "Test before recusion rank: " << ranks[s] << std::endl;
+	    //std::cout << "Test before recursion, corresponding atom is: " << primary_neighbors[s]->GetName() << std::endl;
+	    //std::cout << "Test before recusion rank: " << ranks[s] << std::endl;
 	}
 	std::set<int> unique_ranks2;
 	for (std::vector<int>::iterator int_it = ranks.begin(); int_it != ranks.end(); int_it++){
@@ -463,7 +468,7 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
 
             std::map<Atom*, std::vector<AtomVector> > comparison_progress_tracker;
             this->InitializeComparisonTracker(duplicate_value_indices_versus_higher_rank_indices, visited_atoms, comparison_progress_tracker);
-            std::cout << "About to start recursion." << std::endl;
+            //std::cout << "About to start recursion." << std::endl;
             this->RecursivelyCompareBranches(duplicate_value_indices_versus_higher_rank_indices, ranks, visited_atoms, comparison_progress_tracker);
         }
 
@@ -516,10 +521,10 @@ std::string Atom::DetermineRSAssignment(MolecularModeling::AtomVector& ordered_p
 	largest = ordered_primary_neighbors[0];
     }
 
-    std::cout << "Largest: " << largest->GetName() << std::endl;
-    std::cout << "Third smallest: " << third_smallest->GetName() << std::endl;
-    std::cout << "Second smallest: " << second_smallest->GetName() << std::endl;
-    std::cout << "smalleest: " << smallest_atom->GetName() << std::endl;
+    //std::cout << "Largest: " << largest->GetName() << std::endl;
+    //std::cout << "Third smallest: " << third_smallest->GetName() << std::endl;
+    //std::cout << "Second smallest: " << second_smallest->GetName() << std::endl;
+    //std::cout << "smalleest: " << smallest_atom->GetName() << std::endl;
     double torsion1 = this->GetDihedral(largest, this, smallest_atom, third_smallest);
     double torsion2 = this->GetDihedral(third_smallest, this, smallest_atom, second_smallest);
 
@@ -644,13 +649,13 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
             int index = std::distance(primary_neighbors.begin(), atomit);
             if (std::find(indices_with_identical_ranking.begin(), indices_with_identical_ranking.end(), index) != indices_with_identical_ranking.end()){
                 Atom* neighbor = *atomit;
-		std::cout << "Primary neighbors with identical ranking: " << neighbor->GetName() << std::endl;
+		//std::cout << "Primary neighbors with identical ranking: " << neighbor->GetName() << std::endl;
                 primary_neighbors_with_identical_ranking.push_back(neighbor);
 		std::vector<AtomVector> vec = comparison_progress_tracker[neighbor];
 		for (unsigned int i = 0; i < vec.size(); i++){
-		    std::cout << "Current level 1" << std::endl;
+		    //std::cout << "Current level 1" << std::endl;
 		    for (unsigned int j = 0; j < vec[i].size(); j++){
-			std::cout << "Current level 2 branch atoms: " << vec[i][j]->GetName() << std::endl;
+			//std::cout << "Current level 2 branch atoms: " << vec[i][j]->GetName() << std::endl;
 		    }
 		}
             }
@@ -664,7 +669,7 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
             Atom* primary_neighbor = *atom_it;
             std::vector<AtomVector> branches = comparison_progress_tracker[primary_neighbor];
 	    if (branches.empty()){
-		std::cout << primary_neighbor->GetName() << "is empty. Prevent recursion from visiting it." << std::endl;
+		//std::cout << primary_neighbor->GetName() << "is empty. Prevent recursion from visiting it." << std::endl;
 	    }
 
             std::vector<std::vector<int> > branch_info = this-> ObtainBranchInfo (branches, visited_atoms);
@@ -702,7 +707,7 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
         //Access the comparison result tracker to determine the relative ranking of this set of primary neighbors;
         std::vector<std::pair<Atom*, int> > descent_sorted_primary_neighbors = this->SortPrimaryNeighborBranchesInDescendingOrder(comparison_result_tracker);
         for (std::vector<std::pair<Atom*, int> >::iterator pair_it = descent_sorted_primary_neighbors.begin(); pair_it != descent_sorted_primary_neighbors.end(); pair_it++){
-	    std::cout << "Testing relative rank after sorting: "  << pair_it->first->GetName() << "-" << pair_it->second << std::endl;
+	    //std::cout << "Testing relative rank after sorting: "  << pair_it->first->GetName() << "-" << pair_it->second << std::endl;
 	}
 
         //Adjust overall ranking based on relative ranking
@@ -860,7 +865,7 @@ std::vector<MolecularModeling::AtomVector> Atom::MakeNextLevelOfBranches(std::ve
 	    }
         }
     }
-    std::cout << "Next lvl of branches size is: " << new_branches.size() << std::endl;
+    //std::cout << "Next lvl of branches size is: " << new_branches.size() << std::endl;
     return new_branches;
 }
 
@@ -1032,9 +1037,7 @@ std::vector<std::vector<int> > Atom::SortBranchesInDescendingOrder(std::vector<s
     std::vector<int> first_branch = originally_ordered_branches[0];
     descent_order_sorted_branch_info.push_back(first_branch);
 
-    std::cout << "Sort descend before for loop." << std::endl;
     for (std::vector<std::vector<int> >::iterator bi_it = originally_ordered_branches.begin() +1; bi_it != originally_ordered_branches.end(); bi_it++){
-        std::cout << "Shouldn't see this msg." << std::endl;
         std::vector<int> branch_info = *bi_it;
         if (this->CompareBranches(branch_info, descent_order_sorted_branch_info.front()) != 1){
             descent_order_sorted_branch_info.insert(descent_order_sorted_branch_info.begin(), branch_info);
