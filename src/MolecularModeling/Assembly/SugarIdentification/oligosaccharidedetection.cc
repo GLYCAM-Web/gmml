@@ -413,6 +413,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   {
     Glycan::Monosaccharide* this_mono = it->second;
     ordered_monos.push_back(this_mono);
+    // std::cout << this_mono->cycle_atoms_str_ << "\n";
   }
 
   // ///CREATING MONOSACCHARIDE STRUCTURE. Ring atoms, side atoms, chemical code (Glycode), modifications/derivatives, names

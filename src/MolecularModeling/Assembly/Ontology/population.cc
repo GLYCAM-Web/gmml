@@ -500,7 +500,7 @@ void Assembly::PopulateLinkage(std::stringstream& linkage_stream, std::string ol
       gmml::AddLiteral(linkage_uri, Ontology::linkageIndeces, thisLinkage->inverse_linkage_type_, linkage_stream);
       gmml::AddDecimal(linkage_uri, Ontology::hasGlycosidicPhiAngle, thisLinkage->phi_angle_, linkage_stream);
       gmml::AddDecimal(linkage_uri, Ontology::hasGlycosidicPsiAngle, thisLinkage->psi_angle_, linkage_stream);
-      if(thisLinkage->omega_angle_ != NULL)
+      if(thisLinkage->omega_angle_ != -9999)
         gmml::AddDecimal(linkage_uri, Ontology::hasGlycosidicOmegaAngle, thisLinkage->omega_angle_, linkage_stream);
       linkNum++;
     }
