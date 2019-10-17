@@ -121,6 +121,11 @@ bool Atom::GetIsRing() const
 	return this->is_ring_;
 } // end GetIsRing
 
+bool Atom::GetIsExocyclicCarbon() const
+{
+	return this->is_exocyclic_C_;
+} // end GetIsExocyclicCarbon
+
 unsigned long long Atom::GetIndex() const
 {
 	return this->index_;
@@ -206,6 +211,11 @@ void Atom::SetIsRing(bool is_ring)
 	this->is_ring_ = is_ring;
 }
 //Added by ayush on 13/11/17 for molecules in assembly
+
+void Atom::SetIsRing(bool is_exocyclic_C)
+{
+	this->is_exocyclic_C_ = is_exocyclic_C;
+}
 
 void Atom::SetAtomType(std::string atom_type)
 {

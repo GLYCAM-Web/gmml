@@ -525,17 +525,16 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
           {
             if(orientations.at(index).compare("N") == 0) ///if the position of non-ring oxygen or nitrogen hasn't been set yet
             {
+              side_atoms.at(index).at(0) = neighbor;
+              neighbor -> SetIsSideChain(true);
+              neighbor->SetIsExocyclicCarbon(true);
               if(theta > (gmml::PI_RADIAN/2))
               {
                 orientations.at(index) = "-1D";
-                side_atoms.at(index).at(0) = neighbor;
-                neighbor -> SetIsSideChain(true);
               }
               else
               {
                 orientations.at(index) = "-1U";
-                side_atoms.at(index).at(0) = neighbor;
-                neighbor -> SetIsSideChain(true);
               }
               continue;
             }
@@ -618,6 +617,11 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
           }
           else if(index == cycle_atoms_.size() - 2 && neighbor_id.at(0) == 'C')///if the last ring carbon has a non-ring carbon neighbor
           {
+            
+            //Add +n exocyclic flags TODO for Dave
+            
+            
+            
             ///Check if neighbor of neighbor is oxygen or nitrogen
             MolecularModeling::AtomNode* neighbor_node = neighbor->GetNode();
             std::vector<MolecularModeling::Atom*> neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
@@ -959,21 +963,27 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
       value = GetFormula(target);
       if(value.compare("") != 0)
       {
-        if(((index == 4) && (this->sugar_name_.ring_type_.compare("F") == 0)) ||
-           ((index == 5) && (this->sugar_name_.ring_type_.compare("P") == 0)))
+        if(((index == 3) && (this->sugar_name_.ring_type_.compare("F") == 0)) ||
+           ((index == 4) && (this->sugar_name_.ring_type_.compare("P") == 0)))
         {
-          if (value != "C1O1")
+          if ((value != "C1O1") && (this->sugar_name_.ring_type_.compare("P") == 0))
           {
             // gmml::log(__LINE__, __FILE__, gmml::INF, key);
             // gmml::log(__LINE__, __FILE__, gmml::INF, value);
             unknown_derivatives_.push_back({key, value});
             derivatives_map_.push_back({key, ""});
           }
+          else if ((value != "C2O2") && (this->sugar_name_.ring_type_.compare("F") == 0))
+          {
+            unknown_derivatives_.push_back({key, value});
+            derivatives_map_.push_back({key, ""});
+          }
         }
-        else if(index != 4 && index !=5 && index != 0)
+        else if(index != 4 && index !=3 && index != 0)
         {
-          // gmml::log(__LINE__, __FILE__, gmml::INF, key);
-          // gmml::log(__LINE__, __FILE__, gmml::INF, value);
+          gmml::log(__LINE__, __FILE__, gmml::INF, key);
+          gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(index));
+          gmml::log(__LINE__, __FILE__, gmml::INF, value);
           unknown_derivatives_.push_back({key, value});
           derivatives_map_.push_back({key, ""});
         }

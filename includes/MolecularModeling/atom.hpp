@@ -110,6 +110,11 @@ namespace MolecularModeling
             */
             bool GetIsRing() const;
             /*! \fn
+            * An accessor function in order to access to the is_exocyclic_C_ attribute of the current object
+            * @return is_ring_ attribute of the current object of this class
+            */
+            bool GetIsExocyclicCarbon() const;
+            /*! \fn
             * An accessor function in order to access to the index
             * @return index_ attribute of the current object of this class
             */
@@ -191,6 +196,12 @@ namespace MolecularModeling
             * @param is_ring The boolean value representing if the current atom object is in aring or not
             */
             void SetIsRing(bool is_ring);
+            /*! \fn
+            * A mutator function in order to set the is_exocyclic_C_ attribute of the current object
+            * Set the is_exocyclic_C_ attribute of the current atom
+            * @param is_exocyclic_C_ The boolean value representing if the current atom object is in an exocyclic carbon or not
+            */
+            void SetIsExocyclicCarbon(bool is_exocyclic_C);
             //Added by ayush on 11/12/17 for molecules in assembly like atom type as O,C,H
             /*! \fn
             * A mutator function in order to set the atom type of the current object
@@ -287,6 +298,7 @@ namespace MolecularModeling
             std::string id_;                   /*!< An identifier for an atom which is generated based on the type of the input file from which the structure has to be built
                     			Mostly it is like "residue_name:atom_name" >*/
             bool is_ring_;                     /*!< A boolean value which represents if an atom is involved in a sugar ring or not. This attribute is set during the Sugar ID process >*/
+            bool is_exocyclic_C_ = false; /*!< A boolean value which represents if an atom is an exocyclic carbon of a sugar. This attribute is set during the Sugar ID process >*/
             unsigned long long index_;         /*!< A unqiue index for each atom in an assembly >*/
             std::string atom_type_;                /*!< List the atom type in an assembly >*/      //Added by ayush on 13/11/17 for molecules in assembly to set the atom type as an attribute like O,H
             float b_factor_;                  /*!< Gives the B Factor for the atom >*/            //Added by Dave on 03/23/18 for adding B Factor to ontology
