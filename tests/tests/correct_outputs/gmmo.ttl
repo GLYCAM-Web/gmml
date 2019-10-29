@@ -1961,7 +1961,6 @@ gmmo:4mbz_oligo1_link_0 gmmo:hasChildMono """DNeup5Aca""".
 gmmo:4mbz_oligo1_link_0 gmmo:linkageIndeces """2-3""".
 gmmo:4mbz_oligo1_link_0 gmmo:hasGlycosidicPhiAngle "60.7956"^^xsd:decimal.
 gmmo:4mbz_oligo1_link_0 gmmo:hasGlycosidicPsiAngle "-140.158"^^xsd:decimal.
-gmmo:4mbz_oligo1_link_0 gmmo:hasGlycosidicOmegaAngle "0"^^xsd:decimal.
 gmmo:4mbz_oligo2 gmmo:hasGlycosidicLinkage gmmo:4mbz_oligo2_link_0.
 gmmo:4mbz_oligo2_link_0 rdf:type gmmo:Linkage.
 gmmo:4mbz_oligo2_link_0 gmmo:hasParent gmmo:4mbz_oligo2_res0.
@@ -1971,7 +1970,6 @@ gmmo:4mbz_oligo2_link_0 gmmo:hasChildMono """DNeup5Aca""".
 gmmo:4mbz_oligo2_link_0 gmmo:linkageIndeces """2-3""".
 gmmo:4mbz_oligo2_link_0 gmmo:hasGlycosidicPhiAngle "71.4303"^^xsd:decimal.
 gmmo:4mbz_oligo2_link_0 gmmo:hasGlycosidicPsiAngle "-148.402"^^xsd:decimal.
-gmmo:4mbz_oligo2_link_0 gmmo:hasGlycosidicOmegaAngle "0"^^xsd:decimal.
 gmmo:4mbz_oligo3 gmmo:hasGlycosidicLinkage gmmo:4mbz_oligo3_link_0.
 gmmo:4mbz_oligo3_link_0 rdf:type gmmo:Linkage.
 gmmo:4mbz_oligo3_link_0 gmmo:hasParent gmmo:4mbz_oligo3_res0.
@@ -1981,7 +1979,6 @@ gmmo:4mbz_oligo3_link_0 gmmo:hasChildMono """DNeup5Aca""".
 gmmo:4mbz_oligo3_link_0 gmmo:linkageIndeces """2-3""".
 gmmo:4mbz_oligo3_link_0 gmmo:hasGlycosidicPhiAngle "65.9219"^^xsd:decimal.
 gmmo:4mbz_oligo3_link_0 gmmo:hasGlycosidicPsiAngle "-141.331"^^xsd:decimal.
-gmmo:4mbz_oligo3_link_0 gmmo:hasGlycosidicOmegaAngle "0"^^xsd:decimal.
 gmmo:4mbz_oligo4 gmmo:hasGlycosidicLinkage gmmo:4mbz_oligo4_link_0.
 gmmo:4mbz_oligo4_link_0 rdf:type gmmo:Linkage.
 gmmo:4mbz_oligo4_link_0 gmmo:hasParent gmmo:4mbz_oligo4_res0.
@@ -1991,7 +1988,6 @@ gmmo:4mbz_oligo4_link_0 gmmo:hasChildMono """DNeup5Aca""".
 gmmo:4mbz_oligo4_link_0 gmmo:linkageIndeces """2-3""".
 gmmo:4mbz_oligo4_link_0 gmmo:hasGlycosidicPhiAngle "67.9958"^^xsd:decimal.
 gmmo:4mbz_oligo4_link_0 gmmo:hasGlycosidicPsiAngle "-146.596"^^xsd:decimal.
-gmmo:4mbz_oligo4_link_0 gmmo:hasGlycosidicOmegaAngle "0"^^xsd:decimal.
 gmmo:4mbz_oligo5 gmmo:hasGlycosidicLinkage gmmo:4mbz_oligo5_link_0.
 gmmo:4mbz_oligo5_link_0 rdf:type gmmo:Linkage.
 gmmo:4mbz_oligo5_link_0 gmmo:hasParent gmmo:4mbz_oligo5_res0.
@@ -2001,7 +1997,6 @@ gmmo:4mbz_oligo5_link_0 gmmo:hasChildMono """DNeup5Aca""".
 gmmo:4mbz_oligo5_link_0 gmmo:linkageIndeces """2-3""".
 gmmo:4mbz_oligo5_link_0 gmmo:hasGlycosidicPhiAngle "59.3654"^^xsd:decimal.
 gmmo:4mbz_oligo5_link_0 gmmo:hasGlycosidicPsiAngle "-140.625"^^xsd:decimal.
-gmmo:4mbz_oligo5_link_0 gmmo:hasGlycosidicOmegaAngle "0"^^xsd:decimal.
 gmmo:4mbz_oligo6 gmmo:hasGlycosidicLinkage gmmo:4mbz_oligo6_link_0.
 gmmo:4mbz_oligo6_link_0 rdf:type gmmo:Linkage.
 gmmo:4mbz_oligo6_link_0 gmmo:hasParent gmmo:4mbz_oligo6_res0.
@@ -2011,7 +2006,6 @@ gmmo:4mbz_oligo6_link_0 gmmo:hasChildMono """DNeup5Aca""".
 gmmo:4mbz_oligo6_link_0 gmmo:linkageIndeces """2-3""".
 gmmo:4mbz_oligo6_link_0 gmmo:hasGlycosidicPhiAngle "60.275"^^xsd:decimal.
 gmmo:4mbz_oligo6_link_0 gmmo:hasGlycosidicPsiAngle "-142.004"^^xsd:decimal.
-gmmo:4mbz_oligo6_link_0 gmmo:hasGlycosidicOmegaAngle "0"^^xsd:decimal.
 gmmo:4mbz_oligo7 gmmo:hasGlycosidicLinkage gmmo:4mbz_oligo7_link_0.
 gmmo:4mbz_oligo7_link_0 rdf:type gmmo:Linkage.
 gmmo:4mbz_oligo7_link_0 gmmo:hasParent gmmo:4mbz_oligo7_res1.
@@ -2021,7 +2015,6 @@ gmmo:4mbz_oligo7_link_0 gmmo:hasChildMono """DNeup5Aca""".
 gmmo:4mbz_oligo7_link_0 gmmo:linkageIndeces """2-3""".
 gmmo:4mbz_oligo7_link_0 gmmo:hasGlycosidicPhiAngle "63.1667"^^xsd:decimal.
 gmmo:4mbz_oligo7_link_0 gmmo:hasGlycosidicPsiAngle "-139.45"^^xsd:decimal.
-gmmo:4mbz_oligo7_link_0 gmmo:hasGlycosidicOmegaAngle "0"^^xsd:decimal.
 gmmo:4mbz_oligo7 gmmo:hasGlycosidicLinkage gmmo:4mbz_oligo7_link_1.
 gmmo:4mbz_oligo7_link_1 rdf:type gmmo:Linkage.
 gmmo:4mbz_oligo7_link_1 gmmo:hasParent gmmo:4mbz_oligo7_res0.
@@ -2031,5 +2024,4 @@ gmmo:4mbz_oligo7_link_1 gmmo:hasChildMono """DGalpb""".
 gmmo:4mbz_oligo7_link_1 gmmo:linkageIndeces """1-4""".
 gmmo:4mbz_oligo7_link_1 gmmo:hasGlycosidicPhiAngle "-56.7198"^^xsd:decimal.
 gmmo:4mbz_oligo7_link_1 gmmo:hasGlycosidicPsiAngle "116.192"^^xsd:decimal.
-gmmo:4mbz_oligo7_link_1 gmmo:hasGlycosidicOmegaAngle "0"^^xsd:decimal.
 
