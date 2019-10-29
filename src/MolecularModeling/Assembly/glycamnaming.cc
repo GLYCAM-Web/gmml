@@ -408,7 +408,7 @@ void Assembly::RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& ol
 	    label += atom->GetElementSymbol(); 
 	    label += atom->DetermineChirality();
 	    target_atom_label_map[atom] = label;
-	    std::cout << "Target label is: " << atom->GetName() << " label is: " << label << std::endl;
+	    //std::cout << "Target label is: " << atom->GetName() << " label is: " << label << std::endl;
         }
 
 
@@ -434,10 +434,10 @@ void Assembly::RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& ol
 	    if (atom->GetName() == "C6"){
 		AtomVector neighbors = atom->GetNode()->GetNodeNeighbors();
 		for (unsigned int i = 0; i < neighbors.size(); i++){
-		    std::cout << "C6 neighbor is: " << neighbors[i]->GetName() << std::endl;
+		    //std::cout << "C6 neighbor is: " << neighbors[i]->GetName() << std::endl;
 		}
 	    }
-	    std::cout << "Template " << atom->GetName() << " label is: " << label << std::endl;
+	    //std::cout << "Template " << atom->GetName() << " label is: " << label << std::endl;
         }
 
         Atom* target_start_atom = target_atoms[0];
