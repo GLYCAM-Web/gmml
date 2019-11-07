@@ -408,7 +408,7 @@ void Assembly::RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& ol
 	    label += atom->GetElementSymbol(); 
 	    label += atom->DetermineChirality();
 	    target_atom_label_map[atom] = label;
-	    //std::cout << "Target label is: " << label << std::endl;
+	    //std::cout << "Target label is: " << atom->GetName() << " label is: " << label << std::endl;
         }
 
 
@@ -431,7 +431,13 @@ void Assembly::RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& ol
 	    label += atom->GetElementSymbol(); 
 	    label += atom->DetermineChirality();
 	    template_atom_label_map[atom] = label;
-	    //std::cout << "Template label is: " << label << std::endl;
+	    if (atom->GetName() == "C6"){
+		AtomVector neighbors = atom->GetNode()->GetNodeNeighbors();
+		for (unsigned int i = 0; i < neighbors.size(); i++){
+		    //std::cout << "C6 neighbor is: " << neighbors[i]->GetName() << std::endl;
+		}
+	    }
+	    //std::cout << "Template " << atom->GetName() << " label is: " << label << std::endl;
         }
 
         Atom* target_start_atom = target_atoms[0];
@@ -445,15 +451,16 @@ void Assembly::RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& ol
 	if (all_isomorphisms.empty()){
 	    std::cout << "Isomorphism matching failed, cannot rename atoms." << std::endl;
 	}
-	else if (all_isomorphisms.size() == 1){
+	else if (all_isomorphisms.size() >= 1){
 	    std::vector<std::pair<Atom*, Atom*> > first_isomorphism = all_isomorphisms[0]; 
 	    for (unsigned int i = 0; i < first_isomorphism.size(); i++){
 		first_isomorphism[i].first->SetName(first_isomorphism[i].second->GetName()); 
 	    }
 	}
-	else if (all_isomorphisms.size() > 1){
+
+	if (all_isomorphisms.size() > 1){
 	    std::cout << "Warning: multiple matches detected, applied the first match." << std::endl;
-	    for (std::vector<std::vector<std::pair<Atom*, Atom*> > >::iterator isos = all_isomorphisms.begin(); isos != all_isomorphisms.end(); isos++){
+	    /*for (std::vector<std::vector<std::pair<Atom*, Atom*> > >::iterator isos = all_isomorphisms.begin(); isos != all_isomorphisms.end(); isos++){
 		std::cout << "Match " << std::distance(all_isomorphisms.begin(), isos) << std::endl;
 		std::cout << "-----------------------" << std::endl;
 		std::vector<std::pair<Atom*, Atom*> >& current_iso = *isos;
@@ -461,7 +468,7 @@ void Assembly::RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& ol
 		    std::cout << iso_it->first->GetName() << " is matched to " << iso_it->second->GetName() << std::endl;
 		}
 		std::cout << "-----------------------" << std::endl;
-	    }
+	    }*/
 	}
 	
     }

@@ -122,7 +122,7 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
       {
         // std::cout << new_code.right_up_[i] << "\n";
         new_code.right_up_[i] = new_code.right_up_[i].substr(0,2);
-        std::cout << new_code.right_up_[i] << "\n";
+        // std::cout << new_code.right_up_[i] << "\n";
         derivatives_map_.push_back(std::make_pair(new_code.right_up_[i].substr(0,2), "xCHH"));
       }
     }
@@ -134,7 +134,7 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
       {
         // std::cout << new_code.right_down_[i] << "\n";
         new_code.right_down_[i] = new_code.right_down_[i].substr(0,2);
-        std::cout << new_code.right_down_[i] << "\n";
+        // std::cout << new_code.right_down_[i] << "\n";
         derivatives_map_.push_back(std::make_pair(new_code.right_down_[i].substr(0,2), "xCHH"));
       }
     }
