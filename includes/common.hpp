@@ -476,6 +476,7 @@ namespace gmml
         {"_23dF_a^+1",    "a-D-cordycepofuranose",  "DRibf[3D]a", "D", "", "P", "a", "", "", ""   },
         {"_2_4^3P_a^+1d", "a-D-quinovopyranose",    "DQuipa",     "D", "", "P", "a", "", "", "G6D"},
         {"_2_43dP_a^+1d", "a-D-paratopyranose",     "DParpa",     "D", "", "P", "a", "", "", "PZU"},
+        {"_4^32dP^a^+1d", "b-D-olivopyranose",      "DOlipb",     "D", "", "P", "b", "", "", "DDA"},
 
         ///Alpha L Aldohexapyranoses
         {"^2^3^4P^a",     "a-L-ribopyranose",       "LRibpa",     "L", "", "P", "a", "", "", ""   },

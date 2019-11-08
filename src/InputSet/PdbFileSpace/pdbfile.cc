@@ -3290,12 +3290,12 @@ bool PdbFile::ParseAtomStream(std::stringstream &atomstream)
 {
   //This function is to take an input of just atom cards in a stringstream and create a PdbFile object
 
-  std::string line;
-  getline(atomstream, line);
-  line = gmml::ExpandLine(line, gmml::iPdbLineLength);
-  std::string record_name = line.substr(0,6);
-  record_name = gmml::Trim(record_name);
-  
+  // std::string line;
+  // getline(atomstream, line);
+  // line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+  // std::string record_name = line.substr(0,6);
+  // record_name = gmml::Trim(record_name);
+  // atomstream.seekg(0, atomstream.beg);
   models_ = new PdbFileSpace::PdbModelSection(atomstream);
   
   if(models_ == NULL)
