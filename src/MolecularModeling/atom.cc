@@ -49,7 +49,7 @@ Atom::Atom(const Atom* atom)
 
 
 /*! \todo  Figure out why the constructor below gets the error below and fix it.
- 
+
 src/MolecularModeling/atom.cc: In copy constructor 'MolecularModeling::Atom::Atom(const MolecularModeling::Atom&)':
 src/MolecularModeling/atom.cc:51:1: warning: base class 'class MolecularModeling::MolecularDynamicAtom' should be explicitly initialized in the copy constructor [-Wextra]
  Atom::Atom(const Atom& atom)
@@ -212,7 +212,7 @@ void Atom::SetIsRing(bool is_ring)
 }
 //Added by ayush on 13/11/17 for molecules in assembly
 
-void Atom::SetIsRing(bool is_exocyclic_C)
+void Atom::SetIsExocyclicCarbon(bool is_exocyclic_C)
 {
 	this->is_exocyclic_C_ = is_exocyclic_C;
 }
@@ -299,12 +299,12 @@ std::string Atom::DetermineChirality() //Added by Yao 08/26/3019 Return values a
 	    //std::cout << "Primary neighbors not unique" << std::endl;
 	    return "A";
 	}
-    } 
+    }
 
     else if (primary_neighbors.size() == 3){
 	bool sp2 = false;
-	//Allow up to 11.47 deg from parallel. This cutoff is just slightly above side group N2 in prep file, which is 0.98491, or 9.97 deg from ideal trigonal planar. 
-	if (std::abs(std::cos(GetDihedral(primary_neighbors[0], this, primary_neighbors[1], primary_neighbors[2]))) > 0.98){ 
+	//Allow up to 11.47 deg from parallel. This cutoff is just slightly above side group N2 in prep file, which is 0.98491, or 9.97 deg from ideal trigonal planar.
+	if (std::abs(std::cos(GetDihedral(primary_neighbors[0], this, primary_neighbors[1], primary_neighbors[2]))) > 0.98){
             sp2 = true; //if improper torsion is close to 0 or 180 deg, then carbon neighbor is planar, hence sp2 carbon.
         }
 	//std::cout << "Sp2 judgment torsion is: " << primary_neighbors[0]->GetName() << "-" <<  this->GetName() << "-" <<  primary_neighbors[1]->GetName() << "-" <<  primary_neighbors[2]->GetName()
@@ -404,7 +404,7 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
                 }
             }
         }
-	
+
 	return ordered_primary_neighbors;
     }
 
@@ -430,8 +430,8 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
 		    empty_count[map_index]++;
 	        }
 	    }
-	    //std::cout << "Empty count is: " << empty_count[map_index] << std::endl; 
-		
+	    //std::cout << "Empty count is: " << empty_count[map_index] << std::endl;
+
 	}
 
         for (std::map<std::vector<int>, std::vector<int> >::iterator mapit = duplicate_value_indices_versus_higher_rank_indices.begin(); mapit !=
@@ -448,7 +448,7 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
                 AtomVector neighbors = atom->GetNode()->GetNodeNeighbors();
                 neighbors.erase(std::find(neighbors.begin(), neighbors.end(),this));
                 if (neighbors.empty() && empty_count[map_index] < duplicate_indices.size()){
-		    //Although neighbors have identical ranking at the moment, if a neighbor has no downstream neighbor, it is smaller than other neighbors. 
+		    //Although neighbors have identical ranking at the moment, if a neighbor has no downstream neighbor, it is smaller than other neighbors.
 		    //std::cout << "Adjusting rank, which shouldn't happen." << std::endl;
 		    ranks[index]++;
 		    for (std::vector<int>::iterator int_it2 = higher_rank_indices.begin(); int_it2 != higher_rank_indices.end(); int_it2++){
@@ -462,7 +462,7 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
 
             }
         }
-	
+
 	for (unsigned int s = 0; s < ranks.size(); s++){
 	    //std::cout << "Test before recursion, corresponding atom is: " << primary_neighbors[s]->GetName() << std::endl;
 	    //std::cout << "Test before recusion rank: " << ranks[s] << std::endl;
@@ -471,7 +471,7 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
 	for (std::vector<int>::iterator int_it = ranks.begin(); int_it != ranks.end(); int_it++){
 	    unique_ranks2.insert(*int_it);
 	}
-        if (!dead_end && unique_ranks2.size() != ranks.size()){ //If not at a dead end yet and ranking is not unique, need to start recursive comparison. 
+        if (!dead_end && unique_ranks2.size() != ranks.size()){ //If not at a dead end yet and ranking is not unique, need to start recursive comparison.
             AtomVector visited_atoms;
             visited_atoms.insert(visited_atoms.end(), primary_neighbors.begin(), primary_neighbors.end());
             visited_atoms.push_back(this);
@@ -548,7 +548,7 @@ std::string Atom::DetermineRSAssignment(MolecularModeling::AtomVector& ordered_p
     }
     else {
 	//std::cout << "Don't know what happened." << std::endl;
-	//std::cout << "Torsion 1: " << torsion1 << " Torsion 2: " << torsion2 << std::endl;	
+	//std::cout << "Torsion 1: " << torsion1 << " Torsion 2: " << torsion2 << std::endl;
 	return "A";
     }
 
@@ -642,7 +642,7 @@ std::map<std::vector<int>, std::vector<int> > Atom::ComparePrimaryNeighbors(std:
     return duplicate_value_indices_versus_higher_rank_indices;
 }
 
-void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int> >& duplicate_higher_indices_map, std::vector<int>& ranks, 
+void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int> >& duplicate_higher_indices_map, std::vector<int>& ranks,
   MolecularModeling::AtomVector visited_atoms, std::map<Atom*, std::vector<AtomVector> >& comparison_progress_tracker)
 {
     //std::cout << "Recursively compare branches: " << std::endl;
@@ -672,7 +672,7 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
         }
 	//std::cout << "segfault test 2" << std::endl;
 
-	std::map<Atom*, std::vector<std::vector<int> > > comparison_result_tracker; 
+	std::map<Atom*, std::vector<std::vector<int> > > comparison_result_tracker;
 
         //Compare downstream neighbors and determine priority.
         for (AtomVector::iterator atom_it = primary_neighbors_with_identical_ranking.begin(); atom_it != primary_neighbors_with_identical_ranking.end(); atom_it++){
@@ -726,10 +726,10 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
 	    unique_relative_ranking.insert(pair_it->second);
 	}
 
-	//Check if certain identically ranked primary neighbors and empty. If some, but not all, are empty, increase their relative rank by 1. 
+	//Check if certain identically ranked primary neighbors and empty. If some, but not all, are empty, increase their relative rank by 1.
 	std::vector<std::pair<AtomVector, AtomVector> > duplicate_neighbors_higher_ranked_neighbors;
 	for (std::set<int>::iterator setit = unique_relative_ranking.begin(); setit != unique_relative_ranking.end(); setit++){
-	    int unique_rel_rank = *setit; 
+	    int unique_rel_rank = *setit;
 	    AtomVector duplicate_neighbors = AtomVector();
 	    AtomVector higher_ranked_neighbors = AtomVector();
 
@@ -743,13 +743,13 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
 		    higher_ranked_neighbors.push_back(primary_neighbor);
 		}
 	    }
-	    
+
 	    if (duplicate_neighbors.size() > 1){
 		duplicate_neighbors_higher_ranked_neighbors.push_back(std::make_pair(duplicate_neighbors, higher_ranked_neighbors));
 	    }
 	}
 
-	for (std::vector<std::pair<AtomVector, AtomVector> >::iterator vec_it = duplicate_neighbors_higher_ranked_neighbors.begin(); vec_it != 
+	for (std::vector<std::pair<AtomVector, AtomVector> >::iterator vec_it = duplicate_neighbors_higher_ranked_neighbors.begin(); vec_it !=
 	  duplicate_neighbors_higher_ranked_neighbors.end(); vec_it++){
 	    AtomVector duplicate_neighbors = vec_it->first;
 	    AtomVector higher_ranked_neighbors = vec_it->second;
@@ -772,7 +772,7 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
 		    if (!branchit->empty()){
 			empty = false;
 			all_empty = false;
-		    } 
+		    }
 		}
 		if (empty && !all_empty){
 		    //std::cout << pri_neighbor->GetName() << "is a dead end. " << std::endl;
@@ -795,7 +795,7 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
 	        }
 	    }
 	}
-		
+
 	//std::cout << "segfault test 4" << std::endl;
 
 	int min_relative_rank = 99999;
@@ -806,7 +806,7 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
 	    }
 	}
 
-	
+
         for (std::vector<std::pair<Atom*, int> >::iterator pair_it = descent_sorted_primary_neighbors.begin(); pair_it != descent_sorted_primary_neighbors.end(); pair_it++){
             Atom* primary_neighbor = pair_it->first;
 	    //std::cout << "Primary neighbor is: " << primary_neighbor->GetName() << std::endl;
@@ -858,7 +858,7 @@ std::vector<MolecularModeling::AtomVector> Atom::MakeNextLevelOfBranches(std::ve
         AtomVector individual_branch = *branch_it;
         for (AtomVector::iterator atom_it = individual_branch.begin(); atom_it != individual_branch.end(); atom_it++){
             Atom* individual_atom = *atom_it;
-            AtomVector individual_new_branch; 
+            AtomVector individual_new_branch;
 	    AtomVector neighbors = individual_atom->GetNode()->GetNodeNeighbors();
 	    for (AtomVector::iterator atom_it = neighbors.begin(); atom_it != neighbors.end(); atom_it++){
 		Atom* neighbor = *atom_it;
@@ -885,7 +885,7 @@ std::vector<std::vector<int> > Atom::ObtainBranchInfo (std::vector<MolecularMode
     for (std::vector<AtomVector>::iterator branch_it = branches.begin(); branch_it != branches.end(); branch_it++){
         AtomVector individual_branch = *branch_it;
 	//TODO:Right now each neighbor is counted only once, regardless of the bond type. Need to find double/triple bonded neighbors and count
-	//that neighbor multiple times. 
+	//that neighbor multiple times.
         std::multimap<int, Atom*> neighbor_atomic_number_map = this->GetAtomicNumbersOfNeighbors(individual_branch, visited_atoms);
 
         for (std::multimap<int, Atom*>::iterator nanm_it = neighbor_atomic_number_map.begin(); nanm_it != neighbor_atomic_number_map.end(); nanm_it ++){
@@ -936,7 +936,7 @@ std::map<std::vector<int>, std::vector<int> > Atom::MakeDuplicateRanksHigherRank
             duplicate_value_indices_versus_higher_rank_indices[rank_value_indices] = indices_with_higher_rank;
         }
     }/////
-    return duplicate_value_indices_versus_higher_rank_indices; 
+    return duplicate_value_indices_versus_higher_rank_indices;
 }
 
 
@@ -944,7 +944,7 @@ std::vector<std::pair<Atom*, int> > Atom::SortPrimaryNeighborBranchesInDescendin
 {
     //std::cout << "Compare primary neighbors: " << std::endl;
     /*for (std::map<Atom*, std::vector<std::vector<int> > >::iterator m = comparison_result_tracker.begin(); m != comparison_result_tracker.end(); m++ ){
-	std::cout << m->first->GetName() << ",";	
+	std::cout << m->first->GetName() << ",";
     }
     std::cout << std::endl;*/
 
@@ -963,7 +963,7 @@ std::vector<std::pair<Atom*, int> > Atom::SortPrimaryNeighborBranchesInDescendin
 	    //std::cout << "S1 >= S2" << std::endl;
 	    //std::cout << "Enter if" << std::endl << std::flush;
 	    descent_sorted_primary_neighbor.insert(descent_sorted_primary_neighbor.begin(), primary_neighbor);
-	} 	
+	}
 	else if (this->CompareTwoSetsOfBranches(secondary_branches, comparison_result_tracker[descent_sorted_primary_neighbor.back()]) != 0){ //incoming set <= existing set
 	    //std::cout << "S1 <= S2" << std::endl;
 	    //std::cout << "Enter elif" << std::endl << std::flush;
@@ -972,10 +972,10 @@ std::vector<std::pair<Atom*, int> > Atom::SortPrimaryNeighborBranchesInDescendin
 	else {
 	    //std::cout << "Enter else" << std::endl << std::flush;
 	    for (AtomVector::iterator atom_it = descent_sorted_primary_neighbor.begin(); atom_it != descent_sorted_primary_neighbor.end() -1; atom_it++){
-		Atom* existing_atom = *atom_it;	
+		Atom* existing_atom = *atom_it;
 		AtomVector::iterator next_atom_it = atom_it +1;
 		Atom* next_existing_atom = *next_atom_it;
-		if (this->CompareTwoSetsOfBranches(secondary_branches, comparison_result_tracker[existing_atom]) != 0 && 
+		if (this->CompareTwoSetsOfBranches(secondary_branches, comparison_result_tracker[existing_atom]) != 0 &&
 		  this->CompareTwoSetsOfBranches(secondary_branches,comparison_result_tracker[next_existing_atom]) != 1){
 		    descent_sorted_primary_neighbor.insert(next_atom_it, primary_neighbor);
 		}
@@ -987,12 +987,12 @@ std::vector<std::pair<Atom*, int> > Atom::SortPrimaryNeighborBranchesInDescendin
     descent_sorted_descent_sorted_primary_neighbors_and_ranking.push_back (std::make_pair(descent_sorted_primary_neighbor.front(),relative_rank));
 
     for (AtomVector::iterator atom_it = descent_sorted_primary_neighbor.begin(); atom_it != descent_sorted_primary_neighbor.end() -1; atom_it++){
-	Atom* existing_atom = *atom_it;	
+	Atom* existing_atom = *atom_it;
 	AtomVector::iterator next_atom_it = atom_it +1;
 	Atom* next_existing_atom = *next_atom_it;
 	if (this->CompareTwoSetsOfBranches(comparison_result_tracker[next_existing_atom], comparison_result_tracker[existing_atom]) == 1){
 	    relative_rank++;
-	}	
+	}
 	descent_sorted_descent_sorted_primary_neighbors_and_ranking.push_back(std::make_pair(next_existing_atom, relative_rank));
     }
     return descent_sorted_descent_sorted_primary_neighbors_and_ranking;
@@ -1033,7 +1033,7 @@ int Atom::CompareTwoSetsOfBranches(std::vector<std::vector<int> > set1, std::vec
                     return 1;
                 }
                 else {
-		    break; //Could've returned 2 here.But this will cause compilation warning that control reaches non-void function.So break out this for loop and return at the end. 
+		    break; //Could've returned 2 here.But this will cause compilation warning that control reaches non-void function.So break out this for loop and return at the end.
                 }
             }
         }
@@ -1126,7 +1126,7 @@ std::multimap<int, Atom*> Atom::GetAtomicNumbersOfNeighbors(AtomVector& neighbor
             }
 
             int atomic_number = atomic_number_lookup[element_symbol];
-            neighbor_atomic_number_map.insert(std::make_pair(atomic_number, atom));       
+            neighbor_atomic_number_map.insert(std::make_pair(atomic_number, atom));
 	}
     }
     return neighbor_atomic_number_map;
