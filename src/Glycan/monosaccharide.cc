@@ -35,7 +35,7 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
   {
     (*it)-> SetIsCycle(true);
   }
-  
+
   //Detect Anomeric Carbon, assign Cycle atoms
   Glycan::Note* anomeric_note = new Glycan::Note();
   std::vector< std::string > anomeric_carbons_status = std::vector< std::string >();
@@ -48,32 +48,32 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
     cycle_atoms_ = this_assembly->SortCycle( cycle_atoms, anomeric_carbon_pointer_, sorted_cycle_stream );
     cycle_atoms_str_ = sorted_cycle_stream.str();
   }
-  else 
+  else
   {
     cycle_atoms_ = cycle_atoms;
   }
-  
+
   //Get BFMP
   if( cycle_atoms_.size() > 5 )
   {
     bfmp_ring_conformation_ = glylib::CalculateRingShapeBFMP(this);
   }
-  
-  //Assign side_atoms_ 
+
+  //Assign side_atoms_
   std::vector< std::string > orientations = GetSideGroupOrientations(this_assembly);//This also sets the first side atom for each ring position
-  
+
   //this function sometimes deletes the anomeric carbon's neighbor...
   // this->InitiateDetectionOfCompleteSideGroupAtoms ();
   std::vector<MolecularModeling::Atom*> plus_sides = ExtractAdditionalSideAtoms();
-  
-  
+
+
   ///DERIVATIVE/MODIFICATION PATTERN EXTRACTION
   this->ExtractDerivatives(this_assembly);
-  
+
   //Assign Chemical Code, and SugarNames
   chemical_code_ = BuildChemicalCode(orientations);
   sugar_name_ = gmml::SugarStereoChemistryNameLookup(chemical_code_->toString());
-  
+
   ///CALCULATING B FACTOR
   float total_b_factor = 0;
   int num_atoms =0;
@@ -101,18 +101,18 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
     num_atoms++;
   }
   b_factor_ = total_b_factor/num_atoms;
-  
+
   GenerateCompleteName(plus_sides, this, this_assembly);
-  
+
   if(sugar_name_.chemical_code_string_ == "")
   {//No match in lookup table, check if its from Deoxy groups
-    
+
     Glycan::ChemicalCode new_code = *chemical_code_;
     // std::cout << "Old code" << chemical_code_->toString() << "\n";
     std::vector<std::string> v(1, "");
     new_code.left_middle_ = v;
     new_code.right_middle_ = v;
-    
+
     std::vector<std::string> deoxy_locations;
     for(unsigned int i = 0; i < new_code.right_up_.size(); i++)
     {
@@ -180,8 +180,8 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
     //     std::cout << "right up: " << (*it) << "\n";
     // }
     // std::cout << "new code: " << new_code.toString() << "\n";
-    
-    
+
+
     Glycan::SugarName base_name = gmml::SugarStereoChemistryNameLookup( new_code.toString() );
     // std::cout << "new name: " << base_name.monosaccharide_stereochemistry_short_name_ << "\n";
     sugar_name_ = base_name;
@@ -193,47 +193,47 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
     }
     this->UpdatePdbCode();
     this->GenerateCompleteSugarName(this_assembly);
-    
+
     // addDeoxyToName(base_name, chemical_code_, deoxy_locations);
-    
+
     //this will create the correct name for the sugar, but the chemical code will not match, and will be incorrect, as it will have ^n at the deoxy locations.
     // sugar_name_ = base_name;
-    
+
   }
   if((sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0) && (sugar_name_.monosaccharide_name_.compare("") == 0))
   {
     sugar_name_.monosaccharide_name_ = sugar_name_.monosaccharide_stereochemistry_name_;
   }
-  
+
   //Check if Residue name matches; if not use the CCD to create author_sugar_name_
   std::string original_residue = cycle_atoms_.at(0)->GetResidue()->GetName();
   std::string original_residue_id = cycle_atoms_.at(0)->GetResidue()->GetId();
   CheckMonoNaming(original_residue, original_residue_id);
-  
+
   // std::vector< std::string > idealOrientations = GetSideGroupOrientations(CCD_cycle_atoms);
   // author_chemical_code_ = BuildChemicalCode(idealOrientations);
   // author_sugar_name_ = gmml::SugarStereoChemistryNameLookup(chemical_code_->toString());
-  
+
   //Add notes
   std::stringstream n;
-  if( anomeric_note->description_.compare( "" ) != 0 ) 
+  if( anomeric_note->description_.compare( "" ) != 0 )
   {
     n << sugar_name_.monosaccharide_short_name_ << ": " << anomeric_note->description_;
     anomeric_note->description_ = n.str();
     mono_notes_.push_back(anomeric_note );
   }
-  
+
   ///ADDING NOTES/ISSUES OF RESIDUE NAMING
-  
+
   std::vector<std::string> pdb_codes = gmml::Split(sugar_name_.pdb_code_, ",");
-  if( pdb_codes.size() > 0 ) 
+  if( pdb_codes.size() > 0 )
   {
     std::string pdb_code = "";
     bool found_code = false;
-    for( std::vector< std::string >::iterator codes_it = pdb_codes.begin(); codes_it != pdb_codes.end(); codes_it++ ) 
+    for( std::vector< std::string >::iterator codes_it = pdb_codes.begin(); codes_it != pdb_codes.end(); codes_it++ )
     {
       pdb_code = ( *codes_it );
-      if( pdb_code.compare( original_residue ) == 0 ) 
+      if( pdb_code.compare( original_residue ) == 0 )
       {
         found_code = true;
         break;
@@ -292,15 +292,29 @@ void Glycan::Monosaccharide::createSNFGname()
     {
       monoSNFGName.erase(0,1);
     }
-    if(((monoSNFGName[monoSNFGName.length()-1] == sugar_name_.configuration_[0]) && (monoSNFGName[monoSNFGName.length()-2] != 'N')) || (monoSNFGName[monoSNFGName.length()-1] == 'x'))
+    // if(((monoSNFGName[monoSNFGName.length()-1] == sugar_name_.configuration_[0]) && (monoSNFGName[monoSNFGName.length()-2] != 'N'))
+    //   ||
+    //   || (monoSNFGName[monoSNFGName.length()-1] == 'x'))
+    // {
+    //   monoSNFGName.erase(monoSNFGName.length()-1,1);
+    // }
+    if ((monoSNFGName[monoSNFGName.length()-1] == 'x') ||
+       (monoSNFGName[monoSNFGName.length()-1] == 'a') ||
+       (monoSNFGName[monoSNFGName.length()-1] == 'b'))
     {
-      monoSNFGName.erase(monoSNFGName.length()-1,1);
+       monoSNFGName.erase(monoSNFGName.length()-1,1);
     }
-    if(monoSNFGName[3] == tolower(sugar_name_.ring_type_[0]))
+    // std::cout << "Ring type: " << sugar_name_.ring_type_[0] << "\n";
+    //There is a bug in the ring type code; furanose sugar has ring type of P (CCD code GZL)
+    // if(monoSNFGName[3] == tolower(sugar_name_.ring_type_[0]))
+    // {
+    //   monoSNFGName.erase(3,1);
+    // }
+    if((monoSNFGName[3] == 'p') || (monoSNFGName[3] == 'f'))
     {
       monoSNFGName.erase(3,1);
     }
-    if(monoSNFGName[monoSNFGName.length()-1] == 'H')
+    if((monoSNFGName[monoSNFGName.length()-1] == 'H') && (monoSNFGName.length() > 3))
     {
       monoSNFGName.erase(monoSNFGName.length()-1,1);
     }
@@ -329,7 +343,7 @@ void Glycan::Monosaccharide::createAuthorSNFGname()
   author_SNFG_name_ = monoSNFGName;
 }
 
-MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Note* anomeric_note, std::vector< std::string > & anomeric_carbons_status, std::vector<MolecularModeling::Atom*> cycle, std::string cycle_atoms_str ) 
+MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Note* anomeric_note, std::vector< std::string > & anomeric_carbons_status, std::vector<MolecularModeling::Atom*> cycle, std::string cycle_atoms_str )
 {
   MolecularModeling::Atom* anomeric_carbon = new MolecularModeling::Atom();
   for( std::vector<MolecularModeling::Atom*>::iterator it = cycle.begin(); it != cycle.end(); it++ ) {
@@ -459,7 +473,7 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
   std::vector<std::string> orientations = std::vector<std::string>();
   std::vector<std::vector<MolecularModeling::Atom*>> side_atoms = std::vector<std::vector<MolecularModeling::Atom*>>();
   std::vector<MolecularModeling::Atom*> default_atom_vector = std::vector<MolecularModeling::Atom*>(3, NULL);
-  
+
   std::vector<MolecularModeling::Atom*> debugCycles = cycle_atoms_;
   for(std::vector<MolecularModeling::Atom*>::iterator it = cycle_atoms_.begin(); it != cycle_atoms_.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
   {
@@ -617,11 +631,11 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
           }
           else if(index == cycle_atoms_.size() - 2 && neighbor_id.at(0) == 'C')///if the last ring carbon has a non-ring carbon neighbor
           {
-            
+
             //Add +n exocyclic flags TODO for Dave
-            
-            
-            
+
+
+
             ///Check if neighbor of neighbor is oxygen or nitrogen
             MolecularModeling::AtomNode* neighbor_node = neighbor->GetNode();
             std::vector<MolecularModeling::Atom*> neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
@@ -681,8 +695,8 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
     }
   }
   side_atoms_ = side_atoms;
-  
-  
+
+
   // if ((local_debug > 0) && (side_atoms.length() > 0))
   // {
   //   for (std::vector<std::vector<MolecularModeling::Atom*>>::iterator sidestd::vector<MolecularModeling::Atom*>IT = side_atoms.begin(); sidestd::vector<MolecularModeling::Atom*>IT != side_atoms.end(); sidestd::vector<MolecularModeling::Atom*>IT ++)
@@ -787,9 +801,9 @@ void Glycan::Monosaccharide::SetCompleteSideGroupAtoms(std::vector<MolecularMode
       {//If not part of another side chain && not part of cycle && not visited && is not protein (NLN,LNK etc)
         std::vector<MolecularModeling::Atom*> working_node_neighbor_neighbors = std::vector<MolecularModeling::Atom*>();
         std::string working_neighbor_name = working_node_neighbor-> GetName();
-        if (working_neighbor_name.substr(0,1) == "O" || 
-            working_neighbor_name.substr(0,1) == "N" || 
-            working_neighbor_name.substr(0,1) == "S") 
+        if (working_neighbor_name.substr(0,1) == "O" ||
+            working_neighbor_name.substr(0,1) == "N" ||
+            working_neighbor_name.substr(0,1) == "S")
         { //if this neighbor is an O,N or S
           std::vector<MolecularModeling::Atom*> attached_anomeric_carbons = std::vector<MolecularModeling::Atom*>();
           for (std::vector<MolecularModeling::Atom*>::iterator it2 = working_node_neighbor_neighbors.begin(); it2 != working_node_neighbor_neighbors.end(); it2++)
@@ -810,7 +824,7 @@ void Glycan::Monosaccharide::SetCompleteSideGroupAtoms(std::vector<MolecularMode
               working_node_neighbor-> SetIsSideChain(true);
             }
             // if the workin atom IS INDEED the anomeric carbon the neighbor is attached to, the current side chain doesn't get this oxygen, unless this is a terminal hydroxyl.
-            /*else 
+            /*else
             {
               std::vector<MolecularModeling::Atom*> cycle_and_visited_atoms = std::vector<MolecularModeling::Atom*>();
               cycle_and_visited_atoms.push_back(attached_anomeric_carbons.front() );
@@ -829,7 +843,7 @@ void Glycan::Monosaccharide::SetCompleteSideGroupAtoms(std::vector<MolecularMode
             working_node_neighbor-> SetIsSideChain(true);
           }
         } // if is oxygen,nitrogen or sulfur
-        else 
+        else
         {  // if this neighbor is not oxygen,nitrogen or sulfur, the current side chain should get this atom
           SideAtomArm.push_back(working_node_neighbor);
           working_node_neighbor-> SetIsSideChain(true);
@@ -844,10 +858,10 @@ void Glycan::Monosaccharide::SetCompleteSideGroupAtoms(std::vector<MolecularMode
     {
       MolecularModeling::Atom* working_node_neighbor = *it3;
       //if a node neighbor is not part of a ring,not visited, and not part on protein, change working atom to this neighbor, and start a new recursion call.
-      if (working_node_neighbor != working_atom && 
+      if (working_node_neighbor != working_atom &&
           !working_node_neighbor->GetIsCycle() &&
           std::find(visited_atoms.begin(), visited_atoms.end(), working_node_neighbor) == visited_atoms.end() &&
-          !working_node_neighbor->GetResidue()->CheckIfProtein()) 
+          !working_node_neighbor->GetResidue()->CheckIfProtein())
       {
         working_atom = working_node_neighbor;
         SetCompleteSideGroupAtoms(SideAtomArm, working_atom, cycle_atoms ,visited_atoms);
@@ -958,7 +972,7 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
     else if(index != 0)
     {
       key = gmml::ConvertT(index + 1);
-      
+
       //TODO add function to add formula of unknown derivative
       value = GetFormula(target);
       if(value.compare("") != 0)
@@ -1012,7 +1026,7 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
             {
     //           target = sides.at(side_branch_last_carbon_index);
             }
-    
+
         }
     }
     // else
@@ -1178,15 +1192,15 @@ void Glycan::Monosaccharide::CountElements(MolecularModeling::Atom* thisAtom, st
   if(elementVector.size() == 0)
   {
     elementVector = {{"C", 0}, {"H", 0}, {"Ac", 0},{"Ag", 0},{"Al", 0},{"Am", 0},{"Ar", 0},{"As", 0},{"At", 0},{"Au", 0},
-                     {"B", 0}, {"Ba", 0},{"Be", 0},{"Bh", 0},{"Bi", 0},{"Bk", 0},{"Br", 0},{"Ca", 0},{"Cd", 0},{"Ce", 0}, 
-                     {"Cf", 0},{"Cl", 0},{"Cm", 0},{"Co", 0},{"Cr", 0},{"Cs", 0},{"Cu", 0},{"Dd", 0},{"Dy", 0},{"Er", 0}, 
-                     {"Es", 0},{"Eu", 0},{"F", 0}, {"Fe", 0},{"Fm", 0},{"Fr", 0},{"Ga", 0},{"Gd", 0},{"Ge", 0},{"He", 0}, 
+                     {"B", 0}, {"Ba", 0},{"Be", 0},{"Bh", 0},{"Bi", 0},{"Bk", 0},{"Br", 0},{"Ca", 0},{"Cd", 0},{"Ce", 0},
+                     {"Cf", 0},{"Cl", 0},{"Cm", 0},{"Co", 0},{"Cr", 0},{"Cs", 0},{"Cu", 0},{"Dd", 0},{"Dy", 0},{"Er", 0},
+                     {"Es", 0},{"Eu", 0},{"F", 0}, {"Fe", 0},{"Fm", 0},{"Fr", 0},{"Ga", 0},{"Gd", 0},{"Ge", 0},{"He", 0},
                      {"Hf", 0},{"Hg", 0},{"Ho", 0},{"Hs", 0},{"I", 0}, {"In", 0},{"Ir", 0},{"K", 0}, {"Kr", 0},{"La", 0},
-                     {"Li", 0},{"Lr", 0},{"Lu", 0},{"Md", 0},{"Mg", 0},{"Mn", 0},{"Mo", 0},{"Mt", 0},{"N", 0}, {"Na", 0}, 
-                     {"Nb", 0},{"Nd", 0},{"Ne", 0},{"Ni", 0},{"No", 0},{"Np", 0},{"O", 0}, {"Os", 0},{"P", 0}, {"Pa", 0}, 
-                     {"Pb", 0},{"Pd", 0},{"Pm", 0},{"Po", 0},{"Pr", 0},{"Pt", 0},{"Pu", 0},{"Ra", 0},{"Rb", 0},{"Re", 0}, 
-                     {"Rf", 0},{"Rh", 0},{"Rn", 0},{"Ru", 0},{"S", 0}, {"Sb", 0},{"Sc", 0},{"Se", 0},{"Sg", 0},{"Si", 0}, 
-                     {"Sm", 0},{"Sn", 0},{"Sr", 0},{"Ta", 0},{"Tb", 0},{"Tc", 0},{"Te", 0},{"Th", 0},{"Ti", 0},{"Tl", 0}, 
+                     {"Li", 0},{"Lr", 0},{"Lu", 0},{"Md", 0},{"Mg", 0},{"Mn", 0},{"Mo", 0},{"Mt", 0},{"N", 0}, {"Na", 0},
+                     {"Nb", 0},{"Nd", 0},{"Ne", 0},{"Ni", 0},{"No", 0},{"Np", 0},{"O", 0}, {"Os", 0},{"P", 0}, {"Pa", 0},
+                     {"Pb", 0},{"Pd", 0},{"Pm", 0},{"Po", 0},{"Pr", 0},{"Pt", 0},{"Pu", 0},{"Ra", 0},{"Rb", 0},{"Re", 0},
+                     {"Rf", 0},{"Rh", 0},{"Rn", 0},{"Ru", 0},{"S", 0}, {"Sb", 0},{"Sc", 0},{"Se", 0},{"Sg", 0},{"Si", 0},
+                     {"Sm", 0},{"Sn", 0},{"Sr", 0},{"Ta", 0},{"Tb", 0},{"Tc", 0},{"Te", 0},{"Th", 0},{"Ti", 0},{"Tl", 0},
                      {"Tm", 0},{"U", 0}, {"V", 0}, {"W", 0}, {"Xe", 0},{"Y", 0}, {"Yb", 0},{"Zn", 0},{"Zr", 0}};
   }
   std::string this_atom_element = thisAtom->GetElementSymbol();
@@ -1255,7 +1269,7 @@ void Glycan::Monosaccharide::GenerateCompleteName(std::vector<MolecularModeling:
   // std::cout << plus_sides.size() << "plus atoms\n";
   // if (!plus_sides.empty())
   // {
-    if( plus_sides.size() <= 1 ) 
+    if( plus_sides.size() <= 1 )
     {
       ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
       this_mono->UpdateComplexSugarChemicalCode();
@@ -1266,13 +1280,13 @@ void Glycan::Monosaccharide::GenerateCompleteName(std::vector<MolecularModeling:
       }
       this_mono->UpdatePdbCode();
       this_mono->GenerateCompleteSugarName(this_assembly);
-    } 
-    else 
+    }
+    else
     {
-      if( plus_sides.size() == 3 ) 
+      if( plus_sides.size() == 3 )
       {
         std::vector< std::string >::iterator index_it;
-        if( ( index_it = find( this_mono->chemical_code_->right_up_.begin(), this_mono->chemical_code_->right_up_.end(), "+1" ) ) != this_mono->chemical_code_->right_up_.end() ) 
+        if( ( index_it = find( this_mono->chemical_code_->right_up_.begin(), this_mono->chemical_code_->right_up_.end(), "+1" ) ) != this_mono->chemical_code_->right_up_.end() )
         {
           ///CHECKING R or S
           std::stringstream plus_one;
@@ -1284,8 +1298,8 @@ void Glycan::Monosaccharide::GenerateCompleteName(std::vector<MolecularModeling:
           plus_two << "+2" << orientation;
           this_mono->chemical_code_->right_up_.push_back( plus_two.str() );
           this_mono->chemical_code_->right_up_.push_back( "+3" );
-        } 
-        else if( ( index_it = find( this_mono->chemical_code_->right_down_.begin(), this_mono->chemical_code_->right_down_.end(), "+1" ) ) != this_mono->chemical_code_->right_down_.end() ) 
+        }
+        else if( ( index_it = find( this_mono->chemical_code_->right_down_.begin(), this_mono->chemical_code_->right_down_.end(), "+1" ) ) != this_mono->chemical_code_->right_down_.end() )
         {
           ///CHECKING R or S
           std::stringstream plus_one;
@@ -1298,11 +1312,11 @@ void Glycan::Monosaccharide::GenerateCompleteName(std::vector<MolecularModeling:
           this_mono->chemical_code_->right_down_.push_back( plus_two.str() );
           this_mono->chemical_code_->right_down_.push_back( "+3" );
         }
-      } 
-      else if( plus_sides.size() == 2 ) 
+      }
+      else if( plus_sides.size() == 2 )
       {
         std::vector< std::string >::iterator index_it;
-        if( ( index_it = find( this_mono->chemical_code_->right_up_.begin(), this_mono->chemical_code_->right_up_.end(), "+1" ) ) != this_mono->chemical_code_->right_up_.end() ) 
+        if( ( index_it = find( this_mono->chemical_code_->right_up_.begin(), this_mono->chemical_code_->right_up_.end(), "+1" ) ) != this_mono->chemical_code_->right_up_.end() )
         {
           ///CHECKING R or S
           std::stringstream plus_one;
@@ -1310,8 +1324,8 @@ void Glycan::Monosaccharide::GenerateCompleteName(std::vector<MolecularModeling:
           plus_one << "+1" << orientation;
           (*index_it) = plus_one.str();
           this_mono->chemical_code_->right_up_.push_back("+2");
-        } 
-        else if( ( index_it = find( this_mono->chemical_code_->right_down_.begin(), this_mono->chemical_code_->right_down_.end(), "+1" ) ) != this_mono->chemical_code_->right_down_.end() ) 
+        }
+        else if( ( index_it = find( this_mono->chemical_code_->right_down_.begin(), this_mono->chemical_code_->right_down_.end(), "+1" ) ) != this_mono->chemical_code_->right_down_.end() )
         {
           ///CHECKING R or S
           std::stringstream plus_one;
@@ -1331,42 +1345,42 @@ void Glycan::Monosaccharide::GenerateCompleteName(std::vector<MolecularModeling:
       this_mono->UpdatePdbCode();
       // std::cout << "Complex structure side group atoms: " << std::endl;
       // // gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex structure side group atoms: ");
-      // for( std::vector< std::vector<MolecularModeling::Atom*> >::iterator it1 = this_mono->side_atoms_.begin(); it1 != this_mono->side_atoms_.end(); it1++ ) 
+      // for( std::vector< std::vector<MolecularModeling::Atom*> >::iterator it1 = this_mono->side_atoms_.begin(); it1 != this_mono->side_atoms_.end(); it1++ )
       // {
       //   std::stringstream complex_sugar_side;
       //   std::vector<MolecularModeling::Atom*> sides = ( *it1 );
-      //   if( it1 == this_mono->side_atoms_.begin() ) 
+      //   if( it1 == this_mono->side_atoms_.begin() )
       //   {///side atoms of anomeric carbon
-      //     if( sides.at( 0 ) != NULL && sides.at( 1 ) != NULL ) 
+      //     if( sides.at( 0 ) != NULL && sides.at( 1 ) != NULL )
       //     {
       //       complex_sugar_side << "[1] -> " << sides.at( 0 )->GetId() << ", " << sides.at( 1 )->GetId();
       //       std::cout << complex_sugar_side.str() << std::endl;
       //       // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
-      //     } 
-      //     else if( sides.at( 1 ) != NULL ) 
+      //     }
+      //     else if( sides.at( 1 ) != NULL )
       //     {
       //       complex_sugar_side << "[1] -> " << sides.at( 1 )->GetId();
       //       std::cout << complex_sugar_side.str() << std::endl;
       //       // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
-      //     } 
-      //     else if( sides.at(0) != NULL ) 
+      //     }
+      //     else if( sides.at(0) != NULL )
       //     {
       //       complex_sugar_side << "[1] -> " << sides.at( 0 )->GetId();
       //       std::cout << complex_sugar_side.str() << std::endl;
       //       // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
       //     }
-      //   } 
-      //   else if( it1 == this_mono->side_atoms_.end() - 1 ) 
+      //   }
+      //   else if( it1 == this_mono->side_atoms_.end() - 1 )
       //   {//side atoms of last carbon of the ring
       //     complex_sugar_side << "[" << this_mono->cycle_atoms_.size() - 1 << "]";
-      //     for( unsigned int i = 0; i < plus_sides.size() ; i++ ) 
+      //     for( unsigned int i = 0; i < plus_sides.size() ; i++ )
       //     {
       //       complex_sugar_side << " -> " << sides.at( i )->GetId();
       //     }
       //     std::cout << complex_sugar_side.str() << std::endl;
       //     // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
       //   }
-      //   else if( sides.at( 1 ) != NULL ) 
+      //   else if( sides.at( 1 ) != NULL )
       //   {
       //     int cycle_atom_index = distance( this_mono->side_atoms_.begin(), it1 );
       //     complex_sugar_side << "[" << cycle_atom_index + 1 << "] -> " << sides.at( 1 )->GetId();
@@ -1382,7 +1396,7 @@ void Glycan::Monosaccharide::GenerateCompleteName(std::vector<MolecularModeling:
       ///FINDING COMPLEX CHEMICAL CODE IN COMPLEX SUGAR NAME LOOKUP TABLE
       this_mono->sugar_name_ = gmml::ComplexSugarNameLookup( this_mono->chemical_code_->toString() );
       // gmml::log(__LINE__, __FILE__, gmml::INF,  std::to_string(plus_sides.size()));
-      if( plus_sides.size() == 2 ) 
+      if( plus_sides.size() == 2 )
       {
         ///COMPLETE NAME GENERATION BASED ON DERIVATIVE MAP
         this_mono->GenerateCompleteSugarName(this_assembly);
@@ -1404,7 +1418,7 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
     for(std::vector<std::string>::iterator it = chemical_code_->right_up_.begin(); it != chemical_code_->right_up_.end(); it++)
     {
       std::string key = (*it);
-      
+
       if(key == "-1")
       {
         // std::cout << "minus 1\n";
@@ -1414,7 +1428,7 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
     for(std::vector<std::string>::iterator it = chemical_code_->right_down_.begin(); it != chemical_code_->right_down_.end(); it++)
     {
       std::string key = (*it);
-      
+
       if(key == "-1")
       {
         // std::cout << "minus 1\n";
@@ -1446,7 +1460,7 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
             break;
           }
         }
-        
+
         if(value.compare("xCH-N") == 0)
         {
             long_name_pattern = "-osamine";
@@ -1620,64 +1634,64 @@ void Glycan::Monosaccharide::UpdatePdbCode()
   }
 }
 
-void Glycan::Monosaccharide::UpdateComplexSugarChemicalCode() 
+void Glycan::Monosaccharide::UpdateComplexSugarChemicalCode()
 {
-  for( std::vector<std::pair< std::string, std::string> >::iterator it1 = derivatives_map_.begin(); it1 != derivatives_map_.end(); it1++ ) 
+  for( std::vector<std::pair< std::string, std::string> >::iterator it1 = derivatives_map_.begin(); it1 != derivatives_map_.end(); it1++ )
   {
     std::string key = ( *it1 ).first;
     std::string value = ( *it1 ).second;
-    if( value.compare( "" ) != 0 ) 
+    if( value.compare( "" ) != 0 )
     {
       std::string code = "";
-      if( value.compare( "xCH-N" ) == 0 ) 
+      if( value.compare( "xCH-N" ) == 0 )
       {
         code = key + "N";
-      } 
-      else if( value.compare( "xC-N-C=OCH3" ) == 0 ) 
+      }
+      else if( value.compare( "xC-N-C=OCH3" ) == 0 )
       {
         code = key + "NAc";
-      } 
-      else if( value.compare( "xC-N-C=OCH2OH" ) == 0 ) 
+      }
+      else if( value.compare( "xC-N-C=OCH2OH" ) == 0 )
       {
         code = key + "NGc";
-      } 
-      else if( value.compare( "xC-N-SO3" ) == 0 ) 
+      }
+      else if( value.compare( "xC-N-SO3" ) == 0 )
       {
         code = key + "NS";
-      } 
-      else if( value.compare( "xC-N-PO3" ) == 0 ) 
+      }
+      else if( value.compare( "xC-N-PO3" ) == 0 )
       {
         code = key + "NP";
-      } 
-      else if( value.compare( "xC-N-CH3" ) == 0 ) 
+      }
+      else if( value.compare( "xC-N-CH3" ) == 0 )
       {
         code = key + "NMe";
-      } 
-      else if( value.compare( "xC-O-C=OCH3" ) == 0 ) 
+      }
+      else if( value.compare( "xC-O-C=OCH3" ) == 0 )
       {
         code = key + "Ac";
-      } 
-      else if( value.compare( "xC-O-C=OCH3OH" ) == 0 ) 
+      }
+      else if( value.compare( "xC-O-C=OCH3OH" ) == 0 )
       {
         code = key + "Gc";
-      } 
-      else if( value.compare( "xC-O-SO3" ) == 0 ) 
+      }
+      else if( value.compare( "xC-O-SO3" ) == 0 )
       {
         code = key + "S";
-      } 
-      else if( value.compare( "xC-O-PO3" ) == 0 ) 
+      }
+      else if( value.compare( "xC-O-PO3" ) == 0 )
       {
         code = key + "P";
-      } 
-      else if( value.compare( "xC-O-CH3" ) == 0 ) 
+      }
+      else if( value.compare( "xC-O-CH3" ) == 0 )
       {
         code = key + "Me";
-      } 
-      else if( value.compare( "xC-(O,OH)" ) == 0 ) 
+      }
+      else if( value.compare( "xC-(O,OH)" ) == 0 )
       {
         code = key + "AH";
-      } 
-      else if( value.compare( "xC-(O,O)" ) == 0 ) 
+      }
+      else if( value.compare( "xC-(O,O)" ) == 0 )
       {
         code = key + "A";
       }
@@ -1686,24 +1700,24 @@ void Glycan::Monosaccharide::UpdateComplexSugarChemicalCode()
       //   code = key + "xCHH";
       // }
       std::vector< std::string >::iterator index_it;
-      if( ( key.compare( "a" ) == 0 ) || ( key.compare( "-1" ) == 0 ) || ( key.compare( "+1" ) == 0 ) || ( key.compare( "+2" )== 0 ) || ( key.compare( "+3" ) == 0 ) ) 
+      if( ( key.compare( "a" ) == 0 ) || ( key.compare( "-1" ) == 0 ) || ( key.compare( "+1" ) == 0 ) || ( key.compare( "+2" )== 0 ) || ( key.compare( "+3" ) == 0 ) )
       {
-        if( ( index_it = find( chemical_code_->right_up_.begin(), chemical_code_->right_up_.end(), key ) ) != chemical_code_->right_up_.end() ) 
+        if( ( index_it = find( chemical_code_->right_up_.begin(), chemical_code_->right_up_.end(), key ) ) != chemical_code_->right_up_.end() )
         {
           ( *index_it ) = code;
         }
-        else if( ( index_it = find( chemical_code_->right_down_.begin(), chemical_code_->right_down_.end(), key ) ) != chemical_code_->right_down_.end() ) 
+        else if( ( index_it = find( chemical_code_->right_down_.begin(), chemical_code_->right_down_.end(), key ) ) != chemical_code_->right_down_.end() )
         {
           ( *index_it ) = code;
         }
-      } 
-      else if( ( key.compare( "2" ) == 0 ) || ( key.compare( "3" ) == 0 ) || ( key.compare( "4" ) == 0 ) ) 
+      }
+      else if( ( key.compare( "2" ) == 0 ) || ( key.compare( "3" ) == 0 ) || ( key.compare( "4" ) == 0 ) )
       {
-        if( ( index_it = find( chemical_code_->left_up_.begin(), chemical_code_->left_up_.end(), key ) ) != chemical_code_->left_up_.end() ) 
+        if( ( index_it = find( chemical_code_->left_up_.begin(), chemical_code_->left_up_.end(), key ) ) != chemical_code_->left_up_.end() )
         {
           ( *index_it ) = code;
         }
-        else if( ( index_it = find( chemical_code_->left_down_.begin(), chemical_code_->left_down_.end(), key ) ) != chemical_code_->left_down_.end() ) 
+        else if( ( index_it = find( chemical_code_->left_down_.begin(), chemical_code_->left_down_.end(), key ) ) != chemical_code_->left_down_.end() )
         {
           ( *index_it ) = code;
         }
@@ -1721,20 +1735,20 @@ void Glycan::Monosaccharide::CheckMonoNaming(std::string original_residue, std::
       // //FINDING CLOSEST MATCH FOR THE CHEMICAL CODE IN THE LOOKUP TABLE
       // std::vector< Glycan::SugarName > closest_matches = std::vector< Glycan::SugarName >();
       // gmml::ClosestMatchSugarStereoChemistryNameLookup( chemical_code_->toString(), closest_matches );
-      // if( sugar_name_.monosaccharide_name_.compare( "" ) == 0) 
+      // if( sugar_name_.monosaccharide_name_.compare( "" ) == 0)
       // {
       //   sugar_name_.monosaccharide_name_ = sugar_name_.monosaccharide_stereochemistry_name_;
       // }
-      // if( sugar_name_.monosaccharide_short_name_.compare( "" ) == 0 ) 
+      // if( sugar_name_.monosaccharide_short_name_.compare( "" ) == 0 )
       // {
       //   sugar_name_.monosaccharide_short_name_ = sugar_name_.monosaccharide_stereochemistry_short_name_;
       // }
-      // 
+      //
       // ///ADDING NOTES/ISSUES OF MONOSACCHARIDE STRUCTURE
       // Glycan::Note* matching_note = new Glycan::Note();
       // matching_note->type_ = Glycan::COMMENT;
       // matching_note->category_ = Glycan::MONOSACCHARIDE;
-      // 
+      //
       // std::stringstream ss;
       // ss << "No match found for "; //<<  THIS NEEDS TO BE RESIDUE NAME sugar_name_.monosaccharide_stereochemistry_short_name_
       // ss << original_residue_id;
@@ -1744,7 +1758,7 @@ void Glycan::Monosaccharide::CheckMonoNaming(std::string original_residue, std::
       //   Glycan::SugarName sn = ( *ite );
       //   if( ite == closest_matches.end() - 1 ) {
       //     ss << sn.monosaccharide_stereochemistry_short_name_;
-      //   } 
+      //   }
       //   else {
       //     ss << sn.monosaccharide_stereochemistry_short_name_ << ", ";
       //   }
@@ -1760,7 +1774,7 @@ void Glycan::Monosaccharide::CheckMonoNaming(std::string original_residue, std::
         sugar_name_.monosaccharide_name_ = cycle_atoms_[0]->GetResidue()->GetName();
         sugar_name_.monosaccharide_short_name_ = cycle_atoms_[0]->GetResidue()->GetName();
       }
-      
+
       // else
       // {
       //   std::cout << "No exact match found for the chemical code, the following information comes from one of the closest matches:" << std::endl;
@@ -1771,32 +1785,32 @@ void Glycan::Monosaccharide::CheckMonoNaming(std::string original_residue, std::
 // void Glycan::Monosaccharide::addDeoxyToName(Glycan::SugarName base_name, Glycan::ChemicalCode chemical_code, std::vector<int> deoxy_locations)
 // {
 //   //Figure out how to modify all parts of the sugar name (base_name) correctly for the deoxy locations specified in deoxy_locations
-// 
+//
 //   //Following the logic in GenerateCompleteSugarName
-// 
+//
 //   //chemical_code_string_ won't change for now at least
-// 
+//
 //   //monosaccharide_stereochemistry_name_
-// 
+//
 //   if(base_name.monosaccharide_stereochemistry_name_ != "")
 //   {
-// 
+//
 //   }
-// 
+//
 //   //monosaccharide_stereochemistry_short_name_
-// 
+//
 //   //isomer_ does not change
-// 
+//
 //   //name_
-// 
+//
 //   //ring_type_ doesn not change
-// 
+//
 //   //configuration_ does not change
-// 
+//
 //   //monosaccharide_name_
-// 
+//
 //   //monosaccharide_short_name_
-// 
+//
 //   //pdb_code_
 // }
 
@@ -1875,5 +1889,3 @@ Glycan::ChemicalCode* Glycan::Monosaccharide::BuildChemicalCode(std::vector<std:
 
   return code;
 }
-
-
