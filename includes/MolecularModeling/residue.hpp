@@ -257,6 +257,7 @@ namespace MolecularModeling
             //                   OVERLOADED OPERATORS               //
             //////////////////////////////////////////////////////////
             bool operator== (const Residue &otherResidue);
+            bool operator!= (const Residue &otherResidue);
 
         private:
 

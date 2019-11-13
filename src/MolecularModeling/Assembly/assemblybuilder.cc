@@ -955,6 +955,23 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
     }
 }
 
+/* Oliver needs to clarify what he is doing here:
+ * I don't currently have the ability to "select" which rotamers I will write out. I need to add default and overwritable indexes for residue_linkage class for that to work.
+ * I want this "selection" to work at the level of AddMetadata. So I can only add relevant metadata while linkages or rotamers that are deselected are not used.
+ *  Having flags active and inactive metadata in that class might be another option.
+ * I've updated the pdb writer to allow me to pass in a model_index number X, which will trigger writing out of coordinate set X from coordinateVector in Atom.
+ * I can create an Assembly::saveCurrentCoordinates function that uses Atom::AddCoordinate to push_back a coordinate set related to a rotamer.
+ * Then I'll create a wrapper function that allows me to write out each coordinate set.... Either I can pass in a name (e.g. residue_linkage_index_ gg) or
+ *  I just write the PDB file as I'm creating all the possible combos... But same issue with naming.
+ * The following functions have been added by me already:
+ * Assembly::FigureOutResidueLinkagesInGlycan
+ * Assembly::SetDihedralAngleGeometryWithMetadata
+ *
+
+
+  */
+
+
 // By Yao, Oliver wishes to replace  with SetDihedralAngleGeometryWithMetadata
 void Assembly::RecursivelySetDihedralAngleGeometry (Residue* parent_residue)
 {
@@ -1125,13 +1142,14 @@ void Assembly::RecursivelySetDihedralAngleGeometry (Residue* parent_residue)
 
 ResidueVector Assembly::FindClashingResidues()
 {
+    //TODO: to make the code run faster, for the nested for loops that iterate througha atoms, it1 = it+1
     ResidueVector clashing_residues;
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     //Exhaustively compare two different atoms in assembly, using two nested for loops
-    for (AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end() -1; it++){
+    for (AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end() ; it++){
         Atom* current_atom = *it;
         unsigned int bond_by_distance_count = 0;  //How many bonds does a particular atom have, according to bond by distance
-        for (AtomVector::iterator it1 = it +1; it1 != all_atoms_of_assembly.end(); it1++){
+        for (AtomVector::iterator it1 = all_atoms_of_assembly.begin(); it1 != all_atoms_of_assembly.end(); it1++){
             if (it1 != it){
                 Atom* another_atom = *it1;
                 //First compare X,Y,Z distance of two atoms. If they are really far apart, one dimension comparison is sufficient to exclude. In this way don't have to calculate distance for
