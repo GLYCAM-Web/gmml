@@ -974,7 +974,8 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
  * The following functions have been added by me already:
  * Assembly::FigureOutResidueLinkagesInGlycan
  * Assembly::SetDihedralAngleGeometryWithMetadata
- * In Residue_Linkage I have a simple wiggle function, so now I need to find the relevant linkages to wiggle.
+ * In Residue_Linkage I have a simple wiggle function, I have implemented it here. The problem is that it explores all rotamers. That won't work.
+ * Functionality is there for it to only explore within one rotamer, but need higher level control of that.
 
 
   */
