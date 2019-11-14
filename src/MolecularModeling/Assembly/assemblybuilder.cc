@@ -925,6 +925,7 @@ void Assembly::RecursivelySetAngleGeometry (Residue* parent_residue)
     }
 }
 
+// OG
 void Assembly::FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Residue *to_this_residue2, ResidueLinkageVector *residue_linkages)
 {
     ResidueVector neighbors = to_this_residue2->GetNode()->GetResidueNeighbors();
@@ -945,6 +946,7 @@ void Assembly::FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Res
     return;
 }
 
+// OG
 void Assembly::SetDihedralAngleGeometryWithMetadata()
 {
     ResidueLinkageVector all_residue_linkages;
@@ -953,6 +955,21 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
     {
         linkage.SetDefaultDihedralAnglesUsingMetadata();
     }
+    // Resovlving overlaps should be a separated function, but I don't want assembly to have a ResidueLinkageVector member. Need new, seperate class.
+    for(auto &linkage : all_residue_linkages)
+    {
+        //AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance, int angleIncrement
+        linkage.SimpleWiggle(this->GetAllAtomsOfAssembly(), this->GetAllAtomsOfAssembly(), 0.1, 5);
+    }
+
+}
+
+//OG
+void Assembly::ResolveOverlapsWithMetadata()
+{
+   // std::vector< std::pair <*Residue, *Residue> > overlappingResiduePairs;
+   // this->GetResidueLinkagesbetweenResidues(Residue1, Residue2)
+    double totalOverlap =
 }
 
 /* Oliver needs to clarify what he is doing here:
@@ -966,7 +983,7 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
  * The following functions have been added by me already:
  * Assembly::FigureOutResidueLinkagesInGlycan
  * Assembly::SetDihedralAngleGeometryWithMetadata
- *
+ * In Residue_Linkage I have a simple wiggle function, so now I need to find the relevant linkages to wiggle.
 
 
   */

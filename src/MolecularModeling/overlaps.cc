@@ -4,22 +4,14 @@
 
 double gmml::CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB){
 
-    double distance = 0.0, totalOverlap = 0.0;
+    totalOverlap = 0.0;
     for(auto &atomA : atomsA)
     {
         for(auto &atomB : atomsB)
-        {
-            if ( std::abs((atomA->GetCoordinates().at(0)->GetX() - atomB->GetCoordinates().at(0)->GetX())) < 3.6 ) // This is faster than calulating distance, and rules out tons of atom pairs.
+        {   // if not the same atom (index is unique) and within bonding distance
+            if ( (atomA->GetIndex() != atomB->GetIndex()) && (atomA->CheckIfOtherAtomIsWithinBondingDistance(atomB)) )
             {
-                distance = atomA->GetDistanceToAtom(atomB);
-                if ( ( distance < 3.6 ) && ( distance > 0.0 ) ) //Close enough to overlap, but not the same atom
-                {
-//                    double overlap = gmml::CalculateAtomicOverlaps(atomA, atomB);
-//                    if (overlap > 0.01)
-//                        std::cout << atomA->GetId() << "--"  << atomB->GetId() << ": " << overlap << "\n";
-//                    totalOverlap += overlap;
-                    totalOverlap += gmml::CalculateAtomicOverlaps(atomA, atomB);
-                }
+                totalOverlap += gmml::CalculateAtomicOverlaps(atomA, atomB);
             }
         }
     }

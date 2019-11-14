@@ -54,7 +54,7 @@ public:
     void SetRandomDihedralAngles();
     void DetermineAtomsThatMove();
     // Simple meaning you only check each rotatable_dihedral in series, not every combination.
-    void SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance = 0.01, int interval = 5);
+    void SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance = 0.01, int angleIncrement = 5);
 
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //

@@ -106,7 +106,7 @@ void Residue_linkage::DetermineAtomsThatMove()
     }
 }
 
-void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance, int interval)
+void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance, int angleIncrement)
 {
     double current_overlap = gmml::CalculateAtomicOverlaps(overlapAtomSet1, overlapAtomSet2);
     double lowest_overlap = current_overlap;
@@ -147,7 +147,7 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
                 {
                     best_dihedral_angle = current_dihedral;
                 }
-                current_dihedral += interval; // increment
+                current_dihedral += angleIncrement; // increment
             }
         }
         //std::cout << "Setting best angle as " << best_dihedral_angle << "\n";

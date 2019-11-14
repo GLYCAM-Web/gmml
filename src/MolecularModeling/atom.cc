@@ -263,6 +263,11 @@ double Atom::GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate)
 
 bool Atom::CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom)
 {
+    if (this->GetIndex() == otherAtom->GetIndex())
+    {
+        std::cout << "Warning have just checked distance between an atom and itself!" << std::endl;
+        return true;
+    }
     bool withinDistance = false;
     if (std::abs(this->GetCoordinate()->GetX() - otherAtom->GetCoordinate()->GetX()) < gmml::dCutOff)
     {
