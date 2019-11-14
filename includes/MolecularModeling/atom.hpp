@@ -217,7 +217,7 @@ namespace MolecularModeling
             * A function to find connected Atoms to this Atom.
             * @param visitedAtoms The AtomVector used to find connected atoms.
             */
-            void FindConnectedAtoms(AtomVector& visitedStoms);
+            void FindConnectedAtoms(AtomVector& visitedAtoms);
             /*! \fn
             * A function to aget the distance between this Atom and another.
             * @param otherAtoms The Atom used to get the distance from this Atom.

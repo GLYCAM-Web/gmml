@@ -1,15 +1,39 @@
 #include "../../includes/MolecularModeling/overlaps.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
+#include "../../includes/MolecularModeling/atomnode.hpp"
 #include "../../includes/common.hpp"
 
 double gmml::CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB){
 
-    totalOverlap = 0.0;
+    double totalOverlap = 0.0;
     for(auto &atomA : atomsA)
     {
         for(auto &atomB : atomsB)
         {   // if not the same atom (index is unique) and within bonding distance
             if ( (atomA->GetIndex() != atomB->GetIndex()) && (atomA->CheckIfOtherAtomIsWithinBondingDistance(atomB)) )
+            {
+                totalOverlap += gmml::CalculateAtomicOverlaps(atomA, atomB);
+            }
+        }
+    }
+    return (totalOverlap / gmml::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
+}
+
+double gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB){
+
+    double totalOverlap = 0.0;
+    for(auto &atomA : atomsA)
+    {
+        for(auto &atomB : atomsB)
+        {
+            bool isNeighbor = false;
+            MolecularModeling::AtomVector neighbors = atomA->GetNode()->GetNodeNeighbors();
+            for(auto &neighbor : neighbors)
+            {
+                if (atomB->GetIndex() == neighbor->GetIndex())
+                    isNeighbor = true;
+            }
+            if ( (isNeighbor == false) && (atomA->GetIndex() != atomB->GetIndex()) && (atomA->CheckIfOtherAtomIsWithinBondingDistance(atomB)))
             {
                 totalOverlap += gmml::CalculateAtomicOverlaps(atomA, atomB);
             }

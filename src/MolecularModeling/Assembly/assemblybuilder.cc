@@ -961,15 +961,6 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
         //AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance, int angleIncrement
         linkage.SimpleWiggle(this->GetAllAtomsOfAssembly(), this->GetAllAtomsOfAssembly(), 0.1, 5);
     }
-
-}
-
-//OG
-void Assembly::ResolveOverlapsWithMetadata()
-{
-   // std::vector< std::pair <*Residue, *Residue> > overlappingResiduePairs;
-   // this->GetResidueLinkagesbetweenResidues(Residue1, Residue2)
-    double totalOverlap =
 }
 
 /* Oliver needs to clarify what he is doing here:
@@ -1438,8 +1429,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             Residue* root = corresponding_assembly_residue;
             //  TURN OFF GEOMETRY OPS
             this->RecursivelySetAngleGeometry(root);
-            //this->SetDihedralAngleGeometryWithMetadata(); // Removed for current push. Need to tag dihedrals. Also need to resolve clashes.
-            this->RecursivelySetDihedralAngleGeometry(root); // replaced by SetDihedralAngleGeometryWithMetadata. OG 2019.09.
+            this->SetDihedralAngleGeometryWithMetadata(); // Removed for current push. Need to tag dihedrals. Also need to resolve clashes.
+            //this->RecursivelySetDihedralAngleGeometry(root); // replaced by SetDihedralAngleGeometryWithMetadata. OG 2019.09.
             //          The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
             //          Linkage index is incremented inside function once a linkage has been processed.
 

@@ -108,7 +108,7 @@ void Residue_linkage::DetermineAtomsThatMove()
 
 void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance, int angleIncrement)
 {
-    double current_overlap = gmml::CalculateAtomicOverlaps(overlapAtomSet1, overlapAtomSet2);
+    double current_overlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
     double lowest_overlap = current_overlap;
     // Reverse as convention is Glc1-4Gal and I want to wiggle in opposite direction i.e. outwards from first rotatable bond in Asn or reducing terminal
     RotatableDihedralVector reversed_rotatable_bond_vector = this->GetRotatableDihedrals();
@@ -116,7 +116,7 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
     for(auto &rotatable_dihedral : reversed_rotatable_bond_vector)
     {
         double best_dihedral_angle = rotatable_dihedral.CalculateDihedralAngle();
-       // std::cout << "Starting new linkage with best angle as " << best_dihedral_angle << "\n";
+        std::cout << "Starting new linkage with best angle as " << best_dihedral_angle << "\n";
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_entries = rotatable_dihedral.GetMetadata();
         for(auto &metadata : metadata_entries)
         {
@@ -128,17 +128,17 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
                 rotatable_dihedral.SetDihedralAngle(current_dihedral);
                 //GlycosylationSite::write_pdb_file(this->GetGlycoprotein(), *output_pdb_id, "wiggle", lowest_overlap);
                 //++(*output_pdb_id);
-                current_overlap = gmml::CalculateAtomicOverlaps(overlapAtomSet1, overlapAtomSet2);
-              //  std::cout << this->GetResidueNumber() << ": current dihedral : overlap " << current_dihedral << " : " << current_overlap << ". Best dihedral : overlap: " << best_dihedral_angle << " : "<< lowest_overlap << "\n";
+                current_overlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
+                std::cout << "Dihedral(best): " << current_dihedral << "(" << best_dihedral_angle << ")" <<  ". Overlap(best): " << current_overlap << "(" << lowest_overlap << ")" << "\n";
                 if (lowest_overlap >= (current_overlap + 0.01)) // 0.01 otherwise rounding errors
                 {
                   //  std::cout << "Setting id " << *output_pdb_id << " index: " << metadata.index_ << ": ";
-                    //rotatable_dihedral.Print();
+                    rotatable_dihedral.Print();
                     lowest_overlap = current_overlap;
 //                  glycoprotein_builder::write_pdb_file(this->GetGlycoprotein(), *output_pdb_id, "wiggle", lowest_overlap);
 //                  ++(*output_pdb_id);
                     best_dihedral_angle = current_dihedral;
-                //    std::cout << "Best angle is now " << best_dihedral_angle << "\n";
+                    std::cout << "Best angle is now " << best_dihedral_angle << "\n";
                 //    GlycosylationSite::write_pdb_file(this->GetGlycoprotein(), *output_pdb_id, "wiggle", lowest_overlap);
                 }
                 // Perfer angles closer to default.
@@ -150,10 +150,11 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
                 current_dihedral += angleIncrement; // increment
             }
         }
-        //std::cout << "Setting best angle as " << best_dihedral_angle << "\n";
+        std::cout << "Setting best angle as " << best_dihedral_angle << "\n";
         rotatable_dihedral.SetDihedralAngle(best_dihedral_angle);
         // std::cout << "\n";
-        if(lowest_overlap <= overlapTolerance) return;
+        if(lowest_overlap <= overlapTolerance)
+            return;
     }
     return; // Note possibility of earlier return above
 }

@@ -228,15 +228,15 @@ unsigned long long Atom::generateAtomIndex() {
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Atom::FindConnectedAtoms(AtomVector& visitedAtoms)
+void Atom::FindConnectedAtoms(AtomVector &visitedAtoms)
 {
-	visitedAtoms.push_back(this);
+    visitedAtoms.push_back(this);
 	AtomVector neighbors = this->GetNode()->GetNodeNeighbors();
 	bool alreadyVisited = false;
 	for(AtomVector::iterator neighbor = neighbors.begin(); neighbor != neighbors.end(); neighbor++)
 	{
 		alreadyVisited = false; // reset for each neighbor
-		for(AtomVector::iterator visitedAtom = visitedAtoms.begin(); visitedAtom != visitedAtoms.end(); visitedAtom++)
+        for(AtomVector::iterator visitedAtom = visitedAtoms.begin(); visitedAtom != visitedAtoms.end(); visitedAtom++)
 		{
 			if((*neighbor)->GetIndex() == (*visitedAtom)->GetIndex())
 			alreadyVisited = true;
