@@ -1439,7 +1439,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
     //Find and resolve clashes below(crudely)
     ResidueVector clashing_residues = this->FindClashingResidues();
     std::vector<ResidueVector> clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues);
-    this-> ResolveClashes(clashing_residue_parent_paths, index_dihedral_map);
+    this->ResolveClashes(clashing_residue_parent_paths, index_dihedral_map);
 }
 
 void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure)
