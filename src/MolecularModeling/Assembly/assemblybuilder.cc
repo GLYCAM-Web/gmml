@@ -1142,13 +1142,15 @@ void Assembly::RecursivelySetDihedralAngleGeometry (Residue* parent_residue)
 
 ResidueVector Assembly::FindClashingResidues()
 {
+    //TODO: to make the code run faster, for the nested for loops that iterate througha atoms, it1 = it+1
     ResidueVector clashing_residues;
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     //Exhaustively compare two different atoms in assembly, using two nested for loops
-    for (AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end() -1; it++){
+    for (AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end() ; it++){
         Atom* current_atom = *it;
         unsigned int bond_by_distance_count = 0;  //How many bonds does a particular atom have, according to bond by distance
-        for (AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++){
+        for (AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
+        {
             Atom* another_atom = *it1;
             if(current_atom->CheckIfOtherAtomIsWithinBondingDistance(another_atom))
             {
@@ -1811,7 +1813,8 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
 void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files,
                                         std::vector<std::string> other_lib_files, std::vector<std::string> prep_files, std::string parameter_file)
 {
-    std::cout << "Building assembly from pdb file ..." << std::endl;
+    // std::cout << "Building assembly from pdb file ..." << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
     //    std::cout << "Reading PDB file into PdbFileSpace::PdbFile structure." << std::endl;
     PdbFileSpace::PdbFile* pdb_file=NULL;
     try

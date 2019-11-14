@@ -277,6 +277,7 @@ namespace MolecularModeling
             // void operator=(const Atom&);
             // void operator=(const Atom*);
             bool operator== (const Atom &otherAtom);
+            bool operator!= (const Atom &otherAtom);
 
 
         private:

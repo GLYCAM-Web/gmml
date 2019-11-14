@@ -298,6 +298,7 @@ std::string Atom::DetermineChirality() //Added by Yao 08/26/3019 Return values a
 
 	std::set<int> unique_ranks;
         for (std::vector<int>::iterator int_it = ranks.begin(); int_it != ranks.end(); int_it++){
+	    //std::cout << "Atom " << primary_neighbors[std::distance(ranks.begin(), int_it)]->GetName() << " has rank " << *int_it << std::endl;
             unique_ranks.insert(*int_it);
         }
 
@@ -421,8 +422,10 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
         bool dead_end = true;
 	std::vector<unsigned int> empty_count (duplicate_value_indices_versus_higher_rank_indices.size(), 0);
         for (std::map<std::vector<int>, std::vector<int> >::iterator mapit = duplicate_value_indices_versus_higher_rank_indices.begin(); mapit !=
-          duplicate_value_indices_versus_higher_rank_indices.end(); mapit++){
+            duplicate_value_indices_versus_higher_rank_indices.end(); mapit++){
 
+	    int map_index = std::distance(duplicate_value_indices_versus_higher_rank_indices.begin(), mapit);
+	    //std::cout << "Map index : " << map_index << std::endl;
 	    std::vector<int> duplicate_indices = mapit->first;
             std::vector<int> higher_rank_indices = mapit->second;
             for (std::vector<int>::iterator int_it = duplicate_indices.begin(); int_it != duplicate_indices.end(); int_it++){
@@ -434,15 +437,17 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
                 neighbors.erase(std::find(neighbors.begin(), neighbors.end(),this));
 
 	        if (neighbors.empty()){
-		    empty_count[index]++;
+		    empty_count[map_index]++;
 	        }
 	    }
+	    //std::cout << "Empty count is: " << empty_count[map_index] << std::endl; 
 		
 	}
 
         for (std::map<std::vector<int>, std::vector<int> >::iterator mapit = duplicate_value_indices_versus_higher_rank_indices.begin(); mapit !=
           duplicate_value_indices_versus_higher_rank_indices.end(); mapit++){
 
+	    int map_index = std::distance(duplicate_value_indices_versus_higher_rank_indices.begin(), mapit);
 	    std::vector<int> duplicate_indices = mapit->first;
 	    std::vector<int> higher_rank_indices = mapit->second;
             for (std::vector<int>::iterator int_it = duplicate_indices.begin(); int_it != duplicate_indices.end(); int_it++){
@@ -452,8 +457,9 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
                 Atom* atom = *(atomit);
                 AtomVector neighbors = atom->GetNode()->GetNodeNeighbors();
                 neighbors.erase(std::find(neighbors.begin(), neighbors.end(),this));
-                if (neighbors.empty() && empty_count[index] < duplicate_indices.size()){
+                if (neighbors.empty() && empty_count[map_index] < duplicate_indices.size()){
 		    //Although neighbors have identical ranking at the moment, if a neighbor has no downstream neighbor, it is smaller than other neighbors. 
+		    //std::cout << "Adjusting rank, which shouldn't happen." << std::endl;
 		    ranks[index]++;
 		    for (std::vector<int>::iterator int_it2 = higher_rank_indices.begin(); int_it2 != higher_rank_indices.end(); int_it2++){
 			ranks[*int_it2]++;
@@ -663,11 +669,13 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
             int index = std::distance(primary_neighbors.begin(), atomit);
             if (std::find(indices_with_identical_ranking.begin(), indices_with_identical_ranking.end(), index) != indices_with_identical_ranking.end()){
                 Atom* neighbor = *atomit;
+		//std::cout << "Primary neighbors with identical ranking: " << neighbor->GetName() << std::endl;
                 primary_neighbors_with_identical_ranking.push_back(neighbor);
 		std::vector<AtomVector> vec = comparison_progress_tracker[neighbor];
 		for (unsigned int i = 0; i < vec.size(); i++){
+		    //std::cout << "Current level 1" << std::endl;
 		    for (unsigned int j = 0; j < vec[i].size(); j++){
-			//std::cout << "Current level branch atoms: " << vec[i][j]->GetName() << std::endl;
+			//std::cout << "Current level 2 branch atoms: " << vec[i][j]->GetName() << std::endl;
 		    }
 		}
             }
@@ -877,6 +885,7 @@ std::vector<MolecularModeling::AtomVector> Atom::MakeNextLevelOfBranches(std::ve
 	    }
         }
     }
+    //std::cout << "Next lvl of branches size is: " << new_branches.size() << std::endl;
     return new_branches;
 }
 
@@ -1169,6 +1178,10 @@ bool Atom::operator== (const Atom &otherAtom)
     return (this->GetIndex() == otherAtom.GetIndex());
 }
 
+bool Atom::operator!= (const Atom &otherAtom)
+{
+    return (this->GetIndex() != otherAtom.GetIndex());
+}
 //////////////////////////////////////////////////////////
 //                   HELPER FUNCTIONS                   //
 //////////////////////////////////////////////////////////
