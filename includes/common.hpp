@@ -399,7 +399,7 @@ namespace gmml
         ///Alpha D Aldohexapyranoses
         {"_2_3_4P_a",     "a-D-ribopyranose",       "DRibpa",     "D", "", "P", "a", "", "", ""},
         {"_3_4^2P_a",     "a-D-arabinopyranose" ,   "DArapa",     "D", "", "P", "a", "", "", "64K"},
-        {"_2_4^3P_a",     "a-D-xylopyranose",       "DXylpa",     "D", "", "P", "a", "", "", ""},
+        {"_2_4^3P_a",     "a-D-xylopyranose",       "DXylpa",     "D", "", "P", "a", "", "", "XYS"},
         {"_4^2^3P_a",     "a-D-lyxopyranose",       "DLyxpa",     "D", "", "P", "a", "", "", "LDY"},
         {"_2_3_4P_a^+1",  "a-D-allopyranose",       "DAllpa",     "D", "", "P", "a", "", "", "AFD"},
         {"_3_4^2P_a^+1",  "a-D-altropyranose",      "DAltpa",     "D", "", "P", "a", "", "", "SHD"},
@@ -424,7 +424,7 @@ namespace gmml
         {"^2^3^4P^a^+1",  "b-D-talopyranose",       "DTalpb",     "D", "", "P", "b", "", "", ""   },
         ///Alpha D Ketohexapyranoses
         {"_2_3_4P_a^-1",  "a-D-psicopyranose",      "DPsipa",     "D", "", "P", "a", "", "", "PSJ"},
-        {"_3_4^2P_a^-1",  "a-D-fructopyranose",     "DFrupa",     "D", "", "P", "a", "", "", "FRU"},//FUD is linear form
+        {"_3_4^2P_a^-1",  "a-D-fructopyranose",     "DFrupa",     "D", "", "P", "a", "", "", ""},//FUD is linear form
         {"_2_4^3P_a^-1",  "a-D-sorbopyranose",      "DSorpa",     "D", "", "P", "a", "", "", "SDD"},
         {"_4^2^3P_a^-1",  "a-D-tagatopyranose",     "DTagpa",     "D", "", "P", "a", "", "", "T6T"},//TAG is linear form
         ///Beta D Ketohexapyranoses
@@ -457,7 +457,7 @@ namespace gmml
         {"_2^3F_a^-1^+1", "a-D-sorbofuranose",      "DSorfa",     "D", "", "F", "a", "", "", "SDD"},
         {"^2^3F_a^-1^+1", "a-D-tagatofuranose",     "DTagfa",     "D", "", "F", "a", "", "", "TAG"},
         {"_2_3F_-1^a^+1", "b-D-psicofuranose",      "DPsifb",     "D", "", "F", "b", "", "", "PSJ"},
-        {"_3^2F_-1^a^+1", "b-D-fructofuranose",     "DFrufb",     "D", "", "F", "b", "", "", ""   },
+        {"_3^2F_-1^a^+1", "b-D-fructofuranose",     "DFrufb",     "D", "", "F", "b", "", "", "FRU"},
         {"_2^3F_-1^a^+1", "b-D-sorbofuranose",      "DSorfb",     "D", "", "F", "b", "", "", "SDD"},
         {"^2^3F_-1^a^+1", "b-D-tagatofuranose",     "DTagfb",     "D", "", "F", "b", "", "", "TAG"},
         ///Other
@@ -465,9 +465,9 @@ namespace gmml
         {"_2^3^4P^a^+1d", "b-D-fucopyranose",       "DFucpb",     "D", "", "P", "b", "", "", "FCB"},
         {"_2^3^4P_a^+1d", "a-D-fucopyranose",       "DFucpa",     "D", "", "P", "a", "", "", "FCA"},
         {"_2^43dP^a^+1d", "b-D-abequopyranose",     "DAbepb",     "D", "", "P", "b", "", "", ""   },
-        {"_2^43dP_a^+1d", "a-D-abequopyranose",     "DAbepa",     "D", "", "P", "a", "", "", ""   },
+        {"_2^43dP_a^+1d", "a-D-abequopyranose",     "DAbepa",     "D", "", "P", "a", "", "", "ABE"},
         {"_4^2^3P^a^+1d", "b-D-rhamnoopyranose",    "DRhapb",     "D", "", "P", "b", "", "", ""   },
-        {"_4^2^3P_a^+1d", "a-D-rhamnoopyranose",    "DRhapa",     "D", "", "P", "a", "", "", ""   },
+        {"_4^2^3P_a^+1d", "a-D-rhamnoopyranose",    "DRhapa",     "D", "", "P", "a", "", "", "XXR"},
         {"_4^23dP^a^+1d", "b-D-tyvelopyranose",     "DTyvpb",     "D", "", "P", "b", "", "", ""   },
         {"_4^23dP_a^+1d", "a-D-tyvelopyranose",     "DTyvpa",     "D", "", "P", "a", "", "", "TYV"},
         {"_32dF^a^+1",    "b-D-deoxyribofuranose",  "DRibf[2D]b", "D", "", "P", "b", "", "", ""   },
@@ -484,29 +484,29 @@ namespace gmml
         {"_3^2^4P^a",     "a-L-xylopyranose",       "LXylpa",     "L", "", "P", "a", "", "", "HSY"},
         {"_2_3^4P^a",     "a-L-lyxopyranose",       "LLyxpa",     "L", "", "P", "a", "", "", ""   },
         {"^2^3^4P_+1^a",  "a-L-allopyranose",       "LAllpa",     "L", "", "P", "a", "", "", ""   },
-        {"_2^3^4P_+1^a",  "a-D-altropyranose",      "LAltpa",     "L", "", "P", "a", "", "", ""   },
+        {"_2^3^4P_+1^a",  "a-L-altropyranose",      "LAltpa",     "L", "", "P", "a", "", "", ""   },
         {"_3^2^4P_+1^a",  "a-L-glucopyranose",      "LGlcpa",     "L", "", "P", "a", "", "", ""   },
         {"_2_3^4P_+1^a",  "a-L-mannopyranose",      "LManpa",     "L", "", "P", "a", "", "", ""   },
         {"_4^2^3P_+1^a",  "a-L-gulopyranose",       "LGulpa",     "L", "", "P", "a", "", "", "GUP"},
         {"_2_4^3P_+1^a",  "a-L-idopyranose",        "LIdopa",     "L", "", "P", "a", "", "", ""   },
-        {"_3_4^2P_+1^a",  "a-L-galactopyranose",    "LGalpa",     "L", "", "P", "a", "", "", ""   },
+        {"_3_4^2P_+1^a",  "a-L-galactopyranose",    "LGalpa",     "L", "", "P", "a", "", "", "GXL"},
         {"_2_3_4P_+1^a",  "a-L-talopyranose",       "LTalpa",     "L", "", "P", "a", "", "", ""   },
         ///Beta L Aldohexapyranoses
         {"^2^3^4P_a",     "b-L-ribopyranose",       "LRibpb",     "L", "", "P", "b", "", "", "0MK"},
         {"_2^3^4P_a",     "b-L-arabinopyranose",    "LArapb",     "L", "", "P", "b", "", "", "ARB"},
         {"_3^2^4P_a",     "b-L-xylopyranose",       "LXylpb",     "L", "", "P", "b", "", "", "LXC"},
         {"_2_3^4P^a",     "b-L-lyxopyranose",       "LLyxpb",     "L", "", "P", "b", "", "", ""   },
-        {"^2^3^4P_a_+1",  "b-L-allopyranose",       "LAllpb",     "L", "", "P", "b", "", "", ""   },
+        {"^2^3^4P_a_+1",  "b-L-allopyranose",       "LAllpb",     "L", "", "P", "b", "", "", "WOO"   },
         {"_2^3^4P_a_+1",  "b-L-altropyranose",      "LAltpb",     "L", "", "P", "b", "", "", ""   },
         {"_3^2^4P_a_+1",  "b-L-glucopyranose",      "LGlcpb",     "L", "", "P", "b", "", "", ""   },
         {"_2_3^4P_a_+1",  "b-L-mannopyranose",      "LManpb",     "L", "", "P", "b", "", "", ""   },
         {"_4^2^3P_a_+1",  "b-L-gulopyranose",       "LGulpb",     "L", "", "P", "b", "", "", ""   },
         {"_2_4^3P_a_+1",  "b-L-idopyranose",        "LIdopb",     "L", "", "P", "b", "", "", "4N2"},
-        {"_3_4^2P_a_+1",  "b-L-galactopyranose",    "LGalpb",     "L", "", "P", "b", "", "", ""   },
+        {"_3_4^2P_a_+1",  "b-L-galactopyranose",    "LGalpb",     "L", "", "P", "b", "", "", "GIV"},
         {"_2_3_4P_a_+1",  "b-L-talopyranose",       "LTalpb",     "L", "", "P", "b", "", "", ""   },
         ///Alpha L Ketohexapyranoses
         {"^2^3^4P_-1^a",  "a-L-psicopyranose",      "LPsipa",     "L", "", "P", "a", "", "", ""   },
-        {"_2^3^4P_-1^a",  "a-L-fructopyranose",     "LFrupa",     "L", "", "P", "a", "", "", "FRU"},//FUD is linear form
+        {"_2^3^4P_-1^a",  "a-L-fructopyranose",     "LFrupa",     "L", "", "P", "a", "", "", ""},//FUD is linear form
         {"_3^2^4P_-1^a",  "a-L-sorbopyranose",      "LSorpa",     "L", "", "P", "a", "", "", "SOE"}, //SOL is the linear form
         {"_2_3^4P_-1^a",  "a-L-tagatopyranose",     "LTagpa",     "L", "", "P", "a", "", "", "TAG"},
         ///Beta L Ketohexapyranoses
@@ -544,11 +544,11 @@ namespace gmml
         {"_2_3F_a_+1^-1", "b-L-tagatofuranose",     "LTagfb",     "L", "", "F", "b", "", "", "TAG"},
         ///Other
         ///Deoxy
-        {"_3_4^2P_a_+1d", "b-L-fucopyranose",       "LFucpb",     "L", "", "P", "b", "", "", ""},
+        {"_3_4^2P_a_+1d", "b-L-fucopyranose",       "LFucpb",     "L", "", "P", "b", "", "", "FUL"},
         {"_3_4^2P_+1d^a", "a-L-fucopyranose",       "LFucpa",     "L", "", "P", "a", "", "", "FUC"},//AFL is obsolete
         {"_4^23dP_a_+1d", "b-L-abequopyranose",     "LAbepb",     "L", "", "P", "b", "", "", ""},
         {"_4^23dP_a^+1d", "a-L-abequopyranose",     "LAbepa",     "L", "", "P", "a", "", "", ""},
-        {"_2_3^4P_a_+1d", "b-L-rhamnoopyranose",    "LRhapb",     "L", "", "P", "b", "", "", ""},
+        {"_2_3^4P_a_+1d", "b-L-rhamnoopyranose",    "LRhapb",     "L", "", "P", "b", "", "", "RM4"},
         {"_2_3^4P_+1d^a", "a-L-rhamnoopyranose",    "LRhapa",     "L", "", "P", "a", "", "", "RAM"},
         {"_2^43dP_+1d_a", "b-L-ascarylopyranose",   "LAscpb",     "L", "", "P", "b", "", "", ""},
         {"_2^43dP_+1d^a", "a-L-ascarylopyranose",   "LAscpa",     "L", "", "P", "a", "", "", ""},
@@ -562,7 +562,7 @@ namespace gmml
         ///X D Aldohexapyranoses
         {"_2_3_4P",       "x-D-ribopyranose",       "DRibpx",     "D", "", "P", "x", "", "", ""},
         {"_3_4^2P",       "x-D-arabinopyranose" ,   "DArapx",     "D", "", "P", "x", "", "", ""},
-        {"_2_4^3P",       "x-D-xylopyranose",       "DXylpx",     "D", "", "P", "x", "", "", "XYS"},
+        {"_2_4^3P",       "x-D-xylopyranose",       "DXylpx",     "D", "", "P", "x", "", "", ""},
         {"_4^2^3P",       "x-D-lyxopyranose",       "DLyxpx",     "D", "", "P", "x", "", "", ""},
         {"_2_3_4P^+1",    "x-D-allopyranose",       "DAllpx",     "D", "", "P", "x", "", "", ""},
         {"_3_4^2P^+1",    "x-D-altropyranose",      "DAltpx",     "D", "", "P", "x", "", "", ""},
@@ -574,12 +574,12 @@ namespace gmml
         {"^2^3^4P^+1",    "x-D-talopyranose",       "DTalpx",     "D", "", "P", "x", "", "", ""},
         ///Alpha D Ketohexapyranoses
         {"_2_3_4P^-1",    "a-D-psicopyranose",      "DPsipa",     "D", "", "P", "a", "", "", "PSJ"},
-        {"_3_4^2P^-1",    "a-D-fructopyranose",     "DFrupa",     "D", "", "P", "a", "", "", "FRU,FUD"},
+        {"_3_4^2P^-1",    "a-D-fructopyranose",     "DFrupa",     "D", "", "P", "a", "", "", ""},
         {"_2_4^3P^-1",    "a-D-sorbopyranose",      "DSorpa",     "D", "", "P", "a", "", "", "SDD"},//SDD is the linear form
         {"_4^2^3P^-1",    "a-D-tagatopyranose",     "DTagpa",     "D", "", "P", "a", "", "", "TAG"},
         ///Beta D Ketohexapyranoses
         {"_2_3_4P_-1",    "b-D-psicopyranose",      "DPsipb",     "D", "", "P", "b", "", "", "PSJ"},
-        {"_3_4^2P_-1",    "b-D-fructopyranose",     "DFrupb",     "D", "", "P", "b", "", "", "FRU,FUD"},
+        {"_3_4^2P_-1",    "b-D-fructopyranose",     "DFrupb",     "D", "", "P", "b", "", "", ""},
         {"_2_4^3P_-1",    "b-D-sorbopyranose",      "DSorpb",     "D", "", "P", "b", "", "", "SDD"},
         {"_4^2^3P_-1",    "b-D-tagatopyranose",     "DTagpb",     "D", "", "P", "b", "", "", "TAG"},
         ///X D aldotetrafuranoses
@@ -601,7 +601,7 @@ namespace gmml
         {"_2^3F^-1^+1",   "a-D-sorbofuranose",      "DSorfa",     "D", "", "F", "a", "", "", "SDD"},
         {"^2^3F^-1^+1",   "a-D-tagatofuranose",     "DTagfa",     "D", "", "F", "a", "", "", "TAG"},
         {"_2_3F_-1^+1",   "b-D-psicofuranose",      "DPsifb",     "D", "", "F", "b", "", "", ""},
-        {"_3^2F_-1^+1",   "b-D-fructofuranose",     "DFrufb",     "D", "", "F", "b", "", "", ""},
+        {"_3^2F_-1^+1",   "b-D-fructofuranose",     "DFrufb",     "D", "", "F", "b", "", "", "FRU"},
         {"_2^3F_-1^+1",   "b-D-sorbofuranose",      "DSorfb",     "D", "", "F", "b", "", "", "SDD"},
         {"^2^3F_-1^+1",   "b-D-tagatofuranose",     "DTagfb",     "D", "", "F", "b", "", "", "TAG"},
         ///Other
@@ -628,7 +628,7 @@ namespace gmml
         {"_2_3_4P_+1",    "x-L-talopyranose",       "LTalpx",     "L", "", "P", "x", "", "", ""},
         ///Alpha L Ketohexapyranoses
         {"^2^3^4P_-1",    "a-L-psicopyranose",      "LPsipa",     "L", "", "P", "a", "", "", ""},
-        {"_2^3^4P_-1",    "a-L-fructopyranose",     "LFrupa",     "L", "", "P", "a", "", "", "FRU,FUD"},
+        {"_2^3^4P_-1",    "a-L-fructopyranose",     "LFrupa",     "L", "", "P", "a", "", "", ""},
         {"_3^2^4P_-1",    "a-L-sorbopyranose",      "LSorpa",     "L", "", "P", "a", "", "", "SDD,SOL,SOE"},
         {"_2_3^4P_-1",    "a-L-tagatopyranose",     "LTagpa",     "L", "", "P", "a", "", "", "TAG"},
         ///Beta L Ketohexapyranoses
@@ -672,21 +672,34 @@ namespace gmml
 
     const Glycan::SugarName COMPLEXSUGARNAMELOOKUP[] = {
 
+
+      //TODO: add the following PDB ligands:
+            //PA1, GCS, 95Z, X6X, 1GN, MAV, BEM, LGU, IDR, ADA, GTR, GTK, X1X
+            //Not high priority as we name them correctly and can look them up in the CCD
+
         {"", "", "", "", "", "", "", "", "", ""},
         ///Added to fix some warnings. Probably need to be moved to the correct subcategory.
-        {"_2_4^3P_a^+1A", "a-D-glucopyranose", "DGlcpa", "D", "", "P", "a", "a-D-glucuronic acid", "DGlcpAa", "GCU"},
-        {"_2_4^3P^a^+1A", "b-D-glucopyranose", "DGlcpb", "D", "", "P", "b", "b-D-glucoronic acid", "DGlcpAb", "BDP,GCU"},
-        {"_3_4^2MeP_+1d^a", "a-L-fucopyranose", "LFUcpa", "L", "", "P", "a", "2-O-methyl-a-L-fucopyranose", "LFucp[2Me]a", "MXZ"},
-        {"_3_4^2MeP_+1d_a",  "b-L-fucopyranose", "LFUcpb", "L", "", "P", "b", "2-O-methyl-b-L-fucopyranose", "LFucp[2Me]b", "MXY"},
+        {"_2_4^3P_a^+1A", "a-D-glucopyranose", "DGlcpa", "D", "", "P", "a", "a-D-glucuronate", "DGlcpAa", "GCU"},
+        {"_2_4^3P_a^+1AH", "a-D-glucopyranose", "DGlcpa", "D", "", "P", "a", "a-D-glucuronic acid", "DGlcpAHa", "GCU"},
+        {"_2_4^3P^a^+1A", "b-D-glucopyranose", "DGlcpb", "D", "", "P", "b", "b-D-glucuronate", "DGlcpAb", "BDP"},
+        {"_2_4^3P^a^+1AH", "b-D-glucopyranose", "DGlcpb", "D", "", "P", "b", "b-D-glucoronic acid", "DGlcpAHb", "BDP"},
+        {"_3_4^2MeP_+1d^a", "a-L-fucopyranose", "LFucpa", "L", "", "P", "a", "2-O-methyl-a-L-fucopyranose", "LFucp[2Me]a", "MXZ"},
+        {"_3_4^2MeP_+1d_a",  "b-L-fucopyranose", "LFucpb", "L", "", "P", "b", "2-O-methyl-b-L-fucopyranose", "LFucp[2Me]b", "MXY"},
         {"_2NAc^3^4SP^a^+1", "b-D-galactopyranose", "DGalpb", "D", "", "P", "b", "4-O-sulfo-N-acetyl-b-D-galactosamine", "DGalpNAc[4S]b", "ASG"},
         {"_2NAc^3^4SP_a^+1", "a-D-galactopyranose", "DGalpa", "D", "", "P", "a", "4-O-sulfo-N-Acetyl-a-D-galactosamine", "DGalpNAc[4S]a", "NGK"},
         {"_2NAc_4^3P_a^+1", "a-D-glucopyranose", "DGlcpa", "D", "", "P", "a", "N-acetyl-a-D-glucosamine", "DGlcpNAca", "NDG"},
-        {"_2NAc^3^4P_a^+1", "a-D-galactopyranose", "DGalpa", "D","", "P", "a", "N-acetyl-a-D-galactosamine", "DGalpNAca", "A2G"},
+        {"_3^2NAc^4P_+1^a", "a-L-glucopyranose", "LGlcpa", "L", "", "P", "a", "N-acetyl-a-L-glucosamine", "LGlcpNAca", "NGZ"},
+        {"_2NAc^3^4P_a^+1", "a-D-galactopyranose", "DGalpa", "D", "", "P", "a", "N-acetyl-a-D-galactosamine", "DGalpNAca", "A2G"},
+        {"_2NAc_3_4P^a^+1", "b-D-allopyranose", "DAllpb", "D", "", "P", "b", "N-acetyl-b-D-allopyranosamine", "DAllpNAcb", "NAA"},
         {"_2NAc_4^3P^a^+1", "b-D-glucopyranose", "DGlcpb", "D", "", "P", "b", "N-acetyl-b-D-glucosamine", "DGlcpNAcb", "NAG"},
         {"_2NAc^3^4P^a^+1", "b-D-galactopyranose", "DGalpb", "D", "", "P", "b", "N-acetyl-b-D-galactosamine", "DGalpNAcb", "NGA"},
         {"_2NAc^3iprA^4P^a^+1", "b-D-muramic acid", "DMurpb", "D", "", "P", "b", "N-acetyl-b-D-muramic acid", "DMurpNAcb", "AMU"},
         {"_2NAc^3iprA^4P_a^+1", "a-D-muramic acid", "DMurpa", "D", "", "P", "a", "N-acetyl-a-D-muramic acid", "DMurpNAca", "MUB"},
         {"_2N^3iprA^4P^a^+1", "b-D-muramic acid", "DMurpb", "D", "", "P", "b", "b-D-muramic acid", "", "MUR"},
+        {"_4^2NAc^3P_a^+1", "a-D-mannopyranose", "DManpa", "D", "", "P", "a", "N-acetyl-a-D-mannosamine", "DManpNAca", "BM3"},
+        {"_4^2NAc^3P^a^+1", "b-D-mannopyranose", "DManpb", "D", "", "P", "b", "N-acetyl-b-D-mannosamine", "DManpNAcb", "BM7"},
+
+
         ///Alpha D aldohexafuranoses
         {"_2_3F_a^+1R^+2", "a-D-allofuranose", "DAllfa", "D", "", "F", "a", "", "", ""},
         {"_3^2F_a^+1R^+2", "a-D-altrofuranose", "DAltfa", "D", "", "F", "a", "", "", ""},
@@ -711,23 +724,38 @@ namespace gmml
         // {"_4^2^3P^a^+1R^+2", "", "", "L", "", "P", "b", "L-glycero-b-D-mannoheptopyranose", "LDManHepb", ""},
         // {"", "", "", "D", "", "P", "a", "D-glycero-a-D-mannoheptopyranose", "DDManHepa", "289"},
         ///Eight carbons
-        {"^3^42dP_a^-1A^+1R^+2", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-octulopyranosate", "DKDOpa", ""},
-        {"^3^42dP_a^-1AH^+1R^+2", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-octulopyranosate", "DKDOpa", ""},
+        {"^3^42dP_a^-1A^+1R^+2", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-octulopyranosate", "DKDOpa", "KDO"},
         {"^3^42dP_-1A^a^+1R^+2", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-octulopyranosate", "DKDOpb", ""},
-        {"^3^42dP_-1AH^a^+1R^+2", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-octulopyranosate", "DKDOpb", ""},
         {"^32dF_a_+1R_+2R_+3^-1A", "", "", "D", "", "F", "a", "2-keto-3-deoxy-a-D-octulofuranosate", "DKDOfa", ""},
         {"^32dF_-1A_+1R_+2R_+3^a", "", "", "D", "", "F", "b", "2-keto-3-deoxy-b-D-octulofuranosate", "DKDOfb", ""},
+        //Acid Forms
+        {"^3^42dP_a^-1AH^+1R^+2", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-octulopyranosonic acid", "DKDOpa", ""},
+        {"^3^42dP_-1AH^a^+1R^+2", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-octulopyranosonic acid", "DKDOpb", ""},
+        {"^32dF_a_+1R_+2R_+3^-1AH", "", "", "D", "", "F", "a", "2-keto-3-deoxy-a-D-octulofuranosonic acid", "DKDOfa", ""},
+        {"^32dF_-1AH_+1R_+2R_+3^a", "", "", "D", "", "F", "b", "2-keto-3-deoxy-b-D-octulofuranosonic acid", "DKDOfb", ""},
+
         ///Nine carbons
-        {"_3^42dP_a_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-nonulopyranosate", "DKDNpa", ""},
-        {"_3^42dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-nonulopyranosate", "DKDNpb", ""},
+        {"_3^42dP_a_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-nonulopyranosate", "DKDNpa", "KDM"},
+        {"_3^42dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-nonulopyranosate", "DKDNpb", "KDN"},
         {"_3^4NAc2dP_a_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "N-acetyl-a-D-neuraminate", "DNeup5Aca", "SIA"},
         {"_3^4NAc2dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "N-acetyl-b-D-neuraminate", "DNeup5Acb", "SLB"},
         {"_3Ac^4N2dP_+1R_+2R_+3^-1A_a", "", "", "D", "", "P", "a", "4-O-acetyl-a-D-neuraminate", "DNeup4Aca", ""},
         {"_3Ac^4N2dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "4-O-acetyl-b-D-neuraminate", "DNeup4Acb", ""},
-        {"_3^4NGc2dP_a_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "N-glycolyl-a-D-neuraminate", "DNeup5Gca", ""},
-        {"_3^4NGc2dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "N-glycolyl-b-D-neuraminate", "DNeup5Gcb", ""},
+        {"_3^4NGc2dP_a_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "N-glycolyl-a-D-neuraminate", "DNeup5Gca", "NGC"},
+        {"_3^4NGc2dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "N-glycolyl-b-D-neuraminate", "DNeup5Gcb", "NGE"},
         {"_3^4N2dP_a_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "a-D-neuraminate", "DNeupa", ""},
         {"_3^4N2dP_-1A_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "b-D-neuraminate", "DNeupb", ""},
+        //Acid forms
+        {"_3^42dP_a_+1R_+2R_+3^-1AH", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-nonulopyranosonic acid", "DKDNpa", "KDM"},
+        {"_3^42dP_-1AH_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-nonulopyranosonic acid", "DKDNpb", "KDN"},
+        {"_3^4NAc2dP_a_+1R_+2R_+3^-1AH", "", "", "D", "", "P", "a", "N-acetyl-a-D-neuraminic acid", "DNeup5Aca", "SIA"},
+        {"_3^4NAc2dP_-1AH_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "N-acetyl-b-D-neuraminic acid", "DNeup5Acb", "SLB"},
+        {"_3Ac^4N2dP_+1R_+2R_+3^-1AH_a", "", "", "D", "", "P", "a", "4-O-acetyl-a-D-neuraminic acid", "DNeup4Aca", ""},
+        {"_3Ac^4N2dP_-1AH_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "4-O-acetyl-b-D-neuraminic acid", "DNeup4Acb", ""},
+        {"_3^4NGc2dP_a_+1R_+2R_+3^-1AH", "", "", "D", "", "P", "a", "N-glycolyl-a-D-neuraminic acid", "DNeup5Gca", "NGC"},
+        {"_3^4NGc2dP_-1AH_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "N-glycolyl-b-D-neuraminic acid", "DNeup5Gcb", "NGE"},
+        {"_3^4N2dP_a_+1R_+2R_+3^-1AH", "", "", "D", "", "P", "a", "a-D-neuraminic acid", "DNeupa", ""},
+        {"_3^4N2dP_-1AH_+1R_+2R_+3^a", "", "", "D", "", "P", "b", "b-D-neuraminic acid", "DNeupb", ""},
 
         ///Alpha L aldohexafuranoses
         {"^2^3F_+1S_+2^a", "a-L-allofuranose", "LAllfa", "L", "", "F", "a", "", "", ""},
@@ -737,7 +765,8 @@ namespace gmml
         {"^2^3F^a^+1S^+2", "a-L-gulofuranose", "LGulfa", "L", "", "F", "a", "", "", ""},
         {"_2^3F^a^+1S^+2", "a-L-idofuranose", "LIdofa", "L", "", "F", "a", "", "", ""},
         {"_3^2F^a^+1S^+2", "a-L-galactofuranose", "LGalfa", "L", "", "F", "a", "", "", ""},
-        {"_2_3F^a^+1S^+2", "a-L-talofuranose", "LTalfa", "L", "", "F", "a", "", "", ""},
+        {"_2_3F^a^+1S^+2", "a-L-talofuranose", "LTalfa", "L", "", "F", "a", "", "", "A5C"},
+
         ///Beta L aldohexafuranoses
         {"^2^3F_a_+1S_+2", "b-L-allofuranose", "LAllfb", "L", "", "F", "b", "", "", ""},
         {"_2^3F_a_+1S_+2", "b-L-altrofuranose", "LAltfb", "L", "", "F", "b", "", "", ""},
@@ -747,11 +776,18 @@ namespace gmml
         {"_2^3F_a^+1S^+2", "b-L-idofuranose", "LIdofb", "L", "", "F", "b", "", "", ""},
         {"_3^2F_a^+1S^+2", "b-L-galactofuranose", "LGalfb", "L", "", "F", "b", "", "", ""},
         {"_2_3F_a^+1S^+2", "b-L-talofuranose", "LTalfb", "L", "", "F", "b", "", "", ""},
+
         ///Eight carbons
         {"_3_42dP_-1A_+1S_+2^a", "", "", "L", "", "P", "a", "2-keto-3-deoxy-a-L-octulopyranosate", "LKLOpa", ""},
         {"_3_42dP_a_+1S_+2^-1A", "", "", "L", "", "P", "b", "2-keto-3-deoxy-b-L-octulopyranosate", "LKLOpb", ""},
         {"_32dF_-1A^a^+1S^+2S^+3", "", "", "L", "", "F", "a", "2-keto-3-deoxy-a-L-octulofuranosate", "LKLOfa", ""},
         {"_32dF_a^-1A^+1S^+2S^+3", "", "", "L", "", "F", "b", "2-keto-3-deoxy-b-L-octulofuranosate", "LKLOfb", ""},
+        //Acid forms
+        {"_3_42dP_-1AH_+1S_+2^a", "", "", "L", "", "P", "a", "2-keto-3-deoxy-a-L-octulopyranosonic acid", "LKLOpa", ""},
+        {"_3_42dP_a_+1S_+2^-1AH", "", "", "L", "", "P", "b", "2-keto-3-deoxy-b-L-octulopyranosonic acid", "LKLOpb", ""},
+        {"_32dF_-1AH^a^+1S^+2S^+3", "", "", "L", "", "F", "a", "2-keto-3-deoxy-a-L-octulofuranosonic acid", "LKLOfa", ""},
+        {"_32dF_a^-1AH^+1S^+2S^+3", "", "", "L", "", "F", "b", "2-keto-3-deoxy-b-L-octulofuranosonic acid", "LKLOfb", ""},
+
         ///Nine carbons
         {"_4^32dP_-1A^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "2-keto-3-deoxy-a-L-nonulopyranosate", "LKLNpa", ""},
         {"_4^32dP_a^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "2-keto-3-deoxy-b-L-nonulopyranosate", "LKLNpb", ""},
@@ -763,6 +799,17 @@ namespace gmml
         {"_4NGc^32dP_a^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-glycolyl-b-L-neuraminate", "LNeup5Gcb", ""},
         {"_4N^32dP_-1A^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "a-L-neuraminate", "LNeupa", ""},
         {"_4N^32dP_a^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "b-L-neuraminate", "LNeupb", ""},
+        //Acid forms
+        {"_4^32dP_-1AH^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "2-keto-3-deoxy-a-L-nonulopyranosonic acid", "LKLNpa", ""},
+        {"_4^32dP_a^-1AH^+1S^+2S^+3", "", "", "L", "", "P", "b", "2-keto-3-deoxy-b-L-nonulopyranosonic acid", "LKLNpb", ""},
+        {"_4NAc^32dP_-1AH^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-acetyl-a-L-neuraminic acid", "LNeup5Aca", ""},
+        {"_4NAc^32dP_a^-1AH^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-acetyl-b-L-neuraminic acid", "LNeup5Acb", ""},
+        {"_4N^3Ac2dP_-1AH^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "4-O-acetyl-a-L-neuraminic acid", "LNeup4Aca", ""},
+        {"_4N^3Ac2dP_a^-1AH^+1S^+2S^+3", "", "", "L", "", "P", "b", "4-O-acetyl-b-L-neuraminic acid", "LNeup4Acb", ""},
+        {"_4NGc^32dP_-1AH^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-glycolyl-a-L-neuraminic acid", "LNeup5Gca", ""},
+        {"_4NGc^32dP_a^-1AH^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-glycolyl-b-L-neuraminic acid", "LNeup5Gcb", ""},
+        {"_4N^32dP_-1AH^a^+1S^+2S^+3", "", "", "L", "", "P", "a", "a-L-neuraminic acid", "LNeupa", ""},
+        {"_4N^32dP_a^-1AH^+1S^+2S^+3", "", "", "L", "", "P", "b", "b-L-neuraminic acid", "LNeupb", ""},
 
         ///Indeterminate Anomeric Oxygen
         ///Alpha D aldohexafuranoses
@@ -774,14 +821,21 @@ namespace gmml
         {"_3^2F_+1R_+2", "x-D-idofuranose", "DIdofx", "D", "", "F", "", "", "", ""},
         {"_2^3F_+1R_+2", "x-D-galactofuranose", "DGalfx", "D", "", "F", "", "", "", ""},
         {"^2^3F_+1R_+2", "x-D-talofuranose", "DTalfx", "D", "", "F", "", "", "", ""},
+
         ///Eight carbons
-        {"^3^42dP^-1A^+1R^+2", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-octulopyranosate", "DKDOpa", ""},
+        {"^3^42dP^-1A^+1R^+2", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-octulopyranosate", "DKDOpa", "KDO"},
         {"^3^42dP_-1A^+1R^+2", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-octulopyranosate", "DKDOpb", ""},
         {"^32dF_+1R_+2R_+3^-1A", "", "", "D", "", "F", "a", "2-keto-3-deoxy-a-D-octulofuranosate", "DKDOfa", ""},
         {"^32dF_-1A_+1R_+2R_+3", "", "", "D", "", "F", "b", "2-keto-3-deoxy-b-D-octulofuranosate", "DKDOfb", ""},
+        //Acid forms
+        {"^3^42dP^-1AH^+1R^+2", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-octulopyranosonic acid", "DKDOpa", ""},
+        {"^3^42dP_-1AH^+1R^+2", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-octulopyranosonic acid", "DKDOpb", ""},
+        {"^32dF_+1R_+2R_+3^-1AH", "", "", "D", "", "F", "a", "2-keto-3-deoxy-a-D-octulofuranosonic acid", "DKDOfa", ""},
+        {"^32dF_-1AH_+1R_+2R_+3", "", "", "D", "", "F", "b", "2-keto-3-deoxy-b-D-octulofuranosonic acid", "DKDOfb", ""},
+
         ///Nine carbons
-        {"_3^42dP_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-nonulopyranosate", "DKDNpa", ""},
-        {"_3^42dP_-1A_+1R_+2R_+3", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-nonulopyranosate", "DKDNpb", ""},
+        {"_3^42dP_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-nonulopyranosate", "DKDNpa", "KDM"},
+        {"_3^42dP_-1A_+1R_+2R_+3", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-nonulopyranosate", "DKDNpb", "KDN"},
         {"_3^4NAc2dP_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "N-acetyl-a-D-neuraminate", "DNeup5Aca", ""},
         {"_3^4NAc2dP_-1A_+1R_+2R_+3", "", "", "D", "", "P", "b", "N-acetyl-b-D-neuraminate", "DNeup5Acb", ""},
         {"_3Ac^4N2dP_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "4-O-acetyl-a-D-neuraminate", "DNeup4Aca", ""},
@@ -790,6 +844,17 @@ namespace gmml
         {"_3^4NGc2dP_-1A_+1R_+2R_+3", "", "", "D", "", "P", "b", "N-glycolyl-b-D-neuraminate", "DNeup5Gcb", ""},
         {"_3^4N2dP_+1R_+2R_+3^-1A", "", "", "D", "", "P", "a", "a-D-neuraminate", "Neupa", ""},
         {"_3^4N2dP_-1A_+1R_+2R_+3", "", "", "D", "", "P", "b", "b-D-neuraminate", "Neupb", ""},
+        //Acid Forms
+        {"_3^42dP_+1R_+2R_+3^-1AH", "", "", "D", "", "P", "a", "2-keto-3-deoxy-a-D-nonulopyranosonic acid", "DKDNpa", "KDM"},
+        {"_3^42dP_-1AH_+1R_+2R_+3", "", "", "D", "", "P", "b", "2-keto-3-deoxy-b-D-nonulopyranosonic acid", "DKDNpb", "KDN"},
+        {"_3^4NAc2dP_+1R_+2R_+3^-1AH", "", "", "D", "", "P", "a", "N-acetyl-a-D-neuraminic acid", "DNeup5Aca", ""},
+        {"_3^4NAc2dP_-1AH_+1R_+2R_+3", "", "", "D", "", "P", "b", "N-acetyl-b-D-neuraminic acid", "DNeup5Acb", ""},
+        {"_3Ac^4N2dP_+1R_+2R_+3^-1AH", "", "", "D", "", "P", "a", "4-O-acetyl-a-D-neuraminic acid", "DNeup4Aca", ""},
+        {"_3Ac^4N2dP_-1AH_+1R_+2R_+3", "", "", "D", "", "P", "b", "4-O-acetyl-b-D-neuraminic acid", "DNeup4Acb", ""},
+        {"_3^4NGc2dP_+1R_+2R_+3^-1AH", "", "", "D", "", "P", "a", "N-glycolyl-a-D-neuraminic acid", "DNeup5Gca", ""},
+        {"_3^4NGc2dP_-1AH_+1R_+2R_+3", "", "", "D", "", "P", "b", "N-glycolyl-b-D-neuraminic acid", "DNeup5Gcb", ""},
+        {"_3^4N2dP_+1R_+2R_+3^-1AH", "", "", "D", "", "P", "a", "a-D-neuraminic acid", "Neupa", ""},
+        {"_3^4N2dP_-1AH_+1R_+2R_+3", "", "", "D", "", "P", "b", "b-D-neuraminic acid", "Neupb", ""},
 
         ///Alpha D aldohexafuranoses
         {"^2^3F_+1S_+2", "x-L-allofuranose", "LAllfx", "L", "", "F", "", "", "", ""},
@@ -805,6 +870,12 @@ namespace gmml
         {"_3_42dP_+1S_+2^-1A", "", "", "L", "", "P", "b", "2-keto-3-deoxy-b-L-octulopyranosate", "LKDOpb", ""},
         {"_32dF_-1A^+1S^+2S^+3", "", "", "L", "", "F", "a", "2-keto-3-deoxy-a-L-octulofuranosate", "LKDOfa", ""},
         {"_32dF^-1A^+1S^+2S^+3", "", "", "L", "", "F", "b", "2-keto-3-deoxy-b-L-octulofuranosate", "LKDOfb", ""},
+        //Acid Forms
+        {"_3_42dP_-1AH_+1S_+2", "", "", "L", "", "P", "a", "2-keto-3-deoxy-a-L-octulopyranosonic acid", "LKDOpa", ""},
+        {"_3_42dP_+1S_+2^-1AH", "", "", "L", "", "P", "b", "2-keto-3-deoxy-b-L-octulopyranosonic acid", "LKDOpb", ""},
+        {"_32dF_-1AH^+1S^+2S^+3", "", "", "L", "", "F", "a", "2-keto-3-deoxy-a-L-octulofuranosonic acid", "LKDOfa", ""},
+        {"_32dF^-1AH^+1S^+2S^+3", "", "", "L", "", "F", "b", "2-keto-3-deoxy-b-L-octulofuranosonic acid", "LKDOfb", ""},
+
         ///Nine carbons
         {"_4^32dP_-1A^+1S^+2S^+3", "", "", "L", "", "P", "a", "2-keto-3-deoxy-a-L-nonulopyranosate", "LKDNpa", ""},
         {"_4^32dP^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "2-keto-3-deoxy-b-L-nonulopyranosate", "LKDNpb", ""},
@@ -815,7 +886,18 @@ namespace gmml
         {"_4NGc^32dP_-1A^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-glycolyl-a-L-neuraminate", "LNeup5Gca", ""},
         {"_4NGc^32dP^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-glycolyl-b-L-neuraminate", "LNeup5Gcb", ""},
         {"_4N^32dP_-1A^+1S^+2S^+3", "", "", "L", "", "P", "a", "a-L-neuraminate", "LNeupa", ""},
-        {"_4N^32dP^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "b-L-neuraminate", "LNeupb", ""}
+        {"_4N^32dP^-1A^+1S^+2S^+3", "", "", "L", "", "P", "b", "b-L-neuraminate", "LNeupb", ""},
+        //Acid form
+        {"_4^32dP_-1AH^+1S^+2S^+3", "", "", "L", "", "P", "a", "2-keto-3-deoxy-a-L-nonulopyranosonic acid", "LKDNpa", ""},
+        {"_4^32dP^-1AH^+1S^+2S^+3", "", "", "L", "", "P", "b", "2-keto-3-deoxy-b-L-nonulopyranosonic acid", "LKDNpb", ""},
+        {"_4NAc^32dP_-1AH^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-acetyl-a-L-neuraminic acid", "LNeup5AHca", ""},
+        {"_4NAc^32dP^-1AH^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-acetyl-b-L-neuraminic acid", "LNeup5AHcb", ""},
+        {"_4N^3Ac2dP_-1AH^+1S^+2S^+3", "", "", "L", "", "P", "a", "4-O-acetyl-a-L-neuraminic acid", "LNeup4AHca", ""},
+        {"_4N^3Ac2dP^-1AH^+1S^+2S^+3", "", "", "L", "", "P", "b", "4-O-acetyl-b-L-neuraminic acid", "LNeup4AHcb", ""},
+        {"_4NGc^32dP_-1AH^+1S^+2S^+3", "", "", "L", "", "P", "a", "N-glycolyl-a-L-neuraminic acid", "LNeup5Gca", ""},
+        {"_4NGc^32dP^-1AH^+1S^+2S^+3", "", "", "L", "", "P", "b", "N-glycolyl-b-L-neuraminic acid", "LNeup5Gcb", ""},
+        {"_4N^32dP_-1AH^+1S^+2S^+3", "", "", "L", "", "P", "a", "a-L-neuraminic acid", "LNeupa", ""},
+        {"_4N^32dP^-1AH^+1S^+2S^+3", "", "", "L", "", "P", "b", "b-L-neuraminic acid", "LNeupb", ""}
     };
 
     const int COMPLEXSUGARNAMELOOKUPSIZE = (sizeof(COMPLEXSUGARNAMELOOKUP)/sizeof(COMPLEXSUGARNAMELOOKUP[0]));
