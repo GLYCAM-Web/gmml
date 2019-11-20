@@ -7,7 +7,7 @@ using MolecularModeling::Molecule;
 //////////////////////////////////////////////////////////
 Molecule::Molecule(){
 
-    std::cout<<"Molecule class is called"<<std::endl;
+//    std::cout<<"Molecule class is called"<<std::endl;
 }
 
 //////////////////////////////////////////////////////////

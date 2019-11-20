@@ -244,11 +244,11 @@ namespace MolecularModeling
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
-            void Print(std::ostream& out = std::cout);
+            void Print(std::ostream& out = std::cerr);
 
-            void PrettyPrintHet(std::ostream& out = std::cout);
-            void PrintHetResidues(std::ostream& out = std::cout);
-            void PrintHetAtoms(std::ostream& out = std::cout);
+            void PrettyPrintHet(std::ostream& out = std::cerr);
+            void PrintHetResidues(std::ostream& out = std::cerr);
+            void PrintHetAtoms(std::ostream& out = std::cerr);
 
             void WriteHetResidues(std::ofstream& out);
             void WriteHetAtoms(std::ofstream& out);

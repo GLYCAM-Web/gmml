@@ -34,7 +34,7 @@ GeometryTopology::CoordinateVector GeometryTopology::Rotation::RotateCoordinates
     double l=sqrt(u*u+v*v+w*w);
     if(l<0)
     {
-        std::cout<<"Direction vector length is less than 1"<<std::endl;
+//        std::cout<<"Direction vector length is less than 1"<<std::endl;
         return coordinate_set;
     }else
     {

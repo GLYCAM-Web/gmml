@@ -77,7 +77,7 @@ void Assembly::ExtractOntologyInfoByNameOfGlycan(std::string stereo_name, std::s
 {
     if(stereo_name.compare("") == 0 && stereo_condensed_name.compare("") == 0 && name.compare("") == 0 && condensed_name.compare("") == 0)
     {
-        std::cout << "Please specify at least one of the arguments and set the others as \"\" " << std::endl;
+//        std::cout << "Please specify at least one of the arguments and set the others as \"\" " << std::endl;
         return;
     }
     std::stringstream query;
@@ -113,7 +113,7 @@ void Assembly::ExtractOntologyInfoByNamePartsOfGlycan(std::string isomer, std::s
 {
     if(isomer.compare("") == 0 && ring_type.compare("") == 0 && configuration.compare("") == 0)
     {
-        std::cout << "Please specify at least one of the arguments and set the others as \"\" " << std::endl;
+//        std::cout << "Please specify at least one of the arguments and set the others as \"\" " << std::endl;
         return;
     }
     std::stringstream query;
@@ -147,7 +147,7 @@ void Assembly::ExtractOntologyInfoByPDBID(std::string pdb_id, std::string output
 {
     if(pdb_id.compare("") == 0)
     {
-        std::cout << "Please specify the input argument." << std::endl;
+//        std::cout << "Please specify the input argument." << std::endl;
         return;
     }
     std::stringstream query;
@@ -170,7 +170,7 @@ void Assembly::ExtractOntologyInfoByStringChemicalCode(std::string chemical_code
 {
     if(chemical_code.compare("") == 0)
     {
-        std::cout << "Please specify the input argument." << std::endl;
+//        std::cout << "Please specify the input argument." << std::endl;
         return;
     }
     std::stringstream query;
@@ -219,12 +219,12 @@ void Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(std::stri
     gmml::FindReplaceString(oligo_name_pattern, "]", "\\\\]");
     if(oligo_name_pattern.compare("") == 0)
     {
-        std::cout << "Please specify the input argument. (you can use up to two * in the name pattern)" << std::endl;
+//        std::cout << "Please specify the input argument. (you can use up to two * in the name pattern)" << std::endl;
         return;
     }
     if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') > 3)
     {
-        std::cout << "Wrong name pattern format. Please use only up tp three * in the input argument." << std::endl;
+//        std::cout << "Wrong name pattern format. Please use only up tp three * in the input argument." << std::endl;
         return;
     }
 
@@ -280,7 +280,7 @@ void Assembly::ExtractOntologyInfoByGlycanStructure(std::string ring_type, std::
 {
     if(ring_type.compare("") == 0)
     {
-        std::cout << "Please specify the ring type which is the first argument of the function as either \"P\" or \"F\" " << std::endl;
+//        std::cout << "Please specify the ring type which is the first argument of the function as either \"P\" or \"F\" " << std::endl;
         return;
     }
     std::stringstream query;
@@ -366,7 +366,7 @@ void Assembly::ExtractOntologyInfoByDerivativeModificationMap(std::string ring_t
 {
     if(ring_type.compare("") == 0)
     {
-        std::cout << "Please specify the ring type as the first argument of the function as either \"P\" or \"F\" " << std::endl;
+//        std::cout << "Please specify the ring type as the first argument of the function as either \"P\" or \"F\" " << std::endl;
         return;
     }
     std::stringstream query;
@@ -423,12 +423,12 @@ void Assembly::ExtractOntologyInfoByAttachedGlycanStructures(AttachedGlycanStruc
         std::vector<std::string> structure = (*it);
         if(structure.size() < 7)
         {
-            std::cout << "Missing arguments! All should be set even as an empty value (for empty values set \"\")" << std::endl;
+//            std::cout << "Missing arguments! All should be set even as an empty value (for empty values set \"\")" << std::endl;
             return;
         }
         if(structure.at(0).compare("") == 0)
         {
-            std::cout << "Please specify the ring type which is the first argument of the function as either \"P\" or \"F\" " << std::endl;
+//            std::cout << "Please specify the ring type which is the first argument of the function as either \"P\" or \"F\" " << std::endl;
             return;
         }
         std::stringstream oligo;
@@ -566,7 +566,7 @@ void Assembly::ExtractOntologyInfoByCustomQuery(std::string query_file, std::str
 
     if (!in.is_open())
     {
-        std::cout << "Error in reading the query file" << std::endl;
+//        std::cout << "Error in reading the query file" << std::endl;
         return;
     }
 
@@ -824,10 +824,10 @@ void Assembly::ExtractTorsionAnglesFromSlowQueryResult()
 
 
     ///Outputting the result in std out. In order to write the results into a file comment the following section
-    std::cout << "ϕ (O5′-C1′-Ox-Cx)" << std::endl;
-    std::cout << "ψ (C1′-Ox-Cx-Cx−1)" << std::endl;
-    std::cout << "Ω (O1-C6′-C5′-O5′)" << std::endl;
-    std::cout << std::left << std::setw(15) << "PDB" << std::setw(15) << "Phi Angle" << std::setw(15) << "Psi Angle" << std::setw(15) << "Omega Angle" << std::endl;
+//    std::cout << "ϕ (O5′-C1′-Ox-Cx)" << std::endl;
+//    std::cout << "ψ (C1′-Ox-Cx-Cx−1)" << std::endl;
+//    std::cout << "Ω (O1-C6′-C5′-O5′)" << std::endl;
+//    std::cout << std::left << std::setw(15) << "PDB" << std::setw(15) << "Phi Angle" << std::setw(15) << "Psi Angle" << std::setw(15) << "Omega Angle" << std::endl;
 
     ///Read query result file
     std::string line;
@@ -904,16 +904,16 @@ void Assembly::ExtractTorsionAnglesFromSlowQueryResult()
                 phi_angle = CalculateTorsionAngleByCoordinates(O5_crd, C1_crd, Ox_crd, Cx_crd); /// ϕ (O5′-C1′-Ox-Cx)
                 psi_angle = CalculateTorsionAngleByCoordinates(C1_crd, Ox_crd, Cx_crd,Cx_neighbor_crd); /// ψ (C1′-Ox-Cx-Cx−1)
 
-                std::cout << std::left << std::setw(15) << gmml::Split(gmml::Split(line_tokens.at(0), "#").at(1), "\"").at(0)
-                         << std::setw(15) << gmml::ConvertRadian2Degree(phi_angle) << std::setw(15)
-                         << gmml::ConvertRadian2Degree(psi_angle);
+//                std::cout << std::left << std::setw(15) << gmml::Split(gmml::Split(line_tokens.at(0), "#").at(1), "\"").at(0)
+//                         << std::setw(15) << gmml::ConvertRadian2Degree(phi_angle) << std::setw(15)
+//                         << gmml::ConvertRadian2Degree(psi_angle);
 
                 if(O5_prime_crd != NULL)
                 {
                     omega_angle = CalculateTorsionAngleByCoordinates(Ox_crd, Cx_crd,Cx_neighbor_crd, O5_prime_crd); /// Ω (O1-C6′-C5′-O5′)
-                    std::cout << std::setw(15) << gmml::ConvertRadian2Degree(omega_angle);
+//                    std::cout << std::setw(15) << gmml::ConvertRadian2Degree(omega_angle);
                 }
-                std::cout << std::endl;
+//                std::cout << std::endl;
             }
         }
     }
@@ -949,10 +949,10 @@ void Assembly::ExtractTorsionAnglesFromFastQueryResult()
 
 
     ///Outputting the result in std out. In order to write the results into a file comment the following section
-    std::cout << "ϕ (O5′-C1′-Ox-Cx)" << std::endl;
-    std::cout << "ψ (C1′-Ox-Cx-Cx−1)" << std::endl;
-    std::cout << "Ω (O1-C6′-C5′-O5′)" << std::endl;
-    std::cout << std::left << std::setw(15) << "PDB" << std::setw(15) << "Phi Angle" << std::setw(15) << "Psi Angle" << std::setw(15) << "Omega Angle" << std::endl;
+//    std::cout << "ϕ (O5′-C1′-Ox-Cx)" << std::endl;
+//    std::cout << "ψ (C1′-Ox-Cx-Cx−1)" << std::endl;
+//    std::cout << "Ω (O1-C6′-C5′-O5′)" << std::endl;
+//    std::cout << std::left << std::setw(15) << "PDB" << std::setw(15) << "Phi Angle" << std::setw(15) << "Psi Angle" << std::setw(15) << "Omega Angle" << std::endl;
 
     ///Read query result file
     std::string line;
@@ -1028,16 +1028,16 @@ void Assembly::ExtractTorsionAnglesFromFastQueryResult()
                 phi_angle = CalculateTorsionAngleByCoordinates(O5_crd, C1_crd, Ox_crd, Cx_crd); /// ϕ (O5′-C1′-Ox-Cx)
                 psi_angle = CalculateTorsionAngleByCoordinates(C1_crd, Ox_crd, Cx_crd,Cx_neighbor_crd); /// ψ (C1′-Ox-Cx-Cx−1)
 
-                std::cout << std::left << std::setw(15) << gmml::Split(gmml::Split(line_tokens.at(0), "#").at(1), "\"").at(0)
-                         << std::setw(15) << gmml::ConvertRadian2Degree(phi_angle) << std::setw(15)
-                         << gmml::ConvertRadian2Degree(psi_angle);
+//                std::cout << std::left << std::setw(15) << gmml::Split(gmml::Split(line_tokens.at(0), "#").at(1), "\"").at(0)
+//                         << std::setw(15) << gmml::ConvertRadian2Degree(phi_angle) << std::setw(15)
+//                         << gmml::ConvertRadian2Degree(psi_angle);
 
                 if(O5_prime_crd != NULL)
                 {
                     omega_angle = CalculateTorsionAngleByCoordinates(Ox_crd, Cx_crd,Cx_neighbor_crd, O5_prime_crd); /// Ω (O1-C6′-C5′-O5′)
-                    std::cout << std::setw(15) << gmml::ConvertRadian2Degree(omega_angle);
+//                    std::cout << std::setw(15) << gmml::ConvertRadian2Degree(omega_angle);
                 }
-                std::cout << std::endl;
+//                std::cout << std::endl;
             }
         }
     }
@@ -1073,12 +1073,12 @@ std::string Assembly::ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(
     gmml::FindReplaceString(oligo_name_pattern, "-OH", "-ROH");
     if(oligo_name_pattern.compare("") == 0)
     {
-        std::cout << "Please specify the input argument. (you can use up to two * in the name pattern)" << std::endl;
+//        std::cout << "Please specify the input argument. (you can use up to two * in the name pattern)" << std::endl;
         return "Please specify the input argument. (you can use up to two * in the name pattern)";
     }
     if(count(oligo_name_pattern.begin(), oligo_name_pattern.end(), '*') > 3)
     {
-        std::cout << "Wrong name pattern format. Please use only up to three * in the input argument." << std::endl;
+//        std::cout << "Wrong name pattern format. Please use only up to three * in the input argument." << std::endl;
         return "Wrong name pattern format. Please use only up to three * in the input argument.";
     }
 
@@ -1131,7 +1131,7 @@ std::string Assembly::ExtractOntologyInfoByPDBIDGF(std::string pdb_id, std::stri
 {
     if(pdb_id.compare("") == 0)
     {
-        std::cout << "Please specify the input argument." << std::endl;
+//        std::cout << "Please specify the input argument." << std::endl;
         return "Please specify the input argument.";
     }
     std::stringstream query;

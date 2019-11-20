@@ -47,7 +47,7 @@ namespace Glycan
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
-    void Print(std::ostream& out = std::cout);
+    void Print(std::ostream& out = std::cerr);
     /*! \fn
               * A function to update residueLinkStream based on current oligosaccharide
               * @param oligo_temp The current oligosaccharide of oligo-sequence

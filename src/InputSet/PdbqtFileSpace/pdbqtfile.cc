@@ -34,7 +34,7 @@ PdbqtFile::PdbqtFile(const std::string &pdbqt_file)
     if(std::ifstream(pdbqt_file.c_str()))
     {
         gmml::log(__LINE__, __FILE__,  gmml::INF,"Opening PDBQT file ...");
-        std::cout << "Opening PDBQT file ..." << std::endl;
+//        std::cout << "Opening PDBQT file ..." << std::endl;
         in_file.open(pdbqt_file.c_str());
     }
     else
@@ -46,7 +46,7 @@ PdbqtFile::PdbqtFile(const std::string &pdbqt_file)
         throw PdbqtFileProcessingException(__LINE__, "Reading PDBQT file exception");
     }
     gmml::log(__LINE__, __FILE__,  gmml::INF,"End of file");
-    std::cout << "End of file" << std::endl;
+//    std::cout << "End of file" << std::endl;
     in_file.close();            /// Close the pdbqt files
 }
 
@@ -138,7 +138,7 @@ bool PdbqtFile::ParseCards(std::ifstream &in_stream)
     if (!getline(in_stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         throw PdbqtFileProcessingException("Error reading file");
     }
     std::string record_name = gmml::Split(line, " ").at(0);
@@ -150,7 +150,7 @@ bool PdbqtFile::ParseCards(std::ifstream &in_stream)
     else
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     return true;
@@ -163,9 +163,9 @@ bool PdbqtFile::ParseModelCard(std::ifstream &stream, std::string &line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR,"Model card corruption");
-        std::cout << "Model card corruption" << std::endl;
+//        std::cout << "Model card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     std::string record_name = gmml::Split(line, " ").at(0);
@@ -189,9 +189,9 @@ bool PdbqtFile::ParseModelCard(std::ifstream &stream, std::string &line)
             else
             {
                 gmml::log(__LINE__, __FILE__,  gmml::ERR,"Model card corruption");
-                std::cout << "Model card corruption" << std::endl;
+//                std::cout << "Model card corruption" << std::endl;
                 gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
-                std::cout << "Wrong input file format" << std::endl;
+//                std::cout << "Wrong input file format" << std::endl;
                 return false;
             }
         }

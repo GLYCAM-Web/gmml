@@ -75,7 +75,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::string parameter_file_path)
 {
-    std::cout << "Creating prep file ..." << std::endl;
+//    std::cout << "Creating prep file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating prep file ...");
     PrepFileSpace::PrepFile* prep_file = new PrepFileSpace::PrepFile();
     ResidueVector assembly_residues = this->GetAllResiduesOfAssembly();

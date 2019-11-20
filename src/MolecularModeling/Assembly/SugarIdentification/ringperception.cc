@@ -536,7 +536,7 @@ Assembly::CycleMap Assembly::DetectCyclesByDFS()
 
     std::stringstream n_of_cycle;
     n_of_cycle << "Number of cycles found: " << counter;
-    std::cout << n_of_cycle.str() << std::endl;
+//    std::cout << n_of_cycle.str() << std::endl;
     if ( local_debug > 0 )
     {
       gmml::log(__LINE__, __FILE__,  gmml::INF, n_of_cycle.str());

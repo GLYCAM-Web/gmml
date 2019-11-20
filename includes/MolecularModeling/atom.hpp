@@ -271,7 +271,7 @@ namespace MolecularModeling
             * Print out the information in a defined structure
             * @param out An output stream, the print result will be written in the given output stream
             */
-            void Print(std::ostream& = std::cout); // @TODO DT - See the TODO below for operator<<
+            void Print(std::ostream& = std::cerr); // @TODO DT - See the TODO below for operator<<
             //////////////////////////////////////////////////////////
             //                   OVERLOADED OPERATORS               //
             //////////////////////////////////////////////////////////
@@ -315,7 +315,7 @@ namespace MolecularModeling
     // @TODO DT - Get this working. For some reason it causes a Seg Fault.
     //			Ideally this function would be where the printing code is and the
     //			class Print function would call this operator.
-    //			This would allow someone to do: std::cout << AtomObject << std::endl;
+    //			This would allow someone to do: std::cerr << AtomObject << std::endl;
     // std::ostream& operator<<( std::ostream& out, const Atom& atom );
 }
 #endif // ATOM_HPP

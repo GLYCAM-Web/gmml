@@ -96,7 +96,7 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
         if(oligo->terminal_.compare("") == 0)
             oligo_name = oligo_name + "1-OH";
 
-std::cout << "oligo_name is" << oligo_name << std::endl;
+//std::cout << "oligo_name is" << oligo_name << std::endl;
         CondensedSequenceSpace::CondensedSequence* condensed_sequence = new CondensedSequenceSpace::CondensedSequence(oligo_name);
         //Gets the three letter code of all carbohydrates involved in current oligosaccharide
         CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
@@ -143,8 +143,8 @@ std::cout << "oligo_name is" << oligo_name << std::endl;
 			oligo_id_map[oligo].push_back(terminal_residue_id);
 
 			std::string new_terminal_residue_name = condensed_sequence_glycam06_residue_tree.at(index)->GetName();
-			std::cout << "New terminal residue: " << new_terminal_residue_name << std::endl;
-			std::cout << "Terminal atom name: " << terminal_atom->GetName() << std::endl;
+//			std::cout << "New terminal residue: " << new_terminal_residue_name << std::endl;
+//			std::cout << "Terminal atom name: " << terminal_atom->GetName() << std::endl;
 			if ( !(terminal_atom->GetResidue()->CheckIfProtein()) )  //If this terminal atom is not part of protein,for example,NLN, then it should be in a new glycam residue, for example, ROH.
 			{
 			    ResidueVector AllResiduesInAssembly = this->GetResidues();
@@ -447,9 +447,9 @@ void Assembly::RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& ol
         this->RecursiveMoleculeSubgraphMatching(target_start_atom, target_atoms, template_atoms, target_atom_label_map, template_atom_label_map, 
 						target_template_vertex_match, template_target_vertex_match,all_isomorphisms);
 
-	std::cout << all_isomorphisms.size() << " matches found." << std::endl;
+//	std::cout << all_isomorphisms.size() << " matches found." << std::endl;
 	if (all_isomorphisms.empty()){
-	    std::cout << "Isomorphism matching failed, cannot rename atoms." << std::endl;
+//	    std::cout << "Isomorphism matching failed, cannot rename atoms." << std::endl;
 	}
 	else if (all_isomorphisms.size() >= 1){
 	    std::vector<std::pair<Atom*, Atom*> > first_isomorphism = all_isomorphisms[0]; 
@@ -459,7 +459,7 @@ void Assembly::RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& ol
 	}
 
 	if (all_isomorphisms.size() > 1){
-	    std::cout << "Warning: multiple matches detected, applied the first match." << std::endl;
+//	    std::cout << "Warning: multiple matches detected, applied the first match." << std::endl;
 	    /*for (std::vector<std::vector<std::pair<Atom*, Atom*> > >::iterator isos = all_isomorphisms.begin(); isos != all_isomorphisms.end(); isos++){
 		std::cout << "Match " << std::distance(all_isomorphisms.begin(), isos) << std::endl;
 		std::cout << "-----------------------" << std::endl;
@@ -851,8 +851,8 @@ void Assembly::UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue
                 std::string glycam_residue_name = *name_it;
 		//Right now cannot handle X configuraton, exit when this happens
 		if (glycam_residue_name[glycam_residue_name.size()-1] == 'X'){
-		    std::cout << "Unable to determine alpha/beta configuration." << std::endl;
-		    std::cout << "Aborting." << std::endl;
+//		    std::cout << "Unable to determine alpha/beta configuration." << std::endl;
+//		    std::cout << "Aborting." << std::endl;
 		    std::exit(EXIT_FAILURE);	    	    
 		}
                 PrepFileSpace::PrepFile::ResidueMap customized_prep_residues = PrepFileSpace::PrepFile::ResidueMap();

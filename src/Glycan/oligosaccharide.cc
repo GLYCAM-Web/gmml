@@ -966,7 +966,7 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
               std::stringstream ss;
               ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
               gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-              std::cout << ss.str() << std::endl;
+//              std::cout << ss.str() << std::endl;
               terminal_residue_name = "";
             }
           }
@@ -1057,7 +1057,7 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
                 std::stringstream ss;
                 ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
                 gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-                std::cout << ss.str() << std::endl;
+//                std::cout << ss.str() << std::endl;
                 terminal_residue_name = "";
               }
             }

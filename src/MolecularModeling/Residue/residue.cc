@@ -296,7 +296,7 @@ bool Residue::GraphElementLabeling()
 
 bool Residue::GraphSymbolBasedElementLabeling()
 {
-    std::cout << "Labeling residue nodes based on elements' symbol ... " << std::endl;
+//    std::cout << "Labeling residue nodes based on elements' symbol ... " << std::endl;
     bool flag = true;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
@@ -315,7 +315,7 @@ bool Residue::GraphSymbolBasedElementLabeling()
 
 bool Residue::GraphParameterBasedElementLabeling()
 {
-    std::cout << "Labeling residue nodes based on atom type and parameter file" << std::endl;
+//    std::cout << "Labeling residue nodes based on atom type and parameter file" << std::endl;
     bool flag = true;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
@@ -343,7 +343,7 @@ bool Residue::GraphParameterBasedElementLabeling()
 
 bool Residue::GraphPredictionBasedElementLabeling()
 {
-    std::cout << "Labeling residue nodes based on first letter prediction ... " << std::endl;
+//    std::cout << "Labeling residue nodes based on first letter prediction ... " << std::endl;
     bool flag = true;
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
@@ -509,7 +509,7 @@ GeometryTopology::Coordinate Residue::GetGeometricCenter()
     AtomVector atoms = this->GetAtoms();
     if(atoms.size() == 0)
     {
-        std::cout << "Problem in Residue::GetGeometricCenter(), the residue " << this->GetId() << " contains no atoms." << std::endl;
+//        std::cout << "Problem in Residue::GetGeometricCenter(), the residue " << this->GetId() << " contains no atoms." << std::endl;
     }
 
     double sumX = 0.0, sumY = 0.0, sumZ = 0.0;

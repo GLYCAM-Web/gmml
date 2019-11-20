@@ -39,8 +39,8 @@ using MolecularModeling::Residue;
 //////////////////////////////////////////////////////////
 void Residue::BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *prep_residue)
 {
-    std::cout << "Building residue from prep residue ..." << std::endl;
-    std::cout << "prep res name: " << prep_residue->GetName() << std::endl;
+//    std::cout << "Building residue from prep residue ..." << std::endl;
+//    std::cout << "prep res name: " << prep_residue->GetName() << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building residue from prep residue ...");
 
     int serial_number = 0;
