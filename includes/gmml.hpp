@@ -4,6 +4,7 @@
 #include "common.hpp"
 #include "generictypedefs.hpp"
 #include "utils.hpp"
+#include "CodeUtils/codetests.hpp"
 #include "InputSet/CifFileSpace/ciffile.hpp"
 #include "InputSet/CifFileSpace/ciffileatom.hpp"
 #include "InputSet/CifFileSpace/ciffileprocessingexception.hpp"
