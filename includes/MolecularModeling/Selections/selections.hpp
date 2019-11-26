@@ -21,6 +21,9 @@ bool FindRotationPointsForNonCycles(MolecularModeling::Atom *previous_atom, Mole
 MolecularModeling::Atom* FindCyclePointNeighbor(const MolecularModeling::AtomVector atom_path, MolecularModeling::Atom *cycle_point);
 MolecularModeling::Atom* FindAtomNeighborThatMatchesQuery(MolecularModeling::Atom *atom, std::string query);
 MolecularModeling::Residue* FindResidue(MolecularModeling::Assembly &assembly, const std::string query);
+double GetMaxDistanceBetweenAtoms(MolecularModeling::AtomVector atoms);
+MolecularModeling::AtomVector GetAtomsCommonToBothAtomVectors(MolecularModeling::AtomVector a, MolecularModeling::AtomVector b);
+MolecularModeling::AtomVector GetAtomsin_a_Notin_b_AtomVectors(MolecularModeling::AtomVector a, MolecularModeling::AtomVector b);
 }
 
 #endif // SELECTIONS_H

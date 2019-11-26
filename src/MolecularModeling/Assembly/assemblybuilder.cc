@@ -953,7 +953,7 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
     this->FigureOutResidueLinkagesInGlycan(this->GetResidues().at(0), this->GetResidues().at(0), &all_residue_linkages);
     for(auto &linkage : all_residue_linkages)
     {
-        linkage.SetDefaultDihedralAnglesUsingMetadata();
+        linkage.SetDefaultShapeUsingMetadata();
     }
     // Resovlving overlaps should be a separated function, but I don't want assembly to have a ResidueLinkageVector member. Need new, seperate class.
     for(auto &linkage : all_residue_linkages)

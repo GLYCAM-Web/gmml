@@ -42,6 +42,7 @@ public:
     AtomVector GetAtomsThatMove();
     double GetPreviousDihedralAngle();
     DihedralAngleDataVector GetMetadata();
+    int GetNumberOfRotamers();
 
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
@@ -71,8 +72,8 @@ public:
     void SetMetadata(DihedralAngleDataVector metadataVector);
     void AddMetadata(DihedralAngleData metadata);
 
-    // Set according to default values in metadata
-    void SetDihedralAngleUsingMetadata(bool use_ranges = false);
+    void SetRandomAngleEntryUsingMetadata(bool useRanges = true);
+    void SetSpecificAngleEntryUsingMetadata(bool useRanges = false, int angleEntryNumber = 0);
 
 
     //////////////////////////////////////////////////////////

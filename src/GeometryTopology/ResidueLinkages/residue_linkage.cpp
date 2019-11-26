@@ -1,5 +1,12 @@
 #include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.h"
 #include "../../../includes/MolecularModeling/overlaps.hpp"
+#include "../../../includes/External_Libraries/PCG/pcg_extras.hpp"
+#include "../../../includes/External_Libraries/PCG/pcg_random.hpp"
+
+// Seed with a real random value, if available
+static pcg_extras::seed_seq_from<std::random_device> seed_source;
+// Make a random number engine
+static pcg32 rng(seed_source);
 
 //////////////////////////////////////////////////////////
 //                    TYPE DEFINITION                   //
@@ -28,39 +35,134 @@ ResidueVector Residue_linkage::GetResidues()
     return residues;
 }
 
+RotatableDihedralVector Residue_linkage::GetRotatableDihedralsWithMultipleRotamers()
+{
+    RotatableDihedralVector returningDihedrals;
+    for (auto &entry : rotatable_dihedrals_)
+    {
+        if (entry.GetNumberOfRotamers() > 1)
+        {
+            returningDihedrals.push_back(entry);
+        }
+    }
+    return returningDihedrals;
+}
+
 RotatableDihedralVector Residue_linkage::GetRotatableDihedrals() const
 {
     return rotatable_dihedrals_;
 }
 
-int Residue_linkage::GetNumberOfRotatableDihedrals()
+int Residue_linkage::GetNumberOfShapes() // Can have conformers (sets of rotamers) or permutations of rotamers
 {
-    return rotatable_dihedrals_.size();
+    int numberOfShapes = 1;
+    if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("permutation")==0)
+    {
+        for (auto &entry : rotatable_dihedrals_)
+        {
+            numberOfShapes = (numberOfShapes * entry.GetNumberOfRotamers());
+        }
+    }
+    else if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("conformer")==0)
+    {
+        numberOfShapes = rotatable_dihedrals_.size();
+    }
+    return numberOfShapes;
 }
+
+Residue* Residue_linkage::GetFromThisResidue1()
+{
+    return from_this_residue1_;
+}
+
+Residue* Residue_linkage::GetToThisResidue2()
+{
+    return to_this_residue2_;
+}
+
+Atom* Residue_linkage::GetFromThisConnectionAtom1()
+{
+    return from_this_connection_atom1_;
+}
+
+Atom* Residue_linkage::GetToThisConnectionAtom2()
+{
+    return to_this_connection_atom2_;
+}
+
+bool Residue_linkage::CheckIfConformer()
+{
+    if (rotatable_dihedrals_.empty())
+        std::cout << "Error in Residue_linkage::checkIfConformer as rotatable_dihedrals_.empty()\n";
+    else if (rotatable_dihedrals_.at(0).GetMetadata().empty())
+        std::cout << "Error in Residue_linkage::checkIfConformer as rotatable_dihedrals_.at(0).GetMetadata().empty()\n";
+    else
+    {
+        if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("permutation")==0)
+            return false;
+        else
+            return true;
+    }
+}
+
+//int Residue_linkage::GetNumberOfRotatableDihedrals()
+//{
+//    return rotatable_dihedrals_.size();
+//}
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
+void Residue_linkage::SetRotatableDihedrals(RotatableDihedralVector rotatableDihedrals)
+{
+    rotatable_dihedrals_ = rotatableDihedrals;
+}
+
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 
-void Residue_linkage::SetDefaultDihedralAnglesUsingMetadata()
+void Residue_linkage::GenerateAllShapesUsingMetadata()
+{
+
+}
+
+void Residue_linkage::SetDefaultShapeUsingMetadata()
 {
     for (auto &entry : rotatable_dihedrals_)
     {
-        entry.SetDihedralAngleUsingMetadata();
+        entry.SetSpecificAngleEntryUsingMetadata(); // Default is first entry
     }
 }
 
-// Range should be inherent to each dihedral. Should add that to the class.
-void Residue_linkage::SetRandomDihedralAnglesUsingMetadata()
+void Residue_linkage::SetRandomShapeUsingMetadata(bool useRanges)
+{
+    if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("permutation")==0)
+    {
+        for (auto &entry : rotatable_dihedrals_)
+        {
+            entry.SetRandomAngleEntryUsingMetadata(useRanges);
+        }
+    }
+    else if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("conformer")==0)
+    {
+        int numberOfConformers = rotatable_dihedrals_.at(0).GetMetadata().size();
+        std::uniform_int_distribution<> distr(0, (numberOfConformers - 1)); // define the range
+        int randomlySelectedConformerNumber = distr(rng);
+        for (auto &entry : rotatable_dihedrals_)
+        {
+            entry.SetSpecificAngleEntryUsingMetadata(useRanges, randomlySelectedConformerNumber);
+        }
+    }
+}
+
+// This is dangerous if used by non-conformer linkage. Change it to check.
+void Residue_linkage::SetSpecificShapeUsingMetadata(int shapeNumber, bool useRanges)
 {
     for (auto &entry : rotatable_dihedrals_)
     {
-        bool use_ranges = true;
-        entry.SetDihedralAngleUsingMetadata(use_ranges);
+        entry.SetSpecificAngleEntryUsingMetadata(useRanges, shapeNumber);
     }
 }
 
@@ -81,14 +183,13 @@ void Residue_linkage::SetCustomDihedralAngles(std::vector <double> dihedral_angl
     }
 }
 
-void Residue_linkage::SetDihedralAnglesToPrevious()
+void Residue_linkage::SetShapeToPrevious()
 {
     for(RotatableDihedralVector::iterator rotatable_dihedral = rotatable_dihedrals_.begin(); rotatable_dihedral != rotatable_dihedrals_.end(); ++rotatable_dihedral)
     {
         rotatable_dihedral->SetDihedralAngleToPrevious();
     }
 }
-
 
 void Residue_linkage::SetRandomDihedralAngles()
 {
@@ -341,4 +442,12 @@ void Residue_linkage::SetConnectionAtoms(Residue *residue1, Residue *residue2)
     selection::FindAtomsConnectingResidues(residue1->GetAtoms().at(0), residue2, &connecting_atoms, &found);
     from_this_connection_atom1_ = connecting_atoms.at(0);
     to_this_connection_atom2_ = connecting_atoms.at(1);
+}
+
+void Residue_linkage::SetConformerUsingMetadata(bool useRanges, int conformerNumber)
+{
+    for (auto &entry : rotatable_dihedrals_)
+    {
+        entry.SetSpecificAngleEntryUsingMetadata(useRanges, conformerNumber);
+    }
 }

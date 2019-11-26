@@ -348,6 +348,67 @@ MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeli
     return selected_neighbor;
 }
 
+// Ok not really a selection, but like, chill for a minute ok?
+double selection::GetMaxDistanceBetweenAtoms(MolecularModeling::AtomVector atoms)
+{
+    double max_distance = 0.0;
+    for(MolecularModeling::AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); ++it1)
+    {
+        MolecularModeling::Atom *atom1 = (*it1);
+        for(MolecularModeling::AtomVector::iterator it2 = it1; it2 != atoms.end(); ++it2)
+        {
+            MolecularModeling::Atom *atom2 = (*it2);
+            if (atom1->GetDistanceToAtom(atom2) > max_distance)
+            {
+                max_distance = atom1->GetDistanceToAtom(atom2);
+            }
+        }
+    }
+    return max_distance;
+}
+
+MolecularModeling::AtomVector selection::GetAtomsCommonToBothAtomVectors(MolecularModeling::AtomVector a, MolecularModeling::AtomVector b)
+{
+    MolecularModeling::AtomVector returned_selection;
+    for(MolecularModeling::AtomVector::iterator it = a.begin(); it != a.end(); ++it)
+    {
+        MolecularModeling::Atom *atom_a = *it;
+        for(MolecularModeling::AtomVector::iterator it1 = b.begin(); it1 != b.end(); ++it1)
+        {
+            MolecularModeling::Atom *atom_b = *it1;
+            if (atom_a->GetIndex() == atom_b->GetIndex())
+            {
+                returned_selection.push_back(atom_a);
+            }
+        }
+    }
+    return returned_selection;
+}
+
+MolecularModeling::AtomVector selection::GetAtomsin_a_Notin_b_AtomVectors(MolecularModeling::AtomVector a, MolecularModeling::AtomVector b)
+{
+    MolecularModeling::AtomVector returned_selection;
+    bool isCommon = false;
+    for(MolecularModeling::AtomVector::iterator it = a.begin(); it != a.end(); ++it)
+    {
+        isCommon = false;
+        MolecularModeling::Atom *atom_a = *it;
+        for(MolecularModeling::AtomVector::iterator it1 = b.begin(); it1 != b.end(); ++it1)
+        {
+            MolecularModeling::Atom *atom_b = *it1;
+            if (atom_a->GetIndex() == atom_b->GetIndex())
+            {
+                isCommon = true;
+            }
+        }
+        if (isCommon==false)
+        {
+            returned_selection.push_back(atom_a);
+        }
+    }
+    return returned_selection;
+}
+
 //MolecularModeling::Atom* selection::FindAtomNeighborThatMatchesQuery(MolecularModeling::Atom *atom, std::string query)
 //{
 //    MolecularModeling::Atom *selected_atom;
