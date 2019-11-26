@@ -1,4 +1,5 @@
 #include "../../../includes/MolecularModeling/Selections/selections.hpp"
+#include "../../../includes/MolecularModeling/assembly.hpp"
 #include <regex>
 
 MolecularModeling::AtomVector selection::AtomsWithinDistanceOf(MolecularModeling::Atom *query_atom, double distance, MolecularModeling::AtomVector atoms)
@@ -413,5 +414,24 @@ MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeli
 //        }
 //    }
 //}
+
+// Assumes query is in the format ?_222 or A_222, where 222 is the residue number and ?/A is the chain ID. ? if not specified.
+MolecularModeling::Residue* selection::FindResidue(MolecularModeling::Assembly &assembly, const std::string query)
+{
+    MolecularModeling::ResidueVector allResidues = assembly.GetAllResiduesOfAssembly();
+    for(auto &residue : allResidues)
+    {
+        std::string id = residue->GetId();
+        std::string formatted_query = "_" + query + "_";
+        if( id.compare(3, formatted_query.size(), formatted_query) == 0)
+        {
+            return residue;
+        }
+    }
+    std::cerr << "Residue " << query << " not found in assembly!" << std::endl;
+    MolecularModeling::Residue* residuePointerToNothing;
+    return residuePointerToNothing;
+}
+
 
 

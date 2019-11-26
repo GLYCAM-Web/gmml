@@ -20,6 +20,7 @@ MolecularModeling::AtomVector FindCyclePoints(MolecularModeling::Atom *atom);
 bool FindRotationPointsForNonCycles(MolecularModeling::Atom *previous_atom, MolecularModeling::Atom *current_atom, MolecularModeling::AtomVector *rotation_points);
 MolecularModeling::Atom* FindCyclePointNeighbor(const MolecularModeling::AtomVector atom_path, MolecularModeling::Atom *cycle_point);
 MolecularModeling::Atom* FindAtomNeighborThatMatchesQuery(MolecularModeling::Atom *atom, std::string query);
+MolecularModeling::Residue* FindResidue(MolecularModeling::Assembly &assembly, const std::string query);
 }
 
 #endif // SELECTIONS_H

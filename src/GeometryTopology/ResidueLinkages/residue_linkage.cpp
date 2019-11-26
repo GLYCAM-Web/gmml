@@ -77,7 +77,7 @@ void Residue_linkage::SetCustomDihedralAngles(std::vector <double> dihedral_angl
     }
     else
     {   // Really need to figure out this throwing exceptions lark.
-        std::cout << "ERROR; attempted to set dihedral angles for set of dihedrals but with mismatching number of bonds to angles\n" << std::endl;
+        std::cerr << "ERROR; attempted to set dihedral angles for set of dihedrals but with mismatching number of bonds to angles\n" << std::endl;
     }
 }
 
@@ -116,7 +116,7 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
     for(auto &rotatable_dihedral : reversed_rotatable_bond_vector)
     {
         double best_dihedral_angle = rotatable_dihedral.CalculateDihedralAngle();
-        std::cout << "Starting new linkage with best angle as " << best_dihedral_angle << "\n";
+  //      std::cout << "Starting new linkage with best angle as " << best_dihedral_angle << "\n";
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_entries = rotatable_dihedral.GetMetadata();
         for(auto &metadata : metadata_entries)
         {
@@ -126,33 +126,26 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
             while(current_dihedral <= upper_bound )
             {
                 rotatable_dihedral.SetDihedralAngle(current_dihedral);
-                //GlycosylationSite::write_pdb_file(this->GetGlycoprotein(), *output_pdb_id, "wiggle", lowest_overlap);
-                //++(*output_pdb_id);
                 current_overlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
-                std::cout << "Dihedral(best): " << current_dihedral << "(" << best_dihedral_angle << ")" <<  ". Overlap(best): " << current_overlap << "(" << lowest_overlap << ")" << "\n";
+           //     std::cout << "Dihedral(best): " << current_dihedral << "(" << best_dihedral_angle << ")" <<  ". Overlap(best): " << current_overlap << "(" << lowest_overlap << ")" << "\n";
                 if (lowest_overlap >= (current_overlap + 0.01)) // 0.01 otherwise rounding errors
                 {
-                  //  std::cout << "Setting id " << *output_pdb_id << " index: " << metadata.index_ << ": ";
-                    rotatable_dihedral.Print();
+                   // rotatable_dihedral.Print();
                     lowest_overlap = current_overlap;
-//                  glycoprotein_builder::write_pdb_file(this->GetGlycoprotein(), *output_pdb_id, "wiggle", lowest_overlap);
-//                  ++(*output_pdb_id);
                     best_dihedral_angle = current_dihedral;
-                    std::cout << "Best angle is now " << best_dihedral_angle << "\n";
-                //    GlycosylationSite::write_pdb_file(this->GetGlycoprotein(), *output_pdb_id, "wiggle", lowest_overlap);
+           //         std::cout << "Best angle is now " << best_dihedral_angle << "\n";
                 }
                 // Perfer angles closer to default.
-                else if ( (lowest_overlap == current_overlap) &&
-                          (std::abs(metadata.default_angle_value_ - best_dihedral_angle ) > std::abs(metadata.default_angle_value_ - current_dihedral)) )
+                else if ( (lowest_overlap == current_overlap) && (std::abs(metadata.default_angle_value_ - best_dihedral_angle )
+                                                                  > std::abs(metadata.default_angle_value_ - current_dihedral)) )
                 {
                     best_dihedral_angle = current_dihedral;
                 }
                 current_dihedral += angleIncrement; // increment
             }
         }
-        std::cout << "Setting best angle as " << best_dihedral_angle << "\n";
+   //     std::cout << "Setting best angle as " << best_dihedral_angle << "\n";
         rotatable_dihedral.SetDihedralAngle(best_dihedral_angle);
-        // std::cout << "\n";
         if(lowest_overlap <= overlapTolerance)
             return;
     }
@@ -195,7 +188,7 @@ void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_t
     this->SetResidues(from_this_residue1, to_this_residue2);
     if(this->CheckIfViableLinkage())
     {
-        //std::cout << "Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
+       // std::cout << "Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
         this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
         rotatable_dihedrals_ = this->FindRotatableDihedralsConnectingResidues(from_this_connection_atom1_, to_this_connection_atom2_);
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata = this->FindMetadata(from_this_connection_atom1_, to_this_connection_atom2_);
@@ -304,6 +297,11 @@ gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Residue_linkage::FindMe
 //    {
 //        std::cout << entry.index_ << " : " << entry.atom1_ << ", " << entry.atom2_ << ", " << entry.atom3_ << ", " << entry.atom4_ << ", " << entry.default_angle_value_ << "\n";
 //    }
+    //Sometimes I'll pass in the residues in the order Glc4-1Glc, as that's the way I want them to move. Need to check for reversed entries matching:
+    if (matching_entries.empty())
+    {
+        matching_entries = DihedralAngleMetadata.GetEntriesForLinkage(to_this_connection_atom2, from_this_connection_atom1);
+    }
     return matching_entries;
 }
 
