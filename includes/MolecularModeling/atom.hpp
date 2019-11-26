@@ -228,7 +228,7 @@ namespace MolecularModeling
             * A function to find connected Atoms to this Atom.
             * @param visitedAtoms The AtomVector used to find connected atoms.
             */
-            void FindConnectedAtoms(AtomVector& visitedStoms);
+            void FindConnectedAtoms(AtomVector& visitedAtoms);
             /*! \fn
             * A function to aget the distance between this Atom and another.
             * @param otherAtoms The Atom used to get the distance from this Atom.
@@ -240,6 +240,12 @@ namespace MolecularModeling
             * @param coordinate The GeometryTopology::Coordinate used to get the distance from this Atom's Coordinates.
             */
             double GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate);
+            /*! \fn
+            * A function to check if another atom is within bonding distance
+            * @param otherAtom The other atom.
+            */
+            bool CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom);
+
 	    /*! \fn
 	    * A function to determine the chirality of this atom
 	    */

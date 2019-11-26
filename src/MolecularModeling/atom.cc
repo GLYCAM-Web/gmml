@@ -238,15 +238,15 @@ unsigned long long Atom::generateAtomIndex() {
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Atom::FindConnectedAtoms(AtomVector& visitedAtoms)
+void Atom::FindConnectedAtoms(AtomVector &visitedAtoms)
 {
-	visitedAtoms.push_back(this);
+    visitedAtoms.push_back(this);
 	AtomVector neighbors = this->GetNode()->GetNodeNeighbors();
 	bool alreadyVisited = false;
 	for(AtomVector::iterator neighbor = neighbors.begin(); neighbor != neighbors.end(); neighbor++)
 	{
 		alreadyVisited = false; // reset for each neighbor
-		for(AtomVector::iterator visitedAtom = visitedAtoms.begin(); visitedAtom != visitedAtoms.end(); visitedAtom++)
+        for(AtomVector::iterator visitedAtom = visitedAtoms.begin(); visitedAtom != visitedAtoms.end(); visitedAtom++)
 		{
 			if((*neighbor)->GetIndex() == (*visitedAtom)->GetIndex())
 			alreadyVisited = true;
@@ -270,6 +270,31 @@ double Atom::GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate)
     double z = (this->GetCoordinate()->GetZ() - coordinate->GetZ());
 	return sqrt((x * x) + (y * y) + (z * z));
 } // end GetDistanceToCoordinate
+
+bool Atom::CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom)
+{
+    if (this->GetIndex() == otherAtom->GetIndex())
+    {
+        std::cout << "Warning have just checked distance between an atom and itself!" << std::endl;
+        return true;
+    }
+    bool withinDistance = false;
+    if (std::abs(this->GetCoordinate()->GetX() - otherAtom->GetCoordinate()->GetX()) < gmml::dCutOff)
+    {
+        if (std::abs(this->GetCoordinate()->GetY() - otherAtom->GetCoordinate()->GetY()) < gmml::dCutOff)
+        {
+            if (std::abs(this->GetCoordinate()->GetZ() - otherAtom->GetCoordinate()->GetZ()) < gmml::dCutOff)
+            {
+                //If each dimension is within cutoff, then calculate 3D distance
+                if (this->GetDistanceToAtom(otherAtom) < gmml::dCutOff)
+                {
+                    withinDistance = true;
+                }
+            }
+        }
+    }
+    return withinDistance;
+}
 
 std::string Atom::DetermineChirality() //Added by Yao 08/26/3019 Return values are R,S,A. A = achiral
 {

@@ -925,6 +925,7 @@ void Assembly::RecursivelySetAngleGeometry (Residue* parent_residue)
     }
 }
 
+// OG
 void Assembly::FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Residue *to_this_residue2, ResidueLinkageVector *residue_linkages)
 {
     ResidueVector neighbors = to_this_residue2->GetNode()->GetResidueNeighbors();
@@ -945,6 +946,7 @@ void Assembly::FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Res
     return;
 }
 
+// OG
 void Assembly::SetDihedralAngleGeometryWithMetadata()
 {
     ResidueLinkageVector all_residue_linkages;
@@ -952,6 +954,12 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
     for(auto &linkage : all_residue_linkages)
     {
         linkage.SetDefaultDihedralAnglesUsingMetadata();
+    }
+    // Resovlving overlaps should be a separated function, but I don't want assembly to have a ResidueLinkageVector member. Need new, seperate class.
+    for(auto &linkage : all_residue_linkages)
+    {
+        //AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance, int angleIncrement
+        linkage.SimpleWiggle(this->GetAllAtomsOfAssembly(), this->GetAllAtomsOfAssembly(), 0.1, 5);
     }
 }
 
@@ -966,7 +974,8 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
  * The following functions have been added by me already:
  * Assembly::FigureOutResidueLinkagesInGlycan
  * Assembly::SetDihedralAngleGeometryWithMetadata
- *
+ * In Residue_Linkage I have a simple wiggle function, I have implemented it here. The problem is that it explores all rotamers. That won't work.
+ * Functionality is there for it to only explore within one rotamer, but need higher level control of that.
 
 
   */
@@ -1149,28 +1158,20 @@ ResidueVector Assembly::FindClashingResidues()
     for (AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end() ; it++){
         Atom* current_atom = *it;
         unsigned int bond_by_distance_count = 0;  //How many bonds does a particular atom have, according to bond by distance
-        for (AtomVector::iterator it1 = all_atoms_of_assembly.begin(); it1 != all_atoms_of_assembly.end(); it1++){
-            if (it1 != it){
-                Atom* another_atom = *it1;
-                //First compare X,Y,Z distance of two atoms. If they are really far apart, one dimension comparison is sufficient to exclude. In this way don't have to calculate distance for
-                //each pair
-                if (std::abs(current_atom->GetCoordinates().at(0)->GetX() - another_atom->GetCoordinates().at(0)->GetX()) < gmml::dCutOff){
-                    if (std::abs(current_atom->GetCoordinates().at(0)->GetY() - another_atom->GetCoordinates().at(0)->GetY()) < gmml::dCutOff){
-                        if (std::abs(current_atom->GetCoordinates().at(0)->GetZ() - another_atom->GetCoordinates().at(0)->GetZ()) < gmml::dCutOff){
-                            //If distance as each dimension is within cutoff, then calculate 3D distance
-                            if (current_atom->GetCoordinates().at(0)->Distance(*(another_atom->GetCoordinates().at(0)) ) < gmml::dCutOff){
-                                bond_by_distance_count++;
-                            }
-                        }
-                    }
-                }
+        for (AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
+        {
+            Atom* another_atom = *it1;
+            if(current_atom->CheckIfOtherAtomIsWithinBondingDistance(another_atom))
+            {
+                ++bond_by_distance_count;
             }
         }
         unsigned int actual_bond_count = current_atom->GetNode()->GetNodeNeighbors().size();
         //If bond by distance gives more bonds than the number of bonds in atom node, then this atom is clashing with other atoms. This residue is a clashing residue
         if (bond_by_distance_count > actual_bond_count){
             //If multiple atoms in a residue is clashing, prevent duplicate tagging of the corresponding residue as clashing
-            if (std::find (clashing_residues.begin(), clashing_residues.end(), current_atom->GetResidue()) == clashing_residues.end()){
+            if (std::find (clashing_residues.begin(), clashing_residues.end(), current_atom->GetResidue()) == clashing_residues.end())
+            {
                 clashing_residues.push_back(current_atom->GetResidue());
             }
         }
@@ -1429,8 +1430,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             Residue* root = corresponding_assembly_residue;
             //  TURN OFF GEOMETRY OPS
             this->RecursivelySetAngleGeometry(root);
-            //this->SetDihedralAngleGeometryWithMetadata(); // Removed for current push. Need to tag dihedrals. Also need to resolve clashes.
-            this->RecursivelySetDihedralAngleGeometry(root); // replaced by SetDihedralAngleGeometryWithMetadata. OG 2019.09.
+            this->SetDihedralAngleGeometryWithMetadata(); // Removed for current push. Need to tag dihedrals. Also need to resolve clashes.
+            //this->RecursivelySetDihedralAngleGeometry(root); // replaced by SetDihedralAngleGeometryWithMetadata. OG 2019.09.
             //          The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
             //          Linkage index is incremented inside function once a linkage has been processed.
 
@@ -1449,7 +1450,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
     //Find and resolve clashes below(crudely)
     ResidueVector clashing_residues = this->FindClashingResidues();
     std::vector<ResidueVector> clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues);
-    this-> ResolveClashes(clashing_residue_parent_paths, index_dihedral_map);
+    this->ResolveClashes(clashing_residue_parent_paths, index_dihedral_map);
 }
 
 void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure)

@@ -191,6 +191,7 @@ double Rotatable_dihedral::RandomizeDihedralAngleWithinRange(double min, double 
     //return rand() % (max + 1 - min) + min; // Can get same one everytime for testing
 }
 
+// OG for the CB, I need this class to know which metadata index it's currently set to. So this won't work for that.
 double Rotatable_dihedral::RandomizeDihedralAngleWithinRanges(std::vector<std::pair<double,double>> ranges)
 {
     // For usage, can do ranges.emplace_back(min, max);
@@ -243,26 +244,29 @@ void Rotatable_dihedral::SetDihedralAngleUsingMetadata(bool use_ranges)
             }
             this->RandomizeDihedralAngleWithinRange(lower, upper);
         }
-    }
+    } // I need different behaviour here than previously. If use_ranges is false, just take the first of multiple rotamers, don't randomize.
     else if(assigned_metadata_.size() >= 2) // Some dihedral angles have multiple rotamers, thus mulitple ranges to select from. e.g -60, 60, 180
     {
-        std::vector<std::pair<double,double>> ranges;
-        for (const auto& entry : assigned_metadata_)
+        // OG update for carb builder (CB). This class needs to know what metadata entry it's currently set to.
+        if (use_ranges)
         {
-            double lower = entry.default_angle_value_;
-            double upper = entry.default_angle_value_;
-            if (use_ranges)
+            std::vector<std::pair<double,double>> ranges;
+            for (const auto& entry : assigned_metadata_)
             {
-                lower = (entry.default_angle_value_ - entry.lower_deviation_) ;
-                upper = (entry.default_angle_value_ + entry.upper_deviation_) ;
+                double lower = (entry.default_angle_value_ - entry.lower_deviation_) ;
+                double upper = (entry.default_angle_value_ + entry.upper_deviation_) ;
+                ranges.emplace_back(lower, upper);
             }
-            ranges.emplace_back(lower, upper);
+            this->RandomizeDihedralAngleWithinRanges(ranges);
         }
-        this->RandomizeDihedralAngleWithinRanges(ranges); // Pass all of the ranges into the function. It will randomly select an angle from within the ranges.
+        else
+        { // Just set it to the first entries default value
+            auto &entry = assigned_metadata_.at(0);
+            this->RandomizeDihedralAngleWithinRange(entry.default_angle_value_, entry.default_angle_value_);
+        }
     }
     return;
 }
-
 //////////////////////////////////////////////////////////
 //                  PRIVATE FUNCTIONS                   //
 //////////////////////////////////////////////////////////
