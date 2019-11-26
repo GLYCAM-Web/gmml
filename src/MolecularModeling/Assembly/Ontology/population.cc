@@ -1218,8 +1218,8 @@ std::string Assembly::CreateURIResource(gmml::URIType resource , int number, std
 
 void Assembly::FormulateCURL(std::string output_file_type, std::string query)
 {
-    std::cout << "GENERATED QUERY:" << std::endl;
-    std::cout << query << std::endl;
+//    std::cout << "GENERATED QUERY:" << std::endl;
+//    std::cout << query << std::endl;
     std::stringstream curl;
     curl << Ontology::CURL_PREFIX;
 
@@ -1232,16 +1232,16 @@ void Assembly::FormulateCURL(std::string output_file_type, std::string query)
 
     curl << Ontology::DATA_STORE_ADDRESS << Ontology::QUERY_PREFIX << query << Ontology::QUERY_POSTFIX;
     std::string tmp = curl.str();
-    std::cout << std::endl << "RESULTS: " << std::endl;
+//    std::cout << std::endl << "RESULTS: " << std::endl;
     const char* cstr = tmp.c_str();
     system(cstr);
-    std::cout << std::endl;
+//    std::cout << std::endl;
 }
 
 std::string Assembly::FormulateCURLGF(std::string output_file_type, std::string query, std::string url)
 {
-    std::cout << "GENERATED QUERY:" << std::endl;
-    std::cout << query << std::endl;
+//    std::cout << "GENERATED QUERY:" << std::endl;
+//    std::cout << query << std::endl;
     std::stringstream curl;
     curl << Ontology::CURL_PREFIX;
 

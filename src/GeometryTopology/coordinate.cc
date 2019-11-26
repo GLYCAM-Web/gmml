@@ -416,23 +416,23 @@ Coordinate* Coordinate::ConvertInternalCoordinate2CartesianCoordinate(
             
             //! \todo  Add these cout statmentes and associated error messaging to the errors/logging functions when created
             //  These cout statements are actual error messages for any users who use input with these issues.
-                std::cout << "You are trying to set a dihedral based on three colinear atoms." << std::endl;
-                std::cout << "   This is an undefined situation, so I am going to bail now. " << std::endl;
-                std::cout << "   You probably need to reset how your internal coordinates are defined." << std::endl;
-                std::cout << "   Here are the Cartesian coordinates of the three atoms: " << std::endl;
-                std::cout << "      Parent:  " << std::endl;
-                std::cout << "         X  :  " << parent_vector.GetX() << std::endl;
-                std::cout << "         Y  :  " << parent_vector.GetY() << std::endl;
-                std::cout << "         Z  :  " << parent_vector.GetZ() << std::endl;
-                std::cout << "      G Parent:  " << std::endl;
-                std::cout << "         X  :  " << grandparent_vector.GetX() << std::endl;
-                std::cout << "         Y  :  " << grandparent_vector.GetY() << std::endl;
-                std::cout << "         Z  :  " << grandparent_vector.GetZ() << std::endl;
-                std::cout << "      G G Parent:  " << std::endl;
-                std::cout << "         X  :  " << great_grandparent_vector.GetX() << std::endl;
-                std::cout << "         Y  :  " << great_grandparent_vector.GetY() << std::endl;
-                std::cout << "         Z  :  " << great_grandparent_vector.GetZ() << std::endl;
-                std::cout << "    Exiting. " << std::endl;
+//                std::cout << "You are trying to set a dihedral based on three colinear atoms." << std::endl;
+//                std::cout << "   This is an undefined situation, so I am going to bail now. " << std::endl;
+//                std::cout << "   You probably need to reset how your internal coordinates are defined." << std::endl;
+//                std::cout << "   Here are the Cartesian coordinates of the three atoms: " << std::endl;
+//                std::cout << "      Parent:  " << std::endl;
+//                std::cout << "         X  :  " << parent_vector.GetX() << std::endl;
+//                std::cout << "         Y  :  " << parent_vector.GetY() << std::endl;
+//                std::cout << "         Z  :  " << parent_vector.GetZ() << std::endl;
+//                std::cout << "      G Parent:  " << std::endl;
+//                std::cout << "         X  :  " << grandparent_vector.GetX() << std::endl;
+//                std::cout << "         Y  :  " << grandparent_vector.GetY() << std::endl;
+//                std::cout << "         Z  :  " << grandparent_vector.GetZ() << std::endl;
+//                std::cout << "      G G Parent:  " << std::endl;
+//                std::cout << "         X  :  " << great_grandparent_vector.GetX() << std::endl;
+//                std::cout << "         Y  :  " << great_grandparent_vector.GetY() << std::endl;
+//                std::cout << "         Z  :  " << great_grandparent_vector.GetZ() << std::endl;
+//                std::cout << "    Exiting. " << std::endl;
                 int localErrorCode = 1; // massive confusion or cannot execute order
                 exit(localErrorCode);
             }

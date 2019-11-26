@@ -36,7 +36,7 @@ Grid::Grid(MolecularModeling::Assembly *assembly, GeometryTopology::Coordinate *
 
 Grid::Grid(Grid &grid)
 {
-    std::cout<<"In Deep Copy"<<std::endl;
+//    std::cout<<"In Deep Copy"<<std::endl;
     GeometryTopology::Coordinate* tempMinCoordinate = new GeometryTopology::Coordinate(*grid.GetMinCorner());
     this->min_corner_=tempMinCoordinate;
 
@@ -425,7 +425,7 @@ void Grid::UpdateGrid(double ion_charge)
         }
         else
         {
-            std::cout << "Can't create an appropriate grid!" << std::endl;
+//            std::cout << "Can't create an appropriate grid!" << std::endl;
             return;
         }
 

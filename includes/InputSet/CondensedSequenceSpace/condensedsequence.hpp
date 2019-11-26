@@ -140,7 +140,7 @@ namespace CondensedSequenceSpace
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
-            void Print(std::ostream& out = std::cout);
+            void Print(std::ostream& out = std::cerr);
             void WriteGraphVizDotFile(GraphVizDotConfig& configs);
         private:
             //////////////////////////////////////////////////////////

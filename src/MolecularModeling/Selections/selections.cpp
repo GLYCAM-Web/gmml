@@ -322,7 +322,7 @@ MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeli
         }
         if(good_neighbors.size()==0)
         {
-            std::cout << "About to segfault in MolecularModeling/Selections/selections.cpp selection::FindCyclePointNeighbor" << std::endl;
+//            std::cout << "About to segfault in MolecularModeling/Selections/selections.cpp selection::FindCyclePointNeighbor" << std::endl;
         }
         selected_neighbor = good_neighbors.at(0); // Set to any to start. If there are not good_neighbors then you deserve to crash and burn
        // std::cout << "Good neighbors are: ";

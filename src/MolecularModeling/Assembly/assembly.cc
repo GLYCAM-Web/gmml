@@ -118,7 +118,8 @@ Assembly::Assembly(std::string file_path, gmml::InputFileType type)
     case gmml::UNKNOWN:
         break;
     default:
-        std::cout << "Error, problem with input file type in Assembly Constructor" << std::endl;
+//        std::cout << "Error, problem with input file type in Assembly Constructor" << std::endl;
+        break;
     }
 }
 
@@ -172,7 +173,8 @@ Assembly::Assembly(std::vector<std::string> file_paths, gmml::InputFileType type
     case gmml::UNKNOWN:
         break;
     default:
-        std::cout << "Error, input type not recognized in Assembly Constructor" << std::endl;
+//        std::cout << "Error, input type not recognized in Assembly Constructor" << std::endl;
+        break;
     }
 }
 
@@ -533,7 +535,7 @@ GeometryTopology::CoordinateVector Assembly::GetAllCoordinates()
         GeometryTopology::CoordinateVector assembly_coordinate = assembly->GetAllCoordinates();
         if(assembly_coordinate.size() == 0)
         {
-            std::cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << std::endl;
+//            std::cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << std::endl;
             gmml::log(__LINE__, __FILE__, gmml::ERR, "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)");
             return GeometryTopology::CoordinateVector();
         }
@@ -551,7 +553,7 @@ GeometryTopology::CoordinateVector Assembly::GetAllCoordinates()
             Atom* atom = (*it1);
             if(atom->GetCoordinates().size() == 0)
             {
-                std::cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << std::endl;
+//                std::cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << std::endl;
                 gmml::log(__LINE__, __FILE__, gmml::ERR, "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)");
                 return GeometryTopology::CoordinateVector();
             }
@@ -1029,7 +1031,7 @@ void Assembly::GenerateMoleculesInAssembly()
          }
     }
 
-    std::cout<<"Total number of molecules in Assembly is:"<<moleculecount<<std::endl;
+//    std::cout<<"Total number of molecules in Assembly is:"<<moleculecount<<std::endl;
 
 }
 
@@ -1065,9 +1067,10 @@ MolecularModeling::AtomVector Assembly::GetAllBondedAtomsByStartDirection(Molecu
 {
 
         if(start_atom == NULL || direction_atom == NULL){
-            std::cout<<"Start Atom or Direction Atom is null"<<std::endl;}
+//            std::cout<<"Start Atom or Direction Atom is null"<<std::endl;
+            }
         else if(CheckIfAtomExistInAssembly(start_atom)==false||CheckIfAtomExistInAssembly(direction_atom)==false){
-            std::cout<<"Start Atom or Direction Atom does not exist in Assembly"<<std::endl;
+//            std::cout<<"Start Atom or Direction Atom does not exist in Assembly"<<std::endl;
         }else{
                 bool isNeighbor=false;
                  AtomVector start_atom_neighbors = start_atom->GetNode()->GetNodeNeighbors();
@@ -1095,7 +1098,7 @@ MolecularModeling::AtomVector Assembly::GetAllBondedAtomsByStartDirection(Molecu
                     }
 
                  }else{
-                     std::cout<<"Direction Atom is invalid. Not a neighbor of Start Atom."<<std::endl;
+//                     std::cout<<"Direction Atom is invalid. Not a neighbor of Start Atom."<<std::endl;
                  }
         }
 
@@ -1172,7 +1175,7 @@ GeometryTopology::CoordinateVector Assembly::GetCoordinatesFromAtomVector(AtomVe
         GeometryTopology::Coordinate* coordinate = atom_coordinates[CoordinateIndex];
         coordinatesByIndex.push_back(coordinate);
       }else{
-          std::cout<<"Atom ID "<<atom->GetId()<<" does not have coordinate at index: "<<CoordinateIndex<<std::endl;
+//          std::cout<<"Atom ID "<<atom->GetId()<<" does not have coordinate at index: "<<CoordinateIndex<<std::endl;
       }
     }
     return coordinatesByIndex;
@@ -1183,7 +1186,7 @@ void Assembly::CreateOffFileFromAssembly(std::string file_name, int CoordinateIn
 { 
     OffFileSpace::OffFile* off_file = new OffFileSpace::OffFile();
     off_file->Write(file_name, CoordinateIndex, this);
-    std::cout<<"end of assembly"<<std::endl;
+//    std::cout<<"end of assembly"<<std::endl;
 
 }
 

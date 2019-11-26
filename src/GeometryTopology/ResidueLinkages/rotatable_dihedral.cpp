@@ -227,8 +227,8 @@ void Rotatable_dihedral::SetDihedralAngleUsingMetadata(bool use_ranges)
 {
     if (assigned_metadata_.empty())
     {
-        std::cout << "Error in Rotatable_dihedral::SetDihedralAngleUsingMetadata; no metadata has been set for:.\n"
-                  << atom1_->GetId() << atom2_->GetId() << atom3_->GetId() << atom4_->GetId();
+//        std::cout << "Error in Rotatable_dihedral::SetDihedralAngleUsingMetadata; no metadata has been set for:.\n"
+//                  << atom1_->GetId() << atom2_->GetId() << atom3_->GetId() << atom4_->GetId();
     }
     else if(assigned_metadata_.size() == 1)
     {
@@ -326,13 +326,13 @@ void Rotatable_dihedral::UpdateAtomsIfPsi()
 
 void Rotatable_dihedral::Print()
 {
-    std::cout << atom1_->GetName() << ", " << atom2_->GetName() << ", " << atom3_->GetName() << ", " << atom4_->GetName() << ": " << this->CalculateDihedralAngle()  << ".\n";
-//    for(AtomVector::iterator it1 = atoms_that_move_.begin(); it1 != atoms_that_move_.end(); ++it1)
-//    {
-//        Atom *atom = *it1;
-//        std::cout << atom->GetName() << ", ";
-//    }
-    std::cout << std::endl;
+//    std::cout << atom1_->GetName() << ", " << atom2_->GetName() << ", " << atom3_->GetName() << ", " << atom4_->GetName() << ": " << this->CalculateDihedralAngle()  << ".\n";
+////    for(AtomVector::iterator it1 = atoms_that_move_.begin(); it1 != atoms_that_move_.end(); ++it1)
+////    {
+////        Atom *atom = *it1;
+////        std::cout << atom->GetName() << ", ";
+////    }
+//    std::cout << std::endl;
 }
 
 //////////////////////////////////////////////////////////

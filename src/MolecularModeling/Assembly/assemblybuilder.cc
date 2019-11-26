@@ -103,7 +103,7 @@ bool Assembly::CheckCondensedSequenceSanity(std::string sequence, CondensedSeque
 {
     if (sequence.empty()) // Is sequence an empty string?
     {
-        std::cout << "The input sequence (" << sequence << ") is empty" << std::endl;
+//        std::cout << "The input sequence (" << sequence << ") is empty" << std::endl;
         return false;
     }
     std::vector<char> badChars = {'\'', '(', ')'}; // Does sequence contain any characters it doesn't? Can expand this list as needed.
@@ -111,7 +111,7 @@ bool Assembly::CheckCondensedSequenceSanity(std::string sequence, CondensedSeque
     {
         if (sequence.find(badChar) != std::string::npos)
         {
-            std::cout << "The input sequence (" << sequence << ") is contains a bad character: " << badChar << std::endl;
+//            std::cout << "The input sequence (" << sequence << ") is contains a bad character: " << badChar << std::endl;
             return false;
         }
     }
@@ -125,18 +125,18 @@ bool Assembly::CheckCondensedSequenceSanity(std::string sequence, CondensedSeque
             std::string glycam06_residue_name = glycam06_residue->GetName();
             if(glycam06_residue_name.compare("UNK") == 0)
             {
-                std::cout << "The input sequence (" << sequence << ") is not valid" << std::endl;
+//                std::cout << "The input sequence (" << sequence << ") is not valid" << std::endl;
                 return false;
             }
         }
     }
     catch(std::exception ex)
     {
-        std::cout << "The input sequence (" << sequence << ") is not valid" << std::endl;
+//        std::cout << "The input sequence (" << sequence << ") is not valid" << std::endl;
         return false;
     }
 
-    std::cout << "The input sequence (" << sequence << ") is valid" << std::endl;
+//    std::cout << "The input sequence (" << sequence << ") is valid" << std::endl;
     return true;
 }
 
@@ -183,8 +183,8 @@ Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (std::ve
         }
         else
         {
-            std::cout << "Warning: Cannot find prep file residue with the name: " << *it << std::endl;
-            std::cout << "Either the prep file doesn't have it, or this is not a regular residue at all. For example,\"Deoxy\" means removing parent oxygen it attaches to. " << std::endl;
+//            std::cout << "Warning: Cannot find prep file residue with the name: " << *it << std::endl;
+//            std::cout << "Either the prep file doesn't have it, or this is not a regular residue at all. For example,\"Deoxy\" means removing parent oxygen it attaches to. " << std::endl;
         }
     }
 
@@ -214,8 +214,8 @@ Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (std::ve
         //            }
         if (all_types.empty())
         {
-            std::cout << "Warning: no match exists in metadata map for template residue " << residue_name << "\n"
-                      << "Cannot tag ring/sidechain atoms for this residue. This might affect accuracy of setting geometry." << std::endl;
+//            std::cout << "Warning: no match exists in metadata map for template residue " << residue_name << "\n"
+//                      << "Cannot tag ring/sidechain atoms for this residue. This might affect accuracy of setting geometry." << std::endl;
         }
         else
         {
@@ -670,7 +670,7 @@ void Assembly::SetGlycam06ResidueBonding (std::map<int, std::pair<CondensedSeque
         }
         //If both not set, something is wrong. Print warning message:
         if (head_atoms.empty() && tail_atoms.empty()){
-            std::cout << "Warning: " << "Both head and tail atoms are not set(empty) for residue " << residue->GetName() << std::endl;
+//            std::cout << "Warning: " << "Both head and tail atoms are not set(empty) for residue " << residue->GetName() << std::endl;
         }
     }
 
@@ -1405,7 +1405,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 //New BuildAssemblyFromCondensedSequence() created by Yao on 06/25/2018. This will replace the old version below.
 void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file)
 {
-    std::cout << "Building Assembly From Condensed Sequence......" << std::endl;
+//    std::cout << "Building Assembly From Condensed Sequence......" << std::endl;
     CondensedSequenceSpace::CondensedSequence sequence (condensed_sequence);
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = sequence.GetCondensedSequenceGlycam06ResidueTree();
     
@@ -1637,7 +1637,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
             }
             else
             {
-                std::cout << "Residue " << glycam06_residue_name << " has not been found in the database" << std::endl;
+//                std::cout << "Residue " << glycam06_residue_name << " has not been found in the database" << std::endl;
             }
         }
 
@@ -1699,7 +1699,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
     }
     catch(std::exception ex)
     {
-        std::cout << "Building assembly from " << sequence << " failed." << std::endl;
+//        std::cout << "Building assembly from " << sequence << " failed." << std::endl;
     }
 
 
@@ -1832,14 +1832,14 @@ void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<s
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {
-        std::cout << "Generating PdbFileSpace::PdbFile structure from " << pdb_file_path << "failed." << std::endl;
+//        std::cout << "Generating PdbFileSpace::PdbFile structure from " << pdb_file_path << "failed." << std::endl;
     }
     this->BuildAssemblyFromPdbFile(pdb_file, amino_lib_files, glycam_lib_files, other_lib_files, prep_files, parameter_file);
 }
 
 void Assembly::BuildAssemblyFromAtomStream(std::stringstream& atomStream)
 {
-    std::cout << "Building assembly from stringstream ..." << std::endl;
+//    std::cout << "Building assembly from stringstream ..." << std::endl;
     //    std::cout << "Reading PDB file into PdbFileSpace::PdbFile structure." << std::endl;
     PdbFileSpace::PdbFile* pdb_file=NULL;
     try
@@ -1849,7 +1849,7 @@ void Assembly::BuildAssemblyFromAtomStream(std::stringstream& atomStream)
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {
-        std::cout << "Generating PdbFileSpace::PdbFile structure from stringstream failed." << std::endl;
+//        std::cout << "Generating PdbFileSpace::PdbFile structure from stringstream failed." << std::endl;
     }
     std::vector<std::string> amino_lib_files;
     std::vector<std::string> glycam_lib_files;
@@ -2136,8 +2136,8 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
  * ************************************************************************* **/
 void Assembly::BuildAssemblyFromPdbqtFile(std::string pdbqt_file_path, std::string parameter_file)
 {
-    std::cout << "Building assembly from pdbqt file ..." << std::endl;
-    std::cout << "Reading PDBQT file into PdbqtFileSpace::PdbqtFile structure." << std::endl;
+//    std::cout << "Building assembly from pdbqt file ..." << std::endl;
+//    std::cout << "Reading PDBQT file into PdbqtFileSpace::PdbqtFile structure." << std::endl;
     PdbqtFileSpace::PdbqtFile pdbqt_file;
     try
     {
@@ -2146,7 +2146,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(std::string pdbqt_file_path, std::stri
     }
     catch(PdbqtFileSpace::PdbqtFileProcessingException &ex)
     {
-        std::cout << "Generating PdbqtFileSpace::PdbqtFile structure from " << pdbqt_file_path << "failed." << std::endl;
+//        std::cout << "Generating PdbqtFileSpace::PdbqtFile structure from " << pdbqt_file_path << "failed." << std::endl;
     }
     this->BuildAssemblyFromPdbqtFile(&pdbqt_file, parameter_file);
 }
@@ -2154,7 +2154,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(std::string pdbqt_file_path, std::stri
 
 void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file, std::string parameter_file)
 {
-    std::cout << "Building assembly from pdbqt file ..." << std::endl;
+//    std::cout << "Building assembly from pdbqt file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdbqt file ...");
     try
     {
@@ -2281,8 +2281,8 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
 
 void Assembly::BuildAssemblyFromTopologyFile(std::string topology_file_path, std::string parameter_file)
 {
-    std::cout << "Building assembly from an AMBER parameter-topology file ..." << std::endl;
-    std::cout << "Reading AMBER parameter-topology file into TopologyFileSpace::TopologyFile structure." << std::endl;
+//    std::cout << "Building assembly from an AMBER parameter-topology file ..." << std::endl;
+//    std::cout << "Reading AMBER parameter-topology file into TopologyFileSpace::TopologyFile structure." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Reading AMBER parameter-topology file into TopologyFileSpace::TopologyFile structure.");
     TopologyFileSpace::TopologyFile topology_file;
     try
@@ -2291,14 +2291,14 @@ void Assembly::BuildAssemblyFromTopologyFile(std::string topology_file_path, std
     }
     catch(TopologyFileSpace::TopologyFileProcessingException &ex)
     {
-        std::cout << "Generating TopologyFileSpace::TopologyFile structure from " << topology_file_path << "failed." << std::endl;
+//        std::cout << "Generating TopologyFileSpace::TopologyFile structure from " << topology_file_path << "failed." << std::endl;
     }
     this->BuildAssemblyFromTopologyFile(&topology_file, parameter_file);
 }
 
 void Assembly::BuildAssemblyFromTopologyFile(TopologyFileSpace::TopologyFile *topology_file, std::string parameter_file)
 {
-    std::cout << "Building assembly from topology file ..." << std::endl;
+//    std::cout << "Building assembly from topology file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from topology file ...");
     this->ClearAssembly();
     ParameterFileSpace::ParameterFile* parameter = NULL;
@@ -2371,8 +2371,8 @@ void Assembly::BuildAssemblyFromTopologyFile(TopologyFileSpace::TopologyFile *to
 
 void Assembly::BuildAssemblyFromLibraryFile(std::string library_file_path, std::string parameter_file)
 {
-    std::cout << "Building assembly from AMBER library/off file ..." << std::endl;
-    std::cout << "Reading AMBER library/off file into LibraryFileSpace::LibraryFile structure." << std::endl;
+//    std::cout << "Building assembly from AMBER library/off file ..." << std::endl;
+//   std::cout << "Reading AMBER library/off file into LibraryFileSpace::LibraryFile structure." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Reading AMBER library/off file into LibraryFileSpace::LibraryFile structure ...");
     LibraryFileSpace::LibraryFile library_file;
     try
@@ -2381,7 +2381,7 @@ void Assembly::BuildAssemblyFromLibraryFile(std::string library_file_path, std::
     }
     catch(LibraryFileSpace::LibraryFileProcessingException &ex)
     {
-        std::cout << "Generating LibraryFileSpace::LibraryFile structure from " << library_file_path << "failed." << std::endl;
+//        std::cout << "Generating LibraryFileSpace::LibraryFile structure from " << library_file_path << "failed." << std::endl;
     }
     this->BuildAssemblyFromLibraryFile(&library_file, parameter_file);
 }
@@ -2390,7 +2390,7 @@ void Assembly::BuildAssemblyFromLibraryFile(std::string library_file_path, std::
 
 void Assembly::BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile *library_file, std::string parameter_file)
 {
-    std::cout << "Building assembly from library file ..." << std::endl;
+//    std::cout << "Building assembly from library file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from library file ...");
     this->ClearAssembly();
     ParameterFileSpace::ParameterFile* parameter = NULL;
@@ -2484,8 +2484,8 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile *libra
 
 void Assembly::BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path, std::string parameter_file)
 {
-    std::cout << "Building assembly from AMBER parameter-topology and unknown-style coordinate files ..." << std::endl;
-    std::cout << "Reading AMBER parameter-topology and unknown-style coordinate files into their file structure." << std::endl;
+//    std::cout << "Building assembly from AMBER parameter-topology and unknown-style coordinate files ..." << std::endl;
+//    std::cout << "Reading AMBER parameter-topology and unknown-style coordinate files into their file structure." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Reading AMBER parameter-topology and unknown-style coordinate files into their file structure.");
     TopologyFileSpace::TopologyFile topology_file;
     CoordinateFileSpace::CoordinateFile coordinate_file;
@@ -2495,7 +2495,7 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(std::string topology_file
     }
     catch(TopologyFileSpace::TopologyFileProcessingException &ex)
     {
-        std::cout << "Generating TopologyFileSpace::TopologyFile structure from " << topology_file_path << "failed." << std::endl;
+//        std::cout << "Generating TopologyFileSpace::TopologyFile structure from " << topology_file_path << "failed." << std::endl;
     }
     try
     {
@@ -2503,14 +2503,14 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(std::string topology_file
     }
     catch(CoordinateFileSpace::CoordinateFileProcessingException &ex)
     {
-        std::cout << "Generating CoordinateFileSpace::CoordinateFile structure from " << coordinate_file_path << "failed." << std::endl;
+//        std::cout << "Generating CoordinateFileSpace::CoordinateFile structure from " << coordinate_file_path << "failed." << std::endl;
     }
     this->BuildAssemblyFromTopologyCoordinateFile(&topology_file, &coordinate_file, parameter_file);
 }
 
 void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::TopologyFile *topology_file, CoordinateFileSpace::CoordinateFile *coordinate_file, std::string parameter_file)
 {
-    std::cout << "Building assembly from topology and coordinate files ..." << std::endl;
+//    std::cout << "Building assembly from topology and coordinate files ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from topology and coordinate files ...");
     this->ClearAssembly();
     ParameterFileSpace::ParameterFile* parameter = NULL;
@@ -2590,8 +2590,8 @@ void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::Topolo
 
 void Assembly::BuildAssemblyFromPrepFile(std::string prep_file_path, std::string parameter_file)
 {
-    std::cout << "Building assembly from prep file ..." << std::endl;
-    std::cout << "Reading Prep file into PrepFileSpace::PrepFile structure." << std::endl;
+//    std::cout << "Building assembly from prep file ..." << std::endl;
+//    std::cout << "Reading Prep file into PrepFileSpace::PrepFile structure." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Reading Prep file into PrepFileSpace::PrepFile structure ...");
     PrepFileSpace::PrepFile prep_file;
     try
@@ -2600,7 +2600,7 @@ void Assembly::BuildAssemblyFromPrepFile(std::string prep_file_path, std::string
     }
     catch(PrepFileSpace::PrepFileProcessingException &ex)
     {
-        std::cout << "Generating PrepFileSpace::PrepFile structure from " << prep_file_path << "failed." << std::endl;
+//        std::cout << "Generating PrepFileSpace::PrepFile structure from " << prep_file_path << "failed." << std::endl;
     }
     this->BuildAssemblyFromPrepFile(&prep_file, parameter_file);
 }
@@ -2609,7 +2609,7 @@ void Assembly::BuildAssemblyFromPrepFile(std::string prep_file_path, std::string
 
 void Assembly::BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile *prep_file, std::string parameter_file)
 {
-    std::cout << "Building assembly from prep file ..." << std::endl;
+//    std::cout << "Building assembly from prep file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from prep file ...");
     this->ClearAssembly();
     ParameterFileSpace::ParameterFile* parameter = NULL;

@@ -73,7 +73,7 @@ void CifFile::Read(std::ifstream& in_file)
     {
         getline(in_file, line);
 //        atoms_.push_back(new CifFileAtom(line));
-        std::cout << line << std::endl;
+//        std::cout << line << std::endl;
 
     }
 }

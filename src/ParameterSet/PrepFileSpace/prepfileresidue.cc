@@ -720,7 +720,7 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
                 done = true;
                 break;
             case PrepFileSpace::kSectionOther:
-                std::cout << "Unrecognized section in prep file";
+//                std::cout << "Unrecognized section in prep file";
                 gmml::log(__LINE__, __FILE__,  gmml::WAR, "Unrecognized section in prep file" );
                 break;
         }

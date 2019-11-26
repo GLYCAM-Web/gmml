@@ -75,7 +75,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 LibraryFileSpace::LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
 {
-    std::cout << "Creating library file ..." << std::endl;
+//    std::cout << "Creating library file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating library file ...");
     LibraryFileSpace::LibraryFile* library_file = new LibraryFileSpace::LibraryFile();
     LibraryFileSpace::LibraryFile::ResidueMap residue_map = LibraryFileSpace::LibraryFile::ResidueMap();

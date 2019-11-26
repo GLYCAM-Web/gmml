@@ -131,6 +131,6 @@ std::string GraphDS::Node::GenerateNodeID()
 
 void GraphDS::Node::Print(std::ostream &out)
 {
-    std::cout<<"Printing Node details"<<std::endl;
-    std::cout<<"Node ID:"<<node_id_<<std::endl;
+//    std::cout<<"Printing Node details"<<std::endl;
+//    std::cout<<"Node ID:"<<node_id_<<std::endl;
 }

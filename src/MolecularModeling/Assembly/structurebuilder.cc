@@ -672,7 +672,7 @@ void Assembly::BuildStructureByOriginalFileBondingInformation()
 void Assembly::BuildStructureByPDBFileInformation()
 {
     try{
-        std::cout << "Building structure by pdb file information ..." << std::endl;
+//        std::cout << "Building structure by pdb file information ..." << std::endl;
         gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by pdb file information ...");
         PdbFileSpace::PdbFile* pdb_file = new PdbFileSpace::PdbFile(this->GetSourceFile());
         AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
@@ -724,7 +724,7 @@ void Assembly::BuildStructureByPDBFileInformation()
 
 void Assembly::BuildStructureByTOPFileInformation()
 {
-    std::cout << "Building structure by topology file information ..." << std::endl;
+//    std::cout << "Building structure by topology file information ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by topology file information ...");
     TopologyFileSpace::TopologyFile* topology_file = new TopologyFileSpace::TopologyFile(gmml::Split(this->GetSourceFile(), ";")[0]);
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
@@ -776,7 +776,7 @@ void Assembly::BuildStructureByTOPFileInformation()
 
 void Assembly::BuildStructureByLIBFileInformation()
 {
-    std::cout << "Building structure by library file information..." << std::endl;
+//    std::cout << "Building structure by library file information..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by library file information ...");
     LibraryFileSpace::LibraryFile* library_file = new LibraryFileSpace::LibraryFile(this->GetSourceFile());
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
@@ -826,7 +826,7 @@ void Assembly::BuildStructureByLIBFileInformation()
 
 void Assembly::BuildStructureByPrepFileInformation()
 {
-    std::cout << "Building structure by prep file information ..." << std::endl;
+//    std::cout << "Building structure by prep file information ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by prep file information ...");
     PrepFileSpace::PrepFile* prep_file = new PrepFileSpace::PrepFile(this->GetSourceFile());
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
@@ -874,7 +874,7 @@ void Assembly::BuildStructureByPrepFileInformation()
 
 void Assembly::BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths)
 {
-    std::cout << "Building structure by dataset files information ..." << std::endl;
+//    std::cout << "Building structure by dataset files information ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by dataset files information ...");
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;

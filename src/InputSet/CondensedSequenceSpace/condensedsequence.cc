@@ -799,7 +799,7 @@ CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::Get
     this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, notice.str()));
     //throw CondensedSequenceProcessingException("There is no derivative in the GLYCAM code set represented by the letter " + derivative_name);
     // If none of the above, return something:
-    std::cout << "WARNING: There is no derivative in the GLYCAM code set represented by the letter " << derivative_name << "\n";
+//    std::cout << "WARNING: There is no derivative in the GLYCAM code set represented by the letter " << derivative_name << "\n";
     return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("UNK", "UNK", oxygen_name, true);
 }
 
@@ -843,7 +843,7 @@ void CondensedSequence::FindLongestPath (std::vector<int>& longest_path)
                             }
                         }
                         if (branching_residue == NULL){
-                            std::cout << "Two paths at equal lengths are found. Can't decide which residue has lower branch index.This is a bug." << std::endl;
+//                            std::cout << "Two paths at equal lengths are found. Can't decide which residue has lower branch index.This is a bug." << std::endl;
                         }
                         else{
                             int current_path_branching_index = 0, longest_path_branching_index = 0;

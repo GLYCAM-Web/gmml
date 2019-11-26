@@ -824,32 +824,32 @@ void TopologyFile::ParseSections(std::ifstream &in_stream)
             {
                 solvent_pointers = ParsePartition<int>(section);
 
-                std::cout<<"Printing Solvent Pointers value"<<std::endl;
+//                std::cout<<"Printing Solvent Pointers value"<<std::endl;
                 for (unsigned int x = 0; x != solvent_pointers.size(); ++x)
                 {
                     // std::cout << example[x] << "- subscripting" << std::endl;
-                     std::cout << solvent_pointers.at(x) << " ";
+//                     std::cout << solvent_pointers.at(x) << " ";
                 }
 
             }
             else if(in_line.find("%FLAG ATOMS_PER_MOLECULE") != std::string::npos)
             {
                 atoms_per_molecule = ParsePartition<int>(section);
-                std::cout<<"Printing atoms_per_molecule value"<<std::endl;
+//                std::cout<<"Printing atoms_per_molecule value"<<std::endl;
                 for (unsigned int x = 0; x != atoms_per_molecule.size(); ++x)
                 {
                     // std::cout << example[x] << "- subscripting" << std::endl;
-                     std::cout << atoms_per_molecule.at(x) << " ";
+//                     std::cout << atoms_per_molecule.at(x) << " ";
                 }
             }
             else if(in_line.find("%FLAG BOX_DIMENSIONS") != std::string::npos)
             {
                box_dimensions = ParsePartition<double>(section);
-               std::cout<<"Printing box_dimensions value"<<std::endl;
+//               std::cout<<"Printing box_dimensions value"<<std::endl;
                for (unsigned int x = 0; x != box_dimensions.size(); ++x)
                {
                    // std::cout << example[x] << "- subscripting" << std::endl;
-                    std::cout << box_dimensions.at(x) << " ";
+//                    std::cout << box_dimensions.at(x) << " ";
                }
             }
             else if(in_line.find("%FLAG CAP_INFO") != std::string::npos)
@@ -898,7 +898,7 @@ void TopologyFile::ParseSections(std::ifstream &in_stream)
     // Lennard Jones coefficients for atom pairs
     if(nonbonded_parm_indexes.size() != number_of_types_ * number_of_types_)
     {
-        std::cout << "Lennard Jones coefficients section of the file is not written properly. This section will be ignored!" << std::endl;
+//        std::cout << "Lennard Jones coefficients section of the file is not written properly. This section will be ignored!" << std::endl;
         gmml::log(__LINE__, __FILE__, gmml::INF, "Lennard Jones coefficients section of the file is not written properly. This section will be ignored!");
     }
     else

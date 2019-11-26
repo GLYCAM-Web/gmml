@@ -76,7 +76,7 @@ void Residue_linkage::SetCustomDihedralAngles(std::vector <double> dihedral_angl
     }
     else
     {   // Really need to figure out this throwing exceptions lark.
-        std::cout << "ERROR; attempted to set dihedral angles for set of dihedrals but with mismatching number of bonds to angles\n" << std::endl;
+//        std::cout << "ERROR; attempted to set dihedral angles for set of dihedrals but with mismatching number of bonds to angles\n" << std::endl;
     }
 }
 
@@ -225,7 +225,7 @@ RotatableDihedralVector Residue_linkage::SplitAtomVectorIntoRotatableDihedrals(A
     RotatableDihedralVector rotatable_dihedrals_generated;
     if(atoms.size() < 4)
     {
-        std::cout << "ERROR; in Residue_linkage::SplitAtomVectorIntoRotatableDihedrals, not enough atoms in atom vector: " << atoms.size() << std::endl;
+//        std::cout << "ERROR; in Residue_linkage::SplitAtomVectorIntoRotatableDihedrals, not enough atoms in atom vector: " << atoms.size() << std::endl;
     }
     else
     {
@@ -269,8 +269,8 @@ void Residue_linkage::AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::G
         }
         else
         {
-           std::cout << "Huge problem in residue_linkage.cpp AddMetadataToRotatableDihedrals. Tried to add metadata to a rotatable bond that does not exist.\n"
-                         "Check both dihedralangledata metadata and Residue_linkage::FindRotatableDihedralsConnectingResidues." << std::endl;
+//           std::cout << "Huge problem in residue_linkage.cpp AddMetadataToRotatableDihedrals. Tried to add metadata to a rotatable bond that does not exist.\n"
+//                         "Check both dihedralangledata metadata and Residue_linkage::FindRotatableDihedralsConnectingResidues." << std::endl;
         }
     }
 }
