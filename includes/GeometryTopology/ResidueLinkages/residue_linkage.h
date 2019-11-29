@@ -31,13 +31,14 @@ public:
     //////////////////////////////////////////////////////////
 
     Residue_linkage();
-    Residue_linkage(Residue *residue1, Residue *residue2);
+    Residue_linkage(Residue *nonReducingResidue1, Residue *reducingResidue2, bool reverseAtomsThatMove = true);
 
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
 
     ResidueVector GetResidues();
+    bool GetIfReversedAtomsThatMove();
     RotatableDihedralVector GetRotatableDihedrals() const;
     RotatableDihedralVector GetRotatableDihedralsWithMultipleRotamers();
     int GetNumberOfRotatableDihedrals();
@@ -53,6 +54,7 @@ public:
     //////////////////////////////////////////////////////////
 
     void SetRotatableDihedrals(RotatableDihedralVector rotatableDihedrals);
+    void SetIfReversedAtomsThatMove(bool reversedAtomsThatMove);
 
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
@@ -85,7 +87,7 @@ private:
     //                    PRIVATE FUNCTIONS                 //
     //////////////////////////////////////////////////////////
 
-    void InitializeClass(Residue *from_this_residue1, Residue *to_this_residue2);
+    void InitializeClass(Residue *from_this_residue1, Residue *to_this_residue2, bool reverseAtomsThatMove);
     bool CheckIfViableLinkage();
     RotatableDihedralVector FindRotatableDihedralsConnectingResidues(Atom *from_this_connection_atom1, Atom *to_this_connection_atom2);
     // Previous function generates a list of linearly connected atoms that define the rotatable bonds
@@ -106,6 +108,7 @@ private:
     Atom* from_this_connection_atom1_;
     Atom* to_this_connection_atom2_;
     RotatableDihedralVector rotatable_dihedrals_;
+    bool reverseAtomsThatMove_;
     //gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_;
 };
 

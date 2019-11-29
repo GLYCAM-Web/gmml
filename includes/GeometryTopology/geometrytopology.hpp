@@ -15,6 +15,7 @@ Coordinate subtract_coordinates(Coordinate minuaend, Coordinate subtrahend);
 
 double calculateDistanceFromPointToLineBetweenTwoPoints(Coordinate queryPoint, Coordinate linePointA, Coordinate linePointB);
 
+Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors);
 
 }
 
