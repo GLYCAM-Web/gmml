@@ -11,6 +11,8 @@
 #include "../../MolecularModeling/Selections/selections.hpp"
 #include "rotatable_dihedral.h"
 
+
+
 using MolecularModeling::Residue;
 using MolecularModeling::ResidueVector;
 
@@ -37,22 +39,35 @@ public:
 
     ResidueVector GetResidues();
     RotatableDihedralVector GetRotatableDihedrals() const;
+    RotatableDihedralVector GetRotatableDihedralsWithMultipleRotamers();
     int GetNumberOfRotatableDihedrals();
+    int GetNumberOfShapes();
+    Residue* GetFromThisResidue1();
+    Residue* GetToThisResidue2();
+    Atom* GetFromThisConnectionAtom1();
+    Atom* GetToThisConnectionAtom2();
+    bool CheckIfConformer();
 
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
 
+    void SetRotatableDihedrals(RotatableDihedralVector rotatableDihedrals);
+
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
 
-    void SetDefaultDihedralAnglesUsingMetadata();
-    void SetRandomDihedralAnglesUsingMetadata();
+    void GenerateAllShapesUsingMetadata();
+    void SetDefaultShapeUsingMetadata();
+    void SetRandomShapeUsingMetadata(bool useRanges = true);
+    void SetSpecificShapeUsingMetadata(int shapeNumber, bool useRanges = false);
     void SetCustomDihedralAngles(std::vector <double> dihedral_angles);
-    void SetDihedralAnglesToPrevious();
+    void SetShapeToPrevious();
     void SetRandomDihedralAngles();
     void DetermineAtomsThatMove();
+    // Simple meaning you only check each rotatable_dihedral in series, not every combination.
+    void SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance = 0.01, int angleIncrement = 5);
 
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
@@ -80,6 +95,7 @@ private:
     void AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata);
     void SetResidues(Residue *residue1, Residue *residue2);
     void SetConnectionAtoms(Residue *residue1, Residue *residue2);
+    void SetConformerUsingMetadata(bool useRanges = false, int conformerNumber = 0);
 
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //

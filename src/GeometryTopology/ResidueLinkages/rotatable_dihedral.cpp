@@ -86,6 +86,19 @@ DihedralAngleDataVector Rotatable_dihedral::GetMetadata()
     return assigned_metadata_;
 }
 
+int Rotatable_dihedral::GetNumberOfRotamers()
+{
+    if (assigned_metadata_.empty())
+    {
+        std::cout << "Error in Rotatable_dihedral::GetNumberOfRotamers; no metadata has been set.\n";
+        return 0;
+    }
+    else
+    {
+        return assigned_metadata_.size();
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
@@ -191,6 +204,7 @@ double Rotatable_dihedral::RandomizeDihedralAngleWithinRange(double min, double 
     //return rand() % (max + 1 - min) + min; // Can get same one everytime for testing
 }
 
+// OG for the CB, I need this class to know which metadata index it's currently set to. So this won't work for that.
 double Rotatable_dihedral::RandomizeDihedralAngleWithinRanges(std::vector<std::pair<double,double>> ranges)
 {
     // For usage, can do ranges.emplace_back(min, max);
@@ -223,44 +237,72 @@ void Rotatable_dihedral::AddMetadata(DihedralAngleData metadata)
     this->UpdateAtomsIfPsi();
 }
 
-void Rotatable_dihedral::SetDihedralAngleUsingMetadata(bool use_ranges)
+void Rotatable_dihedral::SetRandomAngleEntryUsingMetadata(bool useRanges)
 {
     if (assigned_metadata_.empty())
     {
-//        std::cout << "Error in Rotatable_dihedral::SetDihedralAngleUsingMetadata; no metadata has been set for:.\n"
-//                  << atom1_->GetId() << atom2_->GetId() << atom3_->GetId() << atom4_->GetId();
+        std::cerr << "Error in Rotatable_dihedral::SetRandomAngleEntryUsingMetadata; no metadata has been set for:.\n"
+                  << atom1_->GetId() << atom2_->GetId() << atom3_->GetId() << atom4_->GetId();
     }
     else if(assigned_metadata_.size() == 1)
     {
-        for (const auto& entry : assigned_metadata_) // Some dihedral angles have only one rotamer i.e. one angle with a set of ranges. e.g 60 +/- 20.
+        const auto& entry = assigned_metadata_.at(0);
+        if (useRanges)
         {
-            double lower = entry.default_angle_value_;
-            double upper = entry.default_angle_value_;
-            if (use_ranges)
-            {
-                lower = (entry.default_angle_value_ - entry.lower_deviation_) ;
-                upper = (entry.default_angle_value_ + entry.upper_deviation_) ;
-            }
+            double lower = (entry.default_angle_value_ - entry.lower_deviation_) ;
+            double upper = (entry.default_angle_value_ + entry.upper_deviation_) ;
             this->RandomizeDihedralAngleWithinRange(lower, upper);
         }
-    }
+        else
+        {
+            this->SetDihedralAngle(entry.default_angle_value_);
+        }
+    } // I need different behaviour here than previously. If use_ranges is false, just take the first of multiple rotamers, don't randomize.
     else if(assigned_metadata_.size() >= 2) // Some dihedral angles have multiple rotamers, thus mulitple ranges to select from. e.g -60, 60, 180
     {
-        std::vector<std::pair<double,double>> ranges;
-        for (const auto& entry : assigned_metadata_)
+        // OG update for carb builder (CB). This class needs to know what metadata entry it's currently set to.
+        if (useRanges)
         {
-            double lower = entry.default_angle_value_;
-            double upper = entry.default_angle_value_;
-            if (use_ranges)
-            {
-                lower = (entry.default_angle_value_ - entry.lower_deviation_) ;
-                upper = (entry.default_angle_value_ + entry.upper_deviation_) ;
-            }
-            ranges.emplace_back(lower, upper);
+            // first randomly pick one of the meta data entries
+            std::uniform_int_distribution<> distr(0, (assigned_metadata_.size() - 1)); // define the range
+            const auto& randomEntry = assigned_metadata_.at(distr(rng));
+            double lower = (randomEntry.default_angle_value_ - randomEntry.lower_deviation_) ;
+            double upper = (randomEntry.default_angle_value_ + randomEntry.upper_deviation_) ;
+            this->RandomizeDihedralAngleWithinRange(lower, upper);
         }
-        this->RandomizeDihedralAngleWithinRanges(ranges); // Pass all of the ranges into the function. It will randomly select an angle from within the ranges.
+        else
+        { // Just set it to the first entries default value
+            const auto& entry = assigned_metadata_.at(0);
+            this->RandomizeDihedralAngleWithinRange(entry.default_angle_value_, entry.default_angle_value_);
+        }
     }
     return;
+}
+
+void Rotatable_dihedral::SetSpecificAngleEntryUsingMetadata(bool useRanges, int angleEntryNumber)
+{
+    if (assigned_metadata_.empty())
+    {
+        std::cout << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; no metadata has been set.\n";
+    }
+    else if (assigned_metadata_.size() <= angleEntryNumber)
+    {
+         std::cout << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; angleEntryNumber of " << angleEntryNumber << " is too large as metadata.size() is " << assigned_metadata_.size() << ".\n";
+    }
+    else
+    {
+        const auto& entry = assigned_metadata_.at(angleEntryNumber);
+        if (useRanges)
+        {
+            double lower = (entry.default_angle_value_ - entry.lower_deviation_) ;
+            double upper = (entry.default_angle_value_ + entry.upper_deviation_) ;
+            this->RandomizeDihedralAngleWithinRange(lower, upper);
+        }
+        else
+        {
+            this->SetDihedralAngle(entry.default_angle_value_);
+        }
+    }
 }
 
 //////////////////////////////////////////////////////////

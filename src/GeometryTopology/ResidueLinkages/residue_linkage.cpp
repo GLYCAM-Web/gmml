@@ -1,4 +1,12 @@
 #include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.h"
+#include "../../../includes/MolecularModeling/overlaps.hpp"
+#include "../../../includes/External_Libraries/PCG/pcg_extras.hpp"
+#include "../../../includes/External_Libraries/PCG/pcg_random.hpp"
+
+// Seed with a real random value, if available
+static pcg_extras::seed_seq_from<std::random_device> seed_source;
+// Make a random number engine
+static pcg32 rng(seed_source);
 
 //////////////////////////////////////////////////////////
 //                    TYPE DEFINITION                   //
@@ -27,39 +35,134 @@ ResidueVector Residue_linkage::GetResidues()
     return residues;
 }
 
+RotatableDihedralVector Residue_linkage::GetRotatableDihedralsWithMultipleRotamers()
+{
+    RotatableDihedralVector returningDihedrals;
+    for (auto &entry : rotatable_dihedrals_)
+    {
+        if (entry.GetNumberOfRotamers() > 1)
+        {
+            returningDihedrals.push_back(entry);
+        }
+    }
+    return returningDihedrals;
+}
+
 RotatableDihedralVector Residue_linkage::GetRotatableDihedrals() const
 {
     return rotatable_dihedrals_;
 }
 
-int Residue_linkage::GetNumberOfRotatableDihedrals()
+int Residue_linkage::GetNumberOfShapes() // Can have conformers (sets of rotamers) or permutations of rotamers
 {
-    return rotatable_dihedrals_.size();
+    int numberOfShapes = 1;
+    if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("permutation")==0)
+    {
+        for (auto &entry : rotatable_dihedrals_)
+        {
+            numberOfShapes = (numberOfShapes * entry.GetNumberOfRotamers());
+        }
+    }
+    else if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("conformer")==0)
+    {
+        numberOfShapes = rotatable_dihedrals_.size();
+    }
+    return numberOfShapes;
 }
+
+Residue* Residue_linkage::GetFromThisResidue1()
+{
+    return from_this_residue1_;
+}
+
+Residue* Residue_linkage::GetToThisResidue2()
+{
+    return to_this_residue2_;
+}
+
+Atom* Residue_linkage::GetFromThisConnectionAtom1()
+{
+    return from_this_connection_atom1_;
+}
+
+Atom* Residue_linkage::GetToThisConnectionAtom2()
+{
+    return to_this_connection_atom2_;
+}
+
+bool Residue_linkage::CheckIfConformer()
+{
+    if (rotatable_dihedrals_.empty())
+        std::cout << "Error in Residue_linkage::checkIfConformer as rotatable_dihedrals_.empty()\n";
+    else if (rotatable_dihedrals_.at(0).GetMetadata().empty())
+        std::cout << "Error in Residue_linkage::checkIfConformer as rotatable_dihedrals_.at(0).GetMetadata().empty()\n";
+    else
+    {
+        if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("permutation")==0)
+            return false;
+        else
+            return true;
+    }
+}
+
+//int Residue_linkage::GetNumberOfRotatableDihedrals()
+//{
+//    return rotatable_dihedrals_.size();
+//}
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
+void Residue_linkage::SetRotatableDihedrals(RotatableDihedralVector rotatableDihedrals)
+{
+    rotatable_dihedrals_ = rotatableDihedrals;
+}
+
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 
-void Residue_linkage::SetDefaultDihedralAnglesUsingMetadata()
+void Residue_linkage::GenerateAllShapesUsingMetadata()
+{
+
+}
+
+void Residue_linkage::SetDefaultShapeUsingMetadata()
 {
     for (auto &entry : rotatable_dihedrals_)
     {
-        entry.SetDihedralAngleUsingMetadata();
+        entry.SetSpecificAngleEntryUsingMetadata(); // Default is first entry
     }
 }
 
-// Range should be inherent to each dihedral. Should add that to the class.
-void Residue_linkage::SetRandomDihedralAnglesUsingMetadata()
+void Residue_linkage::SetRandomShapeUsingMetadata(bool useRanges)
+{
+    if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("permutation")==0)
+    {
+        for (auto &entry : rotatable_dihedrals_)
+        {
+            entry.SetRandomAngleEntryUsingMetadata(useRanges);
+        }
+    }
+    else if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("conformer")==0)
+    {
+        int numberOfConformers = rotatable_dihedrals_.at(0).GetMetadata().size();
+        std::uniform_int_distribution<> distr(0, (numberOfConformers - 1)); // define the range
+        int randomlySelectedConformerNumber = distr(rng);
+        for (auto &entry : rotatable_dihedrals_)
+        {
+            entry.SetSpecificAngleEntryUsingMetadata(useRanges, randomlySelectedConformerNumber);
+        }
+    }
+}
+
+// This is dangerous if used by non-conformer linkage. Change it to check.
+void Residue_linkage::SetSpecificShapeUsingMetadata(int shapeNumber, bool useRanges)
 {
     for (auto &entry : rotatable_dihedrals_)
     {
-        bool use_ranges = true;
-        entry.SetDihedralAngleUsingMetadata(use_ranges);
+        entry.SetSpecificAngleEntryUsingMetadata(useRanges, shapeNumber);
     }
 }
 
@@ -76,18 +179,17 @@ void Residue_linkage::SetCustomDihedralAngles(std::vector <double> dihedral_angl
     }
     else
     {   // Really need to figure out this throwing exceptions lark.
-//        std::cout << "ERROR; attempted to set dihedral angles for set of dihedrals but with mismatching number of bonds to angles\n" << std::endl;
+        std::cerr << "ERROR; attempted to set dihedral angles for set of dihedrals but with mismatching number of bonds to angles\n" << std::endl;
     }
 }
 
-void Residue_linkage::SetDihedralAnglesToPrevious()
+void Residue_linkage::SetShapeToPrevious()
 {
     for(RotatableDihedralVector::iterator rotatable_dihedral = rotatable_dihedrals_.begin(); rotatable_dihedral != rotatable_dihedrals_.end(); ++rotatable_dihedral)
     {
         rotatable_dihedral->SetDihedralAngleToPrevious();
     }
 }
-
 
 void Residue_linkage::SetRandomDihedralAngles()
 {
@@ -103,6 +205,52 @@ void Residue_linkage::DetermineAtomsThatMove()
     {
         rotatable_dihedral->DetermineAtomsThatMove();
     }
+}
+
+void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance, int angleIncrement)
+{
+    double current_overlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
+    double lowest_overlap = current_overlap;
+    // Reverse as convention is Glc1-4Gal and I want to wiggle in opposite direction i.e. outwards from first rotatable bond in Asn or reducing terminal
+    RotatableDihedralVector reversed_rotatable_bond_vector = this->GetRotatableDihedrals();
+    std::reverse(reversed_rotatable_bond_vector.begin(), reversed_rotatable_bond_vector.end());
+    for(auto &rotatable_dihedral : reversed_rotatable_bond_vector)
+    {
+        double best_dihedral_angle = rotatable_dihedral.CalculateDihedralAngle();
+  //      std::cout << "Starting new linkage with best angle as " << best_dihedral_angle << "\n";
+        gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_entries = rotatable_dihedral.GetMetadata();
+        for(auto &metadata : metadata_entries)
+        {
+            double lower_bound = (metadata.default_angle_value_ - metadata.lower_deviation_);
+            double upper_bound = (metadata.default_angle_value_ + metadata.upper_deviation_);
+            double current_dihedral = lower_bound;
+            while(current_dihedral <= upper_bound )
+            {
+                rotatable_dihedral.SetDihedralAngle(current_dihedral);
+                current_overlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
+           //     std::cout << "Dihedral(best): " << current_dihedral << "(" << best_dihedral_angle << ")" <<  ". Overlap(best): " << current_overlap << "(" << lowest_overlap << ")" << "\n";
+                if (lowest_overlap >= (current_overlap + 0.01)) // 0.01 otherwise rounding errors
+                {
+                   // rotatable_dihedral.Print();
+                    lowest_overlap = current_overlap;
+                    best_dihedral_angle = current_dihedral;
+           //         std::cout << "Best angle is now " << best_dihedral_angle << "\n";
+                }
+                // Perfer angles closer to default.
+                else if ( (lowest_overlap == current_overlap) && (std::abs(metadata.default_angle_value_ - best_dihedral_angle )
+                                                                  > std::abs(metadata.default_angle_value_ - current_dihedral)) )
+                {
+                    best_dihedral_angle = current_dihedral;
+                }
+                current_dihedral += angleIncrement; // increment
+            }
+        }
+   //     std::cout << "Setting best angle as " << best_dihedral_angle << "\n";
+        rotatable_dihedral.SetDihedralAngle(best_dihedral_angle);
+        if(lowest_overlap <= overlapTolerance)
+            return;
+    }
+    return; // Note possibility of earlier return above
 }
 
 //////////////////////////////////////////////////////////
@@ -141,7 +289,7 @@ void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_t
     this->SetResidues(from_this_residue1, to_this_residue2);
     if(this->CheckIfViableLinkage())
     {
-        //std::cout << "Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
+       // std::cout << "Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
         this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
         rotatable_dihedrals_ = this->FindRotatableDihedralsConnectingResidues(from_this_connection_atom1_, to_this_connection_atom2_);
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata = this->FindMetadata(from_this_connection_atom1_, to_this_connection_atom2_);
@@ -250,6 +398,11 @@ gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Residue_linkage::FindMe
 //    {
 //        std::cout << entry.index_ << " : " << entry.atom1_ << ", " << entry.atom2_ << ", " << entry.atom3_ << ", " << entry.atom4_ << ", " << entry.default_angle_value_ << "\n";
 //    }
+    //Sometimes I'll pass in the residues in the order Glc4-1Glc, as that's the way I want them to move. Need to check for reversed entries matching:
+    if (matching_entries.empty())
+    {
+        matching_entries = DihedralAngleMetadata.GetEntriesForLinkage(to_this_connection_atom2, from_this_connection_atom1);
+    }
     return matching_entries;
 }
 
@@ -289,4 +442,12 @@ void Residue_linkage::SetConnectionAtoms(Residue *residue1, Residue *residue2)
     selection::FindAtomsConnectingResidues(residue1->GetAtoms().at(0), residue2, &connecting_atoms, &found);
     from_this_connection_atom1_ = connecting_atoms.at(0);
     to_this_connection_atom2_ = connecting_atoms.at(1);
+}
+
+void Residue_linkage::SetConformerUsingMetadata(bool useRanges, int conformerNumber)
+{
+    for (auto &entry : rotatable_dihedrals_)
+    {
+        entry.SetSpecificAngleEntryUsingMetadata(useRanges, conformerNumber);
+    }
 }
