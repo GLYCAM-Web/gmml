@@ -58,9 +58,9 @@ std::string glylib::CalculateRingShapeBFMP(GeometryTopology::CoordinateVector ri
     fileset Oset;
     char *output = NULL;
     output=(char*)calloc(23,sizeof(char));
-    sprintf(output,"ring_conformations.txt");
-    Oset.N=strdup(output);
-    Oset.F=myfopen(Oset.N,"w");
+    // sprintf(output,"ring_conformations.txt");
+    // Oset.N=strdup(output);
+    // Oset.F=myfopen(Oset.N,"w");
     //***************** End Output File ******************//
 
     std::stringstream result; // Will contain whatever normally goes into the output file.
@@ -194,7 +194,7 @@ std::string glylib::CalculateRingShapeBFMP(GeometryTopology::CoordinateVector ri
 
     if(sixcheck==6)
     {
-        fprintf(Oset.F,"F\t");
+        // fprintf(Oset.F,"F\t");
         result << "F\t";
         //printf("This is a flat ring\n");
     }
@@ -628,14 +628,14 @@ if(focheck ==1){
         }
         if(min<0.0)
         {
-            fprintf(Oset.F,"\tE%d\t", min_atom+1);
-            fprintf(Oset.F,"\tp%d\t", min_atom+1);
+            // fprintf(Oset.F,"\tE%d\t", min_atom+1);
+            // fprintf(Oset.F,"\tp%d\t", min_atom+1);
             result << "\tE" << min_atom+1 << "\t\tp" << min_atom+1 << "\t";
         }
         else
         {
-            fprintf(Oset.F,"\t%dE\t", min_atom+1);
-            fprintf(Oset.F,"\t%dp\t", min_atom+1);
+            // fprintf(Oset.F,"\t%dE\t", min_atom+1);
+            // fprintf(Oset.F,"\t%dp\t", min_atom+1);
             result << "\t" << min_atom+1 << "E\t\t" << min_atom+1 << "p\t";
         }
 
@@ -650,7 +650,7 @@ if(focheck ==1){
     }
     if(fivecheck2==0 && no_planes==0)
     {
-        fprintf(Oset.F,"\t-\t\t\tm\t");
+        // fprintf(Oset.F,"\t-\t\t\tm\t");
         result << "\t-\t\t\tm\t";
     }
     int ccheck=0, bcheck=0;
@@ -665,12 +665,12 @@ if(focheck ==1){
                 //printf("the distances are %f and %f\n",d[0],d[1]);
                 if(d[0]<0.0 && d[1] > 0.0)
                 {
-                    fprintf(Oset.F,"\t1C4\t");
+                    // fprintf(Oset.F,"\t1C4\t");
                     result << "\t1C4\t";
                 }
                 if(d[0]>0.0 && d[1] <0.0)
                 {
-                    fprintf(Oset.F,"\t4C1\t");
+                    // fprintf(Oset.F,"\t4C1\t");
                     result << "\t4C1\t";
                 }
                 ccheck=1;
@@ -685,13 +685,13 @@ if(focheck ==1){
                 if(d[0]>0.0 && d[1]>0.0)
                 {
                     bcheck=1;
-                    fprintf(Oset.F,"\t14B\t");
+                    // fprintf(Oset.F,"\t14B\t");
                     result << "\t14B\t";
                 }
                 if(d[0]<0.0 && d[1]<0.0)
                 {
                     bcheck=1;
-                    fprintf(Oset.F,"\tB14\t");
+                    // fprintf(Oset.F,"\tB14\t");
                     result << "\tB14\t";
                 }
             }
@@ -701,13 +701,13 @@ if(focheck ==1){
                 d[1]=get_signed_distance_from_point_to_plane(fifteen_planes[3],ring_coordinates.at(5));
                 if(d[0]>0.0 && d[1]>0.0)
                 {
-                    fprintf(Oset.F,"\tO3B\t");
+                    // fprintf(Oset.F,"\tO3B\t");
                     result << "\tO3B\t";
                     bcheck=1;
                 }
                 if(d[0]<0.0 && d[1]<0.0)
                 {
-                    fprintf(Oset.F,"\tBO3\t");
+                    // fprintf(Oset.F,"\tBO3\t");
                     result << "\tBO3\t";
                     bcheck=1;
                 }
@@ -718,13 +718,13 @@ if(focheck ==1){
                 d[1]=get_signed_distance_from_point_to_plane(fifteen_planes[7],ring_coordinates.at(4));
                 if(d[0]>0.0 && d[1]>0.0)
                 {
-                    fprintf(Oset.F,"\t25B\t");
+                    // fprintf(Oset.F,"\t25B\t");
                     result << "\t25B\t";
                     bcheck=1;
                 }
                 if(d[0]<0.0 && d[1]<0.0)
                 {
-                    fprintf(Oset.F,"\tB25\t");
+                    // fprintf(Oset.F,"\tB25\t");
                     result << "\tB25\t";
                     bcheck=1;
                 }
@@ -746,13 +746,13 @@ if(focheck ==1){
                 if(d[0]<0.0 && d[1]>0.0)
                 {
                     scheck=1;
-                    fprintf(Oset.F,"\t5S1\t");
+                    // fprintf(Oset.F,"\t5S1\t");
                     result << "\t5S1\t";
                 }
                 if(d[0]>0.0 && d[1]<0.0)
                 {
                     scheck=1;
-                    fprintf(Oset.F,"\t1S5\t");
+                    // fprintf(Oset.F,"\t1S5\t");
                     result << "\t1S5\t";
                 }
             }
@@ -779,13 +779,13 @@ if(focheck ==1){
                 if(d[0]<0.0 && d[1]>0.0)
                 {
                     scheck=1;
-                    fprintf(Oset.F,"\t1S3\t");
+                    // fprintf(Oset.F,"\t1S3\t");
                     result << "\t1S3\t";
                 }
                 if(d[0]>0.0 && d[1]<0.0)
                 {
                     scheck=1;
-                    fprintf(Oset.F,"\t3S1\t");
+                    // fprintf(Oset.F,"\t3S1\t");
                     result << "\t3S1\t";
                 }
             }
@@ -802,14 +802,14 @@ if(focheck ==1){
                 {
                     //OGi=Cslurp.n;
                     hcheck=1;
-                    fprintf(Oset.F,"\t2H1\t");
+                    // fprintf(Oset.F,"\t2H1\t");
                     result << "\t2H1\t";
                 }
                 if(d[0]>0.0 && d[1]<0.0)
                 {
                     //OGi=Cslurp.n;
                     hcheck=1;
-                    fprintf(Oset.F,"\t1H2\t");
+                    // fprintf(Oset.F,"\t1H2\t");
                     result << "\t1H2\t";
                 }
             }
@@ -823,14 +823,14 @@ if(focheck ==1){
                 {
                     //OGi=Cslurp.n;
                     hcheck=1;
-                    fprintf(Oset.F,"\t2H3\t");
+                    // fprintf(Oset.F,"\t2H3\t");
                     result << "\t2H3\t";
                 }
                 if(d[0]>0.0 && d[1]<0.0)
                 {
                     //OGi=Cslurp.n;
                     hcheck=1;
-                    fprintf(Oset.F,"\t3H2\t");
+                    // fprintf(Oset.F,"\t3H2\t");
                     result << "\t3H2\t";
                 }
             }
@@ -842,14 +842,14 @@ if(focheck ==1){
                 {
                     //OGi=Cslurp.n;
                     hcheck=1;
-                    fprintf(Oset.F,"\t4H3\t");
+                    // fprintf(Oset.F,"\t4H3\t");
                     result << "\t4H3\t";
                 }
                 if(d[0]>0.0 && d[1]<0.0)
                 {
                     //OGi=Cslurp.n;
                     hcheck=1;
-                    fprintf(Oset.F,"\t3H4\t");
+                    // fprintf(Oset.F,"\t3H4\t");
                     result << "\t3H4\t";
                 }
             }
@@ -861,14 +861,14 @@ if(focheck ==1){
                 {
                     //OGi=Cslurp.n;
                     hcheck=1;
-                    fprintf(Oset.F,"\t4H5\t");
+                    // fprintf(Oset.F,"\t4H5\t");
                     result << "\t4H5\t";
                 }
                 if(d[0]>0.0 && d[1]<0.0)
                 {
                     //OGi=Cslurp.n;
                     hcheck=1;
-                    fprintf(Oset.F,"\t5H4\t");
+                    // fprintf(Oset.F,"\t5H4\t");
                     result << "\t5H4\t";
                 }
             }
@@ -880,14 +880,14 @@ if(focheck ==1){
                 {
                     //OGi=Cslurp.n;
                     hcheck=1;
-                    fprintf(Oset.F,"\tOh5\t");
+                    // fprintf(Oset.F,"\tOh5\t");
                     result << "\tOh5\t";
                 }
                 if(d[0]>0.0 && d[1]<0.0)
                 {
                     //OGi=Cslurp.n;
                     hcheck=1;
-                    fprintf(Oset.F,"\t5HO\t");
+                    // fprintf(Oset.F,"\t5HO\t");
                     result << "\t5HO\t";
                 }
             }
@@ -899,14 +899,14 @@ if(focheck ==1){
                 {
                     //OGi=Cslurp.n;
                     hcheck=1;
-                    fprintf(Oset.F,"\tOH1\t");
+                    // fprintf(Oset.F,"\tOH1\t");
                     result << "\tOH1\t";
                 }
                 if(d[0]>0.0 && d[1]<0.0)
                 {
                     ////OGi=Cslurp.n;
                     hcheck=1;
-                    fprintf(Oset.F,"\t1HO\t");
+                    // fprintf(Oset.F,"\t1HO\t");
                     result << "\t1HO\t";
                 }
             }
@@ -914,7 +914,7 @@ if(focheck ==1){
         if(ccheck==0 && bcheck==0 && scheck==0 && hcheck==0)
         {
           //  printf("Bingo\n");
-            fprintf(Oset.F,"\t-\t");
+            // fprintf(Oset.F,"\t-\t");
             result << "\t-\t";
         }
         for(i=0;i<no_planes;i++)
@@ -927,27 +927,27 @@ if(focheck ==1){
             //printf("%f and %f\n",d[0],d[1]);
             if(d[0]<0.0 && d[1]>0.0)
             {
-                fprintf(Oset.F,"\t%d%c%d(%f)\t", secondlist[sortedplanes[i]*2+1]+1, conformers[sortedplanes[i]], secondlist[sortedplanes[i]*2]+1, fifteen_dihedrals[sortedplanes[i]]);
+                // fprintf(Oset.F,"\t%d%c%d(%f)\t", secondlist[sortedplanes[i]*2+1]+1, conformers[sortedplanes[i]], secondlist[sortedplanes[i]*2]+1, fifteen_dihedrals[sortedplanes[i]]);
                 result << "\t" << secondlist[sortedplanes[i]*2+1]+1 << conformers[sortedplanes[i]] << secondlist[sortedplanes[i]*2]+1 << "(" << fifteen_dihedrals[sortedplanes[i]] << ")" << "\t";
             }
             if(d[0]>0.0 && d[1]<0.0)
             {
-                fprintf(Oset.F,"\t%d%c%d(%f)\t", secondlist[sortedplanes[i]*2]+1, conformers[sortedplanes[i]], secondlist[sortedplanes[i]*2+1]+1, fifteen_dihedrals[sortedplanes[i]]);
+                // fprintf(Oset.F,"\t%d%c%d(%f)\t", secondlist[sortedplanes[i]*2]+1, conformers[sortedplanes[i]], secondlist[sortedplanes[i]*2+1]+1, fifteen_dihedrals[sortedplanes[i]]);
                 result << "\t" << secondlist[sortedplanes[i]*2]+1 << conformers[sortedplanes[i]] << secondlist[sortedplanes[i]*2+1]+1 << "(" << fifteen_dihedrals[sortedplanes[i]] << ")" << "\t";
             }
             if(d[0]>0.0 && d[1] >0.0)
             {
-                fprintf(Oset.F,"\t%d%d%c(%f)\t", secondlist[sortedplanes[i]*2]+1, secondlist[sortedplanes[i]*2+1]+1, conformers[sortedplanes[i]], fifteen_dihedrals[sortedplanes[i]]);
+                // fprintf(Oset.F,"\t%d%d%c(%f)\t", secondlist[sortedplanes[i]*2]+1, secondlist[sortedplanes[i]*2+1]+1, conformers[sortedplanes[i]], fifteen_dihedrals[sortedplanes[i]]);
                 result << "\t" << secondlist[sortedplanes[i]*2]+1 << secondlist[sortedplanes[i]*2+1]+1 << conformers[sortedplanes[i]] << "(" << fifteen_dihedrals[sortedplanes[i]] << ")" << "\t";
             }
             if(d[0]<0.0 && d[1]<0.0)
             {
-                fprintf(Oset.F,"\t%c%d%d(%f)\t",conformers[sortedplanes[i]],secondlist[sortedplanes[i]*2]+1,secondlist[sortedplanes[i]*2+1]+1,fifteen_dihedrals[sortedplanes[i]]);
+                // fprintf(Oset.F,"\t%c%d%d(%f)\t",conformers[sortedplanes[i]],secondlist[sortedplanes[i]*2]+1,secondlist[sortedplanes[i]*2+1]+1,fifteen_dihedrals[sortedplanes[i]]);
                 result << "\t" << conformers[sortedplanes[i]] << secondlist[sortedplanes[i]*2]+1 << secondlist[sortedplanes[i]*2+1]+1 << "(" << fifteen_dihedrals[sortedplanes[i]] << ")" <<  "\t";
             }
         }
     } //fivecheck2==0
-    fprintf(Oset.F,"\n");
+    // fprintf(Oset.F,"\n");
    // printf("\n");
    // printf("OUTPUT FILE:ring_conformations.txt\n");
     result << "\n";
