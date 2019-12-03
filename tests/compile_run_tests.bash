@@ -91,15 +91,15 @@ g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEM
 ./ring_shape_detection > ring_shape_detection.txt
 if [ -f ring_conformations.txt ]; then
     if ! cmp ring_conformations.txt tests/correct_outputs/ring_conformations.txt > /dev/null 2>&1; then
-        printf "Test FAILED!.\n"
+        printf "Test FAILED!.\nPlease compare ring_conformations.txt to tests/correct_outputs/ring_conformations.txt"
     else
         printf "Test passed.\n"
         ((tests_passed++))
+	rm ring_shape_detection ring_shape_detection.txt ring_conformations.txt > /dev/null 2>&1
     fi
 else
-    printf "Test FAILED!.\n"
+    printf "Test FAILED!.\nPlease compare ring_conformations.txt to tests/correct_outputs/ring_conformations.txt"
 fi
-rm ring_shape_detection ring_shape_detection.txt ring_conformations.txt > /dev/null 2>&1
 
 ###################### Test 07 ######################
 printf "Testing buildBySequence... "
@@ -152,7 +152,7 @@ if [ -f pdb2glycam_output.pdb ]; then
 else
     printf "Test FAILED!.\n"
 fi
-rm pdb2glycam_output.pdb pdb2glycam > /dev/null 2>&1
+rm ring_conformations.txt pdb2glycam_output.pdb pdb2glycam > /dev/null 2>&1
 
 printf "Completed $number_of_tests tests.\n"
 #####################################################
