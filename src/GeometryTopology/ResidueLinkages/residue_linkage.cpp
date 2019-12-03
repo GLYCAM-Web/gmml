@@ -104,9 +104,9 @@ Atom* Residue_linkage::GetToThisConnectionAtom2()
 bool Residue_linkage::CheckIfConformer()
 {
     if (rotatable_dihedrals_.empty())
-        std::cout << "Error in Residue_linkage::checkIfConformer as rotatable_dihedrals_.empty()\n";
+        std::cerr << "Error in Residue_linkage::checkIfConformer as rotatable_dihedrals_.empty()\n";
     else if (rotatable_dihedrals_.at(0).GetMetadata().empty())
-        std::cout << "Error in Residue_linkage::checkIfConformer as rotatable_dihedrals_.at(0).GetMetadata().empty()\n";
+        std::cerr << "Error in Residue_linkage::checkIfConformer as rotatable_dihedrals_.at(0).GetMetadata().empty()\n";
     else
     {
         if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("permutation")==0)
@@ -228,9 +228,7 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
 {
     double current_overlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
     double lowest_overlap = current_overlap;
-    // Reverse as convention is Glc1-4Gal and I want to wiggle in opposite direction i.e. outwards from first rotatable bond in Asn or reducing terminal
     RotatableDihedralVector rotatable_bond_vector = this->GetRotatableDihedrals();
-    //std::reverse(rotatable_bond_vector.begin(), rotatable_bond_vector.end());
     for(auto &rotatable_dihedral : rotatable_bond_vector)
     {
         double best_dihedral_angle = rotatable_dihedral.CalculateDihedralAngle();
@@ -434,11 +432,11 @@ void Residue_linkage::AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::G
         if (vector_position <= rotatable_dihedrals_.size())
         {
             rotatable_dihedrals_.at(vector_position).AddMetadata(entry);
-            std::cout << "Set " << entry.dihedral_angle_name_ << " meta data for "
-                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(0)->GetId() << ", "
-                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(1)->GetId() << ", "
-                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(2)->GetId() << ", "
-                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(3)->GetId() << "\n";
+//            std::cout << "Set " << entry.dihedral_angle_name_ << " meta data for "
+//                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(0)->GetId() << ", "
+//                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(1)->GetId() << ", "
+//                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(2)->GetId() << ", "
+//                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(3)->GetId() << "\n";
 //            std::cout << "Added " << entry.index_ << " = " << entry.default_angle_value_ << " to: \n";
 //            rotatable_dihedrals_.at(vector_position).Print();
         }

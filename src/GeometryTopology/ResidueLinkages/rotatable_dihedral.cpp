@@ -329,11 +329,11 @@ void Rotatable_dihedral::SetSpecificAngleEntryUsingMetadata(bool useRanges, int 
 {
     if (assigned_metadata_.empty())
     {
-        std::cout << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; no metadata has been set.\n";
+        std::cerr << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; no metadata has been set.\n";
     }
     else if (assigned_metadata_.size() <= angleEntryNumber)
     {
-         std::cout << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; angleEntryNumber of " << angleEntryNumber << " is too large as metadata.size() is " << assigned_metadata_.size() << ".\n";
+         std::cerr << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; angleEntryNumber of " << angleEntryNumber << " is too large as metadata.size() is " << assigned_metadata_.size() << ".\n";
     }
     else
     {
@@ -433,8 +433,6 @@ Atom* Rotatable_dihedral::CreateHydrogenAtomForPsi(Atom *centralAtom)
         threeNeighborCoords.push_back(neighbor->GetCoordinate());
     }
     GeometryTopology::Coordinate newCoord = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(centralAtom->GetCoordinate(), threeNeighborCoords);
-    newCoord.Print();
-    std::cout << " is new neighbor of " << centralAtom->GetId() << "\n";
     Atom *newAtom = new Atom(centralAtom->GetResidue(), "HHH", newCoord);
     return newAtom;
 }
