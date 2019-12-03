@@ -6,9 +6,6 @@
 #include <vector>
 #include <queue>
 #include <algorithm> // added for std::erase remove
-#include "boost/graph/adjacency_list.hpp"
-#include "boost/graph/vf2_sub_graph_iso.hpp"
-#include "boost/property_map/property_map.hpp"
 
 #include "../GeometryTopology/coordinate.hpp"
 #include "../GeometryTopology/plane.hpp"

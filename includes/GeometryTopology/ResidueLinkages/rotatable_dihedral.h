@@ -28,8 +28,8 @@ public:
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
 
-    Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4);
-    Rotatable_dihedral(AtomVector atoms);
+    Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, bool reverseAtomsThatMove = true);
+    Rotatable_dihedral(AtomVector atoms, bool reverseAtomsThatMove = true);
     Rotatable_dihedral(AtomVector atoms, AtomVector atoms_that_move);
 
 
@@ -40,9 +40,11 @@ public:
     double CalculateDihedralAngle() const;
     AtomVector GetAtoms() const;
     AtomVector GetAtomsThatMove();
+    bool GetIsAtomsThatMoveReversed();
     double GetPreviousDihedralAngle();
     DihedralAngleDataVector GetMetadata();
     int GetNumberOfRotamers();
+    std::vector<double> GetAllPossibleAngleValues(int interval = 5);
 
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
@@ -92,11 +94,13 @@ private:
     //                  PRIVATE FUNCTIONS                   //
     //////////////////////////////////////////////////////////
 
-    void Initialize(AtomVector atoms);
+    void Initialize(AtomVector atoms, bool reverseAtomsThatMove = true);
     void SetAtoms(AtomVector atoms);
     void SetAtomsThatMove(AtomVector atoms);
+    void SetIsAtomsThatMoveReversed(bool isAtomsThatMoveReversed);
     void RecordPreviousDihedralAngle(double dihedral_angle);
     void UpdateAtomsIfPsi();
+    Atom* CreateHydrogenAtomForPsi(Atom *centralAtom);
 
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
@@ -109,6 +113,7 @@ private:
     Atom *atom4_;
     // A vector of pointers to the atoms that are connected to atom2_ and atom3_, and will be rotated when that bond is rotated.
     AtomVector atoms_that_move_;
+    bool isAtomsThatMoveReversed_;
     // I often want to reset a dihedral angle after rotating it, so recording the previous angle makes this easy.
     double previous_dihedral_angle_;
     DihedralAngleDataVector assigned_metadata_;
