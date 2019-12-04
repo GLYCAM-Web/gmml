@@ -31,7 +31,7 @@ namespace PdbqtFileSpace
               * A constructor that get a stream block of atom card and parse the whole block to fill the related fields
               * @param stream_block A whole block of atoms belonging to a model in a pdbqt file
               */
-            PdbqtAtomCard(std::stringstream& stream_block);
+            PdbqtAtomCard(std::ifstream& stream_block);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
@@ -61,6 +61,7 @@ namespace PdbqtFileSpace
               * @param atoms Atom attribute of the current object
               */
             void SetAtoms(PdbqtAtomMap atoms);
+	    void AddAtom(PdbqtAtom* atom);  //Yao added 11/21/2019
 
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //

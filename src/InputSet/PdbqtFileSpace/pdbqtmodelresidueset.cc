@@ -16,62 +16,54 @@ PdbqtModelResidueSet::PdbqtModelResidueSet()
     atoms_ = NULL;
 }
 
-PdbqtModelResidueSet::PdbqtModelResidueSet(std::stringstream &residue_set_block)
+PdbqtModelResidueSet::PdbqtModelResidueSet(std::ifstream &residue_set_block)
 {
     roots_ = NULL;
     atoms_ = NULL;
     branches_ = BranchCardVector();
     std::string line;
-    getline(residue_set_block, line);
-    std::string temp = line;
-    std::stringstream root_block;
-    std::stringstream all_atoms_block;
-    if(line.find("ROOT") != std::string::npos)
-    {
-        root_block << line << std::endl;
-        getline(residue_set_block, line);
-        while(line.find("ENDROOT") == std::string::npos)
+
+    //This vector contains atom cards from root and all downstream branches.They are then concatenated into a single atom card and stored in this object. 
+    std::vector<PdbqtFileSpace::PdbqtAtomCard*> all_atom_cards; 
+
+    while (getline(residue_set_block, line)){
+        if(line.find("ROOT") != std::string::npos)
         {
-            if(line.find("ATOM") != std::string::npos || line.find("HETATM") != std::string::npos)
-            {
-                root_block << line << std::endl;
-                all_atoms_block << line << std::endl;
-            }
-            getline(residue_set_block, line);
+            roots_ = new PdbqtFileSpace::PdbqtRootCard(residue_set_block, all_atom_cards);
         }
-        root_block << line << std::endl;
-    }
-    roots_ = new PdbqtFileSpace::PdbqtRootCard(root_block);
-    getline(residue_set_block, line);
-    while(!gmml::Trim(temp).empty())
-    {
-        std::stringstream branch_block;
-        if(line.find("BRANCH") != std::string::npos)
+
+        else if(line.find("BRANCH") != std::string::npos)
         {
-            branch_block << line << std::endl;
             std::vector<std::string> tokens = gmml::Split(line, " ");
-            int solid_atom_serial_number = gmml::ConvertString<int>(tokens.at(1));
-            int rotatable_atom_serial_number = gmml::ConvertString<int>(tokens.at(2));
-            std::stringstream end_branch_line;
-            end_branch_line << "ENDBRANCH " << std::setw(3) << solid_atom_serial_number << " " << std::setw(3) << rotatable_atom_serial_number;
-            getline(residue_set_block, line);
-            while(line.find(end_branch_line.str()) == std::string::npos)
-            {
-                if(line.find("ATOM") != std::string::npos || line.find("HETATM") != std::string::npos)
-                {
-                    all_atoms_block << line << std::endl;
-                }
-                branch_block << line << std::endl;
-                getline(residue_set_block, line);
-            }
-            branch_block << line << std::endl;
+
+	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            residue_set_block.seekg(offset, residue_set_block.cur); //Go back one line
+            branches_.push_back(new PdbqtBranchCard(residue_set_block, all_atom_cards));
         }
-        branches_.push_back(new PdbqtBranchCard(branch_block));
-        getline(residue_set_block, line);
-        if(line.empty())
-            break;
+	//If not ROOT,BRANCH,ENDROOT, or ENDBRANCH, the code has gone one line beyond the residue set section. So go back one line and exit. 
+	else if (line.find("ATOM") != std::string::npos || line.find("HETATM") != std::string::npos){ 
+
+	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            residue_set_block.seekg(offset, residue_set_block.cur); //Go back one line
+	    //Get single atoms
+	    all_atom_cards.push_back(new PdbqtFileSpace::PdbqtAtomCard(residue_set_block));
+	}
+	else {
+	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            residue_set_block.seekg(offset, residue_set_block.cur); //Go back one line
+	    break;
+	}
+    }//while
+
+    //TODO: Get all atoms
+    atoms_ = new PdbqtFileSpace::PdbqtAtomCard();
+    for (std::vector<PdbqtFileSpace::PdbqtAtomCard*>::iterator it = all_atom_cards.begin(); it != all_atom_cards.end(); it++){
+	PdbqtAtomCard::PdbqtAtomMap card = (*it)->GetAtoms();
+	for (PdbqtAtomCard::PdbqtAtomMap::iterator it2 = card.begin(); it2 != card.end(); it2++){
+	    atoms_->AddAtom(it2->second);
+	}
+	
     }
-    atoms_ = new PdbqtFileSpace::PdbqtAtomCard(all_atoms_block);
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //

@@ -31,7 +31,7 @@ namespace PdbqtFileSpace
               * Constructor with required parameters
               * @param stream_block
               */
-            PdbqtModelCard(std::stringstream& stream_block);
+            PdbqtModelCard(std::ifstream& stream_block);
 
 
             //////////////////////////////////////////////////////////

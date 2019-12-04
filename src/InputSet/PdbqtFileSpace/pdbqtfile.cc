@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <algorithm>
+#include <vector>
 #include "../../../includes/utils.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
@@ -127,77 +129,49 @@ bool PdbqtFile::Read(std::ifstream &in_file)
 {
     if(!this->ParseCards(in_file))
         return false;
-	return true;
+    return true;
 }
 
 bool PdbqtFile::ParseCards(std::ifstream &in_stream)
 {
-    std::string line;
 
-    /// Unable to read file
-    if (!getline(in_stream, line))
-    {
-        gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
-        throw PdbqtFileProcessingException("Error reading file");
+
+    std::string line,record_name;
+
+    while (getline(in_stream, line)){
+        record_name = gmml::Split(line, " ").at(0);
+        if(record_name.compare("MODEL") == 0 || record_name.compare("ROOT") == 0 || record_name.compare("BRANCH") == 0 
+		|| record_name.compare("ATOM") == 0 )
+        {
+	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+	    in_stream.seekg(offset, in_stream.cur);//Go back one line
+            if(!ParseModelCard(in_stream, line))
+                return false;
+        }
     }
-    std::string record_name = gmml::Split(line, " ").at(0);
-    if(record_name.compare("MODEL") == 0)
-    {
-        if(!ParseModelCard(in_stream, line))
-            return false;
-    }
-    else
-    {
-        gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
-        return false;
-    }
+
     return true;
 }
 
 bool PdbqtFile::ParseModelCard(std::ifstream &stream, std::string &line)
 {
-    std::stringstream stream_block;
-    stream_block << line << std::endl;
-    if(!getline(stream, line))
-    {
-        gmml::log(__LINE__, __FILE__,  gmml::ERR,"Model card corruption");
-        std::cout << "Model card corruption" << std::endl;
-        gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
-        return false;
-    }
-    std::string record_name = gmml::Split(line, " ").at(0);
-    record_name = gmml::Trim(record_name);
 
-    while(record_name.compare("MODEL") == 0 || record_name.compare("COMPND") == 0 || record_name.compare("REMARK") == 0
-          || record_name.compare("ROOT") == 0 || record_name.compare("ATOM") == 0 || record_name.compare("ENDROOT") == 0
-          || record_name.compare("BRANCH") == 0 || record_name.compare("ENDBRANCH") == 0 || record_name.compare("HETATM") == 0
-          || record_name.compare("TORSDOF") == 0 || record_name.compare("ENDMDL") == 0)
-    {
-        stream_block << line << std::endl;
-        if(getline(stream, line))
-        {
-            record_name = gmml::Split(line, " ").at(0);
-            record_name = gmml::Trim(record_name);
-        }
-        else
-        {
-            if(record_name.compare("ENDMDL") == 0)
-                break;
-            else
-            {
-                gmml::log(__LINE__, __FILE__,  gmml::ERR,"Model card corruption");
-                std::cout << "Model card corruption" << std::endl;
-                gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
-                std::cout << "Wrong input file format" << std::endl;
-                return false;
-            }
-        }
+    //TODO:catch downstream errors and return false. 
+    while (getline(stream, line)){
+
+        if (line.find("MODEL") != std::string::npos || line.find("COMPND") != std::string::npos || line.find("REMARK") != std::string::npos 
+	    || line.find("ROOT") != std::string::npos || line.find("ATOM") != std::string::npos || line.find("ENDROOT") != std::string::npos 
+	    || line.find("BRANCH") != std::string::npos || line.find("ENDBRANCH") != std::string::npos || line.find("HETATM") != std::string::npos 
+	    || line.find("TORSDOF") != std::string::npos || line.find("ENDMDL") != std::string::npos){
+
+	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+	    stream.seekg(offset, stream.cur);//Go back one line
+	    
+    	    // Model card
+    	    models_ = new PdbqtFileSpace::PdbqtModelCard(stream);
+	    
+	}
     }
-    // Model card
-    models_ = new PdbqtFileSpace::PdbqtModelCard(stream_block);
     return true;
 }
 

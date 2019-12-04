@@ -13,83 +13,76 @@ using PdbqtFileSpace::PdbqtModel;
 //////////////////////////////////////////////////////////
 PdbqtModel::PdbqtModel() {}
 
-PdbqtModel::PdbqtModel(std::stringstream &model_block)
+PdbqtModel::PdbqtModel(std::ifstream &model_block)
 {
     std::string line;
     std::stringstream residue_set_block;
     remarks_ = RemarkCardVector();
     torsional_dof_cards_ = TorsionalDoFCardVector();
     model_compound_card_ = NULL;
-    getline(model_block, line);
-    if(line.find("MODEL") != std::string::npos)
-    {
-        std::vector<std::string> tokens = gmml::Split(line, " ");
-        if(tokens.size() == 1 || tokens.at(1).empty())
-            model_serial_number_ = gmml::iNotSet;
-        else
-            model_serial_number_ = gmml::ConvertString<int>(tokens.at(1));
-        getline(model_block,line);
+
+    //This is the MODEL line if file contains MODEL at all. If not, then the file doesn't contain MODEL, could be ROOT,BRANCH etc.
+    //Should the latter be the case, go back one line since the current line contains useful information. It needs to be read again below.   
+    getline(model_block, line); 
+    if (line.find("MODEL") != std::string::npos){ //If there is MODEL entry
+            std::vector<std::string> tokens = gmml::Split(line, " ");
+            if(tokens.size() == 1 || tokens.at(1).empty())
+                model_serial_number_ = gmml::iNotSet;
+            else
+                model_serial_number_ = gmml::ConvertString<int>(tokens.at(1));
+        }
+    else { //If there isn't a MODEL entry, the entire file is one model. Also go up one line
+        model_serial_number_ = 1;
+	int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+        model_block.seekg(offset, model_block.cur);//Go back one line
+    }
+
+
+    while(getline(model_block,line)){
+	//MODEL
+        if (line.find("MODEL") != std::string::npos){ //If there is MODEL entry
+	    //MODEL has been dealt with above. This will be duplicate MODEL lines, ignore. 
+        }
+
         // COMPND
-        if(line.find("COMPND") != std::string::npos)
+        else if(line.find("COMPND") != std::string::npos)
         {
             model_compound_card_ = new PdbqtFileSpace::PdbqtCompoundCard(line);
-            getline(model_block, line);
+            //getline(model_block, line);
         }
         // REMARK
-        while(line.find("REMARK") != std::string::npos)
+        else if(line.find("REMARK") != std::string::npos)
         {
             PdbqtRemarkCard* remark = new PdbqtRemarkCard(line);
             remarks_.push_back(remark);
-            getline(model_block, line);
+            //getline(model_block, line);
         }
         // ROOT/ENDROOT/ATOM/HETATM/BRANCH/ENDBRANCH
-        while(line.find("ROOT") != std::string::npos || line.find("ATOM") != std::string::npos
+        else if(line.find("ROOT") != std::string::npos || line.find("ATOM") != std::string::npos
               || line.find("HETATM") != std::string::npos || line.find("ENDROOT") != std::string::npos
               || line.find("BRANCH") != std::string::npos || line.find("ENDBRANCH") != std::string::npos)
         {
-            residue_set_block << line << std::endl;
-            getline(model_block, line);
+	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            model_block.seekg(offset, model_block.cur);//Go back one line
+            model_residue_set_ = new PdbqtFileSpace::PdbqtModelResidueSet(model_block);
         }
-        model_residue_set_ = new PdbqtFileSpace::PdbqtModelResidueSet(residue_set_block);
         // TORSDOF
-        while(line.find("TORSDOF") != std::string::npos)
+        else if(line.find("TORSDOF") != std::string::npos)
         {
             torsional_dof_cards_.push_back(new PdbqtTorsionalDoFCard(line));
-            getline(model_block, line);
+            //getline(model_block, line);
         }
-    }
-    else
-    {
-        model_serial_number_ = 1;
-        std::string temp = line;
-        // COMPND
-        if(line.find("COMPND") != std::string::npos)
-        {
-            model_compound_card_ = new PdbqtFileSpace::PdbqtCompoundCard(line);
-            getline(model_block, line);
-        }
-        // REMARK
-        while(line.find("REMARK") != std::string::npos)
-        {
-            PdbqtRemarkCard* remark = new PdbqtRemarkCard(line);
-            remarks_.push_back(remark);
-            getline(model_block, line);
-        }
-        // ROOT/ENDROOT/ATOM/HETATM/BRANCH/ENDBRANCH
-        while(line.find("ATOM") != std::string::npos || line.find("ANISOU") != std::string::npos
-              || line.find("TER") != std::string::npos || line.find("HETATM") != std::string::npos)
-        {
-            residue_set_block << line << std::endl;
-            getline(model_block, line);
-        }
-        model_residue_set_ = new PdbqtFileSpace::PdbqtModelResidueSet(residue_set_block);
-        // TORSDOF
-        while(line.find("TORSDOF") != std::string::npos)
-        {
-            torsional_dof_cards_.push_back(new PdbqtTorsionalDoFCard(line));
-            getline(model_block, line);
-        }
-    }
+	else {  
+	    if (line.find("ENDMDL") != std::string::npos){ //Exit upon ENDMDL is the normal outcome.
+		break;
+	    }
+	    else{  //If not the keywords above, the file stream has gone one line beyond the model block. Go back one line and exit
+	        int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+                model_block.seekg(offset, model_block.cur);//Go back one line
+	        break;
+	    }
+	}
+    }//while
 }
 
 //////////////////////////////////////////////////////////
