@@ -31,7 +31,7 @@ namespace PdbqtFileSpace
               * A constructor that get a stream block of branch card and parse the whole block to fill the related fields
               * @param stream_block A whole block of branches belonging to a model in a pdbqt file
               */
-            PdbqtBranchCard(std::stringstream& stream_block);
+            PdbqtBranchCard(std::ifstream& stream_block, std::vector<PdbqtAtomCard*>& ACV);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////

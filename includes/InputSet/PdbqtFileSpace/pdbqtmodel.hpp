@@ -38,7 +38,7 @@ namespace PdbqtFileSpace
               * Constructor with required parameters
               * @param model_block
               */
-            PdbqtModel(std::stringstream& model_block);
+            PdbqtModel(std::ifstream& model_block);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

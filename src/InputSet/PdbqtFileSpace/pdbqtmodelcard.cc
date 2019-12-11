@@ -10,62 +10,20 @@ using PdbqtFileSpace::PdbqtModelCard;
 //////////////////////////////////////////////////////////
 PdbqtModelCard::PdbqtModelCard() : record_name_("MODEL"){}
 
-PdbqtModelCard::PdbqtModelCard(std::stringstream &stream_block)
+PdbqtModelCard::PdbqtModelCard(std::ifstream &stream_block)
 {
     std::string line;
-    bool is_record_name_set = false;
-    getline(stream_block, line);
-    std::string temp = line;
-    while (!gmml::Trim(temp).empty())
-    {
-        if(line.find("MODEL") != std::string::npos)
-        {
-            if(!is_record_name_set){
-                record_name_ = line.substr(0,6);
-                gmml::Trim(record_name_);
-                is_record_name_set=true;
-            }
-            std::stringstream model_block;
-            while(line.find("MODEL") != std::string::npos || line.find("COMPND") != std::string::npos || line.find("REMARK") != std::string::npos
-                    || line.find("ROOT") != std::string::npos || line.find("ATOM") != std::string::npos || line.find("ENDROOT") != std::string::npos
-                    || line.find("BRANCH") != std::string::npos || line.find("ENDBRANCH") != std::string::npos || line.find("HETATM") != std::string::npos
-                    || line.find("TORSDOF") != std::string::npos || line.find("ENDMDL") != std::string::npos)
-            {
-                model_block << line << std::endl;
-                if(line.find("ENDMDL") != std::string::npos)
-                {
-                    PdbqtModel* pdbqt_model = new PdbqtModel(model_block);
-                    models_[pdbqt_model->GetModelSerialNumber()] = pdbqt_model;
-                    model_block.str("");
-                }
-                getline(stream_block,line);
-                temp = line;
-            }
-        }
-        else
-        {
-            if(!is_record_name_set){
-                record_name_ = "MODEL ";
-                gmml::Trim(record_name_);
-                is_record_name_set = true;
-            }
-            std::stringstream model_block;
-            while(line.find("MODEL") != std::string::npos || line.find("COMPND") != std::string::npos || line.find("REMARK") != std::string::npos
-                    || line.find("ROOT") != std::string::npos || line.find("ATOM") != std::string::npos || line.find("ENDROOT") != std::string::npos
-                    || line.find("BRANCH") != std::string::npos || line.find("ENDBRANCH") != std::string::npos || line.find("HETATM") != std::string::npos
-                    || line.find("TORSDOF") != std::string::npos || line.find("ENDMDL") != std::string::npos)
-            {
-                model_block << line << std::endl;
-                if(line.find("ENDMDL") != std::string::npos)
-                {
-                    PdbqtModel* pdbqt_model = new PdbqtModel(model_block);
-                    models_[pdbqt_model->GetModelSerialNumber()] = pdbqt_model;
-                    model_block.str("");
-                }
-                getline(stream_block,line);
-                temp = line;
-            }
-        }
+
+    record_name_ = "MODEL";
+
+    while(getline(stream_block, line)){
+	if (line.find("MODEL") != std::string::npos || line.find("ROOT") != std::string::npos || line.find("BRANCH") != std::string::npos ||
+	    line.find("ATOM") != std::string::npos || line.find("HETATM") != std::string::npos){
+	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            stream_block.seekg(offset, stream_block.cur);//Go back one line
+            PdbqtModel* pdbqt_model = new PdbqtModel(stream_block);
+            models_[pdbqt_model->GetModelSerialNumber()] = pdbqt_model;
+	}
     }
 }
 

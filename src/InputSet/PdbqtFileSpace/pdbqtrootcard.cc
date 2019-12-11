@@ -13,33 +13,32 @@ PdbqtRootCard::PdbqtRootCard() : record_name_("ROOT")
     root_atoms_ = NULL;
 }
 
-PdbqtRootCard::PdbqtRootCard(std::stringstream &root_block)
+PdbqtRootCard::PdbqtRootCard(std::ifstream &root_block, std::vector<PdbqtFileSpace::PdbqtAtomCard*>& ACV)
 {
     root_atoms_ = NULL;
     std::string line;
-    bool is_record_name_set = false;
-    getline(root_block, line);
-    std::string temp = line;
-    if(line.find("ROOT") != std::string::npos)
-    {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
-            gmml::Trim(record_name_);
-            is_record_name_set=true;
-        }
-    }
+    record_name_ = "ROOT";
 
-    getline(root_block,line);
-    std::stringstream stream_block;
-    while(line.find("ATOM") != std::string::npos || line.find("HETATOM") != std::string::npos)
-    {
-        stream_block << line << std::endl;
-        getline(root_block,line);
-        temp = line;
-    }
-    if(line.find("ENDROOT") != std::string::npos)
-    {
-        root_atoms_ = new PdbqtFileSpace::PdbqtAtomCard(stream_block);
+    while (getline(root_block, line)){
+        if(line.find("ATOM") != std::string::npos || line.find("HETATM") != std::string::npos)
+        {
+	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            root_block.seekg(offset, root_block.cur); //Go back one line
+            root_atoms_ = new PdbqtFileSpace::PdbqtAtomCard(root_block);
+	    ACV.push_back(root_atoms_);
+            
+        }
+
+        else if(line.find("ENDROOT") != std::string::npos) //Quit Root section normally.
+        {
+	    break;
+        }
+	
+	else { //The file stream has gone one line past the root section due to the absence of "ENDROOT". Should rewind by one line and quit RootCard.
+	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            root_block.seekg(offset, root_block.cur); //Go back one line
+	    break;
+	}
     }
 }
 

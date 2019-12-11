@@ -115,7 +115,7 @@ if [ -f buildBySequence.pdb ]; then
 else
     printf "Test FAILED!.\n"
 fi
-rm buildBySequence.pdb buildBySequence > /dev/null 2>&1
+#rm buildBySequence.pdb buildBySequence > /dev/null 2>&1
 
 ###################### Test 08 ######################
 printf "Testing detectSugars... "
