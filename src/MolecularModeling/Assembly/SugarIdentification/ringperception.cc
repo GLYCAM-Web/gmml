@@ -102,10 +102,10 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
         //Adding becuase hydrogens can break cycle detection
         if(atom->GetElementSymbol() != "H")
         {
-          new_atoms.push_back(atom);
+          newAtoms.push_back(atom);
         }
     }
-    atoms = new_atoms;
+    atoms = newAtoms;
     
     if ( local_debug > 0 )
     {
