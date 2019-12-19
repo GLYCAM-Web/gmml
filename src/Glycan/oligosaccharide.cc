@@ -1093,7 +1093,7 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
       if(isRoot)
       {
         Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide();
-        CalculateOligosaccharideBFactor(oligo, oligo->mono_nodes_);
+        // CalculateOligosaccharideBFactor(oligo, oligo->mono_nodes_);
         BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
         oligo->terminal_ = terminal_residue_name;
         oligosaccharides.push_back(oligo);
@@ -1119,7 +1119,7 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
           if((*it1).find(anomeric_linkage.str()) != std::string::npos)///mono is attached to another mono through anomeric
           {
             Glycan::Oligosaccharide* oligo = new Glycan::Oligosaccharide();
-            CalculateOligosaccharideBFactor(oligo, oligo->mono_nodes_);
+            // CalculateOligosaccharideBFactor(oligo, oligo->mono_nodes_);
             BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
             oligosaccharides.push_back(oligo);
             break;
