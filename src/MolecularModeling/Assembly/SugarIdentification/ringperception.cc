@@ -99,12 +99,14 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
         {
           gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
         }
-        if(atom->GetId()[0] != 'H')
+        //Adding becuase hydrogens can break cycle detection
+        if(atom->GetElementSymbol() != "H")
         {
-          newAtoms.push_back(atom);
+          new_atoms.push_back(atom);
         }
     }
-    atoms = newAtoms;
+    atoms = new_atoms;
+    
     if ( local_debug > 0 )
     {
       gmml::log(__LINE__, __FILE__, gmml::INF, "About to Prune Graph");

@@ -559,10 +559,22 @@ namespace gmml
       * @param msg The message content that has been produced
       * @param out_file_name The name of the output log file
       */
-    inline void log(int line, std::string file_path, LogLevel level, std::string msg, std::string out_file_name = "log.log")
+    inline void log(int line, std::string file_path, LogLevel level, std::string msg, std::string out_file_name = "")
     {
-       std::ofstream file;
-       file.open(out_file_name.c_str(), std::ios_base::app);
+      std::ofstream file;
+      if(out_file_name == "")
+      {
+        std::string GEMSHOME_ERROR = "\nMust set GEMSHOME environment variable.\n\n    BASH:   export GEMSHOME=/path/to/gems\n    SH:     setenv GEMSHOME /path/to/gems\n";
+        char* gemshome_env_var = std::getenv("GEMSHOME");
+        // Check if the environment variables exist.
+        if(!gemshome_env_var) 
+        {
+          std::cout << GEMSHOME_ERROR << std::endl;
+        }
+        std::string GEMSHOME(gemshome_env_var);
+        out_file_name = GEMSHOME + "/log.log";
+      }
+      file.open(out_file_name.c_str(), std::ios_base::app);
 
        time_t t = time(0);
        std::string time_str = std::asctime(std::localtime(&t));

@@ -900,7 +900,7 @@ void Glycan::Monosaccharide::CheckIfSideChainIsTerminal(MolecularModeling::Atom*
 
 void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* this_assembly)
 {
-  int local_debug = -1;
+  int local_debug = 1;
   if (local_debug > 0)
   {
     std::stringstream debugStr;
@@ -1126,7 +1126,6 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
               break;
           }
         }
-        //Add function to get the formula of the derivative
         value = GetFormula(target);
         if(value.compare("") != 0)
         {

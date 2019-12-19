@@ -241,7 +241,6 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
       //Mono Index
       thisOutput.indices.push_back(std::make_pair(std::to_string(thisMono->oligosaccharide_index_), thisMono->cycle_atoms_[0]->GetResidue()->GetId()));
       //Mono connectivity
-      //TODO unbreak this; Maybe fix glycosidic linkage class? :'(
       thisMono->mono_neighbors_.shrink_to_fit();
       for (std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> >::iterator it2 = thisMono->mono_neighbors_.begin(); it2 != thisMono->mono_neighbors_.end(); it2++)
       {
@@ -298,10 +297,7 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
             residue_links_vector.push_back(thisID);
           }
             thisOutput.residue_links.push_back(residue_links_vector);
-      
       }
-    
-      
       //Errors at the mono level
       for(std::vector<Glycan::Note*>::iterator it3 = thisMono->mono_notes_.begin(); it3 != thisMono->mono_notes_.end(); it3++)
       {
@@ -309,8 +305,6 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
         std::string thisNoteString = thisNote->type_ + ": " + thisNote->description_;
         thisOutput.error_warning_messages.push_back(thisNoteString);
       }
-    
-      
     }
     //Errors at the Oligo level
     for(std::vector<Glycan::Note*>::iterator it = thisOligo->oligo_notes_.begin(); it != thisOligo->oligo_notes_.end(); it++)
