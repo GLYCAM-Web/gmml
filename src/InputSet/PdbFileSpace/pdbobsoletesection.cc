@@ -29,9 +29,11 @@ PdbObsoleteSection::PdbObsoleteSection(std::stringstream &stream_block)
     bool is_continuation_set = false;
     getline(stream_block, line);
     std::string temp = line;
-    int i = 0;
+    int position = 0;
     while (!gmml::Trim(temp).empty())
     {
+      if(line.find("OBSLTE") != std::string::npos)
+      {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
             gmml::Trim(record_name_);
@@ -43,15 +45,19 @@ PdbObsoleteSection::PdbObsoleteSection(std::stringstream &stream_block)
             is_continuation_set=true;
         }
         std::stringstream obsolete_block;
-        obsolete_block << line << std::endl;
+        obsolete_block << line << "\n";
+        std::cout << position;
+        PdbObsoleteCard* obsolete_card = new PdbObsoleteCard(obsolete_block);
+        std::cout << obsolete_card->GetReplacementDate() << "\n";
+        obsolete_cards_.push_back(
+        );
+        replacement_date_ = obsolete_cards_[position]->GetReplacementDate();
+        std::vector<std::string> IDcodes = obsolete_cards_[position]->GetIdentifierCodes();
+        identifier_codes_.insert(identifier_codes_.end(), IDcodes.begin(), IDcodes.end());
+        position++;
         getline(stream_block, line);
         temp = line;
-        PdbObsoleteCard* obsolete_card = new PdbObsoleteCard(obsolete_block);
-        obsolete_cards_[i] = obsolete_card;
-        replacement_date_ = obsolete_cards_[i]->GetReplacementDate();
-        std::vector<std::string> IDcodes = obsolete_cards_[i]->GetIdentifierCodes();
-        identifier_codes_.insert(identifier_codes_.end(), IDcodes.begin(), IDcodes.end());
-        i++;
+      }
     }
 
 }

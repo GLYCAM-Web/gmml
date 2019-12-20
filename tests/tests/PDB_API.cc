@@ -1,4 +1,4 @@
-// This is a C++ version of the GEMS test, detect_sugars.
+// This is a test for the PDB API for detect_sugars.
 // By: Davis Templeton
 // Modified by: Dave Montgomery
 #include <cstdlib>
