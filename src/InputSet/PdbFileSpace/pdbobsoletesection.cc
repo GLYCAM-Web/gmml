@@ -49,8 +49,7 @@ PdbObsoleteSection::PdbObsoleteSection(std::stringstream &stream_block)
         std::cout << position;
         PdbObsoleteCard* obsolete_card = new PdbObsoleteCard(obsolete_block);
         std::cout << obsolete_card->GetReplacementDate() << "\n";
-        obsolete_cards_.push_back(
-        );
+        obsolete_cards_.push_back(obsolete_card);
         replacement_date_ = obsolete_cards_[position]->GetReplacementDate();
         std::vector<std::string> IDcodes = obsolete_cards_[position]->GetIdentifierCodes();
         identifier_codes_.insert(identifier_codes_.end(), IDcodes.begin(), IDcodes.end());
