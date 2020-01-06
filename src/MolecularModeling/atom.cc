@@ -268,14 +268,14 @@ double Atom::GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate)
     double x = (this->GetCoordinate()->GetX() - coordinate->GetX());
     double y = (this->GetCoordinate()->GetY() - coordinate->GetY());
     double z = (this->GetCoordinate()->GetZ() - coordinate->GetZ());
-	return sqrt((x * x) + (y * y) + (z * z));
+    return std::abs(sqrt((x * x) + (y * y) + (z * z)));
 } // end GetDistanceToCoordinate
 
 bool Atom::CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom)
 {
     if (this->GetIndex() == otherAtom->GetIndex())
     {
-        std::cout << "Warning have just checked distance between an atom and itself!" << std::endl;
+        std::cerr << "Warning have just checked distance between an atom and itself!" << std::endl;
         return true;
     }
     bool withinDistance = false;
