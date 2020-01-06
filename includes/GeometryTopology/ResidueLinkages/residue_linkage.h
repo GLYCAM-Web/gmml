@@ -32,6 +32,7 @@ public:
 
     Residue_linkage();
     Residue_linkage(Residue *nonReducingResidue1, Residue *reducingResidue2, bool reverseAtomsThatMove = true);
+    Residue_linkage(Residue *nonReducingResidue1, Residue *reducingResidue2, AtomVector alsoMovingAtoms, bool reverseAtomsThatMove = true);
 
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
@@ -48,6 +49,10 @@ public:
     Atom* GetFromThisConnectionAtom1();
     Atom* GetToThisConnectionAtom2();
     bool CheckIfConformer();
+    bool GetIfExtraAtoms();
+    AtomVector GetExtraAtoms();
+    void AddExtraAtomsThatMove(AtomVector extraAtoms);
+
 
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
@@ -109,6 +114,8 @@ private:
     Atom* to_this_connection_atom2_;
     RotatableDihedralVector rotatable_dihedrals_;
     bool reverseAtomsThatMove_;
+    AtomVector extraAtomsThatMove_;
+    bool isExtraAtoms_ = true;
     //gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_;
 };
 

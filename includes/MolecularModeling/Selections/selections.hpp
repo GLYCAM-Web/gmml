@@ -24,6 +24,7 @@ MolecularModeling::Residue* FindResidue(MolecularModeling::Assembly &assembly, c
 double GetMaxDistanceBetweenAtoms(MolecularModeling::AtomVector atoms);
 MolecularModeling::AtomVector GetAtomsCommonToBothAtomVectors(MolecularModeling::AtomVector a, MolecularModeling::AtomVector b);
 MolecularModeling::AtomVector GetAtomsin_a_Notin_b_AtomVectors(MolecularModeling::AtomVector a, MolecularModeling::AtomVector b);
+MolecularModeling::AtomVector FindOtherAtomsWithinMolecule(MolecularModeling::Atom *queryAtom);
 }
 
 #endif // SELECTIONS_H

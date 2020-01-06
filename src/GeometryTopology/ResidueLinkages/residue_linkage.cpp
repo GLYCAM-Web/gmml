@@ -23,9 +23,15 @@ Residue_linkage::Residue_linkage() {} // Do nothin
 
 Residue_linkage::Residue_linkage(Residue *nonReducingResidue1, Residue *reducingResidue2, bool reverseAtomsThatMove)
 {
+    isExtraAtoms_ = false;
     this->InitializeClass(nonReducingResidue1, reducingResidue2, reverseAtomsThatMove);
 }
 
+Residue_linkage::Residue_linkage(Residue *nonReducingResidue1, Residue *reducingResidue2, AtomVector alsoMovingAtoms, bool reverseAtomsThatMove)
+{ // Order of calling functions is important!
+    this->AddExtraAtomsThatMove(alsoMovingAtoms);
+    this->InitializeClass(nonReducingResidue1, reducingResidue2, reverseAtomsThatMove);
+}
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
@@ -117,6 +123,17 @@ bool Residue_linkage::CheckIfConformer()
     return false; //Default to shut up the compiler
 }
 
+bool Residue_linkage::GetIfExtraAtoms()
+{
+    return isExtraAtoms_;
+}
+
+AtomVector Residue_linkage::GetExtraAtoms()
+{
+    return extraAtomsThatMove_;
+}
+
+
 //int Residue_linkage::GetNumberOfRotatableDihedrals()
 //{
 //    return rotatable_dihedrals_.size();
@@ -134,6 +151,12 @@ void Residue_linkage::SetRotatableDihedrals(RotatableDihedralVector rotatableDih
 void Residue_linkage::SetIfReversedAtomsThatMove(bool reversedAtomsThatMove)
 {
     reverseAtomsThatMove_ = reversedAtomsThatMove;
+}
+
+void Residue_linkage::AddExtraAtomsThatMove(AtomVector extraAtoms)
+{
+    extraAtomsThatMove_ = extraAtoms;
+    isExtraAtoms_ = true;
 }
 
 //////////////////////////////////////////////////////////
