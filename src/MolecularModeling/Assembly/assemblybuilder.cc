@@ -925,7 +925,7 @@ void Assembly::RecursivelySetAngleGeometry (Residue* parent_residue)
     }
 }
 
-// OG
+// OG These two functions are moving to carbohydrateBuilder
 void Assembly::FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Residue *to_this_residue2, ResidueLinkageVector *residue_linkages)
 {
     ResidueVector neighbors = to_this_residue2->GetNode()->GetResidueNeighbors();
@@ -946,7 +946,7 @@ void Assembly::FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Res
     return;
 }
 
-// OG
+// OG. This is agnostic of it being generated from a condensed sequence. Could be any assembly that is a glycan with good connectivites and GLYCAM nomenclature for atoms and residues.
 void Assembly::SetDihedralAngleGeometryWithMetadata()
 {
     ResidueLinkageVector all_residue_linkages;

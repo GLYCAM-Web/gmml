@@ -20,6 +20,7 @@ int main()
     PdbFileSpace::PdbFile *outputPdbFile = assemblyA.BuildPdbFileStructureFromAssembly();
     outputPdbFile->Write("buildBySequence.pdb");
     std::cout << "Done writing pdb." << std::endl;
+    CondensedSequenceSpace::carbohydrateBuilder steve("build", condensed_sequence);
 }
 //prep file
 

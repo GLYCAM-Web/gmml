@@ -109,6 +109,7 @@
 #include "InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 #include "InputSet/TopologyFileSpace/topologyresidue.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+#include "InputSet/CondensedSequenceSpace/carbohydratebuilder.h"
 #include "InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
