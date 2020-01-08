@@ -22,6 +22,7 @@ Monosaccharide::Monosaccharide(const Monosaccharide &mono)
 
 Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<MolecularModeling::Atom*>& cycle_atoms, MolecularModeling::Assembly* this_assembly, std::string CCD_Path)
 {
+  int local_debug = 1;
   residue_name_ = cycle_atoms[0]->GetResidue()->GetName();
   cycle_atoms[0]->GetResidue()->SetIsSugar(true);
   // std::cout << residue_name_ << "\n";
@@ -52,7 +53,15 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
   {
     cycle_atoms_ = cycle_atoms;
   }
+  if ((local_debug > 0) && (cycle_atoms_.empty()))
+  {
+    gmml::log(__LINE__, __FILE__, gmml::INF, "This monosaccharide has no cycle atoms!!!");
+    gmml::log(__LINE__, __FILE__, gmml::INF, cycle_atoms_str_);
+    gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(cycle_atoms_.size()));
+    gmml::log(__LINE__, __FILE__, gmml::INF, *cycle_atoms_str);
+    gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(cycle_atoms.size()));
 
+  }
   //Get BFMP
   if( cycle_atoms_.size() > 5 )
   {
@@ -363,7 +372,8 @@ MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Not
         MolecularModeling::Atom* o_neighbor1_neighbor = ( *it1 );
 
         if( cycle_atoms_str.find( o_neighbor1_neighbor->GetId() ) == std::string::npos ///if the neighbor is not one of the cycle atoms
-                && ( o_neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || o_neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 ) ) { ///if first element is "O" or "N"
+                && ( o_neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || o_neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 )
+                && (o_neighbor1->GetElementSymbol() != "H")) { ///if first element is "O" or "N"
           //                        && isdigit(gmml::ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
           anomeric_carbon = o_neighbor1;
           anomeric_carbons_status.push_back( "Anomeric carbon: "  );
@@ -382,7 +392,8 @@ MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Not
         MolecularModeling::Atom* o_neighbor2_neighbor = ( *it2 );
 
         if( cycle_atoms_str.find( o_neighbor2_neighbor->GetId() ) == std::string::npos
-                && ( o_neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || o_neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 ) ) {
+                && ( o_neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || o_neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 )
+                && (o_neighbor2->GetElementSymbol() != "H")) {
           //                        && isdigit(gmml::ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
           anomeric_carbon = o_neighbor2;
           anomeric_carbons_status.push_back( "Anomeric carbon: "  );
@@ -413,15 +424,15 @@ MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Not
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
         anomeric_carbons_status.push_back( "Anomeric carbon assigned based on its atom name index (" + ss1.str() + "), Anomeric Carbon is: " + anomeric_carbon->GetName() );
-
-        return o_neighbor1;
+        if (o_neighbor1->GetElementSymbol() != "H")
+          return o_neighbor1;
       }
       if( gmml::ConvertString< int >( ss2.str() ) < gmml::ConvertString< int >( ss1.str() ) ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
         anomeric_carbons_status.push_back( "Anomeric carbon assigned based on its atom name index (" + ss1.str() + "), Anomeric Carbon is: " + anomeric_carbon->GetName() );
-
-        return o_neighbor2;
+        if (o_neighbor2->GetElementSymbol() != "H")
+          return o_neighbor2;
       }
 
       ///Check non-ring neighbors of oxygen neighbors (the one without non-ring carbon is anomeric)
@@ -446,19 +457,22 @@ MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Not
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
         anomeric_carbons_status.push_back( "Anomeric carbon assigned to the ring carbon neighboring the ring oxygen but is not attached to an exocyclic carbon (that is, assuming the monosaccharide is an aldose), Anomeric Carbon is: " + anomeric_carbon->GetName() );
-        return o_neighbor2;
+        if (o_neighbor2->GetElementSymbol() != "H")
+          return o_neighbor2;
       }
       else if( !neighbor2_is_anomeric ) {
         anomeric_note->type_ = Glycan::WARNING;
         anomeric_note->category_ = Glycan::ANOMERIC;
         anomeric_carbons_status.push_back( "Anomeric carbon assigned to the ring carbon neighboring the ring oxygen but is not attached to an exocyclic carbon (that is, assuming the monosaccharide is an aldose), Anomeric Carbon is: " + anomeric_carbon->GetName() );
-        return o_neighbor1;
+        if (o_neighbor2->GetElementSymbol() != "H")
+          return o_neighbor1;
       }
       // @TODO August 8, 2017 Davis/Lachele - Once we get to a point where we read in mmcif definitions, we need to use it to determine the Anomeric Carbon.
       anomeric_note->type_ = Glycan::WARNING;
       anomeric_note->category_ = Glycan::ANOMERIC;
       anomeric_carbons_status.push_back( "Anomeric carbon assigned to the first ring carbon (" + o_neighbor1->GetName() + "), Anomeric Carbon is: " + anomeric_carbon->GetName() );
-      return o_neighbor1;
+      if (o_neighbor2->GetElementSymbol() != "H")
+        return o_neighbor1;
     }
   }
   return NULL;
@@ -468,115 +482,151 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
 {
   //9/14/18 Removed side atom initialization in this function and either moved it to Yao's InitiateDetectionOfCompleteSideGroupAtoms()
   // Dave
-  int local_debug = -1;
-  int model_index_ = this_assembly->GetModelIndex();
+  int local_debug = 1;
   std::vector<std::string> orientations = std::vector<std::string>();
-  std::vector<std::vector<MolecularModeling::Atom*>> side_atoms = std::vector<std::vector<MolecularModeling::Atom*>>();
-  std::vector<MolecularModeling::Atom*> default_atom_vector = std::vector<MolecularModeling::Atom*>(3, NULL);
-
-  std::vector<MolecularModeling::Atom*> debugCycles = cycle_atoms_;
-  for(std::vector<MolecularModeling::Atom*>::iterator it = cycle_atoms_.begin(); it != cycle_atoms_.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
+  if(!cycle_atoms_.empty())
   {
-    orientations.push_back("N");
-    side_atoms.push_back(default_atom_vector);
-    unsigned int index = distance(cycle_atoms_.begin(), it);
-    MolecularModeling::Atom* prev_atom;
-    MolecularModeling::Atom* current_atom = (*it);
-    MolecularModeling::Atom* next_atom;
-    if(index == 0)///if the current atom is the anomeric atom
+    int model_index_ = this_assembly->GetModelIndex();
+    std::vector<std::vector<MolecularModeling::Atom*>> side_atoms = std::vector<std::vector<MolecularModeling::Atom*>>();
+    std::vector<MolecularModeling::Atom*> default_atom_vector = std::vector<MolecularModeling::Atom*>(3, NULL);
+    for(std::vector<MolecularModeling::Atom*>::iterator it = cycle_atoms_.begin(); it != cycle_atoms_.end() - 1; it++) ///iterate on cycle atoms except the oxygen in the ring
     {
-      prev_atom = cycle_atoms_.at(cycle_atoms_.size() - 1); ///previous atom is the oxygen(last atom of the sorted cycle)
-    }
-    else
-    {
-      prev_atom = cycle_atoms_.at(index - 1);
-    }
-    next_atom = cycle_atoms_.at(index + 1);
-
-    ///Calculating the plane based on the two ring neighbors of the current atom
-    GeometryTopology::Coordinate prev_atom_coord = GeometryTopology::Coordinate(*prev_atom->GetCoordinates().at(model_index_));
-    GeometryTopology::Coordinate current_atom_coord = GeometryTopology::Coordinate(*current_atom->GetCoordinates().at(model_index_));
-    GeometryTopology::Coordinate next_atom_coord = GeometryTopology::Coordinate(*next_atom->GetCoordinates().at(model_index_));
-    prev_atom_coord.operator -(current_atom_coord) ;
-    next_atom_coord.operator -(current_atom_coord) ;
-    GeometryTopology::Plane plane = GeometryTopology::Plane();
-    plane.SetV1(prev_atom_coord);
-    plane.SetV2(next_atom_coord);
-    GeometryTopology::Coordinate normal_v = plane.GetUnitNormalVector();
-
-    ///Calculating the orientation of the side atoms
-    MolecularModeling::AtomNode* node = current_atom->GetNode();
-    std::vector<MolecularModeling::Atom*> neighbors = node->GetNodeNeighbors();
-    int not_h_neighbors = 0;
-    for(std::vector<MolecularModeling::Atom*>::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
-    {
-      MolecularModeling::Atom* neighbor = (*it1);
-      std::string neighbor_id = neighbor->GetId();
-      if(cycle_atoms_str_.find(neighbor_id) == std::string::npos) ///if not one of the cycle atoms
+      orientations.push_back("N");
+      side_atoms.push_back(default_atom_vector);
+      unsigned int index = distance(cycle_atoms_.begin(), it);
+      MolecularModeling::Atom* prev_atom;
+      MolecularModeling::Atom* current_atom = (*it);
+      MolecularModeling::Atom* next_atom;
+      if(index == 0)///if the current atom is the anomeric atom
       {
-        if(neighbor->GetName().at(0) != 'H') ///deoxy check
-        {
-          not_h_neighbors++;
-        }
+        prev_atom = cycle_atoms_.at(cycle_atoms_.size() - 1); ///previous atom is the oxygen(last atom of the sorted cycle)
       }
-    }
-    if(not_h_neighbors != 0)
-    {
+      else
+      {
+        prev_atom = cycle_atoms_.at(index - 1);
+      }
+      next_atom = cycle_atoms_.at(index + 1);
+
+      ///Calculating the plane based on the two ring neighbors of the current atom
+      GeometryTopology::Coordinate prev_atom_coord = GeometryTopology::Coordinate(*prev_atom->GetCoordinates().at(model_index_));
+      GeometryTopology::Coordinate current_atom_coord = GeometryTopology::Coordinate(*current_atom->GetCoordinates().at(model_index_));
+      GeometryTopology::Coordinate next_atom_coord = GeometryTopology::Coordinate(*next_atom->GetCoordinates().at(model_index_));
+      prev_atom_coord.operator -(current_atom_coord) ;
+      next_atom_coord.operator -(current_atom_coord) ;
+      GeometryTopology::Plane plane = GeometryTopology::Plane();
+      plane.SetV1(prev_atom_coord);
+      plane.SetV2(next_atom_coord);
+      GeometryTopology::Coordinate normal_v = plane.GetUnitNormalVector();
+
+      ///Calculating the orientation of the side atoms
+      MolecularModeling::AtomNode* node = current_atom->GetNode();
+      std::vector<MolecularModeling::Atom*> neighbors = node->GetNodeNeighbors();
+      int not_h_neighbors = 0;
       for(std::vector<MolecularModeling::Atom*>::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
       {
         MolecularModeling::Atom* neighbor = (*it1);
         std::string neighbor_id = neighbor->GetId();
         if(cycle_atoms_str_.find(neighbor_id) == std::string::npos) ///if not one of the cycle atoms
         {
-          // if(neighbor->GetName().at(0) != 'H') ///deoxy check
-          //     not_h_neighbors++;
-          GeometryTopology::Coordinate side_atom_coord = GeometryTopology::Coordinate(*neighbor->GetCoordinates().at(model_index_));
-          side_atom_coord.operator -(current_atom_coord);
-          side_atom_coord.Normalize();
-          double theta = acos(normal_v.DotProduct(side_atom_coord));
-
-          if(index == 0 && neighbor_id.at(0) == 'C')///if anomeric atom has a non-ring carbon neighbor
+          if(neighbor->GetName().at(0) != 'H') ///deoxy check
           {
-            if(orientations.at(index).compare("N") == 0) ///if the position of non-ring oxygen or nitrogen hasn't been set yet
-            {
-              side_atoms.at(index).at(0) = neighbor;
-              neighbor -> SetIsSideChain(true);
-              neighbor->SetIsExocyclicCarbon(true);
-              if(theta > (gmml::PI_RADIAN/2))
-              {
-                orientations.at(index) = "-1D";
-              }
-              else
-              {
-                orientations.at(index) = "-1U";
-              }
-              continue;
-            }
-            else
-            { ///position of non-ring oxygen or nitrogen + the non-ring carbon
-              std::stringstream ss;
-              if(theta > (gmml::PI_RADIAN/2))
-              {
-                ss << orientations.at(index) << "-1D";
-                orientations.at(index) = ss.str();
-                side_atoms.at(index).at(0) = neighbor;
-                neighbor -> SetIsSideChain(true);
-              }
-              else
-              {
-                ss << orientations.at(index) << "-1U";
-                orientations.at(index) = ss.str();
-                side_atoms.at(index).at(0) = neighbor;
-                neighbor -> SetIsSideChain(true);
-              }
-              break;
-            }
+            not_h_neighbors++;
           }
-          else if(neighbor_id.at(0) == 'O' || neighbor_id.at(0) == 'N')///if neighbor is a non-ring oxygen or nitrogen
+        }
+      }
+      if(not_h_neighbors != 0)
+      {
+        for(std::vector<MolecularModeling::Atom*>::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
+        {
+          MolecularModeling::Atom* neighbor = (*it1);
+          std::string neighbor_id = neighbor->GetId();
+          if(cycle_atoms_str_.find(neighbor_id) == std::string::npos) ///if not one of the cycle atoms
           {
-            if(index == 0)///current atom is anomeric
+            // if(neighbor->GetName().at(0) != 'H') ///deoxy check
+            //     not_h_neighbors++;
+            GeometryTopology::Coordinate side_atom_coord = GeometryTopology::Coordinate(*neighbor->GetCoordinates().at(model_index_));
+            side_atom_coord.operator -(current_atom_coord);
+            side_atom_coord.Normalize();
+            double theta = acos(normal_v.DotProduct(side_atom_coord));
+
+            if(index == 0 && neighbor_id.at(0) == 'C')///if anomeric atom has a non-ring carbon neighbor
             {
-              if(orientations.at(index).compare("N") == 0) ///if the position of non-ring carbon neighbor (if exist) hasn't been set yet
+              if(orientations.at(index).compare("N") == 0) ///if the position of non-ring oxygen or nitrogen hasn't been set yet
+              {
+                side_atoms.at(index).at(0) = neighbor;
+                neighbor -> SetIsSideChain(true);
+                neighbor->SetIsExocyclicCarbon(true);
+                if(theta > (gmml::PI_RADIAN/2))
+                {
+                  orientations.at(index) = "-1D";
+                }
+                else
+                {
+                  orientations.at(index) = "-1U";
+                }
+                continue;
+              }
+              else
+              { ///position of non-ring oxygen or nitrogen + the non-ring carbon
+                std::stringstream ss;
+                if(theta > (gmml::PI_RADIAN/2))
+                {
+                  ss << orientations.at(index) << "-1D";
+                  orientations.at(index) = ss.str();
+                  side_atoms.at(index).at(0) = neighbor;
+                  neighbor -> SetIsSideChain(true);
+                }
+                else
+                {
+                  ss << orientations.at(index) << "-1U";
+                  orientations.at(index) = ss.str();
+                  side_atoms.at(index).at(0) = neighbor;
+                  neighbor -> SetIsSideChain(true);
+                }
+                break;
+              }
+            }
+            else if(neighbor_id.at(0) == 'O' || neighbor_id.at(0) == 'N')///if neighbor is a non-ring oxygen or nitrogen
+            {
+              if(index == 0)///current atom is anomeric
+              {
+                if(orientations.at(index).compare("N") == 0) ///if the position of non-ring carbon neighbor (if exist) hasn't been set yet
+                {
+                  if(theta > (gmml::PI_RADIAN/2))
+                  {
+                    orientations.at(index) = "D";
+                    side_atoms.at(index).at(1) = neighbor;
+                    neighbor -> SetIsSideChain(true);
+                  }
+                  else
+                  {
+                    orientations.at(index) = "U";
+                    side_atoms.at(index).at(1) = neighbor;
+                    neighbor -> SetIsSideChain(true);
+                  }
+                  continue;
+                }
+                else
+                { ///position of non-ring oxygen or nitrogen + the non-ring carbon
+                  std::stringstream ss;
+                  if(theta > (gmml::PI_RADIAN/2))
+                  {
+                    ss << "D" << orientations.at(index);
+                    orientations.at(index) = ss.str();
+                    side_atoms.at(index).at(1) = neighbor;
+                    neighbor -> SetIsSideChain(true);
+                  }
+                  else
+                  {
+                    ss << "U" << orientations.at(index);
+                    orientations.at(index) = ss.str();
+                    side_atoms.at(index).at(1) = neighbor;
+                    neighbor -> SetIsSideChain(true);
+                  }
+                  break;
+                }
+              }
+              else
               {
                 if(theta > (gmml::PI_RADIAN/2))
                 {
@@ -590,128 +640,92 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
                   side_atoms.at(index).at(1) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
-                continue;
+                break;
               }
-              else
-              { ///position of non-ring oxygen or nitrogen + the non-ring carbon
-                std::stringstream ss;
+            }
+            else if(index == cycle_atoms_.size() - 2 && neighbor_id.at(0) == 'C')///if the last ring carbon has a non-ring carbon neighbor
+            {
+
+              //Add +n exocyclic flags TODO for Dave
+
+
+
+              ///Check if neighbor of neighbor is oxygen or nitrogen
+              MolecularModeling::AtomNode* neighbor_node = neighbor->GetNode();
+              std::vector<MolecularModeling::Atom*> neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
+              int o_neighbors = 0;
+              int not_h_neighbors = 0;
+              for(std::vector<MolecularModeling::Atom*>::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
+              {
+                MolecularModeling::Atom* neighbor_of_neighbor = (*it2);
+                std::string neighbor_of_neighbor_id = neighbor_of_neighbor->GetId();
+                if((cycle_atoms_str_.find(neighbor_of_neighbor_id) == std::string::npos) &&
+                  ((neighbor_of_neighbor_id.at(0) == 'O') || (neighbor_of_neighbor_id.at(0) == 'N'))) ///if neighbor of neighbor is a non-ring oxygen or nitrogen
+                {
+                  o_neighbors++;
+                }
+                if(cycle_atoms_str_.find(neighbor_of_neighbor_id) == std::string::npos &&
+                  (neighbor_of_neighbor_id.at(0) != 'H'))///if neighbor of neighbor is any non-ring atom other than hydrogen
+                {
+                  not_h_neighbors++;
+                }
+              }
+              if (o_neighbors >= 1)
+              {
                 if(theta > (gmml::PI_RADIAN/2))
                 {
-                  ss << "D" << orientations.at(index);
-                  orientations.at(index) = ss.str();
-                  side_atoms.at(index).at(1) = neighbor;
+                  orientations.at(index) = "D";
+                  side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 else
                 {
-                  ss << "U" << orientations.at(index);
-                  orientations.at(index) = ss.str();
-                  side_atoms.at(index).at(1) = neighbor;
+                  orientations.at(index) = "U";
+                  side_atoms.at(index).at(0) = neighbor;
+                  neighbor -> SetIsSideChain(true);
+                }
+              }
+              else if(not_h_neighbors == 0)///Type Deoxy
+              {
+                if(theta > (gmml::PI_RADIAN/2))
+                {
+                  orientations.at(index) = "Dd";
+                  side_atoms.at(index).at(0) = neighbor;
+                  neighbor -> SetIsSideChain(true);
+                }
+                else
+                {
+                  orientations.at(index) = "Ud";
+                  side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
                 }
                 break;
               }
+              if(orientations.at(index).compare("N") != 0)
+                break;
             }
-            else
-            {
-              if(theta > (gmml::PI_RADIAN/2))
-              {
-                orientations.at(index) = "D";
-                side_atoms.at(index).at(1) = neighbor;
-                neighbor -> SetIsSideChain(true);
-              }
-              else
-              {
-                orientations.at(index) = "U";
-                side_atoms.at(index).at(1) = neighbor;
-                neighbor -> SetIsSideChain(true);
-              }
-              break;
-            }
-          }
-          else if(index == cycle_atoms_.size() - 2 && neighbor_id.at(0) == 'C')///if the last ring carbon has a non-ring carbon neighbor
-          {
-
-            //Add +n exocyclic flags TODO for Dave
-
-
-
-            ///Check if neighbor of neighbor is oxygen or nitrogen
-            MolecularModeling::AtomNode* neighbor_node = neighbor->GetNode();
-            std::vector<MolecularModeling::Atom*> neighbors_of_neighbor = neighbor_node->GetNodeNeighbors();
-            int o_neighbors = 0;
-            int not_h_neighbors = 0;
-            for(std::vector<MolecularModeling::Atom*>::iterator it2 = neighbors_of_neighbor.begin(); it2 != neighbors_of_neighbor.end(); it2++)
-            {
-              MolecularModeling::Atom* neighbor_of_neighbor = (*it2);
-              std::string neighbor_of_neighbor_id = neighbor_of_neighbor->GetId();
-              if((cycle_atoms_str_.find(neighbor_of_neighbor_id) == std::string::npos) &&
-                ((neighbor_of_neighbor_id.at(0) == 'O') || (neighbor_of_neighbor_id.at(0) == 'N'))) ///if neighbor of neighbor is a non-ring oxygen or nitrogen
-              {
-                o_neighbors++;
-              }
-              if(cycle_atoms_str_.find(neighbor_of_neighbor_id) == std::string::npos &&
-                (neighbor_of_neighbor_id.at(0) != 'H'))///if neighbor of neighbor is any non-ring atom other than hydrogen
-              {
-                not_h_neighbors++;
-              }
-            }
-            if (o_neighbors >= 1)
-            {
-              if(theta > (gmml::PI_RADIAN/2))
-              {
-                orientations.at(index) = "D";
-                side_atoms.at(index).at(0) = neighbor;
-                neighbor -> SetIsSideChain(true);
-              }
-              else
-              {
-                orientations.at(index) = "U";
-                side_atoms.at(index).at(0) = neighbor;
-                neighbor -> SetIsSideChain(true);
-              }
-            }
-            else if(not_h_neighbors == 0)///Type Deoxy
-            {
-              if(theta > (gmml::PI_RADIAN/2))
-              {
-                orientations.at(index) = "Dd";
-                side_atoms.at(index).at(0) = neighbor;
-                neighbor -> SetIsSideChain(true);
-              }
-              else
-              {
-                orientations.at(index) = "Ud";
-                side_atoms.at(index).at(0) = neighbor;
-                neighbor -> SetIsSideChain(true);
-              }
-              break;
-            }
-            if(orientations.at(index).compare("N") != 0)
-              break;
           }
         }
       }
     }
+    side_atoms_ = side_atoms;
+
+
+    // if ((local_debug > 0) && (side_atoms.length() > 0))
+    // {
+    //   for (std::vector<std::vector<MolecularModeling::Atom*>>::iterator sidestd::vector<MolecularModeling::Atom*>IT = side_atoms.begin(); sidestd::vector<MolecularModeling::Atom*>IT != side_atoms.end(); sidestd::vector<MolecularModeling::Atom*>IT ++)
+    //   {
+    //     std::vector<MolecularModeling::Atom*> sidestd::vector<MolecularModeling::Atom*> = (*sidestd::vector<MolecularModeling::Atom*>IT);
+    //     for (std::vector<MolecularModeling::Atom*>::iterator sideAtomIT = sidestd::vector<MolecularModeling::Atom*>.begin(); sideAtomIT != sidestd::vector<MolecularModeling::Atom*>.end(); sideAtomIT++)
+    //     {
+    //       MolecularModeling::Atom* sideAtom = (*sideAtomIT);
+    //       std::stringstream debugStr;
+    //       debugStr << "Side atom: " << sideAtom->GetName();
+    //       gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
+    //     }
+    //   }
+    // }
   }
-  side_atoms_ = side_atoms;
-
-
-  // if ((local_debug > 0) && (side_atoms.length() > 0))
-  // {
-  //   for (std::vector<std::vector<MolecularModeling::Atom*>>::iterator sidestd::vector<MolecularModeling::Atom*>IT = side_atoms.begin(); sidestd::vector<MolecularModeling::Atom*>IT != side_atoms.end(); sidestd::vector<MolecularModeling::Atom*>IT ++)
-  //   {
-  //     std::vector<MolecularModeling::Atom*> sidestd::vector<MolecularModeling::Atom*> = (*sidestd::vector<MolecularModeling::Atom*>IT);
-  //     for (std::vector<MolecularModeling::Atom*>::iterator sideAtomIT = sidestd::vector<MolecularModeling::Atom*>.begin(); sideAtomIT != sidestd::vector<MolecularModeling::Atom*>.end(); sideAtomIT++)
-  //     {
-  //       MolecularModeling::Atom* sideAtom = (*sideAtomIT);
-  //       std::stringstream debugStr;
-  //       debugStr << "Side atom: " << sideAtom->GetName();
-  //       gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
-  //     }
-  //   }
-  // }
-
   return orientations;
 }
 
