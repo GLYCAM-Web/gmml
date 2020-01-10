@@ -1140,7 +1140,6 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
               break;
           }
         }
-        //Add function to get the formula of the derivative
         value = GetFormula(target);
         if(value.compare("") != 0)
         {

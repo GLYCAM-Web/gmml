@@ -101,7 +101,7 @@ Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
       gmml::log(__LINE__, __FILE__, gmml::INF, atom->GetId());
     }
     //Hydrogens can't form cycles (they can only form 1 bond) so they are ignored
-    if(atom->GetId()[0] != 'H')
+    if(atom->GetElementSymbol() != "H")
     {
       newAtoms.push_back(atom);
     }
