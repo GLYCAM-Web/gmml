@@ -406,7 +406,7 @@ MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Not
       ///Seems redundant to have this multiple times, if it is going to say the same thing and be generated for all cases after the first logic check.
       ///Specially if we ever want to change this Note to say something different. Like I am doing now. :)
       std::stringstream ss;
-      ss << "Could not find glycosidic oxygen or nitrogen within " << gmml::dCutOff << " Angstroms of a ring carbon bonded to the ring oxygen(" << node->GetAtom()->GetName() << ").";
+      ss << "Could not find glycosidic oxygen or nitrogen within " << gmml::maxCutOff << " Angstroms of a ring carbon bonded to the ring oxygen(" << node->GetAtom()->GetName() << ").";
       anomeric_note->description_ = ss.str();
 
       ///Check the order of the carbons based on their names to locate the anomeric
@@ -482,7 +482,7 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
 {
   //9/14/18 Removed side atom initialization in this function and either moved it to Yao's InitiateDetectionOfCompleteSideGroupAtoms()
   // Dave
-  int local_debug = 1;
+  int local_debug = -1;
   std::vector<std::string> orientations = std::vector<std::string>();
   if(!cycle_atoms_.empty())
   {

@@ -247,7 +247,7 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
       {
           Glycan::Monosaccharide* thisNeighbor = (*it2).second;
           std::string neighborMonoID = thisNeighbor->cycle_atoms_[0]->GetResidue()->GetId();
-          Glycan::GlycosidicLinkage* thisLinkage = (*it2).first;
+          Glycan::GlycosidicLinkage* thisLinkage = (*it2).first;      
           int NeighborNum = thisNeighbor->oligosaccharide_index_;
           //residue ID, atom name, residue ID2, atom name 2.
           std::vector<std::string> residue_links_vector;
@@ -298,10 +298,10 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
             residue_links_vector.push_back(thisID);
           }
             thisOutput.residue_links.push_back(residue_links_vector);
-
+      
       }
-
-
+    
+      
       //Errors at the mono level
       for(std::vector<Glycan::Note*>::iterator it3 = thisMono->mono_notes_.begin(); it3 != thisMono->mono_notes_.end(); it3++)
       {
@@ -309,8 +309,8 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
         std::string thisNoteString = thisNote->type_ + ": " + thisNote->description_;
         thisOutput.error_warning_messages.push_back(thisNoteString);
       }
-
-
+    
+      
     }
     //Errors at the Oligo level
     for(std::vector<Glycan::Note*>::iterator it = thisOligo->oligo_notes_.begin(); it != thisOligo->oligo_notes_.end(); it++)
@@ -327,7 +327,7 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
 
 std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology, bool individualOntologies, std::string CCD_Path)
 {
-  int local_debug = -1;
+  int local_debug = 1;
   gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap( amino_lib_files );
   if(local_debug > 0)
   {
@@ -366,10 +366,10 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
   //FILTERING OUT CYCLES WITH DOUBLE BONDS and add them to new cyclemap
   CycleMap double_bond_cycles = FilterCyclesWithDoubleBonds( cycles );
-
-
+  
+  
   //TODO figure out what to do with double bonded cycles
-
+  
   if(local_debug > 0)
   {
     std::cout << "\n" << "Cycles after discarding rings containing C-C double bonds" << "\n";
@@ -392,17 +392,14 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   {
     std::string cycle_atoms_str = ( *it ).first;
     MolecularModeling::AtomVector cycle_atoms = ( *it ).second;
-    if(!cycle_atoms.empty())
+    Glycan::Monosaccharide* mono = new Glycan::Monosaccharide(&cycle_atoms_str, cycle_atoms, this, CCD_Path);
+    mono->assembly_ = this;
+    monos.push_back(mono);
+    if(local_debug > 0)
     {
-      Glycan::Monosaccharide* mono = new Glycan::Monosaccharide(&cycle_atoms_str, cycle_atoms, this, CCD_Path);
-      mono->assembly_ = this;
-      monos.push_back(mono);
-      if(local_debug > 0)
-      {
-        std::cout << cycle_atoms_str << "\n";
-        ///e.g. C1_3810_NAG_A_1521_?_?_1-O5_3821_NAG_A_1521_?_?_1-
-        ///C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
-      }
+      std::cout << cycle_atoms_str << "\n"; 
+      ///e.g. C1_3810_NAG_A_1521_?_?_1-O5_3821_NAG_A_1521_?_?_1-
+      ///C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
     }
   }
   std::map <unsigned long long, Glycan::Monosaccharide* > ordered_monos_map =  std::map <unsigned long long, Glycan::Monosaccharide*>();
@@ -504,7 +501,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         }
       }
     }
-
+    
     ///GLYPROBITY REPORT (GEOMETRY OUTLIERS)
     if( glyprobity_report ) {
       CalculateGlyprobityGeometryOutliers( mono );
@@ -518,7 +515,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       std::cout << "Complete name: " << mono->sugar_name_.monosaccharide_name_ << "\n";
       std::cout << "Short name: " << mono->sugar_name_.monosaccharide_short_name_ << "\n";
     }
-
+    
     //Check author's naming vs what's detected
     if(CCD_Path != " ")
     {
@@ -592,7 +589,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     {
       if (this_residue->GetIsSugar() == false)
       {
-        if(this_residue->GetId()[12] == '?')//alternate atomic locations caused new residues that weren't assigned as sugars.  A ? at 12 in the ID
+        if(this_residue->GetId()[12] == '?')//alternate atomic locations caused new residues that weren't assigned as sugars.  A ? at 12 in the ID 
                                             //means it isnt an atom with alternate coordinates
         {
           Glycan::Note* undetected_note = new Glycan::Note();
@@ -672,9 +669,9 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     }
   }
   ///POPULATING GMMO ONTOLOGY
-  if( populate_ontology )
+  if( populate_ontology ) 
   {
-    if( testOligos.size() > 0 )
+    if( testOligos.size() > 0 ) 
     {
       std::ofstream out_file;
       if(individualOntologies)
@@ -964,7 +961,7 @@ Assembly::CycleMap Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
         {
           all_single_bond_filtered_cycles[cycle_str] = cycle_atoms;
         }
-
+            
         else
         {
           all_double_bond_cycles[cycle_str] = cycle_atoms;
@@ -1183,115 +1180,96 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
 
 MolecularModeling::AtomVector Assembly::SortCycle(MolecularModeling::AtomVector cycle, MolecularModeling::Atom *anomeric_atom, std::stringstream& sorted_cycle_stream)
 {
-  int local_debug = -1;
-  MolecularModeling::AtomVector sorted_cycle = MolecularModeling::AtomVector();
-  if(local_debug > 0)
-  {
-    gmml::log(__LINE__,__FILE__,gmml::INF, cycle[0]->GetResidue()->GetName());
-    gmml::log(__LINE__,__FILE__,gmml::INF, std::to_string(cycle.size()));
-    gmml::log(__LINE__,__FILE__,gmml::INF, "The anomeric carbon is: " + anomeric_atom->GetId());
-    gmml::log(__LINE__,__FILE__,gmml::INF, "The anomeric carbon element is: " + anomeric_atom->GetElementSymbol());
-  }
-  for(MolecularModeling::AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
-  {
-    MolecularModeling::Atom* atom = (*it);
-    unsigned int index = distance(cycle.begin(), it);
-    if(local_debug > 0)
+    MolecularModeling::AtomVector sorted_cycle = MolecularModeling::AtomVector();
+    for(MolecularModeling::AtomVector::iterator it = cycle.begin(); it != cycle.end(); it++)
     {
-      gmml::log(__LINE__,__FILE__,gmml::INF,atom->GetId());
-      gmml::log(__LINE__,__FILE__,gmml::INF,atom->GetName());
-      gmml::log(__LINE__,__FILE__,gmml::INF,atom->GetElementSymbol());
-      gmml::log(__LINE__,__FILE__,gmml::INF, std::to_string(index));
+        MolecularModeling::Atom* atom = (*it);
+        unsigned int index = distance(cycle.begin(), it);
+        if(atom->GetId().compare(anomeric_atom->GetId()) == 0)
+        {
+            if(index == cycle.size() - 1)///anomeric atom is at the end of the cycle
+            {
+                sorted_cycle.push_back(anomeric_atom);///anomeric atom as the first atom of the cycle
+                sorted_cycle_stream << anomeric_atom->GetId() << "-";
+                anomeric_atom->SetIsRing(true);
+                MolecularModeling::Atom* a0 = cycle.at(0);
+                if(a0->GetName().substr(0,1).compare("O") == 0)///a0 is oxygen so the std::vector is in reverse order
+                {
+                    for(MolecularModeling::AtomVector::iterator it1 = it - 1; it1 != cycle.begin(); it1--)///atoms before the anomeric atom in reverse order
+                    {
+                        MolecularModeling::Atom* a = (*it1);
+                        sorted_cycle.push_back(a);
+                        sorted_cycle_stream << a->GetId() << "-";
+                        a->SetIsRing(true);
+                    }
+                    sorted_cycle.push_back((*cycle.begin()));
+                    sorted_cycle_stream << (*cycle.begin())->GetId();
+                    (*cycle.begin())->SetIsRing(true);
+                }
+                else
+                {
+                    for(MolecularModeling::AtomVector::iterator it1 = cycle.begin(); it1 != it; it1++)///atoms before the anomeric atom from beginning of std::vector
+                    {
+                        MolecularModeling::Atom* a = (*it1);
+                        sorted_cycle.push_back(a);
+                        a->SetIsRing(true);
+                        if(it1 == it - 1)
+                          sorted_cycle_stream << a->GetId();
+                        else
+                          sorted_cycle_stream << a->GetId() << "-";
+                    }
+                }
+            }
+            else///anomeric is not at the end of the cycle
+            {
+                MolecularModeling::Atom* next_atom = cycle.at(index + 1);
+                if(next_atom->GetName().substr(0,1).compare("O") == 0)///next atom is oxygen so the std::vector is in reverse order
+                {
+                    for(MolecularModeling::AtomVector::iterator it1 = it; it1 != cycle.begin(); it1--) ///atoms befor anomeric atom down to beginning of the std::vector
+                    {
+                        MolecularModeling::Atom* a_before = (*it1);
+                        sorted_cycle.push_back(a_before);
+                        sorted_cycle_stream << a_before->GetId() << "-";
+                        a_before->SetIsRing(true);
+                    }
+                    sorted_cycle.push_back((*cycle.begin()));
+                    sorted_cycle_stream << (*cycle.begin())->GetId() << "-";
+                    (*cycle.begin())->SetIsRing(true);
+                    for(MolecularModeling::AtomVector::iterator it2 = cycle.end() - 1; it2 != it; it2--)///atoms from end of the std::vector down to anomeric atom
+                    {
+                        MolecularModeling::Atom* atom_after = (*it2);
+                        sorted_cycle.push_back(atom_after);
+                        atom_after->SetIsRing(true);
+                        if(it2 == it + 1)
+                          sorted_cycle_stream << atom_after->GetId();
+                        else
+                          sorted_cycle_stream << atom_after->GetId() << "-";
+                    }
+                }
+                else///oxygen is before the anomeric atom so the std::vector is in normal order
+                {
+                    for(MolecularModeling::AtomVector::iterator it1 = it; it1 != cycle.end(); it1++) ///atoms after anomeric atom to the end of the std::vector
+                    {
+                        MolecularModeling::Atom* atom_after = (*it1);
+                        sorted_cycle.push_back(atom_after);
+                        atom_after->SetIsRing(true);
+                        sorted_cycle_stream << atom_after->GetId() << "-";
+                    }
+                    for(MolecularModeling::AtomVector::iterator it2 = cycle.begin(); it2 != it; it2++)///atoms befor the anomeric atom from beginning of std::vector
+                    {
+                        MolecularModeling::Atom* atom_before = (*it2);
+                        sorted_cycle.push_back(atom_before);
+                        atom_before->SetIsRing(true);
+                        if(it2 == it - 1)
+                          sorted_cycle_stream << atom_before->GetId();
+                        else
+                          sorted_cycle_stream << atom_before->GetId() << "-";
+                    }
+                }
+            }
+        }
     }
-    if(atom->GetId().compare(anomeric_atom->GetId()) == 0)
-    {
-      if(index == cycle.size() - 1)///anomeric atom is at the end of the cycle
-      {
-        sorted_cycle.push_back(anomeric_atom);///anomeric atom as the first atom of the cycle
-        sorted_cycle_stream << anomeric_atom->GetId() << "-";
-        anomeric_atom->SetIsRing(true);
-        MolecularModeling::Atom* a0 = cycle.at(0);
-        if(a0->GetName().substr(0,1).compare("O") == 0)///a0 is oxygen so the std::vector is in reverse order
-        {
-          for(MolecularModeling::AtomVector::iterator it1 = it - 1; it1 != cycle.begin(); it1--)///atoms before the anomeric atom in reverse order
-          {
-            MolecularModeling::Atom* a = (*it1);
-            sorted_cycle.push_back(a);
-            sorted_cycle_stream << a->GetId() << "-";
-            a->SetIsRing(true);
-          }
-          sorted_cycle.push_back((*cycle.begin()));
-          sorted_cycle_stream << (*cycle.begin())->GetId();
-          (*cycle.begin())->SetIsRing(true);
-        }
-        else
-        {
-          for(MolecularModeling::AtomVector::iterator it1 = cycle.begin(); it1 != it; it1++)///atoms before the anomeric atom from beginning of std::vector
-          {
-            MolecularModeling::Atom* a = (*it1);
-            sorted_cycle.push_back(a);
-            a->SetIsRing(true);
-            if(it1 == it - 1)
-              sorted_cycle_stream << a->GetId();
-            else
-              sorted_cycle_stream << a->GetId() << "-";
-          }
-        }
-      }
-      else///anomeric is not at the end of the cycle
-      {
-        MolecularModeling::Atom* next_atom = cycle.at(index + 1);
-        if(next_atom->GetName().substr(0,1).compare("O") == 0)///next atom is oxygen so the std::vector is in reverse order
-        {
-          for(MolecularModeling::AtomVector::iterator it1 = it; it1 != cycle.begin(); it1--) ///atoms befor anomeric atom down to beginning of the std::vector
-          {
-            MolecularModeling::Atom* a_before = (*it1);
-            sorted_cycle.push_back(a_before);
-            sorted_cycle_stream << a_before->GetId() << "-";
-            a_before->SetIsRing(true);
-          }
-          sorted_cycle.push_back((*cycle.begin()));
-          sorted_cycle_stream << (*cycle.begin())->GetId() << "-";
-          (*cycle.begin())->SetIsRing(true);
-          for(MolecularModeling::AtomVector::iterator it2 = cycle.end() - 1; it2 != it; it2--)///atoms from end of the std::vector down to anomeric atom
-          {
-            MolecularModeling::Atom* atom_after = (*it2);
-            sorted_cycle.push_back(atom_after);
-            atom_after->SetIsRing(true);
-            if(it2 == it + 1)
-              sorted_cycle_stream << atom_after->GetId();
-            else
-              sorted_cycle_stream << atom_after->GetId() << "-";
-          }
-        }
-        else///oxygen is before the anomeric atom so the std::vector is in normal order
-        {
-          for(MolecularModeling::AtomVector::iterator it1 = it; it1 != cycle.end(); it1++) ///atoms after anomeric atom to the end of the std::vector
-          {
-            MolecularModeling::Atom* atom_after = (*it1);
-            sorted_cycle.push_back(atom_after);
-            atom_after->SetIsRing(true);
-            sorted_cycle_stream << atom_after->GetId() << "-";
-          }
-          for(MolecularModeling::AtomVector::iterator it2 = cycle.begin(); it2 != it; it2++)///atoms befor the anomeric atom from beginning of std::vector
-          {
-            MolecularModeling::Atom* atom_before = (*it2);
-            sorted_cycle.push_back(atom_before);
-            atom_before->SetIsRing(true);
-            if(it2 == it - 1)
-              sorted_cycle_stream << atom_before->GetId();
-            else
-              sorted_cycle_stream << atom_before->GetId() << "-";
-          }
-        }
-      }
-    }
-  }
-  if(local_debug > 0)
-  {
-    gmml::log(__LINE__,__FILE__,gmml::INF, sorted_cycle_stream.str());
-  }
-  return sorted_cycle;
+    return sorted_cycle;
 }
 
 // std::vector<std::string> Assembly::GetSideGroupOrientations(Glycan::Monosaccharide* mono, std::string cycle_atoms_str)
@@ -2691,17 +2669,17 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
   // }
   // if(NxO == 'N')
   // {
-  //   if(pattern.str().compare("xCH-N-CHHH") == 0 ||
-  //     pattern.str().compare("xCH-NH-CHHH") == 0 ||
-  //     pattern.str().compare("xCH-NH-C") == 0 ||
+  //   if(pattern.str().compare("xCH-N-CHHH") == 0 || 
+  //     pattern.str().compare("xCH-NH-CHHH") == 0 || 
+  //     pattern.str().compare("xCH-NH-C") == 0 || 
   //     pattern.str().compare("xCH-N-C") == 0 ||
-  //     pattern.str().compare("xCHH-N-CHHH") == 0 ||
-  //     pattern.str().compare("xCHH-NH-CHHH") == 0 ||
-  //     pattern.str().compare("xCHH-NH-C") == 0 ||
+  //     pattern.str().compare("xCHH-N-CHHH") == 0 || 
+  //     pattern.str().compare("xCHH-NH-CHHH") == 0 || 
+  //     pattern.str().compare("xCHH-NH-C") == 0 || 
   //     pattern.str().compare("xCHH-N-C") == 0 ||
-  //     pattern.str().compare("xC-NH-CHHH") == 0 ||
-  //     pattern.str().compare("xC-NH-C") == 0 ||
-  //     pattern.str().compare("xC-N-CHHH") == 0 ||
+  //     pattern.str().compare("xC-NH-CHHH") == 0 || 
+  //     pattern.str().compare("xC-NH-C") == 0 || 
+  //     pattern.str().compare("xC-N-CHHH") == 0 || 
   //     pattern.str().compare("xC-N-C") == 0)
   //   {
   //     return "xC-N-CH3";
@@ -2711,17 +2689,17 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
   // }
   // else if(NxO == 'O')
   // {
-  //   if(pattern.str().compare("xCH-O-CHHH") == 0 ||
-  //     pattern.str().compare("xCH-OH-CHHH") == 0 ||
-  //     pattern.str().compare("xCH-OH-C") == 0 ||
+  //   if(pattern.str().compare("xCH-O-CHHH") == 0 || 
+  //     pattern.str().compare("xCH-OH-CHHH") == 0 || 
+  //     pattern.str().compare("xCH-OH-C") == 0 || 
   //     pattern.str().compare("xCH-O-C") == 0 ||
   //     pattern.str().compare("xCHH-O-CHHH") == 0 ||
-  //     pattern.str().compare("xCHH-OH-CHHH") == 0 ||
-  //     pattern.str().compare("xCHH-OH-C") == 0 ||
+  //     pattern.str().compare("xCHH-OH-CHHH") == 0 || 
+  //     pattern.str().compare("xCHH-OH-C") == 0 || 
   //     pattern.str().compare("xCHH-O-C") == 0 ||
-  //     pattern.str().compare("xC-OH-CHHH") == 0 ||
-  //     pattern.str().compare("xC-OH-C") == 0 ||
-  //     pattern.str().compare("xC-O-CHHH") == 0 ||
+  //     pattern.str().compare("xC-OH-CHHH") == 0 || 
+  //     pattern.str().compare("xC-OH-C") == 0 || 
+  //     pattern.str().compare("xC-O-CHHH") == 0 || 
   //     pattern.str().compare("xC-O-C") == 0)
   //   {
   //     return "xC-O-CH3";
@@ -4959,16 +4937,16 @@ void Assembly::GetAuthorNaming(std::vector< std::string > amino_lib_files, Glyca
   char CCDhash = residueName[0];
   std::stringstream CCDfilepath;
   CCDfilepath << CCD_Path << "/" << CCDhash << "/" << residueName << "/" << residueName << ".pdb";
-
+  
   // Initialize an Assembly from the PDB file.
-
+  
   //The next two lines are the fastest way to check if a file exists according to https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
-  struct stat buffer;
+  struct stat buffer; 
   if( stat( CCDfilepath.str().c_str(), &buffer ) == 0 )
-  {
+  {  
     MolecularModeling::Assembly CCDassembly(CCDfilepath.str(), gmml::PDB);
-
-    //TODO Remove H atoms from CCD PDB files; They are screwing up too much in the sugar naming (AH vs A in the chemical_code_)
+    
+    //TODO Remove H atoms from CCD PDB files; They are screwing up too much in the sugar naming (AH vs A in the chemical_code_)    
     std::vector<MolecularModeling::Residue*> residues = CCDassembly.GetAllResiduesOfAssembly();
     for(std::vector<MolecularModeling::Residue*>::iterator it = residues.begin(); it != residues.end(); it++)
     {
@@ -4983,7 +4961,7 @@ void Assembly::GetAuthorNaming(std::vector< std::string > amino_lib_files, Glyca
         }
       }
     }
-
+  
     // Build by Distance
     CCDassembly.BuildStructureByDistance(10);
     // Find the Sugars.

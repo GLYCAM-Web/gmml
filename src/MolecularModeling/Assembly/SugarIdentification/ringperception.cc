@@ -78,7 +78,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
-  int local_debug = 1;
+  int local_debug = -1;
   CycleMap cycles = CycleMap();
   MolecularModeling::AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
   std::vector<std::string> path_graph_edges = std::vector<std::string> (); ///The list of edges in the molecular graph
@@ -290,7 +290,7 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
                                std::vector<std::string>& reduced_path_graph_edges, std::vector<std::string>& reduced_path_graph_labels,
                                std::string common_atom, std::vector<std::string>& cycles)
 {
-  int local_debug = 1;
+  int local_debug = -1;
   std::vector<int> to_be_deleted_edges = std::vector<int>();
   std::vector<std::string> alreadyCompared;
   if ( local_debug > 0 )
@@ -327,8 +327,8 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
       theseEdgesStrstr << source_edge_atoms.at(0) << "," << source_edge_atoms.at(1) << ":";
       theseEdgesStrstr << target_edge_atoms.at(0) << "," << target_edge_atoms.at(1);
       std::string theseEdges = theseEdgesStrstr.str();
-      // if(std::find(alreadyCompared.begin(), alreadyCompared.end(), theseEdges) == alreadyCompared.end())
-      // {
+      if(std::find(alreadyCompared.begin(), alreadyCompared.end(), theseEdges) == alreadyCompared.end())
+      {
         if(source_edge_atoms.at(0).compare(source_edge_atoms.at(1)) != 0 && target_edge_atoms.at(0).compare(target_edge_atoms.at(1)) != 0)
         {///if the edges a != b and b != c, so there might be a walk a_b_c
         if ( local_debug > 0 )
@@ -411,7 +411,7 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
           walk_found = true;
         }
       }
-      // }
+      }
       if(walk_found)
       {
         if ( local_debug > 0 )

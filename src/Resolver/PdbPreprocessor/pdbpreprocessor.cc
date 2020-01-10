@@ -2765,7 +2765,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(std::string pdb_file_path, st
                         GeometryTopology::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
                         distance = c_atom_coordinate.Distance(n_atom_coordinate);
                     }
-                    if(distance > gmml::dCutOff + 1.0)
+                    if(distance > gmml::maxCutOff + 1.0)
                     {
                         PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(c_id, *starting_sequence_number_iterator,
                                                                                                             *ending_sequence_number_iterator, sequence_numbers.at(i),
@@ -2929,7 +2929,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFileSpace::PdbFile *pdb_fi
                     GeometryTopology::Coordinate n_atom_coordinate = n_atom_of_next_residue->GetAtomOrthogonalCoordinate();
                     distance = c_atom_coordinate.Distance(n_atom_coordinate);
                 }
-                if(distance > gmml::dCutOff + 1.0)
+                if(distance > gmml::maxCutOff + 1.0)
                 {
                     PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(c_id, *starting_sequence_number_iterator,
                                                                                                         *ending_sequence_number_iterator, sequence_numbers.at(i),
