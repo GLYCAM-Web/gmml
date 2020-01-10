@@ -52,6 +52,7 @@ public:
     bool GetIfExtraAtoms();
     AtomVector GetExtraAtoms();
     void AddExtraAtomsThatMove(AtomVector extraAtoms);
+    unsigned long long GetIndex();
 
 
     //////////////////////////////////////////////////////////
@@ -75,6 +76,7 @@ public:
     void DetermineAtomsThatMove();
     // Simple meaning you only check each rotatable_dihedral in series, not every combination.
     void SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance = 0.01, int angleIncrement = 5);
+    void SetIndex(unsigned long long index);
 
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
@@ -103,6 +105,7 @@ private:
     void SetResidues(Residue *residue1, Residue *residue2);
     void SetConnectionAtoms(Residue *residue1, Residue *residue2);
     void SetConformerUsingMetadata(bool useRanges = false, int conformerNumber = 0);
+    unsigned long long GenerateIndex();
 
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
@@ -116,7 +119,7 @@ private:
     bool reverseAtomsThatMove_;
     AtomVector extraAtomsThatMove_;
     bool isExtraAtoms_ = true;
-    //gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_;
+    unsigned long long index_;
 };
 
 std::ostream& operator<<(std::ostream& os, const Residue_linkage&);

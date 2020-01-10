@@ -159,6 +159,12 @@ void Residue_linkage::AddExtraAtomsThatMove(AtomVector extraAtoms)
     isExtraAtoms_ = true;
 }
 
+unsigned long long Residue_linkage::GetIndex()
+{
+    return index_;
+}
+
+
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
@@ -291,6 +297,11 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
     return; // Note possibility of earlier return above
 }
 
+void Residue_linkage::SetIndex(unsigned long long index)
+{
+    index_ = index;
+}
+
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
@@ -334,6 +345,7 @@ void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_t
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata = this->FindMetadata(from_this_connection_atom1_, to_this_connection_atom2_);
         this->AddMetadataToRotatableDihedrals(metadata);
     }
+    this->SetIndex(this->GenerateIndex());
 }
 
 bool Residue_linkage::CheckIfViableLinkage()
@@ -471,7 +483,6 @@ void Residue_linkage::AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::G
     }
 }
 
-
 void Residue_linkage::SetResidues(Residue *residue1, Residue *residue2)
 {
     from_this_residue1_ = residue1;
@@ -493,4 +504,10 @@ void Residue_linkage::SetConformerUsingMetadata(bool useRanges, int conformerNum
     {
         entry.SetSpecificAngleEntryUsingMetadata(useRanges, conformerNumber);
     }
+}
+
+unsigned long long Residue_linkage::GenerateIndex()
+{
+    static unsigned long long s_ResidueLinkageIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
+    return s_ResidueLinkageIndex++; // makes copy of s_AtomIndex, increments the real s_AtomIndex, then returns the value in the copy
 }

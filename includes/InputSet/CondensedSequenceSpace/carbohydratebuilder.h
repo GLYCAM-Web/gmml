@@ -3,6 +3,15 @@
 #include "condensedsequence.hpp"
 #include "../../MolecularModeling/assembly.hpp"
 
+
+/*
+ * The current but probably very naive plan is that I use my awesome Residue Linkage class and not touch the condensedsequence.cc monster at all.
+ * It's a freaking mess, but if I do this correctly all I need from that function is a 3D structure with the bonding set ok.
+ * Good luck if there's a bug in there. The only problem I foresee (ha!) is that I won't know the sequence name of each linkage, e.g.:
+ * DGalpb1-4DGlcpa- is linkage index 4. I'll need to pass that info back up to Dan in the JSON object, so my plan is to write a function
+ * here that will figure that out from the 3D structure... Yeah I really don't want to touch the condensedsequence class. Have you read it?
+ * */
+
 namespace CondensedSequenceSpace
 {
 class carbohydrateBuilder
@@ -20,16 +29,26 @@ public:
     //                       ACCESSORS                      //
     //////////////////////////////////////////////////////////
 
+    CondensedSequence GetCondensedSequence();
+    std::string GetSequenceString();
+    MolecularModeling::Assembly* GetAssembly();
+    ResidueLinkageVector* GetGlycosidicLinkages();
+
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
 
+    void SetSequenceString(std::string);
+
     //////////////////////////////////////////////////////////
     //                        FUNCTIONS                     //
     //////////////////////////////////////////////////////////
-    void SetDefaultDihedralAngleGeometryWithMetadata();
-    void ResolveOverlaps();
 
+    void GenerateSingle3DStructure();
+    void SetDefaultShapeUsingMetadata();
+    void ResolveOverlaps();
+    void GenerateRotamers();
+    void WriteJSON();
 
 private:
     void FigureOutResidueLinkagesInGlycan(MolecularModeling::Residue *from_this_residue1, MolecularModeling::Residue *to_this_residue2, ResidueLinkageVector *residue_linkages);
@@ -40,7 +59,8 @@ private:
     //////////////////////////////////////////////////////////
 
     MolecularModeling::Assembly assembly_;
-    CondensedSequence sequence_;
+    CondensedSequence condensedSequence_;
+    std::string sequenceString_;
     //GlycanMetadataContainer metadataInformation_; // need this class
     ResidueLinkageVector glycosidicLinkages_;
 
@@ -55,3 +75,12 @@ private:
 //carbohydrateBuilder builder(std::string sequenceString, std::string prepFilePath, enum jobTypeOption);
 
 // Scrap
+
+/* A big problem I have now is that condensed sequence class is separate. It makes a 3D structure of a carbohydrate in an assembly
+ * and I don't know what the linkage "name" is for my linkages. i.e. Galb1-4Glc corresponds to linkage 1. Hmm. I think I need to
+ * add a name attribute to residue_linkage and bring the functionality for building the 3D structure out of the old condensed sequence class.
+ * Also need to bring in the set angles functionality. Then I can delete all the old stuff and cheer.
+ * The other thing I need to sort out is rotamer generation (easy) and selection (?).
+ * Then naming of PDB files and tracking/reporting which is which rotamer permutant.
+
+*/
