@@ -900,7 +900,7 @@ void Glycan::Monosaccharide::CheckIfSideChainIsTerminal(MolecularModeling::Atom*
 
 void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* this_assembly)
 {
-  int local_debug = 1;
+  int local_debug = -1;
   if (local_debug > 0)
   {
     std::stringstream debugStr;
