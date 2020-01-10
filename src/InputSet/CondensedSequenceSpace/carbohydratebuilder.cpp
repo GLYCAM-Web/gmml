@@ -91,17 +91,60 @@ void carbohydrateBuilder::WriteJSON()
 {
     namespace pt = boost::property_tree;
     pt::ptree root;
-    root.put("sequence", this->GetSequenceString());
+    pt::ptree child1, child2, childchild3, childchildchild4;
     pt::ptree glycosidicLinkageNode;
-    for (auto &linkage : *(this->GetGlycosidicLinkages()))
-    {
-        std::stringstream li;
-        li << "LinkageIndex" << linkage.GetIndex();
-        glycosidicLinkageNode.put(li.str(), linkage.GetIndex());
-    }
-    root.add_child("Glycosidic Linkages:", glycosidicLinkageNode);
+    pt::ptree rotatableDihedralsNode;
+    childchildchild4.put("index", "1");
+    childchild3.put("sequence", this->GetSequenceString());
+    childchild3.add_child("glycosidicLinkages", childchildchild4);
+    child1.put("type", "Sequence");
+    child2.add_child("Evaluate", childchild3);
+    root.add_child("entity", child1);
+    root.add_child("responses", child2);
+//    root.put("sequence", this->GetSequenceString());
+//    for (auto &linkage : *(this->GetGlycosidicLinkages())) // I get back a pointer to the ResidueLinkageVector so I *() it to the first element
+//    {
+//        std::stringstream ss;
+//        ss << "LinkageIndex" << linkage.GetIndex();
+//        // We only care about those linkages with multiple rotamers
+//        RotatableDihedralVector rotatableDihedrals = linkage.GetRotatableDihedralsWithMultipleRotamers();
+//        for (auto &rotatableDihedral : rotatableDihedrals)
+//        {
+//            glycosidicLinkageNode.put(ss.str(), "All likely rotamers"); // as I only want it to be there if there are multiple rotamers in the linkage
+//            for (auto &metadata : rotatableDihedral.GetMetadata())
+//            {
+//                std::stringstream ssmeta;
+//                ssmeta << "Dihedral" << metadata.number_of_bonds_from_anomeric_carbon_ << "_" << metadata.index_;
+//                rotatableDihedralsNode.put(metadata.dihedral_angle_name_, metadata.rotamer_name_);
+//                glycosidicLinkageNode.add_child(ssmeta.str(), rotatableDihedralsNode);
+//            }
+//        }
+//    }
+//    root.add_child("Glycosidic Linkages:", glycosidicLinkageNode);
     pt::write_json(std::cout, root);
 }
+
+        /*
+         * struct DihedralAngleData
+{
+    std::string linking_atom1_ ;
+    std::string linking_atom2_ ;
+    std::string dihedral_angle_name_ ;
+    double default_angle_value_ ;
+    double lower_deviation_ ;
+    double upper_deviation_ ;
+    double weight_;
+    std::string rotamer_type_ ; // permutation or conformer
+    std::string rotamer_name_ ;
+    int number_of_bonds_from_anomeric_carbon_;
+    int index_ ; // Used to indicate whether multiple entries are meant to overwrite each other or generate an additional angle
+    StringVector residue1_conditions_ ;
+    StringVector residue2_conditions_ ;
+    std::string atom1_ ;
+    std::string atom2_ ;
+    std::string atom3_ ;
+    std::string atom4_ ;
+} ; */
 
 //////////////////////////////////////////////////////////
 //                   PRIVATE FUNCTIONS                  //
