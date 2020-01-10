@@ -48,6 +48,9 @@ PdbqtModelResidueSet::PdbqtModelResidueSet(std::ifstream &residue_set_block)
 	    //Get single atoms
 	    all_atom_cards.push_back(new PdbqtFileSpace::PdbqtAtomCard(residue_set_block));
 	}
+        else if (line.find("TER") != std::string::npos){ //Do nothing with TER, ignore it
+            continue;
+        }
 	else {
 	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
             residue_set_block.seekg(offset, residue_set_block.cur); //Go back one line

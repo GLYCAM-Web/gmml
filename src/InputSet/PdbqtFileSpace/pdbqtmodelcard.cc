@@ -24,6 +24,7 @@ PdbqtModelCard::PdbqtModelCard(std::ifstream &stream_block)
             PdbqtModel* pdbqt_model = new PdbqtModel(stream_block);
             models_[pdbqt_model->GetModelSerialNumber()] = pdbqt_model;
 	}
+        std::cout << "Last line in PdbqtModelCard constructor is: " << line << std::endl;
     }
 }
 
