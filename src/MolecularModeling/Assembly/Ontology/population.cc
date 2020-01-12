@@ -273,7 +273,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
             if(notes.size() != 0)
             {
                 int note_id = 1;
-                // gmml::log(__LINE__, __FILE__,  gmml::INF, "Poulating notes");
+                // gmml::log(__LINE__, __FILE__,  gmml::INF, "Populating notes");
                 std::string id_prefix = oligo_uri + "_";
                 PopulateNotes(oligo_stream, oligo_stream, oligo_uri, notes, id_prefix, note_id);
             }

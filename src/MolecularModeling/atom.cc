@@ -279,14 +279,14 @@ bool Atom::CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom)
         return true;
     }
     bool withinDistance = false;
-    if (std::abs(this->GetCoordinate()->GetX() - otherAtom->GetCoordinate()->GetX()) < gmml::dCutOff)
+    if (std::abs(this->GetCoordinate()->GetX() - otherAtom->GetCoordinate()->GetX()) < gmml::maxCutOff)
     {
-        if (std::abs(this->GetCoordinate()->GetY() - otherAtom->GetCoordinate()->GetY()) < gmml::dCutOff)
+        if (std::abs(this->GetCoordinate()->GetY() - otherAtom->GetCoordinate()->GetY()) < gmml::maxCutOff)
         {
-            if (std::abs(this->GetCoordinate()->GetZ() - otherAtom->GetCoordinate()->GetZ()) < gmml::dCutOff)
+            if (std::abs(this->GetCoordinate()->GetZ() - otherAtom->GetCoordinate()->GetZ()) < gmml::maxCutOff)
             {
                 //If each dimension is within cutoff, then calculate 3D distance
-                if (this->GetDistanceToAtom(otherAtom) < gmml::dCutOff)
+                if (this->GetDistanceToAtom(otherAtom) < gmml::maxCutOff)
                 {
                     withinDistance = true;
                 }

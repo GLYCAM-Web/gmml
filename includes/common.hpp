@@ -48,7 +48,8 @@ namespace gmml
     const double dSulfurCutoff = 2.5;
     const double PI_RADIAN = 4.0*atan(1.0);
     const double PI_DEGREE = 180.0;
-    const double dCutOff = 1.65;
+    const double maxCutOff = 1.65;
+    const double minCutOff = 0.7;
     const double BOND_LENGTH = 1.4;
     const double ROTATION_ANGLE = 109.5;
     const int PdbResidueThreshold = 500;
