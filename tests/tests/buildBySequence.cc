@@ -21,6 +21,9 @@ int main()
     //outputPdbFile->Write("buildBySequence.pdb");
     //std::cout << "Done writing pdb." << std::endl;
     CondensedSequenceSpace::carbohydrateBuilder steve("build", condensed_sequence);
+    condensed_sequence = "DManpb1-2DManp[6A]b1-2[DGalpb1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME";
+    CondensedSequenceSpace::carbohydrateBuilder steve2("build", condensed_sequence);
+    steve2.WriteFile("PDB", "output2.pdb");
 }
 //prep file
 

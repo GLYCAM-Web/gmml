@@ -30,7 +30,8 @@ public:
     //////////////////////////////////////////////////////////
 
     CondensedSequence GetCondensedSequence();
-    std::string GetSequenceString();
+    std::string GetOfficialSequenceString();
+    std::string GetInputSequenceString();
     MolecularModeling::Assembly* GetAssembly();
     ResidueLinkageVector* GetGlycosidicLinkages();
 
@@ -38,7 +39,9 @@ public:
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
 
-    void SetSequenceString(std::string);
+    void SetInputSequenceString(std::string sequence);
+    void SetOfficialSequenceString(std::string sequence);
+
 
     //////////////////////////////////////////////////////////
     //                        FUNCTIONS                     //
@@ -47,8 +50,10 @@ public:
     void GenerateSingle3DStructure();
     void SetDefaultShapeUsingMetadata();
     void ResolveOverlaps();
+    void WriteFile(std::string type = "PDB", std::string filename = "output.pdb");
     void GenerateRotamers();
     void WriteJSON();
+
 
 private:
     void FigureOutResidueLinkagesInGlycan(MolecularModeling::Residue *from_this_residue1, MolecularModeling::Residue *to_this_residue2, ResidueLinkageVector *residue_linkages);
@@ -60,7 +65,8 @@ private:
 
     MolecularModeling::Assembly assembly_;
     CondensedSequence condensedSequence_;
-    std::string sequenceString_;
+    std::string officialSequenceString_;
+    std::string inputSequenceString_;
     //GlycanMetadataContainer metadataInformation_; // need this class
     ResidueLinkageVector glycosidicLinkages_;
 

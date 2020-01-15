@@ -3,6 +3,7 @@
 #include "../../../includes/MolecularModeling/overlaps.hpp"
 #include "../../../includes/External_Libraries/PCG/pcg_extras.hpp"
 #include "../../../includes/External_Libraries/PCG/pcg_random.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp" // For lookup in GetName function
 
 // Seed with a real random value, if available
 static pcg_extras::seed_seq_from<std::random_device> seed_source;
@@ -133,6 +134,28 @@ AtomVector Residue_linkage::GetExtraAtoms()
     return extraAtomsThatMove_;
 }
 
+unsigned long long Residue_linkage::GetIndex()
+{
+    return index_;
+}
+
+std::string Residue_linkage::GetName()
+{
+    gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookup nameLookup;
+    std::string residue1Name = nameLookup.GetResidueForCode(this->GetFromThisResidue1()->GetName());
+    std::string residue2Name = nameLookup.GetResidueForCode(this->GetToThisResidue2()->GetName());
+    std::cout << this->GetFromThisConnectionAtom1()->GetName() << std::endl;
+    std::cout << this->GetToThisConnectionAtom2()->GetName() << std::endl;
+    std::string atom1Name = this->GetFromThisConnectionAtom1()->GetName();
+    std::string atom2Name = this->GetToThisConnectionAtom2()->GetName();
+    char link1 = *atom1Name.rbegin();
+    char link2 = *atom2Name.rbegin(); // reducing terminal?! Let's see
+    std::stringstream linkageName;
+    linkageName << residue1Name << link1 << "-" << link2 << residue2Name;
+    std::cout << "Name:" << linkageName.str() << std::endl;
+    return linkageName.str();
+    return "Steven";
+}
 
 //int Residue_linkage::GetNumberOfRotatableDihedrals()
 //{
@@ -157,11 +180,6 @@ void Residue_linkage::AddExtraAtomsThatMove(AtomVector extraAtoms)
 {
     extraAtomsThatMove_ = extraAtoms;
     isExtraAtoms_ = true;
-}
-
-unsigned long long Residue_linkage::GetIndex()
-{
-    return index_;
 }
 
 
@@ -337,10 +355,10 @@ void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_t
 {
     this->SetResidues(from_this_residue1, to_this_residue2);
     this->SetIfReversedAtomsThatMove(reverseAtomsThatMove);
+    this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
     if(this->CheckIfViableLinkage())
     {
        // std::cout << "Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
-        this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
         rotatable_dihedrals_ = this->FindRotatableDihedralsConnectingResidues(from_this_connection_atom1_, to_this_connection_atom2_);
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata = this->FindMetadata(from_this_connection_atom1_, to_this_connection_atom2_);
         this->AddMetadataToRotatableDihedrals(metadata);

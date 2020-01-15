@@ -53,7 +53,7 @@ public:
     AtomVector GetExtraAtoms();
     void AddExtraAtomsThatMove(AtomVector extraAtoms);
     unsigned long long GetIndex();
-
+    std::string GetName();
 
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
