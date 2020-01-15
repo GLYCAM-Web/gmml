@@ -188,9 +188,11 @@ void Glycan::Oligosaccharide::Print(std::ostream& out)
   oligosaccharide_residue_linkages_ = residue_links_stream.str();
   gmml::FindReplaceString(oligosaccharide_residue_linkages_, "-]", "]");
 
-  out << oligosaccharide_name_;
+
+  //I have commented out the lines that print to out, as we decided nothing should print that isn't an error.  This function does other things so this was the quickest workaround. DM 1-15-20
+  // out << oligosaccharide_name_;
   // gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_name_);
-  out << std::endl;
+  // out << std::endl;
   // gmml::log(__LINE__, __FILE__,  gmml::INF, oligosaccharide_linkages_);
 }
 

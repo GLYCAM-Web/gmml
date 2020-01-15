@@ -621,17 +621,19 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   ///BUILDING OLIGOSACCHARIDE SEQUENCE
   int number_of_oligosaccharides = 0;
   int number_of_monosaccharides = 0;
-  if(local_debug > 0)
+  
+  for(std::vector< Glycan::Oligosaccharide* >::iterator it = testOligos.begin(); it != testOligos.end(); it++)
   {
-    for(std::vector< Glycan::Oligosaccharide* >::iterator it = testOligos.begin(); it != testOligos.end(); it++)
+    Glycan::Oligosaccharide* thisOligo = *it;
+    if(local_debug > 0)
     {
-      Glycan::Oligosaccharide* thisOligo = *it;
       std::cout << "Oligo IUPAC Name:       " << thisOligo->IUPAC_name_ << "\n";
-      // std::cout << "Oligo author IUPAC Name:" << thisOligo->author_IUPAC_name_ << "\n";
+      std::cout << "Oligo author IUPAC Name:" << thisOligo->author_IUPAC_name_ << "\n";
       std::cout << "Oligo Name:             ";
-      thisOligo->Print( std::cout );
     }
+    thisOligo->Print( std::cout );// This for some reason does a ton of stuff instead of printing....
   }
+  
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
   std::vector< Glycan::Note* > notes = this->GetNotes();
   if(local_debug > 0)
