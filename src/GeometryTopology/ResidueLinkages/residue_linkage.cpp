@@ -152,9 +152,9 @@ std::string Residue_linkage::GetName()
     char link2 = *atom2Name.rbegin(); // reducing terminal?! Let's see
     std::stringstream linkageName;
     linkageName << residue1Name << link1 << "-" << link2 << residue2Name;
-    std::cout << "Name:" << linkageName.str() << std::endl;
+    //std::cout << "Name:" << linkageName.str() << std::endl;
     return linkageName.str();
-    return "Steven";
+  //  return "Steven";
 }
 
 //int Residue_linkage::GetNumberOfRotatableDihedrals()

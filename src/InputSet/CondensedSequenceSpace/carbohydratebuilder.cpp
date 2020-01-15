@@ -159,33 +159,38 @@ void carbohydrateBuilder::GenerateRotamers()
 
 void carbohydrateBuilder::WriteJSON()
 {
+    /* https://github.com/nlohmann/json. See also includes/External_Libraries/json.hpp
+     * nlohmann::json is a little funky. If you first declare something like root["Evaluate"] = "string",
+     * you can't later do += as it figures out it's an object
+     * and not a list. You can declare it to be a list though. json empty_array_explicit = json::array();
+     */
     using json = nlohmann::json;
-    json root, responses, linkages, entries;
+    json j_root, j_responses, j_linkages, j_entries; // using j_ prefix to make clear what is json.
     for (auto &linkage : *(this->GetGlycosidicLinkages())) // I get back a pointer to the ResidueLinkageVector so I *() it to the first element
     {
-        std::cout << "linko nameo: " << linkage.GetName() << std::endl;
+       // std::cout << "linko nameo: " << linkage.GetName() << std::endl;
         RotatableDihedralVector likelyRotatableDihedrals = linkage.GetRotatableDihedralsWithMultipleRotamers();
         for (auto &rotatableDihedral : likelyRotatableDihedrals)
         {
             for (auto &metadata : rotatableDihedral.GetMetadata())
             {
-               entries["likelyRotamers"][metadata.dihedral_angle_name_] += (metadata.rotamer_name_);
-               entries["possibleRotamers"][metadata.dihedral_angle_name_] += (metadata.rotamer_name_);
-
+               j_entries["likelyRotamers"][metadata.dihedral_angle_name_] += (metadata.rotamer_name_);
+               j_entries["possibleRotamers"][metadata.dihedral_angle_name_] += (metadata.rotamer_name_);
             }
         }
         if(!likelyRotatableDihedrals.empty()) // Only want ones with multiple entries. See above call.
-        {
-            linkages[std::to_string(linkage.GetIndex())] += (entries);
-            entries.clear(); // Must do this as some entries match, e.g. likelyRotamers, omg, gt.
+        {   // Order of adding to linkages matters here. I don't know why :(
+            j_linkages[std::to_string(linkage.GetIndex())] = (j_entries);
+            j_linkages[std::to_string(linkage.GetIndex())]["linkageName"] = linkage.GetName();
+            j_entries.clear(); // Must do this as some entries match, e.g. likelyRotamers, omg, gt.
         }
     }
-    responses["Evaluate"]["glycosidicLinkages"] += (linkages);
-    responses["Evaluate"]["inputSequence"] = this->GetInputSequenceString();
-    responses["Evaluate"]["officialSequence"] = this->GetOfficialSequenceString();
-    root["responses"] += responses;
-    root["entity"]["type"] = "sequence";
-    std::cout << std::setw(4) << root << std::endl;
+    j_responses["Evaluate"]["glycosidicLinkages"] += (j_linkages);
+    j_responses["Evaluate"]["inputSequence"] = this->GetInputSequenceString();
+    j_responses["Evaluate"]["officialSequence"] = this->GetOfficialSequenceString();
+    j_root["responses"] += j_responses;
+    j_root["entity"]["type"] = "sequence";
+    std::cout << std::setw(4) << j_root << std::endl;
     std::cout << "Finito" << std::endl;
     return;
 }
