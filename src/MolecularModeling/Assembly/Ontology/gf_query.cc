@@ -683,3 +683,5 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
 // ?residue3 :is1-4ConnectedTo ?residue2.
 // ?residue3 :monosaccharideShortName """DGlcpNAcb""".
 // }
+//TODO make query work for any permutation of DGalpb1-4DGlcpNAcb1-2DManpa1-3[DGlcpNAcb1-2DManpa1-6]DManpb1-4DGlcpNAcb1-4[LFucpa1-6]DGlcpNAcb1-ASN
+
