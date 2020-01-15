@@ -313,7 +313,10 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
                   std::string monoShortName = thisMonoNeighbor->sugar_name_.monosaccharide_short_name_;
                   child_res_resource = CreateURIResource(gmml::OntSequenceResidue, root_oligo_id, id_prefix, neighborResID);
                   child_res_uri = CreateURI(child_res_resource);
-                  gmml::AddTriple(parent_res_uri, Ontology::isConnectedTo, child_res_uri, oligo_sequence_stream);
+                  //TODO replace isConnectedTo w/ isx-nLinkedTo (IE is1-3LinkedTo)
+                  std::stringstream connectionInfo;
+                  connectionInfo << "gmmo:is" << (*it).first->linkage_type_ << "ConnectedTo";
+                  gmml::AddTriple(parent_res_uri, connectionInfo.str(), child_res_uri, oligo_sequence_stream);
                   PopulateLinkage(linkage_stream, oligo_uri, parent_res_uri, child_res_uri, linkNum, (*it).first, thisMono, thisMonoNeighbor);
                   
                 }
@@ -324,6 +327,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
                 std::string term_uri = "";
                 term_resource = CreateURIResource(gmml::OntTerminal, root_oligo_id, id_prefix, "");
                 term_uri = CreateURI(term_resource);
+                //this is the terminal so it's okay to not have the linkage type, as it is in the terminal name (IE 1-OH)
                 gmml::AddTriple(parent_res_uri, Ontology::isConnectedTo, term_uri, oligo_sequence_stream);
                 gmml::AddTriple(oligo_uri, Ontology::hasTerminal, term_uri, oligo_sequence_stream);
                 gmml::AddTriple(term_uri, Ontology::TYPE, Ontology::Terminal, oligo_sequence_stream);
@@ -353,7 +357,9 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
                   std::string monoShortName = thisMonoNeighbor->sugar_name_.monosaccharide_short_name_;
                   child_res_resource = CreateURIResource(gmml::OntSequenceResidue, root_oligo_id, id_prefix, neighborResID);
                   child_res_uri = CreateURI(child_res_resource);
-                  gmml::AddTriple(parent_res_uri, Ontology::isConnectedTo, child_res_uri, oligo_sequence_stream);
+                  std::stringstream connectionInfo;
+                  connectionInfo << "gmmo:is" << (*it).first->linkage_type_ << "ConnectedTo";
+                  gmml::AddTriple(parent_res_uri, connectionInfo.str(), child_res_uri, oligo_sequence_stream);
                   PopulateLinkage(linkage_stream, oligo_uri, parent_res_uri, child_res_uri, linkNum, (*it).first, thisMono, thisMonoNeighbor);
                   
                 }
