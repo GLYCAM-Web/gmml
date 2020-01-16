@@ -141,20 +141,28 @@ unsigned long long Residue_linkage::GetIndex()
 
 std::string Residue_linkage::GetName()
 {
-    gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookup nameLookup;
+    if (!name_.empty())
+    {
+        return name_;
+    }
+    return this->DetermineLinkageNameFromResidueNames();
+}
+
+std::string Residue_linkage::DetermineLinkageNameFromResidueNames()
+{
+    gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookupContainer nameLookup;
     std::string residue1Name = nameLookup.GetResidueForCode(this->GetFromThisResidue1()->GetName());
     std::string residue2Name = nameLookup.GetResidueForCode(this->GetToThisResidue2()->GetName());
     std::cout << this->GetFromThisConnectionAtom1()->GetName() << std::endl;
     std::cout << this->GetToThisConnectionAtom2()->GetName() << std::endl;
     std::string atom1Name = this->GetFromThisConnectionAtom1()->GetName();
     std::string atom2Name = this->GetToThisConnectionAtom2()->GetName();
-    char link1 = *atom1Name.rbegin();
-    char link2 = *atom2Name.rbegin(); // reducing terminal?! Let's see
+    char link1 = *atom1Name.rbegin(); //
+    char link2 = *atom2Name.rbegin(); // Messy for Acetyl.
     std::stringstream linkageName;
     linkageName << residue1Name << link1 << "-" << link2 << residue2Name;
-    //std::cout << "Name:" << linkageName.str() << std::endl;
+    this->SetName(linkageName.str());
     return linkageName.str();
-  //  return "Steven";
 }
 
 //int Residue_linkage::GetNumberOfRotatableDihedrals()
@@ -318,6 +326,11 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
 void Residue_linkage::SetIndex(unsigned long long index)
 {
     index_ = index;
+}
+
+void Residue_linkage::SetName(std::string name)
+{
+    name_ = name;
 }
 
 //////////////////////////////////////////////////////////

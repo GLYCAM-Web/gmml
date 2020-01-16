@@ -9,22 +9,16 @@ namespace MolecularMetadata
 {
 namespace GLYCAM
 {
-/**
-         *   Glycam06NamesToCodesLookupMap
-         *
-         *   The first string is the name-code for a residue.  It is typically
-         *   three or six characters long.
-         *
-         *     Examples:  Gal, Neu5Ac
-         *
-         *   The second string is a code used by GLYCAM in PDB files for that residue.
-         *
-         *     Examples:  Gal is G
-         *
-         *
-         */
+struct ResidueNamesCodesTypes
+{
+    std::string residueName_ ;
+    std::string glycamCode_ ;
+    std::string residueType_ ;
+} ;
 
-class Glycam06ResidueNamesToCodesLookup
+typedef std::vector<ResidueNamesCodesTypes> ResidueNamesCodesTypesVector;
+
+class Glycam06ResidueNamesToCodesLookupContainer
 {
 public:
 
@@ -34,7 +28,7 @@ public:
     /*! \fn
     * Default constructor
     */
-    Glycam06ResidueNamesToCodesLookup();
+    Glycam06ResidueNamesToCodesLookupContainer();
 
     //////////////////////////////////////////////////////////
     //                         TYPEDEFS                     //
@@ -49,7 +43,7 @@ public:
     std::string GetResidueForCode(std::string query);
 
 private:
-    std::multimap<std::string, std::string> glycam06ResidueNamesToCodesLookupMap_;
+    ResidueNamesCodesTypesVector ResidueNamesCodesTypesLookupTable_;
 };
 } // close namespace
 } // close namespace

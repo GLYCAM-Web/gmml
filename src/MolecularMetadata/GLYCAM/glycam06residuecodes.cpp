@@ -7,8 +7,7 @@
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-using gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookup;
-//using gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookupContainerVector;
+using gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookupContainer;
 
 //////////////////////////////////////////////////////////
 //                      QUERY FUNCTIONS                 //
@@ -40,59 +39,120 @@ using gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookup;
 //    return match;
 //}
 
-std::string Glycam06ResidueNamesToCodesLookup::GetResidueForCode(std::string residueNameInGLYCAMFormat)
-{ // lettersFromGLYCAMFormatResidueName. E.g. 0GB, 3YB, 3BC.
-    if (residueNameInGLYCAMFormat.length() < 2)
-    { // Problem.
-        std::cout << "Problem" << std::endl;
-        return "Problem";
-    }
+// This won't be correct all the time, but should be ok for displaying labels to humans.
+std::string Glycam06ResidueNamesToCodesLookupContainer::GetResidueForCode(std::string residueNameInGLYCAMFormat)
+{   // residueNameInGLYCAMFormat. E.g. 0GB, 3YB, 3BC.
     std::cout << "Input name is " << residueNameInGLYCAMFormat << std::endl;
-    char lastLetter = *residueNameInGLYCAMFormat.rbegin(); //points to the last character
-    char middleLetter = residueNameInGLYCAMFormat[residueNameInGLYCAMFormat.size() - 2];
-    std::cout << "last and midd letter are : " << lastLetter << " and " << middleLetter << std::endl;
+    if (residueNameInGLYCAMFormat.length() < 3)
+        return "PrObLeM";
+
+    for (const auto& entry : ResidueNamesCodesTypesLookupTable_)
+    { // residueName_, glycamCode_ , residueType_
+        if ( (residueNameInGLYCAMFormat == entry.glycamCode_) && (entry.residueType_ != "Saccharide") )
+            return entry.residueName_;
+    }
+
+    char secondLetter = residueNameInGLYCAMFormat.at(1);
+    char thirdLetter = residueNameInGLYCAMFormat.at(2);
+    //char secondLetter = residueNameInGLYCAMFormat[residueNameInGLYCAMFormat.size() - 2]; // sush.
+    std::cout << "Letters are : " << secondLetter << " and " << thirdLetter << std::endl;
 
     char configurationDvsL = 'D';
-    if (islower(middleLetter)) // Lower case means L type sugar. E.g. 0fA is LFucpA
+    if (islower(secondLetter)) // Lower case means L type sugar. E.g. 0fA is LFucpA
         configurationDvsL = 'L';
-    middleLetter = toupper(middleLetter); // Make it upper for matching below.
+    secondLetter = toupper(secondLetter); // Make it upper for matching to resname below.
 
-    bool addAnomer = true;                             // Default, may change below
-    char ringform = 'p';                               // Default, may change below
-    char anomericConfiguration = tolower(lastLetter);  // Default, may change below
-    std::string query(1, middleLetter);                // Default, may change below
-    if (lastLetter == 'U' || lastLetter == 'D' || lastLetter == 'A' || lastLetter == 'B' || lastLetter == 'X')
+    bool addRingformAndAnomer = true;
+    char ringform = 'p';                               // Default, may change below if furanose
+    char anomericConfiguration = tolower(thirdLetter);  // Default, may change below if furanose
+    std::string query(1, secondLetter);                // Default, may change below
+    if (thirdLetter == 'U' || thirdLetter == 'D' || thirdLetter == 'A' || thirdLetter == 'B' || thirdLetter == 'X')
     {
-        if (lastLetter == 'U' || lastLetter == 'D') // E.g. 0GU is DGalfb
+        if (thirdLetter == 'U' || thirdLetter == 'D') // E.g. 0GU is DGalfb
             ringform = 'f'; // Furanose
-        if (lastLetter == 'U') // Furanoses: U for up means b. D for down means a.
+        if (thirdLetter == 'U') // Furanoses: U for up means b. D for down means a.
             anomericConfiguration = 'b';
-        if (lastLetter == 'D')
+        if (thirdLetter == 'D')
             anomericConfiguration = 'a';
     }
     else // lastLetter isn't one of the above.
     {
         std::stringstream ss;
-        ss << middleLetter << lastLetter;
+        ss << secondLetter << thirdLetter;
         query = ss.str(); // Weirdos like BC for Bac
-        addAnomer = false;
+        addRingformAndAnomer = false;
     }
     std::cout << "Query is " << query << std::endl;
     std::string match = configurationDvsL + "Hex" + anomericConfiguration; // Default is Hex?
-    for (std::pair<std::string, std::string> elem : glycam06ResidueNamesToCodesLookupMap_)
-    {
-        if (elem.second.compare(query)==0)
+    for (const auto& entry : ResidueNamesCodesTypesLookupTable_)
+    { // residueName_, glycamCode_ , residueType_
+        if (entry.glycamCode_ == query)
         {
-             if (addAnomer)
-                 match = configurationDvsL + elem.first + ringform + anomericConfiguration;
+             if (addRingformAndAnomer)
+                 match = configurationDvsL + entry.residueName_ + ringform + anomericConfiguration;
              else
-                 match = configurationDvsL + elem.first + ringform;
+                 match = configurationDvsL + entry.residueName_;
              std::cout << "Match is " << match << std::endl;
              return match;
         }
     }
     return match;
 }
+
+//std::string Glycam06ResidueNamesToCodesLookupContainer::GetResidueForCode(std::string residueNameInGLYCAMFormat)
+//{ // lettersFromGLYCAMFormatResidueName. E.g. 0GB, 3YB, 3BC.
+//    if (residueNameInGLYCAMFormat.length() != 3)
+//    { // Problem.
+//        std::cout << "Problem" << std::endl;
+//        return "PrObLeM";
+//    }
+
+//    char firstLetter = *residueNameInGLYCAMFormat.begin();
+//    char lastLetter = *residueNameInGLYCAMFormat.rbegin(); //points to the last character
+//    char middleLetter = residueNameInGLYCAMFormat[residueNameInGLYCAMFormat.size() - 2]; // sush.
+//    std::cout << "Letters are : " << firstLetter << ", " << middleLetter << " and " << lastLetter << std::endl;
+
+//    char configurationDvsL = 'D';
+//    if (islower(middleLetter)) // Lower case means L type sugar. E.g. 0fA is LFucpA
+//        configurationDvsL = 'L';
+//    middleLetter = toupper(middleLetter); // Make it upper for matching to resname below.
+
+//    bool addAnomer = true;                             // Default, may change below if derivative or aglycone
+//    char ringform = 'p';                               // Default, may change below if furanose
+//    char anomericConfiguration = tolower(lastLetter);  // Default, may change below if furanose
+//    std::string query(1, middleLetter);                // Default, may change below
+//    if (lastLetter == 'U' || lastLetter == 'D' || lastLetter == 'A' || lastLetter == 'B' || lastLetter == 'X')
+//    {
+//        if (lastLetter == 'U' || lastLetter == 'D') // E.g. 0GU is DGalfb
+//            ringform = 'f'; // Furanose
+//        if (lastLetter == 'U') // Furanoses: U for up means b. D for down means a.
+//            anomericConfiguration = 'b';
+//        if (lastLetter == 'D')
+//            anomericConfiguration = 'a';
+//    }
+//    else // lastLetter isn't one of the above.
+//    {
+//        std::stringstream ss;
+//        ss << middleLetter << lastLetter;
+//        query = ss.str(); // Weirdos like BC for Bac
+//        addAnomer = false;
+//    }
+//    std::cout << "Query is " << query << std::endl;
+//    std::string match = configurationDvsL + "Hex" + anomericConfiguration; // Default is Hex?
+//    for (std::pair<std::string, std::string> elem : ResidueNamesCodesTypesLookupTable_)
+//    {
+//        if (elem.second.compare(query)==0)
+//        {
+//             if (addAnomer)
+//                 match = configurationDvsL + elem.first + ringform + anomericConfiguration;
+//             else
+//                 match = configurationDvsL + elem.first + ringform;
+//             std::cout << "Match is " << match << std::endl;
+//             return match;
+//        }
+//    }
+//    return match;
+//}
 
 
 //////////////////////////////////////////////////////////
@@ -104,57 +164,64 @@ std::string Glycam06ResidueNamesToCodesLookup::GetResidueForCode(std::string res
 //////////////////////////////////////////////////////////
 
 
-Glycam06ResidueNamesToCodesLookup::Glycam06ResidueNamesToCodesLookup()
+//DihedralAngleDataContainer::DihedralAngleDataContainer()
+//{   // const AmberAtomTypeInfo Glycam06j1AtomTypes[] =
+//    dihedralAngleDataVector_ =
+//    { //Regex1, Regex2   , Name   , Angle  , Upper  , Lower  , Weight, Entry Type    , Tag  , D , R , Residue 1 type , Residue 2 type,           , Atom names                                                               // Atom names this applies to
+//        { "C1"
+
+Glycam06ResidueNamesToCodesLookupContainer::Glycam06ResidueNamesToCodesLookupContainer()
 {
-    glycam06ResidueNamesToCodesLookupMap_ =
-    {
-        {"All", "N"},
-        {"Alt", "E"},
-        {"Ara", "A"},
-        {"Bac", "BC"},
-        {"Fru", "C"},
-        {"Fuc", "F"},
-        {"Gal", "L"},
-        {"GalA", "O"},
-        {"GalNAc", "V"},
-        {"Glc", "G"},
-        {"GlcA", "Z"},
-        {"GlcNAc", "Y"},
-        {"Gul", "K"},
-        {"Ido", "I"},
-        {"IdoA", "U"},
-        {"IdoA(1C4)", "U1"},
-        {"IdoA(2SO)", "U2"},
-        {"IdoA(4C1)", "U3"},
-        {"Lyx", "D"},
-        {"Man", "M"},
-        {"ManNAc", "W"},
-        {"Neu5Ac", "S"},
-        {"Neu5Gc", "GL"},
-        {"NeuNAc", "S"},
-        {"NeuNGc", "GL"},
-        {"Psi", "P"},
-        {"Qui", "Q"},
-        {"Rha", "H"},
-        {"Rib", "R"},
-        {"Sor", "B"},
-        {"Tag", "J"},
-        {"Tal", "T"},
-        {"Tyv", "TV"},
-        {"Xyl", "X"},
-        {"GlcNS", "Y"},
-        {"U", "045"}, // ? I don't know what these are. OG.
-        {"S", "245"}, // ? I don't know what these are. OG.
-        {"KDN", "KN"},
-        {"KDO", "KO"},
-        {"ROH", "OH"},
-        {"OME", "ME"},
-        {"OtBu", "BT"},
-        {"OThr", "LT"},
-        {"OSer", "ST"},
-        {"OTyr", "LY"},
-        {"NAsn", "LN"},
-        {"Sulfo", "O3"},
-        {"Methyl", "EX"},
+    ResidueNamesCodesTypesLookupTable_ =
+    {// residueName_, glycamCode_ , residueType_
+        {"All"         , "N"  , "Saccharide"},
+        {"Alt"         , "E"  , "Saccharide"},
+        {"Ara"         , "A"  , "Saccharide"},
+        {"Fru"         , "C"  , "Saccharide"},
+        {"Fuc"         , "F"  , "Saccharide"},
+        {"Gal"         , "L"  , "Saccharide"},
+        {"GalA"        , "O"  , "Saccharide"},
+        {"GalNAc"      , "V"  , "Saccharide"},
+        {"Glc"         , "G"  , "Saccharide"},
+        {"GlcA"        , "Z"  , "Saccharide"},
+        {"GlcNAc"      , "Y"  , "Saccharide"},
+        {"Gul"         , "K"  , "Saccharide"},
+        {"Ido"         , "I"  , "Saccharide"},
+        {"IdoA"        , "U"  , "Saccharide"},
+        {"Lyx"         , "D"  , "Saccharide"},
+        {"Man"         , "M"  , "Saccharide"},
+        {"ManNAc"      , "W"  , "Saccharide"},
+        {"Neu5Ac"      , "S"  , "Saccharide"},
+        {"NeuNAc"      , "S"  , "Saccharide"},
+        {"Psi"         , "P"  , "Saccharide"},
+        {"Qui"         , "Q"  , "Saccharide"},
+        {"Rha"         , "H"  , "Saccharide"},
+        {"Rib"         , "R"  , "Saccharide"},
+        {"Sor"         , "B"  , "Saccharide"},
+        {"Tag"         , "J"  , "Saccharide"},
+        {"Tal"         , "T"  , "Saccharide"},
+        {"Xyl"         , "X"  , "Saccharide"},
+        {"GlcNS"       , "Y"  , "Saccharide"},
+        {"Tyvp"        , "TV" , "Saccharide"}, // Can be alpha or beta. Feck.
+        {"45UIdopa"    , "45" , "Saccharide"}, // Unsaturated 4,5-unsaturated uronate
+        {"LIdoA(1C4)pa", "UA1", "Saccharide"}, // e.g 4uA1 This is a mistake imo. Should be U1, not UA1.
+        {"LIdoA(2SO)pa", "UA2", "Saccharide"},
+        {"LIdoA(4C1)pa", "UA3", "Saccharide"},
+        {"Neu5Gcpa"    , "GL" , "Saccharide"},
+        {"NeuNGcpa"    , "GL" , "Saccharide"},
+        {"KDNpa"       , "KN" , "Saccharide"},
+        {"KDOpa"       , "KO" , "Saccharide"},
+        {"Bacpb"       , "BC" , "Saccharide"},
+        {"ROH"         , "ROH", "Aglycone"  },
+        {"OME"         , "OME", "Aglycone"  },
+        {"OtBu"        , "TBT", "Aglycone"  },
+        {"OThr"        , "OLT", "Amino-acid"},
+        {"OSer"        , "OST", "Amino-acid"},
+        {"OTyr"        , "OLY", "Amino-acid"},
+        {"NAsn"        , "NLN", "Amino-acid"},
+        {"Sulpho"      , "SO3", "Derivative"}, // Phosfo? Phosno.
+        {"Phospho"     , "PO3", "Derivative"},
+        {"Methyl"      , "MEX", "Derivative"},
+        {"Acetyl"      , "ACX", "Derivative"},
     };
 }

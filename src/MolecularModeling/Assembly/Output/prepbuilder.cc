@@ -123,17 +123,17 @@ PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::strin
             }
             else if(i <= 1)
             {
-                dummy_atom->SetBondLength(gmml::dCutOff);
+                dummy_atom->SetBondLength(gmml::maxCutOff);
                 dummy_atom->SetAngle(0.0);
                 dummy_atom->SetDihedral(0.0);
-                cartesian_coordinate_list.push_back(new GeometryTopology::Coordinate(gmml::dCutOff, 0.0, 0.0)); //1.522, 0.0, 0.0 ; -4.5, -5.0, -5.0
+                cartesian_coordinate_list.push_back(new GeometryTopology::Coordinate(gmml::maxCutOff, 0.0, 0.0)); //1.522, 0.0, 0.0 ; -4.5, -5.0, -5.0
             }
             else
             {
-                dummy_atom->SetBondLength(gmml::dCutOff);
+                dummy_atom->SetBondLength(gmml::maxCutOff);
                 dummy_atom->SetAngle(90.0);
                 dummy_atom->SetDihedral(0.0);
-                cartesian_coordinate_list.push_back(new GeometryTopology::Coordinate(gmml::dCutOff, gmml::dCutOff, 0.0)); //2.43347, 1.34044, 0.0 ; -4.7, -4.2, -4.0
+                cartesian_coordinate_list.push_back(new GeometryTopology::Coordinate(gmml::maxCutOff, gmml::maxCutOff, 0.0)); //2.43347, 1.34044, 0.0 ; -4.7, -4.2, -4.0
             }
             dummy_atom->SetCharge(0.0);
             dummy_atom->SetTopologicalType(gmml::kTopTypeM);

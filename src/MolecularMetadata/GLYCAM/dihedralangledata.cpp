@@ -11,6 +11,13 @@ using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
 //                      QUERY FUNCTIONS                 //
 //////////////////////////////////////////////////////////
 // Pass in the two atoms on either side the residue-residue linkage
+
+bool OverWriteEntry(gmml::MolecularMetadata::GLYCAM::DihedralAngleData entry1, gmml::MolecularMetadata::GLYCAM::DihedralAngleData entry2)
+{
+   return (entry1.number_of_bonds_from_anomeric_carbon_ == entry2.number_of_bonds_from_anomeric_carbon_
+            && entry1.index_ == entry2.index_ );
+}
+
 DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage( MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2)
 {
     DihedralAngleDataVector matching_entries;
@@ -31,8 +38,23 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage( Molecu
             if ( (checkIfResidueConditionsAreSatisfied(residue1_types, entry.residue1_conditions_))
               && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_conditions_)) )
             {
-           //    std::cout << "Entry added: " << entry.linking_atom1_ << "-" << entry.linking_atom2_ << "\n";
-                matching_entries.push_back(entry);
+                //Always add a later entry, but remove earlier match if number_of_bonds_from_anomeric_carbon_ AND index number are the same.
+                //for (DihedralAngleDataVector::iterator previousMatch = matching_entries.begin(); previousMatch != matching_entries.end(); ++previousMatch)
+                matching_entries.erase(std::remove(matching_entries.begin(), matching_entries.end(), entry), matching_entries.end());
+//                for (const auto& previousMatch : matching_entries)
+//                {
+////                    if (previousMatch->number_of_bonds_from_anomeric_carbon_ == entry.number_of_bonds_from_anomeric_carbon_
+////                            && previousMatch->index_ == entry.index_)
+////                    {
+////                        previousMatch = entry; // Overwrite?
+////                        isUniqueEntry = false;
+////                    }
+//                        //vec.erase(std::remove(vec.begin(), vec.end(), 8), vec.end());
+//                       //matching_entries.erase(std::remove_if(matching_entries.begin(), matching_entries.end(), OverWriteEntry(previousMatch, entry)), matching_entries.end());
+//                      //matching_entries = std::remove_if(matching_entries.begin(), matching_entries.end(), OverWriteEntry(previousMatch, entry));
+//                }
+               // if (isUniqueEntry)
+                    matching_entries.push_back(entry);
             }
         }
 //            std::string str("1231");
@@ -46,7 +68,18 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage( Molecu
 //            std::cout << well << "\n";
 //            for(auto v: results1) std::cout << v << std::endl;
     }
-    // Not yet implemented: If two entries have same index number, delete the earlier entry.
+    // Not yet implemented: If two entries have same number_of_bonds_from_anomeric_carbon_ AND index number, delete the earlier entry.
+//    for (auto match1 = matching_entries.begin(); match1 != matching_entries.end() - 1; match1++)
+//    {
+//        for (auto match2 = match1 + 1; match2 != matching_entries.end(); match2++)
+//        {
+//            if (match1.number_of_bonds_from_anomeric_carbon_ == match2.number_of_bonds_from_anomeric_carbon_
+//                    && match1.index_ == match2.index_)
+//            {
+
+//            }
+//        }
+//    }
     return matching_entries;
 }
 //////////////////////////////////////////////////////////
@@ -106,9 +139,9 @@ bool DihedralAngleDataContainer::checkIfResidueConditionsAreSatisfied(std::vecto
  * number_of_bonds_from_anomeric_carbon_. So phi is 1, psi is 2, Omg is 3.
  * The index refers the rotamer number. If there are two phi rotamers, they will have an index of 1 and 2.
  * Chi angle index numbering varies depending on side chain length, so in ASN the Chi1 is 4 bonds away from the sugar, so would be 4
- * If two entries have matching regex and have the same index_ number (e.g. 1), the first will be overwritten. Note I haven't used this feature as of 13 Feb 2019
+ * If two entries have matching regex and have the same index_ number (e.g. 1), the first will be overwritten.
  * If two entries have matching regex and different index_ numbers (e.g. 1,2,3) they will all be used to create multiple rotamers/conformers
- * If two entries have different regex, but apply to the same dihedral angle (e.g. phi), give them the same index_ number (e.g. 1).
+ * If two entries have different regex, but apply to the same dihedral angle (e.g. phi), give them the same index_ number (e.g. 1). Later will overwrite earlier?
  */
 
 DihedralAngleDataContainer::DihedralAngleDataContainer()
@@ -137,9 +170,9 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "[SP]1", "O6"     , "omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  },
         { "[SP]1", "O6"     , "omg"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
       // Ac
-        { "C1A"  , "O[1-9]" , "phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"none"}                  , "C2A", "C1A", "O." , "C."  },
-        { "C1A"  , "O[1-5]" , "psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "C1A", "O." , "C." , "H."  },
-        { "C1A"  , "O[6-9]" , "psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "C1A", "O." , "C." , "C."  },
+        { "C1A"  , "O[1-9]" , "phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"none"}       , {"none"}                  , "C2A", "C1A", "O." , "C."  },
+        { "C1A"  , "O[1-5]" , "psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"none"}       , {"none"}                  , "C1A", "O." , "C." , "H."  },
+        { "C1A"  , "O[6-9]" , "psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 2 , 1 , {"none"}       , {"none"}                  , "C1A", "O." , "C." , "C."  },
       // Me
         { "CH3"  , "O[1-5]" , "psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "CH3", "O." , "C." , "H."  },
         { "CH3"  , "O[6-9]" , "psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "CH3", "O." , "C." , "C."  },
