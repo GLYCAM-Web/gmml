@@ -20,7 +20,7 @@ bool OverWriteEntry(gmml::MolecularMetadata::GLYCAM::DihedralAngleData entry1, g
 
 DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage( MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2)
 {
-    DihedralAngleDataVector matching_entries;
+    DihedralAngleDataVector matChing_entries;
     Glycam06NamesToTypesLookupContainer metadata_residueNamesToTypes;
     // Go through each entry in the metadata
     for (const auto& entry : dihedralAngleDataVector_)
@@ -36,51 +36,17 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage( Molecu
             std::vector<std::string> residue1_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom1->GetResidue()->GetName());
             std::vector<std::string> residue2_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom2->GetResidue()->GetName());
             if ( (checkIfResidueConditionsAreSatisfied(residue1_types, entry.residue1_conditions_))
-              && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_conditions_)) )
+                 && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_conditions_)) )
             {
                 //Always add a later entry, but remove earlier match if number_of_bonds_from_anomeric_carbon_ AND index number are the same.
-                //for (DihedralAngleDataVector::iterator previousMatch = matching_entries.begin(); previousMatch != matching_entries.end(); ++previousMatch)
-                matching_entries.erase(std::remove(matching_entries.begin(), matching_entries.end(), entry), matching_entries.end());
-//                for (const auto& previousMatch : matching_entries)
-//                {
-////                    if (previousMatch->number_of_bonds_from_anomeric_carbon_ == entry.number_of_bonds_from_anomeric_carbon_
-////                            && previousMatch->index_ == entry.index_)
-////                    {
-////                        previousMatch = entry; // Overwrite?
-////                        isUniqueEntry = false;
-////                    }
-//                        //vec.erase(std::remove(vec.begin(), vec.end(), 8), vec.end());
-//                       //matching_entries.erase(std::remove_if(matching_entries.begin(), matching_entries.end(), OverWriteEntry(previousMatch, entry)), matching_entries.end());
-//                      //matching_entries = std::remove_if(matching_entries.begin(), matching_entries.end(), OverWriteEntry(previousMatch, entry));
-//                }
-               // if (isUniqueEntry)
-                    matching_entries.push_back(entry);
+                // I've overloaded the == and != operators in the DihedralAngleData struct to evaluate those.
+                // This next line removes any elements of matChing_entries that match "entry", then the line after adds entry.
+                matChing_entries.erase(std::remove(matChing_entries.begin(), matChing_entries.end(), entry), matChing_entries.end());
+                matChing_entries.push_back(entry);
             }
         }
-//            std::string str("1231");
-//            std::regex r("^(\\d)\\d"); // entire match will be 2 numbers
-//            std::smatch m;
-//            std::regex_search(str, m, r);
-        //for(auto v: m) std::cout << v << std::endl;
-//            std::smatch results1;
-//            std::string string1 = linking_atom2->GetName();
-//            bool well = std::regex_search(string1, results1, regex1);
-//            std::cout << well << "\n";
-//            for(auto v: results1) std::cout << v << std::endl;
     }
-    // Not yet implemented: If two entries have same number_of_bonds_from_anomeric_carbon_ AND index number, delete the earlier entry.
-//    for (auto match1 = matching_entries.begin(); match1 != matching_entries.end() - 1; match1++)
-//    {
-//        for (auto match2 = match1 + 1; match2 != matching_entries.end(); match2++)
-//        {
-//            if (match1.number_of_bonds_from_anomeric_carbon_ == match2.number_of_bonds_from_anomeric_carbon_
-//                    && match1.index_ == match2.index_)
-//            {
-
-//            }
-//        }
-//    }
-    return matching_entries;
+    return matChing_entries;
 }
 //////////////////////////////////////////////////////////
 //                    PRIVATE FUNCTIONS                 //
@@ -136,93 +102,95 @@ bool DihedralAngleDataContainer::checkIfResidueConditionsAreSatisfied(std::vecto
 
 /*
  * A note on index_.
- * number_of_bonds_from_anomeric_carbon_. So phi is 1, psi is 2, Omg is 3.
- * The index refers the rotamer number. If there are two phi rotamers, they will have an index of 1 and 2.
+ * number_of_bonds_from_anomeric_carbon_. So Phi is 1, Psi is 2, Omg is 3.
+ * The index refers the rotamer number. If there are two Phi rotamers, they will have an index of 1 and 2.
  * Chi angle index numbering varies depending on side chain length, so in ASN the Chi1 is 4 bonds away from the sugar, so would be 4
- * If two entries have matching regex and have the same index_ number (e.g. 1), the first will be overwritten.
- * If two entries have matching regex and different index_ numbers (e.g. 1,2,3) they will all be used to create multiple rotamers/conformers
- * If two entries have different regex, but apply to the same dihedral angle (e.g. phi), give them the same index_ number (e.g. 1). Later will overwrite earlier?
+ * If two entries have matChing regex and have the same index_ number (e.g. 1), the first will be overwritten.
+ * If two entries have matChing regex and different index_ numbers (e.g. 1,2,3) they will all be used to create multiple rotamers/conformers
+ * If two entries have different regex, but apply to the same dihedral angle (e.g. Phi), give them the same index_ number (e.g. 1). Later will overwrite earlier?
  */
 
 DihedralAngleDataContainer::DihedralAngleDataContainer()
 {   // const AmberAtomTypeInfo Glycam06j1AtomTypes[] =
     dihedralAngleDataVector_ =
     { //Regex1, Regex2   , Name   , Angle  , Upper  , Lower  , Weight, Entry Type    , Tag  , D , R , Residue 1 type , Residue 2 type,           , Atom names                                                               // Atom names this applies to
-        { "C1"   , "O[1-9]" , "phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"aldose"}     , {"none"}                  , "C2" , "C1" , "O." , "C."  }, // phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
-        { "C2"   , "O[1-9]" , "phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"none"}       , {"none"}                  , "C3" , "C2" , "O." , "C."  }, // phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
-        { "C2"   , "O[1-9]" , "phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"none"}         , "C3" , "C2" , "O." , "C."  },
+        { "C1"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"aldose"}     , {"none"}                  , "C2" , "C1" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
+        { "C2"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"none"}       , {"none"}                  , "C3" , "C2" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
+        { "C2"   , "O[1-9]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"none"}         , "C3" , "C2" , "O." , "C."  },
 
-        { "C."   , "O[1-5]" , "psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "H."  }, // psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)
-        { "C."   , "O[6-9]" , "psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "C."  },
+        { "C."   , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "H."  }, // Psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)
+        { "C."   , "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "C."  },
 
-        { "C."   , "O6"     , "omg"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  }, // omg is O6-C5-C5-O5
-        { "C."   , "O6"     , "omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  },
-        { "C."   , "O6"     , "omg"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
+        { "C."   , "O6"     , "Omega", -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  }, // omg is O6-C5-C5-O5
+        { "C."   , "O6"     , "Omega",  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  },
+        { "C."   , "O6"     , "Omega", 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
+      //  Need to check weights when adding dihedral. All possible can return low weight structures.
+//      { "C."   , "O6"     , "Omega", 180.0  ,  20.0  ,  20.0  , 0.001 , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=gluco"}   , "O6" , "C6" , "C5" , "O5"  },
 
          // 2-8 linkages
       //{ "C2", "O8"   , "omg7" ,    };
       // Common sugar derivatives
       // Phosphate/sulfate
-        { "[SP]1", "O[1-9]" , "phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"none"}                  , "O." , ".1" , "O." , "C."  },
-        { "[SP]1", "O[1-5]" , "psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , ".1" , "O." , "C." , "H."  },
-        { "[SP]1", "O[6-9]" , "psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , ".1" , "O." , "C." , "C."  },
-        { "[SP]1", "O6"     , "omg"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  },
-        { "[SP]1", "O6"     , "omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  },
-        { "[SP]1", "O6"     , "omg"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
+        { "[SP]1", "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"none"}                  , "O." , ".1" , "O." , "C."  },
+        { "[SP]1", "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , ".1" , "O." , "C." , "H."  },
+        { "[SP]1", "O[6-9]" , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , ".1" , "O." , "C." , "C."  },
+        { "[SP]1", "O6"     , "Omega", -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  },
+        { "[SP]1", "O6"     , "Omega",  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  },
+        { "[SP]1", "O6"     , "Omega", 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
       // Ac
-        { "C1A"  , "O[1-9]" , "phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"none"}       , {"none"}                  , "C2A", "C1A", "O." , "C."  },
-        { "C1A"  , "O[1-5]" , "psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"none"}       , {"none"}                  , "C1A", "O." , "C." , "H."  },
-        { "C1A"  , "O[6-9]" , "psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 2 , 1 , {"none"}       , {"none"}                  , "C1A", "O." , "C." , "C."  },
+        { "C1A"  , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"none"}       , {"none"}                  , "C2A", "C1A", "O." , "C."  },
+        { "C1A"  , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"none"}       , {"none"}                  , "C1A", "O." , "C." , "H."  },
+        { "C1A"  , "O[6-9]" , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 2 , 1 , {"none"}       , {"none"}                  , "C1A", "O." , "C." , "C."  },
       // Me
-        { "CH3"  , "O[1-5]" , "psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "CH3", "O." , "C." , "H."  },
-        { "CH3"  , "O[6-9]" , "psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "CH3", "O." , "C." , "C."  },
+        { "CH3"  , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "CH3", "O." , "C." , "H."  },
+        { "CH3"  , "O[6-9]" , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "CH3", "O." , "C." , "C."  },
 
 
         // Protein linkages
         // ASN // Values are from Petrescu et al 2004.
-        { "C."   , "ND2"    , "chi1" , 191.6  ,  14.4  ,  14.4  , 0.497 , "conformer"   , "A"  , 4 , 1 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
-        { "C."   , "ND2"    , "chi2" , 177.6  ,  43.0  ,  43.0  , 0.497 , "conformer"   , "A"  , 3 , 1 , {"none"}       , {"amino-acid"}            , "ND2", "CG" , "CB" , "CA"  },
-        { "C."   , "ND2"    , "psi"  , 177.3  ,  12.3  ,  12.3  , 0.497 , "conformer"   , "A"  , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "ND2", "CG" , "CB"  },
-        { "C1"   , "ND2"    , "phi"  , 261.0  ,  21.3  ,  21.3  , 0.497 , "conformer"   , "A"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "ND2", "CG"  },
+        { "C."   , "ND2"    , "Chi1" , 191.6  ,  14.4  ,  14.4  , 0.497 , "conformer"   , "A"  , 4 , 1 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
+        { "C."   , "ND2"    , "Chi2" , 177.6  ,  43.0  ,  43.0  , 0.497 , "conformer"   , "A"  , 3 , 1 , {"none"}       , {"amino-acid"}            , "ND2", "CG" , "CB" , "CA"  },
+        { "C."   , "ND2"    , "Psi"  , 177.3  ,  12.3  ,  12.3  , 0.497 , "conformer"   , "A"  , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "ND2", "CG" , "CB"  },
+        { "C1"   , "ND2"    , "Phi"  , 261.0  ,  21.3  ,  21.3  , 0.497 , "conformer"   , "A"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "ND2", "CG"  },
 
-        { "C."   , "ND2"    , "chi1" ,  63.6  ,   8.9  ,   8.9  , 0.178 , "conformer"   , "B"  , 4 , 2 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
-        { "C."   , "ND2"    , "chi2" , 191.1  ,  31.6  ,  31.6  , 0.178 , "conformer"   , "B"  , 3 , 2 , {"none"}       , {"amino-acid"}            , "ND2", "CG" , "CB" , "CA"  },
-        { "C."   , "ND2"    , "psi"  , 178.5  ,  13.9  ,  13.9  , 0.178 , "conformer"   , "B"  , 2 , 2 , {"none"}       , {"amino-acid"}            , "C." , "ND2", "CG" , "CB"  },
-        { "C1"   , "ND2"    , "phi"  , 253.7  ,  21.5  ,  21.5  , 0.178 , "conformer"   , "B"  , 1 , 2 , {"none"}       , {"amino-acid"}            , "C." , "C." , "ND2", "CG"  },
+        { "C."   , "ND2"    , "Chi1" ,  63.6  ,   8.9  ,   8.9  , 0.178 , "conformer"   , "B"  , 4 , 2 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
+        { "C."   , "ND2"    , "Chi2" , 191.1  ,  31.6  ,  31.6  , 0.178 , "conformer"   , "B"  , 3 , 2 , {"none"}       , {"amino-acid"}            , "ND2", "CG" , "CB" , "CA"  },
+        { "C."   , "ND2"    , "Psi"  , 178.5  ,  13.9  ,  13.9  , 0.178 , "conformer"   , "B"  , 2 , 2 , {"none"}       , {"amino-acid"}            , "C." , "ND2", "CG" , "CB"  },
+        { "C1"   , "ND2"    , "Phi"  , 253.7  ,  21.5  ,  21.5  , 0.178 , "conformer"   , "B"  , 1 , 2 , {"none"}       , {"amino-acid"}            , "C." , "C." , "ND2", "CG"  },
 
-        { "C."   , "ND2"    , "chi1" , 290.6  ,  12.7  ,  12.7  , 0.235 , "conformer"   , "C"  , 4 , 3 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
-        { "C."   , "ND2"    , "chi2" , 152.9  ,  23.9  ,  23.9  , 0.235 , "conformer"   , "C"  , 3 , 3 , {"none"}       , {"amino-acid"}            , "ND2", "CG" , "CB" , "CA"  },
-        { "C."   , "ND2"    , "psi"  , 173.1  ,  12.2  ,  12.2  , 0.235 , "conformer"   , "C"  , 2 , 3 , {"none"}       , {"amino-acid"}            , "C." , "ND2", "CG" , "CB"  },
-        { "C1"   , "ND2"    , "phi"  , 268.0  ,  20.3  ,  20.3  , 0.235 , "conformer"   , "C"  , 1 , 3 , {"none"}       , {"amino-acid"}            , "C." , "C." , "ND2", "CG"  },
+        { "C."   , "ND2"    , "Chi1" , 290.6  ,  12.7  ,  12.7  , 0.235 , "conformer"   , "C"  , 4 , 3 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
+        { "C."   , "ND2"    , "Chi2" , 152.9  ,  23.9  ,  23.9  , 0.235 , "conformer"   , "C"  , 3 , 3 , {"none"}       , {"amino-acid"}            , "ND2", "CG" , "CB" , "CA"  },
+        { "C."   , "ND2"    , "Psi"  , 173.1  ,  12.2  ,  12.2  , 0.235 , "conformer"   , "C"  , 2 , 3 , {"none"}       , {"amino-acid"}            , "C." , "ND2", "CG" , "CB"  },
+        { "C1"   , "ND2"    , "Phi"  , 268.0  ,  20.3  ,  20.3  , 0.235 , "conformer"   , "C"  , 1 , 3 , {"none"}       , {"amino-acid"}            , "C." , "C." , "ND2", "CG"  },
 
-        { "C."   , "ND2"    , "chi1" , 302.3  ,  11.5  ,  11.5  , 0.090 , "conformer"   , "D"  , 4 , 4 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
-        { "C."   , "ND2"    , "chi2" , 255.0  ,  28.8  ,  28.8  , 0.090 , "conformer"   , "D"  , 3 , 4 , {"none"}       , {"amino-acid"}            , "ND2", "CG" , "CB" , "CA"  },
-        { "C."   , "ND2"    , "psi"  , 178.1  ,  11.5  ,  11.5  , 0.090 , "conformer"   , "D"  , 2 , 4 , {"none"}       , {"amino-acid"}            , "C." , "ND2", "CG" , "CB"  },
-        { "C1"   , "ND2"    , "phi"  , 267.5  ,  23.9  ,  23.9  , 0.090 , "conformer"   , "D"  , 1 , 4 , {"none"}       , {"amino-acid"}            , "C." , "C." , "ND2", "CG"  },
+        { "C."   , "ND2"    , "Chi1" , 302.3  ,  11.5  ,  11.5  , 0.090 , "conformer"   , "D"  , 4 , 4 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
+        { "C."   , "ND2"    , "Chi2" , 255.0  ,  28.8  ,  28.8  , 0.090 , "conformer"   , "D"  , 3 , 4 , {"none"}       , {"amino-acid"}            , "ND2", "CG" , "CB" , "CA"  },
+        { "C."   , "ND2"    , "Psi"  , 178.1  ,  11.5  ,  11.5  , 0.090 , "conformer"   , "D"  , 2 , 4 , {"none"}       , {"amino-acid"}            , "C." , "ND2", "CG" , "CB"  },
+        { "C1"   , "ND2"    , "Phi"  , 267.5  ,  23.9  ,  23.9  , 0.090 , "conformer"   , "D"  , 1 , 4 , {"none"}       , {"amino-acid"}            , "C." , "C." , "ND2", "CG"  },
 
 
         // THR // Values are from Lovell et al "PENULTIMATE ROTAMER LIBRARY"
-        { "C."   , "OG1"    , "chi1" ,  59.0  ,  10.0  ,  10.0  , 0.49  , "permutation" , "g"  , 3 , 1 , {"none"}       , {"amino-acid"}            , "OG1", "CB" , "CA" , "N"   },
-        { "C."   , "OG1"    , "chi1" ,-171.0  ,   6.0  ,   6.0  , 0.07  , "permutation" , "t"  , 3 , 2 , {"none"}       , {"amino-acid"}            , "OG1", "CB" , "CA" , "N"   },
-        { "C."   , "OG1"    , "chi1" , -61.0  ,   7.0  ,   7.0  , 0.43  , "permutation" , "-g" , 3 , 3 , {"none"}       , {"amino-acid"}            , "OG1", "CB" , "CA" , "N"   },
+        { "C."   , "OG1"    , "Chi1" ,  59.0  ,  10.0  ,  10.0  , 0.49  , "permutation" , "g"  , 3 , 1 , {"none"}       , {"amino-acid"}            , "OG1", "CB" , "CA" , "N"   },
+        { "C."   , "OG1"    , "Chi1" ,-171.0  ,   6.0  ,   6.0  , 0.07  , "permutation" , "t"  , 3 , 2 , {"none"}       , {"amino-acid"}            , "OG1", "CB" , "CA" , "N"   },
+        { "C."   , "OG1"    , "Chi1" , -61.0  ,   7.0  ,   7.0  , 0.43  , "permutation" , "-g" , 3 , 3 , {"none"}       , {"amino-acid"}            , "OG1", "CB" , "CA" , "N"   },
 
-        { "C."   , "OG1"    , "psi"  , -60.0  ,  60.0  ,  60.0  , 1.000 , "permutation" , "-g" , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "OG1", "CB" , "CA"  },
-        { "C."   , "OG1"    , "phi"  , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "OG1", "CB"  },
+        { "C."   , "OG1"    , "Psi"  , -60.0  ,  60.0  ,  60.0  , 1.000 , "permutation" , "-g" , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "OG1", "CB" , "CA"  },
+        { "C."   , "OG1"    , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "OG1", "CB"  },
 
          // SER // Values not checked
-        { "C."   , "OG"     , "chi1" ,  64.0  ,  10.0  ,  10.0  , 0.48  , "permutation" , "g"  , 3 , 1 , {"none"}       , {"amino-acid"}            , "OG" , "CB" , "CA" , "N"   },
-        { "C."   , "OG"     , "chi1" , 178.0  ,  11.0  ,  11.0  , 0.22  , "permutation" , "t"  , 3 , 2 , {"none"}       , {"amino-acid"}            , "OG" , "CB" , "CA" , "N"   },
-        { "C."   , "OG"     , "chi1" , -65.0  ,   9.0  ,   9.0  , 0.29  , "permutation" , "-g" , 3 , 3 , {"none"}       , {"amino-acid"}            , "OG" , "CB" , "CA" , "N"   },
+        { "C."   , "OG"     , "Chi1" ,  64.0  ,  10.0  ,  10.0  , 0.48  , "permutation" , "g"  , 3 , 1 , {"none"}       , {"amino-acid"}            , "OG" , "CB" , "CA" , "N"   },
+        { "C."   , "OG"     , "Chi1" , 178.0  ,  11.0  ,  11.0  , 0.22  , "permutation" , "t"  , 3 , 2 , {"none"}       , {"amino-acid"}            , "OG" , "CB" , "CA" , "N"   },
+        { "C."   , "OG"     , "Chi1" , -65.0  ,   9.0  ,   9.0  , 0.29  , "permutation" , "-g" , 3 , 3 , {"none"}       , {"amino-acid"}            , "OG" , "CB" , "CA" , "N"   },
 
-        { "C."   , "OG"     , "psi"  , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "OG" , "CB" , "CA"  },
-        { "C."   , "OG"     , "phi"  , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "OG1", "CB"  },
+        { "C."   , "OG"     , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "OG" , "CB" , "CA"  },
+        { "C."   , "OG"     , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "OG1", "CB"  },
          // TYR // Values not checked
-        { "C."   , "OH"     , "chi1" , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 7 , 1 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
-        { "C."   , "OH"     , "chi1" ,  60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "g"  , 7 , 2 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
-        { "C."   , "OH"     , "chi1" , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 7 , 3 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
-        { "C."   , "OH"     , "chi2" , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 6 , 1 , {"none"}       , {"amino-acid"}            , "CD1", "CG" , "CB" , "CA"  },
-        { "C."   , "OH"     , "psi"  , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "OH" , "CZ" , "CE1" },
-        { "C."   , "OH"     , "phi"  , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "OH ", "CZ"  },
+        { "C."   , "OH"     , "Chi1" , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 7 , 1 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
+        { "C."   , "OH"     , "Chi1" ,  60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "g"  , 7 , 2 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
+        { "C."   , "OH"     , "Chi1" , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 7 , 3 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
+        { "C."   , "OH"     , "Chi2" , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 6 , 1 , {"none"}       , {"amino-acid"}            , "CD1", "CG" , "CB" , "CA"  },
+        { "C."   , "OH"     , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "OH" , "CZ" , "CE1" },
+        { "C."   , "OH"     , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "OH ", "CZ"  },
 
     };
 }

@@ -190,7 +190,8 @@ void carbohydrateBuilder::WriteJSON()
     j_responses["Evaluate"]["officialSequence"] = this->GetOfficialSequenceString();
     j_root["responses"] += j_responses;
     j_root["entity"]["type"] = "sequence";
-    std::cout << std::setw(4) << j_root << std::endl;
+    std::cout << j_root << std::endl;
+   // std::cout << std::setw(4) << j_root << std::endl;
     std::cout << "Finito" << std::endl;
     return;
 }
@@ -252,11 +253,13 @@ void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Re
 void carbohydrateBuilder::InitializeClass(std::string selectedBuildType, std::string condensedSequence, std::string prepFilePath)
 {
     PrepFileSpace::PrepFile* prepA = new PrepFileSpace::PrepFile(prepFilePath);
-   // assembly_ = MolecularModeling::Assembly();
     this->SetInputSequenceString(condensedSequence);
     this->SetOfficialSequenceString(condensedSequence); // Need to actually do this.
     assembly_.SetName("CONDENSEDSEQUENCE");
     assembly_.BuildAssemblyFromCondensedSequence(condensedSequence, prepA);
+    // So in the above BuildAss code, linkages are generated that are inaccessible to me.
+    // Condensed sequence should be separated so I can handle everything here, but it's a mess.
+    // In the mean time I must also create linkages at this level, so I want to reset the indexes first:
     this->FigureOutResidueLinkagesInGlycan(assembly_.GetResidues().at(0), assembly_.GetResidues().at(0), &glycosidicLinkages_);
     this->WriteJSON();
 
