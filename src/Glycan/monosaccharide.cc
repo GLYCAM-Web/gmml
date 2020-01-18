@@ -1621,8 +1621,19 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
     std::stringstream long_name;
     if(sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
     {
+      if((sugar_name_.monosaccharide_stereochemistry_name_.substr(sugar_name_.monosaccharide_stereochemistry_name_.size() - 3) ==
+        "ose") && (tail.str() == "-osamine"))
+      {
+        long_name << head.str();
+        long_name << sugar_name_.monosaccharide_stereochemistry_name_.substr(0,sugar_name_.monosaccharide_stereochemistry_name_.size() - 3);
+        long_name << tail.str().substr(1);
+        sugar_name_.monosaccharide_stereochemistry_name_ = long_name.str();
+      }
+      else
+      {
         long_name << head.str() << sugar_name_.monosaccharide_stereochemistry_name_ << tail.str();
         sugar_name_.monosaccharide_stereochemistry_name_ = long_name.str();
+      }
     }
 }
 

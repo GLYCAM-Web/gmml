@@ -661,3 +661,29 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
 // ?commentNote    :NoteType      "comment".
 // ?commentNote    :description   ?comment.}
 // }
+
+//New query format for branched oligo searching
+//Looking for DGlcpNAcb1-4[LFucpa1-3]DGlcpNAcb
+// PREFIX : <http://gmmo.uga.edu/#>
+// PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+// PREFIX owl: <http://www.w3.org/2002/07/owl#>
+// PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+// PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+// SELECT DISTINCT ?pdb (group_concat(distinct ?Oligosaccharide;separator="\n") as ?Oligosaccharides)
+// WHERE {
+// ?pdb_file     :identifier    ?pdb;
+//               :hasOligo      ?oligo.
+// ?pdb_file     :hasTitle               ?title;
+//               :hasAuthors             ?authors.
+// ?oligo        :oligoIUPACname     ?Oligosaccharide.
+// ?oligo        :hasMono            ?mono;
+//               :hasSequenceResidue ?residue1.
+// ?residue1     :monosaccharideShortName  """LFucpa""".
+// 
+// ?residue1     :is1-3ConnectedTo      ?residue2.
+// ?residue2     :monosaccharideShortName """DGlcpNAcb""".
+// ?residue3 :is1-4ConnectedTo ?residue2.
+// ?residue3 :monosaccharideShortName """DGlcpNAcb""".
+// }
+//TODO make query work for any permutation of DGalpb1-4DGlcpNAcb1-2DManpa1-3[DGlcpNAcb1-2DManpa1-6]DManpb1-4DGlcpNAcb1-4[LFucpa1-6]DGlcpNAcb1-ASN
+
