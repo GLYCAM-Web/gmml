@@ -2169,12 +2169,10 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
         }
         std::vector<std::string> key_order = std::vector<std::string>();
         PdbqtFileSpace::PdbqtFile::PdbqtResidueAtomsMap residue_atoms_map = pdbqt_file->GetAllAtomsInOrder(key_order);
-        std::cout << "Key order size: " << key_order.size() << std::endl;
         for(std::vector<std::string>::iterator it = key_order.begin(); it != key_order.end(); it++)
         {
             std::string residue_key = *it;
             PdbqtFileSpace::PdbqtFile::PdbqtAtomVector* atoms = residue_atoms_map[residue_key];
-            std::cout << "Pdbqt atoms size: " << atoms->size() << std::endl;
             Residue* residue = new Residue();
             residue->SetAssembly(this);
 
