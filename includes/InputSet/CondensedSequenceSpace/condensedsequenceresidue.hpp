@@ -33,7 +33,8 @@ namespace CondensedSequenceSpace
 /** \addtogroup Molecular_Data_Structure
               * @{
               */
-            bool GetIsTerminal();
+            bool GetIsTerminalSugar();
+            bool GetIsTerminalAglycone();
             std::string GetIsomer();
             std::string GetConfiguration();
             std::string GetName();
@@ -50,7 +51,8 @@ namespace CondensedSequenceSpace
 /** \addtogroup Manipulators
               * @{
               */
-            void SetIsTerminal(bool is_terminal);
+            void SetIsTerminalSugar(bool is_terminal_sugar);
+            void SetIsTerminalAglycone(bool is_terminal_aglycone);
             void SetIsomer(std::string isomer);
             void SetConfiguration(std::string configuration);
             void SetName(std::string name);
@@ -79,7 +81,8 @@ namespace CondensedSequenceSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            bool is_terminal_;
+            bool is_terminal_aglycone_ = false;
+            bool is_terminal_sugar_ = false;
             std::string isomer_;
             std::string configuration_;
             std::string name_;

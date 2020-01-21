@@ -114,6 +114,7 @@ namespace CondensedSequenceSpace
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
             int InsertNodeInCondensedSequenceResidueTree(CondensedSequenceResidue* condensed_residue, int parent_node_id, int bond_id );
+	    void DetectAnomericAnomericLinkages();
             int InsertNodeInCondensedSequenceGlycam06ResidueTree(CondensedSequenceGlycam06Residue* condensed_glycam06_residue, int parent_node_id, int bond_id );
 	    bool ParseSequenceAndCheckSanity(std::string sequence);
 	    bool CheckResidueTokenSanity();

@@ -18,10 +18,56 @@ CondensedSequenceResidue::CondensedSequenceResidue()
 CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string, CondensedSequenceSpace::CondensedSequence* condensed_sequence)
 {
     size_t dash_index = residue_string.find('-');
-    if(dash_index == std::string::npos)
+    if(dash_index == std::string::npos) //If there is no dashes, then this must be a terminal residue, which is either an aglycone or a sugar bearing ano-ano linkage. 
     {
-        this->name_ = residue_string;
-        this->is_terminal_ = true;
+	//If the first character of residue_string is not a number, for instance "OH", it is an aglycone
+	if (!std::isdigit(residue_string[0])){
+	    std::cout << "First char is not number" << std::endl;
+            this->name_ = residue_string;
+            this->is_terminal_aglycone_ = true;
+        }
+	//Otherwise, it is a ano-ano sugar, for instance "1]DFrufb".
+	else{
+            //In this case, see if the 2nd character is ]. If so, ignore this character.3rd becomes isomer, 4th to (n-1)th becomes residue name, last char becomes configuration. 	    
+	    std::cout << "First char is a number" << std::endl;
+	    if (residue_string.substr(1,1) == "]"){
+	        char isomer_letter = residue_string[2];
+		if (isomer_letter == 'D' || isomer_letter == 'd'){
+		    this->isomer_ = "D";
+		}
+		else if (isomer_letter == 'L' || isomer_letter == 'l'){
+		    this->isomer_ = "L";
+		}
+                else{
+                    std::stringstream error_notice;
+                    error_notice << "ERROR at residue " << residue_string << ": invalid isomer, must be either D/L";
+                    condensed_sequence->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, error_notice.str()));
+                    throw CondensedSequenceProcessingException("Invalid isomer in residue " + residue_string);
+                }
+
+		std::cout << "Name becomes: " << residue_string.substr(3, residue_string.size()-4) << std::endl;;
+		this->name_ = residue_string.substr(3, residue_string.size()-4);
+
+		char configuration_letter = residue_string[residue_string.size()-1];
+		//std::cout << "config letter is: " << configuration_letter << std::endl;
+                if(configuration_letter == 'A' || configuration_letter == 'a')
+                    this->configuration_ = 'A';
+                else if(configuration_letter == 'B' || configuration_letter == 'b')
+                    this->configuration_ = 'B';
+                else if(configuration_letter == 'X' || configuration_letter == 'x')
+                    this->configuration_ = 'X';
+                else{
+                    std::stringstream error_notice;
+                    error_notice << "ERROR at residue " << residue_string << ": invalid anomeric configuration, must be either a/b/x";
+                    condensed_sequence->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, error_notice.str()));
+                    //throw CondensedSequenceProcessingException("Invalid configuration in residue " + residue_string);
+                }
+	    }
+	    std::cout << "About to set terminal sugar to true, now it is: " << this->is_terminal_sugar_ << std::endl;
+	    this->is_terminal_sugar_ = true;
+	    std::cout << "Done setting terminal sugar to true, now it is: " << this->is_terminal_sugar_ << std::endl;
+	    std::cout << "Termianl aglycone status is: " << this->is_terminal_aglycone_ << std::endl;
+	}
     }
     else
     {
@@ -106,6 +152,7 @@ CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string, C
                 size_t left_bracket = residue_string.find('[');
                 size_t right_bracket = residue_string.find(']');
                 if(left_bracket == std::string::npos || right_bracket == std::string::npos){
+		    std::cout << "Name becomes 2: " << residue_string.substr(1, dash_index - 3) << std::endl;
                     this->name_ = residue_string.substr(1, dash_index - 3);
 		}
                 else
@@ -136,9 +183,13 @@ CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string, C
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-bool CondensedSequenceResidue::GetIsTerminal()
+bool CondensedSequenceResidue::GetIsTerminalAglycone()
 {
-    return is_terminal_;
+    return is_terminal_aglycone_;
+}
+bool CondensedSequenceResidue::GetIsTerminalSugar()
+{
+    return is_terminal_sugar_;
 }
 std::string CondensedSequenceResidue::GetIsomer()
 {
@@ -181,9 +232,13 @@ int CondensedSequenceResidue::GetBondId()  //Added by Yao 08/03/2018
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void CondensedSequenceResidue::SetIsTerminal(bool is_terminal)
+void CondensedSequenceResidue::SetIsTerminalAglycone(bool is_terminal_aglycone)
 {
-    is_terminal_ = is_terminal;
+    is_terminal_aglycone_ = is_terminal_aglycone;
+}
+void CondensedSequenceResidue::SetIsTerminalSugar(bool is_terminal_sugar)
+{
+    is_terminal_sugar_ = is_terminal_sugar;
 }
 void CondensedSequenceResidue::SetIsomer(std::string isomer)
 {
