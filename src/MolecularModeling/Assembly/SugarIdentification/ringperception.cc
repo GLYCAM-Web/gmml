@@ -615,7 +615,9 @@ void Assembly::DFSVisit(MolecularModeling::AtomVector atoms, AtomStatusMap& atom
     for(MolecularModeling::AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
     {
         Atom* neighbor = (*it);
-        if(neighbor->GetDescription().find("Het;") != std::string::npos)
+        MolecularModeling::Residue* residue = neighbor->GetResidue();
+        // if(neighbor->GetDescription().find("Het;") != std::string::npos)
+        if((residue->GetName().compare("HOH") != 0) && (residue->CheckIfProtein() != true))
         {
             if(atom_status_map[neighbor->GetId()] == gmml::UNVISITED)
             {
