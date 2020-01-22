@@ -786,7 +786,7 @@ public:
               * @param cutoff Threshold of closeness of the atoms to be considered as bonded
               * @param model_index In the case that the structure has multiple model (multiple coordinates for atoms, such as pdb) this arguments indicates the desired model index
               */
-    void BuildStructureByDistance(int number_of_threads = 1, double cutoff = gmml::dCutOff, int model_index = 0);
+    void BuildStructureByDistance(int number_of_threads = 1, double cutoff = gmml::maxCutOff, int model_index = 0);
     /*! \fn
               * A function to build a graph structure for the current object of central data structure based on the bonding information provided in the original file
               */
@@ -1467,7 +1467,7 @@ public:
     double CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
     double CalculatePhiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
     bool guessIfC_CDoubleBond(MolecularModeling::Atom* carbon1, MolecularModeling::Atom* carbon2);
-    double guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2);
+    std::pair<double,double> guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2);
     void GetAuthorNaming(std::vector< std::string > amino_lib_files, Glycan::Monosaccharide* mono, std::string CCD_Path);
     bool checkIfNucleotide(Glycan::Monosaccharide* mono);
 
@@ -1991,7 +1991,7 @@ struct DistanceCalculationThreadArgument{
         thread_index = 0;
         number_of_threads = 1;
         model_index = 0;
-        cutoff = gmml::dCutOff;
+        cutoff = gmml::maxCutOff;
         a = NULL;
     }
 
@@ -2016,7 +2016,7 @@ struct DistanceCalculationByMatrixThreadArgument{
     {
         thread_index = 0;
         model_index = 0;
-        cutoff = gmml::dCutOff;
+        cutoff = gmml::maxCutOff;
         first_chunk = new std::vector<Atom*>();
         second_chunk = new std::vector<Atom*>();
     }

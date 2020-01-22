@@ -241,13 +241,12 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
       //Mono Index
       thisOutput.indices.push_back(std::make_pair(std::to_string(thisMono->oligosaccharide_index_), thisMono->cycle_atoms_[0]->GetResidue()->GetId()));
       //Mono connectivity
-      //TODO unbreak this; Maybe fix glycosidic linkage class? :'(
       thisMono->mono_neighbors_.shrink_to_fit();
       for (std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> >::iterator it2 = thisMono->mono_neighbors_.begin(); it2 != thisMono->mono_neighbors_.end(); it2++)
       {
           Glycan::Monosaccharide* thisNeighbor = (*it2).second;
           std::string neighborMonoID = thisNeighbor->cycle_atoms_[0]->GetResidue()->GetId();
-          Glycan::GlycosidicLinkage* thisLinkage = (*it2).first;      
+          Glycan::GlycosidicLinkage* thisLinkage = (*it2).first;
           int NeighborNum = thisNeighbor->oligosaccharide_index_;
           //residue ID, atom name, residue ID2, atom name 2.
           std::vector<std::string> residue_links_vector;
@@ -298,10 +297,7 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
             residue_links_vector.push_back(thisID);
           }
             thisOutput.residue_links.push_back(residue_links_vector);
-      
       }
-    
-      
       //Errors at the mono level
       for(std::vector<Glycan::Note*>::iterator it3 = thisMono->mono_notes_.begin(); it3 != thisMono->mono_notes_.end(); it3++)
       {
@@ -309,8 +305,6 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
         std::string thisNoteString = thisNote->type_ + ": " + thisNote->description_;
         thisOutput.error_warning_messages.push_back(thisNoteString);
       }
-    
-      
     }
     //Errors at the Oligo level
     for(std::vector<Glycan::Note*>::iterator it = thisOligo->oligo_notes_.begin(); it != thisOligo->oligo_notes_.end(); it++)
@@ -327,15 +321,15 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
 
 std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology, bool individualOntologies, std::string CCD_Path)
 {
-  int local_debug = 1;
+  int local_debug = -1;
   gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap( amino_lib_files );
   if(local_debug > 0)
   {
     std::cout << "\n" << "Extracting Sugars\n";
   }
   ///CYCLE DETECTION
-  CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
-
+  // CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
+  CycleMap cycles =DetectCyclesByDFS();
   ///PRINTING ALL DETECTED CYCLES
   if(local_debug > 0)
   {
@@ -366,10 +360,10 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
   //FILTERING OUT CYCLES WITH DOUBLE BONDS and add them to new cyclemap
   CycleMap double_bond_cycles = FilterCyclesWithDoubleBonds( cycles );
-  
-  
+
+
   //TODO figure out what to do with double bonded cycles
-  
+
   if(local_debug > 0)
   {
     std::cout << "\n" << "Cycles after discarding rings containing C-C double bonds" << "\n";
@@ -397,7 +391,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     monos.push_back(mono);
     if(local_debug > 0)
     {
-      std::cout << cycle_atoms_str << "\n"; 
+      std::cout << cycle_atoms_str << "\n";
       ///e.g. C1_3810_NAG_A_1521_?_?_1-O5_3821_NAG_A_1521_?_?_1-
       ///C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
     }
@@ -501,7 +495,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         }
       }
     }
-    
+
     ///GLYPROBITY REPORT (GEOMETRY OUTLIERS)
     if( glyprobity_report ) {
       CalculateGlyprobityGeometryOutliers( mono );
@@ -515,7 +509,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       std::cout << "Complete name: " << mono->sugar_name_.monosaccharide_name_ << "\n";
       std::cout << "Short name: " << mono->sugar_name_.monosaccharide_short_name_ << "\n";
     }
-    
+
     //Check author's naming vs what's detected
     if(CCD_Path != " ")
     {
@@ -589,7 +583,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     {
       if (this_residue->GetIsSugar() == false)
       {
-        if(this_residue->GetId()[12] == '?')//alternate atomic locations caused new residues that weren't assigned as sugars.  A ? at 12 in the ID 
+        if(this_residue->GetId()[12] == '?')//alternate atomic locations caused new residues that weren't assigned as sugars.  A ? at 12 in the ID
                                             //means it isnt an atom with alternate coordinates
         {
           Glycan::Note* undetected_note = new Glycan::Note();
@@ -627,17 +621,19 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   ///BUILDING OLIGOSACCHARIDE SEQUENCE
   int number_of_oligosaccharides = 0;
   int number_of_monosaccharides = 0;
-  if(local_debug > 0)
+  
+  for(std::vector< Glycan::Oligosaccharide* >::iterator it = testOligos.begin(); it != testOligos.end(); it++)
   {
-    for(std::vector< Glycan::Oligosaccharide* >::iterator it = testOligos.begin(); it != testOligos.end(); it++)
+    Glycan::Oligosaccharide* thisOligo = *it;
+    if(local_debug > 0)
     {
-      Glycan::Oligosaccharide* thisOligo = *it;
       std::cout << "Oligo IUPAC Name:       " << thisOligo->IUPAC_name_ << "\n";
-      // std::cout << "Oligo author IUPAC Name:" << thisOligo->author_IUPAC_name_ << "\n";
+      std::cout << "Oligo author IUPAC Name:" << thisOligo->author_IUPAC_name_ << "\n";
       std::cout << "Oligo Name:             ";
-      thisOligo->Print( std::cout );
     }
+    thisOligo->Print( std::cout );// This for some reason does a ton of stuff instead of printing....
   }
+  
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
   std::vector< Glycan::Note* > notes = this->GetNotes();
   if(local_debug > 0)
@@ -669,9 +665,9 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     }
   }
   ///POPULATING GMMO ONTOLOGY
-  if( populate_ontology ) 
+  if( populate_ontology )
   {
-    if( testOligos.size() > 0 ) 
+    if( testOligos.size() > 0 )
     {
       std::ofstream out_file;
       if(individualOntologies)
@@ -961,7 +957,7 @@ Assembly::CycleMap Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
         {
           all_single_bond_filtered_cycles[cycle_str] = cycle_atoms;
         }
-            
+
         else
         {
           all_double_bond_cycles[cycle_str] = cycle_atoms;
@@ -2669,17 +2665,17 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
   // }
   // if(NxO == 'N')
   // {
-  //   if(pattern.str().compare("xCH-N-CHHH") == 0 || 
-  //     pattern.str().compare("xCH-NH-CHHH") == 0 || 
-  //     pattern.str().compare("xCH-NH-C") == 0 || 
+  //   if(pattern.str().compare("xCH-N-CHHH") == 0 ||
+  //     pattern.str().compare("xCH-NH-CHHH") == 0 ||
+  //     pattern.str().compare("xCH-NH-C") == 0 ||
   //     pattern.str().compare("xCH-N-C") == 0 ||
-  //     pattern.str().compare("xCHH-N-CHHH") == 0 || 
-  //     pattern.str().compare("xCHH-NH-CHHH") == 0 || 
-  //     pattern.str().compare("xCHH-NH-C") == 0 || 
+  //     pattern.str().compare("xCHH-N-CHHH") == 0 ||
+  //     pattern.str().compare("xCHH-NH-CHHH") == 0 ||
+  //     pattern.str().compare("xCHH-NH-C") == 0 ||
   //     pattern.str().compare("xCHH-N-C") == 0 ||
-  //     pattern.str().compare("xC-NH-CHHH") == 0 || 
-  //     pattern.str().compare("xC-NH-C") == 0 || 
-  //     pattern.str().compare("xC-N-CHHH") == 0 || 
+  //     pattern.str().compare("xC-NH-CHHH") == 0 ||
+  //     pattern.str().compare("xC-NH-C") == 0 ||
+  //     pattern.str().compare("xC-N-CHHH") == 0 ||
   //     pattern.str().compare("xC-N-C") == 0)
   //   {
   //     return "xC-N-CH3";
@@ -2689,17 +2685,17 @@ std::string Assembly::CheckxCOO(MolecularModeling::Atom *target, std::string cyc
   // }
   // else if(NxO == 'O')
   // {
-  //   if(pattern.str().compare("xCH-O-CHHH") == 0 || 
-  //     pattern.str().compare("xCH-OH-CHHH") == 0 || 
-  //     pattern.str().compare("xCH-OH-C") == 0 || 
+  //   if(pattern.str().compare("xCH-O-CHHH") == 0 ||
+  //     pattern.str().compare("xCH-OH-CHHH") == 0 ||
+  //     pattern.str().compare("xCH-OH-C") == 0 ||
   //     pattern.str().compare("xCH-O-C") == 0 ||
   //     pattern.str().compare("xCHH-O-CHHH") == 0 ||
-  //     pattern.str().compare("xCHH-OH-CHHH") == 0 || 
-  //     pattern.str().compare("xCHH-OH-C") == 0 || 
+  //     pattern.str().compare("xCHH-OH-CHHH") == 0 ||
+  //     pattern.str().compare("xCHH-OH-C") == 0 ||
   //     pattern.str().compare("xCHH-O-C") == 0 ||
-  //     pattern.str().compare("xC-OH-CHHH") == 0 || 
-  //     pattern.str().compare("xC-OH-C") == 0 || 
-  //     pattern.str().compare("xC-O-CHHH") == 0 || 
+  //     pattern.str().compare("xC-OH-CHHH") == 0 ||
+  //     pattern.str().compare("xC-OH-C") == 0 ||
+  //     pattern.str().compare("xC-O-CHHH") == 0 ||
   //     pattern.str().compare("xC-O-C") == 0)
   //   {
   //     return "xC-O-CH3";
@@ -3682,7 +3678,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vect
   {
 
     Glycan::Monosaccharide* this_mono = *it;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, this_mono->sugar_name_.monosaccharide_short_name_);
+    // gmml::log(__LINE__, __FILE__,  gmml::INF, this_mono->sugar_name_.monosaccharide_short_name_);
     if(this_mono->mono_neighbors_.empty())
     {
       this_mono->is_root_ = true;
@@ -3699,22 +3695,22 @@ std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vect
         if(thisLinkage->reducing_mono_ != NULL)
         {
           ss << this_mono->cycle_atoms_[0]->GetResidue()->GetId() << " is being compared to " << thisLinkage->non_reducing_mono_->cycle_atoms_[0]->GetResidue()->GetId() << " and the linkage type is " << thisLinkage->inverse_linkage_type_;
-          gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+          // gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
           if(this_mono->cycle_atoms_[0]->GetResidue()->GetId() == thisLinkage->non_reducing_mono_->cycle_atoms_[0]->GetResidue()->GetId())
           {//if this mono has a mono neighbor at the anomeric carbon, it can't be the root (attached to terminal)
-            gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the non reducing mono");
+            // gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the non reducing mono");
             this_mono->is_root_ = false;
           }
           else
           {
-            gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the reducing mono");
+            // gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the reducing mono");
           }
         }
         else
         {
           ss << this_mono->cycle_atoms_[0]->GetResidue()->GetId() << " and " << thisNeighbor->cycle_atoms_[0]->GetResidue()->GetId() << " have a linkage of " << thisLinkage->linkage_type_;
-          gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
-          gmml::log(__LINE__, __FILE__,  gmml::INF, "This linkage is anomeric-anomeric");
+          // gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+          // gmml::log(__LINE__, __FILE__,  gmml::INF, "This linkage is anomeric-anomeric");
           //TODO handle anomeric-anomeric; they both think they are the root and you get stuck in an infinite loop
           if((thisNeighbor->mono_neighbors_.size() == 1) && (this_mono->mono_neighbors_.size() == 1))//just a disaccharide
           {
@@ -3724,7 +3720,7 @@ std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vect
             }
             if(thisLinkage->linkage_type_ == "1-2")
             {
-              gmml::log(__LINE__, __FILE__,  gmml::INF, "This is a 1-2 anomeric linkage, so the other mono is the root");
+              // gmml::log(__LINE__, __FILE__,  gmml::INF, "This is a 1-2 anomeric linkage, so the other mono is the root");
               this_mono->is_root_ = false;
             }
           }
@@ -3737,17 +3733,17 @@ std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vect
     }
     if((this_mono->is_root_) && (!this_mono->is_visited_))
     {
-      gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the root");
+      // gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the root");
       Glycan::Oligosaccharide* this_Oligo = new Glycan::Oligosaccharide(this);
-      gmml::log(__LINE__, __FILE__, gmml::INF, this_mono->sugar_name_.monosaccharide_short_name_);
+      // gmml::log(__LINE__, __FILE__, gmml::INF, this_mono->sugar_name_.monosaccharide_short_name_);
       this_Oligo->traverseGraph(this_mono, this_Oligo);
       this_Oligo->reindexRGroups(this_Oligo);
       this_Oligo->indexMonosaccharides();
       detected_oligos.push_back(this_Oligo);
       std::string iupac = "Oligo IUPAC Name: " + this_Oligo->IUPAC_name_;
-      gmml::log(__LINE__, __FILE__, gmml::INF, iupac);
+      // gmml::log(__LINE__, __FILE__, gmml::INF, iupac);
       std::string oligoname =  "Oligo Name: " +this_Oligo->oligosaccharide_name_;
-      gmml::log(__LINE__, __FILE__, gmml::INF, oligoname);
+      // gmml::log(__LINE__, __FILE__, gmml::INF, oligoname);
     }
   }
   for(std::vector<Glycan::Monosaccharide*>::iterator it = detected_monos.begin(); it != detected_monos.end(); it++)
@@ -4628,7 +4624,7 @@ void Assembly::BuildOligosaccharideTreeStructure(Glycan::Monosaccharide *key, st
                 {
                     //std::cout << "key id " << key->mono_id_  << ", value id " << value_mono->mono_id_ << "\n";
                     Glycan::Oligosaccharide* child_oligo = new Glycan::Oligosaccharide(this);
-                    // CalculateOligosaccharideBFactor(child_oligo, values);
+                    CalculateOligosaccharideBFactor(child_oligo, values);
                     std::vector<Glycan::Monosaccharide*> value_mono_values = monos_table[value_mono];
                     visited_linkages.push_back(link);
                     //std::cout << "call " << value_mono->mono_id_ << "\n";
@@ -4937,16 +4933,16 @@ void Assembly::GetAuthorNaming(std::vector< std::string > amino_lib_files, Glyca
   char CCDhash = residueName[0];
   std::stringstream CCDfilepath;
   CCDfilepath << CCD_Path << "/" << CCDhash << "/" << residueName << "/" << residueName << ".pdb";
-  
+
   // Initialize an Assembly from the PDB file.
-  
+
   //The next two lines are the fastest way to check if a file exists according to https://stackoverflow.com/questions/12774207/fastest-way-to-check-if-a-file-exist-using-standard-c-c11-c
-  struct stat buffer; 
+  struct stat buffer;
   if( stat( CCDfilepath.str().c_str(), &buffer ) == 0 )
-  {  
+  {
     MolecularModeling::Assembly CCDassembly(CCDfilepath.str(), gmml::PDB);
-    
-    //TODO Remove H atoms from CCD PDB files; They are screwing up too much in the sugar naming (AH vs A in the chemical_code_)    
+
+    //TODO Remove H atoms from CCD PDB files; They are screwing up too much in the sugar naming (AH vs A in the chemical_code_)
     std::vector<MolecularModeling::Residue*> residues = CCDassembly.GetAllResiduesOfAssembly();
     for(std::vector<MolecularModeling::Residue*>::iterator it = residues.begin(); it != residues.end(); it++)
     {
@@ -4961,7 +4957,7 @@ void Assembly::GetAuthorNaming(std::vector< std::string > amino_lib_files, Glyca
         }
       }
     }
-  
+
     // Build by Distance
     CCDassembly.BuildStructureByDistance(10);
     // Find the Sugars.

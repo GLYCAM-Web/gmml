@@ -111,6 +111,7 @@ if [ -f buildBySequence.pdb ]; then
     else
         printf "Test passed.\n"
         ((tests_passed++))
+	rm buildBySequence.pdb buildBySequence > /dev/null 2>&1
     fi
 else
     printf "Test FAILED!.\n"

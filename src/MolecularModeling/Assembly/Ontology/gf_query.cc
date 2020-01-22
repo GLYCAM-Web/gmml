@@ -57,7 +57,8 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
   //add info for coordinates here
   query << Ontology::END_WHERE_CLAUSE << "\n";
 
-
+  // gmml::log(__LINE__, __FILE__, gmml::INF, query.str());
+  // std::cout << "\n" << query.str() << "\n";
   return FormulateCURLGF(output_file_type, query.str(), url);
 
 }
@@ -249,6 +250,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       }
       query << "OFFSET " << resultsPerPage*(page - 1) << "\n";
     }
+    // gmml::log(__LINE__, __FILE__, gmml::INF, query.str());
 
     return FormulateCURLGF(output_file_type, query.str(), url);
 }
@@ -618,3 +620,70 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
 // FILTER (!regex(?oligo_IUPAC, "-ASN$"))
 // FILTER (!regex(?oligo_IUPAC, "-THR$"))
 // FILTER (!regex(?oligo_IUPAC, "-SER$"))
+
+
+// PREFIX : <http://gmmo.uga.edu/#>
+// PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+// PREFIX owl: <http://www.w3.org/2002/07/owl#>
+// PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+// PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+// SELECT ?pdb ?oligo_sequence
+// WHERE
+// {
+// ?pdb_file :identifier ?pdb.
+// ?pdb_file :hasOligo ?oligo.
+// ?oligo :oligoName ?oligo_sequence.
+
+// SELECT DISTINCT ?residue_links?title ?resolution ?Mean_B_Factor?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI ?pdb_coordinates ?ProteinID(group_concat(distinct ?comment;separator="\n") as ?comments)(group_concat(distinct ?warning;separator="\n") as ?warnings)(group_concat(distinct ?error;separator="\n") as ?errors)WHERE {
+// ?pdb_file     :identifier    "1A14";
+//               :hasOligo      ?oligo.
+// FILTER regex(?oligo, "oligo1$")
+// ?oligo        :oligoIUPACname     "DManpa1-2DManpa1-2DManpa1-3DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-ASN".
+// ?pdb_file     :hasTitle               ?title;
+//               :hasAuthors             ?authors.
+// OPTIONAL {?pdb_file     :hasJournal             ?journal.}
+// OPTIONAL {?pdb_file     :hasProteinID           ?ProteinID.}
+// OPTIONAL {?pdb_file     :hasDOI                 ?DOI.}
+// OPTIONAL {?pdb_file     :hasPMID                ?PMID.}
+// OPTIONAL {?pdb_file     :hasResolution          ?resolution.}
+// OPTIONAL {?pdb_file     :hasBFactor             ?Mean_B_Factor.}
+// OPTIONAL {?oligo        :oligoResidueLinks      ?residue_links.}
+// OPTIONAL {?oligo        :oligoBFactor           ?oligo_mean_B_Factor.}
+// ?oligo        :PDBfile           ?pdb_coordinates.
+// ?oligo        :hasMono            ?mono.
+// OPTIONAL {?mono       :hasNote       ?errorNote.
+// ?errorNote	    :NoteType      "error".
+// ?errorNote      :description   ?error.}
+// OPTIONAL {?mono       :hasNote       ?warningNote.
+// ?warningNote    :NoteType      "warning".
+// ?warningNote    :description   ?warning.}
+// OPTIONAL {?mono       :hasNote       ?commentNote.
+// ?commentNote    :NoteType      "comment".
+// ?commentNote    :description   ?comment.}
+// }
+
+//New query format for branched oligo searching
+//Looking for DGlcpNAcb1-4[LFucpa1-3]DGlcpNAcb
+// PREFIX : <http://gmmo.uga.edu/#>
+// PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+// PREFIX owl: <http://www.w3.org/2002/07/owl#>
+// PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+// PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+// SELECT DISTINCT ?pdb (group_concat(distinct ?Oligosaccharide;separator="\n") as ?Oligosaccharides)
+// WHERE {
+// ?pdb_file     :identifier    ?pdb;
+//               :hasOligo      ?oligo.
+// ?pdb_file     :hasTitle               ?title;
+//               :hasAuthors             ?authors.
+// ?oligo        :oligoIUPACname     ?Oligosaccharide.
+// ?oligo        :hasMono            ?mono;
+//               :hasSequenceResidue ?residue1.
+// ?residue1     :monosaccharideShortName  """LFucpa""".
+// 
+// ?residue1     :is1-3ConnectedTo      ?residue2.
+// ?residue2     :monosaccharideShortName """DGlcpNAcb""".
+// ?residue3 :is1-4ConnectedTo ?residue2.
+// ?residue3 :monosaccharideShortName """DGlcpNAcb""".
+// }
+//TODO make query work for any permutation of DGalpb1-4DGlcpNAcb1-2DManpa1-3[DGlcpNAcb1-2DManpa1-6]DManpb1-4DGlcpNAcb1-4[LFucpa1-6]DGlcpNAcb1-ASN
+

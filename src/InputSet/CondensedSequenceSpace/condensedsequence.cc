@@ -11,6 +11,7 @@
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
 #include "../../../includes/common.hpp"
 #include "../../../includes/utils.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
 using CondensedSequenceSpace::CondensedSequence;
 
 //////////////////////////////////////////////////////////
@@ -22,6 +23,10 @@ CondensedSequence::CondensedSequence()
 
 CondensedSequence::CondensedSequence(std::string sequence)
 {
+    //gmml::MolecularMetadata::GLYCAM::Glycam06NamesToTypesLookupContainer metadata_residueNamesToTypes;
+    //std::vector<std::string> all_types = glycam06_NamesToTypesMetadata.GetTypesForResidue(residue_name);
+    //if (std::find(all_types.begin(), all_types.end(), "aldose") != all_types.end())
+    //if (std::find(all_types.begin(), all_types.end(), "ketose") != all_types.end())
     residues_ = CondensedSequenceResidueVector();
     tokens_ = CondensedSequenceTokenTypeVector();
     condensed_sequence_residue_tree_ = CondensedSequenceResidueTree();
@@ -293,7 +298,7 @@ void CondensedSequence::AddToken(gmml::CondensedSequenceTokenType token)
 //////////////////////////////////////////////////////////
 bool CondensedSequence::ParseSequenceAndCheckSanity(std::string sequence)
 {
-    ParseCondensedSequence(sequence, this);  //There is error checking in the condense residue constuctor class as well, but the code construct does not allow me to let this function return. 
+    ParseCondensedSequence(sequence, this);  //There is error checking in the condense residue constuctor class as well, but the code construct does not allow me to let this function return.
     std::string bad_residue_notice = "Bad residue information detected.Cannot proceed.See other notices.Aborted.";
     std::string good_residue_notice = "Sequence is sane.";
     bool residues_are_sane = this->CheckResidueTokenSanity();
@@ -379,7 +384,7 @@ int CondensedSequence::InsertNodeInCondensedSequenceResidueTree(CondensedSequenc
     condensed_residue->SetBondId(bond_id);
 
     if (parent_node_id != gmml::iNotSet){
-        condensed_sequence_residue_tree_[parent_node_id]->AddChildId(condensed_sequence_residue_tree_.size());  //Not only child knows parent, parent also knows child. 
+        condensed_sequence_residue_tree_[parent_node_id]->AddChildId(condensed_sequence_residue_tree_.size());  //Not only child knows parent, parent also knows child.
     }
     condensed_sequence_residue_tree_.push_back(condensed_residue);
     return condensed_sequence_residue_tree_.size() - 1;
@@ -457,14 +462,15 @@ bool CondensedSequence::ParseCondensedSequence(std::string sequence, CondensedSe
         residues_.push_back(new CondensedSequenceResidue(terminal_residue, this));
         tokens_.push_back(gmml::CONDENSED_SEQUENCE_RESIDUE);
     }
+    return true;
 }
 
 int CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
 {
     CondensedSequenceTokenTypeVector::reverse_iterator current_token = tokens_.rbegin();
     CondensedSequenceResidueVector::reverse_iterator current_residue = residues_.rbegin();
-    
-    int return_value = 0; //zero is success.Non zero is error. 
+
+    int return_value = 0; //zero is success.Non zero is error.
     if(residues_.size() == 0){
         return_value = 1;
 	this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, "Condensed sequence does not contain any detectable residues."));
@@ -495,7 +501,7 @@ int CondensedSequence::BuildArrayTreeOfCondensedSequenceResidue()
 		    return_value = 1;
 		    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, "Invalid sequence of residues"));
                     //throw CondensedSequenceProcessingException("Invalid sequence of residues");
-		}    
+		}
                 if(residue_stack.empty()){
 		    return_value = 1;
 		    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, "Invalid sequence"));
@@ -665,7 +671,7 @@ std::string CondensedSequence::GetGlycam06ResidueCodeOfCondensedResidue(Condense
     for(unsigned int i = 0; i < open_valences.size(); i ++)
     {
         if(open_valences[i] < 0 || open_valences[i] >= 10){
-	    std::stringstream notice; 
+	    std::stringstream notice;
 	    notice << "Not eligible for MD: " << condensed_residue->GetName() << "unsupported open valence position: <0 or >= 10";
 	    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, notice.str()));
             //throw CondensedSequenceProcessingException("Invalid open valence");
@@ -803,16 +809,27 @@ CondensedSequenceSpace::CondensedSequenceGlycam06Residue* CondensedSequence::Get
     return new CondensedSequenceSpace::CondensedSequenceGlycam06Residue("UNK", "UNK", oxygen_name, true);
 }
 
-std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach reordering_approach, bool label)
+std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach labeling_approach, CondensedSequence::Reordering_Approach reordering_approach, bool label)
 {
+    //WARNING: preserve user input option doesn't work well with the labeing function, but okay with reordering function. 
     std::string labeled_sequence = "";
     std::vector<int> longest_path;  //Elements in this vector is the residue ids on the longest path. Will be used or ignored based on reordering approach. See below.
+    std::map<unsigned int, std::string> residue_label_map;
+    std::map<unsigned int, std::string> bond_label_map;
+
+    if (label){
+	int current_residue_label_index = 0, current_bond_label_index = 0;
+        RecursivelyLabelCondensedSequence(0, current_residue_label_index, current_bond_label_index, residue_label_map, bond_label_map, labeling_approach, longest_path); 
+    }
+
     int branch_depth = 0;
     if (reordering_approach == CondensedSequence::Reordering_Approach::LONGEST_CHAIN){ //If reorder by longest chain, has to first find the longest chain.
 	this->FindLongestPath (longest_path);
     }
 
-    this->RecursivelyBuildLabeledCondensedSequence(0, branch_depth, labeled_sequence, reordering_approach, longest_path, label);
+//void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_index, int& branch_depth, std::string& labeled_sequence, CondensedSequence::Reordering_Approach reordering_approach, std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map, std::vector<int>& longest_path, bool label)
+
+    this->RecursivelyBuildLabeledCondensedSequence(0, branch_depth, labeled_sequence, reordering_approach, residue_label_map, bond_label_map, longest_path, label);
     //Starts with the first condensed residue in the vector, which is the aglycone. Then go recursively down the tree.
     return labeled_sequence;
 }
@@ -874,16 +891,76 @@ void CondensedSequence::FindLongestPath (std::vector<int>& longest_path)
     }
 }
 
-void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_index, int& branch_depth, std::string& labeled_sequence, CondensedSequence::Reordering_Approach reordering_approach, std::vector<int>& longest_path, bool label)
+void CondensedSequence::RecursivelyLabelCondensedSequence(int current_residue_index, int& current_residue_label_index, int& current_bond_label_index, 
+		                                          std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map, 
+							  CondensedSequence::Reordering_Approach labeling_approach, std::vector<int>& longest_path)
+{
+    CondensedSequenceSpace::CondensedSequenceResidue* current_residue = this->condensed_sequence_residue_tree_[current_residue_index];
+    //Insert residue label after residue name,example: Glcp&Label_residueId=1;a1-4
+    std::string residue_label; 
+    residue_label.insert(0, ";"); //semicolon is the right delimiter of a label;
+    residue_label.insert(0, std::to_string(current_residue_label_index)); //Add residue index to label.
+    residue_label.insert(0, "&Label=residue-"); //&Label is the left delimiter of a label. 
+    residue_label_map[current_residue_index] = residue_label;
+    current_residue_label_index++;
+
+    //Insert bond label. A bond label is asoociated with the child residue in the bond, not the parent. 
+    //No bond label for aglycone/terminal residue
+    std::string bond_label;
+    if (current_residue_index != 0){  //Only create bond label for non-terminal/aglycone residue.
+        bond_label.insert(0, ";");
+        bond_label.insert(0, std::to_string(current_bond_label_index));
+        bond_label.insert(0, "&Label=link-");
+        current_bond_label_index++;
+    }
+    bond_label_map[current_residue_index] = bond_label;
+
+    std::vector<int> child_ids = current_residue->GetChildIds(); //Get the index of child residues. Sort this vector based on the reordering approach below. 
+
+    if (labeling_approach == CondensedSequence::Reordering_Approach::LOWEST_INDEX){
+        //If sequence is to be reordered based on index, rearrange child in ascending order based on parent open valene position.Use a temporary map for sorting.
+        std::map<int, int, std::less<int> > openvalence_childid_map = std::map<int, int, std::less<int> >();
+        for (std::vector<int>::iterator it= child_ids.begin(); it != child_ids.end(); it++){
+            int child_id = *it;
+            CondensedSequenceSpace::CondensedSequenceResidue* child_residue = this->condensed_sequence_residue_tree_[child_id];
+            int open_valence_position = child_residue->GetOxygenPosition();
+            openvalence_childid_map[open_valence_position] = child_id;
+        }
+        child_ids.clear();
+        for (std::map<int, int>::iterator map_it = openvalence_childid_map.begin(); map_it != openvalence_childid_map.end(); map_it++){
+            child_ids.push_back(map_it->second);
+        }
+    }
+
+    else if (labeling_approach == CondensedSequence::Reordering_Approach::LONGEST_CHAIN){
+        //If sequence is to be reordered based on longest chain, sort main chain child that's on the predetermined longest path to the front of vector, preserve the order of the rest
+        for (std::vector<int>::iterator it= child_ids.begin(); it != child_ids.end(); it++){
+            int child_id = *it;
+            if (std::find(longest_path.begin(), longest_path.end(), child_id) != longest_path.end()){
+                child_ids.erase(it);
+                child_ids.insert(child_ids.begin(), child_id);
+		break;
+            }
+        }
+    }
+
+    for (std::vector<int>::iterator it = child_ids.begin(); it != child_ids.end(); it++){
+	std::cout << "Current child id: " << *it << std::endl;
+        this->RecursivelyLabelCondensedSequence(*it, current_residue_label_index, current_bond_label_index, residue_label_map, bond_label_map, labeling_approach, longest_path);
+    }
+}
+
+void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_index, int& branch_depth, std::string& labeled_sequence, CondensedSequence::Reordering_Approach reordering_approach, std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map, std::vector<int>& longest_path, bool label)
 {
     CondensedSequenceSpace::CondensedSequenceResidue* current_residue = this->condensed_sequence_residue_tree_[current_index];
     if (current_index == 0){  //If current residue is aglycone
 
         if (label){
             //Insert residue label after residue name,example: Glcp&Label_residueId=1;a1-4
-            labeled_sequence.insert(0,";");  //semicolon is the right delimiter of a label;
-            labeled_sequence.insert(0,std::to_string(current_index));  //Add residue index to label
-            labeled_sequence.insert(0,"&Label=residue-"); //&Label is the left delimiter of a label.
+            //labeled_sequence.insert(0,";");  //semicolon is the right delimiter of a label;
+            //labeled_sequence.insert(0,std::to_string(current_index));  //Add residue index to label
+            //labeled_sequence.insert(0,"&Label=residue-"); //&Label is the left delimiter of a label.
+	    labeled_sequence.insert(0, residue_label_map[current_index]);
         }
         //Done residue label
 
@@ -894,11 +971,13 @@ void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_ind
     else{
         if (label){
             //Insert bond label.
-            labeled_sequence.insert(0,";");
-            labeled_sequence.insert(0,std::to_string(current_residue->GetBondId()));
-            labeled_sequence.insert(0,"&Label=link-");
+            //labeled_sequence.insert(0,";");
+            //labeled_sequence.insert(0,std::to_string(current_residue->GetBondId()));
+            //labeled_sequence.insert(0,"&Label=link-");
+	    labeled_sequence.insert(0, bond_label_map[current_index]);
         }
         //Done bond label
+	
 
         if (current_residue->GetParentId() != 0){  //The residues connected to the aglycone has OxygenPosition set to 1, actually there shouldn't be such a value.So ignore.
 
@@ -923,13 +1002,15 @@ void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_ind
 
         //Insert residue label after residue name,example: Glcp&Label_residueId=1;a1-4
         if (label){
-            labeled_sequence.insert(0,";");  //semicolon is the right delimiter of a label;
-            labeled_sequence.insert(0,std::to_string(current_index));  //Add residue index to label
-            labeled_sequence.insert(0,"&Label=residue-"); //&Label is the left delimiter of a label.
-            labeled_sequence.insert(0, current_residue->GetName());
-            labeled_sequence.insert(0, current_residue->GetIsomer());
+            //labeled_sequence.insert(0,";");  //semicolon is the right delimiter of a label;
+            //labeled_sequence.insert(0,std::to_string(current_index));  //Add residue index to label
+            //labeled_sequence.insert(0,"&Label=residue-"); //&Label is the left delimiter of a label.
+	    labeled_sequence.insert(0, residue_label_map[current_index]);
         }
         //Done residue label
+	
+        labeled_sequence.insert(0, current_residue->GetName());
+        labeled_sequence.insert(0, current_residue->GetIsomer());
 
     }
 
@@ -950,7 +1031,7 @@ void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_ind
         }
     }
     else if (reordering_approach == CondensedSequence::Reordering_Approach::LONGEST_CHAIN){
-        //If sequence is to be reordered based on longest chain, sort main chain child to the end of vector, preserve the order of the rest
+        //If sequence is to be reordered based on longest chain, sort main chain child on the longest chain to the end of vector, preserve the order of the rest
         for (std::vector<int>::iterator it= child_ids.begin(); it != child_ids.end(); it++){
             int child_id = *it;
             if (std::find(longest_path.begin(), longest_path.end(), child_id) != longest_path.end()){
@@ -971,7 +1052,7 @@ void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_ind
             branch_depth++;
             labeled_sequence.insert(0,"]");
         }
-        this->RecursivelyBuildLabeledCondensedSequence(*it, branch_depth, labeled_sequence, reordering_approach, longest_path, label);
+        this->RecursivelyBuildLabeledCondensedSequence(*it, branch_depth, labeled_sequence, reordering_approach, residue_label_map, bond_label_map, longest_path, label);
     }
 
 }
@@ -980,7 +1061,7 @@ CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo CondensedSeq
 {
     CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles = CondensedSequenceRotamersAndGlycosidicAnglesInfo();
     //int linkage_index = 0;
-    int linkage_index = -1; //For testing front end. -- Yao 
+    int linkage_index = -1; //For testing front end. -- Yao
     for(unsigned int i = 0; i < residue_tree.size(); i++)
     {
         int parent = residue_tree.at(i)->GetParentId();
