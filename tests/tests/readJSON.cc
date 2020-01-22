@@ -21,38 +21,18 @@ struct selectedRotamers
    },
    "responses": [
        {
-           "Evaluate": {
+           "UserSelection": {
                "glycosidicLinkages": [
                    {
                        "20": {
-                           "likelyRotamers": {
+                           "SelectedRotamers": {
                                "omg": [
-                                   "gg",
-                                   "gt"
-                               ]
-                           },
-                           "linkageName": "DManpa1-6DManpb",
-                           "possibleRotamers": {
-                               "omg": [
-                                   "gg",
-                                   "gt"
+                                   "gg"
                                ]
                            }
                        },
                        "24": {
-                           "likelyRotamers": {
-                               "omg": [
-                                   "gg",
-                                   "gt",
-                                   "tg"
-                               ],
-                               "phi": [
-                                   "t",
-                                   "-g"
-                               ]
-                           },
-                           "linkageName": "DNeu5Acpa2-6DGalpb",
-                           "possibleRotamers": {
+                           "selectedRotamers": {
                                "omg": [
                                    "gg",
                                    "gt",
@@ -65,14 +45,7 @@ struct selectedRotamers
                            }
                        },
                        "25": {
-                           "likelyRotamers": {
-                               "omg": [
-                                   "gg",
-                                   "gt"
-                               ]
-                           },
-                           "linkageName": "DManpa1-6DManpa",
-                           "possibleRotamers": {
+                           "selectedRotamers": {
                                "omg": [
                                    "gg",
                                    "gt"

@@ -66,7 +66,8 @@ RotatableDihedralVector Residue_linkage::GetRotatableDihedrals() const
 {
     if (rotatable_dihedrals_.empty())
     {
-        std::cerr << "rotatable_dihedrals in this linkage is empty: " << from_this_residue1_->GetId() << "-" << to_this_residue2_->GetId() << std::endl;
+        // LOG IT
+        //std::cerr << "rotatable_dihedrals in this linkage is empty: " << from_this_residue1_->GetId() << "-" << to_this_residue2_->GetId() << std::endl;
     }
     return rotatable_dihedrals_;
 }
@@ -153,8 +154,8 @@ std::string Residue_linkage::DetermineLinkageNameFromResidueNames()
     gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookupContainer nameLookup;
     std::string residue1Name = nameLookup.GetResidueForCode(this->GetFromThisResidue1()->GetName());
     std::string residue2Name = nameLookup.GetResidueForCode(this->GetToThisResidue2()->GetName());
-    std::cout << this->GetFromThisConnectionAtom1()->GetName() << std::endl;
-    std::cout << this->GetToThisConnectionAtom2()->GetName() << std::endl;
+   // std::cout << this->GetFromThisConnectionAtom1()->GetName() << std::endl;
+   // std::cout << this->GetToThisConnectionAtom2()->GetName() << std::endl;
     std::string atom1Name = this->GetFromThisConnectionAtom1()->GetName();
     std::string atom2Name = this->GetToThisConnectionAtom2()->GetName();
     char link1 = *atom1Name.rbegin(); //

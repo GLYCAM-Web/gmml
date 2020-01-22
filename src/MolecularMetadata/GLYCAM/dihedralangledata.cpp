@@ -12,11 +12,13 @@ using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
 //////////////////////////////////////////////////////////
 // Pass in the two atoms on either side the residue-residue linkage
 
-bool OverWriteEntry(gmml::MolecularMetadata::GLYCAM::DihedralAngleData entry1, gmml::MolecularMetadata::GLYCAM::DihedralAngleData entry2)
-{
-   return (entry1.number_of_bonds_from_anomeric_carbon_ == entry2.number_of_bonds_from_anomeric_carbon_
-            && entry1.index_ == entry2.index_ );
-}
+
+// I think this can go away:
+//bool OverWriteEntry(gmml::MolecularMetadata::GLYCAM::DihedralAngleData entry1, gmml::MolecularMetadata::GLYCAM::DihedralAngleData entry2)
+//{
+//   return (entry1.number_of_bonds_from_anomeric_carbon_ == entry2.number_of_bonds_from_anomeric_carbon_
+//            && entry1.index_ == entry2.index_ );
+//}
 
 DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage( MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2)
 {

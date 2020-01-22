@@ -23,7 +23,7 @@ public:
     //////////////////////////////////////////////////////////
 
   //  carbohydrateBuilder();
-    carbohydrateBuilder(std::string selectedBuildType = "build", std::string condensedSequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH", std::string prepFilePath = "/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/dat/prep/GLYCAM_06j-1.prep");
+    carbohydrateBuilder(std::string condensedSequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH", std::string prepFilePath = "../dat/prep/GLYCAM_06j-1.prep");
 
     //////////////////////////////////////////////////////////
     //                       ACCESSORS                      //
@@ -34,30 +34,32 @@ public:
     std::string GetInputSequenceString();
     MolecularModeling::Assembly* GetAssembly();
     ResidueLinkageVector* GetGlycosidicLinkages();
+    bool GetSequenceIsValid();
 
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
 
-    void SetInputSequenceString(std::string sequence);
-    void SetOfficialSequenceString(std::string sequence);
 
 
     //////////////////////////////////////////////////////////
     //                        FUNCTIONS                     //
     //////////////////////////////////////////////////////////
 
-    void GenerateSingle3DStructure();
-    void SetDefaultShapeUsingMetadata();
-    void ResolveOverlaps();
-    void WriteFile(std::string type = "PDB", std::string filename = "output.pdb");
-    void GenerateRotamers();
-    void WriteJSON();
-
+    void GenerateSingle3DStructure(std::string outputFileNaming = "default");
+    void GenerateUserOptionsJSON();
+    void ReadUserSelectionsJSON(std::string jsonInput);
+    void GenerateRotamers(std::string jsonSelection = "");
 
 private:
+    void Write3DStructureFile(std::string type = "PDB", std::string filename = "output.pdb");
+    void SetInputSequenceString(std::string sequence);
+    void SetOfficialSequenceString(std::string sequence);
+    void SetSequenceIsValid(bool isValid);
+    void SetDefaultShapeUsingMetadata();
+    void ResolveOverlaps();
     void FigureOutResidueLinkagesInGlycan(MolecularModeling::Residue *from_this_residue1, MolecularModeling::Residue *to_this_residue2, ResidueLinkageVector *residue_linkages);
-    void InitializeClass(std::string selectedBuildType = "build", std::string condensedSequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH", std::string prepFilePath = "/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/dat/prep/GLYCAM_06j-1.prep");
+    void InitializeClass(std::string condensedSequence, std::string prepFilePath);
 
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
@@ -69,6 +71,7 @@ private:
     std::string inputSequenceString_;
     //GlycanMetadataContainer metadataInformation_; // need this class
     ResidueLinkageVector glycosidicLinkages_;
+    bool sequenceIsValid_;
 
 };
 }

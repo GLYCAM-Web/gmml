@@ -11,19 +11,37 @@
 
 int main()
 {
-    //std::string prep = "../dat/prep/GLYCAM_06j-1.prep";
+    std::string prep = "../dat/prep/GLYCAM_06j-1.prep";
     //PrepFileSpace::PrepFile* prepA = new PrepFileSpace::PrepFile(prep);
-    std::string condensed_sequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH";
+    //std::string condensed_sequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH";
     //MolecularModeling::Assembly assemblyA = MolecularModeling::Assembly();
     //assemblyA.SetName("CONDENSEDSEQUENCE");
     //assemblyA.BuildAssemblyFromCondensedSequence (condensed_sequence, prepA);
     //PdbFileSpace::PdbFile *outputPdbFile = assemblyA.BuildPdbFileStructureFromAssembly();
     //outputPdbFile->Write("buildBySequence.pdb");
     //std::cout << "Done writing pdb." << std::endl;
-    CondensedSequenceSpace::carbohydrateBuilder steve("build", condensed_sequence);
-    condensed_sequence = "DManpb1-2DManp[6A]b1-2[DGalpb1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME";
-    CondensedSequenceSpace::carbohydrateBuilder steve2("build", condensed_sequence);
-    steve2.WriteFile("PDB", "output2.pdb");
+    
+    // testing olivers new thang
+    std::string condensed_sequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH";
+    CondensedSequenceSpace::carbohydrateBuilder carbBuilder(condensed_sequence, prep);
+    // Not an efficient way to check if sequence is valid as a lot of extra work is done when initializing carbohydrateBuilder, but this will tell you.
+    if (!carbBuilder.GetSequenceIsValid())
+    {
+        std::cerr << "Invalid sequence" << std::endl;
+        return 1;
+    }
+    carbBuilder.GenerateUserOptionsJSON(); // This is how Dan will get options to display on front end
+    carbBuilder.GenerateSingle3DStructure(); // This is how you generate a default, single 3D structre. Overlaps are resolved. Provide name if you want
+    carbBuilder.GenerateRotamers(); // This is how you generate all (default behavior) or selected rotamers (pass in JSON string).
+    //std::string jsonSelection = 
+
+    // Testing Yao's reordering thing
+//    std::string sequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH";
+//    std::string sequence = "DManpa1-3[DGalpb1-4DGalpb1-4DGalpb1-4DGalpb1-4]LRhapa1-OH";
+//    CondensedSequenceSpace::CondensedSequence cond_seq(sequence);
+//    std::cout << "Output longest is: " << cond_seq.BuildLabeledCondensedSequence(CondensedSequenceSpace::CondensedSequence::Reordering_Approach::LONGEST_CHAIN, false) << std::endl;
+//    std::cout << "Output sequence is: " << cond_seq.BuildLabeledCondensedSequence(CondensedSequenceSpace::CondensedSequence::Reordering_Approach::LOWEST_INDEX, false) << std::endl;
+
 }
 //prep file
 

@@ -17,7 +17,7 @@ using gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookupContaine
 // This won't be correct all the time (see Tyv), but should be ok for displaying labels to humans.
 std::string Glycam06ResidueNamesToCodesLookupContainer::GetResidueForCode(std::string residueNameInGLYCAMFormat)
 {   // residueNameInGLYCAMFormat. E.g. 0GB, 3YB, 3BC.
-    std::cout << "Input name is " << residueNameInGLYCAMFormat << std::endl;
+//    std::cout << "Input name is " << residueNameInGLYCAMFormat << std::endl;
     if (residueNameInGLYCAMFormat.length() < 3)
         return "PrObLeM";
 
@@ -30,7 +30,7 @@ std::string Glycam06ResidueNamesToCodesLookupContainer::GetResidueForCode(std::s
     char secondLetter = residueNameInGLYCAMFormat.at(1);
     char thirdLetter = residueNameInGLYCAMFormat.at(2);
     //char secondLetter = residueNameInGLYCAMFormat[residueNameInGLYCAMFormat.size() - 2]; // sush.
-    std::cout << "Letters are : " << secondLetter << " and " << thirdLetter << std::endl;
+//    std::cout << "Letters are : " << secondLetter << " and " << thirdLetter << std::endl;
 
     char configurationDvsL = 'D';
     if (islower(secondLetter)) // Lower case means L type sugar. E.g. 0fA is LFucpA
@@ -57,7 +57,7 @@ std::string Glycam06ResidueNamesToCodesLookupContainer::GetResidueForCode(std::s
         query = ss.str(); // Weirdos like BC for Bac
         addRingformAndAnomer = false;
     }
-    std::cout << "Query is " << query << std::endl;
+//    std::cout << "Query is " << query << std::endl;
     std::string match = configurationDvsL + "Hex" + anomericConfiguration; // Default is Hex?
     for (const auto& entry : ResidueNamesCodesTypesLookupTable_)
     { // residueName_, glycamCode_ , residueType_
@@ -67,7 +67,7 @@ std::string Glycam06ResidueNamesToCodesLookupContainer::GetResidueForCode(std::s
                  match = configurationDvsL + entry.residueName_ + ringform + anomericConfiguration;
              else
                  match = configurationDvsL + entry.residueName_;
-             std::cout << "Match is " << match << std::endl;
+//             std::cout << "Match is " << match << std::endl;
              return match;
         }
     }
