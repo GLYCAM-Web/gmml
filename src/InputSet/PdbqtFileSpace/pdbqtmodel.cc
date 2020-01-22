@@ -5,6 +5,7 @@
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
 #include "../../../includes/utils.hpp"
 #include "../../../includes/common.hpp"
+#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp"
 
 using PdbqtFileSpace::PdbqtModel;
 
@@ -67,22 +68,25 @@ PdbqtModel::PdbqtModel(std::ifstream &model_block)
             model_residue_set_ = new PdbqtFileSpace::PdbqtModelResidueSet(model_block);
         }
         // TORSDOF
-        else if(line.find("TORSDOF") != std::string::npos)
+        else if (line.find("TORSDOF") != std::string::npos)
         {
             torsional_dof_cards_.push_back(new PdbqtTorsionalDoFCard(line));
             //getline(model_block, line);
         }
-	else {  
-	    if (line.find("ENDMDL") != std::string::npos){ //Exit upon ENDMDL is the normal outcome.
-		break;
-	    }
-	    else{  //If not the keywords above, the file stream has gone one line beyond the model block. Go back one line and exit
-	        int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
-                model_block.seekg(offset, model_block.cur);//Go back one line
-	        break;
-	    }
+	else if (line.find("ENDMDL") != std::string::npos){ //Exit upon ENDMDL is the normal outcome.
+	    break;
 	}
+        else if (line.find("TER") != std::string::npos){
+            continue;
+        }
+	else{  //If not the keywords above, the file stream has gone one line beyond the model block. Go back one line and exit
+	    //int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            //model_block.seekg(offset, model_block.cur);//Go back one line
+	    //break;
+            throw PdbqtFileProcessingException(__LINE__, "Illegal record detected in model section");
+        }
     }//while
+    std::cout << "Last line is PdbqtModel constructor is: " << line << std::endl;
 }
 
 //////////////////////////////////////////////////////////

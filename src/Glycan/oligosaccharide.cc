@@ -968,7 +968,7 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
               std::stringstream ss;
               ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
               gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-//              std::cout << ss.str() << std::endl;
+              //              std::cout << ss.str() << std::endl;
               terminal_residue_name = "";
             }
           }
@@ -1059,7 +1059,7 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
                 std::stringstream ss;
                 ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
                 gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-//                std::cout << ss.str() << std::endl;
+                //                std::cout << ss.str() << std::endl;
                 terminal_residue_name = "";
               }
             }
@@ -1181,60 +1181,148 @@ std::vector<Glycan::Oligosaccharide*> Glycan::Oligosaccharide::createOligosaccha
   }
   return detected_oligos;
 }
-std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::indexMono(Glycan::Monosaccharide* thisMono, int thisIndex, std::vector<Glycan::Monosaccharide*> &branchedMonos)
+
+void Glycan::Oligosaccharide::indexMonosaccharides()
 {
+  std::stringstream testLog;
+  int local_debug = -1;
+  
+  //Generate Name Index (IUPAC naming order) 
+  for(std::vector<Glycan::Monosaccharide*>::iterator mono = this->mono_nodes_.begin(); mono != this->mono_nodes_.end(); mono++)
+  {
+    this->number_branches_ = 0;
+    Glycan::Monosaccharide* thisMono = *mono;
+    thisMono->is_counted_ = false;
+    thisMono->is_visited_ = false;
+    thisMono->is_indexed_ = false;
+  }
+  this->on_index_ = 0;
+  std::vector<Glycan::Monosaccharide*> branchedMonos;
+  branchedMonos = indexMono(this->root_, 0, branchedMonos);
+  if(branchedMonos.size() > 0)
+  {
+    if(local_debug > 0)
+    {
+      testLog << "There are " << branchedMonos.size() << " branches";  
+      gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+      testLog.str(std::string());//clear stringstream
+    }
+    indexBranches(branchedMonos);
+  }
+  if(local_debug > 0)
+  {
+    testLog << "Done with Indexing";  
+    gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+    testLog.str(std::string());//clear stringstream
+    testLog << "This Oligo has " << this->number_branches_ << " branches";  
+    gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+    testLog.str(std::string());//clear stringstream
+  }
+  
+  //Generate IUPAC Index (Longest chain, then closest branch to aglycon following IUPAC rules for equal branches & branch ordering)
+  for(std::vector<Glycan::Monosaccharide*>::iterator mono = this->mono_nodes_.begin(); mono != this->mono_nodes_.end(); mono++)
+  {
+    this->number_branches_ = 0;
+    Glycan::Monosaccharide* thisMono = *mono;
+    thisMono->is_counted_ = false;
+    thisMono->is_visited_ = false;
+    thisMono->is_indexed_ = false;
+  }
+  this->on_IUPAC_index_ = 0;
+  branchedMonos.clear();
+  branchedMonos = IUPACindexMono(this->root_, 0, branchedMonos);
+  if(branchedMonos.size() > 0)
+  {
+    IUPACindexBranches(branchedMonos);
+  }
+  if(local_debug > 0)
+  {
+    testLog << "Done with IUPAC Indexing";  
+    gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+    testLog.str(std::string());//clear stringstream
+  }
+}
+
+std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::indexMono(Glycan::Monosaccharide* thisMono, int thisIndex, std::vector<Glycan::Monosaccharide*> &branchedMonos)
+{//Index in the order they appear in the OligoIUPACname so Query can check indexes for subgraph matching correctly
+  int local_debug = -1;
+  std::stringstream testLog;
   if(!thisMono->is_indexed_)
   {
-    // std::stringstream testLog;
-    // testLog << "Mono: " << thisMono->cycle_atoms_[0]->GetResidue()->GetId();
-    // testLog << ", Index: " << thisIndex;  
+    if(local_debug > 0)
+    {
+      std::stringstream testLog;
+      testLog << "Mono: " << thisMono->cycle_atoms_[0]->GetResidue()->GetId();
+      testLog << ", Index: " << thisIndex;  
+      gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+      testLog.str(std::string());//clear stringstream
+    }
+    
+    thisMono->oligo_parent_->on_index_++; 
+    thisMono->is_indexed_ = true;
     thisMono->oligosaccharide_index_ = thisIndex;
-    // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-    // testLog.str(std::string());//clear stringstream
     if(thisMono->mono_neighbors_.size() == 0)
     {
-      // testLog << "This mono has no neighbors";  
-      // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-      // testLog.str(std::string());//clear stringstream
-      thisMono->oligo_parent_->on_index_++; 
-      thisMono->is_indexed_ = true;
+      if(local_debug > 0)
+      {
+        testLog << "This mono has no neighbors";  
+        gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
+      //No neighbors so nothing to do
     }
     else if(thisMono->mono_neighbors_.size() == 1)
     {
-      // testLog << "This mono has one neighbor";  
-      // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-      // testLog.str(std::string());//clear stringstream
+      if(local_debug > 0)
+      {
+        testLog << "This mono has one neighbor";  
+        gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
       if(thisMono->is_root_)
       {
-        // testLog << "This mono is the root";  
-        // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-        // testLog.str(std::string());//clear stringstream
-        thisMono->oligo_parent_->on_index_++; 
-        thisMono->is_indexed_ = true;
+        if(local_debug > 0)
+        {
+          testLog << "This mono is the root";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
         if(!thisMono->mono_neighbors_[0].second->is_indexed_)
+        {
           indexMono(thisMono->mono_neighbors_[0].second, thisIndex + 1, branchedMonos);
+        }
       }
       else
       {
-        // testLog << "This mono is not the root";  
-        // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-        // testLog.str(std::string());//clear stringstream
-        // thisMono->oligosaccharide_index_ = thisIndex;
-        thisMono->oligo_parent_->on_index_++;
-        thisMono->is_indexed_ = true;
+        if(local_debug > 0)
+        {
+          testLog << "This mono is not the root";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+
+        //No neighbors besides previous which is already indexed so nothing to do
       }
     }
     else if(thisMono->mono_neighbors_.size() == 2)
     {
-      // testLog << "This mono has two neighbors";  
-      // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-      // testLog.str(std::string());//clear stringstream
+      if(local_debug > 0)
+      {
+        testLog << "This mono has two neighbors";  
+        gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
+      
       if(thisMono->is_root_) //BRANCHED
       {
-        // testLog << "This mono is the root and is branched";  
-        // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-        // testLog.str(std::string());//clear stringstream
-    
+        if(local_debug > 0)
+        {
+          testLog << "This mono is the root and is branched";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
         std::vector<int> branchMaxLengths(thisMono->mono_neighbors_.size(), 1);
         getBranchMaxLengths(thisMono, branchMaxLengths);
         cleanCountedBranches(thisMono);
@@ -1242,138 +1330,99 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::indexMono(Glycan::
         std::vector<int> equalNeighborsLengths;
         for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
         {
-          // std::stringstream ss;
-          // ss << i << ", " << branchMaxLengths[i];
-          // gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
-          // int thisBranchLength = branchMaxLengths[i];
-          if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) //if this length is not already considered
+          if(local_debug > 0)
           {
+            std::stringstream ss;
+            ss << i << ", " << branchMaxLengths[i];
+            gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+          }
+          
+          if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) 
+          {//if this length is not already considered
             equalNeighborsLengths.push_back(branchMaxLengths[i]);
             int branchesOfThisLength = std::count(branchMaxLengths.begin(), branchMaxLengths.end(), branchMaxLengths[i]);
-            if(thisMono->is_root_)
+            if(branchesOfThisLength > 1)
             {
-              if(branchesOfThisLength > 1)
-              {
-                numEqualNeighbors += branchesOfThisLength;
-              }
-            }
-            else
-            {
-              if(branchMaxLengths[i] == 1 && branchesOfThisLength > 2)
-              {
-                numEqualNeighbors += branchesOfThisLength;
-              }
-              else if(branchMaxLengths[i] != 1 && branchesOfThisLength > 1)
-              {
-                numEqualNeighbors += branchesOfThisLength;
-              }
+              numEqualNeighbors += branchesOfThisLength;
             }
           }
-          // if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) //if this length is not already considered
-          // {
-          //   equalNeighborsLengths.push_back(branchMaxLengths[i]);
-          //   int branchesOfThisLength = std::count(branchMaxLengths.begin(), branchMaxLengths.end(), branchMaxLengths[i]);
-          //   if(branchesOfThisLength > 1)
-          //   {
-          //     numEqualNeighbors += branchesOfThisLength;
-          //   }
-          // }
         }
         if(numEqualNeighbors == 0)
         {
-          unsigned int longestBranchLocation = std::distance(branchMaxLengths.begin(), std::max_element(branchMaxLengths.begin(), branchMaxLengths.end()));
-          for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
+          //Getting shortest branch since it is closest to root in IUPAC Name
+          unsigned int shortestBranchLocation = std::distance(branchMaxLengths.begin(), std::min_element(branchMaxLengths.begin(), branchMaxLengths.end()));
+          unsigned int otherBranchLocation;
+          //only 2 neighbors so no need for loops
+          
+          if(shortestBranchLocation == 0)
           {
-            if(i != longestBranchLocation)
-            {
-              this->number_branches_++;
-              thisMono->mono_neighbors_[i].second->oligo_branch_index_ = this->number_branches_;
-              branchedMonos.push_back(thisMono->mono_neighbors_[i].second);
-            }
+            otherBranchLocation = 1;
           }
-          thisMono->is_indexed_ = true;
-          // thisMono->oligosaccharide_index_ = thisIndex;
-          thisMono->oligo_parent_->on_index_++;
-          indexMono(thisMono->mono_neighbors_[longestBranchLocation].second, thisIndex + 1, branchedMonos);
+          else
+          {
+            otherBranchLocation = 0;
+          }
+          //Branches get indexed later
+          this->number_branches_++;
+          thisMono->mono_neighbors_[otherBranchLocation].second->oligo_branch_index_ = this->number_branches_;
+          branchedMonos.push_back(thisMono->mono_neighbors_[otherBranchLocation].second);
+          
+          //Longest branch is main chain
+          indexMono(thisMono->mono_neighbors_[shortestBranchLocation].second, thisIndex + 1, branchedMonos);
         }
         else
-        {
-          // std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> > equalBranches(numEqualNeighbors);
-          //handle branch ordering
+        {//The 2 branches are the same length so we need to order by linkage
           std::vector<std::string> linkageStringVector;
-          // int n = 0;
           for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
           {
-            int longestBranchLocation = std::distance(branchMaxLengths.begin(), std::max_element(branchMaxLengths.begin(), branchMaxLengths.end()));
-            if(std::count(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[longestBranchLocation]) == 0) //no other branches of this length
-            {
-              thisMono->is_indexed_ = true;
-              // thisMono->oligosaccharide_index_ = thisIndex;
-              thisMono->oligo_parent_->on_index_++;
-              indexMono(thisMono->mono_neighbors_[longestBranchLocation].second, thisIndex + 1, branchedMonos);
-              branchMaxLengths[longestBranchLocation] = 0; //moves to the next longest branch
-              // n++;
-            }
-            else
-            {
-              int equalBranchLength = branchMaxLengths[longestBranchLocation];
-              if((branchMaxLengths[i] == equalBranchLength) && (!thisMono->mono_neighbors_[i].second->is_indexed_))
-              {
-                linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
-                // equalBranches.push_back(thisMono->mono_neighbors_[i]);
-              }
-              else if((branchMaxLengths[i] == equalBranchLength)&& (thisMono->mono_neighbors_[i].second->is_indexed_))
-              {
-                linkageStringVector.push_back("999"); //no linkage starts with 999; will be higher than all others and we traverse lowest to highest linkage
-              }
-              else
-              {
-                linkageStringVector.push_back("999");
-              }
-              branchMaxLengths[longestBranchLocation] = 0;
-            }
+            linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
           }
           //go through vector
           //index lower linkage locant
           //go to next linkage
-          unsigned int lowestIndexLocation = std::distance(linkageStringVector.begin(), std::max_element(linkageStringVector.begin(), linkageStringVector.end()));
-          for(unsigned int i = 0; i < linkageStringVector.size(); i++)
+          //Getting highest linkage first as it is closer to root in IUPAC name
+          unsigned int highestIndexLocation = std::distance(linkageStringVector.begin(), std::max_element(linkageStringVector.begin(), linkageStringVector.end()));
+          unsigned int otherIndexLocation;
+          if(highestIndexLocation == 0)
           {
-            if(i != lowestIndexLocation)
-            {
-              this->number_branches_++;
-              thisMono->mono_neighbors_[i].second->oligo_branch_index_ = this->number_branches_;
-              branchedMonos.push_back(thisMono->mono_neighbors_[i].second);
-            }
+            otherIndexLocation = 1;
           }
-          thisMono->is_indexed_ = true;
-          // thisMono->oligosaccharide_index_ = thisIndex;
-          thisMono->oligo_parent_->on_index_++;
-          indexMono(thisMono->mono_neighbors_[lowestIndexLocation].second, thisIndex + 1, branchedMonos);
-          // break;
-          // linkageStringVector[lowestIndexLocation] = "999"; //large number string so it moves to the next lowest linkage
-          // n++;
+          else
+          {
+            otherIndexLocation = 0;
+          }
+          //Branches get indexed later
+          this->number_branches_++;
+          thisMono->mono_neighbors_[otherIndexLocation].second->oligo_branch_index_ = this->number_branches_;
+          branchedMonos.push_back(thisMono->mono_neighbors_[otherIndexLocation].second);
+          
+          //If equal branches, lower linkage is main chain so index higher linkage first
+          indexMono(thisMono->mono_neighbors_[highestIndexLocation].second, thisIndex + 1, branchedMonos);
         }
       }
       else
-      {
-      //   testLog << "This mono is not branched";  
-      //   gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-      //   testLog.str(std::string());//clear stringstream
-        // thisMono->oligosaccharide_index_ = thisIndex;
-        thisMono->oligo_parent_->on_index_++;
-        thisMono->is_indexed_ = true;
+      {//not branched
+        if(local_debug > 0)
+        {
+          testLog << "This mono is not branched";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        //One of the 2 neighbors has already been indexed; Index the other
         if(thisMono->mono_neighbors_[0].second->is_indexed_)
           indexMono(thisMono->mono_neighbors_[1].second, thisIndex + 1, branchedMonos);
         else
           indexMono(thisMono->mono_neighbors_[0].second, thisIndex + 1, branchedMonos);
       }
     }
-    else//more than 2 neighbors aka branched
+    else//more than 2 neighbors so branched
     {
-      // testLog << "This mono has " << thisMono->mono_neighbors_.size() << " neighbors";  
-      // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-      // testLog.str(std::string());//clear stringstream
+      if(local_debug > 0)
+      {
+        testLog << "This mono has " << thisMono->mono_neighbors_.size() << " neighbors";  
+        gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
     
       std::vector<int> branchMaxLengths(thisMono->mono_neighbors_.size(), 1);
       getBranchMaxLengths(thisMono, branchMaxLengths);
@@ -1382,12 +1431,466 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::indexMono(Glycan::
       std::vector<int> equalNeighborsLengths;
       for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
       {
-        // std::stringstream ss;
-        // ss << i << ", " << branchMaxLengths[i];
-        // gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
-        // int thisBranchLength = branchMaxLengths[i];
+        if(local_debug > 0)
+        {
+          testLog << i << ", " << branchMaxLengths[i];
+          gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
         if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) //if this length is not already considered
         {
+          equalNeighborsLengths.push_back(branchMaxLengths[i]);
+          int branchesOfThisLength = std::count(branchMaxLengths.begin(), branchMaxLengths.end(), branchMaxLengths[i]);
+          if(thisMono->is_root_)
+          {
+            if(branchesOfThisLength > 1)
+            {
+              numEqualNeighbors += branchesOfThisLength;
+            }
+          }
+          else
+          {
+            if(branchMaxLengths[i] == 1 && branchesOfThisLength > 2)
+            {//branch going through already indexed monos gets assigned 1
+              numEqualNeighbors += branchesOfThisLength;
+            }
+            else if(branchMaxLengths[i] != 1 && branchesOfThisLength > 1)
+            {
+              numEqualNeighbors += branchesOfThisLength;
+            }
+          }
+        }
+      }
+      if(numEqualNeighbors == 0)
+      {
+        if(local_debug > 0)
+        {
+          testLog << "This mono has all different length branches";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
+        int shortestBranchLocation = std::distance(branchMaxLengths.begin(), std::min_element(branchMaxLengths.begin(), branchMaxLengths.end()));
+        if(thisMono->mono_neighbors_[shortestBranchLocation].second->is_indexed_)//if is previous mono
+        {
+          branchMaxLengths[shortestBranchLocation] = 999;
+          shortestBranchLocation = std::distance(branchMaxLengths.begin(), std::min_element(branchMaxLengths.begin(), branchMaxLengths.end()));
+        }
+        branchMaxLengths[shortestBranchLocation] = 999; //Already have the location and need to reset the max to the next highest for proper ordering
+        for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
+        {
+          int nextShortestBranchLocation = std::distance(branchMaxLengths.begin(), std::min_element(branchMaxLengths.begin(), branchMaxLengths.end()));
+          if(local_debug > 0)
+          {
+            testLog << "This branch length: " << branchMaxLengths[nextShortestBranchLocation];  
+            gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+            testLog.str(std::string());//clear stringstream
+          }
+          
+          if((branchMaxLengths[nextShortestBranchLocation] != 999) && (!thisMono->mono_neighbors_[nextShortestBranchLocation].second->is_indexed_))
+          {
+            if(local_debug > 0)
+            {
+              testLog << thisMono->mono_neighbors_[nextShortestBranchLocation].second->cycle_atoms_[0]->GetResidue()->GetId();  
+              gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+              testLog.str(std::string());//clear stringstream
+            }
+            this->number_branches_++;
+            thisMono->mono_neighbors_[nextShortestBranchLocation].second->oligo_branch_index_ = this->number_branches_;
+            branchedMonos.push_back(thisMono->mono_neighbors_[nextShortestBranchLocation].second);
+            branchMaxLengths[nextShortestBranchLocation] = 999;
+          }
+          else
+          {
+            if(local_debug > 0)
+            {
+              testLog << "This did not get added to branched monos";  
+              gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+              testLog.str(std::string());//clear stringstream
+            }
+            branchMaxLengths[nextShortestBranchLocation] = 999;
+          }
+        }
+        indexMono(thisMono->mono_neighbors_[shortestBranchLocation].second, thisIndex + 1, branchedMonos);
+      }
+      else
+      {
+        if(local_debug > 0)
+        {
+          testLog << "This mono has " << numEqualNeighbors << " equal length branches";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
+        //handle equal length branch ordering by linkage type
+        std::vector<std::string> linkageStringVector;
+        for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
+        {
+          if(thisMono->mono_neighbors_[i].second->is_indexed_)
+          {
+            if(local_debug > 0)
+            {
+              testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << "has been indexed";  
+              gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+              testLog.str(std::string());//clear stringstream
+            }            
+            branchMaxLengths[i] = 999;
+          }
+        }
+        unsigned int shortestBranchLocation = std::distance(branchMaxLengths.begin(), std::min_element(branchMaxLengths.begin(), branchMaxLengths.end()));
+        if((std::count(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[shortestBranchLocation]) == 0) &&  (branchMaxLengths[shortestBranchLocation] != 999))//no other branches of this length
+        {
+          branchMaxLengths[shortestBranchLocation] = 999;//Have location and need to get next shortest
+          for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
+          {
+            int nextShortestBranchLocation = std::distance(branchMaxLengths.begin(), std::min_element(branchMaxLengths.begin(), branchMaxLengths.end()));
+            if((branchMaxLengths[nextShortestBranchLocation] != 999) && (!thisMono->mono_neighbors_[nextShortestBranchLocation].second->is_indexed_))
+            {
+              this->number_branches_++;
+              thisMono->mono_neighbors_[nextShortestBranchLocation].second->oligo_branch_index_ = this->number_branches_;
+              branchedMonos.push_back(thisMono->mono_neighbors_[nextShortestBranchLocation].second);
+              branchMaxLengths[nextShortestBranchLocation] = 999;
+            }
+            else if (thisMono->mono_neighbors_[nextShortestBranchLocation].second->is_indexed_)
+            {
+              if(local_debug > 0)
+              {
+                testLog << "This mono has been indexed";  
+                gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
+            }
+            else
+            {
+              if(local_debug > 0)
+                {
+                  testLog << "This mono branch length: " << branchMaxLengths[nextShortestBranchLocation];  
+                  gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                  testLog.str(std::string());//clear stringstream
+                }
+            }
+          }
+          if(local_debug > 0)
+          {
+            testLog << "This branch does not have any equal length branches";  
+            gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+            testLog.str(std::string());//clear stringstream
+          }
+          indexMono(thisMono->mono_neighbors_[shortestBranchLocation].second, thisIndex + 1, branchedMonos);          
+        }
+        else if(branchMaxLengths[shortestBranchLocation] != 999)
+        {//equal branches, but not already considered
+          int equalBranchLength = branchMaxLengths[shortestBranchLocation];
+          branchMaxLengths[shortestBranchLocation] = 999;
+          if(local_debug > 0)
+          {
+            testLog << "This branch does have equal length branches of length " << equalBranchLength;  
+            gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+            testLog.str(std::string());//clear stringstream
+            testLog << "The shortest branch is at: " << shortestBranchLocation;  
+            gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+            testLog.str(std::string());//clear stringstream
+          }
+          
+          for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
+          {
+            if(local_debug > 0)
+            {
+              testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << "This branch is length: " << branchMaxLengths[i];  
+              gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+              testLog.str(std::string());//clear stringstream
+              testLog <<  "On neighbor: " << i;  
+              gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+              testLog.str(std::string());//clear stringstream
+            }
+            
+            if((branchMaxLengths[i] == equalBranchLength) && (!thisMono->mono_neighbors_[i].second->is_indexed_))
+            {//This branch is not yet considered and is equal length
+              if(local_debug > 0)
+              {
+                testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << " This branch is the same length as the shortest";  
+                gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
+              linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+            }
+            else if(thisMono->mono_neighbors_[i].second->is_indexed_)
+            {//Has already been considered
+              if(local_debug > 0)
+              {
+                testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << "This branch is indexed";  
+                gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
+              linkageStringVector.push_back("-999"); //no linkage starts with -999; will be lower than all others and we traverse highest -> lowest linkage
+            }
+            else if (i == shortestBranchLocation)
+            {
+              if(local_debug > 0)
+              {
+                testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << " This is the shortest branch";  
+                gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
+              linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+              // equalBranches.push_back(thisMono->mono_neighbors_[i]);
+            }
+            else
+            {
+              if(local_debug > 0)
+              {
+                testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << " This branch is length: " << branchMaxLengths[i];  
+                gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
+              linkageStringVector.push_back("-999"); 
+            }
+          }
+        }
+        //go through vector
+        //index higher linkage locant
+        if(local_debug > 0)
+        {
+          testLog << "Linkage vector is " << linkageStringVector.size() << " long";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
+        int highestIndexLocation = std::distance(linkageStringVector.begin(), std::max_element(linkageStringVector.begin(), linkageStringVector.end()));
+        // if(thisMono->mono_neighbors_[lowestIndexLocation].second->is_indexed_)//if is previous mono
+        // {
+        //   linkageStringVector[lowestIndexLocation] = "999";
+        //   lowestIndexLocation = std::distance(linkageStringVector.begin(), std::min_element(linkageStringVector.begin(), linkageStringVector.end()));
+        // }
+        linkageStringVector[highestIndexLocation] = "-999";
+        for(unsigned int i = 0; i < linkageStringVector.size(); i++)
+        {
+          int nextHighestIndexLocation = std::distance(linkageStringVector.begin(), std::max_element(linkageStringVector.begin(), linkageStringVector.end()));
+          if((!thisMono->mono_neighbors_[nextHighestIndexLocation].second->is_indexed_) && (linkageStringVector[nextHighestIndexLocation] != "-999"))//if isnt previous mono and not already considered
+          {
+            this->number_branches_++;
+            thisMono->mono_neighbors_[nextHighestIndexLocation].second->oligo_branch_index_ = this->number_branches_;
+            branchedMonos.push_back(thisMono->mono_neighbors_[nextHighestIndexLocation].second);
+            linkageStringVector[nextHighestIndexLocation] = "-999";
+          }
+        }
+        indexMono(thisMono->mono_neighbors_[highestIndexLocation].second, thisIndex + 1, branchedMonos);
+      }
+    }
+  }
+  return branchedMonos;
+}
+
+void Glycan::Oligosaccharide::indexBranches(std::vector<Glycan::Monosaccharide*> branchedMonos)
+{
+  for(std::vector<Glycan::Monosaccharide*>::iterator mono = branchedMonos.begin(); mono != branchedMonos.end(); mono++ )
+  {
+    Glycan::Monosaccharide* thisMono = *mono;
+    std::vector<Glycan::Monosaccharide*> subBranchedMonos;
+    subBranchedMonos = indexMono(thisMono, this->on_index_, subBranchedMonos);
+    if(subBranchedMonos.size() > 0)
+    {
+      indexBranches(subBranchedMonos);
+    }  
+  }
+}
+std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::IUPACindexMono(Glycan::Monosaccharide* thisMono, int thisIndex, std::vector<Glycan::Monosaccharide*> &branchedMonos)
+{
+  int local_debug = -1;
+  std::stringstream testLog;
+  if(!thisMono->is_indexed_)
+  {
+    thisMono->IUPAC_index_ = thisIndex;
+    thisMono->oligo_parent_->on_IUPAC_index_++;
+    thisMono->is_indexed_ = true;
+    
+    if(local_debug > 0)
+    {
+      testLog << "Mono: " << thisMono->cycle_atoms_[0]->GetResidue()->GetId();
+      testLog << ", Index: " << thisIndex;  
+      gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+      testLog.str(std::string());//clear stringstream
+    }
+    
+    if(thisMono->mono_neighbors_.size() == 0)
+    {
+      if(local_debug > 0)
+      {
+        testLog << "This mono has no neighbors";  
+        gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
+      // No need to do anything if no neighbors
+    }
+    else if(thisMono->mono_neighbors_.size() == 1)
+    {
+      if(local_debug > 0)
+      {
+        testLog << "This mono has one neighbor";  
+        gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
+      
+      if(thisMono->is_root_)
+      {
+        if(local_debug > 0)
+        {
+          testLog << "This mono is the root";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
+        if(!thisMono->mono_neighbors_[0].second->is_indexed_)
+        {
+          IUPACindexMono(thisMono->mono_neighbors_[0].second, thisIndex + 1, branchedMonos);
+        }
+      }
+      else
+      {
+        if(local_debug > 0)
+        {
+          testLog << "This mono is not the root";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
+        //No need to do anything; the previous mono called this function and there is no next mono
+      }
+    }
+    else if(thisMono->mono_neighbors_.size() == 2)
+    {
+      if(local_debug > 0)
+      {
+        testLog << "This mono has two neighbors";  
+        gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
+      if(thisMono->is_root_) //BRANCHED root
+      {
+        if(local_debug > 0)
+        {
+          testLog << "This mono is the root and is branched";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
+        std::vector<int> branchMaxLengths(thisMono->mono_neighbors_.size(), 1);
+        getBranchMaxLengths(thisMono, branchMaxLengths);
+        cleanCountedBranches(thisMono);
+        int numEqualNeighbors = 0;
+        std::vector<int> equalNeighborsLengths;
+        for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
+        {
+          if(local_debug > 0)
+          {
+            testLog << i << ", " << branchMaxLengths[i];
+            gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
+            testLog.str(std::string());//clear stringstream
+          }
+          
+          if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) 
+          {//if this length is not already considered
+            equalNeighborsLengths.push_back(branchMaxLengths[i]);
+            int branchesOfThisLength = std::count(branchMaxLengths.begin(), branchMaxLengths.end(), branchMaxLengths[i]);
+            if(branchesOfThisLength > 1)
+            {
+              numEqualNeighbors += branchesOfThisLength;
+            }
+          }
+        }
+        if(numEqualNeighbors == 0)
+        {
+          unsigned int longestBranchLocation = std::distance(branchMaxLengths.begin(), std::max_element(branchMaxLengths.begin(), branchMaxLengths.end()));
+          unsigned int otherBranchLocation;
+          //only 2 neighbors so no need for loops
+          
+          if(longestBranchLocation == 0)
+          {
+            otherBranchLocation = 1;
+          }
+          else
+          {
+            otherBranchLocation = 0;
+          }
+          //Branches get indexed later
+          this->number_branches_++;
+          thisMono->mono_neighbors_[otherBranchLocation].second->oligo_branch_index_ = this->number_branches_;
+          branchedMonos.push_back(thisMono->mono_neighbors_[otherBranchLocation].second);
+          
+          //Longest branch is main chain
+          IUPACindexMono(thisMono->mono_neighbors_[longestBranchLocation].second, thisIndex + 1, branchedMonos);
+        }
+        else
+        {//The 2 branches are the same length so we need to order by linkage
+          std::vector<std::string> linkageStringVector;
+          for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
+          {
+            linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+          }
+          //go through vector
+          //index lower linkage locant
+          //go to next linkage
+          unsigned int lowestIndexLocation = std::distance(linkageStringVector.begin(), std::min_element(linkageStringVector.begin(), linkageStringVector.end()));
+          unsigned int otherIndexLocation;
+          if(lowestIndexLocation == 0)
+          {
+            otherIndexLocation = 1;
+          }
+          else
+          {
+            otherIndexLocation = 0;
+          }
+          //Branches get indexed later
+          this->number_branches_++;
+          thisMono->mono_neighbors_[otherIndexLocation].second->oligo_branch_index_ = this->number_branches_;
+          branchedMonos.push_back(thisMono->mono_neighbors_[otherIndexLocation].second);
+            
+          //If equal branches, lower linkage is main chain
+          IUPACindexMono(thisMono->mono_neighbors_[lowestIndexLocation].second, thisIndex + 1, branchedMonos);
+        }
+      }
+      else
+      {
+        if(local_debug > 0)
+        {
+          testLog << "This mono is not branched";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
+        //One of the neighbors is already indexed, move to the other
+        if(thisMono->mono_neighbors_[0].second->is_indexed_)
+          IUPACindexMono(thisMono->mono_neighbors_[1].second, thisIndex + 1, branchedMonos);
+        else
+          IUPACindexMono(thisMono->mono_neighbors_[0].second, thisIndex + 1, branchedMonos);
+      }
+    }
+    else//more than 2 neighbors so branched
+    {
+      if(local_debug > 0)
+      {
+        testLog << "This mono has " << thisMono->mono_neighbors_.size() << " neighbors";  
+        gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
+    
+      std::vector<int> branchMaxLengths(thisMono->mono_neighbors_.size(), 1);
+      getBranchMaxLengths(thisMono, branchMaxLengths);
+      cleanCountedBranches(thisMono);
+      int numEqualNeighbors = 0;
+      std::vector<int> equalNeighborsLengths;
+      for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
+      {
+        if(local_debug > 0)
+        {
+          testLog << i << ", " << branchMaxLengths[i];
+          gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
+        if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) 
+        {//if this length is not already considered
           equalNeighborsLengths.push_back(branchMaxLengths[i]);
           int branchesOfThisLength = std::count(branchMaxLengths.begin(), branchMaxLengths.end(), branchMaxLengths[i]);
           if(thisMono->is_root_)
@@ -1409,24 +1912,19 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::indexMono(Glycan::
             }
           }
         }
-        // if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) //if this length is not already considered
-        // {
-        //   equalNeighborsLengths.push_back(branchMaxLengths[i]);
-        //   int branchesOfThisLength = std::count(branchMaxLengths.begin(), branchMaxLengths.end(), branchMaxLengths[i]);
-        //   if(branchesOfThisLength > 1)
-        //   {
-        //     numEqualNeighbors += branchesOfThisLength;
-        //   }
-        // }
       }
       if(numEqualNeighbors == 0)
       {
-        // testLog << "This mono has all different length branches";  
-        // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-        // testLog.str(std::string());//clear stringstream
-        int longestBranchLocation = std::distance(branchMaxLengths.begin(), std::max_element(branchMaxLengths.begin(), branchMaxLengths.end()));
-        if(thisMono->mono_neighbors_[longestBranchLocation].second->is_indexed_)//if is previous mono
+        if(local_debug > 0)
         {
+          testLog << "This mono has all different length branches";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
+        int longestBranchLocation = std::distance(branchMaxLengths.begin(), std::max_element(branchMaxLengths.begin(), branchMaxLengths.end()));
+        if(thisMono->mono_neighbors_[longestBranchLocation].second->is_indexed_)
+        {//if is previous mono, clear and find next longest branch
           branchMaxLengths[longestBranchLocation] = -1;
           longestBranchLocation = std::distance(branchMaxLengths.begin(), std::max_element(branchMaxLengths.begin(), branchMaxLengths.end()));
         }
@@ -1434,14 +1932,21 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::indexMono(Glycan::
         for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
         {
           int nextLongestBranchLocation = std::distance(branchMaxLengths.begin(), std::max_element(branchMaxLengths.begin(), branchMaxLengths.end()));
-          // testLog << "This branch length: " << branchMaxLengths[nextLongestBranchLocation];  
-          // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-          // testLog.str(std::string());//clear stringstream
+          if(local_debug > 0)
+          {
+            testLog << "This branch length: " << branchMaxLengths[nextLongestBranchLocation];  
+            gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+            testLog.str(std::string());//clear stringstream
+          }
+          
           if((branchMaxLengths[nextLongestBranchLocation] != -1) && (!thisMono->mono_neighbors_[nextLongestBranchLocation].second->is_indexed_))
           {
-            // testLog << thisMono->mono_neighbors_[nextLongestBranchLocation].second->cycle_atoms_[0]->GetResidue()->GetId();  
-            // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-            // testLog.str(std::string());//clear stringstream
+            if(local_debug > 0)
+            {
+              testLog << thisMono->mono_neighbors_[nextLongestBranchLocation].second->cycle_atoms_[0]->GetResidue()->GetId();  
+              gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+              testLog.str(std::string());//clear stringstream
+            }
             this->number_branches_++;
             thisMono->mono_neighbors_[nextLongestBranchLocation].second->oligo_branch_index_ = this->number_branches_;
             branchedMonos.push_back(thisMono->mono_neighbors_[nextLongestBranchLocation].second);
@@ -1449,64 +1954,56 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::indexMono(Glycan::
           }
           else
           {
-            // testLog << "This did not get added to branched monos";  
-            // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-            // testLog.str(std::string());//clear stringstream
+            if(local_debug > 0)
+            {
+              testLog << "This did not get added to branched monos";  
+              gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+              testLog.str(std::string());//clear stringstream
+            }
             branchMaxLengths[nextLongestBranchLocation] = -1;
           }
-          // int longestBranchLocation = std::distance(branchMaxLengths.begin(), std::max_element(branchMaxLengths.begin(), branchMaxLengths.end()));
-          // gmml::log(__LINE__, __FILE__, gmml::INF, "On neighbor: ");
-          // gmml::log(__LINE__, __FILE__, gmml::INF, thisMono->mono_neighbors_[longestBranchLocation].second->cycle_atoms_[0]->GetResidue()->GetId());
         }
-        thisMono->is_indexed_ = true;
-        // thisMono->oligosaccharide_index_ = thisIndex;
-        thisMono->oligo_parent_->on_index_++;
-        indexMono(thisMono->mono_neighbors_[longestBranchLocation].second, thisIndex + 1, branchedMonos);
+        IUPACindexMono(thisMono->mono_neighbors_[longestBranchLocation].second, thisIndex + 1, branchedMonos);
       }
       else
       {
-        // testLog << "This mono has " << numEqualNeighbors << " equal length branches";  
-        // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-        // testLog.str(std::string());//clear stringstream
+        if(local_debug > 0)
+        {
+          testLog << "This mono has " << numEqualNeighbors << " equal length branches";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
     
-        // std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> > equalBranches(numEqualNeighbors);
-        //handle branch ordering
         std::vector<std::string> linkageStringVector;
-        
         for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
         {
           if(thisMono->mono_neighbors_[i].second->is_indexed_)
           {
-            // testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << "has been indexed";  
-            // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-            // testLog.str(std::string());//clear stringstream
+            if(local_debug > 0)
+            {
+              testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << "has been indexed";  
+              gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+              testLog.str(std::string());//clear stringstream
+            }
             branchMaxLengths[i] = -1;
           }
         }
         unsigned int longestBranchLocation = std::distance(branchMaxLengths.begin(), std::max_element(branchMaxLengths.begin(), branchMaxLengths.end()));
-        // if(thisMono->mono_neighbors_[longestBranchLocation].second->is_indexed_)//if is previous mono
-        // {
-        //   branchMaxLengths[longestBranchLocation] = -1;
-        //   longestBranchLocation = std::distance(branchMaxLengths.begin(), std::max_element(branchMaxLengths.begin(), branchMaxLengths.end()));
-        // }
         
-        // branchMaxLengths[longestBranchLocation] = -1;
-        if((std::count(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[longestBranchLocation]) == 0) &&  (branchMaxLengths[longestBranchLocation] != -1))//no other branches of this length
+        if((std::count(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[longestBranchLocation]) == 0) &&  (branchMaxLengths[longestBranchLocation] != -1))//no other branches of this length and this hasn't been considered
         {
-          // if(thisMono->mono_neighbors_[longestBranchLocation].second->is_indexed_)//if is previous mono
-          // {
-          //   branchMaxLengths[longestBranchLocation] = -1;
-          //   longestBranchLocation = std::distance(branchMaxLengths.begin(), std::max_element(branchMaxLengths.begin(), branchMaxLengths.end()));
-          // }
-          branchMaxLengths[longestBranchLocation] = -1;
+          branchMaxLengths[longestBranchLocation] = -1; //Have location and need to get next longest
           for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
           {
             int nextLongestBranchLocation = std::distance(branchMaxLengths.begin(), std::max_element(branchMaxLengths.begin(), branchMaxLengths.end()));
             if((branchMaxLengths[nextLongestBranchLocation] != -1) && (!thisMono->mono_neighbors_[nextLongestBranchLocation].second->is_indexed_))
             {
-              // testLog << "This should work...";  
-              // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-              // testLog.str(std::string());//clear stringstream
+              if(local_debug > 0)
+              {
+                testLog << "This should work...";  
+                gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
               this->number_branches_++;
               thisMono->mono_neighbors_[nextLongestBranchLocation].second->oligo_branch_index_ = this->number_branches_;
               branchedMonos.push_back(thisMono->mono_neighbors_[nextLongestBranchLocation].second);
@@ -1514,191 +2011,149 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::indexMono(Glycan::
             }
             else if (thisMono->mono_neighbors_[nextLongestBranchLocation].second->is_indexed_)
             {
-              // testLog << "This mono has been indexed";  
-              // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-              // testLog.str(std::string());//clear stringstream
+              if(local_debug > 0)
+              {
+                testLog << "This mono has been indexed";  
+                gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
             }
             else
             {
-              // testLog << "This mono branch length: " << branchMaxLengths[nextLongestBranchLocation];  
-              // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-              // testLog.str(std::string());//clear stringstream
+              if(local_debug > 0)
+              {
+                testLog << "This mono branch length: " << branchMaxLengths[nextLongestBranchLocation];  
+                gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
             }
           }
-          // testLog << "This branch does not have any equal length branches";  
-          // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-          // testLog.str(std::string());//clear stringstream
-          thisMono->is_indexed_ = true;
-          // thisMono->oligosaccharide_index_ = thisIndex;
-          thisMono->oligo_parent_->on_index_++;
-          indexMono(thisMono->mono_neighbors_[longestBranchLocation].second, thisIndex + 1, branchedMonos);          
+          if(local_debug > 0)
+          {
+            testLog << "This branch does not have any equal length branches";  
+            gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+            testLog.str(std::string());//clear stringstream
+          }
+          IUPACindexMono(thisMono->mono_neighbors_[longestBranchLocation].second, thisIndex + 1, branchedMonos);          
         }
         else if(branchMaxLengths[longestBranchLocation] != -1)
-        {
+        {//equal branches, but not already considered
           int equalBranchLength = branchMaxLengths[longestBranchLocation];
           branchMaxLengths[longestBranchLocation] = -1;
-          // testLog << "This branch does have equal length branches of length " << equalBranchLength;  
-          // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-          // testLog.str(std::string());//clear stringstream
+          if(local_debug > 0)
+          {
+            testLog << "This branch does have equal length branches of length " << equalBranchLength;  
+            gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+            testLog.str(std::string());//clear stringstream
+            testLog << "The longest branch is at: " << longestBranchLocation;  
+            gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+            testLog.str(std::string());//clear stringstream
+          }
           
-          // testLog << "The longest branch is at: " << longestBranchLocation;  
-          // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-          // testLog.str(std::string());//clear stringstream
           for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
           {
-            // testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << "This branch is length: " << branchMaxLengths[i];  
-            // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-            // testLog.str(std::string());//clear stringstream
-            // testLog <<  "On neighbor: " << i;  
-            // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-            // testLog.str(std::string());//clear stringstream
-            if((branchMaxLengths[i] == equalBranchLength) && (!thisMono->mono_neighbors_[i].second->is_indexed_))
+            if(local_debug > 0)
             {
-              // testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << " This branch is the same length as the longest";  
-              // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-              // testLog.str(std::string());//clear stringstream
+              testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << "This branch is length: " << branchMaxLengths[i];  
+              gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+              testLog.str(std::string());//clear stringstream
+              testLog <<  "On neighbor: " << i;  
+              gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+              testLog.str(std::string());//clear stringstream
+            }
+            
+            if((branchMaxLengths[i] == equalBranchLength) && (!thisMono->mono_neighbors_[i].second->is_indexed_))
+            {//This branch is not yet considered and is equal length
+              if(local_debug > 0)
+              {
+                testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << " This branch is the same length as the longest";  
+                gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
+              
               linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
-              // equalBranches.push_back(thisMono->mono_neighbors_[i]);
             }
             else if(thisMono->mono_neighbors_[i].second->is_indexed_)
-            {
-              // testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << "This branch is indexed";  
-              // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-              // testLog.str(std::string());//clear stringstream
+            {//Already considered
+              if(local_debug > 0)
+              {
+                testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << "This branch is indexed";  
+                gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
+              
               linkageStringVector.push_back("999"); //no linkage starts with 999; will be higher than all others and we traverse lowest to highest linkage
             }
             else if (i == longestBranchLocation)
             {
-              // testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << " This is the longest branch";  
-              // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-              // testLog.str(std::string());//clear stringstream
+              if(local_debug > 0)
+              {
+                testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << " This is the longest branch";  
+                gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
+            
               linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
-              // equalBranches.push_back(thisMono->mono_neighbors_[i]);
             }
             else
             {
-              // testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << " This branch is length: " << branchMaxLengths[i];  
-              // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-              // testLog.str(std::string());//clear stringstream
+              if(local_debug > 0)
+              {
+                testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << " This branch is length: " << branchMaxLengths[i];  
+                gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
+              
               linkageStringVector.push_back("999"); 
             }
           }
         }
         //go through vector
         //index lower linkage locant
-        // testLog << "Linkage vector is " << linkageStringVector.size() << " long";  
-        // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-        // testLog.str(std::string());//clear stringstream
+        if(local_debug > 0)
+        {
+          testLog << "Linkage vector is " << linkageStringVector.size() << " long";  
+          gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
+        
         int lowestIndexLocation = std::distance(linkageStringVector.begin(), std::min_element(linkageStringVector.begin(), linkageStringVector.end()));
-        // if(thisMono->mono_neighbors_[lowestIndexLocation].second->is_indexed_)//if is previous mono
-        // {
-        //   linkageStringVector[lowestIndexLocation] = "999";
-        //   lowestIndexLocation = std::distance(linkageStringVector.begin(), std::min_element(linkageStringVector.begin(), linkageStringVector.end()));
-        // }
         linkageStringVector[lowestIndexLocation] = "999";
         for(unsigned int i = 0; i < linkageStringVector.size(); i++)
         {
           int nextLowestIndexLocation = std::distance(linkageStringVector.begin(), std::min_element(linkageStringVector.begin(), linkageStringVector.end()));
           if((!thisMono->mono_neighbors_[nextLowestIndexLocation].second->is_indexed_) && (linkageStringVector[nextLowestIndexLocation] != "999"))//if isnt previous mono and not considered
           {
-            // testLog << "This should work...";  
-            // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-            // testLog.str(std::string());//clear stringstream
             this->number_branches_++;
             thisMono->mono_neighbors_[nextLowestIndexLocation].second->oligo_branch_index_ = this->number_branches_;
             branchedMonos.push_back(thisMono->mono_neighbors_[nextLowestIndexLocation].second);
             linkageStringVector[nextLowestIndexLocation] = "999";
           }
-          // else if (thisMono->mono_neighbors_[nextLowestIndexLocation].second->is_indexed_)
-          // {
-          //   // testLog << "This mono has been indexed";  
-          //   // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-          //   // testLog.str(std::string());//clear stringstream
-          // }
-          // else
-          // {
-          // //   testLog << "This mono branch length: " << linkageStringVector[lowestIndexLocation];  
-          // //   gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-          // //   testLog.str(std::string());//clear stringstream
-          // }
         }
-        thisMono->is_indexed_ = true;
-        // thisMono->oligosaccharide_index_ = thisIndex;
-        thisMono->oligo_parent_->on_index_++;
-        indexMono(thisMono->mono_neighbors_[lowestIndexLocation].second, thisIndex + 1, branchedMonos);
+        IUPACindexMono(thisMono->mono_neighbors_[lowestIndexLocation].second, thisIndex + 1, branchedMonos);
       }
     }
   }
   return branchedMonos;
 }
 
-void Glycan::Oligosaccharide::indexBranches(std::vector<Glycan::Monosaccharide*> branchedMonos)
+void Glycan::Oligosaccharide::IUPACindexBranches(std::vector<Glycan::Monosaccharide*> branchedMonos)
 {
-  std::stringstream testLog;
   for(std::vector<Glycan::Monosaccharide*>::iterator mono = branchedMonos.begin(); mono != branchedMonos.end(); mono++ )
   {
     Glycan::Monosaccharide* thisMono = *mono;
     std::vector<Glycan::Monosaccharide*> subBranchedMonos;
-    subBranchedMonos = indexMono(thisMono, this->on_index_, subBranchedMonos);
+    subBranchedMonos = IUPACindexMono(thisMono, this->on_IUPAC_index_, subBranchedMonos);
     if(subBranchedMonos.size() > 0)
     {
-      // testLog << "There are " << subBranchedMonos.size() << " branches";  
-      // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-      // testLog.str(std::string());//clear stringstream
-      indexBranches(subBranchedMonos);
+      IUPACindexBranches(subBranchedMonos);
     }  
   }
 }
-
-void Glycan::Oligosaccharide::indexMonosaccharides()
-{
-  std::stringstream testLog;
-  for(std::vector<Glycan::Monosaccharide*>::iterator mono = this->mono_nodes_.begin(); mono != this->mono_nodes_.end(); mono++)
-  {
-    this->number_branches_ = 0;
-    Glycan::Monosaccharide* thisMono = *mono;
-    thisMono->is_counted_ = false;
-    thisMono->is_visited_ = false;
-    thisMono->is_indexed_ = false;
-    // if(thisMono->is_root_)
-    // {
-    //   if(thisMono->mono_neighbors_.size() > 1)
-    //   {
-    //     numBranches += thisMono->mono_neighbors_.size() - 1;
-    //     branchedMonos.push_back(thisMono);
-    //   }
-    // }
-    // else
-    // {
-    //   if(thisMono->mono_neighbors_.size() > 2)
-    //   {
-    //     numBranches += thisMono->mono_neighbors_.size() - 1;
-    //     branchedMonos.push_back(thisMono);
-    //   }
-    // }
-  }
-  this->on_index_ = 0;
-  std::vector<Glycan::Monosaccharide*> branchedMonos;
-  branchedMonos = indexMono(this->root_, 0, branchedMonos);
-  if(branchedMonos.size() > 0)
-  {
-    // testLog << "There are " << branchedMonos.size() << " branches";  
-    // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-    // testLog.str(std::string());//clear stringstream
-    indexBranches(branchedMonos);
-  }
-  // testLog << "Done with Indexing";  
-  // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-  // testLog.str(std::string());//clear stringstream
-  // testLog << "This Oligo has " << this->number_branches_ << " branches";  
-  // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-  // testLog.str(std::string());//clear stringstream
-  
-}
-
 void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Glycan::Oligosaccharide* thisOligo)
 {
-  // std::stringstream testLog;
+  int local_debug = -1;
+  std::stringstream testLog;
   thisMono->oligo_parent_ = thisOligo;
   std::string thisMonoName = thisMono->sugar_name_.monosaccharide_short_name_;
   std::string thisMonoAuthorName = thisMono->author_sugar_name_.monosaccharide_short_name_;
@@ -1723,10 +2178,12 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
   {
     thisMonoAuthorName = thisMono->author_sugar_name_.monosaccharide_stereochemistry_name_;
   }
-  // testLog << thisMono->cycle_atoms_[0]->GetResidue()->GetId() << " has " << thisMono->mono_neighbors_.size() << " neighbors.";
-  // gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
-  // testLog.str(std::string());//clear stringstream
-  
+  if(local_debug > 0)
+  {
+    testLog << thisMono->cycle_atoms_[0]->GetResidue()->GetId() << " has " << thisMono->mono_neighbors_.size() << " neighbors.";
+    gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
+    testLog.str(std::string());//clear stringstream
+  }
    //Name terminal and monosaccharide if no neighbors
   if(thisMono->is_root_)
   {
@@ -1793,9 +2250,15 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
         // }
         //Rename sugar
         thisMono->GenerateCompleteSugarName(assembly_);
-        // std::cout << thisMono->sugar_name_.monosaccharide_name_ << "\n";
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->sugar_name_.monosaccharide_name_);
+        }
       }
-      // gmml::log(__LINE__, __FILE__,  gmml::INF, "Named terminal by Formula");
+      if(local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Named terminal by Formula");
+      }
     }
     std::string anomeric_carbon_id;
     if(thisMono->anomeric_carbon_pointer_ != NULL)
@@ -1817,7 +2280,10 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
     }
     else if((thisMono->mono_neighbors_.size() == 1) && (thisMono->mono_neighbors_[0].first->anomeric_anomeric_linkage_ == false))
     {
-      // gmml::log(__LINE__, __FILE__,  gmml::INF, "Not anomeric");
+      if(local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Not anomeric");
+      }
       thisOligo->IUPAC_name_ = terminal;
       thisOligo->author_IUPAC_name_ = terminal;
     }
@@ -1834,7 +2300,10 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
       }
       if(isAnomeric == false)
       {
-        // gmml::log(__LINE__, __FILE__,  gmml::INF, "Not anomeric");
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__,  gmml::INF, "Not anomeric");
+        }
         thisOligo->IUPAC_name_ = terminal;
         thisOligo->author_IUPAC_name_ = terminal;
       }
@@ -1848,14 +2317,20 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
   }
   else if(thisMono->mono_neighbors_.size() == 1) //no branching
   {
-    // testLog << "This mono has one neighbor";  
-    // // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-    // testLog.str(std::string());//clear stringstream
+    if(local_debug > 0)
+    {
+      testLog << "This mono has one neighbor";  
+      gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+      testLog.str(std::string());//clear stringstream
+    }
     if(thisMono->is_root_)
     {
-      // testLog << "This mono is the root";  
-      // // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-      // testLog.str(std::string());//clear stringstream
+      if(local_debug > 0)
+      {
+        testLog << "This mono is the root";  
+        gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
       if(!thisMono->mono_neighbors_[0].second->is_visited_)//temp fix to handle anomeric anomeric infinite loop
       {
         Glycan::Monosaccharide* thisMonoNeighbor = thisMono->mono_neighbors_[0].second;
@@ -1867,31 +2342,48 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
         // thisMonoNeighbor->is_visited_ = true;
         // thisMonoNeighbor->oligosaccharide_index_ = 1;
         thisOligo->mono_nodes_.push_back(thisMonoNeighbor);
-        // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+        }
         traverseGraph(thisMonoNeighbor, thisOligo);
       }
     }
     else//no more neighbors (one is attached already, and this isn't root)
     {
       thisMono->is_visited_ = true;
-      // testLog << "This mono is not the root";  
-      // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-      // testLog.str(std::string());//clear stringstream
+      if(local_debug > 0)
+      {
+        testLog << "This mono is not the root";  
+        gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
       thisOligo->IUPAC_name_ = thisMonoName + thisOligo->IUPAC_name_;
       thisOligo->author_IUPAC_name_ = thisMonoAuthorName + thisOligo->author_IUPAC_name_;
-      // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+      if(local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+      }
     }
   }
   else if(thisMono->mono_neighbors_.size() == 2)
   {
-    // testLog << "This mono has two neighbors";  
-    // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-    // testLog.str(std::string());//clear stringstream
+    if(local_debug > 0)
+    {
+      testLog << "This mono has two neighbors";  
+      gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+      testLog.str(std::string());//clear stringstream
+    }
+    
     if(thisMono->is_root_) //BRANCHED
     {
-      // testLog << "This mono is the root and is branched";  
-      // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-      // testLog.str(std::string());//clear stringstream
+      if(local_debug > 0)
+      {
+        testLog << "This mono is the root and is branched";  
+        gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
+      
       thisOligo->IUPAC_name_ = thisMonoName + thisOligo->IUPAC_name_;
       thisOligo->author_IUPAC_name_ = thisMonoAuthorName + thisOligo->author_IUPAC_name_;
       std::vector<int> branchMaxLengths(thisMono->mono_neighbors_.size(), 1);
@@ -1901,9 +2393,12 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
       std::vector<int> equalNeighborsLengths;
       for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
       {
-        // testLog << i << ", " << branchMaxLengths[i];
-        // gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
-        // testLog.str(std::string());//clear stringstream
+        if(local_debug > 0)
+        {
+          testLog << i << ", " << branchMaxLengths[i];
+          gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
+          testLog.str(std::string());//clear stringstream
+        }
         
         if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) //if this length is not already considered
         {
@@ -1940,7 +2435,11 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
           traverseGraph(thisMono->mono_neighbors_[shortestBranchLocation].second, thisOligo);
           if(i < thisMono->mono_neighbors_.size() - 1)
           {
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
+            if(local_debug > 0)
+            {
+              gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
+            }
+            
             thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
             thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
           }
@@ -1976,7 +2475,10 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
             traverseGraph(thisMono->mono_neighbors_[shortestBranchLocation].second, thisOligo);
             if(i < thisMono->mono_neighbors_.size() - 1)
             {
-              // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
+              if(local_debug > 0)
+              {
+                gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
+              }
               thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
               thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
             }
@@ -1987,13 +2489,21 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
             int equalBranchLength = branchMaxLengths[shortestBranchLocation];
             if((branchMaxLengths[i] == equalBranchLength) && (!thisMono->mono_neighbors_[i].second->is_visited_))
             {
-              // gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId());
+              if(local_debug > 0)
+              {
+                gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId());
+              }
+              
               linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
               // equalBranches.push_back(thisMono->mono_neighbors_[i]);
             }
             else if((branchMaxLengths[i] == equalBranchLength)&& (thisMono->mono_neighbors_[i].second->is_visited_))
             {
-              // gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId());
+              if(local_debug > 0)
+              {
+                gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId());
+              }
+              
               linkageStringVector.push_back("0");
             }
             else
@@ -2017,7 +2527,11 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
             }
             else
             {
-              // gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_);
+              if(local_debug > 0)
+              {
+                gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_);
+              }
+              
               thisOligo->IUPAC_name_ = /*thisMono->mono_neighbors_[highestIndexLocation].second->sugar_name_.monosaccharide_short_name_ +*/
                                        thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
                                        thisOligo->IUPAC_name_;
@@ -2033,16 +2547,20 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
               thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
               thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
             }
-            linkageStringVector[highestIndexLocation] = "0"; //small number string so it moves to the next lowest linkage
+            linkageStringVector[highestIndexLocation] = "0"; //small number string so it moves to the next higest linkage
           }
         }
       }
     }
     else //not root with 2 neighbors
     {
-      // testLog << "This mono is not branched";  
-      // gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
-      // testLog.str(std::string());//clear stringstream
+      if(local_debug > 0)
+      {
+        testLog << "This mono is not branched";  
+        gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
+      
       int neighborNum = 0;
       Glycan::Monosaccharide* thisMonoNeighbor = thisMono->mono_neighbors_[0].second;
       if(thisMonoNeighbor->is_visited_)
@@ -2058,7 +2576,11 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
                                 thisMonoAuthorName + thisOligo->author_IUPAC_name_;                        
         thisMono->is_visited_ = true;
         thisOligo->mono_nodes_.push_back(thisMonoNeighbor);
-        // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+        }
+        
         traverseGraph(thisMonoNeighbor, thisOligo);
       }
     }
@@ -2074,9 +2596,13 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
     std::vector<int> equalNeighborsLengths;
     for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
     {
-      // testLog << "Branch " << i << " has a max length of  " << branchMaxLengths[i];
-      // gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
-      // testLog.str(std::string());//clear stringstream
+      if(local_debug > 0)
+      {
+        testLog << "Branch " << i << " has a max length of  " << branchMaxLengths[i];
+        gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
+      
       if(std::find(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[i]) == equalNeighborsLengths.end()) //if this length is not already considered
       {
         // equalNeighborsLengths.push_back(branchMaxLengths[i]);
@@ -2099,6 +2625,12 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
     }
     if(numEqualNeighbors == 0)
     {
+      if(local_debug > 0)
+      {
+        testLog << "There are no equal branches.";
+        gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
       for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
       {
         int shortestBranchLocation = std::distance(branchMaxLengths.begin(), std::min_element(branchMaxLengths.begin(), branchMaxLengths.end()));
@@ -2126,20 +2658,30 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
                                     thisOligo->author_IUPAC_name_;
           }
           thisMono->is_visited_ = true;
-          // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+          if(local_debug > 0)
+          {
+            gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+          }
+          
           thisOligo->mono_nodes_.push_back(thisMono->mono_neighbors_[shortestBranchLocation].second);
           traverseGraph(thisMono->mono_neighbors_[shortestBranchLocation].second, thisOligo);
           if((i < thisMono->mono_neighbors_.size() - 1) && (countedBackwards))
           {
             thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
             thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+            if(local_debug > 0)
+            {
+              gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+            }
           }
           else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
           {
             thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
             thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+            if(local_debug > 0)
+            {
+              gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+            }
           }
         }
         else
@@ -2151,6 +2693,12 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
     }
     else
     {
+      if(local_debug > 0)
+      {
+        testLog << "There are equal branches.";
+        gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
+        testLog.str(std::string());//clear stringstream
+      }
       //TODO:  fix the logic of this function; the loop has to be within the if statement
       //handle branch ordering
       std::vector<std::string> linkageStringVector;
@@ -2171,6 +2719,12 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
         }
         if(std::count(equalNeighborsLengths.begin(), equalNeighborsLengths.end(), branchMaxLengths[shortestBranchLocation]) == 0) //no other branches of this length
         {
+          if(local_debug > 0)
+          {
+            testLog << "No other branches of length: " << branchMaxLengths[shortestBranchLocation];
+            gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
+            testLog.str(std::string());//clear stringstream
+          }
           linkageStringVector.push_back("0");
           if(!thisMono->mono_neighbors_[shortestBranchLocation].second->is_visited_)
           {
@@ -2202,13 +2756,19 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
             {
               thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
               thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
-              // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+              if(local_debug > 0)
+              {
+                gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+              }
             }
             else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
             {
               thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
               thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
-              // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+              if(local_debug > 0)
+              {
+                gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+              }
             }
             isNeighborNamed[shortestBranchLocation] = true;
           }
@@ -2220,18 +2780,40 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
         }
         else
         {
+          if(local_debug > 0)
+          {
+            testLog << "The equal branches are of length: " << branchMaxLengths[shortestBranchLocation];
+            gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
+            testLog.str(std::string());//clear stringstream
+          }
           std::vector<std::string> equalLinkageStringVector;
           for(unsigned int j = 0; j < thisMono->mono_neighbors_.size(); j++)
           {
             if(branchMaxLengths[j] == branchMaxLengths[shortestBranchLocation])
             {
               equalLinkageStringVector.push_back(linkageStringVector[j]);
+              if(local_debug > 0)
+              {
+                testLog << "This branch has index: " << linkageStringVector[j];
+                gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
+                testLog.str(std::string());//clear stringstream
+              }
+            }
+            else
+            {
+              equalLinkageStringVector.push_back("0");
             }
           }
           for(unsigned int j = 0; j < equalLinkageStringVector.size(); j++)
           {
-            // gmml::log(__LINE__, __FILE__,  gmml::INF, linkageStringVector[i]);
+            
             int highestIndexLocation = std::distance(equalLinkageStringVector.begin(), std::max_element(equalLinkageStringVector.begin(), equalLinkageStringVector.end()));
+            if(local_debug > 0)
+            {
+              testLog << "The highest index is: " << equalLinkageStringVector[highestIndexLocation];
+              gmml::log(__LINE__, __FILE__,  gmml::INF, testLog.str());
+              testLog.str(std::string());//clear stringstream
+            }
             if(!thisMono->mono_neighbors_[highestIndexLocation].second->is_visited_)
             {
               if(thisMono->is_root_ && i < thisMono->mono_neighbors_.size() - 1)
@@ -2243,7 +2825,10 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
               }
               else if((i < thisMono->mono_neighbors_.size() - 1) && (countedBackwards))
               {
-                // gmml::log(__LINE__, __FILE__,  gmml::INF, "Counted Backwards");
+                if(local_debug > 0)
+                {
+                  gmml::log(__LINE__, __FILE__,  gmml::INF, "Counted Backwards");
+                }
                 thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
                                           thisOligo->IUPAC_name_;
                 thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
@@ -2251,7 +2836,10 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
               }
               else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
               {
-                // gmml::log(__LINE__, __FILE__,  gmml::INF, "Didn't count Backwards");
+                if(local_debug > 0)
+                {
+                  gmml::log(__LINE__, __FILE__,  gmml::INF, "Didn't count Backwards");
+                }
                 thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
                                          thisOligo->IUPAC_name_;
                 thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
@@ -2264,7 +2852,11 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
                 thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
                                          thisOligo->author_IUPAC_name_;
               }
-              // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+              if(local_debug > 0)
+              {
+                gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+              }
+              
               thisMono->is_visited_ = true;
               thisOligo->mono_nodes_.push_back(thisMono->mono_neighbors_[highestIndexLocation].second);
               traverseGraph(thisMono->mono_neighbors_[highestIndexLocation].second, thisOligo);
@@ -2277,13 +2869,19 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
               {
                 thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
                 thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
-                // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+                if(local_debug > 0)
+                {
+                  gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+                }
               }
               else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
               {
                 thisOligo->IUPAC_name_ = "[" + thisOligo->IUPAC_name_;
                 thisOligo->author_IUPAC_name_ = "[" + thisOligo->author_IUPAC_name_;
-                // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+                if(local_debug > 0)
+                {
+                  gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
+                }
               }
             }
             else
@@ -2551,6 +3149,7 @@ void Glycan::Oligosaccharide::reindexRGroups(Glycan::Oligosaccharide* this_Oligo
       break;
   }
 }
+
 std::string Glycan::Oligosaccharide::CheckOMETerminal(MolecularModeling::Atom* target, std::vector<MolecularModeling::Atom*> & terminal_atoms)
 {
     terminal_atoms = std::vector<MolecularModeling::Atom*> ();
@@ -2794,7 +3393,6 @@ std::string Glycan::Oligosaccharide::CheckTBTTerminal(MolecularModeling::Atom *t
     }
     return "";
 }
-
 
 std::string Glycan::Oligosaccharide::CheckTerminals(MolecularModeling::Atom* target, std::vector<MolecularModeling::Atom*>& terminal_atoms)
 {

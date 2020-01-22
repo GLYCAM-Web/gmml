@@ -22,7 +22,7 @@ Monosaccharide::Monosaccharide(const Monosaccharide &mono)
 
 Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<MolecularModeling::Atom*>& cycle_atoms, MolecularModeling::Assembly* this_assembly, std::string CCD_Path)
 {
-  int local_debug = 1;
+  int local_debug = -1;
   residue_name_ = cycle_atoms[0]->GetResidue()->GetName();
   cycle_atoms[0]->GetResidue()->SetIsSugar(true);
   // std::cout << residue_name_ << "\n";

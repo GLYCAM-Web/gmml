@@ -483,7 +483,7 @@ MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterR
                 Atom* atom = (*it1);
                 // if(atom->GetDescription().find("Het;") != std::string::npos)
                 // There is a bug in this code somewhere, so I commented it out
-                // Won't find monosaccharides in monosaccharide only pdbs.
+                // Won't find monosaccharides in monosaccharide only pdbs as they are in the ATOM section.
                 all_atoms_of_assembly.push_back(atom);
             }
         }

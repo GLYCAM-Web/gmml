@@ -123,13 +123,17 @@ namespace CondensedSequenceSpace
 	    MolecularModeling::Assembly* ConvertCondensedSequenceResidueTree2ResidueOnlyAssembly();
             bool BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree);
 	    void FindLongestPath(std::vector<int>& longest_path);
-	    void RecursivelyBuildLabeledCondensedSequence(int current_index, int& branch_depth, std::string& labeled_sequence, Reordering_Approach reordering_approach, std::vector<int>& longest_path, bool label);
+	    void RecursivelyLabelCondensedSequence(int current_residue_index, int& current_resdiue_label_index, int& current_bond_label_index,
+                                                   std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map,
+                                                   CondensedSequence::Reordering_Approach labeling_approach, std::vector<int>& longest_path);
+	    void RecursivelyBuildLabeledCondensedSequence(int current_index, int& branch_depth, std::string& labeled_sequence, CondensedSequence::Reordering_Approach reordering_approach                                                                            ,std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map, 
+			                                                    std::vector<int>& longest_path, bool label);
             std::string GetGlycam06TerminalResidueCodeOfTerminalResidue(std::string terminal_residue_name);
             std::string GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequenceResidue* condensed_residue, std::vector<int> open_valences);
             std::string GetFirstLetterOfGlycam06ResidueCode(std::bitset<10> open_valences_check);
             std::string GetSecondLetterOfGlycam06ResidueCode(std::string residue_name, std::string isomer);
             std::string GetThirdLetterOfGlycam06ResidueCode(std::string configuration, std::string ring_type);
-	    std::string BuildLabeledCondensedSequence(Reordering_Approach reordering_approach, bool label);
+	    std::string BuildLabeledCondensedSequence(Reordering_Approach labeling_approach, Reordering_Approach reordering_approach, bool label);
             CondensedSequenceGlycam06Residue* GetCondensedSequenceDerivativeGlycam06Residue(std::string derivative_name, int derivative_index);
             CondensedSequenceRotamersAndGlycosidicAnglesInfo GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(CondensedSequenceResidueTree residue_tree);
             int CountAllPossibleSelectedRotamers(CondensedSequenceRotamersAndGlycosidicAnglesInfo rotamers_glycosidic_angles_info);
