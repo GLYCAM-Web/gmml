@@ -207,7 +207,7 @@ void Rotatable_dihedral::SetDihedralAngle(double dihedral_angle)
 
     // Yo you should add something here that checks if atoms_that_move_ is set. Yeah you.
 
-    //std::cout << "Setting dihedral for " << atom1_->GetId() << ":"  << atom2_->GetId() << ":"  << atom3_->GetId() << ":"  << atom4_->GetId() <<  ": " << dihedral_angle << "\n";
+//    std::cout << "Setting dihedral for " << atom1_->GetId() << ":"  << atom2_->GetId() << ":"  << atom3_->GetId() << ":"  << atom4_->GetId() <<  ": " << dihedral_angle << "\n";
     for(AtomVector::iterator it = atoms_that_move_.begin(); it != atoms_that_move_.end(); it++)
     {
         Atom *atom = *it;
@@ -433,7 +433,7 @@ void Rotatable_dihedral::UpdateAtomsIfPsi()
     for(auto &entry : assigned_metadata_)
     {
         // If it's a psi angle and is supposed to be defined by a H...
-        if ((entry.dihedral_angle_name_.compare("psi")==0) && (entry.atom4_.at(0)=='H'))
+        if ((entry.dihedral_angle_name_.compare("Psi")==0) && (entry.atom4_.at(0)=='H'))
         {// Find the neighbor of current atom3 which is a hydrogen, and set it to be the new atom4;
             bool foundHydrogen = false;
             for(auto &neighbor : atom3_->GetNode()->GetNodeNeighbors())

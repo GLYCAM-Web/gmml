@@ -954,6 +954,7 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
     for(auto &linkage : all_residue_linkages)
     {
         linkage.SetDefaultShapeUsingMetadata();
+
     }
     // Resovlving overlaps should be a separated function, but I don't want assembly to have a ResidueLinkageVector member. Need new, seperate class.
     for(auto &linkage : all_residue_linkages)
@@ -1441,16 +1442,16 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             // However, the ResolveClashes function uses the index_dihedral_map, so that must be replaced at the same time.
 
 
-            int linkage_index = 0;
-            this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
+//            int linkage_index = 0;
+//            this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
             break;
         }
     }
 
-    //Find and resolve clashes below(crudely)
-    ResidueVector clashing_residues = this->FindClashingResidues();
-    std::vector<ResidueVector> clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues);
-    this->ResolveClashes(clashing_residue_parent_paths, index_dihedral_map);
+//    //Find and resolve clashes below(crudely)
+//    ResidueVector clashing_residues = this->FindClashingResidues();
+//    std::vector<ResidueVector> clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues);
+//    this->ResolveClashes(clashing_residue_parent_paths, index_dihedral_map);
 }
 
 void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure)
