@@ -61,6 +61,7 @@ namespace CondensedSequenceSpace
             void SetDerivatives(DerivativeMap derivatives);
             void SetParentId(int parent_id);
 	    void AddChildId(int child_id);
+	    void RemoveChildId(int child_id);
 	    void SetBondId(int bond_id); //Added by Yao 08/03/2018. Bond Id is to label the index of the bond of a residue to its parent, starting from reducing end.Numbering starts from 0.
 /** @}*/
             //////////////////////////////////////////////////////////
