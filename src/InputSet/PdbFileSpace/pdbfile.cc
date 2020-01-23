@@ -4964,7 +4964,7 @@ bool PdbFile::ParseModelSection(std::ifstream& stream, std::string& line)
         }
     }
     // Model card
-       gmml::log(__LINE__, __FILE__,  gmml::ERR, stream_block.str());
+       // gmml::log(__LINE__, __FILE__,  gmml::ERR, stream_block.str());
     models_ = new PdbFileSpace::PdbModelSection(stream_block);
     return true;
 }

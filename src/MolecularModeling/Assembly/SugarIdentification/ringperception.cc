@@ -78,7 +78,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 Assembly::CycleMap Assembly::DetectCyclesByExhaustiveRingPerception()
 {
-  int local_debug = 1;
+  int local_debug = -1;
   CycleMap cycles = CycleMap();
   MolecularModeling::AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
   std::vector<std::string> path_graph_edges = std::vector<std::string> (); ///The list of edges in the molecular graph
@@ -290,7 +290,7 @@ void Assembly::ReducePathGraph(std::vector<std::string> path_graph_edges, std::v
                                std::vector<std::string>& reduced_path_graph_edges, std::vector<std::string>& reduced_path_graph_labels,
                                std::string common_atom, std::vector<std::string>& cycles)
 {
-  int local_debug = 1;
+  int local_debug = -1;
   std::vector<int> to_be_deleted_edges = std::vector<int>();
   std::vector<std::string> alreadyCompared;
   if ( local_debug > 0 )
