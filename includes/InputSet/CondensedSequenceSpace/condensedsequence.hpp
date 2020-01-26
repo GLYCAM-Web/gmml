@@ -13,10 +13,6 @@
 #include "../../../includes/Glycan/note.hpp"
 #include "../../../includes/InputSet/Utilities/response.hpp"
 
-namespace MolecularModeling {
-    class Assembly;
-};
-
 namespace CondensedSequenceSpace
 {
     class CondensedSequenceResidue;
@@ -124,7 +120,6 @@ namespace CondensedSequenceSpace
 	    bool CheckLinkageAndDerivativeSanity();
             bool ParseCondensedSequence(std::string sequence, CondensedSequence* condensed_sequence);
             int BuildArrayTreeOfCondensedSequenceResidue();
-	    MolecularModeling::Assembly* ConvertCondensedSequenceResidueTree2ResidueOnlyAssembly();
             bool BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree);
 	    void FindLongestPath(std::vector<int>& longest_path);
 	    void RecursivelyLabelCondensedSequence(int current_residue_index, int& current_resdiue_label_index, int& current_bond_label_index,
