@@ -8,13 +8,10 @@
 #include <map>
 #include <bitset>
 #include <algorithm>
+#include <utility>
 #include "../../common.hpp"
 #include "../../../includes/Glycan/note.hpp"
 #include "../../../includes/InputSet/Utilities/response.hpp"
-
-namespace MolecularModeling {
-    class Assembly;
-};
 
 namespace CondensedSequenceSpace
 {
@@ -114,13 +111,15 @@ namespace CondensedSequenceSpace
             //                        FUNCTIONS                     //
             //////////////////////////////////////////////////////////
             int InsertNodeInCondensedSequenceResidueTree(CondensedSequenceResidue* condensed_residue, int parent_node_id, int bond_id );
+	    int ReEvaluateParentIdentityUponAnomericAnomericLinkage();
+	    void RecursivelyCountNumberofDownstreamResiduesAndBranches(int parent_residue_index, int& num_residues, int& num_branches);
+	    void DetectAnomericAnomericLinkages();
             int InsertNodeInCondensedSequenceGlycam06ResidueTree(CondensedSequenceGlycam06Residue* condensed_glycam06_residue, int parent_node_id, int bond_id );
 	    bool ParseSequenceAndCheckSanity(std::string sequence);
 	    bool CheckResidueTokenSanity();
 	    bool CheckLinkageAndDerivativeSanity();
             bool ParseCondensedSequence(std::string sequence, CondensedSequence* condensed_sequence);
             int BuildArrayTreeOfCondensedSequenceResidue();
-	    MolecularModeling::Assembly* ConvertCondensedSequenceResidueTree2ResidueOnlyAssembly();
             bool BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree);
 	    void FindLongestPath(std::vector<int>& longest_path);
 	    void RecursivelyLabelCondensedSequence(int current_residue_index, int& current_resdiue_label_index, int& current_bond_label_index,
@@ -150,11 +149,13 @@ namespace CondensedSequenceSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
+	    std::string input_sequence_;
             CondensedSequenceResidueVector residues_;
             CondensedSequenceTokenTypeVector tokens_;
             CondensedSequenceResidueTree condensed_sequence_residue_tree_;
             CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree_;
 	    InputOutput::Response response_;
+	    std::vector<std::pair<int, int> > anomeric_anomeric_linkages_; 
     };
 }
 
