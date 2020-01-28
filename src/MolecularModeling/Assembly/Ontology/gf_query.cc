@@ -1,4 +1,7 @@
 #include "../../../../includes/MolecularModeling/assembly.hpp"
+#include "../../../../includes/MolecularModeling/Graph/graph.hpp"
+
+#include <regex>
 
 //For an example query with some explaination, see the bottom of this file.  For sparql query information, see https://www.w3.org/TR/rdf-sparql-query/ (It is not the greatest documentation but it helps)
 
@@ -564,9 +567,315 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
 
 }
 
+GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string queryString)
+{
+  int local_debug = 1;
+  std::cout << "Starting graph creation\n";
+  GraphDS::Graph graph;
+  
+  struct parsedString
+  {
+    std::string label;
+    GraphDS::Node* node = NULL;
+    GraphDS::Edge* edge = NULL;
+    parsedString(std::string Label, GraphDS::Node* Node = NULL)
+    {//Node is NULL by default for branch brackets
+      label = Label;
+      node = Node;
+    }
+    parsedString(std::string Label, GraphDS::Edge* Edge)
+    {
+      label = Label;
+      edge = Edge;
+    }
+  };
+  
+  std::vector<parsedString> parsedVector;
+  
+  //split string into mono, linkage, and brackets
+  //IE DGlcpNAcb1-4[LFucpa1-4]DGlcpNAcb1-ASN is split into:
+  //{DGlcpNAcb, 1-4,     [,    LFucpa, 1-4,     ],    DGlcpNAcb, 1-,      ASN} (labels)
+  //{Node1,     NULL,    NULL, Node2,  NULL,    NULL, Node3,     NULL,    Node4} (nodes)
+  //{NULL,      Edge1-3, NULL, NULL,   Edge2-3, NULL, NULL,      Edge3-4, NULL} (edges)
+  std::string labelStr;
+  std::size_t linkageStart, linkageEnd, dashLocation;
+  dashLocation = queryString.find("-");
+  if(isdigit(queryString[dashLocation - 1]))
+  {
+    linkageStart = dashLocation - 1;
+  }
+  else
+  {
+    linkageStart = dashLocation;
+  }
+  if(isdigit(queryString[dashLocation + 1]))
+  {
+    linkageEnd = dashLocation + 1;
+  }
+  else
+  {
+    linkageEnd = dashLocation;
+  }
+  
+  //Fill Vector, add nodes & labels
+  for(unsigned int i=0; i<queryString.size(); i++)
+  {
+    if((queryString[i] == '[')||(queryString[i] == ']'))
+    {
+      labelStr.push_back(queryString[i]);
+      parsedVector.push_back(parsedString(labelStr));
+      labelStr = "";
+      continue;
+    }
+    else if(i == linkageStart)
+    {
+      while(i != linkageEnd + 1)
+      {
+        labelStr.push_back(queryString[i]);
+        i++;
+      }
+      GraphDS::Edge* thisEdge();
+      thisEdge->AddEdgeLabel(labelStr);
+      parsedVector.push_back(parsedString(labelStr, thisEdge));
+      labelStr = "";
+      dashLocation = queryString.find("-");
+      if(isdigit(queryString[dashLocation - 1]))
+      {
+        linkageStart = dashLocation - 1;
+      }
+      else
+      {
+        linkageStart = dashLocation;
+      }
+      if(isdigit(queryString[dashLocation + 1]))
+      {
+        linkageEnd = dashLocation + 1;
+      }
+      else
+      {
+        linkageEnd = dashLocation;
+      }
+      continue;
+    }
+    else
+    {
+      while(i+1 != linkageLocation)
+      {
+        labelStr.push_back(queryString[i]);
+        i++;
+      }
+      GraphDS::Node* newNode();
+      newNode->SetNodeValue(labelStr);
+      parsedVector.push_back(parsedString(labelStr, newNode));
+      labelStr = "";
+      continue;
+    }
+  }
+  
+  //Go through vector, add edges b/w nodes & add nodes & edges to graph
+  for(unsigned int i=0; i<parsedVector.size(); i++)
+  {
+    if(parsedVector[i].node != NULL)
+    {
+      graph.AddNewNode(parsedVector[i].node);
+      if(i < parsedVector.size() - 2)
+      {
+        if(parsedVector[i+1].edge != NULL)
+        {
+          if(parsedVector[i+2].node != NULL)
+          {
+            parsedVector[i+1].edge->SetSourceNode(parsedVector[i].node);
+            parsedVector[i+1].edge->SetDestinationNode(parsedVector[i+2].node);
+          }
+          else if(parsedVector[i+2].label == "[")
+          {//there is a branch.  Find the end of the branch and connect to the next node
+            int numOpenBrackets = 1;
+            bool onSameBranchPoint = true;
+            int numBranchesAtThisNode = 1;
+            int endBracketLocation;
+            while (onSameBranchPoint)
+            {
+              for(unsigned int j=i+3; j < parsedVector.size(); j++)
+              {
+                if(parsedVector[j].label == "[")
+                {//branched branches
+                  numOpenBrackets++;
+                }
+                if((parsedVector[j].label == "]") && (numOpenBrackets == 1))
+                {
+                  if((j < parsedVector.size() - 1) && (parsedVector[j+1].label == "["))
+                  {
+                    numBranchesAtThisNode++;
+                  }
+                  else
+                  {
+                    endBracketLocation = j;
+                    onSameBranchPoint = false;
+                  }
+                }
+                else if((parsedVector[j].label == "]") && (numOpenBrackets != 1))
+                {
+                  numOpenBrackets--;
+                }
+              }
+            }
+            if((endBracketLocation < parsedVector.size() - 1) && (parsedVector[endBracketLocation + 1].node != NULL))
+            {
+              parsedVector[i+1].edge->SetSourceNode(parsedVector[i].node);
+              parsedVector[i+1].edge->SetDestinationNode(parsedVector[endBracketLocation + 1].node);
+            }
+            for(int j = 0; j < numBranchesAtThisNode; j++)
+            {//Attach all the branches
+              
+            }
+          }
+        }
+      }
+    }
+    else if(parsedVector[i].edge != NULL)
+    {
+      graph.AddEdge(parsedVector[i].edge);
+    }
+  }
+  
+
+  
+  //Trying something different
+  // 
+  // //Creating a char* vector so I can remove the branches as they are made into nodes without destroying the 
+  // //original string.  It also allows pointers to residues that haven't been turned into nodes yet
+  // //Vector.erase(start, end) will remove the bits from start to end, in this case the branch
+  // 
+  // std::vector<char*> qStringPointer;
+  // for(std::string::iterator it = queryString.begin(); it != queryString.end(); it++)
+  // {
+  //   char* c = &(*it);
+  //   qStringPointer.push_back(c);
+  // }
+  // if(local_debug > 0)
+  // {
+  //   for(unsigned int i = 0; i < qStringPointer.size(); i++)
+  //   {
+  //     std::cout << *qStringPointer[i];
+  //   }
+  //   std::cout << "\n";
+  // }
+  // std::regex branchEndPattern("([1-2]-[1-9])(])");//will match a bracket after a linkage, so the end bracket of a branch
+  // std::smatch matchLocation;
+  // std::size_t numStartBrackets = std::count(queryString.begin(), queryString.end(), '[');
+  // std::size_t numEndBrackets = std::count(queryString.begin(), queryString.end(), ']');
+  // if(numStartBrackets != numEndBrackets)
+  // {
+  //   std::cerr << "This function will get stuck in an infinite loop of there are more or less open brackets than close brackets.\n";
+  //   std::cerr << "Exiting CreateQueryStringGraph() now\n";
+  //   return graph;
+  // }
+  // std::string queryStringCopy = queryString;
+  // while((queryStringCopy.size() != 0) && (numStartBrackets == numEndBrackets))
+  // {  
+  //   // Below will return the first match in matchLocation.str(0)
+  //   // Each pattern in () in the regex object will be returned in the following elements of the array
+  //   // In this case, the linkage will be in matchLocation.str(1) and the bracket will be matchLocation.str(2)
+  //   std::regex_search(queryStringCopy, matchLocation, branchEndPattern);
+  // 
+  //   int i = 0;
+  //   if(local_debug > 0)
+  //   {
+  //     for(std::smatch::iterator it = matchLocation.begin(); it != matchLocation.end(); it++)
+  //     {
+  //       std::cout << i << ": " << *it << "\n";
+  //       i++;
+  //     }
+  //   }
+  // 
+  //   std::string thisBranchString = matchLocation.str(0); //Need full string to get position
+  //   std::size_t thisBranchEndBracket = queryStringCopy.find(thisBranchString);
+  //   thisBranchEndBracket+=3;//Need location of the bracket
+  //   char* endBracketPointer = &queryStringCopy[thisBranchEndBracket];
+  //   std::size_t thisBranchStartBracket;
+  //   unsigned int offset = queryStringCopy.size() - thisBranchEndBracket;//Offset for this position in reverse iterator
+  //   int numOpenBrackets = 0;//Keeping track of [] in case of derivatives {IE [2P]}
+  //   if(matchLocation.str(2) == "]")//found a branch
+  //   {
+  //     numOpenBrackets++;
+  //     for(std::string::reverse_iterator rit = queryStringCopy.rbegin() + offset; rit != queryStringCopy.rend(); rit ++)
+  //     {
+  //       if(*rit == ']')
+  //       {
+  //         numOpenBrackets++;
+  //       }
+  //       else if(*rit == '[')
+  //       {
+  //         if(numOpenBrackets == 1)//This will close the bracket, and is the beginning of the branch
+  //         {
+  //           thisBranchStartBracket = std::distance(rit,queryStringCopy.rend()) - 1;//r(everse)end is the beginning
+  //           numOpenBrackets--;
+  //           break;
+  //         }
+  //         numOpenBrackets--;
+  //       }
+  //     }
+  //     char* startBracketPointer = &queryStringCopy[thisBranchStartBracket];
+  //     if(local_debug > 0)
+  //     {
+  //       std::cout << numOpenBrackets << " open brackets\n";
+  //       std::cout << queryStringCopy << "\n";
+  //       for(unsigned int i = 0; i < queryStringCopy.size(); i++)
+  //       {
+  //         if(i == thisBranchStartBracket)
+  //         {
+  //           std::cout << "[";
+  //         }
+  //         else if (i == thisBranchEndBracket)
+  //         {
+  //           std::cout << "]";
+  //         }
+  //         else
+  //         {
+  //           std::cout << " ";
+  //         }
+  //       }
+  //       std::cout << '\n';
+  //       for(unsigned int i = 0; i < queryStringCopy.size(); i++)
+  //       {
+  //         if(&queryStringCopy[i] == startBracketPointer)
+  //         {
+  //           std::cout << "[";
+  //         }
+  //         else if (&queryStringCopy[i] == endBracketPointer)
+  //         {
+  //           std::cout << "]";
+  //         }
+  //         else
+  //         {
+  //           std::cout << " ";
+  //         }
+  //       }
+  //       std::cout << '\n';
+  //       std::cout << &startBracketPointer << " " << &endBracketPointer << "\n";
+  //     }
+  //     std::string branchString = queryStringCopy.substr(thisBranchStartBracket + 1, thisBranchEndBracket - (thisBranchStartBracket + 1));
+  //     queryStringCopy = queryStringCopy.substr(0,thisBranchStartBracket) + queryStringCopy.substr(thisBranchEndBracket+1, queryStringCopy.size());
+  //     if(local_debug > 0)
+  //     {
+  //       std::cout << "Branch: " << branchString << " found\n";
+  //       std::cout << queryStringCopy << "\n";
+  //     }
+  //   }
+  //   else //No more branches
+  //   {
+  //     queryStringCopy = "";
+  //   }
+  // 
+  // 
+  // }
+  // 
+  
+  return graph;
+}
 // To test new queries, you should go to your dev site's online virtuoso query.
 // To find the IP address of your Virtuoso database, run docker inspect (YOUR_USERNAME)_gw_virt | grep IPAddress
-// Then go to that IP address, followed by :8890/sparql.  SO for me that's http://172.16.3.8:8890/sparql
+// Then go to that IP address, followed by :8890/sparql.  For me right now, that's http://172.16.3.8:8890/sparql
 // To query our ontology, you need to use the prefixes below.  This tells the ontology what the vocabulary means.
 // SELECT is all of the data you want to pull out, and each variable must be present in the WHERE{} part of the query.
 // Below is a sample query, and above if you follow the code it generates a couple other queries.

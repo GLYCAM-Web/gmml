@@ -97,7 +97,13 @@ class Graph
              * @param node_ The node attribute of the current graph object
              */
           void AddEdge(GraphDS::Node* firstNode, GraphDS::Node* secondNode);
-
+          
+          /*! \fn
+             * A function to add an edge to the current graph object of this class
+             * @param newEdge The edge to add to the current graph object
+             */
+          void AddEdge(Edge* newEdge);
+          
            /*! \fn
              * A function to find a node in the current graph object using the node id
              * @return node_ attribute of the current graph object of this class

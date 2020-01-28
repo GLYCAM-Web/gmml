@@ -80,6 +80,12 @@ void GraphDS::Graph::AddEdge(Node* firstNode, Node* secondNode)
     Edge* newEdge = new Edge(firstNode, secondNode);
     graphEdgeList_.push_back(newEdge);
     firstNode->AddEdge(newEdge);
+    secondNode->AddEdge(newEdge);
+}
+
+void GraphDS::Graph::AddEdge(Edge* newEdge)
+{
+  graphEdgeList_.push_back(newEdge);
 }
 
 void GraphDS::Graph::RemoveNode(GraphDS::Node *delNode)
