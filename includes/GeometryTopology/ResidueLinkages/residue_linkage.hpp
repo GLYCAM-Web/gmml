@@ -9,7 +9,7 @@
 #include "../../MolecularModeling/atom.hpp"
 #include "../../MolecularModeling/residue.hpp"
 #include "../../MolecularModeling/Selections/selections.hpp"
-#include "rotatable_dihedral.h"
+#include "rotatable_dihedral.hpp"
 
 
 

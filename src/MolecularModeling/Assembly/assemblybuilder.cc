@@ -25,7 +25,7 @@
 #include "../../../includes/GeometryTopology/cell.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/rotation.hpp"
-#include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.h"
+#include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"

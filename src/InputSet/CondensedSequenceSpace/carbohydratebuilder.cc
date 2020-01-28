@@ -1,5 +1,5 @@
-#include "../../../includes/InputSet/CondensedSequenceSpace/carbohydratebuilder.h"
-#include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.h"
+#include "../../../includes/InputSet/CondensedSequenceSpace/carbohydratebuilder.hpp"
+#include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "../../../includes/External_Libraries/json.hpp"
 
 //////////////////////////////////////////////////////////

@@ -19,7 +19,8 @@ void ClearAtomDescriptions(MolecularModeling::Residue *residue);
 MolecularModeling::AtomVector FindCyclePoints(MolecularModeling::Atom *atom);
 bool FindRotationPointsForNonCycles(MolecularModeling::Atom *previous_atom, MolecularModeling::Atom *current_atom, MolecularModeling::AtomVector *rotation_points);
 MolecularModeling::Atom* FindCyclePointNeighbor(const MolecularModeling::AtomVector atom_path, MolecularModeling::Atom *cycle_point);
-MolecularModeling::Atom* FindAtomNeighborThatMatchesQuery(MolecularModeling::Atom *atom, std::string query);
+//commented out the below because it is commented out in the .cc file, and breaks GEMS -DM
+// MolecularModeling::Atom* FindAtomNeighborThatMatchesQuery(MolecularModeling::Atom *atom, std::string query);
 MolecularModeling::Residue* FindResidue(MolecularModeling::Assembly &assembly, const std::string query);
 double GetMaxDistanceBetweenAtoms(MolecularModeling::AtomVector atoms);
 MolecularModeling::AtomVector GetAtomsCommonToBothAtomVectors(MolecularModeling::AtomVector a, MolecularModeling::AtomVector b);

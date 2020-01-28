@@ -1,4 +1,4 @@
-#include "../../../includes/InputSet/CondensedSequenceSpace/carbohydratebuilder.h"
+#include "../../../includes/InputSet/CondensedSequenceSpace/carbohydratebuilder.hpp"
 #include "../../../includes/External_Libraries/json.hpp"
 
 /* This is just for reading in JSON. Perhaps would have been better at the GEMS level, and have the struct filled in there

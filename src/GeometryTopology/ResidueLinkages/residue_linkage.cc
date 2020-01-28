@@ -1,5 +1,5 @@
 #include <random>
-#include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.h"
+#include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "../../../includes/MolecularModeling/overlaps.hpp"
 #include "../../../includes/External_Libraries/PCG/pcg_extras.hpp"
 #include "../../../includes/External_Libraries/PCG/pcg_random.hpp"
@@ -166,10 +166,10 @@ std::string Residue_linkage::DetermineLinkageNameFromResidueNames()
     return linkageName.str();
 }
 
-//int Residue_linkage::GetNumberOfRotatableDihedrals()
-//{
-//    return rotatable_dihedrals_.size();
-//}
+int Residue_linkage::GetNumberOfRotatableDihedrals()
+{
+   return rotatable_dihedrals_.size();
+}
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
