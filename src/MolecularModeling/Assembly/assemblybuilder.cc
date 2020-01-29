@@ -2193,6 +2193,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
                 Atom* new_atom = new Atom();
                 residue->SetName(residue_name);
                 std::string atom_name = atom->GetAtomName();
+		std::cout << "Assembly atom: " << new_atom << "got name set to: " << atom_name << std::endl;
                 new_atom->SetName(atom_name);
                 new_atom->MolecularDynamicAtom::SetCharge(atom->GetAtomCharge());
                 new_atom->MolecularDynamicAtom::SetAtomType(atom->GetAtomType());
