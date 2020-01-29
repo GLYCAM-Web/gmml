@@ -47,7 +47,7 @@ public:
     //////////////////////////////////////////////////////////
 
     void GenerateSingle3DStructure(std::string outputFileNaming = "default");
-    void GenerateUserOptionsJSON();
+    std::string GenerateUserOptionsJSON();
     void ReadUserSelectionsJSON(std::string jsonInput);
     void GenerateRotamers(std::string jsonSelection = "");
 

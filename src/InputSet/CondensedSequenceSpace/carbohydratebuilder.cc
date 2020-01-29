@@ -81,7 +81,7 @@ void carbohydrateBuilder::GenerateRotamers(std::string jsonSelection)
     return;
 }
 
-void carbohydrateBuilder::GenerateUserOptionsJSON()
+std::string carbohydrateBuilder::GenerateUserOptionsJSON()
 {
     /* https://github.com/nlohmann/json. See also includes/External_Libraries/json.hpp
      * nlohmann::json is a little funky. If you first declare something like root["Evaluate"] = "string",
@@ -116,10 +116,12 @@ void carbohydrateBuilder::GenerateUserOptionsJSON()
     j_responses["Evaluate"]["officialSequence"] = this->GetOfficialSequenceString();
     j_root["responses"] += j_responses;
     j_root["entity"]["type"] = "sequence";
-    std::cout << j_root << std::endl;
+    // std::cout << j_root << std::endl;
+    std::stringstream response;
+    response << j_root;
    // std::cout << std::setw(4) << j_root << std::endl;
   //  std::cout << "Finito" << std::endl;
-    return;
+    return response.str();
 }
 
 
@@ -215,5 +217,3 @@ void carbohydrateBuilder::InitializeClass(std::string inputSequenceString, std::
 //    }
     return;
 }
-
-
