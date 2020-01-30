@@ -64,6 +64,7 @@ bool GraphDS::Node::GetIsVisited()
 
 void GraphDS::Node::SetNodeValue(void* node_value)
 {
+  std::cout << node_value << "\n";
     this->node_value_= node_value;
 }
 

@@ -572,26 +572,8 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
   int local_debug = 1;
   std::cout << "Starting graph creation\n";
   GraphDS::Graph graph;
-  
-  struct parsedString
-  {
-    std::string label;
-    GraphDS::Node* node = NULL;
-    GraphDS::Edge* edge = NULL;
-    parsedString(std::string Label, GraphDS::Node* Node = NULL)
-    {//Node is NULL by default for branch brackets
-      label = Label;
-      node = Node;
-    }
-    parsedString(std::string Label, GraphDS::Edge* Edge)
-    {
-      label = Label;
-      edge = Edge;
-    }
-  };
-  
   std::vector<parsedString> parsedVector;
-  
+  std::vector<std::string> nodeStrings;
   //split string into mono, linkage, and brackets
   //IE DGlcpNAcb1-4[LFucpa1-4]DGlcpNAcb1-ASN is split into:
   //{DGlcpNAcb, 1-4,     [,    LFucpa, 1-4,     ],    DGlcpNAcb, 1-,      ASN} (labels)
@@ -634,7 +616,7 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
         labelStr.push_back(queryString[i]);
         i++;
       }
-      GraphDS::Edge* thisEdge();
+      GraphDS::Edge* thisEdge = new GraphDS::Edge;
       thisEdge->AddEdgeLabel(labelStr);
       parsedVector.push_back(parsedString(labelStr, thisEdge));
       labelStr = "";
@@ -659,13 +641,24 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
     }
     else
     {
-      while(i+1 != linkageLocation)
+      while(i+1 != linkageStart)
       {
         labelStr.push_back(queryString[i]);
         i++;
       }
-      GraphDS::Node* newNode();
-      newNode->SetNodeValue(labelStr);
+      GraphDS::Node* newNode = new GraphDS::Node;
+      
+      //The strings need to exist in a vector of strings so they don't get deleted, so the node* doesn't point to nothing! 
+      
+      // void* ptr = &labelStr;
+      // std::cout << &labelStr << "\n";
+      // std::cout << ptr << "\n";
+      // void* ptr2;
+      // ptr2 = ptr;
+      // std::cout << ptr2 << "\n";
+      nodeStrings.push_back(labelStr);
+      void* ptr = &(nodeStrings[nodeStrings.size() -1][0]);
+      newNode->SetNodeValue(ptr);
       parsedVector.push_back(parsedString(labelStr, newNode));
       labelStr = "";
       continue;
@@ -673,72 +666,9 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
   }
   
   //Go through vector, add edges b/w nodes & add nodes & edges to graph
-  for(unsigned int i=0; i<parsedVector.size(); i++)
-  {
-    if(parsedVector[i].node != NULL)
-    {
-      graph.AddNewNode(parsedVector[i].node);
-      if(i < parsedVector.size() - 2)
-      {
-        if(parsedVector[i+1].edge != NULL)
-        {
-          if(parsedVector[i+2].node != NULL)
-          {
-            parsedVector[i+1].edge->SetSourceNode(parsedVector[i].node);
-            parsedVector[i+1].edge->SetDestinationNode(parsedVector[i+2].node);
-          }
-          else if(parsedVector[i+2].label == "[")
-          {//there is a branch.  Find the end of the branch and connect to the next node
-            int numOpenBrackets = 1;
-            bool onSameBranchPoint = true;
-            int numBranchesAtThisNode = 1;
-            int endBracketLocation;
-            while (onSameBranchPoint)
-            {
-              for(unsigned int j=i+3; j < parsedVector.size(); j++)
-              {
-                if(parsedVector[j].label == "[")
-                {//branched branches
-                  numOpenBrackets++;
-                }
-                if((parsedVector[j].label == "]") && (numOpenBrackets == 1))
-                {
-                  if((j < parsedVector.size() - 1) && (parsedVector[j+1].label == "["))
-                  {
-                    numBranchesAtThisNode++;
-                  }
-                  else
-                  {
-                    endBracketLocation = j;
-                    onSameBranchPoint = false;
-                  }
-                }
-                else if((parsedVector[j].label == "]") && (numOpenBrackets != 1))
-                {
-                  numOpenBrackets--;
-                }
-              }
-            }
-            if((endBracketLocation < parsedVector.size() - 1) && (parsedVector[endBracketLocation + 1].node != NULL))
-            {
-              parsedVector[i+1].edge->SetSourceNode(parsedVector[i].node);
-              parsedVector[i+1].edge->SetDestinationNode(parsedVector[endBracketLocation + 1].node);
-            }
-            for(int j = 0; j < numBranchesAtThisNode; j++)
-            {//Attach all the branches
-              
-            }
-          }
-        }
-      }
-    }
-    else if(parsedVector[i].edge != NULL)
-    {
-      graph.AddEdge(parsedVector[i].edge);
-    }
-  }
+  ConnectNodes(0, static_cast<int>(parsedVector.size()), parsedVector, graph);
   
-
+  
   
   //Trying something different
   // 
@@ -873,6 +803,96 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
   
   return graph;
 }
+
+void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<parsedString>& parsedVector, GraphDS::Graph& graph)
+{
+  if(end < parsedVector.size())
+  {
+    for(unsigned int i=start; i<end; i++)
+    {
+      if(parsedVector[i].node != NULL)
+      {
+        graph.AddNewNode(parsedVector[i].node);
+        if(i < parsedVector.size() - 2)
+        {
+          if(parsedVector[i+1].edge != NULL)
+          {
+            if(parsedVector[i+2].node != NULL)
+            {
+              parsedVector[i+1].edge->SetSourceNode(parsedVector[i].node);
+              parsedVector[i+1].edge->SetDestinationNode(parsedVector[i+2].node);
+            }
+            else if(parsedVector[i+2].label == "[")
+            {//there is a branch.  Find the end of the branch and connect to the next node
+              int numOpenBrackets = 1;
+              bool onSameBranchPoint = true;
+              int numBranchesAtThisNode = 1;
+              int endBracketLocation;
+              std::vector<int> startBranchLocations;
+              startBranchLocations.push_back(i+3);
+              std::vector<int> endBranchNodesLocations;
+              while (onSameBranchPoint)
+              {
+                for(unsigned int j=i+3; j < parsedVector.size(); j++)
+                {//this will pass over both branched branches [[]] and multiple branches at the same node [][][]
+                  //and hopefully point to the last bracket      ^                                             ^
+                  if(parsedVector[j].label == "[")
+                  {//branched branches
+                    numOpenBrackets++;
+                  }
+                  if((parsedVector[j].label == "]") && (numOpenBrackets == 1))
+                  {
+                    if((j < parsedVector.size() - 1) && (parsedVector[j+1].label == "["))
+                    {
+                      numBranchesAtThisNode++;
+                      startBranchLocations.push_back(j+2);
+                      if(parsedVector[j-2].node != NULL)
+                      {
+                        endBranchNodesLocations.push_back(j-2);
+                      }
+                    }
+                    else
+                    {
+                      if(parsedVector[j-2].node != NULL)
+                      {
+                        endBranchNodesLocations.push_back(j-2);
+                      }
+                      endBracketLocation = j;
+                      onSameBranchPoint = false;
+                    }
+                  }
+                  else if((parsedVector[j].label == "]") && (numOpenBrackets != 1))
+                  {
+                    numOpenBrackets--;
+                  }
+                }
+              }
+              if((endBracketLocation < parsedVector.size() - 1) && (parsedVector[endBracketLocation + 1].node != NULL))
+              {//Deal with the node before all this branching nonesense
+                parsedVector[i+1].edge->SetSourceNode(parsedVector[i].node);
+                parsedVector[i+1].edge->SetDestinationNode(parsedVector[endBracketLocation + 1].node);
+              }
+              for(int j = 0; j < endBranchNodesLocations.size(); j++)
+              {//Attach the end of the branch to the node, recursively call this function to connect nodes in branch and deal with branched branches
+                if((parsedVector[endBranchNodesLocations[j+1]].edge != NULL) && (parsedVector[endBracketLocation + 1].node != NULL))
+                {
+                  parsedVector[endBranchNodesLocations[j+1]].edge->SetSourceNode(parsedVector[j].node);
+                  parsedVector[endBranchNodesLocations[j+1]].edge->SetDestinationNode(parsedVector[endBracketLocation + 1].node);
+                }
+                ConnectNodes(startBranchLocations[j], endBranchNodesLocations[j], parsedVector, graph);
+              }
+            }
+          }
+        }
+      }
+      else if(parsedVector[i].edge != NULL)
+      {
+        graph.AddEdge(parsedVector[i].edge);
+      }
+    }
+  }
+}
+
 // To test new queries, you should go to your dev site's online virtuoso query.
 // To find the IP address of your Virtuoso database, run docker inspect (YOUR_USERNAME)_gw_virt | grep IPAddress
 // Then go to that IP address, followed by :8890/sparql.  For me right now, that's http://172.16.3.8:8890/sparql
