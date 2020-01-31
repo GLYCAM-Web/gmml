@@ -17,29 +17,31 @@ using PrepFileSpace::PrepFile;
 PrepFile::PrepFile(const std::string& prep_file)
 {
     path_ = prep_file;
-    std::ifstream in_file;
-    if(std::ifstream(prep_file.c_str()))
-        in_file.open(prep_file.c_str());
+    std::ifstream in_file(prep_file.c_str());
+    if(in_file.is_open())
+    {
+        ReadAllResidues(in_file);
+        in_file.close();            /// Close the prep files
+    }
     else
     {
         throw PrepFileProcessingException(__LINE__, "Prep file not found");
     }
-    ReadAllResidues(in_file);
-    in_file.close();            /// Close the prep files
 }
 
 PrepFile::PrepFile(const std::string& prep_file, std::vector<std::string>& query_residue_names)
 {
     path_ = prep_file;
-    std::ifstream in_file;
-    if(std::ifstream(prep_file.c_str()))
-        in_file.open(prep_file.c_str());
+    std::ifstream in_file(prep_file.c_str());
+    if(in_file.is_open())
+    {
+        ReadOnlyQueryResidues(in_file, query_residue_names);
+        in_file.close();            /// Close the prep files
+    }
     else
     {
         throw PrepFileProcessingException(__LINE__, "Prep file not found");
     }
-    ReadOnlyQueryResidues(in_file, query_residue_names);
-    in_file.close();            /// Close the prep files
 }
 
 PrepFile::PrepFile()
