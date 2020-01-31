@@ -602,8 +602,10 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
   //Fill Vector, add nodes & labels
   for(unsigned int i=0; i<queryString.size(); i++)
   {
+    // std::cout << i << " : " << queryString[i] << "\n";
     if((queryString[i] == '[')||(queryString[i] == ']'))
     {
+      // std::cout << "There's a bracket at: " << i << "\n";
       labelStr.push_back(queryString[i]);
       parsedVector.push_back(parsedString(labelStr));
       labelStr = "";
@@ -611,57 +613,77 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
     }
     else if(i == linkageStart)
     {
-      while(i != linkageEnd + 1)
+      while(i +1 != linkageEnd + 1)
       {
+        // std::cout << i << " : " << linkageEnd+1 << "\n";
         labelStr.push_back(queryString[i]);
         i++;
       }
+      labelStr.push_back(queryString[i]);
       GraphDS::Edge* thisEdge = new GraphDS::Edge;
       thisEdge->AddEdgeLabel(labelStr);
       parsedVector.push_back(parsedString(labelStr, thisEdge));
       labelStr = "";
-      dashLocation = queryString.find("-");
-      if(isdigit(queryString[dashLocation - 1]))
+      dashLocation = queryString.find("-", linkageEnd + 1);
+      if(dashLocation != std::string::npos)
       {
-        linkageStart = dashLocation - 1;
+        if(isdigit(queryString[dashLocation - 1]))
+        {
+          linkageStart = dashLocation - 1;
+        }
+        else
+        {
+          linkageStart = dashLocation;
+        }
+        if(isdigit(queryString[dashLocation + 1]))
+        {
+          linkageEnd = dashLocation + 1;
+        }
+        else
+        {
+          linkageEnd = dashLocation;
+        }
       }
       else
       {
+        dashLocation = -1;
         linkageStart = dashLocation;
-      }
-      if(isdigit(queryString[dashLocation + 1]))
-      {
-        linkageEnd = dashLocation + 1;
-      }
-      else
-      {
         linkageEnd = dashLocation;
       }
-      continue;
     }
     else
     {
-      while(i+1 != linkageStart)
+      if(linkageStart != -1)
       {
+        while(i+1 != linkageStart)
+        {
+          labelStr.push_back(queryString[i]);
+          i++;
+        }
         labelStr.push_back(queryString[i]);
-        i++;
+        GraphDS::Node* newNode = new GraphDS::Node;
+        nodeStrings.push_back(labelStr);
+        void* ptr = &(nodeStrings[nodeStrings.size() -1][0]);
+        newNode->SetNodeValue(ptr);
+        newNode->SetNodeId(labelStr);
+        parsedVector.push_back(parsedString(labelStr, newNode));
+        labelStr = "";
       }
-      GraphDS::Node* newNode = new GraphDS::Node;
-      
-      //The strings need to exist in a vector of strings so they don't get deleted, so the node* doesn't point to nothing! 
-      
-      // void* ptr = &labelStr;
-      // std::cout << &labelStr << "\n";
-      // std::cout << ptr << "\n";
-      // void* ptr2;
-      // ptr2 = ptr;
-      // std::cout << ptr2 << "\n";
-      nodeStrings.push_back(labelStr);
-      void* ptr = &(nodeStrings[nodeStrings.size() -1][0]);
-      newNode->SetNodeValue(ptr);
-      parsedVector.push_back(parsedString(labelStr, newNode));
-      labelStr = "";
-      continue;
+      else
+      {
+        while(i < queryString.size())
+        {
+          labelStr.push_back(queryString[i]);
+          i++;
+        }
+        GraphDS::Node* newNode = new GraphDS::Node;
+        nodeStrings.push_back(labelStr);
+        void* ptr = &(nodeStrings[nodeStrings.size() -1][0]);
+        newNode->SetNodeValue(ptr);
+        newNode->SetNodeId(labelStr);
+        parsedVector.push_back(parsedString(labelStr, newNode));
+        labelStr = "";
+      }
     }
   }
   
@@ -806,7 +828,15 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
 
 void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<parsedString>& parsedVector, GraphDS::Graph& graph)
 {
-  if(end < parsedVector.size())
+  int local_debug = 1;
+  if(local_debug > 0)
+  {
+    std::cout << "Connecting nodes\n";
+    std::cout << start << ":" << end << "\n";
+    std::cout << parsedVector.size()<< "\n";
+  }
+  
+  if(end <= parsedVector.size())
   {
     for(unsigned int i=start; i<end; i++)
     {
@@ -821,6 +851,10 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
             {
               parsedVector[i+1].edge->SetSourceNode(parsedVector[i].node);
               parsedVector[i+1].edge->SetDestinationNode(parsedVector[i+2].node);
+              if(local_debug > 0)
+              {
+                std::cout << parsedVector[i].label << "{" << i <<"}" << " " << parsedVector[i+1].label << "{" << i + 1 <<"}" << " " <<  parsedVector[i + 2].label << "{" << i + 2 <<"}" << "\n";
+              }
             }
             else if(parsedVector[i+2].label == "[")
             {//there is a branch.  Find the end of the branch and connect to the next node
@@ -829,11 +863,11 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
               int numBranchesAtThisNode = 1;
               int endBracketLocation;
               std::vector<int> startBranchLocations;
-              startBranchLocations.push_back(i+3);
+              startBranchLocations.push_back(i+2);
               std::vector<int> endBranchNodesLocations;
               while (onSameBranchPoint)
               {
-                for(unsigned int j=i+3; j < parsedVector.size(); j++)
+                for(unsigned int j=i+3; j < end; j++)
                 {//this will pass over both branched branches [[]] and multiple branches at the same node [][][]
                   //and hopefully point to the last bracket      ^                                             ^
                   if(parsedVector[j].label == "[")
@@ -859,6 +893,7 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
                       }
                       endBracketLocation = j;
                       onSameBranchPoint = false;
+                      break;
                     }
                   }
                   else if((parsedVector[j].label == "]") && (numOpenBrackets != 1))
@@ -871,13 +906,21 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
               {//Deal with the node before all this branching nonesense
                 parsedVector[i+1].edge->SetSourceNode(parsedVector[i].node);
                 parsedVector[i+1].edge->SetDestinationNode(parsedVector[endBracketLocation + 1].node);
+                if(local_debug > 0)
+                {
+                  std::cout << parsedVector[i].label << "{" << i <<"}"<< " " <<  parsedVector[i+1].label << "{" << i +1 <<"}" << " " <<  parsedVector[endBracketLocation + 1].label << "{" << endBracketLocation + 1 <<"}" << "\n";
+                }
               }
               for(int j = 0; j < endBranchNodesLocations.size(); j++)
               {//Attach the end of the branch to the node, recursively call this function to connect nodes in branch and deal with branched branches
-                if((parsedVector[endBranchNodesLocations[j+1]].edge != NULL) && (parsedVector[endBracketLocation + 1].node != NULL))
+                if((parsedVector[endBranchNodesLocations[j]+1].edge != NULL) && (parsedVector[endBracketLocation + 1].node != NULL))
                 {
-                  parsedVector[endBranchNodesLocations[j+1]].edge->SetSourceNode(parsedVector[j].node);
-                  parsedVector[endBranchNodesLocations[j+1]].edge->SetDestinationNode(parsedVector[endBracketLocation + 1].node);
+                  parsedVector[endBranchNodesLocations[j]+1].edge->SetSourceNode(parsedVector[j].node);
+                  parsedVector[endBranchNodesLocations[j]+1].edge->SetDestinationNode(parsedVector[endBracketLocation + 1].node);
+                  if(local_debug > 0)
+                  {
+                    std::cout << parsedVector[j].label << "{" << j <<"}" << " " <<  parsedVector[j+1].label<< "{" << j+1 <<"}" << " " <<  parsedVector[endBracketLocation + 1].label<< "{" << endBracketLocation + 1 <<"}" << "\n";
+                  }
                 }
                 ConnectNodes(startBranchLocations[j], endBranchNodesLocations[j], parsedVector, graph);
               }
