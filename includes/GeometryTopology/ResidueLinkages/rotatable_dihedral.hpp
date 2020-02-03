@@ -29,8 +29,10 @@ public:
     //////////////////////////////////////////////////////////
 
     Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, bool reverseAtomsThatMove = true);
-    Rotatable_dihedral(AtomVector atoms, bool reverseAtomsThatMove = true);
-    Rotatable_dihedral(AtomVector atoms, AtomVector atoms_that_move);
+    Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, AtomVector extraAtomsThatMove, bool reverseAtomsThatMove = true);
+
+//    Rotatable_dihedral(AtomVector atoms, bool reverseAtomsThatMove = true);
+//    Rotatable_dihedral(AtomVector atoms, AtomVector atoms_that_move);
 
 
     //////////////////////////////////////////////////////////
@@ -57,6 +59,7 @@ public:
 
     // Based on connectivities, this figures out which atoms will move when the dihedral is rotated.
     void DetermineAtomsThatMove();
+    void AddExtraAtomsThatMove(AtomVector extraAtoms);
     // Sets the dihedral angle by rotating the bond between atom2 and atom3, moving atom4 and connected.
     void SetDihedralAngle(double dihedral_angle);
     // Sets the dihedral to previous dihedral angle
@@ -64,7 +67,7 @@ public:
     // Randomly sets dihedral angle values between 0 and 360
     double RandomizeDihedralAngle();
     // Takes in a set of ranges, e.g. 10 to 30, 45-55 etc. Randomly selects a range and randomly sets value within that range.
-    double RandomizeDihedralAngleWithinRanges(std::vector<std::pair<double,double>> ranges);
+    double RandomizeDihedralAngleWithinRanges(std::vector<std::pair<double,double> > ranges);
     // Randomly sets dihedral angle to a value within the given range. E.g. Between 25 and 30 degrees.
     double RandomizeDihedralAngleWithinRange(double min, double max);
 
@@ -101,6 +104,8 @@ private:
     void RecordPreviousDihedralAngle(double dihedral_angle);
     void UpdateAtomsIfPsi();
     Atom* CreateHydrogenAtomForPsi(Atom *centralAtom);
+    void SetWasEverRotated(bool wasEverRotated);
+    bool CheckIfEverRotated();
 
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
@@ -113,10 +118,12 @@ private:
     Atom *atom4_;
     // A vector of pointers to the atoms that are connected to atom2_ and atom3_, and will be rotated when that bond is rotated.
     AtomVector atoms_that_move_;
+    AtomVector extra_atoms_that_move_;
     bool isAtomsThatMoveReversed_;
     // I often want to reset a dihedral angle after rotating it, so recording the previous angle makes this easy.
     double previous_dihedral_angle_;
     DihedralAngleDataVector assigned_metadata_;
+    bool wasEverRotated_; // Need this, as it might add a H atom for psi
 
 };
 

@@ -43,8 +43,8 @@ Atom::Atom(MolecularModeling::Residue* residue, std::string name, GeometryTopolo
 
 Atom::Atom(const Atom* atom)
 {
-	this->index_ = this->generateAtomIndex();
-	this->Copy(atom);
+    this->index_ = this->generateAtomIndex();
+    this->Copy(atom);
 } // end Copy Constructor(*)
 
 
@@ -76,7 +76,7 @@ MolecularModeling::Residue* Atom::GetResidue() const
 
 std::string Atom::GetName() const
 {
-	return this->name_;
+    return this->name_;
 } // end GetName
 
 GeometryTopology::CoordinateVector Atom::GetCoordinates() const
@@ -268,14 +268,14 @@ double Atom::GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate)
     double x = (this->GetCoordinate()->GetX() - coordinate->GetX());
     double y = (this->GetCoordinate()->GetY() - coordinate->GetY());
     double z = (this->GetCoordinate()->GetZ() - coordinate->GetZ());
-	return sqrt((x * x) + (y * y) + (z * z));
+    return std::abs(sqrt((x * x) + (y * y) + (z * z)));
 } // end GetDistanceToCoordinate
 
 bool Atom::CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom)
 {
     if (this->GetIndex() == otherAtom->GetIndex())
     {
-        std::cout << "Warning have just checked distance between an atom and itself!" << std::endl;
+        std::cerr << "Warning have just checked distance between an atom and itself!" << std::endl;
         return true;
     }
     bool withinDistance = false;
@@ -1202,28 +1202,28 @@ bool Atom::operator!= (const Atom &otherAtom)
 //////////////////////////////////////////////////////////
 void Atom::Copy(const Atom* atom)
 {
-	// Copy the easy stuff.
-	this->SetName(atom->GetName());
-	this->SetChemicalType(atom->GetChemicalType());
-	this->SetDescription(atom->GetDescription());
-	this->SetElementSymbol(atom->GetElementSymbol());
-	this->SetId(atom->GetId());
-	this->SetIsRing(atom->GetIsRing());
-	this->SetAtomType(atom->GetAtomType());
-	// Deep Copy objects
-	// this->residue_ = new MolecularModeling::Residue(atom->GetResidue());
-	this->SetResidue(atom->GetResidue());
-	if(this->node_ != NULL)
-	{
-		delete this->node_;
-	}
-	this->node_ = new MolecularModeling::AtomNode(atom->GetNode());
+    // Copy the easy stuff.
+    this->SetName(atom->GetName());
+    this->SetChemicalType(atom->GetChemicalType());
+    this->SetDescription(atom->GetDescription());
+    this->SetElementSymbol(atom->GetElementSymbol());
+    this->SetId(atom->GetId());
+    this->SetIsRing(atom->GetIsRing());
+    this->SetAtomType(atom->GetAtomType());
+    // Deep Copy objects
+    // this->residue_ = new MolecularModeling::Residue(atom->GetResidue());
+    this->SetResidue(atom->GetResidue());
+    if(this->node_ != NULL)
+    {
+        delete this->node_;
+    }
+    this->node_ = new MolecularModeling::AtomNode(atom->GetNode());
     GeometryTopology::CoordinateVector atomCoordinates = atom->GetCoordinates();
     for(GeometryTopology::CoordinateVector::iterator it = atomCoordinates.begin(); it != atomCoordinates.end(); it++ )
-	{
-		GeometryTopology::Coordinate* tempCoordinate = (*it);
-		this->coordinates_.push_back(new GeometryTopology::Coordinate(tempCoordinate));
-	}
+    {
+        GeometryTopology::Coordinate* tempCoordinate = (*it);
+        this->coordinates_.push_back(new GeometryTopology::Coordinate(tempCoordinate));
+    }
 } // end Copy
 
 void Atom::SetAttributes(	MolecularModeling::Residue* residue, std::string name, GeometryTopology::CoordinateVector coordinates,

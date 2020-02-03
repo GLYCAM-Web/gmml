@@ -9,7 +9,7 @@
 #include "../../MolecularModeling/atom.hpp"
 #include "../../MolecularModeling/residue.hpp"
 #include "../../MolecularModeling/Selections/selections.hpp"
-#include "rotatable_dihedral.h"
+#include "rotatable_dihedral.hpp"
 
 
 
@@ -32,6 +32,7 @@ public:
 
     Residue_linkage();
     Residue_linkage(Residue *nonReducingResidue1, Residue *reducingResidue2, bool reverseAtomsThatMove = true);
+    Residue_linkage(Residue *nonReducingResidue1, Residue *reducingResidue2, AtomVector alsoMovingAtoms, bool reverseAtomsThatMove = true);
 
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
@@ -48,6 +49,11 @@ public:
     Atom* GetFromThisConnectionAtom1();
     Atom* GetToThisConnectionAtom2();
     bool CheckIfConformer();
+    bool GetIfExtraAtoms();
+    AtomVector GetExtraAtoms();
+    void AddExtraAtomsThatMove(AtomVector extraAtoms);
+    unsigned long long GetIndex();
+    std::string GetName();
 
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
@@ -70,6 +76,8 @@ public:
     void DetermineAtomsThatMove();
     // Simple meaning you only check each rotatable_dihedral in series, not every combination.
     void SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance = 0.01, int angleIncrement = 5);
+    void SetIndex(unsigned long long index);
+    void SetName(std::string name);
 
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
@@ -98,6 +106,8 @@ private:
     void SetResidues(Residue *residue1, Residue *residue2);
     void SetConnectionAtoms(Residue *residue1, Residue *residue2);
     void SetConformerUsingMetadata(bool useRanges = false, int conformerNumber = 0);
+    unsigned long long GenerateIndex();
+    std::string DetermineLinkageNameFromResidueNames();
 
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
@@ -109,7 +119,10 @@ private:
     Atom* to_this_connection_atom2_;
     RotatableDihedralVector rotatable_dihedrals_;
     bool reverseAtomsThatMove_;
-    //gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_;
+    AtomVector extraAtomsThatMove_;
+    bool isExtraAtoms_ = true;
+    unsigned long long index_;
+    std::string name_; //e.g. "DGalpb1-6DGlcpNAc"
 };
 
 std::ostream& operator<<(std::ostream& os, const Residue_linkage&);
