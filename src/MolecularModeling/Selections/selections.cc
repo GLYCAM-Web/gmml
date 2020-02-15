@@ -494,5 +494,11 @@ MolecularModeling::Residue* selection::FindResidue(MolecularModeling::Assembly &
     return residuePointerToNothing;
 }
 
+MolecularModeling::AtomVector selection::FindOtherAtomsWithinMolecule(MolecularModeling::Atom *queryAtom)
+{
+    MolecularModeling::AtomVector foundAtoms;
+    queryAtom->FindConnectedAtoms(foundAtoms);
+    return foundAtoms;
+}
 
 

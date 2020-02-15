@@ -1,5 +1,5 @@
 #include <random>
-#include "../../../includes/GeometryTopology/ResidueLinkages/rotatable_dihedral.h"
+#include "../../../includes/GeometryTopology/ResidueLinkages/rotatable_dihedral.hpp"
 #include "../../../includes/MolecularModeling/atomnode.hpp" // For UpdateAtomsIfPsi
 #include "../../../includes/utils.hpp"
 #include "../../../includes/External_Libraries/PCG/pcg_random.hpp"
@@ -20,17 +20,23 @@ Rotatable_dihedral::Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, At
     AtomVector atoms {atom1, atom2, atom3, atom4};
     this->Initialize(atoms, reverseAtomsThatMove);
 }
-
-Rotatable_dihedral::Rotatable_dihedral(AtomVector atoms, bool reverseAtomsThatMove)
+Rotatable_dihedral::Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, AtomVector extraAtomsThatMove, bool reverseAtomsThatMove)
 {
+    AtomVector atoms {atom1, atom2, atom3, atom4};
     this->Initialize(atoms, reverseAtomsThatMove);
+    this->AddExtraAtomsThatMove(extraAtomsThatMove);
 }
 
-Rotatable_dihedral::Rotatable_dihedral(AtomVector atoms, AtomVector atoms_that_move)
-{
-    this->SetAtoms(atoms);
-    this->SetAtomsThatMove(atoms_that_move);
-}
+//Rotatable_dihedral::Rotatable_dihedral(AtomVector atoms, bool reverseAtomsThatMove)
+//{
+//    this->Initialize(atoms, reverseAtomsThatMove);
+//}
+
+//Rotatable_dihedral::Rotatable_dihedral(AtomVector atoms, AtomVector atoms_that_move)
+//{
+//    this->SetAtoms(atoms);
+//    this->SetAtomsThatMove(atoms_that_move);
+//}
 
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
@@ -152,10 +158,20 @@ void Rotatable_dihedral::DetermineAtomsThatMove()
     this->SetAtomsThatMove(atoms_that_move);
 }
 
+void Rotatable_dihedral::AddExtraAtomsThatMove(AtomVector extraAtoms)
+{
+    extra_atoms_that_move_.insert(extra_atoms_that_move_.end(), extraAtoms.begin(), extraAtoms.end());
+    return;
+}
 
 // Only this function uses radians. Everything else, in and out, should be degrees.
 void Rotatable_dihedral::SetDihedralAngle(double dihedral_angle)
 {
+    if(!this->wasEverRotated_)
+    {
+        this->SetWasEverRotated(true);
+        this->DetermineAtomsThatMove();
+    }
     GeometryTopology::Coordinate* a1 = atom1_->GetCoordinate();
     GeometryTopology::Coordinate* a2 = atom2_->GetCoordinate();
     GeometryTopology::Coordinate* a3 = atom3_->GetCoordinate();
@@ -191,7 +207,7 @@ void Rotatable_dihedral::SetDihedralAngle(double dihedral_angle)
 
     // Yo you should add something here that checks if atoms_that_move_ is set. Yeah you.
 
-    //std::cout << "Setting dihedral for " << atom1_->GetId() << ":"  << atom2_->GetId() << ":"  << atom3_->GetId() << ":"  << atom4_->GetId() <<  ": " << dihedral_angle << "\n";
+//    std::cout << "Setting dihedral for " << atom1_->GetId() << ":"  << atom2_->GetId() << ":"  << atom3_->GetId() << ":"  << atom4_->GetId() <<  ": " << dihedral_angle << "\n";
     for(AtomVector::iterator it = atoms_that_move_.begin(); it != atoms_that_move_.end(); it++)
     {
         Atom *atom = *it;
@@ -208,6 +224,26 @@ void Rotatable_dihedral::SetDihedralAngle(double dihedral_angle)
         atom->GetCoordinate()->SetX(result.GetX());
         atom->GetCoordinate()->SetY(result.GetY());
         atom->GetCoordinate()->SetZ(result.GetZ());
+    }
+    if(!extra_atoms_that_move_.empty())
+    {
+        for(AtomVector::iterator it = extra_atoms_that_move_.begin(); it != extra_atoms_that_move_.end(); it++)
+        {
+            Atom *atom = *it;
+        //    std::cout << ", " << atom->GetId();
+            GeometryTopology::Coordinate* atom_coordinate = atom->GetCoordinate();
+            GeometryTopology::Coordinate result;
+            result.SetX(dihedral_angle_matrix[0][0] * atom_coordinate->GetX() + dihedral_angle_matrix[0][1] * atom_coordinate->GetY() +
+                    dihedral_angle_matrix[0][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[0][3]);
+            result.SetY(dihedral_angle_matrix[1][0] * atom_coordinate->GetX() + dihedral_angle_matrix[1][1] * atom_coordinate->GetY() +
+                    dihedral_angle_matrix[1][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[1][3]);
+            result.SetZ(dihedral_angle_matrix[2][0] * atom_coordinate->GetX() + dihedral_angle_matrix[2][1] * atom_coordinate->GetY() +
+                    dihedral_angle_matrix[2][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[2][3]);
+
+            atom->GetCoordinate()->SetX(result.GetX());
+            atom->GetCoordinate()->SetY(result.GetY());
+            atom->GetCoordinate()->SetZ(result.GetZ());
+        }
     }
   //  std::cout << std::endl;
     return;
@@ -357,9 +393,10 @@ void Rotatable_dihedral::SetSpecificAngleEntryUsingMetadata(bool useRanges, int 
 
 void Rotatable_dihedral::Initialize(AtomVector atoms, bool reverseAtomsThatMove)
 {
+    this->SetWasEverRotated(false);
     this->SetAtoms(atoms);
     this->SetIsAtomsThatMoveReversed(reverseAtomsThatMove);
-    this->DetermineAtomsThatMove();
+    // this->DetermineAtomsThatMove(); // Will be done the first time SetDihedralAngle is called.
 }
 
 void Rotatable_dihedral::SetAtoms(AtomVector atoms)
@@ -396,7 +433,7 @@ void Rotatable_dihedral::UpdateAtomsIfPsi()
     for(auto &entry : assigned_metadata_)
     {
         // If it's a psi angle and is supposed to be defined by a H...
-        if ((entry.dihedral_angle_name_.compare("psi")==0) && (entry.atom4_.at(0)=='H'))
+        if ((entry.dihedral_angle_name_.compare("Psi")==0) && (entry.atom4_.at(0)=='H'))
         {// Find the neighbor of current atom3 which is a hydrogen, and set it to be the new atom4;
             bool foundHydrogen = false;
             for(auto &neighbor : atom3_->GetNode()->GetNodeNeighbors())
@@ -413,7 +450,6 @@ void Rotatable_dihedral::UpdateAtomsIfPsi()
             if (!foundHydrogen)
             {
                 atom4_ = Rotatable_dihedral::CreateHydrogenAtomForPsi(atom3_);
-                atoms_that_move_.push_back(atom4_); // This hydrogen now needs to move too.
             }
         }
     }
@@ -434,8 +470,25 @@ Atom* Rotatable_dihedral::CreateHydrogenAtomForPsi(Atom *centralAtom)
     }
     GeometryTopology::Coordinate newCoord = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(centralAtom->GetCoordinate(), threeNeighborCoords);
     Atom *newAtom = new Atom(centralAtom->GetResidue(), "HHH", newCoord);
+    centralAtom->GetResidue()->AddAtom(newAtom);
+    centralAtom->GetNode()->AddNodeNeighbor(newAtom);
+    // Have to create a new node for this new atom.
+    MolecularModeling::AtomNode *leakyNode = new MolecularModeling::AtomNode();
+    newAtom->SetNode(leakyNode); // A jest!
+    newAtom->GetNode()->AddNodeNeighbor(centralAtom);
     return newAtom;
 }
+
+void Rotatable_dihedral::SetWasEverRotated(bool wasEverRotated)
+{
+    wasEverRotated_ = wasEverRotated;
+}
+
+bool Rotatable_dihedral::CheckIfEverRotated()
+{
+    return wasEverRotated_;
+}
+
 
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
