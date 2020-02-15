@@ -17,7 +17,7 @@ Atom::Atom()
 {
 	this->index_ = this->generateAtomIndex();
 	// Call to private helper function.
-    this->SetAttributes(NULL, "", GeometryTopology::CoordinateVector(), "", "", "", NULL, "", false, "");
+    this->SetAttributes(NULL, "", GeometryTopology::CoordinateVector(), "", "", "", std::vector<AtomNode*>(), "", false, "");
 	this->SetBFactor(0);
 } // end Default Constructor
 
@@ -27,7 +27,7 @@ Atom::Atom(MolecularModeling::Residue* residue, std::string name, GeometryTopolo
 	std::stringstream ss;
 	ss << name << "_" << this->GetIndex() << "_" << residue->GetName() << "_?_1_?_?_1";
 	// Call to private helper function.
-	this->SetAttributes(residue, name, coordinates, "", "", "", NULL, ss.str(), false, "");
+	this->SetAttributes(residue, name, coordinates, "", "", "", std::vector<AtomNode*>(), ss.str(), false, "");
 	//this->SetBFactor(residue[atom]->GetBFactor())
 } // end Constructor
 
@@ -38,7 +38,7 @@ Atom::Atom(MolecularModeling::Residue* residue, std::string name, GeometryTopolo
 	ss << name << "_" << this->GetIndex() << "_" << residue->GetName() << "_?_1_?_?_1";
     GeometryTopology::CoordinateVector coordinates;
 	coordinates.push_back(new GeometryTopology::Coordinate(coordinate.GetX(), coordinate.GetY(), coordinate.GetZ()));
-	this->SetAttributes(residue, name, coordinates, "", "", "", NULL, ss.str(), false, "");
+	this->SetAttributes(residue, name, coordinates, "", "", "", std::vector<AtomNode*>(), ss.str(), false, "");
 } // end Constructor
 
 Atom::Atom(const Atom* atom)
@@ -106,10 +106,22 @@ std::string Atom::GetElementSymbol() const
 	return this->element_symbol_;
 } // end GetElementSymbol
 
-MolecularModeling::AtomNode* Atom::GetNode() const
+MolecularModeling::AtomNode* Atom::GetNode(int index) const
 {
-	return this->node_;
+	int max_index = this->nodes_.size() -1;
+	if (max_index >= index){
+	    return this->nodes_.at(index);
+	}
+	else{
+	    return NULL;
+	}
 } // end GetNode
+
+std::vector<MolecularModeling::AtomNode*> Atom::GetNodes() const
+{
+        return this->nodes_;
+}
+
 
 std::string Atom::GetId() const
 {
@@ -181,6 +193,12 @@ void Atom::AddCoordinate(GeometryTopology::Coordinate* coordinate)
 	this->coordinates_.push_back(coordinate);
 } // end AddCoordinate
 
+void Atom::AddNode(MolecularModeling::AtomNode* node)
+{
+        this->nodes_.push_back(node);
+}
+
+
 void Atom::SetChemicalType(std::string chemical_type)
 {
 	this->chemical_type_ = chemical_type;
@@ -196,10 +214,17 @@ void Atom::SetElementSymbol(std::string element_symbol)
 	this->element_symbol_ = element_symbol;
 } // end SetElementSymbol
 
+void Atom::SetNodes(std::vector<MolecularModeling::AtomNode*> nodes)
+{
+	this->nodes_ = nodes;
+} // end SetNode
+
 void Atom::SetNode(MolecularModeling::AtomNode* node)
 {
-	this->node_ = node;
-} // end SetNode
+        if (this->nodes_.empty()){
+	    this->AddNode(node);
+	}
+}
 
 void Atom::SetId(std::string id)
 {
@@ -238,10 +263,10 @@ unsigned long long Atom::generateAtomIndex() {
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void Atom::FindConnectedAtoms(AtomVector &visitedAtoms)
+void Atom::FindConnectedAtoms(AtomVector &visitedAtoms, int coord_index)
 {
     visitedAtoms.push_back(this);
-	AtomVector neighbors = this->GetNode()->GetNodeNeighbors();
+	AtomVector neighbors = this->GetNode(coord_index)->GetNodeNeighbors();
 	bool alreadyVisited = false;
 	for(AtomVector::iterator neighbor = neighbors.begin(); neighbor != neighbors.end(); neighbor++)
 	{
@@ -253,7 +278,7 @@ void Atom::FindConnectedAtoms(AtomVector &visitedAtoms)
 		}
 		if(!alreadyVisited)
 		{
-            (*neighbor)->FindConnectedAtoms(visitedAtoms); // recursive function call
+            (*neighbor)->FindConnectedAtoms(visitedAtoms, coord_index); // recursive function call
 		}
 	}
 } // end FindConnectedAtoms
@@ -1213,11 +1238,11 @@ void Atom::Copy(const Atom* atom)
 	// Deep Copy objects
 	// this->residue_ = new MolecularModeling::Residue(atom->GetResidue());
 	this->SetResidue(atom->GetResidue());
-	if(this->node_ != NULL)
+	if(this->nodes_.at(0) != NULL)
 	{
-		delete this->node_;
+		delete this->nodes_.at(0);
 	}
-	this->node_ = new MolecularModeling::AtomNode(atom->GetNode());
+	this->nodes_.emplace_back (new MolecularModeling::AtomNode(atom->GetNode()));
     GeometryTopology::CoordinateVector atomCoordinates = atom->GetCoordinates();
     for(GeometryTopology::CoordinateVector::iterator it = atomCoordinates.begin(); it != atomCoordinates.end(); it++ )
 	{
@@ -1228,7 +1253,7 @@ void Atom::Copy(const Atom* atom)
 
 void Atom::SetAttributes(	MolecularModeling::Residue* residue, std::string name, GeometryTopology::CoordinateVector coordinates,
 							std::string chemical_type, std::string description, std::string element_symbol,
-							MolecularModeling::AtomNode* node, std::string id, bool is_ring, std::string atom_type)
+							std::vector<MolecularModeling::AtomNode*> nodes, std::string id, bool is_ring, std::string atom_type)
 {
 	// Having this function call the Setter functions for everything allows for
 	//	simple error handling and debugging because the setting of the variables
@@ -1239,7 +1264,7 @@ void Atom::SetAttributes(	MolecularModeling::Residue* residue, std::string name,
 	this->SetChemicalType(chemical_type);
 	this->SetDescription(description);
 	this->SetElementSymbol(element_symbol);
-	this->SetNode(node);
+	this->SetNodes(nodes);
 	this->SetId(id);
 	this->SetIsRing(is_ring);
 	// This function doesn't set index because of the attributes uniqueness, it should

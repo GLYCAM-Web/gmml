@@ -170,7 +170,6 @@ bool PdbqtFile::ParseModelCard(std::ifstream &stream, std::string &line)
     	    models_ = new PdbqtFileSpace::PdbqtModelCard(stream);
 	    
 	}
-        std::cout << "Last line in ParseModelCard is: " << line << std::endl;
     }
     return true;
 }

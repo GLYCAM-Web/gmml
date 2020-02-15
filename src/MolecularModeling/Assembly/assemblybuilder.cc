@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 #include <iterator> //Added by Yao 07/23/2018
+#include <map>      //Added by Yao 01/29/2020
+#include <algorithm> //Added by Yao 01/29/2020, for std::find()
 #include <math.h>
 #include <queue>
 #include <regex> // Added by OG 2019.09.05
@@ -2157,6 +2159,12 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
 {
 //    std::cout << "Building assembly from pdbqt file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdbqt file ...");
+    //Source of metadata: http://autodock.scripps.edu/faqs-help/manual/autodock-4-2-user-guide/AutoDock4.2_UserGuide.pdf
+    std::map<std::string, std::string> ad_type_element_symbol_map = {
+            {"C","C"}, {"A","C"}, {"HD","H"}, {"H","H"}, {"HS","H"}, {"N","N"}, {"NA","N"}, {"NS","N"}, {"NR", "N"}, {"OA","O"}, {"OS","O"}, {"F","F"}, {"Mg","Mg"}, {"MG","Mg"}, {"P","P"}, {"SA","S"}, 
+	    {"S","S"}, {"Cl","Cl"}, {"CL","Cl"}, {"CA","Ca"}, {"Ca","Ca"}, {"MN","Mn"}, {"Mn","Mn"}, {"FE","Fe"}, {"Fe","Fe"}, {"ZN","Zn"}, {"Zn","Zn"}, {"BR","Br"}, {"Br","Br"}, {"I","I"}, {"Z","Z"}, 
+	    {"G","C"}, {"GA","C"}, {"J","C"}, {"Q","C"}
+    };
     try
     {
         this->ClearAssembly();
@@ -2193,10 +2201,13 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
                 Atom* new_atom = new Atom();
                 residue->SetName(residue_name);
                 std::string atom_name = atom->GetAtomName();
-		std::cout << "Assembly atom: " << new_atom << "got name set to: " << atom_name << std::endl;
                 new_atom->SetName(atom_name);
                 new_atom->MolecularDynamicAtom::SetCharge(atom->GetAtomCharge());
-                new_atom->MolecularDynamicAtom::SetAtomType(atom->GetAtomType());
+		std::string autodock_type = atom->GetAtomType();
+                new_atom->MolecularDynamicAtom::SetAtomType(autodock_type);
+		if (ad_type_element_symbol_map.find(autodock_type) != ad_type_element_symbol_map.end()){
+		    new_atom->SetElementSymbol(ad_type_element_symbol_map[autodock_type]);
+		}
                 if(parameter != NULL)
                 {
                     if(atom_type_map.find(new_atom->GetAtomType()) != atom_type_map.end())

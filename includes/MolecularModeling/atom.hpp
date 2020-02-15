@@ -98,7 +98,12 @@ namespace MolecularModeling
             * An accessor function in order to access to the node
             * @return node_ attribute of the current object of this class
             */
-            MolecularModeling::AtomNode* GetNode() const;
+            MolecularModeling::AtomNode* GetNode(int index = 0) const;
+            /*! \fn
+            * An accessor function in order to access all nodes
+            * @return nodes_ attribute of the current object of this class
+            */
+	    std::vector<MolecularModeling::AtomNode*> GetNodes() const;
             /*! \fn
             * An accessor function in order to access to the id
             * @return id_ attribute of the current object of this class
@@ -161,6 +166,12 @@ namespace MolecularModeling
             */
             void AddCoordinate(GeometryTopology::Coordinate* coordinate);
             /*! \fn
+	    * A function in order to add a new node to the current object
+	    * Set the nodes_ attribute of the current atom
+	    * @param node The new node to be added
+	    */ 
+	    void AddNode(MolecularModeling::AtomNode* node);
+            /*! \fn
             * A mutator function in order to set the chemical type of the current object
             * Set the chemical_type_ attribute of the current atom
             * @param chemical_type The chemical type attribute of the current object
@@ -179,8 +190,14 @@ namespace MolecularModeling
             */
             void SetElementSymbol(std::string element_symbol);
             /*! \fn
+            * A mutator function in order to set the nodes of the current object
+            * Set the nodes_ attribute of the current atom
+            * @param node The node attribute of the current object
+            */
+            void SetNodes(std::vector<MolecularModeling::AtomNode*> nodes);
+            /*! \fn
             * A mutator function in order to set the node of the current object
-            * Set the node_ attribute of the current atom
+            * Set the nodes_ attribute of the current atom
             * @param node The node attribute of the current object
             */
             void SetNode(MolecularModeling::AtomNode* node);
@@ -228,7 +245,7 @@ namespace MolecularModeling
             * A function to find connected Atoms to this Atom.
             * @param visitedAtoms The AtomVector used to find connected atoms.
             */
-            void FindConnectedAtoms(AtomVector& visitedAtoms);
+            void FindConnectedAtoms(AtomVector& visitedAtoms, int coord_index = 0);
             /*! \fn
             * A function to aget the distance between this Atom and another.
             * @param otherAtoms The Atom used to get the distance from this Atom.
@@ -301,7 +318,8 @@ namespace MolecularModeling
             std::string chemical_type_;        /*!< A descriptor to determines the chemical type of the atom >*/
             std::string description_;          /*!< Short description of the atom >*/
             std::string element_symbol_;       /*!< Element symbol of the atom >*/
-            MolecularModeling::AtomNode* node_;                   /*!< A Pointer to a node of the graph structure that indicates this atom >*/
+            //MolecularModeling::AtomNode* node_;                   /*!< A Pointer to a node of the graph structure that indicates this atom >*/
+	    std::vector<MolecularModeling::AtomNode*> nodes_;
             std::string id_;                   /*!< An identifier for an atom which is generated based on the type of the input file from which the structure has to be built
                     			Mostly it is like "residue_name:atom_name" >*/
             bool is_ring_;                     /*!< A boolean value which represents if an atom is involved in a sugar ring or not. This attribute is set during the Sugar ID process >*/
@@ -316,7 +334,7 @@ namespace MolecularModeling
             void Copy(const Atom* atom);
             void SetAttributes( MolecularModeling::Residue* residue, std::string name, GeometryTopology::CoordinateVector coordinates,
                                 std::string chemical_type, std::string description, std::string element_symbol,
-                                AtomNode* atomnode, std::string id, bool is_ring, std::string atom_type);
+                                std::vector<AtomNode*> atomnode, std::string id, bool is_ring, std::string atom_type);
     };
     // @TODO DT - Get this working. For some reason it causes a Seg Fault.
     //			Ideally this function would be where the printing code is and the

@@ -315,6 +315,7 @@ void* BuildStructureByDistanceByOptimizedThread(void* args)
     atom_node->SetId(index);
     //        std::cout << "Thread" << ti << " atom id " << i << std::endl;
     pthread_mutex_unlock(&mutex1);
+    std::cout << "CHeckpoint 2" << std::endl;
     for(MolecularModeling::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
     {
       MolecularModeling::Atom* neighbor_atom = (*it1);
@@ -385,6 +386,7 @@ void* BuildStructureByDistanceByOptimizedThread(void* args)
     }
     atom->SetNode(atom_node);
   }
+  std::cout << "CHeckpoint 3" << std::endl;
 
   //    std::cout << "Thread" << ti << " END" << std::endl;
   pthread_exit((void*) &ti);
