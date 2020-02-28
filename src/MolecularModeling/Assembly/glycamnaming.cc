@@ -450,7 +450,7 @@ void Assembly::RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& ol
 	//std::cout << "Done match subgraph" <<  std::endl;
 	//std::cout << "Tar-tem size: " << target_template_vertex_match.size() << " and Tem-tar size: " << template_target_vertex_match.size() << std::endl;
 
-	std::cout << all_isomorphisms.size() << " matches found." << std::endl;
+	//std::cout << all_isomorphisms.size() << " matches found." << std::endl;
 	if (all_isomorphisms.empty()){
 	    //std::cout << "Isomorphism matching failed, cannot rename atoms." << std::endl;
 	}
