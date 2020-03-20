@@ -12,3 +12,5 @@ log.log
 *.dum
 programs/GlycoproteinBuilder
 *git-ignore-me*
+Doxygen/html
+Doxygen/docs_build.log
