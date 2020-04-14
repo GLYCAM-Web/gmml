@@ -747,9 +747,17 @@ void Glycan::Monosaccharide::InitiateDetectionOfCompleteSideGroupAtoms ()
     std::vector<MolecularModeling::Atom*> all_plus_one_side_atoms = std::vector<MolecularModeling::Atom*>();
     for (std::vector<MolecularModeling::Atom*>::iterator it2 = SideAtomArm.begin(); it2 != SideAtomArm.end(); it2++)
     {
-      if ((*it2) != NULL)
+      MolecularModeling::Atom* side_atom = *it2;
+      if (side_atom != NULL)
       {
-        all_plus_one_side_atoms.push_back(*it2);
+	MolecularModeling::AtomVector side_atom_neighbors = side_atom->GetNode()->GetNodeNeighbors();
+	for (MolecularModeling::AtomVector::iterator atom_it = side_atom_neighbors.begin(); atom_it != side_atom_neighbors.end(); atom_it++){
+	  MolecularModeling::Atom* neighbor = *atom_it;
+	    if (neighbor->GetIsCycle()){
+              all_plus_one_side_atoms.push_back(side_atom);
+	      break;
+	    }
+	}
       }
     }
 
@@ -810,7 +818,12 @@ bool Glycan::Monosaccharide::CheckIfPlusOneSideAtomBelongsToCurrentMonosaccharid
 void Glycan::Monosaccharide::SetCompleteSideGroupAtoms(std::vector<MolecularModeling::Atom*>& SideAtomArm, MolecularModeling::Atom* working_atom, std::vector<MolecularModeling::Atom*>& cycle_atoms, std::vector<MolecularModeling::Atom*>& visited_atoms)
 {
   std::vector<MolecularModeling::Atom*> working_node_neighbors = working_atom -> GetNode() -> GetNodeNeighbors();
-  for (std::vector<MolecularModeling::Atom*>::iterator it = working_node_neighbors.begin(); it != working_node_neighbors.end(); it++)
+  if (working_atom->GetResidue() == cycle_atoms[0]->GetResidue() && !working_atom->GetIsCycle() && std::find(visited_atoms.begin(), visited_atoms.end(), working_atom) == visited_atoms.end()){
+      if (std::find(SideAtomArm.begin(), SideAtomArm.end(), working_atom) == SideAtomArm.end()){
+          SideAtomArm.push_back(working_atom);
+      }
+  }
+  /*for (std::vector<MolecularModeling::Atom*>::iterator it = working_node_neighbors.begin(); it != working_node_neighbors.end(); it++)
   {  //Detect atoms that should be added to the current side chain arm.
     MolecularModeling::Atom* working_node_neighbor = *it;
     if (working_node_neighbor != NULL)
@@ -844,7 +857,7 @@ void Glycan::Monosaccharide::SetCompleteSideGroupAtoms(std::vector<MolecularMode
               working_node_neighbor-> SetIsSideChain(true);
             }
             // if the workin atom IS INDEED the anomeric carbon the neighbor is attached to, the current side chain doesn't get this oxygen, unless this is a terminal hydroxyl.
-            /*else
+            else
             {
               std::vector<MolecularModeling::Atom*> cycle_and_visited_atoms = std::vector<MolecularModeling::Atom*>();
               cycle_and_visited_atoms.push_back(attached_anomeric_carbons.front() );
@@ -855,7 +868,7 @@ void Glycan::Monosaccharide::SetCompleteSideGroupAtoms(std::vector<MolecularMode
                 SideAtomArm.push_back(working_node_neighbor);
                 working_node_neighbor-> SetIsSideChain(true);
               }
-            }*/
+            }
           }
           if (attached_anomeric_carbons.size() == 0)
           {
@@ -870,7 +883,7 @@ void Glycan::Monosaccharide::SetCompleteSideGroupAtoms(std::vector<MolecularMode
         }
       }//if not cycle
     }
-  }//for
+  }*///for
   visited_atoms.push_back(working_atom);
   for (std::vector<MolecularModeling::Atom*>::iterator it3 = working_node_neighbors.begin(); it3 != working_node_neighbors.end(); it3++)
   {
