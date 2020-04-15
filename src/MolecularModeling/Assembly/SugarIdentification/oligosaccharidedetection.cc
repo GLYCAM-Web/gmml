@@ -621,7 +621,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   ///BUILDING OLIGOSACCHARIDE SEQUENCE
   int number_of_oligosaccharides = 0;
   int number_of_monosaccharides = 0;
-  
+
   for(std::vector< Glycan::Oligosaccharide* >::iterator it = testOligos.begin(); it != testOligos.end(); it++)
   {
     Glycan::Oligosaccharide* thisOligo = *it;
@@ -633,7 +633,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     }
     thisOligo->Print( std::cout );// This for some reason does a ton of stuff instead of printing....
   }
-  
+
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
   std::vector< Glycan::Note* > notes = this->GetNotes();
   if(local_debug > 0)
@@ -3097,8 +3097,10 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
                   in_bracket << mono->cycle_atoms_.size() - 1 + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
                   gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
                 }
-               else if(key.compare("a") == 0)
-                   in_bracket << "1" << cond_name_pattern << ",";
+                //Below was commented out because anomeric derivates are likely on the root mono, and listed as terminal.  This resulted in names like DManp[1Me]a1-OME, so it has been removed.  This means if there is a derivative at the anomeric carbon in the middle of an oligosaccharide, we will miss it.
+                //TODO figure out how to fix this.  I tried a check for if the mono was root, but that is set after this is called.
+               // else if(key.compare("a") == 0)
+               //     in_bracket << "1" << cond_name_pattern << ",";
                 else if(key.compare("a") != 0)
                 {
                   in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";

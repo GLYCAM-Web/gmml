@@ -679,7 +679,7 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
 // ?oligo        :hasMono            ?mono;
 //               :hasSequenceResidue ?residue1.
 // ?residue1     :monosaccharideShortName  """LFucpa""".
-// 
+//
 // ?residue1     :is1-3ConnectedTo      ?residue2.
 // ?residue2     :monosaccharideShortName """DGlcpNAcb""".
 // ?residue3 :is1-4ConnectedTo ?residue2.
@@ -687,3 +687,7 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
 // }
 //TODO make query work for any permutation of DGalpb1-4DGlcpNAcb1-2DManpa1-3[DGlcpNAcb1-2DManpa1-6]DManpb1-4DGlcpNAcb1-4[LFucpa1-6]DGlcpNAcb1-ASN
 
+
+//Note to self:
+//The following will remove the IRI prefix from gmmo:?PDBID
+//BIND(STRAFTER(str(?pdb_file), "#") as ?pdb)

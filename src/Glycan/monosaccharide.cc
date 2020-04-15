@@ -1457,29 +1457,30 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
     // std::cout << derivatives_map_.size() << "derivatives\n";
     for(std::vector<std::pair<std::string, std::string> >::iterator it1 = derivatives_map_.begin(); it1 != derivatives_map_.end(); it1++)
     {
-        std::string key = (*it1).first;
-        std::string value = (*it1).second;
-        // std::cout << key << ": " << value << "\n";
-        std::string long_name_pattern = "";
-        std::string cond_name_pattern = "";
-        std::string long_name_pattern_at_minus_one = "";
-        std::string long_name_pattern_at_plus_one = "";
-        std::string pattern = "";
-        // gmml::log(__LINE__, __FILE__,  gmml::INF, "Naming by pettern below");
-        // gmml::log(__LINE__, __FILE__,  gmml::INF, value);
-        std::string unknownDerivativePattern = "", unknownDerivativeKey = "";
-        for(std::vector<std::pair<std::string, std::string> >::iterator it = this->unknown_derivatives_.begin(); it != this->unknown_derivatives_.end(); it++)
+      std::string key = (*it1).first;
+      std::string value = (*it1).second;
+      // std::cout << key << ": " << value << "\n";
+      std::string long_name_pattern = "";
+      std::string cond_name_pattern = "";
+      std::string long_name_pattern_at_minus_one = "";
+      std::string long_name_pattern_at_plus_one = "";
+      std::string pattern = "";
+      // gmml::log(__LINE__, __FILE__,  gmml::INF, "Naming by pettern below");
+      // gmml::log(__LINE__, __FILE__,  gmml::INF, value);
+      std::string unknownDerivativePattern = "", unknownDerivativeKey = "";
+      for(std::vector<std::pair<std::string, std::string> >::iterator it = this->unknown_derivatives_.begin(); it != this->unknown_derivatives_.end(); it++)
+      {
+        std::string thisKey = (*it).first;
+        std::string thisPattern = (*it).second;
+        if(thisKey == key)
         {
-          std::string thisKey = (*it).first;
-          std::string thisPattern = (*it).second;
-          if(thisKey == key)
-          {
-            unknownDerivativeKey = thisKey;
-            unknownDerivativePattern = thisPattern;
-            break;
-          }
+          unknownDerivativeKey = thisKey;
+          unknownDerivativePattern = thisPattern;
+          break;
         }
-
+      }
+      if(((this->is_root_) && (key != "1")) || (this->is_root_ == false))
+      {
         if(value.compare("xCH-N") == 0)
         {
             long_name_pattern = "-osamine";
@@ -1596,6 +1597,7 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
             this_assembly->AddDerivativeRuleInfo(key, pattern, this, long_name_pattern, cond_name_pattern, head, minus_one, in_bracket);
           }
         }
+      }
     }
     if(in_bracket.str().size() != 0)
     {
