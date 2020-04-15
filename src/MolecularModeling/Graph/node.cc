@@ -7,8 +7,8 @@
 
 GraphDS::Node::Node() {
 
-    this->is_visited_=false;
-    this->node_id_=this->GenerateNodeID();
+    // this->is_visited_=false;
+    // this->node_id_=this->GenerateNodeID();
 }
 
 //////////////////////////////////////////////////////////
@@ -16,7 +16,7 @@ GraphDS::Node::Node() {
 //////////////////////////////////////////////////////////
 
 
-GraphDS::Node::~Node(){}
+// GraphDS::Node::~Node(){}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////

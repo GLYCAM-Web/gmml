@@ -137,7 +137,11 @@ void GraphDS::Graph::Print(std::ostream &out)
             for( GraphDS::Graph::EdgeVector::iterator it1 = graphEdgeList_.begin(); it1 != graphEdgeList_.end(); it1++)
             {
                 GraphDS::Edge *current_edge = (*it1);
-                out<<"--> "<<current_edge->GetDestinationNode()->GetNodeId();
+                if(current_edge->GetSourceNode() == current_node)
+                {
+                  out<< "--> " << current_edge->GetDestinationNode()->GetNodeId();
+                }
+                
             }
             out<<std::endl;
 

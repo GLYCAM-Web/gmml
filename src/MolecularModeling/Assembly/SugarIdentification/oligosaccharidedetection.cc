@@ -310,7 +310,7 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
     for(std::vector<Glycan::Note*>::iterator it = thisOligo->oligo_notes_.begin(); it != thisOligo->oligo_notes_.end(); it++)
     {
       Glycan::Note* thisNote = (*it);
-      std::string thisNoteString = thisNote->type_ + ": " + thisNote->description_;
+      std::string thisNoteString = thisNote->ConvertGlycanNoteType2String(thisNote->type_) + ": " + thisNote->description_;
       thisOutput.error_warning_messages.push_back(thisNoteString);
     }
     api_output.push_back(thisOutput);
@@ -328,8 +328,9 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     std::cout << "\n" << "Extracting Sugars\n";
   }
   ///CYCLE DETECTION
+  // DetectCyclesByExhaustiveRingPerception gets stuck in infinite loops for some files, DFS doesn't.
   // CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
-  CycleMap cycles =DetectCyclesByDFS();
+  CycleMap cycles = DetectCyclesByDFS();
   ///PRINTING ALL DETECTED CYCLES
   if(local_debug > 0)
   {
@@ -674,9 +675,14 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       {
         std::string gmmo = this->GetSourceFile();
         gmmo = gmmo.substr(0,gmmo.size()-4) + ".ttl";
-        gmmo.insert(gmmo.size()-8, gmmo.substr(gmmo.size()-7, 2));
-        gmmo.insert(gmmo.size()-8, "/");
-        std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
+        
+        // gmmo.insert(gmmo.size()-8, gmmo.substr(gmmo.size()-7, 2));
+        // gmmo.insert(gmmo.size()-8, "/");
+        // std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
+        std::string ontologyDirectory = "Ontologies";
+        std::string gmmoDirectory = ontologyDirectory + "/" + gmmo.substr(gmmo.size()-7, 2);
+        gmmo = ontologyDirectory + "/" + gmmo.substr(gmmo.size()-7, 2) + "/" + gmmo;        
+        mkdir(ontologyDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
         mkdir(gmmoDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
         out_file.open( gmmo.c_str(), std::fstream::out | std::fstream::trunc);
         out_file << Ontology::TTL_FILE_PREFIX << "\n";
