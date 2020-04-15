@@ -1,8 +1,10 @@
 #!/bin/bash
 
-#Manually change this number as you add tests:
-required_passing_tests=9
-tests_passed=0
+required_passing_tests=$(/bin/ls -1 *.test.*.sh | wc -l)
+echo """
+Number of tests found: ${required_passing_tests}
+Beginning testing.
+"""
 
 run_test() 
 {
@@ -10,25 +12,29 @@ run_test()
     return $?
 }
 
-# Comment out tests you don't want to run. Add additional tests at the bottom. 
-# Change required_passing_tests to equal number of tests.
+##
+##   To disable a test:
+##
+##        Change the filename so that it 
+##        doesn't match the pattern *.test.*.sh
+##
 
-#if run_test 001.test.detectSugar.sh; then tests_passed=$(($tests_passed + 1)); fi
-if run_test 000.test.buildBySequenceOldWay.sh; then tests_passed=$(($tests_passed + 1)); fi
-if run_test 001.test.buildBySequenceMetaWay.sh; then tests_passed=$(($tests_passed + 1)); fi
-if run_test 002.test.createAssemblyWritePDB.sh; then tests_passed=$(($tests_passed + 1)); fi
-if run_test 003.test.SuperimpositionEigen.sh; then tests_passed=$(($tests_passed + 1)); fi
-if run_test 004.test.PDBpreprocessor.sh; then tests_passed=$(($tests_passed + 1)); fi
-if run_test 005.test.Overlaps.sh; then tests_passed=$(($tests_passed + 1)); fi
-if run_test 006.test.BFMP-RingShapeCalculation.sh; then tests_passed=$(($tests_passed + 1)); fi
-if run_test 007.test.DetectSugars.sh; then tests_passed=$(($tests_passed + 1)); fi
-if run_test 008.test.PDB2GlycamAndSubgraphMatching.sh; then tests_passed=$(($tests_passed + 1)); fi
+tests_attempted=0
+tests_passed=0
+for i in $(/bin/ls *.test.*.sh) ; do 
+	printf "Using test file:  ${i} \n"
+	tests_attempted=$((tests_attempted+1))
+	if run_test ${i} ; then tests_passed=$((tests_passed+1)); fi
+done
+echo """
+$tests_attempted tests were attempted
+$tests_passed tests passed 
+$required_passing_tests were required"
 
-echo "$tests_passed tests passed of $required_passing_tests"
-
-if [[ "$tests_passed" -ge "$required_passing_tests" ]]; then
+if [ "$tests_passed" -ge "$required_passing_tests" ]; then 
+    #echo "The required number of tests passed"
     exit 0
-    echo "All tests passed"
 else
+    #echo "Some required tests did not pass."
     exit 1
 fi

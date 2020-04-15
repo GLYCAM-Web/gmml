@@ -1,6 +1,7 @@
 #include "../../../includes/InputSet/CondensedSequenceSpace/carbohydratebuilder.hpp"
 #include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "../../../includes/External_Libraries/json.hpp"
+#include "../../../includes/ParameterSet/OffFileSpace/offfile.hpp"
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -129,15 +130,28 @@ std::string carbohydrateBuilder::GenerateUserOptionsJSON()
 //////////////////////////////////////////////////////////
 //                   PRIVATE FUNCTIONS                  //
 //////////////////////////////////////////////////////////
-
 void carbohydrateBuilder::Write3DStructureFile(std::string type, std::string filename)
 {
     // Use type to figure out which type to write, eg. PDB OFFFILE etc.
     PdbFileSpace::PdbFile *outputPdbFile = this->GetAssembly()->BuildPdbFileStructureFromAssembly();
-    filename += ".pdb";
-    outputPdbFile->Write(filename);
+    std::string emilyThePdbFilename = filename + ".pdb";
+//    filename += ".pdb";
+    outputPdbFile->Write(emilyThePdbFilename);
+    // Le hack:
+    //void OffFileSpace::OffFile::Write(std::string file_name, int CoordinateIndex, MolecularModeling::Assembly* assembly)
+    OffFileSpace::OffFile frankTheOffFile;
+    int CoordinateIndex = 0;
+    frankTheOffFile.Write(filename + ".off", CoordinateIndex, this->GetAssembly());
     return;
 }
+//void carbohydrateBuilder::Write3DStructureFile(std::string type, std::string filename)
+//{
+//    // Use type to figure out which type to write, eg. PDB OFFFILE etc.
+//    PdbFileSpace::PdbFile *outputPdbFile = this->GetAssembly()->BuildPdbFileStructureFromAssembly();
+//    filename += ".pdb";
+//    outputPdbFile->Write(filename);
+//    return;
+//}
 
 void carbohydrateBuilder::SetInputSequenceString(std::string sequence)
 {

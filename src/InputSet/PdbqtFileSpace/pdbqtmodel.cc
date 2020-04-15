@@ -86,7 +86,6 @@ PdbqtModel::PdbqtModel(std::ifstream &model_block)
             throw PdbqtFileProcessingException(__LINE__, "Illegal record detected in model section");
         }
     }//while
-    std::cout << "Last line is PdbqtModel constructor is: " << line << std::endl;
 }
 
 //////////////////////////////////////////////////////////

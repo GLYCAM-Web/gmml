@@ -4170,7 +4170,16 @@ void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide
 
       std::vector<Atom*> AllAtomsInThisMonosaccharide = std::vector<Atom*>();
       for (std::vector<Atom*>::iterator it2= mono->cycle_atoms_.begin(); it2!= mono->cycle_atoms_.end(); it2++){ //Add cycle atoms to monosaccharide
-          AllAtomsInThisMonosaccharide.push_back(*it2);
+	  MolecularModeling::Atom* cycle_atom = *it2;
+          AllAtomsInThisMonosaccharide.push_back(cycle_atom);
+	  MolecularModeling::AtomVector cycle_atom_neighbors = cycle_atom->GetNode()->GetNodeNeighbors();
+	  for (MolecularModeling::AtomVector::iterator neighbor_it = cycle_atom_neighbors.begin(); neighbor_it != cycle_atom_neighbors.end(); neighbor_it++){
+	      MolecularModeling::Atom* neighbor = *neighbor_it;
+	      //If a neighbor of a ring atom is neither on a cycle or a sidechain, and is a hydrogen, then it is the ring hydrogen. Add it to new residue as well. 
+	      if (!neighbor->GetIsCycle() && !neighbor->GetIsSideChain() && neighbor->GetElementSymbol() == "H"){ 
+	          AllAtomsInThisMonosaccharide.push_back(neighbor);
+	      }
+	  }
       }
 
       for (std::vector<std::vector<Atom*> >::iterator it2= mono->side_atoms_.begin(); it2!= mono->side_atoms_.end(); it2++){ //Add side chain atoms to monosaccharide
