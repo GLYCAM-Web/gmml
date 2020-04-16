@@ -91,8 +91,13 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
 
 std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
 {   //This function runs a basic query, looking only for ?pdb (PDB_ID), ?oligo (Oligosaccharides are assigned numbers when they are found, ie oligo_1),
+<<<<<<< Updated upstream
     //and ?oligo_sequence (Condensed sequence).  These three variables together are unique for each result.  This function also takes in all of the
     //possible filter variables to return filtered results when updating via ajax
+=======
+    //and ?oligo_sequence (Condensed sequence).  These three variables together are unique for each result.  This function also takes in all of the possible
+    //filter variables to return filtered results when updating via ajax
+>>>>>>> Stashed changes
     //This function will also call a function to create a graph from the search string for searching across branches.
 
     std::stringstream query;
@@ -102,6 +107,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
     if(count == "TRUE")
     {//for # results and # pages
+<<<<<<< Updated upstream
       query << "( COUNT( DISTINCT *) as ?count) \n";
       query << Ontology::WHERE_CLAUSE << Ontology::SELECT_CLAUSE;;
     }
@@ -109,6 +115,9 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     if(isComment == 1)
     {
       query << "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments) ";
+=======
+      query << " DISTINCT (COUNT(?oligo) as ?count) \n";
+>>>>>>> Stashed changes
     }
     if(isWarning == 1)
     {
@@ -168,6 +177,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
       query << "VALUES ?oligo_sequence { \"" << searchTerm << "\" }\n";
     }
+<<<<<<< Updated upstream
 
     if(search.str()=="Oligo_REGEX")
     {
@@ -299,6 +309,42 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
         }
         // TODO: make sure graph 1's location is before graph 2 (Man*Fuc should not return Fuc-Man)
       }
+=======
+    
+    // TODO: Find & replace [* with [
+    // TODO: make union graph logic for 1-* and 2-*
+    // TODO: 
+    
+    
+    
+    
+    if(search.str()=="Oligo_REGEX")
+    {
+      GraphDS::Graph queryGraph = CreateQueryStringGraph(searchTerm);
+      // queryGraph.Print(std::cout);
+      GraphDS::Graph::NodeVector queryNodes = queryGraph.GetGraphNodeList();
+      GraphDS::Graph::EdgeVector queryEdges = queryGraph.GetGraphEdgeList();
+      for(GraphDS::Graph::NodeVector::iterator it = queryNodes.begin(); it != queryNodes.end(); it++)
+      {
+        GraphDS::Node* current_node=(*it);
+        for( GraphDS::Graph::EdgeVector::iterator it1 = queryEdges.begin(); it1!= queryEdges.end(); it1++)
+        {
+          GraphDS::Edge *current_edge = (*it1);
+          GraphDS::Node* destinationNode = current_edge->GetDestinationNode();
+          if(current_edge->GetSourceNode() == current_node)
+          {
+            //add to query
+            query << "?oligo :hasSequenceResidue ?residue" << current_node->GetNodeType() << ".\n";
+            query << "?oligo :hasSequenceResidue ?residue" << destinationNode->GetNodeType() << ".\n";
+            query << "?residue" << current_node->GetNodeType() << " :monosaccharideShortName \"\"\"" << current_node->GetNodeId() << "\"\"\".\n";
+            query << "?residue" << destinationNode->GetNodeType() << " :monosaccharideShortName \"\"\"" << destinationNode->GetNodeId() << "\"\"\".\n";
+            query << "?residue" << current_node->GetNodeType() << " :is" << current_edge->GetEdgeLabels()[0]<< "ConnectedTo " << "?residue" << destinationNode->GetNodeType() << ".\n";
+          }
+        }
+      }
+      // TODO: make sure graph 1's location is before graph 2 (Man*Fuc should not return Fuc-Man)
+      
+>>>>>>> Stashed changes
     }
     if(isLigand == 1)
     {
@@ -1056,8 +1102,12 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
                   parsedVector[endBranchNodesLocations[j]+1].edge->SetDestinationNode(parsedVector[endBracketLocation + 1].node);
                   if(local_debug > 0)
                   {
+<<<<<<< Updated upstream
                     std::cout << __LINE__  << ": " << parsedVector[endBranchNodesLocations[j]].label << "{" << endBranchNodesLocations[j] <<"}";
                     std::cout << " " <<  parsedVector[endBranchNodesLocations[j]+1].label<< "{" << endBranchNodesLocations[j]+1 <<"}" << " " <<  parsedVector[endBracketLocation + 1].label<< "{" << endBracketLocation + 1 << "}" << "\n";
+=======
+                    std::cout << __LINE__  << ": " << parsedVector[endBranchNodesLocations[j]].label << "{" << endBranchNodesLocations[j] <<"}" << " " <<  parsedVector[endBranchNodesLocations[j]+1].label<< "{" << endBranchNodesLocations[j]+1 <<"}" << " " <<  parsedVector[endBracketLocation + 1].label<< "{" << endBracketLocation + 1 <<"}" << "\n";
+>>>>>>> Stashed changes
                   }
                   if(j > 0)
                   {
