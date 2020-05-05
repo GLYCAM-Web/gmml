@@ -4,6 +4,8 @@
 #include <fstream>
 #include <iostream>
 #include <iterator> //Added by Yao 07/23/2018
+#include <map>      //Added by Yao 01/29/2020
+#include <algorithm> //Added by Yao 01/29/2020, for std::find()
 #include <math.h>
 #include <queue>
 #include <regex> // Added by OG 2019.09.05
@@ -25,7 +27,7 @@
 #include "../../../includes/GeometryTopology/cell.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/rotation.hpp"
-#include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.h"
+#include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
@@ -925,7 +927,7 @@ void Assembly::RecursivelySetAngleGeometry (Residue* parent_residue)
     }
 }
 
-// OG
+// OG These two functions are moving to carbohydrateBuilder
 void Assembly::FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Residue *to_this_residue2, ResidueLinkageVector *residue_linkages)
 {
     ResidueVector neighbors = to_this_residue2->GetNode()->GetResidueNeighbors();
@@ -946,7 +948,7 @@ void Assembly::FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Res
     return;
 }
 
-// OG
+// OG. This is agnostic of it being generated from a condensed sequence. Could be any assembly that is a glycan with good connectivites and GLYCAM nomenclature for atoms and residues.
 void Assembly::SetDihedralAngleGeometryWithMetadata()
 {
     ResidueLinkageVector all_residue_linkages;
@@ -954,6 +956,7 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
     for(auto &linkage : all_residue_linkages)
     {
         linkage.SetDefaultShapeUsingMetadata();
+
     }
     // Resovlving overlaps should be a separated function, but I don't want assembly to have a ResidueLinkageVector member. Need new, seperate class.
     for(auto &linkage : all_residue_linkages)
@@ -1441,16 +1444,16 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             // However, the ResolveClashes function uses the index_dihedral_map, so that must be replaced at the same time.
 
 
-            int linkage_index = 0;
-            this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
+//            int linkage_index = 0;
+//            this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
             break;
         }
     }
 
-    //Find and resolve clashes below(crudely)
-    ResidueVector clashing_residues = this->FindClashingResidues();
-    std::vector<ResidueVector> clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues);
-    this->ResolveClashes(clashing_residue_parent_paths, index_dihedral_map);
+//    //Find and resolve clashes below(crudely)
+//    ResidueVector clashing_residues = this->FindClashingResidues();
+//    std::vector<ResidueVector> clashing_residue_parent_paths = this -> FindPathToCommonAncestors(clashing_residues);
+//    this->ResolveClashes(clashing_residue_parent_paths, index_dihedral_map);
 }
 
 void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::string prep_file, std::string parameter_file, bool structure)
@@ -2157,6 +2160,12 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
 {
 //    std::cout << "Building assembly from pdbqt file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdbqt file ...");
+    //Source of metadata: http://autodock.scripps.edu/faqs-help/manual/autodock-4-2-user-guide/AutoDock4.2_UserGuide.pdf
+    std::map<std::string, std::string> ad_type_element_symbol_map = {
+            {"C","C"}, {"A","C"}, {"HD","H"}, {"H","H"}, {"HS","H"}, {"N","N"}, {"NA","N"}, {"NS","N"}, {"NR", "N"}, {"OA","O"}, {"OS","O"}, {"F","F"}, {"Mg","Mg"}, {"MG","Mg"}, {"P","P"}, {"SA","S"}, 
+	    {"S","S"}, {"Cl","Cl"}, {"CL","Cl"}, {"CA","Ca"}, {"Ca","Ca"}, {"MN","Mn"}, {"Mn","Mn"}, {"FE","Fe"}, {"Fe","Fe"}, {"ZN","Zn"}, {"Zn","Zn"}, {"BR","Br"}, {"Br","Br"}, {"I","I"}, {"Z","Z"}, 
+	    {"G","C"}, {"GA","C"}, {"J","C"}, {"Q","C"}
+    };
     try
     {
         this->ClearAssembly();
@@ -2195,7 +2204,11 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
                 std::string atom_name = atom->GetAtomName();
                 new_atom->SetName(atom_name);
                 new_atom->MolecularDynamicAtom::SetCharge(atom->GetAtomCharge());
-                new_atom->MolecularDynamicAtom::SetAtomType(atom->GetAtomType());
+		std::string autodock_type = atom->GetAtomType();
+                new_atom->MolecularDynamicAtom::SetAtomType(autodock_type);
+		if (ad_type_element_symbol_map.find(autodock_type) != ad_type_element_symbol_map.end()){
+		    new_atom->SetElementSymbol(ad_type_element_symbol_map[autodock_type]);
+		}
                 if(parameter != NULL)
                 {
                     if(atom_type_map.find(new_atom->GetAtomType()) != atom_type_map.end())

@@ -34,6 +34,7 @@
 #include "../InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../InputSet/PdbFileSpace/inputfile.hpp"
 #include "molecule.hpp"
+#include "Graph/graph.hpp"
 //#include "residue.hpp"
 //#include "atom.hpp"
 //#include "atomnode.hpp"
@@ -91,6 +92,23 @@ public:
         // not sure what kinds of error/warning messages gmml will provide
         std::vector<std::string> error_warning_messages;
     } gmml_api_output;
+    
+    struct parsedString
+    {
+      std::string label;
+      GraphDS::Node* node = NULL;
+      GraphDS::Edge* edge = NULL;
+      parsedString(std::string Label, GraphDS::Node* Node = NULL)
+      {//Node is NULL by default for branch brackets
+        label = Label;
+        node = Node;
+      }
+      parsedString(std::string Label, GraphDS::Edge* Edge)
+      {
+        label = Label;
+        edge = Edge;
+      }
+    };
 
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
@@ -973,17 +991,17 @@ public:
     void UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
     void TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
     void RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map, std::string prep_file);
-    int  RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& target_atoms, AtomVector& template_atoms,std::map<Atom*, std::string>& target_atom_label_map,
-                                           std::map<Atom*, std::string>& template_atom_label_map, std::vector<std::pair<Atom*, Atom*> >& target_template_vertex_match,
-                                           std::vector<std::pair<Atom*, Atom*> >& template_target_vertex_match,
-                                           std::vector<std::vector<std::pair<Atom*, Atom*> > >& all_isomorphisms);
+    int  RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& target_atoms, Atom* template_atoms, std::map<Atom*, std::string>& target_atom_label_map,
+                                           std::map<Atom*, std::string>& template_atom_label_map, std::map<Atom*, Atom*>& target_template_vertex_match, 
+                                           std::map<Atom*, Atom*>& template_target_vertex_match, std::vector<Atom*>& insertion_order,
+                                           std::vector<std::map<Atom*, Atom*> >& all_isomorphisms);
     bool AllAtomEdgesMatch(Atom* target_atom, Atom* template_atom, std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map);
     bool AtomVertexMatch(Atom* target_atom, Atom* template_atom, std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map);
-    bool IfMatchScenarioAlreadyExists(std::vector< std::pair<Atom*, Atom*> >& target_template_vertex_match,
-                                        std::vector<std::vector<std::pair<Atom*, Atom*> > >& all_isomorphisms);
-    void RemoveDownstreamMatches(Atom* target_atom, std::vector<std::pair<Atom*, Atom*> >& target_template_vertex_match,
-                                 std::vector<std::pair<Atom*, Atom*> >& template_target_vertex_match);
-    bool IfVertexAlreadyMatched(Atom* vertex_atom, std::vector< std::pair<Atom*, Atom*> >& match_map);
+    bool IfMatchScenarioAlreadyExists(std::map<Atom*, Atom*>& target_template_vertex_match,
+                                        std::vector<std::map<Atom*, Atom*> >& all_isomorphisms);
+    void RemoveDownstreamMatches(Atom* target_atom, std::map<Atom*, Atom*>& target_template_vertex_match,
+                                 std::map<Atom*, Atom*>& template_target_vertex_match, std::vector<Atom*> target_insertion_order);
+    bool IfVertexAlreadyMatched(Atom* vertex_atom, std::map<Atom*, Atom*>& match_map);
 
     /// Pattern mathing
     bool PatternMatching(Residue* residue, ResidueVector query_residues, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
@@ -1353,7 +1371,10 @@ public:
     std::string ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type);
 
     std::string ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type);
-
+    
+    GraphDS::Graph CreateQueryStringGraph(std::string queryString);
+    void ConnectNodes(int start, int end, std::vector<parsedString> &parsedVector, GraphDS::Graph& graph);
+    
     /*! \fn
             * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
             * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology

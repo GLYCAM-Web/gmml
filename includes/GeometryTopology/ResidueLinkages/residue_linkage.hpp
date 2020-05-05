@@ -9,7 +9,7 @@
 #include "../../MolecularModeling/atom.hpp"
 #include "../../MolecularModeling/residue.hpp"
 #include "../../MolecularModeling/Selections/selections.hpp"
-#include "rotatable_dihedral.h"
+#include "rotatable_dihedral.hpp"
 
 
 
@@ -52,7 +52,8 @@ public:
     bool GetIfExtraAtoms();
     AtomVector GetExtraAtoms();
     void AddExtraAtomsThatMove(AtomVector extraAtoms);
-
+    unsigned long long GetIndex();
+    std::string GetName();
 
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
@@ -75,6 +76,8 @@ public:
     void DetermineAtomsThatMove();
     // Simple meaning you only check each rotatable_dihedral in series, not every combination.
     void SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance = 0.01, int angleIncrement = 5);
+    void SetIndex(unsigned long long index);
+    void SetName(std::string name);
 
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
@@ -103,6 +106,8 @@ private:
     void SetResidues(Residue *residue1, Residue *residue2);
     void SetConnectionAtoms(Residue *residue1, Residue *residue2);
     void SetConformerUsingMetadata(bool useRanges = false, int conformerNumber = 0);
+    unsigned long long GenerateIndex();
+    std::string DetermineLinkageNameFromResidueNames();
 
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
@@ -116,7 +121,8 @@ private:
     bool reverseAtomsThatMove_;
     AtomVector extraAtomsThatMove_;
     bool isExtraAtoms_ = true;
-    //gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_;
+    unsigned long long index_;
+    std::string name_; //e.g. "DGalpb1-6DGlcpNAc"
 };
 
 std::ostream& operator<<(std::ostream& os, const Residue_linkage&);

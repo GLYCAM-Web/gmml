@@ -1,8 +1,9 @@
 #include <random>
-#include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.h"
+#include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "../../../includes/MolecularModeling/overlaps.hpp"
 #include "../../../includes/External_Libraries/PCG/pcg_extras.hpp"
 #include "../../../includes/External_Libraries/PCG/pcg_random.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp" // For lookup in GetName function
 
 // Seed with a real random value, if available
 static pcg_extras::seed_seq_from<std::random_device> seed_source;
@@ -65,7 +66,8 @@ RotatableDihedralVector Residue_linkage::GetRotatableDihedrals() const
 {
     if (rotatable_dihedrals_.empty())
     {
-        std::cerr << "rotatable_dihedrals in this linkage is empty: " << from_this_residue1_->GetId() << "-" << to_this_residue2_->GetId() << std::endl;
+        // LOG IT
+        //std::cerr << "rotatable_dihedrals in this linkage is empty: " << from_this_residue1_->GetId() << "-" << to_this_residue2_->GetId() << std::endl;
     }
     return rotatable_dihedrals_;
 }
@@ -133,11 +135,41 @@ AtomVector Residue_linkage::GetExtraAtoms()
     return extraAtomsThatMove_;
 }
 
+unsigned long long Residue_linkage::GetIndex()
+{
+    return index_;
+}
 
-//int Residue_linkage::GetNumberOfRotatableDihedrals()
-//{
-//    return rotatable_dihedrals_.size();
-//}
+std::string Residue_linkage::GetName()
+{
+    if (!name_.empty())
+    {
+        return name_;
+    }
+    return this->DetermineLinkageNameFromResidueNames();
+}
+
+std::string Residue_linkage::DetermineLinkageNameFromResidueNames()
+{
+    gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookupContainer nameLookup;
+    std::string residue1Name = nameLookup.GetResidueForCode(this->GetFromThisResidue1()->GetName());
+    std::string residue2Name = nameLookup.GetResidueForCode(this->GetToThisResidue2()->GetName());
+   // std::cout << this->GetFromThisConnectionAtom1()->GetName() << std::endl;
+   // std::cout << this->GetToThisConnectionAtom2()->GetName() << std::endl;
+    std::string atom1Name = this->GetFromThisConnectionAtom1()->GetName();
+    std::string atom2Name = this->GetToThisConnectionAtom2()->GetName();
+    char link1 = *atom1Name.rbegin(); //
+    char link2 = *atom2Name.rbegin(); // Messy for Acetyl.
+    std::stringstream linkageName;
+    linkageName << residue1Name << link1 << "-" << link2 << residue2Name;
+    this->SetName(linkageName.str());
+    return linkageName.str();
+}
+
+int Residue_linkage::GetNumberOfRotatableDihedrals()
+{
+   return rotatable_dihedrals_.size();
+}
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
@@ -158,6 +190,7 @@ void Residue_linkage::AddExtraAtomsThatMove(AtomVector extraAtoms)
     extraAtomsThatMove_ = extraAtoms;
     isExtraAtoms_ = true;
 }
+
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
@@ -291,6 +324,16 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
     return; // Note possibility of earlier return above
 }
 
+void Residue_linkage::SetIndex(unsigned long long index)
+{
+    index_ = index;
+}
+
+void Residue_linkage::SetName(std::string name)
+{
+    name_ = name;
+}
+
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
@@ -326,14 +369,15 @@ void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_t
 {
     this->SetResidues(from_this_residue1, to_this_residue2);
     this->SetIfReversedAtomsThatMove(reverseAtomsThatMove);
+    this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
     if(this->CheckIfViableLinkage())
     {
        // std::cout << "Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
-        this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
         rotatable_dihedrals_ = this->FindRotatableDihedralsConnectingResidues(from_this_connection_atom1_, to_this_connection_atom2_);
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata = this->FindMetadata(from_this_connection_atom1_, to_this_connection_atom2_);
         this->AddMetadataToRotatableDihedrals(metadata);
     }
+    this->SetIndex(this->GenerateIndex());
 }
 
 bool Residue_linkage::CheckIfViableLinkage()
@@ -471,7 +515,6 @@ void Residue_linkage::AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::G
     }
 }
 
-
 void Residue_linkage::SetResidues(Residue *residue1, Residue *residue2)
 {
     from_this_residue1_ = residue1;
@@ -493,4 +536,10 @@ void Residue_linkage::SetConformerUsingMetadata(bool useRanges, int conformerNum
     {
         entry.SetSpecificAngleEntryUsingMetadata(useRanges, conformerNumber);
     }
+}
+
+unsigned long long Residue_linkage::GenerateIndex()
+{
+    static unsigned long long s_ResidueLinkageIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
+    return s_ResidueLinkageIndex++; // makes copy of s_AtomIndex, increments the real s_AtomIndex, then returns the value in the copy
 }

@@ -173,8 +173,11 @@ void Residue::RemoveAtom(MolecularModeling::Atom *atom, bool remove_bonds)
         if(a->GetId().compare(atom->GetId()) != 0)
         {
 	    if (remove_bonds){
-                if(a->GetNode() != NULL){  
-                    a->GetNode()->RemoveNodeNeighbor(atom);
+		std::vector<MolecularModeling::AtomNode*> nodes = a->GetNodes();
+		for (std::vector<MolecularModeling::AtomNode*>::iterator it2 = nodes.begin(); it2 != nodes.end(); it2++){
+                    if((*it2) != NULL){  
+                        (*it2)->RemoveNodeNeighbor(atom);
+	            }
 	        }
 	    }
             newAtoms.push_back(a);

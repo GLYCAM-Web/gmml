@@ -67,7 +67,7 @@ public:
     // Randomly sets dihedral angle values between 0 and 360
     double RandomizeDihedralAngle();
     // Takes in a set of ranges, e.g. 10 to 30, 45-55 etc. Randomly selects a range and randomly sets value within that range.
-    double RandomizeDihedralAngleWithinRanges(std::vector<std::pair<double,double>> ranges);
+    double RandomizeDihedralAngleWithinRanges(std::vector<std::pair<double,double> > ranges);
     // Randomly sets dihedral angle to a value within the given range. E.g. Between 25 and 30 degrees.
     double RandomizeDihedralAngleWithinRange(double min, double max);
 

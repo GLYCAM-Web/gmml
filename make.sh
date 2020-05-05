@@ -102,6 +102,7 @@ cp -r $GEMSHOME/gmml/.hooks/* $GEMSHOME/gmml/.git/hooks/
 CLEAN="no_clean"
 DEBUG="no_debug"
 TARGET_MAKE_FILE="Makefile"
+OPTIMIZE="optimize"
 
 ################################################################
 #########               COMMAND LINE INPUTS            #########
@@ -115,6 +116,8 @@ while [ ${i} -le $# ]; do
         WRAP_GMML="${!i}"
     elif [ "$argument" = "debug" ]||[ "$argument" = "no_debug" ];then
         DEBUG="${!i}"
+    elif [ "$argument" = "optimize" ]||[ "$argument" = "no_optimize" ]||[ "$argument" = "O1" ]||[ "$argument" = "O2" ];then
+        OPTIMIZE="${!i}"
     fi
     i=$[$i+1]
 done
@@ -123,7 +126,8 @@ printf "\nBuilding with these settings:\n"
 printf "GEMSHOME: $GEMSHOME\n"
 printf "TARGET_MAKE_FILE: $TARGET_MAKE_FILE\n"
 printf "CLEAN: $CLEAN\n"
-printf "DEBUG: $DEBUG\n\n"
+printf "DEBUG: $DEBUG\n"
+printf "OPTIMIZE: $OPTIMIZE\n\n"
 
 ################################################################
 #########                  COMPILE GMML                #########
@@ -134,11 +138,29 @@ printf "DEBUG: $DEBUG\n\n"
  else
      DEBUGOPTIONS=''
  fi
+ 
+ if [ "$OPTIMIZE" == "optimize" ]; then
+     OPTIMIZE=""
+     #Does -O2 by default
+     NO_OPTIMIZE=""
+ elif [ "$OPTIMIZE" == "no_optimize" ]; then
+     OPTIMIZE=""
+     NO_OPTIMIZE="QMAKE_CXXFLAGS_RELEASE -= -O2 -O1"
+ elif [ "$OPTIMIZE" == "O1" ]; then
+     OPTIMIZE="-O1"
+     NO_OPTIMIZE="QMAKE_CXXFLAGS_RELEASE -= -O2"
+ elif [ "$OPTIMIZE" == "O2" ]; then
+     OPTIMIZE="-O2"
+     NO_OPTIMIZE=""
+ else
+     OPTIMIZE=""
+     NO_OPTIMIZE=""
+ fi
 
  echo "Generating GMML $TARGET_MAKE_FILE."
  # Always create a new gmml.pro and makefile
  ## This is going to be broken up to variables instead of being this long command. Just wanted to get a working version pushed up.
- qmake -project -t lib -o gmml.pro "QMAKE_CXXFLAGS += -Wall -W -std=c++11 ${DEBUGOPTIONS}" "QMAKE_CFLAGS += -Wall -W ${DEBUGOPTIONS}" "DEFINES += _REENTRANT" "CONFIG = no_lflag_merge" "unix:LIBS = -L/usr/lib/x86_64-linux-gnu -lpthread" "OBJECTS_DIR = build" "DESTDIR = lib" -r src/ includes/ -nopwd
+ qmake -project -t lib -o gmml.pro "QMAKE_CXXFLAGS += -Wall -W -std=c++11 ${DEBUGOPTIONS} ${OPTIMIZE}" "QMAKE_CFLAGS += -Wall -W ${DEBUGOPTIONS}" "${NO_OPTIMIZE}" "DEFINES += _REENTRANT" "CONFIG = no_lflag_merge" "unix:LIBS = -L/usr/lib/x86_64-linux-gnu -lpthread" "OBJECTS_DIR = build" "DESTDIR = lib" -r src/ includes/ -nopwd
  qmake -o $TARGET_MAKE_FILE
 
  if [ "$CLEAN" == "clean" ]; then
@@ -149,7 +171,8 @@ printf "DEBUG: $DEBUG\n\n"
  fi
 
  echo "Making GMML."
- make -j ${NMP} -f $TARGET_MAKE_FILE
+  make -j ${NMP} -f $TARGET_MAKE_FILE 
+
 
 ################################################################
 #########              WRAP UP TO GEMS                 #########

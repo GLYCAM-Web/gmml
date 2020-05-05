@@ -36,7 +36,7 @@ namespace GraphDS
             /*! \fn
               * Default deconstructor
               */
-            ~Node();
+            // ~Node();
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -159,7 +159,7 @@ namespace GraphDS
            void* node_value_;                       /*!< Value of Node of type atom/residue/molecule etc. >*/
            std::string node_type_;                  /*!< Type(Atom/Residue/Molecule etc.) of Node >*/
            std::string node_id_;                    /*!< An identifier for a graph node which a unqiue index >*/
-           bool is_visited_;                        /*!< Status of the current node visited/unvisited >*/
+           bool is_visited_ = false;                        /*!< Status of the current node visited/unvisited >*/
            EdgeVector edgeList_;                    /*!< List of nodes adjacent to the current node >*/
            TagsVector tags_;                        /*!< List of tags assigned to the node >*/
           };

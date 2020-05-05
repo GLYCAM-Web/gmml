@@ -70,7 +70,7 @@ namespace Glycan
                                       int& number_of_covalent_links, int& number_of_probable_non_covalent_complexes);
     std::vector<Glycan::Oligosaccharide*> createOligosaccharides(std::vector<Glycan::Monosaccharide*> detected_monos);
     void indexMonosaccharides();
-    std::vector<Glycan::Monosaccharide*> indexMono(Glycan::Monosaccharide* thisMono, int thisIndex, std::vector<Glycan::Monosaccharide*> &branchedMonos);
+    void indexMono(Glycan::Monosaccharide* thisMono, int thisIndex, std::vector<Glycan::Monosaccharide*> &branchedMonos);
     void indexBranches(std::vector<Glycan::Monosaccharide*> branchedMonos);
     std::vector<Glycan::Monosaccharide*> IUPACindexMono(Glycan::Monosaccharide* thisMono, int thisIndex, std::vector<Glycan::Monosaccharide*> &branchedMonos);
     void IUPACindexBranches(std::vector<Glycan::Monosaccharide*> branchedMonos);
