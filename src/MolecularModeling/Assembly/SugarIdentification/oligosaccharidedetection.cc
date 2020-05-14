@@ -310,7 +310,7 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
     for(std::vector<Glycan::Note*>::iterator it = thisOligo->oligo_notes_.begin(); it != thisOligo->oligo_notes_.end(); it++)
     {
       Glycan::Note* thisNote = (*it);
-      std::string thisNoteString = thisNote->type_ + ": " + thisNote->description_;
+      std::string thisNoteString = thisNote->ConvertGlycanNoteType2String(thisNote->type_) + ": " + thisNote->description_;
       thisOutput.error_warning_messages.push_back(thisNoteString);
     }
     api_output.push_back(thisOutput);
@@ -328,8 +328,9 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     std::cout << "\n" << "Extracting Sugars\n";
   }
   ///CYCLE DETECTION
+  // DetectCyclesByExhaustiveRingPerception gets stuck in infinite loops for some files, DFS doesn't.
   // CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
-  CycleMap cycles =DetectCyclesByDFS();
+  CycleMap cycles = DetectCyclesByDFS();
   ///PRINTING ALL DETECTED CYCLES
   if(local_debug > 0)
   {
@@ -674,9 +675,14 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       {
         std::string gmmo = this->GetSourceFile();
         gmmo = gmmo.substr(0,gmmo.size()-4) + ".ttl";
-        gmmo.insert(gmmo.size()-8, gmmo.substr(gmmo.size()-7, 2));
-        gmmo.insert(gmmo.size()-8, "/");
-        std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
+        
+        // gmmo.insert(gmmo.size()-8, gmmo.substr(gmmo.size()-7, 2));
+        // gmmo.insert(gmmo.size()-8, "/");
+        // std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
+        std::string ontologyDirectory = "Ontologies";
+        std::string gmmoDirectory = ontologyDirectory + "/" + gmmo.substr(gmmo.size()-7, 2);
+        gmmo = ontologyDirectory + "/" + gmmo.substr(gmmo.size()-7, 2) + "/" + gmmo;        
+        mkdir(ontologyDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
         mkdir(gmmoDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
         out_file.open( gmmo.c_str(), std::fstream::out | std::fstream::trunc);
         out_file << Ontology::TTL_FILE_PREFIX << "\n";
@@ -981,7 +987,7 @@ void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
         for(MolecularModeling::AtomVector::iterator it1 = cycle_atoms.begin(); it1 != cycle_atoms.end(); it1++)
         {
             MolecularModeling::Atom* atom = (*it1);
-            if(atom->GetName().find("C") == std::string::npos)
+            if(atom->GetElementSymbol() != "C")
             {
                 all_carbons = false;
                 break;
@@ -4166,7 +4172,16 @@ void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide
 
       std::vector<Atom*> AllAtomsInThisMonosaccharide = std::vector<Atom*>();
       for (std::vector<Atom*>::iterator it2= mono->cycle_atoms_.begin(); it2!= mono->cycle_atoms_.end(); it2++){ //Add cycle atoms to monosaccharide
-          AllAtomsInThisMonosaccharide.push_back(*it2);
+	  MolecularModeling::Atom* cycle_atom = *it2;
+          AllAtomsInThisMonosaccharide.push_back(cycle_atom);
+	  MolecularModeling::AtomVector cycle_atom_neighbors = cycle_atom->GetNode()->GetNodeNeighbors();
+	  for (MolecularModeling::AtomVector::iterator neighbor_it = cycle_atom_neighbors.begin(); neighbor_it != cycle_atom_neighbors.end(); neighbor_it++){
+	      MolecularModeling::Atom* neighbor = *neighbor_it;
+	      //If a neighbor of a ring atom is neither on a cycle or a sidechain, and is a hydrogen, then it is the ring hydrogen. Add it to new residue as well. 
+	      if (!neighbor->GetIsCycle() && !neighbor->GetIsSideChain() && neighbor->GetElementSymbol() == "H"){ 
+	          AllAtomsInThisMonosaccharide.push_back(neighbor);
+	      }
+	  }
       }
 
       for (std::vector<std::vector<Atom*> >::iterator it2= mono->side_atoms_.begin(); it2!= mono->side_atoms_.end(); it2++){ //Add side chain atoms to monosaccharide

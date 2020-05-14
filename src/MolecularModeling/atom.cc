@@ -112,9 +112,7 @@ MolecularModeling::AtomNode* Atom::GetNode(int index) const
 	if (max_index >= index){
 	    return this->nodes_.at(index);
 	}
-	else{
-	    return NULL;
-	}
+        return NULL;
 } // end GetNode
 
 std::vector<MolecularModeling::AtomNode*> Atom::GetNodes() const
@@ -528,7 +526,6 @@ MolecularModeling::AtomVector Atom::GetRankedPrimaryNeighbors(std::vector<int>& 
 
             std::map<Atom*, std::vector<AtomVector> > comparison_progress_tracker;
             this->InitializeComparisonTracker(duplicate_value_indices_versus_higher_rank_indices, visited_atoms, comparison_progress_tracker);
-            //std::cout << "About to start recursion." << std::endl;
             this->RecursivelyCompareBranches(duplicate_value_indices_versus_higher_rank_indices, ranks, visited_atoms, comparison_progress_tracker);
         }
 
@@ -650,9 +647,9 @@ void Atom::InitializeComparisonTracker(std::map<std::vector<int>, std::vector<in
 
             std::vector<AtomVector> initial_branches;
             AtomVector downstream_neighbors;
-            AtomVector secondary_neighbor = primary_neighbor->GetNode()->GetNodeNeighbors();
+            AtomVector secondary_neighbors = primary_neighbor->GetNode()->GetNodeNeighbors();
 
-            for (AtomVector::iterator atomit = secondary_neighbor.begin(); atomit != secondary_neighbor.end(); atomit++){
+            for (AtomVector::iterator atomit = secondary_neighbors.begin(); atomit != secondary_neighbors.end(); atomit++){
                 Atom* secondary_neighbor = *atomit;
                 if (std::find(visited_atoms.begin(), visited_atoms.end(), secondary_neighbor) == visited_atoms.end()){
                     downstream_neighbors.push_back(secondary_neighbor);
@@ -695,7 +692,6 @@ std::map<std::vector<int>, std::vector<int> > Atom::ComparePrimaryNeighbors(std:
 void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int> >& duplicate_higher_indices_map, std::vector<int>& ranks,
   MolecularModeling::AtomVector visited_atoms, std::map<Atom*, std::vector<AtomVector> >& comparison_progress_tracker)
 {
-    //std::cout << "Recursively compare branches: " << std::endl;
     AtomVector primary_neighbors = this->GetNode()->GetNodeNeighbors();
     for (std::map<std::vector<int>, std::vector<int> >::iterator mapit = duplicate_higher_indices_map.begin(); mapit !=
       duplicate_higher_indices_map.end(); mapit++){
@@ -705,21 +701,27 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
         std::vector<int> indices_with_higher_ranking = mapit->second;
         AtomVector primary_neighbors_with_identical_ranking;
 
+	bool branch_empty = false;
         for (AtomVector::iterator atomit = primary_neighbors.begin(); atomit != primary_neighbors.end(); atomit++){
             int index = std::distance(primary_neighbors.begin(), atomit);
             if (std::find(indices_with_identical_ranking.begin(), indices_with_identical_ranking.end(), index) != indices_with_identical_ranking.end()){
                 Atom* neighbor = *atomit;
 		//std::cout << "Primary neighbors with identical ranking: " << neighbor->GetName() << std::endl;
                 primary_neighbors_with_identical_ranking.push_back(neighbor);
-		std::vector<AtomVector> vec = comparison_progress_tracker[neighbor];
-		for (unsigned int i = 0; i < vec.size(); i++){
-		    //std::cout << "Current level 1" << std::endl;
-		    for (unsigned int j = 0; j < vec[i].size(); j++){
-			//std::cout << "Current level 2 branch atoms: " << vec[i][j]->GetName() << std::endl;
+		std::vector<AtomVector> branches = comparison_progress_tracker[neighbor];
+		for (unsigned int i = 0; i < branches.size(); i++){
+		    for (unsigned int j = 0; j < branches[i].size(); j++){
+			//std::cout << "Comparison tracker atoms: " << branches[i][j]->GetName() << std::endl;
 		    }
+		}
+		if (branches.empty()){
+		    branch_empty = true;
 		}
             }
         }
+	if (branch_empty){
+	    continue;
+	}
 	//std::cout << "segfault test 2" << std::endl;
 
 	std::map<Atom*, std::vector<std::vector<int> > > comparison_result_tracker;
@@ -729,7 +731,8 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
             Atom* primary_neighbor = *atom_it;
             std::vector<AtomVector> branches = comparison_progress_tracker[primary_neighbor];
 	    if (branches.empty()){
-		//std::cout << primary_neighbor->GetName() << "is empty. Prevent recursion from visiting it." << std::endl;
+		std::cout << primary_neighbor->GetResidue()->GetName() << "-" << primary_neighbor->GetName() << "is empty. Prevent previous recursion from visiting it." << std::endl;
+		std::cout << "Primary neighbor neighbors size: "<< primary_neighbor->GetNode()->GetNodeNeighbors().size() << std::endl;
 	    }
 
             std::vector<std::vector<int> > branch_info = this-> ObtainBranchInfo (branches, visited_atoms);
@@ -756,6 +759,7 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
 
             //Make new branches for next round of comparison. Branch expansion rule: each atom in the current branch is replaced by its neighbors, which forms a new branch.
             std::vector<AtomVector> new_branches = this-> MakeNextLevelOfBranches(branches,visited_atoms);
+	    //if (new_branches.empty()) std::cout << "New branches is empty" << std::endl;
 	    for (unsigned int i = 0; i < new_branches.size(); i++){
 		for (unsigned int j = 0; j < new_branches[i].size(); j++){
 		    //std::cout << "Next level of branch atom: " << new_branches[i][j]->GetName() << std::endl;
@@ -880,23 +884,31 @@ void Atom::RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int
 	    //std::cout << "Corresponding primary neighbor: " << primary_neighbors[k]->GetName() << std::endl;
 	    //std::cout << "Checking rank: " << ranks[k] << std::endl;
 	}
-        //Check if primary_rankings are unique.If not, start new recursive call
-        std::map<std::vector<int>, std::vector<int> > child_duplicate_higher_indices_map = this-> MakeDuplicateRanksHigherRankIndicesMap(ranks);
-        if (!child_duplicate_higher_indices_map.empty()){
-	    for ( std::map<std::vector<int>, std::vector<int> >::iterator map_it = child_duplicate_higher_indices_map.begin(); map_it != child_duplicate_higher_indices_map.end();
-		map_it++){
-		//std::cout << "Still non-unique" << map_it->first[0] << "," << map_it->first[1] << std::endl;
-	    }
-	    bool dead_end = true;
-	    for (std::map<Atom*, std::vector<AtomVector> >::iterator mapit = comparison_progress_tracker.begin(); mapit != comparison_progress_tracker.end(); mapit++){
-		if (!mapit->second.empty()){
-		    dead_end = false;
+    }
+
+    //Check if primary_rankings are unique.If not, start new recursive call
+    std::map<std::vector<int>, std::vector<int> > child_duplicate_higher_indices_map = this-> MakeDuplicateRanksHigherRankIndicesMap(ranks);
+    int non_empty_primary_neighbor_count = 0;
+    if (!child_duplicate_higher_indices_map.empty()){
+        for (std::map<std::vector<int>, std::vector<int> >::iterator map_it = child_duplicate_higher_indices_map.begin(); map_it != child_duplicate_higher_indices_map.end();
+            map_it++){
+            //std::cout << "Still non-unique" << map_it->first[0] << "," << map_it->first[1] << std::endl;
+	    std::vector<int> indices_with_identical_ranking = map_it->first;
+            std::vector<int> indices_with_higher_ranking = map_it->second;
+            for (AtomVector::iterator atomit = primary_neighbors.begin(); atomit != primary_neighbors.end(); atomit++){
+                int index = std::distance(primary_neighbors.begin(), atomit);
+                if (std::find(indices_with_identical_ranking.begin(), indices_with_identical_ranking.end(), index) != indices_with_identical_ranking.end()){
+                    Atom* neighbor = *atomit;
+                    if (!comparison_progress_tracker[neighbor].empty()){
+                        non_empty_primary_neighbor_count++;
+                    }    
 		}
-	    }
-	    if (!dead_end){
-                this->RecursivelyCompareBranches(child_duplicate_higher_indices_map, ranks, visited_atoms, comparison_progress_tracker);
-	    }
+            }
         }
+
+    }
+    if (non_empty_primary_neighbor_count > 1){
+        this->RecursivelyCompareBranches(child_duplicate_higher_indices_map, ranks, visited_atoms, comparison_progress_tracker);
     }
 
 }

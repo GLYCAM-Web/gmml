@@ -1,0 +1,6 @@
+Output longest is: DGalpb1-4DGalpb1-4DGalpb1-4DGalpb1-4[DManpa1-3]LRhapa1-1-OH
+Output lowest index is: DManpa1-3[DGalpb1-4DGalpb1-4DGalpb1-4DGalpb1-4]LRhapa1-1-OH
+Output lowest index Labeled is: DManp&Label=residue-2;a1-3&Label=link-1;[DGalp&Label=residue-6;b1-4&Label=link-5;DGalp&Label=residue-5;b1-4&Label=link-4;DGalp&Label=residue-4;b1-4&Label=link-3;DGalp&Label=residue-3;b1-4&Label=link-2;]LRhap&Label=residue-1;a1-1&Label=link-0;-OH&Label=residue-0;
+Output longest is: DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3[DManp[2S,3Me]a1-6DManpa1-6][DGlcpNAcb1-4]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-1-OH
+Output lowest index is: DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3[DGlcpNAcb1-4][DManp[2S,3Me]a1-6DManpa1-6]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-1-OH
+Output lowest index Labeled is: DNeu5Ac&Label=residue-7;a2-6&Label=link-6;DGalp&Label=residue-6;b1-4&Label=link-5;DGlcpNAc&Label=residue-5;[3S]b1-2&Label=link-4;DManp&Label=residue-4;a1-3&Label=link-3;[DGlcpNAc&Label=residue-8;b1-4&Label=link-7;][DManp&Label=residue-10;[2S,3Me]a1-6&Label=link-9;DManp&Label=residue-9;a1-6&Label=link-8;]DManp&Label=residue-3;b1-4&Label=link-2;DGlcpNAc&Label=residue-2;[6Me]b1-4&Label=link-1;DGlcpNAc&Label=residue-1;b1-1&Label=link-0;-OH&Label=residue-0;

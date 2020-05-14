@@ -475,7 +475,8 @@ MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterR
     for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
     {
         Residue* residue = (*it);
-        if((residue->GetName().compare("HOH") != 0) && (residue->CheckIfProtein() != true))
+        if((residue->GetName().compare("HOH") != 0) && (residue->CheckIfProtein() != true) &&
+           (residue->GetName().compare("DOD") != 0))
         {
             AtomVector atoms = residue->GetAtoms();
             for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
