@@ -5,6 +5,7 @@
 #include <set>
 #include <queue>
 #include <stack>
+#include <algorithm>
 
 #include "../../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../../includes/MolecularModeling/residue.hpp"
@@ -162,7 +163,8 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
                 pdb_atom->SetAtomInsertionCode(gmml::ConvertString<char>(atom_id_tokens.at(5)));
                 pdb_atom->SetAtomAlternateLocation(gmml::ConvertString<char>(atom_id_tokens.at(6)));
                 assembly_to_pdb_sequence_number_map[gmml::ConvertString<int>(atom_id_tokens.at(4))] = sequence_number;
-                assembly_to_pdb_serial_number_map[gmml::ConvertString<int>(atom_id_tokens.at(1))] = serial_number;
+                //assembly_to_pdb_serial_number_map[gmml::ConvertString<int>(atom_id_tokens.at(1))] = serial_number;  //Yao: must stop using id.at(1) for index.
+                assembly_to_pdb_serial_number_map[atom->GetIndex()] = serial_number;  //Yao: must stop using id.at(1) for index.
 
                 if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
                 {
@@ -218,7 +220,8 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
             pdb_atom->SetAtomInsertionCode(gmml::ConvertString<char>(atom_id_tokens.at(5)));
             pdb_atom->SetAtomAlternateLocation(gmml::ConvertString<char>(atom_id_tokens.at(6)));
             assembly_to_pdb_sequence_number_map[gmml::ConvertString<int>(atom_id_tokens.at(4))] = sequence_number;
-            assembly_to_pdb_serial_number_map[gmml::ConvertString<int>(atom_id_tokens.at(1))] = serial_number;
+            //assembly_to_pdb_serial_number_map[gmml::ConvertString<int>(atom_id_tokens.at(1))] = serial_number;  //Yao: must stop using id.at(1) for index.
+            assembly_to_pdb_serial_number_map[atom->GetIndex()] = serial_number;
 
             if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
             {
@@ -336,13 +339,17 @@ void Assembly::ExtractPdbConnectSectionFromAssembly(PdbFileSpace::PdbConnectSect
         {
             AtomVector neighbors = node->GetNodeNeighbors();
             std::vector<std::string> atom_id_tokens = gmml::Split(atom->GetId(), "_");
-            int atom_serial_number = assembly_to_pdb_serial_number[gmml::ConvertString<int>(atom_id_tokens.at(1))];
+            //int atom_serial_number = assembly_to_pdb_serial_number[gmml::ConvertString<int>(atom_id_tokens.at(1))];  //Yao: Must stop using id.at(1) as index
+            int atom_serial_number = assembly_to_pdb_serial_number[atom->GetIndex()];
             bonded_atoms_serial_number_map[atom_serial_number] = std::vector<int>();
             for(AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); it1++)
             {
                 Atom* neighbor = *it1;
-                std::vector<std::string> neighbor_id_tokens = gmml::Split(neighbor->GetId(), "_");
-                bonded_atoms_serial_number_map[atom_serial_number].push_back(assembly_to_pdb_serial_number[gmml::ConvertString<int>(neighbor_id_tokens.at(1))]);
+		if (std::find(all_atoms.begin(), all_atoms.end(), neighbor) != all_atoms.end()){
+                    std::vector<std::string> neighbor_id_tokens = gmml::Split(neighbor->GetId(), "_");
+                    //bonded_atoms_serial_number_map[atom_serial_number].push_back(assembly_to_pdb_serial_number[gmml::ConvertString<int>(neighbor_id_tokens.at(1))]);
+                    bonded_atoms_serial_number_map[atom_serial_number].push_back(assembly_to_pdb_serial_number[neighbor->GetIndex()]);
+		}
             }
         }
     }

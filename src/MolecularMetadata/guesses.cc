@@ -1,3 +1,5 @@
+#ifndef GUESSES_CPP 
+#define GUESSES_CPP //Yao added definition guard 03/24/2020
 
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
@@ -224,3 +226,4 @@ std::pair<double,double> MolecularModeling::Assembly::guessBondLengthByAtomType(
   
 
 }
+#endif //GUESSES_CPP

@@ -89,6 +89,7 @@
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp"
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp"
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
+#include "../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp" //Added by Yao 03/18/2020
 
 
 using MolecularModeling::Assembly;
@@ -340,7 +341,7 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
                         //In my situation, I called MolecularModeling::MolecularModelingAtom::SetAtomType(), but later called Atom::GetAtomType(). The result is empty.
                         //We need to talk about this later
                         template_atom_copy->MolecularDynamicAtom::SetAtomType(template_atom->MolecularDynamicAtom::GetAtomType());
-                        template_atom_copy->SetCharge(template_atom->GetCharge());
+                        template_atom_copy->MolecularDynamicAtom::SetCharge(template_atom->MolecularDynamicAtom::GetCharge());
                         //Create coordinate object for new atom
                         GeometryTopology::Coordinate* copy_coordinate = new GeometryTopology::Coordinate(template_atom->GetCoordinates().at(0));
                         template_atom_copy->AddCoordinate(copy_coordinate);
@@ -2024,6 +2025,8 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                     }
                 }
                 new_atom->SetResidue(residue);
+		new_atom->SetInputIndex(atom->GetAtomSerialNumber());
+
                 std::stringstream atom_key;
                 atom_key << atom_name << "_" << atom->GetAtomSerialNumber() << "_" << key;
                 new_atom->SetId(atom_key.str());
@@ -2442,11 +2445,16 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile *libra
 
         LibraryFileSpace::LibraryFileResidue::AtomMap library_atoms = library_residue->GetAtoms();
 
+	std::map<LibraryFileSpace::LibraryFileAtom*, Atom*> library_assembly_atom_map; //Added by Yao 03/18/2020 to address bonding
+
         for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it1 = library_atoms.begin(); it1 != library_atoms.end(); it1++)
         {
             serial_number++;
             Atom* assembly_atom = new Atom();
             LibraryFileSpace::LibraryFileAtom* library_atom = (*it1).second;
+
+	    library_assembly_atom_map[library_atom] = assembly_atom;  //Added by Yao 03/18/2020 to address bonding
+
             std::string atom_name = library_atom->GetName();
             assembly_atom->SetName(atom_name);
             std::stringstream atom_id;
@@ -2458,6 +2466,11 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile *libra
 
             assembly_atom->MolecularDynamicAtom::SetCharge(library_atom->GetCharge());
             assembly_atom->MolecularDynamicAtom::SetAtomType(library_atom->GetType());
+
+	    gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfoContainer AtomTypeMetaData;
+            std::string element = AtomTypeMetaData.GetElementForAtomType(library_atom->GetType());
+	    assembly_atom->SetElementSymbol(element);
+	     
             if(parameter != NULL)
             {
                 if(atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
@@ -2487,6 +2500,30 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile *libra
             if(library_atom->GetAtomIndex() == lib_res_tail_atom_index)
                 assembly_residue->AddTailAtom(assembly_atom);
         }
+
+	//Loop through all atoms again to address bonding. Added by Yao 03/18/2020
+	//Known caveat: no inter-residue bonding is being addressed, this is intra-residue bonding only
+        for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it1 = library_atoms.begin(); it1 != library_atoms.end(); it1++){
+
+            LibraryFileSpace::LibraryFileAtom* library_atom = (*it1).second;
+	    Atom* assembly_atom = library_assembly_atom_map[library_atom];
+	    //Added by Yao 03/18/2020 to address bonding.
+            std::vector<int> bonded_indices = library_atom->GetBondedAtomsIndices();
+            AtomVector node_neighbors;
+
+            for (std::vector<int>::iterator int_it = bonded_indices.begin(); int_it != bonded_indices.end(); int_it++){
+		LibraryFileSpace::LibraryFileAtom* library_atom_neighbor = library_residue->GetAtomByOrder(*int_it);
+		Atom* assembly_atom_neighbor = library_assembly_atom_map[library_atom_neighbor];
+                node_neighbors.push_back(assembly_atom_neighbor);
+            }
+
+            MolecularModeling::AtomNode* new_node = new MolecularModeling::AtomNode();
+            new_node->SetNodeNeighbors(node_neighbors);
+
+            std::vector<MolecularModeling::AtomNode*> nodes(1, new_node);
+            assembly_atom->SetNodes(nodes);
+	
+	}
         residues_.push_back(assembly_residue);
     }
     name_ = ss.str();

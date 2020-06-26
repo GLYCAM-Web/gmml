@@ -167,10 +167,12 @@ void Residue::AddAtom(MolecularModeling::Atom *atom)
 void Residue::RemoveAtom(MolecularModeling::Atom *atom, bool remove_bonds)
 {
     AtomVector newAtoms = AtomVector();
+    std::vector<MolecularModeling::AtomNode*> leaving_atom_nodes = atom->GetNodes();
+
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         MolecularModeling::Atom* a = *it;
-        if(a->GetId().compare(atom->GetId()) != 0)
+        if(a != atom)
         {
 	    if (remove_bonds){
 		std::vector<MolecularModeling::AtomNode*> nodes = a->GetNodes();
@@ -179,6 +181,11 @@ void Residue::RemoveAtom(MolecularModeling::Atom *atom, bool remove_bonds)
                         (*it2)->RemoveNodeNeighbor(atom);
 	            }
 	        }
+		for (std::vector<MolecularModeling::AtomNode*>::iterator it2 = leaving_atom_nodes.begin(); it2 != leaving_atom_nodes.end(); it2++){
+		    if ((*it2) != NULL){
+		        (*it2)->RemoveNodeNeighbor(a);
+		    } 
+		}
 	    }
             newAtoms.push_back(a);
         }
@@ -198,6 +205,13 @@ void Residue::AddHeadAtom(MolecularModeling::Atom *head_atom)
 {
     head_atoms_.push_back(head_atom);
 }
+void Residue::RemoveHeadAtom(MolecularModeling::Atom* head_atom)
+{
+    AtomVector::iterator position = std::find(head_atoms_.begin(), head_atoms_.end(), head_atom);
+    if (position != head_atoms_.end()){
+        head_atoms_.erase(position);
+    }
+}
 void Residue::SetTailAtoms(AtomVector tail_atoms)
 {
     tail_atoms_.clear();
@@ -209,6 +223,13 @@ void Residue::SetTailAtoms(AtomVector tail_atoms)
 void Residue::AddTailAtom(MolecularModeling::Atom *tail_atom)
 {
     tail_atoms_.push_back(tail_atom);
+}
+void Residue::RemoveTailAtom(MolecularModeling::Atom* tail_atom)
+{
+    AtomVector::iterator position = std::find(tail_atoms_.begin(), tail_atoms_.end(), tail_atom);
+    if (position != tail_atoms_.end()){
+        tail_atoms_.erase(position);
+    }
 }
 void Residue::SetChemicalType(std::string chemical_type)
 {
