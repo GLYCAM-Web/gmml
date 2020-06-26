@@ -34,6 +34,7 @@
 #include "../InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../InputSet/PdbFileSpace/inputfile.hpp"
 #include "molecule.hpp"
+#include "Graph/graph.hpp"
 //#include "residue.hpp"
 //#include "atom.hpp"
 //#include "atomnode.hpp"
@@ -91,6 +92,23 @@ public:
         // not sure what kinds of error/warning messages gmml will provide
         std::vector<std::string> error_warning_messages;
     } gmml_api_output;
+    
+    struct parsedString
+    {
+      std::string label;
+      GraphDS::Node* node = NULL;
+      GraphDS::Edge* edge = NULL;
+      parsedString(std::string Label, GraphDS::Node* Node = NULL)
+      {//Node is NULL by default for branch brackets
+        label = Label;
+        node = Node;
+      }
+      parsedString(std::string Label, GraphDS::Edge* Edge)
+      {
+        label = Label;
+        edge = Edge;
+      }
+    };
 
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
@@ -1354,7 +1372,10 @@ public:
     std::string ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type);
 
     std::string ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type);
-
+    
+    GraphDS::Graph CreateQueryStringGraph(std::string queryString);
+    void ConnectNodes(int start, int end, std::vector<parsedString> &parsedVector, GraphDS::Graph& graph);
+    
     /*! \fn
             * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
             * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology

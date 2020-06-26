@@ -14,6 +14,8 @@ GraphDS::Edge::Edge(GraphDS::Node* srcNode,GraphDS::Node* dstNode)
 {
     this->srcNode_=srcNode;
     this->dstNode_=dstNode;
+    srcNode->AddEdge(this);
+    dstNode->AddEdge(this);
 }
 
 //////////////////////////////////////////////////////////

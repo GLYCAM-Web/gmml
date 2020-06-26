@@ -310,7 +310,7 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
     for(std::vector<Glycan::Note*>::iterator it = thisOligo->oligo_notes_.begin(); it != thisOligo->oligo_notes_.end(); it++)
     {
       Glycan::Note* thisNote = (*it);
-      std::string thisNoteString = thisNote->type_ + ": " + thisNote->description_;
+      std::string thisNoteString = thisNote->ConvertGlycanNoteType2String(thisNote->type_) + ": " + thisNote->description_;
       thisOutput.error_warning_messages.push_back(thisNoteString);
     }
     api_output.push_back(thisOutput);
@@ -328,8 +328,9 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     std::cout << "\n" << "Extracting Sugars\n";
   }
   ///CYCLE DETECTION
+  // DetectCyclesByExhaustiveRingPerception gets stuck in infinite loops for some files, DFS doesn't.
   // CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
-  CycleMap cycles =DetectCyclesByDFS();
+  CycleMap cycles = DetectCyclesByDFS();
   ///PRINTING ALL DETECTED CYCLES
   if(local_debug > 0)
   {
@@ -621,7 +622,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   ///BUILDING OLIGOSACCHARIDE SEQUENCE
   int number_of_oligosaccharides = 0;
   int number_of_monosaccharides = 0;
-  
+
   for(std::vector< Glycan::Oligosaccharide* >::iterator it = testOligos.begin(); it != testOligos.end(); it++)
   {
     Glycan::Oligosaccharide* thisOligo = *it;
@@ -633,7 +634,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     }
     thisOligo->Print( std::cout );// This for some reason does a ton of stuff instead of printing....
   }
-  
+
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
   std::vector< Glycan::Note* > notes = this->GetNotes();
   if(local_debug > 0)
@@ -674,9 +675,14 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       {
         std::string gmmo = this->GetSourceFile();
         gmmo = gmmo.substr(0,gmmo.size()-4) + ".ttl";
-        gmmo.insert(gmmo.size()-8, gmmo.substr(gmmo.size()-7, 2));
-        gmmo.insert(gmmo.size()-8, "/");
-        std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
+        
+        // gmmo.insert(gmmo.size()-8, gmmo.substr(gmmo.size()-7, 2));
+        // gmmo.insert(gmmo.size()-8, "/");
+        // std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
+        std::string ontologyDirectory = "Ontologies";
+        std::string gmmoDirectory = ontologyDirectory + "/" + gmmo.substr(gmmo.size()-7, 2);
+        gmmo = ontologyDirectory + "/" + gmmo.substr(gmmo.size()-7, 2) + "/" + gmmo;        
+        mkdir(ontologyDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
         mkdir(gmmoDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
         out_file.open( gmmo.c_str(), std::fstream::out | std::fstream::trunc);
         out_file << Ontology::TTL_FILE_PREFIX << "\n";
@@ -981,7 +987,7 @@ void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
         for(MolecularModeling::AtomVector::iterator it1 = cycle_atoms.begin(); it1 != cycle_atoms.end(); it1++)
         {
             MolecularModeling::Atom* atom = (*it1);
-            if(atom->GetName().find("C") == std::string::npos)
+            if(atom->GetElementSymbol() != "C")
             {
                 all_carbons = false;
                 break;
@@ -3097,8 +3103,10 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
                   in_bracket << mono->cycle_atoms_.size() - 1 + gmml::ConvertString<int>(key) << cond_name_pattern << ",";
                   gmml::log(__LINE__, __FILE__, gmml::INF, in_bracket.str());
                 }
-               else if(key.compare("a") == 0)
-                   in_bracket << "1" << cond_name_pattern << ",";
+                //Below was commented out because anomeric derivates are likely on the root mono, and listed as terminal.  This resulted in names like DManp[1Me]a1-OME, so it has been removed.  This means if there is a derivative at the anomeric carbon in the middle of an oligosaccharide, we will miss it.
+                //TODO figure out how to fix this.  I tried a check for if the mono was root, but that is set after this is called.
+               // else if(key.compare("a") == 0)
+               //     in_bracket << "1" << cond_name_pattern << ",";
                 else if(key.compare("a") != 0)
                 {
                   in_bracket << gmml::ConvertString<int>(key) << cond_name_pattern << ",";
