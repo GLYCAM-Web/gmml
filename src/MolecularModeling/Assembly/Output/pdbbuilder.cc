@@ -5,6 +5,7 @@
 #include <set>
 #include <queue>
 #include <stack>
+#include <string>
 
 #include "../../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../../includes/MolecularModeling/residue.hpp"
@@ -145,6 +146,15 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
         for(ResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
         {
             Residue* residue = (*it1);
+            // Oliver: It looks like there is functionality for sequence_number (residue number) and serial_number (starts at 1) to coexist, but there 
+            // are both set to 1 up above. I'm going to try have sequence_number be the actual sequence number
+            if(!residue->GetNumber().empty() && residue->GetNumber() != "\n" ) // if not an empty string or a newline
+            {
+              // std::cout << "RESIDUE ID is _" << residue->GetId() << "_" << std::endl;
+              // std::cout << "RESIDUE NUMBER IS _" << residue->GetNumber() << "_" << std::endl;
+                try {sequence_number = std::stoi(residue->GetNumber());}
+                catch (...) {}; // Do nothing if can't convert, use the incremented sequence_number
+            }
             AtomVector atoms = residue->GetAtoms();
             for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
             {
@@ -183,7 +193,7 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
                     serial_number++;
                 }
             }
-            sequence_number++;
+             sequence_number++; // if residue->GetNumber() is empty, this is necessary to increment each time
         }
         atom_card->SetAtomCards(atom_map);
         atom_card->SetOrderedAtomCards(atom_vector);
@@ -201,6 +211,15 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
     for(ResidueVector::iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
     {
         Residue* residue = (*it1);
+        // Oliver: It looks like there is functionality for sequence_number (residue number) and serial_number (starts at 1) to coexist, but there 
+        // are both set to 1 up above. I'm going to try have sequence_number be the actual sequence number 
+        if(!residue->GetNumber().empty() && residue->GetNumber() != "\n" ) // if not an empty string or a newline
+        {
+            // std::cout << "RESIDUE ID is _" << residue->GetId() << "_" << std::endl;
+            // std::cout << "RESIDUE NUMBER IS _" << residue->GetNumber() << "_" << std::endl;
+            try {sequence_number = std::stoi(residue->GetNumber());}
+            catch (...) {}; // Do nothing if can't convert, use the incremented sequence_number
+        }
         AtomVector atoms = residue->GetAtoms();
         for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
@@ -240,7 +259,7 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
                 serial_number++;
             }
         }
-        sequence_number++;
+       sequence_number++; // Useful if sequence number in Residue class hasn't been set properly
     }
     atom_card->SetAtomCards(atom_map);
     atom_card->SetOrderedAtomCards(atom_vector);
