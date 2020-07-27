@@ -135,8 +135,9 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
             ExtractPdbModelSectionFromAssembly(residue_set, serial_number, sequence_number, model_number, assembly_to_pdb_sequence_number_map,
                                             assembly_to_pdb_serial_number_map);
         }
-        // Oliver: This next section seems redunant. Any sub-assembly will recurve call and run through the code below this chunk like a top level assembly would.
-        // I think everything will just get overwritten if this runs. Commenting out to see. 
+        // Oliver July 2020: This next section seems redunant. Any sub-assembly will recurve call ExtractPdbModelSectionFromAssembly and run through the code below this chunk 
+        // like a top level assembly would.
+        // I think everything will just get overwritten if this runs. Commenting out to see. Delete this if it's the future and everything is ok now (with writing PDB files).
         // PdbFileSpace::PdbAtomSection* atom_card = new PdbFileSpace::PdbAtomSection();
         // PdbFileSpace::PdbHeterogenAtomSection* het_atom_card = new PdbFileSpace::PdbHeterogenAtomSection();
         // PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map = PdbFileSpace::PdbAtomSection::PdbAtomMap();

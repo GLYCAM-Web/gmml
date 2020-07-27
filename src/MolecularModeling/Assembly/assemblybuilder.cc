@@ -316,10 +316,22 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
                     this->AddResidue(assembly_residue);
                     assembly_residue->SetAssembly(this);
                     assembly_residue->SetName(template_residue->GetName());
-                    std::stringstream id_stream;
-                    id_stream << template_residue->GetName() << "_" << residue_serial_number << "_" << template_residue->GetId() << std::endl;
+                    std::stringstream residue_id_stream;
+                    // Oliver Jul2020: Updating this to look like other IDs. Not sure what the template_residue->GetId() should be, it's blank in my tests
+                   // residue_id_stream << template_residue->GetName() << "_" << residue_serial_number << "_" << template_residue->GetId() << std::endl;
+                    std::string template_residue_id = template_residue->GetId();
+                    if (template_residue_id.empty())
+                    {
+                        template_residue_id = gmml::BLANK_SPACE; // Is actually a "?". No I mean it's an actual question mark.
+                    }
+                    // Oliver Jul2020 
+                    // For the serial_number + 1, it's set to 0 above and used in the index_condensed_sequence_assembly_residue_map below... But I can't have a 0 residue number
+                    // Going to have the default chain be "A".
+                    residue_id_stream << template_residue->GetName() << "_" << "A" << "_" << (residue_serial_number + 1) << "_" << gmml::BLANK_SPACE << "_" 
+                    << gmml::BLANK_SPACE << "_" << template_residue_id;
+                   
                     //std::string residue_id = template_residue->GetName() + "_" + serial_number_stream.str() + "_" + template_residue->GetId();
-                    assembly_residue->SetId (id_stream.str());
+                    assembly_residue->SetId(residue_id_stream.str());
                     index_condensed_sequence_assembly_residue_map[residue_serial_number].first = condensed_sequence_residue;
                     index_condensed_sequence_assembly_residue_map[residue_serial_number].second = assembly_residue;
                     newly_added_residues.push_back(assembly_residue);
@@ -345,7 +357,9 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
                         GeometryTopology::Coordinate* copy_coordinate = new GeometryTopology::Coordinate(template_atom->GetCoordinates().at(0));
                         template_atom_copy->AddCoordinate(copy_coordinate);
                         std::stringstream atom_id_stream;
-                        atom_id_stream << template_atom->GetName() << "_" << atom_serial_number << "_" << template_residue->GetName() << "_" << "A" << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
+                        //Oliver Jul2020: What is this mess? Why is there a " "? 
+                        //atom_id_stream << template_atom->GetName() << "_" << atom_serial_number << "_" << template_residue->GetName() << "_" << "A" << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
+                        atom_id_stream << template_atom->GetName() << "_" << atom_serial_number << "_" << residue_id_stream.str();
                         template_atom_copy->SetId(atom_id_stream.str());
                         //Tag cycle/sidechain atoms
                         template_atom_copy->MolecularModeling::OligoSaccharideDetectionAtom::SetIsCycle(template_atom->GetIsCycle());
@@ -1495,8 +1509,10 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
                 std::string prep_residue_name = prep_residue->GetName();
                 assembly_residue->SetName(prep_residue_name);
                 std::stringstream id;
-                id << prep_residue_name << "_" << gmml::BLANK_SPACE << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
+                // Oliver Jul2020: Adding A as the default chain id. Should do this better, but this code should "go away now please".
+                id << prep_residue_name << "_" << "A" << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
                    << gmml::BLANK_SPACE << "_" << id_;
+              //  std::cout << "ABOUT TO MAKE THIS ID::" << id.str() << "::\n with this id_ ::" << id_ << "::\n";
 
                 assembly_residue->SetId(id.str());
                 if(std::distance(glycam06_residues.begin(), it) == (int)glycam06_residues.size()-1)
@@ -1709,6 +1725,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
 
 }
 
+// Oliver Jul2020: This needs to go away now, there is metadata to set all this.
 void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly, CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo 
                                                      rotamers_glycosidic_angles_info, std::multimap<int, std::pair<AtomVector*, std::string> >& index_dihedral_map)
 {
