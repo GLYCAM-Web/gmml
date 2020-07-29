@@ -82,6 +82,13 @@ void carbohydrateBuilder::GenerateRotamers(std::string jsonSelection)
     return;
 }
 
+void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
+{
+    std::cout << "Rotamer Permutator\n";
+    ResidueLinkageVector linkagesOrderedForPermutation = this->SplitLinkagesIntoPermutants(*(this->GetGlycosidicLinkages()));
+    this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
+}
+
 std::string carbohydrateBuilder::GenerateUserOptionsJSON()
 {
     /* https://github.com/nlohmann/json. See also includes/External_Libraries/json.hpp
@@ -130,18 +137,24 @@ std::string carbohydrateBuilder::GenerateUserOptionsJSON()
 //////////////////////////////////////////////////////////
 //                   PRIVATE FUNCTIONS                  //
 //////////////////////////////////////////////////////////
+
 void carbohydrateBuilder::Write3DStructureFile(std::string type, std::string filename)
 {
     // Use type to figure out which type to write, eg. PDB OFFFILE etc.
-    PdbFileSpace::PdbFile *outputPdbFile = this->GetAssembly()->BuildPdbFileStructureFromAssembly();
-    std::string emilyThePdbFilename = filename + ".pdb";
-//    filename += ".pdb";
-    outputPdbFile->Write(emilyThePdbFilename);
+    if (type == "PDB") 
+    {
+        PdbFileSpace::PdbFile *outputPdbFile = this->GetAssembly()->BuildPdbFileStructureFromAssembly();
+        std::string emilyThePdbFilename = filename + ".pdb";
+        outputPdbFile->Write(emilyThePdbFilename);
+    }
+    if (type == "OFFFILE")
+    {
     // Le hack:
     //void OffFileSpace::OffFile::Write(std::string file_name, int CoordinateIndex, MolecularModeling::Assembly* assembly)
-    OffFileSpace::OffFile frankTheOffFile;
-    int CoordinateIndex = 0;
-    frankTheOffFile.Write(filename + ".off", CoordinateIndex, this->GetAssembly());
+        OffFileSpace::OffFile frankTheOffFile;
+        int CoordinateIndex = 0;
+        frankTheOffFile.Write(filename + ".off", CoordinateIndex, this->GetAssembly());
+    }
     return;
 }
 //void carbohydrateBuilder::Write3DStructureFile(std::string type, std::string filename)
@@ -211,11 +224,11 @@ void carbohydrateBuilder::InitializeClass(std::string inputSequenceString, std::
 {
     assembly_.SetName("CONDENSEDSEQUENCE");
     this->SetInputSequenceString(inputSequenceString);
-   // CondensedSequence condensedSeqence(inputSequenceString); // This is all weird. condensedSequence should be merged into this class eventually
-   // if (condensedSeqence.ParseSequenceAndCheckSanity(inputSequenceString))
- //   { // if a valid sequence
+    CondensedSequence condensedSeqence(inputSequenceString); // This is all weird. condensedSequence should be merged into this class eventually
+    if (condensedSeqence.ParseSequenceAndCheckSanity(inputSequenceString))
+    { // if a valid sequence
         this->SetSequenceIsValid(true);
-     //   this->SetOfficialSequenceString(condensedSeqence.BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach::LONGEST_CHAIN, false));
+        this->SetOfficialSequenceString(condensedSeqence.BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach::LONGEST_CHAIN, CondensedSequence::Reordering_Approach::LONGEST_CHAIN, false));
         PrepFileSpace::PrepFile* prepFile = new PrepFileSpace::PrepFile(inputPrepFilePath);
         assembly_.BuildAssemblyFromCondensedSequence(inputSequenceString, prepFile);
         // So in the above BuildAssemblyFromCondensedSequence code, linkages are generated that are inaccessible to me.
@@ -223,11 +236,65 @@ void carbohydrateBuilder::InitializeClass(std::string inputSequenceString, std::
         // In the mean time I must also create linkages at this level, but I can't figure out how to reset linkage IDs.
         // Maybe I can check if both passed in residues are the same, and reset if so? That only happens here I think.
         this->FigureOutResidueLinkagesInGlycan(assembly_.GetResidues().at(0), assembly_.GetResidues().at(0), &glycosidicLinkages_);
- //   }
-//    else
-//    { // if not a valid sequence
-//        //hmmm not sure how to handle that. Need to ask Dan
-//        this->SetSequenceIsValid(false);
-//    }
+    }
+    else
+    { // if not a valid sequence
+        //hmmm not sure how to handle that. Need to ask Dan
+       this->SetSequenceIsValid(false);
+       std::cout << "Sequence is invalid " << inputSequenceString << "\n";
+    }
     return;
+}
+
+/* This is a straight copy from glycoprotein_builder. I need a high level class that deals with both Residue_linkages, ring shapes
+ * etc. That way I can create X shapes of a molecule. For now this will do to figure out some implementation details like file naming.
+ */
+ResidueLinkageVector carbohydrateBuilder::SplitLinkagesIntoPermutants(ResidueLinkageVector &inputLinkages)
+{
+    ResidueLinkageVector sortedLinkages;
+    for(auto &linkage : inputLinkages)
+    {
+        if(linkage.CheckIfConformer())
+        {
+            sortedLinkages.push_back(linkage);
+        }
+        else // if not a conformer
+        {
+            RotatableDihedralVector rotatableDihedrals = linkage.GetRotatableDihedralsWithMultipleRotamers(); // only want the rotatabe dihedrals within a linkage that have multiple rotamers. Some bonds won't.
+            for(auto &rotatableDihedral : rotatableDihedrals)
+            {
+                Residue_linkage splitLinkage = linkage; // Copy it to get correct info into class
+                RotatableDihedralVector temp = {rotatableDihedral};
+                splitLinkage.SetRotatableDihedrals(temp);
+                sortedLinkages.push_back(splitLinkage);
+                std::cout << "Split out " << splitLinkage.GetFromThisResidue1()->GetId() << "-" << splitLinkage.GetToThisResidue2()->GetId() << " rotamer with number of shapes: " << rotatableDihedral.GetNumberOfRotamers() << "\n";
+            }
+        }
+    }
+    return sortedLinkages;
+}
+
+//Adapted from resolve_overlaps.
+void carbohydrateBuilder::generateLinkagePermutationsRecursively(ResidueLinkageVector::iterator linkage, ResidueLinkageVector::iterator end, int maxRotamers, int rotamerCount)
+{
+    for(int shapeNumber = 0; shapeNumber < linkage->GetNumberOfShapes(); ++shapeNumber)
+    {
+        ++rotamerCount;
+        if (rotamerCount <= maxRotamers)
+        {
+            linkage->SetSpecificShapeUsingMetadata(shapeNumber);
+        //std::cout << linkage->GetFromThisResidue1()->GetId() << "-" << linkage->GetToThisResidue2()->GetId() << ": " << (shapeNumber + 1) << " of " << linkage->GetNumberOfShapes() <<  "\n";
+            if(std::next(linkage) != end)
+            {
+                this->generateLinkagePermutationsRecursively(std::next(linkage), end, maxRotamers, rotamerCount);
+            }
+            else // At the end
+            {
+            //Check for issues? Resolve
+            //Figure out name of file: http://128.192.9.183/eln/gwscratch/2020/01/10/succinct-rotamer-set-labeling-for-sequences/
+            //Write PDB file
+                this->Write3DStructureFile("PDB", std::to_string(rotamerCount));
+            }
+        }
+    }
 }

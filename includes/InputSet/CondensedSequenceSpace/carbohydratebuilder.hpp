@@ -50,6 +50,8 @@ public:
     std::string GenerateUserOptionsJSON();
     void ReadUserSelectionsJSON(std::string jsonInput);
     void GenerateRotamers(std::string jsonSelection = "");
+    void GenerateUpToNRotamers(int maxRotamers = 32);
+
 
 private:
     void Write3DStructureFile(std::string type = "PDB", std::string filename = "output.pdb");
@@ -60,7 +62,9 @@ private:
     void ResolveOverlaps();
     void FigureOutResidueLinkagesInGlycan(MolecularModeling::Residue *from_this_residue1, MolecularModeling::Residue *to_this_residue2, ResidueLinkageVector *residue_linkages);
     void InitializeClass(std::string condensedSequence, std::string prepFilePath);
-
+    // This does not belong in this class:
+    ResidueLinkageVector SplitLinkagesIntoPermutants(ResidueLinkageVector &inputLinkages);
+    void generateLinkagePermutationsRecursively(ResidueLinkageVector::iterator linkage, ResidueLinkageVector::iterator end, int maxRotamers = 32, int rotamerCount = 0);
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
@@ -72,6 +76,7 @@ private:
     //GlycanMetadataContainer metadataInformation_; // need this class
     ResidueLinkageVector glycosidicLinkages_;
     bool sequenceIsValid_;
+    //int maxRotamers_; ?? might be useful
 
 };
 }
