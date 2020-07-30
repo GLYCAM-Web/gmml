@@ -30,9 +30,9 @@ int main()
         std::cerr << "Invalid sequence" << std::endl;
         return 1;
     }
-    carbBuilder.GenerateUserOptionsJSON(); // This is how Dan will get options to display on front end
+    std::cout << carbBuilder.GenerateUserOptionsJSON() << std::endl; // This is how Dan will get options to display on front end
     carbBuilder.GenerateSingle3DStructure(); // This is how you generate a default, single 3D structre. Overlaps are resolved. Provide name if you want
-    carbBuilder.GenerateRotamers(); // This is how you generate all (default behavior) or selected rotamers (pass in JSON string).
+    //carbBuilder.GenerateRotamers(); // This is how you generate all (default behavior) or selected rotamers (pass in JSON string).
     //std::string jsonSelection = 
 
     // Testing Yao's reordering thing

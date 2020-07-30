@@ -5,6 +5,7 @@
 #include <set>
 #include <queue>
 #include <stack>
+#include <string>
 
 #include "../../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../../includes/MolecularModeling/residue.hpp"
@@ -134,63 +135,75 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
             ExtractPdbModelSectionFromAssembly(residue_set, serial_number, sequence_number, model_number, assembly_to_pdb_sequence_number_map,
                                             assembly_to_pdb_serial_number_map);
         }
-        PdbFileSpace::PdbAtomSection* atom_card = new PdbFileSpace::PdbAtomSection();
-        PdbFileSpace::PdbHeterogenAtomSection* het_atom_card = new PdbFileSpace::PdbHeterogenAtomSection();
-        PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map = PdbFileSpace::PdbAtomSection::PdbAtomMap();
-        PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
-        PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomCardMap het_atom_map = PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomCardMap();
-        PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector het_atom_vector = PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
-        //ResidueVector residues = assembly->GetResidues();
-        ResidueVector residues = this->GetResidues();
-        for(ResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
-        {
-            Residue* residue = (*it1);
-            AtomVector atoms = residue->GetAtoms();
-            for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
-            {
-                Atom* atom = (*it2);
-                std::vector<std::string> dscr = gmml::Split(atom->GetDescription(), ";");
-                //                std::stringstream ss;
-                //                ss << setw(2) << fixed << setprecision(1) << atom->MolecularDynamicAtom::GetCharge();
-                std::string residue_name = atom->GetResidue()->GetName();
-                if(residue_name.compare("TIP3PBOX") == 0 || residue_name.compare("TIP5PBOX") == 0)
-                    residue_name = "HOH";
-                PdbFileSpace::PdbAtomCard* pdb_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetName(), ' ', residue_name, ' ', sequence_number, ' ',
-                                                *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet, atom->GetElementSymbol(), "");//ss.str());
-                std::vector<std::string> atom_id_tokens = gmml::Split(atom->GetId(), "_");
-                pdb_atom->SetAtomChainId(gmml::ConvertString<char>(atom_id_tokens.at(3)));
-                pdb_atom->SetAtomInsertionCode(gmml::ConvertString<char>(atom_id_tokens.at(5)));
-                pdb_atom->SetAtomAlternateLocation(gmml::ConvertString<char>(atom_id_tokens.at(6)));
-                assembly_to_pdb_sequence_number_map[gmml::ConvertString<int>(atom_id_tokens.at(4))] = sequence_number;
-                assembly_to_pdb_serial_number_map[gmml::ConvertString<int>(atom_id_tokens.at(1))] = serial_number;
+        // Oliver July 2020: This next section seems redunant. Any sub-assembly will recurve call ExtractPdbModelSectionFromAssembly and run through the code below this chunk 
+        // like a top level assembly would.
+        // I think everything will just get overwritten if this runs. Commenting out to see. Delete this if it's the future and everything is ok now (with writing PDB files).
+        // PdbFileSpace::PdbAtomSection* atom_card = new PdbFileSpace::PdbAtomSection();
+        // PdbFileSpace::PdbHeterogenAtomSection* het_atom_card = new PdbFileSpace::PdbHeterogenAtomSection();
+        // PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map = PdbFileSpace::PdbAtomSection::PdbAtomMap();
+        // PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
+        // PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomCardMap het_atom_map = PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomCardMap();
+        // PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector het_atom_vector = PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
+        // //ResidueVector residues = assembly->GetResidues();
+        // ResidueVector residues = this->GetResidues();
+        // for(ResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
+        // {
+        //     Residue* residue = (*it1);
+        //     // Oliver: It looks like there is functionality for sequence_number (residue number) and serial_number (starts at 1) to coexist, but there 
+        //     // are both set to 1 up above. I'm going to try have sequence_number be the actual sequence number
+        //     if(!residue->GetNumber().empty() && residue->GetNumber() != "\n" ) // if not an empty string or a newline
+        //     {
+        //       // std::cout << "RESIDUE ID is _" << residue->GetId() << "_" << std::endl;
+        //       // std::cout << "RESIDUE NUMBER IS _" << residue->GetNumber() << "_" << std::endl;
+        //         try {sequence_number = std::stoi(residue->GetNumber());}
+        //         catch (...) {}; // Do nothing if can't convert, use the incremented sequence_number
+        //     }
+        //     AtomVector atoms = residue->GetAtoms();
+        //     for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+        //     {
+        //         Atom* atom = (*it2);
+        //         std::vector<std::string> dscr = gmml::Split(atom->GetDescription(), ";");
+        //         //                std::stringstream ss;
+        //         //                ss << setw(2) << fixed << setprecision(1) << atom->MolecularDynamicAtom::GetCharge();
+        //         std::string residue_name = atom->GetResidue()->GetName();
+        //         if(residue_name.compare("TIP3PBOX") == 0 || residue_name.compare("TIP5PBOX") == 0)
+        //             residue_name = "HOH";
+        //         PdbFileSpace::PdbAtomCard* pdb_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetName(), ' ', residue_name, ' ', sequence_number, ' ',
+        //                                         *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet, atom->GetElementSymbol(), "");//ss.str());
+        //         std::vector<std::string> atom_id_tokens = gmml::Split(atom->GetId(), "_");
+        //         pdb_atom->SetAtomChainId(gmml::ConvertString<char>(atom_id_tokens.at(3)));
+        //         pdb_atom->SetAtomInsertionCode(gmml::ConvertString<char>(atom_id_tokens.at(5)));
+        //         pdb_atom->SetAtomAlternateLocation(gmml::ConvertString<char>(atom_id_tokens.at(6)));
+        //         assembly_to_pdb_sequence_number_map[gmml::ConvertString<int>(atom_id_tokens.at(4))] = sequence_number;
+        //         assembly_to_pdb_serial_number_map[gmml::ConvertString<int>(atom_id_tokens.at(1))] = serial_number;
 
-                if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
-                {
-                    atom_map[serial_number] = pdb_atom;
-                    atom_vector.push_back(pdb_atom);
-                    serial_number++;
-                }
-                else if(find(dscr.begin(), dscr.end(), "Het") != dscr.end())
-                {
-                    het_atom_map[serial_number] = pdb_atom;
-                    het_atom_vector.push_back(pdb_atom);
-                    serial_number++;
-                }
-                else
-                {
-                    atom_map[serial_number] = pdb_atom;
-                    atom_vector.push_back(pdb_atom);
-                    serial_number++;
-                }
-            }
-            sequence_number++;
-        }
-        atom_card->SetAtomCards(atom_map);
-        atom_card->SetOrderedAtomCards(atom_vector);
-        het_atom_card->SetHeterogenAtoms(het_atom_map);
-        het_atom_card->SetOrderedHeterogenAtoms(het_atom_vector);
-        residue_set->AddAtom(atom_card);
-        residue_set->AddHeterogenAtom(het_atom_card);
+        //         if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
+        //         {
+        //             atom_map[serial_number] = pdb_atom;
+        //             atom_vector.push_back(pdb_atom);
+        //             serial_number++;
+        //         }
+        //         else if(find(dscr.begin(), dscr.end(), "Het") != dscr.end())
+        //         {
+        //             het_atom_map[serial_number] = pdb_atom;
+        //             het_atom_vector.push_back(pdb_atom);
+        //             serial_number++;
+        //         }
+        //         else
+        //         {
+        //             atom_map[serial_number] = pdb_atom;
+        //             atom_vector.push_back(pdb_atom);
+        //             serial_number++;
+        //         }
+        //     }
+        //      sequence_number++; // if residue->GetNumber() is empty, this is necessary to increment each time
+        // }
+        // atom_card->SetAtomCards(atom_map);
+        // atom_card->SetOrderedAtomCards(atom_vector);
+        // het_atom_card->SetHeterogenAtoms(het_atom_map);
+        // het_atom_card->SetOrderedHeterogenAtoms(het_atom_vector);
+        // residue_set->AddAtom(atom_card);
+        // residue_set->AddHeterogenAtom(het_atom_card);
     }
     PdbFileSpace::PdbAtomSection* atom_card = new PdbFileSpace::PdbAtomSection();
     PdbFileSpace::PdbHeterogenAtomSection* het_atom_card = new PdbFileSpace::PdbHeterogenAtomSection();
@@ -201,6 +214,15 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
     for(ResidueVector::iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
     {
         Residue* residue = (*it1);
+        // Oliver: It looks like there is functionality for sequence_number (residue number) and serial_number (starts at 1) to coexist, but there 
+        // are both set to 1 up above. I'm going to try have sequence_number be the actual sequence number 
+        if(!residue->GetNumber().empty() && residue->GetNumber() != "\n" ) // if not an empty string or a newline
+        {
+            // std::cout << "RESIDUE ID is _" << residue->GetId() << "_" << std::endl;
+            // std::cout << "RESIDUE NUMBER IS _" << residue->GetNumber() << "_" << std::endl;
+            try {sequence_number = std::stoi(residue->GetNumber());}
+            catch (...) {}; // Do nothing if can't convert, use the incremented sequence_number
+        }
         AtomVector atoms = residue->GetAtoms();
         for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
@@ -240,7 +262,7 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
                 serial_number++;
             }
         }
-        sequence_number++;
+       sequence_number++; // Useful if sequence number in Residue class hasn't been set properly
     }
     atom_card->SetAtomCards(atom_map);
     atom_card->SetOrderedAtomCards(atom_vector);

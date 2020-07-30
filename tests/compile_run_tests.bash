@@ -8,7 +8,7 @@ Beginning testing.
 
 run_test() 
 {
-    sh $1
+    source $1
     return $?
 }
 

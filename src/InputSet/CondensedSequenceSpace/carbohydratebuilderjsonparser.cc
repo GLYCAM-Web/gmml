@@ -45,61 +45,61 @@ nlohmann::json findJsonKeyRecursive(const nlohmann::json& j, std::string query_k
     return nullptr;
 }
 
-void carbohydrateBuilder::ReadUserSelectionsJSON(std::string jsonInput)
-{
-    using json = nlohmann::json;
+// void carbohydrateBuilder::ReadUserSelectionsJSON(std::string jsonInput)
+// {
+//     using json = nlohmann::json;
 
-    if (jsonInput.empty()) {
-    // Temporary/example until jsonInput is set and this is called from elsewhere.
-auto exampleJSON = R"({
-    "serviceContext": "oligosaccharideModelingServices",
-    "object": "linkageGeometries",
-    "sessionId": "lengthyUUIDString",
-    "originalSequence": "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH",
-    "officialSequence": "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH",
-    "jobTokenId": "anotherId",
-    "linkageGeometries": [{
-            "linkageLabel": "1",
-            "dihedralName": "omega",
-            "dihedralUnits": "rotamerName",
-            "dihedralValue": "gg"
-        },
-        {
-            "linkageLabel": "4",
-            "dihedralName": "phi",
-            "dihedralValue": "1.27749",
-            "dihedralUnits": "radians"
-        },
-        {
-            "linkageLabel": "4",
-            "dihedralName": "omega",
-            "dihedralValue": "gt",
-            "dihedralUnits": "rotamerName"
-          }
-    ]
-})"_json;
-    jsonInput = exampleJSON.dump(); // I assume jsonInput will be serialized.
-    }
-    // REMOVE THE ABOVE IF FINISHED TESTING
-    json jsonBourne = json::parse(jsonInput);
-    json linkageGeometries = findJsonKeyRecursive(jsonBourne, "linkageGeometries");
+//     if (jsonInput.empty()) {
+//     // Temporary/example until jsonInput is set and this is called from elsewhere.
+// auto exampleJSON = R"({
+//     "serviceContext": "oligosaccharideModelingServices",
+//     "object": "linkageGeometries",
+//     "sessionId": "lengthyUUIDString",
+//     "originalSequence": "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH",
+//     "officialSequence": "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH",
+//     "jobTokenId": "anotherId",
+//     "linkageGeometries": [{
+//             "linkageLabel": "1",
+//             "dihedralName": "omega",
+//             "dihedralUnits": "rotamerName",
+//             "dihedralValue": "gg"
+//         },
+//         {
+//             "linkageLabel": "4",
+//             "dihedralName": "phi",
+//             "dihedralValue": "1.27749",
+//             "dihedralUnits": "radians"
+//         },
+//         {
+//             "linkageLabel": "4",
+//             "dihedralName": "omega",
+//             "dihedralValue": "gt",
+//             "dihedralUnits": "rotamerName"
+//           }
+//     ]
+// })"_json;
+//     jsonInput = exampleJSON.dump(); // I assume jsonInput will be serialized.
+//     }
+//     // REMOVE THE ABOVE IF FINISHED TESTING
+//     json jsonBourne = json::parse(jsonInput);
+//     json linkageGeometries = findJsonKeyRecursive(jsonBourne, "linkageGeometries");
 
-    std::vector <json> values;
-    CondensedSequenceSpace::userSelection steveie;
-    for (auto & el : linkageGeometries.items())
-    {
- //       std::cout << el.key() << " k:v " << el.value() << "\n";
-        values.emplace_back(el.value());
-    }
-    for (auto & el : values)
-    {
-        steveie.dihedralName = el["dihedralName"].get<std::string>();
-        steveie.linkageLabel = el["linkageLabel"].get<std::string>();
-        steveie.dihedralUnits = el["dihedralUnits"].get<std::string>();
-        steveie.dihedralValue = el["dihedralValue"].get<std::string>();
- //     std::cout << "steve: " << steveie.dihedralName << ", " << steveie.linkageLabel << ", " << steveie.dihedralUnits << ", " << steveie.dihedralValue << std::endl;
-    }
-}
+//     std::vector <json> values;
+//     CondensedSequenceSpace::userSelection steveie;
+//     for (auto & el : linkageGeometries.items())
+//     {
+//  //       std::cout << el.key() << " k:v " << el.value() << "\n";
+//         values.emplace_back(el.value());
+//     }
+//     for (auto & el : values)
+//     {
+//         steveie.dihedralName = el["dihedralName"].get<std::string>();
+//         steveie.linkageLabel = el["linkageLabel"].get<std::string>();
+//         steveie.dihedralUnits = el["dihedralUnits"].get<std::string>();
+//         steveie.dihedralValue = el["dihedralValue"].get<std::string>();
+//  //     std::cout << "steve: " << steveie.dihedralName << ", " << steveie.linkageLabel << ", " << steveie.dihedralUnits << ", " << steveie.dihedralValue << std::endl;
+//     }
+// }
 
 
 //// Allows implicit converstion
