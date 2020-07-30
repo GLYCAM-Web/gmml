@@ -14,6 +14,25 @@
 
 namespace CondensedSequenceSpace
 {
+struct singleRotamerInfo
+{
+    std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
+    std::string linkageName; // Can be whatever the user wants it to be, default to same as index.
+    std::string dihedralName; // omg / phi / psi / chi1 / chi2
+    std::string selectedRotamer; // gg / tg / g- etc
+    std::string numericValue; // user entered 64 degrees. Could be a v2 feature.
+};
+typedef std::vector<singleRotamerInfo> singleRotamerInfoVector;
+
+// struct conformerInfo
+// {
+//     conformerInfo() : fileOutputDirectory("undefined"), fileOutputName("default") {}
+//     singleRotamerInfoVector rotamerInfoVector; //All the info to generate one specified shape of a sequence
+//     std::string fileOutputDirectory;
+//     std::string fileOutputName;
+// //    StringVector fileOutputTypes; Just writing both as default for now
+// };
+
 class carbohydrateBuilder
 {
 public:
@@ -40,21 +59,18 @@ public:
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
 
-
-
     //////////////////////////////////////////////////////////
     //                        FUNCTIONS                     //
     //////////////////////////////////////////////////////////
 
-    void GenerateSingle3DStructure(std::string outputFileNaming = "default");
+    void GenerateSingle3DStructure(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string outputFileNaming = "default");
     std::string GenerateUserOptionsJSON();
-    void ReadUserSelectionsJSON(std::string jsonInput);
-    void GenerateRotamers(std::string jsonSelection = "");
-    void GenerateUpToNRotamers(int maxRotamers = 32);
-
+    //void ReadUserSelectionsJSON(std::string jsonInput); // Initially planned this, but made redundant as handled at gems level
+    void GenerateRotamer(singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
+    void GenerateUpToNRotamers(int maxRotamers = 32); // Will not be used by gems, but leaving the functionality as could be useful.
 
 private:
-    void Write3DStructureFile(std::string type = "PDB", std::string filename = "output.pdb");
+    void Write3DStructureFile(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string filename = "output");
     void SetInputSequenceString(std::string sequence);
     void SetOfficialSequenceString(std::string sequence);
     void SetSequenceIsValid(bool isValid);
@@ -65,10 +81,11 @@ private:
     // This does not belong in this class:
     ResidueLinkageVector SplitLinkagesIntoPermutants(ResidueLinkageVector &inputLinkages);
     void generateLinkagePermutationsRecursively(ResidueLinkageVector::iterator linkage, ResidueLinkageVector::iterator end, int maxRotamers = 32, int rotamerCount = 0);
+    Residue_linkage* selectLinkageWithIndex(ResidueLinkageVector &inputLinkages, int indexQuery); 
+    void resetLinkageIDsToStartFromZero(ResidueLinkageVector &inputLinkages);
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
-
     MolecularModeling::Assembly assembly_;
     CondensedSequence condensedSequence_;
     std::string officialSequenceString_;

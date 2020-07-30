@@ -79,6 +79,7 @@ public:
 
     void SetRandomAngleEntryUsingMetadata(bool useRanges = true);
     void SetSpecificAngleEntryUsingMetadata(bool useRanges = false, int angleEntryNumber = 0);
+    void SetSpecificShape(std::string dihedralName, std::string selectedRotamer);
 
 
     //////////////////////////////////////////////////////////
