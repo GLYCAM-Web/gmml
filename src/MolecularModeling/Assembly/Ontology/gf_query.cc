@@ -617,7 +617,7 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
            }
            query << "}\n";
            query << "?pdb_file     :hasOligo               ?oligo.\n";
-           query << "?oligo        :oligoName              ?oligo_sequence.\n";
+           query << "?oligo        :oligoIUPACname              ?oligo_sequence.\n";
            if(search.str()=="Oligo_REGEX")
            {
              gmml::FindReplaceString(searchTerm, "[", "\\\\[");
@@ -665,14 +665,14 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
              query << "?oligo    :oligoSequenceName     ?sequenceName.\n";
              query << "FILTER (!regex(?sequenceName, \"-Unknown$\"))\n";
            }
-           if(isNucleotide == 1)
-           {
-             query << "?mono         :isNucleotide  \"true\"\n";
-           }
-           else if(isNucleotide == 0)
-           {
-             query << "?mono         :isNucleotide  \"false\"\n";
-           }
+           // if(isNucleotide == 1)
+           // {
+           //   query << "?mono         :isNucleotide  \"true\"\n";
+           // }
+           // else if(isNucleotide == 0)
+           // {
+           //   query << "?mono         :isNucleotide  \"false\"\n";
+           // }
            if(isGlycomimetic == 1)
            {
              query << "FILTER regex(?oligo_sequence, \"<R\")\n";
@@ -724,8 +724,7 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
            query << "ORDER BY  ?" << sortBy << "\n";
 
 
-
-
+           gmml::log(__LINE__, __FILE__,  gmml::INF, query.str());
 
 
   return FormulateCURLGF(output_file_type, query.str(), url);
