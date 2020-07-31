@@ -323,7 +323,6 @@ This whole loop seems to be unused
                 {
                    MolecularModeling::Atom* atom = *it2;
                     c2x[c2x_count]=atom_bonding_map_[atom->GetIndex()];
-	            std::cout << "Write connect 7" << std::endl;
 		    //std::cout << "c2x[" << c2x_count << "] = " << atom_bonding_map_[atom->GetIndex()] << std::endl;
                     c2x_count++;
                 }
