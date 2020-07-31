@@ -50,7 +50,7 @@ using OffFileSpace::OffFile;
             WriteHierarchySection(out_file,this->off_file_residues_);
             WriteNameSection(out_file);
             WritePositionSection(out_file,residues, CoordinateIndex);
-            WriteConnectivitySection(out_file,residues);
+            //WriteConnectivitySection(out_file,residues);
             WriteResidueConnectSection(out_file,residues);
             WriteResiduesSection(out_file,residues);
             WriteSolventCapSection(out_file);
