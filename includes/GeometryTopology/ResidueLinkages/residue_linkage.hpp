@@ -70,6 +70,7 @@ public:
     void SetDefaultShapeUsingMetadata();
     void SetRandomShapeUsingMetadata(bool useRanges = true);
     void SetSpecificShapeUsingMetadata(int shapeNumber, bool useRanges = false);
+    void SetSpecificShape(std::string dihedralName, std::string selectedRotamer);
     void SetCustomDihedralAngles(std::vector <double> dihedral_angles);
     void SetShapeToPrevious();
     void SetRandomDihedralAngles();

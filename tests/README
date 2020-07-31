@@ -1,3 +1,5 @@
 To carry out all the tests, simply run ./compile_run_tests.bash
 To run individual tests, do
 source test.sh
+To create new tests, follow the format of the current tests carefully. 
+E.g. Do not use "exit" instead of "return".

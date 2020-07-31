@@ -239,6 +239,15 @@ void Residue_linkage::SetSpecificShapeUsingMetadata(int shapeNumber, bool useRan
     }
 }
 
+void Residue_linkage::SetSpecificShape(std::string dihedralName, std::string selectedRotamer)
+{
+    for (auto &rotatable_dihedral : rotatable_dihedrals_)
+    {
+        // This will call rotatable_dihedrals that don't have dihedralName (phi,psi), and nothing will happen. Hmmm.
+        rotatable_dihedral.SetSpecificShape(dihedralName, selectedRotamer);
+    }   
+}
+
 void Residue_linkage::SetCustomDihedralAngles(std::vector <double> dihedral_angles)
 {
     if(dihedral_angles.size() == rotatable_dihedrals_.size())
