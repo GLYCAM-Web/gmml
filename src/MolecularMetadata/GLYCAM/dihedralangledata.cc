@@ -117,7 +117,7 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
     dihedralAngleDataVector_ =
     { //Regex1, Regex2   , Name   , Angle  , Upper  , Lower  , Weight, Entry Type    , Tag  , D , R , Residue 1 type , Residue 2 type,           , Atom names                                                               // Atom names this applies to
         { "C1"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"aldose"}     , {"none"}                  , "C2" , "C1" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
-        { "C2"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"none"}       , {"none"}                  , "C3" , "C2" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
+        { "C2"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"ketose"}     , {"none"}                  , "C3" , "C2" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
         { "C2"   , "O[1-9]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"none"}         , "C3" , "C2" , "O." , "C."  },
 
         { "C."   , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "H."  }, // Psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)

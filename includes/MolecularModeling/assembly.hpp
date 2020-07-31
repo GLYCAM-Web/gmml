@@ -9,6 +9,7 @@
 
 #include "../GeometryTopology/coordinate.hpp"
 #include "../GeometryTopology/plane.hpp"
+#include "../GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "../common.hpp"
 #include "../Glycan/chemicalcode.hpp"
 #include "../Glycan/sugarname.hpp"
@@ -40,8 +41,9 @@
 //#include "atomnode.hpp"
 #include "residuenode.hpp"
 
-class Residue_linkage;
-typedef std::vector<Residue_linkage> ResidueLinkageVector;
+// has been moved to residue_linkage.hpp
+//class Residue_linkage;
+//typedef std::vector<Residue_linkage> ResidueLinkageVector;
 
 namespace MolecularModeling
 {
