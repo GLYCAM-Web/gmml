@@ -96,11 +96,12 @@ CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string, C
     }
     else
     {
-        if(residue_string.empty()){
+        if(residue_string.length() < 9){ //Expected 9 chars for a standard non-terminal token, for example, DGlcpa1-4
 
-	    std::string error_notice = "Empty residue token detected, but can't determine its exact location in sequence string";
+	    std::string error_notice = "Truncated residue token detected: ";
+	    error_notice += residue_string;
 	    condensed_sequence->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, error_notice));
-            throw CondensedSequenceProcessingException("Invalid residue in sequence");
+            throw CondensedSequenceProcessingException(error_notice);
 	}
 	
 	else{
