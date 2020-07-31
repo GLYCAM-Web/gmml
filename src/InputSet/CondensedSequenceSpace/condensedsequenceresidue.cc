@@ -96,7 +96,12 @@ CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string, C
     }
     else
     {
-        if(residue_string.length() < 9){ //Expected 9 chars for a standard non-terminal token, for example, DGlcpa1-4
+	unsigned int minimum_token_length = 9; //DGlcpa1-4 Normally, length is 9
+	if (residue_string[residue_string.length()-1] == '-'){ //DGlcpa1-ROH, the token before aglycone, DGlcpa1- , length is 8
+	    minimum_token_length = 8;
+	}
+
+        if(residue_string.length() < minimum_token_length){ //Expected 9 chars for a standard non-terminal token, for example, DGlcpa1-4
 
 	    std::string error_notice = "Truncated residue token detected: ";
 	    error_notice += residue_string;

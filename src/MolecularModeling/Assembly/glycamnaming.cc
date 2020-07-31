@@ -96,7 +96,6 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
         if(oligo->terminal_.compare("") == 0)
             oligo_name = oligo_name + "1-OH";
 
-	std::cout << "Condensed sequence is: " << oligo_name << std::endl;
         CondensedSequenceSpace::CondensedSequence* condensed_sequence = new CondensedSequenceSpace::CondensedSequence(oligo_name);
         //Gets the three letter code of all carbohydrates involved in current oligosaccharide
         CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
@@ -186,7 +185,7 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
 
 			    for (AtomVector::iterator atom_it = new_terminal_residue_atoms.begin(); atom_it != new_terminal_residue_atoms.end(); atom_it++){
 			        MolecularModeling::Atom* new_atom = *atom_it;
-				std::cout << "New terminal residue " << new_terminal_residue->GetName() << " adding atom " << new_atom->GetName() << std::endl;
+				//std::cout << "New terminal residue " << new_terminal_residue->GetName() << " adding atom " << new_atom->GetName() << std::endl;
                                 new_terminal_residue->AddAtom(new_atom);
                                 new_atom->SetResidue(new_terminal_residue);
                                 OldResidueForThisAtom->RemoveAtom(new_atom, false);
