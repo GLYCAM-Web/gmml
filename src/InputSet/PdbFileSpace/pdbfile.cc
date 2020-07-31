@@ -7960,7 +7960,7 @@ void PdbFile::ResolveConnectivityCards(std::ostream& stream)
                 stream << std::left << std::setw(49) << " "
                        << std::endl;
 	    
-	    stream << std::endl;
+	    //stream << std::endl;
         }
         else
         {
