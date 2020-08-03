@@ -25,6 +25,7 @@ CondensedSequence::CondensedSequence(std::string sequence)
 {
 	try
 	{
+    	this->SetIsSequenceOkay(true); 
 		input_sequence_ = sequence;
 		residues_ = CondensedSequenceResidueVector();
 		tokens_ = CondensedSequenceTokenTypeVector();
@@ -43,14 +44,17 @@ CondensedSequence::CondensedSequence(std::string sequence)
     	{
 	//Find the anomeric-anomeric linkage, if there is one.  Name that linkage '0'.  If there is more than one, punt.
 	//Throw exception?std::exit(1)?Add error notice? Somehow stop the code from doing anything else. 
+    		this->SetIsSequenceOkay(false); 
+
     	}
     }
     catch(...)
     {
-    	std::cerr << "Exception thrown in condensedSequence constructor. Once I figure out how to tell you what it is I will.\n";
+    	std::cerr << "Exception thrown in condensedSequence constructor. Look in the response object.\n";
+    	this->SetIsSequenceOkay(false); 
     	//std::cout << this->GetResponse().GetServiceType() << " : " << this->GetResponse().GetTags().first << " : " << this->GetResponse().GetTags().second << std::endl;
     	// want a Response.print or Response.printToLog?
-    	this->SetWasSequenceConstructedOk(false);
+    	//this->SetWasSequenceConstructedOk(false);
     }
 }
 
@@ -76,6 +80,10 @@ CondensedSequence::CondensedSequenceGlycam06ResidueTree CondensedSequence::GetCo
 InputOutput::Response CondensedSequence::GetResponse()  //This is for gems to obtain a copy of the response object
 {
     return this->response_;
+}
+bool CondensedSequence::GetIsSequenceOkay()
+{
+	return isSequenceOkay_;
 }
 
 void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
@@ -1832,4 +1840,9 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
 void CondensedSequence::Print(std::ostream &out)
 {
     out << "";
+}
+
+void CondensedSequence::SetIsSequenceOkay(bool status)
+{
+	isSequenceOkay_ = status;
 }
