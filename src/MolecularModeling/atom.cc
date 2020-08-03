@@ -6,6 +6,8 @@
 #include "../../includes/MolecularModeling/atomnode.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/GeometryTopology/coordinate.hpp"
+#include "../../includes/gmml.hpp"
+
 #include "cmath"
 #include "algorithm"
 
@@ -15,11 +17,26 @@ using MolecularModeling::Atom;
 //////////////////////////////////////////////////////////
 Atom::Atom()
 {
-	this->index_ = this->generateAtomIndex();
-	// Call to private helper function.
+    this->index_ = this->generateAtomIndex();
+    // Call to private helper function.
     this->SetAttributes(NULL, "", GeometryTopology::CoordinateVector(), "", "", "", std::vector<AtomNode*>(), "", false, "");
-	this->SetBFactor(0);
-} // end Default Constructor
+    this->SetBFactor(0);
+    //Check if atom id is set. If so, change the index part (2nd token) from the index as in the PDB to the absolute index
+    if (this->id_.find("_") != std::string::npos){
+        std::vector<std::string> underscore_split_tokens = gmml::Split(this->id_, "_");
+	if (underscore_split_tokens.size() >=2){ //name_id_ etc.
+	    underscore_split_tokens[1] = std::to_string(this->index_);
+	}
+	std::string new_id;
+	for (std::vector<std::string>::iterator it = underscore_split_tokens.begin(); it != underscore_split_tokens.end(); it++){
+	    new_id += *it;
+	    if (it != (underscore_split_tokens.end() -1)){ //If not the last token
+	        new_id += "_";
+	    }
+	}
+	this->SetId(new_id);
+    }
+}   // end Default Constructor
 
 Atom::Atom(MolecularModeling::Residue* residue, std::string name, GeometryTopology::CoordinateVector coordinates)
 {
@@ -155,6 +172,11 @@ float Atom::GetBFactor() const
 	return b_factor_;
 }
 
+//Added by Yao on 04/06/2020 
+int Atom::GetInputIndex() const
+{
+        return input_index_;
+}
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -252,6 +274,11 @@ void Atom::SetBFactor(float b_factor)
 	this->b_factor_ = b_factor;
 }
 
+//Added by Yao on 04/06/20 for setting the input index as in the PDB file
+void Atom::SetInputIndex(int input_index)
+{
+        this->input_index_ = input_index;
+}
 
 unsigned long long Atom::generateAtomIndex() {
 	static unsigned long long s_AtomIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
@@ -1239,21 +1266,22 @@ bool Atom::operator!= (const Atom &otherAtom)
 //////////////////////////////////////////////////////////
 void Atom::Copy(const Atom* atom)
 {
-    // Copy the easy stuff.
+    // Copy the easy stuff. 
     this->SetName(atom->GetName());
     this->SetChemicalType(atom->GetChemicalType());
     this->SetDescription(atom->GetDescription());
     this->SetElementSymbol(atom->GetElementSymbol());
     this->SetId(atom->GetId());
     this->SetIsRing(atom->GetIsRing());
-    this->SetAtomType(atom->GetAtomType());
     // Deep Copy objects
     // this->residue_ = new MolecularModeling::Residue(atom->GetResidue());
     this->SetResidue(atom->GetResidue());
+    if (!this->nodes_.empty()){
 	if(this->nodes_.at(0) != NULL)
 	{
 	    delete this->nodes_.at(0);
 	}
+    }
     this->nodes_.emplace_back (new MolecularModeling::AtomNode(atom->GetNode()));
     GeometryTopology::CoordinateVector atomCoordinates = atom->GetCoordinates();
     for(GeometryTopology::CoordinateVector::iterator it = atomCoordinates.begin(); it != atomCoordinates.end(); it++ )
