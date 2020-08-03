@@ -99,6 +99,7 @@ namespace CondensedSequenceSpace
             CondensedSequenceResidueTree GetCondensedSequenceResidueTree();
             CondensedSequenceGlycam06ResidueTree GetCondensedSequenceGlycam06ResidueTree();
 	    InputOutput::Response GetResponse();
+            bool GetIsSequenceOkay();
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -146,6 +147,7 @@ namespace CondensedSequenceSpace
             void Print(std::ostream& out = std::cerr);
             void WriteGraphVizDotFile(GraphVizDotConfig& configs);
         private:
+            void SetIsSequenceOkay(bool status);
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
@@ -156,6 +158,7 @@ namespace CondensedSequenceSpace
             CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree_;
 	    InputOutput::Response response_;
 	    std::vector<std::pair<int, int> > anomeric_anomeric_linkages_; 
+            bool isSequenceOkay_;
     };
 }
 
