@@ -28,10 +28,10 @@ CondensedSequence carbohydrateBuilder::GetCondensedSequence()
     return condensedSequence_;
 }
 
-std::string carbohydrateBuilder::GetOfficialSequenceString()
-{
-    return officialSequenceString_;
-}
+// std::string carbohydrateBuilder::GetOfficialSequenceString()
+// {
+//     return officialSequenceString_;
+// }
 
 std::string carbohydrateBuilder::GetInputSequenceString()
 {
@@ -49,10 +49,10 @@ ResidueLinkageVector* carbohydrateBuilder::GetGlycosidicLinkages()
     return &glycosidicLinkages_;
 }
 
-bool carbohydrateBuilder::GetSequenceIsValid()
-{
-    return sequenceIsValid_;
-}
+// bool carbohydrateBuilder::GetSequenceIsValid()
+// {
+//     return sequenceIsValid_;
+// }
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
@@ -112,6 +112,7 @@ void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
     this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
 }
 
+// This function will be deprecated, JSON to be written at gems level by pydantic
 std::string carbohydrateBuilder::GenerateUserOptionsJSON()
 {
     /* https://github.com/nlohmann/json. See also includes/External_Libraries/json.hpp
@@ -144,7 +145,8 @@ std::string carbohydrateBuilder::GenerateUserOptionsJSON()
     }
     j_responses["Evaluate"]["glycosidicLinkages"] += (j_linkages);
     j_responses["Evaluate"]["inputSequence"] = this->GetInputSequenceString();
-    j_responses["Evaluate"]["officialSequence"] = this->GetOfficialSequenceString();
+    // j_responses["Evaluate"]["officialSequence"] = this->GetOfficialSequenceString();
+    j_responses["Evaluate"]["officialSequence"] = this->GetInputSequenceString();
     j_root["responses"] += j_responses;
     j_root["entity"]["type"] = "sequence";
     // std::cout << j_root << std::endl;
@@ -202,15 +204,15 @@ void carbohydrateBuilder::SetInputSequenceString(std::string sequence)
     inputSequenceString_ = sequence;
 }
 
-void carbohydrateBuilder::SetOfficialSequenceString(std::string sequence)
-{
-    officialSequenceString_ = sequence;
-}
+// void carbohydrateBuilder::SetOfficialSequenceString(std::string sequence)
+// {
+//     officialSequenceString_ = sequence;
+// }
 
-void carbohydrateBuilder::SetSequenceIsValid(bool isValid)
-{
-    sequenceIsValid_ = isValid;
-}
+// void carbohydrateBuilder::SetSequenceIsValid(bool isValid)
+// {
+//     sequenceIsValid_ = isValid;
+// }
 
 void carbohydrateBuilder::SetDefaultShapeUsingMetadata()
 {
@@ -253,32 +255,23 @@ void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Re
 
 void carbohydrateBuilder::InitializeClass(std::string inputSequenceString, std::string inputPrepFilePath)
 {
+    // Have to assume that sequence is sane, because using the condensedsequence class functions to check breaks them... probably they should have been private.
     assembly_.SetName("CONDENSEDSEQUENCE");
     this->SetInputSequenceString(inputSequenceString);
     CondensedSequence condensedSeqence(inputSequenceString); // This is all weird. condensedSequence should be merged into this class eventually
-    if (condensedSeqence.ParseSequenceAndCheckSanity(inputSequenceString))
-    { // if a valid sequence
-        this->SetSequenceIsValid(true);
-    //    this->SetOfficialSequenceString(condensedSeqence.BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach::LONGEST_CHAIN, CondensedSequence::Reordering_Approach::LONGEST_CHAIN, false));
-        PrepFileSpace::PrepFile* prepFile = new PrepFileSpace::PrepFile(inputPrepFilePath);
-        assembly_.BuildAssemblyFromCondensedSequence(inputSequenceString, prepFile);
+    //this->SetOfficialSequenceString(condensedSeqence.BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach::LONGEST_CHAIN, CondensedSequence::Reordering_Approach::LONGEST_CHAIN, false));
+    PrepFileSpace::PrepFile* prepFile = new PrepFileSpace::PrepFile(inputPrepFilePath);
+    assembly_.BuildAssemblyFromCondensedSequence(inputSequenceString, prepFile);
         // So in the above BuildAssemblyFromCondensedSequence code, linkages are generated that are inaccessible to me.
         // Condensed sequence should be separated so I can handle everything here, but it's a mess.
         // In the mean time I must also create linkages at this level, but I can't figure out how to reset linkage IDs.
         // Maybe I can check if both passed in residues are the same, and reset if so? That only happens here I think.
-        this->FigureOutResidueLinkagesInGlycan(assembly_.GetResidues().at(0), assembly_.GetResidues().at(0), &glycosidicLinkages_);
-        this->resetLinkageIDsToStartFromZero(glycosidicLinkages_); /* just a fudge until I figure out how to have linkage ids be sensible
+    this->FigureOutResidueLinkagesInGlycan(assembly_.GetResidues().at(0), assembly_.GetResidues().at(0), &glycosidicLinkages_);
+    this->resetLinkageIDsToStartFromZero(glycosidicLinkages_); /* just a fudge until I figure out how to have linkage ids be sensible
         When you instantiate a condensedSequence it generates a 3D structure, and sets default torsions using Residue_Linkage. That class is decoupled 
         from this class as it needs to be replaced, but for now I'm using both and Residue_Linkages are created in that class, so when they
         are created again via this class, their index numbers are "too high" as they are static variables.
         */ 
-    }
-    else
-    { // if not a valid sequence
-        //hmmm not sure how to handle that. Need to ask Dan
-        this->SetSequenceIsValid(false);
-        //std::cout << "Sequence is invalid " << inputSequenceString << "\n";
-    }
  return;
 }
 

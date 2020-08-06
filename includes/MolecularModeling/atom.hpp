@@ -134,6 +134,11 @@ namespace MolecularModeling
             * @return b_factor_ attribute of the current object of this class
             */
             float GetBFactor() const;
+            /*! \fn
+	    * An accessor function in order to access the input index
+	    * @return input_index_ attribute of the current object of this class
+	    */
+	    int GetInputIndex() const;
             /** @}*/
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
@@ -237,6 +242,11 @@ namespace MolecularModeling
             * @param b_factor The b factor attribute of the current object
             */
             void SetBFactor(float b_factor);
+	    /*! \fn
+            * An mutator function in order to access the input index
+            * @param input_index_ The input index attribute of the current object
+            */
+            void SetInputIndex(int input_index);
             /** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
@@ -327,6 +337,8 @@ namespace MolecularModeling
             unsigned long long index_;         /*!< A unqiue index for each atom in an assembly >*/
             std::string atom_type_;                /*!< List the atom type in an assembly >*/      //Added by ayush on 13/11/17 for molecules in assembly to set the atom type as an attribute like O,H
             float b_factor_;                  /*!< Gives the B Factor for the atom >*/            //Added by Dave on 03/23/18 for adding B Factor to ontology
+
+	    int input_index_;                 /*Records the index of atom as in the inut PDB file*/ //Added by Yao on 04/06/20
 
             //////////////////////////////////////////////////////////
             //                   HELPER FUNCTIONS                   //

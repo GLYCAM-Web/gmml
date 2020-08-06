@@ -161,6 +161,12 @@ namespace MolecularModeling
               */
             void AddHeadAtom(Atom* head_atom);
             /*! \fn
+              * A function in order to remove the head atom from the current object
+              * Set the head_atom_ attribute of the current residue
+              * @param head_atom The head atom to be removed
+              */
+	    void RemoveHeadAtom(Atom* head_atom);
+            /*! \fn
               * A mutator function in order to set the tail atoms of the current object
               * Set the tail_atoms_ attribute of the current residue
               * @param tail_atoms The head atoms attribute of the current object
@@ -172,6 +178,12 @@ namespace MolecularModeling
               * @param tail_atom The tail atom of the current object
               */
             void AddTailAtom(Atom* tail_atom);
+            /*! \fn
+              * A function in order to remove the tail atom from the current object
+              * Set the tail_atom_ attribute of the current residue
+              * @param head_atom The tail atom of the current object to be removed
+              */
+	    void RemoveTailAtom(Atom* tail_atom);
             /*! \fn
               * A mutator function in order to set the chemical type of the current object
               * Set the chemical_type_ attribute of the current residue

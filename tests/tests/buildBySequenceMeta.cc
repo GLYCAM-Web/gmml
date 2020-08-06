@@ -25,11 +25,11 @@ int main()
     std::string condensed_sequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH";
     CondensedSequenceSpace::carbohydrateBuilder carbBuilder(condensed_sequence, prep);
     // Not an efficient way to check if sequence is valid as a lot of extra work is done when initializing carbohydrateBuilder, but this will tell you.
-    if (!carbBuilder.GetSequenceIsValid())
-    {
-        std::cerr << "Invalid sequence" << std::endl;
-        return 1;
-    }
+    // if (!carbBuilder.GetSequenceIsValid())
+    // {
+    //     std::cerr << "Invalid sequence" << std::endl;
+    //     return 1;
+    // }
     std::cout << carbBuilder.GenerateUserOptionsJSON() << std::endl; // This is how Dan will get options to display on front end
     carbBuilder.GenerateSingle3DStructure(); // This is how you generate a default, single 3D structre. Overlaps are resolved. Provide name if you want
     //carbBuilder.GenerateRotamers(); // This is how you generate all (default behavior) or selected rotamers (pass in JSON string).
