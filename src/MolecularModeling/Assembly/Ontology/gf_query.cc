@@ -475,7 +475,7 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
     query << "FILTER (" << b_factor_min << " < ?Mean_B_Factor)\n";
   }
   query << "?pdb_file     :hasOligo               ?oligo.\n";
-  query << "?oligo        :oligoName              ?oligo_sequence.\n";
+  query << "?oligo        :oligoIUPACname              ?oligo_sequence.\n";
   if(search.str()=="Oligo_REGEX")
   {
     gmml::FindReplaceString(searchTerm, "[", "\\\\[");
@@ -510,14 +510,14 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
     query << "?oligo    :oligoSequenceName     ?sequenceName.\n";
     query << "FILTER (!regex(?sequenceName, \"-Unknown$\"))\n";
   }
-  if(isNucleotide == 1)
-  {
-    query << "?mono         :isNucleotide  \"true\"\n";
-  }
-  else if(isNucleotide == 0)
-  {
-    query << "?mono         :isNucleotide  \"false\"\n";
-  }
+  // if(isNucleotide == 1)
+  // {
+  //   query << "?mono         :isNucleotide  \"true\"\n";
+  // }
+  // else if(isNucleotide == 0)
+  // {
+  //   query << "?mono         :isNucleotide  \"false\"\n";
+  // }
   if(isGlycomimetic == 1)
   {
     query << "FILTER regex(?oligo_sequence, \"<R\")\n";
