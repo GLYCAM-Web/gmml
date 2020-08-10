@@ -127,7 +127,7 @@ namespace Ontology
     const std::string XML_OUTPUT_FORMAT = " \'Accept: application/sparql-results+xml' ";
     const std::string DATA_STORE_ADDRESS = "http://192.168.1.52:8890/sparql"; /* "http://128.192.62.244:8890/sparql", "http://192.168.1.52:8890/sparql" */
     const std::string DATA_STORE_ADDRESS_GF = "http://gw_virt:8890/sparql";
-    const std::string CURL_PREFIX = "curl -g -s -H";
+    const std::string CURL_PREFIX = "curl -g -s -H ";
     const std::string QUERY_PREFIX = " --data-urlencode query=\'";
     const std::string QUERY_POSTFIX = "\'";
 }
