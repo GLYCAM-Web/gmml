@@ -94,7 +94,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     //and ?oligo_sequence (Condensed sequence).  These three variables together are unique for each result.  This function also takes in all of the possible
     //filter variables to return filtered results when updating via ajax
     //This function will also call a function to create a graph from the search string for searching across branches.
-
+    int local_debug = -1;
     std::stringstream query;
     std::stringstream search;
     search << searchType;
@@ -120,7 +120,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     }
 
     query << Ontology::WHERE_CLAUSE;
-    query << "?pdb_file     :identifier             ?pdb.\n";
+    query << "{?pdb_file     :identifier             ?pdb.\n";
     if(search.str()=="PDB")
     {
       query << "VALUES ?pdb { \"" << searchTerm << "\" }\n";
@@ -154,13 +154,13 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     query << "?oligo        :oligoIUPACname         ?oligo_sequence.\n";
     query << "FILTER (!regex(?oligo_sequence, \"" << "Unknown" << "\"))\n";
     query << "FILTER (!regex(?oligo_sequence, \"" << "HEM" << "\"))\n";
-    if(search.str()=="Oligo_REGEX")
-    {
-      gmml::FindReplaceString(searchTerm, "[", "\\\\[");
-      gmml::FindReplaceString(searchTerm, "]", "\\\\]");
-      gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
-      query << "FILTER regex(?oligo_sequence, \"" << searchTerm << "\")\n";
-    }
+    // if(search.str()=="Oligo_REGEX")
+    // {
+    //   gmml::FindReplaceString(searchTerm, "[", "\\\\[");
+    //   gmml::FindReplaceString(searchTerm, "]", "\\\\]");
+    //   gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
+    //   query << "FILTER regex(?oligo_sequence, \"" << searchTerm << "\")\n";
+    // }
     if(search.str()=="Condensed_Sequence")
     {
       gmml::FindReplaceString(searchTerm, "[", "\\\\[");
@@ -169,144 +169,176 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       query << "VALUES ?oligo_sequence { \"" << searchTerm << "\" }\n";
     }
 
-    // if(search.str()=="Oligo_REGEX")
-    // {
-    //   //TODO:replace with new search type and keep old regex functionality
-    //   // std::cout << searchTerm << "\n";
-    //   gmml::FindReplaceString(searchTerm, "[*", "[");
-    //   gmml::FindReplaceString(searchTerm, "1-*", "1-0");
-    //   gmml::FindReplaceString(searchTerm, "2-*", "2-0");
-    //   gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
-    //   while(searchTerm.find("**")!=std::string::npos)
-    //   {
-    //     gmml::FindReplaceString(searchTerm, "**", "*");
-    //   }
-    //   if(searchTerm != "*")
-    //   {
-    //     if(searchTerm[0] == '*')
-    //     {//Subgraph match will always find other nodes at the beginning
-    //       searchTerm=searchTerm.substr(1);//char 1 to end (removes first char)
-    //     }
-    //     if(searchTerm[searchTerm.size()-1] == '*')
-    //     {//Subgraph match will always find other nodes at the end
-    //       searchTerm=searchTerm.substr(0,searchTerm.size()-1);//start at the beginning, get 1 less than the # of chars there (remove the last char)
-    //     }
-    //
-    //     // std::cout << searchTerm << "\n";
-    //     GraphDS::Graph queryGraph = CreateQueryStringGraph(searchTerm);
-    //     // queryGraph.Print(std::cout);
-    //     GraphDS::Graph::NodeVector queryNodes = queryGraph.GetGraphNodeList();
-    //     GraphDS::Graph::EdgeVector queryEdges = queryGraph.GetGraphEdgeList();
-    //     for(GraphDS::Graph::NodeVector::iterator it = queryNodes.begin(); it != queryNodes.end(); it++)
-    //     {
-    //
-    //       GraphDS::Node* current_node=(*it);
-    //       if((current_node->GetNodeId() != "*")&&(current_node->GetNodeId() != "ASN")&&
-    //          (current_node->GetNodeId() != "SER")&&(current_node->GetNodeId() != "THR")&&
-    //          (current_node->GetNodeId() != "ROH")&&(current_node->GetNodeId() != "OME")&&
-    //          (current_node->GetNodeId() != "OtBu"))//TODO: Add chemical formula terminal logic here & wherever it gets assigned and added to gmmo.ttl
-    //       {
-    //         query << "?oligo :hasSequenceResidue ?residue" << current_node->GetNodeType() << ".\n";
-    //         query << "?residue" << current_node->GetNodeType() << " :monosaccharideShortName ?monoName" << current_node->GetNodeType() << ".\n";
-    //         query << "FILTER regex(?monoName" << current_node->GetNodeType() << ", \"" << current_node->GetNodeId() << "\")\n";
-    //       }
-    //       else if(current_node->GetNodeId() != "*")
-    //       {
-    //         //what does this do?  or what is it supposed to do?
-    //         //Terminal linkages?
-    //
-    //       }
-    //     }
-    //     for(GraphDS::Graph::NodeVector::iterator it = queryNodes.begin(); it != queryNodes.end(); it++)
-    //     {
-    //       GraphDS::Node* sourceNode =(*it);
-    //       for( GraphDS::Graph::EdgeVector::iterator it1 = queryEdges.begin(); it1!= queryEdges.end(); it1++)
-    //       {
-    //         GraphDS::Edge *current_edge = (*it1);
-    //         GraphDS::Node* destinationNode = current_edge->GetDestinationNode();
-    //         if(current_edge->GetSourceNode() == sourceNode)
-    //         {
-    //           if(current_edge->GetEdgeLabels()[0] == "1-0")
-    //           {
-    //             query << "?residue" << sourceNode->GetNodeType();
-    //             query << " :is1-2ConnectedTo | :is1-3ConnectedTo | :is1-4ConnectedTo | :is1-5ConnectedTo | :is1-6ConnectedTo ";
-    //             query << "?residue" << destinationNode->GetNodeType() << ".\n";
-    //           }
-    //           else if(current_edge->GetEdgeLabels()[0] == "2-0")
-    //           {
-    //             query << "?residue" << sourceNode->GetNodeType();
-    //             query << " :is2-2ConnectedTo | :is2-3ConnectedTo | :is2-4ConnectedTo | :is2-5ConnectedTo | :is2-6ConnectedTo ";
-    //             query << "?residue" << destinationNode->GetNodeType() << ".\n";
-    //           }
-    //           else if((current_edge->GetEdgeLabels()[0] == "1-")||(current_edge->GetEdgeLabels()[0] == "2-")||
-    //                   (current_edge->GetEdgeLabels()[0] == "-"))
-    //           {//Terminal linkage
-    //             query << "?residue" << sourceNode->GetNodeType();
-    //             query << " :isConnectedTo ";
-    //             query << "?terminal.\n";
-    //             query << "?oligo :hasTerminal ?terminal.\n";
-    //             query << "?terminal :identifier ?terminalName.\n";
-    //             query << "FILTER regex(?terminalName, \"" << current_edge->GetEdgeLabels()[0] << destinationNode->GetNodeId() << "\")\n";
-    //             query << "FILTER regex(?oligo_sequence, \"" << current_edge->GetEdgeLabels()[0] << destinationNode->GetNodeId() << "\")\n";
-    //           }
-    //           else if(current_edge->GetEdgeLabels()[0] != "*")
-    //           {
-    //             query << "?residue" << sourceNode->GetNodeType() << " :is" << current_edge->GetEdgeLabels()[0]<< "ConnectedTo " << "?residue" << destinationNode->GetNodeType() << ".\n";
-    //           }
-    //           else
-    //           {
-    //             query << "?residue" << sourceNode->GetNodeType();
-    //             query << " :is1-2ConnectedTo | :is1-3ConnectedTo | :is1-4ConnectedTo | :is1-5ConnectedTo | :is1-6ConnectedTo |\n";
-    //             query << "          :is2-2ConnectedTo | :is2-3ConnectedTo | :is2-4ConnectedTo | :is2-5ConnectedTo | :is2-6ConnectedTo ";
-    //             query << "?residue" << destinationNode->GetNodeType() << ".\n";
-    //           }
-    //         }
-    //         else if((it1 == queryEdges.begin()) && (current_edge->GetSourceNode() == NULL) && (current_edge->GetDestinationNode()!=NULL))
-    //         {//Graph that starts with an edge
-    //           if(current_edge->GetEdgeLabels()[0] == "1-0")
-    //           {
-    //             query << "?residueX";
-    //             query << " :is1-2ConnectedTo | :is1-3ConnectedTo | :is1-4ConnectedTo | :is1-5ConnectedTo | :is1-6ConnectedTo ";
-    //             query << "?residue" << destinationNode->GetNodeType() << ".\n";
-    //           }
-    //           else if(current_edge->GetEdgeLabels()[0] == "2-0")
-    //           {
-    //             query << "?residueX";
-    //             query << " :is2-2ConnectedTo | :is2-3ConnectedTo | :is2-4ConnectedTo | :is2-5ConnectedTo | :is2-6ConnectedTo ";
-    //             query << "?residue" << destinationNode->GetNodeType() << ".\n";
-    //           }
-    //           else if((current_edge->GetEdgeLabels()[0] == "1-")||(current_edge->GetEdgeLabels()[0] == "2-")||
-    //                   (current_edge->GetEdgeLabels()[0] == "-"))
-    //           {//Terminal linkage
-    //             query << "?residueX";
-    //             query << " :isConnectedTo ";
-    //             query << "?terminal.\n";
-    //             query << "?oligo :hasTerminal ?terminal.\n";
-    //             query << "?terminal :identifier ?terminalName.\n";
-    //             query << "FILTER regex(?terminalName, \"" << current_edge->GetEdgeLabels()[0] << destinationNode->GetNodeId() << "\")\n";
-    //             query << "FILTER regex(?oligo_sequence, \"" << current_edge->GetEdgeLabels()[0] << destinationNode->GetNodeId() << "\")\n";
-    //           }
-    //           else if(current_edge->GetEdgeLabels()[0] != "*")
-    //           {
-    //             query << "?residueX :is" << current_edge->GetEdgeLabels()[0]<< "ConnectedTo " << "?residue" << destinationNode->GetNodeType() << ".\n";
-    //           }
-    //           else
-    //           {
-    //             query << "?residueX";
-    //             query << " :is1-2ConnectedTo | :is1-3ConnectedTo | :is1-4ConnectedTo | :is1-5ConnectedTo | :is1-6ConnectedTo |\n";
-    //             query << "          :is2-2ConnectedTo | :is2-3ConnectedTo | :is2-4ConnectedTo | :is2-5ConnectedTo | :is2-6ConnectedTo ";
-    //             query << "?residue" << destinationNode->GetNodeType() << ".\n";
-    //           }
-    //         }
-    //       }
-    //     }
-    //   }
-    //   else
-    //   {
-    //     //TODO: make query return everything
-    //     //Does it already with no additional code?
-    //   }
-    // }
+    if(search.str()=="Oligo_REGEX")
+    {
+      //TODO:replace with new search type and keep old regex functionality
+      // std::cout << searchTerm << "\n";
+      //gmml::FindReplaceString does not work with *s
+      // gmml::FindReplaceString(searchTerm, "[*", "[");
+      // gmml::FindReplaceString(searchTerm, "1-*", "1-0");
+      // gmml::FindReplaceString(searchTerm, "2-*", "2-0");
+      gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
+      while(searchTerm.find("**")!=std::string::npos)
+      {
+        // gmml::FindReplaceString(searchTerm, "**", "*");
+        searchTerm.replace(searchTerm.find("**"), 2, "*");
+      }
+      gmml::FindReplaceString(searchTerm, ".*", "*");
+      while(searchTerm.find("1-*") != std::string::npos)
+      {
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, "Found 1-* still");
+        }
+        searchTerm.replace(searchTerm.find("1-*"), 3, "1-0");
+      }
+      while(searchTerm.find("2-*") != std::string::npos)
+      {
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, "Found 2-* still");
+        }
+        searchTerm.replace(searchTerm.find("2-*"), 3, "2-0");
+      }
+      while(searchTerm.find("[*") != std::string::npos)
+      {
+        searchTerm.replace(searchTerm.find("[*"), 2, "[");
+      }
+      if(local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__, gmml::INF, searchTerm);
+      }
+      if(searchTerm != "*")
+      {
+        if(searchTerm[0] == '*')
+        {//Subgraph match will always find other nodes at the beginning
+          searchTerm=searchTerm.substr(1);//char 1 to end (removes first char)
+        }
+        if(searchTerm[searchTerm.size()-1] == '*')
+        {//Subgraph match will always find other nodes at the end
+          searchTerm=searchTerm.substr(0,searchTerm.size()-1);//start at the beginning, get 1 less than the # of chars there (remove the last char)
+        }
+
+        // std::cout << searchTerm << "\n";
+        GraphDS::Graph queryGraph = CreateQueryStringGraph(searchTerm);
+        if(local_debug > 0)
+        {
+          std::stringstream logSS;
+          queryGraph.Print(logSS);
+          gmml::log(__LINE__, __FILE__, gmml::INF, logSS.str());
+        }
+        GraphDS::Graph::NodeVector queryNodes = queryGraph.GetGraphNodeList();
+        GraphDS::Graph::EdgeVector queryEdges = queryGraph.GetGraphEdgeList();
+        for(GraphDS::Graph::NodeVector::iterator it = queryNodes.begin(); it != queryNodes.end(); it++)
+        {
+
+          GraphDS::Node* current_node=(*it);
+          if((current_node->GetNodeId() != "*")&&(current_node->GetNodeId() != "ASN")&&
+             (current_node->GetNodeId() != "SER")&&(current_node->GetNodeId() != "THR")&&
+             (current_node->GetNodeId() != "ROH")&&(current_node->GetNodeId() != "OME")&&
+             (current_node->GetNodeId() != "OtBu"))//TODO: Add chemical formula terminal logic here & wherever it gets assigned and added to gmmo.ttl
+          {
+            query << "?oligo :hasSequenceResidue ?residue" << current_node->GetNodeType() << ".\n";
+            query << "?residue" << current_node->GetNodeType() << " :monosaccharideShortName ?monoName" << current_node->GetNodeType() << ".\n";
+            query << "FILTER regex(?monoName" << current_node->GetNodeType() << ", \"" << current_node->GetNodeId() << "\")\n";
+          }
+          else if(current_node->GetNodeId() != "*")
+          {
+            //what does this do?  or what is it supposed to do?
+            //Terminal linkages?
+
+          }
+        }
+        for(GraphDS::Graph::NodeVector::iterator it = queryNodes.begin(); it != queryNodes.end(); it++)
+        {
+          GraphDS::Node* sourceNode =(*it);
+          for( GraphDS::Graph::EdgeVector::iterator it1 = queryEdges.begin(); it1!= queryEdges.end(); it1++)
+          {
+            GraphDS::Edge *current_edge = (*it1);
+            GraphDS::Node* destinationNode = current_edge->GetDestinationNode();
+            if(current_edge->GetSourceNode() == sourceNode)
+            {
+              if(current_edge->GetEdgeLabels()[0] == "1-0")
+              {
+                query << "?residue" << sourceNode->GetNodeType();
+                query << " :is1-2ConnectedTo | :is1-3ConnectedTo | :is1-4ConnectedTo | :is1-5ConnectedTo | :is1-6ConnectedTo ";
+                query << "?residue" << destinationNode->GetNodeType() << ".\n";
+              }
+              else if(current_edge->GetEdgeLabels()[0] == "2-0")
+              {
+                query << "?residue" << sourceNode->GetNodeType();
+                query << " :is2-2ConnectedTo | :is2-3ConnectedTo | :is2-4ConnectedTo | :is2-5ConnectedTo | :is2-6ConnectedTo ";
+                query << "?residue" << destinationNode->GetNodeType() << ".\n";
+              }
+              else if((current_edge->GetEdgeLabels()[0] == "1-")||(current_edge->GetEdgeLabels()[0] == "2-")||
+                      (current_edge->GetEdgeLabels()[0] == "-"))
+              {//Terminal linkage
+                query << "?residue" << sourceNode->GetNodeType();
+                query << " :isConnectedTo ";
+                query << "?terminal.\n";
+                query << "?oligo :hasTerminal ?terminal.\n";
+                query << "?terminal :identifier ?terminalName.\n";
+                query << "FILTER regex(?terminalName, \"" << current_edge->GetEdgeLabels()[0] << destinationNode->GetNodeId() << "\")\n";
+                query << "FILTER regex(?oligo_sequence, \"" << current_edge->GetEdgeLabels()[0] << destinationNode->GetNodeId() << "\")\n";
+              }
+              else if(current_edge->GetEdgeLabels()[0] != "*")
+              {
+                query << "?residue" << sourceNode->GetNodeType() << " :is" << current_edge->GetEdgeLabels()[0]<< "ConnectedTo " << "?residue" << destinationNode->GetNodeType() << ".\n";
+              }
+              else
+              {
+                query << "?residue" << sourceNode->GetNodeType();
+                query << " :is1-2ConnectedTo | :is1-3ConnectedTo | :is1-4ConnectedTo | :is1-5ConnectedTo | :is1-6ConnectedTo |\n";
+                query << "          :is2-2ConnectedTo | :is2-3ConnectedTo | :is2-4ConnectedTo | :is2-5ConnectedTo | :is2-6ConnectedTo ";
+                query << "?residue" << destinationNode->GetNodeType() << ".\n";
+              }
+            }
+            else if((it1 == queryEdges.begin()) && (current_edge->GetSourceNode() == NULL) && (current_edge->GetDestinationNode()!=NULL))
+            {//Graph that starts with an edge
+              if(current_edge->GetEdgeLabels()[0] == "1-0")
+              {
+                query << "?residueX";
+                query << " :is1-2ConnectedTo | :is1-3ConnectedTo | :is1-4ConnectedTo | :is1-5ConnectedTo | :is1-6ConnectedTo ";
+                query << "?residue" << destinationNode->GetNodeType() << ".\n";
+              }
+              else if(current_edge->GetEdgeLabels()[0] == "2-0")
+              {
+                query << "?residueX";
+                query << " :is2-2ConnectedTo | :is2-3ConnectedTo | :is2-4ConnectedTo | :is2-5ConnectedTo | :is2-6ConnectedTo ";
+                query << "?residue" << destinationNode->GetNodeType() << ".\n";
+              }
+              else if((current_edge->GetEdgeLabels()[0] == "1-")||(current_edge->GetEdgeLabels()[0] == "2-")||
+                      (current_edge->GetEdgeLabels()[0] == "-"))
+              {//Terminal linkage
+                query << "?residueX";
+                query << " :isConnectedTo ";
+                query << "?terminal.\n";
+                query << "?oligo :hasTerminal ?terminal.\n";
+                query << "?terminal :identifier ?terminalName.\n";
+                query << "FILTER regex(?terminalName, \"" << current_edge->GetEdgeLabels()[0] << destinationNode->GetNodeId() << "\")\n";
+                query << "FILTER regex(?oligo_sequence, \"" << current_edge->GetEdgeLabels()[0] << destinationNode->GetNodeId() << "\")\n";
+              }
+              else if(current_edge->GetEdgeLabels()[0] != "*")
+              {
+                query << "?residueX :is" << current_edge->GetEdgeLabels()[0]<< "ConnectedTo " << "?residue" << destinationNode->GetNodeType() << ".\n";
+              }
+              else
+              {
+                query << "?residueX";
+                query << " :is1-2ConnectedTo | :is1-3ConnectedTo | :is1-4ConnectedTo | :is1-5ConnectedTo | :is1-6ConnectedTo |\n";
+                query << "          :is2-2ConnectedTo | :is2-3ConnectedTo | :is2-4ConnectedTo | :is2-5ConnectedTo | :is2-6ConnectedTo ";
+                query << "?residue" << destinationNode->GetNodeType() << ".\n";
+              }
+            }
+          }
+        }
+      }
+      else
+      {
+        //TODO: make query return everything
+        //Does it already with no additional code? Looks like it!
+      }
+    }
     if(isLigand == 1)
     {
       query << "FILTER (!regex(?oligo_sequence, \"-ASN$\"))\n";
@@ -328,7 +360,6 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       query << "FILTER (!regex(?oligo_sequence, \"-OME$\"))\n";
       query << "?oligo    :oligoSequenceName     ?sequenceName.\n";
       query << "FILTER (!regex(?sequenceName, \"-Unknown$\"))\n";
-
       //TODO: Add logic for chemical derivatives
 
     }
@@ -403,11 +434,30 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       query << "?mono       :hasNote       ?commentNote.}\n";
       query << "FILTER NOT EXISTS { ?commentNote :NoteType \"comment\".}\n";
     }
+    query << "FILTER (!regex(?oligo_sequence, \"\\\\?-\"))\n";
+    query << "FILTER (!regex(?oligo_sequence, \"0-0\"))\n";
+    // query << "FILTER (!regex(?oligo_sequence, \"DRibf\"))\n";
+    query << Ontology::END_WHERE_CLAUSE << "\n";
+    // if(searchTerm == "*")
+    // {
+      query << "MINUS\n{\n";
+      query << "?pdb_file     :identifier             ?pdb.\n";
+      query << "?pdb_file     :hasOligo               ?oligo.\n";
+      query << "?oligo        :hasMono                ?mono.\n";
+      query << "?oligo        :oligoIUPACname         ?oligo_sequence.\n";
+      query << "?oligo :hasSequenceResidue ?residue1.\n";
+      query << "?residue1 :monosaccharideShortName ?mono1.\n";
+      query << "FILTER regex(?mono1, \"Ribf.*\")\n";
+      query << "?residue1 :isConnectedTo ?terminal.\n";
+      query << "?oligo :hasTerminal ?terminal.\n";
+      query << "?terminal :identifier ?terminal_name.\n";
+      query << "FILTER regex(?terminal_name, \".*Unknown\")\n}\n";
+    // }
+    query << Ontology::END_WHERE_CLAUSE << "\n";
     if(count == "TRUE")
     {
       query << Ontology::END_WHERE_CLAUSE << "\n";
     }
-    query << Ontology::END_WHERE_CLAUSE << "\n";
     if(count != "TRUE")
     {
       query << "ORDER BY  ?" << sortBy << "\n";
@@ -417,8 +467,10 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       }
       query << "OFFSET " << resultsPerPage*(page - 1) << "\n";
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, query.str());
-
+    if(local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, query.str());
+    }
     return FormulateCURLGF(output_file_type, query.str(), url);
 }
 
@@ -570,6 +622,7 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
 
 std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
 { //This is a complete (and therefore slow) query that is a combination of moreQuery() and QueryOntology().  It filters the database by user input, and returns a CSV with all of the data for download.
+  int local_debug = -1;
   std::stringstream query;
   std::stringstream search;
   search << searchType;
@@ -723,8 +776,10 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
            query << Ontology::END_WHERE_CLAUSE << "\n";
            query << "ORDER BY  ?" << sortBy << "\n";
 
-
-           gmml::log(__LINE__, __FILE__,  gmml::INF, query.str());
+           if(local_debug > 0)
+           {
+             gmml::log(__LINE__, __FILE__,  gmml::INF, query.str());
+           }
 
 
   return FormulateCURLGF(output_file_type, query.str(), url);
@@ -734,6 +789,7 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
 GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string queryString)
 {
   int local_debug = -1;
+  std::stringstream logSS;
   // std::cout << "Starting graph creation\n";
   GraphDS::Graph graph;
   std::vector<parsedString> parsedVector;
@@ -771,10 +827,20 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
   //Fill Vector, add nodes & labels
   for(unsigned int i=0; i<queryString.size(); i++)
   {
-    // std::cout << i << " : " << queryString[i] << "\n";
+    if(local_debug > 0)
+    {
+      logSS << i << " : " << queryString[i] << "\n";
+      gmml::log(__LINE__, __FILE__,  gmml::INF, logSS.str());
+      logSS.clear();
+    }
     if((queryString[i] == '[')||(queryString[i] == ']'))
     {
-      // std::cout << "There's a bracket at: " << i << "\n";
+      if(local_debug > 0)
+      {
+        logSS << "There's a bracket at: " << i << "\n";
+        gmml::log(__LINE__, __FILE__,  gmml::INF, logSS.str());
+        logSS.clear();
+      }
       labelStr.push_back(queryString[i]);
       parsedVector.push_back(parsedString(labelStr));
       labelStr = "";
@@ -796,7 +862,12 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
     {
       while((i + 1 != linkageEnd + 1) && (i < queryString.size()))
       {
-        // std::cout << i << " : " << linkageEnd+1 << "\n";
+        if(local_debug > 0)
+        {
+          logSS << i << " : " << linkageEnd+1 << "\n";
+          gmml::log(__LINE__, __FILE__,  gmml::INF, logSS.str());
+          logSS.clear();
+        }
         labelStr.push_back(queryString[i]);
         i++;
       }
@@ -858,7 +929,7 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
       }
       else
       {
-        while(i < queryString.size())
+        while((i < queryString.size())&&(queryString[i+1] != '*'))
         {
           labelStr.push_back(queryString[i]);
           i++;
@@ -899,7 +970,12 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
         GraphDS::Edge* thisEdge = new GraphDS::Edge;
         thisEdge->AddEdgeLabel("*");
         parsedVector.insert(parsedVector.begin() + i, parsedString("*", thisEdge));
-        // std::cout << __LINE__ << "Adding * edge at " << i << "\n";
+        if(local_debug > 0)
+        {
+          logSS << "Adding * edge at " << i << "\n";
+          gmml::log(__LINE__, __FILE__,  gmml::INF, logSS.str());
+          logSS.clear();
+        }
         continue;
       }
       if((parsedVector[i+1].edge == NULL) && (parsedVector[i+1].node != NULL) && (parsedVector[i+1].label != "*"))
@@ -908,7 +984,12 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
         GraphDS::Edge* thisEdge1 = new GraphDS::Edge;
         thisEdge1->AddEdgeLabel("*");
         parsedVector.insert(parsedVector.begin() + i + 1, parsedString("*", thisEdge1));
-        // std::cout << __LINE__ << "Adding * edge at " << i + 1 << "\n";
+        if(local_debug > 0)
+        {
+          logSS << "Adding * edge at " << i + 1 << "\n";
+          gmml::log(__LINE__, __FILE__,  gmml::INF, logSS.str());
+          logSS.clear();
+        }
         continue;
       }
       // if((parsedVector[i-1].edge == NULL) && (parsedVector[i-1].node == NULL))
