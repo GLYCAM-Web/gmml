@@ -112,13 +112,13 @@ void carbohydrateBuilder::GenerateRotamerDefaultFiles(CondensedSequenceSpace::si
 
 }
 
-
-void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
-{
-    std::cout << "Rotamer Permutator\n";
-    ResidueLinkageVector linkagesOrderedForPermutation = this->SplitLinkagesIntoPermutants(*(this->GetGlycosidicLinkages()));
-    this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
-}
+// Commenting out for as not being used, and will be confusing later. The front-end calls a differnt function that will build a single, specific rotamer.
+// void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
+// {
+//     std::cout << "Rotamer Permutator\n";
+//     ResidueLinkageVector linkagesOrderedForPermutation = this->SplitLinkagesIntoPermutants(*(this->GetGlycosidicLinkages()));
+//     this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
+// }
 
 // This function will be deprecated, JSON to be written at gems level by pydantic
 std::string carbohydrateBuilder::GenerateUserOptionsJSON()

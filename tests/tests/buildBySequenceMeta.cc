@@ -31,7 +31,7 @@ int main()
     //     return 1;
     // }
     std::cout << carbBuilder.GenerateUserOptionsJSON() << std::endl; // This is how Dan will get options to display on front end
-    carbBuilder.GenerateSingle3DStructure(); // This is how you generate a default, single 3D structre. Overlaps are resolved. Provide name if you want
+    carbBuilder.GenerateSingle3DStructureSingleFile(); // This is how you generate a default, single 3D structre. Overlaps are resolved. Provide name if you want
     //carbBuilder.GenerateRotamers(); // This is how you generate all (default behavior) or selected rotamers (pass in JSON string).
     //std::string jsonSelection = 
 

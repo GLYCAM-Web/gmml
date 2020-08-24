@@ -395,12 +395,15 @@ void Rotatable_dihedral::SetSpecificShape(std::string dihedralName, std::string 
     }
     else
     {
+        std::cout << "Made it here with " << dihedralName << " and " << selectedRotamer << std::endl;
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_entries = this->GetMetadata();
         for(auto &metadata : metadata_entries)
         {
+            std::cout << "Checking entry with " << metadata.dihedral_angle_name_ << " and " << metadata.rotamer_name_ << std::endl;
             if (metadata.dihedral_angle_name_ == dihedralName && metadata.rotamer_name_ == selectedRotamer)
             {
                 this->SetDihedralAngle(metadata.default_angle_value_);
+                std::cout << "Setting " << dihedralName << " to " << metadata.default_angle_value_ << std::endl;
             }
         }
     }

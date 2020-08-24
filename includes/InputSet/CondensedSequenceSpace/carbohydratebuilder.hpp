@@ -70,7 +70,7 @@ public:
     //void GenerateRotamer(singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
     void GenerateRotamerDefaultFiles(singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
     // The following generates no files
-    void GenerateUpToNRotamers(int maxRotamers = 32); // Will not be used by gems, but leaving the functionality as could be useful.
+    //void GenerateUpToNRotamers(int maxRotamers = 32); // Will not be used by gems, but leaving the functionality as could be useful.
 
 private:
     void Write3DStructureFile(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string filename = "output");
