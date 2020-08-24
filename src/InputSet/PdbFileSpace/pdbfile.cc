@@ -3161,7 +3161,8 @@ bool PdbFile::Read(std::ifstream &in_file)
 {
     if(!this->ParseCards(in_file))
         return false;
-	return true;
+
+    return true;
 }
 
 bool PdbFile::Read(std::stringstream &atomstream)
@@ -7843,6 +7844,8 @@ void PdbFile::ResolveConnectivityCards(std::ostream& stream)
             else
                 stream << std::left << std::setw(49) << " "
                        << std::endl;
+	    
+	    //stream << std::endl;
         }
         else
         {

@@ -83,6 +83,7 @@ PdbqtModel::PdbqtModel(std::ifstream &model_block)
 	    //int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
             //model_block.seekg(offset, model_block.cur);//Go back one line
 	    //break;
+	    std::cout << "Bad line:  " << line << std::endl;
             throw PdbqtFileProcessingException(__LINE__, "Illegal record detected in model section");
         }
     }//while

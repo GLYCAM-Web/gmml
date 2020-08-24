@@ -109,7 +109,7 @@ void AtomNode::RemoveNodeNeighbor(Atom *node_neighbor)
     for(MolecularModeling::AtomVector::iterator it = node_neighbors_.begin(); it != node_neighbors_.end(); it++)
     {
         MolecularModeling::Atom* atom = (*it);
-        if(atom->GetId().compare(node_neighbor->GetId()) != 0)
+        if(atom != node_neighbor)
                 new_node_neighbors.push_back(atom);
     }
     this->SetNodeNeighbors(new_node_neighbors);

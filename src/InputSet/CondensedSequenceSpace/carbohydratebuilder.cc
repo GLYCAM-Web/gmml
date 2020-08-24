@@ -64,7 +64,15 @@ ResidueLinkageVector* carbohydrateBuilder::GetGlycosidicLinkages()
 //                      FUNCTIONS                       //
 //////////////////////////////////////////////////////////
 
-void carbohydrateBuilder::GenerateSingle3DStructure(std::string fileOutputDirectory, std::string type, std::string outputFileNaming)
+void carbohydrateBuilder::GenerateSingle3DStructureDefaultFiles(std::string fileOutputDirectory)
+{
+    this->SetDefaultShapeUsingMetadata();
+    this->ResolveOverlaps();
+    this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure");
+    this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", "structure");
+    return;
+}
+void carbohydrateBuilder::GenerateSingle3DStructureSingleFile(std::string fileOutputDirectory, std::string type, std::string outputFileNaming)
 {
     this->SetDefaultShapeUsingMetadata();
     this->ResolveOverlaps();
@@ -82,9 +90,9 @@ void carbohydrateBuilder::GenerateSingle3DStructure(std::string fileOutputDirect
 //     return;
 // }
 
-void carbohydrateBuilder::GenerateRotamer(CondensedSequenceSpace::singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
+void carbohydrateBuilder::GenerateRotamerDefaultFiles(CondensedSequenceSpace::singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
 {
-//        std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
+//     std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
 //     std::string linkageName; // Can be whatever the user wants it to be, default to same as index.
 //     std::string dihedralName; // omg / phi / psi / chi1 / chi2
 //     std::string selectedRotamer; // gg / tg / g- etc
@@ -99,8 +107,8 @@ void carbohydrateBuilder::GenerateRotamer(CondensedSequenceSpace::singleRotamerI
         currentLinkage->SetSpecificShape(rotamerInfo.dihedralName, rotamerInfo.selectedRotamer);
     }
     //this->ResolveOverlaps();
-    this->Write3DStructureFile(fileOutputDirectory, "PDB"); // Need to update to pass in output directory
-    this->Write3DStructureFile(fileOutputDirectory, "OFFFILE"); // Need to update to pass in output directory
+    this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure"); 
+    this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", "structure"); 
 
 }
 

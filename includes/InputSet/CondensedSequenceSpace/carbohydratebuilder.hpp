@@ -63,10 +63,13 @@ public:
     //                        FUNCTIONS                     //
     //////////////////////////////////////////////////////////
 
-    void GenerateSingle3DStructure(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string outputFileNaming = "default");
+    void GenerateSingle3DStructureDefaultFiles(std::string fileOutputDirectory = "unspecified");
+    void GenerateSingle3DStructureSingleFile(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string = "structure");
     std::string GenerateUserOptionsJSON();
     //void ReadUserSelectionsJSON(std::string jsonInput); // Initially planned this, but made redundant as handled at gems level
-    void GenerateRotamer(singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
+    //void GenerateRotamer(singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
+    void GenerateRotamerDefaultFiles(singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
+    // The following generates no files
     void GenerateUpToNRotamers(int maxRotamers = 32); // Will not be used by gems, but leaving the functionality as could be useful.
 
 private:

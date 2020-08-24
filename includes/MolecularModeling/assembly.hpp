@@ -9,6 +9,7 @@
 
 #include "../GeometryTopology/coordinate.hpp"
 #include "../GeometryTopology/plane.hpp"
+#include "../GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "../common.hpp"
 #include "../Glycan/chemicalcode.hpp"
 #include "../Glycan/sugarname.hpp"
@@ -40,8 +41,9 @@
 //#include "atomnode.hpp"
 #include "residuenode.hpp"
 
-class Residue_linkage;
-typedef std::vector<Residue_linkage> ResidueLinkageVector;
+// has been moved to residue_linkage.hpp
+//class Residue_linkage;
+//typedef std::vector<Residue_linkage> ResidueLinkageVector;
 
 namespace MolecularModeling
 {
@@ -992,16 +994,17 @@ public:
     void TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
     void RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map, std::string prep_file);
     int  RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& target_atoms, Atom* template_atoms, std::map<Atom*, std::string>& target_atom_label_map,
-                                           std::map<Atom*, std::string>& template_atom_label_map, std::map<Atom*, Atom*>& target_template_vertex_match, 
-                                           std::map<Atom*, Atom*>& template_target_vertex_match, std::vector<Atom*>& insertion_order,
+                                           std::map<Atom*, std::string>& template_atom_label_map, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match, 
+                                           std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match, std::vector<Atom*>& insertion_order,
                                            std::vector<std::map<Atom*, Atom*> >& all_isomorphisms);
+    bool CheckAndAcceptMatches(MolecularModeling::AtomVector& target_atoms, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match, std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match, std::vector<std::map<Atom*, Atom*> >& all_isomorphisms);
     bool AllAtomEdgesMatch(Atom* target_atom, Atom* template_atom, std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map);
     bool AtomVertexMatch(Atom* target_atom, Atom* template_atom, std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map);
     bool IfMatchScenarioAlreadyExists(std::map<Atom*, Atom*>& target_template_vertex_match,
                                         std::vector<std::map<Atom*, Atom*> >& all_isomorphisms);
-    void RemoveDownstreamMatches(Atom* target_atom, std::map<Atom*, Atom*>& target_template_vertex_match,
-                                 std::map<Atom*, Atom*>& template_target_vertex_match, std::vector<Atom*> target_insertion_order);
-    bool IfVertexAlreadyMatched(Atom* vertex_atom, std::map<Atom*, Atom*>& match_map);
+    void RemoveDownstreamMatches(Atom* target_atom, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match,
+                                 std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match, std::vector<Atom*> target_insertion_order);
+    bool IfVertexAlreadyMatched(Atom* vertex_atom, std::vector<std::map<Atom*, Atom*> >& match_map);
 
     /// Pattern mathing
     bool PatternMatching(Residue* residue, ResidueVector query_residues, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);

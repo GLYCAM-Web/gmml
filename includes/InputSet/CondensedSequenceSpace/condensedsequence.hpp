@@ -85,7 +85,7 @@ namespace CondensedSequenceSpace
             typedef std::map<int, std::vector<std::vector<std::string> > > IndexConfigurationNameMap;
             typedef std::map<int, std::string> IndexNameMap;
             typedef std::map<int, std::string> DerivativeMap;
-    	    enum Reordering_Approach {PRESERVE_USER_INPUT, LOWEST_INDEX, LONGEST_CHAIN};
+    	    enum class Reordering_Approach {PRESERVE_USER_INPUT, LOWEST_INDEX, LONGEST_CHAIN};
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
