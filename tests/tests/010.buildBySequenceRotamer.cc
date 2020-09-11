@@ -18,10 +18,10 @@ int main()
     //std::cout << carbBuilder.GenerateUserOptionsJSON() << std::endl;
     CondensedSequenceSpace::singleRotamerInfoVector rotamerInfoVector =
 	{ 
-		{ "10" , "", "Phi", "t", ""},
-		{ "10" , "", "Omg", "gt", ""},
-        { "11" , "", "Omg", "gg", ""},
-		{ "6" , "", "Omg" , "gg", ""},
+		{ "7" , "", "Phi", "t", ""},
+		{ "7" , "", "Omg", "gt", ""},
+        { "9" , "", "Omg", "gg", ""},
+		{ "10" , "", "Omg" , "gt", ""},
 	};
     std::string fileOutputDirectory = "unspecified"; // If it's "unspecified" or you don't pass a directory string it will write to the current working directory. 
 	carbBuilder.GenerateRotamerDefaultFiles(rotamerInfoVector, fileOutputDirectory);
