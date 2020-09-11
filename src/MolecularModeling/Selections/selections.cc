@@ -506,7 +506,7 @@ bool selection::compareAtomNumbers(MolecularModeling::Atom *a1, MolecularModelin
 {
     int a1Number = (a1->GetName().at(1) - '0'); // The atom "number" is a char. e.g. the 2 in C2.
     int a2Number = (a2->GetName().at(1) - '0');
-    if (a1Number > a2Number)
+    if (a1Number < a2Number)
     {
         return true;
     }
