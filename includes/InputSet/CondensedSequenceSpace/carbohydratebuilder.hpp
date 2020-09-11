@@ -71,6 +71,8 @@ public:
     void GenerateRotamerDefaultFiles(singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
     // The following generates no files
     //void GenerateUpToNRotamers(int maxRotamers = 32); // Will not be used by gems, but leaving the functionality as could be useful.
+    // Ideally this would be handled by labeling bonds in a graph class, but for now I'm reproducing the logic from condensedSequence here:
+    void Print();
 
 private:
     void Write3DStructureFile(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string filename = "output");
@@ -86,6 +88,7 @@ private:
     void generateLinkagePermutationsRecursively(ResidueLinkageVector::iterator linkage, ResidueLinkageVector::iterator end, int maxRotamers = 32, int rotamerCount = 0);
     Residue_linkage* selectLinkageWithIndex(ResidueLinkageVector &inputLinkages, int indexQuery); 
     void resetLinkageIDsToStartFromZero(ResidueLinkageVector &inputLinkages);
+
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////

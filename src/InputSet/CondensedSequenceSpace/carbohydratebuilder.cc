@@ -112,6 +112,7 @@ void carbohydrateBuilder::GenerateRotamerDefaultFiles(CondensedSequenceSpace::si
 
 }
 
+
 // Commenting out for as not being used, and will be confusing later. The front-end calls a differnt function that will build a single, specific rotamer.
 // void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
 // {
@@ -165,6 +166,14 @@ std::string carbohydrateBuilder::GenerateUserOptionsJSON()
     return response.str();
 }
 
+void carbohydrateBuilder::Print()
+{
+    std::cout << "CarbohydrateBuilder called using sequence: " << this->GetInputSequenceString() << "\n and contains these Residue_linkages:\n";
+    for (auto & linkage : glycosidicLinkages_ )
+    {
+        linkage.Print();
+    } 
+}
 
 
 //////////////////////////////////////////////////////////
@@ -241,20 +250,30 @@ void carbohydrateBuilder::ResolveOverlaps() // Need to consider rotamers.
     return;
 }
 
+// Gonna choke on cycles. Add a check for IsVisited when that is required.
 void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Residue *from_this_residue1, MolecularModeling::Residue *to_this_residue2, ResidueLinkageVector *residue_linkages)
 {
-    MolecularModeling::ResidueVector neighbors = to_this_residue2->GetNode()->GetResidueNeighbors();
-    for(auto &neighbor : neighbors)
-    {
-        if(neighbor->GetIndex() != from_this_residue1->GetIndex()) // If not the previous residue
-        {
-            residue_linkages->emplace_back(neighbor, to_this_residue2);
-        }
-    }
+    //MolecularModeling::ResidueVector neighbors = to_this_residue2->GetNode()->GetResidueNeighbors();
+    
+    // Additional code to sort neighbors by lowest index. 
+    // Only required so that numbers match those assigned in condensed sequence class
+    // Should not be done this way, need a generic graph structure and then to centralize everything.
+    MolecularModeling::ResidueVector neighbors = selection::SortResidueNeighborsByAcendingConnectionAtomNumber(to_this_residue2->GetNode()->GetResidueNodeConnectingAtoms());
+    // End addtional sorting code.
+    /* Breath first code */
+    // for(auto &neighbor : neighbors)
+    // {
+    //     if(neighbor->GetIndex() != from_this_residue1->GetIndex()) // If not the previous residue
+    //     {   //std::cout << "Seggie2?" << std::endl;
+    //         residue_linkages->emplace_back(neighbor, to_this_residue2);
+    //     }
+    // }
+    /* End Breath first code */
     for(auto &neighbor : neighbors)
     {
         if(neighbor->GetIndex() != from_this_residue1->GetIndex())
         {
+            residue_linkages->emplace_back(neighbor, to_this_residue2); // Depth first. For Breath first remove this line, and comment out above.
             this->FigureOutResidueLinkagesInGlycan(to_this_residue2, neighbor, residue_linkages);
         }
     }
@@ -267,7 +286,7 @@ void carbohydrateBuilder::InitializeClass(std::string inputSequenceString, std::
     assembly_.SetName("CONDENSEDSEQUENCE");
     this->SetInputSequenceString(inputSequenceString);
     CondensedSequence condensedSeqence(inputSequenceString); // This is all weird. condensedSequence should be merged into this class eventually
-    //this->SetOfficialSequenceString(condensedSeqence.BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach::LONGEST_CHAIN, CondensedSequence::Reordering_Approach::LONGEST_CHAIN, false));
+   // this->SetOfficialSequenceString(condensedSeqence.BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach::LONGEST_CHAIN, CondensedSequence::Reordering_Approach::LONGEST_CHAIN, false));
     PrepFileSpace::PrepFile* prepFile = new PrepFileSpace::PrepFile(inputPrepFilePath);
     assembly_.BuildAssemblyFromCondensedSequence(inputSequenceString, prepFile);
         // So in the above BuildAssemblyFromCondensedSequence code, linkages are generated that are inaccessible to me.
