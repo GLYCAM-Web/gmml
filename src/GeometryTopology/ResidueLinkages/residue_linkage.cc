@@ -249,7 +249,8 @@ void Residue_linkage::SetSpecificShape(std::string dihedralName, std::string sel
     for (auto &rotatable_dihedral : rotatable_dihedrals_)
     {
         // This will call rotatable_dihedrals that don't have dihedralName (phi,psi), and nothing will happen. Hmmm.
-        rotatable_dihedral.SetSpecificShape(dihedralName, selectedRotamer);
+        if (rotatable_dihedral.SetSpecificShape(dihedralName, selectedRotamer))
+            return;
     }   
 }
 
