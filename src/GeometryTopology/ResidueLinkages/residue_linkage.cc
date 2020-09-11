@@ -75,6 +75,10 @@ RotatableDihedralVector Residue_linkage::GetRotatableDihedrals() const
 int Residue_linkage::GetNumberOfShapes() // Can have conformers (sets of rotamers) or permutations of rotamers
 {
     int numberOfShapes = 1;
+    if ( (rotatable_dihedrals_.empty()) || (rotatable_dihedrals_.at(0).GetMetadata().empty()) ) 
+    {
+        return numberOfShapes;
+    }
     if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("permutation")==0)
     {
         for (auto &entry : rotatable_dihedrals_)
@@ -148,6 +152,7 @@ std::string Residue_linkage::GetName()
     }
     return this->DetermineLinkageNameFromResidueNames();
 }
+
 
 std::string Residue_linkage::DetermineLinkageNameFromResidueNames()
 {
@@ -349,10 +354,14 @@ void Residue_linkage::SetName(std::string name)
 
 void Residue_linkage::Print()
 {
-    for(RotatableDihedralVector::iterator rotatable_dihedral = rotatable_dihedrals_.begin(); rotatable_dihedral != rotatable_dihedrals_.end(); ++rotatable_dihedral)
-    {
-        rotatable_dihedral->Print();
-    }
+    std::cout << "Residue_linkage Index: " << this->GetIndex() << ", Name: " << this->GetName() << ", NumberOfShapes: " << this->GetNumberOfShapes() 
+              << ", ids: " << this->GetFromThisResidue1()->GetId() << "@" << this->GetFromThisConnectionAtom1()->GetName() 
+              << " -- " << this->GetToThisResidue2()->GetId() << "@" << this->GetToThisConnectionAtom2()->GetName() << "\n";
+    // << "Contains these rotatable_dihedrals:\n";
+    // for(auto & rotatableDihedral : this->GetRotatableDihedrals() )
+    // {
+    //     rotatableDihedral.Print();
+    // }
 }
 
 //////////////////////////////////////////////////////////
