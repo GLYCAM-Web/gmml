@@ -26,6 +26,8 @@ double GetMaxDistanceBetweenAtoms(MolecularModeling::AtomVector atoms);
 MolecularModeling::AtomVector GetAtomsCommonToBothAtomVectors(MolecularModeling::AtomVector a, MolecularModeling::AtomVector b);
 MolecularModeling::AtomVector GetAtomsin_a_Notin_b_AtomVectors(MolecularModeling::AtomVector a, MolecularModeling::AtomVector b);
 MolecularModeling::AtomVector FindOtherAtomsWithinMolecule(MolecularModeling::Atom *queryAtom);
+ // A function that compares atom numbers to see which is higher:
+bool compareAtomNumbers(MolecularModeling::Atom *a1, MolecularModeling::Atom *a2);
+MolecularModeling::ResidueVector SortResidueNeighborsByAcendingConnectionAtomNumber(MolecularModeling::AtomVector neighboringAtoms);
 }
-
 #endif // SELECTIONS_H

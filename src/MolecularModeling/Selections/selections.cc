@@ -501,4 +501,40 @@ MolecularModeling::AtomVector selection::FindOtherAtomsWithinMolecule(MolecularM
     return foundAtoms;
 }
 
+ // A function that compares atom numbers to see which is higher. Used for sorting residue neighbors.
+bool selection::compareAtomNumbers(MolecularModeling::Atom *a1, MolecularModeling::Atom *a2)
+{
+    int a1Number = (a1->GetName().at(1) - '0'); // The atom "number" is a char. e.g. the 2 in C2.
+    int a2Number = (a2->GetName().at(1) - '0');
+    if (a1Number < a2Number)
+    {
+        return true;
+    }
+    return false;
+}
 
+MolecularModeling::ResidueVector selection::SortResidueNeighborsByAcendingConnectionAtomNumber(MolecularModeling::AtomVector atomsConnectedToOtherResidues)
+{   // Sort neighbors by lowest index so Residue_linkage labeling matches front end. 
+    // Index refers to a 1-6 vs a 1-3 branch, the 1-3 should be labeled with a lower number.
+
+    // First we sort the atoms in the current residue by their atom number. I.e. C2, C6, C4, becomes C2, C4, C6
+    // These should be atoms that are connected to other residues
+
+    std::sort(atomsConnectedToOtherResidues.begin(), atomsConnectedToOtherResidues.end(), selection::compareAtomNumbers);
+
+    // Now we want to get the residue of each atom connected to these atoms, but some of these will be in the same residue and should be ignored.
+    MolecularModeling::ResidueVector sortedNeighbors; 
+    for(auto & sortedAtom : atomsConnectedToOtherResidues)
+    {
+       // std::cout << "Atoms connected to other residues are " << sortedAtom->GetId() << "\n";
+        for(auto & neighboringAtom : sortedAtom->GetNode()->GetNodeNeighbors())
+        {   // want to find residue of atoms that are connected to sortedAtom
+            if (neighboringAtom->GetResidue()->GetIndex() != sortedAtom->GetResidue()->GetIndex())
+            {
+            //    std::cout << "Neighbor of that atom which is in another resiude is " << neighboringAtom->GetResidue()->GetId() << "@" << neighboringAtom->GetId() << "\n";
+                sortedNeighbors.push_back(neighboringAtom->GetResidue());
+            }
+        }
+    }
+    return sortedNeighbors;
+}

@@ -1,6 +1,6 @@
 #include "../../includes/GeometryTopology/geometrytopology.hpp"
-#include "../External_Libraries/Eigen_Algebra_Template_Library/Geometry"
-#include "../utils.hpp"
+#include "../../includes/External_Libraries/Eigen_Algebra_Template_Library/Geometry"
+#include "../../includes/utils.hpp"
 //void whywontthislink::test(){
 //    return;
 //}

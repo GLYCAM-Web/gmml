@@ -387,7 +387,7 @@ void Rotatable_dihedral::SetSpecificAngleEntryUsingMetadata(bool useRanges, int 
     }
 }
 
-void Rotatable_dihedral::SetSpecificShape(std::string dihedralName, std::string selectedRotamer)
+bool Rotatable_dihedral::SetSpecificShape(std::string dihedralName, std::string selectedRotamer)
 {
     if (assigned_metadata_.empty())
     {
@@ -395,18 +395,25 @@ void Rotatable_dihedral::SetSpecificShape(std::string dihedralName, std::string 
     }
     else
     {
-        std::cout << "Made it here with " << dihedralName << " and " << selectedRotamer << std::endl;
+        //std::cout << "Made it here with " << dihedralName << " and " << selectedRotamer << std::endl;
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_entries = this->GetMetadata();
-        for(auto &metadata : metadata_entries)
+        if (dihedralName == metadata_entries.at(0).dihedral_angle_name_)
         {
-            std::cout << "Checking entry with " << metadata.dihedral_angle_name_ << " and " << metadata.rotamer_name_ << std::endl;
-            if (metadata.dihedral_angle_name_ == dihedralName && metadata.rotamer_name_ == selectedRotamer)
+            for(auto &metadata : metadata_entries)
             {
-                this->SetDihedralAngle(metadata.default_angle_value_);
-                std::cout << "Setting " << dihedralName << " to " << metadata.default_angle_value_ << std::endl;
+                // std::cout << dihedralName << ": " << selectedRotamer 
+                // << " vs metadata " << metadata.dihedral_angle_name_ << ": " << metadata.rotamer_name_
+                // << std::endl;
+                if (metadata.rotamer_name_ == selectedRotamer)
+                {
+                    this->SetDihedralAngle(metadata.default_angle_value_);
+                    //std::cout << "Setting " << dihedralName << " to " << metadata.default_angle_value_ << std::endl;
+                    return true;
+                }
             }
         }
     }
+    return false;
 }
 
 //////////////////////////////////////////////////////////
@@ -518,13 +525,13 @@ bool Rotatable_dihedral::CheckIfEverRotated()
 
 void Rotatable_dihedral::Print()
 {
-//    std::cout << atom1_->GetName() << ", " << atom2_->GetName() << ", " << atom3_->GetName() << ", " << atom4_->GetName() << ": " << this->CalculateDihedralAngle()  << ".\n";
-////    for(AtomVector::iterator it1 = atoms_that_move_.begin(); it1 != atoms_that_move_.end(); ++it1)
-////    {
-////        Atom *atom = *it1;
-////        std::cout << atom->GetName() << ", ";
-////    }
-//    std::cout << std::endl;
+   std::cout << atom1_->GetName() << ", " << atom2_->GetName() << ", " << atom3_->GetName() << ", " << atom4_->GetName() << ": " << this->CalculateDihedralAngle()  << ".\n";
+//    for(AtomVector::iterator it1 = atoms_that_move_.begin(); it1 != atoms_that_move_.end(); ++it1)
+//    {
+//        Atom *atom = *it1;
+//        std::cout << atom->GetName() << ", ";
+//    }
+   std::cout << std::endl;
 }
 
 //////////////////////////////////////////////////////////

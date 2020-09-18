@@ -22,7 +22,7 @@ using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
 
 DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage( MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2)
 {
-    DihedralAngleDataVector matChing_entries;
+    DihedralAngleDataVector matching_entries;
     Glycam06NamesToTypesLookupContainer metadata_residueNamesToTypes;
     // Go through each entry in the metadata
     for (const auto& entry : dihedralAngleDataVector_)
@@ -42,13 +42,13 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage( Molecu
             {
                 //Always add a later entry, but remove earlier match if number_of_bonds_from_anomeric_carbon_ AND index number are the same.
                 // I've overloaded the == and != operators in the DihedralAngleData struct to evaluate those.
-                // This next line removes any elements of matChing_entries that match "entry", then the line after adds entry.
-                matChing_entries.erase(std::remove(matChing_entries.begin(), matChing_entries.end(), entry), matChing_entries.end());
-                matChing_entries.push_back(entry);
+                // This next line removes any elements of matching_entries that match "entry", then the line after adds entry.
+                matching_entries.erase(std::remove(matching_entries.begin(), matching_entries.end(), entry), matching_entries.end());
+                matching_entries.push_back(entry);
             }
         }
     }
-    return matChing_entries;
+    return matching_entries;
 }
 //////////////////////////////////////////////////////////
 //                    PRIVATE FUNCTIONS                 //
