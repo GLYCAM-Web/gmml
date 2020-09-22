@@ -25,6 +25,7 @@ int main()
 	};
     std::string fileOutputDirectory = "unspecified"; // If it's "unspecified" or you don't pass a directory string it will write to the current working directory. 
 	carbBuilder.GenerateRotamerDefaultFiles(rotamerInfoVector, fileOutputDirectory);
+    std::cout << "Number of shapes for this sequence is " << carbBuilder.GetNumberOfShapes() << "\n";
 }
 //prep file
 

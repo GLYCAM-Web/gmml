@@ -112,6 +112,16 @@ void carbohydrateBuilder::GenerateRotamerDefaultFiles(CondensedSequenceSpace::si
 
 }
 
+int carbohydrateBuilder::GetNumberOfShapes()
+{
+    int numberOfShapes = 1;
+    for(auto &linkage : (*this->GetGlycosidicLinkages()))
+    {
+        numberOfShapes = (numberOfShapes * linkage.GetNumberOfShapes());
+    }
+    return numberOfShapes;
+}
+
 
 // Commenting out for as not being used, and will be confusing later. The front-end calls a differnt function that will build a single, specific rotamer.
 // void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
