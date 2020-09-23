@@ -72,6 +72,7 @@ public:
     // The following generates no files
     //void GenerateUpToNRotamers(int maxRotamers = 32); // Will not be used by gems, but leaving the functionality as could be useful.
     // Ideally this would be handled by labeling bonds in a graph class, but for now I'm reproducing the logic from condensedSequence here:
+    int GetNumberOfShapes();
     void Print();
 
 private:

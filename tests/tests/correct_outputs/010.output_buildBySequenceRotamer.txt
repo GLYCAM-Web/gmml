@@ -14,3 +14,4 @@ Residue_linkage Index: 10, Name: DManpa1-6DManpa, NumberOfShapes: 2, ids: ZMA_A_
 Residue_linkage Index: 11, Name: Sulpho1-2DManpa, NumberOfShapes: 1, ids: SO3_A_14_?_?_?@S1 -- ZMA_A_13_?_?_?@O2
 Residue_linkage Index: 12, Name: Methyl3-3DManpa, NumberOfShapes: 1, ids: MEX_A_15_?_?_?@CH3 -- ZMA_A_13_?_?_?@O3
 Residue_linkage Index: 13, Name: Methyl3-6DGlcNAcpb, NumberOfShapes: 1, ids: MEX_A_4_?_?_?@CH3 -- UYB_A_3_?_?_?@O6
+Number of shapes for this sequence is 24
