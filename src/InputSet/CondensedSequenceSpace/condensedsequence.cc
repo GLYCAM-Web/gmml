@@ -939,6 +939,8 @@ std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::
     std::vector<int> longest_path;  //Elements in this vector is the residue ids on the longest path. Will be used or ignored based on reordering approach. See below.
     std::map<unsigned int, std::string> residue_label_map;
     std::map<unsigned int, std::string> bond_label_map;
+    std::map<int, std::map<int, std::string> > condensed_residue_derivative_res_label_map;
+    std::map<int, std::map<int, std::string> > condensed_residue_derivative_bond_label_map;
 
     if (reordering_approach != CondensedSequence::Reordering_Approach::PRESERVE_USER_INPUT && this->anomeric_anomeric_linkages_.size() == 1){
 	reevaluated_parent_index = this->ReEvaluateParentIdentityUponAnomericAnomericLinkage();
@@ -950,10 +952,12 @@ std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::
 
     if (label){
         int current_residue_label_index = 0, current_bond_label_index = 0;
-        RecursivelyLabelCondensedSequence(reevaluated_parent_index, current_residue_label_index, current_bond_label_index, residue_label_map, bond_label_map, labeling_approach, longest_path); 
+        RecursivelyLabelCondensedSequence(reevaluated_parent_index, current_residue_label_index, current_bond_label_index, residue_label_map, bond_label_map, labeling_approach, longest_path,
+			                  condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map); 
     }
 
-    this->RecursivelyBuildLabeledCondensedSequence(reevaluated_parent_index, branch_depth, labeled_sequence, reordering_approach, residue_label_map, bond_label_map, longest_path, label);
+    this->RecursivelyBuildLabeledCondensedSequence(reevaluated_parent_index, branch_depth, labeled_sequence, reordering_approach, residue_label_map, bond_label_map, longest_path, label,
+		                                   condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map);
     //Starts with the first condensed residue in the vector, which is the aglycone. Then go recursively down the tree.
     return labeled_sequence;
 }
@@ -1017,7 +1021,9 @@ void CondensedSequence::FindLongestPath (std::vector<int>& longest_path)
 
 void CondensedSequence::RecursivelyLabelCondensedSequence(int current_residue_index, int& current_residue_label_index, int& current_bond_label_index, 
 		                                          std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map, 
-							  CondensedSequence::Reordering_Approach labeling_approach, std::vector<int>& longest_path)
+							  CondensedSequence::Reordering_Approach labeling_approach, std::vector<int>& longest_path, 
+							  std::map<int, std::map<int, std::string> >& condensed_residue_derivative_res_label_map,
+                                                          std::map<int, std::map<int, std::string> >& condensed_residue_derivative_bond_label_map)
 {
     CondensedSequenceSpace::CondensedSequenceResidue* current_residue = this->condensed_sequence_residue_tree_[current_residue_index];
     //Insert residue label after residue name,example: Glcp&Label_residueId=1;a1-4
@@ -1040,6 +1046,8 @@ void CondensedSequence::RecursivelyLabelCondensedSequence(int current_residue_in
     bond_label_map[current_residue_index] = bond_label;
 
     std::vector<int> child_ids = current_residue->GetChildIds(); //Get the index of child residues. Sort this vector based on the reordering approach below. 
+    std::vector<std::pair<int, int> > linkage_index_child_pairs; //Pair first is the linkage index, pair second is condensed residue index, or -999 indicating a derivative. 
+    std::map<int, std::string> this_residue_derivatives = current_residue->GetDerivatives();
 
     if (labeling_approach == CondensedSequence::Reordering_Approach::LOWEST_INDEX){
         //If sequence is to be reordered based on index, rearrange child in ascending order based on parent open valene position.Use a temporary map for sorting.
@@ -1050,30 +1058,107 @@ void CondensedSequence::RecursivelyLabelCondensedSequence(int current_residue_in
             int open_valence_position = child_residue->GetOxygenPosition();
             openvalence_childid_map[open_valence_position] = child_id;
         }
-        child_ids.clear();
+        
+	for (std::map<int, std::string>::iterator mapit = this_residue_derivatives.begin(); mapit != this_residue_derivatives.end(); mapit++){
+            openvalence_childid_map[mapit->first] = -999;
+	}
+
+        //child_ids.clear();
         for (std::map<int, int>::iterator map_it = openvalence_childid_map.begin(); map_it != openvalence_childid_map.end(); map_it++){
-            child_ids.push_back(map_it->second);
+            //child_ids.push_back(map_it->second);
+	    linkage_index_child_pairs.emplace_back(std::make_pair(map_it->first, map_it->second));
         }
     }
 
     else if (labeling_approach == CondensedSequence::Reordering_Approach::LONGEST_CHAIN){
         //If sequence is to be reordered based on longest chain, sort main chain child that's on the predetermined longest path to the front of vector, preserve the order of the rest
         for (std::vector<int>::iterator it= child_ids.begin(); it != child_ids.end(); it++){
+	    int child_id = *it;
+	    int open_valence_position = this->condensed_sequence_residue_tree_[child_id]->GetOxygenPosition();
+            linkage_index_child_pairs.emplace_back(std::make_pair(open_valence_position, child_id));
+	}
+        for (std::vector<int>::iterator it= child_ids.begin(); it != child_ids.end(); it++){
             int child_id = *it;
             if (std::find(longest_path.begin(), longest_path.end(), child_id) != longest_path.end()){
-                child_ids.erase(it);
-                child_ids.insert(child_ids.begin(), child_id);
+                //child_ids.erase(it);
+                //child_ids.insert(child_ids.begin(), child_id);
+		for (std::vector<std::pair<int, int> >::iterator pairs_it = linkage_index_child_pairs.begin(); pairs_it != linkage_index_child_pairs.end(); pairs_it++){
+		    if (pairs_it->second == child_id){
+		        std::pair<int, int> duplicate_pair = std::make_pair(pairs_it->first, pairs_it->second);
+			linkage_index_child_pairs.erase(pairs_it);
+			linkage_index_child_pairs.insert(linkage_index_child_pairs.begin(), duplicate_pair);
+		    }
+		}
 		break;
             }
         }
+
+	for (std::map<int, std::string>::iterator mapit = this_residue_derivatives.begin(); mapit != this_residue_derivatives.end(); mapit++){
+            linkage_index_child_pairs.push_back(std::make_pair(mapit->first, -999));
+	}
     }
 
-    for (std::vector<int>::iterator it = child_ids.begin(); it != child_ids.end(); it++){
-        this->RecursivelyLabelCondensedSequence(*it, current_residue_label_index, current_bond_label_index, residue_label_map, bond_label_map, labeling_approach, longest_path);
+    /*for (std::vector<int>::iterator it = child_ids.begin(); it != child_ids.end(); it++){
+        this->RecursivelyLabelCondensedSequence(*it, current_residue_label_index, current_bond_label_index, residue_label_map, bond_label_map, labeling_approach, longest_path,
+			                            condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map);
+    }*/
+
+    for (std::vector<std::pair<int, int> >::iterator pair_it = linkage_index_child_pairs.begin(); pair_it != linkage_index_child_pairs.end(); pair_it++){
+        if (pair_it->second != -999){ //If not a derivative, if is a sugar
+	    int child_sugar_index = pair_it->second;
+	    this->RecursivelyLabelCondensedSequence(child_sugar_index, current_residue_label_index, current_bond_label_index, residue_label_map, bond_label_map, labeling_approach, longest_path,
+                                                    condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map);
+	}
+	else{  //-999 means that it is a derivative. In this case, generate labels here in place
+	    int derivative_linkage_index = pair_it->first;
+
+	    std::string derivative_residue_label;
+            derivative_residue_label.insert(0, ";"); //semicolon is the right delimiter of a label;
+            derivative_residue_label.insert(0, std::to_string(current_residue_label_index)); //Add residue index to label.
+            derivative_residue_label.insert(0, "&Label=residue-"); //&Label is the left delimiter of a label. 
+
+            //Later declare derivative label structure, add this label to struct. 
+            condensed_residue_derivative_res_label_map[current_residue_index][derivative_linkage_index] = derivative_residue_label;
+            current_residue_label_index++;
+
+            std::string derivative_bond_label;
+            derivative_bond_label.insert(0, ";");
+            derivative_bond_label.insert(0, std::to_string(current_bond_label_index));
+            derivative_bond_label.insert(0, "&Label=link-");
+            current_bond_label_index++;
+
+            //Later declare derivative label structure, add this label to struct.
+            condensed_residue_derivative_bond_label_map[current_residue_index][derivative_linkage_index] = derivative_bond_label;
+	}
     }
+
+    //If this child is a derivative,generate labels here in place
+    /*for(std::map<int, std::string>::iterator mapit = this_residue_derivatives.begin(); mapit != this_residue_derivatives.end(); mapit++){
+        std::string derivative_residue_label;
+        derivative_residue_label.insert(0, ";"); //semicolon is the right delimiter of a label;
+        derivative_residue_label.insert(0, std::to_string(current_residue_label_index)); //Add residue index to label.
+        derivative_residue_label.insert(0, "&Label=residue-"); //&Label is the left delimiter of a label. 
+        //Later declare derivative label structure, add this label to struct. 
+        condensed_residue_derivative_res_label_map[current_residue_index][mapit->first] = derivative_residue_label;
+        current_residue_label_index++;
+        //std::cout << "Derivative residue label is: " << derivative_residue_label << std::endl;
+
+        std::string derivative_bond_label;
+        derivative_bond_label.insert(0, ";");
+        derivative_bond_label.insert(0, std::to_string(current_bond_label_index));
+        derivative_bond_label.insert(0, "&Label=link-");
+        current_bond_label_index++;
+
+        //Later declare derivative label structure, add this label to struct.
+        condensed_residue_derivative_bond_label_map[current_residue_index][mapit->first] = derivative_bond_label;
+        //std::cout << "Derivative bond label is: " << derivative_bond_label << std::endl;
+    }*/
 }
 
-void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_index, int& branch_depth, std::string& labeled_sequence, CondensedSequence::Reordering_Approach reordering_approach, std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map, std::vector<int>& longest_path, bool label)
+void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_index, int& branch_depth, std::string& labeled_sequence, CondensedSequence::Reordering_Approach reordering_approach, 
+		                                                 std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map, std::vector<int>& longest_path,
+								 bool label, std::map<int, std::map<int, std::string> >& condensed_residue_derivative_res_label_map,
+                                                                 std::map<int, std::map<int, std::string> >& condensed_residue_derivative_bond_label_map)
 {
     CondensedSequenceSpace::CondensedSequenceResidue* current_residue = this->condensed_sequence_residue_tree_[current_index];
     if (current_residue->GetIsTerminalAglycone()){  //If current residue is aglycone
@@ -1114,11 +1199,17 @@ void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_ind
         if (derivatives.size() > 0){
             labeled_sequence.insert(0, "]");
             for (CondensedSequenceResidue::DerivativeMap::reverse_iterator derivative_rit = derivatives.rbegin(); derivative_rit != derivatives.rend(); derivative_rit++){
+		//Insert derivative residue label
+		labeled_sequence.insert(0, condensed_residue_derivative_res_label_map[current_index][derivative_rit->first]);
+		//std::cout << "deri res label: " << condensed_residue_derivative_res_label_map[current_index][derivative_rit->first] << std::endl;
                 labeled_sequence.insert(0,derivative_rit->second);
+		//Insert derivative bond label
+		labeled_sequence.insert(0, condensed_residue_derivative_bond_label_map[current_index][derivative_rit->first]);
+		//std::cout << "deri bond label: " << condensed_residue_derivative_bond_label_map[current_index][derivative_rit->first] << std::endl;
                 labeled_sequence.insert(0,std::to_string(derivative_rit->first));
                 labeled_sequence.insert(0,",");
             }
-            labeled_sequence.erase(0,1);
+            labeled_sequence.erase(0,1); //Remove the extra comma
             labeled_sequence.insert(0, "[");
         }
 
@@ -1171,7 +1262,8 @@ void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_ind
             branch_depth++;
             labeled_sequence.insert(0,"]");
         }
-        this->RecursivelyBuildLabeledCondensedSequence(*it, branch_depth, labeled_sequence, reordering_approach, residue_label_map, bond_label_map, longest_path, label);
+        this->RecursivelyBuildLabeledCondensedSequence(*it, branch_depth, labeled_sequence, reordering_approach, residue_label_map, bond_label_map, longest_path, label,
+			                               condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map);
     }
 
 }
