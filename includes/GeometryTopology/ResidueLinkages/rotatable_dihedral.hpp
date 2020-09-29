@@ -45,7 +45,8 @@ public:
     bool GetIsAtomsThatMoveReversed();
     double GetPreviousDihedralAngle();
     DihedralAngleDataVector GetMetadata();
-    int GetNumberOfRotamers();
+    DihedralAngleDataVector GetLikelyMetadata();
+    int GetNumberOfRotamers( bool likelyShapesOnly = false);
     std::vector<double> GetAllPossibleAngleValues(int interval = 5);
 
     //////////////////////////////////////////////////////////
@@ -76,6 +77,7 @@ public:
     // A residue-residue linkage will have metadata for each rotatable_dihedral. Multiple rotamers means multiple entries.
     void SetMetadata(DihedralAngleDataVector metadataVector);
     void AddMetadata(DihedralAngleData metadata);
+    void ClearMetadata();
 
     void SetRandomAngleEntryUsingMetadata(bool useRanges = true);
     void SetSpecificAngleEntryUsingMetadata(bool useRanges = false, int angleEntryNumber = 0);

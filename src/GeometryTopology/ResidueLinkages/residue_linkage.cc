@@ -72,7 +72,7 @@ RotatableDihedralVector Residue_linkage::GetRotatableDihedrals() const
     return rotatable_dihedrals_;
 }
 
-int Residue_linkage::GetNumberOfShapes() // Can have conformers (sets of rotamers) or permutations of rotamers
+int Residue_linkage::GetNumberOfShapes( bool likelyShapesOnly) // Can have conformers (sets of rotamers) or permutations of rotamers
 {
     int numberOfShapes = 1;
     if ( (rotatable_dihedrals_.empty()) || (rotatable_dihedrals_.at(0).GetMetadata().empty()) ) 
@@ -83,11 +83,11 @@ int Residue_linkage::GetNumberOfShapes() // Can have conformers (sets of rotamer
     {
         for (auto &entry : rotatable_dihedrals_)
         {
-            numberOfShapes = (numberOfShapes * entry.GetNumberOfRotamers());
+            numberOfShapes = (numberOfShapes * entry.GetNumberOfRotamers(likelyShapesOnly));
         }
     }
     else if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("conformer")==0)
-    {
+    {   // need to update this once Conformers need weights
         numberOfShapes = rotatable_dihedrals_.size();
     }
     return numberOfShapes;
@@ -510,6 +510,11 @@ gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Residue_linkage::FindMe
 
 void Residue_linkage::AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata)
 {
+    // First clear any metadata already in place.
+    for (auto & rotatableDihedral : rotatable_dihedrals_)
+    {
+        rotatableDihedral.ClearMetadata();
+    }
     for (const auto& entry : metadata)
     {
 //        int bond_number = int (entry.number_of_bonds_from_anomeric_carbon_); // typecast to an int

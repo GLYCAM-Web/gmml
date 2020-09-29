@@ -112,12 +112,12 @@ void carbohydrateBuilder::GenerateRotamerDefaultFiles(CondensedSequenceSpace::si
 
 }
 
-int carbohydrateBuilder::GetNumberOfShapes()
+int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
 {
     int numberOfShapes = 1;
     for(auto &linkage : (*this->GetGlycosidicLinkages()))
     {
-        numberOfShapes = (numberOfShapes * linkage.GetNumberOfShapes());
+        numberOfShapes = (numberOfShapes * linkage.GetNumberOfShapes(likelyShapesOnly));
     }
     return numberOfShapes;
 }
@@ -260,7 +260,7 @@ void carbohydrateBuilder::ResolveOverlaps() // Need to consider rotamers.
     return;
 }
 
-// Gonna choke on cycles. Add a check for IsVisited when that is required.
+// Gonna choke on cyclic glycans. Add a check for IsVisited when that is required.
 void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Residue *from_this_residue1, MolecularModeling::Residue *to_this_residue2, ResidueLinkageVector *residue_linkages)
 {
     //MolecularModeling::ResidueVector neighbors = to_this_residue2->GetNode()->GetResidueNeighbors();
