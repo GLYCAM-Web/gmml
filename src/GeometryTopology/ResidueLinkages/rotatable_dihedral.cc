@@ -118,22 +118,15 @@ int Rotatable_dihedral::GetNumberOfRotamers(bool likelyShapesOnly)
     }
     else
     {
-        if (likelyShapesOnly)
+        int count = 0;
+        for (auto & entry: this->GetMetadata())
         {
-            int count = 1;
-            for (auto & entry: this->GetMetadata())
-            {
-                if (entry.weight_ >= 0.01) // I'm hardcoding it I don't care.
-                {
-                    count++;
-                }
-            }
-            return count;
+            if (entry.weight_ < 0.01 && likelyShapesOnly) // I'm hardcoding it I don't care.
+                {}// Do nought.
+            else
+                count++;
         }
-        else
-        {
-            return this->GetMetadata().size();
-        }
+       return count;
     }
 }
 
