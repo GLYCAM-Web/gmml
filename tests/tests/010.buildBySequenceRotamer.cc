@@ -25,7 +25,10 @@ int main()
 	};
     std::string fileOutputDirectory = "unspecified"; // If it's "unspecified" or you don't pass a directory string it will write to the current working directory. 
 	carbBuilder.GenerateRotamerDefaultFiles(rotamerInfoVector, fileOutputDirectory);
-    std::cout << "Number of shapes for this sequence is " << carbBuilder.GetNumberOfShapes() << "\n";
+    bool likelyShapesOnly = true; // You can just pass "true" to the function. Not sure I like this. Two functions probably more readable.
+    std::cout << "Number of likely shapes for this sequence is " << carbBuilder.GetNumberOfShapes(likelyShapesOnly) << "\n";
+    // Default is to calculate all possible.
+    std::cout << "Number of possible shapes for this sequence is " << carbBuilder.GetNumberOfShapes() << "\n"; 
 }
 //prep file
 
