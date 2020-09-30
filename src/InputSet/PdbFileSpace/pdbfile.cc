@@ -114,24 +114,25 @@ PdbFile::PdbFile(const std::string &pdb_file)
         throw PdbFileProcessingException(__LINE__, "PDB file not found");
     }
 
-    std::string line = "";
-    std::string temp = "";
-    std::stringstream ss;
-    while(!in_file.eof())
-    {
-        if(!getline(in_file, line))
-            break;
-        else
-        {
-            temp = line.substr(0,6);
-            temp = gmml::Trim(temp);
-            if(temp.find("END") != std::string::npos || temp.compare("END") == 0)
-                break;
-            else if(!line.empty())
-                ss << line << std::endl;
-        }
-    }
-    in_file.close();
+    // Oliver 2020-Sep-30 Dave commented out the below in 2019, but 
+    // std::string line = "";
+    // std::string temp = "";
+    // std::stringstream ss;
+    // while(!in_file.eof())
+    // {
+    //     if(!getline(in_file, line))
+    //         break;
+    //     else
+    //     {
+    //         temp = line.substr(0,6);
+    //         temp = gmml::Trim(temp);
+    //         if(temp.find("END") != std::string::npos || temp.compare("END") == 0)
+    //             break;
+    //         else if(!line.empty())
+    //             ss << line << std::endl;
+    //     }
+    // }
+    // in_file.close();
     //I think this erases PDb files sometimes, as they only have "END"
     //Dave 2/1/19
     // if(temp.find("END") == std::string::npos || temp.compare("END") != 0)
@@ -148,7 +149,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     //     out_file << ss.str() << temp;
     //     out_file.close();
     // }
-    in_file.open(pdb_file.c_str());
+    //in_file.open(pdb_file.c_str());
     if(!Read(in_file))
     {
         throw PdbFileProcessingException(__LINE__, "Reading PDB file exception");
