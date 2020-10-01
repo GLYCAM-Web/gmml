@@ -794,7 +794,7 @@ void Glycan::Monosaccharide::SetCompleteSideGroupAtoms(std::vector<MolecularMode
             {
               if ( (*it2)-> GetIsAnomericCarbon() )
               {
-                attached_anomeric_carbons.push_back(*it2); //Check how many anomeric carbons this working neighbor is attacheed to, should be either 0,1,2.
+                attached_anomeric_carbons.push_back(*it2); //Check how many anomeric carbons this working neighbor is attached to, should be either 0,1,2.
               }
             }
           }
@@ -1422,7 +1422,7 @@ void Glycan::Monosaccharide::GenerateCompleteSugarName(MolecularModeling::Assemb
         std::string long_name_pattern_at_minus_one = "";
         std::string long_name_pattern_at_plus_one = "";
         std::string pattern = "";
-        // gmml::log(__LINE__, __FILE__,  gmml::INF, "Naming by pettern below");
+        // gmml::log(__LINE__, __FILE__,  gmml::INF, "Naming by pattern below");
         // gmml::log(__LINE__, __FILE__,  gmml::INF, value);
         std::string unknownDerivativePattern = "", unknownDerivativeKey = "";
         for(std::vector<std::pair<std::string, std::string> >::iterator it = this->unknown_derivatives_.begin(); it != this->unknown_derivatives_.end(); it++)

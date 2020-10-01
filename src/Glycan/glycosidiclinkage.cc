@@ -386,7 +386,7 @@ double Glycan::GlycosidicLinkage::CalculateOmegaAngle()
   }
   if (local_debug > 0)
   {
-    gmml::log(__LINE__, __FILE__,  gmml::INF, "About to calcuate torsion");
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "About to calculate torsion");
   }
   double Omega = non_reducing_mono_->assembly_->CalculateTorsionAngleByAtoms(glycosidicO, C6prime, C5prime, O5prime);
   Omega = gmml::ConvertRadian2Degree(Omega);

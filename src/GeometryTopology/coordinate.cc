@@ -414,9 +414,9 @@ Coordinate* Coordinate::ConvertInternalCoordinate2CartesianCoordinate(
 // std::cout << "         fabs v1.GetY() - v2.GetY()  :  " << fabs ( v1.GetY() - v2.GetY() ) << std::endl;
 // std::cout << "         fabs v1.GetZ() - v2.GetZ()  :  " << fabs ( v1.GetZ() - v2.GetZ() ) << std::endl;
             
-            //! \todo  Add these cout statmentes and associated error messaging to the errors/logging functions when created
+            //! \todo  Add these cout statments and associated error messaging to the errors/logging functions when created
             //  These cout statements are actual error messages for any users who use input with these issues.
-                std::cout << "You are trying to set a dihedral based on three colinear atoms." << std::endl;
+                std::cout << "You are trying to set a dihedral based on three collinear atoms." << std::endl;
                 std::cout << "   This is an undefined situation, so I am going to bail now. " << std::endl;
                 std::cout << "   You probably need to reset how your internal coordinates are defined." << std::endl;
                 std::cout << "   Here are the Cartesian coordinates of the three atoms: " << std::endl;
