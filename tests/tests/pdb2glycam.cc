@@ -1,15 +1,4 @@
 #include "../../includes/gmml.hpp"
-#include "../../includes/MolecularModeling/assembly.hpp"
-#include "../../includes/MolecularModeling/atom.hpp"
-#include "../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
-#include "../../includes/ParameterSet/OffFileSpace/offfile.hpp"
-#include "../../includes/ParameterSet/OffFileSpace/offfileresidue.hpp"
-#include "../../includes/ParameterSet/OffFileSpace/offfileprocessingexception.hpp"
-#include "../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
-#include "../../includes/InputSet/Utilities/response.hpp"
-#include "../../includes/Glycan/note.hpp"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -18,6 +7,13 @@
 
 int main(int argc, char* argv[])
 {
+    if ( (argc != 2) && (argc != 3) )
+    {
+        std::cout << "Usage: pdb2glycam inputFile.pdb [outputFileName]\n";
+        std::cout << "Example: pdb2glycam 1RVX.pdb 1RVX_GLYCAMIFICATION.pdb\n";
+        std::cout << "outFileName is optional, the default name is pdb2glycam_output.pdb\n";
+        std::exit(EXIT_FAILURE);
+    }
     typedef std::vector<Glycan::Oligosaccharide*> OligosaccharideVector;
     std::vector<std::string> amino_libs;
     amino_libs.push_back("../dat/CurrentParams/leaprc.ff12SB_2014-04-24/amino12.lib");
@@ -53,5 +49,12 @@ int main(int argc, char* argv[])
 
     assemblyA.RenameAtoms(oligo_residue_map, prep);
     PdbFileSpace::PdbFile *outputPdbFile = assemblyA.BuildPdbFileStructureFromAssembly();
-    outputPdbFile->Write("pdb2glycam_output.pdb");
+    if (argc == 3)
+    {
+        std::stringstream outNameStream;
+        outNameStream << argv[2] << ".pdb";
+        outputPdbFile->Write(outNameStream.str());
+    }
+    else
+        outputPdbFile->Write("pdb2glycam_output.pdb");
 }
