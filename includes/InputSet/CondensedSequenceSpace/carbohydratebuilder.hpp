@@ -14,7 +14,9 @@
 
 namespace CondensedSequenceSpace
 {
-struct singleRotamerInfo
+
+// For specifying a specific shape to be built with GenerateSpecific3DStructure
+struct SingleRotamerInfo
 {
     std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
     std::string linkageName; // Can be whatever the user wants it to be, default to same as index.
@@ -22,16 +24,35 @@ struct singleRotamerInfo
     std::string selectedRotamer; // gg / tg / g- etc
     std::string numericValue; // user entered 64 degrees. Could be a v2 feature.
 };
-typedef std::vector<singleRotamerInfo> singleRotamerInfoVector;
+typedef std::vector<SingleRotamerInfo> SingleRotamerInfoVector;
 
-// struct conformerInfo
-// {
-//     conformerInfo() : fileOutputDirectory("undefined"), fileOutputName("default") {}
-//     singleRotamerInfoVector rotamerInfoVector; //All the info to generate one specified shape of a sequence
-//     std::string fileOutputDirectory;
-//     std::string fileOutputName;
-// //    StringVector fileOutputTypes; Just writing both as default for now
-// };
+struct DihedralOptions
+{
+    // CONSTRUCTOR
+    DihedralOptions () {}
+    DihedralOptions(std::string name, std::vector<std::string> rotamers) : dihedralName_ (name), rotamers_ (rotamers) {}
+    // DATA
+    std::string dihedralName_; // omg / phi / psi / chi1 / chi2
+    std::vector<std::string> rotamers_; // gg / tg / g- etc
+};
+typedef std::vector<DihedralOptions> DihedralOptionsVector;
+
+struct LinkageOptions
+{
+  // CONSTRUCTOR
+    LinkageOptions () {}
+    LinkageOptions(std::string name, std::string index, std::string res1, std::string res2, DihedralOptionsVector likely, DihedralOptionsVector possible) 
+                    : linkageName_ (name), indexOrderedLabel_ (index), firstResidueNumber_ (res1), secondResidueNumber_ (res2),
+                      likelyRotamers_ (likely), possibleRotamers_ (possible) {}
+    // DATA
+    std::string linkageName_;
+    std::string indexOrderedLabel_;
+    std::string firstResidueNumber_;
+    std::string secondResidueNumber_;
+    DihedralOptionsVector likelyRotamers_;
+    DihedralOptionsVector possibleRotamers_;
+};
+typedef std::vector<LinkageOptions> LinkageOptionsVector;
 
 class carbohydrateBuilder
 {
@@ -66,12 +87,12 @@ public:
     void GenerateSingle3DStructureDefaultFiles(std::string fileOutputDirectory = "unspecified");
     void GenerateSingle3DStructureSingleFile(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string = "structure");
     std::string GenerateUserOptionsJSON();
+    LinkageOptionsVector GenerateUserOptionsDataStruct();
     //void ReadUserSelectionsJSON(std::string jsonInput); // Initially planned this, but made redundant as handled at gems level
-    //void GenerateRotamer(singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
-    void GenerateRotamerDefaultFiles(singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
+    //void GenerateRotamer(SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
+    void GenerateSpecific3DStructure(SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
     // The following generates no files
     //void GenerateUpToNRotamers(int maxRotamers = 32); // Will not be used by gems, but leaving the functionality as could be useful.
-    // Ideally this would be handled by labeling bonds in a graph class, but for now I'm reproducing the logic from condensedSequence here:
     int GetNumberOfShapes(bool likelyShapesOnly = false);
     void Print();
 

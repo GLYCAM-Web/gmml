@@ -48,6 +48,7 @@ public:
     DihedralAngleDataVector GetLikelyMetadata();
     int GetNumberOfRotamers( bool likelyShapesOnly = false);
     std::vector<double> GetAllPossibleAngleValues(int interval = 5);
+    std::string GetName();
 
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //

@@ -16,7 +16,7 @@ int main()
     CondensedSequenceSpace::carbohydrateBuilder carbBuilder(condensed_sequence, prep);
     carbBuilder.Print();
     //std::cout << carbBuilder.GenerateUserOptionsJSON() << std::endl;
-    CondensedSequenceSpace::singleRotamerInfoVector rotamerInfoVector =
+    CondensedSequenceSpace::SingleRotamerInfoVector rotamerInfoVector =
 	{ 
 		{ "7" , "", "Phi", "t", ""},
 		{ "7" , "", "Omg", "gt", ""},
@@ -24,11 +24,25 @@ int main()
 		{ "10" , "", "Omg" , "gt", ""},
 	};
     std::string fileOutputDirectory = "unspecified"; // If it's "unspecified" or you don't pass a directory string it will write to the current working directory. 
-	carbBuilder.GenerateRotamerDefaultFiles(rotamerInfoVector, fileOutputDirectory);
+	carbBuilder.GenerateSpecific3DStructure(rotamerInfoVector, fileOutputDirectory);
     bool likelyShapesOnly = true; // You can just pass "true" to the function. Not sure I like this. Two functions probably more readable.
     std::cout << "Number of likely shapes for this sequence is " << carbBuilder.GetNumberOfShapes(likelyShapesOnly) << "\n";
     // Default is to calculate all possible.
-    std::cout << "Number of possible shapes for this sequence is " << carbBuilder.GetNumberOfShapes() << "\n"; 
+    std::cout << "Number of possible shapes for this sequence is " << carbBuilder.GetNumberOfShapes() << "\n";
+    for(auto &linkageInfo : carbBuilder.GenerateUserOptionsDataStruct())
+    {
+        std::cout   << "Options: Name: " << linkageInfo.linkageName_ << ", Index: " << linkageInfo.indexOrderedLabel_ << ", Res1:" 
+                << linkageInfo.firstResidueNumber_ << ", Res2:" << linkageInfo.secondResidueNumber_ << "\n";
+        for(auto &dihedralInfo : linkageInfo.likelyRotamers_)
+        {
+            std::cout << "Likely: " << dihedralInfo.dihedralName_ ;
+            for(auto &rotamer : dihedralInfo.rotamers_)
+            {
+                std::cout << ", " << rotamer;
+            }
+            std::cout << "\n";
+        } 
+    }
 }
 //prep file
 

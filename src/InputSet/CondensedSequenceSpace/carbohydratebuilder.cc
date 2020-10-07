@@ -80,17 +80,7 @@ void carbohydrateBuilder::GenerateSingle3DStructureSingleFile(std::string fileOu
     return;
 }
 
-// // Not yet functional. The json is read in, but nothing happens with it.
-// void carbohydrateBuilder::GenerateRotamers(std::string jsonSelection)
-// {
-//     if (!jsonSelection.empty())
-//         this->ReadUserSelectionsJSON("");
-//     else
-//         //Generate all rotamers
-//     return;
-// }
-
-void carbohydrateBuilder::GenerateRotamerDefaultFiles(CondensedSequenceSpace::singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
+void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequenceSpace::SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
 {
 //     std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
 //     std::string linkageName; // Can be whatever the user wants it to be, default to same as index.
@@ -390,3 +380,39 @@ void carbohydrateBuilder::resetLinkageIDsToStartFromZero(ResidueLinkageVector &i
         ++newIndex;
     }
 }
+
+CondensedSequenceSpace::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()
+{
+    CondensedSequenceSpace::LinkageOptionsVector userOptionsForSequence;
+    for (auto &linkage : *(this->GetGlycosidicLinkages())) // I get back a pointer to the ResidueLinkageVector so I *() it to the first element
+    {
+       // std::cout << "linko nameo: " << linkage.GetName() << std::endl;
+        CondensedSequenceSpace::DihedralOptionsVector possibleRotamers, likelyRotamers;
+        std::vector<std::string> buffer;
+        for (auto &rotatableDihedral : linkage.GetRotatableDihedralsWithMultipleRotamers())
+        {
+            for (auto &metadata : rotatableDihedral.GetMetadata())
+            {
+                buffer.push_back(metadata.rotamer_name_);
+            }
+            possibleRotamers.emplace_back(rotatableDihedral.GetName(), buffer);
+            buffer.clear();
+            for (auto &metadata : rotatableDihedral.GetLikelyMetadata())
+            {
+                buffer.push_back(metadata.rotamer_name_); 
+            }
+            likelyRotamers.emplace_back(rotatableDihedral.GetName(), buffer);
+            buffer.clear();
+        }
+        // Build struct in vector with emplace_back via constructor in struct
+        userOptionsForSequence.emplace_back(linkage.GetName(), std::to_string(linkage.GetIndex()),
+                                            linkage.GetFromThisResidue1()->GetNumber(),
+                                            linkage.GetToThisResidue2()->GetNumber(),
+                                            possibleRotamers, likelyRotamers);
+    }
+    return userOptionsForSequence;
+    // Do I want a struct here that I can easily pull info from at gems level? Or do I iterate through linkages at gems level?
+
+}
+
+
