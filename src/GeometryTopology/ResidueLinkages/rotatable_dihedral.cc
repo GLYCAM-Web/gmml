@@ -102,13 +102,14 @@ DihedralAngleDataVector Rotatable_dihedral::GetLikelyMetadata()
 {
     DihedralAngleDataVector returningMetadata;
     for (auto &entry : this->GetMetadata())
+    {
         if(entry.weight_ >= 0.01 ) // HARDCODE EVERYTHING.
         {
             //std::cout << "Likely entry for: " << entry.dihedral_angle_name_ << " weigh: " << entry.weight_ << "\n";
             returningMetadata.push_back(entry);
         }
-        //else
-           // std::cout << "UnLikely entry for: " << entry.dihedral_angle_name_ << " weigh: " << entry.weight_ << "\n";
+        //else {std::cout << "UnLikely entry for: " << entry.dihedral_angle_name_ << " weigh: " << entry.weight_ << "\n";}
+    }
     return returningMetadata;
 }
 
@@ -124,7 +125,7 @@ int Rotatable_dihedral::GetNumberOfRotamers(bool likelyShapesOnly)
         int count = 0;
         for (auto & entry: this->GetMetadata())
         {
-            if (entry.weight_ < 0.01 && likelyShapesOnly) // I'm hardcoding it I don't care.
+            if ( (entry.weight_ < 0.01) && (likelyShapesOnly) ) // I'm hardcoding it I don't care.
                 {}// Do nought.
             else
                 count++;

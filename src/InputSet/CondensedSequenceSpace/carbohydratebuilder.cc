@@ -166,6 +166,42 @@ std::string carbohydrateBuilder::GenerateUserOptionsJSON()
     return response.str();
 }
 
+CondensedSequenceSpace::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()
+{
+    CondensedSequenceSpace::LinkageOptionsVector userOptionsForSequence;
+    for (auto &linkage : *(this->GetGlycosidicLinkages())) // I get back a pointer to the ResidueLinkageVector so I *() it to the first element
+    {
+       // std::cout << "linko nameo: " << linkage.GetName() << std::endl;
+        CondensedSequenceSpace::DihedralOptionsVector possibleRotamers, likelyRotamers;
+        std::vector<std::string> buffer;
+        for (auto &rotatableDihedral : linkage.GetRotatableDihedralsWithMultipleRotamers())
+        {
+            for (auto &metadata : rotatableDihedral.GetMetadata())
+            {
+                buffer.push_back(metadata.rotamer_name_);
+            }
+            possibleRotamers.emplace_back(rotatableDihedral.GetName(), buffer);
+            buffer.clear();
+            for (auto &metadata : rotatableDihedral.GetLikelyMetadata())
+            {
+                buffer.push_back(metadata.rotamer_name_); 
+            }
+            likelyRotamers.emplace_back(rotatableDihedral.GetName(), buffer);
+            buffer.clear();
+        }   
+        // If there are multiple rotamers for this linkage
+        if (!linkage.GetRotatableDihedralsWithMultipleRotamers().empty()) 
+        {   // Build struct in vector with emplace_back via constructor in struct
+            userOptionsForSequence.emplace_back(linkage.GetName(), std::to_string(linkage.GetIndex()),
+                                            linkage.GetFromThisResidue1()->GetNumber(),
+                                            linkage.GetToThisResidue2()->GetNumber(),
+                                            likelyRotamers, possibleRotamers);
+        }
+    }
+    return userOptionsForSequence;
+}
+
+
 void carbohydrateBuilder::Print()
 {
     std::cout << "CarbohydrateBuilder called using sequence: " << this->GetInputSequenceString() << "\n and contains these Residue_linkages:\n";
@@ -381,38 +417,5 @@ void carbohydrateBuilder::resetLinkageIDsToStartFromZero(ResidueLinkageVector &i
     }
 }
 
-CondensedSequenceSpace::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()
-{
-    CondensedSequenceSpace::LinkageOptionsVector userOptionsForSequence;
-    for (auto &linkage : *(this->GetGlycosidicLinkages())) // I get back a pointer to the ResidueLinkageVector so I *() it to the first element
-    {
-       // std::cout << "linko nameo: " << linkage.GetName() << std::endl;
-        CondensedSequenceSpace::DihedralOptionsVector possibleRotamers, likelyRotamers;
-        std::vector<std::string> buffer;
-        for (auto &rotatableDihedral : linkage.GetRotatableDihedralsWithMultipleRotamers())
-        {
-            for (auto &metadata : rotatableDihedral.GetMetadata())
-            {
-                buffer.push_back(metadata.rotamer_name_);
-            }
-            possibleRotamers.emplace_back(rotatableDihedral.GetName(), buffer);
-            buffer.clear();
-            for (auto &metadata : rotatableDihedral.GetLikelyMetadata())
-            {
-                buffer.push_back(metadata.rotamer_name_); 
-            }
-            likelyRotamers.emplace_back(rotatableDihedral.GetName(), buffer);
-            buffer.clear();
-        }
-        // Build struct in vector with emplace_back via constructor in struct
-        userOptionsForSequence.emplace_back(linkage.GetName(), std::to_string(linkage.GetIndex()),
-                                            linkage.GetFromThisResidue1()->GetNumber(),
-                                            linkage.GetToThisResidue2()->GetNumber(),
-                                            possibleRotamers, likelyRotamers);
-    }
-    return userOptionsForSequence;
-    // Do I want a struct here that I can easily pull info from at gems level? Or do I iterate through linkages at gems level?
-
-}
 
 
