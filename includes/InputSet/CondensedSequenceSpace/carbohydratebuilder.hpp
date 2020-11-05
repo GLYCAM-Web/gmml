@@ -110,6 +110,7 @@ private:
     void generateLinkagePermutationsRecursively(ResidueLinkageVector::iterator linkage, ResidueLinkageVector::iterator end, int maxRotamers = 32, int rotamerCount = 0);
     Residue_linkage* selectLinkageWithIndex(ResidueLinkageVector &inputLinkages, int indexQuery); 
     void resetLinkageIDsToStartFromZero(ResidueLinkageVector &inputLinkages);
+    std::string convertIncomingRotamerNamesToStandard(std::string incomingName);
 
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //

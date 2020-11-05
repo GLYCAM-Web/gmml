@@ -94,7 +94,8 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequenceSpace::Si
     {
         int currentLinkageIndex = std::stoi(rotamerInfo.linkageIndex);
         Residue_linkage *currentLinkage = this->selectLinkageWithIndex(glycosidicLinkages_, currentLinkageIndex);
-        currentLinkage->SetSpecificShape(rotamerInfo.dihedralName, rotamerInfo.selectedRotamer);
+        std::string standardDihedralName = this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName);
+        currentLinkage->SetSpecificShape(standardDihedralName, rotamerInfo.selectedRotamer);
     }
     //this->ResolveOverlaps();
     this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure"); 
@@ -417,5 +418,27 @@ void carbohydrateBuilder::resetLinkageIDsToStartFromZero(ResidueLinkageVector &i
     }
 }
 
+// In too much of a rush to do this properly, so I'll make it private and 
+// so dumb that you'll have to write a proper one. Yes you! 
+std::string convertIncomingRotamerNamesToStandard(std::string incomingName)
+{   // Lamda function to see if string is in the passed in vector
+    auto isAinList = [](std::vector<std::string> names, std::string query)
+    {
+        if (std::find(names.begin(), names.end(), query) != names.end())
+            return true;
+        return false;
+    }; 
+    if (isAinList({"Omega", "omega", "Omg", "omg", "OMG", "omga", "omg1", "Omg1"}, incomingName))
+        return "Omg";
+    if (isAinList({"Phi", "phi", "PHI"}, incomingName))
+        return "Phi";
+    if (isAinList({"Psi", "psi", "PSI"}, incomingName))
+        return "Psi";
+    if (isAinList({"Chi1", "chi1", "CHI1"}, incomingName))
+        return "Chi1";
+    if (isAinList({"Chi2", "chi2", "CHI2"}, incomingName))
+        return "Chi2";
+    return incomingName; // Good luck.
+}
 
 
