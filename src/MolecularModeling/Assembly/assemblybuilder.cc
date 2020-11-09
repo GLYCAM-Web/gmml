@@ -1426,6 +1426,10 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 {
 //    std::cout << "Building Assembly From Condensed Sequence......" << std::endl;
     CondensedSequenceSpace::CondensedSequence sequence (condensed_sequence);
+    CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues_temp = sequence.GetCondensedSequenceGlycam06ResidueTree();
+    for (unsigned int i = 0; i < glycam06_residues_temp.size(); i++){
+        std::cout << "Before: " << glycam06_residues_temp[i]->GetName() << std::endl;
+    }
     //Here we are not really interested in the output reorganized sequence, but we are trying to rearrange the condensed 06 residue tree acccording to labeling order. 
     //Harded to coded to reorder and label based on lowest index. In the future, give this funcction arguments to specify this option. But fow now, changing this function declaration I will have to
     //change many other things. 
@@ -1433,6 +1437,9 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 		                           CondensedSequenceSpace::CondensedSequence::Reordering_Approach::LOWEST_INDEX, true);
     //Now the 06 residue tree should have the desired order.
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = sequence.GetCondensedSequenceGlycam06ResidueTree();
+    for (unsigned int i = 0; i < glycam06_residues.size(); i++){
+        std::cout << "After: " << glycam06_residues[i]->GetName() << std::endl;
+    }
     
     //    CondensedSequenceSpace::CondensedSequence::CondensedSequenceResidueTree res_tree = sequence.GetCondensedSequenceResidueTree();
     //    CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo info = sequence.GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(res_tree);
