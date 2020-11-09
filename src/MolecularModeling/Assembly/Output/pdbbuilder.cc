@@ -76,7 +76,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card_direction, int connect_card_existance, int model_index)
+PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card_direction, int connect_card_existance, int model_index, bool useInputPDBResidueNumbers)
 {
     if (model_index == -1) // -1 is the default set in header file, if that's not changed, then use model_index_. Can't pass in model_index_ as default for reasons.
         model_index = model_index_;
@@ -99,7 +99,7 @@ PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card
 
     AssemblytoPdbSequenceNumberMap assembly_to_sequence_number_map = AssemblytoPdbSequenceNumberMap();
     AssemblytoPdbSerialNumberMap assembly_to_serial_number_map = AssemblytoPdbSerialNumberMap();
-    ExtractPdbModelSectionFromAssembly(residue_set, serial_number, sequence_number, model_index, assembly_to_sequence_number_map,
+    ExtractPdbModelSectionFromAssembly(residue_set, serial_number, sequence_number, model_index, useInputPDBResidueNumbers, assembly_to_sequence_number_map,
                                     assembly_to_serial_number_map);
 
     PdbFileSpace::PdbLinkSection* link_card = new PdbFileSpace::PdbLinkSection();
@@ -123,7 +123,8 @@ PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card
     return pdb_file;
 }
 
-void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number,
+void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number, 
+                                               bool useInputPDBResidueNumbers,
                                                AssemblytoPdbSequenceNumberMap& assembly_to_pdb_sequence_number_map,
                                                AssemblytoPdbSerialNumberMap& assembly_to_pdb_serial_number_map)
 {
@@ -133,8 +134,8 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
         AssemblyVector assemblies = assembly->GetAssemblies();
         for(AssemblyVector::iterator it1 = assemblies.begin(); it1 != assemblies.end(); it1++)
         {
-            ExtractPdbModelSectionFromAssembly(residue_set, serial_number, sequence_number, model_number, assembly_to_pdb_sequence_number_map,
-                                            assembly_to_pdb_serial_number_map);
+            ExtractPdbModelSectionFromAssembly(residue_set, serial_number, sequence_number, model_number, useInputPDBResidueNumbers,
+                                                assembly_to_pdb_sequence_number_map, assembly_to_pdb_serial_number_map);
         }
         PdbFileSpace::PdbAtomSection* atom_card = new PdbFileSpace::PdbAtomSection();
         PdbFileSpace::PdbHeterogenAtomSection* het_atom_card = new PdbFileSpace::PdbHeterogenAtomSection();
@@ -178,9 +179,9 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
     for(ResidueVector::iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
     {
         Residue* residue = (*it1);
-        // Oliver: It looks like there is functionality for sequence_number (residue number) and serial_number (starts at 1) to coexist, but there 
+        // Oliver: It looks like there is functionality for sequence_number (residue number) and serial_number (starts at 1) to coexist, but they are 
         // are both set to 1 up above. I'm going to try have sequence_number be the actual sequence number 
-        if(!residue->GetNumber().empty() && residue->GetNumber() != "\n" ) // if not an empty string or a newline
+        if(useInputPDBResidueNumbers && !residue->GetNumber().empty() && residue->GetNumber() != "\n" ) // if not an empty string or a newline
         {
             // std::cout << "RESIDUE ID is _" << residue->GetId() << "_" << std::endl;
             // std::cout << "RESIDUE NUMBER IS _" << residue->GetNumber() << "_" << std::endl;

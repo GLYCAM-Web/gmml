@@ -80,17 +80,7 @@ void carbohydrateBuilder::GenerateSingle3DStructureSingleFile(std::string fileOu
     return;
 }
 
-// // Not yet functional. The json is read in, but nothing happens with it.
-// void carbohydrateBuilder::GenerateRotamers(std::string jsonSelection)
-// {
-//     if (!jsonSelection.empty())
-//         this->ReadUserSelectionsJSON("");
-//     else
-//         //Generate all rotamers
-//     return;
-// }
-
-void carbohydrateBuilder::GenerateRotamerDefaultFiles(CondensedSequenceSpace::singleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
+void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequenceSpace::SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
 {
 //     std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
 //     std::string linkageName; // Can be whatever the user wants it to be, default to same as index.
@@ -112,12 +102,12 @@ void carbohydrateBuilder::GenerateRotamerDefaultFiles(CondensedSequenceSpace::si
 
 }
 
-int carbohydrateBuilder::GetNumberOfShapes()
+int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
 {
     int numberOfShapes = 1;
     for(auto &linkage : (*this->GetGlycosidicLinkages()))
     {
-        numberOfShapes = (numberOfShapes * linkage.GetNumberOfShapes());
+        numberOfShapes = (numberOfShapes * linkage.GetNumberOfShapes(likelyShapesOnly));
     }
     return numberOfShapes;
 }
@@ -175,6 +165,42 @@ std::string carbohydrateBuilder::GenerateUserOptionsJSON()
   //  std::cout << "Finito" << std::endl;
     return response.str();
 }
+
+CondensedSequenceSpace::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()
+{
+    CondensedSequenceSpace::LinkageOptionsVector userOptionsForSequence;
+    for (auto &linkage : *(this->GetGlycosidicLinkages())) // I get back a pointer to the ResidueLinkageVector so I *() it to the first element
+    {
+       // std::cout << "linko nameo: " << linkage.GetName() << std::endl;
+        CondensedSequenceSpace::DihedralOptionsVector possibleRotamers, likelyRotamers;
+        std::vector<std::string> buffer;
+        for (auto &rotatableDihedral : linkage.GetRotatableDihedralsWithMultipleRotamers())
+        {
+            for (auto &metadata : rotatableDihedral.GetMetadata())
+            {
+                buffer.push_back(metadata.rotamer_name_);
+            }
+            possibleRotamers.emplace_back(rotatableDihedral.GetName(), buffer);
+            buffer.clear();
+            for (auto &metadata : rotatableDihedral.GetLikelyMetadata())
+            {
+                buffer.push_back(metadata.rotamer_name_); 
+            }
+            likelyRotamers.emplace_back(rotatableDihedral.GetName(), buffer);
+            buffer.clear();
+        }   
+        // If there are multiple rotamers for this linkage
+        if (!linkage.GetRotatableDihedralsWithMultipleRotamers().empty()) 
+        {   // Build struct in vector with emplace_back via constructor in struct
+            userOptionsForSequence.emplace_back(linkage.GetName(), std::to_string(linkage.GetIndex()),
+                                            linkage.GetFromThisResidue1()->GetNumber(),
+                                            linkage.GetToThisResidue2()->GetNumber(),
+                                            likelyRotamers, possibleRotamers);
+        }
+    }
+    return userOptionsForSequence;
+}
+
 
 void carbohydrateBuilder::Print()
 {
@@ -260,7 +286,7 @@ void carbohydrateBuilder::ResolveOverlaps() // Need to consider rotamers.
     return;
 }
 
-// Gonna choke on cycles. Add a check for IsVisited when that is required.
+// Gonna choke on cyclic glycans. Add a check for IsVisited when that is required.
 void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Residue *from_this_residue1, MolecularModeling::Residue *to_this_residue2, ResidueLinkageVector *residue_linkages)
 {
     //MolecularModeling::ResidueVector neighbors = to_this_residue2->GetNode()->GetResidueNeighbors();
@@ -390,3 +416,6 @@ void carbohydrateBuilder::resetLinkageIDsToStartFromZero(ResidueLinkageVector &i
         ++newIndex;
     }
 }
+
+
+

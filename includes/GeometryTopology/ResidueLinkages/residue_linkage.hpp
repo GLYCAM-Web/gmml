@@ -43,7 +43,7 @@ public:
     RotatableDihedralVector GetRotatableDihedrals() const;
     RotatableDihedralVector GetRotatableDihedralsWithMultipleRotamers();
     int GetNumberOfRotatableDihedrals();
-    int GetNumberOfShapes();
+    int GetNumberOfShapes(bool likelyShapesOnly = false);
     Residue* GetFromThisResidue1();
     Residue* GetToThisResidue2();
     Atom* GetFromThisConnectionAtom1();

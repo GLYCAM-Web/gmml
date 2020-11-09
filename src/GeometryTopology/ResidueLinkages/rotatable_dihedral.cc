@@ -98,16 +98,39 @@ DihedralAngleDataVector Rotatable_dihedral::GetMetadata()
     return assigned_metadata_;
 }
 
-int Rotatable_dihedral::GetNumberOfRotamers()
+DihedralAngleDataVector Rotatable_dihedral::GetLikelyMetadata()
 {
-    if (assigned_metadata_.empty())
+    DihedralAngleDataVector returningMetadata;
+    for (auto &entry : this->GetMetadata())
+    {
+        if(entry.weight_ >= 0.01 ) // HARDCODE EVERYTHING.
+        {
+            //std::cout << "Likely entry for: " << entry.dihedral_angle_name_ << " weigh: " << entry.weight_ << "\n";
+            returningMetadata.push_back(entry);
+        }
+        //else {std::cout << "UnLikely entry for: " << entry.dihedral_angle_name_ << " weigh: " << entry.weight_ << "\n";}
+    }
+    return returningMetadata;
+}
+
+int Rotatable_dihedral::GetNumberOfRotamers(bool likelyShapesOnly)
+{
+    if (this->GetMetadata().empty())
     {
         std::cerr << "Error in Rotatable_dihedral::GetNumberOfRotamers; no metadata has been set.\n";
         return 0;
     }
     else
     {
-        return assigned_metadata_.size();
+        int count = 0;
+        for (auto & entry: this->GetMetadata())
+        {
+            if ( (entry.weight_ < 0.01) && (likelyShapesOnly) ) // I'm hardcoding it I don't care.
+                {}// Do nought.
+            else
+                count++;
+        }
+       return count;
     }
 }
 
@@ -136,6 +159,14 @@ std::vector<double> Rotatable_dihedral::GetAllPossibleAngleValues(int interval)
     }
     return allPossibleAngleValues;
 }
+
+std::string Rotatable_dihedral::GetName()
+{
+    if (this->GetLikelyMetadata().empty())
+        return "Boo";
+    else
+        return this->GetLikelyMetadata().at(0).dihedral_angle_name_;
+}   
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
@@ -311,12 +342,20 @@ void Rotatable_dihedral::SetMetadata(DihedralAngleDataVector metadataVector)
 {
     assigned_metadata_ = metadataVector;
     this->UpdateAtomsIfPsi();
+    return;
 }
 
 void Rotatable_dihedral::AddMetadata(DihedralAngleData metadata)
 {
     assigned_metadata_.push_back(metadata);
     this->UpdateAtomsIfPsi();
+    return;
+}
+
+void Rotatable_dihedral::ClearMetadata()
+{
+    assigned_metadata_.clear();
+    return;
 }
 
 void Rotatable_dihedral::SetRandomAngleEntryUsingMetadata(bool useRanges)

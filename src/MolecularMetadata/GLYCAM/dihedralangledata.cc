@@ -20,7 +20,7 @@ using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
 //            && entry1.index_ == entry2.index_ );
 //}
 
-DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage( MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2)
+DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2)
 {
     DihedralAngleDataVector matching_entries;
     Glycam06NamesToTypesLookupContainer metadata_residueNamesToTypes;
@@ -127,7 +127,7 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C."   , "O6"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  },
         { "C."   , "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
       //  Need to check weights when adding dihedral. All possible can return low weight structures.
-//      { "C."   , "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 0.001 , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=gluco"}   , "O6" , "C6" , "C5" , "O5"  },
+        { "C."   , "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 0.001 , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=gluco"}   , "O6" , "C6" , "C5" , "O5"  },
 
          // 2-8 linkages
       //{ "C2", "O8"   , "omg7" ,    };

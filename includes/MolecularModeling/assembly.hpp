@@ -645,14 +645,14 @@ public:
               * Exports data from assembly data structure into pdb file structure
               * @param link_card_direction An integer to define the direction in the link cards (-1: O -> C and 1: C -> O)
               */
-    PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1, int connect_card_existance = 1, int model_index = -1 );
+    PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1, int connect_card_existance = 1, int model_index = -1 , bool useInputPDBResidueNumbers = true);
     /*! \fn
               * A function to build a pdbqt file structure from the current assembly object
               * Exports data from assembly data structure into pdbqt file structure
               */
     PdbqtFileSpace::PdbqtFile* BuildPdbqtFileStructureFromAssembly();
 
-    void ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number,
+    void ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number, bool useInputPDBResidueNumbers,
                                             AssemblytoPdbSequenceNumberMap& assembly_to_pdb_sequence_number_map, AssemblytoPdbSerialNumberMap& assembly_to_pdb_serial_number_map);
     void ExtractPdbqtModelCardFromAssembly(PdbqtFileSpace::PdbqtModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number);
     void ExtractPdbLinkSectionFromAssembly(PdbFileSpace::PdbLinkSection* link_card, int model_index, AssemblytoPdbSequenceNumberMap assembly_to_pdb_sequence_number,
