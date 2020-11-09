@@ -408,7 +408,7 @@ public:
               * @param condensed_sequence The condensed sequence string, for example DManpa1-4DGlcpb1-OH
           * @param prep_file A prep file object.
               */
-    void BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file);	//Created by Yao 06/25/2018, replace old version above
+    void BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file); //Created by Yao 06/25/2018, replace old version above
     /*! \fn
               * A function in order to build an assembly from a condensed sequence, using a prep file as source data
               * A wrapper function for python to call. I(Yao) don't know how to initiate a prep file object in python. So let python generate a string, convert into prep file object
