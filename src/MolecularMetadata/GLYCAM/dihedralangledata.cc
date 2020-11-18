@@ -133,6 +133,8 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
       //{ "C2", "O8"   , "omg7" ,    };
       // Common sugar derivatives
       // Phosphate/sulfate
+        { "[SP]1", "N[2]"   , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"none"}                  , "O." , ".1" , "N." , "C."  },
+        { "[SP]1", "N[2]"   , "Psi"  , -40.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , ".1" , "N." , "C." , "H."  },
         { "[SP]1", "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"none"}                  , "O." , ".1" , "O." , "C."  },
         { "[SP]1", "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , ".1" , "O." , "C." , "H."  },
         { "[SP]1", "O[6-9]" , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , ".1" , "O." , "C." , "C."  },
