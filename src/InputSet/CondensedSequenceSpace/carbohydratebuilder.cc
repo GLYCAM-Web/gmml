@@ -90,17 +90,24 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequenceSpace::Si
     // With a conformer (aka rotamerSet), setting will be different as each rotatable_dihedral will be set to e.g. "A", whereas for linkages
     // with combinatorial rotamers (e,g, phi -g/t, omg gt/gg/tg), we need to set each dihedral as specified, but maybe it will be ok to go 
     // through and find the value for "A" in each rotatable dihedral.. yeah actually it should be fine. Leaving comment for time being.
-    for (auto &rotamerInfo : conformerInfo)
+    try 
     {
-        int currentLinkageIndex = std::stoi(rotamerInfo.linkageIndex);
-        Residue_linkage *currentLinkage = this->selectLinkageWithIndex(glycosidicLinkages_, currentLinkageIndex);
-        std::string standardDihedralName = this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName);
-        currentLinkage->SetSpecificShape(standardDihedralName, rotamerInfo.selectedRotamer);
+        for (auto &rotamerInfo : conformerInfo)
+        {
+            // std::cout << "linkage: " << rotamerInfo.linkageIndex << " " 
+            //     << this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName)
+            //     << " being set to " << rotamerInfo.selectedRotamer << std::endl;
+            int currentLinkageIndex = std::stoi(rotamerInfo.linkageIndex);
+            Residue_linkage *currentLinkage = this->selectLinkageWithIndex(glycosidicLinkages_, currentLinkageIndex);
+            std::string standardDihedralName = this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName);
+            currentLinkage->SetSpecificShape(standardDihedralName, rotamerInfo.selectedRotamer);
+        }
+        //this->ResolveOverlaps();
+        this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure"); 
+        this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", "structure"); 
+    } catch (const char* msg) {
+        std::cerr << msg << std::endl;
     }
-    //this->ResolveOverlaps();
-    this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure"); 
-    this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", "structure"); 
-
 }
 
 int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
@@ -360,14 +367,15 @@ ResidueLinkageVector carbohydrateBuilder::SplitLinkagesIntoPermutants(ResidueLin
                 RotatableDihedralVector temp = {rotatableDihedral};
                 splitLinkage.SetRotatableDihedrals(temp);
                 sortedLinkages.push_back(splitLinkage);
-                std::cout << "Split out " << splitLinkage.GetFromThisResidue1()->GetId() << "-" << splitLinkage.GetToThisResidue2()->GetId() << " rotamer with number of shapes: " << rotatableDihedral.GetNumberOfRotamers() << "\n";
+                //std::cout << "Split out " << splitLinkage.GetFromThisResidue1()->GetId() << "-" << splitLinkage.GetToThisResidue2()->GetId() << " rotamer with number of shapes: " << rotatableDihedral.GetNumberOfRotamers() << "\n";
             }
         }
     }
     return sortedLinkages;
 }
 
-//Adapted from resolve_overlaps.
+// Adapted from resolve_overlaps. For the website, this is actually handled at the gems level
+// Goes deep and then as it falls out of the iteration it's setting and writing the shapes. 
 void carbohydrateBuilder::generateLinkagePermutationsRecursively(ResidueLinkageVector::iterator linkage, ResidueLinkageVector::iterator end, int maxRotamers, int rotamerCount)
 {
     for(int shapeNumber = 0; shapeNumber < linkage->GetNumberOfShapes(); ++shapeNumber)
@@ -396,15 +404,12 @@ void carbohydrateBuilder::generateLinkagePermutationsRecursively(ResidueLinkageV
 // This could be elsewhere, like in a selection class or a dealing with residue linkages class.
 Residue_linkage* carbohydrateBuilder::selectLinkageWithIndex(ResidueLinkageVector &inputLinkages, int indexQuery)
 {
-    Residue_linkage *linkageFound;
     for(auto &linkage : inputLinkages)
     {
         if (linkage.GetIndex() == indexQuery)
-        {
-            linkageFound = &linkage;
-        }
+            return &linkage;
     }
-    return linkageFound;
+    throw "Linkage not found in carbohydrateBuilder::selectLinkageWithIndex()";
 }
 
 // Just a placeholder until we have a map for linkage ids so the user won't see these underlying ones.
@@ -419,26 +424,37 @@ void carbohydrateBuilder::resetLinkageIDsToStartFromZero(ResidueLinkageVector &i
 }
 
 // In too much of a rush to do this properly, so I'll make it private and 
-// so dumb that you'll have to write a proper one. Yes you! 
-std::string convertIncomingRotamerNamesToStandard(std::string incomingName)
+// so dumb that you'll have to write a proper one. Yes you!
+// Metadata belongs in metadata, not in code.
+// Should have put this at the point that the name is compared in 
+// bool Rotatable_dihedral::SetSpecificShape(std::string dihedralName, std::string selectedRotamer)
+// Or somehow that comparison should be moved into metadata. I wonder could you overload the 
+// == comparison operator for the metadata struct to check through this list when checking the name? 
+std::string carbohydrateBuilder::convertIncomingRotamerNamesToStandard(std::string incomingName)
 {   // Lamda function to see if string is in the passed in vector
     auto isAinList = [](std::vector<std::string> names, std::string query)
     {
         if (std::find(names.begin(), names.end(), query) != names.end())
             return true;
         return false;
-    }; 
-    if (isAinList({"Omega", "omega", "Omg", "omg", "OMG", "omga", "omg1", "Omg1"}, incomingName))
+    }; // Thought about converting incomingName to lowercase first.
+    if (isAinList({"Omega", "omega", "Omg", "omg", "OMG", "omga", "omg1", "Omg1", "o"}, incomingName))
         return "Omg";
-    if (isAinList({"Phi", "phi", "PHI"}, incomingName))
+    if (isAinList({"Phi", "phi", "PHI", "h"}, incomingName))
         return "Phi";
-    if (isAinList({"Psi", "psi", "PSI"}, incomingName))
+    if (isAinList({"Psi", "psi", "PSI", "s"}, incomingName))
         return "Psi";
-    if (isAinList({"Chi1", "chi1", "CHI1"}, incomingName))
+    if (isAinList({"Chi1", "chi1", "CHI1", "c1"}, incomingName))
         return "Chi1";
-    if (isAinList({"Chi2", "chi2", "CHI2"}, incomingName))
+    if (isAinList({"Chi2", "chi2", "CHI2", "c2"}, incomingName))
         return "Chi2";
-    return incomingName; // Good luck.
+    if (isAinList({"Omega7", "omega7", "OMG7", "omga7", "Omg7", "omg7", "o7"}, incomingName))
+        return "Omg7";
+    if (isAinList({"Omega8", "omega8", "OMG8", "omga8", "Omg8", "omg8", "o8"}, incomingName))
+        return "Omg8";
+    if (isAinList({"Omega9", "omega9", "OMG9", "omga9", "Omg9", "omg9", "o9"}, incomingName))
+        return "Omg9";
+    std::stringstream ss;
+    ss << "Specified rotamer name: \"" << incomingName << "\", is not recognized in convertIncomingRotamerNamesToStandard.";
+    throw ss.str();
 }
-
-

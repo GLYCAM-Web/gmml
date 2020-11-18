@@ -434,7 +434,7 @@ bool Rotatable_dihedral::SetSpecificShape(std::string dihedralName, std::string 
     }
     else
     {
-        //std::cout << "Made it here with " << dihedralName << " and " << selectedRotamer << std::endl;
+       //std::cout << "Made it here with " << dihedralName << " and " << selectedRotamer << std::endl;
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_entries = this->GetMetadata();
         if (dihedralName == metadata_entries.at(0).dihedral_angle_name_)
         {
