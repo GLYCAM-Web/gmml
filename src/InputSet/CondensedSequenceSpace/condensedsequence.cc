@@ -666,16 +666,15 @@ bool CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
             int oxygen_position = residue->GetOxygenPosition();
             open_valences[parent].push_back(oxygen_position);
         }
-
         CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = residue->GetDerivatives();
         for(CondensedSequenceResidue::DerivativeMap::iterator it = condensed_residue_derivatives.begin(); it != condensed_residue_derivatives.end(); ++it)
         {
             int derivative_index = it->first;
-	    std::string derivative_name = it->second;
-	    if (derivative_name != "D"){  //Deoxy shouldn't be considered as open valence
-	        open_valences[i].push_back(derivative_index);
-	    }
-	}
+	    	std::string derivative_name = it->second;
+	    	if (derivative_name != "D"){  //Deoxy shouldn't be considered as open valence
+	        	open_valences[i].push_back(derivative_index);
+	    	}
+		}
     }
     CondensedSequenceResidue* terminal_residue = residue_tree.at(0);
     std::string terminal = residue_tree.at(0)->GetName();
@@ -697,7 +696,7 @@ bool CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
     {
         derivatives[i] = current_derivative_count;
         CondensedSequenceResidue* condensed_residue = residue_tree.at(i);
-	int condensed_residue_bond_id = condensed_residue->GetBondId();
+		int condensed_residue_bond_id = condensed_residue->GetBondId();
         int parent = residue_tree.at(i)->GetParentId();
 
 
@@ -708,7 +707,7 @@ bool CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
 
         try
         {
-	    int glycam_06_residue_bond_id = condensed_residue_bond_id + current_derivative_count;
+	    	int glycam_06_residue_bond_id = condensed_residue_bond_id + current_derivative_count;
             CondensedSequenceSpace::CondensedSequenceGlycam06Residue* tree_residue = new CondensedSequenceSpace::CondensedSequenceGlycam06Residue(this->GetGlycam06ResidueCodeOfCondensedResidue(
                                                                                                         condensed_residue, open_valences[i])
                                                                                                     , anomeric_carbon, oxygen_position);
@@ -718,7 +717,7 @@ bool CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
             CondensedSequenceResidue::DerivativeMap condensed_residue_derivatives = condensed_residue->GetDerivatives();
             for(CondensedSequenceResidue::DerivativeMap::iterator it = condensed_residue_derivatives.begin(); it != condensed_residue_derivatives.end(); ++it)
             {
-		glycam_06_residue_bond_id++;
+				glycam_06_residue_bond_id++;
                 std::string derivative_name = it->second;
                 int derivative_index = it->first;
                 this->InsertNodeInCondensedSequenceGlycam06ResidueTree(this->GetCondensedSequenceDerivativeGlycam06Residue(derivative_name, derivative_index), residue_index, glycam_06_residue_bond_id);
@@ -732,15 +731,15 @@ bool CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
 
             this->InsertNodeInCondensedSequenceGlycam06ResidueTree(tree_residue, parent + derivatives[parent], gmml::iNotSet);
 
-	    std::stringstream notice;
-	    notice << "Residue Not eligible for MD: (" << condensed_residue->GetName().substr(0,3) << ")";
-	    this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, notice.str()));
+	    	std::stringstream notice;
+	    	notice << "Residue Not eligible for MD: (" << condensed_residue->GetName().substr(0,3) << ")";
+	    	this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, notice.str()));
 
-	    MD_eligible = false;
+	    	MD_eligible = false;
             //throw CondensedSequenceProcessingException("Invalid residue in the sequence (" + condensed_residue->GetName().substr(0,3) + ")");
         }
     }
-    MD_eligible = true;
+    MD_eligible = true; // What? Ah ok, must have forgot to remove this when commenting out the throw?
     return MD_eligible;
 }
 
