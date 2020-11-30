@@ -563,7 +563,6 @@ void Assembly::SetGlycam06ResidueBonding (std::map<int, std::pair<CondensedSeque
 
             if (std::find(existing_assembly_residue_neighbor_nodes.begin(), existing_assembly_residue_neighbor_nodes.end(), neighbor_node) == existing_assembly_residue_neighbor_nodes.end() ){
                 corresponding_assembly_residue_node->AddResidueNodeNeighbor(neighbor_node);
-		neighbor->GetName() << std::endl << std::endl;
             }
 
             ResidueNodeVector existing_neighbor_neighbor_nodes = neighbor_node->GetResidueNodeNeighbors();
