@@ -967,23 +967,19 @@ void Assembly::FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Res
 // OG. This is agnostic of it being generated from a condensed sequence. Could be any assembly that is a glycan with good connectivites and GLYCAM nomenclature for atoms and residues.
 void Assembly::SetDihedralAngleGeometryWithMetadata()
 {
-    std::cout << "Begin set dihed" << std::endl;
     ResidueLinkageVector all_residue_linkages;
     this->FigureOutResidueLinkagesInGlycan(this->GetResidues().at(0), this->GetResidues().at(0), &all_residue_linkages);
-    std::cout << "Set dihed 1" << std::endl;
     for(auto &linkage : all_residue_linkages)
     {
         linkage.SetDefaultShapeUsingMetadata();
 
     }
-    std::cout << "Set dihed 2" << std::endl;
     // Resovlving overlaps should be a separated function, but I don't want assembly to have a ResidueLinkageVector member. Need new, seperate class.
     for(auto &linkage : all_residue_linkages)
     {
         //AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance, int angleIncrement
         linkage.SimpleWiggle(this->GetAllAtomsOfAssembly(), this->GetAllAtomsOfAssembly(), 0.1, 5);
     }
-    std::cout << "Set dihed 3" << std::endl;
 }
 
 /* Oliver needs to clarify what he is doing here:
@@ -1432,9 +1428,6 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 //    std::cout << "Building Assembly From Condensed Sequence......" << std::endl;
     CondensedSequenceSpace::CondensedSequence sequence (condensed_sequence);
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues_temp = sequence.GetCondensedSequenceGlycam06ResidueTree();
-    for (unsigned int i = 0; i < glycam06_residues_temp.size(); i++){
-        std::cout << "Before reorder Name: " << i << " " << glycam06_residues_temp[i]->GetName() << ", parentID: " << glycam06_residues_temp[i]->GetParentId() << std::endl;
-    }
     //Here we are not really interested in the output reorganized sequence, but we are trying to rearrange the condensed 06 residue tree acccording to labeling order. 
     //Harded to coded to reorder and label based on lowest index. In the future, give this funcction arguments to specify this option. But fow now, changing this function declaration I will have to
     //change many other things. 
@@ -1443,37 +1436,28 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 
     //Now the 06 residue tree should have the desired order.
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = sequence.GetCondensedSequenceGlycam06ResidueTree();
-    for (unsigned int i = 0; i < glycam06_residues.size(); i++){
-        std::cout << "After reorder Name: " << i << " " << glycam06_residues[i]->GetName() << ", parentID: " << glycam06_residues[i]->GetParentId() << std::endl;
-    }
     
     //    CondensedSequenceSpace::CondensedSequence::CondensedSequenceResidueTree res_tree = sequence.GetCondensedSequenceResidueTree();
     //    CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo info = sequence.GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(res_tree);
 
     Assembly::TemplateAssembly* template_assembly = this-> BuildTemplateAssemblyFromPrepFile (glycam06_residues, prep_file);
-    std::cout << "T2" << std::endl;
 
     std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> > glycam06_assembly_residue_map =
             this -> ConvertCondensedSequence2AssemblyResidues (glycam06_residues, template_assembly);
 
-    std::cout << "T3" << std::endl;
     this -> SetGlycam06ResidueBonding (glycam06_assembly_residue_map);
-    std::cout << "T4" << std::endl;
 
     std::multimap<int, std::pair<AtomVector*, std::string> > index_dihedral_map = std::multimap<int, std::pair<AtomVector*, std::string> >();
     for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> >::iterator it =
          glycam06_assembly_residue_map.begin(); it != glycam06_assembly_residue_map.end(); it++){
         CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam_06_res = it->second.first;
         Residue* corresponding_assembly_residue = it->second.second;
-	std::cout << "This 06 res " << glycam_06_res->GetName() << " and coresponding assembly residue " << corresponding_assembly_residue->GetName() << std::endl; 
         //The atom and the only atom without a parent is the absolute parent(terminal).
         if (glycam_06_res->GetParentId() == gmml::iNotSet && glycam_06_res->GetName() != "Deoxy"){
             Residue* root = corresponding_assembly_residue;
             //  TURN OFF GEOMETRY OPS
             this->RecursivelySetAngleGeometry(root);
-	    std::cout << "Done recur" << std::endl;
             this->SetDihedralAngleGeometryWithMetadata(); // Removed for current push. Need to tag dihedrals. Also need to resolve clashes.
-	    std::cout << "Done Dihed" << std::endl;
             //this->RecursivelySetDihedralAngleGeometry(root); // replaced by SetDihedralAngleGeometryWithMetadata. OG 2019.09.
             //          The Recursive function below needs to number all dihedrals, so it needs to know the linkage index at the beginning.
             //          Linkage index is incremented inside function once a linkage has been processed.
@@ -1489,7 +1473,6 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             break;
         }
     }
-    std::cout << "T5" << std::endl;
 
 //    //Find and resolve clashes below(crudely)
 //    ResidueVector clashing_residues = this->FindClashingResidues();

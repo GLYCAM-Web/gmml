@@ -880,7 +880,6 @@ std::string CondensedSequence::GetFirstLetterOfGlycam06ResidueCode(std::bitset<1
 
 std::string CondensedSequence::GetSecondLetterOfGlycam06ResidueCode(std::string residue_name, std::string isomer)
 {
-    std::cout << "Get 2nd letter of 06 residue code with name " << residue_name << std::endl;
     gmml::ResidueCodeName residue_name_code = gmml::ResidueNameCodeLookup(residue_name);
     if(residue_name_code.name_.compare("") != 0)
     {
@@ -894,7 +893,6 @@ std::string CondensedSequence::GetSecondLetterOfGlycam06ResidueCode(std::string 
     notice << "Not eligible for MD: " << residue_name << "This residue name has no corresponding entry in glycam06 force field.";
     this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::WARNING, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, notice.str()));
     //throw CondensedSequenceProcessingException(residue_name + " is not a valid residue");
-    std::cout << "Get 2nd letter code about to return empty, residue name is: " << residue_name << " and isomer " << isomer << std::endl;
     return "";
 }
 
@@ -958,7 +956,6 @@ std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::
     for (unsigned int i = 0; i < this->condensed_sequence_residue_tree_.size(); i++){
 	int corresponding_06_index = i + cumulative_derivative_count;
 	condensed_06_index_map[i] = corresponding_06_index;
-	std::cout << this->condensed_sequence_residue_tree_[i]->GetName() << " is mapped to: " << this->condensed_sequence_glycam06_residue_tree_[corresponding_06_index]->GetName() << std::endl;
         cumulative_derivative_count += this->condensed_sequence_residue_tree_[i]->GetDerivatives().size();
     }
 
