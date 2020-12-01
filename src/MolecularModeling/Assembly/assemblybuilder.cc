@@ -335,6 +335,7 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
                     assembly_residue->SetId(residue_id_stream.str());
                     index_condensed_sequence_assembly_residue_map[residue_serial_number].first = condensed_sequence_residue;
                     index_condensed_sequence_assembly_residue_map[residue_serial_number].second = assembly_residue;
+
                     newly_added_residues.push_back(assembly_residue);
 
                     //Copy atoms in residue
@@ -1426,11 +1427,13 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 {
 //    std::cout << "Building Assembly From Condensed Sequence......" << std::endl;
     CondensedSequenceSpace::CondensedSequence sequence (condensed_sequence);
+    CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues_temp = sequence.GetCondensedSequenceGlycam06ResidueTree();
     //Here we are not really interested in the output reorganized sequence, but we are trying to rearrange the condensed 06 residue tree acccording to labeling order. 
     //Harded to coded to reorder and label based on lowest index. In the future, give this funcction arguments to specify this option. But fow now, changing this function declaration I will have to
     //change many other things. 
     sequence.BuildLabeledCondensedSequence(CondensedSequenceSpace::CondensedSequence::Reordering_Approach::LOWEST_INDEX, 
 		                           CondensedSequenceSpace::CondensedSequence::Reordering_Approach::LOWEST_INDEX, true);
+
     //Now the 06 residue tree should have the desired order.
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = sequence.GetCondensedSequenceGlycam06ResidueTree();
     

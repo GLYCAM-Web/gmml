@@ -128,7 +128,8 @@ namespace CondensedSequenceSpace
                                                    CondensedSequence::Reordering_Approach labeling_approach, std::vector<int>& longest_path,
 						   std::map<int, std::map<int, std::string> >& condensed_residue_derivative_res_label_map,
 						   std::map<int, std::map<int, std::string> >& condensed_residue_derivative_bond_label_map,
-						   CondensedSequenceResidueTree& rearranged_tree_by_labeling, CondensedSequenceGlycam06ResidueTree& rearranged_06_tree_by_labeling, int& current_derivative_count);
+						   CondensedSequenceResidueTree& rearranged_tree_by_labeling, CondensedSequenceGlycam06ResidueTree& rearranged_06_tree_by_labeling, int& current_derivative_count,
+						   std::map<int, int>& condensed_06_index_map);
 	    void RecursivelyBuildLabeledCondensedSequence(int current_index, int& branch_depth, std::string& labeled_sequence, CondensedSequence::Reordering_Approach reordering_approach,
                                                           std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map, 
 			                                  std::vector<int>& longest_path, bool label, std::map<int, std::map<int, std::string> >& condensed_residue_derivative_res_label_map,
