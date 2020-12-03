@@ -961,20 +961,16 @@ std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::
 
     CondensedSequenceResidueTree rearranged_tree_by_labeling;
     CondensedSequenceGlycam06ResidueTree rearranged_06_tree_by_labeling;
-    CondensedSequenceResidueTree rearranged_tree_by_reordering;
-    CondensedSequenceGlycam06ResidueTree rearranged_06_tree_by_reordering;
 
     if (label){
-        int current_residue_label_index = 0, current_bond_label_index = 0, current_derivative_count = 0;
+        int current_residue_label_index = 0, current_bond_label_index = 0;
         RecursivelyLabelCondensedSequence(reevaluated_parent_index, current_residue_label_index, current_bond_label_index, residue_label_map, bond_label_map, labeling_approach, longest_path,
 			                  condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map, rearranged_tree_by_labeling, rearranged_06_tree_by_labeling,
-					  current_derivative_count, condensed_06_index_map); 
+					  condensed_06_index_map); 
     }
 
-    int current_derivative_count2 = 0;
     this->RecursivelyBuildLabeledCondensedSequence(reevaluated_parent_index, branch_depth, labeled_sequence, reordering_approach, residue_label_map, bond_label_map, longest_path, label,
-		                                   condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map, rearranged_tree_by_reordering, rearranged_06_tree_by_reordering, 
-						   current_derivative_count2);
+		                                   condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map);
     //Starts with the first condensed residue in the vector, which is the aglycone. Then go recursively down the tree.
     //Now rearrange the residue tree and 06 residue tree by labeling order. In the future user should be able to choose whether to go with labeling order or reordering order. 
     this->condensed_sequence_residue_tree_ = rearranged_tree_by_labeling;
@@ -1045,7 +1041,7 @@ void CondensedSequence::RecursivelyLabelCondensedSequence(int current_residue_in
 							  std::map<int, std::map<int, std::string> >& condensed_residue_derivative_res_label_map,
                                                           std::map<int, std::map<int, std::string> >& condensed_residue_derivative_bond_label_map,
 							  CondensedSequenceResidueTree& rearranged_tree_by_labeling, CondensedSequenceGlycam06ResidueTree& rearranged_06_tree_by_labeling,
-							  int& current_derivative_count, std::map<int, int>& condensed_06_index_map)
+							  std::map<int, int>& condensed_06_index_map)
 {
     CondensedSequenceSpace::CondensedSequenceResidue* current_residue = this->condensed_sequence_residue_tree_[current_residue_index];
     rearranged_tree_by_labeling.push_back(current_residue);
@@ -1054,20 +1050,19 @@ void CondensedSequence::RecursivelyLabelCondensedSequence(int current_residue_in
     int corresponding_06_residue_index = condensed_06_index_map[current_residue_index];
 
     std::map<int, std::string> this_residue_derivatives = current_residue->GetDerivatives();
-    current_derivative_count = this_residue_derivatives.size();
 
 
     CondensedSequenceSpace::CondensedSequenceGlycam06Residue* corresponding_06_residue = this->condensed_sequence_glycam06_residue_tree_[corresponding_06_residue_index];
     rearranged_06_tree_by_labeling.push_back(corresponding_06_residue);
 
     int this_residue_new_06_tree_id = rearranged_06_tree_by_labeling.size()-1; //When each residue just gets added to new vector, its index is size()-1
-    //This section does not sort the derivatives.To do this, comment out this section and uncommment the other section below.
-    for (std::map<int, std::string>::iterator mapit =  this_residue_derivatives.begin(); mapit != this_residue_derivatives.end(); mapit++){
+    //This section does not sort the derivatives. To do this, comment out this section and uncommment the other section below.
+    /*for (std::map<int, std::string>::iterator mapit =  this_residue_derivatives.begin(); mapit != this_residue_derivatives.end(); mapit++){
         int nth_derivative = std::distance(this_residue_derivatives.begin(), mapit) + 1;
         CondensedSequenceSpace::CondensedSequenceGlycam06Residue* derivative_06_residue = this->condensed_sequence_glycam06_residue_tree_[corresponding_06_residue_index + nth_derivative];
         rearranged_06_tree_by_labeling.push_back(derivative_06_residue);
         derivative_06_residue->SetParentId(this_residue_new_06_tree_id);
-    }
+    }*/
 
     //Insert residue label after residue name,example: Glcp&Label_residueId=1;a1-4
     std::string residue_label; 
@@ -1150,7 +1145,7 @@ void CondensedSequence::RecursivelyLabelCondensedSequence(int current_residue_in
 
 	    this->RecursivelyLabelCondensedSequence(child_sugar_index, current_residue_label_index, current_bond_label_index, residue_label_map, bond_label_map, labeling_approach, longest_path,
                                                     condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map, rearranged_tree_by_labeling, rearranged_06_tree_by_labeling,
-						    current_derivative_count, condensed_06_index_map);
+						    condensed_06_index_map);
 	}
 	else{  //-999 means that it is a derivative. In this case, generate labels and rearrange 06 tree here in place
 	    int derivative_linkage_index = pair_it->first;
@@ -1174,14 +1169,14 @@ void CondensedSequence::RecursivelyLabelCondensedSequence(int current_residue_in
             condensed_residue_derivative_bond_label_map[current_residue_index][derivative_linkage_index] = derivative_bond_label;
 
 	    //To also sort the derivatives like regular residues, uncomment this section and comment out the section above.
-	    /*for (std::map<int, std::string>::iterator mapit =  this_residue_derivatives.begin(); mapit != this_residue_derivatives.end(); mapit++){
+	    for (std::map<int, std::string>::iterator mapit =  this_residue_derivatives.begin(); mapit != this_residue_derivatives.end(); mapit++){
 		int nth_derivative = std::distance(this_residue_derivatives.begin(), mapit) + 1;
 	        if (mapit->first == derivative_linkage_index){
 	            CondensedSequenceSpace::CondensedSequenceGlycam06Residue* derivative_06_residue = this->condensed_sequence_glycam06_residue_tree_[corresponding_06_residue_index + nth_derivative];
                     rearranged_06_tree_by_labeling.push_back(derivative_06_residue);
 		    derivative_06_residue->SetParentId(this_residue_new_06_tree_id);
                 }
-	    }*/
+	    }
 
 	}
     }
@@ -1190,26 +1185,13 @@ void CondensedSequence::RecursivelyLabelCondensedSequence(int current_residue_in
 void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_index, int& branch_depth, std::string& labeled_sequence, CondensedSequence::Reordering_Approach reordering_approach, 
 		                                                 std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map, std::vector<int>& longest_path,
 								 bool label, std::map<int, std::map<int, std::string> >& condensed_residue_derivative_res_label_map,
-                                                                 std::map<int, std::map<int, std::string> >& condensed_residue_derivative_bond_label_map,
-								 CondensedSequenceResidueTree& rearranged_tree_by_reordering, CondensedSequenceGlycam06ResidueTree& rearranged_06_tree_by_reordering,
-								 int& current_derivative_count)
+                                                                 std::map<int, std::map<int, std::string> >& condensed_residue_derivative_bond_label_map)
 {
     CondensedSequenceSpace::CondensedSequenceResidue* current_residue = this->condensed_sequence_residue_tree_[current_index];
-    rearranged_tree_by_reordering.push_back(current_residue);
-    int corresponding_06_residue_index = current_index + current_derivative_count;
 
     std::map<int, std::string> this_residue_derivatives = current_residue->GetDerivatives();
-    current_derivative_count += this_residue_derivatives.size();
 
-    CondensedSequenceSpace::CondensedSequenceGlycam06Residue* corresponding_06_residue = this->condensed_sequence_glycam06_residue_tree_[corresponding_06_residue_index];
-    rearranged_06_tree_by_reordering.push_back(corresponding_06_residue);
     //Then rearrange possible child derivatives together with this 06 parent residue.
-    if (!this_residue_derivatives.empty()){
-        for (unsigned int i = 0; i < this_residue_derivatives.size(); i++){
-            CondensedSequenceSpace::CondensedSequenceGlycam06Residue* derivative_06_residue = this->condensed_sequence_glycam06_residue_tree_[corresponding_06_residue_index + i + 1];
-            rearranged_06_tree_by_reordering.push_back(derivative_06_residue);
-        }
-    }
 
     if (current_residue->GetIsTerminalAglycone()){  //If current residue is aglycone
 
@@ -1313,8 +1295,7 @@ void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_ind
             labeled_sequence.insert(0,"]");
         }
         this->RecursivelyBuildLabeledCondensedSequence(*it, branch_depth, labeled_sequence, reordering_approach, residue_label_map, bond_label_map, longest_path, label,
-			                               condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map, rearranged_tree_by_reordering, rearranged_06_tree_by_reordering,
-						       current_derivative_count);
+			                               condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map);
     }
 
 }
