@@ -962,7 +962,7 @@ std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::
     CondensedSequenceGlycam06ResidueTree rearranged_06_tree_by_labeling;
 
     if (label){
-        int current_residue_label_index = 0, current_bond_label_index = 0;
+        int current_residue_label_index = 1, current_bond_label_index = 0;
         RecursivelyLabelCondensedSequence(reevaluated_parent_index, current_residue_label_index, current_bond_label_index, residue_label_map, bond_label_map, labeling_approach, longest_path,
 			                  condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map, rearranged_tree_by_labeling, rearranged_06_tree_by_labeling,
 					  condensed_06_index_map); 
