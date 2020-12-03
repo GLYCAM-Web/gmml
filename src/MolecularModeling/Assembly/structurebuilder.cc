@@ -1,3 +1,4 @@
+#include <pthread.h> // For the mutex. 
 #include <math.h>
 #include <fstream>
 #include <stdio.h>
@@ -156,6 +157,7 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, std
     }
 }
 
+// Anyone know why this can't be local to the function below?
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex2 = PTHREAD_MUTEX_INITIALIZER;
 ///7*7 half matrix 6^2/2 + 4, 2 types of thread complete tile, half tile _ 6*6 complete tiles, 22 threads
