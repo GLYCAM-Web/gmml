@@ -675,13 +675,13 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       {
         std::string gmmo = this->GetSourceFile();
         gmmo = gmmo.substr(0,gmmo.size()-4) + ".ttl";
-        
+
         // gmmo.insert(gmmo.size()-8, gmmo.substr(gmmo.size()-7, 2));
         // gmmo.insert(gmmo.size()-8, "/");
         // std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
         std::string ontologyDirectory = "Ontologies";
         std::string gmmoDirectory = ontologyDirectory + "/" + gmmo.substr(gmmo.size()-7, 2);
-        gmmo = ontologyDirectory + "/" + gmmo.substr(gmmo.size()-7, 2) + "/" + gmmo;        
+        gmmo = ontologyDirectory + "/" + gmmo.substr(gmmo.size()-7, 2) + "/" + gmmo;
         mkdir(ontologyDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
         mkdir(gmmoDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
         out_file.open( gmmo.c_str(), std::fstream::out | std::fstream::trunc);
@@ -1024,8 +1024,8 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
                 {
                     std::stringstream mutual_edge;
                     std::stringstream mutual_edge_reverse;
-                    MolecularModeling::Atom* a1 = new MolecularModeling::Atom();
-                    MolecularModeling::Atom* a2 = new MolecularModeling::Atom();
+                    MolecularModeling::Atom* a1;
+                    MolecularModeling::Atom* a2;
                     if(i == cycle_i_atoms.size() - 1)
                     {
                         a1 = cycle_i_atoms.at(i);
@@ -4177,8 +4177,8 @@ void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide
 	  MolecularModeling::AtomVector cycle_atom_neighbors = cycle_atom->GetNode()->GetNodeNeighbors();
 	  for (MolecularModeling::AtomVector::iterator neighbor_it = cycle_atom_neighbors.begin(); neighbor_it != cycle_atom_neighbors.end(); neighbor_it++){
 	      MolecularModeling::Atom* neighbor = *neighbor_it;
-	      //If a neighbor of a ring atom is neither on a cycle or a sidechain, and is a hydrogen, then it is the ring hydrogen. Add it to new residue as well. 
-	      if (!neighbor->GetIsCycle() && !neighbor->GetIsSideChain() && neighbor->GetElementSymbol() == "H"){ 
+	      //If a neighbor of a ring atom is neither on a cycle or a sidechain, and is a hydrogen, then it is the ring hydrogen. Add it to new residue as well.
+	      if (!neighbor->GetIsCycle() && !neighbor->GetIsSideChain() && neighbor->GetElementSymbol() == "H"){
 	          AllAtomsInThisMonosaccharide.push_back(neighbor);
 	      }
 	  }
