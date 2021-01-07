@@ -177,6 +177,12 @@ int Atom::GetInputIndex() const
 {
         return input_index_;
 }
+
+//Added by Yao on 01/07/2021
+float Atom::GetOccupancy() const
+{
+    return occupancy_;
+}
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -278,6 +284,12 @@ void Atom::SetBFactor(float b_factor)
 void Atom::SetInputIndex(int input_index)
 {
         this->input_index_ = input_index;
+}
+
+//Added by Yao on 01/07/2021
+void Atom::SetOccupancy(float occupancy)
+{
+	this->occupancy_ = occupancy;
 }
 
 unsigned long long Atom::generateAtomIndex() {
