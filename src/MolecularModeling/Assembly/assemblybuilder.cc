@@ -2277,7 +2277,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
                     {
                         new_atom->SetDescription("Atom;");
                     }
-                    else if(atom->GetType().compare("HETATOM") == 0)
+                    else if(atom->GetType().compare("HETATM") == 0)
                     {
                         new_atom->SetDescription("Het;");
                     }
