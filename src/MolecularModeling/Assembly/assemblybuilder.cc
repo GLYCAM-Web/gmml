@@ -2068,7 +2068,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                     {
                         new_atom->SetDescription("Atom;");
                     }
-                    else if(card_index.at(0).compare("HETATOM") == 0)
+                    else if(card_index.at(0).compare("HETATM") == 0)
                     {
                         new_atom->SetDescription("Het;");
                     }
@@ -2106,7 +2106,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                                 }
                             }
                         }
-                        else if(card_index.at(0).compare("HETATOM") == 0)
+                        else if(card_index.at(0).compare("HETATM") == 0)
                         {
                             PdbFileSpace::PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtomCards();
                             PdbFileSpace::PdbHeterogenAtomSection* heterogen_atom_card = heterogen_atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
@@ -2309,7 +2309,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
                             {
                                 new_atom->SetDescription("Atom;");
                             }
-                            else if(atom->GetType().compare("HETATOM") == 0)
+                            else if(atom->GetType().compare("HETATM") == 0)
                             {
                                 new_atom->SetDescription("Het;");
                             }
