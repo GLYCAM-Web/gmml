@@ -569,12 +569,13 @@ Assembly::CycleMap Assembly::DetectCyclesByDFS()
     CycleMap cycles = CycleMap();
 
     MolecularModeling::AtomVector atoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
+    //It's okay that all atoms in the map has this common parent, won't break algorithm. Moving new declaration out of for loop avoids lots of memory leak.
+    Atom* parent = new Atom();
+    parent->SetId("null");
     for(MolecularModeling::AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         Atom* atom = (*it);
         atom_status_map[atom->GetId()] = gmml::UNVISITED;
-        Atom* parent = new Atom();
-        parent->SetId("null");
         atom_parent_map[atom->GetId()] = parent;
     }
     for(MolecularModeling::AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)

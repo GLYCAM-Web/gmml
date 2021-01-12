@@ -1970,6 +1970,8 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                 new_atom->SetBFactor(atom_b_factor);
                 std::string atom_element = atom->GetAtomElementSymbol();
                 new_atom->SetElementSymbol(atom_element);
+		float atom_occupancy = atom->GetAtomOccupancy();
+		new_atom->SetOccupancy(atom_occupancy);
                 // std::stringstream test;
                 // test << atom_b_factor;
                 //gmml::log(__LINE__, __FILE__, gmml::INF, test.str());
@@ -2066,7 +2068,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                     {
                         new_atom->SetDescription("Atom;");
                     }
-                    else if(card_index.at(0).compare("HETATOM") == 0)
+                    else if(card_index.at(0).compare("HETATM") == 0)
                     {
                         new_atom->SetDescription("Het;");
                     }
@@ -2104,7 +2106,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                                 }
                             }
                         }
-                        else if(card_index.at(0).compare("HETATOM") == 0)
+                        else if(card_index.at(0).compare("HETATM") == 0)
                         {
                             PdbFileSpace::PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtomCards();
                             PdbFileSpace::PdbHeterogenAtomSection* heterogen_atom_card = heterogen_atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
@@ -2236,6 +2238,10 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
                 new_atom->MolecularDynamicAtom::SetCharge(atom->GetAtomCharge());
 		std::string autodock_type = atom->GetAtomType();
                 new_atom->MolecularDynamicAtom::SetAtomType(autodock_type);
+
+                new_atom->SetOccupancy(atom->GetAtomOccupancy());
+		new_atom->SetBFactor(atom->GetAtomTempretureFactor());
+
 		if (ad_type_element_symbol_map.find(autodock_type) != ad_type_element_symbol_map.end()){
 		    new_atom->SetElementSymbol(ad_type_element_symbol_map[autodock_type]);
 		}
@@ -2271,7 +2277,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
                     {
                         new_atom->SetDescription("Atom;");
                     }
-                    else if(atom->GetType().compare("HETATOM") == 0)
+                    else if(atom->GetType().compare("HETATM") == 0)
                     {
                         new_atom->SetDescription("Het;");
                     }
@@ -2303,7 +2309,7 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
                             {
                                 new_atom->SetDescription("Atom;");
                             }
-                            else if(atom->GetType().compare("HETATOM") == 0)
+                            else if(atom->GetType().compare("HETATM") == 0)
                             {
                                 new_atom->SetDescription("Het;");
                             }
