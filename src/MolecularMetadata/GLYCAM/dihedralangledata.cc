@@ -35,11 +35,13 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(Molecul
         if ( (std::regex_search(linking_atom1->GetName(), regex1)) && (std::regex_search(linking_atom2->GetName(), regex2)) )
         {
             // Some entries have conditions for the residue, that they have certain tags. Make sure any conditions are met:
+            std::cout << "Matched. Checking if conditions apply.\n";
             std::vector<std::string> residue1_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom1->GetResidue()->GetName());
             std::vector<std::string> residue2_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom2->GetResidue()->GetName());
             if ( (checkIfResidueConditionsAreSatisfied(residue1_types, entry.residue1_conditions_))
                  && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_conditions_)) )
             {
+                std::cout << "Found a match: " << entry.linking_atom1_ << "--" << entry.linking_atom2_ << ", " << entry.dihedral_angle_name_ << "\n";
                 //Always add a later entry, but remove earlier match if number_of_bonds_from_anomeric_carbon_ AND index number are the same.
                 // I've overloaded the == and != operators in the DihedralAngleData struct to evaluate those.
                 // This next line removes any elements of matching_entries that match "entry", then the line after adds entry.
@@ -118,7 +120,7 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
     { // Regex1  , Regex2   , Name   , Angle  , Upper  , Lower  , Weight, Entry Type    , Name , B , I , Res1 Condition , Res2 Conditions           , Atom names                                                               // Atom names this applies to
         { "C1"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"aldose"}     , {"none"}                  , "C2" , "C1" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
         { "C2"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"ketose","ulosonate"}     , {"none"}      , "C3" , "C2" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
-        { "C2"   , "O[1-9]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"none"}         , "C3" , "C2" , "O." , "C."  },
+        { "C2"   , "O[3-6]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"none"}         , "C3" , "C2" , "O." , "C."  },
 
         { "C."   , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "H."  }, // Psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)
         { "C."   , "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "C."  },
@@ -130,6 +132,18 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C."   , "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 0.001 , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=gluco"}   , "O6" , "C6" , "C5" , "O5"  },
 
          // 2-8 linkages
+        { "C2"   , "O8"     , "Phi"  , -79.5  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "A"  , 1 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , -29.9  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "A"  , 2 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,  69.9  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "A"  , 3 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -67.8  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "A"  , 4 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,-174.2  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "A"  , 5 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+
+        { "C2"   , "O8"     , "Phi"  , -79.5  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "B"  , 1 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , -29.9  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "B"  , 2 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "H8"  },
+        { "C2"   , "O8"     , "Omg7" , -67.8  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "B"  , 4 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "H7" , "C7" , "C6" , "H6"  },
+        { "C2"   , "O8"     , "Omg8" ,  69.9  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "B"  , 3 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "H8" , "C8" , "C7" , "H7"  },
+        { "C2"   , "O8"     , "Omg9" ,-174.2  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "B"  , 5 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "C7"  },
+
       //{ "C2", "O8"   , "omg7" ,    };
       // Common sugar derivatives
       // Phosphate/sulfate

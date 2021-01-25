@@ -521,7 +521,24 @@ TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge
 for i in SA GL ; do 
 	## alpha D
 	echo 'i=$((i+1))' >> ${OutputFile}
-	echo "TYPES[\${i}]=\" ${TYPE_BASE} D-isomer \" " >> ${OutputFile}
+	##External/internal relevant for 2-8 linkages
+	echo "TYPES[\${i}]=\" ${TYPE_BASE} D-isomer internal\" " >> ${OutputFile}
+	echo 'NAMES[${i}]="' >> ${OutputFile}
+    	grep   ^!0${i}$  ${ResidueNames} >> ${OutputFile}
+    	grep   ^!0${i}$  ${ResidueNames} >> ${ScriptHandledList}
+    echo "TYPES[\${i}]=\" ${TYPE_BASE} D-isomer external\" " >> ${OutputFile}
+	echo 'NAMES[${i}]="' >> ${OutputFile}
+    	grep   ^0${i}$  ${ResidueNames} >> ${OutputFile}
+    	grep   ^0${i}$  ${ResidueNames} >> ${ScriptHandledList}
+	echo '"' >> ${OutputFile}
+done
+	##2-8 linkages
+TYPE_BASE=' external '
+for i in SA ; do 
+	## alpha D
+	echo 'i=$((i+1))' >> ${OutputFile}
+	##External/internal relevant for 2-8 linkages
+	echo "TYPES[\${i}]=\" ${TYPE_BASE} \" " >> ${OutputFile}
 	echo 'NAMES[${i}]="' >> ${OutputFile}
     	grep   ^.${i}$  ${ResidueNames} >> ${OutputFile}
     	grep   ^.${i}$  ${ResidueNames} >> ${ScriptHandledList}
@@ -550,6 +567,7 @@ TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge
     	grep   ^.sB$  ${ResidueNames} >> ${OutputFile}
     	grep   ^.sB$  ${ResidueNames} >> ${ScriptHandledList}
 	echo '"' >> ${OutputFile}
+
 
 
 ## All ketoses that can be 'aglycon' terminals via anomeric-to-anomeric linkage

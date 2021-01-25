@@ -1,7 +1,7 @@
 #include "../../../includes/MolecularModeling/Selections/selections.hpp"
 #include "../../../includes/MolecularModeling/assembly.hpp"
 #include <regex>
-
+#include <iostream>
 MolecularModeling::AtomVector selection::AtomsWithinDistanceOf(MolecularModeling::Atom *query_atom, double distance, MolecularModeling::AtomVector atoms)
 {
     MolecularModeling::AtomVector atoms_within_distance;
@@ -161,14 +161,20 @@ bool selection::FindPathBetweenTwoAtoms(MolecularModeling::Atom *current_atom, M
             atom_path->push_back(neighbor);
         }
         // If not found && not previously visited atom && ( if neighbor residue is current residue || target_atom residue)
-        if ( (*found == false) && (neighbor->GetDescription().compare("VistedByFindPathBetweenTwoAtoms")!=0) && ((current_atom->GetResidue()->GetId().compare(neighbor->GetResidue()->GetId())==0) || (target_atom->GetResidue()->GetId().compare(neighbor->GetResidue()->GetId())==0)) )
+        if ( (*found == false) 
+            && (neighbor->GetDescription() != "VistedByFindPathBetweenTwoAtoms" ) 
+            //(neighbor->GetDescription() != "VistedByFindPathBetweenTwoAtoms" ) 
+            && ( (current_atom->GetResidue() == neighbor->GetResidue()) || (target_atom->GetResidue() == neighbor->GetResidue()) )
+            //&&  ( (current_atom->GetResidue()->GetId() == neighbor->GetResidue()->GetId()) || (target_atom->GetResidue()->GetId() == neighbor->GetResidue()->GetId()) )
+            )
         {
-          //  std::cout << "STEEEPER\n";
+            //std::cout << "STEEEPER\n";
             selection::FindPathBetweenTwoAtoms(neighbor, target_atom, atom_path, found);
         }
     }
-    if(*found)
+    if(*found) // As you fall back out from the found target, create a list of the atoms.
     {
+        std::cout << "path atom: " << current_atom->GetId() << std::endl;
         atom_path->push_back(current_atom);
     }
     return *found;
@@ -197,7 +203,7 @@ __/  \__/  \__
         \__ Res4
  Res2 __/
 
-  3) It's ok with fuzed rings!
+  3) It's ok with fused rings!
 
 */
 MolecularModeling::AtomVector selection::FindCyclePoints(MolecularModeling::Atom *atom)
@@ -538,3 +544,50 @@ MolecularModeling::ResidueVector selection::SortResidueNeighborsByAcendingConnec
     }
     return sortedNeighbors;
 }
+
+
+// After getting connection atoms between two residues, we have the linear path between them e.g.:
+// (Residue1 C2 - O7 - C7 - O6 - C6 Residue2), where C2 and C6 are the cycle points. In cases like 2-7 or 2-8 linkages, we have significant branches from this linear path
+//                    /
+//                   C8-O8
+//                  /
+//                 C9-O9 
+// And we need to set reasonable values for the C9-C8, and C8-C7 dihedral angles.
+// This is further complicated by the possibility of "DNeup5Aca2-7[DNeup5Aca2-8]DNeup5Aca2-OH", where one of the branches is part of another linkage.
+// This will work for 7/8/9 linked sialic acids, but if we get more heavily branched linkages this will need to change to iteratively find branches from branches
+//
+
+void selection::FindEndsOfBranchesFromLinkageAtom(MolecularModeling::Atom* currentAtom, MolecularModeling::Atom* previousAtom, Branch *branch)
+{
+    branch->ChangeDepth(1);
+    currentAtom->SetDescription("VistedByFindEndsOfBranchesFromLinkageAtom");
+    bool deadEndAtom = true;
+    bool connectsToAnotherResidue = false;
+    for (auto &neighbor : currentAtom->GetNode()->GetNodeNeighbors())
+    {
+        if (neighbor->GetDescription() != "VistedByFindEndsOfBranchesFromLinkageAtom" 
+            && *neighbor != *previousAtom 
+            && neighbor->GetResidue() == previousAtom->GetResidue()) // Don't explore across residues.
+        { 
+            if (neighbor->GetNode()->GetNodeNeighbors().size() > 1)
+            {
+                deadEndAtom = false;
+                std::cout << "At depth " << branch->GetDepth() << " going deeper from " << currentAtom->GetId() << " to " << neighbor->GetId() << "\n";
+                FindEndsOfBranchesFromLinkageAtom(neighbor, currentAtom, branch);
+                branch->ChangeDepth(-1);
+            }
+        }
+        if (neighbor->GetResidue() != previousAtom->GetResidue())
+        {
+            connectsToAnotherResidue = true;
+        }
+    }
+    std::cout << "  Status at " << currentAtom->GetId() << " is deadEndAtom:" << std::boolalpha << deadEndAtom << ", depth: " << branch->GetDepth() << ", connectsToOther: " << connectsToAnotherResidue << std::endl; 
+    if (deadEndAtom && !connectsToAnotherResidue && branch->GetDepth() > 1 && branch->AtMaxDepth())
+    {
+        std::cout << "      Found a dead end: " << currentAtom->GetId() << " at depth " << branch->GetDepth() << std::endl;
+        branch->SetEnd(currentAtom);
+    }
+    return;
+}
+
