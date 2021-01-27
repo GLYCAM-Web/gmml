@@ -131,18 +131,68 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
       //  Need to check weights when adding dihedral. All possible can return low weight structures.
         { "C."   , "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 0.001 , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=gluco"}   , "O6" , "C6" , "C5" , "O5"  },
 
-         // 2-8 linkages
-        { "C2"   , "O8"     , "Phi"  , -79.5  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "A"  , 1 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
-        { "C2"   , "O8"     , "Psi"  , -29.9  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "A"  , 2 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
-        { "C2"   , "O8"     , "Omg8" ,  69.9  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "A"  , 3 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
-        { "C2"   , "O8"     , "Omg7" , -67.8  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "A"  , 4 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
-        { "C2"   , "O8"     , "Omg9" ,-174.2  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "A"  , 5 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+         // Internal 2-8 linkages    
+        { "C2"   , "O8"     , "Phi"  , -79.5  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 1 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  ,  88.1  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 2 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,-170.1  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 3 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -61.8  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 4 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,  65.8  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 5 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
 
-        { "C2"   , "O8"     , "Phi"  , -79.5  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "B"  , 1 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
-        { "C2"   , "O8"     , "Psi"  , -29.9  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "B"  , 2 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "H8"  },
-        { "C2"   , "O8"     , "Omg7" , -67.8  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "B"  , 4 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "H7" , "C7" , "C6" , "H6"  },
-        { "C2"   , "O8"     , "Omg8" ,  69.9  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "B"  , 3 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "H8" , "C8" , "C7" , "H7"  },
-        { "C2"   , "O8"     , "Omg9" ,-174.2  ,  20.0  ,  20.0  , 1.0   , "conformer"   , "B"  , 5 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Phi"  , -73.6  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 1 , 2 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 109.2  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 2 , 2 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,-169.2  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 3 , 2 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -61.9  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 4 , 2 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" , -61.0  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 5 , 2 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        
+        { "C2"   , "O8"     , "Phi"  ,-172.0  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 1 , 3 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 108.7  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 2 , 3 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,-164.2  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 3 , 3 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -52.9  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 4 , 3 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,  68.5  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 5 , 3 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        
+        { "C2"   , "O8"     , "Phi"  , -72.1  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 1 , 4 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 127.1  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 2 , 4 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,  58.5  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 3 , 4 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -66.1  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 4 , 4 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" , 178.9  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 5 , 4 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+
+        { "C2"   , "O8"     , "Phi"  , -42.9  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 1 , 5 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 162.3  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 2 , 5 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" , -58.3  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 3 , 5 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -55.7  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 4 , 5 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" , -58.5  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 5 , 5 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+
+        // External 2-8 linkages    
+        { "C2"   , "O8"     , "Phi"  , -66.0  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 1 , 1 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 118.2  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 2 , 1 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,-160.4  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 3 , 1 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -59.6  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 4 , 1 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,  73.4  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 5 , 1 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+
+        { "C2"   , "O8"     , "Phi"  , -68.4  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 1 , 2 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 132.7  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 2 , 2 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,  64.4  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 3 , 2 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -61.1  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 4 , 2 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,-179.0  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 5 , 2 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        
+        { "C2"   , "O8"     , "Phi"  , -53.2  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 1 , 3 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 161.6  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 2 , 3 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" , -67.8  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 3 , 3 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -61.1  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 4 , 3 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" , -57.9  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 5 , 3 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        
+        { "C2"   , "O8"     , "Phi"  , -72.7  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 1 , 4 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 124.9  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 2 , 4 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,  62.4  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 3 , 4 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -59.5  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 4 , 4 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,  78.8  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 5 , 4 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+
+        { "C2"   , "O8"     , "Phi"  ,-164.9  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 1 , 5 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 103.0  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 2 , 5 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,-161.3  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 3 , 5 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -54.3  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 4 , 5 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,  71.1  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 5 , 5 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+
 
       //{ "C2", "O8"   , "omg7" ,    };
       // Common sugar derivatives

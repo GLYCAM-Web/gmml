@@ -524,24 +524,14 @@ for i in SA GL ; do
 	##External/internal relevant for 2-8 linkages
 	echo "TYPES[\${i}]=\" ${TYPE_BASE} D-isomer internal\" " >> ${OutputFile}
 	echo 'NAMES[${i}]="' >> ${OutputFile}
-    	grep   ^!0${i}$  ${ResidueNames} >> ${OutputFile}
-    	grep   ^!0${i}$  ${ResidueNames} >> ${ScriptHandledList}
+    	grep   ^.${i}$  ${ResidueNames} | grep -v ^[0]${i}$ >> ${OutputFile}
+    	grep   ^.${i}$  ${ResidueNames} | grep -v ^[0]${i}$ >> ${ScriptHandledList}
+    echo '"' >> ${OutputFile}
+    echo 'i=$((i+1))' >> ${OutputFile}
     echo "TYPES[\${i}]=\" ${TYPE_BASE} D-isomer external\" " >> ${OutputFile}
 	echo 'NAMES[${i}]="' >> ${OutputFile}
-    	grep   ^0${i}$  ${ResidueNames} >> ${OutputFile}
-    	grep   ^0${i}$  ${ResidueNames} >> ${ScriptHandledList}
-	echo '"' >> ${OutputFile}
-done
-	##2-8 linkages
-TYPE_BASE=' external '
-for i in SA ; do 
-	## alpha D
-	echo 'i=$((i+1))' >> ${OutputFile}
-	##External/internal relevant for 2-8 linkages
-	echo "TYPES[\${i}]=\" ${TYPE_BASE} \" " >> ${OutputFile}
-	echo 'NAMES[${i}]="' >> ${OutputFile}
-    	grep   ^.${i}$  ${ResidueNames} >> ${OutputFile}
-    	grep   ^.${i}$  ${ResidueNames} >> ${ScriptHandledList}
+    	grep   ^[0]${i}$  ${ResidueNames} >> ${OutputFile}
+    	grep   ^[0]${i}$  ${ResidueNames} >> ${ScriptHandledList}
 	echo '"' >> ${OutputFile}
 done
 for i in sA gL ; do 
