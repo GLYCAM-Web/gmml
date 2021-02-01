@@ -187,6 +187,10 @@ void Rotatable_dihedral::DetermineAtomsThatMove()
         atom3_->FindConnectedAtoms(atoms_that_move);
     }
     this->SetAtomsThatMove(atoms_that_move);
+    // for(auto &atom: atoms_that_move)
+    // {
+    //     std::cout << "Moving: " << atom->GetId() << "\n";
+    // }
 }
 
 void Rotatable_dihedral::AddExtraAtomsThatMove(AtomVector extraAtoms)
@@ -238,7 +242,7 @@ void Rotatable_dihedral::SetDihedralAngle(double dihedral_angle)
 
     // Yo you should add something here that checks if atoms_that_move_ is set. Yeah you.
 
-//    std::cout << "Setting dihedral for " << atom1_->GetId() << ":"  << atom2_->GetId() << ":"  << atom3_->GetId() << ":"  << atom4_->GetId() <<  ": " << dihedral_angle << "\n";
+   // std::cout << "Setting dihedral for " << atom1_->GetId() << ":"  << atom2_->GetId() << ":"  << atom3_->GetId() << ":"  << atom4_->GetId() <<  ": " << dihedral_angle << "\n";
     for(AtomVector::iterator it = atoms_that_move_.begin(); it != atoms_that_move_.end(); it++)
     {
         Atom *atom = *it;
@@ -261,7 +265,7 @@ void Rotatable_dihedral::SetDihedralAngle(double dihedral_angle)
         for(AtomVector::iterator it = extra_atoms_that_move_.begin(); it != extra_atoms_that_move_.end(); it++)
         {
             Atom *atom = *it;
-        //    std::cout << ", " << atom->GetId();
+            //std::cout << ", " << atom->GetId();
             GeometryTopology::Coordinate* atom_coordinate = atom->GetCoordinate();
             GeometryTopology::Coordinate result;
             result.SetX(dihedral_angle_matrix[0][0] * atom_coordinate->GetX() + dihedral_angle_matrix[0][1] * atom_coordinate->GetY() +
@@ -422,6 +426,7 @@ void Rotatable_dihedral::SetSpecificAngleEntryUsingMetadata(bool useRanges, int 
         else
         {
             this->SetDihedralAngle(entry.default_angle_value_);
+            std::cout << entry.dihedral_angle_name_ << " was set to " <<  entry.default_angle_value_ << "\n";
         }
     }
 }
@@ -515,8 +520,10 @@ void Rotatable_dihedral::UpdateAtomsIfPsi()
                     foundHydrogen = true;
                 }
             }
-            if (!foundHydrogen)
+            int numberOfNeighbors = atom3_->GetNode()->GetNodeNeighbors().size();
+            if (!foundHydrogen && numberOfNeighbors <= 3)
             {
+                //std::cout << "Creating HHH atom for " << atom3_->GetId() << " as it has " << numberOfNeighbors << " neighbors\n";
                 atom4_ = Rotatable_dihedral::CreateHydrogenAtomForPsi(atom3_);
             }
         }

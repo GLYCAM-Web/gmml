@@ -290,9 +290,10 @@ MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeli
     if (cycle_point->GetName().compare("CA")==0) // This is a protein, and we always want the N atom.
     {
         selected_neighbor = cycle_point->GetResidue()->GetAtom("N");
-    }
-    else if (cycle_point->GetName().compare("C2")==0) // This is an ulose (e.g. Sia), and we always want the C1 atom.
+    } // If this is a C2 like in Sia, then we always want the C1 atom unless that atom is in the linkage path (like fructose 1-1) 
+    else if ( (cycle_point->GetName().compare("C2")==0) && (std::find(atom_path.begin(), atom_path.end(), cycle_point->GetResidue()->GetAtom("C1")) == atom_path.end()) )
     {
+        std::cout << "\n\n\n\n\n\nTRIGGEREDDDD\n\n\n\n\n";
         selected_neighbor = cycle_point->GetResidue()->GetAtom("C1");
     }
     else if (cycle_point->GetName().compare("C1")==0)
@@ -304,10 +305,8 @@ MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeli
         MolecularModeling::AtomVector neighbors = cycle_point->GetNode()->GetNodeNeighbors();
         // Ok must first get a list of neighbors that weren't in the connection path
         MolecularModeling::AtomVector good_neighbors; // Couldn't think of a better name. Everybody needs these.
-        //for(MolecularModeling::AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
         for(auto &neighbor : neighbors)
         {
-           // MolecularModeling::Atom *neighbor = *it1;
             if ( ! (std::find(atom_path.begin(), atom_path.end(), neighbor) != atom_path.end()) ) // If we've NOT been at this atom on way to cycle point
             {
                 if ( neighbor->GetName().at(0) != 'H' ) // Don't find hydrogens. Later we swap out to use a hydrogen to define a dihedral, but that's a very specific one.
