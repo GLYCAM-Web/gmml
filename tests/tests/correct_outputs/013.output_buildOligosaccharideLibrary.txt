@@ -1,0 +1,216 @@
+
+*********************
+Building DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+*********************
+CarbohydrateBuilder called using sequence: DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGlcNAcpb1-1ROH, NumberOfShapes: 1, ids: 4YB_A_2_?_?_?@C1 -- ROH_A_1_?_?_?@O1
+Residue_linkage Index: 1, Name: DGlcNAcpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: UYB_A_3_?_?_?@C1 -- 4YB_A_2_?_?_?@O4
+Residue_linkage Index: 2, Name: DManpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: QMB_A_4_?_?_?@C1 -- UYB_A_3_?_?_?@O4
+Residue_linkage Index: 3, Name: DManpa1-3DManpb, NumberOfShapes: 1, ids: 2MA_A_5_?_?_?@C1 -- QMB_A_4_?_?_?@O3
+Residue_linkage Index: 4, Name: DGlcNAcpb1-2DManpa, NumberOfShapes: 1, ids: WYB_A_6_?_?_?@C1 -- 2MA_A_5_?_?_?@O2
+Residue_linkage Index: 5, Name: Sulpho1-3DGlcNAcpb, NumberOfShapes: 1, ids: SO3_A_7_?_?_?@S1 -- WYB_A_6_?_?_?@O3
+Residue_linkage Index: 6, Name: DGalpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: 6LB_A_8_?_?_?@C1 -- WYB_A_6_?_?_?@O4
+Residue_linkage Index: 7, Name: DNeu5Acpa2-6DGalpb, NumberOfShapes: 6, ids: 0SA_A_9_?_?_?@C2 -- 6LB_A_8_?_?_?@O6
+Residue_linkage Index: 8, Name: DGlcNAcpb1-4DManpb, NumberOfShapes: 1, ids: 0YB_A_10_?_?_?@C1 -- QMB_A_4_?_?_?@O4
+Residue_linkage Index: 9, Name: DManpa1-6DManpb, NumberOfShapes: 3, ids: 6MA_A_11_?_?_?@C1 -- QMB_A_4_?_?_?@O6
+Residue_linkage Index: 10, Name: DManpa1-6DManpa, NumberOfShapes: 3, ids: ZMA_A_12_?_?_?@C1 -- 6MA_A_11_?_?_?@O6
+Residue_linkage Index: 11, Name: Sulpho1-2DManpa, NumberOfShapes: 1, ids: SO3_A_13_?_?_?@S1 -- ZMA_A_12_?_?_?@O2
+Residue_linkage Index: 12, Name: Methyl3-3DManpa, NumberOfShapes: 1, ids: MEX_A_14_?_?_?@CH3 -- ZMA_A_12_?_?_?@O3
+Residue_linkage Index: 13, Name: Methyl3-6DGlcNAcpb, NumberOfShapes: 1, ids: MEX_A_15_?_?_?@CH3 -- UYB_A_3_?_?_?@O6
+
+*********************
+Building DNeup5Aca2-9DNeup5Aca2-8DNeup5Aca2-7DNeup5Aca2-3DGlcpb1-6DManpb1-OME";
+*********************
+CarbohydrateBuilder called using sequence: DNeup5Aca2-9DNeup5Aca2-8DNeup5Aca2-7DNeup5Aca2-3DGlcpb1-6DManpb1-OME";
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGlcpb1-6DManpb, NumberOfShapes: 3, ids: 3GB_A_3_?_?_?@C1 -- 6MB_A_2_?_?_?@O6
+Residue_linkage Index: 1, Name: DNeu5Acpa2-3DGlcpb, NumberOfShapes: 2, ids: 7SA_A_4_?_?_?@C2 -- 3GB_A_3_?_?_?@O3
+Residue_linkage Index: 2, Name: DNeu5Acpa2-7DNeu5Acpa, NumberOfShapes: 2, ids: 8SA_A_5_?_?_?@C2 -- 7SA_A_4_?_?_?@O7
+Residue_linkage Index: 3, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 9SA_A_6_?_?_?@C2 -- 8SA_A_5_?_?_?@O8
+Residue_linkage Index: 4, Name: DNeu5Acpa2-9DNeu5Acpa, NumberOfShapes: 2, ids: 0SA_A_7_?_?_?@C2 -- 9SA_A_6_?_?_?@O9
+
+*********************
+Building DGlcpa1-2DFrufb
+*********************
+CarbohydrateBuilder called using sequence: DGlcpa1-2DFrufb
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGlcpa1-2DFrufb, NumberOfShapes: 1, ids: 0GA_A_2_?_?_?@C1 -- 2CU_A_1_?_?_?@O2
+
+*********************
+Building DFrufb2-1DGlcpa
+*********************
+CarbohydrateBuilder called using sequence: DFrufb2-1DGlcpa
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DFrufb2-1DGlcpa, NumberOfShapes: 1, ids: 0CU_A_2_?_?_?@C2 -- 1GA_A_1_?_?_?@O1
+
+*********************
+Building DGlcpa1-R
+*********************
+CarbohydrateBuilder called using sequence: DGlcpa1-R
+ and contains these Residue_linkages:
+
+*********************
+Building LRhapa1-6DGlcpb1-OH
+*********************
+CarbohydrateBuilder called using sequence: LRhapa1-6DGlcpb1-OH
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGlcpb1-1ROH, NumberOfShapes: 1, ids: 6GB_A_2_?_?_?@C1 -- ROH_A_1_?_?_?@O1
+Residue_linkage Index: 1, Name: LRhapa1-6DGlcpb, NumberOfShapes: 3, ids: 0hA_A_3_?_?_?@C1 -- 6GB_A_2_?_?_?@O6
+
+*********************
+Building LRhapa1-6DGalpb1-OH
+*********************
+CarbohydrateBuilder called using sequence: LRhapa1-6DGalpb1-OH
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGalpb1-1ROH, NumberOfShapes: 1, ids: 6LB_A_2_?_?_?@C1 -- ROH_A_1_?_?_?@O1
+Residue_linkage Index: 1, Name: LRhapa1-6DGalpb, NumberOfShapes: 3, ids: 0hA_A_3_?_?_?@C1 -- 6LB_A_2_?_?_?@O6
+
+*********************
+Building DNeupNAca2-4DGalpb1-OH
+*********************
+CarbohydrateBuilder called using sequence: DNeupNAca2-4DGalpb1-OH
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGalpb1-1ROH, NumberOfShapes: 1, ids: 4LB_A_2_?_?_?@C1 -- ROH_A_1_?_?_?@O1
+Residue_linkage Index: 1, Name: DNeu5Acpa2-4DGalpb, NumberOfShapes: 2, ids: 0SA_A_3_?_?_?@C2 -- 4LB_A_2_?_?_?@O4
+
+*********************
+Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
+*********************
+CarbohydrateBuilder called using sequence: DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DNeu5Acpa2-1ROH, NumberOfShapes: 1, ids: 8SA_A_2_?_?_?@C2 -- ROH_A_1_?_?_?@O1
+Residue_linkage Index: 1, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 8SA_A_3_?_?_?@C2 -- 8SA_A_2_?_?_?@O8
+Residue_linkage Index: 2, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 8SA_A_4_?_?_?@C2 -- 8SA_A_3_?_?_?@O8
+Residue_linkage Index: 3, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 0SA_A_5_?_?_?@C2 -- 8SA_A_4_?_?_?@O8
+
+*********************
+Building DGlcpA1-OH
+*********************
+CarbohydrateBuilder called using sequence: DGlcpA1-OH
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGlcpa1-1ROH, NumberOfShapes: 1, ids: 0GA_A_2_?_?_?@C1 -- ROH_A_1_?_?_?@O1
+
+*********************
+Building DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
+*********************
+CarbohydrateBuilder called using sequence: DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGlcApb1-OOME, NumberOfShapes: 1, ids: YZB_A_2_?_?_?@C1 -- OME_A_1_?_?_?@O
+Residue_linkage Index: 1, Name: Sulpho1-2DGlcApb, NumberOfShapes: 1, ids: SO3_A_3_?_?_?@S1 -- YZB_A_2_?_?_?@O2
+Residue_linkage Index: 2, Name: DGalNAcpb1-4DGlcApb, NumberOfShapes: 1, ids: UVB_A_4_?_?_?@C1 -- YZB_A_2_?_?_?@O4
+Residue_linkage Index: 3, Name: Sulpho1-4DGalNAcpb, NumberOfShapes: 1, ids: SO3_A_5_?_?_?@S1 -- UVB_A_4_?_?_?@O4
+Residue_linkage Index: 4, Name: Sulpho1-6DGalNAcpb, NumberOfShapes: 3, ids: SO3_A_6_?_?_?@S1 -- UVB_A_4_?_?_?@O6
+
+*********************
+Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-6DGlcpb1-6DGalpba1-OH
+*********************
+CarbohydrateBuilder called using sequence: DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-6DGlcpb1-6DGalpba1-OH
+ and contains these Residue_linkages:
+
+*********************
+Building LFucpa1-1DFrufb2-OMe
+*********************
+CarbohydrateBuilder called using sequence: LFucpa1-1DFrufb2-OMe
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: LFucpa1-1DFrufb, NumberOfShapes: 1, ids: 0fA_A_3_?_?_?@C1 -- 1CU_A_2_?_?_?@O1
+
+*********************
+Building DManpb1-2DManp[6A]b1-2[DGalpb1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+*********************
+CarbohydrateBuilder called using sequence: DManpb1-2DManp[6A]b1-2[DGalpb1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGalpa1-OOME, NumberOfShapes: 1, ids: YLA_A_2_?_?_?@C1 -- OME_A_1_?_?_?@O
+Residue_linkage Index: 1, Name: DManpb1-2DGalpa, NumberOfShapes: 1, ids: XMB_A_3_?_?_?@C1 -- YLA_A_2_?_?_?@O2
+Residue_linkage Index: 2, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: XMB_A_4_?_?_?@C1 -- XMB_A_3_?_?_?@O2
+Residue_linkage Index: 3, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: XMB_A_5_?_?_?@C1 -- XMB_A_4_?_?_?@O2
+Residue_linkage Index: 4, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: 0MB_A_6_?_?_?@C1 -- XMB_A_5_?_?_?@O2
+Residue_linkage Index: 5, Name: AcetylA-6DManpb, NumberOfShapes: 3, ids: ACX_A_7_?_?_?@C1A -- XMB_A_5_?_?_?@O6
+Residue_linkage Index: 6, Name: DGalpb1-6DManpb, NumberOfShapes: 3, ids: 0LB_A_8_?_?_?@C1 -- XMB_A_4_?_?_?@O6
+Residue_linkage Index: 7, Name: Methyl3-6DManpb, NumberOfShapes: 1, ids: MEX_A_9_?_?_?@CH3 -- XMB_A_3_?_?_?@O6
+Residue_linkage Index: 8, Name: DManpa1-4DGalpa, NumberOfShapes: 1, ids: XMA_A_10_?_?_?@C1 -- YLA_A_2_?_?_?@O4
+Residue_linkage Index: 9, Name: Sulpho1-2DManpa, NumberOfShapes: 1, ids: SO3_A_11_?_?_?@S1 -- XMA_A_10_?_?_?@O2
+Residue_linkage Index: 10, Name: DGlcpb1-6DManpa, NumberOfShapes: 3, ids: 0GB_A_12_?_?_?@C1 -- XMA_A_10_?_?_?@O6
+
+*********************
+Building DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+*********************
+CarbohydrateBuilder called using sequence: DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGalpa1-OOME, NumberOfShapes: 1, ids: YLA_A_2_?_?_?@C1 -- OME_A_1_?_?_?@O
+Residue_linkage Index: 1, Name: DManpb1-2DGalpa, NumberOfShapes: 1, ids: XMB_A_3_?_?_?@C1 -- YLA_A_2_?_?_?@O2
+Residue_linkage Index: 2, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: XMB_A_4_?_?_?@C1 -- XMB_A_3_?_?_?@O2
+Residue_linkage Index: 3, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: XMB_A_5_?_?_?@C1 -- XMB_A_4_?_?_?@O2
+Residue_linkage Index: 4, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: 0MB_A_6_?_?_?@C1 -- XMB_A_5_?_?_?@O2
+Residue_linkage Index: 5, Name: AcetylA-6DManpb, NumberOfShapes: 3, ids: ACX_A_7_?_?_?@C1A -- XMB_A_5_?_?_?@O6
+Residue_linkage Index: 6, Name: DGalpb1-6DManpb, NumberOfShapes: 3, ids: 0LB_A_8_?_?_?@C1 -- XMB_A_4_?_?_?@O6
+Residue_linkage Index: 7, Name: Methyl3-6DManpb, NumberOfShapes: 1, ids: MEX_A_9_?_?_?@CH3 -- XMB_A_3_?_?_?@O6
+Residue_linkage Index: 8, Name: DManpa1-4DGalpa, NumberOfShapes: 1, ids: XMA_A_10_?_?_?@C1 -- YLA_A_2_?_?_?@O4
+Residue_linkage Index: 9, Name: Sulpho1-2DManpa, NumberOfShapes: 1, ids: SO3_A_11_?_?_?@S1 -- XMA_A_10_?_?_?@O2
+Residue_linkage Index: 10, Name: DGlcpb1-6DManpa, NumberOfShapes: 3, ids: 0GB_A_12_?_?_?@C1 -- XMA_A_10_?_?_?@O6
+
+*********************
+Building LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
+*********************
+CarbohydrateBuilder called using sequence: LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGlcApa1-OOME, NumberOfShapes: 1, ids: WZA_A_2_?_?_?@C1 -- OME_A_1_?_?_?@O
+Residue_linkage Index: 1, Name: DGalpb1-3DGlcApa, NumberOfShapes: 1, ids: XLB_A_3_?_?_?@C1 -- WZA_A_2_?_?_?@O3
+Residue_linkage Index: 2, Name: Methyl3-2DGalpb, NumberOfShapes: 1, ids: MEX_A_4_?_?_?@CH3 -- XLB_A_3_?_?_?@O2
+Residue_linkage Index: 3, Name: DGlcpa1-4DGlcApa, NumberOfShapes: 1, ids: XGA_A_10_?_?_?@C1 -- WZA_A_2_?_?_?@O4
+Residue_linkage Index: 4, Name: Sulpho1-2DGlcpa, NumberOfShapes: 1, ids: SO3_A_11_?_?_?@S1 -- XGA_A_10_?_?_?@O2
+Residue_linkage Index: 5, Name: DNeu5Acpa2-6DGlcpa, NumberOfShapes: 6, ids: 0SA_A_12_?_?_?@C2 -- XGA_A_10_?_?_?@O6
+
+*********************
+Building DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
+*********************
+CarbohydrateBuilder called using sequence: DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGlcNAcpb1-1ROH, NumberOfShapes: 1, ids: 4YB_A_2_?_?_?@C1 -- ROH_A_1_?_?_?@O1
+Residue_linkage Index: 1, Name: DGlcNAcpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: 4YB_A_3_?_?_?@C1 -- 4YB_A_2_?_?_?@O4
+Residue_linkage Index: 2, Name: DManpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: VMB_A_4_?_?_?@C1 -- 4YB_A_3_?_?_?@O4
+Residue_linkage Index: 3, Name: DManpa1-3DManpb, NumberOfShapes: 1, ids: 2MA_A_5_?_?_?@C1 -- VMB_A_4_?_?_?@O3
+Residue_linkage Index: 4, Name: DManpa1-2DManpa, NumberOfShapes: 1, ids: 2MA_A_6_?_?_?@C1 -- 2MA_A_5_?_?_?@O2
+Residue_linkage Index: 5, Name: DManpa1-2DManpa, NumberOfShapes: 1, ids: 0MA_A_7_?_?_?@C1 -- 2MA_A_6_?_?_?@O2
+Residue_linkage Index: 6, Name: DManpa1-6DManpb, NumberOfShapes: 3, ids: VMA_A_8_?_?_?@C1 -- VMB_A_4_?_?_?@O6
+Residue_linkage Index: 7, Name: DManpa1-3DManpa, NumberOfShapes: 1, ids: 2MA_A_9_?_?_?@C1 -- VMA_A_8_?_?_?@O3
+Residue_linkage Index: 8, Name: DManpa1-2DManpa, NumberOfShapes: 1, ids: 0MA_A_10_?_?_?@C1 -- 2MA_A_9_?_?_?@O2
+Residue_linkage Index: 9, Name: DManpa1-6DManpa, NumberOfShapes: 3, ids: 2MA_A_11_?_?_?@C1 -- VMA_A_8_?_?_?@O6
+Residue_linkage Index: 10, Name: DManpa1-2DManpa, NumberOfShapes: 1, ids: 0MA_A_12_?_?_?@C1 -- 2MA_A_11_?_?_?@O2
+
+*********************
+Building DLyxpa1-2[DManpb1-4][LGulpb1-6]DGlcpa1-2[LGalpa1-5][LFucpa1-1]DFrufb2-OH
+*********************
+CarbohydrateBuilder called using sequence: DLyxpa1-2[DManpb1-4][LGulpb1-6]DGlcpa1-2[LGalpa1-5][LFucpa1-1]DFrufb2-OH
+ and contains these Residue_linkages:
+
+*********************
+Building DManpb1-4[DLyxpa1-2][LGulpb1-6]DGlcpa1-2[LFucpa1-1][LGalpa1-5]DFrufb2-OH
+*********************
+CarbohydrateBuilder called using sequence: DManpb1-4[DLyxpa1-2][LGulpb1-6]DGlcpa1-2[LFucpa1-1][LGalpa1-5]DFrufb2-OH
+ and contains these Residue_linkages:
+00001.pdb succesfully created.
+00002.pdb succesfully created.
+00003.pdb succesfully created.
+00004.pdb succesfully created.
+00005.pdb succesfully created.
+00006.pdb not created.
+00007.pdb not created.
+00008.pdb not created.
+00009.pdb succesfully created.
+00010.pdb succesfully created.
+00011.pdb succesfully created.
+00012.pdb succesfully created.
+00013.pdb succesfully created.
+00014.pdb succesfully created.
+00015.pdb succesfully created.
+00016.pdb succesfully created.
+00017.pdb not created.
+00018.pdb not created.
+00019.pdb succesfully created.
+00020.pdb succesfully created.
+00021.pdb succesfully created.
+00022.pdb not created.
+00023.pdb succesfully created.
+00024.pdb succesfully created.
+00025.pdb succesfully created.
