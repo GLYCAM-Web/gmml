@@ -35,13 +35,13 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(Molecul
         if ( (std::regex_search(linking_atom1->GetName(), regex1)) && (std::regex_search(linking_atom2->GetName(), regex2)) )
         {
             // Some entries have conditions for the residue, that they have certain tags. Make sure any conditions are met:
-            std::cout << "Matched. Checking if conditions apply.\n";
+            //std::cout << "Matched. Checking if conditions apply.\n";
             std::vector<std::string> residue1_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom1->GetResidue()->GetName());
             std::vector<std::string> residue2_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom2->GetResidue()->GetName());
             if ( (checkIfResidueConditionsAreSatisfied(residue1_types, entry.residue1_conditions_))
                  && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_conditions_)) )
             {
-                std::cout << "Found a match: " << entry.linking_atom1_ << "--" << entry.linking_atom2_ << ", " << entry.dihedral_angle_name_ << "\n";
+                //std::cout << "Found a match: " << entry.linking_atom1_ << "--" << entry.linking_atom2_ << ", " << entry.dihedral_angle_name_ << "\n";
                 //Always add a later entry, but remove earlier match if number_of_bonds_from_anomeric_carbon_ AND index number are the same.
                 // I've overloaded the == and != operators in the DihedralAngleData struct to evaluate those.
                 // This next line removes any elements of matching_entries that match "entry", then the line after adds entry.
@@ -135,7 +135,7 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C2"   , "O7"     , "Omg9" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 4 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "C7"  },
         { "C2"   , "O7"     , "Omg8" ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 5 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C9" , "C8" , "C7" , "O7"  },
         // 2-9 linkages copied from GlycamWeb Jan 2021.
-        { "C2"   , "O7"     , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C3" , "C2" , "O." , "C."  },
+        { "C2"   , "O9"     , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C3" , "C2" , "O." , "C."  },
         { "C2"   , "O9"     , "Omg9" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 3 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "C7"  },
         { "C2"   , "O9"     , "Omg8" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 4 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C9" , "C8" , "C7" , "C6"  },
         { "C2"   , "O9"     , "Omg7" , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 5 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O7" , "C7" , "C6" , "O6"  },

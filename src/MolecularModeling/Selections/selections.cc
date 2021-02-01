@@ -174,7 +174,7 @@ bool selection::FindPathBetweenTwoAtoms(MolecularModeling::Atom *current_atom, M
     }
     if(*found) // As you fall back out from the found target, create a list of the atoms.
     {
-        std::cout << "path atom: " << current_atom->GetId() << std::endl;
+        //std::cout << "path atom: " << current_atom->GetId() << std::endl;
         atom_path->push_back(current_atom);
     }
     return *found;
@@ -293,7 +293,6 @@ MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeli
     } // If this is a C2 like in Sia, then we always want the C1 atom unless that atom is in the linkage path (like fructose 1-1) 
     else if ( (cycle_point->GetName().compare("C2")==0) && (std::find(atom_path.begin(), atom_path.end(), cycle_point->GetResidue()->GetAtom("C1")) == atom_path.end()) )
     {
-        std::cout << "\n\n\n\n\n\nTRIGGEREDDDD\n\n\n\n\n";
         selected_neighbor = cycle_point->GetResidue()->GetAtom("C1");
     }
     else if (cycle_point->GetName().compare("C1")==0)
@@ -571,7 +570,7 @@ void selection::FindEndsOfBranchesFromLinkageAtom(MolecularModeling::Atom* curre
             if (neighbor->GetNode()->GetNodeNeighbors().size() > 1)
             {
                 deadEndAtom = false;
-                std::cout << "At depth " << branch->GetDepth() << " going deeper from " << currentAtom->GetId() << " to " << neighbor->GetId() << "\n";
+                //std::cout << "At depth " << branch->GetDepth() << " going deeper from " << currentAtom->GetId() << " to " << neighbor->GetId() << "\n";
                 FindEndsOfBranchesFromLinkageAtom(neighbor, currentAtom, branch);
                 branch->ChangeDepth(-1);
             }
@@ -581,10 +580,10 @@ void selection::FindEndsOfBranchesFromLinkageAtom(MolecularModeling::Atom* curre
             connectsToAnotherResidue = true;
         }
     }
-    std::cout << "  Status at " << currentAtom->GetId() << " is deadEndAtom:" << std::boolalpha << deadEndAtom << ", depth: " << branch->GetDepth() << ", connectsToOther: " << connectsToAnotherResidue << std::endl; 
+    //std::cout << "  Status at " << currentAtom->GetId() << " is deadEndAtom:" << std::boolalpha << deadEndAtom << ", depth: " << branch->GetDepth() << ", connectsToOther: " << connectsToAnotherResidue << std::endl; 
     if (deadEndAtom && !connectsToAnotherResidue && branch->GetDepth() > 1 && branch->AtMaxDepth())
     {
-        std::cout << "      Found a dead end: " << currentAtom->GetId() << " at depth " << branch->GetDepth() << std::endl;
+        //std::cout << "      Found a dead end: " << currentAtom->GetId() << " at depth " << branch->GetDepth() << std::endl;
         branch->SetEnd(currentAtom);
     }
     return;
