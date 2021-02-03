@@ -305,7 +305,7 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
     for(auto &rotatable_dihedral : rotatable_bond_vector)
     {
         double best_dihedral_angle = rotatable_dihedral.CalculateDihedralAngle();
-  //      std::cout << "Starting new linkage with best angle as " << best_dihedral_angle << "\n";
+        //std::cout << "Starting new linkage with best angle as " << best_dihedral_angle << "\n";
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_entries = rotatable_dihedral.GetMetadata();
         for(auto &metadata : metadata_entries)
         {
@@ -316,13 +316,13 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
             {
                 rotatable_dihedral.SetDihedralAngle(current_dihedral);
                 current_overlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
-           //     std::cout << "Dihedral(best): " << current_dihedral << "(" << best_dihedral_angle << ")" <<  ". Overlap(best): " << current_overlap << "(" << lowest_overlap << ")" << "\n";
+                //std::cout << "Dihedral(best): " << current_dihedral << "(" << best_dihedral_angle << ")" <<  ". Overlap(best): " << current_overlap << "(" << lowest_overlap << ")" << "\n";
                 if (lowest_overlap >= (current_overlap + 0.01)) // 0.01 otherwise rounding errors
                 {
-                   // rotatable_dihedral.Print();
+                    //rotatable_dihedral.Print();
                     lowest_overlap = current_overlap;
                     best_dihedral_angle = current_dihedral;
-           //         std::cout << "Best angle is now " << best_dihedral_angle << "\n";
+                    //std::cout << "Best angle is now " << best_dihedral_angle << "\n";
                 }
                 // Perfer angles closer to default.
                 else if ( (lowest_overlap == current_overlap) && (std::abs(metadata.default_angle_value_ - best_dihedral_angle )
@@ -333,7 +333,7 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
                 current_dihedral += angleIncrement; // increment
             }
         }
-   //     std::cout << "Setting best angle as " << best_dihedral_angle << "\n";
+        //std::cout << "Setting best angle as " << best_dihedral_angle << "\n";
         rotatable_dihedral.SetDihedralAngle(best_dihedral_angle);
         if(lowest_overlap <= overlapTolerance)
             return;
