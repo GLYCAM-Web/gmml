@@ -7,7 +7,11 @@
 
 namespace selection
 {
-using MolecularModeling::Atom, MolecularModeling::AtomVector, MolecularModeling::Residue, MolecularModeling::ResidueVector, MolecularModeling::Assembly;
+using MolecularModeling::Atom; 
+using MolecularModeling::AtomVector; 
+using MolecularModeling::Residue; 
+using MolecularModeling::ResidueVector; 
+using MolecularModeling::Assembly;
 AtomVector AtomsWithinDistanceOf(Atom *query_atom, double distance, AtomVector atoms);
 void FindAtomsConnectingResidues(Atom *current_atom, Residue *second_residue, AtomVector *connecting_atoms, bool *found_neighbor);
 //void FindAtomsInPathToCycle(Atom *previous_atom, Atom *current_atom, AtomVector *atom_path, bool *found_cycle_point, Atom *&cycle_point);
@@ -30,7 +34,7 @@ AtomVector FindOtherAtomsWithinMolecule(Atom *queryAtom);
  // A function that compares atom numbers to see which is higher:
 bool compareAtomNumbers(Atom *a1, Atom *a2);
 ResidueVector SortResidueNeighborsByAcendingConnectionAtomNumber(AtomVector neighboringAtoms);
-class Branch
+class Branch // This is only temporary. This will be replaced by new Template Graph class.
 {
 public:
     Branch(Atom *rootAtom, int depth = 0) : depth_ (depth), maxDepth_ (depth), rootAtom_ (rootAtom) {branchFound = false;};
