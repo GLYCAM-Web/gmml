@@ -35,11 +35,13 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(Molecul
         if ( (std::regex_search(linking_atom1->GetName(), regex1)) && (std::regex_search(linking_atom2->GetName(), regex2)) )
         {
             // Some entries have conditions for the residue, that they have certain tags. Make sure any conditions are met:
+            //std::cout << "Matched. Checking if conditions apply.\n";
             std::vector<std::string> residue1_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom1->GetResidue()->GetName());
             std::vector<std::string> residue2_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom2->GetResidue()->GetName());
             if ( (checkIfResidueConditionsAreSatisfied(residue1_types, entry.residue1_conditions_))
                  && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_conditions_)) )
             {
+                //std::cout << "Found a match: " << entry.linking_atom1_ << "--" << entry.linking_atom2_ << ", " << entry.dihedral_angle_name_ << "\n";
                 //Always add a later entry, but remove earlier match if number_of_bonds_from_anomeric_carbon_ AND index number are the same.
                 // I've overloaded the == and != operators in the DihedralAngleData struct to evaluate those.
                 // This next line removes any elements of matching_entries that match "entry", then the line after adds entry.
@@ -118,19 +120,86 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
     { // Regex1  , Regex2   , Name   , Angle  , Upper  , Lower  , Weight, Entry Type    , Name , B , I , Res1 Condition , Res2 Conditions           , Atom names                                                               // Atom names this applies to
         { "C1"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"aldose"}     , {"none"}                  , "C2" , "C1" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
         { "C2"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"ketose","ulosonate"}     , {"none"}      , "C3" , "C2" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
-        { "C2"   , "O[1-9]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"none"}         , "C3" , "C2" , "O." , "C."  },
-
-        { "C."   , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "H."  }, // Psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)
+        { "C2"   , "O[3-6]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"none"}         , "C3" , "C2" , "O." , "C."  },
+        { "C."   , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "ap" , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "H."  }, // Psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)
         { "C."   , "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "C."  },
-
+        // Omega angle in x-6 linkages.        
         { "C."   , "O6"     , "Omg"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  }, // omg is O6-C5-C5-O5
         { "C."   , "O6"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  },
         { "C."   , "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
-      //  Need to check weights when adding dihedral. All possible can return low weight structures.
         { "C."   , "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 0.001 , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=gluco"}   , "O6" , "C6" , "C5" , "O5"  },
-
-         // 2-8 linkages
-      //{ "C2", "O8"   , "omg7" ,    };
+        // 2-7 linkages copied from GlycamWeb Jan 2021. Branching in the linkage causes oddities with the bond number and which atoms are chosen for the torsion.
+        { "C2"   , "O7"     , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C3" , "C2" , "O." , "C."  },
+        { "C2"   , "O7"     , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C." , "O." , "C." , "H."  },
+        { "C2"   , "O7"     , "Omg7" ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 3 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O7" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O7"     , "Omg9" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 4 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "C7"  },
+        { "C2"   , "O7"     , "Omg8" ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 5 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C9" , "C8" , "C7" , "O7"  },
+        // 2-9 linkages copied from GlycamWeb Jan 2021.
+        { "C2"   , "O9"     , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C3" , "C2" , "O." , "C."  },
+        { "C2"   , "O9"     , "Omg9" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 3 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "C7"  },
+        { "C2"   , "O9"     , "Omg8" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 4 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C9" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O9"     , "Omg7" , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 5 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O7" , "C7" , "C6" , "O6"  },
+         // Internal 2-8 linkages   
+        { "C2"   , "O8"     , "Phi"  , -79.5  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 1 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  ,  88.1  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 2 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,-170.1  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 3 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -61.8  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 4 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,  65.8  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 5 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        { "C2"   , "O8"     , "Phi"  , -73.6  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 1 , 2 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 109.2  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 2 , 2 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,-169.2  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 3 , 2 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -61.9  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 4 , 2 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" , -61.0  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 5 , 2 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        { "C2"   , "O8"     , "Phi"  ,-172.0  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 1 , 3 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 108.7  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 2 , 3 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,-164.2  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 3 , 3 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -52.9  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 4 , 3 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,  68.5  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 5 , 3 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        { "C2"   , "O8"     , "Phi"  , -72.1  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 1 , 4 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 127.1  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 2 , 4 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,  58.5  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 3 , 4 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -66.1  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 4 , 4 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" , 178.9  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 5 , 4 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        { "C2"   , "O8"     , "Phi"  , -42.9  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 1 , 5 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 162.3  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 2 , 5 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" , -58.3  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 3 , 5 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -55.7  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 4 , 5 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" , -58.5  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 5 , 5 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        // External 2-8 linkages    
+        { "C2"   , "O8"     , "Phi"  , -66.0  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 1 , 1 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 118.2  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 2 , 1 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,-160.4  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 3 , 1 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -59.6  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 4 , 1 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,  73.4  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 5 , 1 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        { "C2"   , "O8"     , "Phi"  , -68.4  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 1 , 2 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 132.7  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 2 , 2 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,  64.4  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 3 , 2 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -61.1  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 4 , 2 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,-179.0  ,  20.0  ,  20.0  , 0.24  , "conformer"   , "B"  , 5 , 2 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        { "C2"   , "O8"     , "Phi"  , -53.2  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 1 , 3 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 161.6  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 2 , 3 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" , -67.8  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 3 , 3 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -61.1  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 4 , 3 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" , -57.9  ,  20.0  ,  20.0  , 0.08  , "conformer"   , "C"  , 5 , 3 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        { "C2"   , "O8"     , "Phi"  , -72.7  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 1 , 4 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 124.9  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 2 , 4 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,  62.4  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 3 , 4 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -59.5  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 4 , 4 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,  78.8  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "D"  , 5 , 4 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        { "C2"   , "O8"     , "Phi"  ,-164.9  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 1 , 5 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C2"   , "O8"     , "Psi"  , 103.0  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 2 , 5 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C2"   , "O8"     , "Omg8" ,-161.3  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 3 , 5 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C2"   , "O8"     , "Omg7" , -54.3  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 4 , 5 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C2"   , "O8"     , "Omg9" ,  71.1  ,  20.0  ,  20.0  , 0.07  , "conformer"   , "E"  , 5 , 5 , {"ulosonate", "alpha", "external"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
+        // Sucrose from: Bock K, Lemieux RU. Carbohydrate Research, 100 (1982) 63-74. Now allowing ordering of sequence either way, thus four entries instead of two.
+        { "C1"   , "O2"     , "Phi"  ,-135.0  ,   5.0  ,   5.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"pyranose", "aldose"}    , {"furanose", "ketose"}         , "C2" , "C1" , "O2" , "C2" },
+        { "C1"   , "O2"     , "Psi"  ,  80.0  ,  10.0  ,  10.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"pyranose", "aldose"}    , {"furanose", "ketose"}         , "C1" , "O2" , "C2" , "C1" },
+        { "C2"   , "O1"     , "Phi"  ,  80.0  ,  10.0  ,  10.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"furanose", "ketose"}    , {"pyranose", "aldose"}         , "C1" , "C2" , "O1" , "C1" },
+        { "C2"   , "O1"     , "Psi"  ,-135.0  ,   5.0  ,   5.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"furanose", "ketose"}    , {"pyranose", "aldose"}         , "C2" , "O1" , "C1" , "C2" },
+        // Ketose 1-1 linkages. Copied from old GLYCAM-Web builder.
+        { "C1"   , "O1"     , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"ketose"}                , "C2" , "C1" , "O1" , "C1" },
+        { "C1"   , "O1"     , "Psi"  ,-150.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"ketose"}                , "C1" , "O1" , "C1" , "C2" },
+        { "C1"   , "O1"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 3 , 1 , {"none"}       , {"ketose"}                , "O1" , "C1" , "C2" , "O5" },
       // Common sugar derivatives
       // Phosphate/sulfate
         { "[SP]1", "N[2]"   , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"none"}                  , "O." , ".1" , "N." , "C."  },
@@ -148,44 +217,34 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
       // Me
         { "CH3"  , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "CH3", "O." , "C." , "H."  },
         { "CH3"  , "O[6-9]" , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "CH3", "O." , "C." , "C."  },
-
-
         // Protein linkages
         // ASN // Values are from Petrescu et al 2004.
         { "C."   , "ND2"    , "Chi1" , 191.6  ,  14.4  ,  14.4  , 0.497 , "conformer"   , "A"  , 4 , 1 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
         { "C."   , "ND2"    , "Chi2" , 177.6  ,  43.0  ,  43.0  , 0.497 , "conformer"   , "A"  , 3 , 1 , {"none"}       , {"amino-acid"}            , "ND2", "CG" , "CB" , "CA"  },
         { "C."   , "ND2"    , "Psi"  , 177.3  ,  12.3  ,  12.3  , 0.497 , "conformer"   , "A"  , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "ND2", "CG" , "CB"  },
         { "C1"   , "ND2"    , "Phi"  , 261.0  ,  21.3  ,  21.3  , 0.497 , "conformer"   , "A"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "ND2", "CG"  },
-
         { "C."   , "ND2"    , "Chi1" ,  63.6  ,   8.9  ,   8.9  , 0.178 , "conformer"   , "B"  , 4 , 2 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
         { "C."   , "ND2"    , "Chi2" , 191.1  ,  31.6  ,  31.6  , 0.178 , "conformer"   , "B"  , 3 , 2 , {"none"}       , {"amino-acid"}            , "ND2", "CG" , "CB" , "CA"  },
         { "C."   , "ND2"    , "Psi"  , 178.5  ,  13.9  ,  13.9  , 0.178 , "conformer"   , "B"  , 2 , 2 , {"none"}       , {"amino-acid"}            , "C." , "ND2", "CG" , "CB"  },
         { "C1"   , "ND2"    , "Phi"  , 253.7  ,  21.5  ,  21.5  , 0.178 , "conformer"   , "B"  , 1 , 2 , {"none"}       , {"amino-acid"}            , "C." , "C." , "ND2", "CG"  },
-
         { "C."   , "ND2"    , "Chi1" , 290.6  ,  12.7  ,  12.7  , 0.235 , "conformer"   , "C"  , 4 , 3 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
         { "C."   , "ND2"    , "Chi2" , 152.9  ,  23.9  ,  23.9  , 0.235 , "conformer"   , "C"  , 3 , 3 , {"none"}       , {"amino-acid"}            , "ND2", "CG" , "CB" , "CA"  },
         { "C."   , "ND2"    , "Psi"  , 173.1  ,  12.2  ,  12.2  , 0.235 , "conformer"   , "C"  , 2 , 3 , {"none"}       , {"amino-acid"}            , "C." , "ND2", "CG" , "CB"  },
         { "C1"   , "ND2"    , "Phi"  , 268.0  ,  20.3  ,  20.3  , 0.235 , "conformer"   , "C"  , 1 , 3 , {"none"}       , {"amino-acid"}            , "C." , "C." , "ND2", "CG"  },
-
         { "C."   , "ND2"    , "Chi1" , 302.3  ,  11.5  ,  11.5  , 0.090 , "conformer"   , "D"  , 4 , 4 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
         { "C."   , "ND2"    , "Chi2" , 255.0  ,  28.8  ,  28.8  , 0.090 , "conformer"   , "D"  , 3 , 4 , {"none"}       , {"amino-acid"}            , "ND2", "CG" , "CB" , "CA"  },
         { "C."   , "ND2"    , "Psi"  , 178.1  ,  11.5  ,  11.5  , 0.090 , "conformer"   , "D"  , 2 , 4 , {"none"}       , {"amino-acid"}            , "C." , "ND2", "CG" , "CB"  },
         { "C1"   , "ND2"    , "Phi"  , 267.5  ,  23.9  ,  23.9  , 0.090 , "conformer"   , "D"  , 1 , 4 , {"none"}       , {"amino-acid"}            , "C." , "C." , "ND2", "CG"  },
-
-
         // THR // Values are from Lovell et al "PENULTIMATE ROTAMER LIBRARY"
         { "C."   , "OG1"    , "Chi1" ,  59.0  ,  10.0  ,  10.0  , 0.49  , "permutation" , "g"  , 3 , 1 , {"none"}       , {"amino-acid"}            , "OG1", "CB" , "CA" , "N"   },
         { "C."   , "OG1"    , "Chi1" ,-171.0  ,   6.0  ,   6.0  , 0.07  , "permutation" , "t"  , 3 , 2 , {"none"}       , {"amino-acid"}            , "OG1", "CB" , "CA" , "N"   },
         { "C."   , "OG1"    , "Chi1" , -61.0  ,   7.0  ,   7.0  , 0.43  , "permutation" , "-g" , 3 , 3 , {"none"}       , {"amino-acid"}            , "OG1", "CB" , "CA" , "N"   },
-
         { "C."   , "OG1"    , "Psi"  , -60.0  ,  60.0  ,  60.0  , 1.000 , "permutation" , "-g" , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "OG1", "CB" , "CA"  },
         { "C."   , "OG1"    , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "OG1", "CB"  },
-
          // SER // Values not checked
         { "C."   , "OG"     , "Chi1" ,  64.0  ,  10.0  ,  10.0  , 0.48  , "permutation" , "g"  , 3 , 1 , {"none"}       , {"amino-acid"}            , "OG" , "CB" , "CA" , "N"   },
         { "C."   , "OG"     , "Chi1" , 178.0  ,  11.0  ,  11.0  , 0.22  , "permutation" , "t"  , 3 , 2 , {"none"}       , {"amino-acid"}            , "OG" , "CB" , "CA" , "N"   },
         { "C."   , "OG"     , "Chi1" , -65.0  ,   9.0  ,   9.0  , 0.29  , "permutation" , "-g" , 3 , 3 , {"none"}       , {"amino-acid"}            , "OG" , "CB" , "CA" , "N"   },
-
         { "C."   , "OG"     , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "OG" , "CB" , "CA"  },
         { "C."   , "OG"     , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "OG1", "CB"  },
          // TYR // Values not checked

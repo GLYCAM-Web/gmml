@@ -99,6 +99,7 @@ private:
     void InitializeClass(Residue *from_this_residue1, Residue *to_this_residue2, bool reverseAtomsThatMove);
     bool CheckIfViableLinkage();
     RotatableDihedralVector FindRotatableDihedralsConnectingResidues(Atom *from_this_connection_atom1, Atom *to_this_connection_atom2);
+    //AtomVector DealWithBranchesFromLinkages(AtomVector linearLinkageAtoms, Atom *cycle_point1, Atom *cycle_point2);
     // Previous function generates a list of linearly connected atoms that define the rotatable bonds
     // This function splits that list into groups of 4 and creates rotatable_dihedral objects
     RotatableDihedralVector SplitAtomVectorIntoRotatableDihedrals(AtomVector atoms);
