@@ -33,11 +33,11 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
   is_counted_ = false;
   anomeric_carbon_pointer_ = NULL;
   sugar_name_ = {"","","","","","","","","",""};
-  //Set cycle atoms
-  for (std::vector<MolecularModeling::Atom*>::iterator it = cycle_atoms.begin(); it != cycle_atoms.end(); it++ )
-  {
-    (*it)-> SetIsCycle(true);
-  }
+  // //Set cycle atoms
+  // for (std::vector<MolecularModeling::Atom*>::iterator it = cycle_atoms.begin(); it != cycle_atoms.end(); it++ )
+  // {
+  //   (*it)-> SetIsCycle(true);
+  // }
 
   //Detect Anomeric Carbon, assign Cycle atoms
   Glycan::Note* anomeric_note = new Glycan::Note();

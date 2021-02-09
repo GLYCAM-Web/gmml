@@ -330,6 +330,18 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   ///CYCLE DETECTION
   // DetectCyclesByExhaustiveRingPerception gets stuck in infinite loops for some files, DFS doesn't.
   // CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
+
+  MolecularModeling::AtomVector allAtoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
+  for(MolecularModeling::AtomVector::iterator it = allAtoms.begin(); it != allAtoms.end(); it++)
+  {
+    MolecularModeling::Atom* thisAtom = (*it);
+    if(thisAtom->GetElementSymbol() == "H")
+    {
+      MolecularModeling::Residue* thisResidue = thisAtom->GetResidue();
+      thisResidue->RemoveAtom(thisAtom);
+    }
+  }
+
   CycleMap cycles = DetectCyclesByDFS();
   ///PRINTING ALL DETECTED CYCLES
   if(local_debug > 0)
@@ -380,7 +392,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     MolecularModeling::AtomVector cycle_atoms = ( *it ).second;
     for (std::vector<MolecularModeling::Atom*>::iterator it = cycle_atoms.begin(); it != cycle_atoms.end(); it++ )
     {
-      (*it)-> SetIsCycle(true);
+      // (*it)-> SetIsCycle(true);
     }
   }
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
@@ -4772,7 +4784,11 @@ double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* child_oligo, std::st
 double Assembly::CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id)
 {
   //(C1-O-Cx'-C[x-1]') {child_atom_id}-{glycosidic_atom_id}-{parent_atom_id}-{parent_atom_id - 1}
-
+  int local_debug = -1;
+  if(local_debug > 0)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::INF, "CalculatingPsiAngle");
+  }
   MolecularModeling::Atom* C1 = NULL;
   MolecularModeling::Atom* glycosidicO = NULL;
   MolecularModeling::Atom* Cx = NULL;
@@ -4860,7 +4876,10 @@ double Assembly::CalculateOmegaAngle(Glycan::Oligosaccharide* parent_oligo, std:
 {
   int local_debug = -1;
   //(O-C6'-C5'-O5') {glycosidic_atom_id}-{parent_atom_id}-{Carbon 5 in parent oligo}-{Ring oxygen in parent_oligo}
-
+  if(local_debug > 0)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::INF, "CalculatingOmegaAngle");
+  }
   MolecularModeling::Atom* glycosidicO = NULL;
   MolecularModeling::Atom* C6prime = NULL;
   MolecularModeling::Atom* C5prime = NULL;

@@ -1226,7 +1226,7 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
 // FILTER (!regex(?oligo_sequence, ".*f.*"))
 // }
 
-//More filters that I am saving here just in case
+//More filters that I am saving here for copy/paste to the virtuoso sparql endpoint
 // ?oligo :oligoIUPACname ?oligo_IUPAC.
 // FILTER regex(?oligo_sequence, ".*-Unknown$")
 // FILTER (!regex(?oligo_sequence, ".*<R.*"))
