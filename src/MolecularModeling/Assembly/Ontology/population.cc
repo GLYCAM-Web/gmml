@@ -495,7 +495,7 @@ void Assembly::PopulateLinkage(std::stringstream& linkage_stream, std::string ol
     std::stringstream linkage_str;
     std::stringstream glycosidic_linkage_str;
 
-    if((thisMonoNeighbor == thisLinkage->non_reducing_mono_) || (thisMonoNeighbor == thisLinkage->non_reducing_mono_2))
+    if((thisMonoNeighbor == thisLinkage->non_reducing_mono_) || (thisMonoNeighbor == thisLinkage->non_reducing_mono_2_))
     {
       linkage_str << oligo_uri << "_link_" << linkNum;
       linkage_uri = linkage_str.str();
