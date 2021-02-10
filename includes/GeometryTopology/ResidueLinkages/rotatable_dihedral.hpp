@@ -39,7 +39,8 @@ public:
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
 
-    double CalculateDihedralAngle() const;
+    //double CalculateDihedralAngle(GeometryTopology::Coordinate* a1, GeometryTopology::Coordinate* a2, GeometryTopology::Coordinate* a3, GeometryTopology::Coordinate* a4) const;
+    double CalculateDihedralAngle(std::string type = "default");
     AtomVector GetAtoms() const;
     AtomVector GetAtomsThatMove();
     bool GetIsAtomsThatMoveReversed();
@@ -131,6 +132,6 @@ private:
 
 };
 
-std::ostream& operator<<(std::ostream& os, const Rotatable_dihedral&);
+std::ostream& operator<<(std::ostream& os, Rotatable_dihedral&);
 
 #endif // ROTATABLE_DIHEDRAL_H

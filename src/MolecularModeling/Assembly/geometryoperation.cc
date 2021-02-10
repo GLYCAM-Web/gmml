@@ -65,6 +65,7 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
+#include "../../../includes/GeometryTopology/geometrytopology.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
@@ -1209,26 +1210,28 @@ double Assembly::GetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::
     GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(0);
     GeometryTopology::Coordinate* a4 = atom4->GetCoordinates().at(0);
 
-    GeometryTopology::Coordinate b1 = a2;
-    b1.operator -(*a1);
-    GeometryTopology::Coordinate b2 = a3;
-    b2.operator -(*a2);
-    GeometryTopology::Coordinate b3 = a4;
-    b3.operator -(*a3);
-    GeometryTopology::Coordinate b4 = b2;
-    b4.operator *(-1);
+    return GeometryTopology::CalculateDihedralAngle(a1, a2, a3, a4);
 
-    GeometryTopology::Coordinate b2xb3 = b2;
-    b2xb3.CrossProduct(b3);
+//    GeometryTopology::Coordinate b1 = a2;
+//    b1.operator -(*a1);
+//    GeometryTopology::Coordinate b2 = a3;
+//    b2.operator -(*a2);
+//    GeometryTopology::Coordinate b3 = a4;
+//    b3.operator -(*a3);
+//   GeometryTopology::Coordinate b4 = b2;
+//    b4.operator *(-1);
 
-    GeometryTopology::Coordinate b1_m_b2n = b1;
-    b1_m_b2n.operator *(b2.length());
+//    GeometryTopology::Coordinate b2xb3 = b2;
+//    b2xb3.CrossProduct(b3);
 
-    GeometryTopology::Coordinate b1xb2 = b1;
-    b1xb2.CrossProduct(b2);
+//    GeometryTopology::Coordinate b1_m_b2n = b1;
+//    b1_m_b2n.operator *(b2.length());
 
-    current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
-    return current_dihedral /3.1415 * 180;
+//    GeometryTopology::Coordinate b1xb2 = b1;
+//    b1xb2.CrossProduct(b2);
+
+//    current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
+//    return current_dihedral /3.1415 * 180;
 }
 
 void Assembly::SetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::Atom *atom2, MolecularModeling::Atom *atom3, MolecularModeling::Atom *atom4, double torsion)
@@ -1349,31 +1352,31 @@ double Assembly::CalculateBondAngleByAtoms(MolecularModeling::Atom *atom1, Molec
     return acos(b1->DotProduct((*b2)) / b1->length() / b2->length());
 }
 
-double Assembly::CalculateTorsionAngleByCoordinates(GeometryTopology::Coordinate* atom1_crd, GeometryTopology::Coordinate* atom2_crd, GeometryTopology::Coordinate* atom3_crd, GeometryTopology::Coordinate* atom4_crd) //This defines angles in radians!!!!!!!!
-{
-    double current_dihedral = 0.0;
+//double Assembly::CalculateTorsionAngleByCoordinates(GeometryTopology::Coordinate* atom1_crd, GeometryTopology::Coordinate* atom2_crd, GeometryTopology::Coordinate* atom3_crd, GeometryTopology::Coordinate* atom4_crd) //This defines angles in radians!!!!!!!!
+//{
+//    double current_dihedral = 0.0;
 
-    GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*atom2_crd);
-    b1->operator -(*atom1_crd);
-    GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*atom3_crd);
-    b2->operator -(*atom2_crd);
-    GeometryTopology::Coordinate* b3 = new GeometryTopology::Coordinate(*atom4_crd);
-    b3->operator -(*atom3_crd);
-    GeometryTopology::Coordinate* b4 = new GeometryTopology::Coordinate(*b2);
-    b4->operator *(-1);
+//    GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*atom2_crd);
+//    b1->operator -(*atom1_crd);
+//    GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*atom3_crd);
+//    b2->operator -(*atom2_crd);
+//    GeometryTopology::Coordinate* b3 = new GeometryTopology::Coordinate(*atom4_crd);
+//    b3->operator -(*atom3_crd);
+//    GeometryTopology::Coordinate* b4 = new GeometryTopology::Coordinate(*b2);
+//    b4->operator *(-1);
 
-    GeometryTopology::Coordinate* b2xb3 = new GeometryTopology::Coordinate(*b2);
-    b2xb3->CrossProduct(*b3);
+//    GeometryTopology::Coordinate* b2xb3 = new GeometryTopology::Coordinate(*b2);
+//    b2xb3->CrossProduct(*b3);
 
-    GeometryTopology::Coordinate* b1_m_b2n = new GeometryTopology::Coordinate(*b1);
-    b1_m_b2n->operator *(b2->length());
+//    GeometryTopology::Coordinate* b1_m_b2n = new GeometryTopology::Coordinate(*b1);
+//    b1_m_b2n->operator *(b2->length());
 
-    GeometryTopology::Coordinate* b1xb2 = new GeometryTopology::Coordinate(*b1);
-    b1xb2->CrossProduct(*b2);
+//    GeometryTopology::Coordinate* b1xb2 = new GeometryTopology::Coordinate(*b1);
+//    b1xb2->CrossProduct(*b2);
 
-    current_dihedral = atan2(b1_m_b2n->DotProduct(*b2xb3), b1xb2->DotProduct(*b2xb3));
-    return current_dihedral;
-}
+//    current_dihedral = atan2(b1_m_b2n->DotProduct(*b2xb3), b1xb2->DotProduct(*b2xb3));
+//    return current_dihedral;
+//}
 
 
 // atom1Coordinates << atom1->GetId() << "X: " << a1->GetX() << " Y: " << a1->GetY() << " Z: " << a1->GetZ();

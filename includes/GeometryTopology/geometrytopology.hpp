@@ -17,6 +17,9 @@ double calculateDistanceFromPointToLineBetweenTwoPoints(Coordinate queryPoint, C
 
 Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors);
 
+double CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, bool returnRadians = false);
+
+
 }
 
 #endif // GEOMETRYTOPOLOGY_HPP

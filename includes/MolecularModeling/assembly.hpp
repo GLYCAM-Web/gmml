@@ -1462,8 +1462,8 @@ public:
             * @param atom4_crd The geometric coordinate of the fourth atom of the torsion angle
             * @return current_dihedral The calculated torsion angle (radian)
             */
-    double CalculateTorsionAngleByCoordinates(GeometryTopology::Coordinate* atom1_crd, GeometryTopology::Coordinate* atom2_crd,
-                                              GeometryTopology::Coordinate* atom3_crd, GeometryTopology::Coordinate* atom4_crd);
+  //  double CalculateTorsionAngleByCoordinates(GeometryTopology::Coordinate* atom1_crd, GeometryTopology::Coordinate* atom2_crd,
+  //                                            GeometryTopology::Coordinate* atom3_crd, GeometryTopology::Coordinate* atom4_crd);
     /*! \fn
             * A function in order to calculate torsion angles based on the Assembly atom objects
             * @param atom1 The first atom of the torsion angle
