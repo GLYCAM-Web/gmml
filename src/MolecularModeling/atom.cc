@@ -642,33 +642,38 @@ std::string Atom::DetermineRSAssignment(MolecularModeling::AtomVector& ordered_p
 
 double Atom::GetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::Atom *atom2, MolecularModeling::Atom *atom3, MolecularModeling::Atom *atom4)
 {
-    double current_dihedral = 0.0;
+    //double current_dihedral = 0.0;
     GeometryTopology::Coordinate* a1 = atom1->GetCoordinates().at(0);
     GeometryTopology::Coordinate* a2 = atom2->GetCoordinates().at(0);
     GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(0);
     GeometryTopology::Coordinate* a4 = atom4->GetCoordinates().at(0);
 
-    GeometryTopology::Coordinate b1 = a2;
-    b1.operator -(*a1);
-    GeometryTopology::Coordinate b2 = a3;
-    b2.operator -(*a2);
-    GeometryTopology::Coordinate b3 = a4;
-    b3.operator -(*a3);
-    GeometryTopology::Coordinate b4 = b2;
-    b4.operator *(-1);
+    bool returnRadians = true; // Original Atom:: function returned radians. Maybe that's why it was made.
+    return GeometryTopology::CalculateDihedralAngle(a1, a2, a3, a4, returnRadians);
 
-    GeometryTopology::Coordinate b2xb3 = b2;
-    b2xb3.CrossProduct(b3);
+    // Delete commented out code below if it's not early 2021.
 
-    GeometryTopology::Coordinate b1_m_b2n = b1;
-    b1_m_b2n.operator *(b2.length());
+    // GeometryTopology::Coordinate b1 = a2;
+    // b1.operator -(*a1);
+    // GeometryTopology::Coordinate b2 = a3;
+    // b2.operator -(*a2);
+    // GeometryTopology::Coordinate b3 = a4;
+    // b3.operator -(*a3);
+    // GeometryTopology::Coordinate b4 = b2;
+    // b4.operator *(-1);
 
-    GeometryTopology::Coordinate b1xb2 = b1;
-    b1xb2.CrossProduct(b2);
+    // GeometryTopology::Coordinate b2xb3 = b2;
+    // b2xb3.CrossProduct(b3);
 
-    current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
-    //return current_dihedral /3.1415 * 180;
-    return current_dihedral;
+    // GeometryTopology::Coordinate b1_m_b2n = b1;
+    // b1_m_b2n.operator *(b2.length());
+
+    // GeometryTopology::Coordinate b1xb2 = b1;
+    // b1xb2.CrossProduct(b2);
+
+    // current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
+    // //return current_dihedral /3.1415 * 180;
+    // return current_dihedral;
 }
 
 void Atom::InitializeComparisonTracker(std::map<std::vector<int>, std::vector<int> >& duplicate_value_indices_versus_higher_rank_indices, MolecularModeling::AtomVector& visited_atoms,

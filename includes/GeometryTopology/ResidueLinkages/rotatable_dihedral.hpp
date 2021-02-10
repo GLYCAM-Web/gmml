@@ -39,6 +39,7 @@ public:
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
 
+    //double CalculateDihedralAngle(GeometryTopology::Coordinate* a1, GeometryTopology::Coordinate* a2, GeometryTopology::Coordinate* a3, GeometryTopology::Coordinate* a4) const;
     double CalculateDihedralAngle() const;
     AtomVector GetAtoms() const;
     AtomVector GetAtomsThatMove();

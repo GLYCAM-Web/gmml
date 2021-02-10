@@ -41,36 +41,17 @@ Rotatable_dihedral::Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, At
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-
 double Rotatable_dihedral::CalculateDihedralAngle() const
 {
     GeometryTopology::Coordinate* a1 = atom1_->GetCoordinate();
     GeometryTopology::Coordinate* a2 = atom2_->GetCoordinate();
     GeometryTopology::Coordinate* a3 = atom3_->GetCoordinate();
     GeometryTopology::Coordinate* a4 = atom4_->GetCoordinate();
-
-    GeometryTopology::Coordinate b1 = a2;
-    b1.operator -(*a1);
-    GeometryTopology::Coordinate b2 = a3;
-    b2.operator -(*a2);
-    GeometryTopology::Coordinate b3 = a4;
-    b3.operator -(*a3);
-    GeometryTopology::Coordinate b4 = b2;
-    b4.operator *(-1);
-
-    GeometryTopology::Coordinate b2xb3 = b2;
-    b2xb3.CrossProduct(b3);
-
-    GeometryTopology::Coordinate b1_m_b2n = b1;
-    b1_m_b2n.operator *(b2.length());
-
-    GeometryTopology::Coordinate b1xb2 = b1;
-    b1xb2.CrossProduct(b2);
-
-    double current_dihedral_angle = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
-
-    return (current_dihedral_angle * (180 / gmml::PI_RADIAN) ); // Convert to degrees
+    return GeometryTopology::CalculateDihedralAngle(a1, a2, a3, a4);
 }
+
+// This should be elsewhere in gmml. Not sure yet, but it can mov and you adjust the above function only.
+
 
 AtomVector Rotatable_dihedral::GetAtoms() const
 {
@@ -587,6 +568,7 @@ void Rotatable_dihedral::Print()
 std::ostream& operator<<(std::ostream& os, const Rotatable_dihedral& rotatable_dihedral)
 {
     AtomVector atoms = rotatable_dihedral.GetAtoms();
-    os << atoms.at(0)->GetName() << ", " << atoms.at(1)->GetName() << ", " << atoms.at(2)->GetName() << ", " << atoms.at(3)->GetName() << ": " << rotatable_dihedral.CalculateDihedralAngle() << ".\n";
+    os << atoms.at(0)->GetName() << ", " << atoms.at(1)->GetName() << ", " << atoms.at(2)->GetName() << ", " << atoms.at(3)->GetName() << ": " 
+    << rotatable_dihedral.CalculateDihedralAngle() << ".\n";
     return os;
 } // operator<<

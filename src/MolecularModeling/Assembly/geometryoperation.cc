@@ -65,6 +65,7 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
+#include "../../../includes/GeometryTopology/geometrytopology.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
@@ -1209,26 +1210,28 @@ double Assembly::GetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::
     GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(0);
     GeometryTopology::Coordinate* a4 = atom4->GetCoordinates().at(0);
 
-    GeometryTopology::Coordinate b1 = a2;
-    b1.operator -(*a1);
-    GeometryTopology::Coordinate b2 = a3;
-    b2.operator -(*a2);
-    GeometryTopology::Coordinate b3 = a4;
-    b3.operator -(*a3);
-    GeometryTopology::Coordinate b4 = b2;
-    b4.operator *(-1);
+    return GeometryTopology::CalculateDihedralAngle(a1, a2, a3, a4);
 
-    GeometryTopology::Coordinate b2xb3 = b2;
-    b2xb3.CrossProduct(b3);
+//    GeometryTopology::Coordinate b1 = a2;
+//    b1.operator -(*a1);
+//    GeometryTopology::Coordinate b2 = a3;
+//    b2.operator -(*a2);
+//    GeometryTopology::Coordinate b3 = a4;
+//    b3.operator -(*a3);
+//   GeometryTopology::Coordinate b4 = b2;
+//    b4.operator *(-1);
 
-    GeometryTopology::Coordinate b1_m_b2n = b1;
-    b1_m_b2n.operator *(b2.length());
+//    GeometryTopology::Coordinate b2xb3 = b2;
+//    b2xb3.CrossProduct(b3);
 
-    GeometryTopology::Coordinate b1xb2 = b1;
-    b1xb2.CrossProduct(b2);
+//    GeometryTopology::Coordinate b1_m_b2n = b1;
+//    b1_m_b2n.operator *(b2.length());
 
-    current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
-    return current_dihedral /3.1415 * 180;
+//    GeometryTopology::Coordinate b1xb2 = b1;
+//    b1xb2.CrossProduct(b2);
+
+//    current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
+//    return current_dihedral /3.1415 * 180;
 }
 
 void Assembly::SetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::Atom *atom2, MolecularModeling::Atom *atom3, MolecularModeling::Atom *atom4, double torsion)
