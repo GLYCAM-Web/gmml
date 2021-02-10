@@ -41,17 +41,27 @@ Rotatable_dihedral::Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, At
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-double Rotatable_dihedral::CalculateDihedralAngle() const
+double Rotatable_dihedral::CalculateDihedralAngle(std::string type)
 {
-    GeometryTopology::Coordinate* a1 = atom1_->GetCoordinate();
-    GeometryTopology::Coordinate* a2 = atom2_->GetCoordinate();
-    GeometryTopology::Coordinate* a3 = atom3_->GetCoordinate();
-    GeometryTopology::Coordinate* a4 = atom4_->GetCoordinate();
-    return GeometryTopology::CalculateDihedralAngle(a1, a2, a3, a4);
+    if (type == "glycamReport")
+    {
+        if ( (this->GetName() == "Phi") && (atom1_->GetName() == "C1") )
+        {
+            GeometryTopology::Coordinate* o5Coord = atom1_->GetResidue()->GetAtom("O5")->GetCoordinate();
+            return GeometryTopology::CalculateDihedralAngle(o5Coord, atom2_->GetCoordinate(), atom3_->GetCoordinate(), atom4_->GetCoordinate());        
+        }
+    }
+    return GeometryTopology::CalculateDihedralAngle(atom1_->GetCoordinate(), atom2_->GetCoordinate(), atom3_->GetCoordinate(), atom4_->GetCoordinate());
 }
 
-// This should be elsewhere in gmml. Not sure yet, but it can mov and you adjust the above function only.
-
+// double Rotatable_dihedral::CalculateDihedralAngle() const
+// {
+//     GeometryTopology::Coordinate* a1 = atom1_->GetCoordinate();
+//     GeometryTopology::Coordinate* a2 = atom2_->GetCoordinate();
+//     GeometryTopology::Coordinate* a3 = atom3_->GetCoordinate();
+//     GeometryTopology::Coordinate* a4 = atom4_->GetCoordinate();
+//     return GeometryTopology::CalculateDihedralAngle(a1, a2, a3, a4);
+// }
 
 AtomVector Rotatable_dihedral::GetAtoms() const
 {
@@ -565,7 +575,7 @@ void Rotatable_dihedral::Print()
 //                       OPERATORS                      //
 //////////////////////////////////////////////////////////
 
-std::ostream& operator<<(std::ostream& os, const Rotatable_dihedral& rotatable_dihedral)
+std::ostream& operator<<(std::ostream& os, Rotatable_dihedral& rotatable_dihedral)
 {
     AtomVector atoms = rotatable_dihedral.GetAtoms();
     os << atoms.at(0)->GetName() << ", " << atoms.at(1)->GetName() << ", " << atoms.at(2)->GetName() << ", " << atoms.at(3)->GetName() << ": " 
