@@ -295,7 +295,7 @@ void Assembly::ExtractTorsionAnglesFromPDB(std::vector<std::string> amino_lib_fi
             std::queue<Glycan::Oligosaccharide*> oligo_queue;
             oligo_queue.push(oligo);
             if(MatchDisaccharide(oligo_queue, phi_angle, psi_angle, first_mono, mono1_carbon_index, second_mono, mono2_carbon_index))
-                out_file << std::left << std::setw(15) << pdb << std::setw(15) << gmml::ConvertRadian2Degree(phi_angle) << std::setw(15) << gmml::ConvertRadian2Degree(psi_angle) << std::setw(25) << disaccharide << oligo_name << std::endl;
+                out_file << std::left << std::setw(15) << pdb << std::setw(15) << phi_angle << std::setw(15) << psi_angle << std::setw(25) << disaccharide << oligo_name << std::endl;
         }
     }
     out_file.close();

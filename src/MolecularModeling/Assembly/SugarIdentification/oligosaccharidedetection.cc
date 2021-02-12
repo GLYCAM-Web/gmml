@@ -72,6 +72,7 @@
 #include "../../../../includes/Glycan/monosaccharide.hpp"
 #include "../../../../includes/Glycan/oligosaccharide.hpp"
 #include "../../../../includes/Glycan/glycosidiclinkage.hpp"
+#include "../../../../includes/GeometryTopology/geometrytopology.hpp"
 
 #include <unistd.h>
 #include <errno.h>
@@ -794,7 +795,8 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
                                 if(atom3_neighbor->GetId().compare(link_tokens.at(0)) == 0)
                                 {
                                     phi_atom4 = atom3_neighbor; ///Cx
-                                    phi_angle = CalculateTorsionAngleByAtoms(phi_atom1, phi_atom2, phi_atom3, phi_atom4); /// ϕ (O5′-C1′-Ox-Cx)
+                                    //phi_angle = CalculateTorsionAngleByAtoms(phi_atom1, phi_atom2, phi_atom3, phi_atom4); /// ϕ (O5′-C1′-Ox-Cx)
+                                    phi_angle = GeometryTopology::CalculateDihedralAngle(phi_atom1->GetCoordinate(), phi_atom2->GetCoordinate(), phi_atom3->GetCoordinate(), phi_atom4->GetCoordinate()); /// ϕ (O5′-C1′-Ox-Cx)
                                     gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(phi_angle));
                                     MolecularModeling::AtomVector phi_atom4_neighbors = phi_atom4->GetNode()->GetNodeNeighbors();
 
@@ -808,7 +810,8 @@ bool Assembly::MatchDisaccharide(std::queue<Glycan::Oligosaccharide*> oligo_queu
                                             int neighbor_index = gmml::ConvertString<int>(gmml::Split(neighbor_name, "C*,\'").at(0));
                                             if(atom4_index > neighbor_index) ///Cx-1
                                             {
-                                                psi_angle = CalculateTorsionAngleByAtoms(phi_atom2, phi_atom3, phi_atom4, atom4_neighbor); /// ψ (C1′-Ox-Cx-Cx−1)
+                                                //psi_angle = CalculateTorsionAngleByAtoms(phi_atom2, phi_atom3, phi_atom4, atom4_neighbor); /// ψ (C1′-Ox-Cx-Cx−1)
+                                                psi_angle = GeometryTopology::CalculateDihedralAngle(phi_atom2->GetCoordinate(), phi_atom3->GetCoordinate(), phi_atom4->GetCoordinate(), atom4_neighbor->GetCoordinate()); /// ψ (C1′-Ox-Cx-Cx−1)
                                                 break;
                                             }
                                         }
