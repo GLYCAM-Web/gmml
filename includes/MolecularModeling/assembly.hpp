@@ -1472,6 +1472,7 @@ public:
             * @param atom4 The fourth atom of the torsion angle
             * @return current_dihedral The calculated torsion angle (radian)
             */
+    // OG Feb 2021. DO NOT USE CalculateTorsionAngleByAtoms. Only used by guesses.cc for now until bug sorted. USE GeometryTopology::CalculateDihedralAngle
     double CalculateTorsionAngleByAtoms(Atom* atom1, Atom* atom2, Atom* atom3, Atom* atom4);
     /*! \fn
             * A function in order to calculate a torsion angle matrix based on a file that contains torison angles calculated from PDB file(s)

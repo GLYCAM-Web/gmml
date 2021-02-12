@@ -11,6 +11,7 @@
 #include "../../includes/Glycan/oligosaccharide.hpp"
 #include "../../includes/Glycan/monosaccharide.hpp"
 #include "../../includes/Glycan/glycosidiclinkage.hpp"
+#include "../../includes/GeometryTopology/geometrytopology.hpp"
 
 using Glycan::Monosaccharide;
 using Glycan::GlycosidicLinkage;
@@ -218,12 +219,13 @@ double Glycan::GlycosidicLinkage::CalculatePhiAngle()
     gmml::log(__LINE__, __FILE__, gmml::INF, Cx->GetId());
   }
   
-  double Phi = non_reducing_mono_->assembly_->CalculateTorsionAngleByAtoms(O5, C1, glycosidicO, Cx);
+  //double Phi = non_reducing_mono_->assembly_->CalculateTorsionAngleByAtoms(O5, C1, glycosidicO, Cx);
+  double Phi = GeometryTopology::CalculateDihedralAngle(O5->GetCoordinate(), C1->GetCoordinate(), glycosidicO->GetCoordinate(), Cx->GetCoordinate());
   if (local_debug > 0)
   {
     gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(Phi));
   }
-  Phi = gmml::ConvertRadian2Degree(Phi);
+  //Phi = gmml::ConvertRadian2Degree(Phi);
   return Phi;
 }
 
@@ -300,9 +302,10 @@ double Glycan::GlycosidicLinkage::CalculatePsiAngle()
     return -9999;
   }
 
-  double Psi = non_reducing_mono_->assembly_->CalculateTorsionAngleByAtoms(C1, glycosidicO, Cx, Cx_1);
-  Psi = gmml::ConvertRadian2Degree(Psi);
-  return Psi;
+  //double Psi = non_reducing_mono_->assembly_->CalculateTorsionAngleByAtoms(C1, glycosidicO, Cx, Cx_1);
+  //Psi = gmml::ConvertRadian2Degree(Psi);
+  return GeometryTopology::CalculateDihedralAngle(C1->GetCoordinate(), glycosidicO->GetCoordinate(), Cx->GetCoordinate(), Cx_1->GetCoordinate());
+  //return Psi;
 }
 
 double Glycan::GlycosidicLinkage::CalculateOmegaAngle()
@@ -388,8 +391,9 @@ double Glycan::GlycosidicLinkage::CalculateOmegaAngle()
   {
     gmml::log(__LINE__, __FILE__,  gmml::INF, "About to calcuate torsion");
   }
-  double Omega = non_reducing_mono_->assembly_->CalculateTorsionAngleByAtoms(glycosidicO, C6prime, C5prime, O5prime);
-  Omega = gmml::ConvertRadian2Degree(Omega);
-  return Omega;
+  // double Omega = non_reducing_mono_->assembly_->CalculateTorsionAngleByAtoms(glycosidicO, C6prime, C5prime, O5prime);
+  // Omega = gmml::ConvertRadian2Degree(Omega);
+  // return Omega;
+  return GeometryTopology::CalculateDihedralAngle(glycosidicO->GetCoordinate(), C6prime->GetCoordinate(), C5prime->GetCoordinate(), O5prime->GetCoordinate());
 }
 
