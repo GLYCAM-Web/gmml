@@ -332,15 +332,6 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   // CycleMap cycles = DetectCyclesByExhaustiveRingPerception();
 
   MolecularModeling::AtomVector allAtoms = GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms();
-  for(MolecularModeling::AtomVector::iterator it = allAtoms.begin(); it != allAtoms.end(); it++)
-  {
-    MolecularModeling::Atom* thisAtom = (*it);
-    if(thisAtom->GetElementSymbol() == "H")
-    {
-      MolecularModeling::Residue* thisResidue = thisAtom->GetResidue();
-      thisResidue->RemoveAtom(thisAtom);
-    }
-  }
 
   CycleMap cycles = DetectCyclesByDFS();
   ///PRINTING ALL DETECTED CYCLES
@@ -392,7 +383,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     MolecularModeling::AtomVector cycle_atoms = ( *it ).second;
     for (std::vector<MolecularModeling::Atom*>::iterator it = cycle_atoms.begin(); it != cycle_atoms.end(); it++ )
     {
-      // (*it)-> SetIsCycle(true);
+      (*it)-> SetIsCycle(true);
     }
   }
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
