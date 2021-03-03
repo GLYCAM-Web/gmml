@@ -11,6 +11,7 @@
 #include "../../includes/Glycan/oligosaccharide.hpp"
 #include "../../includes/Glycan/monosaccharide.hpp"
 #include "../../includes/Glycan/glycosidiclinkage.hpp"
+#include "../../includes/GeometryTopology/geometrytopology.hpp"
 
 using Glycan::Monosaccharide;
 using Glycan::GlycosidicLinkage;
@@ -387,8 +388,12 @@ double Glycan::GlycosidicLinkage::CalculatePhiAngle(std::vector<MolecularModelin
   // }
 
   //(O5-C1-O-Cx') {Ring oxygen of child_oligo}-{child_atom_id}-{glycosidic_atom_id}-{parent_atom_id}
-  Phi = non_reducing_mono_->assembly_->CalculateTorsionAngleByAtoms(linkageAtoms[0],linkageAtoms[1],linkageAtoms[2],linkageAtoms[3]);
-  Phi = gmml::ConvertRadian2Degree(Phi);
+  Phi = GeometryTopology::CalculateDihedralAngle(linkageAtoms[0]->GetCoordinate(),linkageAtoms[1]->GetCoordinate(),
+                                                 linkageAtoms[2]->GetCoordinate(),linkageAtoms[3]->GetCoordinate())
+
+  //Below being replaced as we are trying to use one function for torsions
+  //non_reducing_mono_->assembly_->CalculateTorsionAngleByAtoms(linkageAtoms[0],linkageAtoms[1],linkageAtoms[2],linkageAtoms[3]);
+  //Phi = gmml::ConvertRadian2Degree(Phi);
   if (local_debug > 0)
   {
     std::stringstream ss;
@@ -491,8 +496,9 @@ double Glycan::GlycosidicLinkage::CalculatePsiAngle(std::vector<MolecularModelin
   //   return -9999;
   // }
 
-  Psi = non_reducing_mono_->assembly_->CalculateTorsionAngleByAtoms(linkageAtoms[1],linkageAtoms[2],linkageAtoms[3],linkageAtoms[4]);
-  Psi = gmml::ConvertRadian2Degree(Psi);
+  Psi = GeometryTopology::CalculateDihedralAngle(linkageAtoms[1]->GetCoordinate(),linkageAtoms[2]->GetCoordinate(),
+                                                 linkageAtoms[3]->GetCoordinate(),linkageAtoms[4]->GetCoordinate());
+  //Psi = gmml::ConvertRadian2Degree(Psi);
   if (local_debug > 0)
   {
     std::stringstream ss;
@@ -633,7 +639,8 @@ double Glycan::GlycosidicLinkage::CalculateOmegaAngle(std::vector<MolecularModel
   // {
   //   gmml::log(__LINE__, __FILE__,  gmml::INF, "About to calcuate torsion");
   // }
-  Omega = non_reducing_mono_->assembly_->CalculateTorsionAngleByAtoms(linkageAtoms[2],linkageAtoms[3],linkageAtoms[4],linkageAtoms[5]);
-  Omega = gmml::ConvertRadian2Degree(Omega);
+  Omega = GeometryTopology::CalculateDihedralAngle(linkageAtoms[2]->GetCoordinate(),linkageAtoms[3]->GetCoordinate(),
+                                                   linkageAtoms[4]->GetCoordinate(),linkageAtoms[5]->GetCoordinate());
+  //Omega = gmml::ConvertRadian2Degree(Omega);
   return Omega;
 }
