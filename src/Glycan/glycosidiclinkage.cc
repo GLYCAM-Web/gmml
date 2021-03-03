@@ -389,7 +389,7 @@ double Glycan::GlycosidicLinkage::CalculatePhiAngle(std::vector<MolecularModelin
 
   //(O5-C1-O-Cx') {Ring oxygen of child_oligo}-{child_atom_id}-{glycosidic_atom_id}-{parent_atom_id}
   Phi = GeometryTopology::CalculateDihedralAngle(linkageAtoms[0]->GetCoordinate(),linkageAtoms[1]->GetCoordinate(),
-                                                 linkageAtoms[2]->GetCoordinate(),linkageAtoms[3]->GetCoordinate())
+                                                 linkageAtoms[2]->GetCoordinate(),linkageAtoms[3]->GetCoordinate());
 
   //Below being replaced as we are trying to use one function for torsions
   //non_reducing_mono_->assembly_->CalculateTorsionAngleByAtoms(linkageAtoms[0],linkageAtoms[1],linkageAtoms[2],linkageAtoms[3]);
