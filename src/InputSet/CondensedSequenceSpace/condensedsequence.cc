@@ -321,9 +321,13 @@ void CondensedSequence::AddToken(gmml::CondensedSequenceTokenType token)
 //////////////////////////////////////////////////////////
 bool CondensedSequence::ParseSequenceAndCheckSanity(std::string sequence)
 {
-    ParseCondensedSequence(sequence, this);  //There is error checking in the condense residue constuctor class as well, but the code construct does not allow me to let this function return.
     std::string bad_residue_notice = "Bad residue information detected.Cannot proceed.See other notices.Aborted.";
     std::string good_residue_notice = "Sequence is sane.";
+    if (!this->ParseCondensedSequence(sequence))
+    {
+    	this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, bad_residue_notice));
+        return false;
+    }
     bool residues_are_sane = this->CheckResidueTokenSanity();
     if (!residues_are_sane){
 	this->AddNoteToResponse(new Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, bad_residue_notice));
@@ -424,7 +428,7 @@ int CondensedSequence::InsertNodeInCondensedSequenceGlycam06ResidueTree(Condense
     return condensed_sequence_glycam06_residue_tree_.size() - 1;
 }
 
-bool CondensedSequence::ParseCondensedSequence(std::string sequence, CondensedSequence* condensed_sequence)
+bool CondensedSequence::ParseCondensedSequence(std::string sequence)
 {
     bool reading_residue = true;
     int start_index = 0;

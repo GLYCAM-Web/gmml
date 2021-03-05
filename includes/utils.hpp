@@ -675,12 +675,11 @@ namespace gmml
     inline std::string ConvertVectorString2String(std::vector<std::string> vector_string)
     {
         std::string result = "";
-        for(unsigned int i = 0; i < vector_string.size(); i++)
-        {
-            result += vector_string.at(i);
-        }
+        for(auto &item : vector_string)
+          result += item;
         return result;
     }
+
     template<typename Out>
     inline void split(const std::string &s, char delim, Out result)
     {
@@ -691,6 +690,7 @@ namespace gmml
             *(result++) = item;
         }
     }
+    
     inline std::vector<std::string> splitStringByDelimiter(const std::string &s, char delim) 
     {
       std::vector<std::string> elems;

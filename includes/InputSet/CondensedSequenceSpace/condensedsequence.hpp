@@ -119,7 +119,7 @@ namespace CondensedSequenceSpace
 	    bool ParseSequenceAndCheckSanity(std::string sequence);
 	    bool CheckResidueTokenSanity();
 	    bool CheckLinkageAndDerivativeSanity();
-            bool ParseCondensedSequence(std::string sequence, CondensedSequence* condensed_sequence);
+            bool ParseCondensedSequence(std::string sequence);
             int BuildArrayTreeOfCondensedSequenceResidue();
             bool BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree);
 	    void FindLongestPath(std::vector<int>& longest_path);
