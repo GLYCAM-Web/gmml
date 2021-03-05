@@ -676,7 +676,9 @@ namespace gmml
     {
         std::string result = "";
         for(auto &item : vector_string)
+        {
           result += item;
+        }
         return result;
     }
 
@@ -690,7 +692,6 @@ namespace gmml
             *(result++) = item;
         }
     }
-    
     inline std::vector<std::string> splitStringByDelimiter(const std::string &s, char delim) 
     {
       std::vector<std::string> elems;
