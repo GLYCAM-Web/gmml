@@ -3,7 +3,6 @@
 #include "condensedsequence.hpp"
 #include "../../MolecularModeling/assembly.hpp"
 
-
 /*
  * The current but probably very naive plan is that I use my awesome Residue Linkage class and not touch the condensedsequence.cc monster at all.
  * It's a freaking mess, but if I do this correctly all I need from that function is a 3D structure with the bonding set ok.
@@ -14,7 +13,6 @@
 
 namespace CondensedSequenceSpace
 {
-
 // For specifying a specific shape to be built with GenerateSpecific3DStructure
 struct SingleRotamerInfo
 {
@@ -61,46 +59,31 @@ public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTORS                   //
     //////////////////////////////////////////////////////////
-
-  //  carbohydrateBuilder();
     carbohydrateBuilder(std::string condensedSequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH", std::string prepFilePath = "../dat/prep/GLYCAM_06j-1.prep");
-
     //////////////////////////////////////////////////////////
     //                       ACCESSORS                      //
     //////////////////////////////////////////////////////////
-
     CondensedSequence GetCondensedSequence();
-    // std::string GetOfficialSequenceString();
     std::string GetInputSequenceString();
     MolecularModeling::Assembly* GetAssembly();
     ResidueLinkageVector* GetGlycosidicLinkages();
-    // bool GetSequenceIsValid();
-
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
-
     //////////////////////////////////////////////////////////
     //                        FUNCTIONS                     //
     //////////////////////////////////////////////////////////
-
     void GenerateSingle3DStructureDefaultFiles(std::string fileOutputDirectory = "unspecified");
     void GenerateSingle3DStructureSingleFile(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string = "structure");
-    std::string GenerateUserOptionsJSON();
     LinkageOptionsVector GenerateUserOptionsDataStruct();
-    //void ReadUserSelectionsJSON(std::string jsonInput); // Initially planned this, but made redundant as handled at gems level
-    //void GenerateRotamer(SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
     void GenerateSpecific3DStructure(SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
     // The following generates no files
     //void GenerateUpToNRotamers(int maxRotamers = 32); // Will not be used by gems, but leaving the functionality as could be useful.
     int GetNumberOfShapes(bool likelyShapesOnly = false);
     void Print();
-
 private:
     void Write3DStructureFile(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string filename = "output");
     void SetInputSequenceString(std::string sequence);
-    // void SetOfficialSequenceString(std::string sequence);
-    // void SetSequenceIsValid(bool isValid);
     void SetDefaultShapeUsingMetadata();
     void ResolveOverlaps();
     void FigureOutResidueLinkagesInGlycan(MolecularModeling::Residue *from_this_residue1, MolecularModeling::Residue *to_this_residue2, ResidueLinkageVector *residue_linkages);
@@ -111,19 +94,13 @@ private:
     Residue_linkage* selectLinkageWithIndex(ResidueLinkageVector &inputLinkages, int indexQuery); 
     void resetLinkageIDsToStartFromZero(ResidueLinkageVector &inputLinkages);
     std::string convertIncomingRotamerNamesToStandard(std::string incomingName);
-
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     MolecularModeling::Assembly assembly_;
     CondensedSequence condensedSequence_;
-    // std::string officialSequenceString_;
     std::string inputSequenceString_;
-    //GlycanMetadataContainer metadataInformation_; // need this class
     ResidueLinkageVector glycosidicLinkages_;
-    // bool sequenceIsValid_;
-    //int maxRotamers_; ?? might be useful
-
 };
 }
 #endif // CARBOHYDRATEBUILDER_H

@@ -1,6 +1,5 @@
 #include "../../../includes/InputSet/CondensedSequenceSpace/carbohydratebuilder.hpp"
 #include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
-#include "../../../includes/External_Libraries/json.hpp"
 #include "../../../includes/ParameterSet/OffFileSpace/offfile.hpp"
 
 //////////////////////////////////////////////////////////
@@ -9,10 +8,6 @@
 
 using CondensedSequenceSpace::carbohydrateBuilder;
 using CondensedSequenceSpace::CondensedSequence;
-//carbohydrateBuilder::carbohydrateBuilder()
-//{
-//    this->InitializeClass();
-//}
 
 carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath)
 {
@@ -27,11 +22,6 @@ CondensedSequence carbohydrateBuilder::GetCondensedSequence()
 {
     return condensedSequence_;
 }
-
-// std::string carbohydrateBuilder::GetOfficialSequenceString()
-// {
-//     return officialSequenceString_;
-// }
 
 std::string carbohydrateBuilder::GetInputSequenceString()
 {
@@ -48,18 +38,6 @@ ResidueLinkageVector* carbohydrateBuilder::GetGlycosidicLinkages()
 {
     return &glycosidicLinkages_;
 }
-
-// bool carbohydrateBuilder::GetSequenceIsValid()
-// {
-//     return sequenceIsValid_;
-// }
-
-//////////////////////////////////////////////////////////
-//                       MUTATOR                        //
-//////////////////////////////////////////////////////////
-
-
-
 //////////////////////////////////////////////////////////
 //                      FUNCTIONS                       //
 //////////////////////////////////////////////////////////
@@ -128,52 +106,6 @@ int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
 //     ResidueLinkageVector linkagesOrderedForPermutation = this->SplitLinkagesIntoPermutants(*(this->GetGlycosidicLinkages()));
 //     this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
 // }
-
-// This function will be deprecated, JSON to be written at gems level by pydantic
-std::string carbohydrateBuilder::GenerateUserOptionsJSON()
-{
-    /* https://github.com/nlohmann/json. See also includes/External_Libraries/json.hpp
-     * nlohmann::json is a little funky. If you first declare something like root["Evaluate"] = "string",
-     * you can't later do += as it figures out it's an object
-     * and not a list. You can declare it to be a list though. json empty_array_explicit = json::array();
-     * Perhaps this would all have been better if I just filled in a struct and then output it as JSON?
-     */
-    using json = nlohmann::json;
-    json j_root, j_responses, j_linkages, j_entries; // using j_ prefix to make clear what is json.
-    for (auto &linkage : *(this->GetGlycosidicLinkages())) // I get back a pointer to the ResidueLinkageVector so I *() it to the first element
-    {
-       // std::cout << "linko nameo: " << linkage.GetName() << std::endl;
-        RotatableDihedralVector likelyRotatableDihedrals = linkage.GetRotatableDihedralsWithMultipleRotamers();
-        for (auto &rotatableDihedral : likelyRotatableDihedrals)
-        {
-            for (auto &metadata : rotatableDihedral.GetMetadata())
-            {
-             j_entries["likelyRotamers"][metadata.dihedral_angle_name_] += (metadata.rotamer_name_);
- // Just a hack for now to get format. I need to call a separate function once I figure out how I'll distinguish All/likely in metadata
-             j_entries["possibleRotamers"][metadata.dihedral_angle_name_] += (metadata.rotamer_name_);
-         }
-     }
-        if(!likelyRotatableDihedrals.empty()) // Only want ones with multiple entries. See GetRotatableDihedralsWithMultipleRotamers.
-        {   // Order of adding to linkages matters here. I don't know why :(
-    j_linkages[std::to_string(linkage.GetIndex())] = (j_entries);
-    j_linkages[std::to_string(linkage.GetIndex())]["linkageName"] = linkage.GetName();
-            j_entries.clear(); // Must do this as some entries match, e.g. likelyRotamers, omg, gt.
-        }
-    }
-    j_responses["Evaluate"]["glycosidicLinkages"] += (j_linkages);
-    j_responses["Evaluate"]["inputSequence"] = this->GetInputSequenceString();
-    // j_responses["Evaluate"]["officialSequence"] = this->GetOfficialSequenceString();
-    j_responses["Evaluate"]["officialSequence"] = this->GetInputSequenceString();
-    j_root["responses"] += j_responses;
-    j_root["entity"]["type"] = "sequence";
-    // std::cout << j_root << std::endl;
-    std::stringstream response;
-    response << j_root;
-   // std::cout << std::setw(4) << j_root << std::endl;
-  //  std::cout << "Finito" << std::endl;
-    return response.str();
-}
-
 CondensedSequenceSpace::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()
 {
     CondensedSequenceSpace::LinkageOptionsVector userOptionsForSequence;
@@ -209,7 +141,6 @@ CondensedSequenceSpace::LinkageOptionsVector carbohydrateBuilder::GenerateUserOp
     return userOptionsForSequence;
 }
 
-
 void carbohydrateBuilder::Print()
 {
     std::cout << "CarbohydrateBuilder called using sequence: " << this->GetInputSequenceString() << "\n and contains these Residue_linkages:\n";
@@ -218,8 +149,6 @@ void carbohydrateBuilder::Print()
         linkage.Print();
     } 
 }
-
-
 //////////////////////////////////////////////////////////
 //                   PRIVATE FUNCTIONS                  //
 //////////////////////////////////////////////////////////
@@ -251,29 +180,11 @@ void carbohydrateBuilder::Write3DStructureFile(std::string fileOutputDirectory, 
     }
     return;
 }
-//void carbohydrateBuilder::Write3DStructureFile(std::string type, std::string filename)
-//{
-//    // Use type to figure out which type to write, eg. PDB OFFFILE etc.
-//    PdbFileSpace::PdbFile *outputPdbFile = this->GetAssembly()->BuildPdbFileStructureFromAssembly();
-//    filename += ".pdb";
-//    outputPdbFile->Write(filename);
-//    return;
-//}
 
 void carbohydrateBuilder::SetInputSequenceString(std::string sequence)
 {
     inputSequenceString_ = sequence;
 }
-
-// void carbohydrateBuilder::SetOfficialSequenceString(std::string sequence)
-// {
-//     officialSequenceString_ = sequence;
-// }
-
-// void carbohydrateBuilder::SetSequenceIsValid(bool isValid)
-// {
-//     sequenceIsValid_ = isValid;
-// }
 
 void carbohydrateBuilder::SetDefaultShapeUsingMetadata()
 {
