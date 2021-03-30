@@ -1,3 +1,4 @@
+#include <regex>
 #include "../../../includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
 
 //////////////////////////////////////////////////////////

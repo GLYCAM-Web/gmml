@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-#include <regex>
 // Query function includes:
 #include "../../MolecularModeling/atom.hpp"
 #include "../../MolecularModeling/residue.hpp"
