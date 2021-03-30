@@ -31,55 +31,55 @@ Residue::Residue(MolecularModeling::Assembly *assembly, std::string name)
     index_ = this->generateIndex();
 }
 
-Residue::Residue(Residue *residue)
-{
-    assembly_ = new Assembly(residue->GetAssembly());
-    name_ = residue->GetName();
-    atoms_ = AtomVector();
-    AtomVector atoms = residue->GetAtoms();
-    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
-        atoms_.push_back(new MolecularModeling::Atom(*it));
-    head_atoms_ = AtomVector();
-    AtomVector head_atoms = residue->GetHeadAtoms();
-    for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
-        head_atoms_.push_back(new MolecularModeling::Atom(*it));
-    tail_atoms_ = AtomVector();
-    AtomVector tail_atoms = residue->GetTailAtoms();
-    for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
-        tail_atoms_.push_back(new MolecularModeling::Atom(*it));
-    chemical_type_ = residue->GetChemicalType();
-    description_ = residue->GetDescription();
-    id_ = residue->GetId();
-    index_ = this->generateIndex();
-}
+// Residue::Residue(Residue *residue)
+// {
+//     assembly_ = new Assembly(residue->GetAssembly());
+//     name_ = residue->GetName();
+//     atoms_ = AtomVector();
+//     AtomVector atoms = residue->GetAtoms();
+//     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+//         atoms_.push_back(new MolecularModeling::Atom(*it));
+//     head_atoms_ = AtomVector();
+//     AtomVector head_atoms = residue->GetHeadAtoms();
+//     for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
+//         head_atoms_.push_back(new MolecularModeling::Atom(*it));
+//     tail_atoms_ = AtomVector();
+//     AtomVector tail_atoms = residue->GetTailAtoms();
+//     for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
+//         tail_atoms_.push_back(new MolecularModeling::Atom(*it));
+//     chemical_type_ = residue->GetChemicalType();
+//     description_ = residue->GetDescription();
+//     id_ = residue->GetId();
+//     index_ = this->generateIndex();
+// }
 
-Residue::Residue(Residue& residue)
-{
-    Assembly *tempAssembly=residue.GetAssembly();
-    this->assembly_=tempAssembly;
+// Residue::Residue(Residue& residue)
+// {
+//     Assembly *tempAssembly=residue.GetAssembly();
+//     this->assembly_=tempAssembly;
 
-    this->name_=residue.GetName();
-    this->atoms_ = AtomVector();
+//     this->name_=residue.GetName();
+//     this->atoms_ = AtomVector();
 
-    AtomVector atoms = residue.GetAtoms();
-    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
-        atoms_.push_back(new MolecularModeling::Atom(*it));
+//     AtomVector atoms = residue.GetAtoms();
+//     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+//         atoms_.push_back(new MolecularModeling::Atom(*it));
 
-    this->head_atoms_ = AtomVector();
-    AtomVector head_atoms = residue.GetHeadAtoms();
-    for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
-        head_atoms_.push_back(new MolecularModeling::Atom(*it));
+//     this->head_atoms_ = AtomVector();
+//     AtomVector head_atoms = residue.GetHeadAtoms();
+//     for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
+//         head_atoms_.push_back(new MolecularModeling::Atom(*it));
 
-    this->tail_atoms_ = AtomVector();
-    AtomVector tail_atoms = residue.GetTailAtoms();
-    for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
-        tail_atoms_.push_back(new MolecularModeling::Atom(*it));
+//     this->tail_atoms_ = AtomVector();
+//     AtomVector tail_atoms = residue.GetTailAtoms();
+//     for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
+//         tail_atoms_.push_back(new MolecularModeling::Atom(*it));
 
-    this->chemical_type_ = residue.GetChemicalType();
-    this->description_ = residue.GetDescription();
-    this->id_ = residue.GetId();
-    index_ = this->generateIndex();
-}
+//     this->chemical_type_ = residue.GetChemicalType();
+//     this->description_ = residue.GetDescription();
+//     this->id_ = residue.GetId();
+//     index_ = this->generateIndex();
+// }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
