@@ -42,6 +42,7 @@ public:
     //The below function has no code in the .cc file, so GEMS breaks.  Commented out for now -DM
     // std::string GetCodeForResidue(std::string query);
     std::string GetResidueForCode(std::string query);
+    std::string GetCodeForResidue(std::string query);
 
 private:
     ResidueNamesCodesTypesVector ResidueNamesCodesTypesLookupTable_;
