@@ -31,6 +31,12 @@ Residue::Residue(MolecularModeling::Assembly *assembly, std::string name)
     index_ = this->generateIndex();
 }
 
+Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue)
+{
+    this->BuildResidueFromPrepFileResidue(prep_residue);
+}
+
+
 // Residue::Residue(Residue *residue)
 // {
 //     assembly_ = new Assembly(residue->GetAssembly());

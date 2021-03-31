@@ -146,13 +146,17 @@ bool Assembly::CheckCondensedSequenceSanity(std::string sequence, CondensedSeque
 Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree,
                                                                          PrepFileSpace::PrepFile* prep_file)
 {
-    std::vector<std::string> query_residue_names = std::vector<std::string>();
-    for (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = glycam06_residue_tree.begin(); it != glycam06_residue_tree.end(); it++)
+    std::vector<std::string> query_residue_names;
+    for (auto &glycam06_residue : glycam06_residue_tree)
     {
-        CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam06_residue = *it;
-        std::string residue_name = glycam06_residue->GetName();
-        query_residue_names.push_back(residue_name);
+        query_residue_names.push_back(glycam06_residue->GetName());
     }
+    // for (CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree::iterator it = glycam06_residue_tree.begin(); it != glycam06_residue_tree.end(); it++)
+    // {
+    //     CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam06_residue = *it;
+    //     std::string residue_name = glycam06_residue->GetName();
+    //     query_residue_names.push_back(residue_name);
+    // }
     return this->BuildTemplateAssemblyFromPrepFile (query_residue_names, prep_file);
 
 }
@@ -177,12 +181,14 @@ Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (std::ve
     //Check each prep file residue, if their name match query residue name, build assembly residue from this prep residue, and add assembly residue to a template assembly.
     for (std::set<std::string>::iterator it = query_residue_names_unique.begin(); it != query_residue_names_unique.end(); it++)
     {
+        std::cout << "OLIVER query name for prep: " << *it << "\n";
         if (std::find(all_prep_residue_names.begin(), all_prep_residue_names.end(), *it) != all_prep_residue_names.end() )
         {
             PrepFileSpace::PrepFileResidue* prep_residue = prep_residue_map[*it];
-            Residue* assembly_residue = new Residue();
-            assembly_residue->BuildResidueFromPrepFileResidue(prep_residue);
-            template_assembly_residues.push_back(assembly_residue);
+            //Residue* assembly_residue = new Residue(prep_residue);
+            //assembly_residue->BuildResidueFromPrepFileResidue(prep_residue);
+            //template_assembly_residues.push_back(assembly_residue);
+            template_assembly_residues.push_back(new Residue(prep_residue));
         }
         else
         {

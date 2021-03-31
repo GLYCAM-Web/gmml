@@ -40,6 +40,7 @@ namespace MolecularModeling
               */
             Residue();
             Residue(Assembly* assembly, std::string name);
+            Residue(PrepFileSpace::PrepFileResidue *prep_residue);
             // Residue(Residue* residue);
             // Residue(Residue& residue);
 
