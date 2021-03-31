@@ -181,15 +181,8 @@ Assembly::Assembly(std::vector<std::string> file_paths, gmml::InputFileType type
 Assembly::Assembly(Assembly *assembly) : sequence_number_(1), id_("1"), description_(""), model_index_(0)
 {
     source_file_ = assembly->GetSourceFile();
-    assemblies_ = AssemblyVector();
-    AssemblyVector assemblies = assembly->GetAssemblies();
-    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
-        assemblies_.push_back(new Assembly(*it));
-
-    residues_ = ResidueVector();
-    ResidueVector residues = assembly->GetResidues();
-    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
-        residues_.push_back(new Residue(*it));
+    assemblies_ = assembly->GetAssemblies();
+    residues_ = assembly->GetResidues();
 }
 
 Assembly::Assembly(std::vector<std::vector<std::string> > file_paths, std::vector<gmml::InputFileType> types)
