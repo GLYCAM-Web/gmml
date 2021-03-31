@@ -1,4 +1,5 @@
 #include <random>
+#include <algorithm> // reverse
 #include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "../../../includes/MolecularModeling/overlaps.hpp"
 #include "../../../includes/External_Libraries/PCG/pcg_extras.hpp"
