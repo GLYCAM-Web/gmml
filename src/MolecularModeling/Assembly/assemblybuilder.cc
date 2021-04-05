@@ -181,7 +181,6 @@ Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (std::ve
     //Check each prep file residue, if their name match query residue name, build assembly residue from this prep residue, and add assembly residue to a template assembly.
     for (std::set<std::string>::iterator it = query_residue_names_unique.begin(); it != query_residue_names_unique.end(); it++)
     {
-        std::cout << "OLIVER query name for prep: " << *it << "\n";
         if (std::find(all_prep_residue_names.begin(), all_prep_residue_names.end(), *it) != all_prep_residue_names.end() )
         {
             PrepFileSpace::PrepFileResidue* prep_residue = prep_residue_map[*it];

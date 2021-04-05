@@ -1,11 +1,5 @@
 #include "../../../includes/MolecularMetadata/GLYCAM/glycam06LinkageCodes.hpp"
 #include <iostream> // for cout, can remove after debug
-#include <locale> // for isLower()
-#include <sstream> // for stringstream
-
-//////////////////////////////////////////////////////////
-//                       CONSTRUCTOR                    //
-//////////////////////////////////////////////////////////
 
 using gmml::MolecularMetadata::GLYCAM::Glycam06LinkageCodesLookupContainer;
 
@@ -13,21 +7,17 @@ using gmml::MolecularMetadata::GLYCAM::Glycam06LinkageCodesLookupContainer;
 //                      QUERY FUNCTIONS                 //
 //////////////////////////////////////////////////////////
 
-std::string Glycam06LinkageCodesLookupContainer::GetCodeForLinkage(std::string queryLinkage)
+std::string Glycam06LinkageCodesLookupContainer::GetCodeForLinkages(std::string queryLinkage)
 { // e.g. input = Fuc, output = F.
-    for (const auto& entry : GlycamLinkageCodesLookup_)
+    for (const auto& entry : Glycam06LinkageCodesLookup_)
     {
         if (entry.linkage_ == queryLinkage)
         {
             return entry.glycamLinkageCode_;
         }
     }
-    return "NoCodeFoundForLinkage";
+    return "";
 }
-
-//////////////////////////////////////////////////////////
-//                    PRIVATE FUNCTIONS                 //
-//////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////
 //                    INITIALIZER                       //

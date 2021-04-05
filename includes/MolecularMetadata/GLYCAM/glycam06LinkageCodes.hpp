@@ -36,9 +36,7 @@ public:
     //                      QUERY FUNCTIONS                 //
     //////////////////////////////////////////////////////////
 
-    //The below function has no code in the .cc file, so GEMS breaks.  Commented out for now -DM
-    // std::string GetCodeForResidue(std::string query);
-    std::string GetCodeForLinkage(std::string query);
+    std::string GetCodeForLinkages(std::string query);
 
 private:
     std::vector<LinkageCodes> Glycam06LinkageCodesLookup_;
