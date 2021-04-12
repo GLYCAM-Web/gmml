@@ -1223,8 +1223,12 @@ void CondensedSequence::RecursivelyBuildLabeledCondensedSequence(int current_ind
         //}
 
 	if (!current_residue->GetIsTerminalSugar()){
-            labeled_sequence.insert(0, std::to_string(current_residue->GetOxygenPosition()));
-            labeled_sequence.insert(0, "-");
+            CondensedSequenceSpace::CondensedSequenceResidue* current_residue_parent = this->condensed_sequence_residue_tree_[current_residue->GetParentId()];
+	    //The residues connected to the aglycone has OxygenPosition set to 1, actually there shouldn't be such a value.So ignore.
+	    if (!current_residue_parent->GetIsTerminalAglycone()){
+                labeled_sequence.insert(0, std::to_string(current_residue->GetOxygenPosition()));
+                labeled_sequence.insert(0, "-");
+	    }
             labeled_sequence.insert(0, std::to_string(current_residue->GetAnomericCarbon()));
 	}
 
