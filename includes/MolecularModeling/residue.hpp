@@ -12,7 +12,8 @@
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
-
+#include "includes/MolecularModeling/Graph/Node.hpp" // TemplateGraph
+#include "includes/MolecularModeling/Abstract/Residue.hpp"
 
 
 namespace MolecularModeling
@@ -23,7 +24,7 @@ namespace MolecularModeling
     //class PrepFileResidue; //This is not in the MolecularModeling namespace
     class Residue; // Forward declare for the vector typedef
     typedef std::vector<MolecularModeling::Residue*> ResidueVector;
-    class Residue : public ResidueProperties
+    class Residue : public ResidueProperties, public Abstract::Residue, public TemplateGraph::Node<Residue>
     {
         public:
             //////////////////////////////////////////////////////////
@@ -97,7 +98,7 @@ namespace MolecularModeling
             std::string GetId();
             /*! \fn                                                                              //Added by ayush on 11/20/17 for residuenodes in assembly
               * An accessor function in order to access to the node
-              * @return node_ attribute of the current object of this class
+              * @return residuenode_ attribute of the current object of this class
               */
             ResidueNode* GetNode();
 
@@ -206,7 +207,7 @@ namespace MolecularModeling
 
             /*! \fn                                                                                          //Added by ayush on 11/20/17 for residuenode in assembly
               * A mutator function in order to set the node of the current object
-              * Set the node_ attribute of the current residue
+              * Set the residuenode_ attribute of the current residue
               * @param node The node attribute of the current object
               */
             void SetNode(ResidueNode* node);
@@ -292,7 +293,7 @@ namespace MolecularModeling
 	    //Added by Yao 06/13/2018
 	    bool is_sugar_derivative_ = false;
 	    bool is_aglycon_ = false;
-            ResidueNode* node_;                 /*!< A Pointer to a node of the graph structure that indicates this residue >*/              //Added by ayush on 11/20/17 for residuenode in assembly
+            ResidueNode* residuenode_;                 /*!< A Pointer to a node of the graph structure that indicates this residue >*/              //Added by ayush on 11/20/17 for residuenode in assembly
             
       //Added by Dave 2/1/19
       bool is_sugar_ = false;

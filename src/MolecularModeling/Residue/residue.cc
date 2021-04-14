@@ -13,12 +13,12 @@ using MolecularModeling::Residue;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Residue::Residue()
+Residue::Residue() : Node(this)
 {
     index_ = this->generateIndex();
 }
 
-Residue::Residue(MolecularModeling::Assembly *assembly, std::string name)
+Residue::Residue(MolecularModeling::Assembly *assembly, std::string name) : Node(this)
 {
     assembly_ = assembly;
     name_ = name;
@@ -31,7 +31,7 @@ Residue::Residue(MolecularModeling::Assembly *assembly, std::string name)
     index_ = this->generateIndex();
 }
 
-Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue)
+Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue) : Node(this)
 {
     this->BuildResidueFromPrepFileResidue(prep_residue);
 }
@@ -139,7 +139,7 @@ bool Residue::GetIsAglycon()
  //Added by ayush on 11/20/17 for residuenode in assembly
 MolecularModeling::ResidueNode* Residue::GetNode()
 {
-        return node_;
+        return residuenode_;
 }
 //Added by Dave 2/1/19
 bool Residue::GetIsSugar()
@@ -272,9 +272,9 @@ void Residue::ReplaceAtomCoordinates(AtomVector *newAtoms)
 }
 
  //Added by ayush on 11/20/17 for residuenode in assembly
-void Residue::SetNode(MolecularModeling::ResidueNode* node)
+void Residue::SetNode(MolecularModeling::ResidueNode* residuenode)
 {
-    node_ = node;
+    residuenode_ = residuenode;
 }
 //Added by Yao 06/13/2018
 void Residue::SetIsSugarDerivative(bool is_derivative)
