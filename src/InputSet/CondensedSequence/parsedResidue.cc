@@ -1,0 +1,190 @@
+
+#include <sstream>
+#include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
+#include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp"
+
+using CondensedSequence::ParsedResidue;
+
+ParsedResidue::ParsedResidue(std::string residueString) 
+: Node(this, residueString), fullResidueString_ (residueString)  
+{
+    this->ParseResidueStringIntoComponents(residueString);
+}
+
+ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor) 
+: Node(this, residueString), fullResidueString_ (residueString) 
+{
+    this->ParseResidueStringIntoComponents(residueString);
+	this->AddLinkage(neighbor);
+}
+
+void ParsedResidue::AddLinkage(ParsedResidue* otherRes) 
+{
+    //std::string label = this->GetName() + "->" + otherRes->GetName();
+    //std::cout << "Adding Edge: " << label << std::endl;
+    this->AddEdge(otherRes, this->GetConfiguration() + this->GetLinkageLabel());
+   // std::cout << "Is it getting destroyed now?\n";
+}
+
+char ParsedResidue::GetLink()
+{
+    switch (this->GetType())
+    {
+        case (Type::Sugar):
+            return this->GetLinkageLabel().back();
+        case (Type::Derivative):
+            return this->GetLinkageLabel().front();
+        default:
+            return '0';
+    }
+}
+
+
+std::vector<ParsedResidue*> ParsedResidue::GetChildren()
+{
+    return this->GetIncomingNeighborObjects();
+}
+
+std::string ParsedResidue::GetChildLinkages()
+{
+    std::string linkages;
+    for (auto &child : this->GetChildren())
+    {
+        std::string link(1, child->GetLink()); // convert from char via string constructor.
+        linkages += (link + ",");
+    }
+    if (linkages.empty())
+    {
+        linkages = "Terminal";
+    }
+    else     // Erase the last ","
+    {
+        linkages.erase(std::prev(linkages.end()));
+    }
+    return linkages;
+}
+
+std::string ParsedResidue::GetName()
+{
+    return (this->GetIsomer() + this->GetResidueName() + this->GetRingType() + this->GetResidueModifier());
+}
+
+void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString)
+{
+	//std::cout << "PARSING RESIDUE: " << residueString << std::endl;
+    // Set defaults:
+    this->SetIsomer('\0');
+    this->SetResidueName("");
+    this->SetRingType('\0');
+    this->SetResidueModifier("");
+    this->SetConfiguration('\0');
+    this->SetLinkageLabel("");
+    this->SetType(Type::Undefined);
+
+	if (residueString.find('-') != std::string::npos)
+    { // E.g. DManpNAca1-4 . Isomer (D or L), residueName (ManNAc), ring type (f or p), configuration (a or b), linkage (1-4)
+    	// Reading from front.
+        this->SetType(Type::Sugar);
+        size_t dashPosition = residueString.find('-');
+        // Assumptions
+        size_t residueStart = 1; // e.g. Gal, Glc, Ido
+        size_t modifierStart = 5; // E.g. NAc, A, A(1C4)
+        // Checks
+        char isomer = residueString[0];
+        if ((isomer == 'D') || (isomer == 'L')) 
+        {
+            this->SetIsomer(isomer);
+        }
+        else
+        {
+            residueStart--;
+            modifierStart--;
+        }
+        this->SetResidueName(residueString.substr(residueStart, 3));
+        size_t ringPosition = (residueStart + 3);
+        char ringType = residueString[ringPosition];
+        if (( ringType == 'p') || (ringType == 'f'))
+        {
+            this->SetRingType(ringType);
+        }
+        else
+        {
+            modifierStart--;
+        }
+        // Find the dash, read around it.
+        this->SetLinkageLabel(residueString.substr((dashPosition - 1), 3 ));
+        char configuration = residueString[dashPosition - 2];
+        if (( configuration == 'a' || configuration == 'b'))
+        {
+            this->SetConfiguration(residueString[dashPosition - 2]);
+        }
+        else
+        {
+            modifierStart--;
+        }
+    	// Find any special modifiers e.g. NAc, Gc, A in IdoA
+    	size_t modifierLength = (dashPosition - modifierStart - 2); // They are 3 apart if no modifier
+        std::cout << "modifierLength is " << modifierLength << ", dashPosition was " << dashPosition << ", ringPosition was " << ringPosition << std::endl;
+        if (modifierLength > 100)
+        {
+            std::string message = "Non standard glycam residue string: " + residueString;
+            //throw message;
+            std::cout << message << std::endl;
+        }
+    	if (modifierLength > 0 && modifierLength < 100)
+        {
+    		this->SetResidueModifier(residueString.substr(modifierStart, modifierLength));
+            std::cout << "Modifier is " << this->GetResidueModifier() << std::endl;
+        }
+    	else
+    		this->SetResidueModifier("");
+    }
+    else if (isdigit(residueString[0]))
+    { // A derivative e.g. 3S, 6Me. Linkage followed by residue name. No configuration.
+        this->SetType(Type::Derivative);
+    	//std::cout << "Assumed derivative " << residueString[0] << ".\n";
+    	std::string linkage(1,residueString[0]);
+    	this->SetLinkageLabel(linkage);
+    	this->SetResidueName(residueString.substr(1)); // From position 1 to the end.
+    }
+    else
+    { // A terminal
+        this->SetType(Type::Aglycone);
+    	this->SetResidueName(residueString);
+
+    }
+    std::cout << this->Print();
+
+}
+
+std::string ParsedResidue::Print()
+{
+	std::stringstream ss;
+    ss << this->GetIsomer() << "_" 
+				<< this->GetResidueName() << "_"
+				<< this->GetRingType() << "_"
+				<< this->GetResidueModifier() << "_"
+				<< this->GetConfiguration() << "_"
+				<< this->GetLinkageLabel() << ".\n";
+    return ss.str();
+}
+
+std::string ParsedResidue::GetGlycamResidueName()
+{
+    std::string linkages = "";
+    if (this->GetType() == Type::Sugar)
+    {
+        linkages = this->GetChildLinkages();
+    }
+    try
+    {
+        auto code = gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNameGenerator(linkages, this->GetIsomer(), this->GetResidueName(), 
+                                                                            this->GetRingType(), this->GetResidueModifier(), this->GetConfiguration() );
+        return code;
+    }
+    catch (const std::string exception)
+    {
+        std::cerr << "Error: " << exception << std::endl;
+    }
+    return "";
+}
