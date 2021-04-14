@@ -1,10 +1,9 @@
-#include "glycam06ResidueNameGenerator.hpp"
-#include "glycam06LinkageCodes.hpp"
-#include "glycam06residuecodes.hpp"
+#include "./includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp"
+#include "./includes/MolecularMetadata/GLYCAM/glycam06LinkageCodes.hpp"
+#include "./includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
 #include <iostream> // for cout, can remove after debug
 #include <locale> // for isLower()
 #include <sstream> // for string stream
-
 
 namespace gmml
 {
@@ -28,7 +27,7 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, char isomer, std:
 
 
 	// Link code e.g. 0, 1, 2, W, Z etc
-	std::cout << "\nInputs:\nlinkages: " << linkages << "\nisomer: " << isomer << "\ninputResName: " << inputResName << "\nringType: " << ringType << "\nresidueModifier: " << residueModifier << "\nconfiguration: " << configuration << std::endl;
+	//std::cout << "\nInputs:\nlinkages: " << linkages << "\nisomer: " << isomer << "\ninputResName: " << inputResName << "\nringType: " << ringType << "\nresidueModifier: " << residueModifier << "\nconfiguration: " << configuration << std::endl;
 	std::string linkCode = "";
 	if(!linkages.empty())
 	{
