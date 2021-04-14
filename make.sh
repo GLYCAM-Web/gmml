@@ -160,7 +160,7 @@ printf "OPTIMIZE: $OPTIMIZE\n\n"
  echo "Generating GMML $TARGET_MAKE_FILE."
  # Always create a new gmml.pro and makefile
  ## This is going to be broken up to variables instead of being this long command. Just wanted to get a working version pushed up.
- qmake -project -t lib -o gmml.pro "QMAKE_CXXFLAGS += -Wall -W -std=c++11 ${DEBUGOPTIONS} ${OPTIMIZE}" "QMAKE_CFLAGS += -Wall -W ${DEBUGOPTIONS}" "${NO_OPTIMIZE}" "DEFINES += _REENTRANT" "CONFIG = no_lflag_merge" "unix:LIBS = -L/usr/lib/x86_64-linux-gnu -lpthread" "OBJECTS_DIR = build" "DESTDIR = lib" -r src/ includes/ -nopwd
+ qmake -project -t lib -o gmml.pro "QMAKE_CXXFLAGS += -Wall -W -std=c++17 ${DEBUGOPTIONS} ${OPTIMIZE}" "QMAKE_CFLAGS += -Wall -W ${DEBUGOPTIONS}" "${NO_OPTIMIZE}" "DEFINES += _REENTRANT" "CONFIG = no_lflag_merge" "unix:LIBS = -L/usr/lib/x86_64-linux-gnu -lpthread" "OBJECTS_DIR = build" "DESTDIR = lib" -r src/ includes/ -nopwd
  qmake -o $TARGET_MAKE_FILE
 
  if [ "$CLEAN" == "clean" ]; then
