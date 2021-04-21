@@ -42,6 +42,7 @@ namespace MolecularModeling
             Residue();
             Residue(Assembly* assembly, std::string name);
             Residue(PrepFileSpace::PrepFileResidue *prep_residue);
+            Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type);
             // Residue(Residue* residue);
             // Residue(Residue& residue);
 
@@ -229,7 +230,7 @@ namespace MolecularModeling
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
-	    
+	          std::string CreateID(std::string name = "default", std::string chain = "default", std::string number = "default");
             void BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *prep_residue);
             /// Check if all atoms in the residue have their element symbols --> Label directly (1st priority)
             bool CheckSymbolBasedElementLabeling();

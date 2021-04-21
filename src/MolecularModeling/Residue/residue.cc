@@ -34,7 +34,35 @@ Residue::Residue(MolecularModeling::Assembly *assembly, std::string name) : Node
 Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue) : Node(this)
 {
     this->BuildResidueFromPrepFileResidue(prep_residue);
+    this->SetId(this->CreateID());
 }
+
+Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type) : Node(this)
+{
+    this->BuildResidueFromPrepFileResidue(prep_residue);
+    this->SetId(this->CreateID());
+    this->SetType(type);
+}
+
+std::string Residue::CreateID(std::string name, std::string chain, std::string number);
+{ // OG Apr 2021: I have no idea what should make up the ID. Can't find any info on what the last three things are.
+    if (name == "default")
+    {
+        name = this->GetName() + "_";
+    }
+    if (chain == "default")
+    {
+        chain = "A_";
+    }
+    if (number == "default")
+    {
+        number = this->GetIndex()  + "_";
+    }
+    std::stringstream id_stream;
+    id_stream << name << chain << number << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE; 
+    return id_stream.str();
+}
+
 
 
 // Residue::Residue(Residue *residue)
