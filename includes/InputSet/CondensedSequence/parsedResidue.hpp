@@ -15,8 +15,8 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
-        ParsedResidue(std::string residueString);
-        ParsedResidue(std::string residueString, ParsedResidue* neighbor);
+        ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType = ParsedResidue::Type::Undefined);
+        ParsedResidue(std::string residueString, ParsedResidue* neighbor, ParsedResidue::Type specifiedType = ParsedResidue::Type::Undefined);
         //~Residue() {std::cout << "Residue destroyed\n";}
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
@@ -57,7 +57,7 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        void ParseResidueStringIntoComponents(std::string residueString);
+        void ParseResidueStringIntoComponents(std::string residueString, ParsedResidue::Type specifiedType = ParsedResidue::Type::Undefined);
         //////////////////////////////////////////////////////////
         //                       MUTATORS                       //
         //////////////////////////////////////////////////////////

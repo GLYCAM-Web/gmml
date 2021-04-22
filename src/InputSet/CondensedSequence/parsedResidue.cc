@@ -5,16 +5,16 @@
 
 using CondensedSequence::ParsedResidue;
 
-ParsedResidue::ParsedResidue(std::string residueString) 
+ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType) 
 : Node(this, residueString), fullResidueString_ (residueString)  
 {
-    this->ParseResidueStringIntoComponents(residueString);
+    this->ParseResidueStringIntoComponents(residueString, specifiedType);
 }
 
-ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor) 
+ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor, ParsedResidue::Type specifiedType) 
 : Node(this, residueString), fullResidueString_ (residueString) 
 {
-    this->ParseResidueStringIntoComponents(residueString);
+    this->ParseResidueStringIntoComponents(residueString, specifiedType);
 	this->AddLinkage(neighbor);
 }
 
@@ -69,7 +69,7 @@ std::string ParsedResidue::GetName()
     return (this->GetIsomer() + this->GetResidueName() + this->GetRingType() + this->GetResidueModifier());
 }
 
-void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString)
+void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, ParsedResidue::Type specifiedType)
 {
 	//std::cout << "PARSING RESIDUE: " << residueString << std::endl;
     // Set defaults:
@@ -79,13 +79,12 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString)
     this->SetResidueModifier("");
     this->SetConfiguration('\0');
     this->SetLinkageLabel("");
-    this->SetType(Type::Undefined);
-
-	if (residueString.find('-') != std::string::npos)
+    this->SetType(specifiedType);
+	if ( (residueString.find('-') != std::string::npos) || (specifiedType == Type::Sugar) )
     { // E.g. DManpNAca1-4 . Isomer (D or L), residueName (ManNAc), ring type (f or p), configuration (a or b), linkage (1-4)
     	// Reading from front.
+        std::cout << "SUGAR!!!\n";
         this->SetType(Type::Sugar);
-        size_t dashPosition = residueString.find('-');
         // Assumptions
         size_t residueStart = 1; // e.g. Gal, Glc, Ido
         size_t modifierStart = 5; // E.g. NAc, A, A(1C4)
@@ -112,6 +111,11 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString)
             modifierStart--;
         }
         // Find the dash, read around it.
+        size_t dashPosition = residueString.find('-');
+        if (dashPosition == std::string::npos) // There is no -
+        {
+            dashPosition = residueString.size(); 
+        }
         this->SetLinkageLabel(residueString.substr((dashPosition - 1), 3 ));
         char configuration = residueString[dashPosition - 2];
         if (( configuration == 'a' || configuration == 'b'))
@@ -139,7 +143,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString)
     	else
     		this->SetResidueModifier("");
     }
-    else if (isdigit(residueString[0]))
+    else if ( (isdigit(residueString[0])) && (specifiedType != Type::Aglycone) )
     { // A derivative e.g. 3S, 6Me. Linkage followed by residue name. No configuration.
         this->SetType(Type::Derivative);
     	//std::cout << "Assumed derivative " << residueString[0] << ".\n";
@@ -147,7 +151,56 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString)
     	this->SetLinkageLabel(linkage);
     	this->SetResidueName(residueString.substr(1)); // From position 1 to the end.
     }
-    else
+    // else if ( (isdigit(residueString[0])) && (specifiedType == Type::Aglycone) )
+    // { // Sugar "aglycone", ano-ano linkage
+    //     this->SetType(Type::Sugar); // Override the Aglycone type for ano-ano linkages
+    //     this->SetLinkageLabel("");
+    //     size_t residueStart = 2; // e.g. Gal, Glc, Ido
+    //     size_t modifierStart = 6; // E.g. NAc, A, A(1C4)
+    //     // Checks
+    //     char isomer = residueString[1];
+    //     if ((isomer == 'D') || (isomer == 'L')) 
+    //     {
+    //         this->SetIsomer(isomer);
+    //     }
+    //     else
+    //     {
+    //         residueStart--;
+    //         modifierStart--;
+    //     }
+    //     this->SetResidueName(residueString.substr(residueStart, 3));
+    //     size_t ringPosition = (residueStart + 3);
+    //     char ringType = residueString[ringPosition];
+    //     if (( ringType == 'p') || (ringType == 'f'))
+    //     {
+    //         this->SetRingType(ringType);
+    //     }
+    //     else
+    //     {
+    //         modifierStart--;
+    //     }
+    //     char configuration = residueString.back();
+    //     if (( configuration == 'a' || configuration == 'b'))
+    //     {
+    //         this->SetConfiguration(configuration);
+    //     }
+    //     // Find any special modifiers e.g. NAc, Gc, A in IdoA
+    //     size_t modifierLength = (residueString.size() - modifierStart - 1);
+    //     if (modifierLength > 100)
+    //     {
+    //         std::string message = "Non standard glycam residue string for rightmost sugar in ano-ano linkage: " + residueString;
+    //         //throw message;
+    //         std::cout << message << std::endl;
+    //     }
+    //     if (modifierLength > 0 && modifierLength < 100)
+    //     {
+    //         this->SetResidueModifier(residueString.substr(modifierStart, modifierLength));
+    //         std::cout << "Modifier is " << this->GetResidueModifier() << std::endl;
+    //     }
+    //     else
+    //         this->SetResidueModifier("");                
+    //}
+    else 
     { // A terminal
         this->SetType(Type::Aglycone);
     	this->SetResidueName(residueString);
