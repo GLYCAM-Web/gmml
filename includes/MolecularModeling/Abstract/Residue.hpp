@@ -1,14 +1,12 @@
 #ifndef ABSTRACT_RESIDUE_HPP
 #define ABSTRACT_RESIDUE_HPP
 
-// Can I #include nothing and still compile? Nah...
-
 namespace Abstract
 {
 	class Residue 
 	{
 	public:
-        enum Type {Aglycone, Sugar, Derivative, Solvent, Protein, Undefined};    
+        enum Type {Aglycone, Sugar, Derivative, Solvent, Protein, Undefined};  
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////

@@ -44,7 +44,7 @@ Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type typ
     this->SetType(type);
 }
 
-std::string Residue::CreateID(std::string name, std::string chain, std::string number);
+std::string Residue::CreateID(std::string name, std::string chain, std::string number)
 { // OG Apr 2021: I have no idea what should make up the ID. Can't find any info on what the last three things are.
     if (name == "default")
     {

@@ -11,7 +11,9 @@ int main ()
     std::string s3 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH";
     std::string s4 = "dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH";
     std::string s5 = "dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH";
-    std::vector<std::string> sequences {s1, s2, s3, s4, s5};
+    std::string s6 = "DGlcpa1-2DFrufb";
+    std::string s7 ="DFrufb2-1DGlcpa";
+    std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7};
     // Test sequenceParser
     for (auto &sequence : sequences)
     {
