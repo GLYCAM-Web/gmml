@@ -242,8 +242,9 @@ void carbohydrateBuilder::InitializeClass(std::string inputSequenceString, std::
     this->SetInputSequenceString(inputSequenceString);
     CondensedSequence condensedSeqence(inputSequenceString); // This is all weird. condensedSequence should be merged into this class eventually
    // this->SetOfficialSequenceString(condensedSeqence.BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach::LONGEST_CHAIN, CondensedSequence::Reordering_Approach::LONGEST_CHAIN, false));
-    PrepFileSpace::PrepFile* prepFile = new PrepFileSpace::PrepFile(inputPrepFilePath);
-    assembly_.BuildAssemblyFromCondensedSequence(inputSequenceString, prepFile);
+    //PrepFileSpace::PrepFile* prepFile = new PrepFileSpace::PrepFile(inputPrepFilePath);
+    PrepFileSpace::PrepFile prepFile(inputPrepFilePath);
+    assembly_.BuildAssemblyFromCondensedSequence(inputSequenceString, &prepFile);
         // So in the above BuildAssemblyFromCondensedSequence code, linkages are generated that are inaccessible to me.
         // Condensed sequence should be separated so I can handle everything here, but it's a mess.
         // In the mean time I must also create linkages at this level, but I can't figure out how to reset linkage IDs.
