@@ -13,7 +13,7 @@ SequenceParser::SequenceParser (std::string inputSequence)
 	if (inputSequence.find(';') != std::string::npos)
 	{
 		std::cout << "Found labels in input\n";
-		this->TokenizeLabelledInput(inputSequence);
+		//this->TokenizeLabelledInput(inputSequence);
 	}
 	else
 	{
@@ -68,33 +68,35 @@ std::vector<ParsedResidue*> SequenceParser::GetParsedResiduesOrderedByConnectivi
 }
 
 
-void SequenceParser::TokenizeLabelledInput(std::string inString)
-{
-	// char delimiter = ';';
-	// std::vector<std::string> tokens = gmml::splitStringByDelimiter(inString, delimiter);
-	// delimiter = '&';
-	// for (auto &element : tokens)
-	// {
-	// 	std::vector<std::string> labelAndLabelee = gmml::splitStringByDelimiter(element, delimiter);
-	// 	for (auto &subtoken : labelAndLabelee)
-	// 	{
-	// 		std::cout << " " << subtoken << " \n";
-	// 	}
-	// }
-}
+// void SequenceParser::TokenizeLabelledInput(std::string inString)
+// {
+// 	// char delimiter = ';';
+// 	// std::vector<std::string> tokens = gmml::splitStringByDelimiter(inString, delimiter);
+// 	// delimiter = '&';
+// 	// for (auto &element : tokens)
+// 	// {
+// 	// 	std::vector<std::string> labelAndLabelee = gmml::splitStringByDelimiter(element, delimiter);
+// 	// 	for (auto &subtoken : labelAndLabelee)
+// 	// 	{
+// 	// 		std::cout << " " << subtoken << " \n";
+// 	// 	}
+// 	// }
+// }
 
 bool SequenceParser::ParseCondensedSequence(const std::string sequence)
 {
     // Reading from the end of the string.
-	size_t last_dash_index = sequence.find_last_of('-');
-	std::string terminal_residue = sequence.substr((last_dash_index + 1)); // From last dash to end.
-    std::cout << "Reducing terminal: " << terminal_residue << "\n";
-    parsedResidues_.push_back(std::make_unique<ParsedResidue>(terminal_residue));
+	size_t i = (sequence.find_last_of('-') + 1);
+    if (isdigit(sequence[i]))
+    { // e.g. DGlcpa1-2DFrufb 
+        ++i; // ano-ano
+        parsedResidues_.push_back(std::make_unique<ParsedResidue>(sequence.substr(i), ParsedResidue::Type::Sugar));
+    }
+    else
+    { // e.g. DGlcpa1-OH
+        parsedResidues_.push_back(std::make_unique<ParsedResidue>(sequence.substr(i), ParsedResidue::Type::Aglycone));
+    }
     auto terminal = parsedResidues_.back().get();
-    //this->SetCurrentParentResidue(parsedResidues_.back());
-    //std::cout << "And that was: " << this->GetCurrentParentResidue()->GetName() << std::endl;
-    //std::cout << "And that was: " << terminal->GetName() << std::endl;
-    size_t i = (last_dash_index + 1);        
     this->RecurveParse(i, sequence, terminal); 
     return true;
 }

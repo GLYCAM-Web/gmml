@@ -1,7 +1,7 @@
 #ifndef CARBOHYDRATEBUILDER_H
 #define CARBOHYDRATEBUILDER_H
 #include "condensedsequence.hpp"
-#include "../../MolecularModeling/assembly.hpp"
+#include "./includes/MolecularModeling/assembly.hpp"
 
 /*
  * The current but probably very naive plan is that I use my awesome Residue Linkage class and not touch the condensedsequence.cc monster at all.
