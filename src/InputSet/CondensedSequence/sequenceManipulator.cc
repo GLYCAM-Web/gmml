@@ -1,24 +1,30 @@
 #include <sstream>
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
+#include "includes/MolecularModeling/Graph/Graph.hpp"
 
 using CondensedSequence::SequenceManipulator;
 using CondensedSequence::ParsedResidue;
 
 
 void SequenceManipulator::ReorderSequence()
-{
-	// Just doing the default by ascending link number for now.
+{	// Just doing the default by ascending link number for now.
 	for (auto &residue : this->GetParsedResidues())
 	{
-		std::cout << "Links for " << residue->GetName() << ":\n";
 		residue->SortInEdgesBySourceTObjectComparator();
-		for (auto &neighbor : residue->GetChildren())
-		{
-			std::cout << neighbor->GetLink() << ",";
-		}
-		std::cout << "\n";
 	}
 	return;
+}
+
+std::vector<ParsedResidue*> SequenceManipulator::GetParsedResiduesOrderedByConnectivity()
+{
+    std::vector<ParsedResidue*> rawResidues;
+    // Go via Graph so order decided by connectivity, depth first traversal:
+    TemplateGraph::Graph<ParsedResidue> sequenceGraph(this->GetTerminal());
+    for(auto &node : sequenceGraph.GetNodes())
+    {
+        rawResidues.push_back(node->GetObjectPtr());
+    }
+    return rawResidues;
 }
 
 void SequenceManipulator::LabelSequence()
@@ -26,7 +32,7 @@ void SequenceManipulator::LabelSequence()
 	std::stringstream ss;
 	int linkIndex = 0; // Convention to start form 0 for linkages.
 	int residueIndex = 1; // Convention to start from 1 for residues.
-	auto startResidue = this->GetTerminal();
+	//auto startResidue = this->GetTerminal();
 	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
 	{
 		ss << residue->GetName() << "&Label=residue-" << residueIndex << ";";

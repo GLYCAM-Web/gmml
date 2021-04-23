@@ -15,7 +15,7 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        inline ParsedResidue* GetTerminal() {return this->FindTerminalResidue();}
+        inline ParsedResidue* GetTerminal() {return this->GetParsedResidues().at(0);}
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
@@ -25,6 +25,7 @@ namespace CondensedSequence
         void ReorderSequence();
         void LabelSequence();
         void PrintLabelledSequence();
+        std::vector<ParsedResidue*> GetParsedResiduesOrderedByConnectivity();
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////

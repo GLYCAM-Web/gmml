@@ -2,47 +2,43 @@
 #include <algorithm> // Reverse function.
 
 #include "includes/InputSet/CondensedSequence/sequenceParser.hpp"
-#include "includes/MolecularModeling/Graph/Graph.hpp" // For print
 
 using CondensedSequence::SequenceParser;
 using CondensedSequence::ParsedResidue;
-using TemplateGraph::Graph;
 
 SequenceParser::SequenceParser (std::string inputSequence)
 {
+    
 	if (inputSequence.find(';') != std::string::npos)
 	{
 		std::cout << "Found labels in input\n";
-		//this->TokenizeLabelledInput(inputSequence);
+		this->ParseLabelledInput(inputSequence);
 	}
 	else
 	{
 		std::cout << "Parsing unlabelled input sequence: " << inputSequence << "\n";
-		this->ParseCondensedSequence(inputSequence);
+        try 
+        {
+            if (this->CheckSequenceSanity(inputSequence))
+            {
+                this->ParseCondensedSequence(inputSequence);
+            }
+        }
+        catch (std::string str)
+        {
+            std::cerr << str;
+        }
 	}
 }
 
 std::string SequenceParser::Print()
 {
-    std::string output;
+    std::string output = "";
     for (auto &residue : this->GetParsedResidues())
     {
         output += residue->Print();
     }
     return output;
-}
-
-ParsedResidue* SequenceParser::FindTerminalResidue()
-{
-    for (auto &residue : this->GetParsedResidues())
-    {
-        if (residue->GetType() == ParsedResidue::Type::Aglycone)
-        {
-            return residue;       
-        }
-    }
-    //throw would be better? How do I handle Ano-Ano or cycles?
-    return this->GetParsedResidues().at(0);
 }
 
 std::vector<ParsedResidue*> SequenceParser::GetParsedResidues()
@@ -55,33 +51,21 @@ std::vector<ParsedResidue*> SequenceParser::GetParsedResidues()
     return rawResidues;
 }
 
-std::vector<ParsedResidue*> SequenceParser::GetParsedResiduesOrderedByConnectivity()
+void SequenceParser::ParseLabelledInput(std::string inString)
 {
-    std::vector<ParsedResidue*> rawResidues;
-    // Go via Graph so order decided by connectivity, depth first traversal:
-    TemplateGraph::Graph<ParsedResidue> sequenceGraph(this->FindTerminalResidue());
-    for(auto &node : sequenceGraph.GetNodes())
-    {
-        rawResidues.push_back(node->GetObjectPtr());
-    }
-    return rawResidues;
+	// char delimiter = ';';
+	// std::vector<std::string> tokens = gmml::splitStringByDelimiter(inString, delimiter);
+	// delimiter = '&';
+	// for (auto &element : tokens)
+	// {
+	// 	// std::vector<std::string> labelAndLabelee = gmml::splitStringByDelimiter(element, delimiter);
+	// 	// for (auto &subtoken : labelAndLabelee)
+	// 	// {
+	// 		std::cout << " " << subtoken << " \n";
+	// 	}
+	// }
+    std::cout << "We can't handle labeled stuff yet: " << inString << "\n";
 }
-
-
-// void SequenceParser::TokenizeLabelledInput(std::string inString)
-// {
-// 	// char delimiter = ';';
-// 	// std::vector<std::string> tokens = gmml::splitStringByDelimiter(inString, delimiter);
-// 	// delimiter = '&';
-// 	// for (auto &element : tokens)
-// 	// {
-// 	// 	std::vector<std::string> labelAndLabelee = gmml::splitStringByDelimiter(element, delimiter);
-// 	// 	for (auto &subtoken : labelAndLabelee)
-// 	// 	{
-// 	// 		std::cout << " " << subtoken << " \n";
-// 	// 	}
-// 	// }
-// }
 
 bool SequenceParser::ParseCondensedSequence(const std::string sequence)
 {
@@ -194,6 +178,38 @@ std::vector<std::string> SequenceParser::ExtractDerivatives()
     auto derivativesCopy = savedDerivatives_;
     savedDerivatives_.clear();
     return derivativesCopy;
+}
+
+bool SequenceParser::CheckSequenceSanity(std::string sequence)
+{
+    try
+    {
+        if ( sequence.empty() )
+        {
+            throw "Error: sequence is empty: ";
+        }
+        if ( sequence.find(" ") != std::string::npos )
+        {
+            throw "Error: sequence contains a space: ";
+        }
+        if ( sequence.find("cake") != std::string::npos )
+        {
+            throw "Error: the cake is a lie: ";
+        }
+        size_t a = std::count(sequence.begin(), sequence.end(), '[');
+        size_t b = std::count(sequence.begin(), sequence.end(), ']');
+        if (a != b)
+        {
+            throw "Error: the number of [ doesn't match the number of ]. Bad branch in : ";
+        }
+    }
+    catch (const std::string &str)
+    {
+        std::string message = str + "\n>>>" + sequence + "<<<\n";
+        std::cerr << message;
+        throw message; 
+    }
+    return true;
 }
 
 

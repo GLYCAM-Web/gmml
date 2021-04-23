@@ -17,9 +17,7 @@ namespace CondensedSequence
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
         std::string Print();
-        ParsedResidue* FindTerminalResidue();
         std::vector<ParsedResidue*> GetParsedResidues();
-        std::vector<ParsedResidue*> GetParsedResiduesOrderedByConnectivity();
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
@@ -36,7 +34,8 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        //void TokenizeLabelledInput(std::string inString);
+        bool CheckSequenceSanity(std::string sequence);
+        void ParseLabelledInput(std::string inString);
         bool ParseCondensedSequence(std::string inString);
         void RecurveParse(size_t &currentIndex, std::string sequence, ParsedResidue* parent);
         ParsedResidue* SaveResidue(const size_t windowStart, const size_t windowEnd, const std::string sequence, ParsedResidue* parent);
