@@ -21,6 +21,7 @@ SequenceParser::SequenceParser (std::string inputSequence)
         {
             if (this->CheckSequenceSanity(inputSequence))
             {
+                std::cout << "Sequence is sane\n";
                 this->ParseCondensedSequence(inputSequence);
             }
         }
@@ -203,11 +204,12 @@ bool SequenceParser::CheckSequenceSanity(std::string sequence)
             throw "Error: the number of [ doesn't match the number of ]. Bad branch in : ";
         }
     }
-    catch (const std::string &str)
+    catch (char const* exception)
     {
-        std::string message = str + "\n>>>" + sequence + "<<<\n";
-        std::cerr << message;
-        throw message; 
+        std::cerr << exception;
+        std::cerr << "\n>>>" << sequence << "<<<\n";
+        //throw message; 
+        return false;
     }
     return true;
 }
