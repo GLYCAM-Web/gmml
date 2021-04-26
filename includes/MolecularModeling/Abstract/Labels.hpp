@@ -20,6 +20,7 @@ namespace Abstract
 		//////////////////////////////////////////////////////////
 		inline std::vector<std::string> GetLabels() {return labels_;}
 		std::string GetLabel();
+		inline std::string GetName() {return this->GetLabel();}
 		//////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
