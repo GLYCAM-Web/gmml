@@ -72,3 +72,65 @@ void SequenceManipulator::PrintLabelledSequence()
 		std::cout << label;
 	return;
 }
+
+void SequenceManipulator::Print()
+{
+	std::vector<std::string> output;
+	int branchStackSize = 0;
+	this->RecurvePrint(this->GetTerminal(), branchStackSize, output);
+	std::reverse(output.begin(), output.end()); // Reverse order, as it starts from terminal.
+	for (auto &label : output)
+		std::cout << label;
+}
+
+void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output)
+{
+	auto neighbors = currentResidue->GetChildren();
+	size_t numberOfNeighbors = neighbors.size();
+	// Derivatives. E.g. 2S,3Me in DManp[2S,3Me]a1-6DManpa1-OH
+	std::string outputResidueString = currentResidue->GetName();
+	std::vector<std::string> derivatives;
+	for (auto &neighbor : neighbors)
+	{
+		if (neighbor->GetType() == ParsedResidue::Type::Derivative)
+		{
+			--numberOfNeighbors;
+			derivatives.push_back(neighbor->GetLinkageLabel() + neighbor->GetName());
+			derivatives.push_back(",");
+		}
+	}
+	if (!derivatives.empty())
+	{
+		derivatives.pop_back(); // Remove the last ","
+		outputResidueString += "[";
+		for (auto &derivative : derivatives)
+		{
+			outputResidueString += derivative;
+		}
+		outputResidueString += "]";
+	}
+	// Output
+	outputResidueString += currentResidue->GetConfiguration() + currentResidue->GetLinkageLabel();
+	output.push_back(outputResidueString);
+	// End of a branch check
+	if (numberOfNeighbors == 0 && branchStackSize > 0)
+	{
+		output.push_back("["); 
+		--branchStackSize;
+	}
+	size_t loopCount = 0;
+	for (auto &neighbor : neighbors)
+	{
+		if (neighbor->GetType() != ParsedResidue::Type::Derivative)
+		{
+			++loopCount;
+			if (loopCount < numberOfNeighbors)
+			{
+				output.push_back("]");
+				++branchStackSize;
+			}
+			this->RecurvePrint(neighbor, branchStackSize, output);
+		}
+	}
+	return;
+}

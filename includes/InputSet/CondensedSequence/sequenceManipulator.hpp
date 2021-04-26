@@ -25,6 +25,8 @@ namespace CondensedSequence
         void ReorderSequence();
         void LabelSequence();
         void PrintLabelledSequence();
+        void Print();
+        void RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output);
         std::vector<ParsedResidue*> GetParsedResiduesOrderedByConnectivity();
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
