@@ -16,7 +16,7 @@ SequenceParser::SequenceParser (std::string inputSequence)
 	}
 	else
 	{
-		std::cout << "Parsing unlabelled input sequence: " << inputSequence << "\n";
+		std::cout << "Parsing unlabelled input sequence:\n" << inputSequence << "\n";
         try 
         {
             if (this->CheckSequenceSanity(inputSequence))

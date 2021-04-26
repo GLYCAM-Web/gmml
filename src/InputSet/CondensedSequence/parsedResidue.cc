@@ -127,7 +127,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         }
     	// Find any special modifiers e.g. NAc, Gc, A in IdoA
     	size_t modifierLength = (dashPosition - modifierStart - 2); // They are 3 apart if no modifier
-        std::cout << "modifierLength is " << modifierLength << ", dashPosition was " << dashPosition << ", ringPosition was " << ringPosition << std::endl;
+        //std::cout << "modifierLength is " << modifierLength << ", dashPosition was " << dashPosition << ", ringPosition was " << ringPosition << std::endl;
         if (modifierLength > 100)
         {
             std::string message = "Non standard glycam residue string: " + residueString;
@@ -137,7 +137,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
     	if (modifierLength > 0 && modifierLength < 100)
         {
     		this->SetResidueModifier(residueString.substr(modifierStart, modifierLength));
-            std::cout << "Modifier is " << this->GetResidueModifier() << std::endl;
+            //std::cout << "Modifier is " << this->GetResidueModifier() << std::endl;
         }
     	else
     		this->SetResidueModifier("");
@@ -159,7 +159,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         std::string message = "Error: we can't parse this residue: \"" + residueString + "\""; 
         throw message;
     }
-    std::cout << this->Print();
+    //std::cout << this->Print();
 
 }
 
