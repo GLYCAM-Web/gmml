@@ -197,6 +197,15 @@ bool SequenceParser::CheckSequenceSanity(std::string sequence)
         {
             throw "Error: the cake is a lie: ";
         }
+        std::vector<char> badChars = {'\'', '_', '+', '"', '`'};
+        for (auto &badChar : badChars)
+        {
+            if (sequence.find(badChar) != std::string::npos)
+            {
+                std::string s(1, badChar); // convert to string     
+                throw "Error: sequence contains a \"" + s + "\": "; 
+            }
+        }
         size_t a = std::count(sequence.begin(), sequence.end(), '[');
         size_t b = std::count(sequence.begin(), sequence.end(), ']');
         if (a != b)
