@@ -41,7 +41,6 @@ void SequenceManipulator::LabelSequence()
 		ss.str( std::string() ); ss.clear();  // Must do both of these to clear the stream
 		for (auto &linkage : residue->GetOutEdges())
 		{
-			std::cout << linkage->GetLabel() << std::endl;
 			ss << linkage->GetLabel() << "&Label=link-" << linkIndex << ";";
 			linkage->AddLabel(ss.str());
 			++linkIndex;
@@ -51,51 +50,55 @@ void SequenceManipulator::LabelSequence()
 	return;
 }
 
-void SequenceManipulator::PrintLabelledSequence()
-{
-	std::vector<std::string> labelsToPrint;
-	auto glycamLabelSignature = "&Label=";
-	for (auto &residue : this->GetParsedResidues())
-	{
-		if (residue->GetType() == ParsedResidue::Type::Aglycone)
-		{ // Aglycone doesn't have linkage, so next for loop doesn't trigger for it.
-			labelsToPrint.push_back(residue->FindLabelContaining(glycamLabelSignature));
-		}
-		for (auto &linkage : residue->GetOutEdges())
-		{ 
-			labelsToPrint.push_back(residue->FindLabelContaining(glycamLabelSignature) 
-				                  + linkage->FindLabelContaining(glycamLabelSignature) );
-		}
-	}
-	std::reverse(labelsToPrint.begin(), labelsToPrint.end()); // Reverse order, as it starts from terminal.
-	for (auto &label : labelsToPrint)
-		std::cout << label;
-	return;
-}
+// void SequenceManipulator::PrintLabelledSequence()
+// {
+// 	std::vector<std::string> labelsToPrint;
+// 	auto glycamLabelSignature = "&Label=";
+// 	for (auto &residue : this->GetParsedResidues())
+// 	{
+// 		if (residue->GetType() == ParsedResidue::Type::Aglycone)
+// 		{ // Aglycone doesn't have linkage, so next for loop doesn't trigger for it.
+// 			labelsToPrint.push_back(residue->FindLabelContaining(glycamLabelSignature));
+// 		}
+// 		for (auto &linkage : residue->GetOutEdges())
+// 		{ 
+// 			labelsToPrint.push_back(residue->FindLabelContaining(glycamLabelSignature) 
+// 				                  + linkage->FindLabelContaining(glycamLabelSignature) );
+// 		}
+// 	}
+// 	std::reverse(labelsToPrint.begin(), labelsToPrint.end()); // Reverse order, as it starts from terminal.
+// 	for (auto &label : labelsToPrint)
+// 		std::cout << label;
+// 	return;
+// }
 
-void SequenceManipulator::Print()
+void SequenceManipulator::Print(const bool withLabels)
 {
+	if (withLabels)
+	{
+		this->LabelSequence();
+	}
 	std::vector<std::string> output;
 	int branchStackSize = 0;
-	this->RecurvePrint(this->GetTerminal(), branchStackSize, output);
+	this->RecurvePrint(this->GetTerminal(), branchStackSize, output, withLabels);
 	std::reverse(output.begin(), output.end()); // Reverse order, as it starts from terminal.
 	for (auto &label : output)
 		std::cout << label;
 }
 
-void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output)
+void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels)
 {
 	auto neighbors = currentResidue->GetChildren();
 	size_t numberOfNeighbors = neighbors.size();
 	// Derivatives. E.g. 2S,3Me in DManp[2S,3Me]a1-6DManpa1-OH
-	std::string outputResidueString = currentResidue->GetName();
+	std::string outputResidueString = currentResidue->GetName(withLabels);
 	std::vector<std::string> derivatives;
 	for (auto &neighbor : neighbors)
 	{
 		if (neighbor->GetType() == ParsedResidue::Type::Derivative)
 		{
 			--numberOfNeighbors;
-			derivatives.push_back(neighbor->GetLinkageLabel() + neighbor->GetName());
+			derivatives.push_back(neighbor->GetLinkageName(withLabels) + neighbor->GetName(withLabels));
 			derivatives.push_back(",");
 		}
 	}
@@ -110,7 +113,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 		outputResidueString += "]";
 	}
 	// Output
-	outputResidueString += currentResidue->GetConfiguration() + currentResidue->GetLinkageLabel();
+	outputResidueString += currentResidue->GetLinkageName(withLabels);
 	output.push_back(outputResidueString);
 	// End of a branch check
 	if (numberOfNeighbors == 0 && branchStackSize > 0)
@@ -129,7 +132,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 				output.push_back("]");
 				++branchStackSize;
 			}
-			this->RecurvePrint(neighbor, branchStackSize, output);
+			this->RecurvePrint(neighbor, branchStackSize, output, withLabels);
 		}
 	}
 	return;
