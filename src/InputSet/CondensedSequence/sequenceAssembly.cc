@@ -46,9 +46,15 @@ std::vector<MolecularModeling::Residue> SequenceAssembly::GenerateResidues(std::
 	return createdResidues;
 }
 
-void SequenceAssembly::RecurveGenerateResidues( ParsedResidue *parsedChild, MolecularModeling::Residue& gmmlParent, 
-	std::vector<MolecularModeling::Residue> &createdResidues)
+void SequenceAssembly::RecurveGenerateResidues(ParsedResidue* parsedChild, MolecularModeling::Residue& gmmlParent, 
+	std::vector<MolecularModeling::Residue>& createdResidues)
 {	
+	if (parsedChild->GetType() == ParsedResidue::Type::Deoxy)
+	{
+		std::string atomNumberToRemove(1, parsedChild->GetLink()); // convert to string
+		gmmlParent->MakeDeoxy(atomNumberToRemove);
+		return;
+	}
 	auto prepEntry = this->GetPrepResidueMap()->find(parsedChild->GetGlycamResidueName());
 	if (prepEntry == this->GetPrepResidueMap()->end())
 	{
@@ -58,9 +64,9 @@ void SequenceAssembly::RecurveGenerateResidues( ParsedResidue *parsedChild, Mole
 	{
 		auto &newGmmlChild = createdResidues.emplace_back(prepEntry->second, parsedChild->GetType());
 		newGmmlChild.AddLabel(parsedChild->GetLabel());
-		//newGmmlChild.AddEdge(&gmmlParent, parsedChild->GetLinkageLabel());
-		this->BondResiduesDeduceAtoms(gmmlParent, newGmmlChild, parsedChild->GetLinkageLabel());
-		this->InitializeInterResidueGeometry(gmmlParent, newGmmlChild);
+		//newGmmlChild.AddEdge(&gmmlParent, parsedChild->GetLinkageName());
+		this->BondResiduesDeduceAtoms(gmmlParent, newGmmlChild, parsedChild->GetLinkageName());
+		//this->InitializeInterResidueGeometry(gmmlParent, newGmmlChild);
 		std::cout << "Recurve created " << newGmmlChild.GetLabel() << std::endl;
 		for (auto &child : parsedChild->GetChildren())
 		{
@@ -132,10 +138,3 @@ void SequenceAssembly::BondResiduesDeduceAtoms(MolecularModeling::Residue& paren
 	return;	
 }
 	
-	// Bond that to anomericCarbon in child. Use AtomNode for now. Change later when Node<Atom>.
-
-void SequenceAssembly::InitializeInterResidueGeometry(MolecularModeling::Residue& parent, MolecularModeling::Residue& child)
-{
-
-	// 
-}
