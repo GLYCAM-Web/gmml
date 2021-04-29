@@ -6,7 +6,7 @@ namespace Abstract
 	class Residue 
 	{
 	public:
-        enum Type {Aglycone, Sugar, Derivative, Solvent, Protein, Undefined};  
+        enum Type {Aglycone, Sugar, Derivative, Solvent, Protein, Deoxy, Undefined};  
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
