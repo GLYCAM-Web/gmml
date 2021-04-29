@@ -12,7 +12,7 @@ namespace Abstract
 		//////////////////////////////////////////////////////////
 		//                       CONSTRUCTOR                    //
 		//////////////////////////////////////////////////////////
-		Labels() {};
+		Labels() {this->AddLabel("");}
 		Labels(std::string label) {this->AddLabel(label);}
 		Labels(std::vector<std::string> labels) {this->SetLabels(labels);}
 		//////////////////////////////////////////////////////////
@@ -20,7 +20,6 @@ namespace Abstract
 		//////////////////////////////////////////////////////////
 		inline std::vector<std::string> GetLabels() {return labels_;}
 		std::string GetLabel();
-		inline std::string GetName() {return this->GetLabel();}
 		//////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////

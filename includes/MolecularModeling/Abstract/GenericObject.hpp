@@ -23,7 +23,7 @@ namespace Abstract
 		// Labels
 		inline std::vector<std::string> GetLabels() {return labels_.GetLabels();}
 		inline std::string GetLabel() {return labels_.GetLabel();}
-		inline std::string GetName() {return labels_.GetName();}
+		inline std::string GetName() {return labels_.GetLabel();}
 
 		// Index
 		inline unsigned long long GetIndex() {return index_.GetIndex();}
