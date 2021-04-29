@@ -250,6 +250,7 @@ namespace MolecularModeling
             Atom* GetAtom(std::string query_name);
             Atom* GetAtom(unsigned long long query_index);
             Atom* GetAtomWithId(std::string query_id);
+            void MakeDeoxy(std::string oxygenNumber);
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //

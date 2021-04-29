@@ -628,6 +628,25 @@ MolecularModeling::Atom* Residue::GetAtomWithId(std::string query_id)
     return return_atom; // may be unset
 }
 
+void Residue::MakeDeoxy(std::string oxygenNumber)
+{ // if oxygenNumber is 6, then C6-O6-H6 becomes C6-Hd 
+    auto hydrogenAtom = this->GetAtom("H" + oxygenNumber);
+    auto oxygenAtom = this->GetAtom("O" + oxygenNumber);
+    auto carbonAtom = this->GetAtom("C" + oxygenNumber);
+    // Add O and H charge to the C atom.
+    carbonAtom->SetCharge(carbonAtom->GetCharge() + oxygenAtom->GetCharge() + hydrogenAtom->GetCharge());
+    // Delete the H of O-H
+    this->RemoveAtom(hydrogenAtom);
+    // Now transform the Oxygen to a Hd. Easier than deleting O and creating H.
+    std::string newID = oxygenAtom->GetId();
+    newID.replace(0,oxygenAtom->GetName().size(),"Hd");
+    oxygenAtom->SetId(newID);
+    oxygenAtom->SetName("Hd");
+    oxygenAtom->MolecularDynamicAtom::SetAtomType("H1");
+    oxygenAtom->SetCharge(0.0000);
+    oxygenAtom->SetElementSymbol("H");
+}
+
 unsigned long long Residue::GetIndex() const
 {
     return this->index_;
@@ -772,6 +791,7 @@ void Residue::WriteHetAtoms(std::ofstream& out)
         out << std::endl;
     }
 }
+
 
 //////////////////////////////////////////////////////////
 //                   OVERLOADED OPERATORS               //
