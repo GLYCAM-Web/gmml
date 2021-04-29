@@ -21,7 +21,8 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        std::string GetName();
+        std::string GetName(const bool withLabels = false);
+        std::string GetLinkageName(const bool withLabels = false);
         inline std::string GetInputString() {return fullResidueString_;}
        // inline TemplateGraph::Node<ParsedResidue>* GetNode() {return &node_;}
         inline char GetIsomer() {return isomer_;}
@@ -29,7 +30,7 @@ namespace CondensedSequence
         inline char GetRingType() {return ringType_;}
         inline std::string GetResidueModifier() {return residueModifier_;}
         inline char GetConfiguration() {return configuration_;}
-        inline std::string GetLinkageLabel() {return linkageLabel_;}
+        inline std::string GetLinkage() {return linkage_;}
        //inline ParsedResidue::Type GetType() {return type_;}
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
@@ -67,7 +68,7 @@ namespace CondensedSequence
         inline void SetRingType(char type) {ringType_ = type;}
         inline void SetResidueModifier(std::string modifier) {residueModifier_ = modifier;}
         inline void SetConfiguration(char config) {configuration_ = config;}
-        inline void SetLinkageLabel(std::string label) {linkageLabel_ = label;}
+        inline void SetLinkage(std::string label) {linkage_ = label;}
         //inline void SetType(ParsedResidue::Type type) {type_ = type;}
         //////////////////////////////////////////////////////////
         //                       ATTRRIBUTES                    //
@@ -79,7 +80,7 @@ namespace CondensedSequence
         char ringType_;                           // f or p
         std::string residueModifier_;             // NAc, Gc, A (IdoA)
     	char configuration_;                      // a or b
-        std::string linkageLabel_;                // 1-4, 2-6, 1- (when connected to OH)
+        std::string linkage_;                // 1-4, 2-6, 1- (when connected to OH)
         //TemplateGraph::Node<ParsedResidue> node_;         
 	};
 }

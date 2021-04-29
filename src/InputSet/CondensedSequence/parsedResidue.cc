@@ -22,7 +22,7 @@ void ParsedResidue::AddLinkage(ParsedResidue* otherRes)
 {
     //std::string label = this->GetName() + "->" + otherRes->GetName();
     //std::cout << "Adding Edge: " << label << std::endl;
-    this->AddEdge(otherRes, this->GetConfiguration() + this->GetLinkageLabel());
+    this->AddEdge(otherRes, this->GetConfiguration() + this->GetLinkage());
    // std::cout << "Is it getting destroyed now?\n";
 }
 
@@ -31,9 +31,11 @@ char ParsedResidue::GetLink()
     switch (this->GetType())
     {
         case (Type::Sugar):
-            return this->GetLinkageLabel().back();
+            return this->GetLinkage().back();
         case (Type::Derivative):
-            return this->GetLinkageLabel().front();
+            return this->GetLinkage().front();
+        case (Type::Deoxy):
+            return this->GetLinkage().front();
         default:
             return '0';
     }
@@ -64,9 +66,29 @@ std::string ParsedResidue::GetChildLinkages()
     return linkages;
 }
 
-std::string ParsedResidue::GetName()
+std::string ParsedResidue::GetName(const bool withLabels)
 {
-    return (this->GetIsomer() + this->GetResidueName() + this->GetRingType() + this->GetResidueModifier());
+    if (withLabels)
+    {
+        return FindLabelContaining("&Label=");
+    }
+    return this->GetIsomer() + this->GetResidueName() + this->GetRingType() + this->GetResidueModifier();
+}
+
+std::string ParsedResidue::GetLinkageName(const bool withLabels)
+{   // Should only ever be zero or one outEdges in my current design.
+    for (auto &linkage : this->GetOutEdges())
+    {
+        if (withLabels)
+        {
+            return linkage->FindLabelContaining("&Label=");
+        }
+        else
+        {
+            return linkage->GetLabel();
+        }
+    }    
+    return ""; // aglycone/reducing terminal will not have linkage.
 }
 
 void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, ParsedResidue::Type specifiedType)
@@ -78,7 +100,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
     this->SetRingType('\0');
     this->SetResidueModifier("");
     this->SetConfiguration('\0');
-    this->SetLinkageLabel("");
+    this->SetLinkage("");
     this->SetType(specifiedType);
 	if ( (residueString.find('-') != std::string::npos) || (specifiedType == Type::Sugar) )
     { // E.g. DManpNAca1-4 . Isomer (D or L), residueName (ManNAc), ring type (f or p), configuration (a or b), linkage (1-4)
@@ -115,7 +137,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         {
             dashPosition = residueString.size(); 
         }
-        this->SetLinkageLabel(residueString.substr((dashPosition - 1), 3 ));
+        this->SetLinkage(residueString.substr((dashPosition - 1), 3 ));
         char configuration = residueString[dashPosition - 2];
         if (( configuration == 'a' || configuration == 'b'))
         {
@@ -140,15 +162,20 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
             //std::cout << "Modifier is " << this->GetResidueModifier() << std::endl;
         }
     	else
+        {
     		this->SetResidueModifier("");
+        }
     }
     else if ( isdigit(residueString[0]) )
     { // A derivative e.g. 3S, 6Me. Linkage followed by residue name. No configuration.
         this->SetType(Type::Derivative);
-    	//std::cout << "Assumed derivative " << residueString[0] << ".\n";
     	std::string linkage(1,residueString[0]);
-    	this->SetLinkageLabel(linkage);
+    	this->SetLinkage(linkage);
     	this->SetResidueName(residueString.substr(1)); // From position 1 to the end.
+        if (this->GetResidueName() == "D")
+        {
+            this->SetType(Type::Deoxy);
+        }
     }
     else if (specifiedType == Type::Aglycone)
     { // A terminal
@@ -160,7 +187,6 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         throw message;
     }
     //std::cout << this->Print();
-
 }
 
 std::string ParsedResidue::Print()
@@ -171,7 +197,7 @@ std::string ParsedResidue::Print()
 				<< this->GetRingType() << "_"
 				<< this->GetResidueModifier() << "_"
 				<< this->GetConfiguration() << "_"
-				<< this->GetLinkageLabel() << ".\n";
+				<< this->GetLinkage() << ".\n";
     return ss.str();
 }
 
