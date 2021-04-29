@@ -12,10 +12,6 @@
 
 namespace Eigen { 
 
-/** @defgroup Geometry_Module Geometry module
-  * @ingroup Eigen
-  */
-
 /** \geometry_module \ingroup Geometry_Module
   *
   *
