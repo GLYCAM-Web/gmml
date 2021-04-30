@@ -1,6 +1,5 @@
 #include "./includes/MolecularMetadata/GLYCAM/glycam06DerivativeAglyconeInfo.hpp"
 
-
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
@@ -10,16 +9,16 @@ using gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeAglyconeConnectionAtomL
 Glycam06DerivativeAglyconeConnectionAtomLookup::Glycam06DerivativeAglyconeConnectionAtomLookup()
 {
     glycam06DerivativeAglyconeConnectionAtomLookup_ =
-    {
-        //Aglycones
+    {  // Glycam06 Residue Name , Linking atom
+        // Aglycones
         { "ROH" , "O1"  } ,
         { "OME" , "O"   } ,
         { "TBT" , "O1"  } ,
-        //Aglycones amino acid
+        // Aglycones amino acid
         { "NLN" , "ND2" } ,
         { "OLT" , "OG1" } ,
         { "OLS" , "OG"  } ,
-        //Derivatives
+        // Derivatives
         { "SO3" , "S1"  } ,
         { "MEX" , "CH3" } ,
         { "ACX" , "C2A" } ,
