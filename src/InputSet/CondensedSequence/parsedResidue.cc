@@ -22,8 +22,15 @@ void ParsedResidue::AddLinkage(ParsedResidue* otherRes)
 {
     //std::string label = this->GetName() + "->" + otherRes->GetName();
     //std::cout << "Adding Edge: " << label << std::endl;
-    this->AddEdge(otherRes, this->GetConfiguration() + this->GetLinkage());
-   // std::cout << "Is it getting destroyed now?\n";
+    if ( this->GetType() == Type::Sugar ) 
+    {
+        this->AddEdge(otherRes, this->GetConfiguration() + this->GetLinkage());
+    }
+    else
+    {
+        this->AddEdge(otherRes, this->GetLinkage());
+    }
+    return;
 }
 
 char ParsedResidue::GetLink()
@@ -133,11 +140,14 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         }
         // Find the dash, read around it.
         size_t dashPosition = residueString.find('-');
-        if (dashPosition == std::string::npos) // There is no -
+        if (dashPosition == std::string::npos) // There is no -. e.g. Fru in DGlcpa1-2DFrufb
         {
-            dashPosition = residueString.size(); 
+            dashPosition = residueString.size() + 1;
         }
-        this->SetLinkage(residueString.substr((dashPosition - 1), 3 ));
+        else
+        {
+            this->SetLinkage(residueString.substr((dashPosition - 1), 3 ));
+        }
         char configuration = residueString[dashPosition - 2];
         if (( configuration == 'a' || configuration == 'b'))
         {
@@ -148,7 +158,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
             modifierStart--;
         }
     	// Find any special modifiers e.g. NAc, Gc, A in IdoA
-    	size_t modifierLength = (dashPosition - modifierStart - 2); // They are 3 apart if no modifier
+    	size_t modifierLength = (dashPosition - modifierStart - 2); // They are 2 apart if no modifier
         //std::cout << "modifierLength is " << modifierLength << ", dashPosition was " << dashPosition << ", ringPosition was " << ringPosition << std::endl;
         if (modifierLength > 100)
         {
@@ -186,7 +196,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         std::string message = "Error: we can't parse this residue: \"" + residueString + "\""; 
         throw message;
     }
-    //std::cout << this->Print();
+    std::cout << this->Print();
 }
 
 std::string ParsedResidue::Print()
@@ -210,7 +220,7 @@ std::string ParsedResidue::GetGlycamResidueName()
     }
     try
     {
-        auto code = gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNameGenerator(linkages, this->GetIsomer(), this->GetResidueName(), 
+        std::string code = gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNameGenerator(linkages, this->GetIsomer(), this->GetResidueName(), 
                                                                             this->GetRingType(), this->GetResidueModifier(), this->GetConfiguration() );
         return code;
     }
