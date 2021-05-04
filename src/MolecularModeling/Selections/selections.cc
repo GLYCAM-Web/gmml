@@ -589,11 +589,11 @@ void selection::FindEndsOfBranchesFromLinkageAtom(MolecularModeling::Atom* curre
     return;
 }
 
-std::string selection::GetNonCarbonHeavyAtomNumbered(AtomVector atoms, char queryNumber)
+std::string selection::GetNonCarbonHeavyAtomNumbered(AtomVector atoms, std::string queryNumber)
 {
     for (auto &atom : atoms)
     {    // Assuming atoms like C2, O2 or N2. Nothing else should match.
-        auto number = atom->GetName().at(1);
+        auto number = atom->GetName().substr(1);
         if ( (number == queryNumber) && (atom->GetName().at(0) != 'C') )
         {
             return atom->GetName();
