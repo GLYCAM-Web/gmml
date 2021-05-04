@@ -2,6 +2,7 @@
 #include "includes/InputSet/CondensedSequence/sequenceAssembly.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeAglyconeInfo.hpp"
+#include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.hpp"
 #include "includes/MolecularModeling/Abstract/Residue.hpp" // For the Residue::Type
 #include "includes/MolecularModeling/Selections/selections.hpp"
 #include "includes/MolecularModeling/assembly.hpp" // Only to use silly Assembly functions. Should go away. 
@@ -49,6 +50,7 @@ std::vector<MolecularModeling::Residue> SequenceAssembly::GenerateResidues(std::
 void SequenceAssembly::RecurveGenerateResidues(ParsedResidue* parsedChild, MolecularModeling::Residue& gmmlParent, 
 	std::vector<MolecularModeling::Residue>& createdResidues)
 {	
+	std::cout << "Recurve Gen Res" << std::endl;
 	if (parsedChild->GetType() == ParsedResidue::Type::Deoxy)
 	{
 		std::string atomNumberToRemove(1, parsedChild->GetLink()); // convert to string
@@ -58,7 +60,7 @@ void SequenceAssembly::RecurveGenerateResidues(ParsedResidue* parsedChild, Molec
 	auto prepEntry = this->GetPrepResidueMap()->find(parsedChild->GetGlycamResidueName());
 	if (prepEntry == this->GetPrepResidueMap()->end())
 	{
-		std::cout << "Could not find prep entry.\n"; 
+		std::cout << "Could not find prep entry." << std::endl; 
 	}
 	else
 	{
@@ -76,65 +78,73 @@ void SequenceAssembly::RecurveGenerateResidues(ParsedResidue* parsedChild, Molec
 	return;
 }
 
-void SequenceAssembly::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent, MolecularModeling::Residue& child, std::string linkageLabel)
+void SequenceAssembly::BondResiduesDeduceAtoms(MolecularModeling::Residue& parentResidue, MolecularModeling::Residue& childResidue, std::string linkageLabel)
 {
 	// This is using the new Node<Residue> functionality and the old AtomNode 
-	parent.AddEdge(&child, linkageLabel);
-	std::cout << "Have entered with types " << parent.GetType() << ", " << child.GetType() << "\n";
-	std::cout << "Linkage label: " << linkageLabel << "\n";
+	parentResidue.AddEdge(&childResidue, linkageLabel);
 	// Now go figure out how which Atoms to bond to each other in the residues.
 	// Rule: Can't ever have a child aglycone or a parent derivative.
 	std::string parentAtomName, childAtomName;
-	if (parent.GetType() == Residue::Type::Aglycone)
+	if (parentResidue.GetType() == Residue::Type::Aglycone)
 	{ 
 		gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeAglyconeConnectionAtomLookup connectionAtomLookup;
-		parentAtomName = connectionAtomLookup.GetConnectionAtomForResidue(parent.GetName());
+		parentAtomName = connectionAtomLookup.GetConnectionAtomForResidue(parentResidue.GetName());
 	}
-	else if (parent.GetType() == Residue::Type::Sugar)
-	{ // Linkage example: child1-4parent. It's never parent1-4child.
-		size_t linkPosition = 2;
-		if (child.GetType() == Residue::Type::Derivative)
+	else if (parentResidue.GetType() == Residue::Type::Sugar)
+	{ // Linkage example: childb1-4parent, it's never parentb1-4child 
+		size_t linkPosition = 3;
+		if (childResidue.GetType() == Residue::Type::Derivative)
 		{ // label will be just a single number.
 			linkPosition = 0;
 		}
-		auto parentLinkageNumber = linkageLabel.at(linkPosition);
-		parentAtomName = selection::GetNonCarbonHeavyAtomNumbered(parent.GetAtoms(), parentLinkageNumber);
+		parentAtomName = selection::GetNonCarbonHeavyAtomNumbered(parentResidue.GetAtoms(), linkageLabel.substr(linkPosition));
 	}
-	std::cout << "Found parent atom " << parentAtomName << "\n";
-	auto parentAtom = parent.GetAtom(parentAtomName);
-
+	Atom* parentAtom = parentResidue.GetAtom(parentAtomName);
 	// Now get child atom
-	if (child.GetType() == Residue::Type::Derivative)
+	if (childResidue.GetType() == Residue::Type::Derivative)
 	{
 		gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeAglyconeConnectionAtomLookup connectionAtomLookup;
-		childAtomName = connectionAtomLookup.GetConnectionAtomForResidue(child.GetName());	
+		childAtomName = connectionAtomLookup.GetConnectionAtomForResidue(childResidue.GetName());	
 	}
-	else if (child.GetType() == Residue::Type::Sugar)
+	else if (childResidue.GetType() == Residue::Type::Sugar)
 	{
-		auto childLinkageNumber = linkageLabel.substr(0,1);
+		auto childLinkageNumber = linkageLabel.substr(1,1);
 		childAtomName = "C" + childLinkageNumber;
 	}
-	std::cout << "Found child atom " << childAtomName << "\n";
-	auto childAtom = child.GetAtom(childAtomName);
+	Atom* childAtom = childResidue.GetAtom(childAtomName);
 	// Now bond the atoms. Needs to change when AtomNode goes away.
 	childAtom->GetNode()->AddNodeNeighbor(parentAtom);
 	parentAtom->GetNode()->AddNodeNeighbor(childAtom);
-	std::cout << "Bonded " << parent.GetName() << "@" << parentAtomName << " to "
-						   << child.GetName() << "@" << childAtomName << std::endl;
-	// Now that I have these atoms, I'm going to do geometry stuff
+	std::cout << "Bonded " << parentResidue.GetName() << "@" << parentAtomName << " to " << childResidue.GetName() << "@" << childAtomName << std::endl;
+	// Charge adjustment
+	if (childResidue.GetType() == Residue::Type::Derivative)
+	{
+	//	std::cout << "Charge Adjustment.\n";
+		gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeChargeAdjustmentLookupContainer lookup;
+		std::string adjustAtomName = lookup.GetAdjustmentAtom(childResidue.GetName());
+		adjustAtomName += linkageLabel.substr(0,1); 
+		Atom* atomToAdjust = parentResidue.GetAtom(adjustAtomName);
+		std::cout << "Derivative is " << childResidue.GetName() << ". Adjusting charge on " << atomToAdjust->GetName() << "\n";
+		std::cout << "Adjusting by: " << lookup.GetAdjustmentCharge(childResidue.GetName()) << "\n";
+		atomToAdjust->SetCharge(atomToAdjust->GetCharge() + lookup.GetAdjustmentCharge(childResidue.GetName()) );
+	}
+	// Geometry
+	std::cout << "Setting bond distance.\n";
 	MolecularModeling::Assembly whyOhGodWhy; // Doing as few changes as possible. These functions should be in a geometryTopology namespace.	
 	whyOhGodWhy.SetResidueResidueBondDistance(parentAtom, childAtom);
 	// Angle
+	std::cout << "Setting angles.\n";
+	const double angle_to_set = 109.4;
 	Atom* parentAtomNeighbor;
 	for (auto &neighbor : parentAtom->GetNode()->GetNodeNeighbors())
 	{ 
 		if ( (neighbor->GetName().at(0) != 'H') && (neighbor != childAtom ) )
 		{
 			parentAtomNeighbor = neighbor;
+			std::cout << "Found neighbor, I'll set the angle now!\n";
+			whyOhGodWhy.SetAngle(parentAtomNeighbor, parentAtom, childAtom, angle_to_set);
 		}
 	}
-	const double angle_to_set = 109.4;
-    whyOhGodWhy.SetAngle(parentAtomNeighbor, parentAtom, childAtom, angle_to_set);
 	return;	
 }
 	

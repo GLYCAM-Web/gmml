@@ -37,7 +37,7 @@ namespace CondensedSequence
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
         void RecurveGenerateResidues(ParsedResidue *currentChild, MolecularModeling::Residue &parent, std::vector<MolecularModeling::Residue> &createdResidues); 
-        void BondResiduesDeduceAtoms(MolecularModeling::Residue& parent, MolecularModeling::Residue& child, std::string linkageLabel);
+        void BondResiduesDeduceAtoms(MolecularModeling::Residue& parentResidue, MolecularModeling::Residue& childResidue, std::string linkageLabel);
 
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
