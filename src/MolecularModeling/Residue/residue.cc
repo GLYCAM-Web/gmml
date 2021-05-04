@@ -33,12 +33,14 @@ Residue::Residue(MolecularModeling::Assembly *assembly, std::string name) : Node
 
 Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue) : Node(this)
 {
+    index_ = this->generateIndex();
     this->BuildResidueFromPrepFileResidue(prep_residue);
     this->SetId(this->CreateID());
 }
 
 Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type) : Node(this)
 {
+    index_ = this->generateIndex();
     this->BuildResidueFromPrepFileResidue(prep_residue);
     this->SetId(this->CreateID());
     this->SetType(type);
@@ -46,6 +48,7 @@ Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type typ
 
 std::string Residue::CreateID(std::string name, std::string chain, std::string number)
 { // OG Apr 2021: I have no idea what should make up the ID. Can't find any info on what the last three things are.
+    //std::cout << name << ", " << chain << ", " << number << std::endl;
     if (name == "default")
     {
         name = this->GetName() + "_";
@@ -56,10 +59,13 @@ std::string Residue::CreateID(std::string name, std::string chain, std::string n
     }
     if (number == "default")
     {
-        number = this->GetIndex()  + "_";
+        std::stringstream ss;
+        ss << this->GetIndex() << "_";    
+        number = ss.str();
     }
     std::stringstream id_stream;
     id_stream << name << chain << number << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE; 
+    //std::cout << id_stream.str() << std::endl;
     return id_stream.str();
 }
 
