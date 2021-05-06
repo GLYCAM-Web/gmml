@@ -50,6 +50,7 @@ namespace TemplateGraph
 		std::vector<T*> GetNodesNeighborsObjects();
 		std::vector<Node<T>*> GetIncomingEdgeNeighbors();
 		std::vector<T*> GetIncomingNeighborObjects();
+		std::vector<T*> GetOutgoingNeighborObjects();
 		void RemoveEdge(Node<T>* otherNode);
 		void SortInEdgesBySourceTObjectComparator();
 
@@ -205,6 +206,17 @@ template <typename T>
 			inNeighborObjects.push_back(inEdge->GetSource()->GetObjectPtr());
 		}
 		return inNeighborObjects;
+	}
+
+template <typename T>
+	std::vector<T*> Node<T>::GetOutgoingNeighborObjects()
+	{
+		std::vector<T*> outNeighborObjects;
+		for(auto &outEdge : this->GetOutEdges())
+		{
+			outNeighborObjects.push_back(outEdge->GetTarget()->GetObjectPtr());
+		}
+		return outNeighborObjects;
 	}
 
 template <typename T>
