@@ -10,14 +10,13 @@
 
 #include "Core"
 
-#include "src/Core/util/DisableStupidWarnings.h"
-
 #include "SVD"
 #include "LU"
 #include <limits>
 
-/** @defgroup Geometry_Module Geometry module
-  * @ingroup Eigen
+#include "src/Core/util/DisableStupidWarnings.h"
+
+/** \defgroup Geometry_Module Geometry module
   *
   * This module provides support for:
   *  - fixed-size homogeneous transformations
