@@ -41,9 +41,12 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         char GetLink();
         std::vector<ParsedResidue*> GetChildren();
+        ParsedResidue* GetParent();
         std::string GetChildLinkages();
         std::string Print();
         std::string GetGlycamResidueName();
+        std::string GetGraphVizLine();
+
         //////////////////////////////////////////////////////////
         //                  OPERATOR OVERLOADING                //
         //////////////////////////////////////////////////////////

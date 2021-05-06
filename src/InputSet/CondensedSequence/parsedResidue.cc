@@ -1,9 +1,11 @@
 
 #include <sstream>
+#include <sys/stat.h> // for checking if file exists
 #include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp"
 
 using CondensedSequence::ParsedResidue;
+//using std::filesystem::exists;
 
 ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType) 
 : Node(this, residueString), fullResidueString_ (residueString)  
@@ -52,6 +54,11 @@ char ParsedResidue::GetLink()
 std::vector<ParsedResidue*> ParsedResidue::GetChildren()
 {
     return this->GetIncomingNeighborObjects();
+}
+
+ParsedResidue* ParsedResidue::GetParent()
+{
+    return this->GetOutgoingNeighborObjects().front();
 }
 
 std::string ParsedResidue::GetChildLinkages()
@@ -229,4 +236,61 @@ std::string ParsedResidue::GetGlycamResidueName()
         std::cerr << "Error: " << exception << std::endl;
     }
     return "";
+}
+
+std::string ParsedResidue::GetGraphVizLine()
+{
+    std::string SnfgFilePath = "/home/oliver/thisDoesNotExist/";
+    std::cout << "Getting GraphVizLine for " << this->GetName() << "\n"; 
+    std::stringstream ss;
+    ss << this->GetIndex() << " [";
+    // Aglycone
+    if (this->GetType() == Type::Aglycone)
+    {
+            std::cout << "Seg1?" << std::endl;
+        ss << "shape=box label=\"" << this->GetName() << "\"]";
+                    std::cout << "Seg1?" << std::endl;
+
+        std::cout << "Parent is" << this->GetParent()->GetName();
+        ss << this->GetIndex() << "--" ;//<< this->GetParent()->GetIndex() ;//<< "[headlabel=\"" << this->GetConfiguration() << "\" ];\n";
+                    std::cout << "Seg1?" << std::endl;
+
+        return ss.str();
+    }
+     std::cout << "Seg2?" << std::endl;
+    // Sugar
+    std::string imageFile = SnfgFilePath + this->GetName() + ".svg";
+    std::string fileNotAvailableString = "shape=circle label=\"" + this->GetName() + "\"]";
+    std::string fileAvailableString = "label=\"\" height=\"0.7\" image=" + imageFile + "\"]";
+    std::cout << "Seg?" << std::endl;
+    struct stat info;
+    if( stat(imageFile.c_str(), &info ) == 0)
+    {
+        ss << fileAvailableString;
+    }
+    else
+    {
+        ss << fileNotAvailableString;
+    }
+    std::cout << "No!" << std::endl;
+    // Derivatives
+    std::string derivativeStr = "";
+    for (auto &childLink : this->GetChildren())
+    {
+        if (childLink->GetType() == Type::Derivative) 
+        {
+            derivativeStr += this->GetName() + " ";
+        }
+    }
+    if (! derivativeStr.empty())
+    {
+        ss << "\n" << "b" << this->GetIndex(); 
+        ss << "[ shape=\"plaintext\",fontsize=\"12\",forcelabels=\"true\"; height = \"0.3\"; labelloc = b;  label=\""; 
+        ss << derivativeStr << "\"]\n";
+        ss << "{ rank=\"same\"; b" << this->GetIndex() << " " << this->GetIndex() << "}\n";
+        ss << "{nodesep=\"0.02\";b" << this->GetIndex() << ";" << this->GetIndex() << "}\n";
+    }
+    // Linkage
+    ss << this->GetIndex() << "--" << this->GetParent()->GetIndex() << "[headlabel=\"" << this->GetLinkageName() << "\" ];\n";
+    return ss.str();
 }
