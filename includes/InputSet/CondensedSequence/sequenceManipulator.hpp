@@ -24,8 +24,10 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         void ReorderSequence();
         void LabelSequence();
+        void SetIndexByConnectivity();
         void PrintLabelledSequence();
         void Print(const bool withLabels = false);
+        void PrintGraphViz();
         std::vector<ParsedResidue*> GetParsedResiduesOrderedByConnectivity();
     private:
         void RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels);

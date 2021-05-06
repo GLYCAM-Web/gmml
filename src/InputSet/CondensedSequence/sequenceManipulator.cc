@@ -29,48 +29,39 @@ std::vector<ParsedResidue*> SequenceManipulator::GetParsedResiduesOrderedByConne
 
 void SequenceManipulator::LabelSequence()
 {
+	this->SetIndexByConnectivity();
 	std::stringstream ss;
-	int linkIndex = 0; // Convention to start form 0 for linkages.
-	int residueIndex = 1; // Convention to start from 1 for residues.
-	//auto startResidue = this->GetTerminal();
 	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
 	{
-		ss << residue->GetName() << "&Label=residue-" << residueIndex << ";";
+		ss << residue->GetName() << "&Label=residue-" << residue->GetIndex() << ";";
 		residue->AddLabel(ss.str());
-		++residueIndex;
 		ss.str( std::string() ); ss.clear();  // Must do both of these to clear the stream
 		for (auto &linkage : residue->GetOutEdges())
 		{
-			ss << linkage->GetLabel() << "&Label=link-" << linkIndex << ";";
+			ss << linkage->GetLabel() << "&Label=link-" << linkage->GetIndex() << ";";
 			linkage->AddLabel(ss.str());
-			++linkIndex;
 			ss.str( std::string() ); ss.clear(); // Must do both of these to clear the stream
 		}
 	}
 	return;
 }
 
-// void SequenceManipulator::PrintLabelledSequence()
-// {
-// 	std::vector<std::string> labelsToPrint;
-// 	auto glycamLabelSignature = "&Label=";
-// 	for (auto &residue : this->GetParsedResidues())
-// 	{
-// 		if (residue->GetType() == ParsedResidue::Type::Aglycone)
-// 		{ // Aglycone doesn't have linkage, so next for loop doesn't trigger for it.
-// 			labelsToPrint.push_back(residue->FindLabelContaining(glycamLabelSignature));
-// 		}
-// 		for (auto &linkage : residue->GetOutEdges())
-// 		{ 
-// 			labelsToPrint.push_back(residue->FindLabelContaining(glycamLabelSignature) 
-// 				                  + linkage->FindLabelContaining(glycamLabelSignature) );
-// 		}
-// 	}
-// 	std::reverse(labelsToPrint.begin(), labelsToPrint.end()); // Reverse order, as it starts from terminal.
-// 	for (auto &label : labelsToPrint)
-// 		std::cout << label;
-// 	return;
-// }
+void SequenceManipulator::SetIndexByConnectivity()
+{
+	unsigned long long linkIndex = 0; // Convention to start form 0 for linkages.
+	unsigned long long residueIndex = 1; // Convention to start from 1 for residues.
+	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
+	{
+		residue->SetIndex(residueIndex);
+		++residueIndex;
+		for (auto &linkage : residue->GetOutEdges())
+		{
+			linkage->SetIndex(linkIndex);
+			++linkIndex;
+		}
+	}
+	return;
+}
 
 void SequenceManipulator::Print(const bool withLabels)
 {
@@ -136,4 +127,18 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 		}
 	}
 	return;
+}
+
+void SequenceManipulator::PrintGraphViz()
+{
+	std::string output = "graph G {graph [splines=false forcelabels=true  dpi=72];node [ shape=\"none\" fontname=Helvetica labelfontsize=12 forcelabels=\"true\";  label=\"none\" size=50 fixedsize=\"true\" scale=\"true\"]; edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0]; rankdir=RL nodesep=\"0.01\";\n";
+	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
+	{
+		if (residue->GetType() != ParsedResidue::Type::Derivative) 
+		{
+			output += residue->GetGraphVizLine() + "\n";
+			std::cout << "Intermediate output is: " << output;
+		}
+	}
+	std::cout << output;
 }
