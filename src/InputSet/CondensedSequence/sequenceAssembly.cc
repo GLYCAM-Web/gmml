@@ -27,12 +27,13 @@ std::vector<MolecularModeling::Residue> SequenceAssembly::GenerateResidues(std::
 {
 	std::vector<MolecularModeling::Residue> createdResidues;
 	createdResidues.reserve(this->GetParsedResidues().size());
-	std::cout << "\nDoing prepFile stuff" << std::endl;
+	std::cout << "\nPREPFILESTUFFFFF\n" << std::endl;
 	PrepFileSpace::PrepFile prepFile(prepFilePath);
 	//A mapping between a residue name and its residue object
 	this->SetPrepResidueMap(prepFile.GetResidues());
 	auto aglycone = this->GetTerminal();
 	auto result = this->GetPrepResidueMap()->find(aglycone->GetGlycamResidueName());
+	std::cout << "Found prep entry: " << result->first << " for " << aglycone->GetName() << "\n";
 	auto &gmmlParent = createdResidues.emplace_back(result->second, aglycone->GetType());
 	gmmlParent.AddLabel(aglycone->GetLabel());
 	for (auto &child : aglycone->GetChildren())
@@ -50,7 +51,7 @@ std::vector<MolecularModeling::Residue> SequenceAssembly::GenerateResidues(std::
 void SequenceAssembly::RecurveGenerateResidues(ParsedResidue* parsedChild, MolecularModeling::Residue& gmmlParent, 
 	std::vector<MolecularModeling::Residue>& createdResidues)
 {	
-	std::cout << "Recurve Gen Res" << std::endl;
+	//std::cout << "Recurve Gen Res" << std::endl;
 	if (parsedChild->GetType() == ParsedResidue::Type::Deoxy)
 	{
 		std::string atomNumberToRemove(1, parsedChild->GetLink()); // convert to string
@@ -60,16 +61,17 @@ void SequenceAssembly::RecurveGenerateResidues(ParsedResidue* parsedChild, Molec
 	auto prepEntry = this->GetPrepResidueMap()->find(parsedChild->GetGlycamResidueName());
 	if (prepEntry == this->GetPrepResidueMap()->end())
 	{
-		std::cout << "Could not find prep entry." << std::endl; 
+		std::cout << "Could not find prep entry for " << parsedChild->GetName() << " Glycam: " << parsedChild->GetGlycamResidueName() << std::endl; 
 	}
 	else
 	{
+		std::cout << "Found prep entry: " << prepEntry->first << " for " << parsedChild->GetName() << "\n";
 		auto &newGmmlChild = createdResidues.emplace_back(prepEntry->second, parsedChild->GetType());
 		newGmmlChild.AddLabel(parsedChild->GetLabel());
 		//newGmmlChild.AddEdge(&gmmlParent, parsedChild->GetLinkageName());
 		this->BondResiduesDeduceAtoms(gmmlParent, newGmmlChild, parsedChild->GetLinkageName());
 		//this->InitializeInterResidueGeometry(gmmlParent, newGmmlChild);
-		std::cout << "Recurve created " << newGmmlChild.GetLabel() << std::endl;
+		//std::cout << "Recurve created " << newGmmlChild.GetLabel() << std::endl;
 		for (auto &child : parsedChild->GetChildren())
 		{
 			this->RecurveGenerateResidues(child, newGmmlChild, createdResidues);	
@@ -78,6 +80,7 @@ void SequenceAssembly::RecurveGenerateResidues(ParsedResidue* parsedChild, Molec
 	return;
 }
 
+// All this stuff goes to Residue. Residue has private Head and child atoms with private getters/setters. Solves this mess.
 void SequenceAssembly::BondResiduesDeduceAtoms(MolecularModeling::Residue& parentResidue, MolecularModeling::Residue& childResidue, std::string linkageLabel)
 {
 	// This is using the new Node<Residue> functionality and the old AtomNode 
@@ -124,16 +127,16 @@ void SequenceAssembly::BondResiduesDeduceAtoms(MolecularModeling::Residue& paren
 		std::string adjustAtomName = lookup.GetAdjustmentAtom(childResidue.GetName());
 		adjustAtomName += linkageLabel.substr(0,1); 
 		Atom* atomToAdjust = parentResidue.GetAtom(adjustAtomName);
-		std::cout << "Derivative is " << childResidue.GetName() << ". Adjusting charge on " << atomToAdjust->GetName() << "\n";
-		std::cout << "Adjusting by: " << lookup.GetAdjustmentCharge(childResidue.GetName()) << "\n";
+		std::cout << "    Derivative is " << childResidue.GetName() << ". Adjusting charge on " << atomToAdjust->GetName() << "\n";
+		std::cout << "    Adjusting by: " << lookup.GetAdjustmentCharge(childResidue.GetName()) << "\n";
 		atomToAdjust->SetCharge(atomToAdjust->GetCharge() + lookup.GetAdjustmentCharge(childResidue.GetName()) );
 	}
 	// Geometry
-	std::cout << "Setting bond distance.\n";
+	//std::cout << "Setting bond distance.\n";
 	MolecularModeling::Assembly whyOhGodWhy; // Doing as few changes as possible. These functions should be in a geometryTopology namespace.	
 	whyOhGodWhy.SetResidueResidueBondDistance(parentAtom, childAtom);
 	// Angle
-	std::cout << "Setting angles.\n";
+	//std::cout << "Setting angles.\n";
 	const double angle_to_set = 109.4;
 	Atom* parentAtomNeighbor;
 	for (auto &neighbor : parentAtom->GetNode()->GetNodeNeighbors())
@@ -141,7 +144,7 @@ void SequenceAssembly::BondResiduesDeduceAtoms(MolecularModeling::Residue& paren
 		if ( (neighbor->GetName().at(0) != 'H') && (neighbor != childAtom ) )
 		{
 			parentAtomNeighbor = neighbor;
-			std::cout << "Found neighbor, I'll set the angle now!\n";
+			//std::cout << "Found neighbor, I'll set the angle now!\n";
 			whyOhGodWhy.SetAngle(parentAtomNeighbor, parentAtom, childAtom, angle_to_set);
 		}
 	}

@@ -7,6 +7,13 @@
 using CondensedSequence::ParsedResidue;
 //using std::filesystem::exists;
 
+bool file_exists (const char *filename)
+{
+    struct stat buffer;
+    std::cout << filename << "\n";
+    return (stat (filename, &buffer) == 0);
+}
+
 ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType) 
 : Node(this, residueString), fullResidueString_ (residueString)  
 {
@@ -56,9 +63,9 @@ std::vector<ParsedResidue*> ParsedResidue::GetChildren()
     return this->GetIncomingNeighborObjects();
 }
 
-ParsedResidue* ParsedResidue::GetParent()
+std::vector<ParsedResidue*> ParsedResidue::GetParents()
 {
-    return this->GetOutgoingNeighborObjects().front();
+    return this->GetOutgoingNeighborObjects();
 }
 
 std::string ParsedResidue::GetChildLinkages()
@@ -240,46 +247,38 @@ std::string ParsedResidue::GetGlycamResidueName()
 
 std::string ParsedResidue::GetGraphVizLine()
 {
-    std::string SnfgFilePath = "/home/oliver/thisDoesNotExist/";
+    std::string SnfgFilePath = "/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/CFG_Symbol_Images/";
     std::cout << "Getting GraphVizLine for " << this->GetName() << "\n"; 
     std::stringstream ss;
     ss << this->GetIndex() << " [";
     // Aglycone
     if (this->GetType() == Type::Aglycone)
     {
-            std::cout << "Seg1?" << std::endl;
-        ss << "shape=box label=\"" << this->GetName() << "\"]";
-                    std::cout << "Seg1?" << std::endl;
-
-        std::cout << "Parent is" << this->GetParent()->GetName();
-        ss << this->GetIndex() << "--" ;//<< this->GetParent()->GetIndex() ;//<< "[headlabel=\"" << this->GetConfiguration() << "\" ];\n";
-                    std::cout << "Seg1?" << std::endl;
-
+        ss << "shape=box label=\"" << this->GetSimpleName() << "\"]";
         return ss.str();
     }
-     std::cout << "Seg2?" << std::endl;
     // Sugar
-    std::string imageFile = SnfgFilePath + this->GetName() + ".svg";
-    std::string fileNotAvailableString = "shape=circle label=\"" + this->GetName() + "\"]";
-    std::string fileAvailableString = "label=\"\" height=\"0.7\" image=" + imageFile + "\"]";
-    std::cout << "Seg?" << std::endl;
-    struct stat info;
-    if( stat(imageFile.c_str(), &info ) == 0)
+    std::string label = "";
+    std::string imageFile = SnfgFilePath + this->GetImageFileName() + ".svg";
+    
+    std::cout << "Searching for image: " << imageFile << "\n";
+    if(file_exists(imageFile.c_str()))
     {
-        ss << fileAvailableString;
+        std::cout << "FOUND IT\n";
+        (this->GetRingType() == 'f') ? label = "f" : label = "";
+        ss << "label=\"" << label << "\" height=\"0.7\" image=\"" << imageFile << "\"];\n";
     }
     else
     {
-        ss << fileNotAvailableString;
+        ss << "shape=circle height=\"0.7\" label=\"" << this->GetSimpleName() << "\"];\n";
     }
-    std::cout << "No!" << std::endl;
     // Derivatives
     std::string derivativeStr = "";
     for (auto &childLink : this->GetChildren())
     {
         if (childLink->GetType() == Type::Derivative) 
         {
-            derivativeStr += this->GetName() + " ";
+            derivativeStr += childLink->GetLinkageName() + childLink->GetName() + " ";
         }
     }
     if (! derivativeStr.empty())
@@ -291,6 +290,23 @@ std::string ParsedResidue::GetGraphVizLine()
         ss << "{nodesep=\"0.02\";b" << this->GetIndex() << ";" << this->GetIndex() << "}\n";
     }
     // Linkage
-    ss << this->GetIndex() << "--" << this->GetParent()->GetIndex() << "[headlabel=\"" << this->GetLinkageName() << "\" ];\n";
+    for (auto &parent : this->GetParents())
+    { // There is either 1 or 0, this covers both cases 
+        ss << this->GetIndex() << "--" << parent->GetIndex() << "[label=\"" << this->GetLinkageName() << "\" ];\n";
+    }
     return ss.str();
 }
+
+std::string ParsedResidue::GetSimpleName()
+{
+    return this->GetResidueName() + this->GetResidueModifier();
+}
+
+std::string ParsedResidue::GetImageFileName()
+{
+    std::stringstream ss;
+    ss << this->GetIsomer() << this->GetResidueName() << this->GetResidueModifier();
+    return ss.str();
+}
+
+

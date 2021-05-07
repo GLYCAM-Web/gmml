@@ -92,7 +92,7 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, char isomer, std:
 	}
 
 	// ConfigurationCode may be empty.
-	std::cout << "Returning: " << (linkCode + residueCode + configurationCode) << std::endl;
+	//std::cout << "Returning: " << (linkCode + residueCode + configurationCode) << std::endl;
 	return (linkCode + residueCode + configurationCode);
 }
 } // close namespace

@@ -131,14 +131,18 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 
 void SequenceManipulator::PrintGraphViz()
 {
-	std::string output = "graph G {graph [splines=false forcelabels=true  dpi=72];node [ shape=\"none\" fontname=Helvetica labelfontsize=12 forcelabels=\"true\";  label=\"none\" size=50 fixedsize=\"true\" scale=\"true\"]; edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0]; rankdir=RL nodesep=\"0.01\";\n";
+	std::string output = "graph G {graph [splines=false forcelabels=true  dpi=72];\n";
+	output += "node [ shape=\"none\" fontname=Helvetica labelfontsize=12 forcelabels=\"true\";\n";
+	output += "label=\"none\" size=50 fixedsize=\"true\" scale=\"true\"];\n";
+	output += "edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];\n";
+	output += "rankdir=LR nodesep=\"0.01\";\n";
 	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
 	{
 		if (residue->GetType() != ParsedResidue::Type::Derivative) 
 		{
 			output += residue->GetGraphVizLine() + "\n";
-			std::cout << "Intermediate output is: " << output;
 		}
 	}
+	output += "}\n";
 	std::cout << output;
 }
