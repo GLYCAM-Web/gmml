@@ -16,6 +16,7 @@ using MolecularModeling::Residue;
 Residue::Residue() : Node(this)
 {
     index_ = this->generateIndex();
+    this->SetId(this->CreateID());
 }
 
 Residue::Residue(MolecularModeling::Assembly *assembly, std::string name) : Node(this)
@@ -27,7 +28,7 @@ Residue::Residue(MolecularModeling::Assembly *assembly, std::string name) : Node
     tail_atoms_ = AtomVector();
     chemical_type_ = "";
     description_ = "";
-    id_ = "";
+    this->SetId(this->CreateID());
     index_ = this->generateIndex();
 }
 
@@ -36,7 +37,7 @@ Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue) : Node(this)
     index_ = this->generateIndex();
     this->BuildResidueFromPrepFileResidue(prep_residue);
     this->SetId(this->CreateID());
-}
+ }
 
 Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type) : Node(this)
 {
@@ -51,20 +52,20 @@ std::string Residue::CreateID(std::string name, std::string chain, std::string n
     //std::cout << name << ", " << chain << ", " << number << std::endl;
     if (name == "default")
     {
-        name = this->GetName() + "_";
+        name = this->GetName();
     }
     if (chain == "default")
     {
-        chain = "A_";
+        chain = "A";
     }
     if (number == "default")
     {
         std::stringstream ss;
-        ss << this->GetIndex() << "_";    
+        ss << this->GetIndex();    
         number = ss.str();
     }
     std::stringstream id_stream;
-    id_stream << name << chain << number << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE; 
+    id_stream << name << "_" << chain << "_" << number << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE; 
     //std::cout << id_stream.str() << std::endl;
     return id_stream.str();
 }
