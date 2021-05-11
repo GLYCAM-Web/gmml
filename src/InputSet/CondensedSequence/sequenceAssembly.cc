@@ -54,8 +54,7 @@ void SequenceAssembly::RecurveGenerateResidues(ParsedResidue* parsedChild, Molec
 	//std::cout << "Recurve Gen Res" << std::endl;
 	if (parsedChild->GetType() == ParsedResidue::Type::Deoxy)
 	{
-		std::string atomNumberToRemove(1, parsedChild->GetLink()); // convert to string
-		gmmlParent.MakeDeoxy(atomNumberToRemove);
+		gmmlParent.MakeDeoxy(parsedChild->GetLink());
 		return;
 	}
 	auto prepEntry = this->GetPrepResidueMap()->find(parsedChild->GetGlycamResidueName());
