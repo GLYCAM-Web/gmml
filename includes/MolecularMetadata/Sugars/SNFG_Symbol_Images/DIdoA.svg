@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Layer_1"
+   data-name="Layer 1"
+   width="395.33"
+   height="395.33"
+   viewBox="0 0 395.33 395.33"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="DIdopA.svg">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="640"
+     inkscape:window-height="480"
+     id="namedview12"
+     showgrid="false"
+     inkscape:zoom="0.59696964"
+     inkscape:cx="197.66499"
+     inkscape:cy="197.66499"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Layer_1" />
+  <defs
+     id="defs3">
+    <style
+       id="style5">
+      .cls-1 {
+        fill: #fff;
+        stroke-width: 39.78px;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #000;
+      }
+
+      .cls-2 {
+        fill: #906021;
+        stroke-linejoin: bevel;
+        stroke-width: 25px;
+      }
+    </style>
+  </defs>
+  <title
+     id="title7">IdoA</title>
+  <g
+     id="layer1">
+    <path
+       id="path2987"
+       class="cls-1"
+       d="M 7029.93,7199.92 7199.47,7369.46 7369,7199.92 7199.47,7030.39 Z"
+       transform="translate(-7001.8,-7002.26)"
+       inkscape:connector-curvature="0"
+       style="fill:#ffffff;stroke:#000000;stroke-width:39.77999878px" />
+    <path
+       id="path3816"
+       class="cls-2"
+       d="M 7362,7197.42 7195.89,7029.2 7028,7195.61 Z"
+       transform="translate(-7001.8,-7002.26)"
+       inkscape:connector-curvature="0"
+       style="fill:#906021;stroke:#000000;stroke-width:25px;stroke-linejoin:bevel" />
+  </g>
+</svg>
