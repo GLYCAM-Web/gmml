@@ -240,9 +240,8 @@ void carbohydrateBuilder::InitializeClass(std::string inputSequenceString, std::
     // Have to assume that sequence is sane, because using the condensedsequence class functions to check breaks them... probably they should have been private.
     assembly_.SetName("CONDENSEDSEQUENCE");
     this->SetInputSequenceString(inputSequenceString);
-    CondensedSequence condensedSeqence(inputSequenceString); // This is all weird. condensedSequence should be merged into this class eventually
+    //CondensedSequence condensedSeqence(inputSequenceString); // This is all weird. condensedSequence should be merged into this class eventually
    // this->SetOfficialSequenceString(condensedSeqence.BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach::LONGEST_CHAIN, CondensedSequence::Reordering_Approach::LONGEST_CHAIN, false));
-    //PrepFileSpace::PrepFile* prepFile = new PrepFileSpace::PrepFile(inputPrepFilePath);
     PrepFileSpace::PrepFile prepFile(inputPrepFilePath);
     assembly_.BuildAssemblyFromCondensedSequence(inputSequenceString, &prepFile);
         // So in the above BuildAssemblyFromCondensedSequence code, linkages are generated that are inaccessible to me.
