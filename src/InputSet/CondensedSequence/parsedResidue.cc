@@ -42,18 +42,19 @@ void ParsedResidue::AddLinkage(ParsedResidue* otherRes)
     return;
 }
 
-char ParsedResidue::GetLink()
+std::string ParsedResidue::GetLink()
 {
+    std::string linkage = this->GetLinkage();
     switch (this->GetType())
     {
         case (Type::Sugar):
-            return this->GetLinkage().back();
+            return linkage.substr(linkage.size() - 1, 1);
         case (Type::Derivative):
-            return this->GetLinkage().front();
+            return linkage.substr(linkage.size() - 1, 1);
         case (Type::Deoxy):
-            return this->GetLinkage().front();
+            return linkage.substr(0, 1);
         default:
-            return '0';
+            return "0";
     }
 }
 
@@ -73,8 +74,7 @@ std::string ParsedResidue::GetChildLinkages()
     std::string linkages;
     for (auto &child : this->GetChildren())
     {
-        std::string link(1, child->GetLink()); // convert from char via string constructor.
-        linkages += (link + ",");
+        linkages += (child->GetLink() + ",");
     }
     if (linkages.empty())
     {
@@ -116,11 +116,11 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
 {
 	//std::cout << "PARSING RESIDUE: " << residueString << std::endl;
     // Set defaults:
-    this->SetIsomer('\0');
+    this->SetIsomer("");
     this->SetResidueName("");
-    this->SetRingType('\0');
+    this->SetRingType("");
     this->SetResidueModifier("");
-    this->SetConfiguration('\0');
+    this->SetConfiguration("");
     this->SetLinkage("");
     this->SetType(specifiedType);
 	if ( (residueString.find('-') != std::string::npos) || (specifiedType == Type::Sugar) )
@@ -131,8 +131,8 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         size_t residueStart = 1; // e.g. Gal, Glc, Ido
         size_t modifierStart = 5; // E.g. NAc, A, A(1C4)
         // Checks
-        char isomer = residueString[0];
-        if ((isomer == 'D') || (isomer == 'L')) 
+        std::string isomer = residueString.substr(0, 1);
+        if ((isomer == "D") || (isomer == "L")) 
         {
             this->SetIsomer(isomer);
         }
@@ -143,8 +143,8 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         }
         this->SetResidueName(residueString.substr(residueStart, 3));
         size_t ringPosition = (residueStart + 3);
-        char ringType = residueString[ringPosition];
-        if (( ringType == 'p') || (ringType == 'f'))
+        std::string ringType = residueString.substr(ringPosition, 1);
+        if (( ringType == "p") || (ringType == "f"))
         {
             this->SetRingType(ringType);
         }
@@ -162,10 +162,10 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         {
             this->SetLinkage(residueString.substr((dashPosition - 1), 3 ));
         }
-        char configuration = residueString[dashPosition - 2];
-        if (( configuration == 'a' || configuration == 'b'))
+        std::string configuration = residueString.substr(dashPosition - 2, 1);
+        if (( configuration == "a" || configuration == "b"))
         {
-            this->SetConfiguration(residueString[dashPosition - 2]);
+            this->SetConfiguration(residueString.substr(dashPosition - 2, 1));
         }
         else
         {
@@ -193,8 +193,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
     else if ( isdigit(residueString[0]) )
     { // A derivative e.g. 3S, 6Me. Linkage followed by residue name. No configuration.
         this->SetType(Type::Derivative);
-    	std::string linkage(1,residueString[0]);
-    	this->SetLinkage(linkage);
+    	this->SetLinkage(residueString.substr(0, 1));
     	this->SetResidueName(residueString.substr(1)); // From position 1 to the end.
         if (this->GetResidueName() == "D")
         {
@@ -245,9 +244,8 @@ std::string ParsedResidue::GetGlycamResidueName()
     return "";
 }
 
-std::string ParsedResidue::GetGraphVizLine()
+std::string ParsedResidue::GetGraphVizLine(std::string SnfgFilePath)
 {
-    std::string SnfgFilePath = "/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/CFG_Symbol_Images/";
     std::cout << "Getting GraphVizLine for " << this->GetName() << "\n"; 
     std::stringstream ss;
     ss << this->GetIndex() << " [";
@@ -265,7 +263,7 @@ std::string ParsedResidue::GetGraphVizLine()
     if(file_exists(imageFile.c_str()))
     {
         std::cout << "FOUND IT\n";
-        (this->GetRingType() == 'f') ? label = "f" : label = "";
+        (this->GetRingType() == "f") ? label = "f" : label = "";
         ss << "label=\"" << label << "\" height=\"0.7\" image=\"" << imageFile << "\"];\n";
     }
     else
@@ -285,14 +283,22 @@ std::string ParsedResidue::GetGraphVizLine()
     {
         ss << "\n" << "b" << this->GetIndex(); 
         ss << "[ shape=\"plaintext\",fontsize=\"12\",forcelabels=\"true\"; height = \"0.3\"; labelloc = b;  label=\""; 
-        ss << derivativeStr << "\"]\n";
-        ss << "{ rank=\"same\"; b" << this->GetIndex() << " " << this->GetIndex() << "}\n";
-        ss << "{nodesep=\"0.02\";b" << this->GetIndex() << ";" << this->GetIndex() << "}\n";
+        ss << derivativeStr << "\"];\n";
+        ss << "{ rank=\"same\"; b" << this->GetIndex() << " " << this->GetIndex() << "};\n";
+        ss << "{nodesep=\"0.2\";b" << this->GetIndex() << ";" << this->GetIndex() << "};\n";
+        ss << "b" << this->GetIndex() << "--" << this->GetIndex() << " [style=invis];\n";
     }
     // Linkage
     for (auto &parent : this->GetParents())
     { // There is either 1 or 0, this covers both cases 
-        ss << this->GetIndex() << "--" << parent->GetIndex() << "[label=\"" << this->GetLinkageName() << "\" ];\n";
+        ss << this->GetIndex() << "--" << parent->GetIndex() << "[label=\"" << this->GetLinkageName() << "\"];\n";
+        for (auto &linkage : this->GetOutEdges())
+        {
+            ss << this->GetIndex() << "--" << parent->GetIndex();
+            ss << "[taillabel=< <B>" << linkage->GetIndex() << "</B>>, ";
+            ss << "labelfontsize = 14, labeldistance = 2.0, labelangle = -35";
+            ss << "];\n";
+        }
     }
     return ss.str();
 }

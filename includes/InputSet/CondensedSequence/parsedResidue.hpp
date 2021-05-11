@@ -21,11 +21,11 @@ namespace CondensedSequence
         std::string GetName(const bool withLabels = false);
         std::string GetLinkageName(const bool withLabels = false);
         inline std::string GetInputString() {return fullResidueString_;}
-        inline char GetIsomer() {return isomer_;}
+        inline std::string GetIsomer() {return isomer_;}
         inline std::string GetResidueName() {return residueName_;}
-        inline char GetRingType() {return ringType_;}
+        inline std::string GetRingType() {return ringType_;}
         inline std::string GetResidueModifier() {return residueModifier_;}
-        inline char GetConfiguration() {return configuration_;}
+        inline std::string GetConfiguration() {return configuration_;}
         inline std::string GetLinkage() {return linkage_;}
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
@@ -34,13 +34,13 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        char GetLink();
+        std::string GetLink();
         std::vector<ParsedResidue*> GetChildren();
         std::vector<ParsedResidue*> GetParents();
         std::string GetChildLinkages();
         std::string Print();
         std::string GetGlycamResidueName();
-        std::string GetGraphVizLine();
+        std::string GetGraphVizLine(std::string SnfgFilePath = "");
         //////////////////////////////////////////////////////////
         //                  OPERATOR OVERLOADING                //
         //////////////////////////////////////////////////////////
@@ -61,21 +61,21 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       MUTATORS                       //
         //////////////////////////////////////////////////////////
-        inline void SetIsomer(char isomer) {isomer_ = isomer;}
+        inline void SetIsomer(std::string isomer) {isomer_ = isomer;}
         inline void SetResidueName(std::string name) {residueName_ = name;}
-        inline void SetRingType(char type) {ringType_ = type;}
+        inline void SetRingType(std::string type) {ringType_ = type;}
         inline void SetResidueModifier(std::string modifier) {residueModifier_ = modifier;}
-        inline void SetConfiguration(char config) {configuration_ = config;}
+        inline void SetConfiguration(std::string config) {configuration_ = config;}
         inline void SetLinkage(std::string label) {linkage_ = label;}
         //////////////////////////////////////////////////////////
         //                       ATTRRIBUTES                    //
         //////////////////////////////////////////////////////////
 		std::string fullResidueString_;           // DManpNAca1-4.
-		char isomer_;                             // D or L
+		std::string isomer_;                             // D or L
         std::string residueName_;                 // Man, Neu, Ido etc
-        char ringType_;                           // f or p
+        std::string ringType_;                           // f or p
         std::string residueModifier_;             // NAc, Gc, A (IdoA)
-    	char configuration_;                      // a or b
+    	std::string configuration_;                      // a or b
         std::string linkage_;                // 1-4, 2-6, 1- (when connected to OH)
 	};
 }
