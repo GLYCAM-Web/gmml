@@ -129,18 +129,19 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 	return;
 }
 
-void SequenceManipulator::PrintGraphViz()
+void SequenceManipulator::PrintGraphViz(std::string SnfgFilePath)
 {
+	this->SetIndexByConnectivity();
 	std::string output = "graph G {graph [splines=false forcelabels=true  dpi=72];\n";
 	output += "node [ shape=\"none\" fontname=Helvetica labelfontsize=12 forcelabels=\"true\";\n";
 	output += "label=\"none\" size=50 fixedsize=\"true\" scale=\"true\"];\n";
 	output += "edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];\n";
-	output += "rankdir=LR nodesep=\"0.01\";\n";
+	output += "rankdir=LR nodesep=\"0.05\" ranksep=\"0.8\";\n";
 	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
 	{
 		if (residue->GetType() != ParsedResidue::Type::Derivative) 
 		{
-			output += residue->GetGraphVizLine() + "\n";
+			output += residue->GetGraphVizLine(SnfgFilePath) + "\n";
 		}
 	}
 	output += "}\n";

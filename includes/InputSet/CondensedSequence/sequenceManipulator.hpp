@@ -27,7 +27,7 @@ namespace CondensedSequence
         void SetIndexByConnectivity();
         void PrintLabelledSequence();
         void Print(const bool withLabels = false);
-        void PrintGraphViz();
+        void PrintGraphViz(std::string SnfgFilePath = "/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/");
         std::vector<ParsedResidue*> GetParsedResiduesOrderedByConnectivity();
     private:
         void RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels);
