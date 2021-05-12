@@ -1,0 +1,601 @@
+Parsing unlabelled input sequence:
+DTalp[2S,3Me]a1-6DManpa1-6[DAllpb1-3][DNeu5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH
+Sequence is sane
+_OH____.
+Saving DGlcpNAcb1- with parent OH
+D_Glc_p_NAc_b_1-.
+Saving DGulpb1-4 with parent DGlcpNAc
+D_Gul_p__b_1-4.
+Saving 6Me with parent DGulp
+_Me____6.
+Saving DManpb1-4 with parent DGulp
+D_Man_p__b_1-4.
+Saving DAltpa1-4 with parent DManp
+D_Alt_p__a_1-4.
+Saving DGlcpb1-2 with parent DAltp
+D_Glc_p__b_1-2.
+Saving 3S with parent DGlcp
+_S____3.
+Saving DGalpb1-4 with parent DGlcp
+D_Gal_p__b_1-4.
+Saving DNeu5Aca2-6 with parent DGalp
+D_Neu__5Ac_a_2-6.
+Saving DAllpb1-3 with parent DManp
+D_All_p__b_1-3.
+Saving DManpa1-6 with parent DManp
+D_Man_p__a_1-6.
+Saving DTalpa1-6 with parent DManp
+D_Tal_p__a_1-6.
+Saving 3Me with parent DTalp
+_Me____3.
+Saving 2S with parent DTalp
+_S____2.
+
+PREPFILESTUFFFFF
+
+Found prep entry: ROH for OH
+Found prep entry: 4YB for DGlcpNAc
+Bonded ROH@O1 to 4YB@C1
+Found prep entry: UKB for DGulp
+Bonded 4YB@H4 to UKB@C1
+Found prep entry: QMB for DManp
+Bonded UKB@H4 to QMB@C1
+Found prep entry: 0NB for DAllp
+Bonded QMB@H3 to 0NB@C1
+Found prep entry: 2EA for DAltp
+Bonded QMB@H4 to 2EA@C1
+Found prep entry: WGB for DGlcp
+Bonded 2EA@H2 to WGB@C1
+Found prep entry: SO3 for S
+Bonded WGB@H3 to SO3@S1
+    Derivative is SO3. Adjusting charge on O3
+    Adjusting by: 0.031
+Found prep entry: 6LB for DGalp
+Bonded WGB@H4 to 6LB@C1
+Could not find prep entry for DNeu5Ac Glycam: 0Sa
+Found prep entry: 6MA for DManp
+Bonded QMB@O6 to 6MA@C1
+Found prep entry: ZTA for DTalp
+Bonded 6MA@O6 to ZTA@C1
+Found prep entry: SO3 for S
+Bonded ZTA@H2 to SO3@S1
+    Derivative is SO3. Adjusting charge on O2
+    Adjusting by: 0.031
+Found prep entry: MEX for Me
+Bonded ZTA@H3 to MEX@CH3
+    Derivative is MEX. Adjusting charge on C3
+    Adjusting by: -0.039
+Found prep entry: MEX for Me
+Bonded UKB@O6 to MEX@CH3
+    Derivative is MEX. Adjusting charge on C6
+    Adjusting by: -0.039
+Created residues: 
+OH
+DGlcpNAcb1-
+DGulpb1-4
+DManpb1-4
+DAllpb1-3
+DAltpa1-4
+DGlcpb1-2
+3S
+DGalpb1-4
+DManpa1-6
+DTalpa1-6
+2S
+3Me
+6Me
+Node labelled OH destroyed
+Edge labeled b1-, with index 31 destroyed
+Node labelled DGlcpNAcb1- destroyed
+Edge labeled b1-4, with index 33 destroyed
+Node labelled DGulpb1-4 destroyed
+Edge labeled b1-4, with index 35 destroyed
+Edge labeled 6, with index 55 destroyed
+Node labelled DManpb1-4 destroyed
+Edge labeled b1-3, with index 37 destroyed
+Edge labeled a1-4, with index 39 destroyed
+Edge labeled a1-6, with index 47 destroyed
+Node labelled DAllpb1-3 destroyed
+Node labelled DAltpa1-4 destroyed
+Edge labeled b1-2, with index 41 destroyed
+Node labelled DGlcpb1-2 destroyed
+Edge labeled 3, with index 43 destroyed
+Edge labeled b1-4, with index 45 destroyed
+Node labelled 3S destroyed
+Node labelled DGalpb1-4 destroyed
+Node labelled DManpa1-6 destroyed
+Edge labeled a1-6, with index 49 destroyed
+Node labelled DTalpa1-6 destroyed
+Edge labeled 2, with index 51 destroyed
+Edge labeled 3, with index 53 destroyed
+Node labelled 2S destroyed
+Node labelled 3Me destroyed
+Node labelled 6Me destroyed
+DTalp[2S,3Me]a1-6DManpa1-6[DNeu5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4][DAllpb1-3]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OHEdge labeled b1-, with index 2 destroyed
+Node labelled OH destroyed
+Edge labeled b1-4, with index 4 destroyed
+Node labelled DGlcpNAcb1- destroyed
+Edge labeled b1-4, with index 8 destroyed
+Edge labeled 6, with index 6 destroyed
+Node labelled DGulpb1-4 destroyed
+Node labelled 6Me destroyed
+Edge labeled b1-3, with index 20 destroyed
+Edge labeled a1-4, with index 10 destroyed
+Edge labeled a1-6, with index 22 destroyed
+Node labelled DManpb1-4 destroyed
+Edge labeled b1-2, with index 12 destroyed
+Node labelled DAltpa1-4 destroyed
+Edge labeled 3, with index 14 destroyed
+Edge labeled b1-4, with index 16 destroyed
+Node labelled DGlcpb1-2 destroyed
+Node labelled 3S destroyed
+Edge labeled a2-6, with index 18 destroyed
+Node labelled DGalpb1-4 destroyed
+Node labelled DNeu5Aca2-6 destroyed
+Node labelled DAllpb1-3 destroyed
+Edge labeled a1-6, with index 24 destroyed
+Node labelled DManpa1-6 destroyed
+Edge labeled 2, with index 28 destroyed
+Edge labeled 3, with index 26 destroyed
+Node labelled DTalpa1-6 destroyed
+Node labelled 3Me destroyed
+Node labelled 2S destroyed
+Parsing unlabelled input sequence:
+DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+Sequence is sane
+_OH____.
+Saving DGlcpNAcb1- with parent OH
+D_Glc_p_NAc_b_1-.
+Saving DGlcpNAcb1-4 with parent DGlcpNAc
+D_Glc_p_NAc_b_1-4.
+Saving 6Me with parent DGlcpNAc
+_Me____6.
+Saving DManpb1-4 with parent DGlcpNAc
+D_Man_p__b_1-4.
+Saving DManpa1-3 with parent DManp
+D_Man_p__a_1-3.
+Saving DGlcpNAcb1-2 with parent DManp
+D_Glc_p_NAc_b_1-2.
+Saving 3S with parent DGlcpNAc
+_S____3.
+Saving DGalpb1-4 with parent DGlcpNAc
+D_Gal_p__b_1-4.
+Saving DNeup5Aca2-6 with parent DGalp
+D_Neu_p_5Ac_a_2-6.
+Saving DGlcpNAcb1-4 with parent DManp
+D_Glc_p_NAc_b_1-4.
+Saving DManpa1-6 with parent DManp
+D_Man_p__a_1-6.
+Saving DManpa1-6 with parent DManp
+D_Man_p__a_1-6.
+Saving 3Me with parent DManp
+_Me____3.
+Saving 2S with parent DManp
+_S____2.
+
+PREPFILESTUFFFFF
+
+Found prep entry: ROH for OH
+Found prep entry: 4YB for DGlcpNAc
+Bonded ROH@O1 to 4YB@C1
+Found prep entry: UYB for DGlcpNAc
+Bonded 4YB@H4 to UYB@C1
+Found prep entry: QMB for DManp
+Bonded UYB@H4 to QMB@C1
+Found prep entry: 2MA for DManp
+Bonded QMB@H3 to 2MA@C1
+Found prep entry: WYB for DGlcpNAc
+Bonded 2MA@H2 to WYB@C1
+Found prep entry: SO3 for S
+Bonded WYB@H3 to SO3@S1
+    Derivative is SO3. Adjusting charge on O3
+    Adjusting by: 0.031
+Found prep entry: 6LB for DGalp
+Bonded WYB@H4 to 6LB@C1
+Found prep entry: 0SA for DNeup5Ac
+Bonded 6LB@O6 to 0SA@C2
+Found prep entry: 0YB for DGlcpNAc
+Bonded QMB@H4 to 0YB@C1
+Found prep entry: 6MA for DManp
+Bonded QMB@O6 to 6MA@C1
+Found prep entry: ZMA for DManp
+Bonded 6MA@O6 to ZMA@C1
+Found prep entry: SO3 for S
+Bonded ZMA@H2 to SO3@S1
+    Derivative is SO3. Adjusting charge on O2
+    Adjusting by: 0.031
+Found prep entry: MEX for Me
+Bonded ZMA@H3 to MEX@CH3
+    Derivative is MEX. Adjusting charge on C3
+    Adjusting by: -0.039
+Found prep entry: MEX for Me
+Bonded UYB@O6 to MEX@CH3
+    Derivative is MEX. Adjusting charge on C6
+    Adjusting by: -0.039
+Created residues: 
+OH
+DGlcpNAcb1-
+DGlcpNAcb1-4
+DManpb1-4
+DManpa1-3
+DGlcpNAcb1-2
+3S
+DGalpb1-4
+DNeup5Aca2-6
+DGlcpNAcb1-4
+DManpa1-6
+DManpa1-6
+2S
+3Me
+6Me
+Node labelled OH destroyed
+Edge labeled b1-, with index 87 destroyed
+Node labelled DGlcpNAcb1- destroyed
+Edge labeled b1-4, with index 89 destroyed
+Node labelled DGlcpNAcb1-4 destroyed
+Edge labeled b1-4, with index 91 destroyed
+Edge labeled 6, with index 113 destroyed
+Node labelled DManpb1-4 destroyed
+Edge labeled a1-3, with index 93 destroyed
+Edge labeled b1-4, with index 103 destroyed
+Edge labeled a1-6, with index 105 destroyed
+Node labelled DManpa1-3 destroyed
+Edge labeled b1-2, with index 95 destroyed
+Node labelled DGlcpNAcb1-2 destroyed
+Edge labeled 3, with index 97 destroyed
+Edge labeled b1-4, with index 99 destroyed
+Node labelled 3S destroyed
+Node labelled DGalpb1-4 destroyed
+Edge labeled a2-6, with index 101 destroyed
+Node labelled DNeup5Aca2-6 destroyed
+Node labelled DGlcpNAcb1-4 destroyed
+Node labelled DManpa1-6 destroyed
+Edge labeled a1-6, with index 107 destroyed
+Node labelled DManpa1-6 destroyed
+Edge labeled 2, with index 109 destroyed
+Edge labeled 3, with index 111 destroyed
+Node labelled 2S destroyed
+Node labelled 3Me destroyed
+Node labelled 6Me destroyed
+DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OHEdge labeled b1-, with index 58 destroyed
+Node labelled OH destroyed
+Edge labeled b1-4, with index 60 destroyed
+Node labelled DGlcpNAcb1- destroyed
+Edge labeled b1-4, with index 64 destroyed
+Edge labeled 6, with index 62 destroyed
+Node labelled DGlcpNAcb1-4 destroyed
+Node labelled 6Me destroyed
+Edge labeled a1-3, with index 66 destroyed
+Edge labeled b1-4, with index 76 destroyed
+Edge labeled a1-6, with index 78 destroyed
+Node labelled DManpb1-4 destroyed
+Edge labeled b1-2, with index 68 destroyed
+Node labelled DManpa1-3 destroyed
+Edge labeled 3, with index 70 destroyed
+Edge labeled b1-4, with index 72 destroyed
+Node labelled DGlcpNAcb1-2 destroyed
+Node labelled 3S destroyed
+Edge labeled a2-6, with index 74 destroyed
+Node labelled DGalpb1-4 destroyed
+Node labelled DNeup5Aca2-6 destroyed
+Node labelled DGlcpNAcb1-4 destroyed
+Edge labeled a1-6, with index 80 destroyed
+Node labelled DManpa1-6 destroyed
+Edge labeled 2, with index 84 destroyed
+Edge labeled 3, with index 82 destroyed
+Node labelled DManpa1-6 destroyed
+Node labelled 3Me destroyed
+Node labelled 2S destroyed
+Parsing unlabelled input sequence:
+DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
+Sequence is sane
+_OH____.
+Saving DXylpb1- with parent OH
+D_Xyl_p__b_1-.
+Saving DGalpb1-4 with parent DXylp
+D_Gal_p__b_1-4.
+Saving DGalpb1-3 with parent DGalp
+D_Gal_p__b_1-3.
+Saving DGlcpAb1-3 with parent DGalp
+D_Glc_p_A_b_1-3.
+Saving DGlcpAb1-4 with parent DGlcpA
+D_Glc_p_A_b_1-4.
+Saving DGlcpNAcb1-4 with parent DGlcpA
+D_Glc_p_NAc_b_1-4.
+
+PREPFILESTUFFFFF
+
+Found prep entry: ROH for OH
+Found prep entry: 4XB for DXylp
+Bonded ROH@O1 to 4XB@C1
+Found prep entry: 3LB for DGalp
+Bonded 4XB@H4 to 3LB@C1
+Found prep entry: 3LB for DGalp
+Bonded 3LB@H3 to 3LB@C1
+Found prep entry: 4ZB for DGlcpA
+Bonded 3LB@H3 to 4ZB@C1
+Found prep entry: 4ZB for DGlcpA
+Bonded 4ZB@H4 to 4ZB@C1
+Found prep entry: 0YB for DGlcpNAc
+Bonded 4ZB@H4 to 0YB@C1
+Created residues: 
+OH
+DXylpb1-
+DGalpb1-4
+DGalpb1-3
+DGlcpAb1-3
+DGlcpAb1-4
+DGlcpNAcb1-4
+Node labelled OH destroyed
+Edge labeled b1-, with index 129 destroyed
+Node labelled DXylpb1- destroyed
+Edge labeled b1-4, with index 131 destroyed
+Node labelled DGalpb1-4 destroyed
+Edge labeled b1-3, with index 133 destroyed
+Node labelled DGalpb1-3 destroyed
+Edge labeled b1-3, with index 135 destroyed
+Node labelled DGlcpAb1-3 destroyed
+Edge labeled b1-4, with index 137 destroyed
+Node labelled DGlcpAb1-4 destroyed
+Edge labeled b1-4, with index 139 destroyed
+Node labelled DGlcpNAcb1-4 destroyed
+DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OHEdge labeled b1-, with index 116 destroyed
+Node labelled OH destroyed
+Edge labeled b1-4, with index 118 destroyed
+Node labelled DXylpb1- destroyed
+Edge labeled b1-3, with index 120 destroyed
+Node labelled DGalpb1-4 destroyed
+Edge labeled b1-3, with index 122 destroyed
+Node labelled DGalpb1-3 destroyed
+Edge labeled b1-4, with index 124 destroyed
+Node labelled DGlcpAb1-3 destroyed
+Edge labeled b1-4, with index 126 destroyed
+Node labelled DGlcpAb1-4 destroyed
+Node labelled DGlcpNAcb1-4 destroyed
+Parsing unlabelled input sequence:
+dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
+Sequence is sane
+_OH____.
+Saving DXylpb1- with parent OH
+D_Xyl_p__b_1-.
+Saving DGalpb1-4 with parent DXylp
+D_Gal_p__b_1-4.
+Saving DGalpb1-3 with parent DGalp
+D_Gal_p__b_1-3.
+Saving DGlcpAb1-3 with parent DGalp
+D_Glc_p_A_b_1-3.
+Saving DGlcpAb1-4 with parent DGlcpA
+D_Glc_p_A_b_1-4.
+Saving 2S with parent DGlcpA
+_S____2.
+Saving DGlcpNSa1-4 with parent DGlcpA
+D_Glc_p_NS_a_1-4.
+Saving LIdopA(2SO)a1-4 with parent DGlcpNS
+L_Ido_p_A(2SO)_a_1-4.
+Saving 2S with parent LIdopA(2SO)
+_S____2.
+Saving DGlcpNAca1-4 with parent LIdopA(2SO)
+D_Glc_p_NAc_a_1-4.
+Saving 6S with parent DGlcpNAc
+_S____6.
+Saving 3S with parent DGlcpNAc
+_S____3.
+Saving dUA1-4 with parent DGlcpNAc
+_dUA____1-4.
+Saving 2S with parent dUA
+_S____2.
+
+PREPFILESTUFFFFF
+
+Found prep entry: ROH for OH
+Found prep entry: 4XB for DXylp
+Bonded ROH@O1 to 4XB@C1
+Found prep entry: 3LB for DGalp
+Bonded 4XB@H4 to 3LB@C1
+Found prep entry: 3LB for DGalp
+Bonded 3LB@H3 to 3LB@C1
+Found prep entry: 4ZB for DGlcpA
+Bonded 3LB@H3 to 4ZB@C1
+Found prep entry: YZB for DGlcpA
+Bonded 4ZB@H4 to YZB@C1
+Found prep entry: SO3 for S
+Bonded YZB@H2 to SO3@S1
+    Derivative is SO3. Adjusting charge on O2
+    Adjusting by: 0.031
+Found prep entry: 4YA for DGlcpNS
+Bonded YZB@H4 to 4YA@C1
+Could not find prep entry for LIdopA(2SO) Glycam: YuA2
+Created residues: 
+OH
+DXylpb1-
+DGalpb1-4
+DGalpb1-3
+DGlcpAb1-3
+DGlcpAb1-4
+2S
+DGlcpNSa1-4
+Node labelled OH destroyed
+Edge labeled b1-, with index 171 destroyed
+Node labelled DXylpb1- destroyed
+Edge labeled b1-4, with index 173 destroyed
+Node labelled DGalpb1-4 destroyed
+Edge labeled b1-3, with index 175 destroyed
+Node labelled DGalpb1-3 destroyed
+Edge labeled b1-3, with index 177 destroyed
+Node labelled DGlcpAb1-3 destroyed
+Edge labeled b1-4, with index 179 destroyed
+Node labelled DGlcpAb1-4 destroyed
+Edge labeled 2, with index 181 destroyed
+Edge labeled a1-4, with index 183 destroyed
+Node labelled 2S destroyed
+Node labelled DGlcpNSa1-4 destroyed
+dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OHEdge labeled b1-, with index 142 destroyed
+Node labelled OH destroyed
+Edge labeled b1-4, with index 144 destroyed
+Node labelled DXylpb1- destroyed
+Edge labeled b1-3, with index 146 destroyed
+Node labelled DGalpb1-4 destroyed
+Edge labeled b1-3, with index 148 destroyed
+Node labelled DGalpb1-3 destroyed
+Edge labeled b1-4, with index 150 destroyed
+Node labelled DGlcpAb1-3 destroyed
+Edge labeled 2, with index 152 destroyed
+Edge labeled a1-4, with index 154 destroyed
+Node labelled DGlcpAb1-4 destroyed
+Node labelled 2S destroyed
+Edge labeled a1-4, with index 156 destroyed
+Node labelled DGlcpNSa1-4 destroyed
+Edge labeled 2, with index 158 destroyed
+Edge labeled a1-4, with index 160 destroyed
+Node labelled LIdopA(2SO)a1-4 destroyed
+Node labelled 2S destroyed
+Edge labeled 3, with index 164 destroyed
+Edge labeled 1-4, with index 166 destroyed
+Edge labeled 6, with index 162 destroyed
+Node labelled DGlcpNAca1-4 destroyed
+Node labelled 6S destroyed
+Node labelled 3S destroyed
+Edge labeled 2, with index 168 destroyed
+Node labelled dUA1-4 destroyed
+Node labelled 2S destroyed
+Parsing unlabelled input sequence:
+dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
+Sequence is sane
+_OH____.
+Saving DGlcpNSa1- with parent OH
+D_Glc_p_NS_a_1-.
+Saving 6S with parent DGlcpNS
+_S____6.
+Saving LIdopA(4C1)a1-4 with parent DGlcpNS
+L_Ido_p_A(4C1)_a_1-4.
+Saving DGlcpNSa1-4 with parent LIdopA(4C1)
+D_Glc_p_NS_a_1-4.
+Saving LIdopAa1-4 with parent DGlcpNS
+L_Ido_p_A_a_1-4.
+Saving 2S with parent LIdopA
+_S____2.
+Saving DGlcpNSa1-4 with parent LIdopA
+D_Glc_p_NS_a_1-4.
+Saving dUAa1-4 with parent DGlcpNS
+_dUA___a_1-4.
+Saving 2S with parent dUA
+_S____2.
+
+PREPFILESTUFFFFF
+
+Found prep entry: ROH for OH
+Found prep entry: UYA for DGlcpNS
+Bonded ROH@O1 to UYA@C1
+Found prep entry: 4uA3 for LIdopA(4C1)
+Bonded UYA@H4 to 4uA3@C1
+Found prep entry: 4YA for DGlcpNS
+Bonded 4uA3@H4 to 4YA@C1
+Found prep entry: YuA for LIdopA
+Bonded 4YA@H4 to YuA@C1
+Found prep entry: SO3 for S
+Bonded YuA@H2 to SO3@S1
+    Derivative is SO3. Adjusting charge on O2
+    Adjusting by: 0.031
+Found prep entry: 4YA for DGlcpNS
+Bonded YuA@H4 to 4YA@C1
+Found prep entry: 245 for dUA
+Bonded 4YA@H4 to 245@C1
+Found prep entry: SO3 for S
+Bonded 245@H2 to SO3@S1
+    Derivative is SO3. Adjusting charge on O2
+    Adjusting by: 0.031
+Found prep entry: SO3 for S
+Bonded UYA@O6 to SO3@S1
+    Derivative is SO3. Adjusting charge on O6
+    Adjusting by: 0.031
+Created residues: 
+OH
+DGlcpNSa1-
+LIdopA(4C1)a1-4
+DGlcpNSa1-4
+LIdopAa1-4
+2S
+DGlcpNSa1-4
+dUAa1-4
+2S
+6S
+Node labelled OH destroyed
+Edge labeled a1-, with index 205 destroyed
+Node labelled DGlcpNSa1- destroyed
+Edge labeled a1-4, with index 207 destroyed
+Edge labeled 6, with index 221 destroyed
+Node labelled LIdopA(4C1)a1-4 destroyed
+Edge labeled a1-4, with index 209 destroyed
+Node labelled DGlcpNSa1-4 destroyed
+Edge labeled a1-4, with index 211 destroyed
+Node labelled LIdopAa1-4 destroyed
+Edge labeled 2, with index 213 destroyed
+Edge labeled a1-4, with index 215 destroyed
+Node labelled 2S destroyed
+Node labelled DGlcpNSa1-4 destroyed
+Edge labeled a1-4, with index 217 destroyed
+Node labelled dUAa1-4 destroyed
+Edge labeled 2, with index 219 destroyed
+Node labelled 2S destroyed
+Node labelled 6S destroyed
+dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OHEdge labeled a1-, with index 186 destroyed
+Node labelled OH destroyed
+Edge labeled a1-4, with index 190 destroyed
+Edge labeled 6, with index 188 destroyed
+Node labelled DGlcpNSa1- destroyed
+Node labelled 6S destroyed
+Edge labeled a1-4, with index 192 destroyed
+Node labelled LIdopA(4C1)a1-4 destroyed
+Edge labeled a1-4, with index 194 destroyed
+Node labelled DGlcpNSa1-4 destroyed
+Edge labeled 2, with index 196 destroyed
+Edge labeled a1-4, with index 198 destroyed
+Node labelled LIdopAa1-4 destroyed
+Node labelled 2S destroyed
+Edge labeled a1-4, with index 200 destroyed
+Node labelled DGlcpNSa1-4 destroyed
+Edge labeled 2, with index 202 destroyed
+Node labelled dUAa1-4 destroyed
+Node labelled 2S destroyed
+Parsing unlabelled input sequence:
+DGlcpa1-2DFrufb
+Sequence is sane
+D_Fru_f__b_.
+Saving DGlcpa1-2 with parent DFruf
+D_Glc_p__a_1-2.
+
+PREPFILESTUFFFFF
+
+Found prep entry: 2CU for DFruf
+Found prep entry: 0GA for DGlcp
+Bonded 2CU@O2 to 0GA@C1
+Created residues: 
+DFrufb
+DGlcpa1-2
+Node labelled DFrufb destroyed
+Edge labeled a1-2, with index 227 destroyed
+Node labelled DGlcpa1-2 destroyed
+DGlcpa1-2DFrufEdge labeled a1-2, with index 224 destroyed
+Node labelled DFrufb destroyed
+Node labelled DGlcpa1-2 destroyed
+Parsing unlabelled input sequence:
+DFrufb2-1DGlcpa
+Sequence is sane
+D_Glc_p__a_.
+Saving DFrufb2-1 with parent DGlcp
+D_Fru_f__b_2-1.
+
+PREPFILESTUFFFFF
+
+Found prep entry: 1GA for DGlcp
+Found prep entry: 0CU for DFruf
+Bonded 1GA@O1 to 0CU@C2
+Created residues: 
+DGlcpa
+DFrufb2-1
+Node labelled DGlcpa destroyed
+Edge labeled b2-1, with index 233 destroyed
+Node labelled DFrufb2-1 destroyed
+DFrufb2-1DGlcpEdge labeled b2-1, with index 230 destroyed
+Node labelled DGlcpa destroyed
+Node labelled DFrufb2-1 destroyed

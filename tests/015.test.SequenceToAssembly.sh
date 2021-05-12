@@ -1,7 +1,7 @@
 #!/bin/bash
 
 printf "Testing 015.test.SequenceAssembly.cc... "
-g++ -std=c++17 -I $GEMSHOME/gmml/ -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/015.test.SequenceAssembly.cc -lgmml -o sequenceAssembly
+g++ -std=c++17 -I $GEMSHOME/gmml/ -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/015.test.SequenceAssembly.cc -lgmml -pthread -o sequenceAssembly
 ./sequenceAssembly > 015.output_sequenceAssembly.txt
 if ! cmp  015.output_sequenceAssembly.txt tests/correct_outputs/015.output_sequenceAssembly.txt > /dev/null 2>&1; then
     printf "Test FAILED!. Output file different\n"

@@ -1,11 +1,4 @@
-#include "../../gmml/includes/gmml.hpp"
-#include "../../gmml/includes/MolecularModeling/assembly.hpp"
-#include "../../gmml/includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "../../gmml/includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "../../gmml/includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
-#include "../../gmml/includes/ParameterSet/OffFileSpace/offfile.hpp"
-#include "../../gmml/includes/ParameterSet/OffFileSpace/offfileresidue.hpp"
-#include "../../gmml/includes/ParameterSet/OffFileSpace/offfileprocessingexception.hpp"
+#include "includes/gmml.hpp"
 #include <iostream>
 #include <string>
 

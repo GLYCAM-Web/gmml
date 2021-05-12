@@ -1,7 +1,6 @@
 #!/bin/bash
-
 printf "Testing buildOligosaccharide library... "
-g++ -std=c++17 -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/013.buildOligosaccharideLibrary.cc -lgmml -o buildOligosaccharideLibrary
+g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/013.buildOligosaccharideLibrary.cc -lgmml -pthread -o buildOligosaccharideLibrary
 rm -r 013.outputs/ >/dev/null 2>&1
 mkdir 013.outputs/
 ./buildOligosaccharideLibrary tests/inputs/013.smallLibrary.txt _ 013.outputs ../dat/prep/GLYCAM_06j-1.prep > 013.output_buildOligosaccharideLibrary.txt

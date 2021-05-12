@@ -1,11 +1,8 @@
-#include "../../includes/gmml.hpp"
+#include "includes/gmml.hpp"
 #include <string>
-
 using namespace MolecularModeling;
 using namespace GeometryTopology;
 using namespace PdbFileSpace;
-
-
 int main(int argc, char* argv[]){
 
     GeometryTopology::Coordinate c_ND2(-0.847,   0.445,  -2.872);

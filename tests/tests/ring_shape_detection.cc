@@ -1,5 +1,5 @@
-#include "gmml.hpp"
-#include "../../includes/MolecularModeling/ring_shape_detection.hpp"
+#include "includes/gmml.hpp"
+#include "includes/MolecularModeling/ring_shape_detection.hpp"
 
 int main(void)
 {

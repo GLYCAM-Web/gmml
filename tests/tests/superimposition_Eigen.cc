@@ -1,4 +1,4 @@
-#include "../../includes/gmml.hpp"
+#include "includes/gmml.hpp"
 #include <string>
 
 using namespace gmml;
