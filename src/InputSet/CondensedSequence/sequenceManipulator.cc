@@ -1,15 +1,15 @@
 #include <sstream>
 #include <sys/stat.h> // for checking if file exists
+#include <fstream>  // writing outputDotFile
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/MolecularModeling/Graph/Graph.hpp"
 
 using CondensedSequence::SequenceManipulator;
 using CondensedSequence::ParsedResidue;
 
-bool file_exists (const char *filename)
+bool file_exists(const char *filename)
 {
     struct stat buffer;
-    std::cout << filename << "\n";
     return (stat (filename, &buffer) == 0);
 }
 
@@ -81,7 +81,9 @@ void SequenceManipulator::Print(const bool withLabels)
 	this->RecurvePrint(this->GetTerminal(), branchStackSize, output, withLabels);
 	std::reverse(output.begin(), output.end()); // Reverse order, as it starts from terminal.
 	for (auto &label : output)
+	{
 		std::cout << label;
+	}
 }
 
 void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels)
@@ -136,26 +138,32 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 	return;
 }
 
-void SequenceManipulator::PrintGraphViz(std::string SnfgFilePath)
+void SequenceManipulator::PrintGraphViz(GraphVizDotConfig &configs)
 {
 	this->SetIndexByConnectivity();
-	std::string output = "graph G {graph [splines=false forcelabels=true  dpi=72];\n";
-	output += "node [ shape=\"none\" fontname=Helvetica labelfontsize=12 forcelabels=\"true\";\n";
-	output += "label=\"none\" size=50 fixedsize=\"true\" scale=\"true\"];\n";
-	output += "edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];\n";
-	output += "rankdir=LR nodesep=\"0.05\" ranksep=\"0.8\";\n";
+	std::stringstream ss;
+	ss << "graph G {graph [splines=false forcelabels=true  dpi=" << configs.dpi_ << "];\n";
+	ss << "node [ shape=\"none\" fontname=Helvetica labelfontsize=12 forcelabels=\"true\";\n";
+	ss << "label=\"none\" size=50 fixedsize=\"true\" scale=\"true\"];\n";
+	ss << "edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];\n";
+	ss << "rankdir=LR nodesep=\"0.05\" ranksep=\"0.8\";\n";
 	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
 	{
 		if (residue->GetType() != ParsedResidue::Type::Derivative) 
 		{
-			output += this->GetGraphVizLineForResidue(*residue, SnfgFilePath) + "\n";
+			ss << this->GetGraphVizLineForResidue(*residue, configs) << "\n";
 		}
 	}
-	output += "}\n";
-	std::cout << output;
+	ss << "}\n";
+	// Open and overwrite.
+	std::ofstream outputDotFile(configs.file_name_, std::ios::trunc);
+	outputDotFile << ss.str();
+	outputDotFile.close();
+	std::cout << ss.str();
+	return;
 }
 
-std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residue, std::string SnfgFilePath)
+std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residue, GraphVizDotConfig &configs)
 {
     std::cout << "Getting GraphVizLine for " << residue.GetName() << "\n"; 
     std::stringstream ss;
@@ -168,8 +176,7 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
     }
     // Sugar
     std::string label = "";
-    std::string imageFile = SnfgFilePath + residue.GetMonosaccharideName() + ".svg";
-    
+    std::string imageFile = configs.svg_directory_path_ + residue.GetMonosaccharideName() + ".svg";
     std::cout << "Searching for image: " << imageFile << "\n";
     if(file_exists(imageFile.c_str()))
     {
@@ -201,15 +208,27 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
     }
     // Linkage
     for (auto &parent : residue.GetParents())
-    { // There is either 1 or 0, this covers both cases 
-        ss << residue.GetIndex() << "--" << parent->GetIndex() << "[label=\"" << residue.GetLinkageName() << "\"];\n";
-        for (auto &linkage : residue.GetOutEdges())
+    { // There is either 1 or 0 parents, this covers both cases.
+        ss << residue.GetIndex() << "--" << parent->GetIndex() << "[label=\"";
+        if (configs.show_config_labels_)
         {
-            ss << residue.GetIndex() << "--" << parent->GetIndex();
-            ss << "[taillabel=< <B>" << linkage->GetIndex() << "</B>>, ";
-            ss << "labelfontsize = 14, labeldistance = 2.0, labelangle = -35";
-            ss << "];\n";
+        	ss << residue.GetConfiguration();
         }
+        if (configs.show_position_labels_)
+        {
+        	ss << residue.GetLinkage();
+        }
+        ss << "\"];\n";
+        if (configs.show_edge_labels_)
+        {
+	        for (auto &linkage : residue.GetOutEdges())
+	        {
+	            ss << residue.GetIndex() << "--" << parent->GetIndex();
+	            ss << "[taillabel=< <B>" << linkage->GetIndex() << "</B>>, ";
+	            ss << "labelfontsize = 14, labeldistance = 2.0, labelangle = -35";
+	            ss << "];\n";
+	        }
+    	}
     }
     return ss.str();
 }
