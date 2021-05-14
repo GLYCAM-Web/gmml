@@ -3,8 +3,6 @@
 
 #include "includes/InputSet/CondensedSequence/sequenceParser.hpp"
 
-
-
 namespace CondensedSequence
 {
     struct GraphVizDotConfig 
@@ -49,22 +47,13 @@ namespace CondensedSequence
         void PrintLabelledSequence();
         void Print(const bool withLabels = false);
         void PrintGraphViz(GraphVizDotConfig &configs);
-        std::string GetGraphVizLineForResidue(ParsedResidue &residue, GraphVizDotConfig &configs);
         std::vector<ParsedResidue*> GetParsedResiduesOrderedByConnectivity();
     private:
-        void RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels);
-        //////////////////////////////////////////////////////////
-        //                       ACCESSOR                       //
-        //////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////
-        //                       MUTATOR                        //
-        //////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////
-        //                 PRIVATE MEMBERS                      //
-        //////////////////////////////////////////////////////////
+        void RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels);
+        std::string GetGraphVizLineForResidue(ParsedResidue &residue, GraphVizDotConfig &configs);
     };
 }
 #endif
