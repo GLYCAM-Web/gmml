@@ -23,10 +23,8 @@ done
 if ! cmp  016.output_drawGlycan.txt tests/correct_outputs/016.output_drawGlycan.txt > /dev/null 2>&1; then
     printf "Test FAILED!. Output file different\n"
     return 1;
-    exit 1;
 else
     printf "Test passed.\n"
     rm drawGlycan 016.output_drawGlycan.txt
     return 0;
-    exit 0;
 fi
