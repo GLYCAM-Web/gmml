@@ -2,7 +2,7 @@
 
 ###################### Test 08 ######################
 printf "Testing detectSugars... "
-g++ -std=c++0x -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/detect_sugars.cc -lgmml -pthread -o detect_sugars
+g++ -std=c++0x -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/007.detectSugars.cc -lgmml -pthread -o detect_sugars
 if [ -f gmmo.ttl ]; then
    mv gmmo.ttl gmmoBeforeTests.ttl > /dev/null 2>&1
 fi
