@@ -38,7 +38,8 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         void RecurveGenerateResidues(ParsedResidue *currentChild, MolecularModeling::Residue &parent, std::vector<MolecularModeling::Residue> &createdResidues); 
         void BondResiduesDeduceAtoms(MolecularModeling::Residue& parentResidue, MolecularModeling::Residue& childResidue, std::string linkageLabel);
-
+        std::string GetGlycamResidueName(ParsedResidue &residue);
+        //////////////////////////////////////////////////////////
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
         std::map<std::string, PrepFileSpace::PrepFileResidue*> prepResidueMap_;

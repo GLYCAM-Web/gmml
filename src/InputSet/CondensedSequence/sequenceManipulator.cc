@@ -1,10 +1,17 @@
 #include <sstream>
+#include <sys/stat.h> // for checking if file exists
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/MolecularModeling/Graph/Graph.hpp"
 
 using CondensedSequence::SequenceManipulator;
 using CondensedSequence::ParsedResidue;
 
+bool file_exists (const char *filename)
+{
+    struct stat buffer;
+    std::cout << filename << "\n";
+    return (stat (filename, &buffer) == 0);
+}
 
 void SequenceManipulator::ReorderSequence()
 {	// Just doing the default by ascending link number for now.
@@ -141,9 +148,68 @@ void SequenceManipulator::PrintGraphViz(std::string SnfgFilePath)
 	{
 		if (residue->GetType() != ParsedResidue::Type::Derivative) 
 		{
-			output += residue->GetGraphVizLine(SnfgFilePath) + "\n";
+			output += this->GetGraphVizLineForResidue(*residue, SnfgFilePath) + "\n";
 		}
 	}
 	output += "}\n";
 	std::cout << output;
+}
+
+std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residue, std::string SnfgFilePath)
+{
+    std::cout << "Getting GraphVizLine for " << residue.GetName() << "\n"; 
+    std::stringstream ss;
+    ss << residue.GetIndex() << " [";
+    // Aglycone
+    if (residue.GetType() == ParsedResidue::Type::Aglycone)
+    {
+        ss << "shape=box label=\"" << residue.GetMonosaccharideName() << "\"]";
+        return ss.str();
+    }
+    // Sugar
+    std::string label = "";
+    std::string imageFile = SnfgFilePath + residue.GetMonosaccharideName() + ".svg";
+    
+    std::cout << "Searching for image: " << imageFile << "\n";
+    if(file_exists(imageFile.c_str()))
+    {
+        std::cout << "FOUND IT\n";
+        (residue.GetRingType() == "f") ? label = "f" : label = "";
+        ss << "label=\"" << label << "\" height=\"0.7\" image=\"" << imageFile << "\"];\n";
+    }
+    else
+    {
+        ss << "shape=circle height=\"0.7\" label=\"" << residue.GetMonosaccharideName() << "\"];\n";
+    }
+    // Derivatives
+    std::string derivativeStr = "";
+    for (auto &childLink : residue.GetChildren())
+    {
+        if (childLink->GetType() == ParsedResidue::Type::Derivative) 
+        {
+            derivativeStr += childLink->GetLinkageName() + childLink->GetName() + " ";
+        }
+    }
+    if (! derivativeStr.empty())
+    {
+        ss << "\n" << "b" << residue.GetIndex(); 
+        ss << "[ shape=\"plaintext\",fontsize=\"12\",forcelabels=\"true\"; height = \"0.3\"; labelloc = b;  label=\""; 
+        ss << derivativeStr << "\"];\n";
+        ss << "{ rank=\"same\"; b" << residue.GetIndex() << " " << residue.GetIndex() << "};\n";
+        ss << "{nodesep=\"0.2\";b" << residue.GetIndex() << ";" << residue.GetIndex() << "};\n";
+        ss << "b" << residue.GetIndex() << "--" << residue.GetIndex() << " [style=invis];\n";
+    }
+    // Linkage
+    for (auto &parent : residue.GetParents())
+    { // There is either 1 or 0, this covers both cases 
+        ss << residue.GetIndex() << "--" << parent->GetIndex() << "[label=\"" << residue.GetLinkageName() << "\"];\n";
+        for (auto &linkage : residue.GetOutEdges())
+        {
+            ss << residue.GetIndex() << "--" << parent->GetIndex();
+            ss << "[taillabel=< <B>" << linkage->GetIndex() << "</B>>, ";
+            ss << "labelfontsize = 14, labeldistance = 2.0, labelangle = -35";
+            ss << "];\n";
+        }
+    }
+    return ss.str();
 }

@@ -1,18 +1,8 @@
-
 #include <sstream>
-#include <sys/stat.h> // for checking if file exists
 #include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp"
 
 using CondensedSequence::ParsedResidue;
-//using std::filesystem::exists;
-
-bool file_exists (const char *filename)
-{
-    struct stat buffer;
-    std::cout << filename << "\n";
-    return (stat (filename, &buffer) == 0);
-}
 
 ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType) 
 : Node(this, residueString), fullResidueString_ (residueString)  
@@ -244,75 +234,9 @@ std::string ParsedResidue::GetGlycamResidueName()
     return "";
 }
 
-std::string ParsedResidue::GetGraphVizLine(std::string SnfgFilePath)
+std::string ParsedResidue::GetMonosaccharideName()
 {
-    std::cout << "Getting GraphVizLine for " << this->GetName() << "\n"; 
-    std::stringstream ss;
-    ss << this->GetIndex() << " [";
-    // Aglycone
-    if (this->GetType() == Type::Aglycone)
-    {
-        ss << "shape=box label=\"" << this->GetSimpleName() << "\"]";
-        return ss.str();
-    }
-    // Sugar
-    std::string label = "";
-    std::string imageFile = SnfgFilePath + this->GetImageFileName() + ".svg";
-    
-    std::cout << "Searching for image: " << imageFile << "\n";
-    if(file_exists(imageFile.c_str()))
-    {
-        std::cout << "FOUND IT\n";
-        (this->GetRingType() == "f") ? label = "f" : label = "";
-        ss << "label=\"" << label << "\" height=\"0.7\" image=\"" << imageFile << "\"];\n";
-    }
-    else
-    {
-        ss << "shape=circle height=\"0.7\" label=\"" << this->GetSimpleName() << "\"];\n";
-    }
-    // Derivatives
-    std::string derivativeStr = "";
-    for (auto &childLink : this->GetChildren())
-    {
-        if (childLink->GetType() == Type::Derivative) 
-        {
-            derivativeStr += childLink->GetLinkageName() + childLink->GetName() + " ";
-        }
-    }
-    if (! derivativeStr.empty())
-    {
-        ss << "\n" << "b" << this->GetIndex(); 
-        ss << "[ shape=\"plaintext\",fontsize=\"12\",forcelabels=\"true\"; height = \"0.3\"; labelloc = b;  label=\""; 
-        ss << derivativeStr << "\"];\n";
-        ss << "{ rank=\"same\"; b" << this->GetIndex() << " " << this->GetIndex() << "};\n";
-        ss << "{nodesep=\"0.2\";b" << this->GetIndex() << ";" << this->GetIndex() << "};\n";
-        ss << "b" << this->GetIndex() << "--" << this->GetIndex() << " [style=invis];\n";
-    }
-    // Linkage
-    for (auto &parent : this->GetParents())
-    { // There is either 1 or 0, this covers both cases 
-        ss << this->GetIndex() << "--" << parent->GetIndex() << "[label=\"" << this->GetLinkageName() << "\"];\n";
-        for (auto &linkage : this->GetOutEdges())
-        {
-            ss << this->GetIndex() << "--" << parent->GetIndex();
-            ss << "[taillabel=< <B>" << linkage->GetIndex() << "</B>>, ";
-            ss << "labelfontsize = 14, labeldistance = 2.0, labelangle = -35";
-            ss << "];\n";
-        }
-    }
-    return ss.str();
-}
-
-std::string ParsedResidue::GetSimpleName()
-{
-    return this->GetResidueName() + this->GetResidueModifier();
-}
-
-std::string ParsedResidue::GetImageFileName()
-{
-    std::stringstream ss;
-    ss << this->GetIsomer() << this->GetResidueName() << this->GetResidueModifier();
-    return ss.str();
+    return this->GetIsomer() + this->GetResidueName() + this->GetResidueModifier();
 }
 
 

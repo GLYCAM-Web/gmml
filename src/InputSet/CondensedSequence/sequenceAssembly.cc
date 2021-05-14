@@ -7,6 +7,7 @@
 #include "includes/MolecularModeling/Selections/selections.hpp"
 #include "includes/MolecularModeling/assembly.hpp" // Only to use silly Assembly functions. Should go away. 
 #include "includes/MolecularModeling/atom.hpp" // For setting Angles and bond distances
+#include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp" // To get glycam name for ParsedResidue
 
 //using Abstract::Residue; // For Residue::Type
 
@@ -32,7 +33,7 @@ std::vector<MolecularModeling::Residue> SequenceAssembly::GenerateResidues(std::
 	//A mapping between a residue name and its residue object
 	this->SetPrepResidueMap(prepFile.GetResidues());
 	auto aglycone = this->GetTerminal();
-	auto result = this->GetPrepResidueMap()->find(aglycone->GetGlycamResidueName());
+	auto result = this->GetPrepResidueMap()->find(this->GetGlycamResidueName(*aglycone));
 	std::cout << "Found prep entry: " << result->first << " for " << aglycone->GetName() << "\n";
 	auto &gmmlParent = createdResidues.emplace_back(result->second, aglycone->GetType());
 	gmmlParent.AddLabel(aglycone->GetLabel());
@@ -57,10 +58,10 @@ void SequenceAssembly::RecurveGenerateResidues(ParsedResidue* parsedChild, Molec
 		gmmlParent.MakeDeoxy(parsedChild->GetLink());
 		return;
 	}
-	auto prepEntry = this->GetPrepResidueMap()->find(parsedChild->GetGlycamResidueName());
+	auto prepEntry = this->GetPrepResidueMap()->find(this->GetGlycamResidueName(*parsedChild));
 	if (prepEntry == this->GetPrepResidueMap()->end())
 	{
-		std::cout << "Could not find prep entry for " << parsedChild->GetName() << " Glycam: " << parsedChild->GetGlycamResidueName() << std::endl; 
+		std::cout << "Could not find prep entry for " << parsedChild->GetName() << " Glycam: " << this->GetGlycamResidueName(*parsedChild) << std::endl; 
 	}
 	else
 	{
@@ -150,3 +151,22 @@ void SequenceAssembly::BondResiduesDeduceAtoms(MolecularModeling::Residue& paren
 	return;	
 }
 	
+std::string SequenceAssembly::GetGlycamResidueName(ParsedResidue &residue)
+{
+    std::string linkages = "";
+    if (residue.GetType() == ParsedResidue::Type::Sugar)
+    {
+        linkages = residue.GetChildLinkages();
+    }
+    try
+    {
+        std::string code = gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNameGenerator(linkages, residue.GetIsomer(), residue.GetResidueName(), 
+                                                                            residue.GetRingType(), residue.GetResidueModifier(), residue.GetConfiguration() );
+        return code;
+    }
+    catch (const std::string exception)
+    {
+        std::cerr << "Error: " << exception << std::endl;
+    }
+    return "";
+}

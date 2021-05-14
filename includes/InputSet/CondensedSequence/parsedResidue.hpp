@@ -1,5 +1,5 @@
-#ifndef PARSED_RESIDUE_HPP
-#define PARSED_RESIDUE_HPP
+#ifndef GMML_INPUTSET_CONDENSED_SEQUENCE_PARSED_RESIDUE_HPP
+#define GMML_INPUTSET_CONDENSED_SEQUENCE_PARSED_RESIDUE_HPP
 
 #include <string>
 #include "includes/MolecularModeling/Graph/Node.hpp" // TemplateGraph
@@ -41,6 +41,7 @@ namespace CondensedSequence
         std::string Print();
         std::string GetGlycamResidueName();
         std::string GetGraphVizLine(std::string SnfgFilePath = "");
+        std::string GetMonosaccharideName();
         //////////////////////////////////////////////////////////
         //                  OPERATOR OVERLOADING                //
         //////////////////////////////////////////////////////////
@@ -52,8 +53,7 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        std::string GetSimpleName();
-        std::string GetImageFileName();
+
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
