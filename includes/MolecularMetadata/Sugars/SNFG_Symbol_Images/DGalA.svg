@@ -13,8 +13,8 @@
    height="396.26"
    viewBox="0 0 396.26 396.26"
    version="1.1"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="DGalpA.svg">
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="DGalA.svg">
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -23,6 +23,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>GalA</dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -35,14 +36,14 @@
      guidetolerance="10"
      inkscape:pageopacity="0"
      inkscape:pageshadow="2"
-     inkscape:window-width="640"
-     inkscape:window-height="480"
+     inkscape:window-width="1215"
+     inkscape:window-height="960"
      id="namedview12"
      showgrid="false"
      inkscape:zoom="0.59556855"
-     inkscape:cx="198.13"
-     inkscape:cy="198.13"
-     inkscape:window-x="0"
+     inkscape:cx="-133.10962"
+     inkscape:cy="187.00024"
+     inkscape:window-x="62"
      inkscape:window-y="0"
      inkscape:window-maximized="0"
      inkscape:current-layer="Layer_1" />
@@ -68,21 +69,36 @@
   </defs>
   <title
      id="title7">GalA</title>
-  <g
-     id="layer1">
-    <path
-       id="path2987"
-       class="cls-1"
-       d="m 7370,7200 -170,-170 -170,170 170,170 z"
-       transform="translate(-7001.87,-7001.87)"
-       inkscape:connector-curvature="0"
-       style="fill:#ffcf25;stroke:#000000;stroke-width:39.77999878px" />
-    <path
-       id="path3816"
-       class="cls-2"
-       d="m 7033.5,7199 166.5,168.64 168.35,-166.86 z"
-       transform="translate(-7001.87,-7001.87)"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:25px;stroke-linejoin:bevel" />
-  </g>
+  <rect
+     style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:25.89699554;stroke-miterlimit:4;stroke-dasharray:none"
+     height="255.25403"
+     width="255.25403"
+     y="-407.82516"
+     x="-127.62701"
+     class="cls-1"
+     id="rect2985"
+     transform="rotate(135)" />
+  <path
+     style="fill:none;stroke:#000000;stroke-width:25.90226555;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 380.70252,198.13001 H 19.645355"
+     id="path1405"
+     inkscape:connector-curvature="0" />
+  <path
+     sodipodi:type="star"
+     style="opacity:1;fill:#ffcf25;fill-opacity:1;stroke:none;stroke-width:24.47298813;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+     id="path1476"
+     sodipodi:sides="3"
+     sodipodi:cx="199.5417"
+     sodipodi:cy="101.05923"
+     sodipodi:r1="147.57663"
+     sodipodi:r2="73.788315"
+     sodipodi:arg1="0.52359878"
+     sodipodi:arg2="1.5707963"
+     inkscape:flatsided="true"
+     inkscape:rounded="0"
+     inkscape:randomized="0"
+     d="m 327.34681,174.84754 -255.610218,0 L 199.5417,-46.517403 Z"
+     inkscape:transform-center-y="-24.88012"
+     transform="matrix(1.1738237,0,0,0.67436468,-36.096769,67.31074)"
+     inkscape:transform-center-x="9.7442719e-06" />
 </svg>

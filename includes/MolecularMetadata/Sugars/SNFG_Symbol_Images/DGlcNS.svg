@@ -14,7 +14,7 @@
    viewBox="0 0 397.26 397.26"
    version="1.1"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
-   sodipodi:docname="DGlcA.svg">
+   sodipodi:docname="DGlcNS.svg">
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -40,9 +40,9 @@
      inkscape:window-height="1016"
      id="namedview12"
      showgrid="false"
-     inkscape:zoom="0.59406936"
-     inkscape:cx="405.12122"
-     inkscape:cy="200.6663"
+     inkscape:zoom="0.84014095"
+     inkscape:cx="224.54333"
+     inkscape:cy="137.17021"
      inkscape:window-x="62"
      inkscape:window-y="1107"
      inkscape:window-maximized="1"
@@ -70,25 +70,25 @@
   <title
      id="title7">GlcA</title>
   <g
-     id="g3293">
+     id="g4678">
     <rect
-       transform="rotate(135)"
+       transform="scale(-1)"
        id="rect2985"
        class="cls-1"
-       x="-126.86996"
-       y="-409.28931"
-       width="255.25403"
-       height="255.25403"
-       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:25.89699554;stroke-miterlimit:4;stroke-dasharray:none" />
+       x="-384.86917"
+       y="-383.9079"
+       width="370.44647"
+       height="370.44647"
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:26.301;stroke-miterlimit:4;stroke-dasharray:none" />
     <path
        inkscape:connector-curvature="0"
        id="path1405"
-       d="M 381.20251,199.70064 H 20.145347"
-       style="fill:none;stroke:#000000;stroke-width:25.90226555;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+       d="M 381.42959,381.30997 21.100283,20.980659"
+       style="fill:none;stroke:#000000;stroke-width:26.557;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
     <path
-       inkscape:transform-center-x="9.7442719e-06"
-       transform="matrix(1.1738237,0,0,0.67436468,-35.596777,68.881372)"
-       inkscape:transform-center-y="-24.88012"
+       inkscape:transform-center-x="2.5051413e-06"
+       transform="matrix(1.2879329,1.2879329,-0.73992067,0.73992067,80.326104,-195.98809)"
+       inkscape:transform-center-y="-27.353889"
        d="m 327.34681,174.84754 -255.610218,0 L 199.5417,-46.517403 Z"
        inkscape:randomized="0"
        inkscape:rounded="0"
@@ -104,4 +104,15 @@
        style="opacity:1;fill:#007fcd;fill-opacity:1;stroke:none;stroke-width:24.47298813;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        sodipodi:type="star" />
   </g>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-weight:normal;font-size:120.00000763px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+     x="131.23187"
+     y="358.30841"
+     id="text4654"><tspan
+       sodipodi:role="line"
+       id="tspan4652"
+       x="131.23187"
+       y="358.30841"
+       style="font-size:96.00000763px">NS</tspan></text>
 </svg>

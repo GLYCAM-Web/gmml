@@ -13,8 +13,8 @@
    height="395.33"
    viewBox="0 0 395.33 395.33"
    version="1.1"
-   inkscape:version="0.91 r13725"
-   sodipodi:docname="LIdopA.svg">
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="LIdoA.svg">
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -39,11 +39,11 @@
      inkscape:window-height="884"
      id="namedview12"
      showgrid="false"
-     inkscape:zoom="0.6"
-     inkscape:cx="169.34858"
-     inkscape:cy="197.66499"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:zoom="1.2"
+     inkscape:cx="244.65129"
+     inkscape:cy="287.49345"
+     inkscape:window-x="484"
+     inkscape:window-y="100"
      inkscape:window-maximized="0"
      inkscape:current-layer="Layer_1" />
   <defs
@@ -68,23 +68,16 @@
   </defs>
   <title
      id="title7">IdoA</title>
-  <g
-     id="layer1"
-     style="stroke:#000000;stroke-width:23;stroke-linejoin:miter;stroke-miterlimit:7.5;stroke-dasharray:46, 23;stroke-dashoffset:59.79999924;stroke-opacity:1"
-     transform="matrix(1.05,0,0,1.05,-9.656982,-9.8531283)">
-    <path
-       id="path2987"
-       class="cls-1"
-       d="M 7029.93,7199.92 7199.47,7369.46 7369,7199.92 7199.47,7030.39 Z"
-       transform="translate(-7001.8,-7002.26)"
-       inkscape:connector-curvature="0"
-       style="fill:#ffffff;stroke:#000000;stroke-width:23;stroke-linejoin:miter;stroke-miterlimit:7.5;stroke-dasharray:46, 23;stroke-dashoffset:59.79999924;stroke-opacity:1" />
-    <path
-       id="path3816"
-       class="cls-2"
-       d="M 7362,7197.42 7195.89,7029.2 7028,7195.61 Z"
-       transform="translate(-7001.8,-7002.26)"
-       inkscape:connector-curvature="0"
-       style="fill:#906021;stroke:#000000;stroke-width:23;stroke-linejoin:miter;stroke-miterlimit:7.5;stroke-dasharray:46, 23;stroke-dashoffset:59.79999924;stroke-opacity:1" />
-  </g>
+  <path
+     style="fill:#ffffff;stroke:#000000;stroke-width:24.14999962;stroke-linejoin:miter;stroke-miterlimit:7.5;stroke-dasharray:48.3, 24.15;stroke-dashoffset:59.79999924;stroke-opacity:1"
+     inkscape:connector-curvature="0"
+     d="M 17.522477,191.20298 195.53948,13.185978 373.54598,191.20298 195.53948,369.20948 Z"
+     class="cls-1"
+     id="path2987" />
+  <path
+     style="fill:#906021;stroke:#000000;stroke-width:24.14999962;stroke-linejoin:miter;stroke-miterlimit:7.5;stroke-dasharray:48.3, 24.15;stroke-dashoffset:59.80000305;stroke-opacity:1"
+     inkscape:connector-curvature="0"
+     d="M 369.95498,192.57848 195.53948,369.20948 19.254977,194.47898 Z"
+     class="cls-2"
+     id="path3816" />
 </svg>
