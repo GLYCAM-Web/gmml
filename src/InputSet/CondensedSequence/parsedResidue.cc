@@ -1,6 +1,5 @@
 #include <sstream>
 #include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
-#include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp"
 
 using CondensedSequence::ParsedResidue;
 
@@ -83,7 +82,7 @@ std::string ParsedResidue::GetName(const bool withLabels)
     {
         return FindLabelContaining("&Label=");
     }
-    return this->GetIsomer() + this->GetResidueName() + this->GetRingType() + this->GetResidueModifier();
+    return this->GetIsomer() + this->GetResidueName() + this->GetRingType() + this->GetResidueModifier() + this->GetRingShape();
 }
 
 std::string ParsedResidue::GetLinkageName(const bool withLabels)
@@ -109,6 +108,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
     this->SetIsomer("");
     this->SetResidueName("");
     this->SetRingType("");
+    this->SetRingShape("");
     this->SetResidueModifier("");
     this->SetConfiguration("");
     this->SetLinkage("");
@@ -173,6 +173,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
     	if (modifierLength > 0 && modifierLength < 100)
         {
     		this->SetResidueModifier(residueString.substr(modifierStart, modifierLength));
+            this->ExciseRingShapeFromModifier();
             //std::cout << "Modifier is " << this->GetResidueModifier() << std::endl;
         }
     	else
@@ -208,35 +209,34 @@ std::string ParsedResidue::Print()
     ss << this->GetIsomer() << "_" 
 				<< this->GetResidueName() << "_"
 				<< this->GetRingType() << "_"
-				<< this->GetResidueModifier() << "_"
+                << this->GetResidueModifier() << "_"
+                << this->GetRingShape() << "_"
 				<< this->GetConfiguration() << "_"
 				<< this->GetLinkage() << ".\n";
     return ss.str();
 }
 
-std::string ParsedResidue::GetGlycamResidueName()
-{
-    std::string linkages = "";
-    if (this->GetType() == Type::Sugar)
-    {
-        linkages = this->GetChildLinkages();
-    }
-    try
-    {
-        std::string code = gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNameGenerator(linkages, this->GetIsomer(), this->GetResidueName(), 
-                                                                            this->GetRingType(), this->GetResidueModifier(), this->GetConfiguration() );
-        return code;
-    }
-    catch (const std::string exception)
-    {
-        std::cerr << "Error: " << exception << std::endl;
-    }
-    return "";
-}
 
 std::string ParsedResidue::GetMonosaccharideName()
 {
-    return this->GetIsomer() + this->GetResidueName() + this->GetResidueModifier();
+    return this->GetIsomer() + this->GetResidueName() + this->GetResidueModifier() + this->GetRingShape();
 }
 
+void ParsedResidue::ExciseRingShapeFromModifier()
+{ // E.g. LIdopA(4C1)a1-4 with modifier "A(4C1)", which here gets broken into ring shape "4C1" and modifier "A".
+    std::string modifier = this->GetResidueModifier();
+    size_t leftParenthesisPosition = modifier.find('(');
+    size_t rightParenthesisPosition = modifier.find(')');
+    
+    if ( (leftParenthesisPosition == std::string::npos) || (rightParenthesisPosition == std::string::npos) )
+    { // If there isn't a ring shape declared.
+        return;
+    }
+    else
+    { // Assumes it's always at end of modifiers
+        this->SetRingShape(modifier.substr(leftParenthesisPosition));
+        this->SetResidueModifier(modifier.substr(0,leftParenthesisPosition));
+    }
+    return;
+}
 

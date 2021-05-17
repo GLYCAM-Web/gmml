@@ -1,35 +1,35 @@
 Parsing unlabelled input sequence:
 DTalp[2S,3Me]a1-6DManpa1-6[DAllpb1-3][DNeu5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH
 Sequence is sane
-_OH____.
+_OH_____.
 Saving DGlcpNAcb1- with parent OH
-D_Glc_p_NAc_b_1-.
+D_Glc_p_NAc__b_1-.
 Saving DGulpb1-4 with parent DGlcpNAc
-D_Gul_p__b_1-4.
+D_Gul_p___b_1-4.
 Saving 6Me with parent DGulp
-_Me____6.
+_Me_____6.
 Saving DManpb1-4 with parent DGulp
-D_Man_p__b_1-4.
+D_Man_p___b_1-4.
 Saving DAltpa1-4 with parent DManp
-D_Alt_p__a_1-4.
+D_Alt_p___a_1-4.
 Saving DGlcpb1-2 with parent DAltp
-D_Glc_p__b_1-2.
+D_Glc_p___b_1-2.
 Saving 3S with parent DGlcp
-_S____3.
+_S_____3.
 Saving DGalpb1-4 with parent DGlcp
-D_Gal_p__b_1-4.
+D_Gal_p___b_1-4.
 Saving DNeu5Aca2-6 with parent DGalp
-D_Neu__5Ac_a_2-6.
+D_Neu__5Ac__a_2-6.
 Saving DAllpb1-3 with parent DManp
-D_All_p__b_1-3.
+D_All_p___b_1-3.
 Saving DManpa1-6 with parent DManp
-D_Man_p__a_1-6.
+D_Man_p___a_1-6.
 Saving DTalpa1-6 with parent DManp
-D_Tal_p__a_1-6.
+D_Tal_p___a_1-6.
 Saving 3Me with parent DTalp
-_Me____3.
+_Me_____3.
 Saving 2S with parent DTalp
-_S____2.
+_S_____2.
 
 PREPFILESTUFFFFF
 
@@ -143,35 +143,35 @@ Node labelled 2S destroyed
 Parsing unlabelled input sequence:
 DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
 Sequence is sane
-_OH____.
+_OH_____.
 Saving DGlcpNAcb1- with parent OH
-D_Glc_p_NAc_b_1-.
+D_Glc_p_NAc__b_1-.
 Saving DGlcpNAcb1-4 with parent DGlcpNAc
-D_Glc_p_NAc_b_1-4.
+D_Glc_p_NAc__b_1-4.
 Saving 6Me with parent DGlcpNAc
-_Me____6.
+_Me_____6.
 Saving DManpb1-4 with parent DGlcpNAc
-D_Man_p__b_1-4.
+D_Man_p___b_1-4.
 Saving DManpa1-3 with parent DManp
-D_Man_p__a_1-3.
+D_Man_p___a_1-3.
 Saving DGlcpNAcb1-2 with parent DManp
-D_Glc_p_NAc_b_1-2.
+D_Glc_p_NAc__b_1-2.
 Saving 3S with parent DGlcpNAc
-_S____3.
+_S_____3.
 Saving DGalpb1-4 with parent DGlcpNAc
-D_Gal_p__b_1-4.
+D_Gal_p___b_1-4.
 Saving DNeup5Aca2-6 with parent DGalp
-D_Neu_p_5Ac_a_2-6.
+D_Neu_p_5Ac__a_2-6.
 Saving DGlcpNAcb1-4 with parent DManp
-D_Glc_p_NAc_b_1-4.
+D_Glc_p_NAc__b_1-4.
 Saving DManpa1-6 with parent DManp
-D_Man_p__a_1-6.
+D_Man_p___a_1-6.
 Saving DManpa1-6 with parent DManp
-D_Man_p__a_1-6.
+D_Man_p___a_1-6.
 Saving 3Me with parent DManp
-_Me____3.
+_Me_____3.
 Saving 2S with parent DManp
-_S____2.
+_S_____2.
 
 PREPFILESTUFFFFF
 
@@ -289,19 +289,19 @@ Node labelled 2S destroyed
 Parsing unlabelled input sequence:
 DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
 Sequence is sane
-_OH____.
+_OH_____.
 Saving DXylpb1- with parent OH
-D_Xyl_p__b_1-.
+D_Xyl_p___b_1-.
 Saving DGalpb1-4 with parent DXylp
-D_Gal_p__b_1-4.
+D_Gal_p___b_1-4.
 Saving DGalpb1-3 with parent DGalp
-D_Gal_p__b_1-3.
+D_Gal_p___b_1-3.
 Saving DGlcpAb1-3 with parent DGalp
-D_Glc_p_A_b_1-3.
+D_Glc_p_A__b_1-3.
 Saving DGlcpAb1-4 with parent DGlcpA
-D_Glc_p_A_b_1-4.
+D_Glc_p_A__b_1-4.
 Saving DGlcpNAcb1-4 with parent DGlcpA
-D_Glc_p_NAc_b_1-4.
+D_Glc_p_NAc__b_1-4.
 
 PREPFILESTUFFFFF
 
@@ -355,35 +355,35 @@ Node labelled DGlcpNAcb1-4 destroyed
 Parsing unlabelled input sequence:
 dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
 Sequence is sane
-_OH____.
+_OH_____.
 Saving DXylpb1- with parent OH
-D_Xyl_p__b_1-.
+D_Xyl_p___b_1-.
 Saving DGalpb1-4 with parent DXylp
-D_Gal_p__b_1-4.
+D_Gal_p___b_1-4.
 Saving DGalpb1-3 with parent DGalp
-D_Gal_p__b_1-3.
+D_Gal_p___b_1-3.
 Saving DGlcpAb1-3 with parent DGalp
-D_Glc_p_A_b_1-3.
+D_Glc_p_A__b_1-3.
 Saving DGlcpAb1-4 with parent DGlcpA
-D_Glc_p_A_b_1-4.
+D_Glc_p_A__b_1-4.
 Saving 2S with parent DGlcpA
-_S____2.
+_S_____2.
 Saving DGlcpNSa1-4 with parent DGlcpA
-D_Glc_p_NS_a_1-4.
+D_Glc_p_NS__a_1-4.
 Saving LIdopA(2SO)a1-4 with parent DGlcpNS
-L_Ido_p_A(2SO)_a_1-4.
+L_Ido_p_A_(2SO)_a_1-4.
 Saving 2S with parent LIdopA(2SO)
-_S____2.
+_S_____2.
 Saving DGlcpNAca1-4 with parent LIdopA(2SO)
-D_Glc_p_NAc_a_1-4.
+D_Glc_p_NAc__a_1-4.
 Saving 6S with parent DGlcpNAc
-_S____6.
+_S_____6.
 Saving 3S with parent DGlcpNAc
-_S____3.
+_S_____3.
 Saving dUA1-4 with parent DGlcpNAc
-_dUA____1-4.
+_dUA_____1-4.
 Saving 2S with parent dUA
-_S____2.
+_S_____2.
 
 PREPFILESTUFFFFF
 
@@ -461,25 +461,25 @@ Node labelled 2S destroyed
 Parsing unlabelled input sequence:
 dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
 Sequence is sane
-_OH____.
+_OH_____.
 Saving DGlcpNSa1- with parent OH
-D_Glc_p_NS_a_1-.
+D_Glc_p_NS__a_1-.
 Saving 6S with parent DGlcpNS
-_S____6.
+_S_____6.
 Saving LIdopA(4C1)a1-4 with parent DGlcpNS
-L_Ido_p_A(4C1)_a_1-4.
+L_Ido_p_A_(4C1)_a_1-4.
 Saving DGlcpNSa1-4 with parent LIdopA(4C1)
-D_Glc_p_NS_a_1-4.
+D_Glc_p_NS__a_1-4.
 Saving LIdopAa1-4 with parent DGlcpNS
-L_Ido_p_A_a_1-4.
+L_Ido_p_A__a_1-4.
 Saving 2S with parent LIdopA
-_S____2.
+_S_____2.
 Saving DGlcpNSa1-4 with parent LIdopA
-D_Glc_p_NS_a_1-4.
+D_Glc_p_NS__a_1-4.
 Saving dUAa1-4 with parent DGlcpNS
-_dUA___a_1-4.
+_dUA____a_1-4.
 Saving 2S with parent dUA
-_S____2.
+_S_____2.
 
 PREPFILESTUFFFFF
 
@@ -560,9 +560,9 @@ Node labelled 2S destroyed
 Parsing unlabelled input sequence:
 DGlcpa1-2DFrufb
 Sequence is sane
-D_Fru_f__b_.
+D_Fru_f___b_.
 Saving DGlcpa1-2 with parent DFruf
-D_Glc_p__a_1-2.
+D_Glc_p___a_1-2.
 
 PREPFILESTUFFFFF
 
@@ -581,9 +581,9 @@ Node labelled DGlcpa1-2 destroyed
 Parsing unlabelled input sequence:
 DFrufb2-1DGlcpa
 Sequence is sane
-D_Glc_p__a_.
+D_Glc_p___a_.
 Saving DFrufb2-1 with parent DGlcp
-D_Fru_f__b_2-1.
+D_Fru_f___b_2-1.
 
 PREPFILESTUFFFFF
 

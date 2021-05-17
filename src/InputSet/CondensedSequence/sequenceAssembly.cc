@@ -161,7 +161,7 @@ std::string SequenceAssembly::GetGlycamResidueName(ParsedResidue &residue)
     try
     {
         std::string code = gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNameGenerator(linkages, residue.GetIsomer(), residue.GetResidueName(), 
-                                                                            residue.GetRingType(), residue.GetResidueModifier(), residue.GetConfiguration() );
+                                                                            residue.GetRingType(), residue.GetResidueModifier() + residue.GetRingShape(), residue.GetConfiguration() );
         return code;
     }
     catch (const std::string exception)
