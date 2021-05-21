@@ -150,6 +150,7 @@ GlycosidicLinkage::GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide*
         if(thisAnomericNeighbor->GetElementSymbol() == "O")
         {//Then this is the glycosidic oxygen
           linkageAtoms.push_back(thisAnomericNeighbor);
+          //TODO: This should be able to identify nonstandard glycosidic atoms, like C and N
           glycosidic_oxygen_ = thisAnomericNeighbor;
         }
         else if (local_debug > 0)
@@ -168,6 +169,7 @@ GlycosidicLinkage::GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide*
       if((thisAnomericNeighbor->GetElementSymbol() == "O") && thisAnomericNeighbor->GetIsRing() == false)
       {//Then this is the glycosidic oxygen
         linkageAtoms.push_back(thisAnomericNeighbor);
+        //TODO: This should be able to identify nonstandard glycosidic atoms, like C and N
         glycosidic_oxygen_ = thisAnomericNeighbor;
       }
       // else if (local_debug > 0)
