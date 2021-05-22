@@ -484,7 +484,7 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
 {
   //9/14/18 Removed side atom initialization in this function and either moved it to Yao's InitiateDetectionOfCompleteSideGroupAtoms()
   // Dave
-  int local_debug = -1;
+  int local_debug = 1;
   std::vector<std::string> orientations = std::vector<std::string>();
   if(!cycle_atoms_.empty())
   {
@@ -555,6 +555,10 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
             {
               if(neighbor->GetResidue()->CheckIfProtein() == false)
               {
+                if(local_debug > 0)
+                {
+                  gmml::log(__LINE__, __FILE__, gmml::INF, "Non-protein neighbor");
+                }
                 if(orientations.at(index).compare("N") == 0) ///if the position of non-ring oxygen or nitrogen hasn't been set yet
                 {
                   side_atoms.at(index).at(0) = neighbor;
@@ -592,6 +596,10 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
               }
               else
               {
+                if(local_debug > 0)
+                {
+                  gmml::log(__LINE__, __FILE__, gmml::INF, "Protein neighbor");
+                }
                 if(orientations.at(index).compare("N") == 0) ///if the position of non-ring oxygen or nitrogen hasn't been set yet
                 {
                   side_atoms.at(index).at(0) = neighbor;
@@ -1068,9 +1076,12 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
         }
         else if(index != 4 && index !=3 && index != 0)
         {
-          gmml::log(__LINE__, __FILE__, gmml::INF, key);
-          gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(index));
-          gmml::log(__LINE__, __FILE__, gmml::INF, value);
+          if(local_debug > 0)
+          {
+            gmml::log(__LINE__, __FILE__, gmml::INF, key);
+            gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(index));
+            gmml::log(__LINE__, __FILE__, gmml::INF, value);
+          }
           unknown_derivatives_.push_back({key, value});
           derivatives_map_.push_back({key, ""});
         }
