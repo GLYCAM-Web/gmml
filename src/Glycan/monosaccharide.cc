@@ -604,7 +604,7 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
                 {
                   side_atoms.at(index).at(0) = neighbor;
                   neighbor -> SetIsSideChain(true);
-                  neighbor->SetIsExocyclicCarbon(true);
+                  // neighbor->SetIsExocyclicCarbon(true);
                   if(theta > (gmml::PI_RADIAN/2))
                   {
                     orientations.at(index) = "D";
@@ -798,14 +798,16 @@ void Glycan::Monosaccharide::InitiateDetectionOfCompleteSideGroupAtoms ()
       MolecularModeling::Atom* side_atom = *it2;
       if (side_atom != NULL)
       {
-	MolecularModeling::AtomVector side_atom_neighbors = side_atom->GetNode()->GetNodeNeighbors();
-	for (MolecularModeling::AtomVector::iterator atom_it = side_atom_neighbors.begin(); atom_it != side_atom_neighbors.end(); atom_it++){
-	  MolecularModeling::Atom* neighbor = *atom_it;
-	    if (neighbor->GetIsCycle()){
-              all_plus_one_side_atoms.push_back(side_atom);
-	      break;
-	    }
-	}
+        MolecularModeling::AtomVector side_atom_neighbors = side_atom->GetNode()->GetNodeNeighbors();
+        for (MolecularModeling::AtomVector::iterator atom_it = side_atom_neighbors.begin(); atom_it != side_atom_neighbors.end(); atom_it++)
+        {
+          MolecularModeling::Atom* neighbor = *atom_it;
+          if (neighbor->GetIsCycle())
+          {
+            all_plus_one_side_atoms.push_back(side_atom);
+            break;
+          }
+        }
       }
     }
 
@@ -981,7 +983,7 @@ void Glycan::Monosaccharide::CheckIfSideChainIsTerminal(MolecularModeling::Atom*
 
 void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* this_assembly)
 {
-  int local_debug = -1;
+  int local_debug = 1;
   if (local_debug > 0)
   {
     std::stringstream debugStr;
@@ -1272,6 +1274,11 @@ std::string Glycan::Monosaccharide::GetFormula(MolecularModeling::Atom* target)/
 
 void Glycan::Monosaccharide::CountElements(MolecularModeling::Atom* thisAtom, std::vector<std::pair<std::string, int> >& elementVector)
 {
+  int local_debug = 1;
+  if(local_debug > 0)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Counting elements");
+  }
   if(elementVector.size() == 0)
   {
     elementVector = {{"C", 0}, {"H", 0}, {"Ac", 0},{"Ag", 0},{"Al", 0},{"Am", 0},{"Ar", 0},{"As", 0},{"At", 0},{"Au", 0},
@@ -1303,7 +1310,7 @@ void Glycan::Monosaccharide::CountElements(MolecularModeling::Atom* thisAtom, st
     for(std::vector<MolecularModeling::Atom*>::iterator it = thisAtomNeighbors.begin(); it != thisAtomNeighbors.end(); it++)
     {
       MolecularModeling::Atom* thisNeighbor = (*it);
-      if (!thisNeighbor->GetNode()->GetIsVisited() && (cycle_atoms_str_.find(thisNeighbor->GetId()) == std::string::npos))
+      if (!thisNeighbor->GetNode()->GetIsVisited() && !thisNeighbor->GetIsCycle()) /* && (cycle_atoms_str_.find(thisNeighbor->GetId()) == std::string::npos)*///this is what breaks it
       {
         if(!thisNeighbor->GetResidue()->CheckIfProtein())
           CountElements(thisNeighbor, elementVector);

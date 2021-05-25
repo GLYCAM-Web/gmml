@@ -573,7 +573,7 @@ namespace gmml
           std::cout << GEMSHOME_ERROR << std::endl;
         }
         std::string GEMSHOME(gemshome_env_var);
-        out_file_name = GEMSHOME + "/gmml/gmmlLog.txt";
+        out_file_name = GEMSHOME + "/gmml/GMML_Log.txt";
       }
       file.open(out_file_name.c_str(), std::ios_base::app);
 
