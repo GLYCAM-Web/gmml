@@ -34,17 +34,19 @@ Residue::Residue(MolecularModeling::Assembly *assembly, std::string name) : Node
 
 Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue) : Node(this)
 {
-    index_ = this->generateIndex();
-    this->BuildResidueFromPrepFileResidue(prep_residue);
+    this->SetIndex(this->generateIndex());
+    this->SetName(prep_residue->GetName());
     this->SetId(this->CreateID());
+    this->BuildResidueFromPrepFileResidue(prep_residue);
  }
 
 Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type) : Node(this)
 {
-    index_ = this->generateIndex();
-    this->BuildResidueFromPrepFileResidue(prep_residue);
+    this->SetIndex(this->generateIndex());
+    this->SetName(prep_residue->GetName());
     this->SetId(this->CreateID());
     this->SetType(type);
+    this->BuildResidueFromPrepFileResidue(prep_residue);
 }
 
 std::string Residue::CreateID(std::string name, std::string chain, std::string number)
