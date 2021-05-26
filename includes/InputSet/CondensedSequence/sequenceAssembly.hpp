@@ -1,18 +1,18 @@
-#ifndef SEQUENCE_ASSEMBLY_HPP
-#define SEQUENCE_ASSEMBLY_HPP
+#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_ASSEMBLY_BUILDER_HPP
+#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_ASSEMBLY_BUILDER_HPP
 
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/MolecularModeling/residue.hpp"
 
 namespace CondensedSequence
 {
-    class SequenceAssembly : public SequenceManipulator
+    class AssemblyBuilder : public SequenceManipulator
     {
     public:
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
-        SequenceAssembly(std::string inputSequence, std::string prepFilePath);
+        AssemblyBuilder(std::string inputSequence, std::string prepFilePath);
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
