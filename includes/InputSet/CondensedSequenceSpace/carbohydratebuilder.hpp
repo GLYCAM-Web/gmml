@@ -1,5 +1,5 @@
-#ifndef CARBOHYDRATEBUILDER_H
-#define CARBOHYDRATEBUILDER_H
+#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_BUILDER_HPP
+#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_BUILDER_HPP
 #include "condensedsequence.hpp"
 #include "./includes/MolecularModeling/assembly.hpp"
 
@@ -75,7 +75,7 @@ private:
     void SetDefaultShapeUsingMetadata();
     void ResolveOverlaps();
     void FigureOutResidueLinkagesInGlycan(MolecularModeling::Residue *from_this_residue1, MolecularModeling::Residue *to_this_residue2, ResidueLinkageVector *residue_linkages);
-    void InitializeClass(std::string condensedSequence, std::string prepFilePath);
+    void InitializeClass(std::string condensedSequence);
     // This does not belong in this class:
     ResidueLinkageVector SplitLinkagesIntoPermutants(ResidueLinkageVector &inputLinkages);
     void generateLinkagePermutationsRecursively(ResidueLinkageVector::iterator linkage, ResidueLinkageVector::iterator end, int maxRotamers = 32, int rotamerCount = 0);
@@ -91,7 +91,7 @@ private:
     ResidueLinkageVector glycosidicLinkages_;
 };
 }
-#endif // CARBOHYDRATEBUILDER_H
+#endif // GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_BUILDER_HPP
 
 
 

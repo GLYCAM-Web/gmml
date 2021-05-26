@@ -10,8 +10,9 @@ using CondensedSequenceSpace::carbohydrateBuilder;
 using CondensedSequenceSpace::CondensedSequence;
 
 carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath)
+: assembly_(condensedSequence, prepFilePath)
 {
-    this->InitializeClass(condensedSequence, prepFilePath);
+    this->InitializeClass(condensedSequence);
 }
 
 //////////////////////////////////////////////////////////
@@ -97,8 +98,6 @@ int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
     }
     return numberOfShapes;
 }
-
-
 // Commenting out for as not being used, and will be confusing later. The front-end calls a differnt function that will build a single, specific rotamer.
 // void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
 // {
@@ -213,7 +212,7 @@ void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Re
     // Additional code to sort neighbors by lowest index. 
     // Only required so that numbers match those assigned in condensed sequence class
     // Should not be done this way, need a generic graph structure and then to centralize everything.
-    MolecularModeling::ResidueVector neighbors = selection::SortResidueNeighborsByAcendingConnectionAtomNumber(to_this_residue2->GetNode()->GetResidueNodeConnectingAtoms());
+    //MolecularModeling::ResidueVector neighbors = selection::SortResidueNeighborsByAcendingConnectionAtomNumber(to_this_residue2->GetNode()->GetResidueNodeConnectingAtoms());
     // End addtional sorting code.
     /* Breath first code */
     // for(auto &neighbor : neighbors)
@@ -224,7 +223,7 @@ void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Re
     //     }
     // }
     /* End Breath first code */
-    for(auto &neighbor : neighbors)
+    for(auto &neighbor : to_this_residue2->GetOutgoingNeighborObjects())
     {
         if(neighbor->GetIndex() != from_this_residue1->GetIndex())
         {
@@ -235,25 +234,23 @@ void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Re
     return;
 }
 
-void carbohydrateBuilder::InitializeClass(std::string inputSequenceString, std::string inputPrepFilePath)
+void carbohydrateBuilder::InitializeClass(std::string inputSequenceString)
 {
-    // Have to assume that sequence is sane, because using the condensedsequence class functions to check breaks them... probably they should have been private.
-    assembly_.SetName("CONDENSEDSEQUENCE");
     this->SetInputSequenceString(inputSequenceString);
-    //CondensedSequence condensedSeqence(inputSequenceString); // This is all weird. condensedSequence should be merged into this class eventually
-   // this->SetOfficialSequenceString(condensedSeqence.BuildLabeledCondensedSequence(CondensedSequence::Reordering_Approach::LONGEST_CHAIN, CondensedSequence::Reordering_Approach::LONGEST_CHAIN, false));
-    PrepFileSpace::PrepFile prepFile(inputPrepFilePath);
-    assembly_.BuildAssemblyFromCondensedSequence(inputSequenceString, &prepFile);
+    //assembly_.BuildAssemblyFromCondensedSequence(inputSequenceString, &prepFile);
         // So in the above BuildAssemblyFromCondensedSequence code, linkages are generated that are inaccessible to me.
         // Condensed sequence should be separated so I can handle everything here, but it's a mess.
         // In the mean time I must also create linkages at this level, but I can't figure out how to reset linkage IDs.
         // Maybe I can check if both passed in residues are the same, and reset if so? That only happens here I think.
+    //std::cout << "About to figure out linkages in glycan." << std::endl;
     this->FigureOutResidueLinkagesInGlycan(assembly_.GetResidues().at(0), assembly_.GetResidues().at(0), &glycosidicLinkages_);
+    //std::cout << "Resetting linkage ids" << std::endl;
     this->resetLinkageIDsToStartFromZero(glycosidicLinkages_); /* just a fudge until I figure out how to have linkage ids be sensible
         When you instantiate a condensedSequence it generates a 3D structure, and sets default torsions using Residue_Linkage. That class is decoupled 
         from this class as it needs to be replaced, but for now I'm using both and Residue_Linkages are created in that class, so when they
         are created again via this class, their index numbers are "too high" as they are static variables.
         */ 
+    //std::cout << "Returning from initializng carb builder" << std::endl;
  return;
 }
 
