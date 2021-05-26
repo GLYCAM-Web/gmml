@@ -593,8 +593,8 @@ std::string selection::GetNonCarbonHeavyAtomNumbered(AtomVector atoms, std::stri
 {
     for (auto &atom : atoms)
     {    // Assuming atoms like C2, O2 or N2. Nothing else should match.
-        auto number = atom->GetName().substr(1);
-        if ( (number == queryNumber) && (atom->GetName().at(0) != 'C') )
+        std::string number = atom->GetName().substr(1);
+        if ( (number == queryNumber) && (atom->GetName().at(0) != 'C') && (atom->GetName().at(0) != 'H'))
         {
             return atom->GetName();
         }
