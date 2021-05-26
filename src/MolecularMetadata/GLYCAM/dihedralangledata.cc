@@ -119,6 +119,8 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
 {   // const AmberAtomTypeInfo Glycam06j1AtomTypes[] =
     dihedralAngleDataVector_ =
     { // Regex1  , Regex2   , Name   , Angle  , Upper  , Lower  , Weight, Entry Type    , Name , B , I , Res1 Condition , Res2 Conditions           , Atom names                                                               // Atom names this applies to
+ // Add me later      { "C1"   , "O1"     , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"aldose"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
+ // Add me later      { "C2"   , "O1"     , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"ketose"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
         { "C1"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"aldose"}     , {"none"}                  , "C2" , "C1" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
         { "C2"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"ketose","ulosonate"}     , {"none"}      , "C1" , "C2" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
         { "C2"   , "O[3-6]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"none"}         , "C1" , "C2" , "O." , "C."  },
