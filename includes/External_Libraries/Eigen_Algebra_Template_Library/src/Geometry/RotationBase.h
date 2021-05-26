@@ -38,8 +38,8 @@ class RotationBase
     typedef Matrix<Scalar,Dim,1> VectorType;
 
   public:
-    EIGEN_DEVICE_FUNC inline const Derived &derived() const { return *static_cast<const Derived*>(this); }
-    EIGEN_DEVICE_FUNC inline Derived &derived() { return *static_cast<Derived*>(this); }
+    EIGEN_DEVICE_FUNC inline const Derived& derived() const { return *static_cast<const Derived*>(this); }
+    EIGEN_DEVICE_FUNC inline Derived& derived() { return *static_cast<Derived*>(this); }
 
     /** \returns an equivalent rotation matrix */
     EIGEN_DEVICE_FUNC inline RotationMatrixType toRotationMatrix() const { return derived().toRotationMatrix(); }

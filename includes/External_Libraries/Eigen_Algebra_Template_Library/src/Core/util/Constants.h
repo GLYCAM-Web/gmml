@@ -37,9 +37,9 @@ const int Infinity = -1;
   * It thus must also be large enough to make sure unrolling won't happen and that sub expressions will be evaluated, but not too large to avoid overflow.
   */
 const int HugeCost = 10000;
-/** @defgroup flags Flags
-  * @ingroup Eigen
-  * @ingroup Core_Module
+
+/** \defgroup flags Flags
+  * \ingroup Core_Module
   *
   * These are the possible bits which can be OR'ed to constitute the flags of a matrix or
   * expression.
@@ -50,12 +50,6 @@ const int HugeCost = 10000;
   *
   * \sa MatrixBase::Flags
   */
-
-/** @defgroup Eigen 
-  * Contains all the groupings made by Eigen
-  *
-  */
-
 
 /** \ingroup flags
   *
@@ -196,8 +190,7 @@ const unsigned int CompressedAccessBit = 0x400;
 const unsigned int HereditaryBits = RowMajorBit
                                   | EvalBeforeNestingBit;
 
-/** @defgroup enums Enumerations
-  * @ingroup Eigen
+/** \defgroup enums Enumerations
   * \ingroup Core_Module
   *
   * Various enumerations used in %Eigen. Many of these are used as template parameters.
