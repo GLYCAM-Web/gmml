@@ -11,7 +11,7 @@ int main ()
     std::string s5 = "dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH";
     std::string s6 = "DGlcpa1-2DFrufb";
     std::string s7 = "DFrufb2-1DGlcpa";
-    // std::string s8 = "DNeu5Ac&Label=residue-9;a2-6&Label=link-7;DGalp&Label=residue-8;b1-4&Label=link-6;DGlcpNAc&Label=residue-6;[3&Label=link-5;S&Label=residue-7;]b1-2&Label=link-4;DManp&Label=residue-5;a1-3&Label=link-3;[DGlcpNAc&Label=residue-10;b1-4&Label=link-8;][DManp&Label=residue-12;[2&Label=link-11;S&Label=residue-13;,3&Label=link-12;Me&Label=residue-14;]a1-6&Label=link-10;DManp&Label=residue-11;a1-6&Label=link-9;]DManp&Label=residue-4;b1-4&Label=link-2;DGlcpNAc&Label=residue-3;[6&Label=link-13;Me&Label=residue-15;]b1-4&Label=link-1;DGlcpNAc&Label=residue-2;b1-1&Label=link-0;-OH&Label=residue-1;";
+    // std::string s8 = "DNeup5Ac&Label=residue-9;a2-6&Label=link-7;DGalp&Label=residue-8;b1-4&Label=link-6;DGlcpNAc&Label=residue-6;[3&Label=link-5;S&Label=residue-7;]b1-2&Label=link-4;DManp&Label=residue-5;a1-3&Label=link-3;[DGlcpNAc&Label=residue-10;b1-4&Label=link-8;][DManp&Label=residue-12;[2&Label=link-11;S&Label=residue-13;,3&Label=link-12;Me&Label=residue-14;]a1-6&Label=link-10;DManp&Label=residue-11;a1-6&Label=link-9;]DManp&Label=residue-4;b1-4&Label=link-2;DGlcpNAc&Label=residue-3;[6&Label=link-13;Me&Label=residue-15;]b1-4&Label=link-1;DGlcpNAc&Label=residue-2;b1-1&Label=link-0;-OH&Label=residue-1;";
     // std::string s9 = "";
     // std::string s10 = "There will be cake.";
     // std::string s11 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH ";
@@ -33,9 +33,6 @@ int main ()
         std::cout << "Starting: " << sequence << std::endl;
     	CondensedSequence::SequenceManipulator man(sequence);
     	man.ReorderSequence();
-        std::cout << "\nManipulator PrintGraphViz:" << std::endl;
-        std::string localLocationOfSNFGFiles = "/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/";
-        man.PrintGraphViz(localLocationOfSNFGFiles);
         std::cout << "\nManipulator Print:" << std::endl;
         man.Print();
         std::cout << "\nManipulator Print with Labels:" << std::endl;

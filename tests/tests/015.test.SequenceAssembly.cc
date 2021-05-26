@@ -1,9 +1,10 @@
 #include <iostream>
-#include "includes/InputSet/CondensedSequence/sequenceAssembly.hpp"
+#include "includes/InputSet/CondensedSequence/assemblyBuilder.hpp"
+#include "includes/MolecularModeling/assembly.hpp"
 
 int main ()
 {	
-    std::string s1 = "DTalp[2S,3Me]a1-6DManpa1-6[DAllpb1-3][DNeu5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH";
+    std::string s1 = "DTalp[2S,3Me]a1-6DManpa1-6[DAllpb1-3][DNeup5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH";
     std::string s2 = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH";
     std::string s3 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH";
     std::string s4 = "dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH";
@@ -20,19 +21,16 @@ int main ()
     std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7};
     //std::vector<std::string> sequences {s14};
     //std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14};
-    auto prepFilePath = "/programs/gems/gmml/dat/prep/GLYCAM_06j-1_GAGS.prep";
+    std::string prepFilePath = "/programs/gems/gmml/dat/prep/GLYCAM_06j-1_GAGS.prep";
+    int loopCounter = 0;
     for (auto &sequence : sequences)
-    {
-    	CondensedSequence::SequenceAssembly man(sequence, prepFilePath);
-    	man.Print();
-    	// man.ReorderSequence();
-    	// man.LabelSequence();
-    	// std::cout << "PrintLabelledSequence:" << std::endl;
-    	// man.PrintLabelledSequence();
-        
-     //    std::cout << "generateTemplateResidues:" << std::endl;
-     //    man.generateResidues(prepFilePath);
-    	// std::cout << "About to go out of scope.\n";
+    {	
+        MolecularModeling::Assembly ass(sequence, prepFilePath);
+        std::cout << "Creating PDB file" << std::endl;
+        PdbFileSpace::PdbFile *outputPdbFile = ass.BuildPdbFileStructureFromAssembly(-1,0);
+        std::cout << "Writing PDB file" << std::endl;
+        outputPdbFile->Write(std::to_string(loopCounter) + ".pdb");
+        loopCounter++;
 	}
 	return 0;
 }
