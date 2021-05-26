@@ -1,5 +1,5 @@
 #include <sstream>
-#include "includes/InputSet/CondensedSequence/sequenceAssembly.hpp"
+#include "includes/InputSet/CondensedSequence/assemblyBuilder.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeAglyconeInfo.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp" // To get glycam name for ParsedResidue
@@ -11,46 +11,37 @@
 
 //using Abstract::Residue; // For Residue::Type
 
-using CondensedSequence::SequenceAssembly;
+using CondensedSequence::AssemblyBuilder;
+using MolecularModeling::Assembly;
 
-SequenceAssembly::SequenceAssembly(std::string inputSequence, std::string prepFilePath) : SequenceManipulator{inputSequence} 
+AssemblyBuilder::AssemblyBuilder(std::string inputSequence, std::string prepFilePath, Assembly *inputAssembly) : SequenceManipulator{inputSequence} 
 {
 	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependancy Oliver.
-	auto molecularModelingResidues = this->GenerateResidues(prepFilePath);
-	// std::cout << "Created these molecularModelingResidues: \n";
-	// for (auto &mmResidue : molecularModelingResidues)
-	// {
-	// 	std::cout << mmResidue.GetIndex() << std::endl;
-	// }
+	PrepFileSpace::PrepFile prepFile(prepFilePath);
+	this->SetPrepResidueMap(prepFile.GetResidues()); //A mapping between a residue name and its residue object
+	this->GenerateResidues(inputAssembly);
+	std::cout << "Finished making assembly" << std::endl;
 }
 
-std::vector<MolecularModeling::Residue> SequenceAssembly::GenerateResidues(std::string prepFilePath)
+void AssemblyBuilder::GenerateResidues(Assembly *assembly)
 {
 	std::vector<MolecularModeling::Residue> createdResidues;
 	createdResidues.reserve(this->GetParsedResidues().size());
-	std::cout << "\nPREPFILESTUFFFFF\n" << std::endl;
-	PrepFileSpace::PrepFile prepFile(prepFilePath);
-	//A mapping between a residue name and its residue object
-	this->SetPrepResidueMap(prepFile.GetResidues());
 	auto aglycone = this->GetTerminal();
 	auto result = this->GetPrepResidueMap()->find(this->GetGlycamResidueName(*aglycone));
 	std::cout << "Found prep entry: " << result->first << " for " << aglycone->GetName() << "\n";
-	auto &gmmlParent = createdResidues.emplace_back(result->second, aglycone->GetType());
+	Residue& gmmlParent = assembly->CreateResidue(result->second, aglycone->GetType());
 	gmmlParent.AddLabel(aglycone->GetLabel());
 	for (auto &child : aglycone->GetChildren())
 	{
-		this->RecurveGenerateResidues(child, gmmlParent, createdResidues);	
+		this->RecurveGenerateResidues(child, gmmlParent, assembly);	
 	}
-	std::cout << "Created residues: \n";
-	for (auto &mmResidue : createdResidues)
-	{
-		std::cout << mmResidue.GetLabel() << std::endl;
-	}
-	return createdResidues;
+	std::cout << "Jobs a good un" << std::endl;
+	return;
 }
 
-void SequenceAssembly::RecurveGenerateResidues(ParsedResidue* parsedChild, MolecularModeling::Residue& gmmlParent, 
-	std::vector<MolecularModeling::Residue>& createdResidues)
+void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, MolecularModeling::Residue& gmmlParent, 
+	Assembly* assembly)
 {	
 	//std::cout << "Recurve Gen Res" << std::endl;
 	if (parsedChild->GetType() == ParsedResidue::Type::Deoxy)
@@ -66,7 +57,7 @@ void SequenceAssembly::RecurveGenerateResidues(ParsedResidue* parsedChild, Molec
 	else
 	{
 		std::cout << "Found prep entry: " << prepEntry->first << " for " << parsedChild->GetName() << "\n";
-		auto &newGmmlChild = createdResidues.emplace_back(prepEntry->second, parsedChild->GetType());
+		Residue& newGmmlChild = assembly->CreateResidue(prepEntry->second, parsedChild->GetType());
 		newGmmlChild.AddLabel(parsedChild->GetLabel());
 		//newGmmlChild.AddEdge(&gmmlParent, parsedChild->GetLinkageName());
 		this->BondResiduesDeduceAtoms(gmmlParent, newGmmlChild, parsedChild->GetLinkageName());
@@ -74,14 +65,14 @@ void SequenceAssembly::RecurveGenerateResidues(ParsedResidue* parsedChild, Molec
 		//std::cout << "Recurve created " << newGmmlChild.GetLabel() << std::endl;
 		for (auto &child : parsedChild->GetChildren())
 		{
-			this->RecurveGenerateResidues(child, newGmmlChild, createdResidues);	
+			this->RecurveGenerateResidues(child, newGmmlChild, assembly);	
 		}
 	}
 	return;
 }
 
-// All this stuff goes to Residue. Residue has private Head and child atoms with private getters/setters. Solves this mess.
-void SequenceAssembly::BondResiduesDeduceAtoms(MolecularModeling::Residue& parentResidue, MolecularModeling::Residue& childResidue, std::string linkageLabel)
+// All this stuff should go into Residue. Residue has private Head and child atoms with private getters/setters. Solves this mess.
+void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parentResidue, MolecularModeling::Residue& childResidue, std::string linkageLabel)
 {
 	// This is using the new Node<Residue> functionality and the old AtomNode 
 	parentResidue.AddEdge(&childResidue, linkageLabel);
@@ -151,7 +142,7 @@ void SequenceAssembly::BondResiduesDeduceAtoms(MolecularModeling::Residue& paren
 	return;	
 }
 	
-std::string SequenceAssembly::GetGlycamResidueName(ParsedResidue &residue)
+std::string AssemblyBuilder::GetGlycamResidueName(ParsedResidue &residue)
 {
     std::string linkages = "";
     if (residue.GetType() == ParsedResidue::Type::Sugar)

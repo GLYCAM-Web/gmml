@@ -47,7 +47,6 @@ std::string ParsedResidue::GetLink()
     }
 }
 
-
 std::vector<ParsedResidue*> ParsedResidue::GetChildren()
 {
     return this->GetIncomingNeighborObjects();
@@ -215,7 +214,6 @@ std::string ParsedResidue::Print()
 				<< this->GetLinkage() << ".\n";
     return ss.str();
 }
-
 
 std::string ParsedResidue::GetMonosaccharideName()
 {
