@@ -110,9 +110,9 @@ bool DihedralAngleDataContainer::checkIfResidueConditionsAreSatisfied(std::vecto
  * number_of_bonds_from_anomeric_carbon_. So Phi is 1, Psi is 2, Omg is 3.
  * The index refers the rotamer number. If there are two Phi rotamers, they will have an index of 1 and 2.
  * Chi angle index numbering varies depending on side chain length, so in ASN the Chi1 is 4 bonds away from the sugar, so would be 4
- * If two entries have matChing regex and have the same index_ number (e.g. 1), the first will be overwritten.
- * If two entries have matChing regex and different index_ numbers (e.g. 1,2,3) they will all be used to create multiple rotamers/conformers
- * If two entries have different regex, but apply to the same dihedral angle (e.g. Phi), give them the same index_ number (e.g. 1). Later will overwrite earlier?
+ * If two entries have matching regex and have the same index_ number (e.g. 1), the first will be overwritten.
+ * If two entries have matching regex and different index_ numbers (e.g. 1,2,3) they will all be used to create multiple rotamers/conformers
+ * If two entries have different regex, but apply to the same dihedral angle (e.g. Phi), give them the same index_ number (e.g. 1).
  */
 
 DihedralAngleDataContainer::DihedralAngleDataContainer()
@@ -120,6 +120,8 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
     dihedralAngleDataVector_ =
     { // Regex1  , Regex2   , Name   , Angle  , Upper  , Lower  , Weight, Entry Type    , Name , B , I , Res1 Condition , Res2 Conditions           , Atom names                                                               // Atom names this applies to
         { "C1"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"aldose"}     , {"none"}                  , "C2" , "C1" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
+        { "C2"   , "O[1-9]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"ketose","alpha"}     , {"none"}            , "C1" , "C2" , "O." , "C."  }, // Phi is defined by C1-C2(ano)-Ox-Cx for ketoses like Fru 
+        { "C2"   , "O[1-9]" , "Phi"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 1 , {"ketose","beta"}     , {"none"}            , "C1" , "C2" , "O." , "C."  }, // Phi is defined by C1-C2(ano)-Ox-Cx for ketoses like Fru 
         { "C2"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"ketose","ulosonate"}     , {"none"}      , "C1" , "C2" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
         { "C2"   , "O[3-6]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"none"}         , "C1" , "C2" , "O." , "C."  },
         { "C."   , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "ap" , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "H."  }, // Psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)

@@ -189,14 +189,27 @@ Building DManpb1-4[DLyxpa1-2][LGulpb1-6]DGlcpa1-2[LFucpa1-1][LGalpa1-5]DFrufb2-O
 *********************
 CarbohydrateBuilder called using sequence: DManpb1-4[DLyxpa1-2][LGulpb1-6]DGlcpa1-2[LFucpa1-1][LGalpa1-5]DFrufb2-OH
  and contains these Residue_linkages:
+
+*********************
+Building DFrupa2-6DManpa1-OH
+*********************
+CarbohydrateBuilder called using sequence: DFrupa2-6DManpa1-OH
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DManpa1-1ROH, NumberOfShapes: 1, ids: 6MA_A_2_?_?_?@C1 -- ROH_A_1_?_?_?@O1
+Residue_linkage Index: 1, Name: DFrupa2-6DManpa, NumberOfShapes: 3, ids: 0CA_A_3_?_?_?@C2 -- 6MA_A_2_?_?_?@O6
+
+*********************
+Building DFrupb2-6DManpa1-OH
+*********************
+CarbohydrateBuilder called using sequence: DFrupb2-6DManpa1-OH
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DManpa1-1ROH, NumberOfShapes: 1, ids: 6MA_A_2_?_?_?@C1 -- ROH_A_1_?_?_?@O1
+Residue_linkage Index: 1, Name: DFrupb2-6DManpa, NumberOfShapes: 3, ids: 0CB_A_3_?_?_?@C2 -- 6MA_A_2_?_?_?@O6
 00001.pdb succesfully created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
 00004.pdb succesfully created.
 00005.pdb succesfully created.
-00006.pdb not created.
-00007.pdb not created.
-00008.pdb not created.
 00009.pdb succesfully created.
 00010.pdb succesfully created.
 00011.pdb succesfully created.
@@ -205,12 +218,11 @@ CarbohydrateBuilder called using sequence: DManpb1-4[DLyxpa1-2][LGulpb1-6]DGlcpa
 00014.pdb succesfully created.
 00015.pdb succesfully created.
 00016.pdb succesfully created.
-00017.pdb not created.
-00018.pdb not created.
 00019.pdb succesfully created.
 00020.pdb succesfully created.
 00021.pdb succesfully created.
-00022.pdb not created.
 00023.pdb succesfully created.
 00024.pdb succesfully created.
 00025.pdb succesfully created.
+00026.pdb succesfully created.
+00027.pdb succesfully created.

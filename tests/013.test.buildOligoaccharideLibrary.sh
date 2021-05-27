@@ -6,7 +6,7 @@ rm -r 013.outputs/ >/dev/null 2>&1
 mkdir 013.outputs/
 ./buildOligosaccharideLibrary tests/inputs/013.smallLibrary.txt _ 013.outputs ../dat/prep/GLYCAM_06j-1.prep > 013.output_buildOligosaccharideLibrary.txt
 
-for i in {00001..00025};
+for i in `cut -d _ -f1 tests/inputs/013.smallLibrary.txt`;
 do
     if [ -f 013.outputs/$i.pdb ]; then
         echo "$i.pdb succesfully created." >> 013.output_buildOligosaccharideLibrary.txt
