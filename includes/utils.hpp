@@ -310,7 +310,7 @@ namespace gmml
         }
         return SUGARNAMELOOKUP[0];
     }
-    
+
     inline Glycan::SugarName ResidueSugarNameLookup(std::string residue)
     {
         for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)
@@ -468,7 +468,7 @@ namespace gmml
         }
         return COMPLEXSUGARNAMELOOKUP[0];
     }
-    
+
     inline Glycan::SugarName ResidueComplexSugarNameLookup(std::string residue)
     {
         for(int i = 0; i < COMPLEXSUGARNAMELOOKUPSIZE; i++)
@@ -568,12 +568,12 @@ namespace gmml
         std::string GEMSHOME_ERROR = "\nMust set GEMSHOME environment variable.\n\n    BASH:   export GEMSHOME=/path/to/gems\n    SH:     setenv GEMSHOME /path/to/gems\n";
         char* gemshome_env_var = std::getenv("GEMSHOME");
         // Check if the environment variables exist.
-        if(!gemshome_env_var) 
+        if(!gemshome_env_var)
         {
           std::cout << GEMSHOME_ERROR << std::endl;
         }
         std::string GEMSHOME(gemshome_env_var);
-        out_file_name = GEMSHOME + "/log.log";
+        out_file_name = GEMSHOME + "/gmml/GMML_Log.txt";
       }
       file.open(out_file_name.c_str(), std::ios_base::app);
 
@@ -687,12 +687,12 @@ namespace gmml
     {
       std::stringstream ss(s);
         std::string item;
-        while (std::getline(ss, item, delim)) 
+        while (std::getline(ss, item, delim))
         {
             *(result++) = item;
         }
     }
-    inline std::vector<std::string> splitStringByDelimiter(const std::string &s, char delim) 
+    inline std::vector<std::string> splitStringByDelimiter(const std::string &s, char delim)
     {
       std::vector<std::string> elems;
       split(s, delim, std::back_inserter(elems));
