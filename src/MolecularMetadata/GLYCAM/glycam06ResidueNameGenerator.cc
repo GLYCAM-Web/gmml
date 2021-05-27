@@ -1,6 +1,6 @@
-#include "glycam06ResidueNameGenerator.hpp"
-#include "glycam06LinkageCodes.hpp"
-#include "glycam06residuecodes.hpp"
+#include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp"
+#include "includes/MolecularMetadata/GLYCAM/glycam06LinkageCodes.hpp"
+#include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
 #include <iostream> // for cout, can remove after debug
 #include <locale> // for isLower()
 #include <sstream> // for string stream
