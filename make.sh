@@ -168,6 +168,7 @@ printf "OPTIMIZE: $OPTIMIZE\n\n"
      echo "Cleaning GMML."
      make -f $TARGET_MAKE_FILE distclean
      qmake -o $TARGET_MAKE_FILE
+     rm build/*.o > /dev/null 2>&1 # For classes from feature branch. Makefile won't clean them. Problems.
  fi
 
  echo "Making GMML."
