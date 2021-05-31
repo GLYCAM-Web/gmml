@@ -392,6 +392,7 @@ void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_t
     this->SetResidues(from_this_residue1, to_this_residue2);
     this->SetIfReversedAtomsThatMove(reverseAtomsThatMove);
     this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
+    //std::cout << "Maybe Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
     if(this->CheckIfViableLinkage())
     {
         //std::cout << "Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
@@ -404,17 +405,14 @@ void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_t
 
 bool Residue_linkage::CheckIfViableLinkage()
 {
-    bool viable = true; // Assume ok.
     for(auto &residue : this->GetResidues())
     {
-        int heavyAtomCount = 0;
-        for(auto &atom : residue->GetAtoms())
-            if (atom->GetName().at(0) != 'H')
-                ++heavyAtomCount;
-        if (heavyAtomCount <= 2)
-            viable = false; // if either residue has two few atoms, it's not a viable linkage
+        if (residue->GetAtoms().size() <= 1)
+        { // If either linkage has only 1 atom, return false. Should not set dihedral.
+            return false; 
+        }
     }
-    return viable;
+    return true;
 }
 
 RotatableDihedralVector Residue_linkage::FindRotatableDihedralsConnectingResidues(Atom *from_this_connection_atom1, Atom *to_this_connection_atom2)
