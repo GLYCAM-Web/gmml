@@ -42,7 +42,7 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(Molecul
             if ( (checkIfResidueConditionsAreSatisfied(residue1_types, entry.residue1_conditions_))
                  && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_conditions_)) )
             {
-                std::cout << "Found a match: " << entry.linking_atom1_ << "--" << entry.linking_atom2_ << ", " << entry.dihedral_angle_name_ << "\n";
+                //std::cout << "Found a match: " << entry.linking_atom1_ << "--" << entry.linking_atom2_ << ", " << entry.dihedral_angle_name_ << "\n";
                 //Always add a later entry, but remove earlier match if number_of_bonds_from_anomeric_carbon_ AND index number are the same.
                 // I've overloaded the == and != operators in the DihedralAngleData struct to evaluate those.
                 // This next line removes any elements of matching_entries that match "entry", then the line after adds entry.
