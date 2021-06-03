@@ -21,13 +21,17 @@ int main(int argc, char* argv[])
     amino_libs.push_back("../dat/CurrentParams/leaprc.ff12SB_2014-04-24/aminont12.lib");
     std::string prep = "../dat/prep/GLYCAM_06j-1.prep";
     MolecularModeling::Assembly assemblyA (argv[1], gmml::InputFileType::PDB);
+    //std::cout << "BuildStructureByDistance()" << std::endl;
     assemblyA.BuildStructureByDistance();
     std::vector<Glycan::Monosaccharide*> monos= std::vector<Glycan::Monosaccharide*>();
+    //std::cout << "ExtractSugars\n";
     std::vector<Glycan::Oligosaccharide*> oligos = assemblyA.ExtractSugars(amino_libs,monos,false,false);
     for (std::vector<Glycan::Monosaccharide*>::iterator mono_it = monos.begin(); mono_it != monos.end(); mono_it++){
+        //std::cout << "InitiateDetectionOfCompleteSideGroupAtoms()" << std::endl;
         (*mono_it)->InitiateDetectionOfCompleteSideGroupAtoms ();
     }
     AtomVector all_atoms = assemblyA.GetAllAtomsOfAssembly();
+    //std::cout << "UpdateMonosaccharides2Residues()" << std::endl;
     assemblyA.UpdateMonosaccharides2Residues(monos);
     std::map<Glycan::Oligosaccharide*, std::vector<std::string> > oligo_id_map;
     std::map<Glycan::Oligosaccharide*, std::vector<MolecularModeling::Residue*> > oligo_residue_map;
@@ -37,9 +41,13 @@ int main(int argc, char* argv[])
         std::vector<MolecularModeling::Residue*> empty_residue_vector = std::vector<MolecularModeling::Residue*>();
         oligo_residue_map[*oligo_it] = empty_residue_vector;
     }
+    //std::cout << "ExtractResidueGlycamNamingMap()" << std::endl;
     gmml::GlycamResidueNamingMap res_map = assemblyA.ExtractResidueGlycamNamingMap(oligos, oligo_id_map, oligo_residue_map);
+    //std::cout << "TestUpdateResidueName2GlycamName()" << std::endl;
     assemblyA.TestUpdateResidueName2GlycamName(res_map, prep);
+    //std::cout << "RenameAtoms()" << std::endl;
     assemblyA.RenameAtoms(oligo_residue_map, prep);
+    //std::cout << "BuildPdbFileStructureFromAssembly()" << std::endl;
     PdbFileSpace::PdbFile *outputPdbFile = assemblyA.BuildPdbFileStructureFromAssembly();
     if (argc == 3)
     {
@@ -49,6 +57,7 @@ int main(int argc, char* argv[])
     }
     else
     {
+        //std::cout << "outputPdbFile->Write()" << std::endl;
         outputPdbFile->Write("pdb2glycam_output.pdb");
     }
 }
