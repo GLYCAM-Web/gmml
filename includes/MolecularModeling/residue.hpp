@@ -205,7 +205,7 @@ namespace MolecularModeling
               * @param id The identification attribute of the current object
               */
             void SetId(std::string id);
-
+            void SetIndex(unsigned long long index);
             /*! \fn                                                                                          //Added by ayush on 11/20/17 for residuenode in assembly
               * A mutator function in order to set the node of the current object
               * Set the residuenode_ attribute of the current residue

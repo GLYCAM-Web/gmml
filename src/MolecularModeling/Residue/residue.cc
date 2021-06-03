@@ -28,8 +28,8 @@ Residue::Residue(MolecularModeling::Assembly *assembly, std::string name) : Node
     tail_atoms_ = AtomVector();
     chemical_type_ = "";
     description_ = "";
-    this->SetId(this->CreateID());
     index_ = this->generateIndex();
+    this->SetId(this->CreateID());
 }
 
 Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue) : Node(this)
@@ -63,7 +63,7 @@ std::string Residue::CreateID(std::string name, std::string chain, std::string n
     if (number == "default")
     {
         std::stringstream ss;
-        ss << this->GetIndex();    
+        ss << this->GetIndex();
         number = ss.str();
     }
     std::stringstream id_stream;
@@ -285,6 +285,10 @@ void Residue::SetDescription(std::string description)
 void Residue::SetId(std::string id)
 {
     id_ = id;
+}
+void Residue::SetIndex(unsigned long long index)
+{
+    index_ = index;
 }
 void Residue::ReplaceAtomCoordinates(AtomVector *newAtoms)
 {
