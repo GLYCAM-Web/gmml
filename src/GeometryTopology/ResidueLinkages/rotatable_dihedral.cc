@@ -445,7 +445,8 @@ bool Rotatable_dihedral::SetSpecificShape(std::string dihedralName, std::string 
                 if (metadata.rotamer_name_ == selectedRotamer)
                 {
                     this->SetDihedralAngle(metadata.default_angle_value_);
-                    //std::cout << "Setting " << dihedralName << " to " << metadata.default_angle_value_ << std::endl;
+                    // std::cout << "Setting " << dihedralName << " to " << metadata.default_angle_value_ << " for "
+                    // << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
                     return true;
                 }
             }
