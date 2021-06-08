@@ -9,14 +9,16 @@
 namespace MolecularModeling
 {
     class Residue;
+    typedef std::vector<Residue*> ResidueVector;
     class Atom;
+    class ResidueNode; // Forward declare for the typedef:
+    typedef std::vector<ResidueNode*> ResidueNodeVector;
     class ResidueNode
     {
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            typedef std::vector<ResidueNode*> ResidueNodeVector;
             typedef std::vector<Atom*> ResidueNodeConnectingAtomVector;
 
             //////////////////////////////////////////////////////////
@@ -43,6 +45,12 @@ namespace MolecularModeling
               * @return residuenode_neighbors_ attribute of the current object of this class
               */
             ResidueNodeVector GetResidueNodeNeighbors();
+
+            /*! \fn
+              * An accessor function in order to access to the residue neighbors
+              * @return A ResidueVector containing residue pointers to each Residue that is connected to this residuenode
+              */
+            ResidueVector GetResidueNeighbors();
 
             /*! \fn
               * An accessor function in order to access to the connecting atoms of residuenode
@@ -136,7 +144,7 @@ namespace MolecularModeling
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
-            void Print(std::ostream& out = std::cout);
+            void Print(std::ostream& out = std::cerr);
 
         private:
             //////////////////////////////////////////////////////////

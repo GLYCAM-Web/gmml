@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-#include <regex>
 // Query function includes:
 #include "../../MolecularModeling/atom.hpp"
 #include "../../MolecularModeling/residue.hpp"
@@ -35,6 +34,8 @@ struct DihedralAngleData
     std::string atom2_ ;
     std::string atom3_ ;
     std::string atom4_ ;
+    inline bool operator== (const DihedralAngleData &other) {return (this->index_ == other.index_ && this->number_of_bonds_from_anomeric_carbon_ == other.number_of_bonds_from_anomeric_carbon_);}
+    inline bool operator!= (const DihedralAngleData &other) {return (this->index_ != other.index_ || this->number_of_bonds_from_anomeric_carbon_ != other.number_of_bonds_from_anomeric_carbon_);}
 } ;
 
 typedef std::vector<DihedralAngleData> DihedralAngleDataVector;
@@ -60,7 +61,7 @@ public:
     //                      QUERY FUNCTIONS                 //
     //////////////////////////////////////////////////////////
     // Pass in the two atoms on either side the residue-residue linkage
-    DihedralAngleDataVector GetEntriesForLinkage( MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2);
+    DihedralAngleDataVector GetEntriesForLinkage(MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2);
 
 private:
     //////////////////////////////////////////////////////////
@@ -70,8 +71,7 @@ private:
     // Most entries have "none" for condition. This checks first if condition is "none", and therefore satisfied.
     // Otherwise (else if) it checks if any of the residue_types match the condition for the entry, e.g. gauche_effect=galacto.
     bool checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::vector<std::string> entry_conditions);
-
-
+    
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////

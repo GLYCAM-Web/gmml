@@ -2,7 +2,9 @@
 #define GMML_HPP
 
 #include "common.hpp"
+#include "generictypedefs.hpp"
 #include "utils.hpp"
+#include "CodeUtils/codetests.hpp"
 #include "InputSet/CifFileSpace/ciffile.hpp"
 #include "InputSet/CifFileSpace/ciffileatom.hpp"
 #include "InputSet/CifFileSpace/ciffileprocessingexception.hpp"
@@ -107,6 +109,7 @@
 #include "InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 #include "InputSet/TopologyFileSpace/topologyresidue.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+#include "InputSet/CondensedSequenceSpace/carbohydratebuilder.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
@@ -115,9 +118,8 @@
 #include "GeometryTopology/plane.hpp"
 #include "GeometryTopology/cell.hpp"
 #include "GeometryTopology/grid.hpp"
-#include "GeometryTopology/angle.hpp"
-#include "GeometryTopology/dihedral.hpp"
-#include "GeometryTopology/distance.hpp"
+#include "GeometryTopology/ResidueLinkages/residue_linkage.hpp"
+#include "GeometryTopology/ResidueLinkages/rotatable_dihedral.hpp"
 #include "Glycan/chemicalcode.hpp"
 #include "Glycan/monosaccharide.hpp"
 #include "Glycan/note.hpp"
@@ -131,6 +133,7 @@
 #include "MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
 #include "MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
 #include "MolecularMetadata/GLYCAM/dihedralangledata.hpp"
+#include "MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
 #include "MolecularMetadata/AMBER/amberelements.hpp"
 #include "MolecularModeling/assembly.hpp"
 #include "MolecularModeling/atom.hpp"
@@ -147,6 +150,7 @@
 #include "MolecularModeling/Graph/node.hpp"
 #include "MolecularModeling/Graph/edge.hpp"
 #include "MolecularModeling/Graph/graph.hpp"
+#include "MolecularModeling/Selections/selections.hpp"
 #include "MolecularModeling/ring_shape_detection.hpp"
 #include "ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
@@ -175,10 +179,6 @@
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp"
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp"
 
-typedef std::vector<MolecularModeling::Atom*> AtomVector;
-typedef std::vector<MolecularModeling::Residue*> ResidueVector;
-typedef std::vector<MolecularModeling::Assembly*> AssemblyVector;
-typedef std::vector<std::string> StringVector;
 typedef std::vector<MolecularModeling::ResidueNode*> ResidueNodeVector;
 
 

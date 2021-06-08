@@ -1,0 +1,27 @@
+CarbohydrateBuilder called using sequence: DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+ and contains these Residue_linkages:
+Residue_linkage Index: 0, Name: DGlcNAcpb1-1ROH, NumberOfShapes: 1, ids: 4YB_A_2_?_?_?@C1 -- ROH_A_1_?_?_?@O1
+Residue_linkage Index: 1, Name: DGlcNAcpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: UYB_A_3_?_?_?@C1 -- 4YB_A_2_?_?_?@O4
+Residue_linkage Index: 2, Name: DManpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: QMB_A_4_?_?_?@C1 -- UYB_A_3_?_?_?@O4
+Residue_linkage Index: 3, Name: DManpa1-3DManpb, NumberOfShapes: 1, ids: 2MA_A_5_?_?_?@C1 -- QMB_A_4_?_?_?@O3
+Residue_linkage Index: 4, Name: DGlcNAcpb1-2DManpa, NumberOfShapes: 1, ids: WYB_A_6_?_?_?@C1 -- 2MA_A_5_?_?_?@O2
+Residue_linkage Index: 5, Name: Sulpho1-3DGlcNAcpb, NumberOfShapes: 1, ids: SO3_A_7_?_?_?@S1 -- WYB_A_6_?_?_?@O3
+Residue_linkage Index: 6, Name: DGalpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: 6LB_A_8_?_?_?@C1 -- WYB_A_6_?_?_?@O4
+Residue_linkage Index: 7, Name: DNeu5Acpa2-6DGalpb, NumberOfShapes: 6, ids: 0SA_A_9_?_?_?@C2 -- 6LB_A_8_?_?_?@O6
+Residue_linkage Index: 8, Name: DGlcNAcpb1-4DManpb, NumberOfShapes: 1, ids: 0YB_A_10_?_?_?@C1 -- QMB_A_4_?_?_?@O4
+Residue_linkage Index: 9, Name: DManpa1-6DManpb, NumberOfShapes: 3, ids: 6MA_A_11_?_?_?@C1 -- QMB_A_4_?_?_?@O6
+Residue_linkage Index: 10, Name: DManpa1-6DManpa, NumberOfShapes: 3, ids: ZMA_A_12_?_?_?@C1 -- 6MA_A_11_?_?_?@O6
+Residue_linkage Index: 11, Name: Sulpho1-2DManpa, NumberOfShapes: 1, ids: SO3_A_13_?_?_?@S1 -- ZMA_A_12_?_?_?@O2
+Residue_linkage Index: 12, Name: Methyl3-3DManpa, NumberOfShapes: 1, ids: MEX_A_14_?_?_?@CH3 -- ZMA_A_12_?_?_?@O3
+Residue_linkage Index: 13, Name: Methyl3-6DGlcNAcpb, NumberOfShapes: 3, ids: MEX_A_15_?_?_?@CH3 -- UYB_A_3_?_?_?@O6
+Number of likely shapes for this sequence is 48
+Number of possible shapes for this sequence is 162
+Options: Name: DNeu5Acpa2-6DGalpb, Index: 7, Res1:9, Res2:8
+Likely: Phi, t, -g
+Likely: Omg, gg, gt, tg
+Options: Name: DManpa1-6DManpb, Index: 9, Res1:11, Res2:4
+Likely: Omg, gg, gt
+Options: Name: DManpa1-6DManpa, Index: 10, Res1:12, Res2:11
+Likely: Omg, gg, gt
+Options: Name: Methyl3-6DGlcNAcpb, Index: 13, Res1:15, Res2:3
+Likely: Omg, gg, gt

@@ -295,7 +295,7 @@ void Assembly::ExtractTorsionAnglesFromPDB(std::vector<std::string> amino_lib_fi
             std::queue<Glycan::Oligosaccharide*> oligo_queue;
             oligo_queue.push(oligo);
             if(MatchDisaccharide(oligo_queue, phi_angle, psi_angle, first_mono, mono1_carbon_index, second_mono, mono2_carbon_index))
-                out_file << std::left << std::setw(15) << pdb << std::setw(15) << gmml::ConvertRadian2Degree(phi_angle) << std::setw(15) << gmml::ConvertRadian2Degree(psi_angle) << std::setw(25) << disaccharide << oligo_name << std::endl;
+                out_file << std::left << std::setw(15) << pdb << std::setw(15) << phi_angle << std::setw(15) << psi_angle << std::setw(25) << disaccharide << oligo_name << std::endl;
         }
     }
     out_file.close();
@@ -341,7 +341,7 @@ Psi|  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 | 
 
     std::ifstream in(input_file.c_str());
     if (!in.is_open())
-        std::cout << "Error in reading the torsion results file" << std::endl;
+//        std::cout << "Error in reading the torsion results file" << std::endl;
 
     ///Read the head of the file untill the data about torsions
     while (getline (in, line) )
@@ -372,62 +372,67 @@ Psi|  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 |  0 | 
     }
     in.close();
 
-    for(int j = 17; j >= 0; j-- )
-    {
-        if(j == 9)
-            std::cout << "Psi| ";
-        else
-            std::cout << std::setw(5) << std::right << "| ";
-        for(int k = 0; k <= 17; k++ )
-        {
-            std::cout << std::setw(2) << psi_phi_matrix.at(j).at(k) << " | ";
-        }
-        if(j == 17)
-            std::cout << high_range;
-        if(j == 0)
-            std::cout << low_range;
-        std::cout << std::endl;
-    }
-    std::cout << std::setw(5) << std::left << low_range << std::setw(43) << std::right << "Phi" << std::setw(45) << std::right << high_range << std::endl << std::endl;
+//
+//
+// TODO:  I think the following few functions do nothing more than print things to cout....  Delete or change?
+//        (2018-11-19  BLFoley)
+//
+//    for(int j = 17; j >= 0; j-- )
+//    {
+//        if(j == 9)
+//            std::cout << "Psi| ";
+//        else
+//            std::cout << std::setw(5) << std::right << "| ";
+//        for(int k = 0; k <= 17; k++ )
+//        {
+//            std::cout << std::setw(2) << psi_phi_matrix.at(j).at(k) << " | ";
+//        }
+//        if(j == 17)
+//            std::cout << high_range;
+//        if(j == 0)
+//            std::cout << low_range;
+//        std::cout << std::endl;
+//    }
+//    std::cout << std::setw(5) << std::left << low_range << std::setw(43) << std::right << "Phi" << std::setw(45) << std::right << high_range << std::endl << std::endl;
 
-    if(has_omega)
-    {
-        for(int j = 17; j >= 0; j-- )
-        {
-            if(j == 9)
-                std::cout << "Psi| ";
-            else
-                std::cout << std::setw(5) << std::right << "| ";
-            for(int k = 0; k <= 17; k++ )
-            {
-                std::cout << std::setw(2) << psi_omega_matrix.at(j).at(k) << " | ";
-            }
-            if(j == 17)
-                std::cout << high_range;
-            if(j == 0)
-                std::cout << low_range;
-            std::cout << std::endl;
-        }
-        std::cout << std::setw(5) << std::left << low_range << std::setw(43) << std::right << "Omega" << std::setw(45) << std::right << high_range << std::endl << std::endl;
+//    if(has_omega)
+//    {
+//        for(int j = 17; j >= 0; j-- )
+//        {
+//            if(j == 9)
+//                std::cout << "Psi| ";
+//            else
+//                std::cout << std::setw(5) << std::right << "| ";
+//            for(int k = 0; k <= 17; k++ )
+//            {
+//                std::cout << std::setw(2) << psi_omega_matrix.at(j).at(k) << " | ";
+//            }
+//            if(j == 17)
+//                std::cout << high_range;
+//            if(j == 0)
+//                std::cout << low_range;
+//            std::cout << std::endl;
+//        }
+//        std::cout << std::setw(5) << std::left << low_range << std::setw(43) << std::right << "Omega" << std::setw(45) << std::right << high_range << std::endl << std::endl;
 
-        for(int j = 17; j >= 0; j-- )
-        {
-            if(j == 9)
-                std::cout << "Phi| ";
-            else
-                std::cout << std::setw(5) << std::right << "| ";
-            for(int k = 0; k <= 17; k++ )
-            {
-                std::cout << std::setw(2) << phi_omega_matrix.at(j).at(k) << " | ";
-            }
-            if(j == 17)
-                std::cout << high_range;
-            if(j == 0)
-                std::cout << low_range;
-            std::cout << std::endl;
-        }
-        std::cout << std::setw(5) << std::left << low_range << std::setw(43) << std::right << "Omega" << std::setw(45) << std::right << high_range << std::endl;
-    }
+//        for(int j = 17; j >= 0; j-- )
+//        {
+//            if(j == 9)
+//                std::cout << "Phi| ";
+//            else
+//                std::cout << std::setw(5) << std::right << "| ";
+//            for(int k = 0; k <= 17; k++ )
+//            {
+//                std::cout << std::setw(2) << phi_omega_matrix.at(j).at(k) << " | ";
+//            }
+//            if(j == 17)
+//                std::cout << high_range;
+//            if(j == 0)
+//                std::cout << low_range;
+//            std::cout << std::endl;
+//        }
+//        std::cout << std::setw(5) << std::left << low_range << std::setw(43) << std::right << "Omega" << std::setw(45) << std::right << high_range << std::endl;
+//    }
 }
 
 void Assembly::CalculateGlyprobityGeometryOutliers(Glycan::Monosaccharide* mono)
@@ -518,7 +523,7 @@ void Assembly::CalculateGlyprobityGeometryOutliers(Glycan::Monosaccharide* mono)
             }
         }
     }
-    std::cout << std::endl << bond_lengths_stream.str() << std::endl << bond_angles_stream.str() << "<--------------------->" << std::endl << std::endl;
+//    std::cout << std::endl << bond_lengths_stream.str() << std::endl << bond_angles_stream.str() << "<--------------------->" << std::endl << std::endl;
 }
 
 bool Assembly::checkIfNucleotide(Glycan::Monosaccharide* mono)

@@ -69,11 +69,14 @@
 #include <string.h>
 
 using MolecularModeling::Assembly;
+using MolecularModeling::Residue;
+using MolecularModeling::Atom;
+using MolecularModeling::AtomVector;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-Assembly::AtomVector Assembly::Select(std::string pattern)
+MolecularModeling::AtomVector Assembly::Select(std::string pattern)
 {
     AtomVector selection = AtomVector();
 
@@ -82,8 +85,8 @@ Assembly::AtomVector Assembly::Select(std::string pattern)
     index << this->GetSequenceNumber();
     this->GetHierarchicalMapOfAssembly(hierarchical_map, index);
 
-    for(HierarchicalContainmentMap::iterator it = hierarchical_map.begin(); it != hierarchical_map.end(); it++)
-        std::cout << (*it).first << " " << (*it).second.size() << std::endl;
+//    for(HierarchicalContainmentMap::iterator it = hierarchical_map.begin(); it != hierarchical_map.end(); it++)
+//        std::cout << (*it).first << " " << (*it).second.size() << std::endl;
 
     SelectPatternMap select_pattern_map = ParsePatternString(pattern);
 

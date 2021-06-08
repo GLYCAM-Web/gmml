@@ -21,7 +21,7 @@ GeometryTopology::Rotation::Rotation(){}
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-GeometryTopology::Coordinate::CoordinateVector GeometryTopology::Rotation::RotateCoordinates(GeometryTopology::Coordinate* pivot_point,GeometryTopology::Coordinate* direction_point,double rotation_angle,GeometryTopology::Coordinate::CoordinateVector coordinate_set)
+GeometryTopology::CoordinateVector GeometryTopology::Rotation::RotateCoordinates(GeometryTopology::Coordinate* pivot_point,GeometryTopology::Coordinate* direction_point,double rotation_angle,GeometryTopology::CoordinateVector coordinate_set)
 {
      //Please refer https://sites.google.com/site/glennmurray/Home/rotation-matrices-and-formulas/rotation-about-an-arbitrary-axis-in-3-dimensions for the technique used in coordinate rotation with respect to arbitrary axis.
 
@@ -34,7 +34,7 @@ GeometryTopology::Coordinate::CoordinateVector GeometryTopology::Rotation::Rotat
     double l=sqrt(u*u+v*v+w*w);
     if(l<0)
     {
-        std::cout<<"Direction vector length is less than 1"<<std::endl;
+//        std::cout<<"Direction vector length is less than 1"<<std::endl;
         return coordinate_set;
     }else
     {
@@ -62,8 +62,8 @@ GeometryTopology::Coordinate::CoordinateVector GeometryTopology::Rotation::Rotat
         double oneMinusCosT = 1 - cosT;
         double sinT = sin(angle);
 
-        GeometryTopology::Coordinate::CoordinateVector rotated_coordinate_set;
-        for(GeometryTopology::Coordinate::CoordinateVector::iterator it = coordinate_set.begin(); it != coordinate_set.end(); it++)
+        GeometryTopology::CoordinateVector rotated_coordinate_set;
+        for(GeometryTopology::CoordinateVector::iterator it = coordinate_set.begin(); it != coordinate_set.end(); it++)
         {
             GeometryTopology::Coordinate* coordinate = (*it);
 

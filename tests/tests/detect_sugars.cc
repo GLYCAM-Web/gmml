@@ -45,12 +45,14 @@ int main(int argc, char* argv[]) {
     // Initialize an Assembly from the PDB file.
     MolecularModeling::Assembly assembly(pdb_file, gmml::PDB);
     // Build by Distance
-    assembly.BuildStructureByDistance(10);
+    assembly.BuildStructureByDistance(3);
+    // Remove Hydrgens
+    assembly.RemoveAllHydrogenAtoms();    
     // Find the Sugars.
     assembly.ExtractSugars(aminolibs, false, true);
-    //Note that to have individual ontology (.ttl) files or to have CCD lookup, you must provide 
+    //Note that to have individual ontology (.ttl) files or to have CCD lookup, you must provide
     //a bool (true) for individual ontologies, and the path to the CCD which right now is just in my home directory
-    
+
     // YAY! We made it!
     return EXIT_SUCCESS;
 }

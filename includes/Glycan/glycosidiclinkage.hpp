@@ -23,18 +23,20 @@ namespace Glycan
     std::string linkage_type_; //ie "1-4"
     std::string inverse_linkage_type_; //ie "4-1" needed for writing as you travel in reverse
     double phi_angle_;
+    double phi_prime_angle_ = -9999;
     double psi_angle_;
-    double omega_angle_;
-    MolecularModeling::Atom* reducing_mono_carbon_;
-    MolecularModeling::Atom* non_reducing_mono_carbon_;
-    MolecularModeling::Atom* non_reducing_mono_2_carbon_;
-    
+    double omega_angle_ = -9999;
+    MolecularModeling::Atom* reducing_mono_carbon_ = NULL;
+    MolecularModeling::Atom* non_reducing_mono_carbon_ = NULL;
+    MolecularModeling::Atom* non_reducing_mono_2_carbon_ = NULL;
+    MolecularModeling::Atom* glycosidic_oxygen_ = NULL;
+
     GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide* targetMono, std::string source_carbon_ID, std::string target_carbon_ID);
     //FUNCTIONS
-    double CalculatePhiAngle();
-    double CalculatePsiAngle();
-    double CalculateOmegaAngle();
-    
+    double CalculatePhiAngle(std::vector<MolecularModeling::Atom*> linkage_Atoms);
+    double CalculatePsiAngle(std::vector<MolecularModeling::Atom*> linkage_Atoms);
+    double CalculateOmegaAngle(std::vector<MolecularModeling::Atom*> linkage_Atoms);
+
   };
 }
 

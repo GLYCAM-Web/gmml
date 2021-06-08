@@ -32,7 +32,7 @@ namespace PdbqtFileSpace
               * Constructor with required parameters
               * @param residue_stream_block
               */
-            PdbqtModelResidueSet(std::stringstream& residue_set_block);
+            PdbqtModelResidueSet(std::ifstream& residue_set_block);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
@@ -90,7 +90,7 @@ namespace PdbqtFileSpace
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
-            void Print(std::ostream& out = std::cout);
+            void Print(std::ostream& out = std::cerr);
 
         private:
             //////////////////////////////////////////////////////////

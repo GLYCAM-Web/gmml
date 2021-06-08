@@ -38,7 +38,7 @@ namespace GeometryTopology
               * @param coordinate_set List of coordinates that need to be rotated by an angle
               * @return A list of coordinates rotated by an angle
               */
-            GeometryTopology::Coordinate::CoordinateVector RotateCoordinates(GeometryTopology::Coordinate* pivot_point,GeometryTopology::Coordinate* direction_point,double rotation_angle,GeometryTopology::Coordinate::CoordinateVector coordinate_set);
+            GeometryTopology::CoordinateVector RotateCoordinates(GeometryTopology::Coordinate* pivot_point,GeometryTopology::Coordinate* direction_point,double rotation_angle,GeometryTopology::CoordinateVector coordinate_set);
 
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //

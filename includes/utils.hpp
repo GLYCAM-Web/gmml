@@ -9,6 +9,7 @@
 #include <vector>
 #include <iomanip>
 #include <math.h>
+#include <iterator> // for back_inserter
 #include "boost/tokenizer.hpp"
 #include "boost/foreach.hpp"
 #include "common.hpp"
@@ -309,7 +310,7 @@ namespace gmml
         }
         return SUGARNAMELOOKUP[0];
     }
-    
+
     inline Glycan::SugarName ResidueSugarNameLookup(std::string residue)
     {
         for(int i = 0; i < SUGARNAMELOOKUPSIZE; i++)
@@ -467,7 +468,7 @@ namespace gmml
         }
         return COMPLEXSUGARNAMELOOKUP[0];
     }
-    
+
     inline Glycan::SugarName ResidueComplexSugarNameLookup(std::string residue)
     {
         for(int i = 0; i < COMPLEXSUGARNAMELOOKUPSIZE; i++)
@@ -559,10 +560,22 @@ namespace gmml
       * @param msg The message content that has been produced
       * @param out_file_name The name of the output log file
       */
-    inline void log(int line, std::string file_path, LogLevel level, std::string msg, std::string out_file_name = "log.log")
+    inline void log(int line, std::string file_path, LogLevel level, std::string msg, std::string out_file_name = "")
     {
-       std::ofstream file;
-       file.open(out_file_name.c_str(), std::ios_base::app);
+      std::ofstream file;
+      if(out_file_name == "")
+      {
+        std::string GEMSHOME_ERROR = "\nMust set GEMSHOME environment variable.\n\n    BASH:   export GEMSHOME=/path/to/gems\n    SH:     setenv GEMSHOME /path/to/gems\n";
+        char* gemshome_env_var = std::getenv("GEMSHOME");
+        // Check if the environment variables exist.
+        if(!gemshome_env_var)
+        {
+          std::cout << GEMSHOME_ERROR << std::endl;
+        }
+        std::string GEMSHOME(gemshome_env_var);
+        out_file_name = GEMSHOME + "/gmml/GMML_Log.txt";
+      }
+      file.open(out_file_name.c_str(), std::ios_base::app);
 
        time_t t = time(0);
        std::string time_str = std::asctime(std::localtime(&t));
@@ -662,11 +675,28 @@ namespace gmml
     inline std::string ConvertVectorString2String(std::vector<std::string> vector_string)
     {
         std::string result = "";
-        for(unsigned int i = 0; i < vector_string.size(); i++)
+        for(auto &item : vector_string)
         {
-            result += vector_string.at(i);
+          result += item;
         }
         return result;
+    }
+
+    template<typename Out>
+    inline void split(const std::string &s, char delim, Out result)
+    {
+      std::stringstream ss(s);
+        std::string item;
+        while (std::getline(ss, item, delim))
+        {
+            *(result++) = item;
+        }
+    }
+    inline std::vector<std::string> splitStringByDelimiter(const std::string &s, char delim)
+    {
+      std::vector<std::string> elems;
+      split(s, delim, std::back_inserter(elems));
+      return elems;
     }
 
 }

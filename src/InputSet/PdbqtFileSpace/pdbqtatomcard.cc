@@ -10,26 +10,22 @@ using PdbqtFileSpace::PdbqtAtomCard;
 //////////////////////////////////////////////////////////
 PdbqtAtomCard::PdbqtAtomCard() : record_name_("ATOM"){}
 
-PdbqtAtomCard::PdbqtAtomCard(std::stringstream &stream_block)
+PdbqtAtomCard::PdbqtAtomCard(std::ifstream &stream_block)
 {
     atoms_ = PdbqtAtomMap();
+    record_name_ = "ATOM";
     std::string line;
-    bool is_record_name_set = false;
-    getline(stream_block, line);
-    std::string temp = line;
-    while (!gmml::Trim(temp).empty())
+    while (getline(stream_block, line))
     {
-        if(!is_record_name_set){
-            record_name_ = "ATOM";
-            gmml::Trim(record_name_);
-            is_record_name_set=true;
-        }
-
-        PdbqtAtom* atom = new PdbqtAtom(line);
-        atoms_[atom->GetAtomSerialNumber()] = atom;
-
-        getline(stream_block, line);
-        temp = line;
+	if (line.find("ATOM") != std::string::npos || line.find("HETATM") != std::string::npos){
+            PdbqtAtom* atom = new PdbqtAtom(line);
+            atoms_[atom->GetAtomSerialNumber()] = atom;
+	}
+	else{ //File stream has gone one line beyond atom section. Rewind by one line and exit.
+	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            stream_block.seekg(offset, stream_block.cur); //Go back one line    
+	    break;
+	}
     }
 }
 
@@ -63,6 +59,17 @@ void PdbqtAtomCard::SetAtoms(PdbqtAtomMap atoms)
         int serial_number = (*it).first;
         atoms_[serial_number] = atom;
     }
+}
+
+void PdbqtAtomCard::AddAtom(PdbqtAtom* atom)
+{
+    int index = atom->GetAtomSerialNumber();
+    if (atoms_.find(index) != atoms_.end()){
+	std::cout << "Warning: Atom object with index: " << index << " alrady exists. " << std::endl; 
+	std::cout << "Since std::map allows only one key-value pair. This add atom attempt overrides the previous one." << std::endl; 
+    }
+
+    atoms_[index] = atom;
 }
 
 //////////////////////////////////////////////////////////

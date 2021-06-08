@@ -75,7 +75,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 CoordinateFileSpace::CoordinateFile* Assembly::BuildCoordinateFileStructureFromAssembly()
 {
-    std::cout << "Creating coordinate file ..." << std::endl;
+//    std::cout << "Creating coordinate file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating coordinate file ...");
     std::vector<GeometryTopology::Coordinate*> coordinates = this->GetAllCoordinates();
     CoordinateFileSpace::CoordinateFile* coordinate_file = new CoordinateFileSpace::CoordinateFile();

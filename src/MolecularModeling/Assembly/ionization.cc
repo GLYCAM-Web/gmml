@@ -78,14 +78,14 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
     if(ion_count == 0)
     {
         gmml::log(__LINE__, __FILE__,  gmml::INF, "Neutralizing .......");
-        std::cout << "Neutralizing ......." << std::endl;
+//        std::cout << "Neutralizing ......." << std::endl;
         LibraryFileSpace::LibraryFile* lib = new LibraryFileSpace::LibraryFile(lib_file);
         ParameterFileSpace::ParameterFile* param = new ParameterFileSpace::ParameterFile(parameter_file, gmml::IONICMOD);
         double charge = this->GetTotalCharge();
         if(fabs(charge) < gmml::CHARGE_TOLERANCE)
         {
             gmml::log(__LINE__, __FILE__,  gmml::INF, "The assembly has 0 charge and is neutral.");
-            std::cout << "The assembly has 0 charge and is neutral." << std::endl;
+//            std::cout << "The assembly has 0 charge and is neutral." << std::endl;
             return;
         }
         else
@@ -93,7 +93,7 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
             std::stringstream ss;
             ss << "Total charge of the assembly is " << charge;
             gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
-            std::cout << ss.str() << std::endl;
+//            std::cout << ss.str() << std::endl;
         }
         double ion_charge = 0;
         std::string ion_residue_name = "";
@@ -107,19 +107,19 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
             if(ion_charge == 0)
             {
                 gmml::log(__LINE__, __FILE__,  gmml::INF, "The ion has 0 charge");
-                std::cout << "The ion has 0 charge" << std::endl;
+//                std::cout << "The ion has 0 charge" << std::endl;
                 return;
             }
             else if(ion_charge > 0 && charge > 0)
             {
                 gmml::log(__LINE__, __FILE__,  gmml::ERR, "The assembly and the given ion have positive charges, neutralizing process is aborted.");
-                std::cout << "The assembly and the given ion have positive charges, neutralizing process is aborted." << std::endl;
+//                std::cout << "The assembly and the given ion have positive charges, neutralizing process is aborted." << std::endl;
                 return;
             }
             else if(ion_charge < 0 && charge < 0)
             {
                 gmml::log(__LINE__, __FILE__,  gmml::ERR, "The assembly and the given ion have positive charges, neutralizing process is aborted.");
-                std::cout << "The assembly and the given ion have negative charges, neutralizing process is aborted." << std::endl;
+//                std::cout << "The assembly and the given ion have negative charges, neutralizing process is aborted." << std::endl;
                 return;
             }
             else
@@ -152,12 +152,12 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
                     GeometryTopology::Grid* grid = new GeometryTopology::Grid(this, minimum_boundary, maximum_boundary, ion_radius, ion_charge);
                     grid->CalculateCellsCharge();
                     grid->CalculateCellsPotentialEnergy(ion_radius);
-                    GeometryTopology::Coordinate::CoordinateVector best_positions = grid->GetBestPositions(ion_charge);
+                    GeometryTopology::CoordinateVector best_positions = grid->GetBestPositions(ion_charge);
 
                     if(best_positions.size() == 0)
                     {
                         gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is no optimum position to place the ion");
-                        std::cout << "There is no optimum position to place the ion" << std::endl;
+//                        std::cout << "There is no optimum position to place the ion" << std::endl;
                         return;
                     }
                     else
@@ -185,7 +185,7 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
                         residue_id << ion->GetName() << "_" << gmml::BLANK_SPACE << "_" << (i+1) << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << id_;
                         ion->SetId(residue_id.str());
 
-                        GeometryTopology::Coordinate::CoordinateVector atom_coordinates;
+                        GeometryTopology::CoordinateVector atom_coordinates;
                         atom_coordinates.push_back(best_position);
                         Atom* ion_atom = new Atom(ion, lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetName(), atom_coordinates);
                         ion_atom->MolecularDynamicAtom::SetAtomType(lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetType());
@@ -207,20 +207,20 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::WAR, "The ion has not been found in the library file.");
-            std::cout << "The ion has not been found in the library file." << std::endl;
+//            std::cout << "The ion has not been found in the library file." << std::endl;
         }
     }
     else if (ion_count > 0)
     {
         gmml::log(__LINE__, __FILE__,  gmml::INF, "Ionizing .......");
-        std::cout << "Ionizing ......." << std::endl;
+//        std::cout << "Ionizing ......." << std::endl;
         LibraryFileSpace::LibraryFile* lib = new LibraryFileSpace::LibraryFile(lib_file);
         ParameterFileSpace::ParameterFile* param = new ParameterFileSpace::ParameterFile(parameter_file, gmml::IONICMOD);
         double charge = this->GetTotalCharge();
         std::stringstream ss;
         ss << "Total charge of the assembly is " << charge;
         gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
-        std::cout << ss.str() << std::endl;
+//        std::cout << ss.str() << std::endl;
         double ion_charge = 0;
         std::string ion_residue_name = "";
         std::vector<std::string> ion_list = lib->GetAllResidueNames();
@@ -233,7 +233,7 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
             if(ion_charge == 0)
             {
                 gmml::log(__LINE__, __FILE__,  gmml::INF, "The ion has 0 charge");
-                std::cout << "The ion has 0 charge" << std::endl;
+//                std::cout << "The ion has 0 charge" << std::endl;
                 return;
             }
             else
@@ -241,7 +241,7 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
                 std::stringstream ss;
                 ss << "The assembly will be charged by " << ion_count << " ion(s)" ;
                 gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
-                std::cout << ss.str() << std::endl;
+//                std::cout << ss.str() << std::endl;
 
                 ParameterFileSpace::ParameterFile::AtomTypeMap atom_type_map = param->GetAtomTypes();
                 double ion_radius = gmml::MINIMUM_RADIUS;
@@ -266,12 +266,12 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
                     GeometryTopology::Grid* grid = new GeometryTopology::Grid(this, minimum_boundary, maximum_boundary, ion_radius, ion_charge);
                     grid->CalculateCellsCharge();
                     grid->CalculateCellsPotentialEnergy(ion_radius);
-                    GeometryTopology::Coordinate::CoordinateVector best_positions = grid->GetBestPositions(ion_charge);
+                    GeometryTopology::CoordinateVector best_positions = grid->GetBestPositions(ion_charge);
 
                     if(best_positions.size() == 0)
                     {
                         gmml::log(__LINE__, __FILE__,  gmml::ERR, "There is no optimum position to place the ion");
-                        std::cout << "There is no optimum position to place the ion" << std::endl;
+//                        std::cout << "There is no optimum position to place the ion" << std::endl;
                         return;
                     }
                     else
@@ -299,7 +299,7 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
                         residue_id << ion->GetName() << "_" << gmml::BLANK_SPACE << "_" << (i+1) << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << id_;
                         ion->SetId(residue_id.str());
 
-                        GeometryTopology::Coordinate::CoordinateVector atom_coordinates;
+                        GeometryTopology::CoordinateVector atom_coordinates;
                         atom_coordinates.push_back(best_position);
                         Atom* ion_atom = new Atom(ion, lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetName(), atom_coordinates);
                         ion_atom->MolecularDynamicAtom::SetAtomType(lib_ion_residue->GetLibraryAtomByAtomName(ion_name)->GetType());
@@ -321,13 +321,13 @@ void Assembly::AddIon(std::string ion_name, std::string lib_file, std::string pa
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "The ion has not been found in the library file.");
-            std::cout << "The ion has not been found in the library file." << std::endl;
+//            std::cout << "The ion has not been found in the library file." << std::endl;
         }
     }
     else
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Please have a non-negative number as the number of ion(s) want to add");
-        std::cout << "Please have a non-negative number as the number of ion(s) want to add" << std::endl;
+//        std::cout << "Please have a non-negative number as the number of ion(s) want to add" << std::endl;
     }
 }
 

@@ -9,8 +9,10 @@
 
 #include "../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../includes/MolecularModeling/residue.hpp"
+#include "../../../includes/MolecularModeling/residuenode.hpp"
 #include "../../../includes/MolecularModeling/atom.hpp"
 #include "../../../includes/MolecularModeling/atomnode.hpp"
+#include "../../../includes/MolecularModeling/molecule.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
@@ -65,8 +67,6 @@
 #include "../../../includes/common.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
-#include "../../../includes/MolecularModeling/residuenode.hpp"         //Added by ayush on 11/16/17 for identifying residuenodes in assembly
-#include "../../../includes/MolecularModeling/molecule.hpp"            //Added by ayush on 11/12/17 for molecules in assembly
 
 #include <unistd.h>
 #include <errno.h>
@@ -75,7 +75,7 @@
 int local_debug = 0;
 
 using MolecularModeling::Assembly;
-
+using MolecularModeling::ResidueNode;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
@@ -118,7 +118,8 @@ Assembly::Assembly(std::string file_path, gmml::InputFileType type)
     case gmml::UNKNOWN:
         break;
     default:
-        std::cout << "Error, problem with input file type in Assembly Constructor" << std::endl;
+//        std::cout << "Error, problem with input file type in Assembly Constructor" << std::endl;
+        break;
     }
 }
 
@@ -172,22 +173,16 @@ Assembly::Assembly(std::vector<std::string> file_paths, gmml::InputFileType type
     case gmml::UNKNOWN:
         break;
     default:
-        std::cout << "Error, input type not recognized in Assembly Constructor" << std::endl;
+//        std::cout << "Error, input type not recognized in Assembly Constructor" << std::endl;
+        break;
     }
 }
 
 Assembly::Assembly(Assembly *assembly) : sequence_number_(1), id_("1"), description_(""), model_index_(0)
 {
     source_file_ = assembly->GetSourceFile();
-    assemblies_ = AssemblyVector();
-    AssemblyVector assemblies = assembly->GetAssemblies();
-    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
-        assemblies_.push_back(new Assembly(*it));
-
-    residues_ = ResidueVector();
-    ResidueVector residues = assembly->GetResidues();
-    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
-        residues_.push_back(new Residue(*it));
+    assemblies_ = assembly->GetAssemblies();
+    residues_ = assembly->GetResidues();
 }
 
 Assembly::Assembly(std::vector<std::vector<std::string> > file_paths, std::vector<gmml::InputFileType> types)
@@ -239,12 +234,12 @@ std::string Assembly::GetName()
     return name_;
 }
 
-Assembly::AssemblyVector Assembly::GetAssemblies()
+MolecularModeling::AssemblyVector Assembly::GetAssemblies()
 {
     return assemblies_;
 }
 
-Assembly::ResidueVector Assembly::GetResidues()
+MolecularModeling::ResidueVector Assembly::GetResidues()
 {
     return residues_;
 }
@@ -284,7 +279,7 @@ int Assembly::GetModelIndex()
     return model_index_;
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssembly()
 {
     AtomVector all_atoms_of_assembly = AtomVector();
     AssemblyVector assemblies = this->GetAssemblies();
@@ -312,7 +307,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssembly()
     return all_atoms_of_assembly;
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinBackbone()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinBackbone()
 { // written by OG, so syntax a bit different from other functions.
 
     AtomVector selection_from_assembly = AtomVector();
@@ -328,7 +323,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinBackbone()
     return selection_from_assembly;
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinSidechain()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinSidechain()
 { // written by OG, so syntax a bit different from other functions.
 
     AtomVector selection_from_assembly = AtomVector();
@@ -344,7 +339,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinSidechain()
     return selection_from_assembly;
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinResidues()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinResidues()
 { // written by OG, so syntax a bit different from other functions.
     AtomVector selection_from_assembly = AtomVector();
     AssemblyVector assemblies = this->GetAssemblies();
@@ -388,12 +383,12 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithinProteinResidues()
     return selection_from_assembly;
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyNotWithinProteinResidues()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyNotWithinProteinResidues()
 { // written by OG, so syntax a bit different from other functions.
     AtomVector selection_from_assembly = AtomVector();
-    AssemblyVector assemblies = this->GetAssemblies();
+    MolecularModeling::AssemblyVector assemblies = this->GetAssemblies();
     //std::cout << "size is " << assemblies.size() << std::endl;
-    for(AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
+    for(MolecularModeling::AssemblyVector::iterator it = assemblies.begin(); it != assemblies.end(); it++)
     {
         Assembly* assembly = (*it);
         ResidueVector residues = assembly->GetResidues();
@@ -439,7 +434,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyNotWithinProteinResidues()
 }
 
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAtoms()
 {
     AtomVector all_atoms_of_assembly = AtomVector();
     AssemblyVector assemblies = this->GetAssemblies();
@@ -473,7 +468,8 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAt
     for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
     {
         Residue* residue = (*it);
-        if((residue->GetName().compare("HOH") != 0) && (residue->CheckIfProtein() != true))
+        if((residue->GetName().compare("HOH") != 0) && (residue->CheckIfProtein() != true) &&
+           (residue->GetName().compare("DOD") != 0))
         {
             AtomVector atoms = residue->GetAtoms();
             for(AtomVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
@@ -481,7 +477,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAt
                 Atom* atom = (*it1);
                 // if(atom->GetDescription().find("Het;") != std::string::npos)
                 // There is a bug in this code somewhere, so I commented it out
-                // Won't find monosaccharides in monosaccharide only pdbs.
+                // Won't find monosaccharides in monosaccharide only pdbs as they are in the ATOM section.
                 all_atoms_of_assembly.push_back(atom);
             }
         }
@@ -489,7 +485,7 @@ Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterResiduesAt
     return all_atoms_of_assembly;
 }
 
-Assembly::ResidueVector Assembly::GetAllResiduesOfAssembly()
+MolecularModeling::ResidueVector Assembly::GetAllResiduesOfAssembly()
 {
     ResidueVector all_residues_of_assembly = ResidueVector();
     AssemblyVector sub_assemblies = this->GetAssemblies();
@@ -510,7 +506,7 @@ Assembly::ResidueVector Assembly::GetAllResiduesOfAssembly()
     return all_residues_of_assembly;
 }
 
-Assembly::ResidueVector Assembly::GetAllProteinResiduesOfAssembly()
+MolecularModeling::ResidueVector Assembly::GetAllProteinResiduesOfAssembly()
 {
     ResidueVector protein_residues;
     ResidueVector all_residues = this->GetAllResiduesOfAssembly();
@@ -524,20 +520,20 @@ Assembly::ResidueVector Assembly::GetAllProteinResiduesOfAssembly()
     }
     return protein_residues;
 }
-GeometryTopology::Coordinate::CoordinateVector Assembly::GetAllCoordinates()
+GeometryTopology::CoordinateVector Assembly::GetAllCoordinates()
 {
-    GeometryTopology::Coordinate::CoordinateVector coordinates;
+    GeometryTopology::CoordinateVector coordinates;
     for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
     {
         Assembly* assembly = (*it);
-        GeometryTopology::Coordinate::CoordinateVector assembly_coordinate = assembly->GetAllCoordinates();
+        GeometryTopology::CoordinateVector assembly_coordinate = assembly->GetAllCoordinates();
         if(assembly_coordinate.size() == 0)
         {
-            std::cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << std::endl;
+//            std::cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << std::endl;
             gmml::log(__LINE__, __FILE__, gmml::ERR, "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)");
-            return GeometryTopology::Coordinate::CoordinateVector();
+            return GeometryTopology::CoordinateVector();
         }
-        for(GeometryTopology::Coordinate::CoordinateVector::iterator it1 = assembly_coordinate.begin(); it1 != assembly_coordinate.end(); it1++)
+        for(GeometryTopology::CoordinateVector::iterator it1 = assembly_coordinate.begin(); it1 != assembly_coordinate.end(); it1++)
         {
             coordinates.push_back(*it1);
         }
@@ -551,9 +547,9 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::GetAllCoordinates()
             Atom* atom = (*it1);
             if(atom->GetCoordinates().size() == 0)
             {
-                std::cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << std::endl;
+//                std::cout << "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)" << std::endl;
                 gmml::log(__LINE__, __FILE__, gmml::ERR, "Central data structure is not complete in order for generating this type of file: Missing coordinate(s)");
-                return GeometryTopology::Coordinate::CoordinateVector();
+                return GeometryTopology::CoordinateVector();
             }
             else
             {
@@ -564,12 +560,12 @@ GeometryTopology::Coordinate::CoordinateVector Assembly::GetAllCoordinates()
     return coordinates;
 }
 
-GeometryTopology::Coordinate::CoordinateVector Assembly::GetCycleAtomCoordinates( Glycan::Monosaccharide* mono ) {
-  GeometryTopology::Coordinate::CoordinateVector coordinates;
+GeometryTopology::CoordinateVector Assembly::GetCycleAtomCoordinates( Glycan::Monosaccharide* mono ) {
+  GeometryTopology::CoordinateVector coordinates;
   for( AtomVector::iterator it1 = mono->cycle_atoms_.begin(); it1 != mono->cycle_atoms_.end(); it1++ ) {
     MolecularModeling::Atom* atom = ( *it1 );
-    GeometryTopology::Coordinate::CoordinateVector atom_coordinates = atom->GetCoordinates();
-    for( GeometryTopology::Coordinate::CoordinateVector::iterator it2 = atom_coordinates.begin(); it2 != atom_coordinates.end(); it2++ ) {
+    GeometryTopology::CoordinateVector atom_coordinates = atom->GetCoordinates();
+    for( GeometryTopology::CoordinateVector::iterator it2 = atom_coordinates.begin(); it2 != atom_coordinates.end(); it2++ ) {
       coordinates.push_back( ( *it2 ) );
     }
   }
@@ -582,13 +578,13 @@ Assembly::NoteVector Assembly::GetNotes()
 }
 
   //Added by ayush on 11/16/17 for residuenodes in assembly
-Assembly::ResidueNodeVector Assembly::GetAllResidueNodesOfAssembly()
+MolecularModeling::ResidueNodeVector Assembly::GetAllResidueNodesOfAssembly()
 {
         return residuenodes_;
 }
 
  //Added by ayush on 11/12/17 for molecules in assembly
-Assembly::MoleculeVector Assembly::GetMolecules()
+MolecularModeling::MoleculeVector Assembly::GetMolecules()
 {
       return molecules_;
 }
@@ -630,6 +626,11 @@ void Assembly::AddAssembly(Assembly *assembly)
 void Assembly::RemoveAssembly(Assembly *assembly)
 {
     assemblies_.erase(std::remove(assemblies_.begin(), assemblies_.end(), assembly), assemblies_.end());
+    //Following code added by Yao 08/20/2019. In addtion to removing assembly, also remove its residues& atoms from current assembly.
+    ResidueVector all_residues = assembly->GetResidues();
+    for (ResidueVector::iterator resit = all_residues.begin(); resit != all_residues.end(); resit++){
+	this->RemoveResidue(*resit);
+    }
 }
 
 void Assembly::UpdateIds(std::string new_id)
@@ -761,10 +762,10 @@ void Assembly::AddNote(Glycan::Note *note)
 
 
 //Added by ayush on 11/16/17 for residuenodes in assembly
-void Assembly::SetResidueNodes(ResidueNodeVector residuenodes)
+void Assembly::SetResidueNodes(MolecularModeling::ResidueNodeVector residuenodes)
 {
     residuenodes_.clear();
-    for(ResidueNodeVector::iterator it = residuenodes.begin(); it != residuenodes.end(); it++)
+    for(MolecularModeling::ResidueNodeVector::iterator it = residuenodes.begin(); it != residuenodes.end(); it++)
     {
         residuenodes_.push_back(*it);
     }
@@ -935,7 +936,7 @@ void Assembly::AddResidueNode(ResidueNode* residuenode)
     residuenodes_.push_back(residuenode);
 }
 
-Assembly::ResidueNodeVector Assembly::GenerateResidueNodesInAssembly()
+MolecularModeling::ResidueNodeVector Assembly::GenerateResidueNodesInAssembly()
 {
 
     int residue_counter=1;
@@ -978,13 +979,13 @@ Assembly::ResidueNodeVector Assembly::GenerateResidueNodesInAssembly()
     }
 
     //For adding residuenode neighbours
-    for(ResidueNodeVector::iterator it3 = residuenodes_.begin(); it3 != residuenodes_.end(); it3++)
+    for(MolecularModeling::ResidueNodeVector::iterator it3 = residuenodes_.begin(); it3 != residuenodes_.end(); it3++)
     {
-            ResidueNode* residuenode = (*it3);
+            MolecularModeling::ResidueNode* residuenode = (*it3);
 
-             AtomVector residue_connecting_atoms = residuenode->GetResidueNodeConnectingAtoms();
+            MolecularModeling::AtomVector residue_connecting_atoms = residuenode->GetResidueNodeConnectingAtoms();
 
-            for(AtomVector::iterator it4 = residue_connecting_atoms.begin(); it4 != residue_connecting_atoms.end(); it4++)
+            for(MolecularModeling::AtomVector::iterator it4 = residue_connecting_atoms.begin(); it4 != residue_connecting_atoms.end(); it4++)
             {
                 Atom* connecting_atom = (*it4);
 
@@ -1014,7 +1015,7 @@ void Assembly::GenerateMoleculesInAssembly()
 {
     int moleculecount=0;
 
-    for(ResidueNodeVector::iterator it = residuenodes_.begin(); it != residuenodes_.end(); it++)
+    for(MolecularModeling::ResidueNodeVector::iterator it = residuenodes_.begin(); it != residuenodes_.end(); it++)
     {
          MolecularModeling::ResidueNode* residuenode = (*it);
          if(residuenode->GetIsVisited()==false)
@@ -1024,16 +1025,16 @@ void Assembly::GenerateMoleculesInAssembly()
          }
     }
 
-    std::cout<<"Total number of molecules in Assembly is:"<<moleculecount<<std::endl;
+//    std::cout<<"Total number of molecules in Assembly is:"<<moleculecount<<std::endl;
 
 }
 
 void Assembly::GenerateMoleculesDFSUtil(MolecularModeling::ResidueNode* DFSresiduenode)
 {
         DFSresiduenode->SetIsVisited(true);
-        ResidueNodeVector residuenode_neighbors=DFSresiduenode->GetResidueNodeNeighbors();
+        MolecularModeling::ResidueNodeVector residuenode_neighbors=DFSresiduenode->GetResidueNodeNeighbors();
 
-        for(ResidueNodeVector::iterator it2 = residuenode_neighbors.begin(); it2 != residuenode_neighbors.end(); it2++)
+        for(MolecularModeling::ResidueNodeVector::iterator it2 = residuenode_neighbors.begin(); it2 != residuenode_neighbors.end(); it2++)
         {
                MolecularModeling::ResidueNode* current_residuenode_neighbor = (*it2);
                if(current_residuenode_neighbor->GetIsVisited()==false)
@@ -1056,13 +1057,14 @@ void Assembly::AddMolecule(MolecularModeling::Molecule *molecule)
 
 
  //Added by ayush on 04/11/18 for TopologyFix in assembly
-Assembly::AtomVector Assembly::GetAllBondedAtomsByStartDirection(MolecularModeling::Atom* start_atom, MolecularModeling::Atom* direction_atom , AtomVector ignore_list)
+MolecularModeling::AtomVector Assembly::GetAllBondedAtomsByStartDirection(MolecularModeling::Atom* start_atom, MolecularModeling::Atom* direction_atom , AtomVector ignore_list)
 {
 
         if(start_atom == NULL || direction_atom == NULL){
-            std::cout<<"Start Atom or Direction Atom is null"<<std::endl;}
+//            std::cout<<"Start Atom or Direction Atom is null"<<std::endl;
+            }
         else if(CheckIfAtomExistInAssembly(start_atom)==false||CheckIfAtomExistInAssembly(direction_atom)==false){
-            std::cout<<"Start Atom or Direction Atom does not exist in Assembly"<<std::endl;
+//            std::cout<<"Start Atom or Direction Atom does not exist in Assembly"<<std::endl;
         }else{
                 bool isNeighbor=false;
                  AtomVector start_atom_neighbors = start_atom->GetNode()->GetNodeNeighbors();
@@ -1090,7 +1092,7 @@ Assembly::AtomVector Assembly::GetAllBondedAtomsByStartDirection(MolecularModeli
                     }
 
                  }else{
-                     std::cout<<"Direction Atom is invalid. Not a neighbor of Start Atom."<<std::endl;
+//                     std::cout<<"Direction Atom is invalid. Not a neighbor of Start Atom."<<std::endl;
                  }
         }
 
@@ -1156,18 +1158,18 @@ bool Assembly::CheckIfAtomExistInAssembly(MolecularModeling::Atom* toCheckAtom)
 
  //Added by ayush on 04/16/18 for TopologyFix in assembly
 
-GeometryTopology::Coordinate::CoordinateVector Assembly::GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex)
+GeometryTopology::CoordinateVector Assembly::GetCoordinatesFromAtomVector(AtomVector atomList, int CoordinateIndex)
 {
-    GeometryTopology::Coordinate::CoordinateVector coordinatesByIndex;
+    GeometryTopology::CoordinateVector coordinatesByIndex;
     for( AtomVector::iterator it1 = atomList.begin(); it1 != atomList.end(); it1++ ) {
       MolecularModeling::Atom* atom = ( *it1 );
-      GeometryTopology::Coordinate::CoordinateVector atom_coordinates = atom->GetCoordinates();
+      GeometryTopology::CoordinateVector atom_coordinates = atom->GetCoordinates();
       if(CoordinateIndex < (int) atom_coordinates.size())
       {
         GeometryTopology::Coordinate* coordinate = atom_coordinates[CoordinateIndex];
         coordinatesByIndex.push_back(coordinate);
       }else{
-          std::cout<<"Atom ID "<<atom->GetId()<<" does not have coordinate at index: "<<CoordinateIndex<<std::endl;
+//          std::cout<<"Atom ID "<<atom->GetId()<<" does not have coordinate at index: "<<CoordinateIndex<<std::endl;
       }
     }
     return coordinatesByIndex;
@@ -1178,7 +1180,7 @@ void Assembly::CreateOffFileFromAssembly(std::string file_name, int CoordinateIn
 { 
     OffFileSpace::OffFile* off_file = new OffFileSpace::OffFile();
     off_file->Write(file_name, CoordinateIndex, this);
-    std::cout<<"end of assembly"<<std::endl;
+//    std::cout<<"end of assembly"<<std::endl;
 
 }
 

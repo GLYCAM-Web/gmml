@@ -81,7 +81,7 @@ double PrepFileResidue::GetCharge(){
     return charge_;
 }
 
-PrepFileResidue::PrepFileAtomVector PrepFileResidue::GetAtoms(){
+PrepFileSpace::PrepFileAtomVector PrepFileResidue::GetAtoms(){
     return atoms_;
 }
 
@@ -94,7 +94,7 @@ PrepFileResidue::Loop PrepFileResidue::GetLoops(){
 }
 PrepFileSpace::PrepFileAtom* PrepFileResidue::GetPrepAtomByName(std::string atom_name)
 {
-    for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    for(PrepFileSpace::PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         PrepFileSpace::PrepFileAtom* prep_file_atom = (*it);
         std::string prep_file_atom_name = prep_file_atom->GetName();
@@ -119,7 +119,7 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
         bonded_atoms_map[to].push_back(from);
     }
 
-    for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    for(PrepFileSpace::PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         PrepFileSpace::PrepFileAtom* atom = *it;
         int index = distance(atoms_.begin(), it);
@@ -259,7 +259,7 @@ PrepFileResidue::BondedAtomIndexMap PrepFileResidue::GetBondingsOfResidue()
 }
 std::string PrepFileResidue::GetAtomNameByIndex(int atom_index)
 {
-    for(PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    for(PrepFileSpace::PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         PrepFileSpace::PrepFileAtom* prep_file_atom = (*it);
         if(prep_file_atom->GetIndex() == atom_index)
@@ -463,7 +463,7 @@ PrepFileSpace::SectionType PrepFileResidue::GetSectionTypeFromString(std::string
 }
 PrepFileSpace::PrepFileAtom* PrepFileResidue::GetPrepAtomByAtomName(std::string atom_name)
 {
-    for(PrepFileResidue::PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    for(PrepFileSpace::PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         PrepFileSpace::PrepFileAtom* atom = (*it);
         if(atom->GetName().compare(atom_name) == 0)
@@ -472,12 +472,12 @@ PrepFileSpace::PrepFileAtom* PrepFileResidue::GetPrepAtomByAtomName(std::string 
     return NULL;
 }
 
-PrepFileResidue::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
+PrepFileSpace::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
 {
     PrepFileAtomVector parents = PrepFileAtomVector();
     PrepFileAtomVector stack = PrepFileAtomVector();
     std::vector<int> neighbors = std::vector<int>();
-    for(PrepFileResidue::PrepFileAtomVector::iterator it = this->atoms_.begin(); it != this->atoms_.end(); it++)
+    for(PrepFileSpace::PrepFileAtomVector::iterator it = this->atoms_.begin(); it != this->atoms_.end(); it++)
     {
         parents.push_back(*it);
         neighbors.push_back(0);
@@ -490,7 +490,7 @@ PrepFileResidue::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
         neighbors.at(from - 1) = 1;
         neighbors.at(to - 1) = 1;
     }
-    for(PrepFileResidue::PrepFileAtomVector::iterator it = this->atoms_.begin(); it != this->atoms_.end(); it++)
+    for(PrepFileSpace::PrepFileAtomVector::iterator it = this->atoms_.begin(); it != this->atoms_.end(); it++)
     {
         PrepFileSpace::PrepFileAtom* atom = *it;
         int index = distance(atoms_.begin(), it);
@@ -601,7 +601,7 @@ void PrepFileResidue::SetCharge(double charge){
 
 void PrepFileResidue::SetAtoms(PrepFileAtomVector atoms){
     atoms_.clear();
-    for(PrepFileResidue::PrepFileAtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    for(PrepFileSpace::PrepFileAtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         atoms_.push_back(*it);
     }
@@ -720,7 +720,7 @@ PrepFileResidue* PrepFileResidue::LoadFromStream(std::ifstream& in_file)
                 done = true;
                 break;
             case PrepFileSpace::kSectionOther:
-                std::cout << "Unrecognized section in prep file";
+//                std::cout << "Unrecognized section in prep file";
                 gmml::log(__LINE__, __FILE__,  gmml::WAR, "Unrecognized section in prep file" );
                 break;
         }
@@ -867,7 +867,7 @@ std::vector<PrepFileResidue::Dihedral> PrepFileResidue::ExtractImproperDihedral(
  {
     PrepFileAtomVector atoms = GetAtoms();
     double residue_charge = 0.0;
-    for(PrepFileAtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    for(PrepFileSpace::PrepFileAtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         PrepFileSpace::PrepFileAtom* atom = (*it);
         residue_charge += atom->GetCharge();

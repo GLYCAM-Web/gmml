@@ -75,7 +75,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::string parameter_file_path)
 {
-    std::cout << "Creating prep file ..." << std::endl;
+//    std::cout << "Creating prep file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating prep file ...");
     PrepFileSpace::PrepFile* prep_file = new PrepFileSpace::PrepFile();
     ResidueVector assembly_residues = this->GetAllResiduesOfAssembly();
@@ -88,7 +88,7 @@ PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::strin
         std::vector<std::string> inserted_improper_dihedral_types = std::vector<std::string>();
         std::vector<std::vector<std::string> > inserted_improper_dihedrals = std::vector<std::vector<std::string> >();
         PrepFileSpace::PrepFileResidue* prep_residue = new PrepFileSpace::PrepFileResidue();
-        PrepFileSpace::PrepFileResidue::PrepFileAtomVector prep_atoms = PrepFileSpace::PrepFileResidue::PrepFileAtomVector();
+        PrepFileSpace::PrepFileAtomVector prep_atoms = PrepFileSpace::PrepFileAtomVector();
         prep_residue->SetTitle(assembly_residue->GetName());
         prep_residue->SetName(assembly_residue->GetName());
         prep_residue->SetGeometryType(PrepFileSpace::kGeometryCorrect);
@@ -99,7 +99,7 @@ PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::strin
         prep_residue->SetOutputFormat(PrepFileSpace::kFormatted);
 
         AtomVector assembly_atoms = assembly_residue->GetAtoms();
-        GeometryTopology::Coordinate::CoordinateVector cartesian_coordinate_list;
+        GeometryTopology::CoordinateVector cartesian_coordinate_list;
         int atom_index = 1;
         PrepFileSpace::PrepFileResidue::Loop loops = PrepFileSpace::PrepFileResidue::Loop();
         std::vector<int> bond_index = std::vector<int>();
@@ -123,17 +123,17 @@ PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::strin
             }
             else if(i <= 1)
             {
-                dummy_atom->SetBondLength(gmml::dCutOff);
+                dummy_atom->SetBondLength(gmml::maxCutOff);
                 dummy_atom->SetAngle(0.0);
                 dummy_atom->SetDihedral(0.0);
-                cartesian_coordinate_list.push_back(new GeometryTopology::Coordinate(gmml::dCutOff, 0.0, 0.0)); //1.522, 0.0, 0.0 ; -4.5, -5.0, -5.0
+                cartesian_coordinate_list.push_back(new GeometryTopology::Coordinate(gmml::maxCutOff, 0.0, 0.0)); //1.522, 0.0, 0.0 ; -4.5, -5.0, -5.0
             }
             else
             {
-                dummy_atom->SetBondLength(gmml::dCutOff);
+                dummy_atom->SetBondLength(gmml::maxCutOff);
                 dummy_atom->SetAngle(90.0);
                 dummy_atom->SetDihedral(0.0);
-                cartesian_coordinate_list.push_back(new GeometryTopology::Coordinate(gmml::dCutOff, gmml::dCutOff, 0.0)); //2.43347, 1.34044, 0.0 ; -4.7, -4.2, -4.0
+                cartesian_coordinate_list.push_back(new GeometryTopology::Coordinate(gmml::maxCutOff, gmml::maxCutOff, 0.0)); //2.43347, 1.34044, 0.0 ; -4.7, -4.2, -4.0
             }
             dummy_atom->SetCharge(0.0);
             dummy_atom->SetTopologicalType(gmml::kTopTypeM);
@@ -143,7 +143,7 @@ PrepFileSpace::PrepFile* Assembly::BuildPrepFileStructureFromAssembly(std::strin
         std::vector<gmml::TopologicalType> residue_topological_types = GetAllTopologicalTypesOfAtomsOfResidue(assembly_atoms, loops, bond_index);
         for(AtomVector::iterator it1 = assembly_atoms.begin(); it1 != assembly_atoms.end(); it1++)
         {
-            GeometryTopology::Coordinate::CoordinateVector coordinate_list;
+            GeometryTopology::CoordinateVector coordinate_list;
 
             Atom* assembly_atom = (*it1);
             PrepFileSpace::PrepFileAtom* prep_atom = new PrepFileSpace::PrepFileAtom();

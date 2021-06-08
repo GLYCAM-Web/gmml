@@ -21,8 +21,11 @@ PdbObsoleteCard::PdbObsoleteCard(std::stringstream& obsolete_block)
     std::stringstream ss;
     getline(obsolete_block, line);
     std::string temp = line;
+    std::cout << line << "\n";
     while (!gmml::Trim(temp).empty())
     {
+      if(line.find("OBSLTE") != std::string::npos)
+      {
         if(!is_replacement_date_set){
             replacement_date_ = line.substr(12,8);
             gmml::Trim(replacement_date_);
@@ -32,6 +35,7 @@ PdbObsoleteCard::PdbObsoleteCard(std::stringstream& obsolete_block)
 
         getline(obsolete_block, line);
         temp = line;
+      }
     }
     std::string all_identifier_codes_ = ss.str();
     std::size_t pos = 0, found;

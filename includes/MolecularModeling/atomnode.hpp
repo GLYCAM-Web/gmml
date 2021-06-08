@@ -7,18 +7,20 @@
 #include <vector>
 #include <cstddef>
 #include <iostream>
+#include "atom.hpp" // For AtomVector.
+#include "../generictypedefs.hpp"
 
 namespace MolecularModeling
 {
     class Atom;
+    class AtomNode; // Forward declare for the typedef:
+    typedef std::vector<AtomNode*>AtomNodeVector;
     class AtomNode
     {
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            typedef std::vector<MolecularModeling::Atom*> AtomVector;
-            typedef std::vector<bool> BooleanVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -115,7 +117,7 @@ namespace MolecularModeling
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
-            void Print(std::ostream& out = std::cout);
+            void Print(std::ostream& out = std::cerr);
 
         private:
             //////////////////////////////////////////////////////////

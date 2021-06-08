@@ -1,3 +1,4 @@
+#include <pthread.h> // For the mutex. 
 #include <math.h>
 #include <fstream>
 #include <stdio.h>
@@ -91,7 +92,7 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, std
                 }
                 if(tokens.at(0).compare("model_index") == 0)
                 {
-                    double cutoff = gmml::dCutOff;
+                    double cutoff = gmml::maxCutOff;
                     int model_index = gmml::ConvertString<int>(tokens.at(1));
                     this->BuildStructureByDistance(cutoff, model_index);
                 }
@@ -103,7 +104,7 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, std
                 description_ = ss.str();
                 std::vector<std::string> cutoff_tokens = gmml::Split(options.at(0), ":");
                 std::vector<std::string> model_tokens = gmml::Split(options.at(1), ":");
-                double cutoff = gmml::dCutOff;
+                double cutoff = gmml::maxCutOff;
                 int model_index = 0;
                 if(cutoff_tokens.at(0).compare("cutoff") == 0)
                 {
@@ -156,6 +157,7 @@ void Assembly::BuildStructure(gmml::BuildingStructureOption building_option, std
     }
 }
 
+// Anyone know why this can't be local to the function below?
 pthread_mutex_t mutex1 = PTHREAD_MUTEX_INITIALIZER;
 pthread_mutex_t mutex2 = PTHREAD_MUTEX_INITIALIZER;
 ///7*7 half matrix 6^2/2 + 4, 2 types of thread complete tile, half tile _ 6*6 complete tiles, 22 threads
@@ -169,11 +171,11 @@ void* BuildStructureByDistanceThread(void* args){
     int t = arg->number_of_threads;
 
     //    std::cout << "Thread" << ti << " start" << std::endl;
-    Assembly::AtomVector all_atoms_of_assembly = arg->a->GetAllAtomsOfAssembly();
+    MolecularModeling::AtomVector all_atoms_of_assembly = arg->a->GetAllAtomsOfAssembly();
     int atoms_size = all_atoms_of_assembly.size();
     int i = ti * (atoms_size/t);
 
-    for(Assembly::AtomVector::iterator it = all_atoms_of_assembly.begin() + ti * (atoms_size/t); ; it++)
+    for(MolecularModeling::AtomVector::iterator it = all_atoms_of_assembly.begin() + ti * (atoms_size/t); ; it++)
     {
         if(ti + 1 < t)
         {
@@ -209,7 +211,7 @@ void* BuildStructureByDistanceThread(void* args){
         //        std::cout << "Thread" << ti << " atom id " << i << std::endl;
         i++;
         pthread_mutex_unlock(&mutex1);
-        for(Assembly::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
+        for(MolecularModeling::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
         {
             MolecularModeling::Atom* neighbor_atom = (*it1);
             // X distance
@@ -248,169 +250,212 @@ void* BuildStructureByDistanceThread(void* args){
     pthread_exit((void*) &ti);
 }
 
-void* BuildStructureByDistanceByOptimizedThread(void* args){//This function should be changed to use atomic informatic to build structure by distance more intelligently
+void* BuildStructureByDistanceByOptimizedThread(void* args)
+{//This function should be changed to use atomic informatic to build structure by distance more intelligently
+  //Preferrably from the MetaData and not the PDB Statistics in guesses.cc
 
-    MolecularModeling::DistanceCalculationThreadArgument* arg = (MolecularModeling::DistanceCalculationThreadArgument*)args;
-    double cutoff = arg->cutoff;
-    int model_index = arg->model_index;
-    int ti = arg->thread_index;
-    int t = arg->number_of_threads;
+  int local_debug = -1;
+  MolecularModeling::DistanceCalculationThreadArgument* arg = (MolecularModeling::DistanceCalculationThreadArgument*)args;
+  double cutoff = arg->cutoff;
+  double minCutoff;
+  int model_index = arg->model_index;
+  int ti = arg->thread_index;
+  int t = arg->number_of_threads;
 
+  //    std::cout << "Thread" << ti << " start" << std::endl;
+  MolecularModeling::AtomVector all_atoms_of_assembly = arg->a->GetAllAtomsOfAssembly();
+  int atoms_size = all_atoms_of_assembly.size();
 
-    //    std::cout << "Thread" << ti << " start" << std::endl;
-    Assembly::AtomVector all_atoms_of_assembly = arg->a->GetAllAtomsOfAssembly();
-    int atoms_size = all_atoms_of_assembly.size();
+  int increase_factor = 0;
+  increase_factor = atoms_size / ((t * t+1) / 2);
+  int end_index = 0;
+  int begin_index = 0;
+  int i = 1;
 
-    int increase_factor = 0;
-    increase_factor = atoms_size / ((t * t+1) / 2);
-    int end_index = 0;
-    int begin_index = 0;
-    int i = 1;
-    for(i = 1; i < ti+1; i++)
+  for(i = 1; i < ti+1; i++)
+  {
+      begin_index = begin_index + (i*increase_factor);
+  }
+  end_index = begin_index + (i*increase_factor);
+
+  for(MolecularModeling::AtomVector::iterator it = all_atoms_of_assembly.begin() + begin_index; ; it++)
+  {
+    if(ti + 1 < t)///if it's not the last thread
     {
-        begin_index = begin_index + (i*increase_factor);
+      if(it == all_atoms_of_assembly.begin() + end_index)
+        break;
     }
-    end_index = begin_index + (i*increase_factor);
-
-    for(Assembly::AtomVector::iterator it = all_atoms_of_assembly.begin() + begin_index; ; it++)
+    else
     {
-        if(ti + 1 < t)///if it's not the last thread
+      if(it == all_atoms_of_assembly.end() - 1)
+      {
+        if((*it)->GetNode() == NULL)
         {
-            if(it == all_atoms_of_assembly.begin() + end_index)
-                break;
+          MolecularModeling::Atom* atom = (*it);
+          MolecularModeling::AtomNode* atom_node = new MolecularModeling::AtomNode();
+          atom_node->SetAtom(atom);
+          atom->SetNode(atom_node);
         }
-        else
-        {
-            if(it == all_atoms_of_assembly.end() - 1)
-            {
-                if((*it)->GetNode() == NULL)
-                {
-                    MolecularModeling::Atom* atom = (*it);
-                    MolecularModeling::AtomNode* atom_node = new MolecularModeling::AtomNode();
-                    atom_node->SetAtom(atom);
-                    atom->SetNode(atom_node);
-                }
-                break;
-            }
-        }
-        int index = distance(all_atoms_of_assembly.begin(), it);
-        MolecularModeling::Atom* atom = (*it);
-        MolecularModeling::AtomNode* atom_node;
-        pthread_mutex_lock(&mutex1);
-        if(atom->GetNode() == NULL)
-        {
-            atom_node = new MolecularModeling::AtomNode();
-            atom_node->SetAtom(atom);
-            atom->SetNode(atom_node);
-        }
-        else
-            atom_node = atom->GetNode();
-        atom_node->SetId(index);
-        //        std::cout << "Thread" << ti << " atom id " << i << std::endl;
-        pthread_mutex_unlock(&mutex1);
-        for(Assembly::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
-        {
-            MolecularModeling::Atom* neighbor_atom = (*it1);
-            
-            //TODO change cutoff based on atom elements
-            cutoff = arg->a->guessBondLengthByAtomType(atom, neighbor_atom);
-            
-            // X distance
-            if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
-            {
-                // Y distance
-                if(atom->GetCoordinates().at(model_index)->GetY() - neighbor_atom->GetCoordinates().at(model_index)->GetY() < cutoff)
-                {
-                    // Z distance
-                    if(atom->GetCoordinates().at(model_index)->GetZ() - neighbor_atom->GetCoordinates().at(model_index)->GetZ() < cutoff)
-                    {
-                        if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
-                        {
-                            MolecularModeling::AtomNode* neighbor_node;
-                            pthread_mutex_lock(&mutex1);
-                            if (neighbor_atom->GetNode() == NULL)
-                            {
-                                neighbor_node = new MolecularModeling::AtomNode();
-                                neighbor_node->SetAtom(neighbor_atom);
-                            }
-                            else
-                                neighbor_node = neighbor_atom->GetNode();
-                            atom_node->AddNodeNeighbor(neighbor_atom);
-                            neighbor_node->AddNodeNeighbor(atom);
-                            neighbor_atom->SetNode(neighbor_node);
-                            pthread_mutex_unlock(&mutex1);
-                        }
-                    }
-                }
-            }
-        }
-        atom->SetNode(atom_node);
+        break;
+      }
     }
 
-    //    std::cout << "Thread" << ti << " END" << std::endl;
-    pthread_exit((void*) &ti);
+    int index = distance(all_atoms_of_assembly.begin(), it);
+    MolecularModeling::Atom* atom = (*it);
+    MolecularModeling::AtomNode* atom_node;
+    pthread_mutex_lock(&mutex1);
+    if(atom->GetNode() == NULL)
+    {
+      atom_node = new MolecularModeling::AtomNode();
+      atom_node->SetAtom(atom);
+      atom->SetNode(atom_node);
+    }
+    else
+    {
+      atom_node = atom->GetNode();
+    }
+    atom_node->SetId(index);
+    //        std::cout << "Thread" << ti << " atom id " << i << std::endl;
+    pthread_mutex_unlock(&mutex1);
+    for(MolecularModeling::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
+    {
+      MolecularModeling::Atom* neighbor_atom = (*it1);
+      if(local_debug > 0)
+      {
+        std::stringstream log;
+        log << atom->GetId() << " is being compared to " << neighbor_atom->GetId();
+        gmml::log(__LINE__,__FILE__, gmml::INF, log.str());
+      }
+      //change cutoff based on atom elements
+      std::pair<double,double> minAndMaxCutoffs = arg->a->guessBondLengthByAtomType(atom, neighbor_atom);
+      cutoff = minAndMaxCutoffs.second; //Temporary comment out, is causing issues for me.Yao
+      minCutoff = minAndMaxCutoffs.first;
+      if(local_debug > 0)
+      {
+        std::stringstream log;
+        log << "Cutoffs are: " << minCutoff << " and " << cutoff;
+        gmml::log(__LINE__,__FILE__, gmml::INF, log.str());
+      }
+
+      // X distance
+      if(abs(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX()) < cutoff)
+      {
+        // Y distance
+        if(abs(atom->GetCoordinates().at(model_index)->GetY() - neighbor_atom->GetCoordinates().at(model_index)->GetY()) < cutoff)
+        {
+          // Z distance
+          if(abs(atom->GetCoordinates().at(model_index)->GetZ() - neighbor_atom->GetCoordinates().at(model_index)->GetZ()) < cutoff)
+          {
+            double thisDistance = (atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index))));
+            if(thisDistance < cutoff)
+            {
+              if(thisDistance > minCutoff)
+              {
+                MolecularModeling::AtomNode* neighbor_node;
+                pthread_mutex_lock(&mutex1);
+                if (neighbor_atom->GetNode() == NULL)
+                {
+                  neighbor_node = new MolecularModeling::AtomNode();
+                  neighbor_node->SetAtom(neighbor_atom);
+                }
+                else
+                {
+                  neighbor_node = neighbor_atom->GetNode();
+                }
+                atom_node->AddNodeNeighbor(neighbor_atom);
+                neighbor_node->AddNodeNeighbor(atom);
+                neighbor_atom->SetNode(neighbor_node);
+                pthread_mutex_unlock(&mutex1);
+                if(local_debug > 0)
+                {
+                  std::stringstream log;
+                  log << atom->GetId() << " is being bonded to " << neighbor_atom->GetId();
+                  gmml::log(__LINE__,__FILE__, gmml::INF, log.str());
+                }
+              }
+              else
+              {
+                std::stringstream log;
+                log << "The atoms " << atom->GetId() << " and " << neighbor_atom->GetId() << " were too close together to bond";
+                gmml::log(__LINE__,__FILE__, gmml::ERR, log.str());
+                std::cerr << log.str() << "\n";
+              }
+            }
+          }
+        }
+      }
+    }
+    atom->SetNode(atom_node);
+  }
+
+  //    std::cout << "Thread" << ti << " END" << std::endl;
+  pthread_exit((void*) &ti);
 }
 
-void* BuildStructureByDistanceByMatrixThread(void* args){
+void* BuildStructureByDistanceByMatrixThread(void* args)
+{
+  MolecularModeling::DistanceCalculationByMatrixThreadArgument* arg = (MolecularModeling::DistanceCalculationByMatrixThreadArgument*)args;
+  int ti = arg->thread_index;
+  double cutoff = arg->cutoff;
+  int model_index = arg->model_index;
+  MolecularModeling::AtomVector* first_chunk = arg->first_chunk;
+  MolecularModeling::AtomVector* second_chunk = arg->second_chunk;
 
-    MolecularModeling::DistanceCalculationByMatrixThreadArgument* arg = (MolecularModeling::DistanceCalculationByMatrixThreadArgument*)args;
-    int ti = arg->thread_index;
-    double cutoff = arg->cutoff;
-    int model_index = arg->model_index;
-    Assembly::AtomVector* first_chunk = arg->first_chunk;
-    Assembly::AtomVector* second_chunk = arg->second_chunk;
-
-    for(Assembly::AtomVector::iterator it = first_chunk->begin(); it != first_chunk->end(); it++)
+  for(MolecularModeling::AtomVector::iterator it = first_chunk->begin(); it != first_chunk->end(); it++)
+  {
+    int index = distance(first_chunk->begin(), it);
+    MolecularModeling::Atom* atom = (*it);
+    MolecularModeling::AtomNode* atom_node;
+    pthread_mutex_lock(&mutex1);
+    if(atom->GetNode() == NULL)
     {
-        int index = distance(first_chunk->begin(), it);
-        MolecularModeling::Atom* atom = (*it);
-        MolecularModeling::AtomNode* atom_node;
-        pthread_mutex_lock(&mutex1);
-        if(atom->GetNode() == NULL)
-        {
-            atom_node = new MolecularModeling::AtomNode();
-            atom_node->SetAtom(atom);
-            atom->SetNode(atom_node);
-        }
-        else
-            atom_node = atom->GetNode();
-        atom_node->SetId(index);
-        pthread_mutex_unlock(&mutex1);
-        for(Assembly::AtomVector::iterator it1 = second_chunk->begin(); it1 != second_chunk->end(); it1++)
-        {
-            MolecularModeling::Atom* neighbor_atom = (*it1);
-            // X distance
-            if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
-            {
-                // Y distance
-                if(atom->GetCoordinates().at(model_index)->GetY() - neighbor_atom->GetCoordinates().at(model_index)->GetY() < cutoff)
-                {
-                    // Z distance
-                    if(atom->GetCoordinates().at(model_index)->GetZ() - neighbor_atom->GetCoordinates().at(model_index)->GetZ() < cutoff)
-                    {
-                        if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
-                        {
-                            MolecularModeling::AtomNode* neighbor_node;
-                            pthread_mutex_lock(&mutex1);
-                            if (neighbor_atom->GetNode() == NULL)
-                            {
-                                neighbor_node = new MolecularModeling::AtomNode();
-                                neighbor_node->SetAtom(neighbor_atom);
-                            }
-                            else
-                                neighbor_node = neighbor_atom->GetNode();
-                            atom_node->AddNodeNeighbor(neighbor_atom);
-                            neighbor_node->AddNodeNeighbor(atom);
-                            neighbor_atom->SetNode(neighbor_node);
-                            pthread_mutex_unlock(&mutex1);
-                        }
-                    }
-                }
-            }
-        }
-        atom->SetNode(atom_node);
+      atom_node = new MolecularModeling::AtomNode();
+      atom_node->SetAtom(atom);
+      atom->SetNode(atom_node);
     }
-    pthread_exit((void*) &ti);
+    else
+    {
+      atom_node = atom->GetNode();
+    }
+    atom_node->SetId(index);
+    pthread_mutex_unlock(&mutex1);
+    for(MolecularModeling::AtomVector::iterator it1 = second_chunk->begin(); it1 != second_chunk->end(); it1++)
+    {
+      MolecularModeling::Atom* neighbor_atom = (*it1);
+      // X distance
+      if(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX() < cutoff)
+      {
+        // Y distance
+        if(atom->GetCoordinates().at(model_index)->GetY() - neighbor_atom->GetCoordinates().at(model_index)->GetY() < cutoff)
+        {
+          // Z distance
+          if(atom->GetCoordinates().at(model_index)->GetZ() - neighbor_atom->GetCoordinates().at(model_index)->GetZ() < cutoff)
+          {
+            if((atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index)))) < cutoff)
+            {
+              MolecularModeling::AtomNode* neighbor_node;
+              pthread_mutex_lock(&mutex1);
+              if (neighbor_atom->GetNode() == NULL)
+              {
+                neighbor_node = new MolecularModeling::AtomNode();
+                neighbor_node->SetAtom(neighbor_atom);
+              }
+              else
+              {
+                neighbor_node = neighbor_atom->GetNode();
+              }
+              atom_node->AddNodeNeighbor(neighbor_atom);
+              neighbor_node->AddNodeNeighbor(atom);
+              neighbor_atom->SetNode(neighbor_node);
+              pthread_mutex_unlock(&mutex1);
+            }
+          }
+        }
+      }
+    }
+    atom->SetNode(atom_node);
+  }
+  pthread_exit((void*) &ti);
 }
 
 void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
@@ -419,19 +464,19 @@ void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
     int ti = arg->thread_index;
     double cutoff = arg->cutoff;
     int model_index = arg->model_index;
-    Assembly::AtomVector* first_chunk = arg->first_chunk;
-    Assembly::AtomVector* second_chunk = arg->second_chunk;
+    MolecularModeling::AtomVector* first_chunk = arg->first_chunk;
+    MolecularModeling::AtomVector* second_chunk = arg->second_chunk;
     int j = ti * 10;
 
-    std::vector<Assembly::AtomVector*> chunks = std::vector<Assembly::AtomVector*>();
+    std::vector<MolecularModeling::AtomVector*> chunks = std::vector<MolecularModeling::AtomVector*>();
     chunks.push_back(first_chunk);
     chunks.push_back(second_chunk);
     for(int i = 0; i < 2; i++)
     {
-        Assembly::AtomVector* chunk = chunks.at(i);
+        MolecularModeling::AtomVector* chunk = chunks.at(i);
         if(chunk->size() != 0)
         {
-            for(Assembly::AtomVector::iterator it = chunk->begin(); it != chunk->end(); it++)
+            for(MolecularModeling::AtomVector::iterator it = chunk->begin(); it != chunk->end(); it++)
             {
                 MolecularModeling::Atom* atom = (*it);
                 //                    std::cout << "chunk" << i << " start " << atom->GetId() << std::endl;
@@ -450,7 +495,7 @@ void* BuildStructureByDistanceByMatrixDiameterThread(void* args){
                 if(it != chunk->end())
                 {
                     pthread_mutex_unlock(&mutex1);
-                    for(Assembly::AtomVector::iterator it1 = it+1; it1 != chunk->end(); it1++)
+                    for(MolecularModeling::AtomVector::iterator it1 = it+1; it1 != chunk->end(); it1++)
                     {
                         MolecularModeling::Atom* neighbor_atom = (*it1);
                         // X distance
@@ -498,7 +543,7 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
     model_index_ = model_index;
 
-    Assembly::AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
+    MolecularModeling::AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int atoms_size = all_atoms_of_assembly.size();
 
     number_of_threads = 5;
@@ -609,7 +654,7 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
 void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, int model_index)
 {
   int local_debug = 0;
-    std::cout << "Building structure by distance ..." << std::endl;
+    // std::cout << "Building structure by distance ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
     model_index_ = model_index;
 
@@ -670,7 +715,7 @@ void Assembly::BuildStructureByOriginalFileBondingInformation()
 void Assembly::BuildStructureByPDBFileInformation()
 {
     try{
-        std::cout << "Building structure by pdb file information ..." << std::endl;
+//        std::cout << "Building structure by pdb file information ..." << std::endl;
         gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by pdb file information ...");
         PdbFileSpace::PdbFile* pdb_file = new PdbFileSpace::PdbFile(this->GetSourceFile());
         AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
@@ -722,7 +767,7 @@ void Assembly::BuildStructureByPDBFileInformation()
 
 void Assembly::BuildStructureByTOPFileInformation()
 {
-    std::cout << "Building structure by topology file information ..." << std::endl;
+//    std::cout << "Building structure by topology file information ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by topology file information ...");
     TopologyFileSpace::TopologyFile* topology_file = new TopologyFileSpace::TopologyFile(gmml::Split(this->GetSourceFile(), ";")[0]);
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
@@ -774,7 +819,7 @@ void Assembly::BuildStructureByTOPFileInformation()
 
 void Assembly::BuildStructureByLIBFileInformation()
 {
-    std::cout << "Building structure by library file information..." << std::endl;
+//    std::cout << "Building structure by library file information..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by library file information ...");
     LibraryFileSpace::LibraryFile* library_file = new LibraryFileSpace::LibraryFile(this->GetSourceFile());
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
@@ -824,7 +869,7 @@ void Assembly::BuildStructureByLIBFileInformation()
 
 void Assembly::BuildStructureByPrepFileInformation()
 {
-    std::cout << "Building structure by prep file information ..." << std::endl;
+//    std::cout << "Building structure by prep file information ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by prep file information ...");
     PrepFileSpace::PrepFile* prep_file = new PrepFileSpace::PrepFile(this->GetSourceFile());
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
@@ -872,7 +917,7 @@ void Assembly::BuildStructureByPrepFileInformation()
 
 void Assembly::BuildStructureByDatabaseFilesBondingInformation(std::vector<gmml::InputFileType> types, std::vector<std::string> file_paths)
 {
-    std::cout << "Building structure by dataset files information ..." << std::endl;
+//    std::cout << "Building structure by dataset files information ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by dataset files information ...");
     AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
     int i = 0;

@@ -1,24 +1,29 @@
-#include "../includes/MolecularModeling/superimposition.hpp"
+#include "../../includes/MolecularModeling/superimposition.hpp"
 
+using MolecularModeling::Atom;
+using MolecularModeling::AtomVector;
+using MolecularModeling::Assembly;
+using MolecularModeling::AssemblyVector;
+using GeometryTopology::CoordinateVector;
 
-GeometryTopology::Coordinate::CoordinateVector gmml::GetCoordinatesInAtomVector(AtomVector *atoms)
+CoordinateVector gmml::GetCoordinatesInAtomVector(AtomVector *atoms)
 {
-    GeometryTopology::Coordinate::CoordinateVector coordinates;
+    CoordinateVector coordinates;
     for(AtomVector::iterator it = atoms->begin(); it != atoms->end(); ++it)
     {
-        MolecularModeling::Atom *atom = *it;
+        Atom *atom = *it;
         coordinates.push_back(atom->GetCoordinate());
     }
     return coordinates;
 }
 
-GeometryTopology::Coordinate::CoordinateVector gmml::GetCoordinatesInAssemblyVector(AssemblyVector *assemblies)
+CoordinateVector gmml::GetCoordinatesInAssemblyVector(AssemblyVector *assemblies)
 {
-    GeometryTopology::Coordinate::CoordinateVector coordinates;
+    CoordinateVector coordinates;
     for(AssemblyVector::iterator it1 = assemblies->begin(); it1 != assemblies->end(); ++it1)
     {
-        MolecularModeling::Assembly *assembly = *it1;
-        GeometryTopology::Coordinate::CoordinateVector extra_coordinates = assembly->GetAllCoordinates();
+        Assembly *assembly = *it1;
+        CoordinateVector extra_coordinates = assembly->GetAllCoordinates();
         coordinates.insert( coordinates.end(), extra_coordinates.begin(), extra_coordinates.end() ); // "Concatentate"
     }
     return coordinates;
@@ -36,10 +41,10 @@ GeometryTopology::Coordinate::CoordinateVector gmml::GetCoordinatesInAssemblyVec
 //    }
 //}
 
-void gmml::GenerateMatrixFromCoordinates(GeometryTopology::Coordinate::CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix)
+void gmml::GenerateMatrixFromCoordinates(CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix)
 {
     int col = 0; // Column index for matrix
-    for(GeometryTopology::Coordinate::CoordinateVector::iterator coordinate = coordinates->begin(); coordinate != coordinates->end(); ++coordinate)
+    for(CoordinateVector::iterator coordinate = coordinates->begin(); coordinate != coordinates->end(); ++coordinate)
     {
         (*matrix)(0, col) = (*coordinate)->GetX();
         (*matrix)(1, col) = (*coordinate)->GetY();
@@ -60,10 +65,10 @@ void gmml::GenerateMatrixFromCoordinates(GeometryTopology::Coordinate::Coordinat
 //    }
 //}
 
-void gmml::ReplaceCoordinatesFromMatrix(GeometryTopology::Coordinate::CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix)
+void gmml::ReplaceCoordinatesFromMatrix(CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix)
 {
     int col = 0; // Column index for matrix
-    for(GeometryTopology::Coordinate::CoordinateVector::iterator coordinate = coordinates->begin(); coordinate != coordinates->end(); ++coordinate)
+    for(CoordinateVector::iterator coordinate = coordinates->begin(); coordinate != coordinates->end(); ++coordinate)
     {
         (*coordinate)->SetX( (*matrix)(0, col) );
         (*coordinate)->SetY( (*matrix)(1, col) );
@@ -132,7 +137,7 @@ Eigen::Affine3d gmml::Find3DAffineTransform(Eigen::Matrix3Xd in, Eigen::Matrix3X
     return A;
 }
 
-void gmml::Superimpose(GeometryTopology::Coordinate::CoordinateVector moving, GeometryTopology::Coordinate::CoordinateVector target)
+void gmml::Superimpose(CoordinateVector moving, CoordinateVector target)
 {
     Eigen::Matrix3Xd movingMatrix(3, moving.size()), targetMatrix(3, target.size()) ;
 
@@ -150,7 +155,7 @@ void gmml::Superimpose(GeometryTopology::Coordinate::CoordinateVector moving, Ge
     ReplaceCoordinatesFromMatrix(&moving, &movedMatrix);
 }
 
-void gmml::Superimpose(GeometryTopology::Coordinate::CoordinateVector moving, GeometryTopology::Coordinate::CoordinateVector target, GeometryTopology::Coordinate::CoordinateVector alsoMoving)
+void gmml::Superimpose(CoordinateVector moving, CoordinateVector target, CoordinateVector alsoMoving)
 {
     Eigen::Matrix3Xd movingMatrix(3, moving.size()), targetMatrix(3, target.size());
     Eigen::Matrix3Xd alsoMovingMatrix(3, alsoMoving.size()); // separate from above line for clarity
@@ -214,51 +219,51 @@ void gmml::Superimpose(GeometryTopology::Coordinate::CoordinateVector moving, Ge
 
 void gmml::Superimpose(AtomVector moving, AtomVector target)
 {
-    GeometryTopology::Coordinate::CoordinateVector moving_coordinates = gmml::GetCoordinatesInAtomVector(&moving);
-    GeometryTopology::Coordinate::CoordinateVector target_coordinates = gmml::GetCoordinatesInAtomVector(&target);
+    CoordinateVector moving_coordinates = gmml::GetCoordinatesInAtomVector(&moving);
+    CoordinateVector target_coordinates = gmml::GetCoordinatesInAtomVector(&target);
 
     gmml::Superimpose(moving_coordinates, target_coordinates);
 }
 
 void gmml::Superimpose(AtomVector moving, AtomVector target, AtomVector alsoMoving)
 {
-    GeometryTopology::Coordinate::CoordinateVector moving_coordinates = gmml::GetCoordinatesInAtomVector(&moving);
-    GeometryTopology::Coordinate::CoordinateVector target_coordinates = gmml::GetCoordinatesInAtomVector(&target);
-    GeometryTopology::Coordinate::CoordinateVector alsoMoving_coordinates = gmml::GetCoordinatesInAtomVector(&alsoMoving);
+    CoordinateVector moving_coordinates = gmml::GetCoordinatesInAtomVector(&moving);
+    CoordinateVector target_coordinates = gmml::GetCoordinatesInAtomVector(&target);
+    CoordinateVector alsoMoving_coordinates = gmml::GetCoordinatesInAtomVector(&alsoMoving);
 
     gmml::Superimpose(moving_coordinates, target_coordinates, alsoMoving_coordinates);
 }
 
-void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target)
+void gmml::Superimpose(Assembly *moving, Assembly *target)
 {
-    GeometryTopology::Coordinate::CoordinateVector moving_coordinates = moving->GetAllCoordinates();
-    GeometryTopology::Coordinate::CoordinateVector target_coordinates = target->GetAllCoordinates();
+    CoordinateVector moving_coordinates = moving->GetAllCoordinates();
+    CoordinateVector target_coordinates = target->GetAllCoordinates();
 
     gmml::Superimpose(moving_coordinates, target_coordinates);
 }
 
-void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, MolecularModeling::Assembly *alsoMoving)
+void gmml::Superimpose(Assembly *moving, Assembly *target, Assembly *alsoMoving)
 {
-    GeometryTopology::Coordinate::CoordinateVector moving_coordinates = moving->GetAllCoordinates();
-    GeometryTopology::Coordinate::CoordinateVector target_coordinates = target->GetAllCoordinates();
-    GeometryTopology::Coordinate::CoordinateVector alsoMoving_coordinates = alsoMoving->GetAllCoordinates();
+    CoordinateVector moving_coordinates = moving->GetAllCoordinates();
+    CoordinateVector target_coordinates = target->GetAllCoordinates();
+    CoordinateVector alsoMoving_coordinates = alsoMoving->GetAllCoordinates();
 
     gmml::Superimpose(moving_coordinates, target_coordinates, alsoMoving_coordinates);
 
 }
 
-void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, AssemblyVector *alsoMoving)
+void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving)
 {
 
-    GeometryTopology::Coordinate::CoordinateVector moving_coordinates = moving->GetAllCoordinates();
-    GeometryTopology::Coordinate::CoordinateVector target_coordinates = target->GetAllCoordinates();
-    GeometryTopology::Coordinate::CoordinateVector alsoMoving_coordinates = gmml::GetCoordinatesInAssemblyVector(alsoMoving);
+    CoordinateVector moving_coordinates = moving->GetAllCoordinates();
+    CoordinateVector target_coordinates = target->GetAllCoordinates();
+    CoordinateVector alsoMoving_coordinates = gmml::GetCoordinatesInAssemblyVector(alsoMoving);
 
     gmml::Superimpose(moving_coordinates, target_coordinates, alsoMoving_coordinates);
 
 }
 
-//void gmml::Superimpose(MolecularModeling::Assembly *moving, MolecularModeling::Assembly *target, AssemblyVector *alsoMoving)
+//void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving)
 //{
 
 //    AtomVector moving_atoms = moving->GetAllAtomsOfAssembly();

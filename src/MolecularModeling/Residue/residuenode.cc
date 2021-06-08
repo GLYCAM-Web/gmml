@@ -1,6 +1,6 @@
-#include "../../includes/MolecularModeling/atom.hpp"
-#include "../../includes/MolecularModeling/residue.hpp"
-#include "../../includes/MolecularModeling/residuenode.hpp"
+#include "../../../includes/MolecularModeling/atom.hpp"
+#include "../../../includes/MolecularModeling/residue.hpp"
+#include "../../../includes/MolecularModeling/residuenode.hpp"
 
 #include <cstddef>
 #include <iostream>
@@ -27,11 +27,21 @@ MolecularModeling::Residue* ResidueNode::GetResidue()
     return residue_;
 }
 
-ResidueNode::ResidueNodeVector ResidueNode::GetResidueNodeNeighbors()
+MolecularModeling::ResidueNodeVector ResidueNode::GetResidueNodeNeighbors()
 {
     return residuenode_neighbors_;
 }
 
+MolecularModeling::ResidueVector ResidueNode::GetResidueNeighbors()
+{
+    MolecularModeling::ResidueVector neighbors;
+    MolecularModeling::ResidueNodeVector neighboringNodes = this->GetResidueNodeNeighbors();
+    for(auto &node : neighboringNodes)
+    {
+        neighbors.push_back(node->GetResidue());
+    }
+    return neighbors;
+}
 
 ResidueNode::ResidueNodeConnectingAtomVector ResidueNode::GetResidueNodeConnectingAtoms()
 {

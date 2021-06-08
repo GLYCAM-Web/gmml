@@ -26,7 +26,7 @@ namespace PdbqtFileSpace
               * A constructor that get a root block of model card and parse the whole block to fill the related fields
               * @param root_block A whole block of atoms belonging to a root card in a pdbqt file
               */
-            PdbqtRootCard(std::stringstream& root_block);
+            PdbqtRootCard(std::ifstream& root_block, std::vector<PdbqtFileSpace::PdbqtAtomCard*>& ACV);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -71,7 +71,7 @@ namespace PdbqtFileSpace
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
-            void Print(std::ostream& out = std::cout);
+            void Print(std::ostream& out = std::cerr);
 
         private:
             //////////////////////////////////////////////////////////

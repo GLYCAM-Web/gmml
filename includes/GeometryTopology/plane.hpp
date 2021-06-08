@@ -65,7 +65,7 @@ namespace GeometryTopology
               * Print out the current plane in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
-            void Print(std::ostream& out = std::cout);
+            void Print(std::ostream& out = std::cerr);
 
     private:
             //////////////////////////////////////////////////////////

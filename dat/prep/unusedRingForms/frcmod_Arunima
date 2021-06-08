@@ -1,0 +1,96 @@
+This file contains parameters for:
+1. Uronate residues with intra-ring double bonds
+2. protonated acids 
+3. protonated acids with intra-ring double bonds
+
+This frcmod has been made from Glycam_06_DEVELOPMENT_2009-11-24.dat frcmod.GLYCAM06intraRing_OLD  frcmod.GLYCAM06_protonated_acids_OLD located in the OLD_frcmods_and_leaprcs folder; mainly because it was getting very confusing. This file contains only the extra parameters required in addition to glycam06h-1.dat
+
+MASS
+
+BOND
+C -Ck  214.0    1.466       * Average (1.494) from CSD structures HEMKEP,KORCOJ,SRHXGU,MIZFUX,GUVFOs,GUVFEI, & GUVFAE
+C -Cj  214.0    1.466       * Duplicate of C -Ck
+C -Oh  450.0    1.364       PARM99 - JCC,7,(1986),230; (not used any more for TYR)
+
+ANGL
+H1-Cg-N3     50.0     109.5    * G06 - MT for NH3+, copy of HP-CT-N3
+Ck-C -O2     49.5     113.4    * Average (117.9) from CSD structures HEMKEP,KORCOJ,SRHXGU,MIZFUX,GUVFOs,GUVFEI, & GUVFAE
+C -Ck-Ck     48.0     126.0    * Average (124.3) from CSD structures HEMKEP,KORCOJ,SRHXGU,MIZFUX,GUVFOs,GUVFEI, & GUVFAE
+C -Ck-Os     73.0     109.5    * Average (111.9) from CSD structures SRHXGU,MIZFUX,GUVFOs,GUVFEI, & GUVFAE
+Cj-C -O2     49.5     113.4    * Duplicate of Ck-C -O2
+C -Cj-Cj     48.0     126.0    * Duplicate of C -Ck-Ck
+C -Cj-Os     73.0     109.5    * Duplicate of C -Ck-Os
+Ck-C -Oh     49.5     113.4    * Duplicate of Ck-C -O2
+Ck-C -O      49.5     113.4    * Duplicate of Ck-C -O2
+Oh-C -Cg     70.0     115.00   Ideal angle copied from O2-C-Cg and k fit to QM of acetic acid
+C -Oh-Ho     50.0     113.00   PARM99 - (not used in tyr anymore)
+
+DIHE
+H1-Cg-C -Oh   1    0.00          0.0            -3.         SCEE=1.0 SCNB=1.0  ** G06 - MT for protonated acid groups, 2-Methoxyacetic Acid model
+              1    0.00          0.0            -2.
+              1    0.00          0.0             1.
+Os-Cg-C -Oh   1    0.04          0.0            -3.         SCEE=1.0 SCNB=1.0  ** G06 - MT for protonated acid groups, 2-Methoxyacetic Acid model
+              1   -0.82          0.0            -2.
+              1    0.75          0.0             1.
+Os-Cg-C -O    1    0.04          0.0            -3.         SCEE=1.0 SCNB=1.0  ** G06 - MT for protonated acid groups, 2-Methoxyacetic Acid model              1   -0.82          0.0            -2.
+              1    0.75          0.0             1.
+Oh-C -Cg-Cg   1    0.15          0.0            -3.         SCEE=1.0 SCNB=1.0  ** G06 - MT for protonated acid groups, Propionic Acid model
+              1   -0.51          0.0            -2.
+              1    0.47          0.0             1.
+HC-Cg-C -Oh   1    0.00          0.0             2.         SCEE=1.0 SCNB=1.0  ** G06 - MT for protonated acid groups - COPY of HC-Cg-C -O2
+H1-Cg-N3-H    1    0.16          0.0             3.         SCEE=1.0 SCNB=1.0  * G06 - MT for NH3+, copy of X -CT-N3-X 
+H2-Cg-Cg-N3   1    0.10          0.0             3.         SCEE=1.0 SCNB=1.0  * G06 - MT for NH3+, copy of H2-CT-CT-N 
+C -Ck-Ck-Ha   1  -11.00          0.0             2.         SCEE=1.0 SCNB=1.0  * G06 - MT for intra-ring double bond uronates - Acrylate
+O2-C -Ck-Ck   1   -0.80          0.0             2.         SCEE=1.0 SCNB=1.0  * G06 - MT for intra-ring double bond uronates - THP-Analog
+Oh-C -Ck-Ck   1   -0.80          0.0             2.         SCEE=1.0 SCNB=1.0  * Duplicate of Oh-C -Ck-Ck
+O -C -Ck-Ck   1   -0.80          0.0             2.         SCEE=1.0 SCNB=1.0  * Duplicate of Oh-C -Ck-Ck
+C -Ck-Ck-Cg   1  -11.00          0.0             2.         SCEE=1.0 SCNB=1.0  * G06 - MT for intra-ring double bond uronates - But-2-enoate
+O2-C -Ck-Os   1   -0.80          0.0             2.         SCEE=1.0 SCNB=1.0  * G06 - MT for intra-ring double bond uronates - THP-Analog
+Oh-C -Ck-Os   1   -0.80          0.0             2.         SCEE=1.0 SCNB=1.0  * Duplicate of O2-C -Ck-Os
+O -C -Ck-Os   1   -0.80          0.0             2.         SCEE=1.0 SCNB=1.0  * Duplicate of O2-C -Ck-Os
+H2-Cg-Os-Ck   1    0.10          0.0            -3.         SCEE=1.0 SCNB=1.0  * G06 - MT for intra-ring double bond uronates
+              1    0.50          0.0            -2.         SCEE=1.0 SCNB=1.0
+              1    1.00          0.0             1.         SCEE=1.0 SCNB=1.0 
+C -Ck-Os-Cg   1    0.67          0.0            -3.         SCEE=1.0 SCNB=1.0  * G06 - MT for intra-ring double bond uronates - 2-Methoxyacrylate
+              1   -1.40          0.0             2.         SCEE=1.0 SCNB=1.0
+Os-Cg-Os-Ck   1    0.50          0.0            -2.         SCEE=1.0 SCNB=1.0  * G06 - MT for intra-ring double bond uronates - Acrylate 2-(MethoxyMethoxy) Acrylate
+              1    0.75          0.0             1.         SCEE=1.0 SCNB=1.0
+Oh-Cg-Cg-Ck   1   -0.11          0.0            -3          SCEE=1.0 SCNB=1.0 Lipids, from 3-butenol
+              1   -0.60          0.0            -2          SCEE=1.0 SCNB=1.0  ***** CHaNGE FOR URONATES!!!! # originally -0.16,-0.40
+              1   -1.06          0.0             1          SCEE=1.0 SCNB=1.0
+Oh-Cg-Cg-Cj   1   -0.11          0.0            -3          SCEE=1.0 SCNB=1.0 Lipids, from 3-butenol
+              1   -0.60          0.0            -2          SCEE=1.0 SCNB=1.0  ***** CHaNGE FOR URONATES!!!! # originally -0.16,-0.40
+              1   -1.06          0.0             1          SCEE=1.0 SCNB=1.0
+Os-Cg-Cg-Ck   1   -0.27          0.0            -1.         SCEE=1.0 SCNB=1.0  * G06 - MT uronates - 4-methoxybut-1-ene
+              1    0.40          0.0             2          SCEE=1.0 SCNB=1.0  ***** CHaNGE FOR URONATES!!!! # originally 0.00
+Os-Cg-Cg-Cj   1   -0.27          0.0            -1.         SCEE=1.0 SCNB=1.0  * G06 - MT duplicate of Os-Cg-Cg-Ck
+              1    0.40          0.0             2          SCEE=1.0 SCNB=1.0  ***** CHaNGE FOR URONATES!!!! # originally 0.00
+C -Cj-Cj-Ha   1  -11.00          0.0             2.         SCEE=1.0 SCNB=1.0  * G06 - MT duplicate of C -Ck-Ck-Ha
+O2-C -Cj-Cj   1   -0.80          0.0             2.         SCEE=1.0 SCNB=1.0  * G06 - MT duplicate of O2-C -Ck-Ck
+C -Cj-Cj-Cg   1  -11.00          0.0             2.         SCEE=1.0 SCNB=1.0  * G06 - MT duplicate of C -Ck-Ck-Cg
+O2-C -Cj-Os   1   -0.80          0.0             2.         SCEE=1.0 SCNB=1.0  * G06 - MT duplicate of O2-C -Ck-Os
+H2-Cg-Os-Cj   1    0.10          0.0            -3.         SCEE=1.0 SCNB=1.0  * G06 - MT duplicate of H2-Cg-Os-Ck
+              1    0.50          0.0            -2.         SCEE=1.0 SCNB=1.0
+              1    1.00          0.0             1.         SCEE=1.0 SCNB=1.0
+C -Cj-Os-Cg   1    0.67          0.0            -3.         SCEE=1.0 SCNB=1.0  * G06 - MT duplicate of C -Ck-Os-Cg
+              1   -1.40          0.0             2.         SCEE=1.0 SCNB=1.0
+Os-Cg-Os-Cj   1    0.50          0.0            -2.         SCEE=1.0 SCNB=1.0  * G06 - MT duplicate of Os-Cg-Os-Ck
+              1    0.75          0.0             1.         SCEE=1.0 SCNB=1.0
+Ho-Oh-C -O2   1    2.30        180.0            -2.         !!!!! PARM99 OF HO-OH-C-O - Junmei et al, 1999
+              1    1.90          0.0             1.
+Ho-Oh-C -Cg   1    0.00          0.0            -3.         SCEE=1.0 SCNB=1.0         ** G06 - MT for protonated acid groups, exact gas phase fitting gives 0.0 for v3, but terms are not used becaus              1    0.00          0.0            -2.         SCEE=1.0 SCNB=1.0         *! Exact gas phase fitting gives -2.30 for v2
+              1    0.00          0.0             1.         SCEE=1.0 SCNB=1.0         *! Exact gas phase fitting gives -0.50 for v1
+Hc-Cg-C -Oh   1    0.00          0.0             2.         SCEE=1.0 SCNB=1.0         ** G06 - MT for protonated acid groups - COPY of HC-CG-C -O2
+Ho-Oh-C -Ck   1    0.00          0.0            -3.         SCEE=1.0 SCNB=1.0         ** G06 - MT for protonated acid groups, exact gas phase fitting gives 0.0 for v3, but terms are not used becaus              1    0.00          0.0            -2.         SCEE=1.0 SCNB=1.0         *! Exact gas phase fitting gives -2.30 for v2
+              1    0.00          0.0             1.         SCEE=1.0 SCNB=1.0         *! Exact gas phase fitting gives -0.50 for v1
+Ho-Oh-C -Cj   1    0.00          0.0            -3.         SCEE=1.0 SCNB=1.0         ** G06 - MT for protonated acid groups, exact gas phase fitting gives 0.0 for v3, but terms are not used becaus              1    0.00          0.0            -2.         SCEE=1.0 SCNB=1.0         *! Exact gas phase fitting gives -2.30 for v2
+              1    0.00          0.0             1.         SCEE=1.0 SCNB=1.0         *! Exact gas phase fitting gives -0.50 for v1
+
+
+
+IMPROPER
+Ck-Ha-Ck-Cg          1.0         180.          2.           Test for improper
+Os-C -Ck-Ck          1.0         180.          2.           Test for improper
+
+NONBON
+

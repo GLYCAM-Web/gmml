@@ -75,7 +75,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 TopologyFileSpace::TopologyFile* Assembly::BuildTopologyFileStructureFromAssembly(std::string parameter_file_path, std::string ion_parameter_file_path)
 {
-    std::cout << "Creating topology file ..." << std::endl;
+//    std::cout << "Creating topology file ..." << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating topology file ...");
     TopologyFileSpace::TopologyFile* topology_file = new TopologyFileSpace::TopologyFile();
 
@@ -153,8 +153,8 @@ TopologyFileSpace::TopologyFile* Assembly::BuildTopologyFileStructureFromAssembl
             topology_atom->SetAtomMass(assembly_atom->GetMass());
             topology_atom->SetResidueName(assembly_residue->GetName());
             topology_atom->SetType(assembly_atom->GetAtomType());
-            if(atom_types_map.find(assembly_atom->GetAtomType()) == atom_types_map.end())
-                std::cout << assembly_atom->GetAtomType() << " atom type is not found in parameter file" << std::endl;
+//            if(atom_types_map.find(assembly_atom->GetAtomType()) == atom_types_map.end())
+//                std::cout << assembly_atom->GetAtomType() << " atom type is not found in parameter file" << std::endl;
             topology_atom->SetTreeChainClasification("0");
             topology_atom->SetRadii(gmml::dNotSet);
             topology_atom->SetScreen(gmml::dNotSet);
@@ -1063,7 +1063,7 @@ int Assembly::CountNumberOfAtoms()
     for(ResidueVector:: iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
     {
         Residue* residue = (*it1);
-        Residue::AtomVector atoms = residue->GetAtoms();
+        MolecularModeling::AtomVector atoms = residue->GetAtoms();
         counter += atoms.size();
     }
     return counter;
@@ -2191,7 +2191,7 @@ std::vector<std::vector<std::string> > Assembly::CreateAllAtomTypePermutationsfo
     return all_permutations;
 }
 
-Assembly::AtomVector Assembly::GetAllAtomsOfAssemblyWithAtLeastThreeNeighbors()
+MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyWithAtLeastThreeNeighbors()
 {
     AtomVector all_atoms = GetAllAtomsOfAssembly();
     AtomVector atoms_with_at_least_three_neighbors = AtomVector();
@@ -2299,7 +2299,7 @@ int Assembly::CountMaxNumberOfAtomsInLargestResidue()
     for(ResidueVector:: iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
     {
         Residue* residue = (*it1);
-        Residue::AtomVector atoms = residue->GetAtoms();
+        MolecularModeling::AtomVector atoms = residue->GetAtoms();
         if(max <= atoms.size())
             max = atoms.size();
     }
