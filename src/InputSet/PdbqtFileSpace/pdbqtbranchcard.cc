@@ -11,54 +11,57 @@ using PdbqtFileSpace::PdbqtBranchCard;
 //////////////////////////////////////////////////////////
 PdbqtBranchCard::PdbqtBranchCard() : record_name_("BRANCH"){}
 
-PdbqtBranchCard::PdbqtBranchCard(std::stringstream &stream_block)
+PdbqtBranchCard::PdbqtBranchCard(std::ifstream &stream_block, std::vector<PdbqtFileSpace::PdbqtAtomCard*>& ACV)
 {
+    sub_branches_ = BranchCardVector();
     std::string line;
-    getline(stream_block, line);
-    if(line.find("BRANCH") != std::string::npos)
-    {
-        std::vector<std::string> tokens = gmml::Split(line, " ");
-        record_name_ = tokens.at(0);
-        solid_atom_serial_number_ = gmml::ConvertString<int>(tokens.at(1));
-        rotatable_atom_serial_number_ = gmml::ConvertString<int>(tokens.at(2));
-        sub_branches_ = BranchCardVector();
-        getline(stream_block, line);
-        std::stringstream rotatable_set_block;
-        while(line.find("ATOM") != std::string::npos || line.find("HETATM") != std::string::npos)
+    bool subbranch_exists = false;
+    while (getline(stream_block, line)){
+        if(line.find("BRANCH") != std::string::npos)
         {
-            rotatable_set_block << line << std::endl;
-            getline(stream_block, line);
+	    if (!subbranch_exists){
+                std::vector<std::string> tokens = gmml::Split(line, " ");
+                record_name_ = tokens.at(0);
+                solid_atom_serial_number_ = gmml::ConvertString<int>(tokens.at(1));
+                rotatable_atom_serial_number_ = gmml::ConvertString<int>(tokens.at(2));
+
+	        while (getline(stream_block, line)){
+                    if(line.find("ATOM") != std::string::npos || line.find("HETATM") != std::string::npos)
+                    {
+		        int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            	        stream_block.seekg(offset, stream_block.cur); //Go back one line
+                        rotatable_atom_set_ = new PdbqtFileSpace::PdbqtAtomCard(stream_block);
+			ACV.push_back(rotatable_atom_set_);
+                    }
+		    else{ //Either BRANCH or ENDBRANCH
+		        int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            	        stream_block.seekg(offset, stream_block.cur); //Go back one line
+		        if (line.find("ENDBRANCH") != std::string::npos){
+			    subbranch_exists = false;
+		        }
+		        else if (line.find("BRANCH") != std::string::npos){
+			    subbranch_exists = true;
+		        }
+		        break;
+		    }
+	        }
+	    }//if subbranch doesn't exist. 
+
+	    else{//If there is a subbranch
+	        int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            	stream_block.seekg(offset, stream_block.cur); //Go back one line
+                sub_branches_.push_back(new PdbqtBranchCard(stream_block, ACV));
+	    }
         }
-        rotatable_atom_set_ = new PdbqtFileSpace::PdbqtAtomCard(rotatable_set_block);
-        std::stringstream end_branch_line;
-        end_branch_line << "ENDBRANCH " << std::setw(3) << solid_atom_serial_number_ << " " << std::setw(3) << rotatable_atom_serial_number_;
-        while(line.find(end_branch_line.str()) == std::string::npos)
-        {
-            if(line.find("BRANCH") != std::string::npos)
-            {
-                std::vector<std::string> subbranch_tokens = gmml::Split(line, " ");
-                int solid_atom_serial_number_of_subbranch = gmml::ConvertString<int>(subbranch_tokens.at(1));
-                int rotatable_atom_serial_number_of_subbranch = gmml::ConvertString<int>(subbranch_tokens.at(2));
-                std::stringstream end_subbranch_line;
-                end_subbranch_line << "ENDBRANCH " << std::setw(3) << solid_atom_serial_number_of_subbranch << " "
-                                   << std::setw(3) << rotatable_atom_serial_number_of_subbranch;
-                std::stringstream subbranch_block;
-                subbranch_block << line << std::endl;
-                getline(stream_block, line);
-                while(line.find(end_subbranch_line.str()) == std::string::npos)
-                {
-                    subbranch_block << line << std::endl;
-                    getline(stream_block, line);
-                }
-                if(line.find(end_subbranch_line.str()) != std::string::npos)
-                {
-                    subbranch_block << line << std::endl;
-                    sub_branches_.push_back(new PdbqtBranchCard(subbranch_block));
-                    getline(stream_block, line);
-                }
-            }
-        }
-    }
+	else if (line.find("ENDBRANCH") != std::string::npos){
+	    break;
+	}
+	else {//If current line is not BRANCH,ATOM,HETATM or ENDBRANCH, the code has gone one line beyond the Branch section. Go back one line and exit.
+	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
+            stream_block.seekg(offset, stream_block.cur); //Go back one line
+	    break;
+	}
+    }//while
 }
 
 //////////////////////////////////////////////////////////

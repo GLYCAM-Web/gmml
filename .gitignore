@@ -1,3 +1,4 @@
+.qmake.stash
 *.o
 *.so
 *.gch
@@ -12,3 +13,7 @@ log.log
 *.dum
 programs/GlycoproteinBuilder
 *git-ignore-me*
+Doxygen/def
+Doxygen/html
+Doxygen/docs_build.log
+compile.messages

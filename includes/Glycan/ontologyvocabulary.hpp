@@ -45,6 +45,7 @@ namespace Ontology
     const std::string hasParentAtomLinkage = "gmmo:hasParentAtomLinkage";
     const std::string hasGlycosidicLinkage = "gmmo:hasGlycosidicLinkage";
     const std::string hasGlycosidicPhiAngle = "gmmo:hasGlycosidicPhiAngle";
+    const std::string hasGlycosidicPhiPrimeAngle = "gmmo:hasGlycosidicPhiPrimeAngle";
     const std::string hasGlycosidicPsiAngle = "gmmo:hasGlycosidicPsiAngle";
     const std::string hasGlycosidicOmegaAngle = "gmmo:hasGlycosidicOmegaAngle";
     const std::string hasNeighbor = "gmmo:hasNeighbor";
@@ -62,6 +63,7 @@ namespace Ontology
     const std::string hasSugarName = "gmmo:hasSugarName";
     const std::string hasSNFGName = "gmmo:hasSNFGName";
     const std::string hasIndex = "gmmo:hasIndex";
+    const std::string hasNameIndex = "gmmo:hasNameIndex";
     const std::string hasOligoParent = "gmmo:hasOligoParent";
     const std::string hasAuthorSNFGName = "gmmo:hasAuthorSNFGName";
     const std::string hasTitle = "gmmo:hasTitle";
@@ -126,7 +128,7 @@ namespace Ontology
     const std::string XML_OUTPUT_FORMAT = " \'Accept: application/sparql-results+xml' ";
     const std::string DATA_STORE_ADDRESS = "http://192.168.1.52:8890/sparql"; /* "http://128.192.62.244:8890/sparql", "http://192.168.1.52:8890/sparql" */
     const std::string DATA_STORE_ADDRESS_GF = "http://gw_virt:8890/sparql";
-    const std::string CURL_PREFIX = "curl -g -s -H";
+    const std::string CURL_PREFIX = "curl -g -s -H ";
     const std::string QUERY_PREFIX = " --data-urlencode query=\'";
     const std::string QUERY_POSTFIX = "\'";
 }

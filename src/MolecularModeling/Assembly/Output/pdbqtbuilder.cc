@@ -75,7 +75,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 PdbqtFileSpace::PdbqtFile* Assembly::BuildPdbqtFileStructureFromAssembly()
 {
-    std::cout << "Creating PDBQT file" << std::endl;
+//    std::cout << "Creating PDBQT file" << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating PDBQT file ...");
     PdbqtFileSpace::PdbqtFile* pdbqt_file = new PdbqtFileSpace::PdbqtFile();
 
@@ -93,7 +93,7 @@ PdbqtFileSpace::PdbqtFile* Assembly::BuildPdbqtFileStructureFromAssembly()
     models[1] = model;
     model_card->SetModels(models);
     pdbqt_file->SetModels(model_card);
-    std::cout << "PDBQT file created" << std::endl;
+//    std::cout << "PDBQT file created" << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "PDBQT file created");
 
     return pdbqt_file;

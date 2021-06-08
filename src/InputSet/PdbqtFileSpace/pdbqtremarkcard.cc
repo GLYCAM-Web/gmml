@@ -13,7 +13,7 @@ PdbqtRemarkCard::PdbqtRemarkCard() : record_name_("REMARK"){}
 PdbqtRemarkCard::PdbqtRemarkCard(std::string line)
 {
     record_name_ = line.substr(0,6);
-    value_ = line.substr(10);
+    value_ = line.substr(6);
 }
 
 //////////////////////////////////////////////////////////

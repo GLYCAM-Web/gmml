@@ -1,11 +1,8 @@
 #ifndef GEOMETRYTOPOLOGY_HPP
 #define GEOMETRYTOPOLOGY_HPP
 
-
-
+#include "../MolecularModeling/atom.hpp"
 #include "coordinate.hpp"
-#include "../Eigen_Algebra_Template_Library/Geometry"
-#include "../utils.hpp"
 
 namespace GeometryTopology
 {
@@ -17,6 +14,10 @@ Coordinate get_cartesian_point_from_internal_coords(Coordinate a, Coordinate b, 
 Coordinate subtract_coordinates(Coordinate minuaend, Coordinate subtrahend);
 
 double calculateDistanceFromPointToLineBetweenTwoPoints(Coordinate queryPoint, Coordinate linePointA, Coordinate linePointB);
+
+Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors);
+
+double CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, bool returnRadians = false);
 
 
 }

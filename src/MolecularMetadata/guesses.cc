@@ -1,3 +1,5 @@
+#ifndef GUESSES_CPP 
+#define GUESSES_CPP //Yao added definition guard 03/24/2020
 
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/atom.hpp"
@@ -37,8 +39,8 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
   }
 
   //See if they are neighbors
-  MolecularModeling::Assembly::AtomVector neighbors = carbon1->GetNode()->GetNodeNeighbors();
-  for(MolecularModeling::Assembly::AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
+  MolecularModeling::AtomVector neighbors = carbon1->GetNode()->GetNodeNeighbors();
+  for(MolecularModeling::AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
   {
     MolecularModeling::Atom* thisNeighbor = *it;
     if(thisNeighbor->GetId() == carbon2->GetId())
@@ -74,8 +76,8 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
   }
 
   //Check geometry;
-  MolecularModeling::Assembly::AtomVector carbon1neighbors = carbon1->GetNode()->GetNodeNeighbors();
-  MolecularModeling::Assembly::AtomVector carbon2neighbors = carbon2->GetNode()->GetNodeNeighbors();
+  MolecularModeling::AtomVector carbon1neighbors = carbon1->GetNode()->GetNodeNeighbors();
+  MolecularModeling::AtomVector carbon2neighbors = carbon2->GetNode()->GetNodeNeighbors();
 
   if((carbon1neighbors.size() < 4) && (carbon2neighbors.size() < 4))//If both have three or less neighbors
   {
@@ -85,12 +87,12 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
       gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
       debugStr.str("");
     }
-    for(MolecularModeling::Assembly::AtomVector::iterator it = carbon1neighbors.begin(); it != carbon1neighbors.end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = carbon1neighbors.begin(); it != carbon1neighbors.end(); it++)
     {
       MolecularModeling::Atom* thisC1Neighbor = *it;
       if(thisC1Neighbor->GetId() != carbon2->GetId())
       {
-        for(MolecularModeling::Assembly::AtomVector::iterator it2 = carbon2neighbors.begin(); it2 != carbon2neighbors.end(); it2++)
+        for(MolecularModeling::AtomVector::iterator it2 = carbon2neighbors.begin(); it2 != carbon2neighbors.end(); it2++)
         {
           MolecularModeling::Atom* thisC2Neighbor = *it2;
           if(thisC2Neighbor->GetId() != carbon1->GetId())
@@ -118,7 +120,7 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
             {
           //    haveAll120angles = false;  // commenting out because not used
             }
-          
+
             //If all 4 torsion angles are about 0 (+-5?)
             if(local_debug > 0)
             {
@@ -188,7 +190,7 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
   return false;
 }
 
-const std::map<std::string, std::pair<double, double> > bondLengthMap = 
+const std::map<std::string, std::pair<double, double> > bondLengthMap =
 {
   {"CC", std::make_pair(1.22, 1.67)},
   {"CO", std::make_pair(1.07975, 1.67025)},
@@ -203,44 +205,25 @@ const std::map<std::string, std::pair<double, double> > bondLengthMap =
   {"SN", std::make_pair(1.62, 1.77)}
 };
 
-double MolecularModeling::Assembly::guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2)
+std::pair<double,double> MolecularModeling::Assembly::guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2)
 {//Using PDB bond length statistics provided by Chenghua on 2/5/19
-  
-  // std::map<std::string, std::pair<double, double> > bondLengthMap;
-  // //String for Atom Types IE CC, then max and min bond lengths in pair
-  // 
-  // bondLengthMap["CC"] = std::make_pair(1.22, 1.67);
-  // 
-  // bondLengthMap["CO"] = std::make_pair(1.07975, 1.67025);
-  // bondLengthMap["OC"] = std::make_pair(1.07975, 1.67025);
-  // 
-  // bondLengthMap["CN"] = std::make_pair(1.26, 1.55);
-  // bondLengthMap["NC"] = std::make_pair(1.26, 1.55);
-  // 
-  // bondLengthMap["OP"] = std::make_pair(1.35, 1.776);
-  // bondLengthMap["PO"] = std::make_pair(1.35, 1.776);
-  // 
-  // bondLengthMap["OS"] = std::make_pair(1.43, 1.78);
-  // bondLengthMap["SO"] = std::make_pair(1.43, 1.78);
-  // 
-  // bondLengthMap["NS"] = std::make_pair(1.62, 1.77);
-  // bondLengthMap["SN"] = std::make_pair(1.62, 1.77);
-  
+
   std::string bothAtoms = atom1->GetElementSymbol() + atom2->GetElementSymbol();
-  
+
   if(bondLengthMap.find(bothAtoms) != bondLengthMap.end())
   {
-    double cutoffDistance = bondLengthMap.at(bothAtoms).second;
+    std::pair<double,double> cutoffDistances = bondLengthMap.at(bothAtoms);
     // std::stringstream logStream;
     // logStream << "Using binding cutoff of " << cutoffDistance;
     // gmml::log(__LINE__, __FILE__,  gmml::INF, logStream.str());
-    return cutoffDistance;
+    return cutoffDistances;
   }
   else
   {
     // gmml::log(__LINE__, __FILE__,  gmml::INF, "Using default binding cutoff of 1.65");
-    return gmml::dCutOff;
+    return std::make_pair(gmml::minCutOff, gmml::maxCutOff);
   }
   
-  
+
 }
+#endif //GUESSES_CPP

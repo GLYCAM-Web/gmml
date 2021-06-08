@@ -140,8 +140,8 @@ GeometryTopology::Coordinate* Cell::GetCellCenter()
 void Cell::CalculateCellCharge()
 {
     double charge = 0.0;
-    MolecularModeling::Assembly::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
-    for(MolecularModeling::Assembly::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    MolecularModeling::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
+    for(MolecularModeling::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
         MolecularModeling::Atom* atom = *it;
         if(atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetX() <= this->GetMaxCorner()->GetX() &&
@@ -158,9 +158,9 @@ void Cell::CalculateCellCharge()
 void Cell::CalculateCellPotentialEnergy(double ion_radius)
 {
     double potential_energy = 0.0;
-    MolecularModeling::Assembly::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
+    MolecularModeling::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
     Coordinate* center_of_cell = this->GetCellCenter();
-    for(MolecularModeling::Assembly::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
         MolecularModeling::Atom* atom = *it;
         double dist = sqrt((center_of_cell->GetX() - atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetX()) *
@@ -187,8 +187,8 @@ void Cell::CalculateCellPotentialEnergy(double ion_radius)
 void Cell::CalculateBoxCharge()
 {
     double charge = 0.0;
-    MolecularModeling::Assembly::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
-    for(MolecularModeling::Assembly::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    MolecularModeling::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
+    for(MolecularModeling::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
         MolecularModeling::Atom* atom = *it;
         if(atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetX() <= this->GetMaxCorner()->GetX() &&
@@ -205,9 +205,9 @@ void Cell::CalculateBoxCharge()
 void Cell::CalculateBoxPotentialEnergy()
 {
     double potential_energy = 0.0;
-    MolecularModeling::Assembly::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
+    MolecularModeling::AtomVector all_atoms = this->grid_->GetAssembly()->GetAllAtomsOfAssembly();
     Coordinate* center_of_cell = this->GetCellCenter();
-    for(MolecularModeling::Assembly::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
+    for(MolecularModeling::AtomVector::iterator it = all_atoms.begin(); it != all_atoms.end(); it++)
     {
         MolecularModeling::Atom* atom = *it;
         double dist = sqrt((center_of_cell->GetX() - atom->GetCoordinates().at(this->grid_->GetAssembly()->GetModelIndex())->GetX()) *

@@ -5,20 +5,24 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include "atom.hpp"
+#include "residue.hpp"
 
 
 namespace MolecularModeling
 {
     class Atom;
     class Residue;
+    class Molecule; // Forward declare for the vector typedef:
+    typedef std::vector<MolecularModeling::Molecule*> MoleculeVector;
     class Molecule
     {
         public:
             //////////////////////////////////////////////////////////
             //                    TYPE DEFINITION                   //
             //////////////////////////////////////////////////////////
-            typedef std::vector<Atom*> AtomVector;
-            typedef std::vector<Residue*> ResidueVector;
+          //  typedef std::vector<Atom*> AtomVector;
+          //  typedef std::vector<Residue*> ResidueVector;
 
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
@@ -42,7 +46,7 @@ namespace MolecularModeling
               * An accessor function in order to access to the atoms of the current molecule object
               * @return molecule_atoms_ attribute of the current object of this class
               */
-            AtomVector GetMoleculeAtoms();
+           AtomVector GetMoleculeAtoms();
 
             /*! \fn
               * An accessor function in order to access to the residues of the current molecule object
@@ -89,7 +93,7 @@ namespace MolecularModeling
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
-            void Print(std::ostream& out = std::cout);
+            void Print(std::ostream& out = std::cerr);
 
         private:
             //////////////////////////////////////////////////////////

@@ -250,9 +250,11 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
                     numR++;
                     if((*derivative).second != "" && thisMono->sugar_name_.monosaccharide_short_name_ != thisMono->cycle_atoms_[0]->GetResidue()->GetName())
                     {
-                      std::stringstream RgroupStream;
+                      std::stringstream RgroupStream, RnumStream;
                       RgroupStream << oligo_uri << "_R" << numR;
-                      gmml::AddLiteral(RgroupStream.str(), Ontology::hasFormula,(*derivative).second, oligo_sequence_stream); 
+                      RnumStream << "gmmo:has" << "R" << numR;
+                      gmml::AddTriple(oligo_uri, RnumStream.str(), RgroupStream.str(), oligo_sequence_stream);
+                      gmml::AddLiteral(RgroupStream.str(), Ontology::hasFormula,(*derivative).second, oligo_sequence_stream);
                     }
                   }
                 }
@@ -271,7 +273,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
             if(notes.size() != 0)
             {
                 int note_id = 1;
-                // gmml::log(__LINE__, __FILE__,  gmml::INF, "Poulating notes");
+                // gmml::log(__LINE__, __FILE__,  gmml::INF, "Populating notes");
                 std::string id_prefix = oligo_uri + "_";
                 PopulateNotes(oligo_stream, oligo_stream, oligo_uri, notes, id_prefix, note_id);
             }
@@ -289,7 +291,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
               residueVector.push_back(thisMono->cycle_atoms_[0]->GetResidue());
               if(thisMono->is_root_)
               {
-                MonoNum = thisMono->oligosaccharide_index_;
+                MonoNum = thisMono->IUPAC_index_;//change to IUPAC_index_
                 // root_oligo_id = thisMono->mono_id_;
                 // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
                 // PopulateLinkage(linkage_stream, oligo, oligo_uri, id_prefix, link_id, visited_oligos);
@@ -302,18 +304,22 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
                 parent_res_resource = CreateURIResource(gmml::OntSequenceResidue, root_oligo_id, id_prefix, resID);
                 parent_res_uri = CreateURI(parent_res_resource);
                 CheckDerivativesAndPopulate(oligo_sequence_stream, monoShortName, oligo_uri, parent_res_uri, monoSNFG, thisMono);
+                gmml::AddLiteral(parent_res_uri, Ontology::hasNameIndex, std::to_string(thisMono->oligosaccharide_index_), oligo_sequence_stream);
                 for(std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> >::iterator it = thisMono->mono_neighbors_.begin(); it!=thisMono->mono_neighbors_.end(); it++)
                 {
                   Glycan::Monosaccharide* thisMonoNeighbor = (*it).second;
-                  MonoNeighborNum = thisMonoNeighbor->oligosaccharide_index_;
+                  MonoNeighborNum = thisMonoNeighbor->IUPAC_index_;//change to IUPAC_index_
                   std::string neighborResID = std::to_string(MonoNeighborNum);
                   std::string monoSNFG = thisMonoNeighbor->SNFG_name_;
                   std::string monoShortName = thisMonoNeighbor->sugar_name_.monosaccharide_short_name_;
                   child_res_resource = CreateURIResource(gmml::OntSequenceResidue, root_oligo_id, id_prefix, neighborResID);
                   child_res_uri = CreateURI(child_res_resource);
-                  gmml::AddTriple(parent_res_uri, Ontology::isConnectedTo, child_res_uri, oligo_sequence_stream);
+                  //TODO replace isConnectedTo w/ isx-nLinkedTo (IE is1-3LinkedTo)
+                  std::stringstream connectionInfo;
+                  connectionInfo << "gmmo:is" << (*it).first->linkage_type_ << "ConnectedTo";
+                  gmml::AddTriple(parent_res_uri, connectionInfo.str(), child_res_uri, oligo_sequence_stream);
                   PopulateLinkage(linkage_stream, oligo_uri, parent_res_uri, child_res_uri, linkNum, (*it).first, thisMono, thisMonoNeighbor);
-                  
+
                 }
                 // PopulateSequenceLinkage(oligo_sequence_stream, oligo, oligo_uri, id_prefix, visited_oligos, mono_to_short_name_map, oligo_to_res_uri_map, root_oligo_id);
                 // gmml::log(__LINE__, __FILE__,  gmml::INF, "Done populating sequence linkages");
@@ -322,6 +328,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
                 std::string term_uri = "";
                 term_resource = CreateURIResource(gmml::OntTerminal, root_oligo_id, id_prefix, "");
                 term_uri = CreateURI(term_resource);
+                //this is the terminal so it's okay to not have the linkage type, as it is in the terminal name (IE 1-OH)
                 gmml::AddTriple(parent_res_uri, Ontology::isConnectedTo, term_uri, oligo_sequence_stream);
                 gmml::AddTriple(oligo_uri, Ontology::hasTerminal, term_uri, oligo_sequence_stream);
                 gmml::AddTriple(term_uri, Ontology::TYPE, Ontology::Terminal, oligo_sequence_stream);
@@ -333,7 +340,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
               // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
                 // PopulateLinkage(linkage_stream, oligo, oligo_uri, id_prefix, link_id, visited_oligos);
                 // gmml::log(__LINE__, __FILE__,  gmml::INF, "About to populate sequence linkages");
-                MonoNum = thisMono->oligosaccharide_index_;
+                MonoNum = thisMono->IUPAC_index_;//change to IUPAC_index_
                 parent_mono_resource = CreateURIResource(gmml::OntOligosaccharide, MonoNum, id_prefix, "");
                 parent_mono_uri = CreateURI(parent_mono_resource);
                 std::string resID = std::to_string(MonoNum);
@@ -342,31 +349,34 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
                 parent_res_resource = CreateURIResource(gmml::OntSequenceResidue, root_oligo_id, id_prefix, resID);
                 parent_res_uri = CreateURI(parent_res_resource);
                 CheckDerivativesAndPopulate(oligo_sequence_stream, monoShortName, oligo_uri, parent_res_uri, monoSNFG, thisMono);
+                gmml::AddLiteral(parent_res_uri, Ontology::hasNameIndex, std::to_string(thisMono->oligosaccharide_index_), oligo_sequence_stream);
                 for(std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> >::iterator it = thisMono->mono_neighbors_.begin(); it!=thisMono->mono_neighbors_.end(); it++)
                 {
                   Glycan::Monosaccharide* thisMonoNeighbor = (*it).second;
-                  MonoNeighborNum = thisMonoNeighbor->oligosaccharide_index_;
+                  MonoNeighborNum = thisMonoNeighbor->IUPAC_index_;//change to IUPAC_index_
                   std::string neighborResID = std::to_string(MonoNeighborNum);
                   std::string monoSNFG = thisMonoNeighbor->SNFG_name_;
                   std::string monoShortName = thisMonoNeighbor->sugar_name_.monosaccharide_short_name_;
                   child_res_resource = CreateURIResource(gmml::OntSequenceResidue, root_oligo_id, id_prefix, neighborResID);
                   child_res_uri = CreateURI(child_res_resource);
-                  gmml::AddTriple(parent_res_uri, Ontology::isConnectedTo, child_res_uri, oligo_sequence_stream);
+                  std::stringstream connectionInfo;
+                  connectionInfo << "gmmo:is" << (*it).first->linkage_type_ << "ConnectedTo";
+                  gmml::AddTriple(parent_res_uri, connectionInfo.str(), child_res_uri, oligo_sequence_stream);
                   PopulateLinkage(linkage_stream, oligo_uri, parent_res_uri, child_res_uri, linkNum, (*it).first, thisMono, thisMonoNeighbor);
-                  
+
                 }
                 PopulateMonosaccharide(mono_stream, oligo_stream, oligo_uri, id_prefix, thisMono, side_or_ring_atoms, pdb_uri);
               }
-              
+
             }
-            
+
             MolecularModeling::Assembly subAssembly(residueVector);
             subAssembly.SetModelIndex(0);
             PdbFileSpace::PdbFile* thisPDB = subAssembly.BuildPdbFileStructureFromAssembly();
             std::ostringstream PDBstringstream;
             thisPDB->WriteToStringstream(PDBstringstream);
             gmml::AddLiteral(oligo_uri, "gmmo:PDBfile", PDBstringstream.str(), oligo_stream);
-            
+
             // if(oligo->child_oligos_.size() != 0 && (find(visited_oligos.begin(), visited_oligos.end(), oligo->root_->mono_id_) == visited_oligos.end()))
             // {
             //   // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
@@ -419,7 +429,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
             // std::vector<Glycan::Oligosaccharide*> child_oligos = oligo->child_oligos_;
             // PopulateOligosaccharide(pdb_stream, oligo_stream, oligo_sequence_stream, mono_stream, linkage_stream, pdb_uri, id_prefix, link_id, child_oligos, side_or_ring_atoms, visited_oligos, mono_to_short_name_map, oligo_to_res_uri_map, root_oligo_id);
         }
-        
+
     }
 }
 
@@ -484,8 +494,8 @@ void Assembly::PopulateLinkage(std::stringstream& linkage_stream, std::string ol
     std::string parent_atom_uri = "";
     std::stringstream linkage_str;
     std::stringstream glycosidic_linkage_str;
-    
-    if(thisMonoNeighbor == thisLinkage->non_reducing_mono_)
+
+    if((thisMonoNeighbor == thisLinkage->non_reducing_mono_) || (thisMonoNeighbor == thisLinkage->non_reducing_mono_2_))
     {
       linkage_str << oligo_uri << "_link_" << linkNum;
       linkage_uri = linkage_str.str();
@@ -497,57 +507,66 @@ void Assembly::PopulateLinkage(std::stringstream& linkage_stream, std::string ol
       gmml::AddLiteral(linkage_uri, Ontology::hasChildMono, thisMonoNeighbor->sugar_name_.monosaccharide_short_name_, linkage_stream);
       gmml::AddLiteral(linkage_uri, Ontology::linkageIndeces, thisLinkage->inverse_linkage_type_, linkage_stream);
       gmml::AddDecimal(linkage_uri, Ontology::hasGlycosidicPhiAngle, thisLinkage->phi_angle_, linkage_stream);
-      gmml::AddDecimal(linkage_uri, Ontology::hasGlycosidicPsiAngle, thisLinkage->psi_angle_, linkage_stream);
-      if(thisLinkage->omega_angle_ != NULL)
+      if(thisLinkage->anomeric_anomeric_linkage_)
+      {
+        gmml::AddDecimal(linkage_uri, Ontology::hasGlycosidicPhiPrimeAngle, thisLinkage->phi_prime_angle_, linkage_stream);
+      }
+      else
+      {
+        gmml::AddDecimal(linkage_uri, Ontology::hasGlycosidicPsiAngle, thisLinkage->psi_angle_, linkage_stream);
+      }
+      if((thisLinkage->linkage_type_ == "1-6") || (thisLinkage->inverse_linkage_type_ == "1-6")||(thisLinkage->linkage_type_ == "2-6") || (thisLinkage->inverse_linkage_type_ == "2-6"))
+      {
         gmml::AddDecimal(linkage_uri, Ontology::hasGlycosidicOmegaAngle, thisLinkage->omega_angle_, linkage_stream);
+      }
       linkNum++;
     }
-    
+
     // for(OligosaccharideVector::iterator it = oligo->child_oligos_.begin(); it != oligo->child_oligos_.end(); it++)
     // {
     //     int index = distance(oligo->child_oligos_.begin(), it);
-    // 
+    //
     //     Glycan::Oligosaccharide* child_oligo = (*it);
     //     // OligosaccharideVector::iterator it2 = (std::next(it,1));
     //     // Glycan::Oligosaccharide* parent_oligo = (*it2);
     //     //        visited_oligos.push_back(child_oligo->root_->mono_id_);
-    // 
+    //
     //     linkage_resource = CreateURIResource(gmml::OntLinkage, link_id, id_prefix, "");
     //     linkage_uri = CreateURI(linkage_resource);
     //     //        linkage_stream << Ontology::ENTITY_COMMENT << linkage_resource << std::endl;
     //     gmml::AddTriple(linkage_uri, Ontology::TYPE, Ontology::Linkage, linkage_stream);
     //     //        gmml::AddLiteral(linkage_uri, Ontology::LABEL, linkage_resource, linkage_stream);
     //     link_id++;
-    // 
+    //
     //     gmml::AddTriple(linkage_uri, Ontology::hasParent, oligo_uri, linkage_stream);
     //     child_oligo_resource = CreateURIResource(gmml::OntOligosaccharide, child_oligo->root_->mono_id_, id_prefix, "");
     //     child_oligo_uri = CreateURI(child_oligo_resource);
     //     gmml::AddTriple(linkage_uri, Ontology::hasChild, child_oligo_uri, linkage_stream);
-    // 
+    //
     //     std::vector<std::string> linkage_tokens = gmml::Split(oligo->child_oligos_linkages_.at(index), "-");
     //     std::string parent_atom_id = linkage_tokens.at(0);
     //     std::string glycosidic_atom_id = linkage_tokens.at(1);
     //     std::string child_atom_id = linkage_tokens.at(2);
-    // 
+    //
     //     int parent_c_index = ExtractLinkageCarbonIndex(oligo, parent_atom_id);
     //     int child_c_index = ExtractLinkageCarbonIndex(child_oligo, child_atom_id);
-    // 
+    //
     //     if(child_c_index != 0 && parent_c_index != 0)
     //     {
     //         std::stringstream link_indeces_str;
     //         link_indeces_str << child_c_index << "-" << parent_c_index;
     //         gmml::AddLiteral(linkage_uri, Ontology::linkageIndeces, link_indeces_str.str(), linkage_stream);
     //     }
-    // 
+    //
     //     child_atom_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, child_atom_id);
     //     child_atom_uri = CreateURI(child_atom_resource);
     //     gmml::AddTriple(linkage_uri, Ontology::hasChildAtomLinkage, child_atom_uri, linkage_stream);
-    // 
+    //
     //     glycosidic_atom_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, glycosidic_atom_id);
     //     glycosidic_atom_uri = CreateURI(glycosidic_atom_resource);
     //     gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicLinkage, glycosidic_atom_uri, linkage_stream);
-    // 
-    // 
+    //
+    //
     //     gmml::AddLiteral(linkage_uri, Ontology::hasChildMono, child_oligo->root_->sugar_name_.monosaccharide_short_name_, linkage_stream);
     //     gmml::AddLiteral(linkage_uri, Ontology::hasParentMono, oligo->root_->sugar_name_.monosaccharide_short_name_, linkage_stream);
     //     double glycosidic_phi_angle = CalculatePhiAngle(child_oligo, parent_atom_id, child_atom_id, glycosidic_atom_id);
@@ -558,8 +577,8 @@ void Assembly::PopulateLinkage(std::stringstream& linkage_stream, std::string ol
     //       gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(glycosidic_phi_angle));
     //     }
     //     gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicPhiAngle, std::to_string(glycosidic_phi_angle), linkage_stream);
-    // 
-    // 
+    //
+    //
     //     double glycosidic_psi_angle = CalculatePsiAngle(child_oligo, parent_atom_id, child_atom_id, glycosidic_atom_id);
     //     glycosidic_psi_angle = gmml::ConvertRadian2Degree(glycosidic_psi_angle);
     //     if(local_debug > 0)
@@ -568,7 +587,7 @@ void Assembly::PopulateLinkage(std::stringstream& linkage_stream, std::string ol
     //       gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(glycosidic_psi_angle));
     //     }
     //     gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicPsiAngle, std::to_string(glycosidic_psi_angle), linkage_stream);
-    // 
+    //
     //     if (parent_c_index == 6)
     //     {
     //       gmml::log(__LINE__, __FILE__,  gmml::INF, "About to calculate Omega Angle");
@@ -580,28 +599,28 @@ void Assembly::PopulateLinkage(std::stringstream& linkage_stream, std::string ol
     //         gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(glycosidic_omega_angle));
     //       }
     //       gmml::AddTriple(linkage_uri, Ontology::hasGlycosidicOmegaAngle, std::to_string(glycosidic_omega_angle), linkage_stream);
-    // 
+    //
     //     }
     //     // gmml::log(__LINE__, __FILE__,  gmml::INF, "Done with angles");
     //     parent_atom_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, parent_atom_id);
     //     parent_atom_uri = CreateURI(parent_atom_resource);
     //     // gmml::log(__LINE__, __FILE__,  gmml::INF, "About to add parent linkage");
     //     gmml::AddTriple(linkage_uri, Ontology::hasParentAtomLinkage, parent_atom_uri, linkage_stream);
-    // 
+    //
     //     std::vector<std::string> child_atom_id_tokens = gmml::Split(child_atom_id, "_");
     //     if(child_atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
     //         linkage_str << child_atom_id_tokens.at(2) << "(" << child_atom_id_tokens.at(4) << ")" << child_atom_id_tokens.at(0);
     //     else
     //         linkage_str << child_atom_id_tokens.at(2) << "(" << child_atom_id_tokens.at(4) << "_" << child_atom_id_tokens.at(3) << ")" << child_atom_id_tokens.at(0);
-    // 
+    //
     //     std::vector<std::string> parent_atom_id_tokens = gmml::Split(parent_atom_id, "_");
     //     if(parent_atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
     //         linkage_str << "-" << parent_atom_id_tokens.at(2) << "(" << parent_atom_id_tokens.at(4) << ")"  << parent_atom_id_tokens.at(0);
     //     else
     //         linkage_str << "-" << parent_atom_id_tokens.at(2) << "(" << parent_atom_id_tokens.at(4) <<  "_" << parent_atom_id_tokens.at(3) << ")"  << parent_atom_id_tokens.at(0);
-    // 
+    //
     //     //        gmml::AddLiteral(linkage_uri, Ontology::linkage_str, linkage_str.str(), linkage_stream);
-    // 
+    //
     //     std::vector<std::string> glycosidic_atom_id_tokens = gmml::Split(glycosidic_atom_id, "_");
     //     if(glycosidic_atom_id_tokens.at(3).at(0) == gmml::BLANK_SPACE)
     //         glycosidic_linkage_str << glycosidic_atom_id_tokens.at(2) << "(" << glycosidic_atom_id_tokens.at(4) << ")" << glycosidic_atom_id_tokens.at(0);
@@ -628,15 +647,15 @@ void Assembly::PopulateSequenceLinkage(std::stringstream& oligo_sequence_stream,
     // std::string o_name = oligo->oligosaccharide_name_;
     // std::string o_term_name = oligo->oligosaccharide_terminal_;
     // bool terminalAdded = false;
-    // 
-    // 
+    //
+    //
     // root_oligo_resource = CreateURIResource(gmml::OntOligosaccharide, root_oligo_id, id_prefix, "");
     // root_oligo_uri = CreateURI(root_oligo_resource);
-    // 
-    // 
-    // 
+    //
+    //
+    //
     // visited_oligos.push_back(oligo->root_->mono_id_);
-    // 
+    //
     // for(std::vector<Glycan::Monosaccharide*>::reverse_iterator rit = oligo->mono_nodes_.rbegin(); rit != oligo->mono_nodes.rend(); rit++)
     // {
     //   thisMono = *rit;
@@ -660,17 +679,17 @@ void Assembly::PopulateSequenceLinkage(std::stringstream& oligo_sequence_stream,
     //     parent_res_uri = CreateURI(parent_res_resource);
     //     gmml::AddTriple(child_res_uri, Ontology::isConnectedTo, parent_res_uri, oligo_sequence_stream);
     //   }
-    // 
+    //
     // }
     // for(OligosaccharideVector::iterator it = oligo->child_oligos_.begin(); it != oligo->child_oligos_.end(); it++)
     // {
     //     int index = distance(oligo->child_oligos_.begin(), it);
-    // 
+    //
     //     Glycan::Oligosaccharide* child_oligo = (*it);
-    // 
+    //
     //     child_oligo_resource = CreateURIResource(gmml::OntOligosaccharide, child_oligo->root_->mono_id_, id_prefix, "");
     //     child_oligo_uri = CreateURI(child_oligo_resource);
-    // 
+    //
     //     if (mono_to_short_name_map.find(child_oligo_uri) == mono_to_short_name_map.end())
     //     {
     //         mono_to_short_name_map[child_oligo_uri] = child_oligo->root_->sugar_name_.monosaccharide_short_name_;
@@ -679,9 +698,9 @@ void Assembly::PopulateSequenceLinkage(std::stringstream& oligo_sequence_stream,
     //         res_id << mono_to_short_name_map.size();
     //         child_res_resource = CreateURIResource(gmml::OntSequenceResidue, root_oligo_id, id_prefix, res_id.str());
     //         child_res_uri = CreateURI(child_res_resource);
-    // 
+    //
     //         CheckDerivativesAndPopulate(oligo_sequence_stream, mono_to_short_name_map[child_oligo_uri], root_oligo_uri, child_res_uri, monoSNFG);
-    // 
+    //
     //         //gmml::AddTriple(root_oligo_uri, Ontology::hasSequenceResidue, child_res_uri, oligo_sequence_stream);
     //         //gmml::AddTriple(child_res_uri, Ontology::TYPE, Ontology::SequenceResidue, oligo_sequence_stream);
     //         //gmml::AddLiteral(child_res_uri, Ontology::id, mono_to_short_name_map[child_oligo_uri], oligo_sequence_stream);
@@ -695,32 +714,32 @@ void Assembly::PopulateSequenceLinkage(std::stringstream& oligo_sequence_stream,
     //         res_id << mono_to_short_name_map.size();
     //         child_res_resource = CreateURIResource(gmml::OntSequenceResidue, root_oligo_id, id_prefix, res_id.str());
     //         child_res_uri = CreateURI(child_res_resource);
-    // 
+    //
     //         CheckDerivativesAndPopulate(oligo_sequence_stream, mono_to_short_name_map[oligo_uri], root_oligo_uri, child_res_uri, monoSNFG);
-    // 
+    //
     //         //gmml::AddTriple(root_oligo_uri, Ontology::hasSequenceResidue, child_res_uri, oligo_sequence_stream);
     //         //gmml::AddTriple(child_res_uri, Ontology::TYPE, Ontology::SequenceResidue, oligo_sequence_stream);
     //         //gmml::AddLiteral(child_res_uri, Ontology::id, mono_to_short_name_map[oligo_uri], oligo_sequence_stream);
     //         oligo_to_res_uri_map[oligo_uri] = child_res_uri;
     //     }
-    // 
+    //
     //     std::string child_uri = oligo_to_res_uri_map[child_oligo_uri];
     //     std::string parent_uri = oligo_to_res_uri_map[oligo_uri];
     //     gmml::AddTriple(child_uri, Ontology::isConnectedTo, parent_uri, oligo_sequence_stream);
-    // 
+    //
     //     if(o_name.compare("") != 0 && o_term_name.compare("") != 0 && !terminalAdded)
     //     {
     //         gmml::AddTriple(parent_uri, Ontology::isConnectedTo, term_uri, oligo_sequence_stream);
     //         terminalAdded = true;
     //     }
-    // 
+    //
     //     std::vector<std::string> linkage_tokens = gmml::Split(oligo->child_oligos_linkages_.at(index), "-");
     //     std::string parent_atom_id = linkage_tokens.at(0);
     //     std::string child_atom_id = linkage_tokens.at(2);
-    // 
+    //
     //     int parent_c_index = ExtractLinkageCarbonIndex(oligo, parent_atom_id);
     //     int child_c_index = ExtractLinkageCarbonIndex(child_oligo, child_atom_id);
-    // 
+    //
     //     if(child_c_index != 0 && parent_c_index != 0)
     //     {
     //         std::stringstream link_indeces_str;
@@ -793,8 +812,9 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
     gmml::AddTriple(mono_uri, Ontology::TYPE, Ontology::monosaccharide, mono_stream);
     gmml::AddLiteral(mono_uri, Ontology::id, mono->cycle_atoms_[0]->GetResidue()->GetId(), mono_stream);
     gmml::AddLiteral(mono_uri, Ontology::hasOligoParent, oligo_uri, mono_stream);
-    int Index = mono->oligosaccharide_index_;
+    int Index = mono->IUPAC_index_; //change to IUPAC_index_
     gmml::AddLiteral(mono_uri, Ontology::hasIndex, std::to_string(Index), mono_stream);
+    gmml::AddLiteral(mono_uri, Ontology::hasNameIndex, std::to_string(mono->oligosaccharide_index_), mono_stream);
     if(checkIfNucleotide(mono))
     {
       gmml::AddTriple(mono_uri, Ontology::isNucleotide, "true", mono_stream);
@@ -863,12 +883,14 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
             numR = std::stoi(mono->sugar_name_.monosaccharide_short_name_.substr(found, 1));
           else
             numR = std::stoi(mono->sugar_name_.monosaccharide_short_name_.substr(found,2));
-            
+
           if((*derivative).second != "")
           {
-            std::stringstream RgroupStream;
+            std::stringstream RgroupStream, RnumStream;
             RgroupStream << mono_uri << "_R" << numR;
-            gmml::AddLiteral(RgroupStream.str(), Ontology::hasFormula,(*derivative).second, mono_stream); 
+            RnumStream << "gmmo:hasR" << numR;
+            gmml::AddTriple(mono_uri, RnumStream.str(), RgroupStream.str(), mono_stream);
+            gmml::AddLiteral(RgroupStream.str(), Ontology::hasFormula,(*derivative).second, mono_stream);
           }
           offset = found;
         }
@@ -1057,7 +1079,7 @@ void Assembly::PopulateSugarName(std::stringstream& mono_stream, std::string id_
     gmml::AddLiteral(sugar_name_uri, Ontology::mono_stereo_name, sugar_name.monosaccharide_stereochemistry_name_, sugar_name_stream);
     gmml::AddLiteral(sugar_name_uri, Ontology::mono_stereo_short_name, sugar_name.monosaccharide_stereochemistry_short_name_, sugar_name_stream);
     gmml::AddLiteral(sugar_name_uri, Ontology::mono_name, sugar_name.monosaccharide_name_, sugar_name_stream);
-    
+
     gmml::AddLiteral(sugar_name_uri, Ontology::mono_short_name, sugar_name.monosaccharide_short_name_, sugar_name_stream);
     gmml::AddLiteral(sugar_name_uri, Ontology::isomer, sugar_name.isomer_, sugar_name_stream);
     if(sugar_name.configuration_.compare("a") == 0)
@@ -1214,8 +1236,8 @@ std::string Assembly::CreateURIResource(gmml::URIType resource , int number, std
 
 void Assembly::FormulateCURL(std::string output_file_type, std::string query)
 {
-    std::cout << "GENERATED QUERY:" << std::endl;
-    std::cout << query << std::endl;
+//    std::cout << "GENERATED QUERY:" << std::endl;
+//    std::cout << query << std::endl;
     std::stringstream curl;
     curl << Ontology::CURL_PREFIX;
 
@@ -1228,16 +1250,16 @@ void Assembly::FormulateCURL(std::string output_file_type, std::string query)
 
     curl << Ontology::DATA_STORE_ADDRESS << Ontology::QUERY_PREFIX << query << Ontology::QUERY_POSTFIX;
     std::string tmp = curl.str();
-    std::cout << std::endl << "RESULTS: " << std::endl;
+//    std::cout << std::endl << "RESULTS: " << std::endl;
     const char* cstr = tmp.c_str();
     system(cstr);
-    std::cout << std::endl;
+//    std::cout << std::endl;
 }
 
 std::string Assembly::FormulateCURLGF(std::string output_file_type, std::string query, std::string url)
 {
-    std::cout << "GENERATED QUERY:" << std::endl;
-    std::cout << query << std::endl;
+//    std::cout << "GENERATED QUERY:" << std::endl;
+//    std::cout << query << std::endl;
     std::stringstream curl;
     curl << Ontology::CURL_PREFIX;
 

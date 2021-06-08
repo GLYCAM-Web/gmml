@@ -6,6 +6,8 @@
 #include <map>
 #include <iostream>
 
+#include "prepfileatom.hpp"
+
 namespace PrepFileSpace
 {
     /*! \enum
@@ -33,7 +35,6 @@ namespace PrepFileSpace
       */
     enum SectionType { kSectionLoop, kSectionImproper, kSectionDone, kSectionOther };
     class PrepFileAtom;
-
     class PrepFileResidue
     {
         public:
@@ -47,11 +48,7 @@ namespace PrepFileSpace
             /*! \typedef
               * A collection of four atom names
               */
-            typedef std::vector<std::string> Dihedral;
-            /*! \typedef
-              * List of prep file atoms
-              */
-            typedef std::vector<PrepFileAtom*> PrepFileAtomVector;
+            typedef std::vector<std::string> Dihedral; // This looks poorly named
             /*! \typedef
               * List of dihedrals
               */
@@ -452,7 +449,7 @@ namespace PrepFileSpace
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
-            void Print(std::ostream& out = std::cout);
+            void Print(std::ostream& out = std::cerr);
 
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //

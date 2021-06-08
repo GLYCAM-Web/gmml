@@ -45,6 +45,7 @@ namespace Glycan
       bool is_counted_;
       bool is_indexed_;
       int oligosaccharide_index_;
+      int IUPAC_index_;
       int oligo_branch_index_;
       Glycan::Oligosaccharide* oligo_parent_ = NULL;
       std::string residue_name_;

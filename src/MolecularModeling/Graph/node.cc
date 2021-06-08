@@ -7,8 +7,8 @@
 
 GraphDS::Node::Node() {
 
-    this->is_visited_=false;
-    this->node_id_=this->GenerateNodeID();
+    // this->is_visited_=false;
+    // this->node_id_=this->GenerateNodeID();
 }
 
 //////////////////////////////////////////////////////////
@@ -16,7 +16,7 @@ GraphDS::Node::Node() {
 //////////////////////////////////////////////////////////
 
 
-GraphDS::Node::~Node(){}
+// GraphDS::Node::~Node(){}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
@@ -64,6 +64,7 @@ bool GraphDS::Node::GetIsVisited()
 
 void GraphDS::Node::SetNodeValue(void* node_value)
 {
+  // std::cout << node_value << "\n";
     this->node_value_= node_value;
 }
 
@@ -131,6 +132,6 @@ std::string GraphDS::Node::GenerateNodeID()
 
 void GraphDS::Node::Print(std::ostream &out)
 {
-    std::cout<<"Printing Node details"<<std::endl;
-    std::cout<<"Node ID:"<<node_id_<<std::endl;
+//    std::cout<<"Printing Node details"<<std::endl;
+//    std::cout<<"Node ID:"<<node_id_<<std::endl;
 }

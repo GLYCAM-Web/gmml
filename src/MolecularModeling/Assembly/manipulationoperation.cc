@@ -113,6 +113,20 @@ void Assembly::RemoveHydrogenAtAttachedPosition(Residue *residue, int branch_ind
     }
 }
 
+void Assembly::RemoveAllHydrogenAtoms()
+{
+  std::vector<MolecularModeling::Atom*> allAtoms = this->GetAllAtomsOfAssembly();
+  for(std::vector<MolecularModeling::Atom*>::iterator it = allAtoms.begin(); it != allAtoms.end(); it++)
+  {
+    MolecularModeling::Atom* thisAtom = (*it);
+    if(thisAtom->GetElementSymbol() == "H")
+    {
+      MolecularModeling::Residue* thisResidue = thisAtom->GetResidue();
+      thisResidue->RemoveAtom(thisAtom);
+    }
+  }
+}
+
 void Assembly::AdjustCharge(Residue *residue, Residue *parent_residue, int branch_index)
 {
     if(residue->GetName().compare("SO3") == 0)

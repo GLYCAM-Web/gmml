@@ -1,31 +1,47 @@
 #include "../../includes/MolecularModeling/overlaps.hpp"
+#include "../../includes/MolecularModeling/atom.hpp"
+#include "../../includes/MolecularModeling/atomnode.hpp"
+#include "../../includes/common.hpp"
 
-double gmml::CalculateAtomicOverlaps(AtomVector atomsA, AtomVector atomsB){
+double gmml::CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB){
 
-    double distance = 0.0, totalOverlap = 0.0;
-
-    for(AtomVector::iterator it1 = atomsA.begin(); it1 != atomsA.end(); ++it1)
+    double totalOverlap = 0.0;
+    for(auto &atomA : atomsA)
     {
-        for(AtomVector::iterator it2 = atomsB.begin(); it2 != atomsB.end(); ++it2)
-        {
-            MolecularModeling::Atom *atomA = *it1;
-            MolecularModeling::Atom *atomB = *it2;
-            if ( std::abs((atomA->GetCoordinates().at(0)->GetX() - atomB->GetCoordinates().at(0)->GetX())) < 3.6 ) // This is faster than calulating distance, and rules out tons of atom pairs.
+        for(auto &atomB : atomsB)
+        {   // if not the same atom (index is unique) and within bonding distance
+            if ( (atomA->GetIndex() != atomB->GetIndex()) && (atomA->CheckIfOtherAtomIsWithinBondingDistance(atomB)) )
             {
-                distance = atomA->GetDistanceToAtom(atomB);
-                if ( ( distance < 3.6 ) && ( distance > 0.0 ) ) //Close enough to overlap, but not the same atom
-                {
-//                    double overlap = gmml::CalculateAtomicOverlaps(atomA, atomB);
-//                    if (overlap > 0.01)
-//                        std::cout << atomA->GetId() << "--"  << atomB->GetId() << ": " << overlap << "\n";
-//                    totalOverlap += overlap;
-                    totalOverlap += gmml::CalculateAtomicOverlaps(atomA, atomB);
-                }
+                totalOverlap += gmml::CalculateAtomicOverlaps(atomA, atomB);
             }
         }
     }
-    return (totalOverlap / CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
+    return (totalOverlap / gmml::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
 }
+
+double gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB){
+
+    double totalOverlap = 0.0;
+    for(auto &atomA : atomsA)
+    {
+        for(auto &atomB : atomsB)
+        {
+            bool isNeighbor = false;
+            MolecularModeling::AtomVector neighbors = atomA->GetNode()->GetNodeNeighbors();
+            for(auto &neighbor : neighbors)
+            {
+                if (atomB->GetIndex() == neighbor->GetIndex())
+                    isNeighbor = true;
+            }
+            if ( (isNeighbor == false) && (atomA->GetIndex() != atomB->GetIndex()) && (atomA->CheckIfOtherAtomIsWithinBondingDistance(atomB)))
+            {
+                totalOverlap += gmml::CalculateAtomicOverlaps(atomA, atomB);
+            }
+        }
+    }
+    return (totalOverlap / gmml::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
+}
+
 
 double gmml::CalculateAtomicOverlaps(MolecularModeling::Atom *atomA, MolecularModeling::Atom *atomB, double radiusA, double radiusB)
 {
@@ -53,7 +69,7 @@ double gmml::CalculateAtomicOverlaps(MolecularModeling::Atom *atomA, MolecularMo
     double overlap = 0.0;
     if (radiusA + radiusB > distance + 0.6){ // 0.6 overlap is deemed acceptable. (Copying chimera:)
         // Eqn 1, Rychkov and Petukhov, J. Comput. Chem., 2006, Joint Neighbours. Each atom against each atom, so overlap can be "double" counted. See paper.
-        overlap = ( 2 * (PI_RADIAN) * radiusA* ( radiusA - distance / 2 - ( ( (radiusA*radiusA) - (radiusB*radiusB) ) / (2 * distance) ) ) );
+        overlap = ( 2 * (gmml::PI_RADIAN) * radiusA* ( radiusA - distance / 2 - ( ( (radiusA*radiusA) - (radiusB*radiusB) ) / (2 * distance) ) ) );
     }
     //std::cout << "Non-normalized Overlap=" << totalOverlap << std::endl;
     return overlap;

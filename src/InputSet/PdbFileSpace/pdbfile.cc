@@ -94,96 +94,19 @@ using PdbFileSpace::PdbFile;
 //////////////////////////////////////////////////////////
 PdbFile::PdbFile()
 {
+    this->Initialize();
     path_ = "GMML-Generated";
-    header_ = NULL;
-    obsolete_ = NULL;
-    title_ = NULL;
-    split_ = NULL;
-    caveat_ = NULL;
-    compound_ = NULL;
-    source_ = NULL;
-    keywords_ = NULL;
-    experimental_data_ = NULL;
-    number_of_models_ = NULL;
-    model_type_ = NULL;
-    author_ = NULL;
-    revision_data_ = NULL;
-    superseded_entries_ = NULL;
-    journal_ = NULL;
-    remark_cards_ = NULL;
-    database_reference_ = NULL;
-    sequence_advanced_ = NULL;
-    residues_sequence_ = NULL;
-    residue_modification_cards_ = NULL;
-    heterogen_cards_ = NULL;
-    heterogen_name_cards_ = NULL;
-    heterogen_synonym_cards_ = NULL;
-    formulas_ = NULL;
-    helix_cards_ = NULL;
-    sheet_cards_ = NULL;
-    disulfide_bonds_ = NULL;
-    link_cards_ = NULL;
-    cis_peptide_ = NULL;
-    site_cards_ = NULL;
-    crystallography_ = NULL;
-    origins_ = NULL;
-    scales_ = NULL;
-    matrices_ = NULL;
-    models_ = NULL;
-    connectivities_ = NULL;
-    serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
-    sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
-    master_ = NULL;
 }
 
 PdbFile::PdbFile(const std::string &pdb_file)
 {
+    this->Initialize();
     path_ = pdb_file;
-    header_ = NULL;
-    obsolete_ = NULL;
-    title_ = NULL;
-    split_ = NULL;
-    caveat_ = NULL;
-    compound_ = NULL;
-    source_ = NULL;
-    keywords_ = NULL;
-    experimental_data_ = NULL;
-    number_of_models_ = NULL;
-    model_type_ = NULL;
-    author_ = NULL;
-    revision_data_ = NULL;
-    superseded_entries_ = NULL;
-    journal_ = NULL;
-    remark_cards_ = NULL;
-    database_reference_ = NULL;
-    sequence_advanced_ = NULL;
-    residues_sequence_ = NULL;
-    residue_modification_cards_ = NULL;
-    heterogen_cards_ = NULL;
-    heterogen_name_cards_ = NULL;
-    heterogen_synonym_cards_ = NULL;
-    formulas_ = NULL;
-    helix_cards_ = NULL;
-    sheet_cards_ = NULL;
-    disulfide_bonds_ = NULL;
-    link_cards_ = NULL;
-    cis_peptide_ = NULL;
-    site_cards_ = NULL;
-    crystallography_ = NULL;
-    origins_ = NULL;
-    scales_ = NULL;
-    matrices_ = NULL;
-    models_ = NULL;
-    connectivities_ = NULL;
-    serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
-    sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
-    master_ = NULL;
-
     std::ifstream in_file;
     if(std::ifstream(pdb_file.c_str()))
     {
         gmml::log(__LINE__, __FILE__,  gmml::INF, "Opening PDB file ...");
-        std::cout << "Opening PDB file ..." << std::endl;
+        // std::cout << "Opening PDB file ..." << std::endl;
         in_file.open(pdb_file.c_str());
     }
     else
@@ -191,24 +114,25 @@ PdbFile::PdbFile(const std::string &pdb_file)
         throw PdbFileProcessingException(__LINE__, "PDB file not found");
     }
 
-    std::string line = "";
-    std::string temp = "";
-    std::stringstream ss;
-    while(!in_file.eof())
-    {
-        if(!getline(in_file, line))
-            break;
-        else
-        {
-            temp = line.substr(0,6);
-            temp = gmml::Trim(temp);
-            if(temp.find("END") != std::string::npos || temp.compare("END") == 0)
-                break;
-            else if(!line.empty())
-                ss << line << std::endl;
-        }
-    }
-    in_file.close();
+    // Oliver 2020-Sep-30 Dave commented out the below in 2019, but 
+    // std::string line = "";
+    // std::string temp = "";
+    // std::stringstream ss;
+    // while(!in_file.eof())
+    // {
+    //     if(!getline(in_file, line))
+    //         break;
+    //     else
+    //     {
+    //         temp = line.substr(0,6);
+    //         temp = gmml::Trim(temp);
+    //         if(temp.find("END") != std::string::npos || temp.compare("END") == 0)
+    //             break;
+    //         else if(!line.empty())
+    //             ss << line << std::endl;
+    //     }
+    // }
+    // in_file.close();
     //I think this erases PDb files sometimes, as they only have "END"
     //Dave 2/1/19
     // if(temp.find("END") == std::string::npos || temp.compare("END") != 0)
@@ -225,7 +149,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     //     out_file << ss.str() << temp;
     //     out_file.close();
     // }
-    in_file.open(pdb_file.c_str());
+    //in_file.open(pdb_file.c_str());
     if(!Read(in_file))
     {
         throw PdbFileProcessingException(__LINE__, "Reading PDB file exception");
@@ -235,58 +159,19 @@ PdbFile::PdbFile(const std::string &pdb_file)
       std::string PDBname = header_->GetIdentifierCode();
       gmml::log(__LINE__, __FILE__,  gmml::INF, PDBname);
     }
-    
+
     in_file.close();            /// Close the pdb files
 }
 
 PdbFile::PdbFile(std::stringstream& atomStream)
 {
-  path_ = "";
-  header_ = NULL;
-  obsolete_ = NULL;
-  title_ = NULL;
-  split_ = NULL;
-  caveat_ = NULL;
-  compound_ = NULL;
-  source_ = NULL;
-  keywords_ = NULL;
-  experimental_data_ = NULL;
-  number_of_models_ = NULL;
-  model_type_ = NULL;
-  author_ = NULL;
-  revision_data_ = NULL;
-  superseded_entries_ = NULL;
-  journal_ = NULL;
-  remark_cards_ = NULL;
-  database_reference_ = NULL;
-  sequence_advanced_ = NULL;
-  residues_sequence_ = NULL;
-  residue_modification_cards_ = NULL;
-  heterogen_cards_ = NULL;
-  heterogen_name_cards_ = NULL;
-  heterogen_synonym_cards_ = NULL;
-  formulas_ = NULL;
-  helix_cards_ = NULL;
-  sheet_cards_ = NULL;
-  disulfide_bonds_ = NULL;
-  link_cards_ = NULL;
-  cis_peptide_ = NULL;
-  site_cards_ = NULL;
-  crystallography_ = NULL;
-  origins_ = NULL;
-  scales_ = NULL;
-  matrices_ = NULL;
-  models_ = NULL;
-  connectivities_ = NULL;
-  serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
-  sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
-  master_ = NULL;
-  
+  this->Initialize();
+
   if(!Read(atomStream))
   {
     throw PdbFileProcessingException(__LINE__, "Reading atom stringstream failed");
   }
-  
+
 }
 
 PdbFile* PdbFile::LoadPdbFile()
@@ -2420,7 +2305,7 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
                     if(located)
                     {
                         // TODO: update coordinates with respect to it2
-                        GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                        GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
                         GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                             coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
@@ -2449,7 +2334,7 @@ void PdbFile::InsertResidueBefore(PdbAtomSection* residue)
                     {
                         PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), 
+                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(),
                                                             atom->GetAlternateAtomCards());
                         updated_atoms[serial_number] = updated_atom;
                         updated_atoms_vector.push_back(updated_atom);
@@ -2580,7 +2465,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                     if(located)
                     {
                         // TODO: update coordinates with respect to it2
-                        GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                        GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
                         GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                             coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
@@ -2609,7 +2494,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                     {
                         PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), 
+                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(),
                                                             atom->GetAlternateAtomCards());
                         updated_atoms[serial_number] = updated_atom;
                         updated_atoms_vector.push_back(updated_atom);
@@ -2668,7 +2553,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
-                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge(), 
+                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge(),
                                                               heterogen_atom->GetAlternateAtomCards());
                 updated_heterogen_atoms[serial_number] = updated_heterogen_atom;
                 updated_heterogen_atoms_vector.push_back(updated_heterogen_atom);
@@ -2756,7 +2641,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                     if(located)
                     {
                         // TODO: update coordinates with respect to it2
-                        GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                        GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
                         GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                             coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
@@ -2803,7 +2688,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                         }
                         PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), 
+                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(),
                                                             atom->GetAlternateAtomCards());
                         updated_atoms[serial_number] = updated_atom;
                         updated_atoms_vector.push_back(updated_atom);
@@ -2815,7 +2700,7 @@ void PdbFile::InsertResidueAfter(PdbAtomSection* residue)
                 if(it2 == --ordered_atoms.end() && located)
                 {
                     // TODO: update coordinates with respect to it2
-                    GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                    GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
                     GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
                     for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
@@ -2950,7 +2835,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                     if(located)
                     {
                         // TODO: update coordinates with respect to it2
-                        GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                        GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
                         GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                             coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
@@ -2996,7 +2881,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                         }
                         PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
                                                             atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), 
+                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(),
                                                             atom->GetAlternateAtomCards());
                         updated_atoms[serial_number] = updated_atom;
                         updated_atoms_vector.push_back(updated_atom);
@@ -3008,7 +2893,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                 if(it2 == --ordered_atoms.end() && located)
                 {
                     // TODO: update coordinates with respect to it2
-                    GeometryTopology::Coordinate::CoordinateVector coordinate_set = GeometryTopology::Coordinate::CoordinateVector();
+                    GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
                     GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
                     for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
@@ -3057,7 +2942,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                                                               heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
                                                               heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
                                                               heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
-                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge(), 
+                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge(),
                                                               heterogen_atom->GetAlternateAtomCards());
                 updated_heterogen_atoms[serial_number] = updated_heterogen_atom;
                 updated_heterogen_atoms_vector.push_back(updated_heterogen_atom);
@@ -3277,7 +3162,8 @@ bool PdbFile::Read(std::ifstream &in_file)
 {
     if(!this->ParseCards(in_file))
         return false;
-	return true;
+
+    return true;
 }
 
 bool PdbFile::Read(std::stringstream &atomstream)
@@ -3291,14 +3177,14 @@ bool PdbFile::ParseAtomStream(std::stringstream &atomstream)
 {
   //This function is to take an input of just atom cards in a stringstream and create a PdbFile object
 
-  std::string line;
-  getline(atomstream, line);
-  line = gmml::ExpandLine(line, gmml::iPdbLineLength);
-  std::string record_name = line.substr(0,6);
-  record_name = gmml::Trim(record_name);
-  
+  // std::string line;
+  // getline(atomstream, line);
+  // line = gmml::ExpandLine(line, gmml::iPdbLineLength);
+  // std::string record_name = line.substr(0,6);
+  // record_name = gmml::Trim(record_name);
+  // atomstream.seekg(0, atomstream.beg);
   models_ = new PdbFileSpace::PdbModelSection(atomstream);
-  
+
   if(models_ == NULL)
   {
     return false;
@@ -3314,7 +3200,7 @@ bool PdbFile::ParseCards(std::ifstream &in_stream)
     if (!getline(in_stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         throw PdbFileProcessingException("Error reading file");
     }
 
@@ -3552,6 +3438,17 @@ bool PdbFile::ParseCards(std::ifstream &in_stream)
     }
     record_name = line.substr(0,6);
     record_name = gmml::Trim(record_name);
+    if(record_name.compare("TVECT") == 0)
+    {
+      while(record_name.compare("TVECT") == 0)
+      {
+        getline(in_stream, line);//skip for now. TODO figure out if we care about having this data
+        record_name = line.substr(0,6);
+        record_name = gmml::Trim(record_name);
+      }
+    }
+    record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
     if(record_name.find("MTRIX") != std::string::npos)
     {
         if(!ParseMatrixSection(in_stream, line))
@@ -3577,7 +3474,7 @@ bool PdbFile::ParseCards(std::ifstream &in_stream)
     if(record_name.compare("MODEL") == 0)
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Multiple connect card between model cards --> Unexpected entry");
-        std::cout << "Multiple connect card between model cards --> Unexpected entry" << std::endl;
+//        std::cout << "Multiple connect card between model cards --> Unexpected entry" << std::endl;
         return false;
     }
     if(record_name.compare("MASTER") == 0)
@@ -3600,7 +3497,7 @@ bool PdbFile::ParseCards(std::ifstream &in_stream)
         std::stringstream ss;
         ss << record_name << " is an Unknown record name.";
         gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
-        std::cout << ss.str() << std::endl;
+        std::cerr << ss.str() << std::endl;
         // return false;
     }
     return true;
@@ -3613,9 +3510,9 @@ bool PdbFile::ParseHeaderCard(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Header card corupption");
-        std::cout << "Header card corruption" << std::endl;
+//        std::cout << "Header card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -3634,9 +3531,9 @@ bool PdbFile::ParseHeaderCard(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Header card corruption");
-            std::cout << "Header card corruption" << std::endl;
+//            std::cout << "Header card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -3652,9 +3549,9 @@ bool PdbFile::ParseObsoleteSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Obsolete card corruption");
-        std::cout << "Obsolete card corruption" << std::endl;
+//        std::cout << "Obsolete card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -3673,9 +3570,9 @@ bool PdbFile::ParseObsoleteSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Obsolete card corruption");
-            std::cout << "Obsolete card corruption" << std::endl;
+//            std::cout << "Obsolete card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -3692,9 +3589,9 @@ bool PdbFile::ParseTitleSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Title card corruption");
-        std::cout << "Title card corruption" << std::endl;
+//        std::cout << "Title card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -3713,9 +3610,9 @@ bool PdbFile::ParseTitleSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Title card corruption");
-            std::cout << "Title card corruption" << std::endl;
+//            std::cout << "Title card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format");
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -3731,9 +3628,9 @@ bool PdbFile::ParseSplitSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Split card corruption" );
-        std::cout << "Split card corruption" << std::endl;
+//        std::cout << "Split card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -3752,9 +3649,9 @@ bool PdbFile::ParseSplitSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Split card corruption" );
-            std::cout << "Split card corruption" << std::endl;
+//            std::cout << "Split card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -3770,9 +3667,9 @@ bool PdbFile::ParseCaveatSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Caveat card corruption" );
-        std::cout << "Caveat card corruption" << std::endl;
+//        std::cout << "Caveat card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -3791,9 +3688,9 @@ bool PdbFile::ParseCaveatSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Caveat card corruption" );
-            std::cout << "Caveat card corruption" << std::endl;
+//            std::cout << "Caveat card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -3809,9 +3706,9 @@ bool PdbFile::ParseCompoundSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Compound card corruption" );
-        std::cout << "Compound card corruption" << std::endl;
+//        std::cout << "Compound card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -3830,9 +3727,9 @@ bool PdbFile::ParseCompoundSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Compound card corruption" );
-            std::cout << "Compound card corruption" << std::endl;
+//            std::cout << "Compound card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -3848,9 +3745,9 @@ bool PdbFile::ParseSourceSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Source card corruption" );
-        std::cout << "Source card corruption" << std::endl;
+//        std::cout << "Source card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -3869,9 +3766,9 @@ bool PdbFile::ParseSourceSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Source card corruption" );
-            std::cout << "Source card corruption" << std::endl;
+//            std::cout << "Source card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -3887,9 +3784,9 @@ bool PdbFile::ParseKeywordsSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Keyword card corruption" );
-        std::cout << "Keyword card corruption" << std::endl;
+//        std::cout << "Keyword card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -3908,9 +3805,9 @@ bool PdbFile::ParseKeywordsSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Keyword card corruption" );
-            std::cout << "Keyword card corruption" << std::endl;
+//            std::cout << "Keyword card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -3926,9 +3823,9 @@ bool PdbFile::ParseExperimentalDataSection(std::ifstream& stream, std::string& l
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Experimental data card corruption" );
-        std::cout << "Experimental data card corruption" << std::endl;
+//        std::cout << "Experimental data card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -3947,9 +3844,9 @@ bool PdbFile::ParseExperimentalDataSection(std::ifstream& stream, std::string& l
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Experimental data card corruption" );
-            std::cout << "Experimental data card corruption" << std::endl;
+//            std::cout << "Experimental data card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -3965,9 +3862,9 @@ bool PdbFile::ParseNumModelCard(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Number of model card corruption" );
-        std::cout << "Number of model card corruption" << std::endl;
+//        std::cout << "Number of model card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -3986,9 +3883,9 @@ bool PdbFile::ParseNumModelCard(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Number of model card corruption" );
-            std::cout << "Number of model card corruption" << std::endl;
+//            std::cout << "Number of model card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4003,9 +3900,9 @@ bool PdbFile::ParseModelTypeSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model type card corruption" );
-        std::cout << "Model type card corruption" << std::endl;
+//        std::cout << "Model type card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4024,9 +3921,9 @@ bool PdbFile::ParseModelTypeSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model type card corruption" );
-            std::cout << "Model type card corruption" << std::endl;
+//            std::cout << "Model type card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4041,9 +3938,9 @@ bool PdbFile::ParseAuthorSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Author card corruption" );
-        std::cout << "Author card corruption" << std::endl;
+//        std::cout << "Author card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4062,9 +3959,9 @@ bool PdbFile::ParseAuthorSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Author card corruption" );
-            std::cout << "Author card corruption" << std::endl;
+//            std::cout << "Author card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4080,9 +3977,9 @@ bool PdbFile::ParseRevisionDataSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Revision data card corruption" );
-        std::cout << "Revision data card corruption" << std::endl;
+//        std::cout << "Revision data card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4101,9 +3998,9 @@ bool PdbFile::ParseRevisionDataSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Revision data card corruption" );
-            std::cout << "Revision data card corruption" << std::endl;
+//            std::cout << "Revision data card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4119,9 +4016,9 @@ bool PdbFile::ParseSupersededEntriesSection(std::ifstream& stream, std::string& 
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Superseded entries card corruption" );
-        std::cout << "Superseded entries card corruption" << std::endl;
+//        std::cout << "Superseded entries card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4140,9 +4037,9 @@ bool PdbFile::ParseSupersededEntriesSection(std::ifstream& stream, std::string& 
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Superseded entries card corruption" );
-            std::cout << "Superseded entries card corruption" << std::endl;
+//            std::cout << "Superseded entries card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4158,9 +4055,9 @@ bool PdbFile::ParseJournalSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Journal card corruption" );
-        std::cout << "Journal card corruption" << std::endl;
+//        std::cout << "Journal card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4179,9 +4076,9 @@ bool PdbFile::ParseJournalSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Journal card corruption" );
-            std::cout << "Journal card corruption" << std::endl;
+//            std::cout << "Journal card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4197,9 +4094,9 @@ bool PdbFile::ParseRemarkSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Remark card corruption" );
-        std::cout << "Remark card corruption" << std::endl;
+//        std::cout << "Remark card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4218,9 +4115,9 @@ bool PdbFile::ParseRemarkSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Remark card corruption" );
-            std::cout << "Remark card corruption" << std::endl;
+//            std::cout << "Remark card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4236,9 +4133,9 @@ bool PdbFile::ParseDatabaseReferenceSection(std::ifstream& stream, std::string& 
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "database reference card corruption" );
-        std::cout << "database reference card corruption" << std::endl;
+//        std::cout << "database reference card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4257,9 +4154,9 @@ bool PdbFile::ParseDatabaseReferenceSection(std::ifstream& stream, std::string& 
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "database reference card corruption" );
-            std::cout << "database reference card corruption" << std::endl;
+//            std::cout << "database reference card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4275,9 +4172,9 @@ bool PdbFile::ParseSequenceAdvancedSection(std::ifstream& stream, std::string& l
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sequence advanced card corruption" );
-        std::cout << "Sequence advanced card corruption" << std::endl;
+//        std::cout << "Sequence advanced card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4296,9 +4193,9 @@ bool PdbFile::ParseSequenceAdvancedSection(std::ifstream& stream, std::string& l
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sequence advanced card corruption" );
-            std::cout << "Sequence advanced card corruption" << std::endl;
+//            std::cout << "Sequence advanced card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4314,9 +4211,9 @@ bool PdbFile::ParseResidueSequenceSection(std::ifstream& stream, std::string& li
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sequence residue card corruption" );
-        std::cout << "Sequence residue card corruption" << std::endl;
+//        std::cout << "Sequence residue card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4335,9 +4232,9 @@ bool PdbFile::ParseResidueSequenceSection(std::ifstream& stream, std::string& li
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sequence residue card corruption" );
-            std::cout << "Sequence residue card corruption" << std::endl;
+//            std::cout << "Sequence residue card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4352,9 +4249,9 @@ bool PdbFile::ParseResidueModificationSection(std::ifstream& stream, std::string
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Modification residue card corruption" );
-        std::cout << "Modification residue card corruption" << std::endl;
+//        std::cout << "Modification residue card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4373,9 +4270,9 @@ bool PdbFile::ParseResidueModificationSection(std::ifstream& stream, std::string
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Modification residue card corruption" );
-            std::cout << "Modification residue card corruption" << std::endl;
+//            std::cout << "Modification residue card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4390,9 +4287,9 @@ bool PdbFile::ParseHeterogenSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen card corruption" );
-        std::cout << "Heterogen card corruption" << std::endl;
+//        std::cout << "Heterogen card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4411,9 +4308,9 @@ bool PdbFile::ParseHeterogenSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen card corruption" );
-            std::cout << "Heterogen card corruption" << std::endl;
+//            std::cout << "Heterogen card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4428,9 +4325,9 @@ bool PdbFile::ParseHeterogenNameSection(std::ifstream& stream, std::string& line
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen name card corruption" );
-        std::cout << "Heterogen name card corruption" << std::endl;
+//        std::cout << "Heterogen name card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4449,9 +4346,9 @@ bool PdbFile::ParseHeterogenNameSection(std::ifstream& stream, std::string& line
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen name card corruption" );
-            std::cout << "Heterogen name card corruption" << std::endl;
+//            std::cout << "Heterogen name card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4466,9 +4363,9 @@ bool PdbFile::ParseHeterogenSynonymSection(std::ifstream& stream, std::string& l
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen synonym card corruption" );
-        std::cout << "Heterogen synonym card corruption" << std::endl;
+//        std::cout << "Heterogen synonym card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4487,9 +4384,9 @@ bool PdbFile::ParseHeterogenSynonymSection(std::ifstream& stream, std::string& l
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Heterogen synonym card corruption" );
-            std::cout << "Heterogen synonym card corruption" << std::endl;
+//            std::cout << "Heterogen synonym card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4504,9 +4401,9 @@ bool PdbFile::ParseFormulaSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Formula card corruption" );
-        std::cout << "Formula card corruption" << std::endl;
+//        std::cout << "Formula card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4525,9 +4422,9 @@ bool PdbFile::ParseFormulaSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Formula card corruption" );
-            std::cout << "Formula card corruption" << std::endl;
+//            std::cout << "Formula card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4542,9 +4439,9 @@ bool PdbFile::ParseHelixSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Helix card corruption" );
-        std::cout << "Helix card corruption" << std::endl;
+//        std::cout << "Helix card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4563,9 +4460,9 @@ bool PdbFile::ParseHelixSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Helix card corruption" );
-            std::cout << "Helix card corruption" << std::endl;
+//            std::cout << "Helix card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4580,9 +4477,9 @@ bool PdbFile::ParseSheetSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sheet card corruption" );
-        std::cout << "Sheet card corruption" << std::endl;
+//        std::cout << "Sheet card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4601,9 +4498,9 @@ bool PdbFile::ParseSheetSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Sheet card corruption" );
-            std::cout << "Sheet card corruption" << std::endl;
+//            std::cout << "Sheet card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4619,9 +4516,9 @@ bool PdbFile::ParseDisulfideBondSection(std::ifstream& stream, std::string& line
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Disulfide bond card corruption" );
-        std::cout << "Disulfide bond card corruption" << std::endl;
+//        std::cout << "Disulfide bond card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4640,9 +4537,9 @@ bool PdbFile::ParseDisulfideBondSection(std::ifstream& stream, std::string& line
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Disulfide bond card corruption" );
-            std::cout << "Disulfide bond card corruption" << std::endl;
+//            std::cout << "Disulfide bond card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4657,9 +4554,9 @@ bool PdbFile::ParseLinkSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Link card corruption" );
-        std::cout << "Link card corruption" << std::endl;
+//        std::cout << "Link card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4678,9 +4575,9 @@ bool PdbFile::ParseLinkSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Link card corruption" );
-            std::cout << "Link card corruption" << std::endl;
+//            std::cout << "Link card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4695,9 +4592,9 @@ bool PdbFile::ParseCISPeptideSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "CIS peptide card corruption" );
-        std::cout << "CIS peptide card corruption" << std::endl;
+//        std::cout << "CIS peptide card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4716,9 +4613,9 @@ bool PdbFile::ParseCISPeptideSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "CIS peptide card corruption" );
-            std::cout << "CIS peptide card corruption" << std::endl;
+//            std::cout << "CIS peptide card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4734,9 +4631,9 @@ bool PdbFile::ParseSiteSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Site card corruption" );
-        std::cout << "Site card corruption" << std::endl;
+//        std::cout << "Site card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4755,9 +4652,9 @@ bool PdbFile::ParseSiteSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Site card corruption" );
-            std::cout << "Site card corruption" << std::endl;
+//            std::cout << "Site card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4772,9 +4669,9 @@ bool PdbFile::ParseCrystallographyCard(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Crystallography card corruption" );
-        std::cout << "Crystallography card corruption" << std::endl;
+//        std::cout << "Crystallography card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4793,9 +4690,9 @@ bool PdbFile::ParseCrystallographyCard(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Crystallography card corruption" );
-            std::cout << "Crystallography card corruption" << std::endl;
+//            std::cout << "Crystallography card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4810,9 +4707,9 @@ bool PdbFile::ParseOriginCard(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Origin card corruption" );
-        std::cout << "Origin card corruption" << std::endl;
+//        std::cout << "Origin card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4831,9 +4728,9 @@ bool PdbFile::ParseOriginCard(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Origin card corruption" );
-            std::cout << "Origin card corruption" << std::endl;
+//            std::cout << "Origin card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4848,9 +4745,9 @@ bool PdbFile::ParseScaleCard(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Scale card corruption" );
-        std::cout << "Scale card corruption" << std::endl;
+//        std::cout << "Scale card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4869,9 +4766,9 @@ bool PdbFile::ParseScaleCard(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Scale card corruption" );
-            std::cout << "Scale card corruption" << std::endl;
+//            std::cout << "Scale card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4886,9 +4783,9 @@ bool PdbFile::ParseMatrixSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Matrix card corruption" );
-        std::cout << "Matrix card corruption" << std::endl;
+//        std::cout << "Matrix card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4907,9 +4804,9 @@ bool PdbFile::ParseMatrixSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Matrix card corruption" );
-            std::cout << "Matrix card corruption" << std::endl;
+//            std::cout << "Matrix card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -4924,9 +4821,9 @@ bool PdbFile::ParseModelSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model card corruption" );
-        std::cout << "Model card corruption" << std::endl;
+//        std::cout << "Model card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4947,14 +4844,14 @@ bool PdbFile::ParseModelSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model card corruption" );
-            std::cout << "Model card corruption" << std::endl;
+//            std::cout << "Model card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
     // Model card
-    //    gmml::log(__LINE__, __FILE__,  gmml::ERR, stream_block.str();
+       // gmml::log(__LINE__, __FILE__,  gmml::ERR, stream_block.str());
     models_ = new PdbFileSpace::PdbModelSection(stream_block);
     return true;
 }
@@ -4966,9 +4863,9 @@ bool PdbFile::ParseConnectivitySection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Connectivity card corruption" );
-        std::cout << "Connectivity card corruption" << std::endl;
+//        std::cout << "Connectivity card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -4987,9 +4884,9 @@ bool PdbFile::ParseConnectivitySection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Connectivity card corruption" );
-            std::cout << "Connectivity card corruption" << std::endl;
+//            std::cout << "Connectivity card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -5004,9 +4901,9 @@ bool PdbFile::ParseMasterCard(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Master card corruption" );
-        std::cout << "Master card corruption" << std::endl;
+//        std::cout << "Master card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-        std::cout << "Wrong input file format" << std::endl;
+//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -5025,9 +4922,9 @@ bool PdbFile::ParseMasterCard(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Master card corruption" );
-            std::cout << "Master card corruption" << std::endl;
+//            std::cout << "Master card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-            std::cout << "Wrong input file format" << std::endl;
+//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
@@ -5042,7 +4939,7 @@ bool PdbFile::ParseEndCard(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::INF, "End of file" );
-        std::cout << "End of file" << std::endl;
+        // std::cout << "End of file" << std::endl;
         return true;
     }
 
@@ -7852,7 +7749,7 @@ void PdbFile::ResolveModelCardWithTheGivenModelNumber(std::ostream& stream, int 
                        << std::right << std::setw(2) << heterogen_atom->GetAtomElementSymbol()
                        << std::left << std::setw(2) << heterogen_atom->GetAtomCharge()
                        << std::endl;
-                       
+
                 std::vector<PdbFileSpace::PdbAtomCard*> alternate_atom_cards = heterogen_atom->GetAlternateAtomCards();
                 if(alternate_atom_cards.size() != 0)
                 {
@@ -7948,6 +7845,8 @@ void PdbFile::ResolveConnectivityCards(std::ostream& stream)
             else
                 stream << std::left << std::setw(49) << " "
                        << std::endl;
+	    
+	    //stream << std::endl;
         }
         else
         {
@@ -8038,13 +7937,13 @@ void PdbFile::PrintOntology(std::stringstream& ont_stream)
   }
   std::string uriStr = uri.str();
   std::transform(uriStr.begin(), uriStr.end(), uriStr.begin(), ::tolower);
-  
+
   gmml::AddLiteral( uriStr, Ontology::TYPE, Ontology::PDB, ont_stream );
-  
+
   //Return PDB_ID
   if(header_ != NULL)
     gmml::AddLiteral( uriStr, Ontology::id, this->header_->GetIdentifierCode(), ont_stream );
-  
+
   //Return Protein Acession Number
   //TODO add check to make sure that it is the Uniprot database reference
   if(database_reference_ != NULL)
@@ -8070,14 +7969,14 @@ void PdbFile::PrintOntology(std::stringstream& ont_stream)
       //Return PMID
       gmml::AddLiteral( uriStr, Ontology::hasPMID, this->journal_->GetPMID(), ont_stream );
   }
-  
 
-  
+
+
   if(remark_cards_ != NULL)
   {
     //Return Resolution
     gmml::AddDecimal( uriStr, Ontology::hasResolution, this->remark_cards_->GetResolution(), ont_stream );
-    
+
     //Return B Factor
     gmml::AddDecimal( uriStr, Ontology::hasBFactor, this->remark_cards_->GetBFactor(), ont_stream );
   }
@@ -8268,4 +8167,52 @@ void PdbFile::Print(std::ostream &out)
         out << "******************************** MASTER *******************************" << std::endl;
         master_->Print(out);
     }
+}
+
+/////////////////////////////////////////////////////////
+//                   PRIVATE FUNCTIONS                  //
+//////////////////////////////////////////////////////////
+
+void PdbFile::Initialize()
+{
+  path_ = "";
+  header_ = NULL;
+  obsolete_ = NULL;
+  title_ = NULL;
+  split_ = NULL;
+  caveat_ = NULL;
+  compound_ = NULL;
+  source_ = NULL;
+  keywords_ = NULL;
+  experimental_data_ = NULL;
+  number_of_models_ = NULL;
+  model_type_ = NULL;
+  author_ = NULL;
+  revision_data_ = NULL;
+  superseded_entries_ = NULL;
+  journal_ = NULL;
+  remark_cards_ = NULL;
+  database_reference_ = NULL;
+  sequence_advanced_ = NULL;
+  residues_sequence_ = NULL;
+  residue_modification_cards_ = NULL;
+  heterogen_cards_ = NULL;
+  heterogen_name_cards_ = NULL;
+  heterogen_synonym_cards_ = NULL;
+  formulas_ = NULL;
+  helix_cards_ = NULL;
+  sheet_cards_ = NULL;
+  disulfide_bonds_ = NULL;
+  link_cards_ = NULL;
+  cis_peptide_ = NULL;
+  site_cards_ = NULL;
+  crystallography_ = NULL;
+  origins_ = NULL;
+  scales_ = NULL;
+  matrices_ = NULL;
+  models_ = NULL;
+  connectivities_ = NULL;
+  serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
+  sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
+  master_ = NULL;
 }

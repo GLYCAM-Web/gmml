@@ -1,16 +1,19 @@
 #include "../../includes/GeometryTopology/geometrytopology.hpp"
-
+#include "../../includes/External_Libraries/Eigen_Algebra_Template_Library/Geometry"
+#include "../../includes/utils.hpp"
 //void whywontthislink::test(){
 //    return;
 //}
 
-GeometryTopology::Coordinate GeometryTopology::subtract_coordinates(Coordinate minuaend, Coordinate subtrahend)
+using GeometryTopology::Coordinate;
+
+Coordinate GeometryTopology::subtract_coordinates(Coordinate minuaend, Coordinate subtrahend)
 {
     Coordinate new_coordinate( (minuaend.GetX()-subtrahend.GetX()), (minuaend.GetY()-subtrahend.GetY()), (minuaend.GetZ()-subtrahend.GetZ()) );
     return new_coordinate;
 }
 
-GeometryTopology::Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(Coordinate a, Coordinate b, Coordinate c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
+Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(Coordinate a, Coordinate b, Coordinate c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
 {     // theta is the angle between 3 atoms. Phi is the torsion between 4 atoms.
     //Convert from Degrees to Radians
     if ( theta_Degrees < 0.0 ) {theta_Degrees += 360.0;}
@@ -64,8 +67,7 @@ GeometryTopology::Coordinate GeometryTopology::get_cartesian_point_from_internal
     return new_coordinate;
 }
 
-
-GeometryTopology::Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c,
+Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c,
                                                                                         double theta_Degrees, double phi_Degrees,  double distance_Angstrom)
 {
     return GeometryTopology::get_cartesian_point_from_internal_coords(a->GetCoordinate(), b->GetCoordinate(), c->GetCoordinate(), theta_Degrees, phi_Degrees, distance_Angstrom);
@@ -99,7 +101,51 @@ double GeometryTopology::calculateDistanceFromPointToLineBetweenTwoPoints(Coordi
 
     //std::cout << "Distance: " << height << " base is " << ab.norm() << " or " << base << "\n";
     return height;
+}
 
+Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors)
+{
+    Eigen::Vector3d combinedVs;
+    for(auto &neighbor : threeNeighbors)
+    {
+        Eigen::Vector3d temp(centralCoord->GetX() - neighbor->GetX(),
+                             centralCoord->GetY() - neighbor->GetY(),
+                             centralCoord->GetZ() - neighbor->GetZ());
+        combinedVs += temp;
+    }
+    combinedVs.normalize();
+    Coordinate newCoord(centralCoord->GetX() + combinedVs(0),
+                        centralCoord->GetY() + combinedVs(1),
+                        centralCoord->GetZ() + combinedVs(2));
+    return newCoord;
+}
 
+double GeometryTopology::CalculateDihedralAngle(GeometryTopology::Coordinate* a1, GeometryTopology::Coordinate* a2, GeometryTopology::Coordinate* a3, GeometryTopology::Coordinate* a4, bool returnRadians)
+{   // returns Degrees by default, must set bool returnRadians to true for radians.
+    GeometryTopology::Coordinate b1 = a2;
+    b1.operator -(*a1);
+    GeometryTopology::Coordinate b2 = a3;
+    b2.operator -(*a2);
+    GeometryTopology::Coordinate b3 = a4;
+    b3.operator -(*a3);
+    GeometryTopology::Coordinate b4 = b2;
+    b4.operator *(-1);
+
+    GeometryTopology::Coordinate b2xb3 = b2;
+    b2xb3.CrossProduct(b3);
+
+    GeometryTopology::Coordinate b1_m_b2n = b1;
+    b1_m_b2n.operator *(b2.length());
+
+    GeometryTopology::Coordinate b1xb2 = b1;
+    b1xb2.CrossProduct(b2);
+
+    double current_dihedral_angle = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
+
+    if (returnRadians)
+    {
+        return current_dihedral_angle;
+    }
+    return (current_dihedral_angle * (180 / gmml::PI_RADIAN) ); // Convert to degrees
 }
 
