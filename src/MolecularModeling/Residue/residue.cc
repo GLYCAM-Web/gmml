@@ -607,7 +607,7 @@ MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
         if ((*it)->GetName().compare(query_name)==0)
         {
             return_atom = (*it);
-            //std::cout << "Returning: " << return_atom->GetId() << std::endl;
+            std::cout << "From Residue::GetAtom(), returning: " << return_atom->GetId() << " as a match for " << query_name << std::endl;
         }
     }
     return return_atom; // may be unset
@@ -642,10 +642,10 @@ MolecularModeling::Atom* Residue::GetAtomWithId(std::string query_id)
 }
 
 void Residue::MakeDeoxy(std::string oxygenNumber)
-{ // if oxygenNumber is 6, then C6-O6-H6 becomes C6-Hd 
-    auto hydrogenAtom = this->GetAtom("H" + oxygenNumber);
-    auto oxygenAtom = this->GetAtom("O" + oxygenNumber);
-    auto carbonAtom = this->GetAtom("C" + oxygenNumber);
+{ // if oxygenNumber is 6, then C6-O6-H6O becomes C6-Hd 
+    MolecularModeling::Atom* hydrogenAtom = this->GetAtom("H" + oxygenNumber + "O");
+    MolecularModeling::Atom* oxygenAtom = this->GetAtom("O" + oxygenNumber);
+    MolecularModeling::Atom* carbonAtom = this->GetAtom("C" + oxygenNumber);
     // Add O and H charge to the C atom.
     carbonAtom->SetCharge(carbonAtom->GetCharge() + oxygenAtom->GetCharge() + hydrogenAtom->GetCharge());
     // Delete the H of O-H
@@ -658,6 +658,7 @@ void Residue::MakeDeoxy(std::string oxygenNumber)
     oxygenAtom->MolecularDynamicAtom::SetAtomType("H1");
     oxygenAtom->SetCharge(0.0000);
     oxygenAtom->SetElementSymbol("H");
+    std::cout << "Completed MakeDeoxy" << std::endl;
 }
 
 unsigned long long Residue::GetIndex() const

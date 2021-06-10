@@ -16,11 +16,19 @@ using MolecularModeling::Assembly;
 
 AssemblyBuilder::AssemblyBuilder(std::string inputSequence, std::string prepFilePath, Assembly *inputAssembly) : SequenceManipulator{inputSequence} 
 {
-	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependancy Oliver.
-	PrepFileSpace::PrepFile prepFile(prepFilePath);
-	this->SetPrepResidueMap(prepFile.GetResidues()); //A mapping between a residue name and its residue object
-	this->GenerateResidues(inputAssembly);
-	std::cout << "Finished making assembly" << std::endl;
+	try
+    {
+		this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependancy Oliver.
+		PrepFileSpace::PrepFile prepFile(prepFilePath);
+		this->SetPrepResidueMap(prepFile.GetResidues()); //A mapping between a residue name and its residue object
+		this->GenerateResidues(inputAssembly);
+		std::cout << "Finished making assembly" << std::endl;
+	}
+	catch (const std::string exception)
+    {
+        std::cerr << "Error: " << exception << std::endl;
+        throw exception;
+    }
 }
 
 void AssemblyBuilder::GenerateResidues(Assembly *assembly)
@@ -46,6 +54,7 @@ void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, Molecu
 	//std::cout << "Recurve Gen Res" << std::endl;
 	if (parsedChild->GetType() == ParsedResidue::Type::Deoxy)
 	{
+		std::cout << "Dealing with deoxy for " << gmmlParent.GetName() << std::endl;
 		gmmlParent.MakeDeoxy(parsedChild->GetLink());
 		return;
 	}
@@ -147,7 +156,7 @@ std::string AssemblyBuilder::GetGlycamResidueName(ParsedResidue &residue)
     std::string linkages = "";
     if (residue.GetType() == ParsedResidue::Type::Sugar)
     {
-        linkages = residue.GetChildLinkages();
+        linkages = residue.GetChildLinkagesForGlycamResidueNaming();
     }
     try
     {
@@ -158,6 +167,7 @@ std::string AssemblyBuilder::GetGlycamResidueName(ParsedResidue &residue)
     catch (const std::string exception)
     {
         std::cerr << "Error: " << exception << std::endl;
+        throw exception;
     }
     return "";
 }
