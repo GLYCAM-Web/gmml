@@ -185,7 +185,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         this->SetType(Type::Derivative);
     	this->SetLinkage(residueString.substr(0, 1));
     	this->SetResidueName(residueString.substr(1)); // From position 1 to the end.
-        if (this->GetResidueName() == "D")
+        if ( (this->GetResidueName() == "D") || (this->GetResidueName() == "H") ) // Supporting both for now.
         {
             this->SetType(Type::Deoxy);
         }
