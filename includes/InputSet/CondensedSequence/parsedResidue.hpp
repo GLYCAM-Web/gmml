@@ -38,7 +38,7 @@ namespace CondensedSequence
         std::string GetLink();
         std::vector<ParsedResidue*> GetChildren();
         std::vector<ParsedResidue*> GetParents();
-        std::string GetChildLinkages();
+        std::string GetChildLinkagesForGlycamResidueNaming();
         std::string Print();
         std::string GetGlycamResidueName();
         std::string GetGraphVizLine(std::string SnfgFilePath = "");

@@ -57,12 +57,15 @@ std::vector<ParsedResidue*> ParsedResidue::GetParents()
     return this->GetOutgoingNeighborObjects();
 }
 
-std::string ParsedResidue::GetChildLinkages()
+std::string ParsedResidue::GetChildLinkagesForGlycamResidueNaming()
 {
     std::string linkages;
     for (auto &child : this->GetChildren())
-    {
-        linkages += (child->GetLink() + ",");
+    {   // For glycam residue name, e.g. 2YB, do not want deoxy linkages to impact the residue name.
+        if (child->GetType() != Type::Deoxy)
+        {
+            linkages += (child->GetLink() + ",");
+        }
     }
     if (linkages.empty())
     {
