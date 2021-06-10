@@ -149,5 +149,6 @@ Glycam06ResidueNamesToCodesLookupContainer::Glycam06ResidueNamesToCodesLookupCon
         {"P"           , "PO3", "Derivative"},
         {"Me"          , "MEX", "Derivative"},
         {"Ac"          , "ACX", "Derivative"},
+        {"A"           , "ACX", "Derivative"},
     };
 }
