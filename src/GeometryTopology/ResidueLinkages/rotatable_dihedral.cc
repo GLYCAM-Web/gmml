@@ -130,7 +130,8 @@ std::vector<double> Rotatable_dihedral::GetAllPossibleAngleValues(int interval)
     std::vector<double> allPossibleAngleValues;
     if (assigned_metadata_.empty())
     {
-        std::cerr << "Error in Rotatable_dihedral::GetAllPossibleAngleValues; no metadata has been set.\n";
+        std::cerr << "Error in Rotatable_dihedral::GetAllPossibleAngleValues; no metadata has been set for:\n"
+        << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
     }
     else
     {
@@ -399,7 +400,8 @@ void Rotatable_dihedral::SetSpecificAngleEntryUsingMetadata(bool useRanges, int 
 {
     if (assigned_metadata_.empty())
     {
-        std::cerr << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; no metadata has been set.\n";
+        std::cerr << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; no metadata has been set for:\n"
+        << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
     }
     else if (assigned_metadata_.size() <= angleEntryNumber)
     {
@@ -417,7 +419,8 @@ void Rotatable_dihedral::SetSpecificAngleEntryUsingMetadata(bool useRanges, int 
         else
         {
             this->SetDihedralAngle(entry.default_angle_value_);
-            //std::cout << entry.dihedral_angle_name_ << " was set to " <<  entry.default_angle_value_ << "\n";
+            // std::cout << entry.dihedral_angle_name_ << " was set to " <<  entry.default_angle_value_ << ". Atoms: "
+            // << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
         }
     }
 }
@@ -442,7 +445,8 @@ bool Rotatable_dihedral::SetSpecificShape(std::string dihedralName, std::string 
                 if (metadata.rotamer_name_ == selectedRotamer)
                 {
                     this->SetDihedralAngle(metadata.default_angle_value_);
-                    //std::cout << "Setting " << dihedralName << " to " << metadata.default_angle_value_ << std::endl;
+                    // std::cout << "Setting " << dihedralName << " to " << metadata.default_angle_value_ << " for "
+                    // << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
                     return true;
                 }
             }

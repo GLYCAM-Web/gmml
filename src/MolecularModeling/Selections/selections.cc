@@ -234,29 +234,7 @@ MolecularModeling::AtomVector selection::FindCyclePoints(MolecularModeling::Atom
         // Always want this at the end of the vector
         rotation_points.push_back(caAtom);
     }
-//    else if(atom->GetResidue()->GetIsAglycon() || atom->GetResidue()->GetIsSugarDerivative())
-//    {
-//        std::cout << "Break now1?" << std::endl;
-//        // Here is where I should look for cycles in derivatives and aglycons. This is the tough one, as who knows that's there.
-//        // If I could code a generic function that handles all cases, I could replace the other code here...
-//        // It would have to find atoms that connect to other residues. Find the branch points, handle multiple fuzed/unconnected rings.
-//        // ...
-//        // For now, something crap:
-//        MolecularModeling::Atom *rotation_point;
-//        atom_path.clear();
-//        found = false;
-//        //Find path to first cycle atom, i.e. anomeric carbon
-//        std::cout << "Non-protein, checking for cycles..." << std::endl;
-//        if(selection::FindCyclePoint(atom, atom, &atom_path, &found, rotation_point))
-//        {
-//            rotation_points.push_back(rotation_point);
-//        }
-
-//        rotation_points.push_back(atom);
-//        rotation_points.push_back(atom->GetNode()->GetNodeNeighbors().at(0));
-//        std::cout << "Break now1now?" << std::endl;
-//    }
-    else // Non protein, but not tagged as glycon or sugar derivative. Into weirdness.
+    else 
     {
         MolecularModeling::Atom *rotation_point;
         atom_path.clear();

@@ -33,7 +33,7 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(Molecul
         std::regex regex1(entry.linking_atom1_, std::regex_constants::ECMAScript);
         std::regex regex2(entry.linking_atom2_, std::regex_constants::ECMAScript);
         // If metadata entry matches (regex query) to the two linking atom names
-        if ( (std::regex_search(linking_atom1->GetName(), regex1)) && (std::regex_search(linking_atom2->GetName(), regex2)) )
+        if ( (std::regex_match(linking_atom1->GetName(), regex1)) && (std::regex_match(linking_atom2->GetName(), regex2)) )
         {
             // Some entries have conditions for the residue, that they have certain tags. Make sure any conditions are met:
             //std::cout << "Matched. Checking if conditions apply.\n";
@@ -118,19 +118,19 @@ bool DihedralAngleDataContainer::checkIfResidueConditionsAreSatisfied(std::vecto
 DihedralAngleDataContainer::DihedralAngleDataContainer()
 {   // const AmberAtomTypeInfo Glycam06j1AtomTypes[] =
     dihedralAngleDataVector_ =
-    { // Regex1  , Regex2   , Name   , Angle  , Upper  , Lower  , Weight, Entry Type    , Name , B , I , Res1 Condition , Res2 Conditions           , Atom names                    // Atom names this applies to
-        { "C1"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"aldose"}     , {"none"}                  , "C2" , "C1" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
-        { "C2"   , "O[1-9]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"ketose","alpha"}     , {"none"}          , "C1" , "C2" , "O." , "C."  }, // Phi is defined by C1-C2(ano)-Ox-Cx for ketoses like Fru 
-        { "C2"   , "O[1-9]" , "Phi"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 1 , {"ketose","beta"}     , {"none"}           , "C1" , "C2" , "O." , "C."  }, // Phi is defined by C1-C2(ano)-Ox-Cx for ketoses like Fru 
-        { "C2"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"ketose","ulosonate"}     , {"none"}      , "C1" , "C2" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
-        { "C2"   , "O[3-6]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"none"}         , "C1" , "C2" , "O." , "C."  },
-        { "C."   , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "ap" , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "H."  }, // Psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)
-        { "C."   , "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 2 , 1 , {"none"}       , {"none"}                  , "C." , "O." , "C." , "C."  },
+    { // Regex1  , Regex2   , Name   , Angle  , Upper  , Lower  , Weight, Entry Type    , Name , B , I , Res1 Condition , Res2 Conditions           , Atom names                                                               // Atom names this applies to
+        { "C1"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"aldose"}     , {"monosaccharide"}                  , "C2" , "C1" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
+        { "C2"   , "O[1-9]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"n-carbon=6", "ketose", "alpha"}     , {"monosaccharide"}            , "C1" , "C2" , "O." , "C."  }, // Phi is defined by C1-C2(ano)-Ox-Cx for ketoses like Fru 
+        { "C2"   , "O[1-9]" , "Phi"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 1 , {"n-carbon=6", "ketose", "beta"}     , {"monosaccharide"}            , "C1" , "C2" , "O." , "C."  }, // Phi is defined by C1-C2(ano)-Ox-Cx for ketoses like Fru 
+        { "C2"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"ketose", "ulosonate"}     , {"monosaccharide"}      , "C1" , "C2" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
+        { "C2"   , "O[3-6]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"monosaccharide"}         , "C1" , "C2" , "O." , "C."  },
+        { "C."   , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "ap" , 2 , 1 , {"monosaccharide"}       , {"monosaccharide"}                  , "C." , "O." , "C." , "H."  }, // Psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)
+        { "C."   , "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 2 , 1 , {"monosaccharide"}       , {"monosaccharide"}                  , "C." , "O." , "C." , "C."  },
         // Omega angle in x-6 linkages.        
-        { "C."   , "O6"     , "Omg"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  }, // omg is O6-C5-C5-O5
-        { "C."   , "O6"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  },
-        { "C."   , "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
-        { "C."   , "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 0.001 , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=gluco"}   , "O6" , "C6" , "C5" , "O5"  },
+        { "C.*"  , "O6"     , "Omg"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"none"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  }, // omg is O6-C5-C5-O5
+        { "C.*"  , "O6"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  },
+        { "C.*"  , "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
+        { "C.*"  , "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 0.001 , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=gluco"}   , "O6" , "C6" , "C5" , "O5"  },
         // 2-7 linkages copied from GlycamWeb Jan 2021. Branching in the linkage causes oddities with the bond number and which atoms are chosen for the torsion.
         { "C2"   , "O7"     , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C3" , "C2" , "O." , "C."  },
         { "C2"   , "O7"     , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C." , "O." , "C." , "H."  },
@@ -205,21 +205,22 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C1"   , "O1"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 3 , 1 , {"none"}       , {"ketose"}                , "O1" , "C1" , "C2" , "O5" },
       // Common sugar derivatives
       // Phosphate/sulfate
-        { "[SP]1", "N[2]"   , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"none"}                  , "O." , ".1" , "N." , "C."  },
-        { "[SP]1", "N[2]"   , "Psi"  , -40.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , ".1" , "N." , "C." , "H."  },
-        { "[SP]1", "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"none"}                  , "O." , ".1" , "O." , "C."  },
-        { "[SP]1", "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , ".1" , "O." , "C." , "H."  },
-        { "[SP]1", "O[6-9]" , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , ".1" , "O." , "C." , "C."  },
-        { "[SP]1", "O6"     , "Omg"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  },
-        { "[SP]1", "O6"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"none"}                  , "O6" , "C6" , "C5" , "O5"  },
+        { "[SP]1", "N[2]"   , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"monosaccharide"}                  , "O." , ".1" , "N." , "C."  },
+        { "[SP]1", "N[2]"   , "Psi"  , -40.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"monosaccharide"}                  , ".1" , "N." , "C." , "H."  },
+        { "[SP]1", "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"monosaccharide"}                  , "O." , ".1" , "O." , "C."  },
+        { "[SP]1", "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"monosaccharide"}                  , ".1" , "O." , "C." , "H."  },
+        { "[SP]1", "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"monosaccharide"}                  , ".1" , "O." , "C." , "C."  },
+        { "[SP]1", "O6"     , "Omg"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"none"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  },
+        { "[SP]1", "O6"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  },
         { "[SP]1", "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
-      // Ac
-        { "C1A"  , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"none"}       , {"none"}                  , "C2A", "C1A", "O." , "C."  },
-        { "C1A"  , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"none"}       , {"none"}                  , "C1A", "O." , "C." , "H."  },
-        { "C1A"  , "O[6-9]" , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 2 , 1 , {"none"}       , {"none"}                  , "C1A", "O." , "C." , "C."  },
-      // Me
-        { "CH3"  , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "CH3", "O." , "C." , "H."  },
-        { "CH3"  , "O[6-9]" , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"none"}                  , "CH3", "O." , "C." , "C."  },
+      // Ac ACX
+        { "C1A"  , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"none"}       , {"monosaccharide"}                  , "C2A", "C1A", "O." , "C."  },
+        { "C1A"  , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"none"}       , {"monosaccharide"}                  , "C1A", "O." , "C." , "H."  },
+        { "C1A"  , "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 2 , 1 , {"none"}       , {"monosaccharide"}                  , "C1A", "O." , "C." , "C."  },
+      // Me MEX
+        { "CH3"  , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"none"}       , {"monosaccharide"}                  , "CH3", "O." , "C." , "H."  },
+        { "CH3"  , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"none"}       , {"monosaccharide"}                  , "CH3", "O." , "C." , "H."  },
+        { "CH3"  , "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 2 , 1 , {"none"}       , {"monosaccharide"}                  , "CH3", "O." , "C." , "C."  },
         // Protein linkages
         // ASN // Values are from Petrescu et al 2004.
         { "C."   , "ND2"    , "Chi1" , 191.6  ,  14.4  ,  14.4  , 0.497 , "conformer"   , "A"  , 4 , 1 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
@@ -257,7 +258,11 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C."   , "OH"     , "Chi2" , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 6 , 1 , {"none"}       , {"amino-acid"}            , "CD1", "CG" , "CB" , "CA"  },
         { "C."   , "OH"     , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "OH" , "CZ" , "CE1" },
         { "C."   , "OH"     , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "OH ", "CZ"  },
-
+        // ROH 
+        { "C1"   , "O1"     , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"aldose"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
+        { "C2"   , "O1"     , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"ketose"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
+        { "C1"   , "O"      , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"aldose"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
+        { "C2"   , "O"      , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"ketose"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
     };
 }
 

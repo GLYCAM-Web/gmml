@@ -13,13 +13,15 @@ Residue_linkage Index: 9, Name: DManpa1-6DManpb, NumberOfShapes: 3, ids: 6MA_A_1
 Residue_linkage Index: 10, Name: DManpa1-6DManpa, NumberOfShapes: 3, ids: ZMA_A_12_?_?_?@C1 -- 6MA_A_11_?_?_?@O6
 Residue_linkage Index: 11, Name: Sulpho1-2DManpa, NumberOfShapes: 1, ids: SO3_A_13_?_?_?@S1 -- ZMA_A_12_?_?_?@O2
 Residue_linkage Index: 12, Name: Methyl3-3DManpa, NumberOfShapes: 1, ids: MEX_A_14_?_?_?@CH3 -- ZMA_A_12_?_?_?@O3
-Residue_linkage Index: 13, Name: Methyl3-6DGlcNAcpb, NumberOfShapes: 1, ids: MEX_A_15_?_?_?@CH3 -- UYB_A_3_?_?_?@O6
-Number of likely shapes for this sequence is 24
-Number of possible shapes for this sequence is 54
+Residue_linkage Index: 13, Name: Methyl3-6DGlcNAcpb, NumberOfShapes: 3, ids: MEX_A_15_?_?_?@CH3 -- UYB_A_3_?_?_?@O6
+Number of likely shapes for this sequence is 48
+Number of possible shapes for this sequence is 162
 Options: Name: DNeu5Acpa2-6DGalpb, Index: 7, Res1:9, Res2:8
 Likely: Phi, t, -g
 Likely: Omg, gg, gt, tg
 Options: Name: DManpa1-6DManpb, Index: 9, Res1:11, Res2:4
 Likely: Omg, gg, gt
 Options: Name: DManpa1-6DManpa, Index: 10, Res1:12, Res2:11
+Likely: Omg, gg, gt
+Options: Name: Methyl3-6DGlcNAcpb, Index: 13, Res1:15, Res2:3
 Likely: Omg, gg, gt
