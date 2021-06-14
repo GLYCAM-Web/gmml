@@ -95,6 +95,10 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     //filter variables to return filtered results when updating via ajax
     //This function will also call a function to create a graph from the search string for searching across branches.
     int local_debug = -1;
+    if(local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Running QueryOntology()");
+    }
     std::stringstream query;
     std::stringstream search;
     search << searchType;
@@ -178,12 +182,16 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       // gmml::FindReplaceString(searchTerm, "1-*", "1-0");
       // gmml::FindReplaceString(searchTerm, "2-*", "2-0");
       gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
+      gmml::FindReplaceString(searchTerm, ".*", "*");
       while(searchTerm.find("**")!=std::string::npos)
       {
         // gmml::FindReplaceString(searchTerm, "**", "*");
         searchTerm.replace(searchTerm.find("**"), 2, "*");
       }
-      gmml::FindReplaceString(searchTerm, ".*", "*");
+      if(local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__, gmml::INF, searchTerm);
+      }
       while(searchTerm.find("1-*") != std::string::npos)
       {
         if(local_debug > 0)
@@ -470,6 +478,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     if(local_debug > 0)
     {
       gmml::log(__LINE__, __FILE__, gmml::INF, query.str());
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Done running QueryOntology()");
     }
     return FormulateCURLGF(output_file_type, query.str(), url);
 }
