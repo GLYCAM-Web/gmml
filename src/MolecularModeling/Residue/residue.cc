@@ -661,6 +661,16 @@ void Residue::MakeDeoxy(std::string oxygenNumber)
     std::cout << "Completed MakeDeoxy" << std::endl;
 }
 
+double Residue::CalculateCharge()
+{
+    double charge = 0.0;
+    for (auto &atom : this->GetAtoms())
+    {
+        charge += atom->GetCharge();
+    }
+    return charge;
+}
+
 unsigned long long Residue::GetIndex() const
 {
     return this->index_;

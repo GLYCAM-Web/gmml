@@ -163,8 +163,8 @@ void carbohydrateBuilder::Write3DStructureFile(std::string fileOutputDirectory, 
     completeFileName += filename;
     // Use type to figure out which type to write, eg. PDB OFFFILE etc.
     if (fileType == "PDB") 
-    {
-        PdbFileSpace::PdbFile *outputPdbFile = this->GetAssembly()->BuildPdbFileStructureFromAssembly();
+    { // int link_card_direction = -1, int connect_card_existance = 1, int model_index = -1 , bool useInputPDBResidueNumbers = true);
+        PdbFileSpace::PdbFile *outputPdbFile = this->GetAssembly()->BuildPdbFileStructureFromAssembly(-1, 0,-1, false);
         completeFileName += ".pdb";
         outputPdbFile->Write(completeFileName);
     }
