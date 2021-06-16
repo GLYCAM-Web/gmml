@@ -159,10 +159,6 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         {
             this->SetConfiguration(residueString.substr(dashPosition - 2, 1));
         }
-        else
-        {
-            modifierStart--;
-        }
     	// Find any special modifiers e.g. NAc, Gc, A in IdoA
     	size_t modifierLength = (dashPosition - modifierStart - 2); // They are 2 apart if no modifier
         //std::cout << "modifierLength is " << modifierLength << ", dashPosition was " << dashPosition << ", ringPosition was " << ringPosition << std::endl;
