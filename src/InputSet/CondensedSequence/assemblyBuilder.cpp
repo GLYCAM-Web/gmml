@@ -22,7 +22,7 @@ AssemblyBuilder::AssemblyBuilder(std::string inputSequence, std::string prepFile
 		PrepFileSpace::PrepFile prepFile(prepFilePath);
 		this->SetPrepResidueMap(prepFile.GetResidues()); //A mapping between a residue name and its residue object
 		this->GenerateResidues(inputAssembly);
-		std::cout << "Finished making assembly" << std::endl;
+		std::cout << "Finished making assembly.\nTotal charge is: " << inputAssembly->GetTotalCharge() << std::endl;
 	}
 	catch (const std::string exception)
     {

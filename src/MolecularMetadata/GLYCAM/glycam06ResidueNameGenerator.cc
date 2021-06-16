@@ -61,7 +61,7 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, std::string isome
 
 	// Residue Code e.g. G, U, A, KN, ROH, NLN
 	Glycam06ResidueNamesToCodesLookupContainer ResidueCodeLookup;
-	auto residueCode = ResidueCodeLookup.GetCodeForResidue(inputResName + residueModifier);
+	std::string residueCode = ResidueCodeLookup.GetCodeForResidue(inputResName + residueModifier);
 	if (residueCode.empty())
 	{
 		residueCode = ResidueCodeLookup.GetCodeForResidue(inputResName + ringType + residueModifier + configuration);
@@ -76,7 +76,7 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, std::string isome
 	}
 	if (residueCode.empty())
 	{
-		auto message = "No residue code found in GMML metadata for residue: " + isomer + inputResName + ringType + residueModifier + configuration;
+		std::string message = "No residue code found in GMML metadata for residue: " + isomer + inputResName + ringType + residueModifier + configuration;
 		throw message;
 	}
 
@@ -92,7 +92,7 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, std::string isome
 	}
 
 	// ConfigurationCode may be empty.
-	//std::cout << "Returning: " << (linkCode + residueCode + configurationCode) << std::endl;
+	std::cout << "Returning: " << (linkCode + residueCode + configurationCode) << std::endl;
 	return (linkCode + residueCode + configurationCode);
 }
 } // close namespace
