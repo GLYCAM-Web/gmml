@@ -73,7 +73,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *pr
             std::stringstream atom_id;
             atom_id << assembly_atom->GetName() << "_" << assembly_atom->GetIndex() << "_" << this->GetId();
             assembly_atom->SetId(atom_id.str());
-            std::cout << "Atom id is now: " << assembly_atom->GetId() << std::endl;
+            //std::cout << "Atom id is now: " << assembly_atom->GetId() << std::endl;
 
             assembly_atom->SetNaming("glycam06");
 

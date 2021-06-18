@@ -38,6 +38,7 @@ namespace CondensedSequence
         void ParseLabelledInput(std::string inString);
         bool ParseCondensedSequence(std::string inString);
         void RecurveParse(size_t &currentIndex, std::string sequence, ParsedResidue* parent);
+        void RecurveParseAlt(size_t &currentIndex, std::string sequence, ParsedResidue* parent);
         ParsedResidue* SaveResidue(const size_t windowStart, const size_t windowEnd, const std::string sequence, ParsedResidue* parent);
         inline void SaveDerivative(std::string derivative) {savedDerivatives_.push_back(derivative);}
         //////////////////////////////////////////////////////////
