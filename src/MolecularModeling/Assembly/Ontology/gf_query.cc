@@ -6,11 +6,11 @@
 //For an example query with some explaination, see the bottom of this file.  For sparql query information, see https://www.w3.org/TR/rdf-sparql-query/ (It is not the greatest documentation but it helps)
 
 std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
-{   //This function runs a basic query, looking only for ?pdb (PDB_ID), ?oligo (Oligosaccharides are assigned numbers when they are found, ie oligo_1), and ?oligo_sequence (Condensed sequence).  
+{   //This function runs a basic query, looking only for ?pdb (PDB_ID), ?oligo (Oligosaccharides are assigned numbers when they are found, ie oligo_1), and ?oligo_sequence (Condensed sequence).
     //These three variables together are unique for each result.  This function also takes in all of the possible
     //filter variables to return filtered results when updating via ajax
     //This function will also call a function to create a graph from the search string for searching across branches.
-    int local_debug = 1;
+    int local_debug = -1;
     if(local_debug > 0)
     {
       gmml::log(__LINE__, __FILE__, gmml::INF, "Running QueryOntology()");
@@ -159,8 +159,11 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
           GraphDS::Node* current_node=(*it);
           if((current_node->GetNodeId() != "*")&&(current_node->GetNodeId() != "ASN")&&
              (current_node->GetNodeId() != "SER")&&(current_node->GetNodeId() != "THR")&&
+             (current_node->GetNodeId() != "TRP")&&
              (current_node->GetNodeId() != "ROH")&&(current_node->GetNodeId() != "OME")&&
-             (current_node->GetNodeId() != "OtBu"))//TODO: Add chemical formula terminal logic here & wherever it gets assigned and added to gmmo.ttl
+             (current_node->GetNodeId() != "OtBu"))
+             //TODO: Add chemical formula terminal logic here & wherever it gets assigned and added to gmmo.ttl
+             //TODO: Make this handle all possible terminal nodes better.  I had to add THR for C-Linked, There are other residues that need to be added as well
           {
             query << "?oligo :hasSequenceResidue ?residue" << current_node->GetNodeType() << ".\n";
             query << "?residue" << current_node->GetNodeType() << " :monosaccharideShortName ?monoName" << current_node->GetNodeType() << ".\n";
@@ -401,7 +404,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
 
 std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo, std::string url, std::string output_file_type)
 { // This function runs a full query on a single result, which is unique given the pdb_id, oligo_sequence, and oligo (which is the oligosaccharide number in the PDB in case it has identical sugars found)
-  int local_debug = 1;
+  int local_debug = -1;
   if(local_debug > 0)
   {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Running MoreQuery()");
@@ -485,7 +488,7 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
 
 std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
 { // This query creates a list of unique PDB_IDs given all of the user specified filters, and returns a CSV which is downloaded
-  int local_debug = 1;
+  int local_debug = -1;
   if(local_debug > 0)
   {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Running ontologyPDBDownload()");
@@ -641,7 +644,7 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
 
 std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
 { //This is a complete (and therefore slow) query that is a combination of moreQuery() and QueryOntology().  It filters the database by user input, and returns a CSV with all of the data for download.
-  int local_debug = 1;
+  int local_debug = -1;
   if(local_debug > 0)
   {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Running ontologyDownload()");
