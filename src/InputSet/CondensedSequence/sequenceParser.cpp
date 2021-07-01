@@ -93,111 +93,58 @@ bool SequenceParser::ParseCondensedSequence(const std::string sequence)
 
 void SequenceParser::RecurveParseAlt(size_t &i, const std::string sequence, ParsedResidue* parent)
 {
-    std::cout << "Started RecurveParse with i=" << i << " and sequence[i] is " << sequence[i] << "\n";
+    //std::cout << "Started RecurveParseAlt with i=" << i << " and sequence[i] is " << sequence[i] << "\n";
     size_t windowEnd = i;
     while (i > 0)
     {
         i--;
-        std::cout << "i=" << i << " sequence[i]=" << sequence[i] << "\n";
-        if ( ( sequence[i] == '-' ) && ((windowEnd - i) > 2 ) )
-        {
-            std::cout << "- with i=" << i << "\n";
+        //std::cout << "i=" << i << " sequence[i]=" << sequence[i] << "\n";
+        if ( ( sequence[i] == '-' ) && ((windowEnd - i) > 5 ) )
+        { // dash and have read enough that there is a residue to save.
+          //  std::cout << "- with i=" << i << "\n";
             parent = this->SaveResidue(i + 2, windowEnd, sequence, parent);
             windowEnd = i + 2; // Get to the right side of the number e.g. 1-4
         }
+        else if ( sequence[i] == ']' )
+        { // Start of branch: recurve. Maybe save if have read enough.
+          //  std::cout << "Starting recurve down a branch as have found a ] with i=" << i << "\n";
+            if ((windowEnd - i) > 5)
+            {   // if not a derivative start and have read enough, save.
+                parent = this->SaveResidue(i + 1, windowEnd, sequence, parent);
+           //     std::cout << "Recurving with branch\n";
+                this->RecurveParseAlt(i, sequence, parent);
+           //     std::cout << "Returned from branch\n";
+                windowEnd = i;
+            }
+            else if ((windowEnd - i) > 1) // and not > 5
+            { // Derivative. Note that windowEnd does not move.
+            //    std::cout << "Recurving with derivative\n";
+                this->RecurveParseAlt(i, sequence, parent);
+            //    std::cout << "Returned from derivative recurve\n";
+            }
+            else 
+            {  // Return from branch and find new one. e.g. [Gal][Gal]
+            //    std::cout << "Recurving with ][ branch\n";
+                this->RecurveParseAlt(i, sequence, parent);
+            //    std::cout << "Returned from ][ branch\n";
+                windowEnd = i;
+            }
+        }
         else if ( sequence[i] == '[' )
-        {
-            std::cout << "[ with i=" << i << "\n"; 
-            //parent = this->SaveResidue(i + 1, windowEnd, sequence, parent);
+        { // End of branch
+            //std::cout << "Saving and returning from recurve due to [ with i=" << i << "\n"; 
             this->SaveResidue(i + 1, windowEnd, sequence, parent);
-            //std::cout << "Parent is " << parent->GetName() << "\n";
             return;
         }
-        else if ( sequence[i] == ']' )
-        {
-            std::cout << "] with i=" << i << "\n";
-            if ((windowEnd - i) > 7) 
-            {   // if not a derivative, save
-                parent = this->SaveResidue(i + 1, windowEnd, sequence, parent);
-                this->RecurveParse(i, sequence, parent);
-                windowEnd = i;
-                //firstDashFound = true; // reset this when you fall out a level
-            }
-            else // Derivative
-            {   
-                this->RecurveParse(i, sequence, parent);
-            }
-        }
         else if ( sequence[i] == ',' )
-        {
-            std::cout << ", with i=" << i << "\n";
+        { // , in derivative list
+            //std::cout << ", so saving derivative with i=" << i << "\n";
             parent = this->SaveResidue(i + 1, windowEnd, sequence, parent);
             windowEnd = i;
         }
         else if ( i == 0)
-        {
-            std::cout << "i == 0" << "\n";
-            parent = this->SaveResidue(i, windowEnd, sequence, parent);
-        }
-    }
-    return; 
-}
-
-void SequenceParser::RecurveParse(size_t &i, const std::string sequence, ParsedResidue* parent)
-{
-    std::cout << "Started RecurveParse with i=" << i << " and sequence[i] is " << sequence[i] << "\n";
-    bool firstDashFound = true;
-    size_t windowEnd = i;
-    while (i > 0)
-    {
-        i--;
-        std::cout << "i=" << i << " sequence[i]=" << sequence[i] << "\n";
-        if ( sequence[i] == '-' )
-        {
-            if (firstDashFound)
-            {
-                firstDashFound = false;
-                std::cout << "firstDashFound is now false" << "\n";
-            }
-            else
-            {
-                std::cout << "- with i=" << i << "\n";
-                parent = this->SaveResidue(i + 2, windowEnd, sequence, parent);
-                windowEnd = i + 2; // Get to the right side of the number e.g. 1-4
-            }
-        }
-        else if ( sequence[i] == '[' )
-        {
-            std::cout << "[ with i=" << i << "\n"; 
-            //parent = this->SaveResidue(i + 1, windowEnd, sequence, parent);
-            this->SaveResidue(i + 1, windowEnd, sequence, parent);
-            //std::cout << "Parent is " << parent->GetName() << "\n";
-            return;
-        }
-        else if ( sequence[i] == ']' )
-        {
-            std::cout << "] with i=" << i << "\n";
-            if ((windowEnd - i) > 7) 
-            {   // if not a derivative, save
-                parent = this->SaveResidue(i + 1, windowEnd, sequence, parent);
-                this->RecurveParse(i, sequence, parent);
-                windowEnd = i;
-                firstDashFound = true; // reset this when you fall out a level
-            }
-            else // Derivative
-            {   
-                this->RecurveParse(i, sequence, parent);
-            }
-        }
-        else if ( sequence[i] == ',' )
-        {
-            std::cout << ", with i=" << i << "\n";
-            parent = this->SaveResidue(i + 1, windowEnd, sequence, parent);
-            windowEnd = i;
-        }
-        else if ( i == 0)
-        {
-            std::cout << "i == 0" << "\n";
+        { // Fin.
+            //std::cout << "i == 0 so need to save and then I'm finished!" << "\n";
             parent = this->SaveResidue(i, windowEnd, sequence, parent);
         }
     }
@@ -207,7 +154,7 @@ void SequenceParser::RecurveParse(size_t &i, const std::string sequence, ParsedR
 ParsedResidue* SequenceParser::SaveResidue(const size_t windowStart, const size_t windowEnd, const std::string sequence, ParsedResidue* parent)
 {
     std::string residueString = sequence.substr(windowStart, (windowEnd - windowStart));
-    std::cout << "At start of save: " << residueString << std::endl;
+    //std::cout << "At start of save: " << residueString << std::endl;
     // Splice out anything within [ and ].
     if (residueString.find('[') != std::string::npos) 
     {
@@ -216,7 +163,7 @@ ParsedResidue* SequenceParser::SaveResidue(const size_t windowStart, const size_
         std::string firstPart = residueString.substr(0, branch_start);
         std::string lastPart = residueString.substr(branch_finish);
         residueString = firstPart + lastPart;
-        std::cout << firstPart << " + " << lastPart << std::endl;
+        //std::cout << firstPart << " + " << lastPart << std::endl;
     }
     if (residueString.find('-') != std::string::npos)
     {
