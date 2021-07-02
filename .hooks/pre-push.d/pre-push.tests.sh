@@ -30,6 +30,23 @@ check_dir_exists() {
     fi
 }
 
+#### Allow skipping tests ####
+branch=`git rev-parse --abbrev-ref HEAD`
+if [[ "$branch" != "gmml-dev" ]] && [[ "$branch" != "dev" ]]; then
+    printf "Branch is %s\nSkipping tests is allowed.\nDo you want to skip them?\ns=skip\na=abort\nEnter anything to run tests.\n" $branch
+    read -p "Enter response: " response
+    if [[ $response == [sS] ]]; then
+        printf "Skipping tests!\n"
+        exit 0;
+    elif [[ $response == [aA] ]]; then
+        printf "Abort!\n"
+        exit 1;
+    else
+        printf "Running tests.\n"
+    fi
+fi
+#### Allow skipping tests ####
+
 cd ../
  gemshome=`pwd`
 cd -
