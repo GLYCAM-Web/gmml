@@ -34,7 +34,7 @@ check_dir_exists() {
 branch=`git rev-parse --abbrev-ref HEAD`
 if [[ "$branch" != "gmml-dev" ]] && [[ "$branch" != "dev" ]]; then
     printf "Branch is %s\nSkipping tests is allowed.\nDo you want to skip them?\ns=skip\na=abort\nEnter anything to run tests.\n" $branch
-    read -p "Enter response: " response
+    read -p "Enter response: " response < /dev/tty
     if [[ $response == [sS] ]]; then
         printf "Skipping tests!\n"
         exit 0;
