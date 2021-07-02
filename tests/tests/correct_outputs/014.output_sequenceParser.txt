@@ -1,136 +1,42 @@
-Starting: DTalp[2S,3Me]a1-6DManpa1-6[DAllpb1-3][DNeu5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH
+Starting: DTalp[2S,3Me]a1-6DManpa1-6[DAllpb1-3][DNeup5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH
 Parsing unlabelled input sequence:
-DTalp[2S,3Me]a1-6DManpa1-6[DAllpb1-3][DNeu5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH
+DTalp[2S,3Me]a1-6DManpa1-6[DAllpb1-3][DNeup5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH
 Sequence is sane
-_OH____.
+_OH_____.
+That was a terminal save with i=116
 Saving DGlcpNAcb1- with parent OH
-D_Glc_p_NAc_b_1-.
+D_Glc_p_NAc__b_1-.
 Saving DGulpb1-4 with parent DGlcpNAc
-D_Gul_p__b_1-4.
-Saving 6Me with parent DGulp
-_Me____6.
+D_Gul_p___b_1-4.
+Saving derivative: 6Me with parent DGulp
+_Me_____6.
 Saving DManpb1-4 with parent DGulp
-D_Man_p__b_1-4.
+D_Man_p___b_1-4.
 Saving DAltpa1-4 with parent DManp
-D_Alt_p__a_1-4.
+D_Alt_p___a_1-4.
 Saving DGlcpb1-2 with parent DAltp
-D_Glc_p__b_1-2.
-Saving 3S with parent DGlcp
-_S____3.
+D_Glc_p___b_1-2.
+Saving derivative: 3S with parent DGlcp
+_S_____3.
 Saving DGalpb1-4 with parent DGlcp
-D_Gal_p__b_1-4.
-Saving DNeu5Aca2-6 with parent DGalp
-D_Neu__5Ac_a_2-6.
+D_Gal_p___b_1-4.
+Saving DNeup5Aca2-6 with parent DGalp
+D_Neu_p_5Ac__a_2-6.
 Saving DAllpb1-3 with parent DManp
-D_All_p__b_1-3.
+D_All_p___b_1-3.
 Saving DManpa1-6 with parent DManp
-D_Man_p__a_1-6.
+D_Man_p___a_1-6.
 Saving DTalpa1-6 with parent DManp
-D_Tal_p__a_1-6.
-Saving 3Me with parent DTalp
-_Me____3.
-Saving 2S with parent DTalp
-_S____2.
-
-Manipulator PrintGraphViz:
-Getting GraphVizLine for OH
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-Getting GraphVizLine for DGulp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGul.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGul.svg
-Getting GraphVizLine for DManp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-Getting GraphVizLine for DAllp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DAll.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DAll.svg
-Getting GraphVizLine for DAltp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DAlt.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DAlt.svg
-Getting GraphVizLine for DGlcp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg
-Getting GraphVizLine for DGalp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-Getting GraphVizLine for DNeu5Ac
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DNeu5Ac.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DNeu5Ac.svg
-Getting GraphVizLine for DManp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-Getting GraphVizLine for DTalp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DTal.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DTal.svg
-graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
-label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
-rankdir=LR nodesep="0.05" ranksep="0.8";
-1 [shape=box label="OH"]
-2 [shape=circle height="0.7" label="GlcNAc"];
-2--1[label="b1-"];
-2--1[taillabel=< <B>0</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-3 [shape=circle height="0.7" label="Gul"];
-
-b3[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="6Me "];
-{ rank="same"; b3 3};
-{nodesep="0.2";b3;3};
-b3--3 [style=invis];
-3--2[label="b1-4"];
-3--2[taillabel=< <B>1</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-4 [shape=circle height="0.7" label="Man"];
-4--3[label="b1-4"];
-4--3[taillabel=< <B>2</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-5 [shape=circle height="0.7" label="All"];
-5--4[label="b1-3"];
-5--4[taillabel=< <B>3</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-6 [shape=circle height="0.7" label="Alt"];
-6--4[label="a1-4"];
-6--4[taillabel=< <B>4</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-7 [shape=circle height="0.7" label="Glc"];
-
-b7[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="3S "];
-{ rank="same"; b7 7};
-{nodesep="0.2";b7;7};
-b7--7 [style=invis];
-7--6[label="b1-2"];
-7--6[taillabel=< <B>5</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-9 [shape=circle height="0.7" label="Gal"];
-9--7[label="b1-4"];
-9--7[taillabel=< <B>7</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-10 [shape=circle height="0.7" label="Neu5Ac"];
-10--9[label="a2-6"];
-10--9[taillabel=< <B>8</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-11 [shape=circle height="0.7" label="Man"];
-11--4[label="a1-6"];
-11--4[taillabel=< <B>9</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-12 [shape=circle height="0.7" label="Tal"];
-
-b12[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="2S 3Me "];
-{ rank="same"; b12 12};
-{nodesep="0.2";b12;12};
-b12--12 [style=invis];
-12--11[label="a1-6"];
-12--11[taillabel=< <B>10</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-}
+D_Tal_p___a_1-6.
+Saving derivative: 3Me with parent DTalp
+_Me_____3.
+Saving derivative: 2S with parent DTalp
+_S_____2.
 
 Manipulator Print:
-DTalp[2S,3Me]a1-6DManpa1-6[DNeu5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4][DAllpb1-3]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH
+DTalp[2S,3Me]a1-6DManpa1-6[DNeup5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4][DAllpb1-3]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH
 Manipulator Print with Labels:
-DTalp&Label=residue-12;[2&Label=link-11;S&Label=residue-13;,3&Label=link-12;Me&Label=residue-14;]a1-6&Label=link-10;DManp&Label=residue-11;a1-6&Label=link-9;[DNeu5Ac&Label=residue-10;a2-6&Label=link-8;DGalp&Label=residue-9;b1-4&Label=link-7;DGlcp&Label=residue-7;[3&Label=link-6;S&Label=residue-8;]b1-2&Label=link-5;DAltp&Label=residue-6;a1-4&Label=link-4;][DAllp&Label=residue-5;b1-3&Label=link-3;]DManp&Label=residue-4;b1-4&Label=link-2;DGulp&Label=residue-3;[6&Label=link-13;Me&Label=residue-15;]b1-4&Label=link-1;DGlcpNAc&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
+DTalp&Label=residue-12;[2&Label=link-11;S&Label=residue-13;,3&Label=link-12;Me&Label=residue-14;]a1-6&Label=link-10;DManp&Label=residue-11;a1-6&Label=link-9;[DNeup5Ac&Label=residue-10;a2-6&Label=link-8;DGalp&Label=residue-9;b1-4&Label=link-7;DGlcp&Label=residue-7;[3&Label=link-6;S&Label=residue-8;]b1-2&Label=link-5;DAltp&Label=residue-6;a1-4&Label=link-4;][DAllp&Label=residue-5;b1-3&Label=link-3;]DManp&Label=residue-4;b1-4&Label=link-2;DGulp&Label=residue-3;[6&Label=link-13;Me&Label=residue-15;]b1-4&Label=link-1;DGlcpNAc&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
 END
 Edge labeled b1-&Label=link-0;, with index 0 destroyed
 Node labelled OH&Label=residue-1; destroyed
@@ -152,7 +58,7 @@ Node labelled DGlcp&Label=residue-7; destroyed
 Node labelled S&Label=residue-8; destroyed
 Edge labeled a2-6&Label=link-8;, with index 8 destroyed
 Node labelled DGalp&Label=residue-9; destroyed
-Node labelled DNeu5Ac&Label=residue-10; destroyed
+Node labelled DNeup5Ac&Label=residue-10; destroyed
 Node labelled DAllp&Label=residue-5; destroyed
 Edge labeled a1-6&Label=link-10;, with index 10 destroyed
 Node labelled DManp&Label=residue-11; destroyed
@@ -165,130 +71,36 @@ Starting: DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc
 Parsing unlabelled input sequence:
 DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
 Sequence is sane
-_OH____.
+_OH_____.
+That was a terminal save with i=125
 Saving DGlcpNAcb1- with parent OH
-D_Glc_p_NAc_b_1-.
+D_Glc_p_NAc__b_1-.
 Saving DGlcpNAcb1-4 with parent DGlcpNAc
-D_Glc_p_NAc_b_1-4.
-Saving 6Me with parent DGlcpNAc
-_Me____6.
+D_Glc_p_NAc__b_1-4.
+Saving derivative: 6Me with parent DGlcpNAc
+_Me_____6.
 Saving DManpb1-4 with parent DGlcpNAc
-D_Man_p__b_1-4.
+D_Man_p___b_1-4.
 Saving DManpa1-3 with parent DManp
-D_Man_p__a_1-3.
+D_Man_p___a_1-3.
 Saving DGlcpNAcb1-2 with parent DManp
-D_Glc_p_NAc_b_1-2.
-Saving 3S with parent DGlcpNAc
-_S____3.
+D_Glc_p_NAc__b_1-2.
+Saving derivative: 3S with parent DGlcpNAc
+_S_____3.
 Saving DGalpb1-4 with parent DGlcpNAc
-D_Gal_p__b_1-4.
+D_Gal_p___b_1-4.
 Saving DNeup5Aca2-6 with parent DGalp
-D_Neu_p_5Ac_a_2-6.
+D_Neu_p_5Ac__a_2-6.
 Saving DGlcpNAcb1-4 with parent DManp
-D_Glc_p_NAc_b_1-4.
+D_Glc_p_NAc__b_1-4.
 Saving DManpa1-6 with parent DManp
-D_Man_p__a_1-6.
+D_Man_p___a_1-6.
 Saving DManpa1-6 with parent DManp
-D_Man_p__a_1-6.
-Saving 3Me with parent DManp
-_Me____3.
-Saving 2S with parent DManp
-_S____2.
-
-Manipulator PrintGraphViz:
-Getting GraphVizLine for OH
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-Getting GraphVizLine for DManp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-Getting GraphVizLine for DManp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-Getting GraphVizLine for DGalp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-Getting GraphVizLine for DNeup5Ac
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DNeu5Ac.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DNeu5Ac.svg
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-Getting GraphVizLine for DManp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-Getting GraphVizLine for DManp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
-label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
-rankdir=LR nodesep="0.05" ranksep="0.8";
-1 [shape=box label="OH"]
-2 [shape=circle height="0.7" label="GlcNAc"];
-2--1[label="b1-"];
-2--1[taillabel=< <B>0</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-3 [shape=circle height="0.7" label="GlcNAc"];
-
-b3[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="6Me "];
-{ rank="same"; b3 3};
-{nodesep="0.2";b3;3};
-b3--3 [style=invis];
-3--2[label="b1-4"];
-3--2[taillabel=< <B>1</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-4 [shape=circle height="0.7" label="Man"];
-4--3[label="b1-4"];
-4--3[taillabel=< <B>2</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-5 [shape=circle height="0.7" label="Man"];
-5--4[label="a1-3"];
-5--4[taillabel=< <B>3</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-6 [shape=circle height="0.7" label="GlcNAc"];
-
-b6[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="3S "];
-{ rank="same"; b6 6};
-{nodesep="0.2";b6;6};
-b6--6 [style=invis];
-6--5[label="b1-2"];
-6--5[taillabel=< <B>4</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-8 [shape=circle height="0.7" label="Gal"];
-8--6[label="b1-4"];
-8--6[taillabel=< <B>6</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-9 [shape=circle height="0.7" label="Neu5Ac"];
-9--8[label="a2-6"];
-9--8[taillabel=< <B>7</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-10 [shape=circle height="0.7" label="GlcNAc"];
-10--4[label="b1-4"];
-10--4[taillabel=< <B>8</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-11 [shape=circle height="0.7" label="Man"];
-11--4[label="a1-6"];
-11--4[taillabel=< <B>9</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-12 [shape=circle height="0.7" label="Man"];
-
-b12[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="2S 3Me "];
-{ rank="same"; b12 12};
-{nodesep="0.2";b12;12};
-b12--12 [style=invis];
-12--11[label="a1-6"];
-12--11[taillabel=< <B>10</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-}
+D_Man_p___a_1-6.
+Saving derivative: 3Me with parent DManp
+_Me_____3.
+Saving derivative: 2S with parent DManp
+_S_____2.
 
 Manipulator Print:
 DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
@@ -328,71 +140,20 @@ Starting: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
 Parsing unlabelled input sequence:
 DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
 Sequence is sane
-_OH____.
+_OH_____.
+That was a terminal save with i=58
 Saving DXylpb1- with parent OH
-D_Xyl_p__b_1-.
+D_Xyl_p___b_1-.
 Saving DGalpb1-4 with parent DXylp
-D_Gal_p__b_1-4.
+D_Gal_p___b_1-4.
 Saving DGalpb1-3 with parent DGalp
-D_Gal_p__b_1-3.
+D_Gal_p___b_1-3.
 Saving DGlcpAb1-3 with parent DGalp
-D_Glc_p_A_b_1-3.
+D_Glc_p_A__b_1-3.
 Saving DGlcpAb1-4 with parent DGlcpA
-D_Glc_p_A_b_1-4.
+D_Glc_p_A__b_1-4.
 Saving DGlcpNAcb1-4 with parent DGlcpA
-D_Glc_p_NAc_b_1-4.
-
-Manipulator PrintGraphViz:
-Getting GraphVizLine for OH
-Getting GraphVizLine for DXylp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DXyl.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DXyl.svg
-Getting GraphVizLine for DGalp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-Getting GraphVizLine for DGalp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-Getting GraphVizLine for DGlcpA
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg
-Getting GraphVizLine for DGlcpA
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
-label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
-rankdir=LR nodesep="0.05" ranksep="0.8";
-1 [shape=box label="OH"]
-2 [shape=circle height="0.7" label="Xyl"];
-2--1[label="b1-"];
-2--1[taillabel=< <B>0</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-3 [shape=circle height="0.7" label="Gal"];
-3--2[label="b1-4"];
-3--2[taillabel=< <B>1</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-4 [shape=circle height="0.7" label="Gal"];
-4--3[label="b1-3"];
-4--3[taillabel=< <B>2</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-5 [shape=circle height="0.7" label="GlcA"];
-5--4[label="b1-3"];
-5--4[taillabel=< <B>3</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-6 [shape=circle height="0.7" label="GlcA"];
-6--5[label="b1-4"];
-6--5[taillabel=< <B>4</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-7 [shape=circle height="0.7" label="GlcNAc"];
-7--6[label="b1-4"];
-7--6[taillabel=< <B>5</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-}
+D_Glc_p_NAc__b_1-4.
 
 Manipulator Print:
 DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
@@ -416,128 +177,37 @@ Starting: dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b
 Parsing unlabelled input sequence:
 dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
 Sequence is sane
-_OH____.
+_OH_____.
+That was a terminal save with i=109
 Saving DXylpb1- with parent OH
-D_Xyl_p__b_1-.
+D_Xyl_p___b_1-.
 Saving DGalpb1-4 with parent DXylp
-D_Gal_p__b_1-4.
+D_Gal_p___b_1-4.
 Saving DGalpb1-3 with parent DGalp
-D_Gal_p__b_1-3.
+D_Gal_p___b_1-3.
 Saving DGlcpAb1-3 with parent DGalp
-D_Glc_p_A_b_1-3.
+D_Glc_p_A__b_1-3.
 Saving DGlcpAb1-4 with parent DGlcpA
-D_Glc_p_A_b_1-4.
-Saving 2S with parent DGlcpA
-_S____2.
+D_Glc_p_A__b_1-4.
+Saving derivative: 2S with parent DGlcpA
+_S_____2.
 Saving DGlcpNSa1-4 with parent DGlcpA
-D_Glc_p_NS_a_1-4.
+D_Glc_p_NS__a_1-4.
 Saving LIdopA(2SO)a1-4 with parent DGlcpNS
-L_Ido_p_A(2SO)_a_1-4.
-Saving 2S with parent LIdopA(2SO)
-_S____2.
+L_Ido_p_A_(2SO)_a_1-4.
+Saving derivative: 2S with parent LIdopA(2SO)
+_S_____2.
 Saving DGlcpNAca1-4 with parent LIdopA(2SO)
-D_Glc_p_NAc_a_1-4.
-Saving 6S with parent DGlcpNAc
-_S____6.
-Saving 3S with parent DGlcpNAc
-_S____3.
+D_Glc_p_NAc__a_1-4.
+Saving derivative: 6S with parent DGlcpNAc
+_S_____6.
+Saving derivative: 3S with parent DGlcpNAc
+_S_____3.
 Saving dUA1-4 with parent DGlcpNAc
-_dUA____1-4.
-Saving 2S with parent dUA
-_S____2.
-
-Manipulator PrintGraphViz:
-Getting GraphVizLine for OH
-Getting GraphVizLine for DXylp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DXyl.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DXyl.svg
-Getting GraphVizLine for DGalp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-Getting GraphVizLine for DGalp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-Getting GraphVizLine for DGlcpA
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg
-Getting GraphVizLine for DGlcpA
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg
-Getting GraphVizLine for DGlcpNS
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg
-Getting GraphVizLine for LIdopA(2SO)
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/LIdoA(2SO).svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/LIdoA(2SO).svg
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-Getting GraphVizLine for dUA
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/dUA.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/dUA.svg
-graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
-label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
-rankdir=LR nodesep="0.05" ranksep="0.8";
-1 [shape=box label="OH"]
-2 [shape=circle height="0.7" label="Xyl"];
-2--1[label="b1-"];
-2--1[taillabel=< <B>0</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-3 [shape=circle height="0.7" label="Gal"];
-3--2[label="b1-4"];
-3--2[taillabel=< <B>1</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-4 [shape=circle height="0.7" label="Gal"];
-4--3[label="b1-3"];
-4--3[taillabel=< <B>2</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-5 [shape=circle height="0.7" label="GlcA"];
-5--4[label="b1-3"];
-5--4[taillabel=< <B>3</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-6 [shape=circle height="0.7" label="GlcA"];
-
-b6[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="2S "];
-{ rank="same"; b6 6};
-{nodesep="0.2";b6;6};
-b6--6 [style=invis];
-6--5[label="b1-4"];
-6--5[taillabel=< <B>4</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-8 [shape=circle height="0.7" label="GlcNS"];
-8--6[label="a1-4"];
-8--6[taillabel=< <B>6</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-9 [shape=circle height="0.7" label="IdoA(2SO)"];
-
-b9[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="2S "];
-{ rank="same"; b9 9};
-{nodesep="0.2";b9;9};
-b9--9 [style=invis];
-9--8[label="a1-4"];
-9--8[taillabel=< <B>7</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-11 [shape=circle height="0.7" label="GlcNAc"];
-
-b11[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="3S 6S "];
-{ rank="same"; b11 11};
-{nodesep="0.2";b11;11};
-b11--11 [style=invis];
-11--9[label="a1-4"];
-11--9[taillabel=< <B>9</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-13 [shape=circle height="0.7" label="dUA"];
-
-b13[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="2S "];
-{ rank="same"; b13 13};
-{nodesep="0.2";b13;13};
-b13--13 [style=invis];
-13--11[label="1-4"];
-13--11[taillabel=< <B>11</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-}
+Non standard glycam residue string: dUA1-4
+_dUA_____1-4.
+Saving derivative: 2S with parent dUA
+_S_____2.
 
 Manipulator Print:
 dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
@@ -577,92 +247,26 @@ Starting: dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[
 Parsing unlabelled input sequence:
 dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
 Sequence is sane
-_OH____.
+_OH_____.
+That was a terminal save with i=76
 Saving DGlcpNSa1- with parent OH
-D_Glc_p_NS_a_1-.
-Saving 6S with parent DGlcpNS
-_S____6.
+D_Glc_p_NS__a_1-.
+Saving derivative: 6S with parent DGlcpNS
+_S_____6.
 Saving LIdopA(4C1)a1-4 with parent DGlcpNS
-L_Ido_p_A(4C1)_a_1-4.
+L_Ido_p_A_(4C1)_a_1-4.
 Saving DGlcpNSa1-4 with parent LIdopA(4C1)
-D_Glc_p_NS_a_1-4.
+D_Glc_p_NS__a_1-4.
 Saving LIdopAa1-4 with parent DGlcpNS
-L_Ido_p_A_a_1-4.
-Saving 2S with parent LIdopA
-_S____2.
+L_Ido_p_A__a_1-4.
+Saving derivative: 2S with parent LIdopA
+_S_____2.
 Saving DGlcpNSa1-4 with parent LIdopA
-D_Glc_p_NS_a_1-4.
+D_Glc_p_NS__a_1-4.
 Saving dUAa1-4 with parent DGlcpNS
-_dUA___a_1-4.
-Saving 2S with parent dUA
-_S____2.
-
-Manipulator PrintGraphViz:
-Getting GraphVizLine for OH
-Getting GraphVizLine for DGlcpNS
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg
-Getting GraphVizLine for LIdopA(4C1)
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/LIdoA(4C1).svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/LIdoA(4C1).svg
-Getting GraphVizLine for DGlcpNS
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg
-Getting GraphVizLine for LIdopA
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/LIdoA.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/LIdoA.svg
-Getting GraphVizLine for DGlcpNS
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg
-Getting GraphVizLine for dUA
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/dUA.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/dUA.svg
-graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
-label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
-rankdir=LR nodesep="0.05" ranksep="0.8";
-1 [shape=box label="OH"]
-2 [shape=circle height="0.7" label="GlcNS"];
-
-b2[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="6S "];
-{ rank="same"; b2 2};
-{nodesep="0.2";b2;2};
-b2--2 [style=invis];
-2--1[label="a1-"];
-2--1[taillabel=< <B>0</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-3 [shape=circle height="0.7" label="IdoA(4C1)"];
-3--2[label="a1-4"];
-3--2[taillabel=< <B>1</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-4 [shape=circle height="0.7" label="GlcNS"];
-4--3[label="a1-4"];
-4--3[taillabel=< <B>2</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-5 [shape=circle height="0.7" label="IdoA"];
-
-b5[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="2S "];
-{ rank="same"; b5 5};
-{nodesep="0.2";b5;5};
-b5--5 [style=invis];
-5--4[label="a1-4"];
-5--4[taillabel=< <B>3</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-7 [shape=circle height="0.7" label="GlcNS"];
-7--5[label="a1-4"];
-7--5[taillabel=< <B>5</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-8 [shape=circle height="0.7" label="dUA"];
-
-b8[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="2S "];
-{ rank="same"; b8 8};
-{nodesep="0.2";b8;8};
-b8--8 [style=invis];
-8--7[label="a1-4"];
-8--7[taillabel=< <B>6</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-}
+_dUA____a_1-4.
+Saving derivative: 2S with parent dUA
+_S_____2.
 
 Manipulator Print:
 dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
@@ -692,29 +296,10 @@ Starting: DGlcpa1-2DFrufb
 Parsing unlabelled input sequence:
 DGlcpa1-2DFrufb
 Sequence is sane
-D_Fru_f__b_.
+D_Fru_f___b_.
+That was a terminal save with i=9
 Saving DGlcpa1-2 with parent DFruf
-D_Glc_p__a_1-2.
-
-Manipulator PrintGraphViz:
-Getting GraphVizLine for DFruf
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DFru.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DFru.svg
-Getting GraphVizLine for DGlcp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg
-graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
-label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
-rankdir=LR nodesep="0.05" ranksep="0.8";
-1 [shape=circle height="0.7" label="Fru"];
-
-2 [shape=circle height="0.7" label="Glc"];
-2--1[label="a1-2"];
-2--1[taillabel=< <B>0</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-}
+D_Glc_p___a_1-2.
 
 Manipulator Print:
 DGlcpa1-2DFruf
@@ -728,29 +313,10 @@ Starting: DFrufb2-1DGlcpa
 Parsing unlabelled input sequence:
 DFrufb2-1DGlcpa
 Sequence is sane
-D_Glc_p__a_.
+D_Glc_p___a_.
+That was a terminal save with i=9
 Saving DFrufb2-1 with parent DGlcp
-D_Fru_f__b_2-1.
-
-Manipulator PrintGraphViz:
-Getting GraphVizLine for DGlcp
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg
-Getting GraphVizLine for DFruf
-Searching for image: /home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DFru.svg
-/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DFru.svg
-graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
-label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
-rankdir=LR nodesep="0.05" ranksep="0.8";
-1 [shape=circle height="0.7" label="Glc"];
-
-2 [shape=circle height="0.7" label="Fru"];
-2--1[label="b2-1"];
-2--1[taillabel=< <B>0</B>>, labelfontsize = 14, labeldistance = 2.0, labelangle = -35];
-
-}
+D_Fru_f___b_2-1.
 
 Manipulator Print:
 DFrufb2-1DGlcp

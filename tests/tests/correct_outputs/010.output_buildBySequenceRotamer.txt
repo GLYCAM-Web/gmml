@@ -1,27 +1,144 @@
-CarbohydrateBuilder called using sequence: DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+Parsing unlabelled input sequence:
+DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+Sequence is sane
+_OH_____.
+That was a terminal save with i=125
+Saving DGlcpNAcb1- with parent OH
+D_Glc_p_NAc__b_1-.
+Saving DGlcpNAcb1-4 with parent DGlcpNAc
+D_Glc_p_NAc__b_1-4.
+Saving derivative: 6Me with parent DGlcpNAc
+_Me_____6.
+Saving DManpb1-4 with parent DGlcpNAc
+D_Man_p___b_1-4.
+Saving DManpa1-3 with parent DManp
+D_Man_p___a_1-3.
+Saving DGlcpNAcb1-2 with parent DManp
+D_Glc_p_NAc__b_1-2.
+Saving derivative: 3S with parent DGlcpNAc
+_S_____3.
+Saving DGalpb1-4 with parent DGlcpNAc
+D_Gal_p___b_1-4.
+Saving DNeup5Aca2-6 with parent DGalp
+D_Neu_p_5Ac__a_2-6.
+Saving DGlcpNAcb1-4 with parent DManp
+D_Glc_p_NAc__b_1-4.
+Saving DManpa1-6 with parent DManp
+D_Man_p___a_1-6.
+Saving DManpa1-6 with parent DManp
+D_Man_p___a_1-6.
+Saving derivative: 3Me with parent DManp
+_Me_____3.
+Saving derivative: 2S with parent DManp
+_S_____2.
+Returning: ROH
+Found prep entry: ROH for OH
+Returning: 4YB
+Found prep entry: 4YB for DGlcpNAc
+Bonded ROH@O1 to 4YB@C1
+Returning: UYB
+Found prep entry: UYB for DGlcpNAc
+Bonded 4YB@O4 to UYB@C1
+Returning: QMB
+Found prep entry: QMB for DManp
+Bonded UYB@O4 to QMB@C1
+Returning: 2MA
+Found prep entry: 2MA for DManp
+Bonded QMB@O3 to 2MA@C1
+Returning: WYB
+Found prep entry: WYB for DGlcpNAc
+Bonded 2MA@O2 to WYB@C1
+Returning: SO3
+Found prep entry: SO3 for S
+Bonded WYB@O3 to SO3@S1
+    Derivative is SO3. Adjusting charge on O3
+    Adjusting by: 0.031
+Returning: 6LB
+Found prep entry: 6LB for DGalp
+Bonded WYB@O4 to 6LB@C1
+Returning: 0SA
+Found prep entry: 0SA for DNeup5Ac
+Bonded 6LB@O6 to 0SA@C2
+Returning: 0YB
+Found prep entry: 0YB for DGlcpNAc
+Bonded QMB@O4 to 0YB@C1
+Returning: 6MA
+Found prep entry: 6MA for DManp
+Bonded QMB@O6 to 6MA@C1
+Returning: ZMA
+Found prep entry: ZMA for DManp
+Bonded 6MA@O6 to ZMA@C1
+Returning: SO3
+Found prep entry: SO3 for S
+Bonded ZMA@O2 to SO3@S1
+    Derivative is SO3. Adjusting charge on O2
+    Adjusting by: 0.031
+Returning: MEX
+Found prep entry: MEX for Me
+Bonded ZMA@O3 to MEX@CH3
+    Derivative is MEX. Adjusting charge on C3
+    Adjusting by: -0.039
+Returning: MEX
+Found prep entry: MEX for Me
+Bonded UYB@O6 to MEX@CH3
+    Derivative is MEX. Adjusting charge on C6
+    Adjusting by: -0.039
+Jobs a good un
+Finished making assembly.
+Total charge is: -3
+Edge labeled b1-, with index 2 destroyed
+Node labelled OH destroyed
+Edge labeled b1-4, with index 4 destroyed
+Node labelled DGlcpNAcb1- destroyed
+Edge labeled b1-4, with index 8 destroyed
+Edge labeled 6, with index 6 destroyed
+Node labelled DGlcpNAcb1-4 destroyed
+Node labelled 6Me destroyed
+Edge labeled a1-3, with index 10 destroyed
+Edge labeled b1-4, with index 20 destroyed
+Edge labeled a1-6, with index 22 destroyed
+Node labelled DManpb1-4 destroyed
+Edge labeled b1-2, with index 12 destroyed
+Node labelled DManpa1-3 destroyed
+Edge labeled 3, with index 14 destroyed
+Edge labeled b1-4, with index 16 destroyed
+Node labelled DGlcpNAcb1-2 destroyed
+Node labelled 3S destroyed
+Edge labeled a2-6, with index 18 destroyed
+Node labelled DGalpb1-4 destroyed
+Node labelled DNeup5Aca2-6 destroyed
+Node labelled DGlcpNAcb1-4 destroyed
+Edge labeled a1-6, with index 24 destroyed
+Node labelled DManpa1-6 destroyed
+Edge labeled 2, with index 28 destroyed
+Edge labeled 3, with index 26 destroyed
+Node labelled DManpa1-6 destroyed
+Node labelled 3Me destroyed
+Node labelled 2S destroyed
+CarbohydrateBuilder called using sequence: DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
  and contains these Residue_linkages:
-Residue_linkage Index: 0, Name: DGlcNAcpb1-1ROH, NumberOfShapes: 1, ids: 4YB_A_2_?_?_?@C1 -- ROH_A_1_?_?_?@O1
-Residue_linkage Index: 1, Name: DGlcNAcpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: UYB_A_3_?_?_?@C1 -- 4YB_A_2_?_?_?@O4
-Residue_linkage Index: 2, Name: DManpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: QMB_A_4_?_?_?@C1 -- UYB_A_3_?_?_?@O4
-Residue_linkage Index: 3, Name: DManpa1-3DManpb, NumberOfShapes: 1, ids: 2MA_A_5_?_?_?@C1 -- QMB_A_4_?_?_?@O3
-Residue_linkage Index: 4, Name: DGlcNAcpb1-2DManpa, NumberOfShapes: 1, ids: WYB_A_6_?_?_?@C1 -- 2MA_A_5_?_?_?@O2
-Residue_linkage Index: 5, Name: Sulpho1-3DGlcNAcpb, NumberOfShapes: 1, ids: SO3_A_7_?_?_?@S1 -- WYB_A_6_?_?_?@O3
-Residue_linkage Index: 6, Name: DGalpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: 6LB_A_8_?_?_?@C1 -- WYB_A_6_?_?_?@O4
-Residue_linkage Index: 7, Name: DNeu5Acpa2-6DGalpb, NumberOfShapes: 6, ids: 0SA_A_9_?_?_?@C2 -- 6LB_A_8_?_?_?@O6
-Residue_linkage Index: 8, Name: DGlcNAcpb1-4DManpb, NumberOfShapes: 1, ids: 0YB_A_10_?_?_?@C1 -- QMB_A_4_?_?_?@O4
-Residue_linkage Index: 9, Name: DManpa1-6DManpb, NumberOfShapes: 3, ids: 6MA_A_11_?_?_?@C1 -- QMB_A_4_?_?_?@O6
-Residue_linkage Index: 10, Name: DManpa1-6DManpa, NumberOfShapes: 3, ids: ZMA_A_12_?_?_?@C1 -- 6MA_A_11_?_?_?@O6
-Residue_linkage Index: 11, Name: Sulpho1-2DManpa, NumberOfShapes: 1, ids: SO3_A_13_?_?_?@S1 -- ZMA_A_12_?_?_?@O2
-Residue_linkage Index: 12, Name: Methyl3-3DManpa, NumberOfShapes: 1, ids: MEX_A_14_?_?_?@CH3 -- ZMA_A_12_?_?_?@O3
-Residue_linkage Index: 13, Name: Methyl3-6DGlcNAcpb, NumberOfShapes: 3, ids: MEX_A_15_?_?_?@CH3 -- UYB_A_3_?_?_?@O6
+Residue_linkage Index: 0, Name: DGlcNAcpb1-1ROH, NumberOfShapes: 1, ids: 4YB_A_1_?_?_?@C1 -- ROH_A_0_?_?_?@O1
+Residue_linkage Index: 1, Name: DGlcNAcpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: UYB_A_2_?_?_?@C1 -- 4YB_A_1_?_?_?@O4
+Residue_linkage Index: 2, Name: DManpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: QMB_A_3_?_?_?@C1 -- UYB_A_2_?_?_?@O4
+Residue_linkage Index: 3, Name: DManpa1-3DManpb, NumberOfShapes: 1, ids: 2MA_A_4_?_?_?@C1 -- QMB_A_3_?_?_?@O3
+Residue_linkage Index: 4, Name: DGlcNAcpb1-2DManpa, NumberOfShapes: 1, ids: WYB_A_5_?_?_?@C1 -- 2MA_A_4_?_?_?@O2
+Residue_linkage Index: 5, Name: Sulpho1-3DGlcNAcpb, NumberOfShapes: 1, ids: SO3_A_6_?_?_?@S1 -- WYB_A_5_?_?_?@O3
+Residue_linkage Index: 6, Name: DGalpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: 6LB_A_7_?_?_?@C1 -- WYB_A_5_?_?_?@O4
+Residue_linkage Index: 7, Name: DNeu5Acpa2-6DGalpb, NumberOfShapes: 6, ids: 0SA_A_8_?_?_?@C2 -- 6LB_A_7_?_?_?@O6
+Residue_linkage Index: 8, Name: DGlcNAcpb1-4DManpb, NumberOfShapes: 1, ids: 0YB_A_9_?_?_?@C1 -- QMB_A_3_?_?_?@O4
+Residue_linkage Index: 9, Name: DManpa1-6DManpb, NumberOfShapes: 3, ids: 6MA_A_10_?_?_?@C1 -- QMB_A_3_?_?_?@O6
+Residue_linkage Index: 10, Name: DManpa1-6DManpa, NumberOfShapes: 3, ids: ZMA_A_11_?_?_?@C1 -- 6MA_A_10_?_?_?@O6
+Residue_linkage Index: 11, Name: Sulpho1-2DManpa, NumberOfShapes: 1, ids: SO3_A_12_?_?_?@S1 -- ZMA_A_11_?_?_?@O2
+Residue_linkage Index: 12, Name: Methyl3-3DManpa, NumberOfShapes: 1, ids: MEX_A_13_?_?_?@CH3 -- ZMA_A_11_?_?_?@O3
+Residue_linkage Index: 13, Name: Methyl3-6DGlcNAcpb, NumberOfShapes: 3, ids: MEX_A_14_?_?_?@CH3 -- UYB_A_2_?_?_?@O6
 Number of likely shapes for this sequence is 48
 Number of possible shapes for this sequence is 162
-Options: Name: DNeu5Acpa2-6DGalpb, Index: 7, Res1:9, Res2:8
+Options: Name: DNeu5Acpa2-6DGalpb, Index: 7, Res1:8, Res2:7
 Likely: Phi, t, -g
 Likely: Omg, gg, gt, tg
-Options: Name: DManpa1-6DManpb, Index: 9, Res1:11, Res2:4
+Options: Name: DManpa1-6DManpb, Index: 9, Res1:10, Res2:3
 Likely: Omg, gg, gt
-Options: Name: DManpa1-6DManpa, Index: 10, Res1:12, Res2:11
+Options: Name: DManpa1-6DManpa, Index: 10, Res1:11, Res2:10
 Likely: Omg, gg, gt
-Options: Name: Methyl3-6DGlcNAcpb, Index: 13, Res1:15, Res2:3
+Options: Name: Methyl3-6DGlcNAcpb, Index: 13, Res1:14, Res2:2
 Likely: Omg, gg, gt

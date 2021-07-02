@@ -600,14 +600,15 @@ GeometryTopology::Coordinate Residue::GetGeometricCenter()
 
 MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
 {
-    MolecularModeling::Atom* return_atom=NULL;
+    MolecularModeling::Atom* return_atom = nullptr;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
         if ((*it)->GetName().compare(query_name)==0)
         {
             return_atom = (*it);
-            std::cout << "From Residue::GetAtom(), returning: " << return_atom->GetId() << " as a match for " << query_name << std::endl;
+            return return_atom;
+            //std::cout << "From Residue::GetAtom(), returning: " << return_atom->GetId() << " as a match for " << query_name << std::endl;
         }
     }
     return return_atom; // may be unset

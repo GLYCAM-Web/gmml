@@ -29,7 +29,7 @@ int main ()
         std::cout << "Creating PDB file" << std::endl;
         PdbFileSpace::PdbFile *outputPdbFile = ass.BuildPdbFileStructureFromAssembly(-1,0);
         std::cout << "Writing PDB file" << std::endl;
-        outputPdbFile->Write(std::to_string(loopCounter) + ".pdb");
+        outputPdbFile->Write(std::to_string(loopCounter) + "_assemblyBuilder.pdb");
         loopCounter++;
 	}
 	return 0;

@@ -8,7 +8,7 @@ if ! cmp  015.output_sequenceAssembly.txt tests/correct_outputs/015.output_seque
     return 1;
 else
     printf "Test passed.\n"
-    rm sequenceAssembly 015.output_sequenceAssembly.txt
+    rm sequenceAssembly 015.output_sequenceAssembly.txt *_assemblyBuilder.pdb
     return 0;
 fi
 
