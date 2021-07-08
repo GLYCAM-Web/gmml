@@ -17,20 +17,15 @@ SequenceParser::SequenceParser (std::string inputSequence)
 	else
 	{
 		std::cout << "Parsing unlabelled input sequence:\n" << inputSequence << "\n";
-        try 
+        if (this->CheckSequenceSanity(inputSequence))
         {
-            if (this->CheckSequenceSanity(inputSequence))
-            {
-                std::cout << "Sequence is sane\n";
-                this->ParseCondensedSequence(inputSequence);
-            }
+            std::cout << "Sequence is sane\n";
+            this->ParseCondensedSequence(inputSequence);
         }
-        catch (std::string str)
-        {
-            std::cerr << str;
-        }
-	}
+    }
+    return;
 }
+
 
 std::string SequenceParser::Print()
 {
@@ -65,7 +60,7 @@ void SequenceParser::ParseLabelledInput(std::string inString)
 	// 		std::cout << " " << subtoken << " \n";
 	// 	}
 	// }
-    std::cout << "We can't handle labeled stuff yet: " << inString << "\n";
+    throw "Error: We can't handle labeled stuff yet: " + inString + "\n";
 }
 
 bool SequenceParser::ParseCondensedSequence(const std::string sequence)
@@ -197,42 +192,32 @@ std::vector<std::string> SequenceParser::ExtractDerivatives()
 
 bool SequenceParser::CheckSequenceSanity(std::string sequence)
 {
-    try
+    if ( sequence.empty() )
     {
-        if ( sequence.empty() )
+        throw "Error: sequence is empty:\n>>>" + sequence + "<<<\n" ;
+    }
+    if ( sequence.find("cake") != std::string::npos )
+    {
+        throw "Error: the cake is a lie:\n>>>" + sequence + "<<<\n" ;
+    }
+    if ( sequence.find(" ") != std::string::npos )
+    {
+        throw "Error: sequence contains a space:\n>>>" + sequence + "<<<\n" ;
+    }
+    std::vector<char> badChars = {'\'', '_', '+', '"', '`'};
+    for (auto &badChar : badChars)
+    {
+        if (sequence.find(badChar) != std::string::npos)
         {
-            throw "Error: sequence is empty: ";
-        }
-        if ( sequence.find(" ") != std::string::npos )
-        {
-            throw "Error: sequence contains a space: ";
-        }
-        if ( sequence.find("cake") != std::string::npos )
-        {
-            throw "Error: the cake is a lie: ";
-        }
-        std::vector<char> badChars = {'\'', '_', '+', '"', '`'};
-        for (auto &badChar : badChars)
-        {
-            if (sequence.find(badChar) != std::string::npos)
-            {
-                std::string s(1, badChar); // convert to string     
-                throw "Error: sequence contains a \"" + s + "\": "; 
-            }
-        }
-        size_t a = std::count(sequence.begin(), sequence.end(), '[');
-        size_t b = std::count(sequence.begin(), sequence.end(), ']');
-        if (a != b)
-        {
-            throw "Error: the number of [ doesn't match the number of ]. Bad branch in : ";
+            std::string s(1, badChar); // convert to string     
+            throw "Error: sequence cannot contain this:\'" + s + "\':\n>>>" + sequence + "<<<\n" ; 
         }
     }
-    catch (char const* exception)
+    size_t a = std::count(sequence.begin(), sequence.end(), '[');
+    size_t b = std::count(sequence.begin(), sequence.end(), ']');
+    if (a != b)
     {
-        std::cerr << exception;
-        std::cerr << "\n>>>" << sequence << "<<<\n";
-        //throw message; 
-        return false;
+        throw "Error: the number of [ doesn't match the number of ]. Bad branch in :\n>>>" + sequence + "<<<\n" ;
     }
     return true;
 }

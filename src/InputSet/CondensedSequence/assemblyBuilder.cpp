@@ -16,19 +16,12 @@ using MolecularModeling::Assembly;
 
 AssemblyBuilder::AssemblyBuilder(std::string inputSequence, std::string prepFilePath, Assembly *inputAssembly) : SequenceManipulator{inputSequence} 
 {
-	try
-    {
-		this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependancy Oliver.
-		PrepFileSpace::PrepFile prepFile(prepFilePath);
-		this->SetPrepResidueMap(prepFile.GetResidues()); //A mapping between a residue name and its residue object
-		this->GenerateResidues(inputAssembly);
-		std::cout << "Finished making assembly.\nTotal charge is: " << inputAssembly->GetTotalCharge() << std::endl;
-	}
-	catch (const std::string exception)
-    {
-        std::cerr << "Error: " << exception << std::endl;
-        throw exception;
-    }
+	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependancy Oliver.
+	PrepFileSpace::PrepFile prepFile(prepFilePath);
+	this->SetPrepResidueMap(prepFile.GetResidues()); //A mapping between a residue name and its residue object
+	this->GenerateResidues(inputAssembly);
+	std::cout << std::fixed;
+	std::cout << "Finished making assembly.\nTotal charge is: " << std::setprecision(6) << inputAssembly->GetTotalCharge() << std::endl;
 }
 
 void AssemblyBuilder::GenerateResidues(Assembly *assembly)
@@ -158,16 +151,7 @@ std::string AssemblyBuilder::GetGlycamResidueName(ParsedResidue &residue)
     {
         linkages = residue.GetChildLinkagesForGlycamResidueNaming();
     }
-    try
-    {
-        std::string code = gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNameGenerator(linkages, residue.GetIsomer(), residue.GetResidueName(), 
+    std::string code = gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNameGenerator(linkages, residue.GetIsomer(), residue.GetResidueName(), 
                                                                             residue.GetRingType(), residue.GetResidueModifier() + residue.GetRingShape(), residue.GetConfiguration() );
-        return code;
-    }
-    catch (const std::string exception)
-    {
-        std::cerr << "Error: " << exception << std::endl;
-        throw exception;
-    }
-    return "";
+    return code;
 }

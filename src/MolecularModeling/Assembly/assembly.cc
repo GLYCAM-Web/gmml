@@ -236,7 +236,17 @@ Assembly::Assembly(std::string inputSequence, std::string prepFilePath)
     source_file_ = prepFilePath;
     assemblies_ = AssemblyVector();
     id_ = "1";
-    CondensedSequence::AssemblyBuilder assBuilder(inputSequence, prepFilePath, this);
+    try
+    {
+        CondensedSequence::AssemblyBuilder assBuilder(inputSequence, prepFilePath, this);
+    }
+    catch (const std::string exception)
+    {
+        std::cerr << "Error: " << exception << std::endl;
+        // And now? A higher level should check the status of assembly and build a response for gems?
+        // Assembly.SetStatus/GetStatus and have a status class that's Print function is gems level friendly?
+        // Or inhert from generic object? That way every class can set its status during construction.
+    }
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //

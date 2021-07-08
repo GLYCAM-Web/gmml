@@ -326,3 +326,38 @@ END
 Edge labeled b2-1&Label=link-0;, with index 0 destroyed
 Node labelled DGlcp&Label=residue-1; destroyed
 Node labelled DFruf&Label=residue-2; destroyed
+Starting: DNeup5Ac&Label=residue-9;a2-6&Label=link-7;DGalp&Label=residue-8;b1-4&Label=link-6;DGlcpNAc&Label=residue-6;[3&Label=link-5;S&Label=residue-7;]b1-2&Label=link-4;DManp&Label=residue-5;a1-3&Label=link-3;[DGlcpNAc&Label=residue-10;b1-4&Label=link-8;][DManp&Label=residue-12;[2&Label=link-11;S&Label=residue-13;,3&Label=link-12;Me&Label=residue-14;]a1-6&Label=link-10;DManp&Label=residue-11;a1-6&Label=link-9;]DManp&Label=residue-4;b1-4&Label=link-2;DGlcpNAc&Label=residue-3;[6&Label=link-13;Me&Label=residue-15;]b1-4&Label=link-1;DGlcpNAc&Label=residue-2;b1-1&Label=link-0;-OH&Label=residue-1;
+Found labels in input
+Starting: 
+Parsing unlabelled input sequence:
+
+Starting: There will be cake.
+Parsing unlabelled input sequence:
+There will be cake.
+Starting: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH 
+Parsing unlabelled input sequence:
+DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH 
+Starting: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH
+Parsing unlabelled input sequence:
+DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH
+Starting: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH
+Parsing unlabelled input sequence:
+DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH
+Sequence is sane
+_OH_____.
+That was a terminal save with i=63
+Saving DXylpb1- with parent OH
+D_Xyl_p___b_1-.
+Saving DGalpb1-4 with parent DXylp
+D_Gal_p___b_1-4.
+Saving DGalpb1-3 with parent DGalp
+D_Gal_p___b_1-3.
+Saving derivative: Boo with parent DGalp
+Node labelled Boo destroyed
+Edge labeled b1-, with index 127 destroyed
+Node labelled OH destroyed
+Edge labeled b1-4, with index 129 destroyed
+Node labelled DXylpb1- destroyed
+Edge labeled b1-3, with index 131 destroyed
+Node labelled DGalpb1-4 destroyed
+Node labelled DGalpb1-3 destroyed
