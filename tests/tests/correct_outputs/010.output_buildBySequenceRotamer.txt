@@ -84,8 +84,7 @@ Bonded UYB@O6 to MEX@CH3
     Derivative is MEX. Adjusting charge on C6
     Adjusting by: -0.039
 Jobs a good un
-Finished making assembly.
-Total charge is: -3
+Total charge is: -3.00000
 Edge labeled b1-, with index 2 destroyed
 Node labelled OH destroyed
 Edge labeled b1-4, with index 4 destroyed

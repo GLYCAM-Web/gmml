@@ -84,8 +84,7 @@ Bonded UKB@O6 to MEX@CH3
     Derivative is MEX. Adjusting charge on C6
     Adjusting by: -0.039
 Jobs a good un
-Finished making assembly.
-Total charge is: -3
+Total charge is: -3.00000
 Edge labeled b1-, with index 2 destroyed
 Node labelled OH destroyed
 Edge labeled b1-4, with index 4 destroyed
@@ -171,7 +170,7 @@ Returning: SO3
 Found prep entry: SO3 for S
 Bonded WYB@O3 to SO3@S1
     Derivative is SO3. Adjusting charge on O3
-    Adjusting by: 0.031
+    Adjusting by: 0.03100
 Returning: 6LB
 Found prep entry: 6LB for DGalp
 Bonded WYB@O4 to 6LB@C1
@@ -191,20 +190,19 @@ Returning: SO3
 Found prep entry: SO3 for S
 Bonded ZMA@O2 to SO3@S1
     Derivative is SO3. Adjusting charge on O2
-    Adjusting by: 0.031
+    Adjusting by: 0.03100
 Returning: MEX
 Found prep entry: MEX for Me
 Bonded ZMA@O3 to MEX@CH3
     Derivative is MEX. Adjusting charge on C3
-    Adjusting by: -0.039
+    Adjusting by: -0.03900
 Returning: MEX
 Found prep entry: MEX for Me
 Bonded UYB@O6 to MEX@CH3
     Derivative is MEX. Adjusting charge on C6
-    Adjusting by: -0.039
+    Adjusting by: -0.03900
 Jobs a good un
-Finished making assembly.
-Total charge is: -3
+Total charge is: -3.00000
 Edge labeled b1-, with index 60 destroyed
 Node labelled OH destroyed
 Edge labeled b1-4, with index 62 destroyed
@@ -274,8 +272,7 @@ Returning: 0YB
 Found prep entry: 0YB for DGlcpNAc
 Bonded 4ZB@O4 to 0YB@C1
 Jobs a good un
-Finished making assembly.
-Total charge is: -2
+Total charge is: -2.00000
 Edge labeled b1-, with index 118 destroyed
 Node labelled OH destroyed
 Edge labeled b1-4, with index 120 destroyed
@@ -346,7 +343,7 @@ Returning: SO3
 Found prep entry: SO3 for S
 Bonded YZB@O2 to SO3@S1
     Derivative is SO3. Adjusting charge on O2
-    Adjusting by: 0.031
+    Adjusting by: 0.03100
 Returning: 4YA
 Found prep entry: 4YA for DGlcpNS
 Bonded YZB@O4 to 4YA@C1
@@ -354,8 +351,8 @@ Returning: YuA2
 Could not find prep entry for LIdopA(2SO) Glycam: Returning: YuA2
 YuA2
 Jobs a good un
-Finished making assembly.
-Total charge is: -3.194
+Total charge is: -3.19400
+Non-integral charge (-3.194). You cannot run MD with this.
 Edge labeled b1-, with index 144 destroyed
 Node labelled OH destroyed
 Edge labeled b1-4, with index 146 destroyed
@@ -385,8 +382,8 @@ Node labelled 3S destroyed
 Edge labeled 2, with index 170 destroyed
 Node labelled dUA1-4 destroyed
 Node labelled 2S destroyed
-Creating PDB file
-Writing PDB file
+Test level caught error: Non-integral charge (-3.194). You cannot run MD with this.
+
 Parsing unlabelled input sequence:
 dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
 Sequence is sane
@@ -428,7 +425,7 @@ Returning: SO3
 Found prep entry: SO3 for S
 Bonded YuA@O2 to SO3@S1
     Derivative is SO3. Adjusting charge on O2
-    Adjusting by: 0.031
+    Adjusting by: 0.03100
 Returning: 4YA
 Found prep entry: 4YA for DGlcpNS
 Bonded YuA@O4 to 4YA@C1
@@ -439,15 +436,14 @@ Returning: SO3
 Found prep entry: SO3 for S
 Bonded 245@O2 to SO3@S1
     Derivative is SO3. Adjusting charge on O2
-    Adjusting by: 0.031
+    Adjusting by: 0.03100
 Returning: SO3
 Found prep entry: SO3 for S
 Bonded UYA@O6 to SO3@S1
     Derivative is SO3. Adjusting charge on O6
-    Adjusting by: 0.031
+    Adjusting by: 0.03100
 Jobs a good un
-Finished making assembly.
-Total charge is: -6
+Total charge is: -6.00000
 Edge labeled a1-, with index 188 destroyed
 Node labelled OH destroyed
 Edge labeled a1-4, with index 192 destroyed
@@ -482,8 +478,7 @@ Returning: 0GA
 Found prep entry: 0GA for DGlcp
 Bonded 2CU@O2 to 0GA@C1
 Jobs a good un
-Finished making assembly.
-Total charge is: 1.11022e-16
+Total charge is: 0.00000
 Edge labeled a1-2, with index 226 destroyed
 Node labelled DFrufb destroyed
 Node labelled DGlcpa1-2 destroyed
@@ -502,10 +497,128 @@ Returning: 0CU
 Found prep entry: 0CU for DFruf
 Bonded 1GA@O1 to 0CU@C2
 Jobs a good un
-Finished making assembly.
-Total charge is: 1.11022e-16
+Total charge is: 0.00000
 Edge labeled b2-1, with index 232 destroyed
 Node labelled DGlcpa destroyed
 Node labelled DFrufb2-1 destroyed
 Creating PDB file
 Writing PDB file
+Found labels in input
+Test level caught error: Error: We can't handle labeled stuff yet: DNeup5Ac&Label=residue-9;a2-6&Label=link-7;DGalp&Label=residue-8;b1-4&Label=link-6;DGlcpNAc&Label=residue-6;[3&Label=link-5;S&Label=residue-7;]b1-2&Label=link-4;DManp&Label=residue-5;a1-3&Label=link-3;[DGlcpNAc&Label=residue-10;b1-4&Label=link-8;][DManp&Label=residue-12;[2&Label=link-11;S&Label=residue-13;,3&Label=link-12;Me&Label=residue-14;]a1-6&Label=link-10;DManp&Label=residue-11;a1-6&Label=link-9;]DManp&Label=residue-4;b1-4&Label=link-2;DGlcpNAc&Label=residue-3;[6&Label=link-13;Me&Label=residue-15;]b1-4&Label=link-1;DGlcpNAc&Label=residue-2;b1-1&Label=link-0;-OH&Label=residue-1;
+
+Parsing unlabelled input sequence:
+
+Test level caught error: Error: sequence is empty:
+>>><<<
+
+Parsing unlabelled input sequence:
+There will be cake.
+Test level caught error: Error: the cake is a lie:
+>>>There will be cake.<<<
+
+Parsing unlabelled input sequence:
+DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH 
+Test level caught error: Error: sequence contains a space:
+>>>DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH <<<
+
+Parsing unlabelled input sequence:
+DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH
+Test level caught error: Error: the number of [ doesn't match the number of ]. Bad branch in :
+>>>DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH<<<
+
+Parsing unlabelled input sequence:
+DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH
+Sequence is sane
+_OH_____.
+That was a terminal save with i=63
+Saving DXylpb1- with parent OH
+D_Xyl_p___b_1-.
+Saving DGalpb1-4 with parent DXylp
+D_Gal_p___b_1-4.
+Saving DGalpb1-3 with parent DGalp
+D_Gal_p___b_1-3.
+Saving derivative: Boo with parent DGalp
+Node labelled Boo destroyed
+Edge labeled b1-, with index 238 destroyed
+Node labelled OH destroyed
+Edge labeled b1-4, with index 240 destroyed
+Node labelled DXylpb1- destroyed
+Edge labeled b1-3, with index 242 destroyed
+Node labelled DGalpb1-4 destroyed
+Node labelled DGalpb1-3 destroyed
+Test level caught error: Error: we can't parse this residue: "Boo"
+Parsing unlabelled input sequence:
+dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4LIdopA(2SO)a1-4DGlcpNSa1-4DGlcpA[2S]b1-OH
+Sequence is sane
+_OH_____.
+That was a terminal save with i=87
+Saving DGlcpAb1- with parent OH
+D_Glc_p_A__b_1-.
+Saving derivative: 2S with parent DGlcpA
+_S_____2.
+Saving DGlcpNSa1-4 with parent DGlcpA
+D_Glc_p_NS__a_1-4.
+Saving LIdopA(2SO)a1-4 with parent DGlcpNS
+L_Ido_p_A_(2SO)_a_1-4.
+Saving LIdopA(2SO)a1-4 with parent LIdopA(2SO)
+L_Ido_p_A_(2SO)_a_1-4.
+Saving derivative: 2S with parent LIdopA(2SO)
+_S_____2.
+Saving DGlcpNAca1-4 with parent LIdopA(2SO)
+D_Glc_p_NAc__a_1-4.
+Saving derivative: 6S with parent DGlcpNAc
+_S_____6.
+Saving derivative: 3S with parent DGlcpNAc
+_S_____3.
+Saving dUA1-4 with parent DGlcpNAc
+Non standard glycam residue string: dUA1-4
+_dUA_____1-4.
+Saving derivative: 2S with parent dUA
+_S_____2.
+Returning: ROH
+Found prep entry: ROH for OH
+Returning: YZB
+Found prep entry: YZB for DGlcpA
+Bonded ROH@O1 to YZB@C1
+Returning: SO3
+Found prep entry: SO3 for S
+Bonded YZB@O2 to SO3@S1
+    Derivative is SO3. Adjusting charge on O2
+    Adjusting by: 0.03100
+Returning: 4YA
+Found prep entry: 4YA for DGlcpNS
+Bonded YZB@O4 to 4YA@C1
+Returning: 4uA2
+Found prep entry: 4uA2 for LIdopA(2SO)
+Bonded 4YA@O4 to 4uA2@C1
+Returning: YuA2
+Could not find prep entry for LIdopA(2SO) Glycam: Returning: YuA2
+YuA2
+Jobs a good un
+Total charge is: -3.19400
+Non-integral charge (-3.194). You cannot run MD with this.
+Edge labeled b1-, with index 246 destroyed
+Node labelled OH destroyed
+Edge labeled 2, with index 248 destroyed
+Edge labeled a1-4, with index 250 destroyed
+Node labelled DGlcpAb1- destroyed
+Node labelled 2S destroyed
+Edge labeled a1-4, with index 252 destroyed
+Node labelled DGlcpNSa1-4 destroyed
+Edge labeled a1-4, with index 254 destroyed
+Node labelled LIdopA(2SO)a1-4 destroyed
+Edge labeled 2, with index 256 destroyed
+Edge labeled a1-4, with index 258 destroyed
+Node labelled LIdopA(2SO)a1-4 destroyed
+Node labelled 2S destroyed
+Edge labeled 3, with index 262 destroyed
+Edge labeled 1-4, with index 264 destroyed
+Edge labeled 6, with index 260 destroyed
+Node labelled DGlcpNAca1-4 destroyed
+Node labelled 6S destroyed
+Node labelled 3S destroyed
+Edge labeled 2, with index 266 destroyed
+Node labelled dUA1-4 destroyed
+Node labelled 2S destroyed
+Test level caught error: Non-integral charge (-3.194). You cannot run MD with this.
+

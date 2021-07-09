@@ -242,7 +242,8 @@ Assembly::Assembly(std::string inputSequence, std::string prepFilePath)
     }
     catch (const std::string exception)
     {
-        std::cerr << "Error: " << exception << std::endl;
+        throw exception; 
+        //std::cerr << "Error: " << exception << std::endl;
         // And now? A higher level should check the status of assembly and build a response for gems?
         // Assembly.SetStatus/GetStatus and have a status class that's Print function is gems level friendly?
         // Or inhert from generic object? That way every class can set its status during construction.

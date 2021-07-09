@@ -20,8 +20,23 @@ AssemblyBuilder::AssemblyBuilder(std::string inputSequence, std::string prepFile
 	PrepFileSpace::PrepFile prepFile(prepFilePath);
 	this->SetPrepResidueMap(prepFile.GetResidues()); //A mapping between a residue name and its residue object
 	this->GenerateResidues(inputAssembly);
+	this->EnsureIntegralCharge(inputAssembly->GetTotalCharge());
+	return;
+}
+
+void AssemblyBuilder::EnsureIntegralCharge(double charge)
+{
 	std::cout << std::fixed;
-	std::cout << "Finished making assembly.\nTotal charge is: " << std::setprecision(6) << inputAssembly->GetTotalCharge() << std::endl;
+	std::cout << "Total charge is: " << std::setprecision(5) << charge << std::endl;
+	double difference = std::fabs(charge - (std::round(charge)));
+	if (difference > 0.00001 && difference < 0.99999)
+	{
+		std::stringstream errorMessage; 
+		errorMessage << "Non-integral charge (" << charge << "). You cannot run MD with this.\n";
+		std::cout << errorMessage.str();
+		throw errorMessage.str();
+	}
+	return;
 }
 
 void AssemblyBuilder::GenerateResidues(Assembly *assembly)

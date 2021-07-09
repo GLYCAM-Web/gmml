@@ -40,7 +40,7 @@ int main(int argc, char** argv)
         }
         catch (const std::string exception)
         {
-            std::cerr << "Error: " << exception << std::endl;
+            std::cerr << "Test level caught exception: " << exception << std::endl;
         }
     }
 }

@@ -18,19 +18,26 @@ int main ()
     std::string s12 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH";
     std::string s13 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH";
     std::string s14 = "dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4LIdopA(2SO)a1-4DGlcpNSa1-4DGlcpA[2S]b1-OH";
-    std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7};
+    //std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7};
     //std::vector<std::string> sequences {s14};
-    //std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14};
+    std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14};
     std::string prepFilePath = "/programs/gems/gmml/dat/prep/GLYCAM_06j-1_GAGS.prep";
     int loopCounter = 0;
     for (auto &sequence : sequences)
     {	
-        MolecularModeling::Assembly ass(sequence, prepFilePath);
-        std::cout << "Creating PDB file" << std::endl;
-        PdbFileSpace::PdbFile *outputPdbFile = ass.BuildPdbFileStructureFromAssembly(-1,0);
-        std::cout << "Writing PDB file" << std::endl;
-        outputPdbFile->Write(std::to_string(loopCounter) + "_assemblyBuilder.pdb");
-        loopCounter++;
+        try
+        {
+            MolecularModeling::Assembly ass(sequence, prepFilePath);
+            std::cout << "Creating PDB file" << std::endl;
+            PdbFileSpace::PdbFile *outputPdbFile = ass.BuildPdbFileStructureFromAssembly(-1,0);
+            std::cout << "Writing PDB file" << std::endl;
+            outputPdbFile->Write(std::to_string(loopCounter) + "_assemblyBuilder.pdb");
+            loopCounter++;
+        }
+        catch (const std::string exception)
+        {
+            std::cerr << "Test level caught error: " << exception << std::endl;
+        }
 	}
 	return 0;
 }
