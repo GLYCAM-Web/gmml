@@ -314,36 +314,36 @@ Residue_linkage Index: 0, Name: DGalpb1-1ROH, NumberOfShapes: 1, ids: 6LB_A_29_?
 Residue_linkage Index: 1, Name: LRhapa1-6DGalpb, NumberOfShapes: 3, ids: 0hA_A_30_?_?_?@C1 -- 6LB_A_29_?_?_?@O6
 
 *********************
-Building DNeupNAca2-4DGalpb1-OH
+Building DNeupNAca2-4DGalpb1-3LIdopa1-OH
 *********************
 Parsing unlabelled input sequence:
-DNeupNAca2-4DGalpb1-OH
+DNeupNAca2-4DGalpb1-3LIdopa1-OH
 Sequence is sane
 _OH_____.
-That was a terminal save with i=20
-Saving DGalpb1- with parent OH
-D_Gal_p___b_1-.
+That was a terminal save with i=29
+Saving LIdopa1- with parent OH
+L_Ido_p___a_1-.
+Saving DGalpb1-3 with parent LIdop
+D_Gal_p___b_1-3.
 Saving DNeupNAca2-4 with parent DGalp
 D_Neu_p_NAc__a_2-4.
 Returning: ROH
 Found prep entry: ROH for OH
-Returning: 4LB
-Found prep entry: 4LB for DGalp
-Bonded ROH@O1 to 4LB@C1
-Returning: 0SA
-Found prep entry: 0SA for DNeupNAc
-Bonded 4LB@O4 to 0SA@C2
+Returning: 3iA
+Could not find prep entry for LIdop Glycam: Returning: 3iA
+3iA
 Jobs a good un
-Total charge is: -1.00000
-Edge labeled b1-, with index 119 destroyed
+Total charge is: -0.19400
+Non-integral charge (-0.194). You cannot run MD with this.
+Edge labeled a1-, with index 119 destroyed
 Node labelled OH destroyed
-Edge labeled a2-4, with index 121 destroyed
-Node labelled DGalpb1- destroyed
+Edge labeled b1-3, with index 121 destroyed
+Node labelled LIdopa1- destroyed
+Edge labeled a2-4, with index 123 destroyed
+Node labelled DGalpb1-3 destroyed
 Node labelled DNeupNAca2-4 destroyed
-CarbohydrateBuilder called using sequence: DNeupNAca2-4DGalpb1-OH
- and contains these Residue_linkages:
-Residue_linkage Index: 0, Name: DGalpb1-1ROH, NumberOfShapes: 1, ids: 4LB_A_32_?_?_?@C1 -- ROH_A_31_?_?_?@O1
-Residue_linkage Index: 1, Name: DNeu5Acpa2-4DGalpb, NumberOfShapes: 2, ids: 0SA_A_33_?_?_?@C2 -- 4LB_A_32_?_?_?@O4
+Test level caught exception: Non-integral charge (-0.194). You cannot run MD with this.
+
 
 *********************
 Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
@@ -377,21 +377,21 @@ Found prep entry: 0SA for DNeupNAc
 Bonded 8SA@O8 to 0SA@C2
 Jobs a good un
 Total charge is: -4.00000
-Edge labeled a2-, with index 129 destroyed
+Edge labeled a2-, with index 127 destroyed
 Node labelled OH destroyed
-Edge labeled a2-8, with index 131 destroyed
+Edge labeled a2-8, with index 129 destroyed
 Node labelled DNeupNAca2- destroyed
-Edge labeled a2-8, with index 133 destroyed
+Edge labeled a2-8, with index 131 destroyed
 Node labelled DNeupNAca2-8 destroyed
-Edge labeled a2-8, with index 135 destroyed
+Edge labeled a2-8, with index 133 destroyed
 Node labelled DNeupNAca2-8 destroyed
 Node labelled DNeupNAca2-8 destroyed
 CarbohydrateBuilder called using sequence: DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
  and contains these Residue_linkages:
-Residue_linkage Index: 0, Name: DNeu5Acpa2-1ROH, NumberOfShapes: 1, ids: 8SA_A_35_?_?_?@C2 -- ROH_A_34_?_?_?@O1
-Residue_linkage Index: 1, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 8SA_A_36_?_?_?@C2 -- 8SA_A_35_?_?_?@O8
-Residue_linkage Index: 2, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 8SA_A_37_?_?_?@C2 -- 8SA_A_36_?_?_?@O8
-Residue_linkage Index: 3, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 0SA_A_38_?_?_?@C2 -- 8SA_A_37_?_?_?@O8
+Residue_linkage Index: 0, Name: DNeu5Acpa2-1ROH, NumberOfShapes: 1, ids: 8SA_A_33_?_?_?@C2 -- ROH_A_32_?_?_?@O1
+Residue_linkage Index: 1, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 8SA_A_34_?_?_?@C2 -- 8SA_A_33_?_?_?@O8
+Residue_linkage Index: 2, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 8SA_A_35_?_?_?@C2 -- 8SA_A_34_?_?_?@O8
+Residue_linkage Index: 3, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 0SA_A_36_?_?_?@C2 -- 8SA_A_35_?_?_?@O8
 
 *********************
 Building DGlcpA1-OH
@@ -411,7 +411,7 @@ Could not find prep entry for DGlcp Glycam: Returning: 0G
 Jobs a good un
 Total charge is: -0.19400
 Non-integral charge (-0.194). You cannot run MD with this.
-Edge labeled 1-, with index 147 destroyed
+Edge labeled 1-, with index 145 destroyed
 Node labelled OH destroyed
 Node labelled DGlcpA1- destroyed
 Test level caught exception: Non-integral charge (-0.194). You cannot run MD with this.
@@ -460,24 +460,24 @@ Bonded UVB@O6 to SO3@S1
     Adjusting by: 0.03100
 Jobs a good un
 Total charge is: -4.00000
-Edge labeled b1-, with index 151 destroyed
+Edge labeled b1-, with index 149 destroyed
 Node labelled OME destroyed
-Edge labeled 2, with index 153 destroyed
-Edge labeled b1-4, with index 155 destroyed
+Edge labeled 2, with index 151 destroyed
+Edge labeled b1-4, with index 153 destroyed
 Node labelled DGlcpAb1- destroyed
 Node labelled 2S destroyed
-Edge labeled 4, with index 159 destroyed
-Edge labeled 6, with index 157 destroyed
+Edge labeled 4, with index 157 destroyed
+Edge labeled 6, with index 155 destroyed
 Node labelled DGalpNAcb1-4 destroyed
 Node labelled 6S destroyed
 Node labelled 4S destroyed
 CarbohydrateBuilder called using sequence: DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
  and contains these Residue_linkages:
-Residue_linkage Index: 0, Name: DGlcApb1-OOME, NumberOfShapes: 1, ids: YZB_A_41_?_?_?@C1 -- OME_A_40_?_?_?@O
-Residue_linkage Index: 1, Name: Sulpho1-2DGlcApb, NumberOfShapes: 1, ids: SO3_A_42_?_?_?@S1 -- YZB_A_41_?_?_?@O2
-Residue_linkage Index: 2, Name: DGalNAcpb1-4DGlcApb, NumberOfShapes: 1, ids: UVB_A_43_?_?_?@C1 -- YZB_A_41_?_?_?@O4
-Residue_linkage Index: 3, Name: Sulpho1-4DGalNAcpb, NumberOfShapes: 1, ids: SO3_A_44_?_?_?@S1 -- UVB_A_43_?_?_?@O4
-Residue_linkage Index: 4, Name: Sulpho1-6DGalNAcpb, NumberOfShapes: 3, ids: SO3_A_45_?_?_?@S1 -- UVB_A_43_?_?_?@O6
+Residue_linkage Index: 0, Name: DGlcApb1-OOME, NumberOfShapes: 1, ids: YZB_A_39_?_?_?@C1 -- OME_A_38_?_?_?@O
+Residue_linkage Index: 1, Name: Sulpho1-2DGlcApb, NumberOfShapes: 1, ids: SO3_A_40_?_?_?@S1 -- YZB_A_39_?_?_?@O2
+Residue_linkage Index: 2, Name: DGalNAcpb1-4DGlcApb, NumberOfShapes: 1, ids: UVB_A_41_?_?_?@C1 -- YZB_A_39_?_?_?@O4
+Residue_linkage Index: 3, Name: Sulpho1-4DGalNAcpb, NumberOfShapes: 1, ids: SO3_A_42_?_?_?@S1 -- UVB_A_41_?_?_?@O4
+Residue_linkage Index: 4, Name: Sulpho1-6DGalNAcpb, NumberOfShapes: 3, ids: SO3_A_43_?_?_?@S1 -- UVB_A_41_?_?_?@O6
 
 *********************
 Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-6DGlcpb1-6DGalpb1-OH
@@ -521,27 +521,27 @@ Found prep entry: 0SA for DNeupNAc
 Bonded 8SA@O8 to 0SA@C2
 Jobs a good un
 Total charge is: -4.00000
-Edge labeled b1-, with index 173 destroyed
+Edge labeled b1-, with index 171 destroyed
 Node labelled OH destroyed
-Edge labeled b1-6, with index 175 destroyed
+Edge labeled b1-6, with index 173 destroyed
 Node labelled DGalpb1- destroyed
-Edge labeled a2-6, with index 177 destroyed
+Edge labeled a2-6, with index 175 destroyed
 Node labelled DGlcpb1-6 destroyed
-Edge labeled a2-8, with index 179 destroyed
+Edge labeled a2-8, with index 177 destroyed
 Node labelled DNeupNAca2-6 destroyed
-Edge labeled a2-8, with index 181 destroyed
+Edge labeled a2-8, with index 179 destroyed
 Node labelled DNeupNAca2-8 destroyed
-Edge labeled a2-8, with index 183 destroyed
+Edge labeled a2-8, with index 181 destroyed
 Node labelled DNeupNAca2-8 destroyed
 Node labelled DNeupNAca2-8 destroyed
 CarbohydrateBuilder called using sequence: DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-6DGlcpb1-6DGalpb1-OH
  and contains these Residue_linkages:
-Residue_linkage Index: 0, Name: DGalpb1-1ROH, NumberOfShapes: 1, ids: 6LB_A_47_?_?_?@C1 -- ROH_A_46_?_?_?@O1
-Residue_linkage Index: 1, Name: DGlcpb1-6DGalpb, NumberOfShapes: 3, ids: 6GB_A_48_?_?_?@C1 -- 6LB_A_47_?_?_?@O6
-Residue_linkage Index: 2, Name: DNeu5Acpa2-6DGlcpb, NumberOfShapes: 6, ids: 8SA_A_49_?_?_?@C2 -- 6GB_A_48_?_?_?@O6
-Residue_linkage Index: 3, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 8SA_A_50_?_?_?@C2 -- 8SA_A_49_?_?_?@O8
-Residue_linkage Index: 4, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 8SA_A_51_?_?_?@C2 -- 8SA_A_50_?_?_?@O8
-Residue_linkage Index: 5, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 0SA_A_52_?_?_?@C2 -- 8SA_A_51_?_?_?@O8
+Residue_linkage Index: 0, Name: DGalpb1-1ROH, NumberOfShapes: 1, ids: 6LB_A_45_?_?_?@C1 -- ROH_A_44_?_?_?@O1
+Residue_linkage Index: 1, Name: DGlcpb1-6DGalpb, NumberOfShapes: 3, ids: 6GB_A_46_?_?_?@C1 -- 6LB_A_45_?_?_?@O6
+Residue_linkage Index: 2, Name: DNeu5Acpa2-6DGlcpb, NumberOfShapes: 6, ids: 8SA_A_47_?_?_?@C2 -- 6GB_A_46_?_?_?@O6
+Residue_linkage Index: 3, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 8SA_A_48_?_?_?@C2 -- 8SA_A_47_?_?_?@O8
+Residue_linkage Index: 4, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 8SA_A_49_?_?_?@C2 -- 8SA_A_48_?_?_?@O8
+Residue_linkage Index: 5, Name: DNeu5Acpa2-8DNeu5Acpa, NumberOfShapes: 5, ids: 0SA_A_50_?_?_?@C2 -- 8SA_A_49_?_?_?@O8
 
 *********************
 Building LFucpa1-1DFrufb2-OME
@@ -565,15 +565,15 @@ Found prep entry: 0fA for LFucp
 Bonded 1CU@O1 to 0fA@C1
 Jobs a good un
 Total charge is: 0.00000
-Edge labeled b2-, with index 199 destroyed
+Edge labeled b2-, with index 197 destroyed
 Node labelled OME destroyed
-Edge labeled a1-1, with index 201 destroyed
+Edge labeled a1-1, with index 199 destroyed
 Node labelled DFrufb2- destroyed
 Node labelled LFucpa1-1 destroyed
 CarbohydrateBuilder called using sequence: LFucpa1-1DFrufb2-OME
  and contains these Residue_linkages:
-Residue_linkage Index: 0, Name: DFrufb2-OOME, NumberOfShapes: 1, ids: 1CU_A_54_?_?_?@C2 -- OME_A_53_?_?_?@O
-Residue_linkage Index: 1, Name: LFucpa1-1DFrufb, NumberOfShapes: 1, ids: 0fA_A_55_?_?_?@C1 -- 1CU_A_54_?_?_?@O1
+Residue_linkage Index: 0, Name: DFrufb2-OOME, NumberOfShapes: 1, ids: 1CU_A_52_?_?_?@C2 -- OME_A_51_?_?_?@O
+Residue_linkage Index: 1, Name: LFucpa1-1DFrufb, NumberOfShapes: 1, ids: 0fA_A_53_?_?_?@C1 -- 1CU_A_52_?_?_?@O1
 
 *********************
 Building DManpb1-2DManp[6A]b1-2[DGalp[6Ac]b1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
@@ -655,45 +655,45 @@ Found prep entry: 0GB for DGlcp
 Bonded XMA@O6 to 0GB@C1
 Jobs a good un
 Total charge is: -1.00000
-Edge labeled a1-, with index 209 destroyed
+Edge labeled a1-, with index 207 destroyed
 Node labelled OME destroyed
-Edge labeled b1-2, with index 217 destroyed
-Edge labeled a1-4, with index 211 destroyed
+Edge labeled b1-2, with index 215 destroyed
+Edge labeled a1-4, with index 209 destroyed
 Node labelled DGalpa1- destroyed
-Edge labeled 2, with index 213 destroyed
-Edge labeled b1-6, with index 215 destroyed
+Edge labeled 2, with index 211 destroyed
+Edge labeled b1-6, with index 213 destroyed
 Node labelled DManpa1-4 destroyed
 Node labelled 2S destroyed
 Node labelled DGlcpb1-6 destroyed
-Edge labeled b1-2, with index 221 destroyed
-Edge labeled 6, with index 219 destroyed
+Edge labeled b1-2, with index 219 destroyed
+Edge labeled 6, with index 217 destroyed
 Node labelled DManpb1-2 destroyed
 Node labelled 6Me destroyed
-Edge labeled b1-2, with index 227 destroyed
-Edge labeled b1-6, with index 223 destroyed
+Edge labeled b1-2, with index 225 destroyed
+Edge labeled b1-6, with index 221 destroyed
 Node labelled DManpb1-2 destroyed
-Edge labeled 6, with index 225 destroyed
+Edge labeled 6, with index 223 destroyed
 Node labelled DGalpb1-6 destroyed
 Node labelled 6Ac destroyed
-Edge labeled b1-2, with index 231 destroyed
-Edge labeled 6, with index 229 destroyed
+Edge labeled b1-2, with index 229 destroyed
+Edge labeled 6, with index 227 destroyed
 Node labelled DManpb1-2 destroyed
 Node labelled 6A destroyed
 Node labelled DManpb1-2 destroyed
 CarbohydrateBuilder called using sequence: DManpb1-2DManp[6A]b1-2[DGalp[6Ac]b1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
  and contains these Residue_linkages:
-Residue_linkage Index: 0, Name: DGalpa1-OOME, NumberOfShapes: 1, ids: YLA_A_57_?_?_?@C1 -- OME_A_56_?_?_?@O
-Residue_linkage Index: 1, Name: DManpb1-2DGalpa, NumberOfShapes: 1, ids: XMB_A_58_?_?_?@C1 -- YLA_A_57_?_?_?@O2
-Residue_linkage Index: 2, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: XMB_A_59_?_?_?@C1 -- XMB_A_58_?_?_?@O2
-Residue_linkage Index: 3, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: XMB_A_60_?_?_?@C1 -- XMB_A_59_?_?_?@O2
-Residue_linkage Index: 4, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: 0MB_A_61_?_?_?@C1 -- XMB_A_60_?_?_?@O2
-Residue_linkage Index: 5, Name: AcetylA-6DManpb, NumberOfShapes: 3, ids: ACX_A_62_?_?_?@C2A -- XMB_A_60_?_?_?@O6
-Residue_linkage Index: 6, Name: DGalpb1-6DManpb, NumberOfShapes: 3, ids: 6LB_A_63_?_?_?@C1 -- XMB_A_59_?_?_?@O6
-Residue_linkage Index: 7, Name: AcetylA-6DGalpb, NumberOfShapes: 3, ids: ACX_A_64_?_?_?@C2A -- 6LB_A_63_?_?_?@O6
-Residue_linkage Index: 8, Name: Methyl3-6DManpb, NumberOfShapes: 3, ids: MEX_A_65_?_?_?@CH3 -- XMB_A_58_?_?_?@O6
-Residue_linkage Index: 9, Name: DManpa1-4DGalpa, NumberOfShapes: 1, ids: XMA_A_66_?_?_?@C1 -- YLA_A_57_?_?_?@O4
-Residue_linkage Index: 10, Name: Sulpho1-2DManpa, NumberOfShapes: 1, ids: SO3_A_67_?_?_?@S1 -- XMA_A_66_?_?_?@O2
-Residue_linkage Index: 11, Name: DGlcpb1-6DManpa, NumberOfShapes: 3, ids: 0GB_A_68_?_?_?@C1 -- XMA_A_66_?_?_?@O6
+Residue_linkage Index: 0, Name: DGalpa1-OOME, NumberOfShapes: 1, ids: YLA_A_55_?_?_?@C1 -- OME_A_54_?_?_?@O
+Residue_linkage Index: 1, Name: DManpb1-2DGalpa, NumberOfShapes: 1, ids: XMB_A_56_?_?_?@C1 -- YLA_A_55_?_?_?@O2
+Residue_linkage Index: 2, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: XMB_A_57_?_?_?@C1 -- XMB_A_56_?_?_?@O2
+Residue_linkage Index: 3, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: XMB_A_58_?_?_?@C1 -- XMB_A_57_?_?_?@O2
+Residue_linkage Index: 4, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: 0MB_A_59_?_?_?@C1 -- XMB_A_58_?_?_?@O2
+Residue_linkage Index: 5, Name: AcetylA-6DManpb, NumberOfShapes: 3, ids: ACX_A_60_?_?_?@C2A -- XMB_A_58_?_?_?@O6
+Residue_linkage Index: 6, Name: DGalpb1-6DManpb, NumberOfShapes: 3, ids: 6LB_A_61_?_?_?@C1 -- XMB_A_57_?_?_?@O6
+Residue_linkage Index: 7, Name: AcetylA-6DGalpb, NumberOfShapes: 3, ids: ACX_A_62_?_?_?@C2A -- 6LB_A_61_?_?_?@O6
+Residue_linkage Index: 8, Name: Methyl3-6DManpb, NumberOfShapes: 3, ids: MEX_A_63_?_?_?@CH3 -- XMB_A_56_?_?_?@O6
+Residue_linkage Index: 9, Name: DManpa1-4DGalpa, NumberOfShapes: 1, ids: XMA_A_64_?_?_?@C1 -- YLA_A_55_?_?_?@O4
+Residue_linkage Index: 10, Name: Sulpho1-2DManpa, NumberOfShapes: 1, ids: SO3_A_65_?_?_?@S1 -- XMA_A_64_?_?_?@O2
+Residue_linkage Index: 11, Name: DGlcpb1-6DManpa, NumberOfShapes: 3, ids: 0GB_A_66_?_?_?@C1 -- XMA_A_64_?_?_?@O6
 
 *********************
 Building DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
@@ -768,42 +768,42 @@ Found prep entry: 0GB for DGlcp
 Bonded XMA@O6 to 0GB@C1
 Jobs a good un
 Total charge is: -1.00000
-Edge labeled a1-, with index 259 destroyed
+Edge labeled a1-, with index 257 destroyed
 Node labelled OME destroyed
-Edge labeled b1-2, with index 267 destroyed
-Edge labeled a1-4, with index 261 destroyed
+Edge labeled b1-2, with index 265 destroyed
+Edge labeled a1-4, with index 259 destroyed
 Node labelled DGalpa1- destroyed
-Edge labeled 2, with index 263 destroyed
-Edge labeled b1-6, with index 265 destroyed
+Edge labeled 2, with index 261 destroyed
+Edge labeled b1-6, with index 263 destroyed
 Node labelled DManpa1-4 destroyed
 Node labelled 2S destroyed
 Node labelled DGlcpb1-6 destroyed
-Edge labeled b1-2, with index 271 destroyed
-Edge labeled 6, with index 269 destroyed
+Edge labeled b1-2, with index 269 destroyed
+Edge labeled 6, with index 267 destroyed
 Node labelled DManpb1-2 destroyed
 Node labelled 6Me destroyed
-Edge labeled b1-2, with index 273 destroyed
-Edge labeled b1-6, with index 279 destroyed
+Edge labeled b1-2, with index 271 destroyed
+Edge labeled b1-6, with index 277 destroyed
 Node labelled DManpb1-2 destroyed
-Edge labeled b1-2, with index 277 destroyed
-Edge labeled 6, with index 275 destroyed
+Edge labeled b1-2, with index 275 destroyed
+Edge labeled 6, with index 273 destroyed
 Node labelled DManpb1-2 destroyed
 Node labelled 6A destroyed
 Node labelled DManpb1-2 destroyed
 Node labelled DGalpb1-6 destroyed
 CarbohydrateBuilder called using sequence: DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
  and contains these Residue_linkages:
-Residue_linkage Index: 0, Name: DGalpa1-OOME, NumberOfShapes: 1, ids: YLA_A_70_?_?_?@C1 -- OME_A_69_?_?_?@O
-Residue_linkage Index: 1, Name: DManpb1-2DGalpa, NumberOfShapes: 1, ids: XMB_A_71_?_?_?@C1 -- YLA_A_70_?_?_?@O2
-Residue_linkage Index: 2, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: XMB_A_72_?_?_?@C1 -- XMB_A_71_?_?_?@O2
-Residue_linkage Index: 3, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: XMB_A_73_?_?_?@C1 -- XMB_A_72_?_?_?@O2
-Residue_linkage Index: 4, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: 0MB_A_74_?_?_?@C1 -- XMB_A_73_?_?_?@O2
-Residue_linkage Index: 5, Name: AcetylA-6DManpb, NumberOfShapes: 3, ids: ACX_A_75_?_?_?@C2A -- XMB_A_73_?_?_?@O6
-Residue_linkage Index: 6, Name: DGalpb1-6DManpb, NumberOfShapes: 3, ids: 0LB_A_76_?_?_?@C1 -- XMB_A_72_?_?_?@O6
-Residue_linkage Index: 7, Name: Methyl3-6DManpb, NumberOfShapes: 3, ids: MEX_A_77_?_?_?@CH3 -- XMB_A_71_?_?_?@O6
-Residue_linkage Index: 8, Name: DManpa1-4DGalpa, NumberOfShapes: 1, ids: XMA_A_78_?_?_?@C1 -- YLA_A_70_?_?_?@O4
-Residue_linkage Index: 9, Name: Sulpho1-2DManpa, NumberOfShapes: 1, ids: SO3_A_79_?_?_?@S1 -- XMA_A_78_?_?_?@O2
-Residue_linkage Index: 10, Name: DGlcpb1-6DManpa, NumberOfShapes: 3, ids: 0GB_A_80_?_?_?@C1 -- XMA_A_78_?_?_?@O6
+Residue_linkage Index: 0, Name: DGalpa1-OOME, NumberOfShapes: 1, ids: YLA_A_68_?_?_?@C1 -- OME_A_67_?_?_?@O
+Residue_linkage Index: 1, Name: DManpb1-2DGalpa, NumberOfShapes: 1, ids: XMB_A_69_?_?_?@C1 -- YLA_A_68_?_?_?@O2
+Residue_linkage Index: 2, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: XMB_A_70_?_?_?@C1 -- XMB_A_69_?_?_?@O2
+Residue_linkage Index: 3, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: XMB_A_71_?_?_?@C1 -- XMB_A_70_?_?_?@O2
+Residue_linkage Index: 4, Name: DManpb1-2DManpb, NumberOfShapes: 1, ids: 0MB_A_72_?_?_?@C1 -- XMB_A_71_?_?_?@O2
+Residue_linkage Index: 5, Name: AcetylA-6DManpb, NumberOfShapes: 3, ids: ACX_A_73_?_?_?@C2A -- XMB_A_71_?_?_?@O6
+Residue_linkage Index: 6, Name: DGalpb1-6DManpb, NumberOfShapes: 3, ids: 0LB_A_74_?_?_?@C1 -- XMB_A_70_?_?_?@O6
+Residue_linkage Index: 7, Name: Methyl3-6DManpb, NumberOfShapes: 3, ids: MEX_A_75_?_?_?@CH3 -- XMB_A_69_?_?_?@O6
+Residue_linkage Index: 8, Name: DManpa1-4DGalpa, NumberOfShapes: 1, ids: XMA_A_76_?_?_?@C1 -- YLA_A_68_?_?_?@O4
+Residue_linkage Index: 9, Name: Sulpho1-2DManpa, NumberOfShapes: 1, ids: SO3_A_77_?_?_?@S1 -- XMA_A_76_?_?_?@O2
+Residue_linkage Index: 10, Name: DGlcpb1-6DManpa, NumberOfShapes: 3, ids: 0GB_A_78_?_?_?@C1 -- XMA_A_76_?_?_?@O6
 
 *********************
 Building LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
@@ -848,26 +848,26 @@ Found prep entry: MEX for Me
 Bonded XLB@O2 to MEX@CH3
     Derivative is MEX. Adjusting charge on C2
     Adjusting by: -0.03900
-Edge labeled a1-, with index 305 destroyed
+Edge labeled a1-, with index 303 destroyed
 Node labelled OME destroyed
-Edge labeled b1-3, with index 313 destroyed
-Edge labeled a1-4, with index 307 destroyed
+Edge labeled b1-3, with index 311 destroyed
+Edge labeled a1-4, with index 305 destroyed
 Node labelled DGlcpAa1- destroyed
-Edge labeled 2, with index 309 destroyed
-Edge labeled a2-6, with index 311 destroyed
+Edge labeled 2, with index 307 destroyed
+Edge labeled a2-6, with index 309 destroyed
 Node labelled DGlcpa1-4 destroyed
 Node labelled 2S destroyed
 Node labelled DNeupNAca2-6 destroyed
-Edge labeled 2, with index 315 destroyed
-Edge labeled a2-6, with index 317 destroyed
+Edge labeled 2, with index 313 destroyed
+Edge labeled a2-6, with index 315 destroyed
 Node labelled DGalpb1-3 destroyed
 Node labelled 2Me destroyed
-Edge labeled a1-4, with index 325 destroyed
-Edge labeled a2-5, with index 319 destroyed
+Edge labeled a1-4, with index 323 destroyed
+Edge labeled a2-5, with index 317 destroyed
 Node labelled LFrupa2-6 destroyed
-Edge labeled a2-8, with index 321 destroyed
+Edge labeled a2-8, with index 319 destroyed
 Node labelled DNeupNAca2-5 destroyed
-Edge labeled a2-8, with index 323 destroyed
+Edge labeled a2-8, with index 321 destroyed
 Node labelled DNeupNAca2-8 destroyed
 Node labelled DNeupNAca2-8 destroyed
 Node labelled LIdopAa1-4 destroyed
@@ -940,42 +940,42 @@ Found prep entry: 0MA for DManp
 Bonded 2MA@O2 to 0MA@C1
 Jobs a good un
 Total charge is: 0.00000
-Edge labeled b1-, with index 335 destroyed
+Edge labeled b1-, with index 333 destroyed
 Node labelled OH destroyed
-Edge labeled b1-4, with index 337 destroyed
+Edge labeled b1-4, with index 335 destroyed
 Node labelled DGlcpNAcb1- destroyed
-Edge labeled b1-4, with index 339 destroyed
+Edge labeled b1-4, with index 337 destroyed
 Node labelled DGlcpNAcb1-4 destroyed
-Edge labeled a1-3, with index 341 destroyed
-Edge labeled a1-6, with index 347 destroyed
+Edge labeled a1-3, with index 339 destroyed
+Edge labeled a1-6, with index 345 destroyed
 Node labelled DManpb1-4 destroyed
+Edge labeled a1-2, with index 341 destroyed
+Node labelled DManpa1-3 destroyed
 Edge labeled a1-2, with index 343 destroyed
-Node labelled DManpa1-3 destroyed
-Edge labeled a1-2, with index 345 destroyed
 Node labelled DManpa1-2 destroyed
 Node labelled DManpa1-2 destroyed
-Edge labeled a1-3, with index 349 destroyed
-Edge labeled a1-6, with index 353 destroyed
+Edge labeled a1-3, with index 347 destroyed
+Edge labeled a1-6, with index 351 destroyed
 Node labelled DManpa1-6 destroyed
-Edge labeled a1-2, with index 351 destroyed
+Edge labeled a1-2, with index 349 destroyed
 Node labelled DManpa1-3 destroyed
 Node labelled DManpa1-2 destroyed
-Edge labeled a1-2, with index 355 destroyed
+Edge labeled a1-2, with index 353 destroyed
 Node labelled DManpa1-6 destroyed
 Node labelled DManpa1-2 destroyed
 CarbohydrateBuilder called using sequence: DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
  and contains these Residue_linkages:
-Residue_linkage Index: 0, Name: DGlcNAcpb1-1ROH, NumberOfShapes: 1, ids: 4YB_A_86_?_?_?@C1 -- ROH_A_85_?_?_?@O1
-Residue_linkage Index: 1, Name: DGlcNAcpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: 4YB_A_87_?_?_?@C1 -- 4YB_A_86_?_?_?@O4
-Residue_linkage Index: 2, Name: DManpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: VMB_A_88_?_?_?@C1 -- 4YB_A_87_?_?_?@O4
-Residue_linkage Index: 3, Name: DManpa1-3DManpb, NumberOfShapes: 1, ids: 2MA_A_89_?_?_?@C1 -- VMB_A_88_?_?_?@O3
-Residue_linkage Index: 4, Name: DManpa1-2DManpa, NumberOfShapes: 1, ids: 2MA_A_90_?_?_?@C1 -- 2MA_A_89_?_?_?@O2
-Residue_linkage Index: 5, Name: DManpa1-2DManpa, NumberOfShapes: 1, ids: 0MA_A_91_?_?_?@C1 -- 2MA_A_90_?_?_?@O2
-Residue_linkage Index: 6, Name: DManpa1-6DManpb, NumberOfShapes: 3, ids: VMA_A_92_?_?_?@C1 -- VMB_A_88_?_?_?@O6
-Residue_linkage Index: 7, Name: DManpa1-3DManpa, NumberOfShapes: 1, ids: 2MA_A_93_?_?_?@C1 -- VMA_A_92_?_?_?@O3
-Residue_linkage Index: 8, Name: DManpa1-2DManpa, NumberOfShapes: 1, ids: 0MA_A_94_?_?_?@C1 -- 2MA_A_93_?_?_?@O2
-Residue_linkage Index: 9, Name: DManpa1-6DManpa, NumberOfShapes: 3, ids: 2MA_A_95_?_?_?@C1 -- VMA_A_92_?_?_?@O6
-Residue_linkage Index: 10, Name: DManpa1-2DManpa, NumberOfShapes: 1, ids: 0MA_A_96_?_?_?@C1 -- 2MA_A_95_?_?_?@O2
+Residue_linkage Index: 0, Name: DGlcNAcpb1-1ROH, NumberOfShapes: 1, ids: 4YB_A_84_?_?_?@C1 -- ROH_A_83_?_?_?@O1
+Residue_linkage Index: 1, Name: DGlcNAcpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: 4YB_A_85_?_?_?@C1 -- 4YB_A_84_?_?_?@O4
+Residue_linkage Index: 2, Name: DManpb1-4DGlcNAcpb, NumberOfShapes: 1, ids: VMB_A_86_?_?_?@C1 -- 4YB_A_85_?_?_?@O4
+Residue_linkage Index: 3, Name: DManpa1-3DManpb, NumberOfShapes: 1, ids: 2MA_A_87_?_?_?@C1 -- VMB_A_86_?_?_?@O3
+Residue_linkage Index: 4, Name: DManpa1-2DManpa, NumberOfShapes: 1, ids: 2MA_A_88_?_?_?@C1 -- 2MA_A_87_?_?_?@O2
+Residue_linkage Index: 5, Name: DManpa1-2DManpa, NumberOfShapes: 1, ids: 0MA_A_89_?_?_?@C1 -- 2MA_A_88_?_?_?@O2
+Residue_linkage Index: 6, Name: DManpa1-6DManpb, NumberOfShapes: 3, ids: VMA_A_90_?_?_?@C1 -- VMB_A_86_?_?_?@O6
+Residue_linkage Index: 7, Name: DManpa1-3DManpa, NumberOfShapes: 1, ids: 2MA_A_91_?_?_?@C1 -- VMA_A_90_?_?_?@O3
+Residue_linkage Index: 8, Name: DManpa1-2DManpa, NumberOfShapes: 1, ids: 0MA_A_92_?_?_?@C1 -- 2MA_A_91_?_?_?@O2
+Residue_linkage Index: 9, Name: DManpa1-6DManpa, NumberOfShapes: 3, ids: 2MA_A_93_?_?_?@C1 -- VMA_A_90_?_?_?@O6
+Residue_linkage Index: 10, Name: DManpa1-2DManpa, NumberOfShapes: 1, ids: 0MA_A_94_?_?_?@C1 -- 2MA_A_93_?_?_?@O2
 
 *********************
 Building DLyxpa1-2[DManpb1-4][LGulpb1-6]DGlcpa1-2[LGalpa1-5][LFucpa1-1]DFrufb
@@ -997,15 +997,15 @@ Saving DManpb1-4 with parent DGlcp
 D_Man_p___b_1-4.
 Saving DLyxpa1-2 with parent DGlcp
 D_Lyx_p___a_1-2.
-Edge labeled a1-1, with index 381 destroyed
-Edge labeled a1-2, with index 385 destroyed
-Edge labeled a1-5, with index 383 destroyed
+Edge labeled a1-1, with index 379 destroyed
+Edge labeled a1-2, with index 383 destroyed
+Edge labeled a1-5, with index 381 destroyed
 Node labelled DFrufb destroyed
 Node labelled LFucpa1-1 destroyed
 Node labelled LGalpa1-5 destroyed
-Edge labeled a1-2, with index 391 destroyed
-Edge labeled b1-4, with index 389 destroyed
-Edge labeled b1-6, with index 387 destroyed
+Edge labeled a1-2, with index 389 destroyed
+Edge labeled b1-4, with index 387 destroyed
+Edge labeled b1-6, with index 385 destroyed
 Node labelled DGlcpa1-2 destroyed
 Node labelled LGulpb1-6 destroyed
 Node labelled DManpb1-4 destroyed
@@ -1032,15 +1032,15 @@ Saving DLyxpa1-2 with parent DGlcp
 D_Lyx_p___a_1-2.
 Saving DManpb1-4 with parent DGlcp
 D_Man_p___b_1-4.
-Edge labeled a1-1, with index 396 destroyed
-Edge labeled a1-2, with index 398 destroyed
-Edge labeled a1-5, with index 394 destroyed
+Edge labeled a1-1, with index 394 destroyed
+Edge labeled a1-2, with index 396 destroyed
+Edge labeled a1-5, with index 392 destroyed
 Node labelled DFrufb destroyed
 Node labelled LGalpa1-5 destroyed
 Node labelled LFucpa1-1 destroyed
-Edge labeled a1-2, with index 402 destroyed
-Edge labeled b1-4, with index 404 destroyed
-Edge labeled b1-6, with index 400 destroyed
+Edge labeled a1-2, with index 400 destroyed
+Edge labeled b1-4, with index 402 destroyed
+Edge labeled b1-6, with index 398 destroyed
 Node labelled DGlcpa1-2 destroyed
 Node labelled LGulpb1-6 destroyed
 Node labelled DLyxpa1-2 destroyed
@@ -1069,15 +1069,15 @@ Found prep entry: 0CA for DFrup
 Bonded 6MA@O6 to 0CA@C2
 Jobs a good un
 Total charge is: 0.00000
-Edge labeled a1-, with index 407 destroyed
+Edge labeled a1-, with index 405 destroyed
 Node labelled OH destroyed
-Edge labeled a2-6, with index 409 destroyed
+Edge labeled a2-6, with index 407 destroyed
 Node labelled DManpa1- destroyed
 Node labelled DFrupa2-6 destroyed
 CarbohydrateBuilder called using sequence: DFrupa2-6DManpa1-OH
  and contains these Residue_linkages:
-Residue_linkage Index: 0, Name: DManpa1-1ROH, NumberOfShapes: 1, ids: 6MA_A_98_?_?_?@C1 -- ROH_A_97_?_?_?@O1
-Residue_linkage Index: 1, Name: DFrupa2-6DManpa, NumberOfShapes: 3, ids: 0CA_A_99_?_?_?@C2 -- 6MA_A_98_?_?_?@O6
+Residue_linkage Index: 0, Name: DManpa1-1ROH, NumberOfShapes: 1, ids: 6MA_A_96_?_?_?@C1 -- ROH_A_95_?_?_?@O1
+Residue_linkage Index: 1, Name: DFrupa2-6DManpa, NumberOfShapes: 3, ids: 0CA_A_97_?_?_?@C2 -- 6MA_A_96_?_?_?@O6
 
 *********************
 Building DFrupb2-6DManpa1-OH
@@ -1101,15 +1101,15 @@ Found prep entry: 0CB for DFrup
 Bonded 6MA@O6 to 0CB@C2
 Jobs a good un
 Total charge is: -0.00000
-Edge labeled a1-, with index 417 destroyed
+Edge labeled a1-, with index 415 destroyed
 Node labelled OH destroyed
-Edge labeled b2-6, with index 419 destroyed
+Edge labeled b2-6, with index 417 destroyed
 Node labelled DManpa1- destroyed
 Node labelled DFrupb2-6 destroyed
 CarbohydrateBuilder called using sequence: DFrupb2-6DManpa1-OH
  and contains these Residue_linkages:
-Residue_linkage Index: 0, Name: DManpa1-1ROH, NumberOfShapes: 1, ids: 6MA_A_101_?_?_?@C1 -- ROH_A_100_?_?_?@O1
-Residue_linkage Index: 1, Name: DFrupb2-6DManpa, NumberOfShapes: 3, ids: 0CB_A_102_?_?_?@C2 -- 6MA_A_101_?_?_?@O6
+Residue_linkage Index: 0, Name: DManpa1-1ROH, NumberOfShapes: 1, ids: 6MA_A_99_?_?_?@C1 -- ROH_A_98_?_?_?@O1
+Residue_linkage Index: 1, Name: DFrupb2-6DManpa, NumberOfShapes: 3, ids: 0CB_A_100_?_?_?@C2 -- 6MA_A_99_?_?_?@O6
 
 *********************
 Building DGlcp[4D,3Me]b1-2DManp[6H]a1-OH
@@ -1148,22 +1148,22 @@ Dealing with deoxy for 2MA
 Completed MakeDeoxy
 Jobs a good un
 Total charge is: 0.00000
-Edge labeled a1-, with index 427 destroyed
+Edge labeled a1-, with index 425 destroyed
 Node labelled OH destroyed
-Edge labeled b1-2, with index 431 destroyed
-Edge labeled 6, with index 429 destroyed
+Edge labeled b1-2, with index 429 destroyed
+Edge labeled 6, with index 427 destroyed
 Node labelled DManpa1- destroyed
 Node labelled 6H destroyed
-Edge labeled 3, with index 433 destroyed
-Edge labeled 4, with index 435 destroyed
+Edge labeled 3, with index 431 destroyed
+Edge labeled 4, with index 433 destroyed
 Node labelled DGlcpb1-2 destroyed
 Node labelled 3Me destroyed
 Node labelled 4D destroyed
 CarbohydrateBuilder called using sequence: DGlcp[4D,3Me]b1-2DManp[6H]a1-OH
  and contains these Residue_linkages:
-Residue_linkage Index: 0, Name: DManpa1-1ROH, NumberOfShapes: 1, ids: 2MA_A_104_?_?_?@C1 -- ROH_A_103_?_?_?@O1
-Residue_linkage Index: 1, Name: DGlcpb1-2DManpa, NumberOfShapes: 1, ids: 3GB_A_105_?_?_?@C1 -- 2MA_A_104_?_?_?@O2
-Residue_linkage Index: 2, Name: Methyl3-3DGlcpb, NumberOfShapes: 1, ids: MEX_A_106_?_?_?@CH3 -- 3GB_A_105_?_?_?@O3
+Residue_linkage Index: 0, Name: DManpa1-1ROH, NumberOfShapes: 1, ids: 2MA_A_102_?_?_?@C1 -- ROH_A_101_?_?_?@O1
+Residue_linkage Index: 1, Name: DGlcpb1-2DManpa, NumberOfShapes: 1, ids: 3GB_A_103_?_?_?@C1 -- 2MA_A_102_?_?_?@O2
+Residue_linkage Index: 2, Name: Methyl3-3DGlcpb, NumberOfShapes: 1, ids: MEX_A_104_?_?_?@CH3 -- 3GB_A_103_?_?_?@O3
 
 *********************
 Building DFrufb2-6DFrufb2-6[DFrufb2-6DFrufb2-1]DFrufb2-6DFrufb2-6DFrufb2-OH
@@ -1195,19 +1195,19 @@ Bonded ROH@O1 to 6CU@C2
 Returning: 6CU
 Found prep entry: 6CU for DFruf
 Bonded 6CU@O6 to 6CU@C2
-Edge labeled b2-, with index 445 destroyed
+Edge labeled b2-, with index 443 destroyed
 Node labelled OH destroyed
-Edge labeled b2-6, with index 447 destroyed
+Edge labeled b2-6, with index 445 destroyed
 Node labelled DFrufb2- destroyed
-Edge labeled b2-6, with index 449 destroyed
+Edge labeled b2-6, with index 447 destroyed
 Node labelled DFrufb2-6 destroyed
-Edge labeled b2-1, with index 451 destroyed
-Edge labeled b2-6, with index 455 destroyed
-Node labelled DFrufb2-6 destroyed
+Edge labeled b2-1, with index 449 destroyed
 Edge labeled b2-6, with index 453 destroyed
+Node labelled DFrufb2-6 destroyed
+Edge labeled b2-6, with index 451 destroyed
 Node labelled DFrufb2-1 destroyed
 Node labelled DFrufb2-6 destroyed
-Edge labeled b2-6, with index 457 destroyed
+Edge labeled b2-6, with index 455 destroyed
 Node labelled DFrufb2-6 destroyed
 Node labelled DFrufb2-6 destroyed
 Test level caught exception: No linkage code found in GMML metadata for linkage: 1,6
@@ -1218,7 +1218,7 @@ Test level caught exception: No linkage code found in GMML metadata for linkage:
 00005.pdb not created.
 00009.pdb succesfully created.
 00010.pdb succesfully created.
-00011.pdb succesfully created.
+00011.pdb not created.
 00012.pdb succesfully created.
 00013.pdb not created.
 00014.pdb succesfully created.
