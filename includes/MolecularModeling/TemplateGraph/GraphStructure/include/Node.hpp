@@ -149,6 +149,7 @@ namespace glygraph
         currInEdge->getSourceNode()->removeOutEdge(currInEdge);
       }
     tempInEdge.clear();
+    std::cout << "Node labelled " << this->getLabel() << " destroyed\n";
   }
 
   // Copy constructor

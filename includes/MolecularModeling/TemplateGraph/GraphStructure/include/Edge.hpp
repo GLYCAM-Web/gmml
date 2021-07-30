@@ -5,6 +5,7 @@
 #include "./GenericGraphObject.hpp"
 
 #include <memory>
+#include <iostream>
 
 namespace glygraph
 {
@@ -91,6 +92,7 @@ namespace glygraph
   {
     // have our edge destructor remove itself from our inList then let die
     this->targetNode_m->removeInEdge(this);
+    std::cout << "Edge labeled " << this->getLabel() << ", with index " << this->getIndex() << " destroyed\n";
     // lazyInfo(__LINE__, __func__,
     //			"Edge with name <" + this->getName() + "> deleted");
   }
