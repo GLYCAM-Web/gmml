@@ -5,12 +5,12 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
-#include "includes/MolecularModeling/Abstract/GenericObject.hpp"
+#include "../Abstract/GenericObject.hpp"
 
 namespace TemplateGraph
 {
 	template <class T> class Node;
-	template <class T> class Edge; // forward declare 
+	template <class T> class Edge; // forward declare
 	template <class T>
 	class Edge : public Abstract::GenericObject
 	{
@@ -23,7 +23,7 @@ namespace TemplateGraph
 		~Edge() { std::cout << "Edge labeled " << this->GetLabel() << ", with index " << this->GetIndex() << " destroyed\n";}
 		//////////////////////////////////////////////////////////
 		//                       ACCESSOR                       //
-		//////////////////////////////////////////////////////////	
+		//////////////////////////////////////////////////////////
 		inline Node<T>* GetSource() {return source_;}
 		inline Node<T>* GetTarget() {return target_;}
 		//////////////////////////////////////////////////////////
@@ -38,7 +38,7 @@ namespace TemplateGraph
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
 		inline void SetSource(Node<T>* source) {source_ = source;}
-		inline void SetTarget(Node<T>* target) {target_ = target;}       		
+		inline void SetTarget(Node<T>* target) {target_ = target;}
 		//////////////////////////////////////////////////////////
         //                       ATTRIBUTES                     //
         //////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ namespace TemplateGraph
 	//////////////////////////////////////////////////////////
     //                       DEFINITIONS                    //
     //////////////////////////////////////////////////////////
-template <typename T> 
+template <typename T>
 	Edge<T>::Edge(Node<T>* source, Node<T>* target, std::string label)
 	{
 		this->SetSource(source);
@@ -61,10 +61,10 @@ template <typename T>
 		//std::cout << "Edge labeled " << this->GetLabel() << ", with index " << this->GetIndex() << " constructed\n";
 	}
 
-template <typename T>  
+template <typename T>
 	bool Edge<T>::CompareEdgeAndNodeLabels(Edge<T>* otherEdge)
 	{ // If any label here matches any in other label, return true
-		if(this->CompareLabels(otherEdge->GetLabels()) 
+		if(this->CompareLabels(otherEdge->GetLabels())
 			&& this->GetSource()->CompareLabels(otherEdge->GetSource()->GetLabels())
 			&& this->GetTarget()->CompareLabels(otherEdge->GetTarget()->GetLabels()) )
 				return true;

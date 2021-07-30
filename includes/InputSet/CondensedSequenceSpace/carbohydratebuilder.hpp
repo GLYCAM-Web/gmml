@@ -1,7 +1,7 @@
 #ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_BUILDER_HPP
 #define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_BUILDER_HPP
 #include "condensedsequence.hpp"
-#include "./includes/MolecularModeling/assembly.hpp"
+#include "../../MolecularModeling/assembly.hpp"
 
 namespace CondensedSequenceSpace
 { // For specifying a specific shape to be built with GenerateSpecific3DStructure
@@ -28,7 +28,7 @@ typedef std::vector<DihedralOptions> DihedralOptionsVector;
 struct LinkageOptions
 {   // CONSTRUCTOR
     LinkageOptions () {}
-    LinkageOptions(std::string name, std::string index, std::string res1, std::string res2, DihedralOptionsVector likely, DihedralOptionsVector possible) 
+    LinkageOptions(std::string name, std::string index, std::string res1, std::string res2, DihedralOptionsVector likely, DihedralOptionsVector possible)
                     : linkageName_ (name), indexOrderedLabel_ (index), firstResidueNumber_ (res1), secondResidueNumber_ (res2),
                       likelyRotamers_ (likely), possibleRotamers_ (possible) {}
     // DATA
@@ -79,7 +79,7 @@ private:
     // This does not belong in this class:
     ResidueLinkageVector SplitLinkagesIntoPermutants(ResidueLinkageVector &inputLinkages);
     void generateLinkagePermutationsRecursively(ResidueLinkageVector::iterator linkage, ResidueLinkageVector::iterator end, int maxRotamers = 32, int rotamerCount = 0);
-    Residue_linkage* selectLinkageWithIndex(ResidueLinkageVector &inputLinkages, int indexQuery); 
+    Residue_linkage* selectLinkageWithIndex(ResidueLinkageVector &inputLinkages, int indexQuery);
     void resetLinkageIDsToStartFromZero(ResidueLinkageVector &inputLinkages);
     std::string convertIncomingRotamerNamesToStandard(std::string incomingName);
     //////////////////////////////////////////////////////////

@@ -12,8 +12,8 @@
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
-#include "includes/MolecularModeling/Graph/Node.hpp" // TemplateGraph
-#include "includes/MolecularModeling/Abstract/Residue.hpp"
+#include "./Graph/Node.hpp" // TemplateGraph
+#include "./Abstract/Residue.hpp"
 
 
 namespace MolecularModeling
@@ -111,7 +111,7 @@ namespace MolecularModeling
             * @return index_ attribute of the current object of this class
             */
             unsigned long long GetIndex() const;
-            
+
             bool GetIsSugar();
 
 /** @}*/
@@ -223,8 +223,8 @@ namespace MolecularModeling
             void SetIsSugarDerivative(bool is_derivative);
 
             void SetIsAglycon(bool is_aglycon);
-            
-            
+
+
             void SetIsSugar(bool is_sugar);
 /** @}*/
             //////////////////////////////////////////////////////////
@@ -297,7 +297,7 @@ namespace MolecularModeling
 	    bool is_sugar_derivative_ = false;
 	    bool is_aglycon_ = false;
             ResidueNode* residuenode_;                 /*!< A Pointer to a node of the graph structure that indicates this residue >*/              //Added by ayush on 11/20/17 for residuenode in assembly
-            
+
       //Added by Dave 2/1/19
       bool is_sugar_ = false;
     };

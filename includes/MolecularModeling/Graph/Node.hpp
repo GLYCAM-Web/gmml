@@ -6,8 +6,8 @@
 #include <vector>
 #include <memory>
 #include <algorithm>
-#include "includes/MolecularModeling/Abstract/GenericObject.hpp"
-#include "includes/MolecularModeling/Graph/Edge.hpp"
+#include "../Abstract/GenericObject.hpp"
+#include "./Edge.hpp"
 
 namespace TemplateGraph
 {
@@ -92,7 +92,7 @@ template <typename T>  // Need to alter type from weak to shared.
 	{
 		std::vector<Edge<T>*> returnEdges;
 		for (auto &edge : this->GetSharedOutEdges())
-		{   
+		{
 			returnEdges.push_back(edge.get());
 		}
 		return returnEdges;
@@ -109,22 +109,22 @@ template <typename T>
 		return allEdges;
 	}
 
-template <typename T>  
+template <typename T>
 	void Node<T>::RemoveEdge(Node<T>* otherNode)
 	{
 		for(auto &edge : this->GetSharedOutEdges())
 		{   // Can I be my own neighbor? Maybe!
 			if (edge->GetTarget() == otherNode)
-			{ 
+			{
 				outEdges_.erase(std::remove(outEdges_.begin(), outEdges_.end(), edge), outEdges_.end());
 			}
-		} 
+		}
 		// inEdges_ are weak, and them pointing at nothing is handled.
 		// But need to go remove it from the otherNode's out
 		for(auto &edge : this->GetInEdges())
-		{   
+		{
 			if (edge->GetSource() == otherNode)
-			{	
+			{
 				otherNode->RemoveEdge(this);
 			}
 		}
@@ -143,28 +143,28 @@ template <typename T>
 		return;
 	}
 
-template <typename T>  
+template <typename T>
 	void Node<T>::RemoveOutEdgeToNode(Node<T>* otherNode)
 	{
 		for(auto &edge : this->GetSharedOutEdges())
-		{   
-			if (edge->GetTarget() == otherNode) 
-			{ 
+		{
+			if (edge->GetTarget() == otherNode)
+			{
 				outEdges_.erase(std::remove(outEdges_.begin(), outEdges_.end(), edge), outEdges_.end());
 			}
-		} 
+		}
 		return;
 	}
 
-template <typename T>  
+template <typename T>
 	void Node<T>::AddEdge(Node<T>* targetNode, std::string label)
 	{ // assumes adding outEdge. Constructor of Edge calls targetNode.AddIncomingEdge
 	    outEdges_.push_back(std::make_shared<Edge<T>>(this, targetNode, label));
 	    targetNode->AddIncomingEdge(outEdges_.back());
 	    return;
-	} 
+	}
 
-template <typename T>  
+template <typename T>
 	void Node<T>::AddIncomingEdge(std::shared_ptr<Edge<T>> incomingEdge)
 	{
 	    inEdges_.push_back(std::weak_ptr<Edge<T>>(incomingEdge));
@@ -180,7 +180,7 @@ template <typename T>
 			neighbors.push_back(edge->GetTarget());
 		}
 		for(auto &edge : this->GetInEdges())
-		{   
+		{
 			neighbors.push_back(edge->GetSource());
 		}
 		return neighbors;
