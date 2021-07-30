@@ -4,13 +4,13 @@
 using CondensedSequence::ParsedResidue;
 
 ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType) 
-: Node(this, residueString), fullResidueString_ (residueString)  
+: Node(residueString), fullResidueString_ (residueString)
 {
     this->ParseResidueStringIntoComponents(residueString, specifiedType);
 }
 
 ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor, ParsedResidue::Type specifiedType) 
-: Node(this, residueString), fullResidueString_ (residueString) 
+: Node(residueString), fullResidueString_ (residueString)
 {
     this->ParseResidueStringIntoComponents(residueString, specifiedType);
 	this->AddLinkage(neighbor);
@@ -22,11 +22,11 @@ void ParsedResidue::AddLinkage(ParsedResidue* otherRes)
     //std::cout << "Adding Edge: " << label << std::endl;
     if ( this->GetType() == Type::Sugar ) 
     {
-        this->AddEdge(otherRes, this->GetConfiguration() + this->GetLinkage());
+        this->addChild(this->GetConfiguration() + this->GetLinkage(), otherRes);
     }
     else
     {
-        this->AddEdge(otherRes, this->GetLinkage());
+        this->addChild(this->GetLinkage(), otherRes);
     }
     return;
 }
@@ -49,12 +49,22 @@ std::string ParsedResidue::GetLink()
 
 std::vector<ParsedResidue*> ParsedResidue::GetChildren()
 {
-    return this->GetIncomingNeighborObjects();
+	std::vector<ParsedResidue*> resRet;
+	for (glygraph::Node<ParsedResidue>* currNodeRes : this->getParents())
+	{
+		resRet.push_back(currNodeRes->getDeriviedClass());
+	}
+    return resRet;
 }
 
 std::vector<ParsedResidue*> ParsedResidue::GetParents()
 {
-    return this->GetOutgoingNeighborObjects();
+	std::vector<ParsedResidue*> resRet;
+	for (glygraph::Node<ParsedResidue>* currNodeRes : this->getChildren())
+	{
+		resRet.push_back(currNodeRes->getDeriviedClass());
+	}
+    return resRet;
 }
 
 std::string ParsedResidue::GetChildLinkagesForGlycamResidueNaming()
@@ -82,22 +92,22 @@ std::string ParsedResidue::GetName(const bool withLabels)
 {
     if (withLabels)
     {
-        return FindLabelContaining("&Label=");
+        return this->findLabelContaining("&Label=");
     }
     return this->GetIsomer() + this->GetResidueName() + this->GetRingType() + this->GetResidueModifier() + this->GetRingShape();
 }
 
 std::string ParsedResidue::GetLinkageName(const bool withLabels)
 {   // Should only ever be zero or one outEdges in my current design.
-    for (auto &linkage : this->GetOutEdges())
+    for (auto &linkage : this->getOutEdges())
     {
         if (withLabels)
         {
-            return linkage->FindLabelContaining("&Label=");
+            return linkage->findLabelContaining("&Label=");
         }
         else
         {
-            return linkage->GetLabel();
+            return linkage->getLabel();
         }
     }    
     return ""; // aglycone/reducing terminal will not have linkage.

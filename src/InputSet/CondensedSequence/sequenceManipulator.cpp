@@ -2,7 +2,7 @@
 #include <sys/stat.h> // for checking if file exists
 #include <fstream>  // writing outputDotFile
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
-#include "includes/MolecularModeling/Graph/Graph.hpp"
+#include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Graph.hpp"
 
 using CondensedSequence::SequenceManipulator;
 using CondensedSequence::ParsedResidue;
@@ -17,7 +17,7 @@ void SequenceManipulator::ReorderSequence()
 {	// Just doing the default by ascending link number for now.
 	for (auto &residue : this->GetParsedResidues())
 	{
-		residue->SortInEdgesBySourceTObjectComparator();
+		residue->sortInEdgesBySourceTObjectComparator();
 	}
 	return;
 }
@@ -26,10 +26,10 @@ std::vector<ParsedResidue*> SequenceManipulator::GetParsedResiduesOrderedByConne
 {
     std::vector<ParsedResidue*> rawResidues;
     // Go via Graph so order decided by connectivity, depth first traversal:
-    TemplateGraph::Graph<ParsedResidue> sequenceGraph(this->GetTerminal());
-    for(auto &node : sequenceGraph.GetNodes())
+    glygraph::Graph<ParsedResidue> sequenceGraph(this->GetTerminal());
+    for(auto &node : sequenceGraph.getNodes())
     {
-        rawResidues.push_back(node->GetObjectPtr());
+        rawResidues.push_back(node->getDeriviedClass());
     }
     return rawResidues;
 }
@@ -40,13 +40,13 @@ void SequenceManipulator::LabelSequence()
 	std::stringstream ss;
 	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
 	{
-		ss << residue->GetName() << "&Label=residue-" << residue->GetIndex() << ";";
-		residue->AddLabel(ss.str());
+		ss << residue->GetName() << "&Label=residue-" << residue->getIndex() << ";";
+		residue->addLabel(ss.str());
 		ss.str( std::string() ); ss.clear();  // Must do both of these to clear the stream
-		for (auto &linkage : residue->GetOutEdges())
+		for (auto &linkage : residue->getOutEdges())
 		{
-			ss << linkage->GetLabel() << "&Label=link-" << linkage->GetIndex() << ";";
-			linkage->AddLabel(ss.str());
+			ss << linkage->getLabel() << "&Label=link-" << linkage->getIndex() << ";";
+			linkage->addLabel(ss.str());
 			ss.str( std::string() ); ss.clear(); // Must do both of these to clear the stream
 		}
 	}
@@ -59,11 +59,11 @@ void SequenceManipulator::SetIndexByConnectivity()
 	unsigned long long residueIndex = 1; // Convention to start from 1 for residues.
 	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
 	{
-		residue->SetIndex(residueIndex);
+		residue->setIndex(residueIndex);
 		++residueIndex;
-		for (auto &linkage : residue->GetOutEdges())
+		for (auto &linkage : residue->getOutEdges())
 		{
-			linkage->SetIndex(linkIndex);
+			linkage->setIndex(linkIndex);
 			++linkIndex;
 		}
 	}
@@ -167,7 +167,7 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
 {
     std::cout << "Getting GraphVizLine for " << residue.GetName() << "\n"; 
     std::stringstream ss;
-    ss << residue.GetIndex() << " [";
+    ss << residue.getIndex() << " [";
     // Aglycone
     if (residue.GetType() == ParsedResidue::Type::Aglycone)
     {
@@ -199,17 +199,17 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
     }
     if (! derivativeStr.empty())
     {
-        ss << "\n" << "b" << residue.GetIndex(); 
+        ss << "\n" << "b" << residue.getIndex();
         ss << "[ shape=\"plaintext\",fontsize=\"12\",forcelabels=\"true\"; height = \"0.3\"; labelloc = b;  label=\""; 
         ss << derivativeStr << "\"];\n";
-        ss << "{ rank=\"same\"; b" << residue.GetIndex() << " " << residue.GetIndex() << "};\n";
-        ss << "{nodesep=\"0.2\";b" << residue.GetIndex() << ";" << residue.GetIndex() << "};\n";
-        ss << "b" << residue.GetIndex() << "--" << residue.GetIndex() << " [style=invis];\n";
+        ss << "{ rank=\"same\"; b" << residue.getIndex() << " " << residue.getIndex() << "};\n";
+        ss << "{nodesep=\"0.2\";b" << residue.getIndex() << ";" << residue.getIndex() << "};\n";
+        ss << "b" << residue.getIndex() << "--" << residue.getIndex() << " [style=invis];\n";
     }
     // Linkage
     for (auto &parent : residue.GetParents())
     { // There is either 1 or 0 parents, this covers both cases.
-        ss << residue.GetIndex() << "--" << parent->GetIndex() << "[label=\"";
+        ss << residue.getIndex() << "--" << parent->getIndex() << "[label=\"";
         if (configs.show_config_labels_)
         {
         	ss << residue.GetConfiguration();
@@ -221,10 +221,10 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
         ss << "\"];\n";
         if (configs.show_edge_labels_)
         {
-	        for (auto &linkage : residue.GetOutEdges())
+	        for (auto &linkage : residue.getOutEdges())
 	        {
-	            ss << residue.GetIndex() << "--" << parent->GetIndex();
-	            ss << "[taillabel=< <B>" << linkage->GetIndex() << "</B>>, ";
+	            ss << residue.getIndex() << "--" << parent->getIndex();
+	            ss << "[taillabel=< <B>" << linkage->getIndex() << "</B>>, ";
 	            ss << "labelfontsize = 14, labeldistance = 2.0, labelangle = -35";
 	            ss << "];\n";
 	        }

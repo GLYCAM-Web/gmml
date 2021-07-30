@@ -6,6 +6,7 @@
 #include "./GenericGraphObject.hpp"
 
 #include <memory>
+#include <iostream>
 #include <unordered_set>
 
 namespace glygraph
@@ -79,6 +80,21 @@ namespace glygraph
      ***********************************************/
     bool     isNeighbor(Node<T> *const &otherNode_t);
     Edge<T> *getConnectingEdge(Node<T> *const &otherNode_t);
+    std::vector<Node<T> *> getChildren();
+    std::vector<Node<T> *> getParents();
+
+    /************************************************
+     *  LAMBDAS
+     ***********************************************/
+    // Implemented for sorting the vector of incoming edges by the source objects < operator. Uses a lambda function.
+    inline void sortInEdgesBySourceTObjectComparator()
+    	{
+    		std::sort(inEdges_m.begin(), inEdges_m.end(), [](Edge<T>* e1, Edge<T>* e2)
+    		{ // Lambda function for doing the sort.
+    			return ( *(e1->getSourceNode()->getDeriviedClass()) < *(e2->getSourceNode()->getDeriviedClass()) );
+    		});
+    		return;
+    	}
 
   private:
     /************************************************
@@ -94,9 +110,6 @@ namespace glygraph
 
     bool isChildOf(Node<T> *const &possibleParent_t);
     bool isParentOf(Node<T> *const &possibleChild_t);
-
-    std::vector<Node<T> *> getChildren();
-    std::vector<Node<T> *> getParents();
 
     friend class Edge<T>;
   };

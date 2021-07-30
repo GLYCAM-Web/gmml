@@ -2,12 +2,12 @@
 #define GMML_INPUTSET_CONDENSED_SEQUENCE_PARSED_RESIDUE_HPP
 
 #include <string>
-#include "includes/MolecularModeling/Graph/Node.hpp" // TemplateGraph
+#include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp" // TemplateGraph
 #include "includes/MolecularModeling/Abstract/Residue.hpp"
 
 namespace CondensedSequence
 {
-	class ParsedResidue : public Abstract::Residue , public TemplateGraph::Node<ParsedResidue>
+	class ParsedResidue : public Abstract::Residue , public glygraph::Node<ParsedResidue>
 	{  
 	public:
         //////////////////////////////////////////////////////////
