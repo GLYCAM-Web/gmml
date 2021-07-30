@@ -21,7 +21,7 @@ public:
 	}
 
 	inline Labels(std::string name_t) :
-			name_m(name_t), labels_m( { "" } )
+			name_m(name_t), labels_m( { name_t } )
 	{
 	}
 
