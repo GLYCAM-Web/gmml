@@ -13,13 +13,13 @@ using MolecularModeling::Residue;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Residue::Residue() : Node(this)
+Residue::Residue() : Node()
 {
     index_ = this->generateIndex();
     this->SetId(this->CreateID());
 }
 
-Residue::Residue(MolecularModeling::Assembly *assembly, std::string name) : Node(this)
+Residue::Residue(MolecularModeling::Assembly *assembly, std::string name) : Node(name)
 {
     assembly_ = assembly;
     name_ = name;
@@ -32,7 +32,7 @@ Residue::Residue(MolecularModeling::Assembly *assembly, std::string name) : Node
     this->SetId(this->CreateID());
 }
 
-Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue) : Node(this)
+Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue) : Node()
 {
     this->SetIndex(this->generateIndex());
     this->SetName(prep_residue->GetName());
@@ -40,7 +40,7 @@ Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue) : Node(this)
     this->BuildResidueFromPrepFileResidue(prep_residue);
  }
 
-Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type) : Node(this)
+Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type) : Node()
 {
     this->SetIndex(this->generateIndex());
     this->SetName(prep_residue->GetName());

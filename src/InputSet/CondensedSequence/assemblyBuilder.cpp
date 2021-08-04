@@ -47,7 +47,7 @@ void AssemblyBuilder::GenerateResidues(Assembly *assembly)
 	auto result = this->GetPrepResidueMap()->find(this->GetGlycamResidueName(*aglycone));
 	std::cout << "Found prep entry: " << result->first << " for " << aglycone->GetName() << "\n";
 	Residue& gmmlParent = assembly->CreateResidue(result->second, aglycone->GetType());
-	gmmlParent.AddLabel(aglycone->getLabel());
+	gmmlParent.addLabel(aglycone->getLabel());
 	for (auto &child : aglycone->GetChildren())
 	{
 		this->RecurveGenerateResidues(child, gmmlParent, assembly);	
@@ -75,7 +75,7 @@ void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, Molecu
 	{
 		std::cout << "Found prep entry: " << prepEntry->first << " for " << parsedChild->GetName() << "\n";
 		Residue& newGmmlChild = assembly->CreateResidue(prepEntry->second, parsedChild->GetType());
-		newGmmlChild.AddLabel(parsedChild->getLabel());
+		newGmmlChild.addLabel(parsedChild->getLabel());
 		//newGmmlChild.AddEdge(&gmmlParent, parsedChild->GetLinkageName());
 		this->BondResiduesDeduceAtoms(gmmlParent, newGmmlChild, parsedChild->GetLinkageName());
 		//this->InitializeInterResidueGeometry(gmmlParent, newGmmlChild);
@@ -92,7 +92,7 @@ void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, Molecu
 void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parentResidue, MolecularModeling::Residue& childResidue, std::string linkageLabel)
 {
 	// This is using the new Node<Residue> functionality and the old AtomNode 
-	parentResidue.AddEdge(&childResidue, linkageLabel);
+	parentResidue.addChild(linkageLabel, &childResidue);
 	// Now go figure out how which Atoms to bond to each other in the residues.
 	// Rule: Can't ever have a child aglycone or a parent derivative.
 	std::string parentAtomName, childAtomName;

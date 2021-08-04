@@ -223,12 +223,12 @@ void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Re
     //     }
     // }
     /* End Breath first code */
-    for(auto &neighbor : to_this_residue2->GetOutgoingNeighborObjects())
+    for(auto &neighbor : to_this_residue2->getChildren())
     {
-        if(neighbor->GetIndex() != from_this_residue1->GetIndex())
+        if(neighbor->getIndex() != from_this_residue1->GetIndex())
         {
-            residue_linkages->emplace_back(neighbor, to_this_residue2); // Depth first. For Breath first remove this line, and comment out above.
-            this->FigureOutResidueLinkagesInGlycan(to_this_residue2, neighbor, residue_linkages);
+            residue_linkages->emplace_back(neighbor->getDeriviedClass(), to_this_residue2); // Depth first. For Breath first remove this line, and comment out above.
+            this->FigureOutResidueLinkagesInGlycan(to_this_residue2, neighbor->getDeriviedClass(), residue_linkages);
         }
     }
     return;

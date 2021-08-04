@@ -12,7 +12,7 @@
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
-#include "./Graph/Node.hpp" // TemplateGraph
+#include "./TemplateGraph/GraphStructure/include/Node.hpp" // TemplateGraph
 #include "./Abstract/Residue.hpp"
 
 
@@ -24,7 +24,7 @@ namespace MolecularModeling
     //class PrepFileResidue; //This is not in the MolecularModeling namespace
     class Residue; // Forward declare for the vector typedef
     typedef std::vector<MolecularModeling::Residue*> ResidueVector;
-    class Residue : public ResidueProperties, public Abstract::Residue, public TemplateGraph::Node<Residue>
+    class Residue : public ResidueProperties, public Abstract::Residue, public glygraph::Node<Residue>
     {
         public:
             //////////////////////////////////////////////////////////
