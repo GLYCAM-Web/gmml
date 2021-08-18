@@ -8,7 +8,7 @@
 namespace CondensedSequence
 {
 	class ParsedResidue : public Abstract::Residue , public glygraph::Node<ParsedResidue>
-	{  
+	{
 	public:
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
@@ -76,7 +76,7 @@ namespace CondensedSequence
 		std::string isomer_;                      // D or L
         std::string residueName_;                 // Man, Neu, Ido etc
         std::string ringType_;                    // f or p
-        std::string ringShape_;                   // 2SO, 4C1, 1C4 etc 
+        std::string ringShape_;                   // 2SO, 4C1, 1C4 etc
         std::string residueModifier_;             // NAc, Gc, A (IdoA) etc
     	std::string configuration_;               // a or b
         std::string linkage_;                     // 1-4, 2-6, 1- (when connected to OH) etc

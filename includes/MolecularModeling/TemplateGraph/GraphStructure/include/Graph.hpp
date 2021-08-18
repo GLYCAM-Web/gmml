@@ -63,6 +63,8 @@ namespace glygraph
      *  FUNCTIONS
      ***********************************************/
     std::string getGraphvizLink();
+    void dfsWalk(Node<T> *const &startNode_t);
+    void bfsWalk(Node<T> *const &startNode_t);
 
   private:
     /************************************************
@@ -81,10 +83,15 @@ namespace glygraph
     void populateLookups();
     void lazyExpiredFixer();
 
-    std::vector<Node<T> *> getReachableNodes(Node<T> *const &startingNode_t);
+    //std::vector<Node<T> *> getReachableNodes(Node<T> *const &startingNode_t);
     // NOTE: To be used when we are passed solely a root node.
-    void getReachableHelper(Node<T> *const &currentNode_t, std::unordered_set<Node<T> *> &visistedNodeSet_t,
-                            std::vector<Node<T> *> &reachableNodes_t);
+    //void getReachableHelper(Node<T> *const &currentNode_t, std::unordered_set<Node<T> *> &visitedNodeSet_t,
+    //                        std::vector<Node<T> *> &reachableNodes_t);
+
+    void dfsHelper(Node<T> *const &currentNode_t, std::unordered_set<Node<T> *> &visitedNodeSet_t,
+            				std::vector<Node<T> *> &reachableNodes_t);
+    void bfsHelper(Node<T> *const &currentNode_t, std::unordered_set<Node<T> *> &visitedNodeSet_t,
+    						std::vector<Node<T> *> &reachableNodes_t);
   }; // end graph class
 
   template<class T>
@@ -97,17 +104,16 @@ namespace glygraph
   inline Graph<T>::Graph(Node<T> *const &initialNode_t)
   {
 
-    // Lazy way to prevent dupes, cant use method used in get nodes
-    // due to weak_ptr being useless in our typical stl algo functions
+    // Lazy way to prevent dupes even tho algo prevents this. Clean
+	this->allNodes_m.push_back(initialNode_t);
+    this->dfsWalk(initialNode_t);
 
-    std::vector<Node<T> *> tempNodeVec = this->getReachableNodes(initialNode_t);
+    //std::unordered_set<Node<T> *> tempNodeSet(tempNodeVec.begin(), tempNodeVec.end());
 
-    std::unordered_set<Node<T> *> tempNodeSet(tempNodeVec.begin(), tempNodeVec.end());
-
-    for (Node<T> *currentNode : tempNodeSet)
-      {
-        this->allNodes_m.push_back(currentNode);
-      }
+    //for (Node<T> *currentNode : tempNodeSet)
+     // {
+      //  this->allNodes_m.push_back(currentNode);
+     // }
 
     // populate our lookups
     this->populateLookups();
@@ -204,19 +210,19 @@ namespace glygraph
       }
   }
 
-  template<class T>
-  inline std::vector<Node<T> *> Graph<T>::getReachableNodes(Node<T> *const &startingNode_t)
-  {
-    std::unordered_set<Node<T> *> visitedNodes;
+  //template<class T>
+  //inline std::vector<Node<T> *> Graph<T>::getReachableNodes(Node<T> *const &startingNode_t)
+  //{
+ //   std::unordered_set<Node<T> *> visitedNodes;
     // TODO: Please note that this current method does increase the size of our call stack a good bit due to the use of
     // recursion. 			Depending on how large of graphs we are dealing with this could become an issue and it may be
     // a better 			call to use a different method.
 
-    std::vector<Node<T> *> reachableVecToReturn;
+ //   std::vector<Node<T> *> reachableVecToReturn;
 
-    this->getReachableHelper(startingNode_t, visitedNodes, reachableVecToReturn);
-    return reachableVecToReturn;
-  }
+ //   this->getReachableHelper(startingNode_t, visitedNodes, reachableVecToReturn);
+ //   return reachableVecToReturn;
+//  }
 
   // Should be correct. Passing pointer by reference
   template<class T>
@@ -362,7 +368,48 @@ namespace glygraph
     return *this;
   }
 
-  template<class T>
+template<class T>
+inline void Graph<T>::dfsWalk(Node<T> *const&startNode_t)
+{
+    std::unordered_set<Node<T> *> visitedNodes;
+    // TODO: Please note that this current method does increase the size of our call stack a good bit due to the use of
+    // recursion. 			Depending on how large of graphs we are dealing with this could become an issue and it may be
+    // a better 			call to use a different method.
+
+    std::vector<Node<T> *> reachableVecToReturn;
+
+    //NOTE: reachable vector to return redundant due to visited nodes
+    this->dfsHelper(startNode_t, visitedNodes, reachableVecToReturn);
+    this->allNodes_m.clear();
+    this->allNodes_m = reachableVecToReturn;
+}
+
+template<class T>
+inline void glygraph::Graph<T>::dfsHelper(Node<T> *const&currentNode_t,
+		std::unordered_set<Node<T>*> &visitedNodeSet_t,
+		std::vector<Node<T>*> &reachableNodes_t)
+{
+    reachableNodes_t.push_back(currentNode_t);
+
+    visitedNodeSet_t.insert(currentNode_t);
+    for (Node<T> *currNeighbor : currentNode_t->getNeighbors())
+      {
+        if (!(visitedNodeSet_t.count(currNeighbor)))
+          {
+            this->dfsHelper(currNeighbor, visitedNodeSet_t, reachableNodes_t);
+          }
+      }
+}
+
+template<class T>
+inline void Graph<T>::bfsWalk(Node<T> *const&startNode_t)
+{
+	//TODO: Implement
+}
+
+
+//delete!!!
+ /* template<class T>
   inline void Graph<T>::getReachableHelper(Node<T> *const &currentNode_t, std::unordered_set<Node<T> *> &visitedNodeSet_t,
                                            std::vector<Node<T> *> &reachableNodes_t)
   {
@@ -378,6 +425,17 @@ namespace glygraph
           }
       }
   }
+  */
 
 } // namespace temp_graph
+
+
+
+template<class T>
+inline void glygraph::Graph<T>::bfsHelper(Node<T> *const&currentNode_t,
+		std::unordered_set<Node<T>*> &visitedNodeSet_t,
+		std::vector<Node<T>*> &reachableNodes_t)
+{
+}
+
 #endif // TEMPLATEGRAPH_GRAPHSTRUCTURE_INCLUDE_GRAPH_HPP
