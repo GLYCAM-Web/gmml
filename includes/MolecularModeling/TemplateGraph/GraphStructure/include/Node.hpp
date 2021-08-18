@@ -232,7 +232,7 @@ namespace glygraph
       {
         parentsVeclol.push_back(cWP);
       }
-    return parentsVeclol;
+    return parentsVec;
   }
 
   template<class T>
