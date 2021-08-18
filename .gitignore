@@ -1,3 +1,4 @@
+.project
 .qmake.stash
 *.o
 *.so
