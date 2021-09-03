@@ -358,6 +358,30 @@ bool Atom::CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom)
     return withinDistance;
 }
 
+bool Atom::CheckIfOtherAtomIsWithinOverlapDistance(Atom* otherAtom)
+{
+    if (this->GetIndex() == otherAtom->GetIndex())
+    {
+        std::cerr << "Warning have just checked distance between an atom and itself!" << std::endl;
+        return true;
+    }
+    if (std::abs(this->GetCoordinate()->GetX() - otherAtom->GetCoordinate()->GetX()) < (gmml::maxCutOff * 2))
+    {
+        if (std::abs(this->GetCoordinate()->GetY() - otherAtom->GetCoordinate()->GetY()) < (gmml::maxCutOff * 2))
+        {
+            if (std::abs(this->GetCoordinate()->GetZ() - otherAtom->GetCoordinate()->GetZ()) < (gmml::maxCutOff * 2))
+            {
+                //If each dimension is within cutoff, then calculate 3D distance
+                if (this->GetDistanceToAtom(otherAtom) < (gmml::maxCutOff * 2))
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 std::string Atom::DetermineChirality() //Added by Yao 08/26/3019 Return values are R,S,A. A = achiral
 {
     AtomVector primary_neighbors = this->GetNode()->GetNodeNeighbors();
