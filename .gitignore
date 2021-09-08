@@ -1,3 +1,4 @@
+.gitignore
 .project
 .qmake.stash
 *.o
@@ -18,3 +19,6 @@ Doxygen/def
 Doxygen/html
 Doxygen/docs_build.log
 compile.messages
+.cproject
+.settings/language.settings.xml .settings/org.eclipse.cdt.core.prefs
+.settings/
