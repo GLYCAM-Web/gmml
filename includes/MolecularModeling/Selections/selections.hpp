@@ -12,6 +12,7 @@ using MolecularModeling::AtomVector;
 using MolecularModeling::Residue; 
 using MolecularModeling::ResidueVector; 
 using MolecularModeling::Assembly;
+AtomVector FindHeavyAtoms(AtomVector query);
 AtomVector AtomsWithinDistanceOf(Atom *query_atom, double distance, AtomVector atoms);
 void FindAtomsConnectingResidues(Atom *current_atom, Residue *second_residue, AtomVector *connecting_atoms, bool *found_neighbor);
 //void FindAtomsInPathToCycle(Atom *previous_atom, Atom *current_atom, AtomVector *atom_path, bool *found_cycle_point, Atom *&cycle_point);

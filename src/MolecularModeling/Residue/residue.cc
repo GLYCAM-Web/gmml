@@ -137,7 +137,7 @@ std::string Residue::GetName()
 std::string Residue::GetNumber()
 {
     StringVector id = gmml::Split(id_, "_");
-    return id.at(2); // This is silly, why not add residue number to class? OG: I know right?
+    return id.at(2); // This is silly, why not add residue number to class? OG: I know right? OG: Single point of truth?
 }
 MolecularModeling::AtomVector Residue::GetAtoms()
 {

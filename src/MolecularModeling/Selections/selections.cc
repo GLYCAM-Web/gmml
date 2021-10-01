@@ -580,4 +580,16 @@ std::string selection::GetNonCarbonHeavyAtomNumbered(AtomVector atoms, std::stri
     return "";    
 }
 
-
+AtomVector selection::FindHeavyAtoms(AtomVector query)
+{
+	AtomVector foundAtoms;
+	for (auto &atom : query)
+	{
+		char element = atom->GetName().at(0);
+	    if ( ( element == 'S') || ( element == 'C') || ( element == 'O') || ( element == 'N') || ( element == 'P') )
+	    {
+	    	foundAtoms.push_back(atom);
+	    }
+	}
+	return foundAtoms;
+}
