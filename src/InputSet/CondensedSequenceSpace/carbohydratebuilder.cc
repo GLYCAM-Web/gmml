@@ -237,6 +237,7 @@ void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Re
 void carbohydrateBuilder::InitializeClass(std::string inputSequenceString)
 {
     this->SetInputSequenceString(inputSequenceString);
+    assembly_.SetName("CONDENSEDSEQUENCE"); // Necessary for off file to load into tleap
     //assembly_.BuildAssemblyFromCondensedSequence(inputSequenceString, &prepFile);
         // So in the above BuildAssemblyFromCondensedSequence code, linkages are generated that are inaccessible to me.
         // Condensed sequence should be separated so I can handle everything here, but it's a mess.
