@@ -276,5 +276,6 @@ ATOM    260 H3   MEX A  14      30.480   6.947  -5.995                       H
 ATOM    261 CH3  MEX A  15      14.043  12.224  -6.685                       C  
 ATOM    262 H1   MEX A  15      14.426  13.239  -6.673                       H  
 ATOM    263 H2   MEX A  15      12.966  12.261  -6.559                       H  
+ATOM    264 H3   MEX A  15      14.243  11.792  -7.659                       H  
 TER     265      MEX A  15                                                      
 END                                                                             
