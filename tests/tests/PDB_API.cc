@@ -4,7 +4,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <vector>
-#include "../../includes/gmml.hpp"
+#include "includes/gmml.hpp"
 
 std::string TextFileToString(std::string filename)
 {
@@ -60,7 +60,6 @@ int main(int argc, char* argv[]) {
         std::cout << USAGE << std::endl;
         return EXIT_FAILURE;
     }
-
     // Get the Amino Lib file from GMML.
     std::vector<std::string> aminolibs;
     aminolibs.push_back(GEMSHOME + "/gmml/dat/CurrentParams/leaprc.ff12SB_2014-04-24/amino12.lib");

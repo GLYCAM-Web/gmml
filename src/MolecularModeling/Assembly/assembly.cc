@@ -7,66 +7,67 @@
 #include <stack>
 #include <algorithm>
 
-#include "../../../includes/MolecularModeling/assembly.hpp"
-#include "../../../includes/MolecularModeling/residue.hpp"
-#include "../../../includes/MolecularModeling/residuenode.hpp"
-#include "../../../includes/MolecularModeling/atom.hpp"
-#include "../../../includes/MolecularModeling/atomnode.hpp"
-#include "../../../includes/MolecularModeling/molecule.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyatom.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologybond.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyangle.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
-#include "../../../includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
-#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
-#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
-#include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
-#include "../../../includes/ParameterSet/OffFileSpace/offfile.hpp"         //Added by ayush on 06/16/18 for OffFile
-#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfile.hpp"
-#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp"
-#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp"
-#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp"
-#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
-#include "../../../includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../../includes/utils.hpp"
-#include "../../../includes/common.hpp"
-#include "../../../includes/GeometryTopology/grid.hpp"
-#include "../../../includes/GeometryTopology/cell.hpp"
+#include "includes/MolecularModeling/assembly.hpp"
+#include "includes/MolecularModeling/residue.hpp"
+#include "includes/MolecularModeling/residuenode.hpp"
+#include "includes/MolecularModeling/atom.hpp"
+#include "includes/MolecularModeling/atomnode.hpp"
+#include "includes/MolecularModeling/molecule.hpp"
+#include "includes/InputSet/CondensedSequence/assemblyBuilder.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyfile.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyatom.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologybond.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyangle.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
+#include "includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbfile.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdblinksection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
+#include "includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
+#include "includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
+#include "includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
+#include "includes/ParameterSet/OffFileSpace/offfile.hpp"         //Added by ayush on 06/16/18 for OffFile
+#include "includes/ParameterSet/ParameterFileSpace/parameterfile.hpp"
+#include "includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp"
+#include "includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp"
+#include "includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp"
+#include "includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
+#include "includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "includes/utils.hpp"
+#include "includes/common.hpp"
+#include "includes/GeometryTopology/grid.hpp"
+#include "includes/GeometryTopology/cell.hpp"
 
 #include <unistd.h>
 #include <errno.h>
@@ -225,6 +226,28 @@ Assembly::Assembly(std::stringstream& atomStream)
 Assembly::Assembly(std::vector<MolecularModeling::Residue*> residueVector)
 {
   residues_ = residueVector;
+}
+
+Assembly::Assembly(std::string inputSequence, std::string prepFilePath)
+{
+    description_ = "";
+    model_index_ = 0;
+    sequence_number_ = 1;
+    source_file_ = prepFilePath;
+    assemblies_ = AssemblyVector();
+    id_ = "1";
+    try
+    {
+        CondensedSequence::AssemblyBuilder assBuilder(inputSequence, prepFilePath, this);
+    }
+    catch (const std::string exception)
+    {
+        throw exception; 
+        //std::cerr << "Error: " << exception << std::endl;
+        // And now? A higher level should check the status of assembly and build a response for gems?
+        // Assembly.SetStatus/GetStatus and have a status class that's Print function is gems level friendly?
+        // Or inhert from generic object? That way every class can set its status during construction.
+    }
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -592,6 +615,14 @@ MolecularModeling::MoleculeVector Assembly::GetMolecules()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
+Residue& Assembly::CreateResidue(PrepFileSpace::PrepFileResidue* prepResidue, Residue::Type residueType)
+{
+    Residue* newRes = new Residue(prepResidue, residueType); 
+    residues_.push_back(newRes);
+    newRes->SetAssembly(this);
+    return *newRes;
+}
+
 void Assembly::SetName(std::string name)
 {
     name_ = name;

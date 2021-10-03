@@ -66,6 +66,6 @@ private:
     //AtomVector path_;
 }; 
 void FindEndsOfBranchesFromLinkageAtom(Atom *currentAtom, Atom* previousAtom, Branch *branch);
-
+std::string GetNonCarbonHeavyAtomNumbered(AtomVector atoms, std::string queryNumber);
 }
 #endif // SELECTIONS_H

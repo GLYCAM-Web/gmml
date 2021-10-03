@@ -1,19 +1,10 @@
-#ifndef CARBOHYDRATEBUILDER_H
-#define CARBOHYDRATEBUILDER_H
+#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_BUILDER_HPP
+#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_BUILDER_HPP
 #include "condensedsequence.hpp"
 #include "../../MolecularModeling/assembly.hpp"
 
-/*
- * The current but probably very naive plan is that I use my awesome Residue Linkage class and not touch the condensedsequence.cc monster at all.
- * It's a freaking mess, but if I do this correctly all I need from that function is a 3D structure with the bonding set ok.
- * Good luck if there's a bug in there. The only problem I foresee (ha!) is that I won't know the sequence name of each linkage, e.g.:
- * DGalpb1-4DGlcpa- is linkage index 4. I'll need to pass that info back up to Dan in the JSON object, so my plan is to write a function
- * here that will figure that out from the 3D structure... Yeah I really don't want to touch the condensedsequence class. Have you read it?
- * */
-
 namespace CondensedSequenceSpace
-{
-// For specifying a specific shape to be built with GenerateSpecific3DStructure
+{ // For specifying a specific shape to be built with GenerateSpecific3DStructure
 struct SingleRotamerInfo
 {
     std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
@@ -25,8 +16,7 @@ struct SingleRotamerInfo
 typedef std::vector<SingleRotamerInfo> SingleRotamerInfoVector;
 
 struct DihedralOptions
-{
-    // CONSTRUCTOR
+{   // CONSTRUCTOR
     DihedralOptions () {}
     DihedralOptions(std::string name, std::vector<std::string> rotamers) : dihedralName_ (name), rotamers_ (rotamers) {}
     // DATA
@@ -36,10 +26,9 @@ struct DihedralOptions
 typedef std::vector<DihedralOptions> DihedralOptionsVector;
 
 struct LinkageOptions
-{
-  // CONSTRUCTOR
+{   // CONSTRUCTOR
     LinkageOptions () {}
-    LinkageOptions(std::string name, std::string index, std::string res1, std::string res2, DihedralOptionsVector likely, DihedralOptionsVector possible) 
+    LinkageOptions(std::string name, std::string index, std::string res1, std::string res2, DihedralOptionsVector likely, DihedralOptionsVector possible)
                     : linkageName_ (name), indexOrderedLabel_ (index), firstResidueNumber_ (res1), secondResidueNumber_ (res2),
                       likelyRotamers_ (likely), possibleRotamers_ (possible) {}
     // DATA
@@ -55,11 +44,10 @@ typedef std::vector<LinkageOptions> LinkageOptionsVector;
 class carbohydrateBuilder
 {
 public:
-
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTORS                   //
     //////////////////////////////////////////////////////////
-    carbohydrateBuilder(std::string condensedSequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH", std::string prepFilePath = "../dat/prep/GLYCAM_06j-1.prep");
+    carbohydrateBuilder(std::string condensedSequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH", std::string prepFilePath = "../dat/prep/GLYCAM_06j-1.prep");
     //////////////////////////////////////////////////////////
     //                       ACCESSORS                      //
     //////////////////////////////////////////////////////////
@@ -87,11 +75,11 @@ private:
     void SetDefaultShapeUsingMetadata();
     void ResolveOverlaps();
     void FigureOutResidueLinkagesInGlycan(MolecularModeling::Residue *from_this_residue1, MolecularModeling::Residue *to_this_residue2, ResidueLinkageVector *residue_linkages);
-    void InitializeClass(std::string condensedSequence, std::string prepFilePath);
+    void InitializeClass(std::string condensedSequence);
     // This does not belong in this class:
     ResidueLinkageVector SplitLinkagesIntoPermutants(ResidueLinkageVector &inputLinkages);
     void generateLinkagePermutationsRecursively(ResidueLinkageVector::iterator linkage, ResidueLinkageVector::iterator end, int maxRotamers = 32, int rotamerCount = 0);
-    Residue_linkage* selectLinkageWithIndex(ResidueLinkageVector &inputLinkages, int indexQuery); 
+    Residue_linkage* selectLinkageWithIndex(ResidueLinkageVector &inputLinkages, int indexQuery);
     void resetLinkageIDsToStartFromZero(ResidueLinkageVector &inputLinkages);
     std::string convertIncomingRotamerNamesToStandard(std::string incomingName);
     //////////////////////////////////////////////////////////
@@ -103,7 +91,7 @@ private:
     ResidueLinkageVector glycosidicLinkages_;
 };
 }
-#endif // CARBOHYDRATEBUILDER_H
+#endif // GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_BUILDER_HPP
 
 
 

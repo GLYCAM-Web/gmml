@@ -101,7 +101,6 @@ PdbFileSpace::PdbFile* Assembly::BuildPdbFileStructureFromAssembly(int link_card
     AssemblytoPdbSerialNumberMap assembly_to_serial_number_map = AssemblytoPdbSerialNumberMap();
     ExtractPdbModelSectionFromAssembly(residue_set, serial_number, sequence_number, model_index, useInputPDBResidueNumbers, assembly_to_sequence_number_map,
                                     assembly_to_serial_number_map);
-
     PdbFileSpace::PdbLinkSection* link_card = new PdbFileSpace::PdbLinkSection();
     //The follwing line might be commented out for my testing purpose, definitely shouldn'be committed/pushed. If you see it commented out, please uncomment it.
     ExtractPdbLinkSectionFromAssembly(link_card, model_index, assembly_to_sequence_number_map, link_card_direction);
@@ -137,8 +136,8 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
             ExtractPdbModelSectionFromAssembly(residue_set, serial_number, sequence_number, model_number, useInputPDBResidueNumbers,
                                                 assembly_to_pdb_sequence_number_map, assembly_to_pdb_serial_number_map);
         }
-        PdbFileSpace::PdbAtomSection* atom_card = new PdbFileSpace::PdbAtomSection();
-        PdbFileSpace::PdbHeterogenAtomSection* het_atom_card = new PdbFileSpace::PdbHeterogenAtomSection();
+        // PdbFileSpace::PdbAtomSection* atom_card = new PdbFileSpace::PdbAtomSection();
+        // PdbFileSpace::PdbHeterogenAtomSection* het_atom_card = new PdbFileSpace::PdbHeterogenAtomSection();
         PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map = PdbFileSpace::PdbAtomSection::PdbAtomMap();
         PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
         PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomCardMap het_atom_map = PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomCardMap();
@@ -192,6 +191,7 @@ void Assembly::ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueS
         for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
             Atom* atom = (*it2);
+            // std::cout << "Working on atom: " << atom->GetName() << " with description: " << atom->GetDescription() << std::endl;
             std::vector<std::string> dscr = gmml::Split(atom->GetDescription(), ";");
             //            std::stringstream ss;
             //            ss << setw(2) << fixed << setprecision(1) << atom->MolecularDynamicAtom::GetCharge();

@@ -5,14 +5,13 @@
 #include <locale> // for isLower()
 #include <sstream> // for string stream
 
-
 namespace gmml
 {
 namespace MolecularMetadata
 {
 namespace GLYCAM
 {
-std::string Glycam06ResidueNameGenerator(std::string linkages, char isomer, std::string inputResName, char ringType, std::string residueModifier, char configuration)
+std::string Glycam06ResidueNameGenerator(std::string linkages, std::string isomer, std::string inputResName, std::string ringType, std::string residueModifier, std::string configuration)
 {
 /* 	Example inputs: 
 	linkages: "2,3" , "1" , "Terminal" , "4,7"
@@ -28,7 +27,7 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, char isomer, std:
 
 
 	// Link code e.g. 0, 1, 2, W, Z etc
-	std::cout << "\nInputs:\nlinkages: " << linkages << "\nisomer: " << isomer << "\ninputResName: " << inputResName << "\nringType: " << ringType << "\nresidueModifier: " << residueModifier << "\nconfiguration: " << configuration << std::endl;
+	//std::cout << "\nInputs:\nlinkages: " << linkages << "\nisomer: " << isomer << "\ninputResName: " << inputResName << "\nringType: " << ringType << "\nresidueModifier: " << residueModifier << "\nconfiguration: " << configuration << std::endl;
 	std::string linkCode = "";
 	if(!linkages.empty())
 	{
@@ -42,27 +41,27 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, char isomer, std:
 	}
 
 	// Configuration Code i.e. A/B/U/D
-	std::string configurationCode(1, configuration); // Convert to string with string constuctor. 1 copy.
-	if ((ringType == 'f') && (configuration == 'a'))
+	std::string configurationCode = configuration; // I guess this is an ok default
+	if ((ringType == "f") && (configuration == "a"))
 	{
 		configurationCode = "D";
 	}	
-	else if ((ringType == 'f') && (configuration == 'b'))
+	else if ((ringType == "f") && (configuration == "b"))
 	{
 		configurationCode = "U";
 	}
-	else if ((ringType == 'p') && (configuration == 'a'))
+	else if ((ringType == "p") && (configuration == "a"))
 	{
 		configurationCode = "A";
 	}
-	else if ((ringType == 'p') && (configuration == 'b'))
+	else if ((ringType == "p") && (configuration == "b"))
 	{
 		configurationCode = "B";
 	}
 
 	// Residue Code e.g. G, U, A, KN, ROH, NLN
 	Glycam06ResidueNamesToCodesLookupContainer ResidueCodeLookup;
-	auto residueCode = ResidueCodeLookup.GetCodeForResidue(inputResName + residueModifier);
+	std::string residueCode = ResidueCodeLookup.GetCodeForResidue(inputResName + residueModifier);
 	if (residueCode.empty())
 	{
 		residueCode = ResidueCodeLookup.GetCodeForResidue(inputResName + ringType + residueModifier + configuration);
@@ -77,7 +76,7 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, char isomer, std:
 	}
 	if (residueCode.empty())
 	{
-		auto message = "No residue code found in GMML metadata for residue: " + isomer + inputResName + ringType + residueModifier + configuration;
+		std::string message = "No residue code found in GMML metadata for residue: " + isomer + inputResName + ringType + residueModifier + configuration;
 		throw message;
 	}
 
@@ -87,7 +86,7 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, char isomer, std:
 	}
 
 	// D vs L sugars. Residue code will be lowercase for L sugars
-	if ((isomer == 'L') && (residueCode.size() == 1))
+	if ((isomer == "L") && (residueCode.size() == 1))
 	{
 		residueCode = std::tolower(residueCode.at(0));
 	}

@@ -1,4 +1,4 @@
-#include "../../includes/gmml.hpp"
+#include "includes/gmml.hpp"
 #include <iostream>
 #include <string>
 #include <fstream>
@@ -7,7 +7,6 @@
 
 int main(int argc, char* argv[])
 {
-
     MolecularModeling::Assembly assemblyA (argv[1], gmml::InputFileType::PDB);
     assemblyA.BuildStructureByDistance();
     PdbFileSpace::PdbFile *outputPdbFile = assemblyA.BuildPdbFileStructureFromAssembly();

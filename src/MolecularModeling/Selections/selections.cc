@@ -567,6 +567,19 @@ void selection::FindEndsOfBranchesFromLinkageAtom(MolecularModeling::Atom* curre
     return;
 }
 
+std::string selection::GetNonCarbonHeavyAtomNumbered(AtomVector atoms, std::string queryNumber)
+{
+    for (auto &atom : atoms)
+    {    // Assuming atoms like C2, O2 or N2. Nothing else should match.
+        std::string number = atom->GetName().substr(1);
+        if ( (number == queryNumber) && (atom->GetName().at(0) != 'C') && (atom->GetName().at(0) != 'H'))
+        {
+            return atom->GetName();
+        }
+    }
+    return "";    
+}
+
 AtomVector selection::FindHeavyAtoms(AtomVector query)
 {
 	AtomVector foundAtoms;
@@ -580,4 +593,3 @@ AtomVector selection::FindHeavyAtoms(AtomVector query)
 	}
 	return foundAtoms;
 }
-

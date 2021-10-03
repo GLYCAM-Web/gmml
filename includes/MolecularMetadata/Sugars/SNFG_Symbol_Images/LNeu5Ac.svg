@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Layer_1"
+   data-name="Layer 1"
+   width="395.26"
+   height="395.26"
+   viewBox="0 0 395.26 395.26"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="LNeup5Ac.svg">
+  <metadata
+     id="metadata13">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Neu5Ac</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="777"
+     inkscape:window-height="480"
+     id="namedview11"
+     showgrid="false"
+     inkscape:zoom="0.59707533"
+     inkscape:cx="197.63"
+     inkscape:cy="197.63"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Layer_1" />
+  <defs
+     id="defs3">
+    <style
+       id="style5">
+      .cls-1 {
+        fill: #9667fc;
+        stroke: #000;
+        stroke-width: 39.78px;
+      }
+    </style>
+  </defs>
+  <title
+     id="title7">Neu5Ac</title>
+  <g
+     id="layer1"
+     style="stroke:#000000;stroke-opacity:1;stroke-width:23;stroke-miterlimit:4;stroke-dasharray:46,23;stroke-dashoffset:59.8">
+    <path
+       id="path2987"
+       class="cls-1"
+       d="M 7030,7200.5 7199.5,7031 7369,7200.5 7199.5,7370 Z"
+       transform="translate(-7001.87,-7002.87)"
+       inkscape:connector-curvature="0"
+       style="fill:#9667fc;stroke:#000000;stroke-width:23;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:46,23;stroke-dashoffset:59.8" />
+  </g>
+</svg>
