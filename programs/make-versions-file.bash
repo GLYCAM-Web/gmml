@@ -9,5 +9,5 @@
 echo """
 GMML_GIT_BRANCH=\"$(git branch | sed -n -e 's/^\* \(.*\)/\1/p')\"
 GMML_GIT_COMMIT_HASH=\"$(git rev-parse HEAD)\"
-""" >> VERSIONS.sh
+""" > VERSIONS.sh
 
