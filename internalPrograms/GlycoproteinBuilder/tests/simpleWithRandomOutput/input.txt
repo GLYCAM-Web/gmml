@@ -13,7 +13,7 @@ prepFileLocation:Default
 isDeterministic:false
 
 ProteinResidue, GlycanInputType, GlycanName:
-A_24,Library,glycans/Man9-gtgt.pdb
-A_38,Library,glycans/Man9-gtgt.pdb
-A_83,Library,glycans/S1A3_S1G3GN3M3GN2-.pdb
+A_24|Library|glycans/Man9-gtgt.pdb
+A_38|Library|glycans/Man9-gtgt.pdb
+A_83|Library|glycans/S1A3_S1G3GN3M3GN2-.pdb
 END
