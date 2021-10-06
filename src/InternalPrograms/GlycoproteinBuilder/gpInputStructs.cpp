@@ -50,7 +50,7 @@ GlycoproteinBuilderInputs GPInputs::readGPInputFile(std::string workingDirectory
             getline(infile, tempBuffer);
             while(tempBuffer != "END")
             {
-                std::vector<std::string> splitLine = split(tempBuffer, ',');
+                std::vector<std::string> splitLine = split(tempBuffer, '.');
                 gpInputs.glycositesInputVector_.emplace_back(splitLine.at(0), splitLine.at(1), splitLine.at(2));
                 getline(infile, tempBuffer);
             }
