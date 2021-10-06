@@ -1,0 +1,20 @@
+Protein:protein.pdb
+
+NumberOfOutputStructures:1
+
+maxThreads:1
+
+persistCycles:5
+
+overlapTolerance:0.1
+
+prepFileLocation:Default
+
+isDeterministic:true
+
+ProteinResidue, GlycanInputType, GlycanName:
+?_1496,Library,/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/programs/GlycoproteinBuilder/glycans/Man9-gtgt.pdb
+?_1529,Sequence,DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
+?_1565,Library,/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/programs/GlycoproteinBuilder/glycans/Man9-gtgt.pdb
+?_1680,Library,/home/oliver/Programs/GLYCAM_Dev_Env/V_2/Web_Programs/gems/gmml/programs/GlycoproteinBuilder/glycans/Man9-gtgt.pdb
+END

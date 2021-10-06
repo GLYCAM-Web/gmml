@@ -1,0 +1,184 @@
+Working directory is tests/simple
+Read_Input_File
+Build glycoprotein Structure By Distance
+Building assembly from pdb file ...
+Opening PDB file ...
+End of file
+Building structure by distance ...
+AttachGlycansToGlycosites
+glycosite id:ASN_A_24_?_?_1
+glycosite id:ASN_A_38_?_?_1
+glycosite id:ASN_A_83_?_?_1
+Building assembly from pdb file ...
+Opening PDB file ...
+End of file
+Building structure by distance ...
+Building assembly from pdb file ...
+Opening PDB file ...
+End of file
+Building structure by distance ...
+Building assembly from pdb file ...
+Opening PDB file ...
+End of file
+Building structure by distance ...
+Setup for ASN_A_24_?_?_1 chi1: -180 chi2: 180
+Setup for ASN_A_38_?_?_1 chi1: 180 chi2: 180
+Setup for ASN_A_83_?_?_1 chi1: 180 chi2: -180
+BuildGlycoproteinStructure
+Add_Beads
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+   ASN_A_38_?_?_1 |  43.23 |   43.23 |   0.00
+   ASN_A_83_?_?_1 |   2.64 |    2.64 |   0.00
+Cycle 1 of 10
+      Site        |  Total | Protein | Glycan 
+   ASN_A_38_?_?_1 |  18.73 |   17.10 |   1.63
+   ASN_A_83_?_?_1 |  10.22 |    8.59 |   1.63
+Cycle 2 of 10
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   6.70 |    0.00 |   6.70
+   ASN_A_38_?_?_1 |   1.01 |    1.01 |   0.00
+   ASN_A_83_?_?_1 |  73.66 |   66.96 |   6.70
+Cycle 3 of 10
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   3.72 |    3.72 |   0.00
+   ASN_A_38_?_?_1 |  18.87 |   13.18 |   5.69
+   ASN_A_83_?_?_1 | 120.06 |  114.37 |   5.69
+Cycle 4 of 10
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   2.29 |    2.29 |   0.00
+   ASN_A_38_?_?_1 |  10.76 |    0.72 |  10.04
+   ASN_A_83_?_?_1 |  55.22 |   45.19 |  10.04
+Cycle 5 of 10
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.86 |    0.86 |   0.00
+   ASN_A_38_?_?_1 |   1.20 |    1.20 |   0.00
+Cycle 6 of 10
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   4.09 |    4.09 |   0.00
+   ASN_A_38_?_?_1 |  18.37 |   18.37 |   0.00
+Cycle 7 of 10
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   3.01 |    3.01 |   0.00
+   ASN_A_38_?_?_1 |   1.21 |    1.21 |   0.00
+Cycle 8 of 10
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   1.62 |    1.62 |   0.00
+   ASN_A_38_?_?_1 |   0.34 |    0.34 |   0.00
+Cycle 9 of 10
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   2.69 |    2.69 |   0.00
+   ASN_A_38_?_?_1 |   5.21 |    5.21 |   0.00
+Cycle 10 of 10
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   4.95 |    4.95 |   0.00
+Could not resolve quickly
+Setup for ASN_A_24_?_?_1 chi1: -180.00 chi2: -180.00
+Setup for ASN_A_38_?_?_1 chi1: 180.00 chi2: 180.00
+Setup for ASN_A_83_?_?_1 chi1: 180.00 chi2: 180.00
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+   ASN_A_38_?_?_1 |  43.23 |   43.23 |   0.00
+   ASN_A_83_?_?_1 |   2.64 |    2.64 |   0.00
+Initial torsions and overlaps:
+site: A_24 chi1: -180.00, chi2: -180.00, overlap: 0.51
+site: A_38 chi1: 180.00, chi2: 180.00, overlap: 43.23
+site: A_83 chi1: 180.00, chi2: 180.00, overlap: 2.64
+Cycle 2 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+   ASN_A_38_?_?_1 |   1.69 |    1.69 |   0.00
+   ASN_A_83_?_?_1 |   2.64 |    2.64 |   0.00
+Cycle 3 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+   ASN_A_38_?_?_1 |   0.24 |    0.24 |   0.00
+   ASN_A_83_?_?_1 |   2.64 |    2.64 |   0.00
+Cycle 4 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+   ASN_A_38_?_?_1 |   0.24 |    0.24 |   0.00
+   ASN_A_83_?_?_1 |   2.64 |    2.64 |   0.00
+Cycle 5 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+   ASN_A_38_?_?_1 |   0.24 |    0.24 |   0.00
+   ASN_A_83_?_?_1 |   2.64 |    2.64 |   0.00
+Cycle 6 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+   ASN_A_38_?_?_1 |   0.24 |    0.24 |   0.00
+   ASN_A_83_?_?_1 |   2.64 |    2.64 |   0.00
+Cycle 7 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+   ASN_A_38_?_?_1 |   0.24 |    0.24 |   0.00
+   ASN_A_83_?_?_1 |   2.64 |    2.64 |   0.00
+Cycle 8 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+   ASN_A_38_?_?_1 |   0.24 |    0.24 |   0.00
+   ASN_A_83_?_?_1 |   2.64 |    2.64 |   0.00
+Cycle 9 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+   ASN_A_38_?_?_1 |   0.24 |    0.24 |   0.00
+   ASN_A_83_?_?_1 |   2.64 |    2.64 |   0.00
+Cycle 10 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+   ASN_A_38_?_?_1 |   0.24 |    0.24 |   0.00
+   ASN_A_83_?_?_1 |   2.64 |    2.64 |   0.00
+Cycle 11 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+   ASN_A_83_?_?_1 |   2.12 |    2.12 |   0.00
+Cycle 12 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+Cycle 13 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.51 |    0.51 |   0.00
+Cycle 14 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.40 |    0.40 |   0.00
+Cycle 15 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.40 |    0.40 |   0.00
+Cycle 16 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.40 |    0.40 |   0.00
+Cycle 17 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.40 |    0.40 |   0.00
+Cycle 18 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.40 |    0.40 |   0.00
+Cycle 19 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.40 |    0.40 |   0.00
+Cycle 20 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.40 |    0.40 |   0.00
+Cycle 21 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.40 |    0.40 |   0.00
+Cycle 22 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.40 |    0.40 |   0.00
+Cycle 23 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.40 |    0.40 |   0.00
+Cycle 24 of 500
+      Site        |  Total | Protein | Glycan 
+   ASN_A_24_?_?_1 |   0.40 |    0.40 |   0.00
+Cycle 25 of 500
+      Site        |  Total | Protein | Glycan 
+Stopping with all overlaps resolved.
+Global overlap before deleting sites is 0.00
+Finished torsions and overlaps:
+site: A_24 chi1: -128.00, chi2: -58.00, overlap: 0.00
+site: A_38 chi1: 22.00, chi2: -24.00, overlap: 0.00
+site: A_83 chi1: -163.00, chi2: 78.00, overlap: 0.00
+Global overlap is 0.00
+Program got to end ok
