@@ -8,6 +8,7 @@
 #include "includes/MolecularModeling/assembly.hpp" // Only to use silly Assembly functions. Should go away. 
 #include "includes/MolecularModeling/atom.hpp" // For setting Angles and bond distances
 #include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 //using Abstract::Residue; // For Residue::Type
 
@@ -26,14 +27,16 @@ AssemblyBuilder::AssemblyBuilder(std::string inputSequence, std::string prepFile
 
 void AssemblyBuilder::EnsureIntegralCharge(double charge)
 {
-	std::cout << std::fixed;
-	std::cout << "Total charge is: " << std::setprecision(5) << charge << std::endl;
+	std::stringstream ss;
+	ss << std::fixed;
+	ss << "Total charge is: " << std::setprecision(5) << charge << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
 	double difference = std::fabs(charge - (std::round(charge)));
 	if (difference > 0.00001 && difference < 0.99999)
 	{
 		std::stringstream errorMessage; 
 		errorMessage << "Non-integral charge (" << charge << "). You cannot run MD with this.\n";
-		std::cout << errorMessage.str();
+		std::cerr << errorMessage.str();
 		throw errorMessage.str();
 	}
 	return;
@@ -45,14 +48,16 @@ void AssemblyBuilder::GenerateResidues(Assembly *assembly)
 	createdResidues.reserve(this->GetParsedResidues().size());
 	auto aglycone = this->GetTerminal();
 	auto result = this->GetPrepResidueMap()->find(this->GetGlycamResidueName(*aglycone));
-	std::cout << "Found prep entry: " << result->first << " for " << aglycone->GetName() << "\n";
+	std::stringstream ss;
+	ss << "Found prep entry: " << result->first << " for " << aglycone->GetName() << "\n";
 	Residue& gmmlParent = assembly->CreateResidue(result->second, aglycone->GetType());
 	gmmlParent.addLabel(aglycone->getLabel());
 	for (auto &child : aglycone->GetChildren())
 	{
 		this->RecurveGenerateResidues(child, gmmlParent, assembly);	
 	}
-	std::cout << "Jobs a good un" << std::endl;
+	ss << "Finished generating residues for Assembly.\n" << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
 	return;
 }
 
@@ -60,26 +65,30 @@ void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, Molecu
 	Assembly* assembly)
 {	
 	//std::cout << "Recurve Gen Res" << std::endl;
+	std::stringstream ss;
 	if (parsedChild->GetType() == ParsedResidue::Type::Deoxy)
 	{
-		std::cout << "Dealing with deoxy for " << gmmlParent.GetName() << std::endl;
+		ss << "Dealing with deoxy for " << gmmlParent.GetName() << std::endl;
+		gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
 		gmmlParent.MakeDeoxy(parsedChild->GetLink());
 		return;
 	}
 	auto prepEntry = this->GetPrepResidueMap()->find(this->GetGlycamResidueName(*parsedChild));
 	if (prepEntry == this->GetPrepResidueMap()->end())
 	{
-		std::cout << "Could not find prep entry for " << parsedChild->GetName() << " Glycam: " << this->GetGlycamResidueName(*parsedChild) << std::endl; 
+		ss << "Could not find prep entry for " << parsedChild->GetName() << " Glycam: " << this->GetGlycamResidueName(*parsedChild) << std::endl;
+		gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+		throw ss.str();
 	}
 	else
 	{
-		std::cout << "Found prep entry: " << prepEntry->first << " for " << parsedChild->GetName() << "\n";
+		ss << "Found prep entry: " << prepEntry->first << " for " << parsedChild->GetName() << "\n";
+		gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
 		Residue& newGmmlChild = assembly->CreateResidue(prepEntry->second, parsedChild->GetType());
 		newGmmlChild.addLabel(parsedChild->getLabel());
-		//newGmmlChild.AddEdge(&gmmlParent, parsedChild->GetLinkageName());
+		//newGmmlChild.AddEdge(&gmmlParent, parsedChild->GetLinkageName()); // I think this is wishlist versus BondResiduesDeduceAtoms.
 		this->BondResiduesDeduceAtoms(gmmlParent, newGmmlChild, parsedChild->GetLinkageName());
-		//this->InitializeInterResidueGeometry(gmmlParent, newGmmlChild);
-		//std::cout << "Recurve created " << newGmmlChild.GetLabel() << std::endl;
+		//this->InitializeInterResidueGeometry(gmmlParent, newGmmlChild); // I think this is wishlist versus BondResiduesDeduceAtoms.
 		for (auto &child : parsedChild->GetChildren())
 		{
 			this->RecurveGenerateResidues(child, newGmmlChild, assembly);	
@@ -91,6 +100,7 @@ void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, Molecu
 // All this stuff should go into Residue. Residue has private Head and child atoms with private getters/setters. Solves this mess.
 void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parentResidue, MolecularModeling::Residue& childResidue, std::string linkageLabel)
 {
+	std::stringstream logss;
 	// This is using the new Node<Residue> functionality and the old AtomNode 
 	parentResidue.addChild(linkageLabel, &childResidue);
 	// Now go figure out how which Atoms to bond to each other in the residues.
@@ -126,25 +136,28 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 	// Now bond the atoms. Needs to change when AtomNode goes away.
 	childAtom->GetNode()->AddNodeNeighbor(parentAtom);
 	parentAtom->GetNode()->AddNodeNeighbor(childAtom);
-	std::cout << "Bonded " << parentResidue.GetName() << "@" << parentAtomName << " to " << childResidue.GetName() << "@" << childAtomName << std::endl;
+	logss << "Bonded " << parentResidue.GetName() << "@" << parentAtomName << " to " << childResidue.GetName() << "@" << childAtomName << std::endl;
 	// Charge adjustment
 	if (childResidue.GetType() == Residue::Type::Derivative)
 	{
-	//	std::cout << "Charge Adjustment.\n";
+		logss << "Charge Adjustment.\n";
 		gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeChargeAdjustmentLookupContainer lookup;
 		std::string adjustAtomName = lookup.GetAdjustmentAtom(childResidue.GetName());
 		adjustAtomName += linkageLabel.substr(0,1); 
 		Atom* atomToAdjust = parentResidue.GetAtom(adjustAtomName);
-		std::cout << "    Derivative is " << childResidue.GetName() << ". Adjusting charge on " << atomToAdjust->GetName() << "\n";
-		std::cout << "    Adjusting by: " << lookup.GetAdjustmentCharge(childResidue.GetName()) << "\n";
+		logss << "    Derivative is " << childResidue.GetName() << ". Adjusting charge on " << atomToAdjust->GetName() << "\n";
+		logss << "    Adjusting by: " << lookup.GetAdjustmentCharge(childResidue.GetName()) << "\n";
+		gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
 		atomToAdjust->SetCharge(atomToAdjust->GetCharge() + lookup.GetAdjustmentCharge(childResidue.GetName()) );
 	}
 	// Geometry
-	//std::cout << "Setting bond distance.\n";
+	logss << "Setting bond distance.\n";
+	gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
 	MolecularModeling::Assembly whyOhGodWhy; // Doing as few changes as possible. These functions should be in a geometryTopology namespace.	
 	whyOhGodWhy.SetResidueResidueBondDistance(parentAtom, childAtom);
 	// Angle
-	//std::cout << "Setting angles.\n";
+	logss << "Setting angles.\n";
+	gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
 	const double angle_to_set = 109.4;
 	Atom* parentAtomNeighbor;
 	for (auto &neighbor : parentAtom->GetNode()->GetNodeNeighbors())

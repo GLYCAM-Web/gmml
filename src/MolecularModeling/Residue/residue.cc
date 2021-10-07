@@ -1,11 +1,12 @@
-#include "../../../includes/MolecularModeling/residue.hpp"
-#include "../../../includes/MolecularModeling/assembly.hpp"
-#include "../../../includes/MolecularModeling/atom.hpp"
-#include "../../../includes/MolecularModeling/atomnode.hpp"
-#include "../../../includes/MolecularModeling/residueproperties.hpp"
-#include "../../../includes/MolecularModeling/residuenode.hpp"
-#include "../../../includes/MolecularModeling/overlaps.hpp"
-#include "../../../includes/common.hpp"
+#include "includes/MolecularModeling/residue.hpp"
+#include "includes/MolecularModeling/assembly.hpp"
+#include "includes/MolecularModeling/atom.hpp"
+#include "includes/MolecularModeling/atomnode.hpp"
+#include "includes/MolecularModeling/residueproperties.hpp"
+#include "includes/MolecularModeling/residuenode.hpp"
+#include "includes/MolecularModeling/overlaps.hpp"
+//#include "includes/common.hpp"
+#include "includes/CodeUtils/logging.hpp"
 #include <algorithm>    // std::any_of
 
 using MolecularModeling::Residue;

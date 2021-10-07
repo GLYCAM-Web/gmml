@@ -22,8 +22,8 @@
 //    Please put files not ib a subdirectory first
 //    Then add subdirectories in alphabetical order
 //    Apply those two rules recursively
-#include "../../../includes/utils.hpp"
-#include "../../../includes/common.hpp"
+//#include "../../../includes/utils.hpp"
+//#include "../../../includes/common.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/rotation.hpp"
@@ -90,7 +90,7 @@
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp"
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp" //Added by Yao 03/18/2020
-
+#include "includes/CodeUtils/logging.hpp"
 
 using MolecularModeling::Assembly;
 using MolecularModeling::AssemblyVector;

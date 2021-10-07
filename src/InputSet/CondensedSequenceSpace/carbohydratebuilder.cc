@@ -1,6 +1,7 @@
-#include "../../../includes/InputSet/CondensedSequenceSpace/carbohydratebuilder.hpp"
-#include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
-#include "../../../includes/ParameterSet/OffFileSpace/offfile.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/carbohydratebuilder.hpp"
+#include "includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
+#include "includes/ParameterSet/OffFileSpace/offfile.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -142,11 +143,14 @@ CondensedSequenceSpace::LinkageOptionsVector carbohydrateBuilder::GenerateUserOp
 
 void carbohydrateBuilder::Print()
 {
-    std::cout << "CarbohydrateBuilder called using sequence: " << this->GetInputSequenceString() << "\n and contains these Residue_linkages:\n";
+    std::stringstream logss;
+    logss << "CarbohydrateBuilder called using sequence: " << this->GetInputSequenceString() << "\n and contains these Residue_linkages:\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
     for (auto & linkage : glycosidicLinkages_ )
     {
         linkage.Print();
-    } 
+    }
+    return; 
 }
 //////////////////////////////////////////////////////////
 //                   PRIVATE FUNCTIONS                  //
@@ -218,7 +222,7 @@ void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Re
     // for(auto &neighbor : neighbors)
     // {
     //     if(neighbor->GetIndex() != from_this_residue1->GetIndex()) // If not the previous residue
-    //     {   //std::cout << "Seggie2?" << std::endl;
+    //     {   
     //         residue_linkages->emplace_back(neighbor, to_this_residue2);
     //     }
     // }
@@ -243,16 +247,13 @@ void carbohydrateBuilder::InitializeClass(std::string inputSequenceString)
         // Condensed sequence should be separated so I can handle everything here, but it's a mess.
         // In the mean time I must also create linkages at this level, but I can't figure out how to reset linkage IDs.
         // Maybe I can check if both passed in residues are the same, and reset if so? That only happens here I think.
-    //std::cout << "About to figure out linkages in glycan." << std::endl;
     this->FigureOutResidueLinkagesInGlycan(assembly_.GetResidues().at(0), assembly_.GetResidues().at(0), &glycosidicLinkages_);
-    //std::cout << "Resetting linkage ids" << std::endl;
     this->resetLinkageIDsToStartFromZero(glycosidicLinkages_); /* just a fudge until I figure out how to have linkage ids be sensible
         When you instantiate a condensedSequence it generates a 3D structure, and sets default torsions using Residue_Linkage. That class is decoupled 
         from this class as it needs to be replaced, but for now I'm using both and Residue_Linkages are created in that class, so when they
         are created again via this class, their index numbers are "too high" as they are static variables.
         */ 
-    //std::cout << "Returning from initializng carb builder" << std::endl;
- return;
+    return;
 }
 
 /* This is a straight copy from glycoprotein_builder. I need a high level class that deals with both Residue_linkages, ring shapes

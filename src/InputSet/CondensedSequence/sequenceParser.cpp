@@ -1,28 +1,29 @@
 #include <string>
 #include <algorithm> // Reverse function.
-
 #include "includes/InputSet/CondensedSequence/sequenceParser.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using CondensedSequence::SequenceParser;
 using CondensedSequence::ParsedResidue;
 
 SequenceParser::SequenceParser (std::string inputSequence)
 {
-    
+    std::stringstream logss;
 	if (inputSequence.find(';') != std::string::npos)
 	{
-		std::cout << "Found labels in input\n";
+		logss << "Found labels in input\n";
 		this->ParseLabelledInput(inputSequence);
 	}
 	else
 	{
-		std::cout << "Parsing unlabelled input sequence:\n" << inputSequence << "\n";
+		logss << "Parsing unlabelled input sequence:\n" << inputSequence << "\n";
         if (this->CheckSequenceSanity(inputSequence))
         {
-            std::cout << "Sequence is sane\n";
+            logss << "Sequence is sane\n";
             this->ParseCondensedSequence(inputSequence);
         }
     }
+    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
     return;
 }
 
@@ -81,75 +82,78 @@ bool SequenceParser::ParseCondensedSequence(const std::string sequence)
         parsedResidues_.push_back(std::make_unique<ParsedResidue>(sequence.substr(i), ParsedResidue::Type::Aglycone));
     }
     auto terminal = parsedResidues_.back().get();
-    std::cout << "That was a terminal save with i=" << i << "\n";
     this->RecurveParseAlt(i, sequence, terminal); 
     return true;
 }
 
 void SequenceParser::RecurveParseAlt(size_t &i, const std::string sequence, ParsedResidue* parent)
 {
-    //std::cout << "Started RecurveParseAlt with i=" << i << " and sequence[i] is " << sequence[i] << "\n";
+    //std::stringstream logss;
+    //logss << "Started RecurveParseAlt with i=" << i << " and sequence[i] is " << sequence[i] << "\n";
     size_t windowEnd = i;
     while (i > 0)
     {
         i--;
-        //std::cout << "i=" << i << " sequence[i]=" << sequence[i] << "\n";
+        //logss << "i=" << i << " sequence[i]=" << sequence[i] << "\n";
         if ( ( sequence[i] == '-' ) && ((windowEnd - i) > 5 ) )
         { // dash and have read enough that there is a residue to save.
-          //  std::cout << "- with i=" << i << "\n";
+          //  logss << "- with i=" << i << "\n";
             parent = this->SaveResidue(i + 2, windowEnd, sequence, parent);
             windowEnd = i + 2; // Get to the right side of the number e.g. 1-4
         }
         else if ( sequence[i] == ']' )
         { // Start of branch: recurve. Maybe save if have read enough.
-          //  std::cout << "Starting recurve down a branch as have found a ] with i=" << i << "\n";
+          //  logss << "Starting recurve down a branch as have found a ] with i=" << i << "\n";
             if ((windowEnd - i) > 5)
             {   // if not a derivative start and have read enough, save.
                 parent = this->SaveResidue(i + 1, windowEnd, sequence, parent);
-           //     std::cout << "Recurving with branch\n";
+           //     logss << "Recurving with branch\n";
                 this->RecurveParseAlt(i, sequence, parent);
-           //     std::cout << "Returned from branch\n";
+           //     logss << "Returned from branch\n";
                 windowEnd = i;
             }
             else if ((windowEnd - i) > 1) // and not > 5
             { // Derivative. Note that windowEnd does not move.
-            //    std::cout << "Recurving with derivative\n";
+            //    logss << "Recurving with derivative\n";
                 this->RecurveParseAlt(i, sequence, parent);
-            //    std::cout << "Returned from derivative recurve\n";
+            //    logss << "Returned from derivative recurve\n";
             }
             else 
             {  // Return from branch and find new one. e.g. [Gal][Gal]
-            //    std::cout << "Recurving with ][ branch\n";
+            //    logss << "Recurving with ][ branch\n";
                 this->RecurveParseAlt(i, sequence, parent);
-            //    std::cout << "Returned from ][ branch\n";
+            //    logss << "Returned from ][ branch\n";
                 windowEnd = i;
             }
         }
         else if ( sequence[i] == '[' )
         { // End of branch
-            //std::cout << "Saving and returning from recurve due to [ with i=" << i << "\n"; 
+            //logss << "Saving and returning from recurve due to [ with i=" << i << "\n"; 
             this->SaveResidue(i + 1, windowEnd, sequence, parent);
+            //gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
             return;
         }
         else if ( sequence[i] == ',' )
         { // , in derivative list
-            //std::cout << ", so saving derivative with i=" << i << "\n";
+            //logss << ", so saving derivative with i=" << i << "\n";
             parent = this->SaveResidue(i + 1, windowEnd, sequence, parent);
             windowEnd = i;
         }
         else if ( i == 0)
         { // Fin.
-            //std::cout << "i == 0 so need to save and then I'm finished!" << "\n";
+            //logss << "i == 0 so need to save and then I'm finished!" << "\n";
             parent = this->SaveResidue(i, windowEnd, sequence, parent);
         }
     }
+    //gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
     return; 
 }
 
 ParsedResidue* SequenceParser::SaveResidue(const size_t windowStart, const size_t windowEnd, const std::string sequence, ParsedResidue* parent)
 {
+    std::stringstream logss;
     std::string residueString = sequence.substr(windowStart, (windowEnd - windowStart));
-    //std::cout << "At start of save: " << residueString << std::endl;
+    logss << "At start of save: " << residueString << std::endl;
     // Splice out anything within [ and ].
     if (residueString.find('[') != std::string::npos) 
     {
@@ -158,26 +162,28 @@ ParsedResidue* SequenceParser::SaveResidue(const size_t windowStart, const size_
         std::string firstPart = residueString.substr(0, branch_start);
         std::string lastPart = residueString.substr(branch_finish);
         residueString = firstPart + lastPart;
-        //std::cout << firstPart << " + " << lastPart << std::endl;
+        logss << firstPart << " + " << lastPart << std::endl;
     }
     if (residueString.find('-') != std::string::npos)
     {
-        std::cout << "Saving " << residueString << " with parent " << parent->GetName() <<  std::endl;
+        logss << "Saving " << residueString << " with parent " << parent->GetName() <<  std::endl;
         parsedResidues_.push_back(std::make_unique<ParsedResidue>(residueString, parent));
         auto newRes = parsedResidues_.back().get();
         if(this->DerivativesExist())
         {
             for(auto &derivative : this->ExtractDerivatives())
             {
-                std::cout << "Saving derivative: " << derivative << " with parent " << newRes->GetName() <<  std::endl;
+                logss << "Saving derivative: " << derivative << " with parent " << newRes->GetName() <<  std::endl;
                 parsedResidues_.push_back(std::make_unique<ParsedResidue>(derivative, newRes));
             }
         }
+        gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
         return newRes;
     }
     else // A derivatve. The parent residue doesn't exist yet, so save it.
     {
-        //std::cout << "Temporarily holding derivative: " << residueString << "\n";
+        logss << "Temporarily holding derivative: " << residueString << "\n";
+        gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
         this->SaveDerivative(residueString);
         return parent;
     }

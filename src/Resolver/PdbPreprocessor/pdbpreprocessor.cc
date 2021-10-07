@@ -22,8 +22,9 @@
 #include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
-#include "../../../includes/common.hpp"
-#include "../../../includes/utils.hpp"
+//#include "../../../includes/common.hpp"
+//#include "../../../includes/utils.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using PdbPreprocessorSpace::PdbPreprocessor;
 //////////////////////////////////////////////////////////

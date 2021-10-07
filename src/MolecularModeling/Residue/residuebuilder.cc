@@ -4,33 +4,30 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
-
 #include <fstream>
 #include <set>
 #include <queue>
 #include <stack>
 #include <cstring>
 #include <algorithm>
-
-#include "../../../includes/MolecularModeling/assembly.hpp"
-#include "../../../includes/MolecularModeling/residue.hpp"
-#include "../../../includes/MolecularModeling/atom.hpp"
-#include "../../../includes/MolecularModeling/atomnode.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
-#include "../../../includes/utils.hpp"
-#include "../../../includes/common.hpp"
-#include "../../../includes/GeometryTopology/geometrytopology.hpp"
-#include "../../../includes/GeometryTopology/coordinate.hpp"
-#include "../../../includes/GeometryTopology/grid.hpp"
-#include "../../../includes/GeometryTopology/cell.hpp"
-#include "../../../includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
-#include "../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
+#include "includes/MolecularModeling/assembly.hpp"
+#include "includes/MolecularModeling/residue.hpp"
+#include "includes/MolecularModeling/atom.hpp"
+#include "includes/MolecularModeling/atomnode.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
+#include "includes/GeometryTopology/geometrytopology.hpp"
+#include "includes/GeometryTopology/coordinate.hpp"
+#include "includes/GeometryTopology/grid.hpp"
+#include "includes/GeometryTopology/cell.hpp"
+#include "includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
+#include "includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using MolecularModeling::Residue;
 

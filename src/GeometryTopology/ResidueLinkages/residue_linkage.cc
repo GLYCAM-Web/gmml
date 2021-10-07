@@ -1,10 +1,11 @@
 #include <random>
 #include <algorithm> // reverse
-#include "../../../includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
-#include "../../../includes/MolecularModeling/overlaps.hpp"
-#include "../../../includes/External_Libraries/PCG/pcg_extras.hpp"
-#include "../../../includes/External_Libraries/PCG/pcg_random.hpp"
-#include "../../../includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp" // For lookup in GetName function
+#include "includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
+#include "includes/MolecularModeling/overlaps.hpp"
+#include "includes/External_Libraries/PCG/pcg_extras.hpp"
+#include "includes/External_Libraries/PCG/pcg_random.hpp"
+#include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp" // For lookup in GetName function
+#include "includes/CodeUtils/logging.hpp"
 
 // Seed with a real random value, if available
 static pcg_extras::seed_seq_from<std::random_device> seed_source;
@@ -358,9 +359,11 @@ void Residue_linkage::SetName(std::string name)
 
 void Residue_linkage::Print()
 {
-    std::cout << "Residue_linkage Index: " << this->GetIndex() << ", Name: " << this->GetName() << ", NumberOfShapes: " << this->GetNumberOfShapes() 
+    std::stringstream ss;
+    ss << "Residue_linkage Index: " << this->GetIndex() << ", Name: " << this->GetName() << ", NumberOfShapes: " << this->GetNumberOfShapes() 
               << ", ids: " << this->GetFromThisResidue1()->GetId() << "@" << this->GetFromThisConnectionAtom1()->GetName() 
               << " -- " << this->GetToThisResidue2()->GetId() << "@" << this->GetToThisConnectionAtom2()->GetName() << "\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
     // << "Contains these rotatable_dihedrals:\n";
     // for(auto & rotatableDihedral : this->GetRotatableDihedrals() )
     // {

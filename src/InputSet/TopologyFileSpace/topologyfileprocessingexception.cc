@@ -1,9 +1,10 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "../../../includes/common.hpp"
-#include "../../../includes/utils.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
+#include "includes/common.hpp"
+//#include "../../../includes/utils.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using TopologyFileSpace::TopologyFileProcessingException;
 

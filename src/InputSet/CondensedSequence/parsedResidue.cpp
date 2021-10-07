@@ -1,5 +1,6 @@
 #include <sstream>
 #include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using CondensedSequence::ParsedResidue;
 
@@ -18,8 +19,6 @@ ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor,
 
 void ParsedResidue::AddLinkage(ParsedResidue* otherRes) 
 {
-    //std::string label = this->GetName() + "->" + otherRes->GetName();
-    //std::cout << "Adding Edge: " << label << std::endl;
     if ( this->GetType() == Type::Sugar ) 
     {
         this->addChild(this->GetConfiguration() + this->GetLinkage(), otherRes);
@@ -115,7 +114,10 @@ std::string ParsedResidue::GetLinkageName(const bool withLabels)
 
 void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, ParsedResidue::Type specifiedType)
 {
-	//std::cout << "PARSING RESIDUE: " << residueString << std::endl;
+
+    std::stringstream logss;
+	logss << "PARSING RESIDUE: " << residueString << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
     // Set defaults:
     this->SetIsomer("");
     this->SetResidueName("");
@@ -171,18 +173,18 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         }
     	// Find any special modifiers e.g. NAc, Gc, A in IdoA
     	size_t modifierLength = (dashPosition - modifierStart - 2); // They are 2 apart if no modifier
-        //std::cout << "modifierLength is " << modifierLength << ", dashPosition was " << dashPosition << ", ringPosition was " << ringPosition << std::endl;
+        //logss << "modifierLength is " << modifierLength << ", dashPosition was " << dashPosition << ", ringPosition was " << ringPosition << std::endl;
         if (modifierLength > 100)
         {
-            std::string message = "Non standard glycam residue string: " + residueString;
-            //throw message;
-            std::cout << message << std::endl;
+            std::string message = "Unable to parse this as a glycam residue string: " + residueString;
+            std::cerr << message << std::endl;
+            gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+            throw message;
         }
     	if (modifierLength > 0 && modifierLength < 100)
         {
     		this->SetResidueModifier(residueString.substr(modifierStart, modifierLength));
             this->ExciseRingShapeFromModifier();
-            //std::cout << "Modifier is " << this->GetResidueModifier() << std::endl;
         }
     	else
         {
@@ -208,7 +210,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         std::string message = "Error: we can't parse this residue: \"" + residueString + "\""; 
         throw message;
     }
-    std::cout << this->Print();
+    gmml::log(__LINE__, __FILE__, gmml::INF, this->Print());
 }
 
 std::string ParsedResidue::Print()

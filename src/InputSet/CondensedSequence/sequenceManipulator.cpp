@@ -3,6 +3,7 @@
 #include <fstream>  // writing outputDotFile
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Graph.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using CondensedSequence::SequenceManipulator;
 using CondensedSequence::ParsedResidue;
@@ -80,10 +81,13 @@ void SequenceManipulator::Print(const bool withLabels)
 	int branchStackSize = 0;
 	this->RecurvePrint(this->GetTerminal(), branchStackSize, output, withLabels);
 	std::reverse(output.begin(), output.end()); // Reverse order, as it starts from terminal.
+	std::stringstream logss;
 	for (auto &label : output)
 	{
-		std::cout << label;
+		logss << label;
 	}
+	gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+	return;
 }
 
 void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels)
@@ -159,13 +163,16 @@ void SequenceManipulator::PrintGraphViz(GraphVizDotConfig &configs)
 	std::ofstream outputDotFile(configs.file_name_, std::ios::trunc);
 	outputDotFile << ss.str();
 	outputDotFile.close();
-	std::cout << ss.str();
+	gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
 	return;
 }
 
 std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residue, GraphVizDotConfig &configs)
 {
-    std::cout << "Getting GraphVizLine for " << residue.GetName() << "\n"; 
+	std::stringstream logss;
+    logss << "Getting GraphVizLine for " << residue.GetName() << "\n"; 
+    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+    logss.clear();
     std::stringstream ss;
     ss << residue.getIndex() << " [";
     // Aglycone
@@ -177,15 +184,16 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
     // Sugar
     std::string label = "";
     std::string imageFile = configs.svg_directory_path_ + residue.GetMonosaccharideName() + ".svg";
-    std::cout << "Searching for image: " << imageFile << "\n";
+    logss << "Searching for image: " << imageFile << "\n";
     if(file_exists(imageFile.c_str()))
     {
-        std::cout << "FOUND IT\n";
+        logss << "FOUND IT\n";
         (residue.GetRingType() == "f") ? label = "f" : label = "";
         ss << "label=\"" << label << "\" height=\"0.7\" image=\"" << imageFile << "\"];\n";
     }
     else
     {
+    	logss << "Not image available, using circle\n";
         ss << "shape=circle height=\"0.7\" label=\"" << residue.GetMonosaccharideName() << "\"];\n";
     }
     // Derivatives
@@ -230,5 +238,6 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
 	        }
     	}
     }
+    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
     return ss.str();
 }
