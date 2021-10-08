@@ -1,7 +1,7 @@
 #include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06LinkageCodes.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
-#include <iostream> // for cout, can remove after debug
+#include "includes/CodeUtils/logging.hpp"
 #include <locale> // for isLower()
 #include <sstream> // for string stream
 
@@ -92,7 +92,7 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, std::string isome
 	}
 
 	// ConfigurationCode may be empty.
-	std::cout << "Returning: " << (linkCode + residueCode + configurationCode) << std::endl;
+	gmml::log(__LINE__, __FILE__, gmml::INF, ("Returning: " + linkCode + residueCode + configurationCode + "\n"));
 	return (linkCode + residueCode + configurationCode);
 }
 } // close namespace

@@ -34,11 +34,11 @@ int main()
     std::cout << "Number of possible shapes for this sequence is " << carbBuilder.GetNumberOfShapes() << "\n";
     for(auto &linkageInfo : carbBuilder.GenerateUserOptionsDataStruct())
     {
-        std::cout   << "Options: Name: " << linkageInfo.linkageName_ << ", Index: " << linkageInfo.indexOrderedLabel_ << ", Res1:" 
-                << linkageInfo.firstResidueNumber_ << ", Res2:" << linkageInfo.secondResidueNumber_ << "\n";
+        std::cout   << "Name: " << linkageInfo.linkageName_ << ", LinkageIndex: " << linkageInfo.indexOrderedLabel_ << ", Res1: "
+                << linkageInfo.firstResidueNumber_ << ", Res2: " << linkageInfo.secondResidueNumber_ << "\n";
         for(auto &dihedralInfo : linkageInfo.likelyRotamers_)
         {
-            std::cout << "Likely: " << dihedralInfo.dihedralName_ ;
+            std::cout << "    LikelyRotamers: " << dihedralInfo.dihedralName_ ;
             for(auto &rotamer : dihedralInfo.rotamers_)
             {
                 std::cout << ", " << rotamer;

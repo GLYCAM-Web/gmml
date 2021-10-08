@@ -1,67 +1,3 @@
-Parsing unlabelled input sequence:
-DTalp[2S,3Me]a1-6DManpa1-6[DAllpb1-3][DNeup5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH
-Sequence is sane
-_OH_____.
-That was a terminal save with i=116
-Saving DGlcpNAcb1- with parent OH
-D_Glc_p_NAc__b_1-.
-Saving DGulpb1-4 with parent DGlcpNAc
-D_Gul_p___b_1-4.
-Saving derivative: 6Me with parent DGulp
-_Me_____6.
-Saving DManpb1-4 with parent DGulp
-D_Man_p___b_1-4.
-Saving DAltpa1-4 with parent DManp
-D_Alt_p___a_1-4.
-Saving DGlcpb1-2 with parent DAltp
-D_Glc_p___b_1-2.
-Saving derivative: 3S with parent DGlcp
-_S_____3.
-Saving DGalpb1-4 with parent DGlcp
-D_Gal_p___b_1-4.
-Saving DNeup5Aca2-6 with parent DGalp
-D_Neu_p_5Ac__a_2-6.
-Saving DAllpb1-3 with parent DManp
-D_All_p___b_1-3.
-Saving DManpa1-6 with parent DManp
-D_Man_p___a_1-6.
-Saving DTalpa1-6 with parent DManp
-D_Tal_p___a_1-6.
-Saving derivative: 3Me with parent DTalp
-_Me_____3.
-Saving derivative: 2S with parent DTalp
-_S_____2.
-Getting GraphVizLine for OH
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-FOUND IT
-Getting GraphVizLine for DGulp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGul.svg
-FOUND IT
-Getting GraphVizLine for DManp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-FOUND IT
-Getting GraphVizLine for DAltp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DAlt.svg
-FOUND IT
-Getting GraphVizLine for DGlcp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg
-FOUND IT
-Getting GraphVizLine for DGalp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-FOUND IT
-Getting GraphVizLine for DNeup5Ac
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DNeu5Ac.svg
-FOUND IT
-Getting GraphVizLine for DAllp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DAll.svg
-FOUND IT
-Getting GraphVizLine for DManp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-FOUND IT
-Getting GraphVizLine for DTalp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DTal.svg
-FOUND IT
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -114,99 +50,7 @@ b13--13 [style=invis];
 13--12[label="a1-6"];
 
 }
-Edge labeled b1-, with index 0 destroyed
-Node labelled OH destroyed
-Edge labeled b1-4, with index 1 destroyed
-Node labelled DGlcpNAcb1- destroyed
-Edge labeled 6, with index 2 destroyed
-Edge labeled b1-4, with index 3 destroyed
-Node labelled DGulpb1-4 destroyed
-Node labelled 6Me destroyed
-Edge labeled a1-4, with index 4 destroyed
-Edge labeled b1-3, with index 9 destroyed
-Edge labeled a1-6, with index 10 destroyed
-Node labelled DManpb1-4 destroyed
-Edge labeled b1-2, with index 5 destroyed
-Node labelled DAltpa1-4 destroyed
-Edge labeled 3, with index 6 destroyed
-Edge labeled b1-4, with index 7 destroyed
-Node labelled DGlcpb1-2 destroyed
-Node labelled 3S destroyed
-Edge labeled a2-6, with index 8 destroyed
-Node labelled DGalpb1-4 destroyed
-Node labelled DNeup5Aca2-6 destroyed
-Node labelled DAllpb1-3 destroyed
-Edge labeled a1-6, with index 11 destroyed
-Node labelled DManpa1-6 destroyed
-Edge labeled 3, with index 12 destroyed
-Edge labeled 2, with index 13 destroyed
-Node labelled DTalpa1-6 destroyed
-Node labelled 3Me destroyed
-Node labelled 2S destroyed
-Parsing unlabelled input sequence:
-DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
-Sequence is sane
-_OH_____.
-That was a terminal save with i=125
-Saving DGlcpNAcb1- with parent OH
-D_Glc_p_NAc__b_1-.
-Saving DGlcpNAcb1-4 with parent DGlcpNAc
-D_Glc_p_NAc__b_1-4.
-Saving derivative: 6Me with parent DGlcpNAc
-_Me_____6.
-Saving DManpb1-4 with parent DGlcpNAc
-D_Man_p___b_1-4.
-Saving DManpa1-3 with parent DManp
-D_Man_p___a_1-3.
-Saving DGlcpNAcb1-2 with parent DManp
-D_Glc_p_NAc__b_1-2.
-Saving derivative: 3S with parent DGlcpNAc
-_S_____3.
-Saving DGalpb1-4 with parent DGlcpNAc
-D_Gal_p___b_1-4.
-Saving DNeup5Aca2-6 with parent DGalp
-D_Neu_p_5Ac__a_2-6.
-Saving DGlcpNAcb1-4 with parent DManp
-D_Glc_p_NAc__b_1-4.
-Saving DManpa1-6 with parent DManp
-D_Man_p___a_1-6.
-Saving DManpa1-6 with parent DManp
-D_Man_p___a_1-6.
-Saving derivative: 3Me with parent DManp
-_Me_____3.
-Saving derivative: 2S with parent DManp
-_S_____2.
-Getting GraphVizLine for OH
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-FOUND IT
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-FOUND IT
-Getting GraphVizLine for DManp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-FOUND IT
-Getting GraphVizLine for DManp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-FOUND IT
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-FOUND IT
-Getting GraphVizLine for DGalp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-FOUND IT
-Getting GraphVizLine for DNeup5Ac
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DNeu5Ac.svg
-FOUND IT
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-FOUND IT
-Getting GraphVizLine for DManp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-FOUND IT
-Getting GraphVizLine for DManp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg
-FOUND IT
+
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -259,71 +103,7 @@ b13--13 [style=invis];
 13--12[label="a1-6"];
 
 }
-Edge labeled b1-, with index 0 destroyed
-Node labelled OH destroyed
-Edge labeled b1-4, with index 1 destroyed
-Node labelled DGlcpNAcb1- destroyed
-Edge labeled 6, with index 2 destroyed
-Edge labeled b1-4, with index 3 destroyed
-Node labelled DGlcpNAcb1-4 destroyed
-Node labelled 6Me destroyed
-Edge labeled a1-3, with index 4 destroyed
-Edge labeled b1-4, with index 9 destroyed
-Edge labeled a1-6, with index 10 destroyed
-Node labelled DManpb1-4 destroyed
-Edge labeled b1-2, with index 5 destroyed
-Node labelled DManpa1-3 destroyed
-Edge labeled 3, with index 6 destroyed
-Edge labeled b1-4, with index 7 destroyed
-Node labelled DGlcpNAcb1-2 destroyed
-Node labelled 3S destroyed
-Edge labeled a2-6, with index 8 destroyed
-Node labelled DGalpb1-4 destroyed
-Node labelled DNeup5Aca2-6 destroyed
-Node labelled DGlcpNAcb1-4 destroyed
-Edge labeled a1-6, with index 11 destroyed
-Node labelled DManpa1-6 destroyed
-Edge labeled 3, with index 12 destroyed
-Edge labeled 2, with index 13 destroyed
-Node labelled DManpa1-6 destroyed
-Node labelled 3Me destroyed
-Node labelled 2S destroyed
-Parsing unlabelled input sequence:
-DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
-Sequence is sane
-_OH_____.
-That was a terminal save with i=58
-Saving DXylpb1- with parent OH
-D_Xyl_p___b_1-.
-Saving DGalpb1-4 with parent DXylp
-D_Gal_p___b_1-4.
-Saving DGalpb1-3 with parent DGalp
-D_Gal_p___b_1-3.
-Saving DGlcpAb1-3 with parent DGalp
-D_Glc_p_A__b_1-3.
-Saving DGlcpAb1-4 with parent DGlcpA
-D_Glc_p_A__b_1-4.
-Saving DGlcpNAcb1-4 with parent DGlcpA
-D_Glc_p_NAc__b_1-4.
-Getting GraphVizLine for OH
-Getting GraphVizLine for DXylp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DXyl.svg
-FOUND IT
-Getting GraphVizLine for DGalp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-FOUND IT
-Getting GraphVizLine for DGalp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-FOUND IT
-Getting GraphVizLine for DGlcpA
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg
-FOUND IT
-Getting GraphVizLine for DGlcpA
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg
-FOUND IT
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-FOUND IT
+
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -349,79 +129,7 @@ rankdir=LR nodesep="0.05" ranksep="0.8";
 7--6[label="b1-4"];
 
 }
-Edge labeled b1-, with index 0 destroyed
-Node labelled OH destroyed
-Edge labeled b1-4, with index 1 destroyed
-Node labelled DXylpb1- destroyed
-Edge labeled b1-3, with index 2 destroyed
-Node labelled DGalpb1-4 destroyed
-Edge labeled b1-3, with index 3 destroyed
-Node labelled DGalpb1-3 destroyed
-Edge labeled b1-4, with index 4 destroyed
-Node labelled DGlcpAb1-3 destroyed
-Edge labeled b1-4, with index 5 destroyed
-Node labelled DGlcpAb1-4 destroyed
-Node labelled DGlcpNAcb1-4 destroyed
-Parsing unlabelled input sequence:
-dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
-Sequence is sane
-_OH_____.
-That was a terminal save with i=109
-Saving DXylpb1- with parent OH
-D_Xyl_p___b_1-.
-Saving DGalpb1-4 with parent DXylp
-D_Gal_p___b_1-4.
-Saving DGalpb1-3 with parent DGalp
-D_Gal_p___b_1-3.
-Saving DGlcpAb1-3 with parent DGalp
-D_Glc_p_A__b_1-3.
-Saving DGlcpAb1-4 with parent DGlcpA
-D_Glc_p_A__b_1-4.
-Saving derivative: 2S with parent DGlcpA
-_S_____2.
-Saving DGlcpNSa1-4 with parent DGlcpA
-D_Glc_p_NS__a_1-4.
-Saving LIdopA(2SO)a1-4 with parent DGlcpNS
-L_Ido_p_A_(2SO)_a_1-4.
-Saving derivative: 2S with parent LIdopA(2SO)
-_S_____2.
-Saving DGlcpNAca1-4 with parent LIdopA(2SO)
-D_Glc_p_NAc__a_1-4.
-Saving derivative: 6S with parent DGlcpNAc
-_S_____6.
-Saving derivative: 3S with parent DGlcpNAc
-_S_____3.
-Saving dUA1-4 with parent DGlcpNAc
-Non standard glycam residue string: dUA1-4
-_dUA_____1-4.
-Saving derivative: 2S with parent dUA
-_S_____2.
-Getting GraphVizLine for OH
-Getting GraphVizLine for DXylp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DXyl.svg
-FOUND IT
-Getting GraphVizLine for DGalp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-FOUND IT
-Getting GraphVizLine for DGalp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg
-FOUND IT
-Getting GraphVizLine for DGlcpA
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg
-FOUND IT
-Getting GraphVizLine for DGlcpA
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg
-FOUND IT
-Getting GraphVizLine for DGlcpNS
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg
-FOUND IT
-Getting GraphVizLine for LIdopA(2SO)
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/LIdoA(2SO).svg
-Getting GraphVizLine for DGlcpNAc
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg
-FOUND IT
-Getting GraphVizLine for dUA
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/dUA.svg
+
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -476,75 +184,7 @@ b14--14 [style=invis];
 14--11[label="1-4"];
 
 }
-Edge labeled b1-, with index 0 destroyed
-Node labelled OH destroyed
-Edge labeled b1-4, with index 1 destroyed
-Node labelled DXylpb1- destroyed
-Edge labeled b1-3, with index 2 destroyed
-Node labelled DGalpb1-4 destroyed
-Edge labeled b1-3, with index 3 destroyed
-Node labelled DGalpb1-3 destroyed
-Edge labeled b1-4, with index 4 destroyed
-Node labelled DGlcpAb1-3 destroyed
-Edge labeled 2, with index 5 destroyed
-Edge labeled a1-4, with index 6 destroyed
-Node labelled DGlcpAb1-4 destroyed
-Node labelled 2S destroyed
-Edge labeled a1-4, with index 7 destroyed
-Node labelled DGlcpNSa1-4 destroyed
-Edge labeled 2, with index 8 destroyed
-Edge labeled a1-4, with index 9 destroyed
-Node labelled LIdopA(2SO)a1-4 destroyed
-Node labelled 2S destroyed
-Edge labeled 6, with index 10 destroyed
-Edge labeled 3, with index 11 destroyed
-Edge labeled 1-4, with index 12 destroyed
-Node labelled DGlcpNAca1-4 destroyed
-Node labelled 6S destroyed
-Node labelled 3S destroyed
-Edge labeled 2, with index 13 destroyed
-Node labelled dUA1-4 destroyed
-Node labelled 2S destroyed
-Parsing unlabelled input sequence:
-dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
-Sequence is sane
-_OH_____.
-That was a terminal save with i=76
-Saving DGlcpNSa1- with parent OH
-D_Glc_p_NS__a_1-.
-Saving derivative: 6S with parent DGlcpNS
-_S_____6.
-Saving LIdopA(4C1)a1-4 with parent DGlcpNS
-L_Ido_p_A_(4C1)_a_1-4.
-Saving DGlcpNSa1-4 with parent LIdopA(4C1)
-D_Glc_p_NS__a_1-4.
-Saving LIdopAa1-4 with parent DGlcpNS
-L_Ido_p_A__a_1-4.
-Saving derivative: 2S with parent LIdopA
-_S_____2.
-Saving DGlcpNSa1-4 with parent LIdopA
-D_Glc_p_NS__a_1-4.
-Saving dUAa1-4 with parent DGlcpNS
-_dUA____a_1-4.
-Saving derivative: 2S with parent dUA
-_S_____2.
-Getting GraphVizLine for OH
-Getting GraphVizLine for DGlcpNS
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg
-FOUND IT
-Getting GraphVizLine for LIdopA(4C1)
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/LIdoA(4C1).svg
-Getting GraphVizLine for DGlcpNS
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg
-FOUND IT
-Getting GraphVizLine for LIdopA
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/LIdoA.svg
-FOUND IT
-Getting GraphVizLine for DGlcpNS
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg
-FOUND IT
-Getting GraphVizLine for dUA
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/dUA.svg
+
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -585,38 +225,7 @@ b9--9 [style=invis];
 9--8[label="a1-4"];
 
 }
-Edge labeled a1-, with index 0 destroyed
-Node labelled OH destroyed
-Edge labeled 6, with index 1 destroyed
-Edge labeled a1-4, with index 2 destroyed
-Node labelled DGlcpNSa1- destroyed
-Node labelled 6S destroyed
-Edge labeled a1-4, with index 3 destroyed
-Node labelled LIdopA(4C1)a1-4 destroyed
-Edge labeled a1-4, with index 4 destroyed
-Node labelled DGlcpNSa1-4 destroyed
-Edge labeled 2, with index 5 destroyed
-Edge labeled a1-4, with index 6 destroyed
-Node labelled LIdopAa1-4 destroyed
-Node labelled 2S destroyed
-Edge labeled a1-4, with index 7 destroyed
-Node labelled DGlcpNSa1-4 destroyed
-Edge labeled 2, with index 8 destroyed
-Node labelled dUAa1-4 destroyed
-Node labelled 2S destroyed
-Parsing unlabelled input sequence:
-DGlcpa1-2DFrufb
-Sequence is sane
-D_Fru_f___b_.
-That was a terminal save with i=9
-Saving DGlcpa1-2 with parent DFruf
-D_Glc_p___a_1-2.
-Getting GraphVizLine for DFruf
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DFru.svg
-FOUND IT
-Getting GraphVizLine for DGlcp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg
-FOUND IT
+
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -628,22 +237,7 @@ rankdir=LR nodesep="0.05" ranksep="0.8";
 2--1[label="a1-2"];
 
 }
-Edge labeled a1-2, with index 0 destroyed
-Node labelled DFrufb destroyed
-Node labelled DGlcpa1-2 destroyed
-Parsing unlabelled input sequence:
-DFrufb2-1DGlcpa
-Sequence is sane
-D_Glc_p___a_.
-That was a terminal save with i=9
-Saving DFrufb2-1 with parent DGlcp
-D_Fru_f___b_2-1.
-Getting GraphVizLine for DGlcp
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg
-FOUND IT
-Getting GraphVizLine for DFruf
-Searching for image: /programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DFru.svg
-FOUND IT
+
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -655,6 +249,4 @@ rankdir=LR nodesep="0.05" ranksep="0.8";
 2--1[label="b2-1"];
 
 }
-Edge labeled b2-1, with index 0 destroyed
-Node labelled DGlcpa destroyed
-Node labelled DFrufb2-1 destroyed
+

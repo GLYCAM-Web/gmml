@@ -38,7 +38,7 @@ int main(int argc, char** argv)
             std::string inputGlycanID = splitLine.at(0);
             carbBuilder.GenerateSingle3DStructureSingleFile(outputFolderName, "PDB", inputGlycanID);
         }
-        catch (const std::string exception)
+        catch (const std::string &exception)
         {
             std::cerr << "Test level caught exception: " << exception << std::endl;
         }

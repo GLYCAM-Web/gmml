@@ -241,7 +241,7 @@ Assembly::Assembly(std::string inputSequence, std::string prepFilePath)
     {
         CondensedSequence::AssemblyBuilder assBuilder(inputSequence, prepFilePath, this);
     }
-    catch (const std::string exception)
+    catch (const std::string &exception)
     {
         throw exception; 
         //std::cerr << "Error: " << exception << std::endl;

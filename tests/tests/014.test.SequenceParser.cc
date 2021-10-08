@@ -32,15 +32,16 @@ int main ()
     {
         try
         {
-            std::cout << "Starting: " << sequence << std::endl;
+            std::cout << "Parsing: " << sequence << std::endl;
         	CondensedSequence::SequenceManipulator man(sequence);
         	man.ReorderSequence();
-            std::cout << "\nManipulator Print:" << std::endl;
-            man.Print();
-            std::cout << "\nManipulator Print with Labels:" << std::endl;
+            //std::cout << "\nManipulator Print:" << std::endl;
+            std::cout << man.Print() << std::endl;
+            //std::cout << "\nManipulator Print with Labels:" << std::endl;
             bool withLabels = true;
-            man.Print(withLabels);
-            std::cout << "\nEND" << std::endl;
+            std::cout << man.Print(withLabels) << std::endl;
+            //std::cout << "\nEND" << std::endl;
+            std::cout << "Parsed and labelled with no exceptions thrown.\n\n";
         }
         catch (const std::string exception)
         {

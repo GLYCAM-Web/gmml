@@ -44,9 +44,8 @@ namespace CondensedSequence
         void ReorderSequence();
         void LabelSequence();
         void SetIndexByConnectivity();
-        void PrintLabelledSequence();
-        void Print(const bool withLabels = false);
-        void PrintGraphViz(GraphVizDotConfig &configs);
+        std::string Print(const bool withLabels = false);
+        std::string PrintGraphViz(GraphVizDotConfig &configs);
         std::vector<ParsedResidue*> GetParsedResiduesOrderedByConnectivity();
     private:
         //////////////////////////////////////////////////////////

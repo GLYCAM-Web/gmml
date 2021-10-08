@@ -26,7 +26,7 @@ int main ()
     	CondensedSequence::SequenceManipulator manipulator(sequence);
         CondensedSequence::GraphVizDotConfig config;
         config.file_name_ = std::to_string(count) + ".dot";
-    	manipulator.PrintGraphViz(config);
+    	std::cout << manipulator.PrintGraphViz(config) << std::endl;
         count++;
 	}
 	return 0;

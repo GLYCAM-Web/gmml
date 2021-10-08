@@ -575,7 +575,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     *it = mono;
   }
   gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-  logss.clear();
+  logss.str( std::string() ); logss.clear();  // Must do both of these to clear the stream;
   //Checking if any sugar named residue is not detected
   MolecularModeling::ResidueVector all_residues = GetAllResiduesOfAssembly();
   for(MolecularModeling::ResidueVector::iterator it = all_residues.begin(); it != all_residues.end(); it++)

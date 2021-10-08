@@ -71,7 +71,7 @@ void SequenceManipulator::SetIndexByConnectivity()
 	return;
 }
 
-void SequenceManipulator::Print(const bool withLabels)
+std::string SequenceManipulator::Print(const bool withLabels)
 {
 	if (withLabels)
 	{
@@ -87,7 +87,7 @@ void SequenceManipulator::Print(const bool withLabels)
 		logss << label;
 	}
 	gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-	return;
+	return logss.str();
 }
 
 void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels)
@@ -142,7 +142,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 	return;
 }
 
-void SequenceManipulator::PrintGraphViz(GraphVizDotConfig &configs)
+std::string SequenceManipulator::PrintGraphViz(GraphVizDotConfig &configs)
 {
 	this->SetIndexByConnectivity();
 	std::stringstream ss;
@@ -164,7 +164,7 @@ void SequenceManipulator::PrintGraphViz(GraphVizDotConfig &configs)
 	outputDotFile << ss.str();
 	outputDotFile.close();
 	gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-	return;
+	return ss.str();
 }
 
 std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residue, GraphVizDotConfig &configs)
@@ -172,7 +172,7 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
 	std::stringstream logss;
     logss << "Getting GraphVizLine for " << residue.GetName() << "\n"; 
     gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-    logss.clear();
+    logss.str( std::string() ); logss.clear();  // Must do both of these to clear the stream;
     std::stringstream ss;
     ss << residue.getIndex() << " [";
     // Aglycone

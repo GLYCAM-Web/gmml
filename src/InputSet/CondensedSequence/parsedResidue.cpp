@@ -176,10 +176,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         //logss << "modifierLength is " << modifierLength << ", dashPosition was " << dashPosition << ", ringPosition was " << ringPosition << std::endl;
         if (modifierLength > 100)
         {
-            std::string message = "Unable to parse this as a glycam residue string: " + residueString;
-            std::cerr << message << std::endl;
-            gmml::log(__LINE__, __FILE__, gmml::ERR, message);
-            throw message;
+            gmml::log(__LINE__, __FILE__, gmml::WAR, "This is a non-standard residue string that may cause issues: " + residueString);
         }
     	if (modifierLength > 0 && modifierLength < 100)
         {

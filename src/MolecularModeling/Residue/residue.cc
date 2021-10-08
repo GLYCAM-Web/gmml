@@ -1,3 +1,4 @@
+#include <algorithm>    // std::any_of
 #include "includes/MolecularModeling/residue.hpp"
 #include "includes/MolecularModeling/assembly.hpp"
 #include "includes/MolecularModeling/atom.hpp"
@@ -5,9 +6,7 @@
 #include "includes/MolecularModeling/residueproperties.hpp"
 #include "includes/MolecularModeling/residuenode.hpp"
 #include "includes/MolecularModeling/overlaps.hpp"
-//#include "includes/common.hpp"
 #include "includes/CodeUtils/logging.hpp"
-#include <algorithm>    // std::any_of
 
 using MolecularModeling::Residue;
 
@@ -660,7 +659,7 @@ void Residue::MakeDeoxy(std::string oxygenNumber)
     oxygenAtom->MolecularDynamicAtom::SetAtomType("H1");
     oxygenAtom->SetCharge(0.0000);
     oxygenAtom->SetElementSymbol("H");
-    std::cout << "Completed MakeDeoxy" << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Completed MakeDeoxy\n");
 }
 
 double Residue::CalculateCharge()

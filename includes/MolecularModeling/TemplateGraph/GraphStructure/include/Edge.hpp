@@ -92,7 +92,9 @@ namespace glygraph
     // have our edge destructor remove itself from our inList then let die
     this->targetNode_m->removeInEdge(this);
     //to help match outputs
-    std::cout << "Edge labeled " << this->getLabel() << ", with index " << this->getIndex() << " destroyed\n";
+    // std::stringstream logss;
+    // logss << "Edge labeled " << this->getLabel() << ", with index " << this->getIndex() << " destroyed\n";
+    // gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
     // lazyInfo(__LINE__, __func__,
     //			"Edge with name <" + this->getName() + "> deleted");
   }

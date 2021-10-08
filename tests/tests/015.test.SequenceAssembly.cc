@@ -23,21 +23,21 @@ int main ()
     std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14};
     std::string prepFilePath = "/programs/gems/gmml/dat/prep/GLYCAM_06j-1_GAGS.prep";
     int loopCounter = 0;
+    std::cout << "-----------------------------------------------------------------------------------------------------\n\n";
     for (auto &sequence : sequences)
     {	
         try
-        {
-            MolecularModeling::Assembly ass(sequence, prepFilePath);
-            std::cout << "Creating PDB file" << std::endl;
-            PdbFileSpace::PdbFile *outputPdbFile = ass.BuildPdbFileStructureFromAssembly(-1,0);
-            std::cout << "Writing PDB file" << std::endl;
-            outputPdbFile->Write(std::to_string(loopCounter) + "_assemblyBuilder.pdb");
+        {   // WARNING, this is just a test, the generated 3D structures are not correct. Look in 013.buildOligosaccharideLibrary for how to build 3D structures.
             loopCounter++;
+        	std::cout << "Sequence " << loopCounter << ": " << sequence << "\n";
+            MolecularModeling::Assembly ass(sequence, prepFilePath); // WARNING. Just a test. 3D structures are not correct.
+            std::cout << "Assembly created without throwing an exception for: " << sequence << "\n\n";
         }
-        catch (const std::string exception)
+        catch (const std::string &exception)
         {
             std::cerr << "Test level caught error: " << exception << std::endl;
         }
+        std::cout << "-----------------------------------------------------------------------------------------------------\n\n";
 	}
 	return 0;
 }

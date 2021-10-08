@@ -141,7 +141,6 @@ namespace glygraph
   {
     std::vector<Edge<T> *> tempInEdge = this->inEdges_m;
     //lazyInfo(__LINE__, __func__, "Destroying Node: " + this->getName());
-    //std::cout << "\tMem Addr: " << this << "\n\n";
     // go through and hit all our parents, i.e. the ones that own the incoming edge and delete them
     // TODO: Do this but not lazy
     this->outEdges_m.clear();
@@ -150,7 +149,7 @@ namespace glygraph
         currInEdge->getSourceNode()->removeOutEdge(currInEdge);
       }
     tempInEdge.clear();
-    std::cout << "Node labelled " << this->getLabel() << " destroyed\n";
+    // gmml::log(__LINE__, __FILE__, gmml::INF, ("Node labelled " + this->getLabel() + " destroyed\n"));
   }
 
   // Copy constructor
