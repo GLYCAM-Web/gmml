@@ -1,16 +1,7 @@
-#include "../../../includes/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.hpp"
-#include <iostream> // for cout, can remove after debug
-#include <locale> // for isLower()
-#include <sstream> // for stringstream
+#include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.hpp"
 
 using gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeChargeAdjustmentLookupContainer;
 
-//////////////////////////////////////////////////////////
-//                      QUERY FUNCTIONS                 //
-//////////////////////////////////////////////////////////
-    std::string glycamResidueCode_ ;
-    std::string adjustmentAtom_ ;
-    double charge_ ;
 double Glycam06DerivativeChargeAdjustmentLookupContainer::GetAdjustmentCharge(std::string queryResidueName)
 { // e.g. input = SO3, output = +0.008.
     for (const auto& entry : glycam06DerivativeChargeAdjustmentLookup_)
@@ -34,7 +25,6 @@ std::string Glycam06DerivativeChargeAdjustmentLookupContainer::GetAdjustmentAtom
 //////////////////////////////////////////////////////////
 //                    INITIALIZER                       //
 //////////////////////////////////////////////////////////
-
 Glycam06DerivativeChargeAdjustmentLookupContainer::Glycam06DerivativeChargeAdjustmentLookupContainer()
 {
     glycam06DerivativeChargeAdjustmentLookup_ =
