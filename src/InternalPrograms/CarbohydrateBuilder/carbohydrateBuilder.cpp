@@ -1,4 +1,4 @@
-#include "includes/InputSet/CondensedSequenceSpace/carbohydratebuilder.hpp"
+#include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 #include "includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "includes/ParameterSet/OffFileSpace/offfile.hpp"
 #include "includes/CodeUtils/logging.hpp"
@@ -141,16 +141,16 @@ CondensedSequenceSpace::LinkageOptionsVector carbohydrateBuilder::GenerateUserOp
     return userOptionsForSequence;
 }
 
-void carbohydrateBuilder::Print()
+std::string carbohydrateBuilder::Print()
 {
     std::stringstream logss;
     logss << "CarbohydrateBuilder called using sequence: " << this->GetInputSequenceString() << "\n and contains these Residue_linkages:\n";
-    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
     for (auto & linkage : glycosidicLinkages_ )
     {
-        linkage.Print();
+        logss << linkage.Print();
     }
-    return; 
+    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+    return logss.str();
 }
 //////////////////////////////////////////////////////////
 //                   PRIVATE FUNCTIONS                  //
@@ -270,11 +270,11 @@ ResidueLinkageVector carbohydrateBuilder::SplitLinkagesIntoPermutants(ResidueLin
         }
         else // if not a conformer
         {
-            RotatableDihedralVector rotatableDihedrals = linkage.GetRotatableDihedralsWithMultipleRotamers(); // only want the rotatabe dihedrals within a linkage that have multiple rotamers. Some bonds won't.
+            std::vector<Rotatable_dihedral> rotatableDihedrals = linkage.GetRotatableDihedralsWithMultipleRotamers(); // only want the rotatabe dihedrals within a linkage that have multiple rotamers. Some bonds won't.
             for(auto &rotatableDihedral : rotatableDihedrals)
             {
                 Residue_linkage splitLinkage = linkage; // Copy it to get correct info into class
-                RotatableDihedralVector temp = {rotatableDihedral};
+                std::vector<Rotatable_dihedral> temp = {rotatableDihedral};
                 splitLinkage.SetRotatableDihedrals(temp);
                 sortedLinkages.push_back(splitLinkage);
                 //std::cout << "Split out " << splitLinkage.GetFromThisResidue1()->GetId() << "-" << splitLinkage.GetToThisResidue2()->GetId() << " rotamer with number of shapes: " << rotatableDihedral.GetNumberOfRotamers() << "\n";

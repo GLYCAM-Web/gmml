@@ -1,7 +1,6 @@
-#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_BUILDER_HPP
-#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_BUILDER_HPP
-#include "condensedsequence.hpp"
-#include "../../MolecularModeling/assembly.hpp"
+#ifndef GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
+#define GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
+#include "includes/MolecularModeling/assembly.hpp"
 
 namespace CondensedSequenceSpace
 { // For specifying a specific shape to be built with GenerateSpecific3DStructure
@@ -68,7 +67,7 @@ public:
     // The following generates no files
     //void GenerateUpToNRotamers(int maxRotamers = 32); // Will not be used by gems, but leaving the functionality as could be useful.
     int GetNumberOfShapes(bool likelyShapesOnly = false);
-    void Print();
+    std::string Print();
 private:
     void Write3DStructureFile(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string filename = "output");
     void SetInputSequenceString(std::string sequence);
@@ -91,7 +90,7 @@ private:
     ResidueLinkageVector glycosidicLinkages_;
 };
 }
-#endif // GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_BUILDER_HPP
+#endif // GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
 
 
 

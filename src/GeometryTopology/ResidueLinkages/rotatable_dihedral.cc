@@ -1,9 +1,10 @@
 #include <random>
-#include "../../../includes/GeometryTopology/ResidueLinkages/rotatable_dihedral.hpp"
-#include "../../../includes/MolecularModeling/atomnode.hpp" // For UpdateAtomsIfPsi
-#include "../../../includes/utils.hpp"
-#include "../../../includes/External_Libraries/PCG/pcg_random.hpp"
-#include "../../../includes/GeometryTopology/geometrytopology.hpp"
+#include "includes/GeometryTopology/ResidueLinkages/rotatable_dihedral.hpp"
+#include "includes/MolecularModeling/atomnode.hpp" // For UpdateAtomsIfPsi
+#include "includes/utils.hpp"
+#include "includes/External_Libraries/PCG/pcg_random.hpp"
+#include "includes/GeometryTopology/geometrytopology.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 // Seed with a real random value, if available
 static pcg_extras::seed_seq_from<std::random_device> seed_source;
@@ -218,16 +219,12 @@ void Rotatable_dihedral::SetDihedralAngle(double dihedral_angle)
     b3.operator -(*a3);
     GeometryTopology::Coordinate b4 = b2;
     b4.operator *(-1);
-
     GeometryTopology::Coordinate b2xb3 = b2;
     b2xb3.CrossProduct(b3);
-
     GeometryTopology::Coordinate b1_m_b2n = b1;
     b1_m_b2n.operator *(b2.length());
-
     GeometryTopology::Coordinate b1xb2 = b1;
     b1xb2.CrossProduct(b2);
-
     double current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
     double** dihedral_angle_matrix = gmml::GenerateRotationMatrix(&b4, a2, current_dihedral - gmml::ConvertDegree2Radian(dihedral_angle));
     this->RecordPreviousDihedralAngle(gmml::ConvertRadian2Degree(current_dihedral));
@@ -276,12 +273,10 @@ void Rotatable_dihedral::SetDihedralAngle(double dihedral_angle)
     return;
 }
 
-
 void Rotatable_dihedral::SetDihedralAngleToPrevious()
 {
     this->SetDihedralAngle(this->GetPreviousDihedralAngle());
 }
-
 
 double Rotatable_dihedral::RandomizeDihedralAngle()
 {
@@ -298,7 +293,6 @@ double Rotatable_dihedral::RandomizeDihedralAngleWithinRange(double min, double 
 //    double random_angle = angle_distribution(eng1);
     double random_angle = angle_distribution(rng);
    // std::cout << "Random angle is: " << random_angle << "\n";
-
     /*******************************************/
     /*               IMPORTANT                 */
     /*******************************************/
@@ -308,7 +302,6 @@ double Rotatable_dihedral::RandomizeDihedralAngleWithinRange(double min, double 
     /*******************************************/
     /*               IMPORTANT                 */
     /*******************************************/
-
     return random_angle;
     //return rand() % (max + 1 - min) + min; // Can get same one everytime for testing
 }
@@ -320,16 +313,12 @@ double Rotatable_dihedral::RandomizeDihedralAngleWithinRanges(std::vector<std::p
     // Pass in a vector of pairs of ranges.
     // First select one of those ranges.
     // Then create an angle within the selected range.
-
     // Rando stuff from slack overflow:
 //    std::random_device rd; // obtain a random number from hardware
 //    std::mt19937 eng(rd()); // seed the generator
     std::uniform_int_distribution<> distr(0, (ranges.size() - 1)); // define the range
-
     // Select one of the ranges
     int range_selection = distr(rng);
-    //std::cout << "Randomly selected range number " << range_selection << "\n";
-
     // create an angle within the selected range
     return this->RandomizeDihedralAngleWithinRange(ranges.at(range_selection).first, ranges.at(range_selection).second);
 }
@@ -423,6 +412,7 @@ void Rotatable_dihedral::SetSpecificAngleEntryUsingMetadata(bool useRanges, int 
             // << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
         }
     }
+    return;
 }
 
 bool Rotatable_dihedral::SetSpecificShape(std::string dihedralName, std::string selectedRotamer)
@@ -454,17 +444,16 @@ bool Rotatable_dihedral::SetSpecificShape(std::string dihedralName, std::string 
     }
     return false;
 }
-
 //////////////////////////////////////////////////////////
 //                  PRIVATE FUNCTIONS                   //
 //////////////////////////////////////////////////////////
-
 void Rotatable_dihedral::Initialize(AtomVector atoms, bool reverseAtomsThatMove)
 {
     this->SetWasEverRotated(false);
     this->SetAtoms(atoms);
     this->SetIsAtomsThatMoveReversed(reverseAtomsThatMove);
     // this->DetermineAtomsThatMove(); // Will be done the first time SetDihedralAngle is called.
+    return;
 }
 
 void Rotatable_dihedral::SetAtoms(AtomVector atoms)
@@ -473,22 +462,19 @@ void Rotatable_dihedral::SetAtoms(AtomVector atoms)
     atom2_ = atoms.at(1);
     atom3_ = atoms.at(2);
     atom4_ = atoms.at(3);
+    return;
 }
 
 void Rotatable_dihedral::SetAtomsThatMove(AtomVector atoms)
 {
     atoms_that_move_ = atoms;
-//    std::cout << "Set the following to move:\n";
-//    for (auto &moving_atom : atoms_that_move_)
-//    {
-//        std::cout << moving_atom->GetId() << ", ";
-//    }
-//    std::cout << "\n";
+    return;
 }
 
 void Rotatable_dihedral::SetIsAtomsThatMoveReversed(bool isAtomsThatMoveReversed)
 {
     isAtomsThatMoveReversed_ = isAtomsThatMoveReversed;
+    return;
 }
 
 void Rotatable_dihedral::RecordPreviousDihedralAngle(double dihedral_angle)
@@ -558,27 +544,19 @@ bool Rotatable_dihedral::CheckIfEverRotated()
 {
     return wasEverRotated_;
 }
-
-
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-
-void Rotatable_dihedral::Print()
+std::string Rotatable_dihedral::Print()
 {
-   std::cout << atom1_->GetName() << ", " << atom2_->GetName() << ", " << atom3_->GetName() << ", " << atom4_->GetName() << ": " << this->CalculateDihedralAngle()  << ".\n";
-//    for(AtomVector::iterator it1 = atoms_that_move_.begin(); it1 != atoms_that_move_.end(); ++it1)
-//    {
-//        Atom *atom = *it1;
-//        std::cout << atom->GetName() << ", ";
-//    }
-   std::cout << std::endl;
+   std::stringstream logss;
+   logss << atom1_->GetName() << ", " << atom2_->GetName() << ", " << atom3_->GetName() << ", " << atom4_->GetName() << ": " << this->CalculateDihedralAngle()  << ".\n";
+   gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+   return logss.str();
 }
-
 //////////////////////////////////////////////////////////
 //                       OPERATORS                      //
 //////////////////////////////////////////////////////////
-
 std::ostream& operator<<(std::ostream& os, Rotatable_dihedral& rotatable_dihedral)
 {
     AtomVector atoms = rotatable_dihedral.GetAtoms();

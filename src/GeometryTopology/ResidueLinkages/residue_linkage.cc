@@ -11,19 +11,9 @@
 static pcg_extras::seed_seq_from<std::random_device> seed_source;
 // Make a random number engine
 static pcg32 rng(seed_source);
-
-//////////////////////////////////////////////////////////
-//                    TYPE DEFINITION                   //
-//////////////////////////////////////////////////////////
-
-typedef std::vector<Rotatable_dihedral> RotatableDihedralVector;
-
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-
-Residue_linkage::Residue_linkage() {} // Do nothin
-
 Residue_linkage::Residue_linkage(Residue *nonReducingResidue1, Residue *reducingResidue2, bool reverseAtomsThatMove)
 {
     isExtraAtoms_ = false;
@@ -51,9 +41,9 @@ bool Residue_linkage::GetIfReversedAtomsThatMove()
 }
 
 
-RotatableDihedralVector Residue_linkage::GetRotatableDihedralsWithMultipleRotamers()
+std::vector<Rotatable_dihedral> Residue_linkage::GetRotatableDihedralsWithMultipleRotamers()
 {
-    RotatableDihedralVector returningDihedrals;
+    std::vector<Rotatable_dihedral> returningDihedrals;
     for (auto &entry : rotatable_dihedrals_)
     {
         if (entry.GetNumberOfRotamers() > 1)
@@ -64,7 +54,7 @@ RotatableDihedralVector Residue_linkage::GetRotatableDihedralsWithMultipleRotame
     return returningDihedrals;
 }
 
-RotatableDihedralVector Residue_linkage::GetRotatableDihedrals() const
+std::vector<Rotatable_dihedral> Residue_linkage::GetRotatableDihedrals() const
 {
     if (rotatable_dihedrals_.empty())
     {
@@ -183,7 +173,7 @@ int Residue_linkage::GetNumberOfRotatableDihedrals()
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void Residue_linkage::SetRotatableDihedrals(RotatableDihedralVector rotatableDihedrals)
+void Residue_linkage::SetRotatableDihedrals(std::vector<Rotatable_dihedral> rotatableDihedrals)
 {
     rotatable_dihedrals_ = rotatableDihedrals;
 }
@@ -277,7 +267,7 @@ void Residue_linkage::SetCustomDihedralAngles(std::vector <double> dihedral_angl
 
 void Residue_linkage::SetShapeToPrevious()
 {
-    for(RotatableDihedralVector::iterator rotatable_dihedral = rotatable_dihedrals_.begin(); rotatable_dihedral != rotatable_dihedrals_.end(); ++rotatable_dihedral)
+    for(std::vector<Rotatable_dihedral>::iterator rotatable_dihedral = rotatable_dihedrals_.begin(); rotatable_dihedral != rotatable_dihedrals_.end(); ++rotatable_dihedral)
     {
         rotatable_dihedral->SetDihedralAngleToPrevious();
     }
@@ -285,7 +275,7 @@ void Residue_linkage::SetShapeToPrevious()
 
 void Residue_linkage::SetRandomDihedralAngles()
 {
-    for(RotatableDihedralVector::iterator rotatable_dihedral = rotatable_dihedrals_.begin(); rotatable_dihedral != rotatable_dihedrals_.end(); ++rotatable_dihedral)
+    for(std::vector<Rotatable_dihedral>::iterator rotatable_dihedral = rotatable_dihedrals_.begin(); rotatable_dihedral != rotatable_dihedrals_.end(); ++rotatable_dihedral)
     {
         rotatable_dihedral->RandomizeDihedralAngle();
     }
@@ -293,7 +283,7 @@ void Residue_linkage::SetRandomDihedralAngles()
 
 void Residue_linkage::DetermineAtomsThatMove()
 {
-    for(RotatableDihedralVector::iterator rotatable_dihedral = rotatable_dihedrals_.begin(); rotatable_dihedral != rotatable_dihedrals_.end(); ++rotatable_dihedral)
+    for(std::vector<Rotatable_dihedral>::iterator rotatable_dihedral = rotatable_dihedrals_.begin(); rotatable_dihedral != rotatable_dihedrals_.end(); ++rotatable_dihedral)
     {
         rotatable_dihedral->DetermineAtomsThatMove();
     }
@@ -303,7 +293,7 @@ void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overla
 {
     double current_overlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
     double lowest_overlap = current_overlap;
-    RotatableDihedralVector rotatable_bond_vector = this->GetRotatableDihedrals();
+    std::vector<Rotatable_dihedral> rotatable_bond_vector = this->GetRotatableDihedrals();
     for(auto &rotatable_dihedral : rotatable_bond_vector)
     {
         double best_dihedral_angle = rotatable_dihedral.CalculateDihedralAngle();
@@ -356,40 +346,23 @@ void Residue_linkage::SetName(std::string name)
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-
-void Residue_linkage::Print()
+std::string Residue_linkage::Print()
 {
     std::stringstream ss;
     ss << "Residue_linkage Index: " << this->GetIndex() << ", Name: " << this->GetName() << ", NumberOfShapes: " << this->GetNumberOfShapes() 
               << ", ids: " << this->GetFromThisResidue1()->GetId() << "@" << this->GetFromThisConnectionAtom1()->GetName() 
               << " -- " << this->GetToThisResidue2()->GetId() << "@" << this->GetToThisConnectionAtom2()->GetName() << "\n";
     gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-    // << "Contains these rotatable_dihedrals:\n";
-    // for(auto & rotatableDihedral : this->GetRotatableDihedrals() )
-    // {
-    //     rotatableDihedral.Print();
-    // }
-}
-
-//////////////////////////////////////////////////////////
-//                       OPERATORS                      //
-//////////////////////////////////////////////////////////
-
-std::ostream& operator<<(std::ostream& os, const Residue_linkage& residue_linkage)
-{
-    RotatableDihedralVector rotatable_dihedrals = residue_linkage.GetRotatableDihedrals();
-    for(RotatableDihedralVector::iterator rotatable_dihedral = rotatable_dihedrals.begin(); rotatable_dihedral != rotatable_dihedrals.end(); ++rotatable_dihedral)
+    for(auto & rotatableDihedral : this->GetRotatableDihedrals() )
     {
-        os << (*rotatable_dihedral);
+         ss << rotatableDihedral.Print();
     }
-    return os;
-} // operator<<
-
+    return ss.str();
+}
 
 //////////////////////////////////////////////////////////
 //                    PRIVATE FUNCTIONS                 //
 //////////////////////////////////////////////////////////
-
 void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_this_residue2, bool reverseAtomsThatMove)
 {
     this->SetResidues(from_this_residue1, to_this_residue2);
@@ -418,7 +391,7 @@ bool Residue_linkage::CheckIfViableLinkage()
     return true;
 }
 
-RotatableDihedralVector Residue_linkage::FindRotatableDihedralsConnectingResidues(Atom *from_this_connection_atom1, Atom *to_this_connection_atom2)
+std::vector<Rotatable_dihedral> Residue_linkage::FindRotatableDihedralsConnectingResidues(Atom *from_this_connection_atom1, Atom *to_this_connection_atom2)
 {
     // Going to ignore tags etc.
     // Given two residues that are connected. Find connecting atoms.
@@ -443,7 +416,7 @@ RotatableDihedralVector Residue_linkage::FindRotatableDihedralsConnectingResidue
     // for(auto & atom : from_this_residue1_cycle_points)
     //     std::cout << atom->GetId() << "\n";
     // std::cout << "\n";
-    RotatableDihedralVector rotatableDihedralsInBranches;
+    std::vector<Rotatable_dihedral> rotatableDihedralsInBranches;
     for(int i = 0; i < from_this_residue1_cycle_points.size(); i = i+2)
     {
         Atom *cycle_point1 = from_this_residue1_cycle_points.at(i);
@@ -498,7 +471,7 @@ RotatableDihedralVector Residue_linkage::FindRotatableDihedralsConnectingResidue
                                 // std::cout << "Found atoms:\n";
                                 // for (auto &atom: foundPath)
                                 //     std::cout << atom->GetId() << "\n";
-                                RotatableDihedralVector temp = this->SplitAtomVectorIntoRotatableDihedrals(foundPath);
+                                std::vector<Rotatable_dihedral> temp = this->SplitAtomVectorIntoRotatableDihedrals(foundPath);
                                 rotatableDihedralsInBranches.insert( rotatableDihedralsInBranches.end(), temp.begin(), temp.end() );
                             }
                         }
@@ -510,7 +483,7 @@ RotatableDihedralVector Residue_linkage::FindRotatableDihedralsConnectingResidue
         // for (auto &dihedral : rotatableDihedralsInBranches)
         //     dihedral.Print();
     }
-    RotatableDihedralVector rotatable_dihedrals = this->SplitAtomVectorIntoRotatableDihedrals(connecting_atoms);
+    std::vector<Rotatable_dihedral> rotatable_dihedrals = this->SplitAtomVectorIntoRotatableDihedrals(connecting_atoms);
     // Add any linkage branches (in 2-7 and 2-8) to the rest. 
     rotatable_dihedrals.insert( rotatable_dihedrals.end(), rotatableDihedralsInBranches.begin(), rotatableDihedralsInBranches.end() );
     // std::cout << "These are the assigned rotatable_dihedrals:\n";
@@ -520,11 +493,11 @@ RotatableDihedralVector Residue_linkage::FindRotatableDihedralsConnectingResidue
 }
 
 
-RotatableDihedralVector Residue_linkage::SplitAtomVectorIntoRotatableDihedrals(AtomVector atoms)
+std::vector<Rotatable_dihedral> Residue_linkage::SplitAtomVectorIntoRotatableDihedrals(AtomVector atoms)
 {
     //Ok looking for sets of four atoms, but shifting along vector by one atom for each dihedral.
     // So four atoms will make one rotatable bond, five will make two bonds, six will make three etc.
-    RotatableDihedralVector rotatable_dihedrals_generated;
+    std::vector<Rotatable_dihedral> rotatable_dihedrals_generated;
     if(atoms.size() < 4)
     {
 //        std::cout << "ERROR; in Residue_linkage::SplitAtomVectorIntoRotatableDihedrals, not enough atoms in atom vector: " << atoms.size() << std::endl;

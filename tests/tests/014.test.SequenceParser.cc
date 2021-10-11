@@ -43,7 +43,7 @@ int main ()
             //std::cout << "\nEND" << std::endl;
             std::cout << "Parsed and labelled with no exceptions thrown.\n\n";
         }
-        catch (const std::string exception)
+        catch (const std::string &exception)
         {
             std::cerr << exception << std::endl;
 	    }

@@ -13,7 +13,7 @@
 #include "includes/GeometryTopology/geometrytopology.hpp"
 #include "includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "includes/GeometryTopology/ResidueLinkages/rotatable_dihedral.hpp"
-#include "includes/InputSet/CondensedSequenceSpace/carbohydratebuilder.hpp"
+#include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 #include "includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
 #include "includes/MolecularModeling/assembly.hpp"
 #include "includes/MolecularModeling/atom.hpp"
@@ -639,7 +639,7 @@ void GlycosylationSite::WiggleOneLinkage(Residue_linkage &linkage, OverlapType o
     double current_overlap = this->CalculateOverlaps(overlapType);
     double lowest_overlap = current_overlap;
     // Reverse as convention is Glc1-4Gal and I want to wiggle in opposite direction i.e. from first rotatable bond in Asn outwards
-    RotatableDihedralVector reversed_rotatable_bond_vector = linkage.GetRotatableDihedrals();
+    std::vector<Rotatable_dihedral> reversed_rotatable_bond_vector = linkage.GetRotatableDihedrals();
     std::reverse(reversed_rotatable_bond_vector.begin(), reversed_rotatable_bond_vector.end());
     for(auto &rotatable_dihedral : reversed_rotatable_bond_vector)
     {
