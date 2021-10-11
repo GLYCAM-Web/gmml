@@ -8,15 +8,14 @@ void gmml::log(int line, std::string file_path, LogLevel level, std::string msg,
 	std::ofstream file;
 	if(out_file_name == "")
 	{
-		char* gemshome_env_var = std::getenv("GEMSHOME");
+		char* gmmlLogEnvVar = std::getenv("GMMLLOG");
 		// Check if the environment variables exist.
-		if(!gemshome_env_var)
+		if(!gmmlLogEnvVar)
 		{
-			std::cerr << "\nMust set GEMSHOME environment variable.\n\n    BASH:   export GEMSHOME=/path/to/gems\n    SH:     setenv GEMSHOME /path/to/gems\n" << std::endl;
-			return;
+			return; // Log nothing unless GMMLLOG is set in the user's environment.
 		}
-		std::string GEMSHOME(gemshome_env_var);
-		out_file_name = GEMSHOME + "/gmml/GMML_Log.txt";
+		std::string gmmlLog(gmmlLogEnvVar);
+		out_file_name = gmmlLog;
 	}
 	file.open(out_file_name.c_str(), std::ios_base::app);
 	time_t t = time(0);
