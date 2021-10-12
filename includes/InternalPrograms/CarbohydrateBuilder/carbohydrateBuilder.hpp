@@ -1,6 +1,6 @@
 #ifndef GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
 #define GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
-#include "includes/MolecularModeling/assembly.hpp"
+#include "../../../includes/MolecularModeling/assembly.hpp"
 
 namespace CondensedSequenceSpace
 { // For specifying a specific shape to be built with GenerateSpecific3DStructure
