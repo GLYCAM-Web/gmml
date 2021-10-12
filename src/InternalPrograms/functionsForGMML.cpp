@@ -1,5 +1,5 @@
 #include "includes/InternalPrograms/functionsForGMML.hpp"
-#include "includes/CodeUtils/logging.hpp";
+#include "includes/CodeUtils/logging.hpp"
 void gmml::WritePDBFile(MolecularModeling::Assembly &ass, std::string workingDirectory, std::string fileNamePrefix, bool includeOutputFileCount)
 {
 	static int outputFileCount = 0;
