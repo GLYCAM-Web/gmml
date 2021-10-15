@@ -1,6 +1,7 @@
 #ifndef GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
 #define GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
-#include "../../../includes/MolecularModeling/assembly.hpp"
+#include "../../../includes/MolecularModeling/assembly.hpp" // This has to be relative for SWIG for unknown reasons.
+#include "../../../includes/InputSet/Utilities/response.hpp"
 
 namespace CondensedSequenceSpace
 { // For specifying a specific shape to be built with GenerateSpecific3DStructure
@@ -52,8 +53,9 @@ public:
     //////////////////////////////////////////////////////////
     CondensedSequence GetCondensedSequence();
     std::string GetInputSequenceString();
-    MolecularModeling::Assembly* GetAssembly();
-    ResidueLinkageVector* GetGlycosidicLinkages();
+    MolecularModeling::Assembly* GetAssembly(); // Should become a move of unique_ptr. Treat this class like a factor.
+    ResidueLinkageVector* GetGlycosidicLinkages(); // Dodgy. Why do I do this?
+    InputOutput::Response GetResponse();
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
@@ -88,23 +90,7 @@ private:
     CondensedSequence condensedSequence_;
     std::string inputSequenceString_;
     ResidueLinkageVector glycosidicLinkages_;
+    InputOutput::Response response_;
 };
 }
 #endif // GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
-
-
-
-// Proposed usage examples:
-
-//carbohydrateBuilder builder(std::string sequenceString, std::string prepFilePath, enum jobTypeOption);
-
-// Scrap
-
-/* A big problem I have now is that condensed sequence class is separate. It makes a 3D structure of a carbohydrate in an assembly
- * and I don't know what the linkage "name" is for my linkages. i.e. Galb1-4Glc corresponds to linkage 1. Hmm. I think I need to
- * add a name attribute to residue_linkage and bring the functionality for building the 3D structure out of the old condensed sequence class.
- * Also need to bring in the set angles functionality. Then I can delete all the old stuff and cheer.
- * The other thing I need to sort out is rotamer generation (easy) and selection (?).
- * Then naming of PDB files and tracking/reporting which is which rotamer permutant.
-
-*/

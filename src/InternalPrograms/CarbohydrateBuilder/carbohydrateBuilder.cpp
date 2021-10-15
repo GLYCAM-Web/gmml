@@ -13,6 +13,7 @@ using CondensedSequenceSpace::CondensedSequence;
 carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath)
 : assembly_(condensedSequence, prepFilePath)
 {
+	Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, bad_residue_notice)
     this->InitializeClass(condensedSequence);
 }
 
@@ -40,6 +41,12 @@ ResidueLinkageVector* carbohydrateBuilder::GetGlycosidicLinkages()
 {
     return &glycosidicLinkages_;
 }
+
+InputOutput::Response carbohydrateBuilder::GetResponse()
+{
+	return response_;
+}
+
 //////////////////////////////////////////////////////////
 //                      FUNCTIONS                       //
 //////////////////////////////////////////////////////////
