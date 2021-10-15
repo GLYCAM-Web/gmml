@@ -41,8 +41,8 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        void ReorderSequence();
-        void LabelSequence();
+        std::string ReorderSequence();
+        std::string LabelSequence();
         void SetIndexByConnectivity();
         std::string Print(const bool withLabels = false);
         std::string PrintGraphViz(GraphVizDotConfig &configs);

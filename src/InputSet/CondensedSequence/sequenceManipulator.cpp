@@ -14,13 +14,13 @@ bool file_exists(const char *filename)
     return (stat (filename, &buffer) == 0);
 }
 
-void SequenceManipulator::ReorderSequence()
+std::string SequenceManipulator::ReorderSequence()
 {	// Just doing the default by ascending link number for now.
 	for (auto &residue : this->GetParsedResidues())
 	{
 		residue->sortInEdgesBySourceTObjectComparator();
 	}
-	return;
+	return this->Print();
 }
 
 std::vector<ParsedResidue*> SequenceManipulator::GetParsedResiduesOrderedByConnectivity()
@@ -35,7 +35,7 @@ std::vector<ParsedResidue*> SequenceManipulator::GetParsedResiduesOrderedByConne
     return rawResidues;
 }
 
-void SequenceManipulator::LabelSequence()
+std::string SequenceManipulator::LabelSequence()
 {
 	this->SetIndexByConnectivity();
 	std::stringstream ss;
@@ -51,7 +51,7 @@ void SequenceManipulator::LabelSequence()
 			ss.str( std::string() ); ss.clear(); // Must do both of these to clear the stream
 		}
 	}
-	return;
+	return this->Print();
 }
 
 void SequenceManipulator::SetIndexByConnectivity()

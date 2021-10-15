@@ -18,36 +18,24 @@ int main ()
     std::string s12 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH";
     std::string s13 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH";
  //   std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7};
- //   std::vector<std::string> sequences {s4};
     std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13};
-    // Test sequenceParser
- //    for (auto &sequence : sequences)
- //    {
- //    	CondensedSequence::SequenceParser parser(sequence);
- //    	std::cout << parser.Print() << "\n\n";
- //    	std::cout << "About to go out of scope.\n";
-	// }
-//	Now test sequenceManipulator
+    std::cout << "-----------------------------------------------------------------------------------------------------\n\n";
 	for (auto &sequence : sequences)
     {
         try
         {
             std::cout << "Parsing: " << sequence << std::endl;
         	CondensedSequence::SequenceManipulator man(sequence);
-        	man.ReorderSequence();
-            //std::cout << "\nManipulator Print:" << std::endl;
-            std::cout << man.Print() << std::endl;
-            //std::cout << "\nManipulator Print with Labels:" << std::endl;
+        	std::cout << man.ReorderSequence() << std::endl;
             bool withLabels = true;
             std::cout << man.Print(withLabels) << std::endl;
-            //std::cout << "\nEND" << std::endl;
             std::cout << "Parsed and labelled with no exceptions thrown.\n\n";
         }
         catch (const std::string &exception)
         {
             std::cerr << exception << std::endl;
 	    }
+        std::cout << "-----------------------------------------------------------------------------------------------------\n\n";
     }
 	return 0;
 }
-
