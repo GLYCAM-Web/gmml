@@ -231,6 +231,8 @@ Assembly::Assembly(std::vector<MolecularModeling::Residue*> residueVector)
 
 Assembly::Assembly(std::string inputSequence, std::string prepFilePath)
 {
+    this->SetName("CONDENSEDSEQUENCE"); // Necessary for off file to load into tleap
+    input_file_ =
     description_ = "";
     model_index_ = 0;
     sequence_number_ = 1;
