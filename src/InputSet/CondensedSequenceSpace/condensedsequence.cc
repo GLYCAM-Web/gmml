@@ -287,10 +287,6 @@ void CondensedSequence::WriteGraphVizDotFile(GraphVizDotConfig& configs)
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void CondensedSequence::AddNoteToResponse(Glycan::Note* new_note)
-{
-    this->response_.AddNotice(new_note);
-}
 
 void CondensedSequence::SetResidues(CondensedSequenceResidueVector residues)
 {

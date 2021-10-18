@@ -46,6 +46,11 @@ void Response::AddNotice(Glycan::Note* new_notice)
     this->notices.push_back(new_notice);
 }
 
+void Response::AddNotice(Glycan::Note new_notice)
+{
+    this->notices.push_back(new_notice);
+}
+
 void Response::AddOutput(std::pair <std::string, std::string> new_output)
 {
     this->output_dict.push_back(new_output);
