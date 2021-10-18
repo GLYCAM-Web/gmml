@@ -11,17 +11,9 @@ using CondensedSequenceSpace::carbohydrateBuilder;
 using CondensedSequenceSpace::CondensedSequence;
 
 carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath)
+: assembly_(condensedSequence, prepFilePath)
 {
-	try
-	{
-		assembly_(condensedSequence, prepFilePath);
-	}
-	catch(const std::string &exceptionMessage)
-	{
-
-		Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, exceptionMessage);
-	}
-
+	Glycan::Note(Glycan::NoteType::ERROR, Glycan::NoteCat::IMPROPER_CONDENSED_SEQUENCE, bad_residue_notice)
     this->InitializeClass(condensedSequence);
 }
 
@@ -48,6 +40,11 @@ MolecularModeling::Assembly* carbohydrateBuilder::GetAssembly()
 ResidueLinkageVector* carbohydrateBuilder::GetGlycosidicLinkages()
 {
     return &glycosidicLinkages_;
+}
+
+InputOutput::Response carbohydrateBuilder::GetResponse()
+{
+	return response_;
 }
 
 //////////////////////////////////////////////////////////
@@ -162,7 +159,6 @@ std::string carbohydrateBuilder::Print()
     gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
     return logss.str();
 }
-
 //////////////////////////////////////////////////////////
 //                   PRIVATE FUNCTIONS                  //
 //////////////////////////////////////////////////////////

@@ -1,6 +1,7 @@
 #ifndef GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
 #define GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
 #include "../../../includes/MolecularModeling/assembly.hpp" // This has to be relative for SWIG for unknown reasons.
+#include "../../../includes/InputSet/Utilities/response.hpp"
 
 namespace CondensedSequenceSpace
 { // For specifying a specific shape to be built with GenerateSpecific3DStructure
@@ -89,6 +90,7 @@ private:
     CondensedSequence condensedSequence_;
     std::string inputSequenceString_;
     ResidueLinkageVector glycosidicLinkages_;
+    InputOutput::Response response_;
 };
 }
 #endif // GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
