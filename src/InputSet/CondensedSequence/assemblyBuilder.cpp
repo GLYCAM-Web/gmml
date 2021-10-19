@@ -3,7 +3,7 @@
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeAglyconeInfo.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp" // To get glycam name for ParsedResidue
-#include "includes/MolecularModeling/Abstract/Residue.hpp" // For the Residue::Type
+#include "includes/Abstract/residue.hpp" // For the Residue::Type
 #include "includes/MolecularModeling/Selections/selections.hpp"
 #include "includes/MolecularModeling/assembly.hpp" // Only to use silly Assembly functions. Should go away. 
 #include "includes/MolecularModeling/atom.hpp" // For setting Angles and bond distances

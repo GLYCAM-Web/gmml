@@ -1,8 +1,9 @@
 #ifndef GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
 #define GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
+#include <string>
+#include <vector>
+#include "../../../includes/Abstract/builder.hpp"
 #include "../../../includes/MolecularModeling/assembly.hpp" // This has to be relative for SWIG for unknown reasons.
-#include "../../../includes/InputSet/Utilities/response.hpp"
-
 namespace CondensedSequenceSpace
 { // For specifying a specific shape to be built with GenerateSpecific3DStructure
 struct SingleRotamerInfo
@@ -41,7 +42,7 @@ struct LinkageOptions
 };
 typedef std::vector<LinkageOptions> LinkageOptionsVector;
 
-class carbohydrateBuilder
+class carbohydrateBuilder : public Abstract::Builder
 {
 public:
     //////////////////////////////////////////////////////////
