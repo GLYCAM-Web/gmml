@@ -21,6 +21,7 @@ carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::str
 	catch(const std::string &exceptionMessage)
 	{
 		this->SetStatus("ERROR", exceptionMessage);
+		// Better to throw once I figure out how to catch it in gems.
 	}
 }
 
