@@ -4,6 +4,7 @@
 #include <vector>
 #include "../../../includes/Abstract/builder.hpp"
 #include "../../../includes/MolecularModeling/assembly.hpp" // This has to be relative for SWIG for unknown reasons.
+
 namespace CondensedSequenceSpace
 { // For specifying a specific shape to be built with GenerateSpecific3DStructure
 struct SingleRotamerInfo
@@ -56,7 +57,6 @@ public:
     std::string GetInputSequenceString();
     MolecularModeling::Assembly* GetAssembly(); // Should become a move of unique_ptr. Treat this class like a factor.
     ResidueLinkageVector* GetGlycosidicLinkages(); // Dodgy. Why do I do this?
-    InputOutput::Response GetResponse();
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
@@ -91,7 +91,6 @@ private:
     CondensedSequence condensedSequence_;
     std::string inputSequenceString_;
     ResidueLinkageVector glycosidicLinkages_;
-    InputOutput::Response response_;
 };
 }
 #endif // GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP

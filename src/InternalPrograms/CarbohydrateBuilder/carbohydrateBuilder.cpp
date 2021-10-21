@@ -39,7 +39,6 @@ std::string carbohydrateBuilder::GetInputSequenceString()
     return inputSequenceString_;
 }
 
-
 MolecularModeling::Assembly* carbohydrateBuilder::GetAssembly()
 {
     return &assembly_;
@@ -48,11 +47,6 @@ MolecularModeling::Assembly* carbohydrateBuilder::GetAssembly()
 ResidueLinkageVector* carbohydrateBuilder::GetGlycosidicLinkages()
 {
     return &glycosidicLinkages_;
-}
-
-InputOutput::Response carbohydrateBuilder::GetResponse()
-{
-	return response_;
 }
 
 //////////////////////////////////////////////////////////
