@@ -1,6 +1,7 @@
 #include <sstream>
 #include <sys/stat.h> // for checking if file exists
 #include <fstream>  // writing outputDotFile
+#include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Graph.hpp"
 #include "includes/CodeUtils/logging.hpp"

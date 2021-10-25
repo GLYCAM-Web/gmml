@@ -8,7 +8,6 @@
 //////////////////////////////////////////////////////////
 
 using CondensedSequenceSpace::carbohydrateBuilder;
-using CondensedSequenceSpace::CondensedSequence;
 
 carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath)
 : assembly_(condensedSequence, prepFilePath)
@@ -28,11 +27,6 @@ carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::str
 //////////////////////////////////////////////////////////
 //                       ACCESSORS                      //
 //////////////////////////////////////////////////////////
-
-CondensedSequence carbohydrateBuilder::GetCondensedSequence()
-{
-    return condensedSequence_;
-}
 
 std::string carbohydrateBuilder::GetInputSequenceString()
 {

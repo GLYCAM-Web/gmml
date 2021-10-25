@@ -53,7 +53,6 @@ public:
     //////////////////////////////////////////////////////////
     //                       ACCESSORS                      //
     //////////////////////////////////////////////////////////
-    CondensedSequence GetCondensedSequence();
     std::string GetInputSequenceString();
     MolecularModeling::Assembly* GetAssembly(); // Should become a move of unique_ptr. Treat this class like a factor.
     ResidueLinkageVector* GetGlycosidicLinkages(); // Dodgy. Why do I do this?
@@ -88,7 +87,6 @@ private:
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     MolecularModeling::Assembly assembly_;
-    CondensedSequence condensedSequence_;
     std::string inputSequenceString_;
     ResidueLinkageVector glycosidicLinkages_;
 };

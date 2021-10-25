@@ -1,6 +1,7 @@
 #ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_MANIPULATOR_HPP
 #define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_MANIPULATOR_HPP
 
+#include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
 #include "includes/InputSet/CondensedSequence/sequenceParser.hpp"
 
 namespace CondensedSequence
