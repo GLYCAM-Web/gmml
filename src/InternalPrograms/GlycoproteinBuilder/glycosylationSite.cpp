@@ -29,21 +29,21 @@
 //////////////////////////////////////////////////////////
 GlycosylationSite::GlycosylationSite(Assembly* glycoprotein, std::string residueNumber, std::string glycanInputType, std::string glycanInput, std::string prepFileLocation)
 {
-    std::stringstream logss;
     this->SetGlycanName(glycanInput);
     this->SetResidueNumber(residueNumber);
     this->SetGlycanOverlap(0.0);
     this->SetProteinOverlap(0.0);
-    logss << "Finding protein residue: " << residueNumber <<  "\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Finding protein residue: " + residueNumber);
     this->FindSetProteinResidue(residueNumber, glycoprotein->GetResidues()); // FindProteinResidue should be in Assembly? This does both finding and setting.
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Setting assembly for residue.");
     this->GetResidue()->SetAssembly(glycoprotein); // gawd-dern you gmml.
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Determining overlap atoms in protein");
     this->DetermineOverlapProteinAtoms(glycoprotein, this->GetResidue());
-    logss << "Building glycan!\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Building glycan!");
     this->BuildGlycan(glycanInputType, glycanInput, prepFileLocation);
-    logss << "Attaching glycan\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Attaching glycan!");
     this->AttachGlycan(glycoprotein);
-   	logss << "Added " << this->GetGlycanName() << " to " << this->GetResidueNumber() << "\n";
-    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Added " + this->GetGlycanName() + " to " + this->GetResidueNumber());
 }
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
@@ -89,17 +89,16 @@ void GlycosylationSite::Remove(Assembly *glycoproteinAssembly)
 
 void GlycosylationSite::BuildGlycan(std::string glycanInputType, std::string glycanInput, std::string prepFileLocation)
 {
-    std::stringstream logss;
 	if (glycanInputType == "Sequence")
 	{
-		logss << "Generating assembly from sequence with " << glycanInput << std::endl;
-		logss << "Prepfile location is: " << prepFileLocation << std::endl;
+	    gmml::log(__LINE__, __FILE__, gmml::INF, "Generating assembly from sequence with " + glycanInput);
+	    gmml::log(__LINE__, __FILE__, gmml::INF, "Prepfile location is: " + prepFileLocation);
 		CondensedSequenceSpace::carbohydrateBuilder carbBuilder(glycanInput, prepFileLocation);
 		this->SetGlycan(carbBuilder.GetAssembly());
 	}
 	else if (glycanInputType == "Library")
 	{
-		logss << "Generating assembly from PDB with " << glycanInput << std::endl;
+	    gmml::log(__LINE__, __FILE__, gmml::INF, "Generating assembly from PDB with " + glycanInput);
 		MolecularModeling::Assembly glycan(glycanInput, gmml::InputFileType::PDB);
 		glycan.BuildStructureByDistance();
 		this->SetGlycan(glycan);
@@ -123,18 +122,22 @@ double GlycosylationSite::GetWeightedOverlap(double glycan_weight, double protei
 // Bond by distance wouldn't work as may have overlaps after superimposition.
 void GlycosylationSite::AttachGlycan(Assembly* glycoprotein)
 {
-    std::stringstream logss;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Start of AttachGlycan");
 	this->Prepare_Glycans_For_Superimposition_To_Particular_Residue(residue_->GetName());
-	logss << "Superimpose prep done" << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Superimpose prep done");
 	this->Superimpose_Glycan_To_Glycosite(residue_);
-	logss << "SuperimposedGlycanToGlycosite" << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Residue ID is: " + this->GetResidue()->GetId());
+	this->RenumberGlycanToMatch(*glycoprotein);
+    gmml::log(__LINE__, __FILE__, gmml::INF, "SuperimposedGlycanToGlycosite");
 	this->Rename_Protein_Residue_To_GLYCAM_Nomenclature();
 	glycoprotein->MergeAssembly(&glycan_); // Add glycan to glycoprotein assembly, allows SetDihedral later. May not be necessary anymore with new Rotatable Dihedral class.
-	logss << "Merge done" << std::endl;
+	gmml::log(__LINE__, __FILE__, gmml::INF, "Merge done");
 	all_residue_linkages_.emplace_back(glycan_.GetResidues().at(0), residue_);
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Figuring out residue linkages");
 	this->FigureOutResidueLinkagesInGlycan(glycan_.GetResidues().at(0), glycan_.GetResidues().at(0), &all_residue_linkages_);
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Setting internal bond count to check if more form later");
 	this->SetInternalBondCount(gmml::CountInternalBonds(glycan_));
-    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Attach glycan done");
 }
 
 /*
@@ -232,11 +235,11 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue *glycosite_resid
     Atom* atomC1;
     for(AtomVector::iterator it = reducing_Atoms.begin(); it != reducing_Atoms.end(); it++)
     {
-       Atom* atom = *it;
-       if(atom->GetName().compare("C1")==0)
-       {
-           atomC1 = atom;
-       }
+        Atom* atom = *it;
+        if(atom->GetName().compare("C1")==0)
+        {
+            atomC1 = atom;
+        }
     }
     //Connect the glycan and protein atoms to each other.
     Atom *protein_connection_atom = this->GetConnectingProteinAtom(glycosite_residue->GetName());
@@ -245,6 +248,19 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue *glycosite_resid
     //Delete the atoms used to superimpose the glycan onto the protein. Remove the residue.
     Residue *superimposition_residue = glycan_.GetAllResiduesOfAssembly().at(0);
     glycan_.RemoveResidue(superimposition_residue);
+}
+
+void GlycosylationSite::RenumberGlycanToMatch(Assembly &glycoprotein)
+{
+    std::string chainID = this->GetResidue()->GetChainID();
+    std::cerr << "Setting chainID to " << chainID << std::endl;
+    int highestResidueNumber = selection::FindHighestResidueNumber(glycoprotein, chainID);
+    for (auto &glycanResidue : this->GetAttachedGlycan()->GetResidues())
+    {
+        glycanResidue->SetChainID(chainID);
+        glycanResidue->SetResidueNumber(std::to_string(highestResidueNumber++));
+    }
+    return;
 }
 
 void GlycosylationSite::Rename_Protein_Residue_To_GLYCAM_Nomenclature()

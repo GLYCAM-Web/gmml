@@ -9,7 +9,7 @@
 //#include "../../includes/utils.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/Glycan/oligosaccharide.hpp"
-#include "includes/CodeUtils/logging.hpp";
+#include "includes/CodeUtils/logging.hpp"
 
 using Glycan::Oligosaccharide;
 //////////////////////////////////////////////////////////

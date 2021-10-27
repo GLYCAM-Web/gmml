@@ -1868,7 +1868,7 @@ void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<s
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {
-//        std::cout << "Generating PdbFileSpace::PdbFile structure from " << pdb_file_path << "failed." << std::endl;
+         throw "Generating PdbFileSpace::PdbFile structure from " + pdb_file_path + " failed:\n" + ex.message_;
     }
     this->BuildAssemblyFromPdbFile(pdb_file, amino_lib_files, glycam_lib_files, other_lib_files, prep_files, parameter_file);
 }

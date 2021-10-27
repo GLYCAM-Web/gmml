@@ -56,7 +56,6 @@ private:
     //                  PRIVATE FUNCTIONS                   //
     //////////////////////////////////////////////////////////
     // Class instantiation
-    void InitializeGlycoproteinBuilder(std::string inputFile, std::string workingDirectory);
     void InitializeGlycoproteinBuilder(GlycoproteinBuilderInputs inputStruct);
     void ConvertInputStructEntries(GlycoproteinBuilderInputs inputStruct);
     void CreateGlycosites(std::vector<GlycositeInput> glycositesInputVector);
