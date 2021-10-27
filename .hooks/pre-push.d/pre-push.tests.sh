@@ -30,9 +30,17 @@ check_dir_exists() {
     fi
 }
 
+cd ../
+ gemshome=`pwd`
+cd -
+check_gemshome $gemshome 
+
+## OG Oct 2021 have the hooks update themselves.
+cp -r $GEMSHOME/gmml/.hooks/* $GEMSHOME/gmml/.git/hooks/
+
 #### Allow skipping tests ####
 branch=`git rev-parse --abbrev-ref HEAD`
-if [[ "$branch" != "gmml-dev" ]] && [[ "$branch" != "dev" ]]; then
+if [[ "$branch" != "gmml-dev" ]] && [[ "$branch" != "gmml-test" ]]; then
     printf "Branch is %s\nSkipping tests is allowed.\nDo you want to skip them?\ns=skip\na=abort\nEnter anything to run tests.\n" $branch
     read -p "Enter response: " response < /dev/tty
     if [[ $response == [sS] ]]; then
@@ -47,10 +55,7 @@ if [[ "$branch" != "gmml-dev" ]] && [[ "$branch" != "dev" ]]; then
 fi
 #### Allow skipping tests ####
 
-cd ../
- gemshome=`pwd`
-cd -
-check_gemshome $gemshome 
+
 
 #Compile gmml if not compiled:
 echo "Pulling all changes"
