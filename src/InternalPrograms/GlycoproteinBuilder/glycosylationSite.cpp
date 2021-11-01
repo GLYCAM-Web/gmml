@@ -253,7 +253,7 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue *glycosite_resid
 void GlycosylationSite::RenumberGlycanToMatch(Assembly &glycoprotein)
 {
     std::string chainID = this->GetResidue()->GetChainID();
-    std::cerr << "Setting chainID to " << chainID << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Setting chainID to " + chainID + "\nNote a ? is fine and means no chain ID here.");
     int highestResidueNumber = selection::FindHighestResidueNumber(glycoprotein, chainID);
     for (auto &glycanResidue : this->GetAttachedGlycan()->GetResidues())
     {

@@ -58,7 +58,8 @@ std::string Residue::CreateID(std::string name, std::string chain, std::string n
     }
     if (chain == "default")
     {
-        chain = "A";
+        chain = "A"; // Leaving this commented out as it was the old default. Maybe changing it messes something up and we need to go back.
+        //chain = gmml::BLANK_SPACE;
     }
     if (number == "default")
     {

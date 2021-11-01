@@ -102,7 +102,7 @@ void GlycoproteinBuilder::InitializeGlycoproteinBuilder(GlycoproteinBuilderInput
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
         std::cerr << "Error in Glycoprotein builder class constructor:\n" << errorMessage << std::endl;
-        std::exit(EXIT_FAILURE);
+        std::exit(EXIT_FAILURE); // Can't do this when GEMS starts to use this class. Working on the issue on another feature branch.
     }
 }
 
