@@ -258,7 +258,7 @@ void GlycosylationSite::RenumberGlycanToMatch(Assembly &glycoprotein)
     for (auto &glycanResidue : this->GetAttachedGlycan()->GetResidues())
     {
         glycanResidue->SetChainID(chainID);
-        glycanResidue->SetResidueNumber(std::to_string(highestResidueNumber++));
+        glycanResidue->SetResidueNumber(std::to_string(++highestResidueNumber));
     }
     return;
 }
