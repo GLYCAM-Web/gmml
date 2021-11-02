@@ -168,10 +168,14 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
                             }
                             oligo_residue_map[oligo].push_back(new_terminal_residue);
                             //For example, the ROH coming from terminal BGC, should go after, instead of in front of BGC.
-                            std::string new_terminal_residue_id = terminal_atom->GetId(); //This new residue takes the atom id as residue id.
-                            new_terminal_residue->SetId(new_terminal_residue_id);
+                            //OG std::string new_terminal_residue_id = terminal_atom->GetId(); //This new residue takes the atom id as residue id. // OG: huh?
+                            //OG new_terminal_residue->SetId(new_terminal_residue_id);
+                            //OG Ok let's see if doing something more "sensible" breaks something else:
+                            int newResidueNumberInt = 1 + std::stoi(OldResidueForThisAtom->GetNumber()); // OG: You sometimes need to be -1, but I don't think that functionality
+                            // currently exists, and this thing is so bad I ain't putting any more time into it.
+                            new_terminal_residue->SetId(new_terminal_residue->CreateID(new_terminal_residue_name, OldResidueForThisAtom->GetChainID(), std::to_string(newResidueNumberInt) ));
 
-                            gmml::log(__LINE__, __FILE__, gmml::INF, "new_terminal_residue_id is: " + new_terminal_residue_id);
+                            gmml::log(__LINE__, __FILE__, gmml::INF, "new_terminal_residue_id is: " + new_terminal_residue->GetId());
 
                             //Get all the atoms that should go to this new terminal residue. Find all connected atoms of the terminal atom that's not on the sugar side of the old residue
                             AtomVector new_terminal_residue_atoms;
@@ -195,6 +199,8 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
                                 new_terminal_residue->AddAtom(new_atom);
                                 new_atom->SetResidue(new_terminal_residue);
                                 OldResidueForThisAtom->RemoveAtom(new_atom, false);
+                                gmml::log(__LINE__, __FILE__, gmml::INF, "New terminal residue id is: " + new_terminal_residue->GetId() );
+                                gmml::log(__LINE__, __FILE__, gmml::INF, "Adding atom with id: " + new_atom->GetId() );
                             }
 
                         }
@@ -367,6 +373,7 @@ void Assembly::TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap res
         std::string residue_name = residue->GetName();
         std::string residue_id = residue->GetId();
         if(residue_glycam_map.find(residue_id) != residue_glycam_map.end()){
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Residue found in residue_glycam_map, adding to terminal_residues, id is: " + residue_id);
             std::vector<std::string> glycam_names = residue_glycam_map[residue_id];
             std::string real_glycam_name = "";
             if (glycam_names.size() == 1) //if residue_id and glycam names is one to one relationship
@@ -971,8 +978,10 @@ void Assembly::UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue
         Residue* residue = *it2;
         std::string residue_name = residue->GetName();
         std::string residue_id = residue->GetId();
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Looking for residue in residue_glycam_map, id is: " + residue_id);
         if(residue_glycam_map.find(residue_id) != residue_glycam_map.end())
         {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Residue found in residue_glycam_map, adding to terminal_residues, id is: " + residue_id);
             terminal_residues.push_back(new Residue(this, ""));
             residue_sequence_number--;
             bool terminal = false;
