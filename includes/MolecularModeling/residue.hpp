@@ -70,6 +70,7 @@ namespace MolecularModeling
               * An accessor function in order to access to the atoms
               * @return atoms_ attribute of the current object of this class
               */
+            std::string GetChainID();
             AtomVector GetAtoms();
             /*! \fn
               * An accessor function in order to access to the head atoms
@@ -204,6 +205,8 @@ namespace MolecularModeling
               * @param id The identification attribute of the current object
               */
             void SetId(std::string id);
+            void SetChainID(std::string chain);
+            void SetResidueNumber(std::string number);
             void SetIndex(unsigned long long index);
             /*! \fn                                                                                          //Added by ayush on 11/20/17 for residuenode in assembly
               * A mutator function in order to set the node of the current object

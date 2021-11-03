@@ -12,7 +12,7 @@
 #include "../../includes/Glycan/monosaccharide.hpp"
 #include "../../includes/Glycan/glycosidiclinkage.hpp"
 #include "../../includes/GeometryTopology/geometrytopology.hpp"
-#include "includes/CodeUtils/logging.hpp";
+#include "includes/CodeUtils/logging.hpp"
 
 using Glycan::Monosaccharide;
 using Glycan::GlycosidicLinkage;

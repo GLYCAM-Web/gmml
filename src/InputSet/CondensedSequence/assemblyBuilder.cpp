@@ -9,6 +9,8 @@
 #include "includes/MolecularModeling/atom.hpp" // For setting Angles and bond distances
 #include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/files.hpp"
+
 
 //using Abstract::Residue; // For Residue::Type
 
@@ -18,6 +20,7 @@ using MolecularModeling::Assembly;
 AssemblyBuilder::AssemblyBuilder(std::string inputSequence, std::string prepFilePath, Assembly *inputAssembly) : SequenceManipulator{inputSequence} 
 {
 	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependancy Oliver.
+	gmml::ensureFileExists(prepFilePath);
 	PrepFileSpace::PrepFile prepFile(prepFilePath);
 	this->SetPrepResidueMap(prepFile.GetResidues()); //A mapping between a residue name and its residue object
 	this->GenerateResidues(inputAssembly);

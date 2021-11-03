@@ -5,6 +5,7 @@
 #include "includes/InternalPrograms/metropolisCriterion.hpp"
 #include "includes/InternalPrograms/functionsForGMML.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/files.hpp"
 
 // ToDo Check for negative overlap in case the funk gets funky.
 // ToDo The cout for accepting overlap changes doesn't match the values printed. Why? Is it making them high, not printing, accepting lower, then rejecting, etc?
@@ -82,20 +83,27 @@ void GlycoproteinBuilder::SetIsDeterministic(std::string isDeterministic)
 
 void GlycoproteinBuilder::InitializeGlycoproteinBuilder(GlycoproteinBuilderInputs inputStruct)
 {
-	this->SetWorkingDirectory(inputStruct.workingDirectory_);
-	this->SetPrepFileLocation(inputStruct.prepFileLocation_);
-	this->SetIsDeterministic(inputStruct.isDeterministic_);
-	this->ConvertInputStructEntries(inputStruct);
-	std::stringstream logss;
-	logss << "Build protein structure by distance.\n";
-	glycoprotein_ = Assembly((inputStruct.workingDirectory_ + inputStruct.substrateFileName_), gmml::InputFileType::PDB);
-	glycoprotein_.BuildStructureByDistance(4, 1.6); // 4 threads, 1.91 cutoff to allow C-S in Cys and Met to be bonded. Nope 1.91 did bad things.
-    logss << "AttachGlycansToGlycositesNew"  << std::endl;
-    this->CreateGlycosites(inputStruct.glycositesInputVector_);
-    logss << "Add_Beads"  << std::endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-    this->Add_Beads(this->GetGlycoproteinAssembly(), this->GetGlycosites());
-    this->UpdateAtomsThatMoveInLinkages(); // Must update to include beads.
+    try
+    {
+        this->SetWorkingDirectory(inputStruct.workingDirectory_);
+        this->SetPrepFileLocation(inputStruct.prepFileLocation_);
+        this->SetIsDeterministic(inputStruct.isDeterministic_);
+        this->ConvertInputStructEntries(inputStruct);
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Build protein structure by distance.");
+        glycoprotein_ = Assembly((inputStruct.workingDirectory_ + inputStruct.substrateFileName_), gmml::InputFileType::PDB);
+        glycoprotein_.BuildStructureByDistance(4, 1.6); // 4 threads, 1.91 cutoff to allow C-S in Cys and Met to be bonded. Nope 1.91 did bad things.
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Attaching Glycans To Glycosites.");
+        this->CreateGlycosites(inputStruct.glycositesInputVector_);
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Adding beads");
+        this->Add_Beads(this->GetGlycoproteinAssembly(), this->GetGlycosites());
+        this->UpdateAtomsThatMoveInLinkages(); // Must update to include beads.
+    }
+    catch (const std::string &errorMessage)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
+        std::cerr << "Error in Glycoprotein builder class constructor:\n" << errorMessage << std::endl;
+        std::exit(EXIT_FAILURE); // Can't do this when GEMS starts to use this class. Working on the issue on another feature branch.
+    }
 }
 
 void GlycoproteinBuilder::ConvertInputStructEntries(GlycoproteinBuilderInputs inputStruct)

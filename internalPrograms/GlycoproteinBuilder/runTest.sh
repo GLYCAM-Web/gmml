@@ -15,7 +15,7 @@ if grep -q "Program got to end ok" test1_output; then
         ((tests_passed++))
         rm test1_output
     else
-        echo "Structure files different, test FAILED!"
+        echo "Structure files different, ( tests/simple/savedOutput_GlycoProtein_All_Resolved.pdb Vs tests/simple/GlycoProtein_All_Resolved.pdb ) test FAILED!"
     fi
 else 
    echo "Test FAILED, program did not get to the end ok"

@@ -58,7 +58,8 @@ std::string Residue::CreateID(std::string name, std::string chain, std::string n
     }
     if (chain == "default")
     {
-        chain = "A";
+        chain = "A"; // Leaving this commented out as it was the old default. Maybe changing it messes something up and we need to go back.
+        //chain = gmml::BLANK_SPACE;
     }
     if (number == "default")
     {
@@ -72,7 +73,19 @@ std::string Residue::CreateID(std::string name, std::string chain, std::string n
     return id_stream.str();
 }
 
+void Residue::SetChainID(std::string chain)
+{
+    std::string newID = this->CreateID(this->GetName(), chain, this->GetNumber());
+    this->SetId(newID);
+    return;
+}
 
+void Residue::SetResidueNumber(std::string number)
+{
+    std::string newID = this->CreateID(this->GetName(), this->GetChainID(), number);
+    this->SetId(newID);
+    return;
+}
 
 // Residue::Residue(Residue *residue)
 // {
@@ -138,6 +151,11 @@ std::string Residue::GetNumber()
 {
     StringVector id = gmml::Split(id_, "_");
     return id.at(2); // This is silly, why not add residue number to class? OG: I know right? OG: Single point of truth?
+}
+std::string Residue::GetChainID()
+{
+    StringVector id = gmml::Split(id_, "_");
+    return id.at(1);
 }
 MolecularModeling::AtomVector Residue::GetAtoms()
 {

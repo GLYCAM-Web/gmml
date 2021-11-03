@@ -9,7 +9,7 @@ fi
 ./detect_sugars tests/inputs/4mbz.pdb > /dev/null 2>&1
 if [ -f gmmo.ttl ]; then
    if ! cmp gmmo.ttl tests/correct_outputs/gmmo.ttl > /dev/null 2>&1; then
-       printf "Test FAILED!.\n"
+       printf "\nTest FAILED!. gmml.ttl differs from tests/correct_outputs/gmmo.ttl\n"
        return 1
    else
        printf "Test passed.\n"
@@ -20,7 +20,7 @@ if [ -f gmmo.ttl ]; then
        return 0
    fi
 else
-   printf "Test FAILED!.\n"
+   printf "\nTest FAILED!.\n"
    return 1
 fi
 

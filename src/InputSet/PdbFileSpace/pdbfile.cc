@@ -112,6 +112,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     }
     else
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "PDB file not found");
         throw PdbFileProcessingException(__LINE__, "PDB file not found");
     }
 
