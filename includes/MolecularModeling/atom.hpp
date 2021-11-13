@@ -283,6 +283,7 @@ namespace MolecularModeling
             * @param otherAtom The other atom.
             */
             bool CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom);
+            bool CheckIfOtherAtomIsWithinOverlapDistance(Atom* otherAtom);
 
 	    /*! \fn
 	    * A function to determine the chirality of this atom

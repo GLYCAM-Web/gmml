@@ -137,10 +137,12 @@ std::vector<MolecularModeling::AtomNode*> Atom::GetNodes() const
         return this->nodes_;
 }
 
-
 std::string Atom::GetId() const
 {
-	return this->id_;
+	//return this->id_;
+    std::stringstream ss;
+    ss << this->GetName() << "_" << this->GetIndex() << "_" << this->GetResidue()->GetId();
+    return ss.str();
 } // end GetId
 
 bool Atom::GetIsRing() const
@@ -356,6 +358,30 @@ bool Atom::CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom)
         }
     }
     return withinDistance;
+}
+
+bool Atom::CheckIfOtherAtomIsWithinOverlapDistance(Atom* otherAtom)
+{
+    if (this->GetIndex() == otherAtom->GetIndex())
+    {
+        std::cerr << "Warning have just checked distance between an atom and itself!" << std::endl;
+        return true;
+    }
+    if (std::abs(this->GetCoordinate()->GetX() - otherAtom->GetCoordinate()->GetX()) < (gmml::maxCutOff * 2))
+    {
+        if (std::abs(this->GetCoordinate()->GetY() - otherAtom->GetCoordinate()->GetY()) < (gmml::maxCutOff * 2))
+        {
+            if (std::abs(this->GetCoordinate()->GetZ() - otherAtom->GetCoordinate()->GetZ()) < (gmml::maxCutOff * 2))
+            {
+                //If each dimension is within cutoff, then calculate 3D distance
+                if (this->GetDistanceToAtom(otherAtom) < (gmml::maxCutOff * 2))
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 std::string Atom::DetermineChirality() //Added by Yao 08/26/3019 Return values are R,S,A. A = achiral

@@ -1,0 +1,252 @@
+graph G {graph [splines=false forcelabels=true  dpi=72];
+node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+label="none" size=50 fixedsize="true" scale="true"];
+edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+rankdir=LR nodesep="0.05" ranksep="0.8";
+1 [shape=box label="OH"]
+2 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg"];
+2--1[label="b1-"];
+
+3 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGul.svg"];
+
+b3[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="6Me "];
+{ rank="same"; b3 3};
+{nodesep="0.2";b3;3};
+b3--3 [style=invis];
+3--2[label="b1-4"];
+
+5 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg"];
+5--3[label="b1-4"];
+
+6 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DAlt.svg"];
+6--5[label="a1-4"];
+
+7 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg"];
+
+b7[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="3S "];
+{ rank="same"; b7 7};
+{nodesep="0.2";b7;7};
+b7--7 [style=invis];
+7--6[label="b1-2"];
+
+9 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg"];
+9--7[label="b1-4"];
+
+10 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DNeu5Ac.svg"];
+10--9[label="a2-6"];
+
+11 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DAll.svg"];
+11--5[label="b1-3"];
+
+12 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg"];
+12--5[label="a1-6"];
+
+13 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DTal.svg"];
+
+b13[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="3Me 2S "];
+{ rank="same"; b13 13};
+{nodesep="0.2";b13;13};
+b13--13 [style=invis];
+13--12[label="a1-6"];
+
+}
+
+graph G {graph [splines=false forcelabels=true  dpi=72];
+node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+label="none" size=50 fixedsize="true" scale="true"];
+edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+rankdir=LR nodesep="0.05" ranksep="0.8";
+1 [shape=box label="OH"]
+2 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg"];
+2--1[label="b1-"];
+
+3 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg"];
+
+b3[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="6Me "];
+{ rank="same"; b3 3};
+{nodesep="0.2";b3;3};
+b3--3 [style=invis];
+3--2[label="b1-4"];
+
+5 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg"];
+5--3[label="b1-4"];
+
+6 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg"];
+6--5[label="a1-3"];
+
+7 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg"];
+
+b7[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="3S "];
+{ rank="same"; b7 7};
+{nodesep="0.2";b7;7};
+b7--7 [style=invis];
+7--6[label="b1-2"];
+
+9 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg"];
+9--7[label="b1-4"];
+
+10 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DNeu5Ac.svg"];
+10--9[label="a2-6"];
+
+11 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg"];
+11--5[label="b1-4"];
+
+12 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg"];
+12--5[label="a1-6"];
+
+13 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DMan.svg"];
+
+b13[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="3Me 2S "];
+{ rank="same"; b13 13};
+{nodesep="0.2";b13;13};
+b13--13 [style=invis];
+13--12[label="a1-6"];
+
+}
+
+graph G {graph [splines=false forcelabels=true  dpi=72];
+node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+label="none" size=50 fixedsize="true" scale="true"];
+edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+rankdir=LR nodesep="0.05" ranksep="0.8";
+1 [shape=box label="OH"]
+2 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DXyl.svg"];
+2--1[label="b1-"];
+
+3 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg"];
+3--2[label="b1-4"];
+
+4 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg"];
+4--3[label="b1-3"];
+
+5 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg"];
+5--4[label="b1-3"];
+
+6 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg"];
+6--5[label="b1-4"];
+
+7 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg"];
+7--6[label="b1-4"];
+
+}
+
+graph G {graph [splines=false forcelabels=true  dpi=72];
+node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+label="none" size=50 fixedsize="true" scale="true"];
+edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+rankdir=LR nodesep="0.05" ranksep="0.8";
+1 [shape=box label="OH"]
+2 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DXyl.svg"];
+2--1[label="b1-"];
+
+3 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg"];
+3--2[label="b1-4"];
+
+4 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGal.svg"];
+4--3[label="b1-3"];
+
+5 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg"];
+5--4[label="b1-3"];
+
+6 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcA.svg"];
+
+b6[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="2S "];
+{ rank="same"; b6 6};
+{nodesep="0.2";b6;6};
+b6--6 [style=invis];
+6--5[label="b1-4"];
+
+8 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg"];
+8--6[label="a1-4"];
+
+9 [shape=circle height="0.7" label="LIdoA(2SO)"];
+
+b9[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="2S "];
+{ rank="same"; b9 9};
+{nodesep="0.2";b9;9};
+b9--9 [style=invis];
+9--8[label="a1-4"];
+
+11 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg"];
+
+b11[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="6S 3S "];
+{ rank="same"; b11 11};
+{nodesep="0.2";b11;11};
+b11--11 [style=invis];
+11--9[label="a1-4"];
+
+14 [shape=circle height="0.7" label="dUA"];
+
+b14[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="2S "];
+{ rank="same"; b14 14};
+{nodesep="0.2";b14;14};
+b14--14 [style=invis];
+14--11[label="1-4"];
+
+}
+
+graph G {graph [splines=false forcelabels=true  dpi=72];
+node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+label="none" size=50 fixedsize="true" scale="true"];
+edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+rankdir=LR nodesep="0.05" ranksep="0.8";
+1 [shape=box label="OH"]
+2 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg"];
+
+b2[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="6S "];
+{ rank="same"; b2 2};
+{nodesep="0.2";b2;2};
+b2--2 [style=invis];
+2--1[label="a1-"];
+
+4 [shape=circle height="0.7" label="LIdoA(4C1)"];
+4--2[label="a1-4"];
+
+5 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg"];
+5--4[label="a1-4"];
+
+6 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/LIdoA.svg"];
+
+b6[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="2S "];
+{ rank="same"; b6 6};
+{nodesep="0.2";b6;6};
+b6--6 [style=invis];
+6--5[label="a1-4"];
+
+8 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg"];
+8--6[label="a1-4"];
+
+9 [shape=circle height="0.7" label="dUA"];
+
+b9[ shape="plaintext",fontsize="12",forcelabels="true"; height = "0.3"; labelloc = b;  label="2S "];
+{ rank="same"; b9 9};
+{nodesep="0.2";b9;9};
+b9--9 [style=invis];
+9--8[label="a1-4"];
+
+}
+
+graph G {graph [splines=false forcelabels=true  dpi=72];
+node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+label="none" size=50 fixedsize="true" scale="true"];
+edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+rankdir=LR nodesep="0.05" ranksep="0.8";
+1 [label="f" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DFru.svg"];
+
+2 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg"];
+2--1[label="a1-2"];
+
+}
+
+graph G {graph [splines=false forcelabels=true  dpi=72];
+node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+label="none" size=50 fixedsize="true" scale="true"];
+edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+rankdir=LR nodesep="0.05" ranksep="0.8";
+1 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg"];
+
+2 [label="f" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DFru.svg"];
+2--1[label="b2-1"];
+
+}
+

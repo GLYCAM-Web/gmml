@@ -125,9 +125,9 @@ Glycam06ResidueNamesToCodesLookupContainer::Glycam06ResidueNamesToCodesLookupCon
         {"GlcNS"       , "Y"  , "Saccharide"},
         {"Tyvp"        , "TV" , "Saccharide"}, // Can be alpha or beta. Feck.
         {"dUA"         , "45" , "Saccharide"}, // Unsaturated 4,5-unsaturated uronate.
-        {"LIdopA(1C4)" , "UA1", "Saccharide"}, // e.g 0uA1 with the 1 over-running.
-        {"LIdopA(2SO)" , "UA2", "Saccharide"},
-        {"LIdopA(4C1)" , "UA3", "Saccharide"},
+        {"LIdopA(1C4)" , "uA1", "Saccharide"}, // e.g 0uA1 with the 1 over-running.
+        {"LIdopA(2SO)" , "uA2", "Saccharide"},
+        {"LIdopA(4C1)" , "uA3", "Saccharide"},
         {"Neup5Gca"    , "GL" , "Saccharide"},
         {"NeupNGca"    , "GL" , "Saccharide"},
         {"KDNpa"       , "KN" , "Saccharide"},
@@ -149,5 +149,6 @@ Glycam06ResidueNamesToCodesLookupContainer::Glycam06ResidueNamesToCodesLookupCon
         {"P"           , "PO3", "Derivative"},
         {"Me"          , "MEX", "Derivative"},
         {"Ac"          , "ACX", "Derivative"},
+        {"A"           , "ACX", "Derivative"},
     };
 }

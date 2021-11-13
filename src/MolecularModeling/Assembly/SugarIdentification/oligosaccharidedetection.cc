@@ -10,69 +10,68 @@
 #include <algorithm>
 #include <sys/stat.h>
 
-#include "../../../../includes/MolecularModeling/assembly.hpp"
-#include "../../../../includes/MolecularModeling/residue.hpp"
-#include "../../../../includes/MolecularModeling/atom.hpp"
-#include "../../../../includes/MolecularModeling/atomnode.hpp"
-#include "../../../../includes/Glycan/monosaccharide.hpp"
-#include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
-#include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-#include "../../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
-#include "../../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
-#include "../../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
-#include "../../../../includes/InputSet/TopologyFileSpace/topologyatom.hpp"
-#include "../../../../includes/InputSet/TopologyFileSpace/topologybond.hpp"
-#include "../../../../includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
-#include "../../../../includes/InputSet/TopologyFileSpace/topologyangle.hpp"
-#include "../../../../includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
-#include "../../../../includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
-#include "../../../../includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
-#include "../../../../includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
-#include "../../../../includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
-#include "../../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "../../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "../../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
-#include "../../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
-#include "../../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
-#include "../../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
-#include "../../../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
-#include "../../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
-#include "../../../../includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
-#include "../../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
-#include "../../../../includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
-#include "../../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
-#include "../../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
-#include "../../../../includes/ParameterSet/ParameterFileSpace/parameterfile.hpp"
-#include "../../../../includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp"
-#include "../../../../includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp"
-#include "../../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp"
-#include "../../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
-#include "../../../../includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp"
-#include "../../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "../../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "../../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../../../includes/utils.hpp"
-#include "../../../../includes/common.hpp"
-#include "../../../../includes/GeometryTopology/grid.hpp"
-#include "../../../../includes/GeometryTopology/cell.hpp"
-#include "../../../../includes/MolecularModeling/ring_shape_detection.hpp"
-#include "../../../../includes/Glycan/monosaccharide.hpp"
-#include "../../../../includes/Glycan/oligosaccharide.hpp"
-#include "../../../../includes/Glycan/glycosidiclinkage.hpp"
-#include "../../../../includes/GeometryTopology/geometrytopology.hpp"
+#include "includes/MolecularModeling/assembly.hpp"
+#include "includes/MolecularModeling/residue.hpp"
+#include "includes/MolecularModeling/atom.hpp"
+#include "includes/MolecularModeling/atomnode.hpp"
+#include "includes/Glycan/monosaccharide.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyfile.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyatom.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologybond.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyangle.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
+#include "includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
+#include "includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbfile.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdblinksection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
+#include "includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
+#include "includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
+#include "includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
+#include "includes/ParameterSet/ParameterFileSpace/parameterfile.hpp"
+#include "includes/ParameterSet/ParameterFileSpace/parameterfilebond.hpp"
+#include "includes/ParameterSet/ParameterFileSpace/parameterfileangle.hpp"
+#include "includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp"
+#include "includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
+#include "includes/ParameterSet/ParameterFileSpace/parameterfileatom.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "includes/GeometryTopology/grid.hpp"
+#include "includes/GeometryTopology/cell.hpp"
+#include "includes/MolecularModeling/ring_shape_detection.hpp"
+#include "includes/Glycan/monosaccharide.hpp"
+#include "includes/Glycan/oligosaccharide.hpp"
+#include "includes/Glycan/glycosidiclinkage.hpp"
+#include "includes/GeometryTopology/geometrytopology.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 #include <unistd.h>
 #include <errno.h>
@@ -237,7 +236,7 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
       if(local_debug > 0)
       {
         std::string monoID =  thisMono->cycle_atoms_[0]->GetResidue()->GetId();
-        std::cout << monoID << "\n";
+        gmml::log(__LINE__, __FILE__, gmml::INF, (monoID + "\n"));
       }
       //Mono Index
       thisOutput.indices.push_back(std::make_pair(std::to_string(thisMono->oligosaccharide_index_), thisMono->cycle_atoms_[0]->GetResidue()->GetId()));
@@ -322,11 +321,12 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
 
 std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology, bool individualOntologies, std::string CCD_Path)
 {
+  std::stringstream logss;
   int local_debug = -1;
   gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap( amino_lib_files );
   if(local_debug > 0)
   {
-    std::cout << "\n" << "Extracting Sugars\n";
+    logss << "\n" << "Extracting Sugars\n";
   }
   ///CYCLE DETECTION
   // DetectCyclesByExhaustiveRingPerception gets stuck in infinite loops for some files, DFS doesn't.
@@ -338,14 +338,14 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   ///PRINTING ALL DETECTED CYCLES
   if(local_debug > 0)
   {
-    std::cout << "\n" << "All detected cycles\n";
+    logss << "\n" << "All detected cycles\n";
   }
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
   {
     std::string cycle_atoms_str = ( *it ).first;
     if(local_debug > 0)
     {
-      std::cout << cycle_atoms_str << "\n";
+      logss << cycle_atoms_str << "\n";
     }
   }
 
@@ -356,11 +356,11 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   FilterAllCarbonCycles( cycles );
   if(local_debug > 0)
   {
-    std::cout << "\n" << "Cycles after discarding rings that are all-carbon" << "\n";
+    logss << "\n" << "Cycles after discarding rings that are all-carbon" << "\n";
     for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
     {
       std::string cycle_atoms_str = ( *it ).first;
-      std::cout << cycle_atoms_str << "\n";
+      logss << cycle_atoms_str << "\n";
     }
   }
   //FILTERING OUT CYCLES WITH DOUBLE BONDS and add them to new cyclemap
@@ -371,7 +371,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 
   if(local_debug > 0)
   {
-    std::cout << "\n" << "Cycles after discarding rings containing C-C double bonds" << "\n";
+    logss << "\n" << "Cycles after discarding rings containing C-C double bonds" << "\n";
   }
 
   ///ANOMERIC CARBON DETECTION and SORTING
@@ -396,7 +396,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     monos.push_back(mono);
     if(local_debug > 0)
     {
-      std::cout << cycle_atoms_str << "\n";
+      logss << cycle_atoms_str << "\n";
       ///e.g. C1_3810_NAG_A_1521_?_?_1-O5_3821_NAG_A_1521_?_?_1-
       ///C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
     }
@@ -412,13 +412,13 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   {
     Glycan::Monosaccharide* this_mono = it->second;
     ordered_monos.push_back(this_mono);
-    // std::cout << this_mono->cycle_atoms_str_ << "\n";
+    // logss << this_mono->cycle_atoms_str_ << "\n";
   }
 
   // ///CREATING MONOSACCHARIDE STRUCTURE. Ring atoms, side atoms, chemical code (Glycode), modifications/derivatives, names
   if(local_debug > 0)
   {
-    std::cout << "\n" << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << "\n";
+    logss << "\n" << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << "\n";
   }
   int mono_id_ = 0;
   for (std::vector<Glycan::Monosaccharide*>::iterator it = ordered_monos.begin(); it != ordered_monos.end(); it++)
@@ -426,10 +426,9 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     Glycan::Monosaccharide* mono = *it;
     if(local_debug > 0)
     {
-      std::cout << "Ring atoms: " << mono->cycle_atoms_str_ << "\n";
-
+      logss << "Ring atoms: " << mono->cycle_atoms_str_ << "\n";
       ///PRINTING ASSIGNED SIDE ATOMS
-      std::cout << "Side group atoms: " << "\n";
+      logss << "Side group atoms: " << "\n";
       for( std::vector< MolecularModeling::AtomVector >::iterator it1 = mono->side_atoms_.begin(); it1 != mono->side_atoms_.end(); it1++ )
       {
         MolecularModeling::AtomVector sides = ( *it1 );
@@ -437,44 +436,44 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         {
           if( sides.at( 0 ) != NULL && sides.at( 1 ) != NULL )
           {
-            std::cout << "[1] -> " << sides.at( 0 )->GetId() << ", " << sides.at( 1 )->GetId() << "\n";
+            logss << "[1] -> " << sides.at( 0 )->GetId() << ", " << sides.at( 1 )->GetId() << "\n";
           }
           else if( sides.at( 1 ) != NULL )
           {
-            std::cout << "[1] -> " << sides.at( 1 )->GetId() << "\n";
+            logss << "[1] -> " << sides.at( 1 )->GetId() << "\n";
           }
           else if( sides.at( 0 ) != NULL )
           {
-            std::cout << "[1] -> " << sides.at( 0 )->GetId() << "\n";
+            logss << "[1] -> " << sides.at( 0 )->GetId() << "\n";
           }
         }
         else if( it1 == mono->side_atoms_.end() - 1 ) //side atoms of last carbon of the
         {
-          std::cout << "[" << mono->cycle_atoms_.size() - 1 << "] -> ";
+          logss << "[" << mono->cycle_atoms_.size() - 1 << "] -> ";
           if( sides.at( 0 ) != NULL )
           {
-            std::cout << sides.at( 0 )->GetId() << "\n";
+            logss << sides.at( 0 )->GetId() << "\n";
           }
         }
         else if( sides.at( 1 ) != NULL )
         {
           int cycle_atom_index = distance( mono->side_atoms_.begin(), it1 );
-          std::cout << "[" << cycle_atom_index + 1 << "] -> " << sides.at( 1 )->GetId() << "\n";
+          logss << "[" << cycle_atom_index + 1 << "] -> " << sides.at( 1 )->GetId() << "\n";
         }
       }
 
       ///PRINTING ANOMERIC STATUS
-      std::cout << mono->anomeric_status_ << mono->cycle_atoms_.at( 0 )->GetId() << "\n";
-      std::cout << "\n" << "Ring Stereo chemistry chemical code:"  << "\n";
-      std::cout << mono->chemical_code_->toString() << "\n";
-      mono->chemical_code_->Print( std::cout );
-      std::cout << "\n";
+      logss << mono->anomeric_status_ << mono->cycle_atoms_.at( 0 )->GetId() << "\n";
+      logss << "\n" << "Ring Stereo chemistry chemical code:"  << "\n";
+      logss << mono->chemical_code_->toString() << "\n";
+      mono->chemical_code_->Print( logss );
+      logss << "\n";
       // Actually, it only works for hexoses, so this should read "!=6" rather than ">5"
       if( mono->cycle_atoms_.size() > 5 )
       {
         if( mono->bfmp_ring_conformation_.compare( "" ) != 0 )
         {
-          std::cout << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << "\n" << "\n"; ///Part of Glyprobity report
+          logss << "BFMP ring conformation: " << mono->bfmp_ring_conformation_ << "\n" << "\n"; ///Part of Glyprobity report
         }
       }
 
@@ -496,7 +495,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
             trimmedValue = value;
           }
           if(value != "")
-            std::cout << "Carbon at Ring Position " << key << " is attached to " << trimmedValue << "\n";
+            logss << "Carbon at Ring Position " << key << " is attached to " << trimmedValue << "\n";
         }
       }
     }
@@ -509,10 +508,10 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     ///PRINTING NAMES OF MONOSACCHARIDE
     if(local_debug > 0)
     {
-      std::cout << "Stereochemistry name: " << mono->sugar_name_.monosaccharide_stereochemistry_name_ << "\n";
-      std::cout << "Stereochemistry short name: " << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "\n";
-      std::cout << "Complete name: " << mono->sugar_name_.monosaccharide_name_ << "\n";
-      std::cout << "Short name: " << mono->sugar_name_.monosaccharide_short_name_ << "\n";
+      logss << "Stereochemistry name: " << mono->sugar_name_.monosaccharide_stereochemistry_name_ << "\n";
+      logss << "Stereochemistry short name: " << mono->sugar_name_.monosaccharide_stereochemistry_short_name_ << "\n";
+      logss << "Complete name: " << mono->sugar_name_.monosaccharide_name_ << "\n";
+      logss << "Short name: " << mono->sugar_name_.monosaccharide_short_name_ << "\n";
     }
 
     //Check author's naming vs what's detected
@@ -524,7 +523,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         {
           if(local_debug > 0)
           {
-            std::cout << this->source_file_ << ": " << mono->residue_name_ << "\n";
+            logss << this->source_file_ << ": " << mono->residue_name_ << "\n";
           }
           GetAuthorNaming(amino_lib_files, mono, CCD_Path);
           mono->createAuthorSNFGname();
@@ -548,7 +547,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
         {
           if(local_debug > 0)
           {
-            std::cout << this->source_file_ << ": " << mono->residue_name_ << "\n";
+            logss << this->source_file_ << ": " << mono->residue_name_ << "\n";
           }
           GetAuthorNaming(amino_lib_files, mono, CCD_Path);
           mono->createAuthorSNFGname();
@@ -568,14 +567,15 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     }
     if(local_debug > 0)
     {
-      std::cout << "SNFG Name: " << mono->SNFG_name_ << "\n";
-      std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------\n";
+      logss << "SNFG Name: " << mono->SNFG_name_ << "\n";
+      logss << "-------------------------------------------------------------------------------------------------------------------------------------------\n";
     }
     mono_id_++;
     mono->mono_id_ = mono_id_;
     *it = mono;
   }
-
+  gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+  logss.str( std::string() ); logss.clear();  // Must do both of these to clear the stream;
   //Checking if any sugar named residue is not detected
   MolecularModeling::ResidueVector all_residues = GetAllResiduesOfAssembly();
   for(MolecularModeling::ResidueVector::iterator it = all_residues.begin(); it != all_residues.end(); it++)
@@ -607,7 +607,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   ///CREATING TREE-LIKE STRUCTURE OF OLIGOSACCHARIDE
   if(local_debug > 0)
   {
-    std::cout << "\n" << "Oligosaccharides:" << "\n";
+    logss << "\n" << "Oligosaccharides:" << "\n";
   }
   int number_of_covalent_links = 0;
   int number_of_probable_non_covalent_complexes = 0;
@@ -619,7 +619,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   testOligos = ExtractOligosaccharides( ordered_monos, dataset_residue_names, number_of_covalent_links, number_of_probable_non_covalent_complexes );
   if(local_debug > 0)
   {
-    std::cout << std::to_string(testOligos.size()) << "\n";
+    logss << std::to_string(testOligos.size()) << "\n";
   }
   // testOligo.createOligosaccharideGraphs(ordered_monos);
 
@@ -632,11 +632,11 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     Glycan::Oligosaccharide* thisOligo = *it;
     if(local_debug > 0)
     {
-      std::cout << "Oligo IUPAC Name:       " << thisOligo->IUPAC_name_ << "\n";
-      std::cout << "Oligo author IUPAC Name:" << thisOligo->author_IUPAC_name_ << "\n";
-      std::cout << "Oligo Name:             ";
+      logss << "Oligo IUPAC Name:       " << thisOligo->IUPAC_name_ << "\n";
+      logss << "Oligo author IUPAC Name:" << thisOligo->author_IUPAC_name_ << "\n";
+      logss << "Oligo Name:             ";
     }
-    thisOligo->Print( std::cout );// This for some reason does a ton of stuff instead of printing....
+    thisOligo->Print( logss );// This for some reason does a ton of stuff instead of printing....
   }
 
   ///PRINTING NOTES AND ISSUES FOUND WITH THE INPUT FILE IF THERE ARE ANY NOTES
@@ -644,29 +644,29 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   if(local_debug > 0)
   {
     if( !notes.empty() ) {
-      std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
-      std::cout << "\n" << "NOTES/ISSUES:" << "\n";
+      logss << "-------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
+      logss << "\n" << "NOTES/ISSUES:" << "\n";
       for( std::vector< Glycan::Note* >::iterator note_it = notes.begin(); note_it != notes.end(); note_it++ ) {
         Glycan::Note* note = ( *note_it );
-        std::cout << "\n" << "Category: " << note->ConvertGlycanNoteCat2String( note->category_ ) << "\n";
-        std::cout << "Type: " << note->ConvertGlycanNoteType2String( note->type_ ) << "\n";
-        std::cout << "Description: " << note->description_ << "\n";
+        logss << "\n" << "Category: " << note->ConvertGlycanNoteCat2String( note->category_ ) << "\n";
+        logss << "Type: " << note->ConvertGlycanNoteType2String( note->type_ ) << "\n";
+        logss << "Description: " << note->description_ << "\n";
       }
-      std::cout << "-------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
+      logss << "-------------------------------------------------------------------------------------------------------------------------------------------" << "\n";
     }
 
     ///PRINTING STATISTICAL REPORT OF GLYPROBITY
     if( glyprobity_report ) {
-      std::cout << "\n" << "GLYPROBITY REPORT" << "\n";
-      std::cout << "<-------Topology------>" << "\n";
-      std::cout << "Monosaccharide detected: " << monos.size() << "\n";
-      std::cout << "Residue Distribution " << "\n";
-      std::cout << " Monosaccharides: " << number_of_monosaccharides << "\n";
-      std::cout << " Oligosaccharides: " << number_of_oligosaccharides << "\n";
-      std::cout << "Carbohydrate Context " << "\n";
-      std::cout << " Covalently linked to protein: " << number_of_covalent_links << "\n";
-      std::cout << " Non-covalent complex: " << number_of_probable_non_covalent_complexes << "\n";
-      std::cout << "<--------------------->" << "\n";
+      logss << "\n" << "GLYPROBITY REPORT" << "\n";
+      logss << "<-------Topology------>" << "\n";
+      logss << "Monosaccharide detected: " << monos.size() << "\n";
+      logss << "Residue Distribution " << "\n";
+      logss << " Monosaccharides: " << number_of_monosaccharides << "\n";
+      logss << " Oligosaccharides: " << number_of_oligosaccharides << "\n";
+      logss << "Carbohydrate Context " << "\n";
+      logss << " Covalently linked to protein: " << number_of_covalent_links << "\n";
+      logss << " Non-covalent complex: " << number_of_probable_non_covalent_complexes << "\n";
+      logss << "<--------------------->" << "\n";
     }
   }
   ///POPULATING GMMO ONTOLOGY
@@ -710,7 +710,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       out_file.close();
     }
   }
-
+  gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
   return testOligos;
 }
 
@@ -2888,7 +2888,7 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     mono->mono_notes_.push_back(der_mod_note);
     if(local_debug > 0)
     {
-      std::cout << ss.str() << "\n";
+      gmml::log(__LINE__, __FILE__, gmml::INF, ss.str() + "\n");
     }
   }
   else if(key.compare("2") == 0 && mono->sugar_name_.ring_type_.compare("P") == 0 &&
@@ -2929,7 +2929,7 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     mono->mono_notes_.push_back(der_mod_note);
     if(local_debug > 0)
     {
-      std::cout << ss.str() << "\n";
+      gmml::log(__LINE__, __FILE__, gmml::INF, ss.str() + "\n");
     }
   }
   else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
@@ -2949,7 +2949,7 @@ void Assembly::AddModificationRuleOneInfo(std::string key, std::string pattern, 
     mono->mono_notes_.push_back(der_mod_note);
     if(local_debug > 0)
     {
-      std::cout << ss.str() << "\n";
+      gmml::log(__LINE__, __FILE__, gmml::INF, ss.str() + "\n");
     }
   }
   else
@@ -3081,7 +3081,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             der_mod_note->description_ = note.str();
             // this->AddNote(der_mod_note);
             mono->mono_notes_.push_back(der_mod_note);
-            std::cout << ss.str() << "\n";
+            gmml::log(__LINE__, __FILE__, gmml::INF, ss.str() + "\n");
         }
         else if(mono->sugar_name_.ring_type_.compare("P") == 0 && key.compare("5") == 0)
         {
@@ -3098,7 +3098,7 @@ void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glyca
             der_mod_note->description_ = note.str();
             // this->AddNote(der_mod_note);
             mono->mono_notes_.push_back(der_mod_note);
-            std::cout << ss.str() << "\n";
+            gmml::log(__LINE__, __FILE__, gmml::INF, ss.str() + "\n");
         }
         else
         {
@@ -3165,10 +3165,8 @@ void Assembly::AddModificationRuleTwoInfo(std::string key, std::string pattern, 
             ss << " is at error position: " << gmml::ConvertString<int>(key) + 1;
             der_mod_note->type_ = Glycan::ERROR;
         }
-        std::cout << ss.str() << "\n";
         gmml::log(__LINE__, __FILE__,  gmml::ERR, ss.str());
         tail << long_name_pattern_at_minus_one;
-
         if(mono->sugar_name_.monosaccharide_stereochemistry_short_name_.compare("") != 0)
         {
             if(!minus_one)
@@ -3225,7 +3223,6 @@ void Assembly::AddModificationRuleTwoInfo(std::string key, std::string pattern, 
     der_mod_note->description_ = note.str();
     // this->AddNote(der_mod_note);
     mono->mono_notes_.push_back(der_mod_note);
-    // std::cout << ss.str() << "\n";
     gmml::log(__LINE__, __FILE__,  gmml::WAR, ss.str());
 }
 
@@ -3672,7 +3669,6 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
               std::stringstream ss;
               ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
               gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-              // std::cout << ss.str() << "\n";
               // terminal_residue_name = "";
             }
           }
@@ -3794,7 +3790,6 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
                 std::stringstream ss;
                 ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
                 gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-                // std::cout << ss.str() << "\n";
                 // terminal_residue_name = "";
               }
             }
@@ -4339,7 +4334,6 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
                             std::stringstream ss;
                             ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
                             gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-                            // std::cout << ss.str() << "\n";
                             // terminal_residue_name = "";
                         }
                     }
@@ -4464,7 +4458,6 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides( std::ve
                                 std::stringstream ss;
                                 ss << "Root anomeric atom is attached to a non-standard " << terminal_residue_name << " protein residue!";
                                 gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-                                // std::cout << ss.str() << "\n";
                                 // terminal_residue_name = "";
                             }
                         }
@@ -4966,7 +4959,6 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, MolecularM
               }
               else
               {
-	                // std::cout << "This return." << "\n";
                   return target_o_neighbor->GetResidue()->GetName();
               }
           }

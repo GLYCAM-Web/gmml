@@ -552,50 +552,49 @@ namespace gmml
         return ATOMTYPESINFOLOOKUP[0];
     }
 
-    /*! \fn
-      * A function in order to write the information/warning/error messages produced by the program into a log file
-      * @param line The line number producing the message
-      * @param file_path The file path of the file which the message has been produced within in
-      * @param level The type of the produced message INF/WAR/ERR
-      * @param msg The message content that has been produced
-      * @param out_file_name The name of the output log file
-      */
-    inline void log(int line, std::string file_path, LogLevel level, std::string msg, std::string out_file_name = "")
-    {
-      std::ofstream file;
-      if(out_file_name == "")
-      {
-        std::string GEMSHOME_ERROR = "\nMust set GEMSHOME environment variable.\n\n    BASH:   export GEMSHOME=/path/to/gems\n    SH:     setenv GEMSHOME /path/to/gems\n";
-        char* gemshome_env_var = std::getenv("GEMSHOME");
-        // Check if the environment variables exist.
-        if(!gemshome_env_var)
-        {
-          std::cout << GEMSHOME_ERROR << std::endl;
-        }
-        std::string GEMSHOME(gemshome_env_var);
-        out_file_name = GEMSHOME + "/gmml/GMML_Log.txt";
-      }
-      file.open(out_file_name.c_str(), std::ios_base::app);
-
-       time_t t = time(0);
-       std::string time_str = std::asctime(std::localtime(&t));
-       file << time_str.substr(0, time_str.size() - 1) << " >>> " << file_path << ":" << line << " >>>";
-       switch(level)
-       {
-           case INF:
-               file << " [INFO]: ";
-               break;
-           case ERR:
-               file << " [ERROR]: ";
-               break;
-           case WAR:
-               file << " [WARNING]: ";
-               break;
-       }
-       file << msg << std::endl;
-
-       file.close();
-    }
+    // OG 2021Oct7, I moved this to logging.hpp
+//    /*! \fn
+//      * A function in order to write the information/warning/error messages produced by the program into a log file
+//      * @param line The line number producing the message
+//      * @param file_path The file path of the file which the message has been produced within in
+//      * @param level The type of the produced message INF/WAR/ERR
+//      * @param msg The message content that has been produced
+//      * @param out_file_name The name of the output log file
+//      */
+//    inline void log(int line, std::string file_path, LogLevel level, std::string msg, std::string out_file_name = "")
+//    {
+//    	std::ofstream file;
+//    	if(out_file_name == "")
+//    	{
+//    		std::string GEMSHOME_ERROR = "\nMust set GEMSHOME environment variable.\n\n    BASH:   export GEMSHOME=/path/to/gems\n    SH:     setenv GEMSHOME /path/to/gems\n";
+//    		char* gemshome_env_var = std::getenv("GEMSHOME");
+//    		// Check if the environment variables exist.
+//    		if(!gemshome_env_var)
+//    		{
+//    			std::cerr << GEMSHOME_ERROR << std::endl;
+//    		}
+//    		std::string GEMSHOME(gemshome_env_var);
+//    		out_file_name = GEMSHOME + "/gmml/GMML_Log.txt";
+//    	}
+//    	file.open(out_file_name.c_str(), std::ios_base::app);
+//    	time_t t = time(0);
+//    	std::string time_str = std::asctime(std::localtime(&t));
+//    	file << time_str.substr(0, time_str.size() - 1) << " >>> " << file_path << ":" << line << " >>>";
+//    	switch(level)
+//    	{
+//    	case INF:
+//    		file << " [INFO]: ";
+//    		break;
+//    	case ERR:
+//    		file << " [ERROR]: ";
+//    		break;
+//    	case WAR:
+//    		file << " [WARNING]: ";
+//    		break;
+//    	}
+//    	file << msg << std::endl;
+//    	file.close();
+//    }
 
     inline double** GenerateRotationMatrix(GeometryTopology::Coordinate* direction, GeometryTopology::Coordinate* parent, double angle)
     {
@@ -692,13 +691,13 @@ namespace gmml
             *(result++) = item;
         }
     }
+
     inline std::vector<std::string> splitStringByDelimiter(const std::string &s, char delim)
     {
       std::vector<std::string> elems;
       split(s, delim, std::back_inserter(elems));
       return elems;
     }
-
 }
 
 

@@ -6,9 +6,10 @@
 #include <sstream>
 
 #include "../../includes/MolecularModeling/assembly.hpp"
-#include "../../includes/utils.hpp"
+//#include "../../includes/utils.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/Glycan/oligosaccharide.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using Glycan::Oligosaccharide;
 //////////////////////////////////////////////////////////

@@ -5,6 +5,7 @@
 #include "generictypedefs.hpp"
 #include "utils.hpp"
 #include "CodeUtils/codetests.hpp"
+#include "CodeUtils/logging.hpp"
 #include "InputSet/CifFileSpace/ciffile.hpp"
 #include "InputSet/CifFileSpace/ciffileatom.hpp"
 #include "InputSet/CifFileSpace/ciffileprocessingexception.hpp"
@@ -109,7 +110,6 @@
 #include "InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 #include "InputSet/TopologyFileSpace/topologyresidue.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequence.hpp"
-#include "InputSet/CondensedSequenceSpace/carbohydratebuilder.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
 #include "InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
@@ -178,6 +178,7 @@
 #include "Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp"
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp"
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp"
+#include "InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
 typedef std::vector<MolecularModeling::ResidueNode*> ResidueNodeVector;
 

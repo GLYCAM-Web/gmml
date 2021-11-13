@@ -1,3 +1,5 @@
+.gitignore
+.project
 .qmake.stash
 *.o
 *.so
@@ -9,6 +11,7 @@ libgmml.so.1.0
 libgmml.so.1.0.0
 DOXY_DOCUMENTS
 log.log
+*VERSIONS.sh
 *.swp
 *.dum
 programs/GlycoproteinBuilder
@@ -17,3 +20,7 @@ Doxygen/def
 Doxygen/html
 Doxygen/docs_build.log
 compile.messages
+GMML_Log.txt
+.cproject
+.settings/language.settings.xml .settings/org.eclipse.cdt.core.prefs
+.settings/

@@ -567,3 +567,56 @@ void selection::FindEndsOfBranchesFromLinkageAtom(MolecularModeling::Atom* curre
     return;
 }
 
+std::string selection::GetNonCarbonHeavyAtomNumbered(AtomVector atoms, std::string queryNumber)
+{
+    for (auto &atom : atoms)
+    {    // Assuming atoms like C2, O2 or N2. Nothing else should match.
+        std::string number = atom->GetName().substr(1);
+        if ( (number == queryNumber) && (atom->GetName().at(0) != 'C') && (atom->GetName().at(0) != 'H'))
+        {
+            return atom->GetName();
+        }
+    }
+    return "";    
+}
+
+AtomVector selection::FindHeavyAtoms(AtomVector query)
+{
+	AtomVector foundAtoms;
+	for (auto &atom : query)
+	{
+		char element = atom->GetName().at(0);
+	    if ( ( element == 'S') || ( element == 'C') || ( element == 'O') || ( element == 'N') || ( element == 'P') )
+	    {
+	    	foundAtoms.push_back(atom);
+	    }
+	}
+	return foundAtoms;
+}
+
+int selection::FindHighestResidueNumber(MolecularModeling::Assembly &ass, std::string inputChainID)
+{
+    int highest = 0;
+    for (auto &residue : FindResiduesWithChainID(ass, inputChainID))
+    {
+        int resNumInt = std::stoi(residue->GetNumber());
+        if (resNumInt > highest)
+        {
+            highest = resNumInt;
+        }
+    }
+    return highest;
+}
+
+std::vector<MolecularModeling::Residue*> selection::FindResiduesWithChainID(MolecularModeling::Assembly &ass, std::string inputChainID)
+{
+    std::vector<MolecularModeling::Residue*> foundResidues;
+    for (auto &residue : ass.GetResidues())
+    {
+        if (inputChainID == residue->GetChainID())
+        {
+            foundResidues.push_back(residue);
+        }
+    }
+    return foundResidues;
+}
