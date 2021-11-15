@@ -10,7 +10,6 @@
 using CondensedSequenceSpace::carbohydrateBuilder;
 
 carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath)
-: assembly_(condensedSequence, prepFilePath)
 {
 	try
 	{
@@ -19,8 +18,17 @@ carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::str
 	}
 	catch(const std::string &exceptionMessage)
 	{
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught this exception message: " + exceptionMessage);
 		this->SetStatus("ERROR", exceptionMessage);
 		// Better to throw once I figure out how to catch it in gems.
+	}
+	catch(std::runtime_error &error)
+	{
+	    this->SetStatus("ERROR", error.what());
+	}
+	catch (...)
+	{
+	    gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught a throw that was not a std::string. Curious. Death cometh.");
 	}
 }
 
