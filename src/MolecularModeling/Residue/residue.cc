@@ -152,7 +152,7 @@ std::string Residue::GetNumber()
     StringVector id = gmml::Split(id_, "_");
     return id.at(2); // This is silly, why not add residue number to class? OG: I know right? OG: Single point of truth?
 }
-std::string Residue::GetChain()
+std::string Residue::GetChainID()
 {
     StringVector id = gmml::Split(id_, "_");
     return id.at(1);
