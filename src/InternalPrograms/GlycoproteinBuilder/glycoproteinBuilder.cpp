@@ -6,6 +6,7 @@
 #include "includes/InternalPrograms/functionsForGMML.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/files.hpp"
+#include "includes/ParameterSet/OffFileSpace/offfile.hpp"
 
 // ToDo Check for negative overlap in case the funk gets funky.
 // ToDo The cout for accepting overlap changes doesn't match the values printed. Why? Is it making them high, not printing, accepting lower, then rejecting, etc?
@@ -126,6 +127,12 @@ void GlycoproteinBuilder::ConvertInputStructEntries(GlycoproteinBuilderInputs in
 void GlycoproteinBuilder::WriteOutputFiles()
 {
 	gmml::WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved", false);
+//  Write an off file:
+    this->GetGlycoproteinAssembly().SetName("GLYCOPROTEIN"); // Necessary for off file to load into tleap
+    OffFileSpace::OffFile frankTheOffFile;
+    int CoordinateIndex = 0;
+    std::string completeFileName = this->GetWorkingDirectory() + "/GlycoProtein_All_Resolved.off";
+    frankTheOffFile.Write(completeFileName, CoordinateIndex, &this->GetGlycoproteinAssembly());
 //    this->DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(this->GetGlycosites(), this->GetOverlapTolerance());
 //	std::stringstream logss;	
 //    logss << "Atomic overlap is " << this->CalculateOverlaps(ATOMIC) << "\n";
@@ -136,13 +143,12 @@ void GlycoproteinBuilder::WriteOutputFiles()
     return;
 }
 
-
 void GlycoproteinBuilder::ResolveOverlaps()
 {
 	bool randomize = !this->GetIsDeterministic();
 	if (randomize)
-	{
-		if (this->DumbRandomWalk())
+	{ // First try a very fast/cheap approach
+		if (this->DumbRandomWalk()) // returns true if it fully resolves overlaps.
 		{
 			return;
 		}
