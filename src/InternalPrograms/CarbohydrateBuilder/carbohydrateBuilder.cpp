@@ -22,13 +22,13 @@ carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::str
 		this->SetStatus("ERROR", exceptionMessage);
 		// Better to throw once I figure out how to catch it in gems.
 	}
-	catch(std::runtime_error &error)
+    catch (const std::runtime_error &error)
 	{
 	    this->SetStatus("ERROR", error.what());
 	}
 	catch (...)
 	{
-	    gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught a throw that was not a std::string. Curious. Death cometh.");
+	    gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught a throw that was not anticipated. Curious. Death cometh.");
 	}
 }
 

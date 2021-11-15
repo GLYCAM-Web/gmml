@@ -34,7 +34,7 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, std::string isome
 		linkCode = linkageCodeLookup.GetCodeForLinkages(linkages);
 		if (linkCode.empty())
 		{
-			std::string message = "No linkage code found in GMML metadata for linkage: " + linkages;
+			std::string message = "No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: " + linkages + "\nCheck these inputs for mistakes: " + inputs;
 			gmml::log(__LINE__, __FILE__, gmml::ERR, message);
 	        throw std::runtime_error(message);
 		}

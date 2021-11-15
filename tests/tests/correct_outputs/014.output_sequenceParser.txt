@@ -55,27 +55,19 @@ Error: We can't handle labeled stuff yet: DNeup5Ac&Label=residue-9;a2-6&Label=li
 -----------------------------------------------------------------------------------------------------
 
 Parsing: 
-Error: sequence is empty:
->>><<<
-
+Error: sequence is empty:>>><<<
 -----------------------------------------------------------------------------------------------------
 
 Parsing: There will be cake.
-Error: the cake is a lie:
->>>There will be cake.<<<
-
+Error: the cake is a lie:>>>There will be cake.<<<
 -----------------------------------------------------------------------------------------------------
 
 Parsing: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH 
-Error: sequence contains a space:
->>>DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH <<<
-
+Error: sequence contains a space:>>>DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH <<<
 -----------------------------------------------------------------------------------------------------
 
 Parsing: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH
-Error: the number of [ doesn't match the number of ]. Bad branch in :
->>>DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH<<<
-
+Error: the number of [ doesn't match the number of ]. Bad branch in :>>>DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH<<<
 -----------------------------------------------------------------------------------------------------
 
 Parsing: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH

@@ -2,8 +2,7 @@
 *********************
 Building DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
 *********************
-Test level caught exception: Could not find prep entry for DNeu5Ac Glycam: 0Sa
-
+Could not find prep entry for DNeu5Ac. GLYCAM code used to search is: 0Sa
 
 *********************
 Building DNeup5Aca2-9DNeup5Aca2-8DNeup5Aca2-7DNeup5Aca2-3DGlcpb1-6DManpb1-OME
@@ -20,7 +19,7 @@ Building DFrufb2-1DGlcpa
 *********************
 Building DGlcpa1-R
 *********************
-Test level caught exception: No residue code found in GMML metadata for residue: R
+Cannot create 3D structure as no GLYCAM residue code was found in the GMML metadata for residue: R
 
 *********************
 Building LRhapa1-6DGlcpb1-OH
@@ -33,8 +32,7 @@ Building LRhapa1-6DGalpb1-OH
 *********************
 Building DNeupNAca2-4DGalpb1-3LIdopa1-OH
 *********************
-Test level caught exception: Could not find prep entry for LIdop Glycam: 3iA
-
+Could not find prep entry for LIdop. GLYCAM code used to search is: 3iA
 
 *********************
 Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
@@ -43,8 +41,7 @@ Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
 *********************
 Building DGlcpA1-OH
 *********************
-Test level caught exception: Could not find prep entry for DGlcp Glycam: 0G
-
+Could not find prep entry for DGlcp. GLYCAM code used to search is: 0G
 
 *********************
 Building DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
@@ -69,7 +66,15 @@ Building DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp
 *********************
 Building LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
 *********************
-Test level caught exception: No linkage code found in GMML metadata for linkage: 4,5
+No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 4,5
+Check these inputs for mistakes: 
+Inputs:
+linkages: 4,5
+isomer: L
+inputResName: Fru
+ringType: p
+residueModifier: 
+configuration: a
 
 *********************
 Building DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
@@ -78,12 +83,28 @@ Building DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManp
 *********************
 Building DLyxpa1-2[DManpb1-4][LGulpb1-6]DGlcpa1-2[LGalpa1-5][LFucpa1-1]DFrufb
 *********************
-Test level caught exception: No linkage code found in GMML metadata for linkage: 1,2,5
+No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 1,2,5
+Check these inputs for mistakes: 
+Inputs:
+linkages: 1,2,5
+isomer: D
+inputResName: Fru
+ringType: f
+residueModifier: 
+configuration: b
 
 *********************
 Building DManpb1-4[DLyxpa1-2][LGulpb1-6]DGlcpa1-2[LFucpa1-1][LGalpa1-5]DFrufb
 *********************
-Test level caught exception: No linkage code found in GMML metadata for linkage: 1,2,5
+No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 1,2,5
+Check these inputs for mistakes: 
+Inputs:
+linkages: 1,2,5
+isomer: D
+inputResName: Fru
+ringType: f
+residueModifier: 
+configuration: b
 
 *********************
 Building DFrupa2-6DManpa1-OH
@@ -100,7 +121,15 @@ Building DGlcp[4D,3Me]b1-2DManp[6H]a1-OH
 *********************
 Building DFrufb2-6DFrufb2-6[DFrufb2-6DFrufb2-1]DFrufb2-6DFrufb2-6DFrufb2-OH
 *********************
-Test level caught exception: No linkage code found in GMML metadata for linkage: 1,6
+No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 1,6
+Check these inputs for mistakes: 
+Inputs:
+linkages: 1,6
+isomer: D
+inputResName: Fru
+ringType: f
+residueModifier: 
+configuration: b
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
