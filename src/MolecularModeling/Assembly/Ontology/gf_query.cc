@@ -1,5 +1,6 @@
 #include "../../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../../includes/MolecularModeling/Graph/graph.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 #include <regex>
 

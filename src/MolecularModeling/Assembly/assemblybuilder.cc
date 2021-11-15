@@ -22,8 +22,8 @@
 //    Please put files not ib a subdirectory first
 //    Then add subdirectories in alphabetical order
 //    Apply those two rules recursively
-#include "../../../includes/utils.hpp"
-#include "../../../includes/common.hpp"
+//#include "../../../includes/utils.hpp"
+//#include "../../../includes/common.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/rotation.hpp"
@@ -90,7 +90,7 @@
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedral.hpp"
 #include "../../../includes/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp" //Added by Yao 03/18/2020
-
+#include "includes/CodeUtils/logging.hpp"
 
 using MolecularModeling::Assembly;
 using MolecularModeling::AssemblyVector;
@@ -328,13 +328,13 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
                     std::string template_residue_id = template_residue->GetId();
                     if (template_residue_id.empty())
                     {
-                        template_residue_id = gmml::BLANK_SPACE; // Is actually a "?". No I mean it's an actual question mark.
+                        template_residue_id = gmml::BLANK_SPACE; // It's an actual question mark.
                     }
                     // Oliver Jul2020 
                     // For the serial_number + 1, it's set to 0 above and used in the index_condensed_sequence_assembly_residue_map below... But I can't have a 0 residue number
                     // Going to have the default chain be "A".
                     residue_id_stream << template_residue->GetName() << "_" << "A" << "_" << (residue_serial_number + 1) << "_" << gmml::BLANK_SPACE << "_" 
-                    << gmml::BLANK_SPACE << "_" << template_residue_id;
+                    << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE;// << template_residue_id;
                    
                     //std::string residue_id = template_residue->GetName() + "_" + serial_number_stream.str() + "_" + template_residue->GetId();
                     assembly_residue->SetId(residue_id_stream.str());
@@ -1526,7 +1526,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
                 std::stringstream id;
                 // Oliver Jul2020: Adding A as the default chain id. Should do this better, but this code should "go away now please".
                 id << prep_residue_name << "_" << "A" << "_" << sequence_number << "_" << gmml::BLANK_SPACE << "_"
-                   << gmml::BLANK_SPACE << "_" << id_;
+                   << gmml::BLANK_SPACE;// << "_" << id_;
               //  std::cout << "ABOUT TO MAKE THIS ID::" << id.str() << "::\n with this id_ ::" << id_ << "::\n";
 
                 assembly_residue->SetId(id.str());
@@ -1868,7 +1868,7 @@ void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<s
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {
-//        std::cout << "Generating PdbFileSpace::PdbFile structure from " << pdb_file_path << "failed." << std::endl;
+         throw "Generating PdbFileSpace::PdbFile structure from " + pdb_file_path + " failed:\n" + ex.message_;
     }
     this->BuildAssemblyFromPdbFile(pdb_file, amino_lib_files, glycam_lib_files, other_lib_files, prep_files, parameter_file);
 }

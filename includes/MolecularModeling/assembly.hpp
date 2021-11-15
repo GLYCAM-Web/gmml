@@ -146,6 +146,7 @@ public:
     //An assembly created by residues of another assembly
     Assembly(std::vector<MolecularModeling::Residue*> residueVector);
 
+    Assembly(std::string inputSequence, std::string prepFilePath);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -276,6 +277,12 @@ public:
     /** \addtogroup Manipulators
                * @{
                */
+    /*! \fn
+              * A mutator function in order to create a MolecularModeling::Residue
+              * This line repeats the same thing above, but in a different way
+              * @param PrepFileSpace::PrepFileResidue* and a Residue::Type that is defaulted to type "Undefined"
+              */
+    Residue& CreateResidue(PrepFileSpace::PrepFileResidue*, Residue::Type residueType = Residue::Type::Undefined);
     /*! \fn
               * A mutator function in order to set the name of the current object
               * Set the name_ attribute of the current assembly

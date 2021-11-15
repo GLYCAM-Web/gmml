@@ -1,7 +1,9 @@
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
-#include "../../../includes/utils.hpp"
-#include "../../../includes/common.hpp"
+#include <string>
+#include "includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
+#include "includes/utils.hpp"
+#include "includes/common.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using PdbqtFileSpace::PdbqtAtomCard;
 
@@ -64,11 +66,13 @@ void PdbqtAtomCard::SetAtoms(PdbqtAtomMap atoms)
 void PdbqtAtomCard::AddAtom(PdbqtAtom* atom)
 {
     int index = atom->GetAtomSerialNumber();
-    if (atoms_.find(index) != atoms_.end()){
-	std::cout << "Warning: Atom object with index: " << index << " alrady exists. " << std::endl; 
-	std::cout << "Since std::map allows only one key-value pair. This add atom attempt overrides the previous one." << std::endl; 
+    if (atoms_.find(index) != atoms_.end())
+    {
+       std::stringstream logss;
+	   logss << "Warning: Atom object with index: " << index << " alrady exists.\n"; 
+	   logss << "Since std::map allows only one key-value pair. This add atom attempt overrides the previous one.\n"; 
+       gmml::log(__LINE__, __FILE__, gmml::WAR, logss.str());
     }
-
     atoms_[index] = atom;
 }
 

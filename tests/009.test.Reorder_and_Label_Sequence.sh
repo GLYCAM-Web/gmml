@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SourceCode="tests/reorderSequence.cc"
+SourceCode="tests/009.reorderSequence.cc"
 Executable="reorderSequence"
 OutputFile="Reordered_Labeled_Sequences.txt"
 CompareFile="tests/correct_outputs/Reordered_Labeled_Sequences.txt"
@@ -9,7 +9,7 @@ SequenceTwo="DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpN
 SequenceThree="LFrupa2-6-DGlcpAa1-OME"
 
 printf "Testing Sequence reordering and labeling... "
-g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ ${SourceCode}  -lgmml -o ${Executable}
+g++ -std=c++0x -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ ${SourceCode} -lgmml -pthread -o ${Executable}
 
 ./reorderSequence ${SequenceOne}  > "${OutputFile}"  2>&1
 ./reorderSequence ${SequenceTwo}  >> "${OutputFile}"  2>&1

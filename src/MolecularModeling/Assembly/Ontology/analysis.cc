@@ -59,10 +59,11 @@
 #include "../../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../../../includes/utils.hpp"
-#include "../../../../includes/common.hpp"
+//#include "../../../../includes/utils.hpp"
+//#include "../../../../includes/common.hpp"
 #include "../../../../includes/GeometryTopology/grid.hpp"
 #include "../../../../includes/GeometryTopology/cell.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 #include <unistd.h>
 #include <errno.h>

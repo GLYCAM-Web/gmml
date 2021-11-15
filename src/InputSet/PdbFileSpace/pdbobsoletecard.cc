@@ -21,7 +21,6 @@ PdbObsoleteCard::PdbObsoleteCard(std::stringstream& obsolete_block)
     std::stringstream ss;
     getline(obsolete_block, line);
     std::string temp = line;
-    std::cout << line << "\n";
     while (!gmml::Trim(temp).empty())
     {
       if(line.find("OBSLTE") != std::string::npos)

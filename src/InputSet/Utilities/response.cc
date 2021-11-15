@@ -1,9 +1,9 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include "../../../includes/InputSet/Utilities/response.hpp"
-using InputOutput::Response;
+#include "includes/InputSet/Utilities/response.hpp"
 
+using InputOutput::Response;
 //Constructor
 Response::Response()
 {

@@ -137,10 +137,12 @@ std::vector<MolecularModeling::AtomNode*> Atom::GetNodes() const
         return this->nodes_;
 }
 
-
 std::string Atom::GetId() const
 {
-	return this->id_;
+	//return this->id_;
+    std::stringstream ss;
+    ss << this->GetName() << "_" << this->GetIndex() << "_" << this->GetResidue()->GetId();
+    return ss.str();
 } // end GetId
 
 bool Atom::GetIsRing() const
