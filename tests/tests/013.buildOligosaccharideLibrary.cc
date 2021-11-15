@@ -42,5 +42,9 @@ int main(int argc, char** argv)
         {
             std::cerr << "Test level caught exception: " << exception << std::endl;
         }
+        catch (const std::runtime_error &error)
+        {
+            std::cerr << "Test level caught runtime error: " << error.what() << std::endl;
+        }
     }
 }
