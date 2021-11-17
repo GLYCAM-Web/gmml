@@ -17,7 +17,6 @@ inline void ensureFileExists(const std::string& fileName)
 {
     if (!doesFileExist(fileName))
     {
-
         throw "File " + fileName + " does not exist";
     }
 }
@@ -40,7 +39,5 @@ inline void ensureDirectoryExists (const std::string& pathName)
         throw "Directory " + pathName + " does not exist";
     }
 }
-
-
 }
 #endif //GMML_INCLUDES_CODEUTILS_FILES_HPP
