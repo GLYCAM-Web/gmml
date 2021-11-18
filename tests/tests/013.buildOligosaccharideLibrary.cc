@@ -31,16 +31,16 @@ int main(int argc, char** argv)
         StringVector splitLine = gmml::splitStringByDelimiter(line, delimiter);
         std::string inputSequence = splitLine.at(1);
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
-        try
+        CondensedSequenceSpace::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
+        if (carbBuilder.IsStatusOk())
         {
-            CondensedSequenceSpace::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
             carbBuilder.Print();
             std::string inputGlycanID = splitLine.at(0);
             carbBuilder.GenerateSingle3DStructureSingleFile(outputFolderName, "PDB", inputGlycanID);
         }
-        catch (const std::string &exception)
+        else
         {
-            std::cerr << "Test level caught exception: " << exception << std::endl;
+            std::cerr << carbBuilder.GetStatusMessage() << std::endl;
         }
     }
 }

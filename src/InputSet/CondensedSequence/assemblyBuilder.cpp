@@ -3,7 +3,7 @@
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeAglyconeInfo.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp" // To get glycam name for ParsedResidue
-#include "includes/MolecularModeling/Abstract/Residue.hpp" // For the Residue::Type
+#include "includes/Abstract/residue.hpp" // For the Residue::Type
 #include "includes/MolecularModeling/Selections/selections.hpp"
 #include "includes/MolecularModeling/assembly.hpp" // Only to use silly Assembly functions. Should go away. 
 #include "includes/MolecularModeling/atom.hpp" // For setting Angles and bond distances
@@ -49,18 +49,18 @@ void AssemblyBuilder::GenerateResidues(Assembly *assembly)
 {
 	std::vector<MolecularModeling::Residue> createdResidues;
 	createdResidues.reserve(this->GetParsedResidues().size());
-	auto aglycone = this->GetTerminal();
+	CondensedSequence::ParsedResidue *aglycone = this->GetTerminal();
 	auto result = this->GetPrepResidueMap()->find(this->GetGlycamResidueName(*aglycone));
 	std::stringstream ss;
 	ss << "Found prep entry: " << result->first << " for " << aglycone->GetName() << "\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
 	Residue& gmmlParent = assembly->CreateResidue(result->second, aglycone->GetType());
 	gmmlParent.addLabel(aglycone->getLabel());
 	for (auto &child : aglycone->GetChildren())
 	{
 		this->RecurveGenerateResidues(child, gmmlParent, assembly);	
 	}
-	ss << "Finished generating residues for Assembly.\n" << std::endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Finished generating residues for Assembly.\n");
 	return;
 }
 
@@ -68,23 +68,22 @@ void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, Molecu
 	Assembly* assembly)
 {	
 	//std::cout << "Recurve Gen Res" << std::endl;
-	std::stringstream ss;
 	if (parsedChild->GetType() == ParsedResidue::Type::Deoxy)
 	{
-		ss << "Dealing with deoxy for " << gmmlParent.GetName() << std::endl;
-		gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+		gmml::log(__LINE__, __FILE__, gmml::INF, "Dealing with deoxy for " + gmmlParent.GetName());
 		gmmlParent.MakeDeoxy(parsedChild->GetLink());
 		return;
 	}
 	auto prepEntry = this->GetPrepResidueMap()->find(this->GetGlycamResidueName(*parsedChild));
 	if (prepEntry == this->GetPrepResidueMap()->end())
 	{
-		ss << "Could not find prep entry for " << parsedChild->GetName() << " Glycam: " << this->GetGlycamResidueName(*parsedChild) << std::endl;
-		gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-		throw ss.str();
+		std::string errorMessage = "Could not find prep entry for " + parsedChild->GetName() + ". GLYCAM code used to search is: " + this->GetGlycamResidueName(*parsedChild);
+		gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
+		throw errorMessage;
 	}
 	else
 	{
+	    std::stringstream ss;
 		ss << "Found prep entry: " << prepEntry->first << " for " << parsedChild->GetName() << "\n";
 		gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
 		Residue& newGmmlChild = assembly->CreateResidue(prepEntry->second, parsedChild->GetType());
@@ -180,6 +179,7 @@ std::string AssemblyBuilder::GetGlycamResidueName(ParsedResidue &residue)
     std::string linkages = "";
     if (residue.GetType() == ParsedResidue::Type::Sugar)
     {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Checking for glycosidic linkages that connect to " + residue.GetResidueName());
         linkages = residue.GetChildLinkagesForGlycamResidueNaming();
     }
     std::string code = gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNameGenerator(linkages, residue.GetIsomer(), residue.GetResidueName(), 

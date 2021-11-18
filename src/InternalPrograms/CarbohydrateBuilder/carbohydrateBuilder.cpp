@@ -8,28 +8,38 @@
 //////////////////////////////////////////////////////////
 
 using CondensedSequenceSpace::carbohydrateBuilder;
-using CondensedSequenceSpace::CondensedSequence;
 
 carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath)
-: assembly_(condensedSequence, prepFilePath)
 {
-    this->InitializeClass(condensedSequence);
+	try
+	{
+		assembly_ = MolecularModeling::Assembly(condensedSequence, prepFilePath);
+	    this->InitializeClass(condensedSequence);
+	}
+	catch(const std::string &exceptionMessage)
+	{
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught this exception message: " + exceptionMessage);
+		this->SetStatus("ERROR", exceptionMessage);
+		// Better to throw once I figure out how to catch it in gems.
+	}
+    catch (const std::runtime_error &error)
+	{
+	    this->SetStatus("ERROR", error.what());
+	}
+	catch (...)
+	{
+	    gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught a throw that was not anticipated. Curious. Death cometh.");
+	}
 }
 
 //////////////////////////////////////////////////////////
 //                       ACCESSORS                      //
 //////////////////////////////////////////////////////////
 
-CondensedSequence carbohydrateBuilder::GetCondensedSequence()
-{
-    return condensedSequence_;
-}
-
 std::string carbohydrateBuilder::GetInputSequenceString()
 {
     return inputSequenceString_;
 }
-
 
 MolecularModeling::Assembly* carbohydrateBuilder::GetAssembly()
 {
@@ -40,6 +50,7 @@ ResidueLinkageVector* carbohydrateBuilder::GetGlycosidicLinkages()
 {
     return &glycosidicLinkages_;
 }
+
 //////////////////////////////////////////////////////////
 //                      FUNCTIONS                       //
 //////////////////////////////////////////////////////////
@@ -241,7 +252,6 @@ void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Re
 void carbohydrateBuilder::InitializeClass(std::string inputSequenceString)
 {
     this->SetInputSequenceString(inputSequenceString);
-    assembly_.SetName("CONDENSEDSEQUENCE"); // Necessary for off file to load into tleap
     //assembly_.BuildAssemblyFromCondensedSequence(inputSequenceString, &prepFile);
         // So in the above BuildAssemblyFromCondensedSequence code, linkages are generated that are inaccessible to me.
         // Condensed sequence should be separated so I can handle everything here, but it's a mess.

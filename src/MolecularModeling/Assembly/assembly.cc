@@ -231,24 +231,15 @@ Assembly::Assembly(std::vector<MolecularModeling::Residue*> residueVector)
 
 Assembly::Assembly(std::string inputSequence, std::string prepFilePath)
 {
+    this->SetName("CONDENSEDSEQUENCE"); // Necessary for off file to load into tleap
     description_ = "";
     model_index_ = 0;
     sequence_number_ = 1;
     source_file_ = prepFilePath;
     assemblies_ = AssemblyVector();
     id_ = "1";
-    try
-    {
-        CondensedSequence::AssemblyBuilder assBuilder(inputSequence, prepFilePath, this);
-    }
-    catch (const std::string &exception)
-    {
-        throw exception; 
-        //std::cerr << "Error: " << exception << std::endl;
-        // And now? A higher level should check the status of assembly and build a response for gems?
-        // Assembly.SetStatus/GetStatus and have a status class that's Print function is gems level friendly?
-        // Or inhert from generic object? That way every class can set its status during construction.
-    }
+    CondensedSequence::AssemblyBuilder assBuilder(inputSequence, prepFilePath, this);
+    return;
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //

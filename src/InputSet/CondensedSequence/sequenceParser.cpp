@@ -19,7 +19,7 @@ SequenceParser::SequenceParser (std::string inputSequence)
 		logss << "Parsing unlabelled input sequence:\n" << inputSequence << "\n";
         if (this->CheckSequenceSanity(inputSequence))
         {
-            logss << "Sequence is sane\n";
+            logss << "Sequence passed initial sanity checks for things like special characters or incorrect branching.\n";
             this->ParseCondensedSequence(inputSequence);
         }
     }
@@ -200,15 +200,15 @@ bool SequenceParser::CheckSequenceSanity(std::string sequence)
 {
     if ( sequence.empty() )
     {
-        throw "Error: sequence is empty:\n>>>" + sequence + "<<<\n" ;
+        throw "Error: sequence is empty:>>>" + sequence + "<<<" ;
     }
     if ( sequence.find("cake") != std::string::npos )
     {
-        throw "Error: the cake is a lie:\n>>>" + sequence + "<<<\n" ;
+        throw "Error: the cake is a lie:>>>" + sequence + "<<<" ;
     }
     if ( sequence.find(" ") != std::string::npos )
     {
-        throw "Error: sequence contains a space:\n>>>" + sequence + "<<<\n" ;
+        throw "Error: sequence contains a space:>>>" + sequence + "<<<" ;
     }
     std::vector<char> badChars = {'\'', '_', '+', '"', '`'};
     for (auto &badChar : badChars)
@@ -216,14 +216,14 @@ bool SequenceParser::CheckSequenceSanity(std::string sequence)
         if (sequence.find(badChar) != std::string::npos)
         {
             std::string s(1, badChar); // convert to string     
-            throw "Error: sequence cannot contain this:\'" + s + "\':\n>>>" + sequence + "<<<\n" ; 
+            throw "Error: sequence cannot contain this:\'" + s + "\':>>>" + sequence + "<<<" ;
         }
     }
     size_t a = std::count(sequence.begin(), sequence.end(), '[');
     size_t b = std::count(sequence.begin(), sequence.end(), ']');
     if (a != b)
     {
-        throw "Error: the number of [ doesn't match the number of ]. Bad branch in :\n>>>" + sequence + "<<<\n" ;
+        throw "Error: the number of [ doesn't match the number of ]. Bad branch in :>>>" + sequence + "<<<" ;
     }
     return true;
 }

@@ -4,7 +4,7 @@
 
 using CondensedSequence::ParsedResidue;
 
-ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType) 
+ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType)
 : Node(residueString), fullResidueString_ (residueString)
 {
     this->ParseResidueStringIntoComponents(residueString, specifiedType);

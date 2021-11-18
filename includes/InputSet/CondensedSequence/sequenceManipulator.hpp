@@ -1,6 +1,7 @@
 #ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_MANIPULATOR_HPP
 #define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_MANIPULATOR_HPP
 
+#include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
 #include "includes/InputSet/CondensedSequence/sequenceParser.hpp"
 
 namespace CondensedSequence
@@ -41,8 +42,8 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        void ReorderSequence();
-        void LabelSequence();
+        std::string ReorderSequence();
+        std::string LabelSequence();
         void SetIndexByConnectivity();
         std::string Print(const bool withLabels = false);
         std::string PrintGraphViz(GraphVizDotConfig &configs);
