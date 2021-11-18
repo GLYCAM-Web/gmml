@@ -66,7 +66,6 @@ namespace MolecularModeling
               * @return number split from id_ attribute of the current object of this class
               */
             std::string GetNumber();
-            std::string GetChain();
             std::string GetInsertionCode();
             /*! \fn
               * An accessor function in order to access to the atoms
