@@ -13,6 +13,7 @@ carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::str
 {
 	try
 	{
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Initializing the carbohydrate builder class with condensedSequence: " + condensedSequence + "\n and prepFilePath: " + prepFilePath);
 		assembly_ = MolecularModeling::Assembly(condensedSequence, prepFilePath);
 	    this->InitializeClass(condensedSequence);
 	}
