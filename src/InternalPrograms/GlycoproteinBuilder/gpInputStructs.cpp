@@ -2,15 +2,20 @@
 #include "includes/InternalPrograms/functionsForGMML.hpp"
 #include "includes/InternalPrograms/io.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/files.hpp"
 
 GlycoproteinBuilderInputs GPInputs::readGPInputFile(std::string workingDirectory, std::string inputFileName)
 {
+    if (workingDirectory == "Default")
+    {
+        workingDirectory = Find_Program_workingDirectory();
+    }
     std::ifstream infile (workingDirectory + inputFileName);
     if (!infile)
     {
         std::string message = "Uh oh, input file: " + workingDirectory + inputFileName + ", could not be opened for reading!\n";
         gmml::log(__LINE__, __FILE__, gmml::ERR, message);
-        throw(message);
+        throw std::runtime_error(message);
     }
     GlycoproteinBuilderInputs gpInputs;
     gpInputs.workingDirectory_ = workingDirectory; // Just to make sure. Having two like  directory// doesn't matter.

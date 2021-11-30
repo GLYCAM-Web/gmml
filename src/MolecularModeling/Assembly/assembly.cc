@@ -6,6 +6,7 @@
 #include <queue>
 #include <stack>
 #include <algorithm>
+#include <unordered_set>
 
 #include "includes/MolecularModeling/assembly.hpp"
 #include "includes/MolecularModeling/residue.hpp"
@@ -69,6 +70,8 @@
 #include "includes/GeometryTopology/grid.hpp"
 #include "includes/GeometryTopology/cell.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/files.hpp"
+#include "includes/CodeUtils/numbers.hpp"
 
 #include <unistd.h>
 #include <errno.h>
@@ -1206,6 +1209,84 @@ void Assembly::CreateOffFileFromAssembly(std::string file_name, int CoordinateIn
 //    std::cout<<"end of assembly"<<std::endl;
 
 }
+
+// OG: Leaning towards fully instantiating every assembly, so that each "writer" will just work.
+void Assembly::SetChargesAndAtomTypes()
+{
+    // Find $GMMLHOME
+    std::string gmmlHomeDir = codeutils::getGmmlHomeDir();
+    gmml::log(__LINE__, __FILE__, gmml::INF, "gmmlhome is: " + codeutils::getGmmlHomeDir());
+    // Library files of 3D structures with parameters for simulations.
+    std::vector<std::string> libFiles, prepFiles;
+    libFiles.push_back(gmmlHomeDir + "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/amino12.lib");
+    libFiles.push_back(gmmlHomeDir + "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/aminoct12.lib");
+    libFiles.push_back(gmmlHomeDir + "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/aminont12.lib");
+    libFiles.push_back(gmmlHomeDir + "/dat/CurrentParams/leaprc_GLYCAM_06j-1_2014-03-14/GLYCAM_amino_06j_12SB.lib");
+    libFiles.push_back(gmmlHomeDir + "/dat/CurrentParams/leaprc_GLYCAM_06j-1_2014-03-14/GLYCAM_aminoct_06j_12SB.lib");
+    libFiles.push_back(gmmlHomeDir + "/dat/CurrentParams/leaprc_GLYCAM_06j-1_2014-03-14/GLYCAM_aminont_06j_12SB.lib");
+    libFiles.push_back(gmmlHomeDir + "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/nucleic12.lib");
+    libFiles.push_back(gmmlHomeDir + "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/nucleic12.lib");
+    libFiles.push_back(gmmlHomeDir + "/dat/CurrentParams/other/solvents.lib");
+    prepFiles.push_back(gmmlHomeDir + "/dat/prep/GLYCAM_06j-1_GAGS.prep");
+  //  std::string ion_parameter_file_path = gmmlHomeDir + "/dat/CurrentParams/other/atomic_ions.lib";
+    // Residues in prep/lib files
+    std::map< std::string, PrepFileSpace::PrepFileResidue* > residueNameToPrepResidueMap;
+    for(auto &prepFilePath : prepFiles)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Attempting to load prep file: " + prepFilePath);
+        PrepFileSpace::PrepFile prepFile(prepFilePath);
+        residueNameToPrepResidueMap.merge(prepFile.GetResidues());
+    }
+    std::map< std::string,  LibraryFileSpace::LibraryFileResidue* > residueNameToLibResidueMap;
+    for(auto &libFilePath : libFiles)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Attempting to load lib file: " + libFilePath);
+        LibraryFileSpace::LibraryFile libFile(libFilePath);
+        residueNameToLibResidueMap.merge(libFile.GetResidues());
+    }
+    for(auto &assResidue : this->GetResidues())
+    {
+        auto mapIterator1 = residueNameToLibResidueMap.find(assResidue->GetName());
+        if (mapIterator1 != residueNameToLibResidueMap.end())
+        {
+            assResidue->AddChargesTypesToAtoms(*mapIterator1->second);
+        }
+        else
+        {
+
+            auto mapIterator = residueNameToPrepResidueMap.find(assResidue->GetName());
+            if (mapIterator != residueNameToPrepResidueMap.end())
+            {
+                assResidue->AddChargesTypesToAtoms(*mapIterator->second);
+            }
+            else
+            {
+                std::string errorMessage = "Could not find lib or prep file for " + assResidue->GetId();
+                gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
+                throw std::runtime_error(errorMessage);
+            }
+        }
+    }
+    return;
+}
+
+void Assembly::EnsureIntegralCharge()
+{
+    double charge = this->GetTotalCharge();
+    std::stringstream ss;
+    ss << std::fixed;
+    ss << "Total charge is: " << std::setprecision(5) << charge << std::endl;
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+    if (!codeutils::isNumberIntegral(charge))
+    {
+        std::stringstream errorMessage;
+        errorMessage << "Non-integral charge (" << charge << "). You cannot run MD with this.\n";
+        std::cerr << errorMessage.str();
+        throw errorMessage.str();
+    }
+    return;
+}
+
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //

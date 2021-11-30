@@ -7,6 +7,11 @@
 #include "includes/MolecularModeling/residuenode.hpp"
 #include "includes/MolecularModeling/overlaps.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
+#include "includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "includes/MolecularModeling/moleculardynamicatom.hpp"
 
 using MolecularModeling::Residue;
 
@@ -347,6 +352,33 @@ void Residue::SetIsAglycon(bool is_aglycon)
 void Residue::SetIsSugar(bool is_sugar)
 {
   is_sugar_ = is_sugar;
+}
+
+void Residue::AddChargesTypesToAtoms(LibraryFileSpace::LibraryFileResidue &libResidue)
+{
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Adjusting charges and types for residue: " + this->GetId());
+    for (auto &assemblyAtom : this->GetAtoms())
+    {
+        LibraryFileSpace::LibraryFileAtom *atomTemplate = libResidue.GetLibraryAtomByAtomName(assemblyAtom->GetName());
+        assemblyAtom->MolecularDynamicAtom::SetAtomType(atomTemplate->GetType());
+        assemblyAtom->MolecularDynamicAtom::SetCharge(atomTemplate->GetCharge());
+        // Is element needed for off files?
+        //            gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfoContainer AtomTypeMetaData;
+        //            std::string element = AtomTypeMetaData.GetElementForAtomType(atom_type);
+        //            assembly_atom->SetElementSymbol(element);
+    }
+    return;
+}
+void Residue::AddChargesTypesToAtoms(PrepFileSpace::PrepFileResidue &prepResidue)
+{
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Adjusting charges and types for residue: " + this->GetId());
+    for (auto &assemblyAtom : this->GetAtoms())
+    {
+        PrepFileSpace::PrepFileAtom *atomTemplate = prepResidue.GetPrepAtomByAtomName(assemblyAtom->GetName());
+        assemblyAtom->MolecularDynamicAtom::SetAtomType(atomTemplate->GetType());
+        assemblyAtom->MolecularDynamicAtom::SetCharge(atomTemplate->GetCharge());
+    }
+    return;
 }
 
 //////////////////////////////////////////////////////////

@@ -14,19 +14,30 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-GlycoproteinBuilder::GlycoproteinBuilder(std::string inputFile)
-{
-    GlycoproteinBuilderInputs inputStruct = GPInputs::readGPInputFile(Find_Program_workingDirectory(), inputFile);
-	this->InitializeGlycoproteinBuilder(inputStruct);
-}
 GlycoproteinBuilder::GlycoproteinBuilder(std::string inputFile, std::string workingDirectory)
 {
-	GlycoproteinBuilderInputs inputStruct = GPInputs::readGPInputFile(workingDirectory, inputFile);
-	this->InitializeGlycoproteinBuilder(inputStruct);
+    try
+    {
+        GlycoproteinBuilderInputs inputStruct = GPInputs::readGPInputFile(workingDirectory, inputFile);
+        this->InitializeGlycoproteinBuilder(inputStruct);
+    }
+    catch (std::runtime_error const &error)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+        this->SetStatus("ERROR", error.what());
+    }
 }
 GlycoproteinBuilder::GlycoproteinBuilder(GlycoproteinBuilderInputs inputStruct)
 {
-	this->InitializeGlycoproteinBuilder(inputStruct);
+    try
+    {
+        this->InitializeGlycoproteinBuilder(inputStruct);
+    }
+    catch (std::runtime_error const &error)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+        this->SetStatus("ERROR", error.what());
+    }
 }
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
@@ -72,9 +83,7 @@ void GlycoproteinBuilder::SetIsDeterministic(std::string isDeterministic)
 	}
 	else
 	{
-		std::string errorMessage = "isDeterminstic not set to either \"true\" or \"false\" in inputs, value is " + isDeterministic + "\n";
-		std::cerr << errorMessage;
-		throw errorMessage;
+		throw std::runtime_error("isDeterminstic not set to either \"true\" or \"false\" in inputs, value is " + isDeterministic);
 	}
 	return;
 }
@@ -102,8 +111,7 @@ void GlycoproteinBuilder::InitializeGlycoproteinBuilder(GlycoproteinBuilderInput
     catch (const std::string &errorMessage)
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
-        std::cerr << "Error in Glycoprotein builder class constructor:\n" << errorMessage << std::endl;
-        std::exit(EXIT_FAILURE); // Can't do this when GEMS starts to use this class. Working on the issue on another feature branch.
+        //std::exit(EXIT_FAILURE); // Can't do this when GEMS starts to use this class. Working on the issue on another feature branch.
     }
 }
 
@@ -118,8 +126,8 @@ void GlycoproteinBuilder::ConvertInputStructEntries(GlycoproteinBuilderInputs in
 	catch (...)
 	{
 		std::string errorMessage = "Error converting types in GlycoproteinBuilder::ConvertInputStructEntries(). Check that the values you entered in the input are convertible to integers.";
-		std::cerr << errorMessage << std::endl;
-		throw errorMessage;
+        gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
+		throw std::runtime_error(errorMessage);
 	}
 	return;
 }
@@ -129,10 +137,27 @@ void GlycoproteinBuilder::WriteOutputFiles()
 	gmml::WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved", false);
 //  Write an off file:
     this->GetGlycoproteinAssembly().SetName("GLYCOPROTEIN"); // Necessary for off file to load into tleap
-    OffFileSpace::OffFile frankTheOffFile;
-    int CoordinateIndex = 0;
-    std::string completeFileName = this->GetWorkingDirectory() + "/GlycoProtein_All_Resolved.off";
-    frankTheOffFile.Write(completeFileName, CoordinateIndex, &this->GetGlycoproteinAssembly());
+    try
+    {
+        this->GetGlycoproteinAssembly().SetChargesAndAtomTypes();
+        OffFileSpace::OffFile frankTheOffFile;
+        int CoordinateIndex = 0;
+        std::string completeFileName = this->GetWorkingDirectory() + "/GlycoProtein_All_Resolved.off";
+        frankTheOffFile.Write(completeFileName, CoordinateIndex, &this->GetGlycoproteinAssembly());
+    }
+    catch (const std::runtime_error &error)
+    {
+        // Probably set status here.
+        std::stringstream ss;
+        ss << "Could not generate off file: " << error.what();
+        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+        this->SetStatus("ERROR", ss.str());
+    }
+    catch (...)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Could not generate off file: Unexpected exception caught when setting charges and atom types");
+        this->SetStatus("ERROR", "Could not generate off file: Unexpected exception caught when setting charges and atom types");
+    }
 //    this->DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(this->GetGlycosites(), this->GetOverlapTolerance());
 //	std::stringstream logss;	
 //    logss << "Atomic overlap is " << this->CalculateOverlaps(ATOMIC) << "\n";

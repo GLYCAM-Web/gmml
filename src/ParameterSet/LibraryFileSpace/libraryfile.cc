@@ -45,6 +45,10 @@ const LibraryFile::ResidueMap& LibraryFile::GetResidues() const
 {
     return residues_;
 }
+LibraryFile::ResidueMap& LibraryFile::GetResidues()
+{
+    return residues_;
+}
 std::vector<std::string> LibraryFile::GetAllResidueNames()
 {
     std::vector<std::string> residue_names;

@@ -3,6 +3,7 @@
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../../includes/common.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using LibraryFileSpace::LibraryFileResidue;
 
@@ -111,7 +112,10 @@ LibraryFileSpace::LibraryFileAtom* LibraryFileResidue::GetLibraryAtomByAtomName(
         if(atom->GetName().compare(atom_name) == 0)
             return atom;
     }
-    return NULL;
+    std::string errorMessage = "Didn't find a lib file atom for  " + atom_name + " in " + this->GetName();
+    gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
+    throw std::runtime_error(errorMessage);
+    return nullptr;
 }
 int LibraryFileResidue::GetListingIndex()
 {

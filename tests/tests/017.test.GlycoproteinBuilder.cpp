@@ -27,6 +27,10 @@ int main(int argc, char* argv[])
     GlycoproteinBuilder glycoproteinBuilder(inputStruct);
     glycoproteinBuilder.ResolveOverlaps(); // Default randomize value is true, and output isn't deterministic.
     glycoproteinBuilder.WriteOutputFiles();
+    if (!glycoproteinBuilder.IsStatusOk())
+    {
+        std::cerr << glycoproteinBuilder.GetStatusMessage() << std::endl;
+    }
     std::cout << "Program got to end ok" << std::endl;
     return 0;
 }

@@ -20,30 +20,31 @@ using MolecularModeling::Assembly;
 AssemblyBuilder::AssemblyBuilder(std::string inputSequence, std::string prepFilePath, Assembly *inputAssembly) : SequenceManipulator{inputSequence} 
 {
 	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependancy Oliver.
-	gmml::ensureFileExists(prepFilePath);
+	codeutils::ensureFileExists(prepFilePath);
 	PrepFileSpace::PrepFile prepFile(prepFilePath);
 	this->SetPrepResidueMap(prepFile.GetResidues()); //A mapping between a residue name and its residue object
 	this->GenerateResidues(inputAssembly);
-	this->EnsureIntegralCharge(inputAssembly->GetTotalCharge());
+	//this->EnsureIntegralCharge(inputAssembly->GetTotalCharge());
+	inputAssembly->EnsureIntegralCharge();
 	return;
 }
 
-void AssemblyBuilder::EnsureIntegralCharge(double charge)
-{
-	std::stringstream ss;
-	ss << std::fixed;
-	ss << "Total charge is: " << std::setprecision(5) << charge << std::endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-	double difference = std::fabs(charge - (std::round(charge)));
-	if (difference > 0.00001 && difference < 0.99999)
-	{
-		std::stringstream errorMessage; 
-		errorMessage << "Non-integral charge (" << charge << "). You cannot run MD with this.\n";
-		std::cerr << errorMessage.str();
-		throw errorMessage.str();
-	}
-	return;
-}
+//void AssemblyBuilder::EnsureIntegralCharge(double charge)
+//{
+//	std::stringstream ss;
+//	ss << std::fixed;
+//	ss << "Total charge is: " << std::setprecision(5) << charge << std::endl;
+//    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+//	double difference = std::fabs(charge - (std::round(charge)));
+//	if (difference > 0.00001 && difference < 0.99999)
+//	{
+//		std::stringstream errorMessage;
+//		errorMessage << "Non-integral charge (" << charge << "). You cannot run MD with this.\n";
+//		std::cerr << errorMessage.str();
+//		throw errorMessage.str();
+//	}
+//	return;
+//}
 
 void AssemblyBuilder::GenerateResidues(Assembly *assembly)
 {
