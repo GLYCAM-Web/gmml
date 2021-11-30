@@ -33,11 +33,9 @@ public:
 	{
 	}
 
-	//copy assignment
 	inline Index& operator=(const Index &rhs)
 	{
-		this->index_m = rhs.index_m;
-		return *this;
+		return *this = Index(rhs);
 	}
 
 	//move assignment
