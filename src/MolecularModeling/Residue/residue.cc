@@ -162,6 +162,11 @@ std::string Residue::GetChainID()
     StringVector id = gmml::Split(id_, "_");
     return id.at(1);
 }
+std::string Residue::GetInsertionCode()
+{
+    StringVector id = gmml::Split(id_, "_");
+    return id.at(3);
+}
 MolecularModeling::AtomVector Residue::GetAtoms()
 {
     return atoms_;
@@ -654,7 +659,7 @@ MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
-        if ((*it)->GetName().compare(query_name)==0)
+        if ((*it)->GetName() == query_name)
         {
             return_atom = (*it);
             return return_atom;
@@ -666,7 +671,7 @@ MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
 
 MolecularModeling::Atom* Residue::GetAtom(unsigned long long query_index)
 {
-    MolecularModeling::Atom* return_atom=NULL;
+    MolecularModeling::Atom* return_atom = nullptr;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
@@ -680,11 +685,11 @@ MolecularModeling::Atom* Residue::GetAtom(unsigned long long query_index)
 
 MolecularModeling::Atom* Residue::GetAtomWithId(std::string query_id)
 {
-    MolecularModeling::Atom* return_atom=NULL;
+    MolecularModeling::Atom* return_atom = nullptr;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
-        if ((*it)->GetId().compare(query_id)==0)
+        if ((*it)->GetId() == query_id)
         {
             return_atom = (*it);
         }

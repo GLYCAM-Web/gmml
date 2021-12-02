@@ -970,7 +970,6 @@ MolecularModeling::ResidueNodeVector Assembly::GenerateResidueNodesInAssembly()
     for(ResidueVector::iterator it = assembly_residues.begin(); it != assembly_residues.end(); it++)
     {
         ResidueNode* residuenode = new ResidueNode();
-
        Residue* residue = (*it);
 
         residuenode->SetResidue(residue);
