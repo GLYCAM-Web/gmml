@@ -1210,6 +1210,7 @@ void Assembly::CreateOffFileFromAssembly(std::string file_name, int CoordinateIn
 }
 
 // OG: Leaning towards fully instantiating every assembly, so that each "writer" will just work.
+// DUCT-TAPE: The PDBPreprocessor should write out an (e.g.) off file that contains all the info I'm trying to get here.
 void Assembly::SetChargesAndAtomTypes()
 {
     // Find $GMMLHOME
@@ -1229,6 +1230,10 @@ void Assembly::SetChargesAndAtomTypes()
     prepFiles.push_back(gmmlHomeDir + "/dat/prep/GLYCAM_06j-1_GAGS.prep");
   //  std::string ion_parameter_file_path = gmmlHomeDir + "/dat/CurrentParams/other/atomic_ions.lib";
     // Residues in prep/lib files
+
+    // Need to figure out terminal residues using this:
+    //MolecularModeling::Residue* selection::FindNeighborResidueConnectedViaSpecificAtom(MolecularModeling::Residue *queryResidue, std::string queryAtomName)
+
     std::map< std::string, PrepFileSpace::PrepFileResidue* > residueNameToPrepResidueMap;
     for(auto &prepFilePath : prepFiles)
     {
@@ -1245,15 +1250,15 @@ void Assembly::SetChargesAndAtomTypes()
     }
     for(auto &assResidue : this->GetResidues())
     {
-        auto mapIterator1 = residueNameToLibResidueMap.find(assResidue->GetName());
+        std::string terminalCode = assResidue->GetTerminalCode(); // Terminal code can be "N", "C", or ""
+        auto mapIterator1 = residueNameToLibResidueMap.find(terminalCode + assResidue->GetName());
         if (mapIterator1 != residueNameToLibResidueMap.end())
         {
             assResidue->AddChargesTypesToAtoms(*mapIterator1->second);
         }
         else
         {
-
-            auto mapIterator = residueNameToPrepResidueMap.find(assResidue->GetName());
+            auto mapIterator = residueNameToPrepResidueMap.find(terminalCode + assResidue->GetName());
             if (mapIterator != residueNameToPrepResidueMap.end())
             {
                 assResidue->AddChargesTypesToAtoms(*mapIterator->second);

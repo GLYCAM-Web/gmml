@@ -231,6 +231,8 @@ namespace MolecularModeling
 
             void AddChargesTypesToAtoms(LibraryFileSpace::LibraryFileResidue &libResidue);
             void AddChargesTypesToAtoms(PrepFileSpace::PrepFileResidue &prepResidue);
+            std::string GetTerminalCode();
+
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //

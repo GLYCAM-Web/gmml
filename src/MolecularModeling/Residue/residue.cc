@@ -374,6 +374,21 @@ void Residue::AddChargesTypesToAtoms(LibraryFileSpace::LibraryFileResidue &libRe
     }
     return;
 }
+
+// This is duct-tape for now. The PDBPreprocessor should write out an (e.g.) off file that contains all the info I'm trying to get here.
+std::string Residue::GetTerminalCode()
+{
+    if ( selection::FindNeighborResidueConnectedViaSpecificAtom(this, "N")  == nullptr )
+    {
+        return "N"; // No residues connected to N atom, ergo I am the N terminus.
+    }
+    else if ( selection::FindNeighborResidueConnectedViaSpecificAtom(this, "C")  == nullptr )
+    {
+        return "C"; // No residues connected to N atom, ergo I am the C terminus.
+    }
+    return "";
+}
+
 void Residue::AddChargesTypesToAtoms(PrepFileSpace::PrepFileResidue &prepResidue)
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Adjusting charges and types for residue: " + this->GetId());
