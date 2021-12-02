@@ -3752,57 +3752,48 @@ void PdbPreprocessor::ApplyPreprocessingWithTheGivenModelNumber(PdbFileSpace::Pd
 void PdbPreprocessor::Print(std::ostream &out)
 {
     out << "================================== Disulfide Bonds =====================================" << std::endl;
-    for(PdbPreprocessorDisulfideBondVector::iterator it = disulfide_bonds_.begin(); it != disulfide_bonds_.end(); it++)
+    for(auto &disulfide_bond : this->GetDisulfideBonds())
     {
-        PdbPreprocessorDisulfideBond* disulfide_bond = (*it);
         disulfide_bond->Print(out);
     }
     out << "======================================= Chains =========================================" << std::endl;
-    for(PdbPreprocessorChainTerminationVector::iterator it = chain_terminations_.begin(); it != chain_terminations_.end(); it++)
+    for(auto &chain : this->GetChainTerminations())
     {
-        PdbPreprocessorChainTermination* chain = (*it);
         chain->Print(out);
     }
     out << "===================================== HIS Residues =====================================" << std::endl;
-    for(PdbPreprocessorHistidineMappingVector::iterator it = histidine_mappings_.begin(); it != histidine_mappings_.end(); it++)
+    for(auto &hisResidue : this->GetHistidineMappings())
     {
-        PdbPreprocessorHistidineMapping* his_residue = (*it);
-        his_residue->Print(out);
+        hisResidue->Print(out);
     }
     out << "======================================== Gaps ==========================================" << std::endl;
-    for(PdbPreprocessorMissingResidueVector::iterator it = missing_residues_.begin(); it != missing_residues_.end(); it++)
+    for(auto &gap : this->GetMissingResidues())
     {
-        PdbPreprocessorMissingResidue* gap = (*it);
         gap->Print(out);
     }
     out << "============================== Unrecognized Residues ===================================" << std::endl;
-    for(PdbPreprocessorUnrecognizedResidueVector::iterator it = unrecognized_residues_.begin(); it != unrecognized_residues_.end(); it++)
+    for(auto &unrecognizedResidue : this->GetUnrecognizedResidues())
     {
-        PdbPreprocessorUnrecognizedResidue* unrecognized_residue = (*it);
-        unrecognized_residue->Print(out);
+        unrecognizedResidue->Print(out);
     }
     out << "=============================== Unknown Heavy Atoms ====================================" << std::endl;
-    for(PdbPreprocessorUnrecognizedHeavyAtomVector::iterator it = unrecognized_heavy_atoms_.begin(); it != unrecognized_heavy_atoms_.end(); it++)
+    for(auto &unknownHeavyAtom : this->GetUnrecognizedHeavyAtoms())
     {
-        PdbPreprocessorUnrecognizedHeavyAtom* unknown_heavy_atom = (*it);
-        unknown_heavy_atom->Print(out);
+        unknownHeavyAtom->Print(out);
     }
     out << "================================ Removed Hydrogens =====================================" << std::endl;
-    for(PdbPreprocessorReplacedHydrogenVector::iterator it = replaced_hydrogens_.begin(); it != replaced_hydrogens_.end(); it++)
+    for(auto &removedHydrogen : this->GetReplacedHydrogens())
     {
-        PdbPreprocessorReplacedHydrogen* removed_hydrogen = (*it);
-        removed_hydrogen->Print(out);
+        removedHydrogen->Print(out);
     }
     out << "================================ Alternate Residues ====================================" << std::endl;
-    for(PdbPreprocessorAlternateResidueMap::iterator it = alternate_residue_map_.begin(); it != alternate_residue_map_.end(); it++)
+    for(auto &alternateResidue : this->GetAlternateResidueMap())
     {
-        PdbPreprocessorAlternateResidue* alternate_residue = (*it).second;
-        alternate_residue->Print(out);
+        alternateResidue.second->Print(out);
     }
     out << "================================ Residues Info ====================================" << std::endl;
-    for(PdbPreprocessorResidueInfoMap::iterator it = residue_info_map_.begin(); it != residue_info_map_.end(); it++)
+    for(auto &residueInfo : this->GetResidueInfoMap())
     {
-        PdbPreprocessorResidueInfo* residue_info = (*it).second;
-        residue_info->Print(out);
+        residueInfo.second->Print(out);
     }
 }
