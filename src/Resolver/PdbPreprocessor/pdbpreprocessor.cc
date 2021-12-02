@@ -140,32 +140,10 @@ void PdbPreprocessor::AddUnrecognizedHeavyAtom(PdbPreprocessorUnrecognizedHeavyA
 {
     unrecognized_heavy_atoms_.push_back(unrecognized_heavy_atom);
 }
-void PdbPreprocessor::SetReplacedHydrogens(PdbPreprocessor::PdbPreprocessorReplacedHydrogenVector replaced_hydrogens){
-    replaced_hydrogens.clear();
-    for(PdbPreprocessorReplacedHydrogenVector::iterator it = replaced_hydrogens.begin(); it != replaced_hydrogens.end(); it++)
-    {
-        replaced_hydrogens_.push_back(*it);
-    }
-}
+
 void PdbPreprocessor::AddReplacedHydrogen(PdbPreprocessorReplacedHydrogen *replaced_hydrogen)
 {
     replaced_hydrogens_.push_back(replaced_hydrogen);
-}
-void PdbPreprocessor::SetToBeDeletedAtoms(PdbPreprocessorToBeDeletedAtomVector to_be_deleted_atoms)
-{
-    to_be_deleted_atoms_.clear();
-    for(PdbPreprocessorToBeDeletedAtomVector::iterator it = to_be_deleted_atoms.begin(); it != to_be_deleted_atoms.end(); it++)
-    {
-        to_be_deleted_atoms_.push_back(*it);
-    }
-}
-void PdbPreprocessor::SetToBeDeletedResidues(PdbPreprocessorToBeDeletedResidueVector to_be_deleted_residues)
-{
-    to_be_deleted_residues_.clear();
-    for(PdbPreprocessorToBeDeletedResidueVector::iterator it = to_be_deleted_residues.begin(); it != to_be_deleted_residues.end(); it++)
-    {
-        to_be_deleted_residues_.push_back(*it);
-    }
 }
 
 //////////////////////////////////////////////////////////
@@ -1708,7 +1686,7 @@ bool PdbPreprocessor::ExtractRemovedHydrogens(std::string pdb_file_path, std::ve
                         new PdbPreprocessorReplacedHydrogen(removed_hydrogen->GetAtomChainId(), removed_hydrogen->GetAtomSerialNumber(), removed_hydrogen->GetAtomName(),
                                                             removed_hydrogen->GetAtomResidueName(), removed_hydrogen->GetAtomResidueSequenceNumber(),
                                                             removed_hydrogen->GetAtomInsertionCode(), removed_hydrogen->GetAtomAlternateLocation());
-                replaced_hydrogens_.push_back(removed_hydrogen_atom);
+                this->AddReplacedHydrogen(removed_hydrogen_atom);
             }
         }
         return true;
@@ -1776,7 +1754,7 @@ bool PdbPreprocessor::ExtractRemovedHydrogens(PdbFileSpace::PdbFile* pdb_file, s
                         new PdbPreprocessorReplacedHydrogen(removed_hydrogen->GetAtomChainId(), removed_hydrogen->GetAtomSerialNumber(), removed_hydrogen->GetAtomName(),
                                                             removed_hydrogen->GetAtomResidueName(), removed_hydrogen->GetAtomResidueSequenceNumber(),
                                                             removed_hydrogen->GetAtomInsertionCode(), removed_hydrogen->GetAtomAlternateLocation());
-                replaced_hydrogens_.push_back(removed_hydrogen_atom);
+                this->AddReplacedHydrogen(removed_hydrogen_atom);
             }
         }
     }

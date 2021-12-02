@@ -239,29 +239,12 @@ namespace PdbPreprocessorSpace
               */
             void AddUnrecognizedHeavyAtom(PdbPreprocessorUnrecognizedHeavyAtom* unrecognized_heavy_atom);
             /*! \fn
-              * A mutator function in order to set the replaced hydrogens of the current object
-              * Set the replaced_hydrogens_ attribute of the current pdb preprocessor
-              * @param replaced_hydrogens The replaced hydrogens attribute of the current object
-              */
-            void SetReplacedHydrogens(PdbPreprocessorReplacedHydrogenVector replaced_hydrogens);
-            /*! \fn
               * A function in order to add the replaced hydrogen to the current object
               * Set replaced_hydrogens_ attribute of the current pdb preprocessor
               * @param replaced_hydrogen The replaced hydrogen atom attribute of the current object
               */
             void AddReplacedHydrogen(PdbPreprocessorReplacedHydrogen* replaced_hydrogen);
-            /*! \fn
-              * A mutator function in order to set the to be deleted atoms of the current object
-              * Set the to_be_deleted_atoms attribute of the current pdb preprocessor
-              * @param to_be_deleted_atoms The to be deleted atoms attribute of the current object
-              */
-            void SetToBeDeletedAtoms(PdbPreprocessorToBeDeletedAtomVector to_be_deleted_atoms);
-            /*! \fn
-              * A mutator function in order to set the to be deleted residues of the current object
-              * Set the to_be_deleted_residues attribute of the current pdb preprocessor
-              * @param to_be_deleted_residues The to be deleted residues attribute of the current object
-              */
-            void SetToBeDeletedResidues(PdbPreprocessorToBeDeletedResidueVector to_be_deleted_residues);
+
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
