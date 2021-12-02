@@ -51,9 +51,6 @@ PdbPreprocessor::PdbPreprocessorMissingResidueVector PdbPreprocessor::GetMissing
 PdbPreprocessor::PdbPreprocessorUnrecognizedResidueVector PdbPreprocessor::GetUnrecognizedResidues(){
     return unrecognized_residues_;
 }
-PdbPreprocessor::PdbPreprocessorRecognizedResidueVector PdbPreprocessor::GetRecognizedResidues(){
-    return recognized_residues_;
-}
 PdbPreprocessor::PdbPreprocessorUnrecognizedHeavyAtomVector PdbPreprocessor::GetUnrecognizedHeavyAtoms(){
     return unrecognized_heavy_atoms_;
 }
@@ -131,17 +128,7 @@ void PdbPreprocessor::AddUnrecognizedResidue(PdbPreprocessorUnrecognizedResidue 
 {
     unrecognized_residues_.push_back(unrecognized_residue);
 }
-void PdbPreprocessor::SetRecognizedResidues(PdbPreprocessor::PdbPreprocessorRecognizedResidueVector recognized_residues){
-    recognized_residues_.clear();
-    for(PdbPreprocessorRecognizedResidueVector::iterator it = recognized_residues.begin(); it != recognized_residues.end(); it++)
-    {
-        recognized_residues_.push_back(*it);
-    }
-}
-void PdbPreprocessor::AddRecognizedResidue(PdbPreprocessorUnrecognizedResidue *recognized_residue)
-{
-    recognized_residues_.push_back(recognized_residue);
-}
+
 void PdbPreprocessor::SetUnrecognizedHeavyAtoms(PdbPreprocessor::PdbPreprocessorUnrecognizedHeavyAtomVector unrecognized_heavy_atoms){
     unrecognized_heavy_atoms_.clear();
     for(PdbPreprocessorUnrecognizedHeavyAtomVector::iterator it = unrecognized_heavy_atoms.begin(); it != unrecognized_heavy_atoms.end(); it++)
@@ -398,19 +385,6 @@ PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetUnrecognizedResidues
     return unrecognized_residues;
 }
 
-PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetRecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, std::vector<std::string> recognized_residue_names)
-{
-    PdbFileSpace::PdbFile::PdbResidueVector recognized_residues;
-    for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues.begin(); it != pdb_residues.end(); it++)
-    {
-        PdbFileSpace::PdbResidue* pdb_residue = *it;
-        std::string pdb_residue_name = pdb_residue->GetResidueName();
-        if(find(recognized_residue_names.begin(), recognized_residue_names.end(), pdb_residue_name) != recognized_residue_names.end())
-            recognized_residues.push_back(pdb_residue);
-    }
-    return recognized_residues;
-}
-
 PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetRecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, gmml::ResidueNameMap recognized_residue_names)
 {
     PdbFileSpace::PdbFile::PdbResidueVector recognized_residues;
@@ -558,125 +532,6 @@ gmml::ResidueNameMap PdbPreprocessor::GetAllResidueNamesFromDatasetFilesMap(std:
     return all_residue_names;
 }
 
-bool PdbPreprocessor::ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files)
-{
-    try
-    {
-        std::vector<std::string> lib_files = std::vector<std::string>();
-        for(std::vector<std::string>::iterator it = amino_lib_files.begin(); it != amino_lib_files.end(); it++)
-        {
-            lib_files.push_back(*it);
-        }
-        for(std::vector<std::string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
-        {
-            lib_files.push_back(*it);
-        }
-        for(std::vector<std::string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
-        {
-            lib_files.push_back(*it);
-        }
-        // Slow version
-//        std::vector<std::string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
-        // Advanced version
-        gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromDatasetFilesMap(lib_files, prep_files);
-        PdbFileSpace::PdbFile* pdb_file = new PdbFileSpace::PdbFile(pdb_file_path);
-        PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names = pdb_file->GetAllResidueNames();
-        // Slow version
-//        std::vector<std::string> unrecognized_residue_names = GetUnrecognizedResidueNames(pdb_residue_names, dataset_residue_names);
-        // Advanced version
-        gmml::ResidueNameMap unrecognized_residue_names = GetUnrecognizedResidueNamesMap(pdb_residue_names, dataset_residue_names);
-
-        PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
-        PdbFileSpace::PdbFile::PdbResidueVector unrecognized_residues = GetUnrecognizedResidues(pdb_residues, unrecognized_residue_names);
-
-        PdbFileSpace::PdbFile::PdbResidueVector pdb_residues_atom_card = pdb_file->GetAllResiduesFromAtomSection();
-        PdbPreprocessorChainIdResidueMap all_chain_map_residue;
-        PdbPreprocessor::PdbPreprocessorChainIdSequenceNumbersMap chain_map_sequence_number;
-        PdbPreprocessor::PdbPreprocessorChainIdInsertionCodeMap chain_map_insertion_code;
-
-        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = pdb_residues_atom_card.begin(); it != pdb_residues_atom_card.end(); it++)
-        {
-            PdbFileSpace::PdbResidue* residue = *it;
-            char chain_id = residue->GetResidueChainId();
-
-            std::stringstream ss;
-            ss << chain_id;
-            all_chain_map_residue[ss.str()].push_back(residue);
-        }
-
-        // Slower version
-    //        std::vector<std::string> amino_lib_residue_names = GetAllResidueNamesFromMultipleLibFiles(lib_files);
-        // Advanced version
-        gmml::ResidueNameMap amino_lib_residue_names_map = GetAllResidueNamesFromMultipleLibFilesMap(amino_lib_files);
-        PdbPreprocessorChainIdResidueMap chain_map_residue;
-        PdbFileSpace::PdbFile::PdbResidueVector residues;
-        PdbFileSpace::PdbFile::PdbResidueVector pdb_residues_in_chain;
-        for(PdbPreprocessorChainIdResidueMap::iterator it = all_chain_map_residue.begin(); it != all_chain_map_residue.end(); it++)
-        {
-            int internal_amino_acid_chain_counter = 0;
-            chain_map_residue = PdbPreprocessorChainIdResidueMap();
-            std::string chain_id = (*it).first;
-            residues = (*it).second;
-
-            for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
-            {
-                PdbFileSpace::PdbResidue* residue = (*it1);
-                if(amino_lib_residue_names_map.find(residue->GetResidueName()) != amino_lib_residue_names_map.end())
-                {
-                    std::stringstream ss;
-                    ss << "A_" << chain_id << "_" << internal_amino_acid_chain_counter;
-                    chain_map_residue[ss.str()].push_back(residue);
-                    std::stringstream sss(chain_id);
-                    char c_id;
-                    sss >> c_id;
-                    chain_map_sequence_number[c_id].push_back(residue->GetResidueSequenceNumber());
-                    chain_map_insertion_code[c_id].push_back(residue->GetResidueInsertionCode());
-                }
-                else
-                {
-                    std::stringstream ss;
-                    ss << "NA_" << chain_id << "_" << internal_amino_acid_chain_counter;
-                    chain_map_residue[ss.str()].push_back(residue);
-                    internal_amino_acid_chain_counter++;
-                }
-            }
-
-            for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it1 = unrecognized_residues.begin(); it1 != unrecognized_residues.end(); it1++)
-            {
-                PdbFileSpace::PdbResidue* pdb_residue = (*it1);
-                PdbPreprocessorUnrecognizedResidue* unrecognized_residue =
-                        new PdbPreprocessorUnrecognizedResidue(pdb_residue->GetResidueName(), pdb_residue->GetResidueChainId(), pdb_residue->GetResidueSequenceNumber(),
-                                                               pdb_residue->GetResidueInsertionCode(), pdb_residue->GetResidueAlternateLocation(), false);
-                if(chain_map_residue.size() <= 2)
-                    unrecognized_residue->SetMiddleOfChain(false);
-                else
-                {
-                    for(PdbPreprocessorChainIdResidueMap::iterator it2 = chain_map_residue.begin(); it2 != chain_map_residue.end(); it2++)
-                    {
-                        std::string key = (*it2).first;
-                        pdb_residues_in_chain = (*it2).second;
-                        unsigned int dist = distance(chain_map_residue.begin(), it2);
-                        if(key.substr(0, 2).compare("NA") == 0 && dist != 0 && dist != chain_map_residue.size() - 1)
-                        {
-                            if(find(pdb_residues_in_chain.begin(), pdb_residues_in_chain.end(), pdb_residue) != pdb_residues_in_chain.end())
-                            {
-                                unrecognized_residue->SetMiddleOfChain(true);
-                            }
-                        }
-                        else
-                            unrecognized_residue->SetMiddleOfChain(false);
-                    }
-                }
-                unrecognized_residues_.push_back(unrecognized_residue);
-            }
-        }
-        return true;
-    }
-    catch(PdbFileSpace::PdbFileProcessingException &ex)
-    {
-        return false;
-    }
-}
 bool PdbPreprocessor::ExtractUnrecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files)
 {
     std::vector<std::string> lib_files = std::vector<std::string>();
@@ -818,89 +673,7 @@ void PdbPreprocessor::RemoveUnrecognizedResiduesWithTheGivenModelNumber(PdbFileS
     }
     DeleteAllToBeDeletedEntitiesWithTheGivenModelNumber(pdb_file, model_number);
 }
-bool PdbPreprocessor::ExtractRecognizedResidues(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files)
-{
-    try
-    {
-        std::vector<std::string> lib_files = std::vector<std::string>();
-        for(std::vector<std::string>::iterator it = amino_lib_files.begin(); it != amino_lib_files.end(); it++)
-        {
-            lib_files.push_back(*it);
-        }
-        for(std::vector<std::string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
-        {
-            lib_files.push_back(*it);
-        }
-        for(std::vector<std::string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
-        {
-            lib_files.push_back(*it);
-        }
-        // Slow version
-//        std::vector<std::string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
-        // Advanced version
-        gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromDatasetFilesMap(lib_files, prep_files);
-        PdbFileSpace::PdbFile* pdb_file = new PdbFileSpace::PdbFile(pdb_file_path);
-        PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names = pdb_file->GetAllResidueNames();
-        // Slow version
-//        std::vector<std::string> unrecognized_residue_names = GetRecognizedResidueNames(pdb_residue_names, dataset_residue_names);
-        // Advanced version
-        gmml::ResidueNameMap unrecognized_residue_names = GetRecognizedResidueNamesMap(pdb_residue_names, dataset_residue_names);
 
-        PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
-        PdbFileSpace::PdbFile::PdbResidueVector recognized_residues = GetRecognizedResidues(pdb_residues, unrecognized_residue_names);
-
-        for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = recognized_residues.begin(); it != recognized_residues.end(); it++)
-        {
-            PdbFileSpace::PdbResidue* pdb_residue = (*it);
-            PdbPreprocessorUnrecognizedResidue* recognized_residue =
-                    new PdbPreprocessorUnrecognizedResidue(pdb_residue->GetResidueName(), pdb_residue->GetResidueChainId(), pdb_residue->GetResidueSequenceNumber(),
-                                                           pdb_residue->GetResidueInsertionCode(), pdb_residue->GetResidueAlternateLocation(), false);
-            recognized_residues_.push_back(recognized_residue);
-        }
-        return true;
-    }
-    catch(PdbFileSpace::PdbFileProcessingException &ex)
-    {
-        return false;
-    }
-}
-bool PdbPreprocessor::ExtractRecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files)
-{
-    std::vector<std::string> lib_files = std::vector<std::string>();
-    for(std::vector<std::string>::iterator it = amino_lib_files.begin(); it != amino_lib_files.end(); it++)
-    {
-        lib_files.push_back(*it);
-    }
-    for(std::vector<std::string>::iterator it = glycam_lib_files.begin(); it != glycam_lib_files.end(); it++)
-    {
-        lib_files.push_back(*it);
-    }
-    for(std::vector<std::string>::iterator it = other_lib_files.begin(); it != other_lib_files.end(); it++)
-    {
-        lib_files.push_back(*it);
-    }
-    // Slow version
-//    std::vector<std::string> dataset_residue_names = GetAllResidueNamesFromDatasetFiles(lib_files, prep_files);
-    // Advanced version
-    gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromDatasetFilesMap(lib_files, prep_files);
-    PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names = pdb_file->GetAllResidueNames();
-    // Slow version
-//    std::vector<std::string> unrecognized_residue_names = GetRecognizedResidueNames(pdb_residue_names, dataset_residue_names);
-    // Advanced version
-    gmml::ResidueNameMap unrecognized_residue_names = GetRecognizedResidueNamesMap(pdb_residue_names, dataset_residue_names);
-    PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = pdb_file->GetAllResidues();
-    PdbFileSpace::PdbFile::PdbResidueVector recognized_residues = GetRecognizedResidues(pdb_residues, unrecognized_residue_names);
-
-    for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = recognized_residues.begin(); it != recognized_residues.end(); it++)
-    {
-        PdbFileSpace::PdbResidue* pdb_residue = (*it);
-        PdbPreprocessorUnrecognizedResidue* recognized_residue =
-                new PdbPreprocessorUnrecognizedResidue(pdb_residue->GetResidueName(), pdb_residue->GetResidueChainId(), pdb_residue->GetResidueSequenceNumber(),
-                                                       pdb_residue->GetResidueInsertionCode(), pdb_residue->GetResidueAlternateLocation(), false);
-        recognized_residues_.push_back(recognized_residue);
-    }
-    return true;
-}
 PdbFileSpace::PdbFile::PdbResidueVector PdbPreprocessor::GetAllCYSResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues)
 {
     PdbFileSpace::PdbFile::PdbResidueVector all_cys_residues;
@@ -3904,12 +3677,12 @@ void PdbPreprocessor::ApplyPreprocessing(PdbFileSpace::PdbFile *pdb_file, std::v
     amino_update << time_str.substr(0, time_str.size() - 1) << " Amino acid chains update: done" ;
 //    std::cout << amino_update.str() << std::endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, amino_update.str() );
-    //UpdateGapsInAminoAcidChains(pdb_file, amino_lib_files_path, this->GetMissingResidues()); // OG Mar 2017
+    UpdateGapsInAminoAcidChains(pdb_file, amino_lib_files_path, this->GetMissingResidues()); // OG Mar 2017
     t = time(0);
     time_str = std::asctime(std::localtime(&t));
     std::stringstream gaps_update;
-    //gaps_update << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains update: done" ; // OG Mar 2017
-    gaps_update << time_str.substr(0, time_str.size() - 1) << " Currently, GMML cannot not fix gaps " ; // OG Mar 2017
+    gaps_update << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains update: done" ; // OG Mar 2017
+    //gaps_update << time_str.substr(0, time_str.size() - 1) << " Currently, GMML cannot not fix gaps " ; // OG Mar 2017
 //    std::cout << gaps_update.str() << std::endl;
     gmml::log(__LINE__, __FILE__,  gmml::INF, gaps_update.str() );
     t = time(0);

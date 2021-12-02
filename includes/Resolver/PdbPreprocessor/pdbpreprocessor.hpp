@@ -130,11 +130,6 @@ namespace PdbPreprocessorSpace
               */
             PdbPreprocessorUnrecognizedResidueVector GetUnrecognizedResidues();
             /*! \fn
-              * An accessor function in order to access to the recognized residues
-              * @return recognized_residues_ attribute of the current object of this class
-              */
-            PdbPreprocessorRecognizedResidueVector GetRecognizedResidues();
-            /*! \fn
               * An accessor function in order to access to the unrecognized heavy atoms
               * @return unrecognized_heavy_atoms_ attribute of the current object of this class
               */
@@ -236,18 +231,6 @@ namespace PdbPreprocessorSpace
               * Set the recognized_residues_ attribute of the current pdb preprocessor
               * @param recognized_residues The recognized residues attribute of the current object
               */
-            void SetRecognizedResidues(PdbPreprocessorRecognizedResidueVector recognized_residues);
-            /*! \fn
-              * A function in order to add the recognized residue to the current object
-              * Set recognized_residues_ attribute of the current pdb preprocessor
-              * @param recognized_residue The recognized residue attribute of the current object
-              */
-            void AddRecognizedResidue(PdbPreprocessorUnrecognizedResidue* recognized_residue);
-            /*! \fn
-              * A mutator function in order to set the unrecognized heavy atoms of the current object
-              * Set the unrecognized_heavy_atoms_ attribute of the current pdb preprocessor
-              * @param unrecognized_heavy_atoms The unrecognized heavy atoms attribute of the current object
-              */
             void SetUnrecognizedHeavyAtoms(PdbPreprocessorUnrecognizedHeavyAtomVector unrecognized_heavy_atoms);
             /*! \fn
               * A function in order to add the unrecognized heavy atom to the current object
@@ -331,11 +314,8 @@ namespace PdbPreprocessorSpace
               * @param recognized_residue_names The list of recognized residue names
               * @return recognized_residues
               */
-            PdbFileSpace::PdbFile::PdbResidueVector GetRecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, std::vector<std::string> recognized_residue_names);
-
             //**************************************************
             PdbFileSpace::PdbFile::PdbResidueVector GetRecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, gmml::ResidueNameMap recognized_residue_names);
-
             //**************************************************
 
             /*! \fn
@@ -391,14 +371,6 @@ namespace PdbPreprocessorSpace
             /** \addtogroup Manipulators
                * @{
                */
-            /*! \fn
-              * A function in order to extract the unrecognized residues of a pdb file
-              * @param pdb_file_path The path to the pdb file
-              * @param lib_files The list of paths to the library files
-              * @param prep_files The list of paths to the prep files
-              * @return bool value
-              */
-            bool ExtractUnrecognizedResidues(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
             /*! \fn
               * A function in order to extract the unrecognized residues of a pdb file
               * @param pdb_file The object of a pdb file
@@ -879,7 +851,6 @@ namespace PdbPreprocessorSpace
             PdbPreprocessorHistidineMappingVector histidine_mappings_;              /*!< List of histidine residues detected in a pdb file >*/
             PdbPreprocessorMissingResidueVector missing_residues_;                  /*!< List of gaps (missing residues) detected in a pdb file >*/
             PdbPreprocessorUnrecognizedResidueVector unrecognized_residues_;        /*!< List of unrecognized residues detected in a pdb file >*/
-            PdbPreprocessorRecognizedResidueVector recognized_residues_;            /*!< List of recognized residues detected in a pdb file >*/
             PdbPreprocessorUnrecognizedHeavyAtomVector unrecognized_heavy_atoms_;   /*!< List of unrecognized heavy atoms detected in a pdb file >*/
             PdbPreprocessorReplacedHydrogenVector replaced_hydrogens_;              /*!< List of removed/replaced hydrogen atoms detected in a pdb file >*/
             PdbPreprocessorAlternateResidueMap alternate_residue_map_;              /*!< Map of alternate residues detected in a pdb file >*/
