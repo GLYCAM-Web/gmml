@@ -280,31 +280,9 @@ public:
      * A function in order to remove the unrecognized residues of a pdb file
      * @param pdb_file The object of a pdb file
      * @param unknown_heavy_atoms The list of unrecognized residues
-     */
-    void RemoveUnrecognizedResidues(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedResidueVector unrecognized_residues);
-    /*! \fn
-     * A function in order to remove the unrecognized residues of a pdb file
-     * @param pdb_file The object of a pdb file
-     * @param unknown_heavy_atoms The list of unrecognized residues
      * @param model_number Selected model number from the multiple models that are in a pdb file
      */
     void RemoveUnrecognizedResiduesWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedResidueVector unrecognized_residues, int model_number = 1);
-    /*! \fn
-     * A function in order to extract the recognized residues of a pdb file
-     * @param pdb_file_path The path to the pdb file
-     * @param lib_files The list of paths to the library files
-     * @param prep_files The list of paths to the prep files
-     * @return bool value
-     */
-    bool ExtractRecognizedResidues(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
-    /*! \fn
-     * A function in order to extract the recognized residues of a pdb file
-     * @param pdb_file The object of pdb file
-     * @param lib_files The list of paths to the library files
-     * @param prep_files The list of paths to the prep files
-     * @return bool value
-     */
-    bool ExtractRecognizedResidues(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
     /*! \fn
      * A function in order to access to the list of CYS residues
      * @param pdb_residues The list of pdb residues
