@@ -720,13 +720,6 @@ public:
      * @param lib_files Paths of library files as database in order for preprocessing of the given pdb file
      * @return model_charge Overal charge of the model
      */
-    double CalculateModelCharge(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
-    /*! \fn
-     * A function to calculate the overall charge of the model
-     * @param pdb_file The object of a pdb file
-     * @param lib_files Paths of library files as database in order for preprocessing of the given pdb file
-     * @return model_charge Overal charge of the model
-     */
     double CalculateModelCharge(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
     /** @}*/
     //////////////////////////////////////////////////////////
