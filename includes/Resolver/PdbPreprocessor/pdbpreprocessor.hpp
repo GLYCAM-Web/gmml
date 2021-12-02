@@ -172,12 +172,7 @@ public:
      * @param data_set_residue_names The list of residue names from library and prep files
      * @return unrecognized_residue_names
      */
-    std::vector<std::string> GetUnrecognizedResidueNames(PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, std::vector<std::string> dataset_residue_names);
-
-    //**************************************************
     gmml::ResidueNameMap GetUnrecognizedResidueNamesMap(PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, gmml::ResidueNameMap dataset_residue_names);
-
-    //**************************************************
 
     /*! \fn
      * A function in order to access to the recognized residue names of pdb
@@ -185,25 +180,14 @@ public:
      * @param data_set_residue_names The list of residue names from library and prep files
      * @return recognized_residue_names
      */
-    std::vector<std::string> GetRecognizedResidueNames(PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, std::vector<std::string> dataset_residue_names);
-
-    //**************************************************
     gmml::ResidueNameMap GetRecognizedResidueNamesMap(PdbFileSpace::PdbFile::PdbPairVectorAtomNamePositionFlag pdb_residue_names, gmml::ResidueNameMap dataset_residue_names);
-
-    //**************************************************
-
     /*! \fn
      * A function in order to access to the unrecognized residues of pdb
      * @param pdb_residues The list of residues in the current pdb file
      * @param unrecognized_residue_names The list of unrecognized residue names
      * @return unrecognized_residues
      */
-    PdbFileSpace::PdbFile::PdbResidueVector GetUnrecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, std::vector<std::string> unrecognized_residue_names);
-
-    //**************************************************
     PdbFileSpace::PdbFile::PdbResidueVector GetUnrecognizedResidues(PdbFileSpace::PdbFile::PdbResidueVector pdb_residues, gmml::ResidueNameMap unrecognized_residue_names);
-
-    //**************************************************
 
     /*! \fn
      * A function in order to access to the recognized residues of pdb
@@ -283,6 +267,7 @@ public:
      * @param model_number Selected model number from the multiple models that are in a pdb file
      */
     void RemoveUnrecognizedResiduesWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedResidueVector unrecognized_residues, int model_number = 1);
+
     /*! \fn
      * A function in order to access to the list of CYS residues
      * @param pdb_residues The list of pdb residues
@@ -316,12 +301,7 @@ public:
      * @{
      */
 
-    bool ExtractCYSResidues(std::string pdb_file_path);
-    /*! \fn
-     * A function in order to extract the CYS residues of a pdb file
-     * @param pdb_file The object of pdb file
-     * @return bool value
-     */
+
     bool ExtractCYSResidues(PdbFileSpace::PdbFile* pdb_file);
     /*! \fn
      * A function in order to remove the unknown heavy atoms of a pdb file
@@ -355,19 +335,7 @@ public:
     /** \addtogroup Manipulators
      * @{
      */
-    bool ExtractHISResidues(std::string pdb_file_path);
-    /*! \fn
-     * A function in order to extract the HIS residues of a pdb file
-     * @param pdb_file The object of pdb file
-     * @return bool value
-     */
     bool ExtractHISResidues(PdbFileSpace::PdbFile* pdb_file);
-    /*! \fn
-     * A function in order to update histidine mapping of a pdb file
-     * @param pdb_file The object of a pdb file
-     * @param histidine_mappings The list of histidine mappings
-     */
-    void UpdateHISMapping(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorHistidineMappingVector histidine_mappings);
     /*! \fn
      * A function in order to update histidine mapping of a pdb file
      * @param pdb_file The object of a pdb file
@@ -375,29 +343,12 @@ public:
      * @param model_number Selected model number from the multiple models that are in a pdb file
      */
     void UpdateHISMappingWithTheGivenNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorHistidineMappingVector histidine_mappings, int model_number = 1);
-    /*! \fn
-     * A function in order to access to the list of unknown heavy atoms of a residue
-     * @param pdb_atom_names_of_residue The list of atom names of a pdb residue
-     * @param dataset_atom_names_of_residue The list of atom names of a residue from dataset
-     * @return unknown_heavy_atom_names_of_residue
-     */
+
     /** @}*/
     /** \addtogroup Molecular_Data_Structure
      * @{
      */
-    std::vector<std::string> GetUnknownHeavyAtomNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, std::vector<std::string> dataset_atom_names_of_residue);
-
-    /*! \fn
-     * A function in order to access to the list of atom names of a residue from multiple library files
-     * @param residue_name The name of the residue
-     * @param lib_files The list of paths to the library files
-     * @return all_atom_names_of_residue
-     */
-    std::vector<std::string> GetAllAtomNamesOfResidueFromMultipleLibFiles(std::string residue_name, std::vector<std::string> lib_files);
-
-    //**************************************************
     gmml::ResidueNameAtomNamesMap GetAllAtomNamesOfResidueNamesFromMultipleLibFiles(std::vector<std::string> lib_files);
-    //**************************************************
 
     /*! \fn
      * A function in order to access to the list of atom names of a residue from multiple prep files
@@ -405,11 +356,7 @@ public:
      * @param prep_files The list of paths to the prep files
      * @return all_atom_names_of_residue
      */
-    std::vector<std::string> GetAllAtomNamesOfResidueFromMultiplePrepFiles(std::string residue_name, std::vector<std::string> prep_files);
-
-    //**************************************************
     gmml::ResidueNameAtomNamesMap GetAllAtomNamesOfResidueNamesFromMultiplePrepFiles(std::vector<std::string> prep_files);
-    //**************************************************
 
     /*! \fn
      * A function in order to access to the list of all atom names of a residue from library and prep files
@@ -430,19 +377,10 @@ public:
      * @return unknown_heavy_atoms_of_residue
      */
     PdbFileSpace::PdbFile::PdbAtomCardVector GetUnknownHeavyAtomsOfResidue(PdbFileSpace::PdbFile::PdbAtomCardVector pdb_atoms, std::vector<std::string> dataset_atom_names_of_residue);
-
-    /*! \fn
-     * A function in order to extract the unknown heavy atoms of a pdb file
-     * @param pdb_file_path The path to the pdb file
-     * @param lib_files The list of paths to the library files
-     * @param prep_files The list of paths to the prep files
-     * @return bool value
-     */
     /** @}*/
     /** \addtogroup Manipulators
      * @{
      */
-    bool ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
     /*! \fn
      * A function in order to extract the unknown heavy atoms of a pdb file
      * @param pdb_file The object of a pdb file
@@ -452,42 +390,12 @@ public:
      */
     bool ExtractUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
     /*! \fn
-     * A function in order to remove the unknown heavy atoms of a pdb file
-     * @param pdb_file The object of a pdb file
-     * @param unknown_heavy_atoms The list of unknown heavy atoms
-     */
-    void RemoveUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms);
-    /*! \fn
-     * A function in order to remove the unknown heavy atoms of a pdb file
-     * @param pdb_file The object of a pdb file
-     * @param unknown_heavy_atoms The list of unknown heavy atoms
-     * @param model_number Selected model number from the multiple models that are in a pdb file
-     */
-    void RemoveUnknownHeavyAtomsWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms, int model_number = 1);
-    /*! \fn
-     * A function in order to remove residues of unknown heavy atoms of a pdb file
-     * @param pdb_file The object of a pdb file
-     * @param unknown_heavy_atoms The list of unknown heavy atoms
-     */
-    void RemoveResiduesOfUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms);
-    /*! \fn
      * A function in order to remove residues of unknown heavy atoms of a pdb file
      * @param pdb_file The object of a pdb file
      * @param unknown_heavy_atoms The list of unknown heavy atoms
      * @param model_number Selected model number from the multiple models that are in a pdb file
      */
     void RemoveResiduesOfUnknownHeavyAtomsWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorUnrecognizedHeavyAtomVector unknown_heavy_atoms, int model_number = 1);
-    /*! \fn
-     * A function in order to access to the removed hydrogen names of a residue
-     * @param pdb_atom_names_of_residue The list of atom names of a residue from pdb file
-     * @param dataset_atom_names_of_residue The list of atom names of a residue from dataset
-     * @return removed_hydrogen_names_of_residue
-     */
-    /** @}*/
-    /** \addtogroup Molecular_Data_Structure
-     * @{
-     */
-    std::vector<std::string> GetRemovedHydrogenNamesOfResidue(std::vector<std::string> pdb_atom_names_of_residue, std::vector<std::string> dataset_atom_names_of_residue);
 
     /*! \fn
      * A function in order to access to the removed hydrogens of a residue
@@ -508,21 +416,7 @@ public:
     /** \addtogroup Manipulators
      * @{
      */
-    bool ExtractRemovedHydrogens(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
-    /*! \fn
-     * A function in order to extract the removed hydrogens of a pdb file
-     * @param pdb_file The object of a pdb file
-     * @param lib_files The list of paths to the library files
-     * @param prep_files The list of paths to the prep files
-     * @return bool value
-     */
     bool ExtractRemovedHydrogens(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files, std::vector<std::string> other_lib_files, std::vector<std::string> prep_files);
-    /*! \fn
-     * A function in order to remove the removed hydrogens of a pdb file
-     * @param pdb_file The object of a pdb file
-     * @param replaced_hydrogens The list of replaced hydrogens
-     */
-    void RemoveRemovedHydrogens(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorReplacedHydrogenVector replaced_hydrogens);
     /*! \fn
      * A function in order to remove the removed hydrogens of a pdb file
      * @param pdb_file The object of a pdb file
@@ -532,26 +426,10 @@ public:
     void RemoveRemovedHydrogensWithTheGivenModelNumber(PdbFileSpace::PdbFile* pdb_file, PdbPreprocessorReplacedHydrogenVector replaced_hydrogens, int model_number = 1);
     /*! \fn
      * A function in order to extract the amino acid chains of a pdb file
-     * @param pdb_file_path The path to the pdb file
-     * @return bool value
-     */
-    bool ExtractAminoAcidChains(std::string pdb_file_path);
-
-    //**************************************************
-    bool ExtractAminoAcidChains(std::string pdb_file_path, std::vector<std::string> amino_lib_files);
-
-    //**************************************************
-    /*! \fn
-     * A function in order to extract the amino acid chains of a pdb file
      * @param pdb_file The object of pdb file
      * @return bool value
      */
-    bool ExtractAminoAcidChains(PdbFileSpace::PdbFile* pdb_file);
-
-    //**************************************************
     bool ExtractAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, std::vector<std::string> amino_lib_files);
-
-    //**************************************************
     /*! \fn
      * A function in order to update the amino acid chains of a pdb file
      * @param pdb_file The object of a pdb file
