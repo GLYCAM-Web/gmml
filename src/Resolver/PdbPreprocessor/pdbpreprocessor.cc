@@ -73,74 +73,31 @@ PdbPreprocessor::PdbPreprocessorResidueInfoMap PdbPreprocessor::GetResidueInfoMa
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbPreprocessor::SetDisulfideBonds(PdbPreprocessor::PdbPreprocessorDisulfideBondVector disulfide_bonds){
-    disulfide_bonds_.clear();
-    for(PdbPreprocessorDisulfideBondVector::iterator it = disulfide_bonds.begin(); it != disulfide_bonds.end(); it++)
-    {
-        disulfide_bonds_.push_back(*it);
-    }
-}
+
 void PdbPreprocessor::AddDisulfideBond(PdbPreprocessorDisulfideBond *disulfide_bond)
 {
     disulfide_bonds_.push_back(disulfide_bond);
-}
-void PdbPreprocessor::SetChainTerminations(PdbPreprocessor::PdbPreprocessorChainTerminationVector chain_terminations){
-    chain_terminations_.clear();
-    for(PdbPreprocessorChainTerminationVector::iterator it = chain_terminations.begin(); it != chain_terminations.end(); it++)
-    {
-        chain_terminations_.push_back(*it);
-    }
 }
 void PdbPreprocessor::AddChainTermination(PdbPreprocessorChainTermination *chain_termination)
 {
     chain_terminations_.push_back(chain_termination);
 }
-void PdbPreprocessor::SetHistidineMappings(PdbPreprocessor::PdbPreprocessorHistidineMappingVector histidine_mappings){
-    histidine_mappings_.clear();
-    for(PdbPreprocessorHistidineMappingVector::iterator it = histidine_mappings.begin(); it != histidine_mappings.end(); it++)
-    {
-        histidine_mappings_.push_back(*it);
-    }
-}
 void PdbPreprocessor::AddHistidineMapping(PdbPreprocessorHistidineMapping *histidine_mapping)
 {
     histidine_mappings_.push_back(histidine_mapping);
-}
-void PdbPreprocessor::SetMissingResidues(PdbPreprocessor::PdbPreprocessorMissingResidueVector missing_residues){
-    missing_residues_.clear();
-    for(PdbPreprocessorMissingResidueVector::iterator it = missing_residues.begin(); it != missing_residues.end(); it++)
-    {
-        missing_residues_.push_back(*it);
-    }
 }
 void PdbPreprocessor::AddMissingResidue(PdbPreprocessorMissingResidue *missing_residue)
 {
     missing_residues_.push_back(missing_residue);
 }
-void PdbPreprocessor::SetUnrecognizedResidues(PdbPreprocessor::PdbPreprocessorUnrecognizedResidueVector unrecognized_residues){
-    unrecognized_residues_.clear();
-    for(PdbPreprocessorUnrecognizedResidueVector::iterator it = unrecognized_residues.begin(); it != unrecognized_residues.end(); it++)
-    {
-        unrecognized_residues_.push_back(*it);
-    }
-}
 void PdbPreprocessor::AddUnrecognizedResidue(PdbPreprocessorUnrecognizedResidue *unrecognized_residue)
 {
     unrecognized_residues_.push_back(unrecognized_residue);
-}
-
-void PdbPreprocessor::SetUnrecognizedHeavyAtoms(PdbPreprocessor::PdbPreprocessorUnrecognizedHeavyAtomVector unrecognized_heavy_atoms){
-    unrecognized_heavy_atoms_.clear();
-    for(PdbPreprocessorUnrecognizedHeavyAtomVector::iterator it = unrecognized_heavy_atoms.begin(); it != unrecognized_heavy_atoms.end(); it++)
-    {
-        unrecognized_heavy_atoms_.push_back(*it);
-    }
 }
 void PdbPreprocessor::AddUnrecognizedHeavyAtom(PdbPreprocessorUnrecognizedHeavyAtom *unrecognized_heavy_atom)
 {
     unrecognized_heavy_atoms_.push_back(unrecognized_heavy_atom);
 }
-
 void PdbPreprocessor::AddReplacedHydrogen(PdbPreprocessorReplacedHydrogen *replaced_hydrogen)
 {
     replaced_hydrogens_.push_back(replaced_hydrogen);
@@ -616,7 +573,7 @@ bool PdbPreprocessor::ExtractUnrecognizedResidues(PdbFileSpace::PdbFile* pdb_fil
                         unrecognized_residue->SetMiddleOfChain(false);
                 }
             }
-            unrecognized_residues_.push_back(unrecognized_residue);
+            this->AddUnrecognizedResidue(unrecognized_residue);
         }
     }
     return true;
@@ -707,7 +664,7 @@ bool PdbPreprocessor::ExtractCYSResidues(std::string pdb_file_path)
                                                              distance, true, first_residue->GetResidueInsertionCode(), second_residue->GetResidueInsertionCode(),
                                                              first_residue->GetResidueAlternateLocation(), second_residue->GetResidueAlternateLocation(),
                                                              first_sulfur_atom_serial_number, second_sulfur_atom_serial_number);
-                    disulfide_bonds_.push_back(disulfide_bond);
+                    this->AddDisulfideBond(disulfide_bond);
                 }
             }
         }
@@ -742,7 +699,7 @@ bool PdbPreprocessor::ExtractCYSResidues(PdbFileSpace::PdbFile* pdb_file)
                                                          distance, true, first_residue->GetResidueInsertionCode(), second_residue->GetResidueInsertionCode(),
                                                          first_residue->GetResidueAlternateLocation(), second_residue->GetResidueAlternateLocation(),
                                                          first_sulfur_atom_serial_number, second_sulfur_atom_serial_number);
-                disulfide_bonds_.push_back(disulfide_bond);
+                this->AddDisulfideBond(disulfide_bond);
             }
         }
     }
@@ -939,28 +896,28 @@ bool PdbPreprocessor::ExtractHISResidues(std::string pdb_file_path)
                 PdbPreprocessorHistidineMapping* histidine_mapping =
                         new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), gmml::HIE,
                                                             his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-                histidine_mappings_.push_back(histidine_mapping);
+                this->AddHistidineMapping(histidine_mapping);
             }
             else if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") == NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") != NULL)
             {
                 PdbPreprocessorHistidineMapping* histidine_mapping =
                         new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), gmml::HID,
                                                             his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-                histidine_mappings_.push_back(histidine_mapping);
+                this->AddHistidineMapping(histidine_mapping);
             }
             else if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") != NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") != NULL)
             {
                 PdbPreprocessorHistidineMapping* histidine_mapping =
                         new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), gmml::HIP,
                                                             his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-                histidine_mappings_.push_back(histidine_mapping);
+                this->AddHistidineMapping(histidine_mapping);
             }
             else if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") == NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") == NULL)
             {
                 PdbPreprocessorHistidineMapping* histidine_mapping =
                         new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), gmml::HIE,
                                                             his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-                histidine_mappings_.push_back(histidine_mapping);
+                this->AddHistidineMapping(histidine_mapping);
             }
         }
         return true;
@@ -984,7 +941,7 @@ bool PdbPreprocessor::ExtractHISResidues(PdbFileSpace::PdbFile* pdb_file)
             PdbPreprocessorHistidineMapping* histidine_mapping =
                     new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), gmml::HIE,
                                                         his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-            histidine_mappings_.push_back(histidine_mapping);
+            this->AddHistidineMapping(histidine_mapping);
         }
         // gmml::HID residue
         else if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") == NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") != NULL)
@@ -992,7 +949,7 @@ bool PdbPreprocessor::ExtractHISResidues(PdbFileSpace::PdbFile* pdb_file)
             PdbPreprocessorHistidineMapping* histidine_mapping =
                     new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), gmml::HID,
                                                         his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-            histidine_mappings_.push_back(histidine_mapping);
+            this->AddHistidineMapping(histidine_mapping);
         }
         // gmml::HIP residue
         else if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") != NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") != NULL)
@@ -1000,14 +957,14 @@ bool PdbPreprocessor::ExtractHISResidues(PdbFileSpace::PdbFile* pdb_file)
             PdbPreprocessorHistidineMapping* histidine_mapping =
                     new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), gmml::HIP,
                                                         his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-            histidine_mappings_.push_back(histidine_mapping);
+            this->AddHistidineMapping(histidine_mapping);
         }
         else if(pdb_file->GetAtomOfResidueByName(his_residue, "HE2") == NULL && pdb_file->GetAtomOfResidueByName(his_residue, "HD1") == NULL)
         {
             PdbPreprocessorHistidineMapping* histidine_mapping =
                     new PdbPreprocessorHistidineMapping(his_residue->GetResidueChainId(), his_residue->GetResidueSequenceNumber(), gmml::HIE,
                                                         his_residue->GetResidueInsertionCode(), his_residue->GetResidueAlternateLocation());
-            histidine_mappings_.push_back(histidine_mapping);
+            this->AddHistidineMapping(histidine_mapping);
         }
     }
     return true;
@@ -1404,7 +1361,7 @@ bool PdbPreprocessor::ExtractUnknownHeavyAtoms(std::string pdb_file_path, std::v
                             new PdbPreprocessorUnrecognizedHeavyAtom(heavy_atom->GetAtomChainId(), heavy_atom->GetAtomSerialNumber(),
                                                                      heavy_atom->GetAtomName(), heavy_atom->GetAtomResidueName(),
                                                                      heavy_atom->GetAtomResidueSequenceNumber(), heavy_atom->GetAtomInsertionCode(), heavy_atom->GetAtomAlternateLocation());
-                    unrecognized_heavy_atoms_.push_back(unknown_heavy_atom);
+                    this->AddUnrecognizedHeavyAtom(unknown_heavy_atom);
                 }
             }
         }
@@ -1505,7 +1462,7 @@ bool PdbPreprocessor::ExtractUnknownHeavyAtoms(PdbFileSpace::PdbFile* pdb_file, 
                         new PdbPreprocessorUnrecognizedHeavyAtom(heavy_atom->GetAtomChainId(), heavy_atom->GetAtomSerialNumber(),
                                                                  heavy_atom->GetAtomName(), heavy_atom->GetAtomResidueName(),
                                                                  heavy_atom->GetAtomResidueSequenceNumber(), heavy_atom->GetAtomInsertionCode(), heavy_atom->GetAtomAlternateLocation());
-                unrecognized_heavy_atoms_.push_back(unknown_heavy_atom);
+                this->AddUnrecognizedHeavyAtom(unknown_heavy_atom);
             }
         }
     }
@@ -1824,7 +1781,7 @@ bool PdbPreprocessor::ExtractAminoAcidChains(std::string pdb_file_path)
             PdbPreprocessorChainTermination* chain = new PdbPreprocessorChainTermination(chain_id, *starting_sequence_number_iterator, *ending_sequence_number_iterator,
                                                                                          insertion_codes.at(starting_index), insertion_codes.at(ending_index) );
 
-            chain_terminations_.push_back(chain);
+            this->AddChainTermination(chain);
         }
         return true;
     }
@@ -1913,7 +1870,7 @@ bool PdbPreprocessor::ExtractAminoAcidChains(std::string pdb_file_path, std::vec
             PdbPreprocessorChainTermination* chain = new PdbPreprocessorChainTermination(chain_id, *starting_sequence_number_iterator, *ending_sequence_number_iterator,
                                                                                          insertion_codes.at(starting_index), insertion_codes.at(ending_index) );
 
-            chain_terminations_.push_back(chain);
+            this->AddChainTermination(chain);
         }
         return true;
     }
@@ -1952,7 +1909,7 @@ bool PdbPreprocessor::ExtractAminoAcidChains(PdbFileSpace::PdbFile* pdb_file)
 
         PdbPreprocessorChainTermination* chain = new PdbPreprocessorChainTermination(chain_id, *starting_sequence_number_iterator, *ending_sequence_number_iterator,
                                                                                      insertion_codes.at(starting_index), insertion_codes.at(ending_index) );
-        chain_terminations_.push_back(chain);
+        this->AddChainTermination(chain);
     }
     return true;
 }
@@ -2036,7 +1993,7 @@ bool PdbPreprocessor::ExtractAminoAcidChains(PdbFileSpace::PdbFile* pdb_file, st
             PdbPreprocessorChainTermination* chain = new PdbPreprocessorChainTermination(chain_id, *starting_sequence_number_iterator, *ending_sequence_number_iterator,
                                                                                          insertion_codes.at(starting_index), insertion_codes.at(ending_index) );
 
-            chain_terminations_.push_back(chain);
+            this->AddChainTermination(chain);
         }
         return true;
     }
@@ -2402,7 +2359,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(std::string pdb_file_path)
                     PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(chain_id, starting_sequence_number,
                                                                                                         ending_sequence_number, sequence_numbers.at(i),
                                                                                                         sequence_numbers.at(i+1), insertion_codes.at(i), insertion_codes.at(i+1));
-                    missing_residues_.push_back(missing_residues);
+                    this->AddMissingResidue(missing_residues);
                 }
             }
         }
@@ -2522,7 +2479,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(std::string pdb_file_path, st
                         PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(c_id, *starting_sequence_number_iterator,
                                                                                                             *ending_sequence_number_iterator, sequence_numbers.at(i),
                                                                                                             sequence_numbers.at(j), insertion_codes.at(i), insertion_codes.at(j));
-                        missing_residues_.push_back(missing_residues);
+                        this->AddMissingResidue(missing_residues);
                     }
                 }
             }
@@ -2573,7 +2530,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFileSpace::PdbFile* pdb_fi
                 PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(chain_id, starting_sequence_number,
                                                                                                     ending_sequence_number, sequence_numbers.at(i),
                                                                                                     sequence_numbers.at(i+1), insertion_codes.at(i), insertion_codes.at(i+1));
-                missing_residues_.push_back(missing_residues);
+                this->AddMissingResidue(missing_residues);
             }
         }
     }
@@ -2686,7 +2643,7 @@ bool PdbPreprocessor::ExtractGapsInAminoAcidChains(PdbFileSpace::PdbFile *pdb_fi
                     PdbPreprocessorMissingResidue* missing_residues = new PdbPreprocessorMissingResidue(c_id, *starting_sequence_number_iterator,
                                                                                                         *ending_sequence_number_iterator, sequence_numbers.at(i),
                                                                                                         sequence_numbers.at(j), insertion_codes.at(i), insertion_codes.at(j));
-                    missing_residues_.push_back(missing_residues);
+                    this->AddMissingResidue(missing_residues);
                 }
             }
         }

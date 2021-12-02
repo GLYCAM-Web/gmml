@@ -159,93 +159,7 @@ namespace PdbPreprocessorSpace
               * @return reisude_info_map_ attribute of the current object of this class
               */
             PdbPreprocessorResidueInfoMap GetResidueInfoMap();
-/** @}*/
-            //////////////////////////////////////////////////////////
-            //                       MUTATOR                        //
-            //////////////////////////////////////////////////////////
-/** \addtogroup Manipulators
-               * @{
-               */
-            /*! \fn
-              * A mutator function in order to set the disulfide bonds of the current object
-              * Set the disulfide_bonds_ attribute of the current pdb preprocessor
-              * @param disulfide_bonds The disulfide bonds attribute of the current object
-              */
-            void SetDisulfideBonds(PdbPreprocessorDisulfideBondVector disulfide_bonds);
-            /*! \fn
-              * A function in order to add the disulfide_bond to the current object
-              * Set disulfide_bonds_ attribute of the current pdb preprocessor
-              * @param disulfide_bond The heterogen atom attribute of the current object
-              */
-            void AddDisulfideBond(PdbPreprocessorDisulfideBond* disulfide_bond);
-            /*! \fn
-              * A mutator function in order to set the chain terminations of the current object
-              * Set the chain_terminations_ attribute of the current pdb preprocessor
-              * @param chain_terminations The chain terminations attribute of the current object
-              */
-            void SetChainTerminations(PdbPreprocessorChainTerminationVector chain_terminations);
-            /*! \fn
-              * A function in order to add the chain_termination to the current object
-              * Set chain_terminations_ attribute of the current pdb preprocessor
-              * @param chain_termination The chain termination attribute of the current object
-              */
-            void AddChainTermination(PdbPreprocessorChainTermination* chain_termination);
-            /*! \fn
-              * A mutator function in order to set the histidnie mappings of the current object
-              * Set the histidnie_mappings_ attribute of the current pdb preprocessor
-              * @param histidnie_mappings The histidnie mappings attribute of the current object
-              */
-            void SetHistidineMappings(PdbPreprocessorHistidineMappingVector histidine_mappings);
-            /*! \fn
-              * A function in order to add the histidnie mapping to the current object
-              * Set histidnie_mappings_ attribute of the current pdb preprocessor
-              * @param histidnie_mapping The histidnie mapping attribute of the current object
-              */
-            void AddHistidineMapping(PdbPreprocessorHistidineMapping* histidnine_mapping);
-            /*! \fn
-              * A mutator function in order to set the missing residues of the current object
-              * Set the missing_residues_ attribute of the current pdb preprocessor
-              * @param missing_residues The histidnie mappings attribute of the current object
-              */
-            void SetMissingResidues(PdbPreprocessorMissingResidueVector missing_residues);
-            /*! \fn
-              * A function in order to add the missing residue to the current object
-              * Set missing_residues_ attribute of the current pdb preprocessor
-              * @param missing_residue The histidnie mapping attribute of the current object
-              */
-            void AddMissingResidue(PdbPreprocessorMissingResidue* missing_residue);
-            /*! \fn
-              * A mutator function in order to set the unrecognized residues of the current object
-              * Set the unrecognized_residues_ attribute of the current pdb preprocessor
-              * @param unrecognized_residues The unrecognized residues attribute of the current object
-              */
-            void SetUnrecognizedResidues(PdbPreprocessorUnrecognizedResidueVector unrecognized_residues);
-            /*! \fn
-              * A function in order to add the unrecognized residue to the current object
-              * Set unrecognized_residues_ attribute of the current pdb preprocessor
-              * @param unrecognized_residue The unrecognized residue attribute of the current object
-              */
-            void AddUnrecognizedResidue(PdbPreprocessorUnrecognizedResidue* unrecognized_residue);
-            /*! \fn
-              * A mutator function in order to set the recognized residues of the current object
-              * Set the recognized_residues_ attribute of the current pdb preprocessor
-              * @param recognized_residues The recognized residues attribute of the current object
-              */
-            void SetUnrecognizedHeavyAtoms(PdbPreprocessorUnrecognizedHeavyAtomVector unrecognized_heavy_atoms);
-            /*! \fn
-              * A function in order to add the unrecognized heavy atom to the current object
-              * Set unrecognized_heavy_atoms_ attribute of the current pdb preprocessor
-              * @param unrecognized_heavy_atom The unrecognized heavy atom attribute of the current object
-              */
-            void AddUnrecognizedHeavyAtom(PdbPreprocessorUnrecognizedHeavyAtom* unrecognized_heavy_atom);
-            /*! \fn
-              * A function in order to add the replaced hydrogen to the current object
-              * Set replaced_hydrogens_ attribute of the current pdb preprocessor
-              * @param replaced_hydrogen The replaced hydrogen atom attribute of the current object
-              */
-            void AddReplacedHydrogen(PdbPreprocessorReplacedHydrogen* replaced_hydrogen);
 
-/** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
@@ -824,8 +738,76 @@ namespace PdbPreprocessorSpace
               * @param out An output stream, the print result will be written in the given output stream
               */
             void Print(std::ostream& out = std::cerr);
-
         private:
+            /** @}*/
+            //////////////////////////////////////////////////////////
+            //                       MUTATOR                        //
+            //////////////////////////////////////////////////////////
+            /** \addtogroup Manipulators
+             * @{
+             */
+            /*! \fn
+             * A function in order to add the disulfide_bond to the current object
+             * Set disulfide_bonds_ attribute of the current pdb preprocessor
+             * @param disulfide_bond The heterogen atom attribute of the current object
+             */
+            void AddDisulfideBond(PdbPreprocessorDisulfideBond* disulfide_bond);
+            /*! \fn
+             * A function in order to add the chain_termination to the current object
+             * Set chain_terminations_ attribute of the current pdb preprocessor
+             * @param chain_termination The chain termination attribute of the current object
+             */
+            void AddChainTermination(PdbPreprocessorChainTermination* chain_termination);
+            /*! \fn
+             * A function in order to add the histidnie mapping to the current object
+             * Set histidnie_mappings_ attribute of the current pdb preprocessor
+             * @param histidnie_mapping The histidnie mapping attribute of the current object
+             */
+            void AddHistidineMapping(PdbPreprocessorHistidineMapping* histidnine_mapping);
+            /*! \fn
+             * A mutator function in order to set the missing residues of the current object
+             * Set the missing_residues_ attribute of the current pdb preprocessor
+             * @param missing_residues The histidnie mappings attribute of the current object
+             */
+            void SetMissingResidues(PdbPreprocessorMissingResidueVector missing_residues);
+            /*! \fn
+             * A function in order to add the missing residue to the current object
+             * Set missing_residues_ attribute of the current pdb preprocessor
+             * @param missing_residue The histidnie mapping attribute of the current object
+             */
+            void AddMissingResidue(PdbPreprocessorMissingResidue* missing_residue);
+            /*! \fn
+             * A mutator function in order to set the unrecognized residues of the current object
+             * Set the unrecognized_residues_ attribute of the current pdb preprocessor
+             * @param unrecognized_residues The unrecognized residues attribute of the current object
+             */
+            void SetUnrecognizedResidues(PdbPreprocessorUnrecognizedResidueVector unrecognized_residues);
+            /*! \fn
+             * A function in order to add the unrecognized residue to the current object
+             * Set unrecognized_residues_ attribute of the current pdb preprocessor
+             * @param unrecognized_residue The unrecognized residue attribute of the current object
+             */
+            void AddUnrecognizedResidue(PdbPreprocessorUnrecognizedResidue* unrecognized_residue);
+            /*! \fn
+             * A mutator function in order to set the recognized residues of the current object
+             * Set the recognized_residues_ attribute of the current pdb preprocessor
+             * @param recognized_residues The recognized residues attribute of the current object
+             */
+            void SetUnrecognizedHeavyAtoms(PdbPreprocessorUnrecognizedHeavyAtomVector unrecognized_heavy_atoms);
+            /*! \fn
+             * A function in order to add the unrecognized heavy atom to the current object
+             * Set unrecognized_heavy_atoms_ attribute of the current pdb preprocessor
+             * @param unrecognized_heavy_atom The unrecognized heavy atom attribute of the current object
+             */
+            void AddUnrecognizedHeavyAtom(PdbPreprocessorUnrecognizedHeavyAtom* unrecognized_heavy_atom);
+            /*! \fn
+             * A function in order to add the replaced hydrogen to the current object
+             * Set replaced_hydrogens_ attribute of the current pdb preprocessor
+             * @param replaced_hydrogen The replaced hydrogen atom attribute of the current object
+             */
+            void AddReplacedHydrogen(PdbPreprocessorReplacedHydrogen* replaced_hydrogen);
+
+            /** @}*/
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
