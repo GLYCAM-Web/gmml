@@ -26,6 +26,15 @@ class PdbPreprocessorResidueInfo;
 class PdbPreprocessor
 {
 public:
+
+    //////////////////////////////////////////////////////////
+    //                       CONSTRUCTOR                    //
+    //////////////////////////////////////////////////////////
+    /*! \fn
+     * Default constructor
+     */
+    PdbPreprocessor();
+
     //////////////////////////////////////////////////////////
     //                    TYPE DEFINITION                   //
     //////////////////////////////////////////////////////////
@@ -89,14 +98,6 @@ public:
      * A mapping between residue key and its corresponding residue info object
      */
     typedef std::map<std::string, PdbPreprocessorResidueInfo*> PdbPreprocessorResidueInfoMap;
-
-    //////////////////////////////////////////////////////////
-    //                       CONSTRUCTOR                    //
-    //////////////////////////////////////////////////////////
-    /*! \fn
-     * Default constructor
-     */
-    PdbPreprocessor();
 
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //

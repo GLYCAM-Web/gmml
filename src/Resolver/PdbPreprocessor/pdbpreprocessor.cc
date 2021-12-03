@@ -2356,119 +2356,53 @@ void PdbPreprocessor::Preprocess(PdbFileSpace::PdbFile* pdb_file, std::vector<st
 {
     try
     {
-        time_t t = time(0);
-        std::string time_str = std::asctime(std::localtime(&t));
-//        std::cout << time_str.substr(0, time_str.size() - 1) << " Start preprocessing ..." << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::INF, " Start preprocessing ..." );
-        bool his_ext = ExtractHISResidues(pdb_file);
-        t = time(0);
-        time_str = std::asctime(std::localtime(&t));
-        std::stringstream his;
-        if(his_ext)
-            his << time_str.substr(0, time_str.size() - 1) << " HIS residues extraction: done";
+        if(ExtractHISResidues(pdb_file))
+            gmml::log(__LINE__, __FILE__,  gmml::INF, " HIS residues extraction: done");
         else
-            his << time_str.substr(0, time_str.size() - 1) << " HIS residues extraction: failed";
-//        std::cout << his.str() << std::endl;
-        gmml::log(__LINE__, __FILE__,  gmml::INF, his.str());
-        bool cys_ext = ExtractCYSResidues(pdb_file);
-        t = time(0);
-        time_str = std::asctime(std::localtime(&t));
-        std::stringstream cys;
-        if(cys_ext)
-            cys << time_str.substr(0, time_str.size() - 1) << " CYS residues extraction: done";
+            gmml::log(__LINE__, __FILE__,  gmml::INF, " HIS residues extraction: failed");
+        if(ExtractCYSResidues(pdb_file))
+            gmml::log(__LINE__, __FILE__,  gmml::INF, " CYS residues extraction: done");
         else
-            cys << time_str.substr(0, time_str.size() - 1) << " CYS residues extraction: failed";
-//        std::cout << cys.str() << std::endl;
-        gmml::log(__LINE__, __FILE__,  gmml::INF, cys.str() );
-        bool alt_res_ext = ExtractAlternateResidue(pdb_file);
-        t = time(0);
-        time_str = std::asctime(std::localtime(&t));
-        std::stringstream alt;
-        if(alt_res_ext)
-            alt << time_str.substr(0, time_str.size() - 1) << " Alternate residues extraction: done";
+            gmml::log(__LINE__, __FILE__,  gmml::INF, " CYS residues extraction: failed");
+        if(ExtractAlternateResidue(pdb_file))
+            gmml::log(__LINE__, __FILE__,  gmml::INF, " Alternate residues extraction: done");
         else
-            alt << time_str.substr(0, time_str.size() - 1) << " Alternate residues extraction: failed";
-//        std::cout << alt.str() << std::endl;
-        gmml::log(__LINE__, __FILE__,  gmml::INF, alt.str() );
-        bool unrec_res_ext = ExtractUnrecognizedResidues(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
-        t = time(0);
-        time_str = std::asctime(std::localtime(&t));
-        std::stringstream unrecognized;
-        if(unrec_res_ext)
-            unrecognized << time_str.substr(0, time_str.size() - 1) << " Unrecognized residues extraction: done";
+            gmml::log(__LINE__, __FILE__,  gmml::INF, " Alternate residues extraction: failed");
+        if(ExtractUnrecognizedResidues(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path))
+            gmml::log(__LINE__, __FILE__,  gmml::INF, " Unrecognized residues extraction: done");
         else
-            unrecognized << time_str.substr(0, time_str.size() - 1) << " Unrecognized residues extraction: failed";
-//        std::cout << unrecognized.str() << std::endl;
-        gmml::log(__LINE__, __FILE__,  gmml::INF, unrecognized.str() );
-        bool unknown_heavy_atom_ext = ExtractUnknownHeavyAtoms(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
-        t = time(0);
-        time_str = std::asctime(std::localtime(&t));
-        std::stringstream heavy;
-        if(unknown_heavy_atom_ext)
-            heavy << time_str.substr(0, time_str.size() - 1) << " Unknown heavy atoms extraction: done" ;
+            gmml::log(__LINE__, __FILE__,  gmml::INF, " Unrecognized residues extraction: failed");
+        if(ExtractUnknownHeavyAtoms(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path))
+            gmml::log(__LINE__, __FILE__,  gmml::INF, " Unknown heavy atoms extraction: done");
         else
-            heavy << time_str.substr(0, time_str.size() - 1) << " Unknown heavy atoms extraction: failed" ;
-//        std::cout << heavy.str() << std::endl;
-        gmml::log(__LINE__, __FILE__,  gmml::INF, heavy.str() );
-        bool removed_hydro_ext = ExtractRemovedHydrogens(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
-        t = time(0);
-        time_str = std::asctime(std::localtime(&t));
-        std::stringstream hydrogen;
-        if(removed_hydro_ext)
-            hydrogen << time_str.substr(0, time_str.size() - 1) << " Removed hydrogens extraction: done" ;
+            gmml::log(__LINE__, __FILE__,  gmml::INF,  " Unknown heavy atoms extraction: failed");
+        if(ExtractRemovedHydrogens(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path))
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Removed hydrogens extraction: done");
         else
-            hydrogen << time_str.substr(0, time_str.size() - 1) << " Removed hydrogens extraction: failed" ;
-//        std::cout << hydrogen.str() << std::endl;
-        gmml::log(__LINE__, __FILE__,  gmml::INF, hydrogen.str() );
-        bool amino_ext = ExtractAminoAcidChains(pdb_file, amino_lib_files_path);
-        t = time(0);
-        time_str = std::asctime(std::localtime(&t));
-        std::stringstream amino;
-        if(amino_ext)
-            amino << time_str.substr(0, time_str.size() - 1) << " Amino acid chains extraction: done" ;
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Removed hydrogens extraction: failed");
+        if(ExtractAminoAcidChains(pdb_file, amino_lib_files_path))
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Amino acid chains extraction: done");
         else
-            amino << time_str.substr(0, time_str.size() - 1) << " Amino acid chains extraction: failed" ;
-//        std::cout << amino.str() << std::endl;
-        gmml::log(__LINE__, __FILE__,  gmml::INF, amino.str() );
-        bool gap_ext = ExtractGapsInAminoAcidChains(pdb_file, amino_lib_files_path);
-        t = time(0);
-        time_str = std::asctime(std::localtime(&t));
-        std::stringstream gaps;
-        if(gap_ext)
-            gaps << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains extraction: done";
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Amino acid chains extraction: failed");
+        if(ExtractGapsInAminoAcidChains(pdb_file, amino_lib_files_path))
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Gaps in amino acid chains extraction: done");
         else
-            gaps << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains extraction: failed";
-//        std::cout << gaps.str() << std::endl;
-        gmml::log(__LINE__, __FILE__,  gmml::INF, gaps.str() );
-        bool res_inf_ext = ExtractResidueInfo(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path);
-        t = time(0);
-        time_str = std::asctime(std::localtime(&t));
-        std::stringstream info;
-        if(res_inf_ext)
-            info << time_str.substr(0, time_str.size() - 1) << " Residue info extraction: done" ;
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Gaps in amino acid chains extraction: failed");
+        if(ExtractResidueInfo(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path))
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Residue info extraction: done");
         else
-            info << time_str.substr(0, time_str.size() - 1) << " Residue info extraction: failed" ;
-//        std::cout << info.str() << std::endl;
-        gmml::log(__LINE__, __FILE__,  gmml::INF, info.str() );
-        t = time(0);
-        time_str = std::asctime(std::localtime(&t));
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Residue info extraction: failed");
         std::stringstream model_charge;
         model_charge << "Model charge is " << CalculateModelCharge(pdb_file, amino_lib_files_path, glycam_lib_files_path, other_lib_files_path, prep_files_path) ;
-//        std::cout << model_charge.str() << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::INF, model_charge.str() );
-        std::stringstream model_done;
-        model_done << time_str.substr(0, time_str.size() - 1) << " Model charge calculation: done" ;
-//        std::cout << model_done.str() << std::endl;
-        gmml::log(__LINE__, __FILE__,  gmml::INF, model_done.str() );
-        t = time(0);
-        time_str = std::asctime(std::localtime(&t));
-        std::stringstream pre;
-        pre << time_str.substr(0, time_str.size() - 1) << " Preprocessing done";
-//        std::cout << pre.str() << std::endl;
-        gmml::log(__LINE__, __FILE__,  gmml::INF, pre.str() );
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Model charge calculation: done");
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Preprocessing done");
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
-    {}
+    {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Caught an exception during Preprocessing: " + ex.what());
+    }
 }
 
 void PdbPreprocessor::ApplyPreprocessingWithTheGivenModelNumber(PdbFileSpace::PdbFile *pdb_file, std::vector<std::string> amino_lib_files_path,
