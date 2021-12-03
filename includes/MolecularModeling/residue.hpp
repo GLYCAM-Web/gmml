@@ -9,8 +9,7 @@
 #include "residueproperties.hpp"
 #include "../GeometryTopology/coordinate.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp" // TemplateGraph
 #include "includes/Abstract/residue.hpp"
@@ -66,6 +65,7 @@ namespace MolecularModeling
               * @return number split from id_ attribute of the current object of this class
               */
             std::string GetNumber();
+            std::string GetInsertionCode();
             /*! \fn
               * An accessor function in order to access to the atoms
               * @return atoms_ attribute of the current object of this class
@@ -228,6 +228,11 @@ namespace MolecularModeling
 
 
             void SetIsSugar(bool is_sugar);
+
+            void AddChargesTypesToAtoms(LibraryFileSpace::LibraryFileResidue &libResidue);
+            void AddChargesTypesToAtoms(PrepFileSpace::PrepFileResidue &prepResidue);
+            std::string GetTerminalCode();
+
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
@@ -279,9 +284,7 @@ namespace MolecularModeling
             bool operator!= (const Residue &otherResidue);
 
         private:
-
             unsigned long long generateIndex();
-
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
@@ -293,7 +296,7 @@ namespace MolecularModeling
             std::string chemical_type_;         /*!< A descriptor in order to describe chemical type of the residue >*/
             std::string description_;           /*!< A short description of the residue >*/
             std::string id_;                    /*!< An identifier for a residue that is generated based on the type of the given file from which the structure has to be built >*/
-            unsigned long long index_;         /*!< A unqiue index for each residue in an assembly >*/
+            unsigned long long index_;         /*!< A unique index for each residue in an assembly >*/
 
 	    //Added by Yao 06/13/2018
 	    bool is_sugar_derivative_ = false;

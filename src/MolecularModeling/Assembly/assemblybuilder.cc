@@ -1959,13 +1959,20 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                 char chain_id = atom->GetAtomChainId();
                 int sequence_number = atom->GetAtomResidueSequenceNumber();
                 char insertion_code = atom->GetAtomInsertionCode();
-                char alternate_location = atom->GetAtomAlternateLocation();
+                // OG 2021Sep29 edit: residue ID needs to be the same for each atom in a residue, otherwise you get weird residue node connectivites as it compares residue IDs when determining if a bonded atom is within the same residue or not.
+                char alternate_location = gmml::BLANK_SPACE;
+                //char alternate_location = atom->GetAtomAlternateLocation();
                 std::stringstream ss;
                 ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_"
                    << alternate_location << "_" << id_;
                 std::string key = ss.str();
                 residue->SetId(key);
-
+                // Ok I still want the AtomIds to reflect the alternate location, and "key" gets added to their ID.
+                ss.clear();
+                alternate_location = atom->GetAtomAlternateLocation();
+                ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_"
+                                   << alternate_location << "_" << id_;
+                key = ss.str();
                 Atom* new_atom = new Atom();
                 residue->SetName(residue_name);
                 

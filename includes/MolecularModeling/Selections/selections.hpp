@@ -37,6 +37,8 @@ AtomVector FindOtherAtomsWithinMolecule(Atom *queryAtom);
  // A function that compares atom numbers to see which is higher:
 bool compareAtomNumbers(Atom *a1, Atom *a2);
 ResidueVector SortResidueNeighborsByAcendingConnectionAtomNumber(AtomVector neighboringAtoms);
+Residue* FindNeighborResidueConnectedViaSpecificAtom(Residue *queryResidue, std::string queryAtomName);
+std::string GetNonCarbonHeavyAtomNumbered(AtomVector atoms, std::string queryNumber);
 class Branch // This is only temporary. This will be replaced by new Template Graph class.
 {
 public:
@@ -68,6 +70,5 @@ private:
     //AtomVector path_;
 }; 
 void FindEndsOfBranchesFromLinkageAtom(Atom *currentAtom, Atom* previousAtom, Branch *branch);
-std::string GetNonCarbonHeavyAtomNumbered(AtomVector atoms, std::string queryNumber);
 }
 #endif // SELECTIONS_H

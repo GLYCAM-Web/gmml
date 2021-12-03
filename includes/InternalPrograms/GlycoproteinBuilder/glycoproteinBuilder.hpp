@@ -5,15 +5,15 @@
 #include <sys/stat.h>
 #include "includes/InternalPrograms/GlycoproteinBuilder/glycosylationSite.hpp"
 #include "includes/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
+#include "includes/Abstract/builder.hpp"
 
-class GlycoproteinBuilder
+class GlycoproteinBuilder : public Abstract::Builder
 {
 public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
-    GlycoproteinBuilder(std::string inputFile);
-    GlycoproteinBuilder(std::string inputFile, std::string workingDirectory);
+    GlycoproteinBuilder(std::string inputFile = "Default", std::string workingDirectory = "Default");
     GlycoproteinBuilder(GlycoproteinBuilderInputs inputStruct);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
@@ -75,6 +75,7 @@ private:
     void DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(std::vector<GlycosylationSite> &glycosites, double tolerance);
     void UpdateAtomsThatMoveInLinkages();
     void SetOtherGlycosites();
+    void SetChargesAndAtomTypes(); // This will be silly for now.
     // Selection
 //    ResidueLinkageVector GetAllFirstAnd1_6Linkages();
 //    ResidueLinkageVector GetAllFirstAnd2_XLinkages();
