@@ -1428,18 +1428,6 @@ bool PdbPreprocessor::ExtractResidueInfo()
         if(lib_residues.find(residue->GetResidueName()) != lib_residues.end())
         {
             LibraryFileSpace::LibraryFileResidue* lib_residue = lib_residues[residue->GetResidueName()];
-//            PdbFileSpace::PdbFile::PdbAtomCardVector atoms = this->GetPdbFile().GetAllAtomsOfResidue(residue);
-
-//            for(PdbFileSpace::PdbFile::PdbAtomCardVector::iterator it1 = atoms.begin(); it1 != atoms.end(); it1++)
-//            {
-//                PdbFileSpace::PdbAtomCard* atom = (*it1);
-//                LibraryFileSpace::LibraryFileAtom* lib_atom = lib_residue->GetLibraryAtomByAtomName(atom->GetAtomName());
-//                if(lib_atom != NULL)
-//                {
-//                    if(lib_atom->GetCharge() != gmml::dNotSet)
-//                        residue_charge += lib_atom->GetCharge();
-//                }
-//            }
             lib_atoms = lib_residue->GetAtoms();
             for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it1 = lib_atoms.begin(); it1 != lib_atoms.end(); it1++)
             {
@@ -1472,7 +1460,7 @@ double PdbPreprocessor::CalculateModelCharge()
     double modelCharge = 0.0;
     for(auto &pdbRes : this->GetPdbFile().GetAllResidues())
     {
-        this->GetParameters().GetChargeForResidue(pdbRes->GetResidueName());
+        modelCharge += this->GetParameters().GetChargeForResidue(pdbRes->GetResidueName());
     }
     return modelCharge;
 }
@@ -1533,75 +1521,24 @@ void PdbPreprocessor::Preprocess()
 
 void PdbPreprocessor::ApplyPreprocessingWithTheGivenModelNumber(int model_number)
 {
-    time_t t = time(0);
-    std::string time_str = std::asctime(std::localtime(&t));
-    std::stringstream changes;
-    changes << time_str.substr(0, time_str.size() - 1) << " Start to apply changes ..." ;
-//    std::cout << changes.str() << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, changes.str() );
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Start to apply changes ...");
     UpdateHISMappingWithTheGivenNumber(this->GetHistidineMappings(), model_number);
-    t = time(0);
-    time_str = std::asctime(std::localtime(&t));
-    std::stringstream his_update;
-    his_update << time_str.substr(0, time_str.size() - 1) << " HIS residues update: done" ;
-//    std::cout << his_update.str() << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, his_update.str() );
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "HIS residues update: done");
     UpdateCYSResiduesWithTheGivenModelNumber(this->GetDisulfideBonds());
-    t = time(0);
-    time_str = std::asctime(std::localtime(&t));
-    std::stringstream cys_update;
-    cys_update << time_str.substr(0, time_str.size() - 1) << " CYS residues update: done" ;
-//    std::cout << cys_update.str() << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, cys_update.str() );
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "CYS residues update: done");
     RemoveUnselectedAlternateResiduesWithTheGivenModelNumber(this->GetAlternateResidueMap()/*, model_number*/);
-    t = time(0);
-    time_str = std::asctime(std::localtime(&t));
-    std::stringstream alt_res;
-    alt_res << time_str.substr(0, time_str.size() - 1) << " Unselected alternate residues removed: done" ;
-//    std::cout << alt_res.str() << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, alt_res.str() );
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Unselected alternate residues removed: done");
     RemoveUnrecognizedResiduesWithTheGivenModelNumber(this->GetUnrecognizedResidues(), model_number);
-    t = time(0);
-    time_str = std::asctime(std::localtime(&t));
-    std::stringstream remove_res;
-    remove_res << time_str.substr(0, time_str.size() - 1) << " Remove unrecognized residues: done" ;
-//    std::cout << remove_res.str() << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, remove_res.str() );
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Remove unrecognized residues: done");
     RemoveResiduesOfUnknownHeavyAtomsWithTheGivenModelNumber(this->GetUnrecognizedHeavyAtoms(), model_number);
-    t = time(0);
-    time_str = std::asctime(std::localtime(&t));
-    std::stringstream remove_heavy;
-    remove_heavy << time_str.substr(0, time_str.size() - 1) << " Unknown heavy atoms removed: done" ;
-//    std::cout << remove_heavy.str() << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, remove_heavy.str() );
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Unknown heavy atoms removed: done");
     RemoveRemovedHydrogensWithTheGivenModelNumber(this->GetReplacedHydrogens(), model_number);
-    t = time(0);
-    time_str = std::asctime(std::localtime(&t));
-    std::stringstream remove_hydrogen;
-    remove_hydrogen << time_str.substr(0, time_str.size() - 1) << " Removed hydrogens removed: done" ;
-//    std::cout << remove_hydrogen.str() << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, remove_hydrogen.str() );
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Removed hydrogens removed: done");
     UpdateAminoAcidChainsWithTheGivenModelNumber(this->GetChainTerminations(), model_number);
-    t = time(0);
-    time_str = std::asctime(std::localtime(&t));
-    std::stringstream amino_update;
-    amino_update << time_str.substr(0, time_str.size() - 1) << " Amino acid chains update: done" ;
-//    std::cout << amino_update.str() << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, amino_update.str() );
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Amino acid chains update: done");
    // UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(pdb_file, amino_lib_files_path, this->GetMissingResidues(), model_number); // OG Mar 2017
-    t = time(0);
-    time_str = std::asctime(std::localtime(&t));
-    std::stringstream gaps_update;
-    // gaps_update << time_str.substr(0, time_str.size() - 1) << " Gaps in amino acid chains update: done" ; // OG Mar 2017
-    gaps_update << time_str.substr(0, time_str.size() - 1) << " Currently, GMML cannot not fix gaps " ; // OG Mar 2017
-//    std::cout << gaps_update.str() << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, gaps_update.str() );
-    t = time(0);
-    time_str = std::asctime(std::localtime(&t));
-    std::stringstream applied;
-    applied << time_str.substr(0, time_str.size() - 1) << " Applying changes done" ;
-//    std::cout << applied.str() << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, applied.str() );
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Currently, GMML cannot not fix gaps.");
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Applying changes completed.");
 }
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
