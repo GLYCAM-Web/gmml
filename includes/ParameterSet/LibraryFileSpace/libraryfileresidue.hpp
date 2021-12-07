@@ -62,6 +62,8 @@ namespace LibraryFileSpace
               * @return atoms_ attribute of the current residue
               */
             AtomMap GetAtoms();
+            std::vector<LibraryFileSpace::LibraryFileAtom*> GetAtomsVector();
+
             /*! \fn
               * An accessor function in order to access to a atom belonging to the current object by its atom index
               * @param index Index of the target atom in the current residue
@@ -115,6 +117,8 @@ namespace LibraryFileSpace
               * @return listing_index attribute of the current residue
               */
             int GetListingIndex();
+            double GetCharge();
+
 /**@}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //

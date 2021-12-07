@@ -124,6 +124,7 @@ namespace LibraryFileSpace
                * @{
                */
             LibraryFileResidue* GetLibraryResidueByResidueName(std::string residue_name);
+            //std::map<std::string, LibraryFileSpace::LibraryFileResidue*> GetResidueMap();
             /*! \fn
               * A function to write back a library file into an output file
               * @param library_file Library output file name

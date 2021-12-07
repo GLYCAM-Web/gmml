@@ -4,7 +4,7 @@
 #include "includes/MolecularModeling/assembly.hpp"
 #include "includes/MolecularModeling/atom.hpp"
 #include "includes/MolecularModeling/atomnode.hpp"
-#include "includes/CodeUtils/logging.hpp";
+#include "includes/CodeUtils/logging.hpp"
 
 bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* carbon1, MolecularModeling::Atom* carbon2)
 {
