@@ -25,16 +25,17 @@ PdbAtomCard::PdbAtomCard(std::string &line)
     atom_name_ = line.substr(12, 4);
     gmml::Trim(atom_name_);
 
-    temp = line.substr(16,1);
-    temp = gmml::Trim(temp);
-    if(temp.empty())
-    {
+    // OG Dec2021, we don't want alt locations in gmml for now. Messes with the preprocessor.
+//    temp = line.substr(16,1);
+//    temp = gmml::Trim(temp);
+//    if(temp.empty())
+//    {
         atom_alternate_location_ = gmml::BLANK_SPACE;
-    }
-    else
-    {
-        atom_alternate_location_ = gmml::ConvertString<char>(temp);
-    }
+//    }
+//    else
+//    {
+//        atom_alternate_location_ = gmml::ConvertString<char>(temp);
+//    }
 
     temp = line.substr(17,3);
     temp = gmml::Trim(temp);
