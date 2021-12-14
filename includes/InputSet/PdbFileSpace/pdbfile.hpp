@@ -749,7 +749,7 @@ namespace PdbFileSpace
               * A function in order to insert a residue before the given residue in a chain
               * @param residue A residue of the current object of this class
               */
-            void InsertResidueBefore(PdbAtomSection* residue);
+//            void InsertResidueBefore(PdbAtomSection* residue);
             /*! \fn
               * A function in order to insert a residue before the given residue in a chain
               * @param residue A residue of the current object of this class
@@ -760,7 +760,7 @@ namespace PdbFileSpace
               * A function in order to insert a residue after the given residue in a chain
               * @param residue A residue of the current object of this class
               */
-            void InsertResidueAfter(PdbAtomSection* residue);
+//            void InsertResidueAfter(PdbAtomSection* residue);
             /*! \fn
               * A function in order to insert a residue after the given residue in a chain
               * @param residue A residue of the current object of this class
