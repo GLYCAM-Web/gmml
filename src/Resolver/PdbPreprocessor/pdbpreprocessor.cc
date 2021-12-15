@@ -1536,7 +1536,7 @@ void PdbPreprocessor::ApplyPreprocessingWithTheGivenModelNumber(int model_number
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Removed hydrogens removed: done");
     UpdateAminoAcidChainsWithTheGivenModelNumber(this->GetChainTerminations(), model_number);
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Amino acid chains update: done");
-   // UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(pdb_file, amino_lib_files_path, this->GetMissingResidues(), model_number); // OG Mar 2017
+    UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(this->GetMissingResidues(), model_number); // OG Mar 2017
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Currently, GMML cannot not fix gaps.");
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Applying changes completed.");
 }

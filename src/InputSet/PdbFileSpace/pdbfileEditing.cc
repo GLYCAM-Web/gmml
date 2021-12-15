@@ -1379,40 +1379,139 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
 
 void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue, int model_number)
 {
+    gmml::log(__LINE__, __FILE__, gmml::INF, "InsertResidueAfterWithTheGivenModelNumber");
     PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
-    if(models.size() != 0)
+    if(models.size() == 0)
     {
-        PdbModelCard* model = models[model_number];
-        PdbFileSpace::PdbModelSection::PdbModelCardMap updated_models;
-        PdbModelCard* updated_model = new PdbModelCard();
-        updated_model->SetModelSerialNumber(model->GetModelSerialNumber());
-        PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-        PdbModelResidueSet* updated_residue_set = new PdbModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards;
-        int serial_number = 1;
-        int sequence_number = 1;
-        int offset = 0;
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        return;
+    }
+    PdbModelCard* model = models[model_number];
+    PdbFileSpace::PdbModelSection::PdbModelCardMap updated_models;
+    PdbModelCard* updated_model = new PdbModelCard();
+    updated_model->SetModelSerialNumber(model->GetModelSerialNumber());
+    PdbModelResidueSet* residue_set = model->GetModelResidueSet();
+    PdbModelResidueSet* updated_residue_set = new PdbModelResidueSet();
+    PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
+    PdbModelResidueSet::AtomCardVector updated_atom_cards;
+    int serial_number = 1;
+    int sequence_number = 1;
+    int offset = 0;
+    PdbFileSpace::PdbAtomCard *cAtomInProtein, *oAtomInProtein, *nAtomInProtein, *caAtomInProtein; // OG Dec 21 just trying to make sense of it all.
+    for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+    {
+        PdbAtomSection* atom_card = (*it1);
+        PdbAtomSection* updated_atom_card = new PdbAtomSection();
+        updated_atom_card->SetRecordName(atom_card->GetRecordName());
+        PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
+        PdbAtomSection::PdbAtomMap updated_atoms;
+        PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
+        bool located = false;
+
+        PdbAtomSection::PdbAtomCardOrderVector ordered_atoms_of_residue = residue->GetOrderedAtomCards();
+        PdbFileSpace::PdbAtomCard* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
+        char residue_chain_id = first_atom_in_residue->GetAtomChainId();
+        int residue_sequence_number = first_atom_in_residue->GetAtomResidueSequenceNumber();
+
+        for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
         {
-            PdbAtomSection* atom_card = (*it1);
-            PdbAtomSection* updated_atom_card = new PdbAtomSection();
-            updated_atom_card->SetRecordName(atom_card->GetRecordName());
-            PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
-            PdbAtomSection::PdbAtomMap updated_atoms;
-            PdbAtomSection::PdbAtomCardOrderVector updated_atoms_vector = PdbAtomSection::PdbAtomCardOrderVector();
-            bool located = false;
+            PdbFileSpace::PdbAtomCard* atom = (*it2);
 
-            PdbAtomSection::PdbAtomCardOrderVector ordered_atoms_of_residue = residue->GetOrderedAtomCards();
-            PdbFileSpace::PdbAtomCard* first_atom_in_residue = (*(ordered_atoms_of_residue.begin()));
-            char residue_chain_id = first_atom_in_residue->GetAtomChainId();
-            int residue_sequence_number = first_atom_in_residue->GetAtomResidueSequenceNumber();
-
-            for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
+            if(residue_chain_id == atom->GetAtomChainId() && residue_sequence_number == atom->GetAtomResidueSequenceNumber())
             {
-                PdbFileSpace::PdbAtomCard* atom = (*it2);
-
-                if(residue_chain_id == atom->GetAtomChainId() && residue_sequence_number == atom->GetAtomResidueSequenceNumber())
+                std::stringstream ss;
+                ss << residue_chain_id << "_" << residue_sequence_number;
+                gmml::log(__LINE__, __FILE__, gmml::INF, "residue chain_sequenceNumber is " + ss.str());
+                if (atom->GetAtomName() == "C") // This code needs to die.
+                {
+                    cAtomInProtein = atom;
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named C in brotein" );
+                    std::cerr << "Found the atom named C in brotein, coords are: ";
+                    atom->GetAtomOrthogonalCoordinate().Print();
+                    std::cerr << "\n";
+                }
+                if (atom->GetAtomName() == "O") // This code needs to die.
+                {
+                    oAtomInProtein = atom;
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named O in brotein" );
+                    std::cerr << "Found the atom named O in brotein, coords are: ";
+                    atom->GetAtomOrthogonalCoordinate().Print();
+                    std::cerr << "\n";
+                }
+                if (atom->GetAtomName() == "N") // This code needs to die.
+                {
+                    nAtomInProtein = atom;
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named N in brotein" );
+                    std::cerr << "Found the atom named N in brotein, coords are: ";
+                    atom->GetAtomOrthogonalCoordinate().Print();
+                    std::cerr << "\n";
+                }
+                if (atom->GetAtomName() == "CA") // This code needs to die.
+                {
+                    caAtomInProtein = atom;
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named CA in brotein" );
+                    std::cerr << "Found the atom named CA in brotein, coords are: ";
+                    atom->GetAtomOrthogonalCoordinate().Print();
+                    std::cerr << "\n";
+                }
+                if(it2 != ordered_atoms.begin())
+                {
+                    PdbFileSpace::PdbAtomCard* previous_atom = (*(--it2));
+                    it2++;
+                    if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
+                    {
+                        int diff = atom->GetAtomResidueSequenceNumber() - previous_atom->GetAtomResidueSequenceNumber();
+                        if(diff == 1)
+                            sequence_number++;
+                        else
+                            sequence_number += diff;
+                    }
+                }
+                else
+                {
+                    sequence_number = atom->GetAtomResidueSequenceNumber() + offset;
+                }
+                PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
+                        atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
+                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), atom->GetAlternateAtomCards());
+                updated_atoms[serial_number] = updated_atom;
+                updated_atoms_vector.push_back(updated_atom);
+                serial_number++;
+                if(sequence_number != atom->GetAtomResidueSequenceNumber())
+                    sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
+                located = true;
+            }
+            else
+            {
+                if(located)
+                {
+                    // TODO: update coordinates with respect to it2
+                    GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
+                    GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
+                    for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
+                        coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "About to get into it" );
+                    base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, 1);
+                    base_coordinate->RotateAngularAll(coordinate_set, 180.0, 1);
+                    base_coordinate->SetDihedralAngle(coordinate_set, 180.0, 1);
+                    sequence_number++;
+                    for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
+                    {
+                        PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
+                        int index = distance(ordered_atoms_of_residue.begin(), it3);
+                        PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
+                                atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
+                                atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
+                                atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
+                                atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom->GetAlternateAtomCards());
+                        updated_atoms[serial_number] = new_atom;
+                        updated_atoms_vector.push_back(new_atom);
+                        serial_number++;
+                    }
+                    sequence_number++;
+                    offset++;
+                    located = false;
+                }
+                if(!located)
                 {
                     if(it2 != ordered_atoms.begin())
                     {
@@ -1432,144 +1531,156 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                         sequence_number = atom->GetAtomResidueSequenceNumber() + offset;
                     }
                     PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
-                                                        atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                        atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(), atom->GetAlternateAtomCards());
+                            atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
+                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(),
+                            atom->GetAlternateAtomCards());
                     updated_atoms[serial_number] = updated_atom;
                     updated_atoms_vector.push_back(updated_atom);
                     serial_number++;
                     if(sequence_number != atom->GetAtomResidueSequenceNumber())
                         sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
-                    located = true;
-                }
-                else
-                {
-                    if(located)
-                    {
-                        // TODO: update coordinates with respect to it2
-                        GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
-                        GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
-                        for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
-                            coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
-                        base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, 1);
-                        base_coordinate->RotateAngularAll(coordinate_set, 180.0, 1);
-                        base_coordinate->SetDihedralAngle(coordinate_set, 180.0, 1);
-                        sequence_number++;
-                        for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
-                        {
-                            PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
-                            int index = distance(ordered_atoms_of_residue.begin(), it3);
-                            PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
-                                                            atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
-                                                            atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
-                                                            atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
-                                                            atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom->GetAlternateAtomCards());
-                            updated_atoms[serial_number] = new_atom;
-                            updated_atoms_vector.push_back(new_atom);
-                            serial_number++;
-                        }
-                        sequence_number++;
-                        offset++;
-                        located = false;
-                    }
-                    if(!located)
-                    {
-                        if(it2 != ordered_atoms.begin())
-                        {
-                            PdbFileSpace::PdbAtomCard* previous_atom = (*(--it2));
-                            it2++;
-                            if(previous_atom->GetAtomResidueSequenceNumber() != atom->GetAtomResidueSequenceNumber())
-                            {
-                                int diff = atom->GetAtomResidueSequenceNumber() - previous_atom->GetAtomResidueSequenceNumber();
-                                if(diff == 1)
-                                    sequence_number++;
-                                else
-                                    sequence_number += diff;
-                            }
-                        }
-                        else
-                        {
-                            sequence_number = atom->GetAtomResidueSequenceNumber() + offset;
-                        }
-                        PdbFileSpace::PdbAtomCard* updated_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom->GetAtomName(),atom->GetAtomAlternateLocation(), atom->GetAtomResidueName(),
-                                                            atom->GetAtomChainId(), sequence_number, atom->GetAtomInsertionCode(), atom->GetAtomOrthogonalCoordinate(),
-                                                            atom->GetAtomOccupancy(), atom->GetAtomTempretureFactor(), atom->GetAtomElementSymbol(), atom->GetAtomCharge(),
-                                                            atom->GetAlternateAtomCards());
-                        updated_atoms[serial_number] = updated_atom;
-                        updated_atoms_vector.push_back(updated_atom);
-                        serial_number++;
-                        if(sequence_number != atom->GetAtomResidueSequenceNumber())
-                            sequence_number_mapping_[sequence_number] = atom->GetAtomResidueSequenceNumber();
-                    }
-                }
-                if(it2 == --ordered_atoms.end() && located)
-                {
-                    // TODO: update coordinates with respect to it2
-                    GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
-                    GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
-                    for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
-                        coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
-                    base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, 1);
-                    base_coordinate->RotateAngularAll(coordinate_set, 180.0, 1);
-                    base_coordinate->SetDihedralAngle(coordinate_set, 180.0, 1);
-                    sequence_number++;
-                    for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
-                    {
-                        PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
-                        int index = distance(ordered_atoms_of_residue.begin(), it3);
-                        PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
-                                                        atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
-                                                        atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
-                                                        atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
-                                                        atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom->GetAlternateAtomCards());
-                        updated_atoms[serial_number] = new_atom;
-                        updated_atoms_vector.push_back(new_atom);
-                        serial_number++;
-                    }
-                    sequence_number_mapping_[sequence_number] = gmml::iNotSet;
-                    located = false;
-                    sequence_number++;
-                    offset++;
                 }
             }
-            updated_atom_card->SetAtomCards(updated_atoms);
-            updated_atom_card->SetOrderedAtomCards(updated_atoms_vector);
-            updated_atom_cards.push_back(updated_atom_card);
+            if(it2 == --ordered_atoms.end() && located) // Note that the below no longer uses it2, I've made the spaghetti worse.
+            {
+                // TODO: update coordinates with respect to it2
+                GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
+                //GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
+                GeometryTopology::Coordinate* oAtomInProteinCoord = new GeometryTopology::Coordinate(oAtomInProtein->GetAtomOrthogonalCoordinate());
+                GeometryTopology::Coordinate* cAtomInProteinCoord = new GeometryTopology::Coordinate(cAtomInProtein->GetAtomOrthogonalCoordinate());
+                GeometryTopology::Coordinate* caAtomInProteinCoord = new GeometryTopology::Coordinate(caAtomInProtein->GetAtomOrthogonalCoordinate());
+                GeometryTopology::Coordinate* nAtomInProteinCoord = new GeometryTopology::Coordinate(nAtomInProtein->GetAtomOrthogonalCoordinate());
+//                Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(Coordinate a, Coordinate b, Coordinate c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
+                GeometryTopology::Coordinate bcoordOfNAtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(nAtomInProteinCoord, caAtomInProteinCoord, cAtomInProteinCoord, 120.0, 140.0, 1.4);
+                bcoordOfNAtomInNME.Print();
+                std::cerr << "\n";
+                coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfNAtomInNME));
+                GeometryTopology::Coordinate bcoordOfHAtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(caAtomInProteinCoord, cAtomInProteinCoord, bcoordOfNAtomInNME, 109.0, 0.0, 1.0);
+                coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfHAtomInNME));
+                GeometryTopology::Coordinate bcoordOfCH3AtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(caAtomInProteinCoord, cAtomInProteinCoord, bcoordOfNAtomInNME, 125.0, 180.0, 1.48);
+                coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfCH3AtomInNME));
+                GeometryTopology::Coordinate bcoordOfHH31AtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(bcoordOfHAtomInNME, bcoordOfNAtomInNME, bcoordOfCH3AtomInNME, 109.0, 180.0, 1.09);
+                coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfHH31AtomInNME));
+                GeometryTopology::Coordinate bcoordOfHH32AtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(bcoordOfHAtomInNME, bcoordOfNAtomInNME, bcoordOfCH3AtomInNME, 109.0, 60.0, 1.09);
+                coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfHH32AtomInNME));
+                GeometryTopology::Coordinate bcoordOfHH33AtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(bcoordOfHAtomInNME, bcoordOfNAtomInNME, bcoordOfCH3AtomInNME, 109.0, -60.0, 1.09);
+                coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfHH33AtomInNME));
+
+//                                GeometryTopology::Coordinate *coordOfNAtomInNME, *coordOfCH3AtomInNME, *coordOfHAtomInNME;
+//                for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
+//                {
+//                    std::cerr << (*it3)->GetAtomName() << "\n";
+//                    coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate())); // This actually copies, the original coords now remain untouched for no good reason whatsoever. The coordinate_set coords and only those get changed, then they are used to create a new PdbAtomcCard below. FML.
+//                    if ((*it3)->GetAtomName() == "N") // This code needs to die.
+//                    {
+//                        coordOfNAtomInNME = coordinate_set.back(); // Curiouser and curiouser
+//                        gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named N in NME" );
+//                    }
+//                    if ((*it3)->GetAtomName() == "CH3") // This code needs to die.
+//                    {
+//                        coordOfCH3AtomInNME = coordinate_set.back();
+//                        gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named CH3 in NME" );
+//                    }
+//                    if ((*it3)->GetAtomName() == "H") // This code needs to die.
+//                    {
+//                        coordOfHAtomInNME = coordinate_set.back(); // seriously if you're reading this, just start again it's not worth it.
+//                        gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named H in NME" );
+//                    }
+//                }
+//                gmml::log(__LINE__, __FILE__, gmml::INF, "Second instance in this bullshit ");
+////                base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, 1);
+//                std::cerr << "Initial\n";
+//                coordOfNAtomInNME->Print();
+//                std::cerr << "_";
+//                coordOfCH3AtomInNME->Print();
+//                std::cerr << "\n";
+//                cAtomInProteinCoord->TranslateCoordinateSet(coordinate_set, gmml::BOND_LENGTH, coordOfNAtomInNME);
+//                std::cerr << "After Translation\n";
+//                coordOfNAtomInNME->Print();
+//                std::cerr << "_";
+//                coordOfCH3AtomInNME->Print();
+//                std::cerr << "\n";
+//                GeometryTopology::SetDihedralAngle(140.0, nAtomInProteinCoord, caAtomInProteinCoord, cAtomInProteinCoord, coordOfNAtomInNME, coordinate_set);
+//                base_coordinate->RotateAngularAll(coordinate_set, 180.0, 1);
+//                cAtomInProteinCoord->SetAngle(coordinate_set, 125.0, coordOfNAtomInNME, coordOfCH3AtomInNME);
+//                std::cerr << "After Angle\n";
+//                coordOfNAtomInNME->Print();
+//                std::cerr << "_";
+//                coordOfCH3AtomInNME->Print();
+//                std::cerr << "\n";
+//                std::cerr << "_";
+//                coordOfHAtomInNME->Print();
+//                GeometryTopology::SetDihedralAngle(-20.0, oAtomInProteinCoord, cAtomInProteinCoord, coordOfNAtomInNME, coordOfCH3AtomInNME, coordinate_set);
+//                std::cerr << "After Dihedral\n";
+//                coordOfNAtomInNME->Print();
+//                std::cerr << "_";
+//                coordOfCH3AtomInNME->Print();
+//                std::cerr << "_";
+//                coordOfHAtomInNME->Print();
+//                std::cerr << "\n";
+               // GeometryTopology::SetDihedralAngle(180.0, oAtomInProteinCoord, base_coordinate, coordOfNAtomInNME, coordOfHAtomInNME, coordinate_set);
+
+
+//                base_coordinate->SetDihedralAngle(coordinate_set, 180.0, 1);
+                sequence_number++;
+                for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
+                {
+                    PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
+                    int index = distance(ordered_atoms_of_residue.begin(), it3);
+                    PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
+                            atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
+                            atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
+                            atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
+                            atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom->GetAlternateAtomCards());
+                    updated_atoms[serial_number] = new_atom;
+                    updated_atoms_vector.push_back(new_atom);
+                    serial_number++;
+                }
+                sequence_number_mapping_[sequence_number] = gmml::iNotSet;
+                located = false;
+                sequence_number++;
+                offset++;
+            }
+        }
+        updated_atom_card->SetAtomCards(updated_atoms);
+        updated_atom_card->SetOrderedAtomCards(updated_atoms_vector);
+        updated_atom_cards.push_back(updated_atom_card);
+        serial_number++;
+    }
+    PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtomCards();
+    PdbModelResidueSet::HeterogenAtomCardVector updated_heterogen_atom_cards;
+    for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
+    {
+        PdbHeterogenAtomSection* heterogen_atom_card = (*it1);
+        PdbHeterogenAtomSection* updated_heterogen_atom_card = new PdbHeterogenAtomSection();
+        updated_heterogen_atom_card->SetRecordName(heterogen_atom_card->GetRecordName());
+        PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtomCards();
+        PdbHeterogenAtomSection::PdbHeterogenAtomCardMap updated_heterogen_atoms;
+        PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
+        for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
+        {
+            PdbFileSpace::PdbAtomCard* heterogen_atom = (*it2);
+            PdbFileSpace::PdbAtomCard* updated_heterogen_atom = new PdbFileSpace::PdbAtomCard(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
+                    heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
+                    heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
+                    heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
+                    heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge(),
+                    heterogen_atom->GetAlternateAtomCards());
+            updated_heterogen_atoms[serial_number] = updated_heterogen_atom;
+            updated_heterogen_atoms_vector.push_back(updated_heterogen_atom);
             serial_number++;
         }
-        PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtomCards();
-        PdbModelResidueSet::HeterogenAtomCardVector updated_heterogen_atom_cards;
-        for(PdbModelResidueSet::HeterogenAtomCardVector::iterator it1 = heterogen_atom_cards.begin(); it1 != heterogen_atom_cards.end(); it1++)
-        {
-            PdbHeterogenAtomSection* heterogen_atom_card = (*it1);
-            PdbHeterogenAtomSection* updated_heterogen_atom_card = new PdbHeterogenAtomSection();
-            updated_heterogen_atom_card->SetRecordName(heterogen_atom_card->GetRecordName());
-            PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector ordered_heterogen_atoms = heterogen_atom_card->GetOrderedHeterogenAtomCards();
-            PdbHeterogenAtomSection::PdbHeterogenAtomCardMap updated_heterogen_atoms;
-            PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector updated_heterogen_atoms_vector = PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector();
-            for(PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it2 = ordered_heterogen_atoms.begin(); it2 != ordered_heterogen_atoms.end(); it2++)
-            {
-                PdbFileSpace::PdbAtomCard* heterogen_atom = (*it2);
-                PdbFileSpace::PdbAtomCard* updated_heterogen_atom = new PdbFileSpace::PdbAtomCard(serial_number, heterogen_atom->GetAtomName(),heterogen_atom->GetAtomAlternateLocation(),
-                                                              heterogen_atom->GetAtomResidueName(), heterogen_atom->GetAtomChainId(), heterogen_atom->GetAtomResidueSequenceNumber(),
-                                                              heterogen_atom->GetAtomInsertionCode(), heterogen_atom->GetAtomOrthogonalCoordinate(),
-                                                              heterogen_atom->GetAtomOccupancy(), heterogen_atom->GetAtomTempretureFactor(),
-                                                              heterogen_atom->GetAtomElementSymbol(), heterogen_atom->GetAtomCharge(),
-                                                              heterogen_atom->GetAlternateAtomCards());
-                updated_heterogen_atoms[serial_number] = updated_heterogen_atom;
-                updated_heterogen_atoms_vector.push_back(updated_heterogen_atom);
-                serial_number++;
-            }
-            updated_heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
-            updated_heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
-            updated_heterogen_atom_cards.push_back(updated_heterogen_atom_card);
-        }
-        updated_residue_set->SetAtomCards(updated_atom_cards);
-        updated_residue_set->SetHeterogenAtoms(updated_heterogen_atom_cards);
-        updated_model->SetModelResidueSet(updated_residue_set);
-        updated_models[updated_model->GetModelSerialNumber()] = updated_model;
-        models_->SetModels(updated_models);
+        updated_heterogen_atom_card->SetHeterogenAtoms(updated_heterogen_atoms);
+        updated_heterogen_atom_card->SetOrderedHeterogenAtoms(updated_heterogen_atoms_vector);
+        updated_heterogen_atom_cards.push_back(updated_heterogen_atom_card);
     }
+    updated_residue_set->SetAtomCards(updated_atom_cards);
+    updated_residue_set->SetHeterogenAtoms(updated_heterogen_atom_cards);
+    updated_model->SetModelResidueSet(updated_residue_set);
+    updated_models[updated_model->GetModelSerialNumber()] = updated_model;
+    models_->SetModels(updated_models);
 }
+
 void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_point_sequence_number)
 {
     PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
