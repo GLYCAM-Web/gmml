@@ -1231,6 +1231,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
         int serial_number = 1;
         int sequence_number = 1;
         int offset = 0;
+        PdbFileSpace::PdbAtomCard *cAtomInProtein, *nAtomInProtein, *caAtomInProtein; // OG Dec 21 Sorry about the warnings.
         for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
@@ -1249,9 +1250,32 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
             for(PdbAtomSection::PdbAtomCardOrderVector::iterator it2 = ordered_atoms.begin(); it2 != ordered_atoms.end(); it2++)
             {
                 PdbFileSpace::PdbAtomCard* atom = (*it2);
-
                 if(residue_chain_id == atom->GetAtomChainId() && residue_sequence_number == atom->GetAtomResidueSequenceNumber())
                 {
+                    // OG Go forward from here and get all the info you need.
+                    PdbAtomSection::PdbAtomCardOrderVector::iterator fromHere = it2;
+                    while((fromHere != ordered_atoms.end()) && ((*fromHere)->GetAtomResidueSequenceNumber() == residue_sequence_number) && (located == true))
+                    {
+                        PdbFileSpace::PdbAtomCard* futureAtom = (*fromHere);
+                        std::stringstream ss;
+                        ss << residue_chain_id << "_" << residue_sequence_number;
+                        if (futureAtom->GetAtomName() == "C") // This code needs to die.
+                        {
+                            cAtomInProtein = futureAtom;
+                            gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named C in " + ss.str());
+                        }
+                        if (futureAtom->GetAtomName() == "N") // This code needs to die.
+                        {
+                            nAtomInProtein = futureAtom;
+                            gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named N in " + ss.str());
+                        }
+                        if (futureAtom->GetAtomName() == "CA") // This code needs to die.
+                        {
+                            caAtomInProtein = futureAtom;
+                            gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named CA in " + ss.str());
+                        }
+                        fromHere++;
+                    }
                     if(it2 != ordered_atoms.begin())
                     {
                         PdbFileSpace::PdbAtomCard* previous_atom = (*(--it2));
@@ -1269,14 +1293,25 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                         sequence_number = atom->GetAtomResidueSequenceNumber() + offset;
                     if(located)
                     {
-                        // TODO: update coordinates with respect to it2
+                        sequence_number = atom->GetAtomResidueSequenceNumber() - 1; // OG edit: Single gaps will end up with the same ACE NME resid numbers. Otherwise good.
                         GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
-                        GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
-                        for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
-                            coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
-                        base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, -1);
-                        base_coordinate->RotateAngularAll(coordinate_set, 180.0, -1);
-                        base_coordinate->SetDihedralAngle(coordinate_set, 180.0, -1);
+                        GeometryTopology::Coordinate* cCoordProtein = new GeometryTopology::Coordinate(cAtomInProtein->GetAtomOrthogonalCoordinate());
+                        GeometryTopology::Coordinate* caCoordProtein = new GeometryTopology::Coordinate(caAtomInProtein->GetAtomOrthogonalCoordinate());
+                        GeometryTopology::Coordinate* nCoordProtein = new GeometryTopology::Coordinate(nAtomInProtein->GetAtomOrthogonalCoordinate());
+                        // This is a bad idea, but it works. Better to load in the template and align it, but the support code didn't work and I'm a quitter.
+                        GeometryTopology::Coordinate cCoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(cCoordProtein, caCoordProtein, nCoordProtein, 120.0, -130.0, 1.4);
+                        GeometryTopology::Coordinate oCoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(caCoordProtein, nCoordProtein, cCoordACE, 120.0, 0.0, 1.23);
+                        GeometryTopology::Coordinate ch3CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(caCoordProtein, nCoordProtein, cCoordACE, 125.0, 180.0, 1.48);
+                        GeometryTopology::Coordinate hh31CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, 180.0, 1.09);
+                        GeometryTopology::Coordinate hh32CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, 60.0, 1.09);
+                        GeometryTopology::Coordinate hh33CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, -60.0, 1.09);
+                        // Quantity and order matter.
+                        coordinate_set.push_back(new GeometryTopology::Coordinate(hh31CoordACE));
+                        coordinate_set.push_back(new GeometryTopology::Coordinate(ch3CoordACE));
+                        coordinate_set.push_back(new GeometryTopology::Coordinate(hh32CoordACE));
+                        coordinate_set.push_back(new GeometryTopology::Coordinate(hh33CoordACE));
+                        coordinate_set.push_back(new GeometryTopology::Coordinate(cCoordACE));
+                        coordinate_set.push_back(new GeometryTopology::Coordinate(oCoordACE));
                         for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                         {
                             PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
@@ -1292,7 +1327,7 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                         }
                         sequence_number_mapping_[sequence_number] = gmml::iNotSet;
                         sequence_number++;
-                        offset++;
+                       // offset++;
                         located = false;
                     }
                     if(!located)
@@ -1396,7 +1431,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
     int serial_number = 1;
     int sequence_number = 1;
     int offset = 0;
-    PdbFileSpace::PdbAtomCard *cAtomInProtein, *oAtomInProtein, *nAtomInProtein, *caAtomInProtein; // OG Dec 21 just trying to make sense of it all.
+    PdbFileSpace::PdbAtomCard *cAtomInProtein, *nAtomInProtein, *caAtomInProtein; // OG Dec 21 Sorry about the warnings.
     for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
     {
         PdbAtomSection* atom_card = (*it1);
@@ -1420,38 +1455,20 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
             {
                 std::stringstream ss;
                 ss << residue_chain_id << "_" << residue_sequence_number;
-                gmml::log(__LINE__, __FILE__, gmml::INF, "residue chain_sequenceNumber is " + ss.str());
                 if (atom->GetAtomName() == "C") // This code needs to die.
                 {
                     cAtomInProtein = atom;
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named C in brotein" );
-                    std::cerr << "Found the atom named C in brotein, coords are: ";
-                    atom->GetAtomOrthogonalCoordinate().Print();
-                    std::cerr << "\n";
-                }
-                if (atom->GetAtomName() == "O") // This code needs to die.
-                {
-                    oAtomInProtein = atom;
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named O in brotein" );
-                    std::cerr << "Found the atom named O in brotein, coords are: ";
-                    atom->GetAtomOrthogonalCoordinate().Print();
-                    std::cerr << "\n";
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named C in " + ss.str());
                 }
                 if (atom->GetAtomName() == "N") // This code needs to die.
                 {
                     nAtomInProtein = atom;
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named N in brotein" );
-                    std::cerr << "Found the atom named N in brotein, coords are: ";
-                    atom->GetAtomOrthogonalCoordinate().Print();
-                    std::cerr << "\n";
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named N in " + ss.str());
                 }
                 if (atom->GetAtomName() == "CA") // This code needs to die.
                 {
                     caAtomInProtein = atom;
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named CA in brotein" );
-                    std::cerr << "Found the atom named CA in brotein, coords are: ";
-                    atom->GetAtomOrthogonalCoordinate().Print();
-                    std::cerr << "\n";
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named CA in " + ss.str());
                 }
                 if(it2 != ordered_atoms.begin())
                 {
@@ -1484,16 +1501,23 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
             {
                 if(located)
                 {
-                    // TODO: update coordinates with respect to it2
-                    GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
-                    GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
-                    for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
-                        coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate()));
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "About to get into it" );
-                    base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, 1);
-                    base_coordinate->RotateAngularAll(coordinate_set, 180.0, 1);
-                    base_coordinate->SetDihedralAngle(coordinate_set, 180.0, 1);
-                    sequence_number++;
+                    GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector(); // These are pointers to newly created copies!
+                    GeometryTopology::Coordinate* cAtomInProteinCoord = new GeometryTopology::Coordinate(cAtomInProtein->GetAtomOrthogonalCoordinate());
+                    GeometryTopology::Coordinate* caAtomInProteinCoord = new GeometryTopology::Coordinate(caAtomInProtein->GetAtomOrthogonalCoordinate());
+                    GeometryTopology::Coordinate* nAtomInProteinCoord = new GeometryTopology::Coordinate(nAtomInProtein->GetAtomOrthogonalCoordinate());
+                    // This is a bad idea, but it works. Better to load in the template and align it, but the support code didn't work.
+                    GeometryTopology::Coordinate bcoordOfNAtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(nAtomInProteinCoord, caAtomInProteinCoord, cAtomInProteinCoord, 120.0, 140.0, 1.4);
+                    coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfNAtomInNME));
+                    GeometryTopology::Coordinate bcoordOfHAtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(caAtomInProteinCoord, cAtomInProteinCoord, bcoordOfNAtomInNME, 109.0, 0.0, 1.0);
+                    coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfHAtomInNME));
+                    GeometryTopology::Coordinate bcoordOfCH3AtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(caAtomInProteinCoord, cAtomInProteinCoord, bcoordOfNAtomInNME, 125.0, 180.0, 1.48);
+                    coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfCH3AtomInNME));
+                    GeometryTopology::Coordinate bcoordOfHH31AtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(bcoordOfHAtomInNME, bcoordOfNAtomInNME, bcoordOfCH3AtomInNME, 109.0, 180.0, 1.09);
+                    coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfHH31AtomInNME));
+                    GeometryTopology::Coordinate bcoordOfHH32AtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(bcoordOfHAtomInNME, bcoordOfNAtomInNME, bcoordOfCH3AtomInNME, 109.0, 60.0, 1.09);
+                    coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfHH32AtomInNME));
+                    GeometryTopology::Coordinate bcoordOfHH33AtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(bcoordOfHAtomInNME, bcoordOfNAtomInNME, bcoordOfCH3AtomInNME, 109.0, -60.0, 1.09);
+                    coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfHH33AtomInNME));
                     for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                     {
                         PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
@@ -1508,7 +1532,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                         serial_number++;
                     }
                     sequence_number++;
-                    offset++;
+                   // offset++;
                     located = false;
                 }
                 if(!located)
@@ -1543,17 +1567,12 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
             }
             if(it2 == --ordered_atoms.end() && located) // Note that the below no longer uses it2, I've made the spaghetti worse.
             {
-                // TODO: update coordinates with respect to it2
-                GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector();
-                //GeometryTopology::Coordinate* base_coordinate = new GeometryTopology::Coordinate((*it2)->GetAtomOrthogonalCoordinate());
-                GeometryTopology::Coordinate* oAtomInProteinCoord = new GeometryTopology::Coordinate(oAtomInProtein->GetAtomOrthogonalCoordinate());
+                GeometryTopology::CoordinateVector coordinate_set = GeometryTopology::CoordinateVector(); // These are pointers to newly created copies!
                 GeometryTopology::Coordinate* cAtomInProteinCoord = new GeometryTopology::Coordinate(cAtomInProtein->GetAtomOrthogonalCoordinate());
                 GeometryTopology::Coordinate* caAtomInProteinCoord = new GeometryTopology::Coordinate(caAtomInProtein->GetAtomOrthogonalCoordinate());
                 GeometryTopology::Coordinate* nAtomInProteinCoord = new GeometryTopology::Coordinate(nAtomInProtein->GetAtomOrthogonalCoordinate());
-//                Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(Coordinate a, Coordinate b, Coordinate c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
+                // This is a bad idea, but it works. Better to load in the template and align it, but the support code didn't work.
                 GeometryTopology::Coordinate bcoordOfNAtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(nAtomInProteinCoord, caAtomInProteinCoord, cAtomInProteinCoord, 120.0, 140.0, 1.4);
-                bcoordOfNAtomInNME.Print();
-                std::cerr << "\n";
                 coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfNAtomInNME));
                 GeometryTopology::Coordinate bcoordOfHAtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(caAtomInProteinCoord, cAtomInProteinCoord, bcoordOfNAtomInNME, 109.0, 0.0, 1.0);
                 coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfHAtomInNME));
@@ -1565,63 +1584,6 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                 coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfHH32AtomInNME));
                 GeometryTopology::Coordinate bcoordOfHH33AtomInNME = GeometryTopology::get_cartesian_point_from_internal_coords(bcoordOfHAtomInNME, bcoordOfNAtomInNME, bcoordOfCH3AtomInNME, 109.0, -60.0, 1.09);
                 coordinate_set.push_back(new GeometryTopology::Coordinate(bcoordOfHH33AtomInNME));
-
-//                                GeometryTopology::Coordinate *coordOfNAtomInNME, *coordOfCH3AtomInNME, *coordOfHAtomInNME;
-//                for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
-//                {
-//                    std::cerr << (*it3)->GetAtomName() << "\n";
-//                    coordinate_set.push_back(new GeometryTopology::Coordinate((*it3)->GetAtomOrthogonalCoordinate())); // This actually copies, the original coords now remain untouched for no good reason whatsoever. The coordinate_set coords and only those get changed, then they are used to create a new PdbAtomcCard below. FML.
-//                    if ((*it3)->GetAtomName() == "N") // This code needs to die.
-//                    {
-//                        coordOfNAtomInNME = coordinate_set.back(); // Curiouser and curiouser
-//                        gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named N in NME" );
-//                    }
-//                    if ((*it3)->GetAtomName() == "CH3") // This code needs to die.
-//                    {
-//                        coordOfCH3AtomInNME = coordinate_set.back();
-//                        gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named CH3 in NME" );
-//                    }
-//                    if ((*it3)->GetAtomName() == "H") // This code needs to die.
-//                    {
-//                        coordOfHAtomInNME = coordinate_set.back(); // seriously if you're reading this, just start again it's not worth it.
-//                        gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named H in NME" );
-//                    }
-//                }
-//                gmml::log(__LINE__, __FILE__, gmml::INF, "Second instance in this bullshit ");
-////                base_coordinate->TranslateAll(coordinate_set, gmml::BOND_LENGTH, 1);
-//                std::cerr << "Initial\n";
-//                coordOfNAtomInNME->Print();
-//                std::cerr << "_";
-//                coordOfCH3AtomInNME->Print();
-//                std::cerr << "\n";
-//                cAtomInProteinCoord->TranslateCoordinateSet(coordinate_set, gmml::BOND_LENGTH, coordOfNAtomInNME);
-//                std::cerr << "After Translation\n";
-//                coordOfNAtomInNME->Print();
-//                std::cerr << "_";
-//                coordOfCH3AtomInNME->Print();
-//                std::cerr << "\n";
-//                GeometryTopology::SetDihedralAngle(140.0, nAtomInProteinCoord, caAtomInProteinCoord, cAtomInProteinCoord, coordOfNAtomInNME, coordinate_set);
-//                base_coordinate->RotateAngularAll(coordinate_set, 180.0, 1);
-//                cAtomInProteinCoord->SetAngle(coordinate_set, 125.0, coordOfNAtomInNME, coordOfCH3AtomInNME);
-//                std::cerr << "After Angle\n";
-//                coordOfNAtomInNME->Print();
-//                std::cerr << "_";
-//                coordOfCH3AtomInNME->Print();
-//                std::cerr << "\n";
-//                std::cerr << "_";
-//                coordOfHAtomInNME->Print();
-//                GeometryTopology::SetDihedralAngle(-20.0, oAtomInProteinCoord, cAtomInProteinCoord, coordOfNAtomInNME, coordOfCH3AtomInNME, coordinate_set);
-//                std::cerr << "After Dihedral\n";
-//                coordOfNAtomInNME->Print();
-//                std::cerr << "_";
-//                coordOfCH3AtomInNME->Print();
-//                std::cerr << "_";
-//                coordOfHAtomInNME->Print();
-//                std::cerr << "\n";
-               // GeometryTopology::SetDihedralAngle(180.0, oAtomInProteinCoord, base_coordinate, coordOfNAtomInNME, coordOfHAtomInNME, coordinate_set);
-
-
-//                base_coordinate->SetDihedralAngle(coordinate_set, 180.0, 1);
                 sequence_number++;
                 for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
                 {
@@ -1639,7 +1601,7 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                 sequence_number_mapping_[sequence_number] = gmml::iNotSet;
                 located = false;
                 sequence_number++;
-                offset++;
+                //offset++;
             }
         }
         updated_atom_card->SetAtomCards(updated_atoms);
