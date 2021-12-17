@@ -1262,17 +1262,17 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                         if (futureAtom->GetAtomName() == "C") // This code needs to die.
                         {
                             cAtomInProtein = futureAtom;
-                            gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named C in " + ss.str());
+                            //gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named C in " + ss.str());
                         }
                         if (futureAtom->GetAtomName() == "N") // This code needs to die.
                         {
                             nAtomInProtein = futureAtom;
-                            gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named N in " + ss.str());
+                            //gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named N in " + ss.str());
                         }
                         if (futureAtom->GetAtomName() == "CA") // This code needs to die.
                         {
                             caAtomInProtein = futureAtom;
-                            gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named CA in " + ss.str());
+                            //gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named CA in " + ss.str());
                         }
                         fromHere++;
                     }
@@ -1414,7 +1414,6 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
 
 void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue, int model_number)
 {
-    gmml::log(__LINE__, __FILE__, gmml::INF, "InsertResidueAfterWithTheGivenModelNumber");
     PdbFileSpace::PdbModelSection::PdbModelCardMap models = models_->GetModels();
     if(models.size() == 0)
     {
@@ -1458,17 +1457,17 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
                 if (atom->GetAtomName() == "C") // This code needs to die.
                 {
                     cAtomInProtein = atom;
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named C in " + ss.str());
+                   // gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named C in " + ss.str());
                 }
                 if (atom->GetAtomName() == "N") // This code needs to die.
                 {
                     nAtomInProtein = atom;
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named N in " + ss.str());
+                   // gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named N in " + ss.str());
                 }
                 if (atom->GetAtomName() == "CA") // This code needs to die.
                 {
                     caAtomInProtein = atom;
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named CA in " + ss.str());
+                    //gmml::log(__LINE__, __FILE__, gmml::INF, "Found the atom named CA in " + ss.str());
                 }
                 if(it2 != ordered_atoms.begin())
                 {

@@ -735,7 +735,12 @@ PdbFileSpace::PdbFile::PdbAtomCardVector PdbPreprocessor::GetRemovedHydrogensOfR
             (pdb_atom_name.substr(1,1).compare("H") == 0 && isdigit(gmml::ConvertString<char>(pdb_atom_name.substr(0,1))))))
         {
             if(find(dataset_atom_names_of_residue.begin(), dataset_atom_names_of_residue.end(), pdb_atom_name) == dataset_atom_names_of_residue.end())
+            {
                 removed_hydrogens_of_residue.push_back(pdb_atom);
+                std::stringstream ss;
+                ss << pdb_atom->GetAtomName() << "_" << pdb_atom->GetAtomResidueSequenceNumber() << "_" << pdb_atom->GetAtomResidueName() << "_" << pdb_atom->GetAtomChainId();
+                gmml::log(__LINE__, __FILE__,  gmml::ERR, "Removing hydrogen: " + ss.str());
+            }
         }
     }
     return removed_hydrogens_of_residue;
@@ -752,7 +757,6 @@ bool PdbPreprocessor::ExtractRemovedHydrogens()
     PdbFileSpace::PdbFile::PdbResidueAtomsMap residue_atom_map = this->GetPdbFile().GetAllAtomsOfResidues();
     PdbFileSpace::PdbFile::PdbAtomCardVector atoms_of_residue;
     gmml::ResidueNameAtomNamesMap dataset_residue_atom_map = this->GetParameters().GetResidueNamesToTheirAtomNamesMap();
-    std::vector<std::string> dataset_atom_names_of_residue = std::vector<std::string>();
     PdbFileSpace::PdbFile::PdbAtomCardVector removed_hydrogens;
     for(PdbFileSpace::PdbFile::PdbResidueVector::iterator it = recognized_residues.begin(); it != recognized_residues.end(); it++)
     {
@@ -768,7 +772,13 @@ bool PdbPreprocessor::ExtractRemovedHydrogens()
             ss << residue_name << "_" << chain_id << "_" << sequence_number << "_" << insertion_code << "_" << alternate_location;
             std::string key = ss.str();
             atoms_of_residue = *(residue_atom_map[key]);
-            dataset_atom_names_of_residue = dataset_residue_atom_map[residue_name];
+            std::vector<std::string> dataset_atom_names_of_residue = dataset_residue_atom_map[residue_name];
+            // OG JUST DUCT TAPING AT THIS POINT. Sometimes there will be atoms coming in like H1, H2, H3 on N terminus, we want to keep those.
+            std::vector<std::string> dataset_atom_names_of_Nresidue = dataset_residue_atom_map[("N" + residue_name)];
+            std::vector<std::string> dataset_atom_names_of_Cresidue = dataset_residue_atom_map[("C" + residue_name)];
+            dataset_atom_names_of_residue.insert(dataset_atom_names_of_residue.end(), dataset_atom_names_of_Nresidue.begin(), dataset_atom_names_of_Nresidue.end());
+            dataset_atom_names_of_residue.insert(dataset_atom_names_of_residue.end(), dataset_atom_names_of_Cresidue.begin(), dataset_atom_names_of_Cresidue.end());
+            // OG END DUCT TAPE.
             removed_hydrogens = GetRemovedHydrogensOfResidue(atoms_of_residue, dataset_atom_names_of_residue);
             for(PdbFileSpace::PdbFile::PdbAtomCardVector::iterator it1 = removed_hydrogens.begin(); it1 != removed_hydrogens.end(); it1++)
             {
@@ -897,10 +907,12 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbPreprocess
     {
         PdbPreprocessorChainTermination* chain = (*it1);
         this->GetPdbFile().SplitAtomCardOfModelCard(chain->GetResidueChainId(), chain->GetEndingResidueSequenceNumber() + 1);
+        std::stringstream ss;
+        ss <<  chain->GetResidueChainId() << "_" << chain->GetEndingResidueSequenceNumber();
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Split atom card after: " + ss.str());
     }
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Putting TER card after non-amino acid residues aka chain_terminations: Done" );
 
-//    std::cout << "Putting TER card after non-amino acid residues: Done" << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, "Putting TER card after non-amino acid residues: Done" );
     // Get all TER card positions and split
     std::vector<std::pair<char, int> > ter_card_positions = this->GetPdbFile().GetAllTerCardPositions(this->GetParameters().GetGlycamResidueNames());
 
@@ -922,129 +934,81 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbPreprocess
         // Zwitterionic in n terminal
         if(chain->GetStringFormatOfSelectedNTermination().find("+") != std::string::npos || chain->GetStringFormatOfSelectedNTermination().find("-") != std::string::npos)
         {
-            // Zwitterionic in c terminal
-            if(chain->GetStringFormatOfSelectedCTermination().find("+") != std::string::npos || chain->GetStringFormatOfSelectedCTermination().find("-") != std::string::npos)
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Did nothing for N termination, which selected is " + chain->GetStringFormatOfSelectedNTermination() );
+            // First find out name of residue so can look up lib file
+            // See if any atoms are missing, or any are extra.
+            // Grow missing ones? That doesn't look easy actually, I'm not even sure there is a single point of truth for the atom cards.
+        }
+        else // this adds an extra residue, the above if should add hydrogens to the residue to make it charged.
+        {   // Add n terminal residue at the beginning of the chain
+            gmml::PossibleNChainTermination n_termination = chain->GetSelectedNTermination();
+            std::string string_n_termination = chain->GetStringFormatOfNTermination(n_termination);
+            LibraryFileSpace::LibraryFileResidue* lib_file_residue = this->GetParameters().FindLibResidue(string_n_termination);
+            if(lib_file_residue != NULL)
             {
-                // End of chain
-                // Do nothing
-            }
-            else
-            {
-                // Add c terminal at the end of the chain
-                gmml::PossibleCChainTermination c_termination = chain->GetSelectedCTermination();
-                std::string string_c_termination = chain->GetStringFormatOfCTermination(c_termination);
-                LibraryFileSpace::LibraryFileResidue* lib_file_residue = this->GetParameters().FindLibResidue(string_c_termination);
-                if(lib_file_residue != NULL)
+                LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
+                PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbFileSpace::PdbAtomSection();
+                pdb_atom_card->SetRecordName("ATOM");
+                PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
+                PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
+                int serial_number = 0;
+                for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
                 {
-                    lib_atoms = lib_file_residue->GetAtoms();
-                    PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbFileSpace::PdbAtomSection();
-                    pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
-                    int serial_number = 0;
-                    for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
-                    {
-                        LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
-                        PdbFileSpace::PdbAtomCard* pdb_atom = new PdbFileSpace::PdbAtomCard(serial_number, lib_file_atom->GetName(), ' ', string_c_termination, chain->GetResidueChainId(),
-                                                                      chain->GetEndingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), gmml::dNotSet, gmml::dNotSet, " ", "");
-                        atom_map[serial_number] = pdb_atom;
-                        atom_vector.push_back(pdb_atom);
-                        serial_number++;
-                    }
-                    pdb_atom_card->SetAtomCards(atom_map);
-                    pdb_atom_card->SetOrderedAtomCards(atom_vector);
-                    this->GetPdbFile().InsertResidueAfterWithTheGivenModelNumber(pdb_atom_card, model_number);
+                    LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
+                    PdbFileSpace::PdbAtomCard* pdb_atom = new PdbFileSpace::PdbAtomCard(serial_number, lib_file_atom->GetName(), ' ', string_n_termination, chain->GetResidueChainId(),
+                            chain->GetStartingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), gmml::dNotSet, gmml::dNotSet, " ", "");
+                    atom_map[serial_number] = pdb_atom;
+                    atom_vector.push_back(pdb_atom);
+                    serial_number++;
                 }
+                pdb_atom_card->SetAtomCards(atom_map);
+                pdb_atom_card->SetOrderedAtomCards(atom_vector);
+                gmml::log(__LINE__, __FILE__,  gmml::INF, "CIs this code ever triggered? ");
+                this->GetPdbFile().InsertResidueBeforeWithTheGivenModelNumber(pdb_atom_card, model_number);
             }
+        }
+        // Zwitterionic in c terminal
+        if(chain->GetStringFormatOfSelectedCTermination().find("+") != std::string::npos || chain->GetStringFormatOfSelectedCTermination().find("-") != std::string::npos)
+        {
+            // End of chain
+            // Do nothing
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Did nothing for C termination, which selected is " + chain->GetStringFormatOfSelectedCTermination() );
+            // Yo should add the OXT
         }
         else
         {
-            // Zwitterionic in c terminal
-            if(chain->GetStringFormatOfSelectedCTermination().find("+") != std::string::npos || chain->GetStringFormatOfSelectedCTermination().find("-") != std::string::npos)
+            // Add c terminal at the end of the chain
+            gmml::PossibleCChainTermination c_termination = chain->GetSelectedCTermination();
+            std::string string_c_termination = chain->GetStringFormatOfCTermination(c_termination);
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Adding c termination: " + string_c_termination );
+            LibraryFileSpace::LibraryFileResidue* lib_file_residue = this->GetParameters().FindLibResidue(string_c_termination);
+            if(lib_file_residue != NULL)
             {
-                // Add n terminal residue at the beginning of the chain
-                gmml::PossibleNChainTermination n_termination = chain->GetSelectedNTermination();
-                std::string string_n_termination = chain->GetStringFormatOfNTermination(n_termination);
-                LibraryFileSpace::LibraryFileResidue* lib_file_residue = this->GetParameters().FindLibResidue(string_n_termination);
-                if(lib_file_residue != NULL)
+                lib_atoms = lib_file_residue->GetAtoms();
+                gmml::log(__LINE__, __FILE__,  gmml::INF, "Found lib file: " + lib_file_residue->GetName() );
+                PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbFileSpace::PdbAtomSection();
+                pdb_atom_card->SetRecordName("ATOM");
+                PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
+                PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
+                int serial_number = 0;
+                for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
                 {
-                    lib_atoms = lib_file_residue->GetAtoms();
-                    PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbFileSpace::PdbAtomSection();
-                    pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
-                    int serial_number = 0;
-                    for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
-                    {
-                        LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
-                        PdbFileSpace::PdbAtomCard* pdb_atom = new PdbFileSpace::PdbAtomCard(serial_number, lib_file_atom->GetName(), ' ', string_n_termination, chain->GetResidueChainId(),
-                                                                      chain->GetStartingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), gmml::dNotSet, gmml::dNotSet, " ", "");
-                        atom_map[serial_number] = pdb_atom;
-                        atom_vector.push_back(pdb_atom);
-                        serial_number++;
-                    }
-                    pdb_atom_card->SetAtomCards(atom_map);
-                    pdb_atom_card->SetOrderedAtomCards(atom_vector);
-                    this->GetPdbFile().InsertResidueBeforeWithTheGivenModelNumber(pdb_atom_card, model_number);
+                    LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
+                    PdbFileSpace::PdbAtomCard* pdb_atom = new PdbFileSpace::PdbAtomCard(serial_number, lib_file_atom->GetName(), ' ', string_c_termination, chain->GetResidueChainId(),
+                            chain->GetEndingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), gmml::dNotSet, gmml::dNotSet, " ", "");
+                    atom_map[serial_number] = pdb_atom;
+                    atom_vector.push_back(pdb_atom);
+                    serial_number++;
                 }
-            }
-            else
-            {
-                // Add n terminal residue at the beginning of the chain
-                gmml::PossibleNChainTermination n_termination = chain->GetSelectedNTermination();
-                std::string string_n_termination = chain->GetStringFormatOfNTermination(n_termination);
-                LibraryFileSpace::LibraryFileResidue* lib_file_residue = this->GetParameters().FindLibResidue(string_n_termination);
-                if(lib_file_residue != NULL)
-                {
-                    LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms = lib_file_residue->GetAtoms();
-                    PdbFileSpace::PdbAtomSection* pdb_atom_card = new PdbFileSpace::PdbAtomSection();
-                    pdb_atom_card->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map;
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
-                    int serial_number = 0;
-                    for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it2 = lib_atoms.begin(); it2 != lib_atoms.end(); it2++)
-                    {
-                        LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it2).second;
-                        PdbFileSpace::PdbAtomCard* pdb_atom = new PdbFileSpace::PdbAtomCard(serial_number, lib_file_atom->GetName(), ' ', string_n_termination, chain->GetResidueChainId(),
-                                                                      chain->GetStartingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), gmml::dNotSet, gmml::dNotSet, " ", "");
-                        atom_map[serial_number] = pdb_atom;
-                        atom_vector.push_back(pdb_atom);
-                        serial_number++;
-                    }
-                    pdb_atom_card->SetAtomCards(atom_map);
-                    pdb_atom_card->SetOrderedAtomCards(atom_vector);
-                    this->GetPdbFile().InsertResidueBeforeWithTheGivenModelNumber(pdb_atom_card, model_number);
-                }
-                // Add c terminal residue at the end of the chain
-                gmml::PossibleCChainTermination c_termination = chain->GetSelectedCTermination();
-                std::string string_c_termination = chain->GetStringFormatOfCTermination(c_termination);
-                LibraryFileSpace::LibraryFileResidue* lib_file_residue_from_c_termination = this->GetParameters().FindLibResidue(string_c_termination);
-                if(lib_file_residue_from_c_termination != NULL)
-                {
-                    LibraryFileSpace::LibraryFileResidue::AtomMap lib_atoms_from_c_termination = lib_file_residue_from_c_termination->GetAtoms();
-                    PdbFileSpace::PdbAtomSection* pdb_atom_card_for_c_termination = new PdbFileSpace::PdbAtomSection();
-                    pdb_atom_card_for_c_termination->SetRecordName("ATOM");
-                    PdbFileSpace::PdbAtomSection::PdbAtomMap atom_map_for_c_termination;
-                    PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector atom_vector_for_c_termination = PdbFileSpace::PdbAtomSection::PdbAtomCardOrderVector();
-                    int serial_number = 0;
-                    for(LibraryFileSpace::LibraryFileResidue::AtomMap::iterator it3 = lib_atoms_from_c_termination.begin(); it3 != lib_atoms_from_c_termination.end(); it3++)
-                    {
-                        LibraryFileSpace::LibraryFileAtom* lib_file_atom = (*it3).second;
-                        PdbFileSpace::PdbAtomCard* pdb_atom = new PdbFileSpace::PdbAtomCard(serial_number, lib_file_atom->GetName(), ' ', string_c_termination, chain->GetResidueChainId(),
-                                                                      chain->GetEndingResidueSequenceNumber(), ' ', lib_file_atom->GetCoordinate(), gmml::dNotSet, gmml::dNotSet, " ", "");
-                        atom_map_for_c_termination[serial_number] = pdb_atom;
-                        atom_vector_for_c_termination.push_back(pdb_atom);
-                        serial_number++;
-                    }
-                    pdb_atom_card_for_c_termination->SetAtomCards(atom_map_for_c_termination);
-                    pdb_atom_card_for_c_termination->SetOrderedAtomCards(atom_vector_for_c_termination);
-                    this->GetPdbFile().InsertResidueAfterWithTheGivenModelNumber(pdb_atom_card_for_c_termination, model_number);
-                }
+                pdb_atom_card->SetAtomCards(atom_map);
+                pdb_atom_card->SetOrderedAtomCards(atom_vector);
+                gmml::log(__LINE__, __FILE__,  gmml::INF, "AIs this code ever triggered? ");
+                this->GetPdbFile().InsertResidueAfterWithTheGivenModelNumber(pdb_atom_card, model_number);
             }
         }
     }
-//    std::cout << "Add terminals: Done" << std::endl;
-    gmml::log(__LINE__, __FILE__,  gmml::INF, "Add terminals: Done" );
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Add N/C terminals: Done" );
+    return;
 }
 
 bool PdbPreprocessor::ExtractGapsInAminoAcidChains()
@@ -1537,7 +1501,10 @@ void PdbPreprocessor::ApplyPreprocessingWithTheGivenModelNumber(int model_number
     UpdateAminoAcidChainsWithTheGivenModelNumber(this->GetChainTerminations(), model_number);
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Amino acid chains update: done");
     UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(this->GetMissingResidues(), model_number); // OG Mar 2017
-    gmml::log(__LINE__, __FILE__,  gmml::INF, "Currently, GMML cannot not fix gaps.");
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Fixed the gaps.");
+    std::stringstream model_charge;
+    model_charge << "Final model charge is " << this->CalculateModelCharge() ;
+    gmml::log(__LINE__, __FILE__,  gmml::INF, model_charge.str() );
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Applying changes completed.");
 }
 //////////////////////////////////////////////////////////
