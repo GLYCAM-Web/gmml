@@ -2120,7 +2120,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                         }
                         else if(card_index.at(0).compare("HETATM") == 0)
                         {
-                            PdbFileSpace::PdbModelResidueSet::HeterogenAtomCardVector heterogen_atom_cards = residue_set->GetHeterogenAtomCards();
+                            PdbFileSpace::PdbModelResidueSet::HeterogenAtomSectionVector heterogen_atom_cards = residue_set->GetHeterogenAtomCards();
                             PdbFileSpace::PdbHeterogenAtomSection* heterogen_atom_card = heterogen_atom_cards.at(gmml::ConvertString<int>(card_index.at(1)));
                             PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector heterogen_atom_vector = heterogen_atom_card->GetOrderedHeterogenAtomCards();
                             for(PdbFileSpace::PdbHeterogenAtomSection::PdbHeterogenAtomOrderVector::iterator it3 = heterogen_atom_vector.begin(); it3 != heterogen_atom_vector.end(); it3++)
