@@ -2091,7 +2091,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                     {
                         PdbFileSpace::PdbModelCard* model = (*it2).second;
                         PdbFileSpace::PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-                        PdbFileSpace::PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
+                        PdbFileSpace::PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
                         std::vector<std::string> card_index = gmml::Split(atom->GetAtomCardIndexInResidueSet(), "_");
                         if(card_index.at(0).compare("ATOM") == 0)
                         {

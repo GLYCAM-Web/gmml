@@ -23,7 +23,7 @@ namespace PdbFileSpace
             /*! \typedef
               * List of atom cards in a model residue set
               */
-            typedef std::vector<PdbAtomSection*> AtomCardVector;
+            typedef std::vector<PdbAtomSection*> PdbAtomSectionVector;
             /*! \typedef
               * List of heterogen atom cards
               */
@@ -52,7 +52,7 @@ namespace PdbFileSpace
               * An accessor function in order to access to the atoms in a model residue set
               * @return atoms_ attribute of the current object of this class
               */
-            AtomCardVector GetAtomCards();
+            PdbAtomSectionVector GetAtomCards();
             /*! \fn
               * An accessor function in order to access to the heterogen atoms in a model residue set
               * @return heterogen_atoms_ attribute of the current object of this class
@@ -70,7 +70,7 @@ namespace PdbFileSpace
               * Set the atoms_ attribute of the current model residue set
               * @param atoms The atoms attribute of the current object
               */
-            void SetAtomCards(AtomCardVector atoms);
+            void SetAtomCards(PdbAtomSectionVector atoms);
             /*! \fn
               * A function in order to add the atom to the current object
               * Set the atom_ attribute of the current model residue set
@@ -108,7 +108,7 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            AtomCardVector atoms_;                          /*!< List of atom cards that are in a model >*/
+            PdbAtomSectionVector atoms_;                          /*!< List of atom cards that are in a model >*/
             HeterogenAtomCardVector heterogen_atoms_;       /*!< List of heterogen atom cards that are in a model >*/
 
     };

@@ -125,7 +125,7 @@ PdbModelResidueSet::PdbModelResidueSet(std::stringstream &residue_set_block)
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-PdbModelResidueSet::AtomCardVector PdbModelResidueSet::GetAtomCards(){
+PdbModelResidueSet::PdbAtomSectionVector PdbModelResidueSet::GetAtomCards(){
     return atoms_;
 }
 
@@ -137,9 +137,9 @@ PdbModelResidueSet::HeterogenAtomCardVector PdbModelResidueSet::GetHeterogenAtom
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
 
-void PdbModelResidueSet::SetAtomCards(PdbModelResidueSet::AtomCardVector atoms){
+void PdbModelResidueSet::SetAtomCards(PdbModelResidueSet::PdbAtomSectionVector atoms){
     atoms_.clear();
-    for(AtomCardVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+    for(PdbAtomSectionVector::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         atoms_.push_back(*it);
     }
@@ -173,7 +173,7 @@ void PdbModelResidueSet::AddHeterogenAtom(PdbHeterogenAtomSection *heterogen_ato
 void PdbModelResidueSet::Print(std::ostream &out)
 {
     out << "----------------- Atoms -------------" << std::endl;
-    for(PdbModelResidueSet::AtomCardVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    for(PdbModelResidueSet::PdbAtomSectionVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         (*it)->Print(out);
     }

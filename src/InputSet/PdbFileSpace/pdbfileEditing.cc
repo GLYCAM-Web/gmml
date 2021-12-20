@@ -31,10 +31,10 @@ void PdbFile::DeleteResidue(PdbResidue *residue)
     {
         PdbModelCard* model = (*it).second;
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards = PdbModelResidueSet::AtomCardVector();
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards = PdbModelResidueSet::PdbAtomSectionVector();
         int serial_number = 1;
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
@@ -147,10 +147,10 @@ void PdbFile::DeleteResidues(PdbResidueVector target_residues)
     {
         PdbModelCard* model = (*it).second;
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards = PdbModelResidueSet::AtomCardVector();
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards = PdbModelResidueSet::PdbAtomSectionVector();
         int serial_number = 1;
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
@@ -256,10 +256,10 @@ void PdbFile::DeleteResidueWithTheGivenModelNumber(PdbResidue *residue, int mode
     {
         PdbModelCard* model = models[model_number];
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards = PdbModelResidueSet::AtomCardVector();
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards = PdbModelResidueSet::PdbAtomSectionVector();
         int serial_number = 1;
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
@@ -372,10 +372,10 @@ void PdbFile::DeleteResiduesWithTheGivenModelNumber(PdbResidueVector target_resi
     {
         PdbModelCard* model = models[model_number];
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards = PdbModelResidueSet::AtomCardVector();
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards = PdbModelResidueSet::PdbAtomSectionVector();
         int serial_number = 1;
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
@@ -482,11 +482,11 @@ void PdbFile::DeleteAtom(PdbFileSpace::PdbAtomCard* target_atom)
     {
         PdbModelCard* model = (*it).second;
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards;
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards;
         int serial_number = 1;
 
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
@@ -622,11 +622,11 @@ void PdbFile::DeleteAtoms(PdbAtomCardVector target_atoms)
     {
         PdbModelCard* model = (*it).second;
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards;
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards;
         int serial_number = 1;
 
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
@@ -758,11 +758,11 @@ void PdbFile::DeleteAtomWithTheGivenModelNumber(PdbFileSpace::PdbAtomCard* targe
     {
         PdbModelCard* model = models[model_number];
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards;
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards;
         int serial_number = 1;
 
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
@@ -898,11 +898,11 @@ void PdbFile::DeleteAtomsWithTheGivenModelNumber(PdbAtomCardVector target_atoms,
     {
         PdbModelCard* model = models[model_number];
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards;
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards;
         int serial_number = 1;
 
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
@@ -1034,9 +1034,9 @@ void PdbFile::UpdateResidueName(PdbResidue *residue, std::string updated_residue
     {
         PdbModelCard* model = (*it).second;
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards;
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards;
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
@@ -1132,9 +1132,9 @@ void PdbFile::UpdateResidueNameWithTheGivenModelNumber(PdbResidue *residue, std:
     {
         PdbModelCard* model = models[model_number];
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards;
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards;
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection::PdbAtomCardOrderVector ordered_atoms = atom_card->GetOrderedAtomCards();
@@ -1226,13 +1226,13 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
         updated_model->SetModelSerialNumber(model->GetModelSerialNumber());
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
         PdbModelResidueSet* updated_residue_set = new PdbModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards;
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards;
         int serial_number = 1;
         int sequence_number = 1;
         int offset = 0;
         PdbFileSpace::PdbAtomCard *cAtomInProtein, *nAtomInProtein, *caAtomInProtein; // OG Dec 21 Sorry about the warnings.
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection* updated_atom_card = new PdbAtomSection();
@@ -1425,13 +1425,13 @@ void PdbFile::InsertResidueAfterWithTheGivenModelNumber(PdbAtomSection* residue,
     updated_model->SetModelSerialNumber(model->GetModelSerialNumber());
     PdbModelResidueSet* residue_set = model->GetModelResidueSet();
     PdbModelResidueSet* updated_residue_set = new PdbModelResidueSet();
-    PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-    PdbModelResidueSet::AtomCardVector updated_atom_cards;
+    PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+    PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards;
     int serial_number = 1;
     int sequence_number = 1;
     int offset = 0;
     PdbFileSpace::PdbAtomCard *cAtomInProtein, *nAtomInProtein, *caAtomInProtein; // OG Dec 21 Sorry about the warnings.
-    for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+    for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
     {
         PdbAtomSection* atom_card = (*it1);
         PdbAtomSection* updated_atom_card = new PdbAtomSection();
@@ -1653,10 +1653,10 @@ void PdbFile::SplitAtomCardOfModelCard(char split_point_chain_id, int split_poin
         updated_model->SetModelSerialNumber(model->GetModelSerialNumber());
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
         PdbModelResidueSet* updated_residue_set = new PdbModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards;
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards;
         int serial_number = 1;
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection* updated_atom_card_first_part = new PdbAtomSection();
@@ -1735,10 +1735,10 @@ void PdbFile::SplitAtomCardOfModelCardWithTheGivenModelNumber(char split_point_c
         updated_model->SetModelSerialNumber(model->GetModelSerialNumber());
         PdbModelResidueSet* residue_set = model->GetModelResidueSet();
         PdbModelResidueSet* updated_residue_set = new PdbModelResidueSet();
-        PdbModelResidueSet::AtomCardVector atom_cards = residue_set->GetAtomCards();
-        PdbModelResidueSet::AtomCardVector updated_atom_cards;
+        PdbModelResidueSet::PdbAtomSectionVector atom_cards = residue_set->GetAtomCards();
+        PdbModelResidueSet::PdbAtomSectionVector updated_atom_cards;
         int serial_number = 1;
-        for(PdbModelResidueSet::AtomCardVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
+        for(PdbModelResidueSet::PdbAtomSectionVector::iterator it1 = atom_cards.begin(); it1 != atom_cards.end(); it1++)
         {
             PdbAtomSection* atom_card = (*it1);
             PdbAtomSection* updated_atom_card_first_part = new PdbAtomSection();
