@@ -55,6 +55,7 @@ void GlycoproteinBuilder::SetWorkingDirectory(std::string workingDirectory)
 	{
 		workingDirectory_ = workingDirectory;
 	}
+    gmml::log(__LINE__, __FILE__, gmml::INF, "WorkingDirectory is set to  " + workingDirectory_);
 	return;
 }
 
@@ -100,7 +101,7 @@ void GlycoproteinBuilder::InitializeGlycoproteinBuilder(GlycoproteinBuilderInput
         this->SetIsDeterministic(inputStruct.isDeterministic_);
         this->ConvertInputStructEntries(inputStruct);
         gmml::log(__LINE__, __FILE__, gmml::INF, "Build protein structure by distance.");
-        glycoprotein_ = Assembly((inputStruct.workingDirectory_ + inputStruct.substrateFileName_), gmml::InputFileType::PDB);
+        glycoprotein_ = Assembly((this->GetWorkingDirectory() + inputStruct.substrateFileName_), gmml::InputFileType::PDB);
         glycoprotein_.BuildStructureByDistance(4, 1.6); // 4 threads, 1.91 cutoff to allow C-S in Cys and Met to be bonded. Nope 1.91 did bad things.
         gmml::log(__LINE__, __FILE__, gmml::INF, "Attaching Glycans To Glycosites.");
         this->CreateGlycosites(inputStruct.glycositesInputVector_);

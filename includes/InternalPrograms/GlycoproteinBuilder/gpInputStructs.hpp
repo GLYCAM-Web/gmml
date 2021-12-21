@@ -9,6 +9,7 @@
 struct GlycositeInput
 {
 	// Constructor
+    GlycositeInput() {proteinResidueId_ = "", glycanInputType_ = "", glycanInput_ = "" ;}
 	GlycositeInput(std::string proteinResidueId, std::string glycanInputType, std::string glycan) : proteinResidueId_ (proteinResidueId), glycanInputType_ (glycanInputType), glycanInput_ (glycan) {}
 	// Data. No default values
 	std::string proteinResidueId_;  // E.g. ?_20 if no chain ID and residue number is 20. C_20 if chain id is C.
