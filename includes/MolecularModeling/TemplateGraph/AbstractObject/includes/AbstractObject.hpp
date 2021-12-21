@@ -55,12 +55,15 @@ public:
 	//copy assignment
 	inline AbstractObject& operator=(const AbstractObject &rhs)
 	{
-		return *this;
+		return *this = AbstractObject(rhs);
 	}
 
 	//move assignment
 	inline AbstractObject& operator=(AbstractObject &&rhs)
 	{
+		this->setName(rhs.getName());
+		this->setLabels(rhs.getLabels());
+		this->setIndex(rhs.getIndex());
 		return *this;
 	}
 
