@@ -1,0 +1,113 @@
+Tue Dec 21 09:02:44 2021 >>> src/InputSet/PdbFileSpace/pdbfile.cc:109 >>> [INFO]: Opening PDB file ...
+Tue Dec 21 09:02:44 2021 >>> src/InputSet/PdbFileSpace/pdbfile.cc:2900 >>> [INFO]: End of file
+Tue Dec 21 09:02:44 2021 >>> src/ParameterSet/parameterManager.cpp:18 >>> [INFO]: gmmlhome is: /programs/gems/gmml/
+Tue Dec 21 09:02:44 2021 >>> src/ParameterSet/parameterManager.cpp:26 >>> [INFO]: Initializing PrepResidueMap
+Tue Dec 21 09:02:44 2021 >>> src/ParameterSet/parameterManager.cpp:31 >>> [INFO]: Initializing Glycam Residue names
+Tue Dec 21 09:02:44 2021 >>> src/ParameterSet/parameterManager.cpp:39 >>> [INFO]: Initializing LibResidueMap
+Tue Dec 21 09:02:44 2021 >>> src/ParameterSet/parameterManager.cpp:41 >>> [INFO]: Initializing silly maps
+Tue Dec 21 09:02:44 2021 >>> src/ParameterSet/parameterManager.cpp:43 >>> [INFO]: Finished construction.
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1503 >>> [INFO]:  Start preprocessing ...
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1505 >>> [INFO]:  HIS residues extraction: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1509 >>> [INFO]:  CYS residues extraction: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1513 >>> [INFO]:  Alternate residues extraction: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:154 >>> [INFO]: HIS residue(s) found
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1517 >>> [INFO]:  Unrecognized residues extraction: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:201 >>> [INFO]: HIS residue(s) found
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1521 >>> [INFO]:  Unknown heavy atoms extraction: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:201 >>> [INFO]: HIS residue(s) found
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1525 >>> [INFO]: Removed hydrogens extraction: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1529 >>> [INFO]: Amino acid chains extraction: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1533 >>> [INFO]: Gaps in amino acid chains extraction: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1537 >>> [INFO]: Residue info extraction: done
+Tue Dec 21 09:02:44 2021 >>> src/ParameterSet/parameterManager.cpp:112 >>> [WARNING]: Did not find a LibraryFileSpace::LibraryFileResidue in my map for HIS
+Tue Dec 21 09:02:44 2021 >>> src/ParameterSet/parameterManager.cpp:123 >>> [WARNING]: Did not find a LibraryFileSpace::LibraryFileResidue in my map for HIS
+Tue Dec 21 09:02:44 2021 >>> src/ParameterSet/parameterManager.cpp:112 >>> [WARNING]: Did not find a LibraryFileSpace::LibraryFileResidue in my map for HIS
+Tue Dec 21 09:02:44 2021 >>> src/ParameterSet/parameterManager.cpp:123 >>> [WARNING]: Did not find a LibraryFileSpace::LibraryFileResidue in my map for HIS
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1542 >>> [INFO]: Model charge is 3
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1543 >>> [INFO]: Model charge calculation: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1544 >>> [INFO]: Preprocessing done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1554 >>> [INFO]: Start to apply changes ...
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1556 >>> [INFO]: HIS residues update: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1558 >>> [INFO]: CYS residues update: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1560 >>> [INFO]: Unselected alternate residues removed: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1562 >>> [INFO]: Remove unrecognized residues: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1564 >>> [INFO]: Unknown heavy atoms removed: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1566 >>> [INFO]: Removed hydrogens removed: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:914 >>> [INFO]: Split atom card after: H_110
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:914 >>> [INFO]: Split atom card after: L_107
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:916 >>> [INFO]: Putting TER card after non-amino acid residues aka chain_terminations: Done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:929 >>> [INFO]: Putting TER card after residues with no tail or with at least 2 tails: Done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:939 >>> [INFO]: Did nothing for N termination, which selected is gmml::NH3+
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:983 >>> [INFO]: firstRes:GLN1.LfinalRes:ALA110.H
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called OXT
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:939 >>> [INFO]: Did nothing for N termination, which selected is gmml::NH3+
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:983 >>> [INFO]: firstRes:GLN1.LfinalRes:ALA110.H
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called OXT
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1076 >>> [INFO]: Add N/C terminals: Done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1568 >>> [INFO]: Amino acid chains update: done
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1570 >>> [INFO]: Fixed the gaps.
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1573 >>> [INFO]: Final model charge is 3
+Tue Dec 21 09:02:44 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1574 >>> [INFO]: Applying changes completed.
+Tue Dec 21 09:04:44 2021 >>> src/InputSet/PdbFileSpace/pdbfile.cc:109 >>> [INFO]: Opening PDB file ...
+Tue Dec 21 09:04:44 2021 >>> src/InputSet/PdbFileSpace/pdbfile.cc:1161 >>> [ERROR]: Wrong input file format
+Tue Dec 21 09:04:44 2021 >>> src/InputSet/PdbFileSpace/pdbfileprocessingexception.cc:44 >>> [ERROR]: PdbFile: Error reading file
+Tue Dec 21 09:06:25 2021 >>> src/InputSet/PdbFileSpace/pdbfile.cc:109 >>> [INFO]: Opening PDB file ...
+Tue Dec 21 09:06:25 2021 >>> src/InputSet/PdbFileSpace/pdbfile.cc:2900 >>> [INFO]: End of file
+Tue Dec 21 09:06:25 2021 >>> src/ParameterSet/parameterManager.cpp:18 >>> [INFO]: gmmlhome is: /programs/gems/gmml/
+Tue Dec 21 09:06:25 2021 >>> src/ParameterSet/parameterManager.cpp:26 >>> [INFO]: Initializing PrepResidueMap
+Tue Dec 21 09:06:25 2021 >>> src/ParameterSet/parameterManager.cpp:31 >>> [INFO]: Initializing Glycam Residue names
+Tue Dec 21 09:06:25 2021 >>> src/ParameterSet/parameterManager.cpp:39 >>> [INFO]: Initializing LibResidueMap
+Tue Dec 21 09:06:26 2021 >>> src/ParameterSet/parameterManager.cpp:41 >>> [INFO]: Initializing silly maps
+Tue Dec 21 09:06:26 2021 >>> src/ParameterSet/parameterManager.cpp:43 >>> [INFO]: Finished construction.
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1503 >>> [INFO]:  Start preprocessing ...
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1505 >>> [INFO]:  HIS residues extraction: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1509 >>> [INFO]:  CYS residues extraction: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1513 >>> [INFO]:  Alternate residues extraction: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:154 >>> [INFO]: HIS residue(s) found
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1517 >>> [INFO]:  Unrecognized residues extraction: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:201 >>> [INFO]: HIS residue(s) found
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1521 >>> [INFO]:  Unknown heavy atoms extraction: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:201 >>> [INFO]: HIS residue(s) found
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1525 >>> [INFO]: Removed hydrogens extraction: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1529 >>> [INFO]: Amino acid chains extraction: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1533 >>> [INFO]: Gaps in amino acid chains extraction: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1537 >>> [INFO]: Residue info extraction: done
+Tue Dec 21 09:06:26 2021 >>> src/ParameterSet/parameterManager.cpp:112 >>> [WARNING]: Did not find a LibraryFileSpace::LibraryFileResidue in my map for HIS
+Tue Dec 21 09:06:26 2021 >>> src/ParameterSet/parameterManager.cpp:123 >>> [WARNING]: Did not find a LibraryFileSpace::LibraryFileResidue in my map for HIS
+Tue Dec 21 09:06:26 2021 >>> src/ParameterSet/parameterManager.cpp:112 >>> [WARNING]: Did not find a LibraryFileSpace::LibraryFileResidue in my map for HIS
+Tue Dec 21 09:06:26 2021 >>> src/ParameterSet/parameterManager.cpp:123 >>> [WARNING]: Did not find a LibraryFileSpace::LibraryFileResidue in my map for HIS
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1542 >>> [INFO]: Model charge is 3
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1543 >>> [INFO]: Model charge calculation: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1544 >>> [INFO]: Preprocessing done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1554 >>> [INFO]: Start to apply changes ...
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1556 >>> [INFO]: HIS residues update: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1558 >>> [INFO]: CYS residues update: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1560 >>> [INFO]: Unselected alternate residues removed: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1562 >>> [INFO]: Remove unrecognized residues: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1564 >>> [INFO]: Unknown heavy atoms removed: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1566 >>> [INFO]: Removed hydrogens removed: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:914 >>> [INFO]: Split atom card after: H_110
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:914 >>> [INFO]: Split atom card after: L_107
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:916 >>> [INFO]: Putting TER card after non-amino acid residues aka chain_terminations: Done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:929 >>> [INFO]: Putting TER card after residues with no tail or with at least 2 tails: Done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:939 >>> [INFO]: Did nothing for N termination, which selected is gmml::NH3+
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:983 >>> [INFO]: firstRes:GLN1.LfinalRes:ALA110.H
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called H
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called HA
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called HB1
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called HB2
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called HB3
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called OXT
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:939 >>> [INFO]: Did nothing for N termination, which selected is gmml::NH3+
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:983 >>> [INFO]: firstRes:GLN1.LfinalRes:ALA110.H
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called H
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called HA
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called HB1
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called HB2
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called HB3
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1000 >>> [INFO]: Creating a new atom called OXT
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1076 >>> [INFO]: Add N/C terminals: Done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1568 >>> [INFO]: Amino acid chains update: done
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1570 >>> [INFO]: Fixed the gaps.
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1573 >>> [INFO]: Final model charge is 3
+Tue Dec 21 09:06:26 2021 >>> src/Resolver/PdbPreprocessor/pdbpreprocessor.cc:1574 >>> [INFO]: Applying changes completed.

@@ -783,6 +783,8 @@ bool PdbPreprocessor::ExtractRemovedHydrogens()
             for(PdbFileSpace::PdbFile::PdbAtomCardVector::iterator it1 = removed_hydrogens.begin(); it1 != removed_hydrogens.end(); it1++)
             {
                 PdbFileSpace::PdbAtomCard* removed_hydrogen = (*it1);
+
+                gmml::log(__LINE__, __FILE__, gmml::INF, "Removing hydrogen:" + removed_hydrogen->GetAtomName());
                 PdbPreprocessorReplacedHydrogen* removed_hydrogen_atom =
                         new PdbPreprocessorReplacedHydrogen(removed_hydrogen->GetAtomChainId(), removed_hydrogen->GetAtomSerialNumber(), removed_hydrogen->GetAtomName(),
                                                             removed_hydrogen->GetAtomResidueName(), removed_hydrogen->GetAtomResidueSequenceNumber(),
@@ -970,59 +972,59 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbPreprocess
         // Zwitterionic in c terminal
         if(chain->GetStringFormatOfSelectedCTermination().find("+") != std::string::npos || chain->GetStringFormatOfSelectedCTermination().find("-") != std::string::npos)
         {
+            // OG do nothing. TLEAP needs to add hydrogens if they are missing, as well as OXT atoms.
+            // Figuring out the coords for missing atoms is too hard. Tleap is good at it.
 //            OLIVER HERE
-            // Imma just do it myself. The classes here are too twisty.
-            PdbFileSpace::PdbFile::PdbResidueVector pdbResidues = this->GetPdbFile().GetAllResiduesFromAtomSection();
-            PdbFileSpace::PdbResidue* firstRes = pdbResidues.front();
-            PdbFileSpace::PdbResidue* finalRes = pdbResidues.back();
-            std::stringstream ss;
-            ss << "firstRes:" << firstRes->GetResidueName() << firstRes->GetResidueSequenceNumber() << "." << firstRes->GetResidueChainId();
-            ss << "firstRes:" << finalRes->GetResidueName() << finalRes->GetResidueSequenceNumber() << "." << finalRes->GetResidueChainId();
-            gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str() );
-            LibraryFileSpace::LibraryFileResidue* lib_file_residue = this->GetParameters().FindLibResidue("N" + firstRes->GetResidueName());
-            //PdbAtomCardVector GetAllAtomsOfResidue(PdbResidue* residue);
-            std::vector<PdbFileSpace::PdbAtomCard*> firstResidueAtoms = this->GetPdbFile().GetAllAtomsOfResidue(firstRes);
-            // Go through lib file atoms, if one exists that isn't in residue, add it.
-            for (auto &libFileAtom : lib_file_residue->GetAtomsVector())
-            {
-                std::vector<PdbFileSpace::PdbAtomCard*>::iterator positionOfAtom = std::find(firstResidueAtoms.begin(), firstResidueAtoms.end(), libFileAtom->GetName());
-                if (positionOfAtom == firstResidueAtoms.end())
-                {
-                    // create and add in the lib atom
-                    gmml::log(__LINE__, __FILE__,  gmml::INF, "Creating a new atom called " + libFileAtom->GetName());
-                    int serial_number = 9000000;
-                    GeometryTopology::Coordinate coords;
-                    //GeometryTopology::Coordinate cCoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(cCoordProtein, caCoordProtein, nCoordProtein, 120.0, -130.0, 1.4);
-//                    PdbAtomCard(
-
-                    PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(
-                            serial_number, //  int atom_serial_number
-                            libFileAtom->GetName(), // std::string atom_name
-                            firstRes->GetResidueAlternateLocation(), //char atom_alternate_location
-                            firstRes->GetResidueName(), // std::string residue_name,
-                            firstRes->GetResidueChainId(), // char chain_id
-                            firstRes->GetResidueSequenceNumber(),
-                            firstRes->GetResidueInsertionCode(),
-                            coords,
-                            1.00,
-                            0.00,
-                            "",
-                            "");
-                }
-            }
-            //lib_file_residue->GetLibraryAtomByAtomName(atom_name) // no this throws something else
-
+//            PdbFileSpace::PdbFile::PdbResidueVector pdbResidues = this->GetPdbFile().GetAllResiduesFromAtomSection();
+//            PdbFileSpace::PdbResidue* firstRes = pdbResidues.front();
+//            PdbFileSpace::PdbResidue* finalRes = pdbResidues.back();
+//            std::stringstream ss;
+//            ss << "firstRes:" << firstRes->GetResidueName() << firstRes->GetResidueSequenceNumber() << "." << firstRes->GetResidueChainId();
+//            ss << "finalRes:" << finalRes->GetResidueName() << finalRes->GetResidueSequenceNumber() << "." << finalRes->GetResidueChainId();
+//            gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str() );
+//            LibraryFileSpace::LibraryFileResidue* lib_file_residue = this->GetParameters().FindLibResidue("C" + finalRes->GetResidueName());
+//            //PdbAtomCardVector GetAllAtomsOfResidue(PdbResidue* residue);
+//            std::vector<PdbFileSpace::PdbAtomCard*> finalResidueAtoms = this->GetPdbFile().GetAllAtomsOfResidue(finalRes);
+//            // Go through lib file atoms, if one exists that isn't in residue, add it.
+//            for (auto &libFileAtom : lib_file_residue->GetAtomsVector())
+//            {
+//                bool found = false;
+//                for (auto &pdbAtomCard : finalResidueAtoms)
+//                {
+//                    if (pdbAtomCard->GetAtomName() == libFileAtom->GetName())
+//                    {
+//                        found = true;
+//                    }
+//                }
+//                if (!found)
+//                {
+//                    gmml::log(__LINE__, __FILE__,  gmml::INF, "Creating a new atom called " + libFileAtom->GetName());
+//                                                            int serial_number = 900000;
+//                                                            GeometryTopology::Coordinate coords(0.0, 0.0, 0.0);
+            //GeometryTopology::Coordinate cCoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(cCoordProtein, caCoordProtein, nCoordProtein, 120.0, -130.0, 1.4);
+            //                    PdbAtomCard(
+            //                    int atom_serial_number, std::string atom_name, char atom_alternate_location, std::string residue_name, char chain_id,
+            //                                        int residue_sequence_number, char insertion_code, GeometryTopology::Coordinate coordinate, double occupancy, double tempreture_factor,
+            //                                        std::string element_symbol, std::string charge, std::vector<PdbAtomCard*> alternate_atom_locations ={});
+            //                    PdbFileSpace::PdbAtomCard new_atom(
+            //                            serial_number, //  int atom_serial_number
+            //                            libFileAtom->GetName(), // std::string atom_name
+            //                            firstRes->GetResidueAlternateLocation(), //char atom_alternate_location
+            //                            firstRes->GetResidueName(), // std::string residue_name,
+            //                            firstRes->GetResidueChainId(), // char chain_id
+            //                            firstRes->GetResidueSequenceNumber(), // int residue_sequence_number,
+            //                            firstRes->GetResidueInsertionCode(), // char insertion_code,
+            //                            coords, // GeometryTopology::Coordinate coordinate
+            //                            1.00, //  double occupancy
+            //                            0.00, // double tempreture_factor
+            //                            std::string(), // std::string element_symbol
+            //                            std::string(), //  std::string charge
+            //                            std::vector<PdbFileSpace::PdbAtomCard*> {}
+            //                    );
+//                }
+//            }
+//
             // Go through residue atoms, if one exists that isn't in the lib, delete it or cry idk.
-
-
-
-//            PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
-//                                                                        atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
-//                                                                        atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
-//                                                                        atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
-//                                                                        atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom->GetAlternateAtomCards());
-//            void PdbAtomSection::InsertAtomCard(PdbAtomCard *insertionCard, PdbAtomCard* referenceCard)
-
         }
         else
         {
