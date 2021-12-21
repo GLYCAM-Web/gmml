@@ -981,11 +981,19 @@ void PdbFile::InsertResidueBeforeWithTheGivenModelNumber(PdbAtomSection* residue
                         {
                             PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
                             int index = distance(ordered_atoms_of_residue.begin(), it3);
-                            PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
-                                                            atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
-                                                            atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
-                                                            atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
-                                                            atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom->GetAlternateAtomCards());
+                            PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number,
+                                                            atom_of_residue->GetAtomName(),
+                                                            atom_of_residue->GetAtomAlternateLocation(),
+                                                            atom_of_residue->GetAtomResidueName(),
+                                                            atom_of_residue->GetAtomChainId(),
+                                                            sequence_number,
+                                                            atom_of_residue->GetAtomInsertionCode(),
+                                                            coordinate_set.at(index),
+                                                            atom_of_residue->GetAtomOccupancy(),
+                                                            atom_of_residue->GetAtomTempretureFactor(),
+                                                            atom_of_residue->GetAtomElementSymbol(),
+                                                            atom_of_residue->GetAtomCharge(),
+                                                            atom->GetAlternateAtomCards());
                             updated_atoms[serial_number] = new_atom;
                             updated_atoms_vector.push_back(new_atom);
                             serial_number++;

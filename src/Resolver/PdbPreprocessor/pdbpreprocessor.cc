@@ -970,10 +970,59 @@ void PdbPreprocessor::UpdateAminoAcidChainsWithTheGivenModelNumber(PdbPreprocess
         // Zwitterionic in c terminal
         if(chain->GetStringFormatOfSelectedCTermination().find("+") != std::string::npos || chain->GetStringFormatOfSelectedCTermination().find("-") != std::string::npos)
         {
-            // End of chain
-            // Do nothing
-            gmml::log(__LINE__, __FILE__,  gmml::INF, "Did nothing for C termination, which selected is " + chain->GetStringFormatOfSelectedCTermination() );
-            // Yo should add the OXT
+//            OLIVER HERE
+            // Imma just do it myself. The classes here are too twisty.
+            PdbFileSpace::PdbFile::PdbResidueVector pdbResidues = this->GetPdbFile().GetAllResiduesFromAtomSection();
+            PdbFileSpace::PdbResidue* firstRes = pdbResidues.front();
+            PdbFileSpace::PdbResidue* finalRes = pdbResidues.back();
+            std::stringstream ss;
+            ss << "firstRes:" << firstRes->GetResidueName() << firstRes->GetResidueSequenceNumber() << "." << firstRes->GetResidueChainId();
+            ss << "firstRes:" << finalRes->GetResidueName() << finalRes->GetResidueSequenceNumber() << "." << finalRes->GetResidueChainId();
+            gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str() );
+            LibraryFileSpace::LibraryFileResidue* lib_file_residue = this->GetParameters().FindLibResidue("N" + firstRes->GetResidueName());
+            //PdbAtomCardVector GetAllAtomsOfResidue(PdbResidue* residue);
+            std::vector<PdbFileSpace::PdbAtomCard*> firstResidueAtoms = this->GetPdbFile().GetAllAtomsOfResidue(firstRes);
+            // Go through lib file atoms, if one exists that isn't in residue, add it.
+            for (auto &libFileAtom : lib_file_residue->GetAtomsVector())
+            {
+                std::vector<PdbFileSpace::PdbAtomCard*>::iterator positionOfAtom = std::find(firstResidueAtoms.begin(), firstResidueAtoms.end(), libFileAtom->GetName());
+                if (positionOfAtom == firstResidueAtoms.end())
+                {
+                    // create and add in the lib atom
+                    gmml::log(__LINE__, __FILE__,  gmml::INF, "Creating a new atom called " + libFileAtom->GetName());
+                    int serial_number = 9000000;
+                    GeometryTopology::Coordinate coords;
+                    //GeometryTopology::Coordinate cCoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(cCoordProtein, caCoordProtein, nCoordProtein, 120.0, -130.0, 1.4);
+//                    PdbAtomCard(
+
+                    PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(
+                            serial_number, //  int atom_serial_number
+                            libFileAtom->GetName(), // std::string atom_name
+                            firstRes->GetResidueAlternateLocation(), //char atom_alternate_location
+                            firstRes->GetResidueName(), // std::string residue_name,
+                            firstRes->GetResidueChainId(), // char chain_id
+                            firstRes->GetResidueSequenceNumber(),
+                            firstRes->GetResidueInsertionCode(),
+                            coords,
+                            1.00,
+                            0.00,
+                            "",
+                            "");
+                }
+            }
+            //lib_file_residue->GetLibraryAtomByAtomName(atom_name) // no this throws something else
+
+            // Go through residue atoms, if one exists that isn't in the lib, delete it or cry idk.
+
+
+
+//            PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number, atom_of_residue->GetAtomName(),atom_of_residue->GetAtomAlternateLocation(),
+//                                                                        atom_of_residue->GetAtomResidueName(),atom_of_residue->GetAtomChainId(), sequence_number,
+//                                                                        atom_of_residue->GetAtomInsertionCode(), coordinate_set.at(index),
+//                                                                        atom_of_residue->GetAtomOccupancy(), atom_of_residue->GetAtomTempretureFactor(),
+//                                                                        atom_of_residue->GetAtomElementSymbol(), atom_of_residue->GetAtomCharge(), atom->GetAlternateAtomCards());
+//            void PdbAtomSection::InsertAtomCard(PdbAtomCard *insertionCard, PdbAtomCard* referenceCard)
+
         }
         else
         {
