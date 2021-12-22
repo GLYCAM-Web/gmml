@@ -456,6 +456,7 @@ private:
      * @param disulfide_bond The heterogen atom attribute of the current object
      */
     void AddDisulfideBond(PdbPreprocessorDisulfideBond* disulfide_bond);
+    void ClearDisulfideBonds();
     /*! \fn
      * A function in order to add the chain_termination to the current object
      * Set chain_terminations_ attribute of the current pdb preprocessor

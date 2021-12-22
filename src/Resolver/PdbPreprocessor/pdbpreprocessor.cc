@@ -80,6 +80,10 @@ void PdbPreprocessor::AddDisulfideBond(PdbPreprocessorDisulfideBond *disulfide_b
 {
     disulfide_bonds_.push_back(disulfide_bond);
 }
+void PdbPreprocessor::ClearDisulfideBonds()
+{
+    disulfide_bonds_.clear();
+}
 void PdbPreprocessor::AddChainTermination(PdbPreprocessorChainTermination *chain_termination)
 {
     chain_terminations_.push_back(chain_termination);
@@ -363,6 +367,7 @@ double PdbPreprocessor::GetDistanceofCYS(PdbFileSpace::PdbResidue *first_residue
 
 bool PdbPreprocessor::ExtractCYSResidues()
 {
+    this->ClearDisulfideBonds();
     PdbFileSpace::PdbFile::PdbResidueVector pdb_residues = this->GetPdbFile().GetAllResiduesFromAtomSection();
     PdbFileSpace::PdbFile::PdbResidueVector cys_residues = GetAllCYSResidues(pdb_residues);
     PdbFileSpace::PdbFile::PdbResidueAtomsMap residue_atom_map = this->GetPdbFile().GetAllAtomsOfResidues();
@@ -1539,8 +1544,7 @@ void PdbPreprocessor::ApplyPreprocessingWithTheGivenModelNumber(int model_number
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Start to apply changes ...");
     UpdateHISMappingWithTheGivenNumber(this->GetHistidineMappings(), model_number);
     gmml::log(__LINE__, __FILE__,  gmml::INF, "HIS residues update: done");
-    UpdateCYSResiduesWithTheGivenModelNumber(this->GetDisulfideBonds());
-    gmml::log(__LINE__, __FILE__,  gmml::INF, "CYS residues update: done");
+
     RemoveUnselectedAlternateResiduesWithTheGivenModelNumber(this->GetAlternateResidueMap()/*, model_number*/);
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Unselected alternate residues removed: done");
     RemoveUnrecognizedResiduesWithTheGivenModelNumber(this->GetUnrecognizedResidues(), model_number);
@@ -1553,6 +1557,9 @@ void PdbPreprocessor::ApplyPreprocessingWithTheGivenModelNumber(int model_number
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Amino acid chains update: done");
     UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(this->GetMissingResidues(), model_number); // OG Mar 2017
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Fixed the gaps.");
+    this->ExtractCYSResidues(); // Must do this again here as index numbers of atoms may have changed.
+    UpdateCYSResiduesWithTheGivenModelNumber(this->GetDisulfideBonds()); // OG this must be last as it uses index numbers to make CONECT cards. And it copies the index numbers during extraction. Bleh.
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "CYS residues update: done");
     std::stringstream model_charge;
     model_charge << "Final model charge is " << this->CalculateModelCharge() ;
     gmml::log(__LINE__, __FILE__,  gmml::INF, model_charge.str() );
