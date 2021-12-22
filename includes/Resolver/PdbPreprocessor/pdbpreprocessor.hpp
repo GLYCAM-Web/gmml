@@ -246,15 +246,8 @@ public:
     /** \addtogroup Manipulators
      * @{
      */
-
-
     bool ExtractCYSResidues();
-    /*! \fn
-     * A function in order to remove the unknown heavy atoms of a pdb file
-     * @param pdb_file The object of a pdb file
-     * @param disulfide_bonds The list of disulfide bonds
-     */
-    void UpdateCYSResidues(PdbPreprocessorDisulfideBondVector disulfide_bonds);
+
     /*! \fn
      * A function in order to remove the unknown heavy atoms of a pdb file
      * @param pdb_file The object of a pdb file
@@ -392,12 +385,6 @@ public:
      * @return bool value
      */
     bool ExtractAlternateResidue();
-    /*! \fn
-     * A function in order to remove unselected alternate residues of a pdb file
-     * @param pdb_file The object of a pdb file
-     * @param alternate_residue_map
-     */
-    void RemoveUnselectedAlternateResidues(PdbPreprocessorAlternateResidueMap alternate_residue_map);
     /*! \fn
      * A function in order to remove unselected alternate residues of a pdb file
      * @param pdb_file The object of a pdb file
