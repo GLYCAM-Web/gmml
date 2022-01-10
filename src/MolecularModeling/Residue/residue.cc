@@ -375,9 +375,13 @@ void Residue::AddChargesTypesToAtoms(LibraryFileSpace::LibraryFileResidue &libRe
     return;
 }
 
-// This is duct-tape for now. The PDBPreprocessor should write out an (e.g.) off file that contains all the info I'm trying to get here.
+// This is duct-tape for now. The PDBPreprocessor should write out an (e.g.) off file that contains all the info I'm trying to get here. And then GMML should read it in.
 std::string Residue::GetTerminalCode()
 {
+    if ( (this->GetName() == "NME") || (this->GetName() == "ACE") )
+    {
+        return ""; // Despite being on the ends, these caps don't get the CNME or NACE treatment like regular amino acids. Fun.
+    }
     if ( selection::FindNeighborResidueConnectedViaSpecificAtom(this, "N")  == nullptr )
     {
         return "N"; // No residues connected to N atom, ergo I am the N terminus.
