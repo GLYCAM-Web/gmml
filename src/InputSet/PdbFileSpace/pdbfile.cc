@@ -1415,6 +1415,18 @@ bool PdbFile::ParseCards(std::ifstream &in_stream)
     }
     record_name = line.substr(0,6);
     record_name = gmml::Trim(record_name);
+    if(record_name == "USER") // OG Jan22. This should just run through the USER section (created by Ambertool's reduce) and do nothing.
+    {
+        while(record_name.compare("USER") == 0)
+        {
+            getline(in_stream, line); //skip.
+            record_name = line.substr(0,6);
+            record_name = gmml::Trim(record_name);
+        }
+    }
+    // End OG Jan22
+    record_name = line.substr(0,6);
+    record_name = gmml::Trim(record_name);
     if(record_name.compare("MODEL") == 0 || record_name.compare("ATOM") == 0 || record_name.compare("HETATM") == 0)
     {
         if(!ParseModelSection(in_stream, line))
@@ -1433,7 +1445,6 @@ bool PdbFile::ParseCards(std::ifstream &in_stream)
     if(record_name.compare("MODEL") == 0)
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Multiple connect card between model cards --> Unexpected entry");
-//        std::cout << "Multiple connect card between model cards --> Unexpected entry" << std::endl;
         return false;
     }
     if(record_name.compare("MASTER") == 0)
