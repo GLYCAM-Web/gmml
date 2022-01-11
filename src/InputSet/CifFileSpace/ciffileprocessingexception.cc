@@ -2,8 +2,9 @@
 #include <stdexcept>
 
 #include "../../../includes/common.hpp"
-#include "../../../includes/utils.hpp"
+//#include "../../../includes/utils.hpp"
 #include "../../../includes/InputSet/CifFileSpace/ciffileprocessingexception.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using CifFileSpace::CifFileProcessingException;
 

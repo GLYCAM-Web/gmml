@@ -2,19 +2,21 @@
 #include <fstream>
 #include <algorithm>
 #include <vector>
-#include "../../../includes/utils.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtcompoundcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtremarkcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtrootcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtbranchcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp"
+#include "includes/utils.hpp"
+#include "includes/common.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtcompoundcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtremarkcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtrootcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtbranchcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using PdbqtFileSpace::PdbqtFile;
 

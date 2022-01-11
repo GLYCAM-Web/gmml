@@ -11,7 +11,7 @@ namespace MolecularMetadata
 {
 namespace GLYCAM
 {
-std::string Glycam06ResidueNameGenerator(std::string linkages, char isomer, std::string inputResName, char ringType, std::string residueModifier, char configuration);
+std::string Glycam06ResidueNameGenerator(std::string linkages, std::string isomer, std::string inputResName, std::string ringType, std::string residueModifier, std::string configuration);
 } // close namespace
 } // close namespace
 } // close namespace

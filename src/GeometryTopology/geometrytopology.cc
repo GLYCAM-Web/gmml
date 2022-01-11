@@ -1,9 +1,6 @@
 #include "../../includes/GeometryTopology/geometrytopology.hpp"
 #include "../../includes/External_Libraries/Eigen_Algebra_Template_Library/Geometry"
 #include "../../includes/utils.hpp"
-//void whywontthislink::test(){
-//    return;
-//}
 
 using GeometryTopology::Coordinate;
 
@@ -148,4 +145,3 @@ double GeometryTopology::CalculateDihedralAngle(GeometryTopology::Coordinate* a1
     }
     return (current_dihedral_angle * (180 / gmml::PI_RADIAN) ); // Convert to degrees
 }
-

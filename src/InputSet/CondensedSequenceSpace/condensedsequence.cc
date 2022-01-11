@@ -50,11 +50,12 @@ CondensedSequence::CondensedSequence(std::string sequence)
     }
     catch(...)
     {
+    	//std::stringstream logss;
     	std::cerr << "Exception thrown in condensedSequence constructor. Look in the response object.\n";
     	this->SetIsSequenceOkay(false); 
-    	//std::cout << this->GetResponse().GetServiceType() << " : " << this->GetResponse().GetTags().first << " : " << this->GetResponse().GetTags().second << std::endl;
+    	//logss << this->GetResponse().GetServiceType() << " : " << this->GetResponse().GetTags().first << " : " << this->GetResponse().GetTags().second << std::endl;
+    	//gmml::log(__LINE__, __FILE__, gmml::ERR, logss.str());
     	// want a Response.print or Response.printToLog?
-    	//this->SetWasSequenceConstructedOk(false);
     }
 }
 
@@ -1876,22 +1877,22 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
     }
 
     // Print all rotamers for each linkage
-    /*for(unsigned int i = 0; i < phi_psi_omega_vector_map.size(); i++)
-    {
-        std::vector<std::vector<double> > phi_psi_omega_combination = phi_psi_omega_vector_map.at(i);
-        for(unsigned int j = 0; j < phi_psi_omega_combination.size(); j++)
-        {
-            std::vector<double> phi_psi_omega = phi_psi_omega_combination.at(j);
-            std::cout << "<";
-            for(unsigned int k = 0; k < phi_psi_omega.size(); k++)
-            {
-                std::cout << phi_psi_omega.at(k);
-                (k < phi_psi_omega.size() - 1) ? std::cout << ", " : std::cout << "";
-            }
-            std::cout << ">";
-        }
-        std::cout << std::endl;
-    }*/
+    // for(unsigned int i = 0; i < phi_psi_omega_vector_map.size(); i++)
+    // {
+    //     std::vector<std::vector<double> > phi_psi_omega_combination = phi_psi_omega_vector_map.at(i);
+    //     for(unsigned int j = 0; j < phi_psi_omega_combination.size(); j++)
+    //     {
+    //         std::vector<double> phi_psi_omega = phi_psi_omega_combination.at(j);
+    //         std::cout << "<";
+    //         for(unsigned int k = 0; k < phi_psi_omega.size(); k++)
+    //         {
+    //             std::cout << phi_psi_omega.at(k);
+    //             (k < phi_psi_omega.size() - 1) ? std::cout << ", " : std::cout << "";
+    //         }
+    //         std::cout << ">";
+    //     }
+    //     std::cout << std::endl;
+    // }
 
     // Build all rotamers with combination of each phi_psi_omega value for each linkage with the others
     for(unsigned int j = 0; j < phi_psi_omega_vector_map.size(); j++)
@@ -1936,17 +1937,17 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
 
     for(unsigned int i = 0; i < mapper.size(); i++)
     {
-        /*std::cout << i << ": ";
-        for(unsigned int j = 0; j < mapper[i].size(); j++)
-        {
-            std::cout << "<";
-            for(unsigned int k = 0; k < mapper[i].at(j).size(); k++)
-            {
-                std::cout << mapper[i].at(j).at(k);
-                (k < mapper[i].at(j).size() - 1) ? std::cout << ", " : std::cout << " ";
-            }
-            std::cout << ">";
-        }*/
+        // std::cout << i << ": ";
+        // for(unsigned int j = 0; j < mapper[i].size(); j++)
+        // {
+        //     std::cout << "<";
+        //     for(unsigned int k = 0; k < mapper[i].at(j).size(); k++)
+        //     {
+        //         std::cout << mapper[i].at(j).at(k);
+        //         (k < mapper[i].at(j).size() - 1) ? std::cout << ", " : std::cout << " ";
+        //     }
+        //     std::cout << ">";
+        // }
         std::stringstream ss;
         for(unsigned int j = 0; j < mapper[i].size(); j++)
         {
@@ -1959,8 +1960,8 @@ CondensedSequence::IndexLinkageConfigurationMap CondensedSequence::CreateIndexLi
             }
         }
         names[i] = ss.str().substr(0,ss.str().size()-1);
-        /*std::cout << "<" << ss.str().substr(0,ss.str().size()-1) << ">";
-        std::cout << std::endl;*/
+        // std::cout << "<" << ss.str().substr(0,ss.str().size()-1) << ">";
+        // std::cout << std::endl;
     }
     return mapper;
 }

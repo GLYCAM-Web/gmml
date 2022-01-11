@@ -6,12 +6,13 @@
 #include <sstream>
 
 #include "../../includes/MolecularModeling/assembly.hpp"
-#include "../../includes/utils.hpp"
+//#include "../../includes/utils.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/Glycan/oligosaccharide.hpp"
 #include "../../includes/Glycan/monosaccharide.hpp"
 #include "../../includes/Glycan/glycosidiclinkage.hpp"
 #include "../../includes/GeometryTopology/geometrytopology.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using Glycan::Monosaccharide;
 using Glycan::GlycosidicLinkage;

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   id="Layer_1"
+   data-name="Layer 1"
+   width="399.01"
+   height="379.48"
+   viewBox="0 0 399.01 379.48"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="LSorp.svg">
+  <metadata
+     id="metadata13">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Sor</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="777"
+     inkscape:window-height="480"
+     id="namedview11"
+     showgrid="false"
+     inkscape:zoom="0.62190364"
+     inkscape:cx="199.505"
+     inkscape:cy="189.74001"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="Layer_1" />
+  <defs
+     id="defs3">
+    <style
+       id="style5">
+      .cls-1 {
+        fill: #fa7727;
+        stroke: #000;
+        stroke-width: 26.56px;
+      }
+    </style>
+  </defs>
+  <title
+     id="title7">Sor</title>
+  <polygon
+     class="cls-1"
+     points="85.85,366.2 313.16,366.2 383.4,150.02 199.5,16.41 199.5,16.41 15.61,150.02 "
+     id="polygon9"
+     style="fill:#fa7727;stroke:#000000;stroke-width:25;stroke-miterlimit:4;stroke-dasharray:50,25;stroke-dashoffset:17.5" />
+</svg>

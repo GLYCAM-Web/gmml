@@ -3,11 +3,12 @@
 #include <iostream>
 #include <iomanip>
 
-#include "../../../includes/utils.hpp"
-#include "../../../includes/common.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "../../../includes/MolecularModeling/residue.hpp"
+#include "includes/utils.hpp"
+#include "includes/common.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "includes/MolecularModeling/residue.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using PrepFileSpace::PrepFileResidue;
 using MolecularModeling::Residue;

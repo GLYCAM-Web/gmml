@@ -14,32 +14,17 @@ using MolecularModeling::AtomVector;
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleData;
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
 
-class Rotatable_dihedral;
-typedef std::vector<Rotatable_dihedral> RotatableDihedralVector;
 class Rotatable_dihedral
 {
 public:
     //////////////////////////////////////////////////////////
-    //                    TYPE DEFINITION                   //
-    //////////////////////////////////////////////////////////
-
-
-    //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
-
     Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, bool reverseAtomsThatMove = true);
     Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, AtomVector extraAtomsThatMove, bool reverseAtomsThatMove = true);
-
-//    Rotatable_dihedral(AtomVector atoms, bool reverseAtomsThatMove = true);
-//    Rotatable_dihedral(AtomVector atoms, AtomVector atoms_that_move);
-
-
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-
-    //double CalculateDihedralAngle(GeometryTopology::Coordinate* a1, GeometryTopology::Coordinate* a2, GeometryTopology::Coordinate* a3, GeometryTopology::Coordinate* a4) const;
     double CalculateDihedralAngle(std::string type = "default");
     AtomVector GetAtoms() const;
     AtomVector GetAtomsThatMove();
@@ -50,16 +35,9 @@ public:
     int GetNumberOfRotamers( bool likelyShapesOnly = false);
     std::vector<double> GetAllPossibleAngleValues(int interval = 5);
     std::string GetName();
-
-    //////////////////////////////////////////////////////////
-    //                       FUNCTIONS                      //
-    //////////////////////////////////////////////////////////
-
-
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
-
     // Based on connectivities, this figures out which atoms will move when the dihedral is rotated.
     void DetermineAtomsThatMove();
     void AddExtraAtomsThatMove(AtomVector extraAtoms);
@@ -73,35 +51,22 @@ public:
     double RandomizeDihedralAngleWithinRanges(std::vector<std::pair<double,double> > ranges);
     // Randomly sets dihedral angle to a value within the given range. E.g. Between 25 and 30 degrees.
     double RandomizeDihedralAngleWithinRange(double min, double max);
-
     // ALTER CONSTRUCTOR SO THESE  next two ARE PRIVATE?
-
     // A residue-residue linkage will have metadata for each rotatable_dihedral. Multiple rotamers means multiple entries.
     void SetMetadata(DihedralAngleDataVector metadataVector);
     void AddMetadata(DihedralAngleData metadata);
     void ClearMetadata();
-
     void SetRandomAngleEntryUsingMetadata(bool useRanges = true);
     void SetSpecificAngleEntryUsingMetadata(bool useRanges = false, int angleEntryNumber = 0);
     bool SetSpecificShape(std::string dihedralName, std::string selectedRotamer);
-
-
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
-
-    void Print();
-
-    //////////////////////////////////////////////////////////
-    //                       OPERATORS                      //
-    //////////////////////////////////////////////////////////
-
+    std::string Print();
 private:
-
     //////////////////////////////////////////////////////////
     //                  PRIVATE FUNCTIONS                   //
     //////////////////////////////////////////////////////////
-
     void Initialize(AtomVector atoms, bool reverseAtomsThatMove = true);
     void SetAtoms(AtomVector atoms);
     void SetAtomsThatMove(AtomVector atoms);
@@ -111,11 +76,9 @@ private:
     Atom* CreateHydrogenAtomForPsi(Atom *centralAtom);
     void SetWasEverRotated(bool wasEverRotated);
     bool CheckIfEverRotated();
-
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
-
     // The four atoms that define the dihedral angle. The bond between atom2_ and atom3_ is what is rotated.
     Atom *atom1_;
     Atom *atom2_;
@@ -129,9 +92,5 @@ private:
     double previous_dihedral_angle_;
     DihedralAngleDataVector assigned_metadata_;
     bool wasEverRotated_; // Need this, as it might add a H atom for psi
-
 };
-
-std::ostream& operator<<(std::ostream& os, Rotatable_dihedral&);
-
 #endif // ROTATABLE_DIHEDRAL_H

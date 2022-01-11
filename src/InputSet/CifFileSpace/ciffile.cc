@@ -1,8 +1,9 @@
 #include <fstream>
 #include <iostream>
 #include "../../../includes/InputSet/CifFileSpace/ciffile.hpp"
-#include "../../../includes/utils.hpp"
+//#include "../../../includes/utils.hpp"
 #include "../../../includes/InputSet/CifFileSpace/ciffileprocessingexception.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using CifFileSpace::CifFile;
 
@@ -77,53 +78,53 @@ void CifFile::Read(std::ifstream& in_file)
 
     }
 }
-/*    int listing_index = 1;
-    getline(in_file, line);
-    while(line[0] != '!')
-    {
-        try
-        {
-            /// Process index section
-            RemoveQuotes(line);
-            RemoveSpaces(line);
-            residues_[line] = new LibraryFileResidue(line, listing_index);
-            listing_index++;
-            getline(in_file,line);      /// Read the next line
-        } catch(...)
-        {
-            throw LibraryFileProcessingException(__LINE__, "Error processing index section");
-        }
-    }
-}
-*/
-///READER
-/*
-bool PdbqtFile::ParseCards(ifstream &in_stream)
-{
-    std::string line;
+//     int listing_index = 1;
+//     getline(in_file, line);
+//     while(line[0] != '!')
+//     {
+//         try
+//         {
+//             /// Process index section
+//             RemoveQuotes(line);
+//             RemoveSpaces(line);
+//             residues_[line] = new LibraryFileResidue(line, listing_index);
+//             listing_index++;
+//             getline(in_file,line);      /// Read the next line
+//         } catch(...)
+//         {
+//             throw LibraryFileProcessingException(__LINE__, "Error processing index section");
+//         }
+//     }
+// }
 
-    /// Unable to read file
-    if (!getline(in_stream, line))
-    {
-        gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
-        throw PdbqtFileProcessingException("Error reading file");
-    }
-    std::string record_name = Split(line, " ").at(0);
-    if(record_name.compare("MODEL") == 0)
-    {
-        if(!ParseModelCard(in_stream, line))
-            return false;
-    }
-    else
-    {
-        gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
-        std::cout << "Wrong input file format" << std::endl;
-        return false;
-    }
-    return true;
-}
- */
+// ///READER
+
+// bool PdbqtFile::ParseCards(ifstream &in_stream)
+// {
+//     std::string line;
+
+//     /// Unable to read file
+//     if (!getline(in_stream, line))
+//     {
+//         gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
+//         std::cout << "Wrong input file format" << std::endl;
+//         throw PdbqtFileProcessingException("Error reading file");
+//     }
+//     std::string record_name = Split(line, " ").at(0);
+//     if(record_name.compare("MODEL") == 0)
+//     {
+//         if(!ParseModelCard(in_stream, line))
+//             return false;
+//     }
+//     else
+//     {
+//         gmml::log(__LINE__, __FILE__,  gmml::ERR,"Wrong input file format");
+//         std::cout << "Wrong input file format" << std::endl;
+//         return false;
+//     }
+//     return true;
+// }
+ 
 
 
 
