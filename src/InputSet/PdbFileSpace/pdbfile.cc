@@ -2791,9 +2791,7 @@ bool PdbFile::ParseModelSection(std::ifstream& stream, std::string& line)
     if(!getline(stream, line))
     {
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model card corruption" );
-//        std::cout << "Model card corruption" << std::endl;
         gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-//        std::cout << "Wrong input file format" << std::endl;
         return false;
     }
     line = gmml::ExpandLine(line, gmml::iPdbLineLength);
@@ -2802,7 +2800,6 @@ bool PdbFile::ParseModelSection(std::ifstream& stream, std::string& line)
 
     while(record_name.compare("MODEL") == 0 || record_name.compare("ATOM") == 0 || record_name.compare("ANISOU") == 0
           || record_name.compare("TER") == 0 || record_name.compare("HETATM") == 0 || record_name.compare("ENDMDL") == 0)
-        //          || record_name.find("TER") != std::string::npos || record_name.find("ENDMDL") != std::string::npos)
     {
         stream_block << line << std::endl;
         if(getline(stream, line))
@@ -2814,14 +2811,11 @@ bool PdbFile::ParseModelSection(std::ifstream& stream, std::string& line)
         else
         {
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Model card corruption" );
-//            std::cout << "Model card corruption" << std::endl;
             gmml::log(__LINE__, __FILE__,  gmml::ERR, "Wrong input file format" );
-//            std::cout << "Wrong input file format" << std::endl;
             return false;
         }
     }
     // Model card
-       // gmml::log(__LINE__, __FILE__,  gmml::ERR, stream_block.str());
     models_ = new PdbFileSpace::PdbModelSection(stream_block);
     return true;
 }

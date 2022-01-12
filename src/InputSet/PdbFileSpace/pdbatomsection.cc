@@ -20,6 +20,9 @@ PdbAtomSection::PdbAtomSection(std::stringstream &stream_block, std::string inde
 //    cout << stream_block.str() << std::endl;
     getline(stream_block, line);
     std::string temp = line;
+    // OG Jan 22 edits so that it reads the first set of alternative residues, whether it starts with A or B or whatever.
+    std::string previousResidueNumber = "";
+    std::string firstFoundAlternativeID = "";
     while (!gmml::Trim(temp).empty())
     {
         if(!is_record_name_set){
@@ -32,18 +35,29 @@ PdbAtomSection::PdbAtomSection(std::stringstream &stream_block, std::string inde
         this_atom_name = gmml::Trim(this_atom_name);
         std::string alternate_id = line.substr(16,1);
         alternate_id = gmml::Trim(alternate_id);
-        
         PdbFileSpace::PdbAtomCard* atom_card = new PdbFileSpace::PdbAtomCard(line);
-        if((alternate_id.empty()) || (alternate_id == "A"))
+        std::string residueNumber = line.substr(22,4);
+        residueNumber = gmml::Trim(residueNumber);
+        if(residueNumber != previousResidueNumber)
+        {
+            firstFoundAlternativeID = ""; // reset
+        }
+        previousResidueNumber = residueNumber;
+        if(!alternate_id.empty() && firstFoundAlternativeID.empty())
+        {
+            firstFoundAlternativeID = alternate_id;
+        }
+        if((alternate_id.empty()) || (alternate_id == firstFoundAlternativeID))
         {
           //int ch = 65 + ConvertString<int>(Split(index, "_")[1]);
           atom_card->SetAtomCardIndexInResidueSet(index);
           //atom->SetAtomChainId((char)ch);
           atomCardMap_[atom_card->GetAtomSerialNumber()] = atom_card;
           orderedAtomCards_.push_back(atom_card);
-          
-          getline(stream_block, line);
-          temp = line;
+
+          std::cout << "Processed: " << temp << "\n";
+//          getline(stream_block, line);
+//          temp = line;
         }
 // OG Dec 2021. We don't want to deal with alternate coordinates in gmml for now, just take the A version and ignore the rest.
         else //These are alternate coordinates that need to be added to the correct atom
@@ -77,14 +91,17 @@ PdbAtomSection::PdbAtomSection(std::stringstream &stream_block, std::string inde
 //            }
 //          }
 //
-          getline(stream_block, line);
-          temp = line;
+//          getline(stream_block, line);
+//          temp = line;
 //          // atom_card->SetAtomCardIndexInResidueSet(index);
 //          // //atom->SetAtomChainId((char)ch);
 //          // atom_cards_[atom_card->GetAtomSerialNumber()] = atom_card;
 //          // ordered_atom_cards_.push_back(atom_card);
         }
+        getline(stream_block, line);
+        temp = line;
     }
+    std::cout << "Finished block\n";
 }
 
 //////////////////////////////////////////////////////////
