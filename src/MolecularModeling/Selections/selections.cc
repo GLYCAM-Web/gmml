@@ -1,7 +1,7 @@
 #include "../../../includes/MolecularModeling/Selections/selections.hpp"
 #include "../../../includes/MolecularModeling/assembly.hpp"
 #include <regex>
-
+#include <iostream>
 MolecularModeling::AtomVector selection::AtomsWithinDistanceOf(MolecularModeling::Atom *query_atom, double distance, MolecularModeling::AtomVector atoms)
 {
     MolecularModeling::AtomVector atoms_within_distance;
@@ -161,14 +161,20 @@ bool selection::FindPathBetweenTwoAtoms(MolecularModeling::Atom *current_atom, M
             atom_path->push_back(neighbor);
         }
         // If not found && not previously visited atom && ( if neighbor residue is current residue || target_atom residue)
-        if ( (*found == false) && (neighbor->GetDescription().compare("VistedByFindPathBetweenTwoAtoms")!=0) && ((current_atom->GetResidue()->GetId().compare(neighbor->GetResidue()->GetId())==0) || (target_atom->GetResidue()->GetId().compare(neighbor->GetResidue()->GetId())==0)) )
+        if ( (*found == false) 
+            && (neighbor->GetDescription() != "VistedByFindPathBetweenTwoAtoms" ) 
+            //(neighbor->GetDescription() != "VistedByFindPathBetweenTwoAtoms" ) 
+            && ( (current_atom->GetResidue() == neighbor->GetResidue()) || (target_atom->GetResidue() == neighbor->GetResidue()) )
+            //&&  ( (current_atom->GetResidue()->GetId() == neighbor->GetResidue()->GetId()) || (target_atom->GetResidue()->GetId() == neighbor->GetResidue()->GetId()) )
+            )
         {
-          //  std::cout << "STEEEPER\n";
+            //std::cout << "STEEEPER\n";
             selection::FindPathBetweenTwoAtoms(neighbor, target_atom, atom_path, found);
         }
     }
-    if(*found)
+    if(*found) // As you fall back out from the found target, create a list of the atoms.
     {
+        //std::cout << "path atom: " << current_atom->GetId() << std::endl;
         atom_path->push_back(current_atom);
     }
     return *found;
@@ -197,7 +203,7 @@ __/  \__/  \__
         \__ Res4
  Res2 __/
 
-  3) It's ok with fuzed rings!
+  3) It's ok with fused rings!
 
 */
 MolecularModeling::AtomVector selection::FindCyclePoints(MolecularModeling::Atom *atom)
@@ -228,29 +234,7 @@ MolecularModeling::AtomVector selection::FindCyclePoints(MolecularModeling::Atom
         // Always want this at the end of the vector
         rotation_points.push_back(caAtom);
     }
-//    else if(atom->GetResidue()->GetIsAglycon() || atom->GetResidue()->GetIsSugarDerivative())
-//    {
-//        std::cout << "Break now1?" << std::endl;
-//        // Here is where I should look for cycles in derivatives and aglycons. This is the tough one, as who knows that's there.
-//        // If I could code a generic function that handles all cases, I could replace the other code here...
-//        // It would have to find atoms that connect to other residues. Find the branch points, handle multiple fuzed/unconnected rings.
-//        // ...
-//        // For now, something crap:
-//        MolecularModeling::Atom *rotation_point;
-//        atom_path.clear();
-//        found = false;
-//        //Find path to first cycle atom, i.e. anomeric carbon
-//        std::cout << "Non-protein, checking for cycles..." << std::endl;
-//        if(selection::FindCyclePoint(atom, atom, &atom_path, &found, rotation_point))
-//        {
-//            rotation_points.push_back(rotation_point);
-//        }
-
-//        rotation_points.push_back(atom);
-//        rotation_points.push_back(atom->GetNode()->GetNodeNeighbors().at(0));
-//        std::cout << "Break now1now?" << std::endl;
-//    }
-    else // Non protein, but not tagged as glycon or sugar derivative. Into weirdness.
+    else 
     {
         MolecularModeling::Atom *rotation_point;
         atom_path.clear();
@@ -284,8 +268,8 @@ MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeli
     if (cycle_point->GetName().compare("CA")==0) // This is a protein, and we always want the N atom.
     {
         selected_neighbor = cycle_point->GetResidue()->GetAtom("N");
-    }
-    else if (cycle_point->GetName().compare("C2")==0) // This is an ulose (e.g. Sia), and we always want the C1 atom.
+    } // If this is a C2 like in Sia, then we always want the C1 atom unless that atom is in the linkage path (like fructose 1-1) 
+    else if ( (cycle_point->GetName().compare("C2")==0) && (std::find(atom_path.begin(), atom_path.end(), cycle_point->GetResidue()->GetAtom("C1")) == atom_path.end()) )
     {
         selected_neighbor = cycle_point->GetResidue()->GetAtom("C1");
     }
@@ -298,10 +282,8 @@ MolecularModeling::Atom* selection::FindCyclePointNeighbor(const MolecularModeli
         MolecularModeling::AtomVector neighbors = cycle_point->GetNode()->GetNodeNeighbors();
         // Ok must first get a list of neighbors that weren't in the connection path
         MolecularModeling::AtomVector good_neighbors; // Couldn't think of a better name. Everybody needs these.
-        //for(MolecularModeling::AtomVector::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
         for(auto &neighbor : neighbors)
         {
-           // MolecularModeling::Atom *neighbor = *it1;
             if ( ! (std::find(atom_path.begin(), atom_path.end(), neighbor) != atom_path.end()) ) // If we've NOT been at this atom on way to cycle point
             {
                 if ( neighbor->GetName().at(0) != 'H' ) // Don't find hydrogens. Later we swap out to use a hydrogen to define a dihedral, but that's a very specific one.
@@ -501,4 +483,140 @@ MolecularModeling::AtomVector selection::FindOtherAtomsWithinMolecule(MolecularM
     return foundAtoms;
 }
 
+ // A function that compares atom numbers to see which is higher. Used for sorting residue neighbors.
+bool selection::compareAtomNumbers(MolecularModeling::Atom *a1, MolecularModeling::Atom *a2)
+{
+    int a1Number = (a1->GetName().at(1) - '0'); // The atom "number" is a char. e.g. the 2 in C2.
+    int a2Number = (a2->GetName().at(1) - '0');
+    if (a1Number < a2Number)
+    {
+        return true;
+    }
+    return false;
+}
 
+MolecularModeling::ResidueVector selection::SortResidueNeighborsByAcendingConnectionAtomNumber(MolecularModeling::AtomVector atomsConnectedToOtherResidues)
+{   // Sort neighbors by lowest index so Residue_linkage labeling matches front end. 
+    // Index refers to a 1-6 vs a 1-3 branch, the 1-3 should be labeled with a lower number.
+
+    // First we sort the atoms in the current residue by their atom number. I.e. C2, C6, C4, becomes C2, C4, C6
+    // These should be atoms that are connected to other residues
+
+    std::sort(atomsConnectedToOtherResidues.begin(), atomsConnectedToOtherResidues.end(), selection::compareAtomNumbers);
+
+    // Now we want to get the residue of each atom connected to these atoms, but some of these will be in the same residue and should be ignored.
+    MolecularModeling::ResidueVector sortedNeighbors; 
+    for(auto & sortedAtom : atomsConnectedToOtherResidues)
+    {
+       // std::cout << "Atoms connected to other residues are " << sortedAtom->GetId() << "\n";
+        for(auto & neighboringAtom : sortedAtom->GetNode()->GetNodeNeighbors())
+        {   // want to find residue of atoms that are connected to sortedAtom
+            if (neighboringAtom->GetResidue()->GetIndex() != sortedAtom->GetResidue()->GetIndex())
+            {
+            //    std::cout << "Neighbor of that atom which is in another resiude is " << neighboringAtom->GetResidue()->GetId() << "@" << neighboringAtom->GetId() << "\n";
+                sortedNeighbors.push_back(neighboringAtom->GetResidue());
+            }
+        }
+    }
+    return sortedNeighbors;
+}
+
+
+// After getting connection atoms between two residues, we have the linear path between them e.g.:
+// (Residue1 C2 - O7 - C7 - O6 - C6 Residue2), where C2 and C6 are the cycle points. In cases like 2-7 or 2-8 linkages, we have significant branches from this linear path
+//                    /
+//                   C8-O8
+//                  /
+//                 C9-O9 
+// And we need to set reasonable values for the C9-C8, and C8-C7 dihedral angles.
+// This is further complicated by the possibility of "DNeup5Aca2-7[DNeup5Aca2-8]DNeup5Aca2-OH", where one of the branches is part of another linkage.
+// This will work for 7/8/9 linked sialic acids, but if we get more heavily branched linkages this will need to change to iteratively find branches from branches
+//
+
+void selection::FindEndsOfBranchesFromLinkageAtom(MolecularModeling::Atom* currentAtom, MolecularModeling::Atom* previousAtom, Branch *branch)
+{
+    branch->ChangeDepth(1);
+    currentAtom->SetDescription("VistedByFindEndsOfBranchesFromLinkageAtom");
+    bool deadEndAtom = true;
+    bool connectsToAnotherResidue = false;
+    for (auto &neighbor : currentAtom->GetNode()->GetNodeNeighbors())
+    {
+        if (neighbor->GetDescription() != "VistedByFindEndsOfBranchesFromLinkageAtom" 
+            && *neighbor != *previousAtom 
+            && neighbor->GetResidue() == previousAtom->GetResidue()) // Don't explore across residues.
+        { 
+            if (neighbor->GetNode()->GetNodeNeighbors().size() > 1)
+            {
+                deadEndAtom = false;
+                //std::cout << "At depth " << branch->GetDepth() << " going deeper from " << currentAtom->GetId() << " to " << neighbor->GetId() << "\n";
+                FindEndsOfBranchesFromLinkageAtom(neighbor, currentAtom, branch);
+                branch->ChangeDepth(-1);
+            }
+        }
+        if (neighbor->GetResidue() != previousAtom->GetResidue())
+        {
+            connectsToAnotherResidue = true;
+        }
+    }
+    //std::cout << "  Status at " << currentAtom->GetId() << " is deadEndAtom:" << std::boolalpha << deadEndAtom << ", depth: " << branch->GetDepth() << ", connectsToOther: " << connectsToAnotherResidue << std::endl; 
+    if (deadEndAtom && !connectsToAnotherResidue && branch->GetDepth() > 1 && branch->AtMaxDepth())
+    {
+        //std::cout << "      Found a dead end: " << currentAtom->GetId() << " at depth " << branch->GetDepth() << std::endl;
+        branch->SetEnd(currentAtom);
+    }
+    return;
+}
+
+std::string selection::GetNonCarbonHeavyAtomNumbered(AtomVector atoms, std::string queryNumber)
+{
+    for (auto &atom : atoms)
+    {    // Assuming atoms like C2, O2 or N2. Nothing else should match.
+        std::string number = atom->GetName().substr(1);
+        if ( (number == queryNumber) && (atom->GetName().at(0) != 'C') && (atom->GetName().at(0) != 'H'))
+        {
+            return atom->GetName();
+        }
+    }
+    return "";    
+}
+
+AtomVector selection::FindHeavyAtoms(AtomVector query)
+{
+	AtomVector foundAtoms;
+	for (auto &atom : query)
+	{
+		char element = atom->GetName().at(0);
+	    if ( ( element == 'S') || ( element == 'C') || ( element == 'O') || ( element == 'N') || ( element == 'P') )
+	    {
+	    	foundAtoms.push_back(atom);
+	    }
+	}
+	return foundAtoms;
+}
+
+int selection::FindHighestResidueNumber(MolecularModeling::Assembly &ass, std::string inputChainID)
+{
+    int highest = 0;
+    for (auto &residue : FindResiduesWithChainID(ass, inputChainID))
+    {
+        int resNumInt = std::stoi(residue->GetNumber());
+        if (resNumInt > highest)
+        {
+            highest = resNumInt;
+        }
+    }
+    return highest;
+}
+
+std::vector<MolecularModeling::Residue*> selection::FindResiduesWithChainID(MolecularModeling::Assembly &ass, std::string inputChainID)
+{
+    std::vector<MolecularModeling::Residue*> foundResidues;
+    for (auto &residue : ass.GetResidues())
+    {
+        if (inputChainID == residue->GetChainID())
+        {
+            foundResidues.push_back(residue);
+        }
+    }
+    return foundResidues;
+}

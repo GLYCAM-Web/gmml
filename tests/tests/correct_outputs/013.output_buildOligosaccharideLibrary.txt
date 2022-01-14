@@ -1,0 +1,126 @@
+
+*********************
+Building DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+*********************
+Test level caught exception: Could not find prep entry for DNeu5Ac Glycam: 0Sa
+
+
+*********************
+Building DNeup5Aca2-9DNeup5Aca2-8DNeup5Aca2-7DNeup5Aca2-3DGlcpb1-6DManpb1-OME
+*********************
+
+*********************
+Building DGlcpa1-2DFrufb
+*********************
+
+*********************
+Building DFrufb2-1DGlcpa
+*********************
+
+*********************
+Building DGlcpa1-R
+*********************
+Test level caught exception: No residue code found in GMML metadata for residue: R
+
+*********************
+Building LRhapa1-6DGlcpb1-OH
+*********************
+
+*********************
+Building LRhapa1-6DGalpb1-OH
+*********************
+
+*********************
+Building DNeupNAca2-4DGalpb1-3LIdopa1-OH
+*********************
+Test level caught exception: Could not find prep entry for LIdop Glycam: 3iA
+
+
+*********************
+Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
+*********************
+
+*********************
+Building DGlcpA1-OH
+*********************
+Test level caught exception: Could not find prep entry for DGlcp Glycam: 0G
+
+
+*********************
+Building DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
+*********************
+
+*********************
+Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-6DGlcpb1-6DGalpb1-OH
+*********************
+
+*********************
+Building LFucpa1-1DFrufb2-OME
+*********************
+
+*********************
+Building DManpb1-2DManp[6A]b1-2[DGalp[6Ac]b1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+*********************
+
+*********************
+Building DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+*********************
+
+*********************
+Building LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
+*********************
+Test level caught exception: No linkage code found in GMML metadata for linkage: 4,5
+
+*********************
+Building DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
+*********************
+
+*********************
+Building DLyxpa1-2[DManpb1-4][LGulpb1-6]DGlcpa1-2[LGalpa1-5][LFucpa1-1]DFrufb
+*********************
+Test level caught exception: No linkage code found in GMML metadata for linkage: 1,2,5
+
+*********************
+Building DManpb1-4[DLyxpa1-2][LGulpb1-6]DGlcpa1-2[LFucpa1-1][LGalpa1-5]DFrufb
+*********************
+Test level caught exception: No linkage code found in GMML metadata for linkage: 1,2,5
+
+*********************
+Building DFrupa2-6DManpa1-OH
+*********************
+
+*********************
+Building DFrupb2-6DManpa1-OH
+*********************
+
+*********************
+Building DGlcp[4D,3Me]b1-2DManp[6H]a1-OH
+*********************
+
+*********************
+Building DFrufb2-6DFrufb2-6[DFrufb2-6DFrufb2-1]DFrufb2-6DFrufb2-6DFrufb2-OH
+*********************
+Test level caught exception: No linkage code found in GMML metadata for linkage: 1,6
+00001.pdb not created.
+00002.pdb succesfully created.
+00003.pdb succesfully created.
+00004.pdb succesfully created.
+00005.pdb not created.
+00009.pdb succesfully created.
+00010.pdb succesfully created.
+00011.pdb not created.
+00012.pdb succesfully created.
+00013.pdb not created.
+00014.pdb succesfully created.
+00015.pdb succesfully created.
+00016.pdb succesfully created.
+00019.pdb succesfully created.
+00020.pdb succesfully created.
+00021.pdb not created.
+00023.pdb succesfully created.
+00024.pdb not created.
+00025.pdb not created.
+00026.pdb succesfully created.
+00027.pdb succesfully created.
+00028.pdb succesfully created.
+00029.pdb not created.

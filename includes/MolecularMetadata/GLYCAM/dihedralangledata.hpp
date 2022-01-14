@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-#include <regex>
 // Query function includes:
 #include "../../MolecularModeling/atom.hpp"
 #include "../../MolecularModeling/residue.hpp"
@@ -62,7 +61,7 @@ public:
     //                      QUERY FUNCTIONS                 //
     //////////////////////////////////////////////////////////
     // Pass in the two atoms on either side the residue-residue linkage
-    DihedralAngleDataVector GetEntriesForLinkage( MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2);
+    DihedralAngleDataVector GetEntriesForLinkage(MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2);
 
 private:
     //////////////////////////////////////////////////////////
@@ -72,8 +71,7 @@ private:
     // Most entries have "none" for condition. This checks first if condition is "none", and therefore satisfied.
     // Otherwise (else if) it checks if any of the residue_types match the condition for the entry, e.g. gauche_effect=galacto.
     bool checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::vector<std::string> entry_conditions);
-
-
+    
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////

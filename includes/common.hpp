@@ -101,7 +101,17 @@ namespace gmml
                                       "VAL", "LEU", "THR", "SER", "LYS",
                                       "MET", "TYR", "TRP", "PHE", "SEC",
                                       "ILE", "CYX", "HID", "HIE", "NLN",
-                                      "OLY", "OLS", "OLT"};
+                                      "OLY", "OLS", "OLT", "NALA", "NASP",
+				      "NASN", "NARG", "NGLY", "NGLU", "NGLN",
+				      "NPRO", "NHIS", "NCYS", "NVAL", "NLEU",
+				      "NTHR", "NSER", "NLYS", "NMET", "NTYR",
+				      "NTRP", "NPHE", "NSEC", "NILE", "NCYX",
+				      "NHID", "NHIE", "CNALA", "CNASP", 
+                                      "CASN", "CARG", "CGLY", "CGLU", "CGLN", 
+                                      "CPRO", "CHIS", "CCYS", "CVAL", "CLEU", 
+                                      "CTHR", "CSER", "CLYS", "CMET", "CTYR", 
+                                      "CTRP", "CPHE", "CSEC", "CILE", "CCYX", 
+                                      "CHID", "CHIE"};
 
     const int PROTEINSSIZE = ( sizeof( PROTEINS ) / sizeof( PROTEINS[ 0 ] ) );
 
@@ -1007,15 +1017,16 @@ namespace gmml
         VISITED = 1,
         DONE = 2
     };
-    /*! \enum
-      * LogLevel enumerator
-      */
-    enum LogLevel
-    {
-        INF,
-        ERR,
-        WAR
-    };
+    // Moved to includes/logging.hpp
+//    /*! \enum
+//      * LogLevel enumerator
+//      */
+//    enum LogLevel
+//    {
+//        INF,
+//        ERR,
+//        WAR
+//    };
     /*! \enum
       * Condensed sequence token type
       */

@@ -1,7 +1,8 @@
-#include "../../includes/GeometryTopology/coordinate.hpp"
-#include "../../includes/common.hpp"
-#include "../../includes/utils.hpp"
 #include <limits>
+#include "includes/GeometryTopology/coordinate.hpp"
+#include "includes/common.hpp"
+#include "includes/utils.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using GeometryTopology::Coordinate;
 

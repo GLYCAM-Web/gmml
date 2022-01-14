@@ -13,6 +13,15 @@ using gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookupContaine
 //                      QUERY FUNCTIONS                 //
 //////////////////////////////////////////////////////////
 
+std::string Glycam06ResidueNamesToCodesLookupContainer::GetCodeForResidue(std::string queryResidueName)
+{ // e.g. input = Fuc, output = F.
+    for (const auto& entry : ResidueNamesCodesTypesLookupTable_)
+    {
+        if (entry.residueName_ == queryResidueName)
+            return entry.glycamCode_;
+    }
+    return "";
+}
 
 // This won't be correct all the time (see Tyv), but should be ok for displaying labels to humans.
 std::string Glycam06ResidueNamesToCodesLookupContainer::GetResidueForCode(std::string residueNameInGLYCAMFormat)
@@ -115,16 +124,17 @@ Glycam06ResidueNamesToCodesLookupContainer::Glycam06ResidueNamesToCodesLookupCon
         {"Xyl"         , "X"  , "Saccharide"},
         {"GlcNS"       , "Y"  , "Saccharide"},
         {"Tyvp"        , "TV" , "Saccharide"}, // Can be alpha or beta. Feck.
-        {"45UIdopa"    , "45" , "Saccharide"}, // Unsaturated 4,5-unsaturated uronate
-        {"LIdoA(1C4)"  , "UA1", "Saccharide"}, // e.g 0uA1 with the 1 over-running.
-        {"LIdoA(2SO)"  , "UA2", "Saccharide"},
-        {"LIdoA(4C1)"  , "UA3", "Saccharide"},
-        {"Neu5Gcpa"    , "GL" , "Saccharide"},
-        {"NeuNGcpa"    , "GL" , "Saccharide"},
+        {"dUA"         , "45" , "Saccharide"}, // Unsaturated 4,5-unsaturated uronate.
+        {"LIdopA(1C4)" , "uA1", "Saccharide"}, // e.g 0uA1 with the 1 over-running.
+        {"LIdopA(2SO)" , "uA2", "Saccharide"},
+        {"LIdopA(4C1)" , "uA3", "Saccharide"},
+        {"Neup5Gca"    , "GL" , "Saccharide"},
+        {"NeupNGca"    , "GL" , "Saccharide"},
         {"KDNpa"       , "KN" , "Saccharide"},
         {"KDOpa"       , "KO" , "Saccharide"},
         {"Bacpb"       , "BC" , "Saccharide"},
         {"ROH"         , "ROH", "Aglycone"  },
+        {"OH"          , "ROH", "Aglycone"  },
         {"OME"         , "OME", "Aglycone"  },
         {"OtBu"        , "TBT", "Aglycone"  },
         {"OThr"        , "OLT", "Amino-acid"},
@@ -135,5 +145,10 @@ Glycam06ResidueNamesToCodesLookupContainer::Glycam06ResidueNamesToCodesLookupCon
         {"Phospho"     , "PO3", "Derivative"},
         {"Methyl"      , "MEX", "Derivative"},
         {"Acetyl"      , "ACX", "Derivative"},
+        {"S"           , "SO3", "Derivative"},
+        {"P"           , "PO3", "Derivative"},
+        {"Me"          , "MEX", "Derivative"},
+        {"Ac"          , "ACX", "Derivative"},
+        {"A"           , "ACX", "Derivative"},
     };
 }

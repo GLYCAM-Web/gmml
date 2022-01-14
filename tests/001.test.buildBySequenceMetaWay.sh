@@ -1,15 +1,15 @@
 #!/bin/bash
 
 printf "Testing buildBySequenceMeta... "
-g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/buildBySequenceMeta.cc -lgmml -o buildBySequenceMeta
+g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/001.buildBySequenceMeta.cc -lgmml -pthread -o buildBySequenceMeta
 ./buildBySequenceMeta > /dev/null 2>&1
-if [ -f default.pdb ]; then
-    if ! cmp default.pdb tests/correct_outputs/buildBySequenceMeta.pdb > /dev/null 2>&1; then
+if [ -f structure.pdb ]; then
+    if ! cmp structure.pdb tests/correct_outputs/001.buildBySequenceMeta.pdb > /dev/null 2>&1; then
         printf "Test FAILED!.\n"
         return 1;
     else
         printf "Test passed.\n"
-        rm default.pdb buildBySequenceMeta
+        rm structure.pdb buildBySequenceMeta
         return 0;
     fi
 else

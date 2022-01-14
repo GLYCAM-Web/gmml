@@ -85,7 +85,7 @@ namespace CondensedSequenceSpace
             typedef std::map<int, std::vector<std::vector<std::string> > > IndexConfigurationNameMap;
             typedef std::map<int, std::string> IndexNameMap;
             typedef std::map<int, std::string> DerivativeMap;
-    	    enum Reordering_Approach {PRESERVE_USER_INPUT, LOWEST_INDEX, LONGEST_CHAIN};
+    	    enum class Reordering_Approach {PRESERVE_USER_INPUT, LOWEST_INDEX, LONGEST_CHAIN};
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
@@ -99,6 +99,7 @@ namespace CondensedSequenceSpace
             CondensedSequenceResidueTree GetCondensedSequenceResidueTree();
             CondensedSequenceGlycam06ResidueTree GetCondensedSequenceGlycam06ResidueTree();
 	    InputOutput::Response GetResponse();
+            bool GetIsSequenceOkay();
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -118,15 +119,21 @@ namespace CondensedSequenceSpace
 	    bool ParseSequenceAndCheckSanity(std::string sequence);
 	    bool CheckResidueTokenSanity();
 	    bool CheckLinkageAndDerivativeSanity();
-            bool ParseCondensedSequence(std::string sequence, CondensedSequence* condensed_sequence);
+            bool ParseCondensedSequence(std::string sequence);
             int BuildArrayTreeOfCondensedSequenceResidue();
             bool BuildArrayTreeOfCondensedSequenceGlycam06Residue(CondensedSequenceResidueTree residue_tree);
 	    void FindLongestPath(std::vector<int>& longest_path);
 	    void RecursivelyLabelCondensedSequence(int current_residue_index, int& current_resdiue_label_index, int& current_bond_label_index,
                                                    std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map,
-                                                   CondensedSequence::Reordering_Approach labeling_approach, std::vector<int>& longest_path);
-	    void RecursivelyBuildLabeledCondensedSequence(int current_index, int& branch_depth, std::string& labeled_sequence, CondensedSequence::Reordering_Approach reordering_approach                                                                            ,std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map, 
-			                                                    std::vector<int>& longest_path, bool label);
+                                                   CondensedSequence::Reordering_Approach labeling_approach, std::vector<int>& longest_path,
+						   std::map<int, std::map<int, std::string> >& condensed_residue_derivative_res_label_map,
+						   std::map<int, std::map<int, std::string> >& condensed_residue_derivative_bond_label_map,
+						   CondensedSequenceResidueTree& rearranged_tree_by_labeling, CondensedSequenceGlycam06ResidueTree& rearranged_06_tree_by_labeling, 
+						   std::map<int, int>& condensed_06_index_map);
+	    void RecursivelyBuildLabeledCondensedSequence(int current_index, int& branch_depth, std::string& labeled_sequence, CondensedSequence::Reordering_Approach reordering_approach,
+                                                          std::map<unsigned int, std::string>& residue_label_map, std::map<unsigned int, std::string>& bond_label_map, 
+			                                  std::vector<int>& longest_path, bool label, std::map<int, std::map<int, std::string> >& condensed_residue_derivative_res_label_map,
+							  std::map<int, std::map<int, std::string> >& condensed_residue_derivative_bond_label_map);
             std::string GetGlycam06TerminalResidueCodeOfTerminalResidue(std::string terminal_residue_name);
             std::string GetGlycam06ResidueCodeOfCondensedResidue(CondensedSequenceResidue* condensed_residue, std::vector<int> open_valences);
             std::string GetFirstLetterOfGlycam06ResidueCode(std::bitset<10> open_valences_check);
@@ -146,6 +153,7 @@ namespace CondensedSequenceSpace
             void Print(std::ostream& out = std::cerr);
             void WriteGraphVizDotFile(GraphVizDotConfig& configs);
         private:
+            void SetIsSequenceOkay(bool status);
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
@@ -156,6 +164,7 @@ namespace CondensedSequenceSpace
             CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree_;
 	    InputOutput::Response response_;
 	    std::vector<std::pair<int, int> > anomeric_anomeric_linkages_; 
+            bool isSequenceOkay_;
     };
 }
 

@@ -1,7 +1,10 @@
+#ifndef GUESSES_CPP 
+#define GUESSES_CPP //Yao added definition guard 03/24/2020
 
-#include "../../includes/MolecularModeling/assembly.hpp"
-#include "../../includes/MolecularModeling/atom.hpp"
-#include "../../includes/MolecularModeling/atomnode.hpp"
+#include "includes/MolecularModeling/assembly.hpp"
+#include "includes/MolecularModeling/atom.hpp"
+#include "includes/MolecularModeling/atomnode.hpp"
+#include "includes/CodeUtils/logging.hpp";
 
 bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* carbon1, MolecularModeling::Atom* carbon2)
 {
@@ -224,3 +227,4 @@ std::pair<double,double> MolecularModeling::Assembly::guessBondLengthByAtomType(
   
 
 }
+#endif //GUESSES_CPP

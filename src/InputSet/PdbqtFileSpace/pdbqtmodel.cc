@@ -1,12 +1,12 @@
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtcompoundcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtremarkcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
-#include "../../../includes/utils.hpp"
-#include "../../../includes/common.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp"
-
+#include "includes/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtcompoundcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtremarkcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
+#include "includes/utils.hpp"
+#include "includes/common.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp"
+#include "includes/CodeUtils/logging.hpp"
 using PdbqtFileSpace::PdbqtModel;
 
 //////////////////////////////////////////////////////////
@@ -83,6 +83,7 @@ PdbqtModel::PdbqtModel(std::ifstream &model_block)
 	    //int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
             //model_block.seekg(offset, model_block.cur);//Go back one line
 	    //break;
+	    std::cerr << "Bad line:  " << line << std::endl;
             throw PdbqtFileProcessingException(__LINE__, "Illegal record detected in model section");
         }
     }//while

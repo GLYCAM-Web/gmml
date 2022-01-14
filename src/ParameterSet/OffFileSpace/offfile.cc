@@ -50,6 +50,7 @@ using OffFileSpace::OffFile;
             WriteHierarchySection(out_file,this->off_file_residues_);
             WriteNameSection(out_file);
             WritePositionSection(out_file,residues, CoordinateIndex);
+            //WriteConnectivitySection(out_file,residues);
             WriteResidueConnectSection(out_file,residues);
             WriteResiduesSection(out_file,residues);
             WriteSolventCapSection(out_file);
@@ -326,7 +327,9 @@ This whole loop seems to be unused
                     c2x_count++;
                 }
 
-		stream << " " << c1x[0] << " " << c2x[0];
+		if (c1x.size() > 0 && c2x.size() > 0){ //Yao added this if statement guard. What if these vectors are empty? Then it segfaults. 03/24/2020
+		    stream << " " << c1x[0] << " " << c2x[0];
+		}
 		for (int i=1; i<c1x_count; i++){
 		    stream << " " << c1x[i];
 		}

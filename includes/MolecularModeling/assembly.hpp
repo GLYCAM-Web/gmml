@@ -9,6 +9,7 @@
 
 #include "../GeometryTopology/coordinate.hpp"
 #include "../GeometryTopology/plane.hpp"
+#include "../GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "../common.hpp"
 #include "../Glycan/chemicalcode.hpp"
 #include "../Glycan/sugarname.hpp"
@@ -40,8 +41,9 @@
 //#include "atomnode.hpp"
 #include "residuenode.hpp"
 
-class Residue_linkage;
-typedef std::vector<Residue_linkage> ResidueLinkageVector;
+// has been moved to residue_linkage.hpp
+//class Residue_linkage;
+//typedef std::vector<Residue_linkage> ResidueLinkageVector;
 
 namespace MolecularModeling
 {
@@ -92,7 +94,7 @@ public:
         // not sure what kinds of error/warning messages gmml will provide
         std::vector<std::string> error_warning_messages;
     } gmml_api_output;
-    
+
     struct parsedString
     {
       std::string label;
@@ -144,6 +146,7 @@ public:
     //An assembly created by residues of another assembly
     Assembly(std::vector<MolecularModeling::Residue*> residueVector);
 
+    Assembly(std::string inputSequence, std::string prepFilePath);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -274,6 +277,12 @@ public:
     /** \addtogroup Manipulators
                * @{
                */
+    /*! \fn
+              * A mutator function in order to create a MolecularModeling::Residue
+              * This line repeats the same thing above, but in a different way
+              * @param PrepFileSpace::PrepFileResidue* and a Residue::Type that is defaulted to type "Undefined"
+              */
+    Residue& CreateResidue(PrepFileSpace::PrepFileResidue*, Residue::Type residueType = Residue::Type::Undefined);
     /*! \fn
               * A mutator function in order to set the name of the current object
               * Set the name_ attribute of the current assembly
@@ -406,7 +415,7 @@ public:
               * @param condensed_sequence The condensed sequence string, for example DManpa1-4DGlcpb1-OH
           * @param prep_file A prep file object.
               */
-    void BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file);	//Created by Yao 06/25/2018, replace old version above
+    void BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file); //Created by Yao 06/25/2018, replace old version above
     /*! \fn
               * A function in order to build an assembly from a condensed sequence, using a prep file as source data
               * A wrapper function for python to call. I(Yao) don't know how to initiate a prep file object in python. So let python generate a string, convert into prep file object
@@ -522,6 +531,7 @@ public:
     void Grafting(MolecularModeling::Atom* parent_tail_atom, MolecularModeling::Atom* child_head_atom, double head_tail_bond_length);  //Added by Yao 08/20/2019.
     void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
     void RemoveHydrogenAtAttachedPosition(Residue* residue, int branch_index);
+    void RemoveAllHydrogenAtoms(); 
     void SetDerivativeAngle(Residue* residue, Residue* parent_residue, int branch_index);
     void AdjustCharge(Residue* residue, Residue* parent_residue, int branch_index);
     void SetAttachedResidueBond(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
@@ -643,14 +653,14 @@ public:
               * Exports data from assembly data structure into pdb file structure
               * @param link_card_direction An integer to define the direction in the link cards (-1: O -> C and 1: C -> O)
               */
-    PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1, int connect_card_existance = 1, int model_index = -1 );
+    PdbFileSpace::PdbFile* BuildPdbFileStructureFromAssembly(int link_card_direction = -1, int connect_card_existance = 1, int model_index = -1 , bool useInputPDBResidueNumbers = true);
     /*! \fn
               * A function to build a pdbqt file structure from the current assembly object
               * Exports data from assembly data structure into pdbqt file structure
               */
     PdbqtFileSpace::PdbqtFile* BuildPdbqtFileStructureFromAssembly();
 
-    void ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number,
+    void ExtractPdbModelSectionFromAssembly(PdbFileSpace::PdbModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number, bool useInputPDBResidueNumbers,
                                             AssemblytoPdbSequenceNumberMap& assembly_to_pdb_sequence_number_map, AssemblytoPdbSerialNumberMap& assembly_to_pdb_serial_number_map);
     void ExtractPdbqtModelCardFromAssembly(PdbqtFileSpace::PdbqtModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number);
     void ExtractPdbLinkSectionFromAssembly(PdbFileSpace::PdbLinkSection* link_card, int model_index, AssemblytoPdbSequenceNumberMap assembly_to_pdb_sequence_number,
@@ -992,16 +1002,17 @@ public:
     void TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
     void RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map, std::string prep_file);
     int  RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& target_atoms, Atom* template_atoms, std::map<Atom*, std::string>& target_atom_label_map,
-                                           std::map<Atom*, std::string>& template_atom_label_map, std::map<Atom*, Atom*>& target_template_vertex_match, 
-                                           std::map<Atom*, Atom*>& template_target_vertex_match, std::vector<Atom*>& insertion_order,
+                                           std::map<Atom*, std::string>& template_atom_label_map, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match,
+                                           std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match, std::vector<Atom*>& insertion_order,
                                            std::vector<std::map<Atom*, Atom*> >& all_isomorphisms);
+    bool CheckAndAcceptMatches(MolecularModeling::AtomVector& target_atoms, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match, std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match, std::vector<std::map<Atom*, Atom*> >& all_isomorphisms);
     bool AllAtomEdgesMatch(Atom* target_atom, Atom* template_atom, std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map);
     bool AtomVertexMatch(Atom* target_atom, Atom* template_atom, std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map);
     bool IfMatchScenarioAlreadyExists(std::map<Atom*, Atom*>& target_template_vertex_match,
                                         std::vector<std::map<Atom*, Atom*> >& all_isomorphisms);
-    void RemoveDownstreamMatches(Atom* target_atom, std::map<Atom*, Atom*>& target_template_vertex_match,
-                                 std::map<Atom*, Atom*>& template_target_vertex_match, std::vector<Atom*> target_insertion_order);
-    bool IfVertexAlreadyMatched(Atom* vertex_atom, std::map<Atom*, Atom*>& match_map);
+    void RemoveDownstreamMatches(Atom* target_atom, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match,
+                                 std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match, std::vector<Atom*> target_insertion_order);
+    bool IfVertexAlreadyMatched(Atom* vertex_atom, std::vector<std::map<Atom*, Atom*> >& match_map);
 
     /// Pattern mathing
     bool PatternMatching(Residue* residue, ResidueVector query_residues, gmml::GlycamAtomNameMap& pdb_glycam_map, gmml::GlycamAtomNameMap& glycam_atom_map);
@@ -1371,10 +1382,10 @@ public:
     std::string ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type);
 
     std::string ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type);
-    
+
     GraphDS::Graph CreateQueryStringGraph(std::string queryString);
     void ConnectNodes(int start, int end, std::vector<parsedString> &parsedVector, GraphDS::Graph& graph);
-    
+
     /*! \fn
             * A function in order to extract necessary atom coordinates from ontology to calculate phi/psi/omega torsion angles
             * @param disaccharide_pattern The disaccharide pattern that is going to be searched in ontology
@@ -1459,8 +1470,8 @@ public:
             * @param atom4_crd The geometric coordinate of the fourth atom of the torsion angle
             * @return current_dihedral The calculated torsion angle (radian)
             */
-    double CalculateTorsionAngleByCoordinates(GeometryTopology::Coordinate* atom1_crd, GeometryTopology::Coordinate* atom2_crd,
-                                              GeometryTopology::Coordinate* atom3_crd, GeometryTopology::Coordinate* atom4_crd);
+  //  double CalculateTorsionAngleByCoordinates(GeometryTopology::Coordinate* atom1_crd, GeometryTopology::Coordinate* atom2_crd,
+  //                                            GeometryTopology::Coordinate* atom3_crd, GeometryTopology::Coordinate* atom4_crd);
     /*! \fn
             * A function in order to calculate torsion angles based on the Assembly atom objects
             * @param atom1 The first atom of the torsion angle
@@ -1469,6 +1480,7 @@ public:
             * @param atom4 The fourth atom of the torsion angle
             * @return current_dihedral The calculated torsion angle (radian)
             */
+    // OG Feb 2021. DO NOT USE CalculateTorsionAngleByAtoms. Only used by guesses.cc for now until bug sorted. USE GeometryTopology::CalculateDihedralAngle
     double CalculateTorsionAngleByAtoms(Atom* atom1, Atom* atom2, Atom* atom3, Atom* atom4);
     /*! \fn
             * A function in order to calculate a torsion angle matrix based on a file that contains torison angles calculated from PDB file(s)

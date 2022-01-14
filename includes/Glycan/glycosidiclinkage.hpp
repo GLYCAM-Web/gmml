@@ -25,9 +25,12 @@ namespace Glycan
     std::string anomeric_configuration_; //can be α/β
     std::string hydroxyl_configuration_; //can be axial/equatorial
     double phi_angle_ = -9999;
+    double phi_prime_angle_ = -9999;
     double psi_angle_ = -9999;
     double omega_angle_ = -9999;
     double phi_CHI_Energy_ = 0;
+    //No CHI Energy functions exist for anomeric-anomeric linkages
+    //so there is no phi_prime_CHI_Energy_.
     double psi_CHI_Energy_ = 0;
     double omega_CHI_Energy_ = 0;
     MolecularModeling::Atom* reducing_mono_carbon_ = NULL;
@@ -36,14 +39,14 @@ namespace Glycan
     MolecularModeling::Atom* glycosidic_oxygen_ = NULL;
 
     GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide* targetMono, std::string source_carbon_ID, std::string target_carbon_ID);
+
     //FUNCTIONS
-    double CalculatePhiAngle();
-    double CalculatePsiAngle();
-    double CalculateOmegaAngle();
+    double CalculatePhiAngle(std::vector<MolecularModeling::Atom*> linkage_Atoms);
+    double CalculatePsiAngle(std::vector<MolecularModeling::Atom*> linkage_Atoms);
+    double CalculateOmegaAngle(std::vector<MolecularModeling::Atom*> linkage_Atoms);
     double CalculatePhiChiEnergy();
     double CalculatePsiChiEnergy();
     double CalculateOmegaChiEnergy();
-
   };
 }
 

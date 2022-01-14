@@ -12,7 +12,8 @@
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
-
+#include "./TemplateGraph/GraphStructure/include/Node.hpp" // TemplateGraph
+#include "./Abstract/Residue.hpp"
 
 
 namespace MolecularModeling
@@ -23,7 +24,7 @@ namespace MolecularModeling
     //class PrepFileResidue; //This is not in the MolecularModeling namespace
     class Residue; // Forward declare for the vector typedef
     typedef std::vector<MolecularModeling::Residue*> ResidueVector;
-    class Residue : public ResidueProperties
+    class Residue : public ResidueProperties, public Abstract::Residue, public glygraph::Node<Residue>
     {
         public:
             //////////////////////////////////////////////////////////
@@ -40,8 +41,10 @@ namespace MolecularModeling
               */
             Residue();
             Residue(Assembly* assembly, std::string name);
-            Residue(Residue* residue);
-            Residue(Residue& residue);
+            Residue(PrepFileSpace::PrepFileResidue *prep_residue);
+            Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type);
+            // Residue(Residue* residue);
+            // Residue(Residue& residue);
 
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
@@ -68,6 +71,7 @@ namespace MolecularModeling
               * An accessor function in order to access to the atoms
               * @return atoms_ attribute of the current object of this class
               */
+            std::string GetChainID();
             AtomVector GetAtoms();
             /*! \fn
               * An accessor function in order to access to the head atoms
@@ -96,7 +100,7 @@ namespace MolecularModeling
             std::string GetId();
             /*! \fn                                                                              //Added by ayush on 11/20/17 for residuenodes in assembly
               * An accessor function in order to access to the node
-              * @return node_ attribute of the current object of this class
+              * @return residuenode_ attribute of the current object of this class
               */
             ResidueNode* GetNode();
 
@@ -108,7 +112,7 @@ namespace MolecularModeling
             * @return index_ attribute of the current object of this class
             */
             unsigned long long GetIndex() const;
-            
+
             bool GetIsSugar();
 
 /** @}*/
@@ -161,6 +165,12 @@ namespace MolecularModeling
               */
             void AddHeadAtom(Atom* head_atom);
             /*! \fn
+              * A function in order to remove the head atom from the current object
+              * Set the head_atom_ attribute of the current residue
+              * @param head_atom The head atom to be removed
+              */
+	    void RemoveHeadAtom(Atom* head_atom);
+            /*! \fn
               * A mutator function in order to set the tail atoms of the current object
               * Set the tail_atoms_ attribute of the current residue
               * @param tail_atoms The head atoms attribute of the current object
@@ -172,6 +182,12 @@ namespace MolecularModeling
               * @param tail_atom The tail atom of the current object
               */
             void AddTailAtom(Atom* tail_atom);
+            /*! \fn
+              * A function in order to remove the tail atom from the current object
+              * Set the tail_atom_ attribute of the current residue
+              * @param head_atom The tail atom of the current object to be removed
+              */
+	    void RemoveTailAtom(Atom* tail_atom);
             /*! \fn
               * A mutator function in order to set the chemical type of the current object
               * Set the chemical_type_ attribute of the current residue
@@ -190,10 +206,12 @@ namespace MolecularModeling
               * @param id The identification attribute of the current object
               */
             void SetId(std::string id);
-
+            void SetChainID(std::string chain);
+            void SetResidueNumber(std::string number);
+            void SetIndex(unsigned long long index);
             /*! \fn                                                                                          //Added by ayush on 11/20/17 for residuenode in assembly
               * A mutator function in order to set the node of the current object
-              * Set the node_ attribute of the current residue
+              * Set the residuenode_ attribute of the current residue
               * @param node The node attribute of the current object
               */
             void SetNode(ResidueNode* node);
@@ -208,14 +226,14 @@ namespace MolecularModeling
             void SetIsSugarDerivative(bool is_derivative);
 
             void SetIsAglycon(bool is_aglycon);
-            
-            
+
+
             void SetIsSugar(bool is_sugar);
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
-	    
+	          std::string CreateID(std::string name = "default", std::string chain = "default", std::string number = "default");
             void BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *prep_residue);
             /// Check if all atoms in the residue have their element symbols --> Label directly (1st priority)
             bool CheckSymbolBasedElementLabeling();
@@ -235,6 +253,8 @@ namespace MolecularModeling
             Atom* GetAtom(std::string query_name);
             Atom* GetAtom(unsigned long long query_index);
             Atom* GetAtomWithId(std::string query_id);
+            void MakeDeoxy(std::string oxygenNumber);
+            double CalculateCharge();
 
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
@@ -279,8 +299,8 @@ namespace MolecularModeling
 	    //Added by Yao 06/13/2018
 	    bool is_sugar_derivative_ = false;
 	    bool is_aglycon_ = false;
-            ResidueNode* node_;                 /*!< A Pointer to a node of the graph structure that indicates this residue >*/              //Added by ayush on 11/20/17 for residuenode in assembly
-            
+            ResidueNode* residuenode_;                 /*!< A Pointer to a node of the graph structure that indicates this residue >*/              //Added by ayush on 11/20/17 for residuenode in assembly
+
       //Added by Dave 2/1/19
       bool is_sugar_ = false;
     };

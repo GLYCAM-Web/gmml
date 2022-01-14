@@ -6,6 +6,8 @@
 #include "../../includes/MolecularModeling/atomnode.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
 #include "../../includes/GeometryTopology/coordinate.hpp"
+#include "../../includes/gmml.hpp"
+
 #include "cmath"
 #include "algorithm"
 
@@ -15,11 +17,26 @@ using MolecularModeling::Atom;
 //////////////////////////////////////////////////////////
 Atom::Atom()
 {
-	this->index_ = this->generateAtomIndex();
-	// Call to private helper function.
+    this->index_ = this->generateAtomIndex();
+    // Call to private helper function.
     this->SetAttributes(NULL, "", GeometryTopology::CoordinateVector(), "", "", "", std::vector<AtomNode*>(), "", false, "");
-	this->SetBFactor(0);
-} // end Default Constructor
+    this->SetBFactor(0);
+    //Check if atom id is set. If so, change the index part (2nd token) from the index as in the PDB to the absolute index
+    if (this->id_.find("_") != std::string::npos){
+        std::vector<std::string> underscore_split_tokens = gmml::Split(this->id_, "_");
+	if (underscore_split_tokens.size() >=2){ //name_id_ etc.
+	    underscore_split_tokens[1] = std::to_string(this->index_);
+	}
+	std::string new_id;
+	for (std::vector<std::string>::iterator it = underscore_split_tokens.begin(); it != underscore_split_tokens.end(); it++){
+	    new_id += *it;
+	    if (it != (underscore_split_tokens.end() -1)){ //If not the last token
+	        new_id += "_";
+	    }
+	}
+	this->SetId(new_id);
+    }
+}   // end Default Constructor
 
 Atom::Atom(MolecularModeling::Residue* residue, std::string name, GeometryTopology::CoordinateVector coordinates)
 {
@@ -120,10 +137,12 @@ std::vector<MolecularModeling::AtomNode*> Atom::GetNodes() const
         return this->nodes_;
 }
 
-
 std::string Atom::GetId() const
 {
-	return this->id_;
+	//return this->id_;
+    std::stringstream ss;
+    ss << this->GetName() << "_" << this->GetIndex() << "_" << this->GetResidue()->GetId();
+    return ss.str();
 } // end GetId
 
 bool Atom::GetIsRing() const
@@ -155,6 +174,17 @@ float Atom::GetBFactor() const
 	return b_factor_;
 }
 
+//Added by Yao on 04/06/2020 
+int Atom::GetInputIndex() const
+{
+        return input_index_;
+}
+
+//Added by Yao on 01/07/2021
+float Atom::GetOccupancy() const
+{
+    return occupancy_;
+}
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -252,6 +282,17 @@ void Atom::SetBFactor(float b_factor)
 	this->b_factor_ = b_factor;
 }
 
+//Added by Yao on 04/06/20 for setting the input index as in the PDB file
+void Atom::SetInputIndex(int input_index)
+{
+        this->input_index_ = input_index;
+}
+
+//Added by Yao on 01/07/2021
+void Atom::SetOccupancy(float occupancy)
+{
+	this->occupancy_ = occupancy;
+}
 
 unsigned long long Atom::generateAtomIndex() {
 	static unsigned long long s_AtomIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
@@ -317,6 +358,30 @@ bool Atom::CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom)
         }
     }
     return withinDistance;
+}
+
+bool Atom::CheckIfOtherAtomIsWithinOverlapDistance(Atom* otherAtom)
+{
+    if (this->GetIndex() == otherAtom->GetIndex())
+    {
+        std::cerr << "Warning have just checked distance between an atom and itself!" << std::endl;
+        return true;
+    }
+    if (std::abs(this->GetCoordinate()->GetX() - otherAtom->GetCoordinate()->GetX()) < (gmml::maxCutOff * 2))
+    {
+        if (std::abs(this->GetCoordinate()->GetY() - otherAtom->GetCoordinate()->GetY()) < (gmml::maxCutOff * 2))
+        {
+            if (std::abs(this->GetCoordinate()->GetZ() - otherAtom->GetCoordinate()->GetZ()) < (gmml::maxCutOff * 2))
+            {
+                //If each dimension is within cutoff, then calculate 3D distance
+                if (this->GetDistanceToAtom(otherAtom) < (gmml::maxCutOff * 2))
+                {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 std::string Atom::DetermineChirality() //Added by Yao 08/26/3019 Return values are R,S,A. A = achiral
@@ -603,33 +668,38 @@ std::string Atom::DetermineRSAssignment(MolecularModeling::AtomVector& ordered_p
 
 double Atom::GetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::Atom *atom2, MolecularModeling::Atom *atom3, MolecularModeling::Atom *atom4)
 {
-    double current_dihedral = 0.0;
+    //double current_dihedral = 0.0;
     GeometryTopology::Coordinate* a1 = atom1->GetCoordinates().at(0);
     GeometryTopology::Coordinate* a2 = atom2->GetCoordinates().at(0);
     GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(0);
     GeometryTopology::Coordinate* a4 = atom4->GetCoordinates().at(0);
 
-    GeometryTopology::Coordinate b1 = a2;
-    b1.operator -(*a1);
-    GeometryTopology::Coordinate b2 = a3;
-    b2.operator -(*a2);
-    GeometryTopology::Coordinate b3 = a4;
-    b3.operator -(*a3);
-    GeometryTopology::Coordinate b4 = b2;
-    b4.operator *(-1);
+    bool returnRadians = true; // Original Atom:: function returned radians. Maybe that's why it was made.
+    return GeometryTopology::CalculateDihedralAngle(a1, a2, a3, a4, returnRadians);
 
-    GeometryTopology::Coordinate b2xb3 = b2;
-    b2xb3.CrossProduct(b3);
+    // Delete commented out code below if it's not early 2021.
 
-    GeometryTopology::Coordinate b1_m_b2n = b1;
-    b1_m_b2n.operator *(b2.length());
+    // GeometryTopology::Coordinate b1 = a2;
+    // b1.operator -(*a1);
+    // GeometryTopology::Coordinate b2 = a3;
+    // b2.operator -(*a2);
+    // GeometryTopology::Coordinate b3 = a4;
+    // b3.operator -(*a3);
+    // GeometryTopology::Coordinate b4 = b2;
+    // b4.operator *(-1);
 
-    GeometryTopology::Coordinate b1xb2 = b1;
-    b1xb2.CrossProduct(b2);
+    // GeometryTopology::Coordinate b2xb3 = b2;
+    // b2xb3.CrossProduct(b3);
 
-    current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
-    //return current_dihedral /3.1415 * 180;
-    return current_dihedral;
+    // GeometryTopology::Coordinate b1_m_b2n = b1;
+    // b1_m_b2n.operator *(b2.length());
+
+    // GeometryTopology::Coordinate b1xb2 = b1;
+    // b1xb2.CrossProduct(b2);
+
+    // current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
+    // //return current_dihedral /3.1415 * 180;
+    // return current_dihedral;
 }
 
 void Atom::InitializeComparisonTracker(std::map<std::vector<int>, std::vector<int> >& duplicate_value_indices_versus_higher_rank_indices, MolecularModeling::AtomVector& visited_atoms,
@@ -1239,21 +1309,22 @@ bool Atom::operator!= (const Atom &otherAtom)
 //////////////////////////////////////////////////////////
 void Atom::Copy(const Atom* atom)
 {
-    // Copy the easy stuff.
+    // Copy the easy stuff. 
     this->SetName(atom->GetName());
     this->SetChemicalType(atom->GetChemicalType());
     this->SetDescription(atom->GetDescription());
     this->SetElementSymbol(atom->GetElementSymbol());
     this->SetId(atom->GetId());
     this->SetIsRing(atom->GetIsRing());
-    this->SetAtomType(atom->GetAtomType());
     // Deep Copy objects
     // this->residue_ = new MolecularModeling::Residue(atom->GetResidue());
     this->SetResidue(atom->GetResidue());
+    if (!this->nodes_.empty()){
 	if(this->nodes_.at(0) != NULL)
 	{
 	    delete this->nodes_.at(0);
 	}
+    }
     this->nodes_.emplace_back (new MolecularModeling::AtomNode(atom->GetNode()));
     GeometryTopology::CoordinateVector atomCoordinates = atom->GetCoordinates();
     for(GeometryTopology::CoordinateVector::iterator it = atomCoordinates.begin(); it != atomCoordinates.end(); it++ )

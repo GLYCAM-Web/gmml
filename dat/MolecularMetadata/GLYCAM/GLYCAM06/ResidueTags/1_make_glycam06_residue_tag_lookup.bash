@@ -26,13 +26,10 @@ if [ -e ${OUTPATH}/${OUTFILE} ] ; then
 
 The specified output file:
 
-    ${OUTFILE}
-
-at path:
-
-    ${OUTPATH}
-
+    ${OUTPATH}/${OUTFILE}
+  
 already exists.  Please re/move it and then re-run this script."
+	return 1
 fi
 
 ########################################
@@ -76,7 +73,7 @@ fi
 ##
 ## Start by writing header-type info to the hpp file
 ##
-echo "#include \"../../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp\"
+echo "#include \"../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp\"
 
 /** \\file:  ${GMMLOUTPATH}/${OUTFILE}
  * GLYCAM06 metadata for residues

@@ -1,0 +1,11 @@
+Number of likely shapes for this sequence is 48
+Number of possible shapes for this sequence is 162
+Name: DNeu5Acpa2-6DGalpb, LinkageIndex: 7, Res1: 8, Res2: 7
+    LikelyRotamers: Phi, t, -g
+    LikelyRotamers: Omg, gg, gt, tg
+Name: DManpa1-6DManpb, LinkageIndex: 9, Res1: 10, Res2: 3
+    LikelyRotamers: Omg, gg, gt
+Name: DManpa1-6DManpa, LinkageIndex: 10, Res1: 11, Res2: 10
+    LikelyRotamers: Omg, gg, gt
+Name: Methyl3-6DGlcNAcpb, LinkageIndex: 13, Res1: 14, Res2: 2
+    LikelyRotamers: Omg, gg, gt

@@ -1,24 +1,25 @@
-#include "../../../includes/MolecularModeling/residue.hpp"
-#include "../../../includes/MolecularModeling/assembly.hpp"
-#include "../../../includes/MolecularModeling/atom.hpp"
-#include "../../../includes/MolecularModeling/atomnode.hpp"
-#include "../../../includes/MolecularModeling/residueproperties.hpp"
-#include "../../../includes/MolecularModeling/residuenode.hpp"
-#include "../../../includes/MolecularModeling/overlaps.hpp"
-#include "../../../includes/common.hpp"
 #include <algorithm>    // std::any_of
+#include "includes/MolecularModeling/residue.hpp"
+#include "includes/MolecularModeling/assembly.hpp"
+#include "includes/MolecularModeling/atom.hpp"
+#include "includes/MolecularModeling/atomnode.hpp"
+#include "includes/MolecularModeling/residueproperties.hpp"
+#include "includes/MolecularModeling/residuenode.hpp"
+#include "includes/MolecularModeling/overlaps.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using MolecularModeling::Residue;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Residue::Residue()
+Residue::Residue() : Node()
 {
     index_ = this->generateIndex();
+    this->SetId(this->CreateID());
 }
 
-Residue::Residue(MolecularModeling::Assembly *assembly, std::string name)
+Residue::Residue(MolecularModeling::Assembly *assembly, std::string name) : Node(name)
 {
     assembly_ = assembly;
     name_ = name;
@@ -27,59 +28,114 @@ Residue::Residue(MolecularModeling::Assembly *assembly, std::string name)
     tail_atoms_ = AtomVector();
     chemical_type_ = "";
     description_ = "";
-    id_ = "";
     index_ = this->generateIndex();
+    this->SetId(this->CreateID());
 }
 
-Residue::Residue(Residue *residue)
+Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue) : Node()
 {
-    assembly_ = new Assembly(residue->GetAssembly());
-    name_ = residue->GetName();
-    atoms_ = AtomVector();
-    AtomVector atoms = residue->GetAtoms();
-    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
-        atoms_.push_back(new MolecularModeling::Atom(*it));
-    head_atoms_ = AtomVector();
-    AtomVector head_atoms = residue->GetHeadAtoms();
-    for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
-        head_atoms_.push_back(new MolecularModeling::Atom(*it));
-    tail_atoms_ = AtomVector();
-    AtomVector tail_atoms = residue->GetTailAtoms();
-    for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
-        tail_atoms_.push_back(new MolecularModeling::Atom(*it));
-    chemical_type_ = residue->GetChemicalType();
-    description_ = residue->GetDescription();
-    id_ = residue->GetId();
-    index_ = this->generateIndex();
-}
+    this->SetIndex(this->generateIndex());
+    this->SetName(prep_residue->GetName());
+    this->SetId(this->CreateID());
+    this->BuildResidueFromPrepFileResidue(prep_residue);
+ }
 
-Residue::Residue(Residue& residue)
+Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type) : Node()
 {
-    Assembly *tempAssembly=residue.GetAssembly();
-    this->assembly_=tempAssembly;
-
-    this->name_=residue.GetName();
-    this->atoms_ = AtomVector();
-
-    AtomVector atoms = residue.GetAtoms();
-    for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
-        atoms_.push_back(new MolecularModeling::Atom(*it));
-
-    this->head_atoms_ = AtomVector();
-    AtomVector head_atoms = residue.GetHeadAtoms();
-    for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
-        head_atoms_.push_back(new MolecularModeling::Atom(*it));
-
-    this->tail_atoms_ = AtomVector();
-    AtomVector tail_atoms = residue.GetTailAtoms();
-    for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
-        tail_atoms_.push_back(new MolecularModeling::Atom(*it));
-
-    this->chemical_type_ = residue.GetChemicalType();
-    this->description_ = residue.GetDescription();
-    this->id_ = residue.GetId();
-    index_ = this->generateIndex();
+    this->SetIndex(this->generateIndex());
+    this->SetName(prep_residue->GetName());
+    this->SetId(this->CreateID());
+    this->SetType(type);
+    this->BuildResidueFromPrepFileResidue(prep_residue);
 }
+
+std::string Residue::CreateID(std::string name, std::string chain, std::string number)
+{ // OG Apr 2021: I have no idea what should make up the ID. Can't find any info on what the last three things are.
+    //std::cout << name << ", " << chain << ", " << number << std::endl;
+    if (name == "default")
+    {
+        name = this->GetName();
+    }
+    if (chain == "default")
+    {
+        chain = "A"; // Leaving this commented out as it was the old default. Maybe changing it messes something up and we need to go back.
+        //chain = gmml::BLANK_SPACE;
+    }
+    if (number == "default")
+    {
+        std::stringstream ss;
+        ss << this->GetIndex();
+        number = ss.str();
+    }
+    std::stringstream id_stream;
+    id_stream << name << "_" << chain << "_" << number << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE; 
+    //std::cout << id_stream.str() << std::endl;
+    return id_stream.str();
+}
+
+void Residue::SetChainID(std::string chain)
+{
+    std::string newID = this->CreateID(this->GetName(), chain, this->GetNumber());
+    this->SetId(newID);
+    return;
+}
+
+void Residue::SetResidueNumber(std::string number)
+{
+    std::string newID = this->CreateID(this->GetName(), this->GetChainID(), number);
+    this->SetId(newID);
+    return;
+}
+
+// Residue::Residue(Residue *residue)
+// {
+//     assembly_ = new Assembly(residue->GetAssembly());
+//     name_ = residue->GetName();
+//     atoms_ = AtomVector();
+//     AtomVector atoms = residue->GetAtoms();
+//     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+//         atoms_.push_back(new MolecularModeling::Atom(*it));
+//     head_atoms_ = AtomVector();
+//     AtomVector head_atoms = residue->GetHeadAtoms();
+//     for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
+//         head_atoms_.push_back(new MolecularModeling::Atom(*it));
+//     tail_atoms_ = AtomVector();
+//     AtomVector tail_atoms = residue->GetTailAtoms();
+//     for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
+//         tail_atoms_.push_back(new MolecularModeling::Atom(*it));
+//     chemical_type_ = residue->GetChemicalType();
+//     description_ = residue->GetDescription();
+//     id_ = residue->GetId();
+//     index_ = this->generateIndex();
+// }
+
+// Residue::Residue(Residue& residue)
+// {
+//     Assembly *tempAssembly=residue.GetAssembly();
+//     this->assembly_=tempAssembly;
+
+//     this->name_=residue.GetName();
+//     this->atoms_ = AtomVector();
+
+//     AtomVector atoms = residue.GetAtoms();
+//     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); it++)
+//         atoms_.push_back(new MolecularModeling::Atom(*it));
+
+//     this->head_atoms_ = AtomVector();
+//     AtomVector head_atoms = residue.GetHeadAtoms();
+//     for(AtomVector::iterator it = head_atoms.begin(); it != head_atoms.end(); it++)
+//         head_atoms_.push_back(new MolecularModeling::Atom(*it));
+
+//     this->tail_atoms_ = AtomVector();
+//     AtomVector tail_atoms = residue.GetTailAtoms();
+//     for(AtomVector::iterator it = tail_atoms.begin(); it != tail_atoms.end(); it++)
+//         tail_atoms_.push_back(new MolecularModeling::Atom(*it));
+
+//     this->chemical_type_ = residue.GetChemicalType();
+//     this->description_ = residue.GetDescription();
+//     this->id_ = residue.GetId();
+//     index_ = this->generateIndex();
+// }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
@@ -94,7 +150,12 @@ std::string Residue::GetName()
 std::string Residue::GetNumber()
 {
     StringVector id = gmml::Split(id_, "_");
-    return id.at(2); // This is silly, why not add residue number to class? OG: I know right?
+    return id.at(2); // This is silly, why not add residue number to class? OG: I know right? OG: Single point of truth?
+}
+std::string Residue::GetChainID()
+{
+    StringVector id = gmml::Split(id_, "_");
+    return id.at(1);
 }
 MolecularModeling::AtomVector Residue::GetAtoms()
 {
@@ -133,7 +194,7 @@ bool Residue::GetIsAglycon()
  //Added by ayush on 11/20/17 for residuenode in assembly
 MolecularModeling::ResidueNode* Residue::GetNode()
 {
-        return node_;
+        return residuenode_;
 }
 //Added by Dave 2/1/19
 bool Residue::GetIsSugar()
@@ -167,10 +228,12 @@ void Residue::AddAtom(MolecularModeling::Atom *atom)
 void Residue::RemoveAtom(MolecularModeling::Atom *atom, bool remove_bonds)
 {
     AtomVector newAtoms = AtomVector();
+    std::vector<MolecularModeling::AtomNode*> leaving_atom_nodes = atom->GetNodes();
+
     for(AtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         MolecularModeling::Atom* a = *it;
-        if(a->GetId().compare(atom->GetId()) != 0)
+        if(a != atom)
         {
 	    if (remove_bonds){
 		std::vector<MolecularModeling::AtomNode*> nodes = a->GetNodes();
@@ -179,6 +242,11 @@ void Residue::RemoveAtom(MolecularModeling::Atom *atom, bool remove_bonds)
                         (*it2)->RemoveNodeNeighbor(atom);
 	            }
 	        }
+		for (std::vector<MolecularModeling::AtomNode*>::iterator it2 = leaving_atom_nodes.begin(); it2 != leaving_atom_nodes.end(); it2++){
+		    if ((*it2) != NULL){
+		        (*it2)->RemoveNodeNeighbor(a);
+		    } 
+		}
 	    }
             newAtoms.push_back(a);
         }
@@ -198,6 +266,13 @@ void Residue::AddHeadAtom(MolecularModeling::Atom *head_atom)
 {
     head_atoms_.push_back(head_atom);
 }
+void Residue::RemoveHeadAtom(MolecularModeling::Atom* head_atom)
+{
+    AtomVector::iterator position = std::find(head_atoms_.begin(), head_atoms_.end(), head_atom);
+    if (position != head_atoms_.end()){
+        head_atoms_.erase(position);
+    }
+}
 void Residue::SetTailAtoms(AtomVector tail_atoms)
 {
     tail_atoms_.clear();
@@ -210,6 +285,13 @@ void Residue::AddTailAtom(MolecularModeling::Atom *tail_atom)
 {
     tail_atoms_.push_back(tail_atom);
 }
+void Residue::RemoveTailAtom(MolecularModeling::Atom* tail_atom)
+{
+    AtomVector::iterator position = std::find(tail_atoms_.begin(), tail_atoms_.end(), tail_atom);
+    if (position != tail_atoms_.end()){
+        tail_atoms_.erase(position);
+    }
+}
 void Residue::SetChemicalType(std::string chemical_type)
 {
     chemical_type_ = chemical_type;
@@ -221,6 +303,10 @@ void Residue::SetDescription(std::string description)
 void Residue::SetId(std::string id)
 {
     id_ = id;
+}
+void Residue::SetIndex(unsigned long long index)
+{
+    index_ = index;
 }
 void Residue::ReplaceAtomCoordinates(AtomVector *newAtoms)
 {
@@ -245,9 +331,9 @@ void Residue::ReplaceAtomCoordinates(AtomVector *newAtoms)
 }
 
  //Added by ayush on 11/20/17 for residuenode in assembly
-void Residue::SetNode(MolecularModeling::ResidueNode* node)
+void Residue::SetNode(MolecularModeling::ResidueNode* residuenode)
 {
-    node_ = node;
+    residuenode_ = residuenode;
 }
 //Added by Yao 06/13/2018
 void Residue::SetIsSugarDerivative(bool is_derivative)
@@ -532,14 +618,15 @@ GeometryTopology::Coordinate Residue::GetGeometricCenter()
 
 MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
 {
-    MolecularModeling::Atom* return_atom=NULL;
+    MolecularModeling::Atom* return_atom = nullptr;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
         if ((*it)->GetName().compare(query_name)==0)
         {
             return_atom = (*it);
-            //std::cout << "Returning: " << return_atom->GetId() << std::endl;
+            return return_atom;
+            //std::cout << "From Residue::GetAtom(), returning: " << return_atom->GetId() << " as a match for " << query_name << std::endl;
         }
     }
     return return_atom; // may be unset
@@ -571,6 +658,36 @@ MolecularModeling::Atom* Residue::GetAtomWithId(std::string query_id)
         }
     }
     return return_atom; // may be unset
+}
+
+void Residue::MakeDeoxy(std::string oxygenNumber)
+{ // if oxygenNumber is 6, then C6-O6-H6O becomes C6-Hd 
+    MolecularModeling::Atom* hydrogenAtom = this->GetAtom("H" + oxygenNumber + "O");
+    MolecularModeling::Atom* oxygenAtom = this->GetAtom("O" + oxygenNumber);
+    MolecularModeling::Atom* carbonAtom = this->GetAtom("C" + oxygenNumber);
+    // Add O and H charge to the C atom.
+    carbonAtom->SetCharge(carbonAtom->GetCharge() + oxygenAtom->GetCharge() + hydrogenAtom->GetCharge());
+    // Delete the H of O-H
+    this->RemoveAtom(hydrogenAtom);
+    // Now transform the Oxygen to a Hd. Easier than deleting O and creating H.
+    std::string newID = oxygenAtom->GetId();
+    newID.replace(0,oxygenAtom->GetName().size(),"Hd");
+    oxygenAtom->SetId(newID);
+    oxygenAtom->SetName("Hd");
+    oxygenAtom->MolecularDynamicAtom::SetAtomType("H1");
+    oxygenAtom->SetCharge(0.0000);
+    oxygenAtom->SetElementSymbol("H");
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Completed MakeDeoxy\n");
+}
+
+double Residue::CalculateCharge()
+{
+    double charge = 0.0;
+    for (auto &atom : this->GetAtoms())
+    {
+        charge += atom->GetCharge();
+    }
+    return charge;
 }
 
 unsigned long long Residue::GetIndex() const
@@ -717,6 +834,7 @@ void Residue::WriteHetAtoms(std::ofstream& out)
         out << std::endl;
     }
 }
+
 
 //////////////////////////////////////////////////////////
 //                   OVERLOADED OPERATORS               //

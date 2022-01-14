@@ -1,9 +1,10 @@
 #include <sstream>
 #include <stdexcept>
 
-#include "../../../includes/common.hpp"
-#include "../../../includes/utils.hpp"
-#include "../../../includes/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp"
+#include "includes/common.hpp"
+//#include "includes/utils.hpp"
+#include "includes/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using CoordinateFileSpace::CoordinateFileProcessingException;
 

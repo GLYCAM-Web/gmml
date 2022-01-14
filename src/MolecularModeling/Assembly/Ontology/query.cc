@@ -63,6 +63,8 @@
 #include "../../../../includes/common.hpp"
 #include "../../../../includes/GeometryTopology/grid.hpp"
 #include "../../../../includes/GeometryTopology/cell.hpp"
+#include "../../../../includes/GeometryTopology/geometrytopology.hpp"
+
 
 #include <unistd.h>
 #include <errno.h>
@@ -900,9 +902,9 @@ void Assembly::ExtractTorsionAnglesFromSlowQueryResult()
                 Cx_neighbor_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(15), "\"").at(0)));
                 Cx_neighbor_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(16), " ").at(0)));
                 Cx_neighbor_crd->SetZ(gmml::ConvertString<double>(gmml::Split(line_tokens.at(17), "\"").at(0)));
-
-                phi_angle = CalculateTorsionAngleByCoordinates(O5_crd, C1_crd, Ox_crd, Cx_crd); /// ϕ (O5′-C1′-Ox-Cx)
-                psi_angle = CalculateTorsionAngleByCoordinates(C1_crd, Ox_crd, Cx_crd,Cx_neighbor_crd); /// ψ (C1′-Ox-Cx-Cx−1)
+                bool returnRadians = true;    
+                phi_angle = GeometryTopology::CalculateDihedralAngle(O5_crd, C1_crd, Ox_crd, Cx_crd, returnRadians); /// ϕ (O5′-C1′-Ox-Cx)
+                psi_angle = GeometryTopology::CalculateDihedralAngle(C1_crd, Ox_crd, Cx_crd,Cx_neighbor_crd, returnRadians); /// ψ (C1′-Ox-Cx-Cx−1)
 
 //                std::cout << std::left << std::setw(15) << gmml::Split(gmml::Split(line_tokens.at(0), "#").at(1), "\"").at(0)
 //                         << std::setw(15) << gmml::ConvertRadian2Degree(phi_angle) << std::setw(15)
@@ -910,7 +912,7 @@ void Assembly::ExtractTorsionAnglesFromSlowQueryResult()
 
                 if(O5_prime_crd != NULL)
                 {
-                    omega_angle = CalculateTorsionAngleByCoordinates(Ox_crd, Cx_crd,Cx_neighbor_crd, O5_prime_crd); /// Ω (O1-C6′-C5′-O5′)
+                    omega_angle = GeometryTopology::CalculateDihedralAngle(Ox_crd, Cx_crd,Cx_neighbor_crd, O5_prime_crd, returnRadians); /// Ω (O1-C6′-C5′-O5′)
 //                    std::cout << std::setw(15) << gmml::ConvertRadian2Degree(omega_angle);
                 }
 //                std::cout << std::endl;
@@ -1024,9 +1026,9 @@ void Assembly::ExtractTorsionAnglesFromFastQueryResult()
                 Cx_neighbor_crd->SetX(gmml::ConvertString<double>(gmml::Split(line_tokens.at(15), ",").at(0)));
                 Cx_neighbor_crd->SetY(gmml::ConvertString<double>(gmml::Split(line_tokens.at(16), ",").at(0)));
                 Cx_neighbor_crd->SetZ(gmml::ConvertString<double>(line_tokens.at(17)));
-
-                phi_angle = CalculateTorsionAngleByCoordinates(O5_crd, C1_crd, Ox_crd, Cx_crd); /// ϕ (O5′-C1′-Ox-Cx)
-                psi_angle = CalculateTorsionAngleByCoordinates(C1_crd, Ox_crd, Cx_crd,Cx_neighbor_crd); /// ψ (C1′-Ox-Cx-Cx−1)
+                bool returnRadians = true;
+                phi_angle = GeometryTopology::CalculateDihedralAngle(O5_crd, C1_crd, Ox_crd, Cx_crd, returnRadians); /// ϕ (O5′-C1′-Ox-Cx)
+                psi_angle = GeometryTopology::CalculateDihedralAngle(C1_crd, Ox_crd, Cx_crd, Cx_neighbor_crd, returnRadians); /// ψ (C1′-Ox-Cx-Cx−1)
 
 //                std::cout << std::left << std::setw(15) << gmml::Split(gmml::Split(line_tokens.at(0), "#").at(1), "\"").at(0)
 //                         << std::setw(15) << gmml::ConvertRadian2Degree(phi_angle) << std::setw(15)
@@ -1034,7 +1036,7 @@ void Assembly::ExtractTorsionAnglesFromFastQueryResult()
 
                 if(O5_prime_crd != NULL)
                 {
-                    omega_angle = CalculateTorsionAngleByCoordinates(Ox_crd, Cx_crd,Cx_neighbor_crd, O5_prime_crd); /// Ω (O1-C6′-C5′-O5′)
+                    omega_angle = GeometryTopology::CalculateDihedralAngle(Ox_crd, Cx_crd,Cx_neighbor_crd, O5_prime_crd, returnRadians); /// Ω (O1-C6′-C5′-O5′)
 //                    std::cout << std::setw(15) << gmml::ConvertRadian2Degree(omega_angle);
                 }
 //                std::cout << std::endl;

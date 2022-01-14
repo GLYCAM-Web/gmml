@@ -8,84 +8,85 @@
 #include <exception>
 #include <cctype>
 #include <string>
-#include "../../../includes/InputSet/PdbFileSpace/pdbfile.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheadercard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbobsoletesection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbobsoletecard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsplitsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbcaveatsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbcompoundsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbcompoundspecification.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsourcesection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsourcecard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbkeywordssection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbexperimentaldatasection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbnummodelcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodeltypesection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbauthorsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbrevisiondatasection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbrevisiondatacard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriessection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsupersededentriescard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbjournalsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbdatabasereferencesection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbdatabasereference.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsequenceadvancedsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsequenceadvancedcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbresiduesequencesection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbresiduesequencecard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbresiduemodificationsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbresiduemodificationcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogensection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogencard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogennamesection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogennamecard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogensynonymsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogensynonymcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbformulasection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbformulacard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbhelixsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbhelixcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbhelixresidue.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsheetsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsheetcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsheetstrand.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsheetstrandresidue.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbdisulfidebondsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbdisulfideresiduebond.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbdisulfideresidue.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinksection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbcispeptidesection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbcispeptidecard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsitesection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsitecard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbsiteresidue.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbcrystallographiccard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdboriginxncard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdboriginxnsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbscalencard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbscalensection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmatrixnsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmatrixncard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbmastercard.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
-#include "../../../includes/InputSet/PdbFileSpace/pdbresidue.hpp"
-#include "../../../includes/utils.hpp"
-#include "../../../includes/common.hpp"
-#include "../../../includes/GeometryTopology/coordinate.hpp"
-#include "../../../includes/MolecularModeling/assembly.hpp"
-#include "../../../includes/Glycan/ontologyvocabulary.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbfile.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbheadercard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbobsoletesection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbobsoletecard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbtitlesection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsplitsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbcaveatsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbcompoundsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbcompoundspecification.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsourcesection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsourcecard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbkeywordssection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbexperimentaldatasection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbnummodelcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmodeltypesection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbauthorsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbrevisiondatasection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbrevisiondatacard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsupersededentriessection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsupersededentriescard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbjournalsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbremarksection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbdatabasereferencesection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbdatabasereference.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsequenceadvancedsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsequenceadvancedcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbresiduesequencesection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbresiduesequencecard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbresiduemodificationsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbresiduemodificationcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbheterogensection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbheterogencard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbheterogennamesection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbheterogennamecard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbheterogensynonymsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbheterogensynonymcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbformulasection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbformulacard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbhelixsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbhelixcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbhelixresidue.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsheetsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsheetcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsheetstrand.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsheetstrandresidue.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbdisulfidebondsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbdisulfideresiduebond.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbdisulfideresidue.hpp"
+#include "includes/InputSet/PdbFileSpace/pdblinksection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdblinkcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdblinkcardresidue.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbcispeptidesection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbcispeptidecard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsitesection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsitecard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbsiteresidue.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbcrystallographiccard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdboriginxncard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdboriginxnsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbscalencard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbscalensection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmatrixnsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmatrixncard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmodelcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmodelresidueset.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmodelsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbheterogenatomsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbconnectsection.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbmastercard.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
+#include "includes/InputSet/PdbFileSpace/pdbresidue.hpp"
+//#include "includes/utils.hpp"
+#include "includes/common.hpp"
+#include "includes/GeometryTopology/coordinate.hpp"
+#include "includes/MolecularModeling/assembly.hpp"
+#include "includes/Glycan/ontologyvocabulary.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using PdbFileSpace::PdbFile;
 
@@ -94,90 +95,14 @@ using PdbFileSpace::PdbFile;
 //////////////////////////////////////////////////////////
 PdbFile::PdbFile()
 {
+    this->Initialize();
     path_ = "GMML-Generated";
-    header_ = NULL;
-    obsolete_ = NULL;
-    title_ = NULL;
-    split_ = NULL;
-    caveat_ = NULL;
-    compound_ = NULL;
-    source_ = NULL;
-    keywords_ = NULL;
-    experimental_data_ = NULL;
-    number_of_models_ = NULL;
-    model_type_ = NULL;
-    author_ = NULL;
-    revision_data_ = NULL;
-    superseded_entries_ = NULL;
-    journal_ = NULL;
-    remark_cards_ = NULL;
-    database_reference_ = NULL;
-    sequence_advanced_ = NULL;
-    residues_sequence_ = NULL;
-    residue_modification_cards_ = NULL;
-    heterogen_cards_ = NULL;
-    heterogen_name_cards_ = NULL;
-    heterogen_synonym_cards_ = NULL;
-    formulas_ = NULL;
-    helix_cards_ = NULL;
-    sheet_cards_ = NULL;
-    disulfide_bonds_ = NULL;
-    link_cards_ = NULL;
-    cis_peptide_ = NULL;
-    site_cards_ = NULL;
-    crystallography_ = NULL;
-    origins_ = NULL;
-    scales_ = NULL;
-    matrices_ = NULL;
-    models_ = NULL;
-    connectivities_ = NULL;
-    serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
-    sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
-    master_ = NULL;
 }
 
 PdbFile::PdbFile(const std::string &pdb_file)
 {
+    this->Initialize();
     path_ = pdb_file;
-    header_ = NULL;
-    obsolete_ = NULL;
-    title_ = NULL;
-    split_ = NULL;
-    caveat_ = NULL;
-    compound_ = NULL;
-    source_ = NULL;
-    keywords_ = NULL;
-    experimental_data_ = NULL;
-    number_of_models_ = NULL;
-    model_type_ = NULL;
-    author_ = NULL;
-    revision_data_ = NULL;
-    superseded_entries_ = NULL;
-    journal_ = NULL;
-    remark_cards_ = NULL;
-    database_reference_ = NULL;
-    sequence_advanced_ = NULL;
-    residues_sequence_ = NULL;
-    residue_modification_cards_ = NULL;
-    heterogen_cards_ = NULL;
-    heterogen_name_cards_ = NULL;
-    heterogen_synonym_cards_ = NULL;
-    formulas_ = NULL;
-    helix_cards_ = NULL;
-    sheet_cards_ = NULL;
-    disulfide_bonds_ = NULL;
-    link_cards_ = NULL;
-    cis_peptide_ = NULL;
-    site_cards_ = NULL;
-    crystallography_ = NULL;
-    origins_ = NULL;
-    scales_ = NULL;
-    matrices_ = NULL;
-    models_ = NULL;
-    connectivities_ = NULL;
-    serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
-    sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
-    master_ = NULL;
     std::ifstream in_file;
     if(std::ifstream(pdb_file.c_str()))
     {
@@ -187,27 +112,29 @@ PdbFile::PdbFile(const std::string &pdb_file)
     }
     else
     {
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "PDB file not found");
         throw PdbFileProcessingException(__LINE__, "PDB file not found");
     }
 
-    std::string line = "";
-    std::string temp = "";
-    std::stringstream ss;
-    while(!in_file.eof())
-    {
-        if(!getline(in_file, line))
-            break;
-        else
-        {
-            temp = line.substr(0,6);
-            temp = gmml::Trim(temp);
-            if(temp.find("END") != std::string::npos || temp.compare("END") == 0)
-                break;
-            else if(!line.empty())
-                ss << line << std::endl;
-        }
-    }
-    in_file.close();
+    // Oliver 2020-Sep-30 Dave commented out the below in 2019, but 
+    // std::string line = "";
+    // std::string temp = "";
+    // std::stringstream ss;
+    // while(!in_file.eof())
+    // {
+    //     if(!getline(in_file, line))
+    //         break;
+    //     else
+    //     {
+    //         temp = line.substr(0,6);
+    //         temp = gmml::Trim(temp);
+    //         if(temp.find("END") != std::string::npos || temp.compare("END") == 0)
+    //             break;
+    //         else if(!line.empty())
+    //             ss << line << std::endl;
+    //     }
+    // }
+    // in_file.close();
     //I think this erases PDb files sometimes, as they only have "END"
     //Dave 2/1/19
     // if(temp.find("END") == std::string::npos || temp.compare("END") != 0)
@@ -224,7 +151,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
     //     out_file << ss.str() << temp;
     //     out_file.close();
     // }
-    in_file.open(pdb_file.c_str());
+    //in_file.open(pdb_file.c_str());
     if(!Read(in_file))
     {
         throw PdbFileProcessingException(__LINE__, "Reading PDB file exception");
@@ -240,46 +167,7 @@ PdbFile::PdbFile(const std::string &pdb_file)
 
 PdbFile::PdbFile(std::stringstream& atomStream)
 {
-  path_ = "";
-  header_ = NULL;
-  obsolete_ = NULL;
-  title_ = NULL;
-  split_ = NULL;
-  caveat_ = NULL;
-  compound_ = NULL;
-  source_ = NULL;
-  keywords_ = NULL;
-  experimental_data_ = NULL;
-  number_of_models_ = NULL;
-  model_type_ = NULL;
-  author_ = NULL;
-  revision_data_ = NULL;
-  superseded_entries_ = NULL;
-  journal_ = NULL;
-  remark_cards_ = NULL;
-  database_reference_ = NULL;
-  sequence_advanced_ = NULL;
-  residues_sequence_ = NULL;
-  residue_modification_cards_ = NULL;
-  heterogen_cards_ = NULL;
-  heterogen_name_cards_ = NULL;
-  heterogen_synonym_cards_ = NULL;
-  formulas_ = NULL;
-  helix_cards_ = NULL;
-  sheet_cards_ = NULL;
-  disulfide_bonds_ = NULL;
-  link_cards_ = NULL;
-  cis_peptide_ = NULL;
-  site_cards_ = NULL;
-  crystallography_ = NULL;
-  origins_ = NULL;
-  scales_ = NULL;
-  matrices_ = NULL;
-  models_ = NULL;
-  connectivities_ = NULL;
-  serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
-  sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
-  master_ = NULL;
+  this->Initialize();
 
   if(!Read(atomStream))
   {
@@ -3276,7 +3164,8 @@ bool PdbFile::Read(std::ifstream &in_file)
 {
     if(!this->ParseCards(in_file))
         return false;
-	return true;
+
+    return true;
 }
 
 bool PdbFile::Read(std::stringstream &atomstream)
@@ -7958,6 +7847,8 @@ void PdbFile::ResolveConnectivityCards(std::ostream& stream)
             else
                 stream << std::left << std::setw(49) << " "
                        << std::endl;
+	    
+	    //stream << std::endl;
         }
         else
         {
@@ -8278,4 +8169,52 @@ void PdbFile::Print(std::ostream &out)
         out << "******************************** MASTER *******************************" << std::endl;
         master_->Print(out);
     }
+}
+
+/////////////////////////////////////////////////////////
+//                   PRIVATE FUNCTIONS                  //
+//////////////////////////////////////////////////////////
+
+void PdbFile::Initialize()
+{
+  path_ = "";
+  header_ = NULL;
+  obsolete_ = NULL;
+  title_ = NULL;
+  split_ = NULL;
+  caveat_ = NULL;
+  compound_ = NULL;
+  source_ = NULL;
+  keywords_ = NULL;
+  experimental_data_ = NULL;
+  number_of_models_ = NULL;
+  model_type_ = NULL;
+  author_ = NULL;
+  revision_data_ = NULL;
+  superseded_entries_ = NULL;
+  journal_ = NULL;
+  remark_cards_ = NULL;
+  database_reference_ = NULL;
+  sequence_advanced_ = NULL;
+  residues_sequence_ = NULL;
+  residue_modification_cards_ = NULL;
+  heterogen_cards_ = NULL;
+  heterogen_name_cards_ = NULL;
+  heterogen_synonym_cards_ = NULL;
+  formulas_ = NULL;
+  helix_cards_ = NULL;
+  sheet_cards_ = NULL;
+  disulfide_bonds_ = NULL;
+  link_cards_ = NULL;
+  cis_peptide_ = NULL;
+  site_cards_ = NULL;
+  crystallography_ = NULL;
+  origins_ = NULL;
+  scales_ = NULL;
+  matrices_ = NULL;
+  models_ = NULL;
+  connectivities_ = NULL;
+  serial_number_mapping_ = PdbFile::PdbSerialNumberMapping();
+  sequence_number_mapping_ = PdbFile::PdbSequenceNumberMapping();
+  master_ = NULL;
 }

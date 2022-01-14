@@ -4,33 +4,30 @@
 #include <unistd.h>
 #include <errno.h>
 #include <string.h>
-
 #include <fstream>
 #include <set>
 #include <queue>
 #include <stack>
 #include <cstring>
 #include <algorithm>
-
-#include "../../../includes/MolecularModeling/assembly.hpp"
-#include "../../../includes/MolecularModeling/residue.hpp"
-#include "../../../includes/MolecularModeling/atom.hpp"
-#include "../../../includes/MolecularModeling/atomnode.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
-#include "../../../includes/utils.hpp"
-#include "../../../includes/common.hpp"
-#include "../../../includes/GeometryTopology/geometrytopology.hpp"
-#include "../../../includes/GeometryTopology/coordinate.hpp"
-#include "../../../includes/GeometryTopology/grid.hpp"
-#include "../../../includes/GeometryTopology/cell.hpp"
-#include "../../../includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
-#include "../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
+#include "includes/MolecularModeling/assembly.hpp"
+#include "includes/MolecularModeling/residue.hpp"
+#include "includes/MolecularModeling/atom.hpp"
+#include "includes/MolecularModeling/atomnode.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
+#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
+#include "includes/GeometryTopology/geometrytopology.hpp"
+#include "includes/GeometryTopology/coordinate.hpp"
+#include "includes/GeometryTopology/grid.hpp"
+#include "includes/GeometryTopology/cell.hpp"
+#include "includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
+#include "includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using MolecularModeling::Residue;
 
@@ -55,7 +52,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *pr
     std::map<Atom*,PrepFileSpace::PrepFileAtom*> assembly_prep_parent_atom_map = std::map<Atom*,PrepFileSpace::PrepFileAtom*>();	//associates an assembly atom with corresonding prep atom parent.
     //eventually: assembly atom -> prep parent -> assembly parent
     this->SetName(prep_residue->GetName());
-    std::stringstream residue_id;
+    //std::stringstream residue_id;
     //Set id for testing purpose
     //residue_id << prep_residue->GetName() <<"_" << " " << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
     for(PrepFileSpace::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
@@ -69,9 +66,12 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *pr
             assembly_atom->SetResidue(this);
             this->AddAtom(assembly_atom);
             std::string atom_name = prep_atom->GetName();
-            std::string id;
-            std::stringstream atom_id;
             assembly_atom->SetName(atom_name);
+            std::stringstream atom_id;
+            atom_id << assembly_atom->GetName() << "_" << assembly_atom->GetIndex() << "_" << this->GetId();
+            assembly_atom->SetId(atom_id.str());
+            //std::cout << "Atom id is now: " << assembly_atom->GetId() << std::endl;
+
             assembly_atom->SetNaming("glycam06");
 
             //Attention: SetAtomType()function is overloaded as MolecularModeling::Atom::SetAtomType() and MolecularModeling::MolecularDynamicAtom::SetAtomType(). You don't really know which one to use.
@@ -83,18 +83,9 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *pr
             assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
             assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
 
-// Oliver new code after rework of metadata:
             gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfoContainer AtomTypeMetaData;
             std::string element = AtomTypeMetaData.GetElementForAtomType(atom_type);
-// Oliver rework of Metadata, Oct 2018. Delete this old commented out section if all is well.
-//            std::string element = "";
-//            int size_of_lookup_map = sizeof(gmml::MolecularMetadata::GLYCAM::Glycam06j1AtomTypes) / sizeof(gmml::MolecularMetadata::GLYCAM::Glycam06j1AtomTypes[0]);
-//            for (int i = 0; i < size_of_lookup_map; i++){
-//                gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfo entry = gmml::MolecularMetadata::GLYCAM::Glycam06j1AtomTypes[i];
-//                if (atom_type.compare(entry.type_) == 0){
-//                    element = entry.element_;
-//                }
-//            }
+
             assembly_atom->SetElementSymbol(element);
             int index = std::distance(prep_atoms.begin(), it1);
             PrepFileSpace::PrepFileAtom* parent_prep_atom = parent_atoms.at(index);

@@ -1,0 +1,10 @@
+2014-03-27 BLFoley
+
+Files:
+
+	Iduronate-a-1C4_G06.prep
+	Iduronate-a-2SO_G06.prep
+	Iduronate-a-4C1_G06.prep
+
+These are some prep file entries appropriate to iduronate in three common 
+conformations.  They are appropriate for GLYCAM_06 versions h and later.

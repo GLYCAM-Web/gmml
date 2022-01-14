@@ -2,19 +2,21 @@
 #include <fstream>
 #include <algorithm>
 #include <vector>
-#include "../../../includes/utils.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtcompoundcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtremarkcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtrootcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqtbranchcard.hpp"
-#include "../../../includes/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp"
+#include "includes/utils.hpp"
+#include "includes/common.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtatomcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtatom.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtfile.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtfileprocessingexception.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtcompoundcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtremarkcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtrootcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqtbranchcard.hpp"
+#include "includes/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using PdbqtFileSpace::PdbqtFile;
 
@@ -137,16 +139,28 @@ bool PdbqtFile::ParseCards(std::ifstream &in_stream)
 
     std::string line,record_name;
 
+    /*if (line.find("MODEL") != std::string::npos || line.find("COMPND") != std::string::npos || line.find("REMARK") != std::string::npos
+            || line.find("ROOT") != std::string::npos || line.find("ATOM") != std::string::npos || line.find("ENDROOT") != std::string::npos
+            || line.find("BRANCH") != std::string::npos || line.find("ENDBRANCH") != std::string::npos || line.find("HETATM") != std::string::npos
+            || line.find("TORSDOF") != std::string::npos || line.find("ENDMDL") != std::string::npos){*/
+
     while (getline(in_stream, line)){
         record_name = gmml::Split(line, " ").at(0);
         if(record_name.compare("MODEL") == 0 || record_name.compare("ROOT") == 0 || record_name.compare("BRANCH") == 0 
-		|| record_name.compare("ATOM") == 0 || record_name.compare("HETATM") == 0)
+	   || record_name.compare("ATOM") == 0 || record_name.compare("HETATM") == 0 || record_name.compare("COMPND") == 0 || record_name.compare("REMARK") == 0
+	   || record_name.compare("TORSDOF") == 0)
         {
 	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
 	    in_stream.seekg(offset, in_stream.cur);//Go back one line
             if(!ParseModelCard(in_stream, line))
                 return false;
         }
+	else {
+	    //Notify the user of unknown record name in file
+            std::string err_string = "Invalid line in pdbqt file: ";
+	    err_string += line;
+	    throw PdbqtFileProcessingException(__LINE__, err_string);
+	}
     }
     
 
