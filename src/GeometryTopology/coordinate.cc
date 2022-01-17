@@ -63,7 +63,7 @@ void Coordinate::Translate(double x, double y, double z)
     z_ += z;
 }
 
-bool Coordinate::CompareTo(Coordinate coordinate)
+bool Coordinate::CompareTo(Coordinate coordinate) const
 {
     if(x_ == coordinate.x_ && y_ == coordinate.y_ && z_ == coordinate.z_)
         return true;
@@ -555,7 +555,7 @@ Coordinate* Coordinate::ConvertCartesianCoordinate2InternalCoordinate(Coordinate
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
-void Coordinate::Print(std::ostream& out)
+void Coordinate::Print(std::ostream& out) const
 {
     if(this->CompareTo(Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == true)
         out << std::setw(10) << " " << ", " << std::setw(10) << " " << ", " << std::setw(10) << " ";

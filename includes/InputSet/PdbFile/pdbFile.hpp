@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <fstream>      // std::ifstream
 
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
 #include "includes/InputSet/PdbFile/conectRecord.hpp"
@@ -25,15 +26,15 @@ public:
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-    inline const HeaderRecord& GetHeaderRecord() const {return &headerRecord_;}
-    inline const TitleRecord& GetTitleRecord() const {return &titleRecord_;}
-    inline const AuthorRecord& GetAuthorRecord() const {return &authorRecord_;}
-    inline const JournalRecord& GetJournalRecord() const {return &journalRecord_;}
-    inline const RemarkRecord& GetRemarkRecord() const {return &remarkRecord_;}
-    inline const std::string& GetPath() const {return &inFilePath_;}
+    inline const HeaderRecord& GetHeaderRecord() const {return headerRecord_;}
+    inline const TitleRecord& GetTitleRecord() const {return titleRecord_;}
+    inline const AuthorRecord& GetAuthorRecord() const {return authorRecord_;}
+    inline const JournalRecord& GetJournalRecord() const {return journalRecord_;}
+    inline const RemarkRecord& GetRemarkRecord() const {return remarkRecord_;}
+    inline const std::string& GetPath() const {return inFilePath_;}
     std::string GetUniprotIDs() const;
 private:
-    inline const std::vector<DatabaseReference> GetDatabaseReferences() const {return &databaseReferences_;}
+    inline const std::vector<DatabaseReference>& GetDatabaseReferences() const {return databaseReferences_;}
     //////////////////////////////////////////////////////////
     //                        ATTRIBUTES                    //
     //////////////////////////////////////////////////////////

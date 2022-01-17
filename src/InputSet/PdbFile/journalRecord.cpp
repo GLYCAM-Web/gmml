@@ -9,6 +9,7 @@ using pdb::JournalRecord;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
+JournalRecord::JournalRecord(){};
 JournalRecord::JournalRecord(std::stringstream& stream_block)
 {
     std::string line;
@@ -193,29 +194,28 @@ void JournalRecord::SetText(const std::string text)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void JournalRecord::Print(std::ostream &out)
+void JournalRecord::Print(std::ostream &out) const
 {
     out << "Record Name: " << record_name_ << std::endl;
     out << "Authors: ";
-    for(std::vector<std::string>::iterator it = authors_.begin(); it != authors_.end(); it++)
+    for(auto &author : this->GetAuthors())
     {
-      out << *it << " ";
+      out << author << " ";
     }
     out << std::endl;
     out << "Title: " << title_ << std::endl;
     out << "Editors: ";
-    for(std::vector<std::string>::iterator it = editors_.begin(); it != editors_.end(); it++)
+    for(auto &editor : this->GetEditors())
     {
-      out << *it << " ";
+        out << editor << " ";
     }
     out << std::endl;
     out << "Reference: " << reference_ << std::endl;
     out << "Publisher: " << publisher_ << std::endl;
     out << "Reference Numbers: ";
-    for(std::vector<std::string>::iterator it = reference_nums_.begin();
-        it != reference_nums_.end(); it++)
+    for(auto &refNum : this->GetReferenceNumbers())
     {
-      out << *it << " ";
+        out << refNum << " ";
     }
     out << std::endl;
     out << "PMID: " << pmid_ << std::endl;

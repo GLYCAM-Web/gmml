@@ -12,8 +12,7 @@ namespace pdb
             //////////////////////////////////////////////////////////
             //                       CONSTRUCTOR                    //
             //////////////////////////////////////////////////////////
-            TitleRecord();
-            TitleRecord(std::string name = "TITLE", std::string title);
+            TitleRecord(std::string name = "TITLE", std::string title = "DEFAULT");
             TitleRecord(std::stringstream& stream_block);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

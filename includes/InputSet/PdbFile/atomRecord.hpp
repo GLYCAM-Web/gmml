@@ -16,25 +16,31 @@ namespace pdb
             //////////////////////////////////////////////////////////
             //                    CONSTRUCTOR                       //
             //////////////////////////////////////////////////////////
-            AtomRecord(std::string& line, int modelNumber = 1);
+            AtomRecord(const std::string& line, int modelNumber = 1);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
-            int GetSerialNumber();
-            std::string GetName();
-            std::string GetResidueName();
-            char GetChain();
-            int GetResidueSequenceNumber();
-            char GetInsertionCode();
-            GeometryTopology::Coordinate GetCoordinate();
-            double GetOccupancy();
-            double GetTemperatureFactor();
-            std::string GetElementSymbol();
-            std::string GetCharge();
-            int GetModelNumber();
+            inline const int& GetSerialNumber() const {return serialNumber_;}
+            inline const std::string& GetName() const {return name_;}
+            inline const std::string& GetResidueName() const {return residueName_;}
+            inline const char& GetChain() const {return chainId_;}
+            inline const int& GetResidueSequenceNumber() const {return residueSequenceNumber_;}
+            inline const char& GetInsertionCode() const {return insertionCode_;}
+            inline const GeometryTopology::Coordinate& GetCoordinate() const {return coordinate_;}
+            inline const double& GetOccupancy() const {return occupancy_;}
+            inline const double& GetTemperatureFactor() const {return temperatureFactor_;}
+            inline const std::string& GetElementSymbol() const {return element_;}
+            inline const std::string& GetCharge() const {return charge_;}
+            inline const int& GetModelNumber() const {return modelNumber_;;}
+            //////////////////////////////////////////////////////////
+            //                       DISPLAY FUNCTION               //
+            //////////////////////////////////////////////////////////
+            void Print(std::ostream& out = std::cerr) const;
+        private:
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+            void SetModelNumber(const int i);
             void SetAtomSerialNumber(int atom_serial_number);
             void SetAtomName(const std::string atom_name);
             void SetAtomAlternateLocation(char atom_alternate_location);
@@ -50,29 +56,23 @@ namespace pdb
             void SetAtomCardIndexInResidueSet(std::string atom_card_index_in_residue_sequence);
             void AddAlternateLocation(AtomRecord* alternate_atom);
             //////////////////////////////////////////////////////////
-            //                       DISPLAY FUNCTION               //
-            //////////////////////////////////////////////////////////
-            void Print(std::ostream& out = std::cerr);
-        private:
-            //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            int serialNumber_;                    /*!< Atom serial number in a model card of a pdb file */
-            std::string name_;                     /*!< Atom name in a single atom record in a model card of a pdb file */
-            char alternateLocation_;              /*!< Atom residue name in a single atom record in a model card of a pdb file */
-            std::string atom_residue_name_;             /*!< Residue name that the atom is assigned to */
-            char atom_chain_id_;                        /*!< Chain id that the atom belongs to */
-            int atom_residue_sequence_number_;          /*!< Sequence number of the residue that the atom is assigned to */
-            char atom_insertion_code_;                                  /*!< Insertion code for the atom in it belonging residue */
-            GeometryTopology::Coordinate atom_orthogonal_coordinate_;   /*!< Atom coordinate */
-            double atom_occupancy_;                                     /*!< Atom occupancy */
-            double atom_temperature_factor_;                            /*!< Atom temperature factor */
-            std::string atom_element_symbol_;                           /*!< Atom element symbol */
-            std::string atom_charge_;                                   /*!< Atom charge */
-            std::string atom_card_index_in_residue_sequence_;
-            std::vector<AtomRecord*> alternate_atom_locations_;              /*!< Alternate atom locations, as a vector of atom cards, as there is
-                                                                  more information that may be needed (such as ID (A,B,C, etc), %occupancy, etc) */
+            int modelNumber_;                             // Model number that this card belongs to. Note not included in line.
+            int serialNumber_;                            // Atom serial number in a model card of a pdb file
+            std::string name_;                            // Atom name in a single atom record in a model card of a pdb file
+            char alternateLocation_;                      // Atom residue name in a single atom record in a model card of a pdb file
+            std::string residueName_;                     // Residue name that the atom is assigned to
+            char chainId_;                                // Chain id that the atom belongs to
+            int residueSequenceNumber_;                   // Sequence number of the residue that the atom is assigned to
+            char insertionCode_;                          // Insertion code for the atom in it belonging residue
+            GeometryTopology::Coordinate coordinate_;     // Atom coordinate
+            double occupancy_;                            // Atom occupancy
+            double temperatureFactor_;                    // Atom temperature factor
+            std::string element_;                         // Atom element symbol
+            std::string charge_;                          // Atom charge
+            std::string residueSequenceIndex_;
+            std::vector<AtomRecord*> alternateLocations_; // Alternate atom locations, as a vector of atom cards, as there is   more information that may be needed (such as ID (A,B,C, etc), %occupancy, etc)
     };
 }
-
 #endif// GMML_INCLUDES_INPUTSET_PDBFILE_ATOMRECORD_HPP

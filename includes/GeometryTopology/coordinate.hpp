@@ -94,7 +94,7 @@ namespace GeometryTopology
               * @param coordinate A coordinate to be compared with the current object
               * @return A boolean value as a result of comparison
               */
-            bool CompareTo(Coordinate coordinate);
+            bool CompareTo(Coordinate coordinate) const;
 
             /*! \fn
               * Calculate the distance between current object coordinate and the given coordinate
@@ -172,7 +172,7 @@ namespace GeometryTopology
               * Print out the current coordinate in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
-            void Print(std::ostream& out = std::cerr);
+            void Print(std::ostream& out = std::cerr) const;
 
 	private:
             //////////////////////////////////////////////////////////

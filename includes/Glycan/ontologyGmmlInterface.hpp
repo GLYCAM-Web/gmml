@@ -2,7 +2,7 @@
 #define GMML_INCLUDES_GLYCAN_ONTOLOGYGMMLINTERFACE_HPP
 
 #include <sstream>
-#include "includes/InputSet/PdbFile/pdbfile.hpp"
+#include "includes/InputSet/PdbFile/pdbFile.hpp"
 
 namespace Ontology
 {

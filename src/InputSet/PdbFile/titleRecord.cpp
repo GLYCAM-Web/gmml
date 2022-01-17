@@ -9,8 +9,6 @@ using pdb::TitleRecord;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-TitleRecord::TitleRecord() : name_("TITLE"), title_(""){}
-
 TitleRecord::TitleRecord(std::string record_name, std::string title)
 {
     name_ = record_name;
