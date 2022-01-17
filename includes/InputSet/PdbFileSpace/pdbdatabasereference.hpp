@@ -71,12 +71,12 @@ namespace PdbFileSpace
               * An accessor function in order to access to the Database attribute in a database reference
               * @return database_ attribute of the current object of this class
               */
-            std::string GetDatabase();
+            std::string GetDatabase() const;
             /*! \fn
               * An accessor function in order to access to the Database Accession attribute in a database reference
               * @return db_accession_ attribute of the current object of this class
               */
-            std::string GetDatabaseAccession();
+            std::string GetDatabaseAccession() const;
             /*! \fn
               * An accessor function in order to access to the Database ID Code attribute in a database reference
               * @return db_id_code_ attribute of the current object of this class
