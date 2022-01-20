@@ -1,5 +1,3 @@
-// Created by: Dave Montgomery
-
 #include "includes/InputSet/PdbFile/remarkRecord.hpp"
 #include "includes/utils.hpp"
 #include "includes/common.hpp"
@@ -10,87 +8,65 @@ using pdb::RemarkRecord;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-RemarkRecord::RemarkRecord(const std::string record_name, const std::string remark_cards)
+RemarkRecord::RemarkRecord()
 {
-    record_name_ = record_name;
-    remark_cards_ = remark_cards;
-    resolution_ = gmml::dNotSet;
-    b_factor_ = gmml::dNotSet;
+    this->SetResolution(gmml::dNotSet);
+    this->SetBFactor(gmml::dNotSet);
 }
-
 RemarkRecord::RemarkRecord(std::stringstream &stream_block)
 {
+    this->SetResolution(gmml::dNotSet);
+    this->SetBFactor(gmml::dNotSet);
     std::string line;
-    bool is_record_name_set = false;
     getline(stream_block, line);
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
         if(line.find("REMARK") != std::string::npos)
         {
-            if(!is_record_name_set)
+            if (line.find("2 RESOLUTION.") != std::string::npos)
             {
-                record_name_ = line.substr(0,6);
-                gmml::Trim(record_name_);
-                is_record_name_set=true;
+                std::string tmp_resolution = line.substr(23,7);
+                gmml::Trim(tmp_resolution);
+                try
+                {
+                    this->SetResolution( std::stof( tmp_resolution ) );
+                }
+                catch (const std::invalid_argument& error)
+                {
+                    gmml::log(__LINE__, __FILE__, gmml::ERR, "RESOLUTION is not a valid float value. Value:\t" + tmp_resolution);
+                }
             }
-            std::stringstream remark_cardstream;
-            while(line.find("REMARK") != std::string::npos)
+            if (line.find("MEAN B VALUE") != std::string::npos)
             {
-                remark_cardstream << line << std::endl;
-                if (line.find("2 RESOLUTION.")!= std::string::npos)
+                int start = line.find(":") + 1;
+                std::string tmp_b_factor = line.substr(start,80-start);
+                gmml::Trim( tmp_b_factor );
+                try
                 {
-                    std::string tmp_resolution = line.substr(23,7);
-                    gmml::Trim(tmp_resolution);
-                    // if( tmp_resolution != "NULL" ) {
-                    //     this->SetResolution( std::stof( tmp_resolution ) );
-                    // }
-                    try {
-                        this->SetResolution( std::stof( tmp_resolution ) );
-                    } catch (const std::invalid_argument& error) {
-                        gmml::log(__LINE__, __FILE__, gmml::ERR, "RESOLUTION is not a valid float value. Value:\t" + tmp_resolution);
-                    }
+                    this->SetBFactor( std::stof( tmp_b_factor ) );
                 }
-                if (line.find("MEAN B VALUE")!= std::string::npos)
+                catch(const std::invalid_argument& error)
                 {
-                    int start = line.find(":") + 1;
-                    std::string tmp_b_factor = line.substr(start,80-start);
-                    gmml::Trim( tmp_b_factor );
-                    if(tmp_b_factor == "NULL") {
-                        this->SetBFactor(0);
-                    }
-                    try {
-                        this->SetBFactor( std::stof( tmp_b_factor ) );
-                    } catch(const std::invalid_argument& error) {
-                        gmml::log(__LINE__, __FILE__, gmml::ERR, "MEAN B VALUE is not a valid float value. Value:\t" + tmp_b_factor);
-                        this->SetBFactor(0);
-                    }
+                    gmml::log(__LINE__, __FILE__, gmml::ERR, "MEAN B VALUE is not a valid float value. Value:\t" + tmp_b_factor);
                 }
-                getline(stream_block,line);
-                temp = line;
             }
-            remark_cards_ = remark_cardstream.str();
         }
-
+        getline(stream_block,line);
+        temp = line;
     }
 }
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void RemarkRecord::SetRecordName(const std::string record_name){
-    record_name_ = record_name;
-}
-
-void RemarkRecord::SetRemarks(const std::string remark_cards){
-    remark_cards_ = remark_cards;
-}
-
-void RemarkRecord::SetResolution(const float resolution) {
+void RemarkRecord::SetResolution(const float resolution)
+{
     this->resolution_ = resolution;
 }
 
-void RemarkRecord::SetBFactor(const float b_factor) {
+void RemarkRecord::SetBFactor(const float b_factor)
+{
     this->b_factor_ = b_factor;
 }
 
@@ -99,17 +75,5 @@ void RemarkRecord::SetBFactor(const float b_factor) {
 //////////////////////////////////////////////////////////
 void RemarkRecord::Print(std::ostream &out) const
 {
-    out << "Record Name: " << record_name_ << std::endl <<
-           remark_cards_ << std::endl;
-
-    // for(RemarkRecord::PdbRemarkMap::iterator it = remark_cards_.begin(); it != remark_cards_.end(); it++)
-    // {
-    //     out << "Remark Serial Number: ";
-    //     if((it)->first != iNotSet)
-    //         out << (it)->first << std::endl;
-    //     else
-    //         out << " " << std::endl;
-    //     (it)->second->Print();
-    //     out << std::endl;
-    // }
+    out << "Resolution: " << this->GetResolution() << ". BFactor: " << this->GetBFactor() << "\n";
 }

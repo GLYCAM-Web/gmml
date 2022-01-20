@@ -1,6 +1,7 @@
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
-#include "includes/utils.hpp"
 #include "includes/common.hpp"
+#include "includes/CodeUtils/strings.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using pdb::AtomRecord;
 
@@ -8,145 +9,52 @@ using pdb::AtomRecord;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-AtomRecord::AtomRecord(const std::string &line, int modelNumber)
+AtomRecord::AtomRecord(const std::string &line, int modelNumber) : serialNumber_(gmml::iNotSet), modelNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(' '), residueName_(""), chainId_(' '), residueSequenceNumber_(gmml::iNotSet), insertionCode_(' '), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_(""), residueSequenceIndex_("")
 {
     this->SetModelNumber(modelNumber);
-    std::string temp = line.substr(6, 5);
-    temp = gmml::Trim(temp);
-    if(temp.empty())
+    this->SetRecordName(codeUtils::RemoveWhiteSpace(line.substr(0,6)));
+    try
     {
-        serialNumber_ =  gmml::iNotSet;
+        serialNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(6, 5)));
     }
-    else
+    catch (...)
     {
-        serialNumber_ = gmml::ConvertString<int>(temp);
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to serialNumber from: " + line.substr(6,5));
     }
-
-    name_ = line.substr(12, 4);
-    gmml::Trim(name_);
-
+    atomName_ = codeUtils::RemoveWhiteSpace(line.substr(12, 4));
     // OG Dec2021, we don't want alt locations in gmml for now. Messes with the preprocessor.
-//    temp = line.substr(16,1);
-//    temp = gmml::Trim(temp);
-//    if(temp.empty())
-//    {
     alternateLocation_ = gmml::BLANK_SPACE;
-//    }
-//    else
-//    {
-//        alternateLocation_ = gmml::ConvertString<char>(temp);
-//    }
+    residueName_ = codeUtils::RemoveWhiteSpace(line.substr(17,3));
+    std::string temp = codeUtils::RemoveWhiteSpace(line.substr(21,1));
+    chainId_ = temp[0];
+    residueSequenceNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(22,4)));
+    temp = codeUtils::RemoveWhiteSpace(line.substr(26,1));
+    insertionCode_ = temp[0];
 
-    temp = line.substr(17,3);
-    temp = gmml::Trim(temp);
-    if(temp.empty())
+    temp = codeUtils::RemoveWhiteSpace(line.substr(30,8));
+    if(!temp.empty())
     {
-        residueName_ = " ";
+        coordinate_.SetX(std::stod(temp));
     }
-    else
+    temp = codeUtils::RemoveWhiteSpace(line.substr(38,8));
+    if(!temp.empty())
     {
-        residueName_ = temp;
+        coordinate_.SetY(std::stod(temp));
     }
-
-    temp = line.substr(21,1);
-    temp = gmml::Trim(temp);
-    if(temp.empty() || temp.compare("_") == 0)
+    temp = codeUtils::RemoveWhiteSpace(line.substr(46,8));
+    if(!temp.empty())
     {
-        chainId_ = gmml::BLANK_SPACE;
+        coordinate_.SetZ(std::stod(temp));
     }
-    else
-    {
-        chainId_ = gmml::ConvertString<char>(temp);
-    }
-
-    temp = line.substr(22,4);
-    temp = gmml::Trim(temp);
-    if(temp.empty())
-    {
-        residueSequenceNumber_ = gmml::iNotSet;
-    }
-    else
-    {
-        residueSequenceNumber_ = gmml::ConvertString<int>(temp);
-    }
-
-    temp = line.substr(26,1);
-    temp = gmml::Trim(temp);
-    if(temp.empty())
-    {
-        insertionCode_ = gmml::BLANK_SPACE;
-    }
-    else
-    {
-        insertionCode_ = gmml::ConvertString<char>(temp);
-    }
-
-    temp = line.substr(30, 8);
-    temp = gmml::Trim(temp);
-    if(temp.empty())
-    {
-        coordinate_.SetX(gmml::dNotSet);
-    }
-    else
-    {
-        coordinate_.SetX(gmml::ConvertString<double>(temp));
-    }
-
-    temp = line.substr(38,8);
-    temp = gmml::Trim(temp);
-    if(temp.empty())
-    {
-        coordinate_.SetY(gmml::dNotSet);
-    }
-    else
-    {
-        coordinate_.SetY( gmml::ConvertString<double>(line.substr(38,8)));
-    }
-
-    temp = line.substr(46,8);
-    temp = gmml::Trim(temp);
-    if(temp.empty())
-    {
-        coordinate_.SetZ(gmml::dNotSet);
-    }
-    else
-    {
-        coordinate_.SetZ( gmml::ConvertString<double>(temp));
-    }
-
-    temp = line.substr(54, 6);
-    temp = gmml::Trim(temp);
-    if(temp.empty())
-    {
-        occupancy_ = gmml::dNotSet;
-    }
-    else
-    {
-        occupancy_ = gmml::ConvertString<double>(temp);
-    }
-
-    temp = line.substr(60, 6);
-    temp = gmml::Trim(temp);
-    if(temp.empty())
-    {
-        temperatureFactor_ = gmml::dNotSet;
-    }
-    else
-    {
-        temperatureFactor_ = gmml::ConvertString<double>(temp);
-    }
-
-    temp = line.substr(76, 2);
-    temp = gmml::Trim(temp);
+    occupancy_ = std::stod(codeUtils::RemoveWhiteSpace(line.substr(54,6)));
+    temperatureFactor_ = std::stod(codeUtils::RemoveWhiteSpace(line.substr(60,6)));
+    temp = codeUtils::RemoveWhiteSpace(line.substr(76, 2));
     if(temp.size() == 2)
     {
       temp[1] = std::tolower(temp[1]);
     }
     element_ = temp;
-
-    temp = line.substr(78, 2);
-    temp = gmml::Trim(temp);
-    charge_ = temp;
+    charge_ = codeUtils::RemoveWhiteSpace(line.substr(78, 2));
 }
 /////////////////////////////////////////////////////////
 //                       MUTATOR                        //
@@ -155,12 +63,16 @@ void AtomRecord::SetModelNumber(const int i)
 {
     modelNumber_ = i;
 }
+void AtomRecord::SetRecordName(const std::string s)
+{
+    recordName_ = s;
+}
 void AtomRecord::SetAtomSerialNumber(int atom_serial_number){
     serialNumber_ = atom_serial_number;
 }
 
 void AtomRecord::SetAtomName(const std::string atom_name){
-    name_ = atom_name;
+    atomName_ = atom_name;
 }
 
 void AtomRecord::SetAtomAlternateLocation(char atom_alternate_location){
@@ -217,33 +129,33 @@ void AtomRecord::AddAlternateLocation(AtomRecord* alternate_atom)
 //////////////////////////////////////////////////////////
 void AtomRecord::Print(std::ostream &out) const
 {
-    out << "Atom Serial Number: ";
+    out << "Serial Number: ";
     if(serialNumber_ == gmml::iNotSet)
         out << " ";
     else
         out << serialNumber_;
-    out << ", Atom Name: " << name_
-        << ", Atom Alternate Location: " << alternateLocation_
-        << ", Atom Residue Name: " << residueName_
-        << ", Atom Chain ID: " << chainId_
-        << ", Atom Residue Sequence Number: ";
+    out << ", Atom Name: " << atomName_
+        << ", Alternate Location: " << alternateLocation_
+        << ", Residue Name: " << residueName_
+        << ", Chain ID: " << chainId_
+        << ", Residue Sequence Number: ";
     if(residueSequenceNumber_ == gmml::iNotSet)
         out << " ";
     else
         out << residueSequenceNumber_;
-    out << ", Atom Inserion Code: " << insertionCode_
-        << ", Atom Orthogonal Coordinate: ";
+    out << ", Inserion Code: " << insertionCode_
+        << ", Coordinate: ";
     coordinate_.Print(out);
-    out << ", Atom Occupancy: ";
+    out << ", Occupancy: ";
     if(occupancy_ == gmml::dNotSet)
         out << " ";
     else
         out << occupancy_;
-    out << ", Atom Tempreture Factor: ";
+    out << ", Temperature Factor: ";
     if(temperatureFactor_ == gmml::dNotSet)
         out << " ";
     else
         out << temperatureFactor_;
-    out << ", Atom Element Symbol: " << element_
-        << ", Atom Charge: " << charge_ << std::endl;
+    out << ", Element: " << element_
+        << ", Charge: " << charge_ << std::endl;
 }

@@ -44,12 +44,15 @@ void Ontology::PrintOntology(std::stringstream& ont_stream, pdb::PdbFile const &
         gmml::AddLiteral( uriStr, Ontology::hasPMID, pdbFile.GetJournalRecord().GetPMID(), ont_stream );
     }
     //Return Remarks
-    if(pdbFile.GetRemarkRecord().GetResolution() != gmml::dNotSet)
+    if(pdbFile.GetResolution() != gmml::dNotSet)
     {
         //Return Resolution
-        gmml::AddDecimal( uriStr, Ontology::hasResolution, pdbFile.GetRemarkRecord().GetResolution(), ont_stream );
+        gmml::AddDecimal( uriStr, Ontology::hasResolution, pdbFile.GetResolution(), ont_stream );
+    }
+    if(pdbFile.GetBFactor() != gmml::dNotSet)
+    {
         //Return B Factor
-        gmml::AddDecimal( uriStr, Ontology::hasBFactor, pdbFile.GetRemarkRecord().GetBFactor(), ont_stream );
+        gmml::AddDecimal( uriStr, Ontology::hasBFactor, pdbFile.GetBFactor(), ont_stream );
     }
     return;
 }

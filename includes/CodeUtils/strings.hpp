@@ -8,6 +8,6 @@ namespace codeUtils
 {
      std::string FindStringInStringMap(const std::string s, const std::unordered_map<std::string, std::string> &sMap);
      std::string RemoveWhiteSpace(std::string s);
-     //bool isStringInVector(const std::string s, const std::vector<std::string> &v)
+     void ExpandLine(std::string &line, int length);
 }
 #endif //GMML_INCLUDES_CODEUTILS_STRINGS_HPP

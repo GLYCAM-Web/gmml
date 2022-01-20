@@ -10,6 +10,7 @@
 
 namespace pdb
 {
+
     class AtomRecord
     {
         public:
@@ -21,7 +22,7 @@ namespace pdb
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
             inline const int& GetSerialNumber() const {return serialNumber_;}
-            inline const std::string& GetName() const {return name_;}
+            inline const std::string& GetName() const {return atomName_;}
             inline const std::string& GetResidueName() const {return residueName_;}
             inline const char& GetChain() const {return chainId_;}
             inline const int& GetResidueSequenceNumber() const {return residueSequenceNumber_;}
@@ -37,10 +38,12 @@ namespace pdb
             //////////////////////////////////////////////////////////
             void Print(std::ostream& out = std::cerr) const;
         private:
+            enum Type {ATOM, HETATM};
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
             void SetModelNumber(const int i);
+            void SetRecordName(const std::string s);
             void SetAtomSerialNumber(int atom_serial_number);
             void SetAtomName(const std::string atom_name);
             void SetAtomAlternateLocation(char atom_alternate_location);
@@ -58,9 +61,10 @@ namespace pdb
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
+            std::string recordName_;                             // See enum Type. Can be ATOM or HETATM
             int modelNumber_;                             // Model number that this card belongs to. Note not included in line.
             int serialNumber_;                            // Atom serial number in a model card of a pdb file
-            std::string name_;                            // Atom name in a single atom record in a model card of a pdb file
+            std::string atomName_;                            // Atom name in a single atom record in a model card of a pdb file
             char alternateLocation_;                      // Atom residue name in a single atom record in a model card of a pdb file
             std::string residueName_;                     // Residue name that the atom is assigned to
             char chainId_;                                // Chain id that the atom belongs to
