@@ -12,7 +12,20 @@ using GeometryTopology::Coordinate;
 Coordinate::Coordinate() : x_(0.0), y_(0.0), z_(0.0) {}
 
 Coordinate::Coordinate(double x, double y, double z) : x_(x), y_(y), z_(z) {}
-
+Coordinate::Coordinate(const std::string x, const std::string y, const std::string z)
+{
+    try
+    {
+        x_ = std::stod(x);
+        y_ = std::stod(y);
+        z_ = std::stod(z);
+    }
+    catch (...)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Could not convert these strings to doubles: " + x + ", " + y + ", " + z + ", ");
+        throw;
+    }
+}
 Coordinate::Coordinate(const Coordinate &coordinate) : x_(coordinate.x_), y_(coordinate.y_), z_(coordinate.z_) {}
 
 Coordinate::Coordinate(Coordinate* coordinate) : x_(coordinate->x_), y_(coordinate->y_), z_(coordinate->z_) {}

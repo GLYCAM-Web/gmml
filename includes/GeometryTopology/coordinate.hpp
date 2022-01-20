@@ -31,6 +31,7 @@ namespace GeometryTopology
               * @param y A double value on Y axis in cartesian coordinate
               * @param z A double value on Z axis in cartesian coordinate
               */
+            Coordinate(const std::string x, const std::string y, const std::string z);
             Coordinate(double x, double y, double z);
             /*! \fn
               * Copy constructor
