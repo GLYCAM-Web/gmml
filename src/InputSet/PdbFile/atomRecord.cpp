@@ -9,8 +9,9 @@ using pdb::AtomRecord;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-AtomRecord::AtomRecord(const std::string &line, int modelNumber) : serialNumber_(gmml::iNotSet), modelNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(' '), residueName_(""), chainId_(' '), residueSequenceNumber_(gmml::iNotSet), insertionCode_(' '), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_(""), residueSequenceIndex_("")
+AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(modelNumber), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(""), residueName_(""), chainId_(""), residueSequenceNumber_(gmml::iNotSet), insertionCode_(""), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("")
 {
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Parsing " + line);
     this->SetModelNumber(modelNumber);
     this->SetRecordName(codeUtils::RemoveWhiteSpace(line.substr(0,6)));
     try
@@ -22,38 +23,36 @@ AtomRecord::AtomRecord(const std::string &line, int modelNumber) : serialNumber_
         gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to serialNumber from: " + line.substr(6,5));
     }
     atomName_ = codeUtils::RemoveWhiteSpace(line.substr(12, 4));
-    // OG Dec2021, we don't want alt locations in gmml for now. Messes with the preprocessor.
-    alternateLocation_ = gmml::BLANK_SPACE;
+    //alternateLocation_ = ""; // OG Dec2021, we don't want alt locations in gmml for now. Messes with the preprocessor.
     residueName_ = codeUtils::RemoveWhiteSpace(line.substr(17,3));
-    std::string temp = codeUtils::RemoveWhiteSpace(line.substr(21,1));
-    chainId_ = temp[0];
+    chainId_ = codeUtils::RemoveWhiteSpace(line.substr(21,1));
     residueSequenceNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(22,4)));
-    temp = codeUtils::RemoveWhiteSpace(line.substr(26,1));
-    insertionCode_ = temp[0];
-
-    temp = codeUtils::RemoveWhiteSpace(line.substr(30,8));
-    if(!temp.empty())
+    insertionCode_ = codeUtils::RemoveWhiteSpace(line.substr(26,1));
+    try
     {
-        coordinate_.SetX(std::stod(temp));
+        coordinate_ = GeometryTopology::Coordinate(codeUtils::RemoveWhiteSpace(line.substr(30,8)), codeUtils::RemoveWhiteSpace(line.substr(38,8)), codeUtils::RemoveWhiteSpace(line.substr(46,8)));
     }
-    temp = codeUtils::RemoveWhiteSpace(line.substr(38,8));
-    if(!temp.empty())
+    catch (...)
     {
-        coordinate_.SetY(std::stod(temp));
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error setting coordinate from this line:\n" + line);
     }
-    temp = codeUtils::RemoveWhiteSpace(line.substr(46,8));
-    if(!temp.empty())
+    try
     {
-        coordinate_.SetZ(std::stod(temp));
+        occupancy_ = std::stod(codeUtils::RemoveWhiteSpace(line.substr(54,6)));
     }
-    occupancy_ = std::stod(codeUtils::RemoveWhiteSpace(line.substr(54,6)));
-    temperatureFactor_ = std::stod(codeUtils::RemoveWhiteSpace(line.substr(60,6)));
-    temp = codeUtils::RemoveWhiteSpace(line.substr(76, 2));
-    if(temp.size() == 2)
+    catch (...)
     {
-      temp[1] = std::tolower(temp[1]);
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to occupancy from: " + line.substr(54,6));
     }
-    element_ = temp;
+    try
+    {
+        temperatureFactor_ = std::stod(codeUtils::RemoveWhiteSpace(line.substr(60,6)));
+    }
+    catch (...)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to temperatureFactor_ from: " + line.substr(60,6));
+    }
+    element_ = codeUtils::RemoveWhiteSpace(line.substr(76, 2));; // this used to be for element: temp[1] = std::tolower(temp[1]);
     charge_ = codeUtils::RemoveWhiteSpace(line.substr(78, 2));
 }
 /////////////////////////////////////////////////////////
@@ -67,63 +66,58 @@ void AtomRecord::SetRecordName(const std::string s)
 {
     recordName_ = s;
 }
-void AtomRecord::SetAtomSerialNumber(int atom_serial_number){
+void AtomRecord::SetSerialNumber(const int atom_serial_number)
+{
     serialNumber_ = atom_serial_number;
 }
-
-void AtomRecord::SetAtomName(const std::string atom_name){
+void AtomRecord::SetAtomName(const std::string atom_name)
+{
     atomName_ = atom_name;
 }
-
-void AtomRecord::SetAtomAlternateLocation(char atom_alternate_location){
+void AtomRecord::SetAlternateLocation(const std::string atom_alternate_location)
+{
     alternateLocation_ = atom_alternate_location;
 }
-
-void AtomRecord::SetAtomResidueName(const std::string atom_residue_name){
+void AtomRecord::SetResidueName(const std::string atom_residue_name)
+{
     residueName_ = atom_residue_name;
 }
-
-void AtomRecord::SetAtomChainId(char atom_chain_id){
+void AtomRecord::SetChainId(const std::string atom_chain_id)
+{
     chainId_ = atom_chain_id;
 }
-
-void AtomRecord::SetAtomResidueSequenceNumber(int atom_residue_sequence_number){
+void AtomRecord::SetResidueSequenceNumber(const int atom_residue_sequence_number)
+{
     residueSequenceNumber_ = atom_residue_sequence_number;
 }
-
-void AtomRecord::SetAtomInsertionCode(char atom_insertion_code){
+void AtomRecord::SetInsertionCode(const std::string atom_insertion_code)
+{
     insertionCode_ = atom_insertion_code;
 }
-
-void AtomRecord::SetAtomOrthogonalCoordinate(GeometryTopology::Coordinate atom_orthogonal_coordinate){
-    coordinate_ = atom_orthogonal_coordinate;
+void AtomRecord::SetCoordinate(const GeometryTopology::Coordinate c)
+{
+    coordinate_ = c;
 }
-
-void AtomRecord::SetAtomOccupancy(double atom_occupancy){
+void AtomRecord::SetOccupancy(const double atom_occupancy)
+{
     occupancy_ = atom_occupancy;
 }
-
-void AtomRecord::SetAtomTempretureFactor(double atom_temperature_factor){
+void AtomRecord::SetTempretureFactor(const double atom_temperature_factor)
+{
     temperatureFactor_ = atom_temperature_factor;
 }
-
-void AtomRecord::SetAtomElementSymbol(const std::string atom_element_symbol){
+void AtomRecord::SetElement(const std::string atom_element_symbol)
+{
     element_ = atom_element_symbol;
 }
-
-void AtomRecord::SetAtomCharge(const std::string atom_charge){
+void AtomRecord::SetCharge(const std::string atom_charge)
+{
     charge_ = atom_charge;
 }
-void AtomRecord::SetAtomCardIndexInResidueSet(std::string atom_card_index_in_residue_sequence)
-{
-    residueSequenceIndex_ = atom_card_index_in_residue_sequence;
-}
-
-void AtomRecord::AddAlternateLocation(AtomRecord* alternate_atom)
-{
-  alternateLocations_.push_back(alternate_atom);
-}
-
+//void AtomRecord::AddAlternateLocation(AtomRecord* alternate_atom)
+//{
+//  alternateLocations_.push_back(alternate_atom);
+//}
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
