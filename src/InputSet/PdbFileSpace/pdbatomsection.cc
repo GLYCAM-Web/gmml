@@ -55,7 +55,6 @@ PdbAtomSection::PdbAtomSection(std::stringstream &stream_block, std::string inde
           atomCardMap_[atom_card->GetAtomSerialNumber()] = atom_card;
           orderedAtomCards_.push_back(atom_card);
 
-          std::cout << "Processed: " << temp << "\n";
 //          getline(stream_block, line);
 //          temp = line;
         }
@@ -101,7 +100,6 @@ PdbAtomSection::PdbAtomSection(std::stringstream &stream_block, std::string inde
         getline(stream_block, line);
         temp = line;
     }
-    std::cout << "Finished block\n";
 }
 
 //////////////////////////////////////////////////////////
