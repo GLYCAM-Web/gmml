@@ -11,6 +11,8 @@ CoordinateSection::CoordinateSection() {}
 CoordinateSection::CoordinateSection(std::stringstream &stream_block)
 {
     int currentModelNumber = 1;
+   // std::string currentResidueId = "?_?_?"; // This is just for organizing into residues.
+   // std::string previousResidueId = "IJustNeedThisToBeDifferentFromCurrentResidueIdForTheinitialCheckOkDontJudgeMeImDoingMyBestOutHere";
     std::string line;
     while(getline(stream_block, line))
     {
@@ -24,14 +26,28 @@ CoordinateSection::CoordinateSection(std::stringstream &stream_block)
             }
             catch (...)
             {
-                gmml::log(__LINE__, __FILE__, gmml::ERR, "Model card issue. Could not convert this to an int: " + codeUtils::RemoveWhiteSpace(line.substr(10,4)));
-                currentModelNumber = 1; // Seems like a reasonable default, things could go wrong with funky PDBs.
+                gmml::log(__LINE__, __FILE__, gmml::ERR, "Model issue: this ain't an int: " + codeUtils::RemoveWhiteSpace(line.substr(10,4)));
+                currentModelNumber = 1; // Seems like a reasonable default.
             }
         }
         // ATOM
         else if ( (recordName == "ATOM") || (recordName == "HETATM") )
         {
             atomRecords_.emplace_back(line, currentModelNumber);
+            //AtomRecord& newAtomRecord = atomRecords_.emplace_back(line, currentModelNumber);
+            // This next thing is to pre-organize into residues. Maybe dumb.
+//            currentResidueId = newAtomRecord.GetResidueId();
+//            if(currentResidueId == previousResidueId)
+//            {
+//                this->GetCurrentResidue().AddAtom(&newAtomRecord);
+//                std::cout << "Added to current residue\n";
+//            }
+//            else
+//            {
+//                this->CreateNewResidue(&newAtomRecord);
+//                std::cout << "New residue created!\n";
+//            }
+//            previousResidueId = currentResidueId;
         }
     }
 }
@@ -50,8 +66,15 @@ CoordinateSection::CoordinateSection(std::stringstream &stream_block)
 ////////////////////////////////////////////////////////
 void CoordinateSection::Print(std::ostream &out) const
 {
-    for (auto atomRecord : this->GetAtomRecords())
+    out << "The atom records are: " << "\n";
+    for (auto &atomRecord : this->GetAtomRecords())
     {
         atomRecord.Print(out);
     }
+//    out << "The number of residues is: " << this->GetResidues().size() << "\n";
+//    out << "The residues are: " << "\n";
+//    for (auto &residue : this->GetResidues())
+//    {
+//        residue.Print();
+//    }
 }

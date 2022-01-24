@@ -8,10 +8,9 @@ using pdb::AtomRecord;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-
 AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(modelNumber), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(""), residueName_(""), chainId_(""), residueSequenceNumber_(gmml::iNotSet), insertionCode_(""), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("")
 {
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Parsing " + line);
+//    gmml::log(__LINE__, __FILE__, gmml::INF, "Parsing " + line);
     this->SetModelNumber(modelNumber);
     this->SetRecordName(codeUtils::RemoveWhiteSpace(line.substr(0,6)));
     try
@@ -23,11 +22,34 @@ AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(
         gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to serialNumber from: " + line.substr(6,5));
     }
     atomName_ = codeUtils::RemoveWhiteSpace(line.substr(12, 4));
+    if (atomName_.empty())
+    {
+        atomName_ = gmml::BLANK_SPACE;
+    }
     //alternateLocation_ = ""; // OG Dec2021, we don't want alt locations in gmml for now. Messes with the preprocessor.
     residueName_ = codeUtils::RemoveWhiteSpace(line.substr(17,3));
+    if (residueName_.empty())
+    {
+        residueName_ = gmml::BLANK_SPACE;
+    }
     chainId_ = codeUtils::RemoveWhiteSpace(line.substr(21,1));
-    residueSequenceNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(22,4)));
+    if (chainId_.empty())
+    {
+        chainId_ = gmml::BLANK_SPACE;
+    }
+    try
+    {
+        residueSequenceNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(22,4)));
+    }
+    catch (...)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error setting residue number from this line:\n" + line);
+    }
     insertionCode_ = codeUtils::RemoveWhiteSpace(line.substr(26,1));
+    if (insertionCode_.empty())
+    {
+        insertionCode_ = gmml::BLANK_SPACE;
+    }
     try
     {
         coordinate_ = GeometryTopology::Coordinate(codeUtils::RemoveWhiteSpace(line.substr(30,8)), codeUtils::RemoveWhiteSpace(line.substr(38,8)), codeUtils::RemoveWhiteSpace(line.substr(46,8)));
@@ -118,6 +140,15 @@ void AtomRecord::SetCharge(const std::string atom_charge)
 //{
 //  alternateLocations_.push_back(alternate_atom);
 //}
+//////////////////////////////////////////////////////////
+//                       FUNCTION                       //
+//////////////////////////////////////////////////////////
+std::string AtomRecord::GetResidueId() const
+{
+    std::stringstream ss;
+    ss << this->GetResidueSequenceNumber() << "_" << this->GetInsertionCode() << "_" + this->GetChainId();
+    return ss.str();
+}
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////

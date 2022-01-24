@@ -18,10 +18,11 @@ namespace pdb
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
+            std::string GetResidueId() const;
             inline const int& GetSerialNumber() const {return serialNumber_;}
             inline const std::string& GetName() const {return atomName_;}
             inline const std::string& GetResidueName() const {return residueName_;}
-            inline const std::string& GetChain() const {return chainId_;}
+            inline const std::string& GetChainId() const {return chainId_;}
             inline const int& GetResidueSequenceNumber() const {return residueSequenceNumber_;}
             inline const std::string& GetInsertionCode() const {return insertionCode_;}
             inline const std::string& GetAlternateLocation() const {return alternateLocation_;}
