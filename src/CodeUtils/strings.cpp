@@ -1,6 +1,8 @@
 #include <sstream>
 #include <iomanip> // std::setw
+#include <ctype.h> // isdigit
 #include "includes/CodeUtils/strings.hpp"
+
 
 std::string codeUtils::FindStringInStringMap(const std::string s, const std::unordered_map<std::string, std::string> &sMap)
 {
@@ -34,6 +36,24 @@ void codeUtils::ExpandLine(std::string &line, int length)
     }
     return;
 }
+
+int codeUtils::GetSizeOfIntInString(const std::string str)
+{
+    int size = 0;
+    for(const char& c : str)
+    {
+        if (isdigit(c))
+        {
+            ++size;
+        }
+        else
+        {
+            return size;
+        }
+    }
+    return size;
+}
+
 
 //bool codeUtils::isStringInVector(const std::string s, const std::vector<std::string> &v)
 //{

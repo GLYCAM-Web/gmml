@@ -33,17 +33,17 @@ Coordinate::Coordinate(Coordinate* coordinate) : x_(coordinate->x_), y_(coordina
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
-double Coordinate::GetX()
+double Coordinate::GetX() const
 {
     return x_;
 }
 
-double Coordinate::GetY()
+double Coordinate::GetY() const
 {
     return y_;
 }
 
-double Coordinate::GetZ()
+double Coordinate::GetZ() const
 {
     return z_;
 }
@@ -84,13 +84,17 @@ bool Coordinate::CompareTo(Coordinate coordinate) const
         return false;
 }
 
-double Coordinate::Distance(Coordinate coordinate)
+double Coordinate::Distance(const Coordinate &coordinate) const
 {
     double dist = (x_ - coordinate.x_) * (x_ - coordinate.x_) + (y_ - coordinate.y_) * (y_ - coordinate.y_) + (z_ - coordinate.z_) * (z_ - coordinate.z_);
-    return sqrt(dist);
+    if(dist > 0.00000001) // can sometimes measure distance to self, in which case get sqrt(0), which should be fine but zero is funky and somtimes is actually slightly negative.
+    {
+        return sqrt(dist);
+    }
+    return 0.0;
 }
 
-double Coordinate::Distance(Coordinate *coordinate)
+double Coordinate::Distance(const Coordinate *coordinate) const
 {
     return this->Distance(*coordinate);
 }

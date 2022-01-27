@@ -13,7 +13,7 @@ void Ontology::PrintOntology(std::stringstream& ont_stream, pdb::PdbFile const &
     }
     else
     {
-        std::string file = gmml::Split(pdbFile.GetPath().substr(pdbFile.GetPath().find_last_of('/') + 1), ".").at(0);
+        std::string file = gmml::Split(pdbFile.GetInputFilePath().substr(pdbFile.GetInputFilePath().find_last_of('/') + 1), ".").at(0);
         // std::transform(file.begin(), file.end(),file.begin(), ::toupper);
         uri << file;
     }

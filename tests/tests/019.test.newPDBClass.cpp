@@ -1,5 +1,7 @@
 #include "includes/gmml.hpp"
 #include "includes/InputSet/PdbFile/pdbFile.hpp"
+#include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
+
 #include <string>
 
 int main(int argc, char* argv[])
@@ -11,6 +13,9 @@ int main(int argc, char* argv[])
         std::exit(EXIT_FAILURE);
     }
     pdb::PdbFile pdbFile(argv[1]);
+    std::cout << "pdbFile constructed\n" << std::endl;
+    pdb::PreprocessorOptions options;
+    pdb::PreprocessorInformation whatever = pdbFile.PreProcess(options);
 //    PdbPreprocessorSpace::PdbPreprocessor preprocessor(pdbFile);
 //    preprocessor.ApplyPreprocessingWithTheGivenModelNumber();
 //    pdbFile.WriteWithTheGivenModelNumber("Processed.pdb");

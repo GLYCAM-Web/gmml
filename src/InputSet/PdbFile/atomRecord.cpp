@@ -8,51 +8,68 @@ using pdb::AtomRecord;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
+AtomRecord::AtomRecord() : modelNumber_(1), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(""), residueName_(""), chainId_(""), residueSequenceNumber_(gmml::iNotSet), insertionCode_(""), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("") {}
+
 AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(modelNumber), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(""), residueName_(""), chainId_(""), residueSequenceNumber_(gmml::iNotSet), insertionCode_(""), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("")
 {
-//    gmml::log(__LINE__, __FILE__, gmml::INF, "Parsing " + line);
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Parsing " + line);
+    // In the PDB file the residue number overruns after 9999 and serial number overruns after 99999. First overun for serial doesn't matter as there should be a space between the number and the name. So the problem is above 999999
     this->SetModelNumber(modelNumber);
     this->SetRecordName(codeUtils::RemoveWhiteSpace(line.substr(0,6)));
+    // Dealing with number overruns for serialNumber and residueNumber
+    int shift = 0;
+    shift = codeUtils::GetSizeOfIntInString(line.substr(12));
+    if (shift > 0)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "A serial number shift has occurred.");
+    }
     try
     {
-        serialNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(6, 5)));
+        serialNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(6, 6 + shift)));
     }
     catch (...)
     {
-        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to serialNumber from: " + line.substr(6,5));
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to serialNumber from: " + line.substr(6, 6 + shift));
     }
-    atomName_ = codeUtils::RemoveWhiteSpace(line.substr(12, 4));
+    atomName_ = codeUtils::RemoveWhiteSpace(line.substr(12 + shift, 4));
     if (atomName_.empty())
     {
         atomName_ = gmml::BLANK_SPACE;
     }
     //alternateLocation_ = ""; // OG Dec2021, we don't want alt locations in gmml for now. Messes with the preprocessor.
-    residueName_ = codeUtils::RemoveWhiteSpace(line.substr(17,3));
+    residueName_ = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
     if (residueName_.empty())
     {
         residueName_ = gmml::BLANK_SPACE;
     }
-    chainId_ = codeUtils::RemoveWhiteSpace(line.substr(21,1));
+    chainId_ = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
     if (chainId_.empty())
     {
         chainId_ = gmml::BLANK_SPACE;
     }
+    int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));
     try
     {
-        residueSequenceNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(22,4)));
+        residueSequenceNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(22 + shift, 4 + secondShift)));
     }
     catch (...)
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, "Error setting residue number from this line:\n" + line);
     }
-    insertionCode_ = codeUtils::RemoveWhiteSpace(line.substr(26,1));
+    // Insertion code gets shifted right by every overrun in residue number.
+    insertionCode_ = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
     if (insertionCode_.empty())
     {
         insertionCode_ = gmml::BLANK_SPACE;
     }
+    // Coordinates etc don't get shifted by first overrun in residue number, but do by the rest.
+    if (secondShift > 1)
+    {
+        shift += (secondShift - 1); // Combine the shifts, but ignore the first shift in residue sequence number from here on
+    }
     try
     {
-        coordinate_ = GeometryTopology::Coordinate(codeUtils::RemoveWhiteSpace(line.substr(30,8)), codeUtils::RemoveWhiteSpace(line.substr(38,8)), codeUtils::RemoveWhiteSpace(line.substr(46,8)));
+        coordinate_ = GeometryTopology::Coordinate(codeUtils::RemoveWhiteSpace(line.substr(30 + shift, 8)), codeUtils::RemoveWhiteSpace(line.substr(38 + shift, 8)), codeUtils::RemoveWhiteSpace(line.substr(46 + shift, 8)));
     }
     catch (...)
     {
@@ -60,22 +77,29 @@ AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(
     }
     try
     {
-        occupancy_ = std::stod(codeUtils::RemoveWhiteSpace(line.substr(54,6)));
+        occupancy_ = std::stod(codeUtils::RemoveWhiteSpace(line.substr(54 + shift, 6)));
     }
     catch (...)
     {
-        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to occupancy from: " + line.substr(54,6));
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to occupancy from: " + line.substr(54 + shift, 6));
     }
     try
     {
-        temperatureFactor_ = std::stod(codeUtils::RemoveWhiteSpace(line.substr(60,6)));
+        temperatureFactor_ = std::stod(codeUtils::RemoveWhiteSpace(line.substr(60 + shift, 6)));
     }
     catch (...)
     {
-        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to temperatureFactor_ from: " + line.substr(60,6));
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to temperatureFactor_ from: " + line.substr(60 + shift, 6));
     }
-    element_ = codeUtils::RemoveWhiteSpace(line.substr(76, 2));; // this used to be for element: temp[1] = std::tolower(temp[1]);
-    charge_ = codeUtils::RemoveWhiteSpace(line.substr(78, 2));
+    // Worried about case where shift is 2 and these don't exist, so line length is 80. More Ifs: Ugh.
+    if (shift <= 2)
+    {
+        element_ = codeUtils::RemoveWhiteSpace(line.substr(76 + shift, 2));; // this used to be for element: temp[1] = std::tolower(temp[1]);
+    }
+    if (shift == 0)
+    {
+        charge_ = codeUtils::RemoveWhiteSpace(line.substr(78, 2));
+    }
 }
 /////////////////////////////////////////////////////////
 //                       MUTATOR                        //
@@ -143,12 +167,24 @@ void AtomRecord::SetCharge(const std::string atom_charge)
 //////////////////////////////////////////////////////////
 //                       FUNCTION                       //
 //////////////////////////////////////////////////////////
+std::string AtomRecord::GetId() const
+{
+    std::stringstream ss;
+    ss << this->GetName() << "_" << this->GetSerialNumber() << "_" << this->GetResidueId();
+    return ss.str();
+}
+
 std::string AtomRecord::GetResidueId() const
 {
     std::stringstream ss;
-    ss << this->GetResidueSequenceNumber() << "_" << this->GetInsertionCode() << "_" + this->GetChainId();
+    ss << this->GetResidueName() << "_" << this->GetInsertionCode() << "_" << this->GetResidueSequenceNumber() << "_" + this->GetChainId();
     return ss.str();
 }
+double AtomRecord::CalculateDistance(const AtomRecord* otherAtom) const
+{
+    return this->GetCoordinate().Distance(otherAtom->GetCoordinate());
+}
+
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////

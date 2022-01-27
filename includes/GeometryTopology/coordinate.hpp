@@ -52,19 +52,19 @@ namespace GeometryTopology
               * The attribute is set by the contents of the given file
               * @return x_ of the current object of this class
               */
-            double GetX();
+            double GetX() const;
             /*! \fn
               * An accessor function in order to access to Y coordinate attribute of the current object
               * The attribute is set by the contents of the given file
               * @return y_ of the current object of this class
               */
-            double GetY();
+            double GetY() const;
             /*! \fn
               * An accessor function in order to access to Z coordinate attribute of the current object
               * The attribute is set by the contents of the given file
               * @return z_ of the current object of this class
               */
-            double GetZ();
+            double GetZ() const;
 /** @}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //
@@ -102,14 +102,14 @@ namespace GeometryTopology
               * @param coordinate A coordinate to calculate the distance between that and the current object
               * @return A double value as a distance between two coordinates
               */
-            double Distance(Coordinate coordinate);
+            double Distance(const Coordinate &coordinate) const;
 
             /*! \fn
               * Calculate the distance between current object coordinate and the given coordinate
               * @param coordinate A coordinate to calculate the distance between that and the current object
               * @return A double value as a distance between two coordinates
               */
-            double Distance(Coordinate *coordinate);
+            double Distance(const Coordinate *coordinate) const;
 
             /*! \fn
               * Calculate the length of the vector

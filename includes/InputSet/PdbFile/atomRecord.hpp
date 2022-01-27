@@ -14,11 +14,11 @@ namespace pdb
             //////////////////////////////////////////////////////////
             //                    CONSTRUCTOR                       //
             //////////////////////////////////////////////////////////
+            AtomRecord();
             AtomRecord(const std::string& line, int modelNumber = 1);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
-            std::string GetResidueId() const;
             inline const int& GetSerialNumber() const {return serialNumber_;}
             inline const std::string& GetName() const {return atomName_;}
             inline const std::string& GetResidueName() const {return residueName_;}
@@ -31,7 +31,17 @@ namespace pdb
             inline const double& GetTemperatureFactor() const {return temperatureFactor_;}
             inline const std::string& GetElementSymbol() const {return element_;}
             inline const std::string& GetCharge() const {return charge_;}
-            inline const int& GetModelNumber() const {return modelNumber_;;}
+            inline const int& GetModelNumber() const {return modelNumber_;}
+            //////////////////////////////////////////////////////////
+            //                       MUTATOR                        //
+            //////////////////////////////////////////////////////////
+            void SetResidueName(const std::string atom_residue_name); // Make friend of pdb::Residue?
+            //////////////////////////////////////////////////////////
+            //                       FUNCTION                       //
+            //////////////////////////////////////////////////////////
+            std::string GetId() const;
+            std::string GetResidueId() const;
+            double CalculateDistance(const AtomRecord* otherAtom) const;
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
@@ -45,7 +55,6 @@ namespace pdb
             void SetSerialNumber(const int atom_serial_number);
             void SetAtomName(const std::string atom_name);
             void SetAlternateLocation(const std::string atom_alternate_location);
-            void SetResidueName(const std::string atom_residue_name);
             void SetChainId(const std::string atom_chain_id);
             void SetResidueSequenceNumber(const int atom_residue_sequence_number);
             void SetInsertionCode(const std::string atom_insertion_code);
