@@ -12,17 +12,13 @@ AtomRecord::AtomRecord() : modelNumber_(1), recordName_(""), serialNumber_(gmml:
 
 AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(modelNumber), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(""), residueName_(""), chainId_(""), residueSequenceNumber_(gmml::iNotSet), insertionCode_(""), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("")
 {
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Parsing " + line);
+    //gmml::log(__LINE__, __FILE__, gmml::INF, "Parsing " + line);
     // In the PDB file the residue number overruns after 9999 and serial number overruns after 99999. First overun for serial doesn't matter as there should be a space between the number and the name. So the problem is above 999999
     this->SetModelNumber(modelNumber);
     this->SetRecordName(codeUtils::RemoveWhiteSpace(line.substr(0,6)));
     // Dealing with number overruns for serialNumber and residueNumber
     int shift = 0;
     shift = codeUtils::GetSizeOfIntInString(line.substr(12));
-    if (shift > 0)
-    {
-        gmml::log(__LINE__, __FILE__, gmml::WAR, "A serial number shift has occurred.");
-    }
     try
     {
         serialNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(6, 6 + shift)));

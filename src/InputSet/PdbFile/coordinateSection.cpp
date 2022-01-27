@@ -66,14 +66,13 @@ std::vector<pdb::PdbResidue> CoordinateSection::GetResidues() const
     for(auto &atomUniquePtr : atomRecords_)
     {
         id = atomUniquePtr->GetResidueId();
-        std::cout << "Comparing " << id << " with " << previousId << "\n";
         if(id == previousId)
         {
             residues.back().AddAtom(atomUniquePtr.get());
         }
         else
         {
-            std::cout << "Creating new residue\n";
+            //std::cout << "Creating new residue\n";
             residues.emplace_back(atomUniquePtr.get());
         }
         previousId = id;
@@ -90,7 +89,7 @@ std::vector<pdb::PdbResidue> CoordinateSection::FindResidues(const std::string s
         if(found != std::string::npos)
         {
             matchingResidues.push_back(residue);
-            std::cout << residue.GetId() << " contains " << selector << "\n";
+            //std::cout << residue.GetId() << " contains " << selector << "\n";
         }
     }
     return matchingResidues;

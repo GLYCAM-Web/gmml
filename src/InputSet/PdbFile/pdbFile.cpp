@@ -26,7 +26,7 @@ PdbFile::PdbFile(const std::string &pdbFilePath) : inFilePath_(pdbFilePath)
     }
     gmml::log(__LINE__, __FILE__,  gmml::INF, "File opened: " + pdbFilePath + ". Ready to parse!");
     this->ParseInFileStream(pdbFileStream);
-    coordinateSection_.Print();
+    //coordinateSection_.Print();
     std::cout << "Finsihed printing Coordinate section" << std::endl;
 }
 void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream)

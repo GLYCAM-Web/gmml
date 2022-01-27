@@ -67,7 +67,7 @@ pdb::AtomRecord* PdbResidue::FindAtom(const std::string selector) const
 //////////////////////////////////////////////////////////
 void PdbResidue::AddAtom(AtomRecord* atomRecord)
 {
-    std::cout << "Adding atom with id " << atomRecord->GetId() << " to residue.\n";
+    //std::cout << "Adding atom with id " << atomRecord->GetId() << " to residue.\n";
     atomRecords_.push_back(atomRecord);
     return;
 }
