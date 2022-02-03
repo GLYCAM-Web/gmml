@@ -1,10 +1,11 @@
-#ifndef GMML_INCLUDES_INPUTSET_PDBFILE_CONECTRECORD_HPP
-#define GMML_INCLUDES_INPUTSET_PDBFILE_CONECTRECORD_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILE_CONECTRECORDS_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILE_CONECTRECORDS_HPP
 
 #include <string>
 #include <iostream>
 
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
+#include "includes/InputSet/PdbFile/coordinateSection.hpp"
 
 namespace pdb
 {
@@ -16,7 +17,8 @@ namespace pdb
             //////////////////////////////////////////////////////////
             //                    CONSTRUCTOR                       //
             //////////////////////////////////////////////////////////
-            ConectRecord(std::string& line, int modelNumber = 1);
+            ConectRecord(std::string &line, CoordinateSection& coordinateSection);
+            ConectRecord(std::vector<AtomRecord*> atoms );
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
@@ -33,10 +35,8 @@ namespace pdb
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::pair<AtomRecord*, AtomRecord*> connectRecord_;
-
-
+            std::vector<AtomRecord*> atomRecordPtrs_;
     };
 }
 
-#endif// GMML_INCLUDES_INPUTSET_PDBFILE_CONECTRECORD_HPP
+#endif// GMML_INCLUDES_INPUTSET_PDBFILE_CONECTRECORDS_HPP

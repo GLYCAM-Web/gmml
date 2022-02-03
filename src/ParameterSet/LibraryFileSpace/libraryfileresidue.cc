@@ -52,6 +52,29 @@ LibraryFileResidue::AtomMap LibraryFileResidue::GetAtoms()
     return atoms_;
 }
 
+std::vector<std::string> LibraryFileResidue::GetAtomNames()
+{
+    std::vector<std::string> foundAtoms;
+    for (auto &atom : this->GetAtomsVector())
+    {
+        foundAtoms.push_back(atom->GetName());
+    }
+    return foundAtoms;
+}
+
+std::vector<std::string> LibraryFileResidue::GetHeavyAtomNames()
+{
+    std::vector<std::string> foundAtoms;
+    for (auto &atom : this->GetAtomsVector())
+    {
+        if (atom->GetName().at(0) != 'H')
+        {
+            foundAtoms.push_back(atom->GetName());
+        }
+    }
+    return foundAtoms;
+}
+
 std::vector<LibraryFileSpace::LibraryFileAtom*> LibraryFileResidue::GetAtomsVector()
 {
     std::vector<LibraryFileSpace::LibraryFileAtom*> atoms;

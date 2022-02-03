@@ -8,7 +8,7 @@ using pdb::AtomRecord;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-AtomRecord::AtomRecord() : modelNumber_(1), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(""), residueName_(""), chainId_(""), residueSequenceNumber_(gmml::iNotSet), insertionCode_(""), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("") {}
+//AtomRecord::AtomRecord() : modelNumber_(1), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(""), residueName_(""), chainId_(""), residueSequenceNumber_(gmml::iNotSet), insertionCode_(""), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("") {}
 
 AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(modelNumber), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(""), residueName_(""), chainId_(""), residueSequenceNumber_(gmml::iNotSet), insertionCode_(""), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("")
 {
@@ -97,6 +97,41 @@ AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(
         charge_ = codeUtils::RemoveWhiteSpace(line.substr(78, 2));
     }
 }
+
+AtomRecord::AtomRecord(const std::string& name, const GeometryTopology::Coordinate& coord, AtomRecord *sisterAtom) : atomName_(name), coordinate_ (coord)
+{
+    modelNumber_ = sisterAtom->GetModelNumber();
+    recordName_ = sisterAtom->GetRecordName();
+    serialNumber_ = sisterAtom->GetSerialNumber() + 1; // An ok default.
+    alternateLocation_ = sisterAtom->GetAlternateLocation();
+    residueName_ = sisterAtom->GetResidueName();
+    chainId_ = sisterAtom->GetChainId();
+    residueSequenceNumber_ = sisterAtom->GetResidueSequenceNumber();
+    insertionCode_ = sisterAtom->GetInsertionCode();
+    occupancy_ = gmml::dNotSet; // Not accurate to copy this from sisterAtom
+    temperatureFactor_ = gmml::dNotSet; // Not accurate to copy this from sisterAtom
+    element_ = name.substr(0,1); // Just take first letter as element. Ok default.
+    charge_ = ""; // Idk when/how this is used. It being a string is weird.
+}
+
+AtomRecord::AtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const GeometryTopology::Coordinate& coord , const std::string& chainId, const int& modelNumber, const int& serialNumber, const std::string& recordName, const std::string& alternateLocation, const std::string& insertionCode, const double& occupancy, const double& temperatureFactor, const std::string& element, const std::string& charge)
+:
+        modelNumber_(modelNumber),
+        recordName_(recordName),
+        atomName_(atomName),
+        serialNumber_(serialNumber),
+        alternateLocation_(alternateLocation),
+        residueName_(residueName),
+        chainId_(chainId),
+        residueSequenceNumber_(residueSequenceNumber),
+        insertionCode_(insertionCode),
+        occupancy_(occupancy),
+        temperatureFactor_(temperatureFactor),
+        element_(element),
+        charge_(charge),
+        coordinate_(coord)
+{}
+
 /////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////

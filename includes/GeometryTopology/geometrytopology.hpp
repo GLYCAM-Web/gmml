@@ -9,11 +9,11 @@ namespace GeometryTopology
 
 Coordinate get_cartesian_point_from_internal_coords(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c, double theta_Degrees, double phi_Degrees, double distance_Angstrom);
 
-Coordinate get_cartesian_point_from_internal_coords(Coordinate a, Coordinate b, Coordinate c, double theta_Degrees, double phi_Degrees, double distance_Angstrom);
+Coordinate get_cartesian_point_from_internal_coords(const Coordinate& a, const Coordinate& b, const Coordinate& c, double theta_Degrees, double phi_Degrees, double distance_Angstrom);
 
-Coordinate subtract_coordinates(Coordinate minuaend, Coordinate subtrahend);
+Coordinate subtract_coordinates(const Coordinate& minuaend, const Coordinate& subtrahend);
 
-double calculateDistanceFromPointToLineBetweenTwoPoints(Coordinate queryPoint, Coordinate linePointA, Coordinate linePointB);
+double calculateDistanceFromPointToLineBetweenTwoPoints(const Coordinate& queryPoint, const Coordinate& linePointA, const Coordinate& linePointB);
 
 Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors);
 

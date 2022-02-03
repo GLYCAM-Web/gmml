@@ -7,7 +7,6 @@
 
 #include "includes/InputSet/PdbFile/coordinateSection.hpp"
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
-#include "includes/InputSet/PdbFile/conectRecord.hpp"
 #include "includes/InputSet/PdbFile/headerRecord.hpp"
 #include "includes/InputSet/PdbFile/databaseReferenceRecord.hpp"
 #include "includes/InputSet/PdbFile/titleRecord.hpp"
@@ -15,14 +14,15 @@
 #include "includes/InputSet/PdbFile/journalRecord.hpp"
 #include "includes/InputSet/PdbFile/remarkRecord.hpp"
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
-#include "pdbResidue.hpp"
+#include "includes/InputSet/PdbFile/conectRecord.hpp"
+#include "includes/InputSet/PdbFile/pdbResidue.hpp"
 
 namespace pdb
 {
 const int iPdbLineLength = 80;
 class PdbFile
 {
-    friend class PdbPreprocessor;
+   // friend class PdbPreprocessor;
 public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
@@ -48,15 +48,18 @@ public:
     const float& GetResolution() const;
     const float& GetBFactor() const;
     pdb::PreprocessorInformation PreProcess(PreprocessorOptions options);
-
+    void Print(std::ostream& out = std::cout) const;
 private:
     void ParseInFileStream(std::ifstream& pdbFileStream);
     std::stringstream ExtractHeterogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, const std::vector<std::string> recordNames);
     std::stringstream ExtractHomogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, std::string previousName);
-    std::string GetExpandedLine(std::ifstream& pdbFileStream);
-    void ParseLine(std::string &line);
     inline const std::vector<DatabaseReference>& GetDatabaseReferences() const {return databaseReferences_;}
     inline CoordinateSection& GetCoordinateSection() {return coordinateSection_;}
+    void AddConnection(AtomRecord* atom1, AtomRecord* atom2);
+    void DeleteAtomRecord(AtomRecord* atom);
+    void ModifyNTerminal(const std::string& type, PdbResidue* nTerminalResidue);
+    void ModifyCTerminal(const std::string& type, PdbResidue* residue);
+    void InsertCap(const PdbResidue& residue, const std::string& type);
     //////////////////////////////////////////////////////////
     //                        ATTRIBUTES                    //
     //////////////////////////////////////////////////////////

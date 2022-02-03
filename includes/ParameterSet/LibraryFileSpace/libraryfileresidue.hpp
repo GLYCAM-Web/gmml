@@ -62,6 +62,9 @@ namespace LibraryFileSpace
               * @return atoms_ attribute of the current residue
               */
             AtomMap GetAtoms();
+            std::vector<std::string> GetAtomNames();
+            std::vector<std::string> GetHeavyAtomNames();
+
             std::vector<LibraryFileSpace::LibraryFileAtom*> GetAtomsVector();
 
             /*! \fn

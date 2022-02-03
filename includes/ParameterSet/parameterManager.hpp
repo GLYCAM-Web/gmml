@@ -19,6 +19,8 @@ public:
     inline std::map<std::string, LibraryFileSpace::LibraryFileResidue*> GetLibraryResidueMap() { return libResMap_;}
     inline std::map<std::string, PrepFileSpace::PrepFileResidue*> GetPrepResidueMap() { return prepResMap_;}
     inline std::vector<std::string> GetGlycamResidueNames() {return glycamResidueNames_;}
+    std::vector<std::string> GetAtomNamesForResidue(const std::string& residueName);
+    std::vector<std::string> GetHeavyAtomNamesForResidue(const std::string &residueName);
 
 private:
     void InitializeMaps();

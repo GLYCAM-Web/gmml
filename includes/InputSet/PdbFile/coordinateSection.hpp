@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <iostream>
+#include "includes/InputSet/PdbFile/pdbChain.hpp"
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
 
@@ -19,21 +20,26 @@ namespace pdb
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
-
             //////////////////////////////////////////////////////////
-            //                        FUNCTIONS                     //
+            //                       FUNCTIONS                      //
             //////////////////////////////////////////////////////////
+            std::vector<std::vector<pdb::PdbResidue>> GetProteinChains(); // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
+            std::vector<pdb::PdbResidue> GetResidues(); // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
+            std::vector<pdb::PdbResidue> FindResidues(const std::string selector); // Uh oh, private parts are exposed. Wee-ooo wee-ooo.
+            AtomRecord* FindAtom(int serialNumber); // Conect records
+            void DeleteAtomRecord(AtomRecord* atom);
+            void CreateNewAtomRecord(std::string name, GeometryTopology::Coordinate& coord, AtomRecord* sisterAtom);
+            AtomRecord* CreateNewAtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const GeometryTopology::Coordinate& coord, const std::string& chainId, const int& modelNumber, AtomRecord* previousAtom);
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
             void Print(std::ostream& out = std::cerr) const;
-            std::vector<pdb::PdbResidue> FindResidues(const std::string selector); // Uh oh, private parts are exposed. Wee-ooo wee-ooo.
         private:
+            std::vector<std::unique_ptr<AtomRecord>>::iterator FindPositionOfAtom(AtomRecord* queryAtom);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////
             //inline pdb::PdbResidue* GetCurrentResidue() {return &(residues_.front());}
-            std::vector<pdb::PdbResidue> GetResidues() const;
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
@@ -41,7 +47,7 @@ namespace pdb
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::vector<pdb::PdbResidue> residues_;              // We organize by residue to mirror the rest of GMML structure.
+//            std::vector<pdb::PdbResidue> residues_;              // We organize by residue to mirror the rest of GMML structure.
             std::vector<std::unique_ptr<AtomRecord>> atomRecords_;
     };
 }

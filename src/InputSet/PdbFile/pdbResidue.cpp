@@ -15,12 +15,30 @@ PdbResidue::PdbResidue(std::vector<AtomRecord*> atomRecords)
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
+std::vector<std::string> PdbResidue::GetAtomNames() const
+{
+    std::vector<std::string> foundAtomNames;
+    for(auto &atomRecord : atomRecords_)
+    {
+        foundAtomNames.push_back(atomRecord->GetName());
+    }
+    return foundAtomNames;
+}
+
+pdb::AtomRecord* PdbResidue::GetLastAtom() const
+{
+    if (atomRecords_.empty())
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "atomRecords in PdbResidue is empty. Impossible!?");
+    }
+    return atomRecords_.back();
+}
+
 pdb::AtomRecord* PdbResidue::GetFirstAtom() const
 {
     if (atomRecords_.empty())
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, "atomRecords in PdbResidue is empty. Impossible!?");
-        std::exit(1);
     }
     return atomRecords_.front();
 }
@@ -31,6 +49,18 @@ const std::string& PdbResidue::GetChainId() const
 const std::string& PdbResidue::GetName() const
 {
     return this->GetFirstAtom()->GetResidueName();
+}
+const std::string PdbResidue::GetParmName() const // If terminal, need to look up e.g. NPRO or CPRO instead of PRO.
+{
+    if (this->containsLabel("NTerminal"))
+    {
+        return "N" + this->GetName();
+    }
+    else if (this->containsLabel("CTerminal"))
+    {
+        return "C" + this->GetName();
+    }
+    return this->GetName();
 }
 const int& PdbResidue::GetSequenceNumber() const
 {
@@ -44,17 +74,25 @@ std::string PdbResidue::GetId() const
 {
     return this->GetFirstAtom()->GetResidueId();
 }
+const int& PdbResidue::GetModelNumber() const
+{
+    return this->GetFirstAtom()->GetModelNumber();
+}
+
 
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
-pdb::AtomRecord* PdbResidue::FindAtom(const std::string selector) const
+pdb::AtomRecord* PdbResidue::FindAtom(const std::string& queryName) const
 {
-    pdb::AtomRecord* nullAtom = nullptr;
     for(auto &atom : atomRecords_)
     {
-        std::size_t found = atom->GetId().find(selector);
-        if (found != std::string::npos)
+//        std::size_t found = atom->GetId().find(name);
+//        if (found != std::string::npos)
+//        {
+//            return atom;
+//        }
+        if(atom->GetName() == queryName)
         {
             return atom;
         }

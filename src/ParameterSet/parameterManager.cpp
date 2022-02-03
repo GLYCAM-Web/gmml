@@ -109,7 +109,7 @@ LibraryFileSpace::LibraryFileResidue* Manager::FindLibResidue(std::string residu
     {
         return it->second;
     }
-    gmml::log(__LINE__, __FILE__, gmml::WAR, "Did not find a LibraryFileSpace::LibraryFileResidue in my map for " + residueName );
+//    gmml::log(__LINE__, __FILE__, gmml::WAR, "Did not find a LibraryFileSpace::LibraryFileResidue in my map for " + residueName );
     return nullptr;
 }
 
@@ -120,7 +120,7 @@ PrepFileSpace::PrepFileResidue* Manager::FindPrepResidue(std::string residueName
     {
         return it->second;
     }
-    gmml::log(__LINE__, __FILE__, gmml::WAR, "Did not find a LibraryFileSpace::LibraryFileResidue in my map for " + residueName );
+//    gmml::log(__LINE__, __FILE__, gmml::WAR, "Did not find a PrepFileSpace::PrepFileResidue in my map for " + residueName );
     return nullptr;
 }
 
@@ -139,6 +139,38 @@ double Manager::GetChargeForResidue(std::string residueName)
     }
     return libRes->GetCharge();
 }
+
+std::vector<std::string> Manager::GetAtomNamesForResidue(const std::string &residueName)
+{
+    LibraryFileSpace::LibraryFileResidue* libRes = this->FindLibResidue(residueName);
+    if (libRes == nullptr) // not found
+    {
+        PrepFileSpace::PrepFileResidue* prepRes = this->FindPrepResidue(residueName);
+        if (prepRes == nullptr)
+        {
+            return std::vector<std::string>(); // it will be empty
+        }
+        return prepRes->GetAtomNames();
+    }
+    return libRes->GetAtomNames();
+}
+
+std::vector<std::string> Manager::GetHeavyAtomNamesForResidue(const std::string &residueName)
+{
+    LibraryFileSpace::LibraryFileResidue* libRes = this->FindLibResidue(residueName);
+    if (libRes == nullptr) // not found
+    {
+        PrepFileSpace::PrepFileResidue* prepRes = this->FindPrepResidue(residueName);
+        if (prepRes == nullptr)
+        {
+            return std::vector<std::string>(); // it will be empty
+        }
+        return prepRes->GetHeavyAtomNames();
+    }
+    return libRes->GetHeavyAtomNames();
+}
+
+
 
 //
 //gmml::ResidueNameMap PdbPreprocessor::GetAllResidueNamesFromMultipleLibFilesMap(std::vector<std::string> lib_files)

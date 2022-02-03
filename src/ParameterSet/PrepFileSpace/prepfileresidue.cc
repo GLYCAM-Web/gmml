@@ -565,6 +565,29 @@ PrepFileSpace::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
     return parents;
 }
 
+std::vector<std::string> PrepFileResidue::GetAtomNames()
+{
+    std::vector<std::string> foundAtoms;
+    for (auto &prepAtom : this->GetAtoms())
+    {
+        foundAtoms.push_back(prepAtom->GetName());
+    }
+    return foundAtoms;
+}
+
+std::vector<std::string> PrepFileResidue::GetHeavyAtomNames()
+{
+    std::vector<std::string> foundAtoms;
+    for (auto &prepAtom : this->GetAtoms())
+    {
+        if(prepAtom->GetName().at(0) != 'H')
+        {
+            foundAtoms.push_back(prepAtom->GetName());
+        }
+    }
+    return foundAtoms;
+}
+
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////

@@ -124,7 +124,7 @@ public:
 	/************************************************
 	 *  FUNCTIONS
 	 ***********************************************/
-	inline bool containsLabel(const std::string query)
+	inline bool containsLabel(const std::string query) const
 	{
 		for (std::string currLabel : this->labels_m)
 		{

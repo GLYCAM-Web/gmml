@@ -16,6 +16,7 @@ int main(int argc, char* argv[])
     std::cout << "pdbFile constructed\n" << std::endl;
     pdb::PreprocessorOptions options;
     pdb::PreprocessorInformation whatever = pdbFile.PreProcess(options);
+    pdbFile.Print();
 //    PdbPreprocessorSpace::PdbPreprocessor preprocessor(pdbFile);
 //    preprocessor.ApplyPreprocessingWithTheGivenModelNumber();
 //    pdbFile.WriteWithTheGivenModelNumber("Processed.pdb");
