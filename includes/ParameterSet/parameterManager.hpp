@@ -21,15 +21,12 @@ public:
     inline std::vector<std::string> GetGlycamResidueNames() {return glycamResidueNames_;}
     std::vector<std::string> GetAtomNamesForResidue(const std::string& residueName);
     std::vector<std::string> GetHeavyAtomNamesForResidue(const std::string &residueName);
-
 private:
     void InitializeMaps();
     void InitializePrepResidueMap(std::vector<std::string> &prepFiles);
     void InitializeLibResidueMap(std::vector<std::string> &libFiles);
     void SetGlycamResidueNames(std::vector<std::string> &libFiles, std::vector<std::string> &prepFiles);
     PrepFileSpace::PrepFileResidue* FindPrepResidue(std::string residueName);
-
-
     std::map<std::string, std::string> residueNamesToSelfMap_; // Silly
     std::map<std::string, std::vector<std::string>> residueNamesToTheirAtomsNameMap_;
     std::map<std::string, LibraryFileSpace::LibraryFileResidue*> libResMap_;

@@ -153,36 +153,35 @@ void CoordinateSection::DeleteAtomRecord(AtomRecord* atom)
     return;
 }
 
-void CoordinateSection::CreateNewAtomRecord(std::string name, GeometryTopology::Coordinate& coord, AtomRecord* sisterAtom)
-{
-    auto position = this->FindPositionOfAtom(sisterAtom);
+pdb::AtomRecordIterator CoordinateSection::CreateNewAtomRecord(std::string name, GeometryTopology::Coordinate& coord, AtomRecord* sisterAtom)
+{ // A bit wonky as position records the sisterAtom position in the vector, and then the new atom position to be returned.
+    AtomRecordIterator position = this->FindPositionOfAtom(sisterAtom);
     if (position != atomRecords_.end())
     {
         ++position; // it is ok to insert at end(). I checked. It was ok. Ok.
-        atomRecords_.insert(position, std::make_unique<AtomRecord>(name, coord, sisterAtom));
+        position = atomRecords_.insert(position, std::make_unique<AtomRecord>(name, coord, sisterAtom));
         gmml::log(__LINE__,__FILE__,gmml::INF, "New atom named " + name + " has been born; You're welcome.");
     }
     else
     {
         gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create atom named " + name + " as sisterAtom was not found in atom records\n");
     }
-    return;
+    return position;
 }
 
-pdb::AtomRecord* CoordinateSection::CreateNewAtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const GeometryTopology::Coordinate& coord, const std::string& chainId, const int& modelNumber, AtomRecord* previousAtom)
+pdb::AtomRecordIterator CoordinateSection::CreateNewAtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const GeometryTopology::Coordinate& coord, const std::string& chainId, const int& modelNumber, AtomRecordIterator previousAtomPosition)
 {
-    auto position = this->FindPositionOfAtom(previousAtom);
-    if (position != atomRecords_.end())
-    {
-        ++position;
-        position = atomRecords_.insert(position, std::make_unique<AtomRecord>(atomName, residueName, residueSequenceNumber, coord, chainId, modelNumber));
+    //auto position = this->FindPositionOfAtom(previousAtom);
+    //if (position != atomRecords_.end())
+    //{
+        AtomRecordIterator newAtomPosition = atomRecords_.insert(++previousAtomPosition, std::make_unique<AtomRecord>(atomName, residueName, residueSequenceNumber, coord, chainId, modelNumber));
         gmml::log(__LINE__,__FILE__,gmml::INF, "New atom named " + atomName + " has been born; You're welcome.");
-    }
-    else
-    {
-        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create atom named " + atomName + " as previousAtom was not found in atom records\n");
-    }
-    return position->get(); // this is an iterator to where the unique ptr is, and get() returns a raw ptr.
+    //}
+//    else
+//    {
+//        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create atom named " + atomName + " as previousAtom was not found in atom records\n");
+//    }
+    return newAtomPosition; // this is an iterator to where the unique ptr is, and get() returns a raw ptr.
 }
 
 

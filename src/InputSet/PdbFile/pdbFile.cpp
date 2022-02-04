@@ -213,44 +213,49 @@ void PdbFile::InsertCap(const PdbResidue& residue, const std::string& type)
 {
     // This approach is bad, should be using templates. When parameter manager is good we can use that to remove the get_carestian stuff
     using GeometryTopology::Coordinate;
-    if (type == "ACE")
+    if (type == "NME")
+    {
+        int sequenceNumber = residue.GetSequenceNumber() + 1; // Single gaps will end up with the same ACE NME resid numbers. Otherwise good.
+        const Coordinate& cCoordProtein = residue.FindAtom("C")->GetCoordinate();
+        const Coordinate& caCoordProtein = residue.FindAtom("CA")->GetCoordinate();
+        const Coordinate& oCoordProtein = residue.FindAtom("O")->GetCoordinate();
+        Coordinate nCoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordProtein, caCoordProtein, cCoordProtein, 120.0, 180.0, 1.4);
+        Coordinate hCoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordProtein, caCoordProtein, nCoordNME, 109.0, 180.0, 1.0);
+        Coordinate ch3CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(caCoordProtein, cCoordProtein, nCoordNME, 125.0, 180.0, 1.48);
+        Coordinate hh31CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, 180.0, 1.09);
+        Coordinate hh32CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, 60.0, 1.09);
+        Coordinate hh33CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, -60.0, 1.09);
+        AtomRecordIterator atomPosition = this->GetCoordinateSection().FindPositionOfAtom(residue.GetLastAtom());
+        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("N", "NME", sequenceNumber, nCoordNME, residue.GetChainId(), residue.GetModelNumber(), atomPosition);
+        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("H", "NME", sequenceNumber, hCoordNME, residue.GetChainId(), residue.GetModelNumber(), atomPosition);
+        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("CH3", "NME", sequenceNumber, ch3CoordNME, residue.GetChainId(), residue.GetModelNumber(), atomPosition);
+        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH31", "NME", sequenceNumber, hh31CoordNME, residue.GetChainId(), residue.GetModelNumber(), atomPosition);
+        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH32", "NME", sequenceNumber, hh32CoordNME, residue.GetChainId(), residue.GetModelNumber(), atomPosition);
+        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH33", "NME", sequenceNumber, hh33CoordNME, residue.GetChainId(), residue.GetModelNumber(), atomPosition);
+    }
+    else if (type == "ACE")
     {
         int sequenceNumber = residue.GetSequenceNumber() - 1; // Single gaps will end up with the same ACE NME resid numbers. Otherwise good.
-
+        // These are the atoms in residue that I use to build the ACE out from.
         const Coordinate& cCoordProtein = residue.FindAtom("C")->GetCoordinate();
         const Coordinate& caCoordProtein = residue.FindAtom("CA")->GetCoordinate();
         const Coordinate& nCoordProtein = residue.FindAtom("N")->GetCoordinate();
-
+        // This is bad, should use templates loaded from lib/prep file instead.
         Coordinate cCoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(cCoordProtein, caCoordProtein, nCoordProtein, 120.0, -130.0, 1.4);
         Coordinate oCoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(caCoordProtein, nCoordProtein, cCoordACE, 120.0, 0.0, 1.23);
         Coordinate ch3CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(caCoordProtein, nCoordProtein, cCoordACE, 125.0, 180.0, 1.48);
         Coordinate hh31CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, 180.0, 1.09);
         Coordinate hh32CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, 60.0, 1.09);
         Coordinate hh33CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, -60.0, 1.09);
-        AtomRecord* cAtomACE = this->GetCoordinateSection().CreateNewAtomRecord("C", "ACE", sequenceNumber, cCoordACE, residue.GetChainId(), residue.GetModelNumber(), residue.GetLastAtom());
-        AtomRecord* oAtomACE = this->GetCoordinateSection().CreateNewAtomRecord("O", "ACE", sequenceNumber, oCoordACE, residue.GetChainId(), residue.GetModelNumber(), cAtomACE);
-        AtomRecord* ch3AtomACE = this->GetCoordinateSection().CreateNewAtomRecord("CH3", "ACE", sequenceNumber, ch3CoordACE, residue.GetChainId(), residue.GetModelNumber(), oAtomACE);
-//        for(PdbAtomSection::PdbAtomCardOrderVector::iterator it3 = ordered_atoms_of_residue.begin(); it3 != ordered_atoms_of_residue.end(); it3++)
-//        {
-//            PdbFileSpace::PdbAtomCard* atom_of_residue = (*it3);
-//            int index = distance(ordered_atoms_of_residue.begin(), it3);
-//            PdbFileSpace::PdbAtomCard* new_atom = new PdbFileSpace::PdbAtomCard(serial_number,
-//                    atom_of_residue->GetAtomName(),
-//                    atom_of_residue->GetAtomAlternateLocation(),
-//                    atom_of_residue->GetAtomResidueName(),
-//                    atom_of_residue->GetAtomChainId(),
-//                    sequence_number,
-//                    atom_of_residue->GetAtomInsertionCode(),
-//                    coordinate_set.at(index),
-//                    atom_of_residue->GetAtomOccupancy(),
-//                    atom_of_residue->GetAtomTempretureFactor(),
-//                    atom_of_residue->GetAtomElementSymbol(),
-//                    atom_of_residue->GetAtomCharge(),
-//                    atom->GetAlternateAtomCards());
-//            updated_atoms[serial_number] = new_atom;
-//            updated_atoms_vector.push_back(new_atom);
-//            serial_number++;
-//        }
+        // Ok this next bit is convoluted, but I look up the position of the first atom in the protein residue and insert the new Atom before it, and get passed back the position of the newly created atom, so I can use that when creating the next one and so on.
+        AtomRecordIterator atomPosition = this->GetCoordinateSection().FindPositionOfAtom(residue.GetFirstAtom());
+        --atomPosition; // Want to insert before the first atom, inserting at begin() position is fine.
+        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("C", "ACE", sequenceNumber, cCoordACE, residue.GetChainId(), residue.GetModelNumber(), atomPosition);
+        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("O", "ACE", sequenceNumber, oCoordACE, residue.GetChainId(), residue.GetModelNumber(), atomPosition);
+        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("CH3", "ACE", sequenceNumber, ch3CoordACE, residue.GetChainId(), residue.GetModelNumber(), atomPosition);
+        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH31", "ACE", sequenceNumber, hh31CoordACE, residue.GetChainId(), residue.GetModelNumber(), atomPosition);
+        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH32", "ACE", sequenceNumber, hh32CoordACE, residue.GetChainId(), residue.GetModelNumber(), atomPosition);
+        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH33", "ACE", sequenceNumber, hh33CoordACE, residue.GetChainId(), residue.GetModelNumber(), atomPosition);
         gmml::log(__LINE__, __FILE__, gmml::INF, "Created ACE residue numbered: " + std::to_string(sequenceNumber));
     }
 }
