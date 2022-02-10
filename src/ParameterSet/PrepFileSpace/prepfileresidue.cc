@@ -580,7 +580,7 @@ std::vector<std::string> PrepFileResidue::GetHeavyAtomNames()
     std::vector<std::string> foundAtoms;
     for (auto &prepAtom : this->GetAtoms())
     {
-        if(prepAtom->GetName().at(0) != 'H')
+        if(prepAtom->GetName().at(0) != 'H' && prepAtom->GetName() != "DUMM")
         {
             foundAtoms.push_back(prepAtom->GetName());
         }

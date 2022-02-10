@@ -417,7 +417,6 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
                     // Residue contains unrecognized atom.
                     gmml::log(__LINE__, __FILE__, gmml::INF, "Unrecognized atom named " + pdbAtomName + " in " + residue.GetId());
                     ppInfo.unrecognizedAtoms_.emplace_back(pdbAtomName, residue.GetId());
-
                 }
             }
         }

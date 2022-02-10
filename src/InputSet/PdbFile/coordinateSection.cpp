@@ -114,7 +114,7 @@ std::vector<std::vector<pdb::PdbResidue>> CoordinateSection::GetProteinChains()
 std::vector<pdb::PdbResidue> CoordinateSection::GetResidues() const
 {
     std::vector<pdb::PdbResidue> residues;
-    std::string id = "?_?_?_?_?"; // model_resname_insertionCode_resnumber_chain_
+    std::string id = "?_?_?_?_?"; // resname_insertionCode_resnumber_chain_model
     std::string previousId = "AStringThatIsUniqueFromIdForTheFirstLoop";
     for(auto &atomUniquePtr : atomRecords_)
     {
@@ -125,7 +125,6 @@ std::vector<pdb::PdbResidue> CoordinateSection::GetResidues() const
         }
         else
         {
-            //std::cout << "Creating new residue\n";
             residues.emplace_back(atomUniquePtr.get());
         }
         previousId = id;
