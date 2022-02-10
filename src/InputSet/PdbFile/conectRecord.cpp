@@ -50,7 +50,7 @@ ConectRecord::ConectRecord(std::vector<AtomRecord*> atoms)
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void ConectRecord::Print(std::ostream& out)
+void ConectRecord::Print(std::ostream& out) const
 {
     out << "CONECT ";
     out << std::setw(5);
@@ -60,3 +60,15 @@ void ConectRecord::Print(std::ostream& out)
     }
     out << "\n";
 }
+
+void ConectRecord::Write(std::ostream& stream) const
+{
+    stream << "CONECT ";
+    stream << std::setw(5);
+    for (auto &atomRecordPtr : atomRecordPtrs_)
+    {
+        stream << std::right << atomRecordPtr->GetSerialNumber();
+    }
+    stream << "\n";
+}
+

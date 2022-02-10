@@ -5,23 +5,23 @@
 #include <string>
 #include <iostream>
 #include "includes/GeometryTopology/coordinate.hpp"
-#include "includes/common.hpp" // gmml::BLANK_SPACE
+#include "includes/common.hpp" // gmml::iNotSet
+#include "includes/MolecularModeling/TemplateGraph/AbstractObject/includes/Labels.hpp"
 
 namespace pdb
 {
-class AtomRecord
+class AtomRecord : public abstrab::Labels
 {
 public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
     // Default constructor:
-    AtomRecord(const std::string& atomName = "", const std::string& residueName = "", const int& residueSequenceNumber = gmml::iNotSet, const GeometryTopology::Coordinate& coord = GeometryTopology::Coordinate(), const std::string& chainId = "", const int& modelNumber = 1, const int& serialNumber = gmml::iNotSet, const std::string& recordName = "ATOM",  const std::string& alternateLocation = "", const std::string& insertionCode = "", const double& occupancy = gmml::dNotSet, const double& temperatureFactor = gmml::dNotSet, const std::string& element = "", const std::string& charge = "");
+    AtomRecord(const std::string& atomName = "", const std::string& residueName = "", const int& residueSequenceNumber = gmml::iNotSet, const GeometryTopology::Coordinate& coord = GeometryTopology::Coordinate(), const std::string& chainId = gmml::sNotSet, const int& modelNumber = 1, const int& serialNumber = gmml::iNotSet, const std::string& recordName = "ATOM",  const std::string& alternateLocation = gmml::sNotSet, const std::string& insertionCode = gmml::sNotSet, const double& occupancy = gmml::dNotSet, const double& temperatureFactor = gmml::dNotSet, const std::string& element = "", const std::string& charge = "");
     // Constructor when reading lines:
     AtomRecord(const std::string& line, int modelNumber = 1);
     // Handy constructor that copies info from sisterAtom.
     AtomRecord(const std::string& name, const GeometryTopology::Coordinate& coord, AtomRecord *sisterAtom);
-
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -53,6 +53,7 @@ public:
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
     void Print(std::ostream& out = std::cerr) const;
+    void Write(std::ostream& stream) const;
 private:
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //

@@ -44,6 +44,7 @@ namespace gmml
 
     const double dNotSet = 123456789.0;
     const int iNotSet = -123456;
+    const std::string sNotSet = "?";
     const int iPdbLineLength = 80;
     const double dSulfurCutoff = 2.5;
     const double PI_RADIAN = 4.0*atan(1.0);

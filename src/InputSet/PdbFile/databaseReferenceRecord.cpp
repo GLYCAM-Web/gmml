@@ -243,3 +243,65 @@ void DatabaseReference::Print(std::ostream &out) const
     out << "DB Insert End: " << this->GetDatabaseInsEnd();
     out << std::endl;
 }
+
+void DatabaseReference::Write(std::ostream& stream) const
+{
+    if (this->GetRecordName() == "DBREF ")
+    {
+        stream << std::left << std::setw(6) << this->GetRecordName()
+               << std::left << std::setw(1) << " "
+               << std::left << std::setw(4) << this->GetIDCode()
+               << std::left << std::setw(1) << " "
+               << std::left << std::setw(1) << this->GetChainID()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(4) << this->GetSeqBegin()
+               << std::right << std::setw(1) << this->GetInsertBegin()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(4) << this->GetSeqEnd()
+               << std::right << std::setw(1) << this->GetInsertEnd()
+               << std::left << std::setw(1) << " "
+               << std::left << std::setw(6) << this->GetDatabase()
+               << std::left << std::setw(1) << " "
+               << std::left << std::setw(8) << this->GetDatabaseAccession()
+               << std::left << std::setw(1) << " "
+               << std::left << std::setw(12) << this->GetDatabaseIDCode()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(5) << this->GetDatabaseSeqBegin()
+               << std::right << std::setw(1) << this->GetDatabaseInsBegin()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(5) << this->GetDatabaseSeqEnd()
+               << std::right << std::setw(1) << this->GetDatabaseInsEnd()
+               << std::endl;
+    }
+    else if (this->GetRecordName() == "DBREF1")
+    {
+        stream << std::left << std::setw(6) << this->GetRecordName()
+               << std::left << std::setw(1) << " "
+               << std::left << std::setw(4) << this->GetIDCode()
+               << std::left << std::setw(1) << " "
+               << std::left << std::setw(1) << this->GetChainID()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(4) << this->GetSeqBegin()
+               << std::right << std::setw(1) << this->GetInsertBegin()
+               << std::left << std::setw(1) << " "
+               << std::right << std::setw(4) << this->GetSeqEnd()
+               << std::right << std::setw(1) << this->GetInsertEnd()
+               << std::left << std::setw(1) << " "
+               << std::left << std::setw(6) << this->GetDatabase()
+               << std::left << std::setw(16) << " "
+               << std::left << std::setw(15) << this->GetDatabaseIDCode()
+               << std::endl
+               << std::left << std::setw(6) << "DBREF2"
+               << std::left << std::setw(1) << " "
+               << std::left << std::setw(4) << this->GetIDCode()
+               << std::left << std::setw(1) << " "
+               << std::left << std::setw(1) << this->GetChainID()
+               << std::left << std::setw(6) << " "
+               << std::left << std::setw(22) << this->GetDatabaseAccession()
+               << std::left << std::setw(5) << " "
+               << std::right << std::setw(10) << this->GetDatabaseSeqBegin()
+               << std::left << std::setw(2) << " "
+               << std::right << std::setw(10) << this->GetDatabaseSeqEnd()
+               << std::endl;
+    }
+}

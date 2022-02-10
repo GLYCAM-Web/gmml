@@ -25,9 +25,11 @@ public:
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
+    std::vector<std::vector<pdb::PdbResidue>> GetModels() const;
     std::vector<std::vector<pdb::PdbResidue>> GetProteinChains(); // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
-    std::vector<pdb::PdbResidue> GetResidues(); // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
+    std::vector<pdb::PdbResidue> GetResidues() const; // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
     std::vector<pdb::PdbResidue> FindResidues(const std::string selector); // Uh oh, private parts are exposed. Wee-ooo wee-ooo.
+    void ChangeResidueName(const std::string& selector, const std::string& newName);
     AtomRecord* FindAtom(int serialNumber); // Conect records
     void DeleteAtomRecord(AtomRecord* atom);
     AtomRecordIterator CreateNewAtomRecord(std::string name, GeometryTopology::Coordinate& coord, AtomRecord* sisterAtom);
@@ -37,6 +39,7 @@ public:
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
     void Print(std::ostream& out = std::cerr) const;
+    void Write(std::ostream& stream) const;
 private:
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //

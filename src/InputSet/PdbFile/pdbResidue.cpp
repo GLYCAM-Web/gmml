@@ -42,6 +42,11 @@ pdb::AtomRecord* PdbResidue::GetFirstAtom() const
     }
     return atomRecords_.front();
 }
+const std::string& PdbResidue::GetLabel() const
+{
+    return this->GetFirstAtom()->getLabel();
+}
+
 const std::string& PdbResidue::GetChainId() const
 {
     return this->GetFirstAtom()->GetChainId();
@@ -50,13 +55,17 @@ const std::string& PdbResidue::GetName() const
 {
     return this->GetFirstAtom()->GetResidueName();
 }
+const std::string& PdbResidue::GetRecordName() const
+{
+    return this->GetFirstAtom()->GetRecordName();
+}
 const std::string PdbResidue::GetParmName() const // If terminal, need to look up e.g. NPRO or CPRO instead of PRO.
 {
-    if (this->containsLabel("NTerminal"))
+    if (this->GetFirstAtom()->containsLabel("NTerminal"))
     {
         return "N" + this->GetName();
     }
-    else if (this->containsLabel("CTerminal"))
+    else if (this->GetFirstAtom()->containsLabel("CTerminal"))
     {
         return "C" + this->GetName();
     }
@@ -103,6 +112,11 @@ pdb::AtomRecord* PdbResidue::FindAtom(const std::string& queryName) const
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
+void PdbResidue::AddLabel(const std::string &label)
+{
+    this->GetFirstAtom()->addLabel(label);
+    return;
+}
 void PdbResidue::AddAtom(AtomRecord* atomRecord)
 {
     //std::cout << "Adding atom with id " << atomRecord->GetId() << " to residue.\n";
@@ -126,5 +140,12 @@ void PdbResidue::Print(std::ostream &out) const
     for(auto &atom : atomRecords_)
     {
         out << "    atom : " << atom->GetId() << " X: "  << atom->GetCoordinate().GetX() << " Y: "  << atom->GetCoordinate().GetY() << " Z: " << atom->GetCoordinate().GetZ() << "\n";
+    }
+}
+void PdbResidue::Write(std::ostream& stream) const
+{
+    for(auto &atom : atomRecords_)
+    {
+        atom->Write(stream);
     }
 }

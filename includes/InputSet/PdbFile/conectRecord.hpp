@@ -30,7 +30,8 @@ namespace pdb
             //////////////////////////////////////////////////////////
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
-            void Print(std::ostream& out = std::cerr);
+            void Print(std::ostream& out = std::cerr) const;
+            void Write(std::ostream& stream) const;
         private:
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //

@@ -59,36 +59,59 @@ CoordinateSection::CoordinateSection(std::stringstream &stream_block)
 //        }
     }
 }
+
+
+std::vector<std::vector<pdb::PdbResidue>> CoordinateSection::GetModels() const
+{
+    std::vector<std::vector<pdb::PdbResidue>> models;
+    int previousModel = -123456789; // It would need to be very wrong to be this value.
+    for(auto &residue : this->GetResidues())
+    {
+        if (residue.GetModelNumber() != previousModel )
+        {
+            models.emplace_back(std::vector<PdbResidue>{residue});
+        }
+        else
+        {
+            models.back().push_back(residue);
+        }
+        previousModel = residue.GetModelNumber();
+    }
+    return models;
+}
+
 std::vector<std::vector<pdb::PdbResidue>> CoordinateSection::GetProteinChains()
 {
     std::vector<std::vector<pdb::PdbResidue>> chains;
     std::string previousChain = "AUniqueLittleString";
+    int previousModelNumber = -99999;
     for(auto residue : this->GetResidues())
     {
         // This gmml::PROTEINS seems weird, but whatever, it works.
         if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), residue.GetName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
         {
-            if (residue.GetChainId() == previousChain)
-            {
-                chains.back().push_back(residue);
-            }
-            else
+            if ( residue.GetChainId() != previousChain || residue.GetModelNumber() != previousModelNumber )
             {
                 chains.emplace_back(std::vector<PdbResidue>{residue});
             }
+            else
+            {
+                chains.back().push_back(residue);
+            }
         }
         previousChain = residue.GetChainId();
+        previousModelNumber = residue.GetModelNumber();
     }
     // Labels
     for(auto &chain : chains)
     {
-        chain.front().addLabel("NTerminal");
-        chain.back().addLabel("CTerminal");
+        chain.front().AddLabel("NTerminal");
+        chain.back().AddLabel("CTerminal");
     }
     return chains;
 }
 
-std::vector<pdb::PdbResidue> CoordinateSection::GetResidues()
+std::vector<pdb::PdbResidue> CoordinateSection::GetResidues() const
 {
     std::vector<pdb::PdbResidue> residues;
     std::string id = "?_?_?_?_?"; // model_resname_insertionCode_resnumber_chain_
@@ -123,6 +146,19 @@ std::vector<pdb::PdbResidue> CoordinateSection::FindResidues(const std::string s
         }
     }
     return matchingResidues;
+}
+
+void CoordinateSection::ChangeResidueName(const std::string& selector, const std::string& newName)
+{
+    for(auto &residue : this->GetResidues())
+    {
+        std::size_t found = residue.GetId().find(selector);
+        if(found != std::string::npos)
+        {
+            residue.SetName(newName);
+        }
+    }
+    return;
 }
 
 pdb::AtomRecord* CoordinateSection::FindAtom(int serialNumber)
@@ -214,6 +250,10 @@ std::vector<std::unique_ptr<pdb::AtomRecord>>::iterator CoordinateSection::FindP
 //////////////////////////////////////////////////////////
 //                      FUNCTIONS                       //
 //////////////////////////////////////////////////////////
+//void CoordinateSection::SerializeAtomRecordSerialNumbers()
+//{
+//
+//}
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 ////////////////////////////////////////////////////////
@@ -224,10 +264,32 @@ void CoordinateSection::Print(std::ostream &out) const
     {
         atomRecord->Print(out);
     }
-//    out << "The number of residues is: " << this->GetResidues().size() << "\n";
-//    out << "The residues are: " << "\n";
-//    for (auto &residue : this->GetResidues())
-//    {
-//        residue.Print();
-//    }
 }
+void CoordinateSection::Write(std::ostream& stream) const
+{
+    std::vector<std::vector<pdb::PdbResidue>> models = this->GetModels(); // Vectors of residues in a vector organized by model.
+    for (auto &model : models)
+    {
+        if (models.size() > 1)
+        {
+            stream << "MODEL " << std::right << std::setw(4) << model.at(0).GetModelNumber() << "\n";
+        }
+        std::string previousResidueName = "";
+        std::string previousChainId = model.at(0).GetChainId();
+        for (auto &residue: model) // Maybe I should just put the TER cards in the vector as AtomRecord?
+        { // if previous was NME, or it's a new chain, or it's a HETATM and starts previous residue name began a 0, insert a TER.
+            if (previousResidueName == "NME" || previousChainId != residue.GetChainId() || (residue.GetRecordName() == "HETATM" && previousResidueName.substr(0,1) == "0"))
+            {
+                stream << "TER\n";
+            }
+            residue.Write(stream);
+            previousResidueName = residue.GetName();
+            previousChainId = residue.GetChainId();
+        }
+        if (models.size() > 1)
+        {
+            stream << "ENDMDL\n";
+        }
+    }
+}
+

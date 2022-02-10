@@ -77,3 +77,11 @@ void RemarkRecord::Print(std::ostream &out) const
 {
     out << "Resolution: " << this->GetResolution() << ". BFactor: " << this->GetBFactor() << "\n";
 }
+
+void RemarkRecord::Write(std::ostream& stream) const
+{
+    stream << "REMARK   2\n";
+    stream << "REMARK   2 RESOLUTION.  " << this->GetResolution() << " ANGSTROMS.\n";
+    stream << "REMARK   3\n";
+    stream << "REMARK   3   MEAN B VALUE      (OVERALL, A**2) : " << this->GetBFactor() << "\n";
+}

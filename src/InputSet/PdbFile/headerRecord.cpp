@@ -98,8 +98,21 @@ void HeaderRecord::SetIdentificationCode(const std::string identifier_code)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void HeaderRecord::Print(std::ostream &out)
+void HeaderRecord::Print(std::ostream &out) const
 {
-    out << "Record Name: " << record_name_ << ", Classification: " << classification_ <<
-           ", Deposition Date: " << deposition_date_ << ", Identifier Code: " << identifier_code_ << std::endl << std::endl;
+    out << "Record Name: " << this->GetRecordName() << ", Classification: " << this->GetClassification() <<
+           ", Deposition Date: " << this->GetDepositionDate() << ", Identifier Code: " << this->GetIdentifierCode() << std::endl << std::endl;
+}
+
+
+void HeaderRecord::Write(std::ostream& stream) const
+{
+    stream << std::left << std::setw(6) << this->GetRecordName()
+           << std::left << std::setw(4) << " "
+           << std::left << std::setw(40) << this->GetClassification()
+           << std::left << std::setw(9) << this->GetDepositionDate()
+           << std::left << std::setw(3) << " "
+           << std::right << std::setw(4) << this->GetIdentifierCode()
+           << std::left << std::setw(14) << " "
+           << std::endl;
 }

@@ -221,3 +221,42 @@ void JournalRecord::Print(std::ostream &out) const
     out << "PMID: " << pmid_ << std::endl;
     out << "DOI: " << doi_ << std::endl;
 }
+
+void JournalRecord::Write(std::ostream& stream) const
+{
+    const int MAX_JOURNAL_LENGTH_IN_LINE = 67;
+    stream << std::left << std::setw(6) << this->GetRecordName()
+                     << std::left << std::setw(6) << " ";
+    if((int)this->GetText().length() > MAX_JOURNAL_LENGTH_IN_LINE)
+    {
+        stream << std::left << std::setw(67) << this->GetText().substr(0,MAX_JOURNAL_LENGTH_IN_LINE)
+                         << std::endl;
+
+        int counter = ceil((double)(this->GetText().length()) / MAX_JOURNAL_LENGTH_IN_LINE);
+        for(int i = 2; i <= counter; i++)
+        {
+            if(i != counter)
+            {
+                stream << std::left << std::setw(6) << this->GetRecordName()
+                                 << std::left << std::setw(6) << " "
+                                 << std::left << std::setw(67) << this->GetText().substr(MAX_JOURNAL_LENGTH_IN_LINE*(i-1), MAX_JOURNAL_LENGTH_IN_LINE)
+                                 << std::endl;
+            }
+            else
+            {
+                stream << std::left << std::setw(6) << this->GetRecordName()
+                                 << std::left << std::setw(6) << " "
+                                 << std::left << std::setw(67) << this->GetText().substr(MAX_JOURNAL_LENGTH_IN_LINE*(i-1), this->GetText().length()-MAX_JOURNAL_LENGTH_IN_LINE*(i-1))
+                                 << std::endl;
+            }
+        }
+    }
+    else
+    {
+        stream << std::right << std::setw(6) << " "
+                << std::left << std::setw(67) << this
+                ->GetText()
+                << std::endl;
+    }
+}
+

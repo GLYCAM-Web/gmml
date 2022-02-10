@@ -1,5 +1,12 @@
-#ifndef SRC_INPUTSET_PDBFILE_PDBFILE_HPP
-#define SRC_INPUTSET_PDBFILE_PDBFILE_HPP
+#ifndef INCLUDES_INPUTSET_PDBFILE_PDBFILE_HPP
+#define INCLUDES_INPUTSET_PDBFILE_PDBFILE_HPP
+
+// ToDo use of ? is an issue.
+// ToDo Unrecognized DUMM in glycan residues like 0FA.
+// ToDo split preprocessor into separate class that inherits from this one or is friends?.
+// ToDo Get rid of coordinate section and just have this class hold the records
+// ToDo Ownership Hierarchy of PdbFile->Models->Chains->Residues->AtomRecords?
+// ToDo Warning about gaps being 1 residue.
 
 #include <string>
 #include <vector>
@@ -22,7 +29,6 @@ namespace pdb
 const int iPdbLineLength = 80;
 class PdbFile
 {
-   // friend class PdbPreprocessor;
 public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
@@ -32,7 +38,6 @@ public:
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-
     std::vector<PdbResidue> GetResiduesWithName(const std::string name) const;
     inline std::string GetInputFilePath() const {return inFilePath_;}
     // These should be private and whatever info they give out should be directly queryable here.
@@ -48,12 +53,18 @@ public:
     const float& GetResolution() const;
     const float& GetBFactor() const;
     pdb::PreprocessorInformation PreProcess(PreprocessorOptions options);
+    //////////////////////////////////////////////////////////
+    //                        DISPLAY                       //
+    //////////////////////////////////////////////////////////
     void Print(std::ostream& out = std::cout) const;
+    void Write(const std::string outName) const;
+    void Write(std::ostream& stream) const;
 private:
     void ParseInFileStream(std::ifstream& pdbFileStream);
     std::stringstream ExtractHeterogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, const std::vector<std::string> recordNames);
     std::stringstream ExtractHomogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, std::string previousName);
     inline const std::vector<DatabaseReference>& GetDatabaseReferences() const {return databaseReferences_;}
+    inline const std::vector<ConectRecord>& GetConectRecords() const {return conectRecords_;}
     inline CoordinateSection& GetCoordinateSection() {return coordinateSection_;}
     void AddConnection(AtomRecord* atom1, AtomRecord* atom2);
     void DeleteAtomRecord(AtomRecord* atom);
@@ -74,4 +85,4 @@ private:
     std::vector<ConectRecord> conectRecords_;
 };
 }
-#endif /* SRC_INPUTSET_PDBFILE_PDBFILE_HPP */
+#endif /* INCLUDES_INPUTSET_PDBFILE_PDBFILE_HPP */

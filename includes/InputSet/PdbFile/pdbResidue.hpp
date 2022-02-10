@@ -5,7 +5,6 @@
 #include <iostream>
 #include <functional>
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
-#include "includes/MolecularModeling/TemplateGraph/AbstractObject/includes/AbstractObject.hpp"
 
 // Oliver Jan 2022
 // This class just holds (non-owning) references to atomEntries so that I can more efficiently pass information
@@ -15,7 +14,7 @@
 // By ownership I mean responsible for creating and managing lifetime of.
 namespace pdb
 {
-    class PdbResidue : public abstrab::Labels
+    class PdbResidue
     {
         public:
             //////////////////////////////////////////////////////////
@@ -29,6 +28,7 @@ namespace pdb
             std::string GetId() const;
             const std::string& GetChainId() const;
             const std::string& GetName() const;
+            const std::string& GetRecordName() const;
             const std::string& GetInsertionCode() const;
             const int& GetSequenceNumber() const;
             std::vector<std::string> GetAtomNames() const;
@@ -36,9 +36,11 @@ namespace pdb
             const int& GetModelNumber() const;
             AtomRecord* GetLastAtom() const;
             AtomRecord* GetFirstAtom() const;
+            const std::string& GetLabel() const;
             //////////////////////////////////////////////////////////
             //                       MUTATOR                        //
             //////////////////////////////////////////////////////////
+            void AddLabel(const std::string &label);
             void AddAtom(AtomRecord* atomRecord);
             void SetName(const std::string name);
             //////////////////////////////////////////////////////////
@@ -49,6 +51,8 @@ namespace pdb
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
             void Print(std::ostream& out = std::cerr) const;
+            void Write(std::ostream& stream) const;
+
         private:
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //

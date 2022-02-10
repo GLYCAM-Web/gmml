@@ -10,7 +10,7 @@ using pdb::AtomRecord;
 //////////////////////////////////////////////////////////
 //AtomRecord::AtomRecord() : modelNumber_(1), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(""), residueName_(""), chainId_(""), residueSequenceNumber_(gmml::iNotSet), insertionCode_(""), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("") {}
 
-AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(modelNumber), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(""), residueName_(""), chainId_(""), residueSequenceNumber_(gmml::iNotSet), insertionCode_(""), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("")
+AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(modelNumber), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(gmml::sNotSet), residueName_(""), chainId_(gmml::sNotSet), residueSequenceNumber_(gmml::iNotSet), insertionCode_(gmml::sNotSet), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("")
 {
     //gmml::log(__LINE__, __FILE__, gmml::INF, "Parsing " + line);
     // In the PDB file the residue number overruns after 9999 and serial number overruns after 99999. First overun for serial doesn't matter as there should be a space between the number and the name. So the problem is above 999999
@@ -26,22 +26,23 @@ AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(
     catch (...)
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to serialNumber from: " + line.substr(6, 6 + shift));
+        serialNumber_ = gmml::iNotSet;
     }
     atomName_ = codeUtils::RemoveWhiteSpace(line.substr(12 + shift, 4));
     if (atomName_.empty())
     {
-        atomName_ = gmml::BLANK_SPACE;
+        atomName_ = "    ";
     }
     //alternateLocation_ = ""; // OG Dec2021, we don't want alt locations in gmml for now. Messes with the preprocessor.
     residueName_ = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
     if (residueName_.empty())
     {
-        residueName_ = gmml::BLANK_SPACE;
+        residueName_ = "   ";
     }
     chainId_ = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
     if (chainId_.empty())
     {
-        chainId_ = gmml::BLANK_SPACE;
+        chainId_ = " ";
     }
     int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));
     try
@@ -51,12 +52,13 @@ AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(
     catch (...)
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, "Error setting residue number from this line:\n" + line);
+        residueSequenceNumber_ = gmml::iNotSet;
     }
     // Insertion code gets shifted right by every overrun in residue number.
     insertionCode_ = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
     if (insertionCode_.empty())
     {
-        insertionCode_ = gmml::BLANK_SPACE;
+        insertionCode_ = " ";
     }
     // Coordinates etc don't get shifted by first overrun in residue number, but do by the rest.
     if (secondShift > 1)
@@ -77,7 +79,7 @@ AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(
     }
     catch (...)
     {
-        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to occupancy from: " + line.substr(54 + shift, 6));
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "Problem converting to occupancy from: " + line.substr(54 + shift, 6));
     }
     try
     {
@@ -85,7 +87,7 @@ AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(
     }
     catch (...)
     {
-        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to temperatureFactor_ from: " + line.substr(60 + shift, 6));
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "Problem converting to temperatureFactor_ from: " + line.substr(60 + shift, 6));
     }
     // Worried about case where shift is 2 and these don't exist, so line length is 80. More Ifs: Ugh.
     if (shift <= 2)
@@ -98,11 +100,12 @@ AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(
     }
 }
 
-AtomRecord::AtomRecord(const std::string& name, const GeometryTopology::Coordinate& coord, AtomRecord *sisterAtom) : atomName_(name), coordinate_ (coord)
+AtomRecord::AtomRecord(const std::string& name, const GeometryTopology::Coordinate& coord, AtomRecord *sisterAtom)
 {
     modelNumber_ = sisterAtom->GetModelNumber();
     recordName_ = sisterAtom->GetRecordName();
     serialNumber_ = sisterAtom->GetSerialNumber() + 1; // An ok default.
+    atomName_ = name;
     alternateLocation_ = sisterAtom->GetAlternateLocation();
     residueName_ = sisterAtom->GetResidueName();
     chainId_ = sisterAtom->GetChainId();
@@ -112,14 +115,15 @@ AtomRecord::AtomRecord(const std::string& name, const GeometryTopology::Coordina
     temperatureFactor_ = gmml::dNotSet; // Not accurate to copy this from sisterAtom
     element_ = name.substr(0,1); // Just take first letter as element. Ok default.
     charge_ = ""; // Idk when/how this is used. It being a string is weird.
+    coordinate_ = coord;
 }
 
 AtomRecord::AtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const GeometryTopology::Coordinate& coord , const std::string& chainId, const int& modelNumber, const int& serialNumber, const std::string& recordName, const std::string& alternateLocation, const std::string& insertionCode, const double& occupancy, const double& temperatureFactor, const std::string& element, const std::string& charge)
 :
         modelNumber_(modelNumber),
         recordName_(recordName),
-        atomName_(atomName),
         serialNumber_(serialNumber),
+        atomName_(atomName),
         alternateLocation_(alternateLocation),
         residueName_(residueName),
         chainId_(chainId),
@@ -204,11 +208,28 @@ std::string AtomRecord::GetId() const
     ss << this->GetName() << "_" << this->GetSerialNumber() << "_" << this->GetResidueId();
     return ss.str();
 }
-
+// I don't want to store the insertion code or chainId as ?, as that looks odd outside of the ID context, so I store as " " when undefined and change that to ? when getting the ID.
 std::string AtomRecord::GetResidueId() const
 {
     std::stringstream ss;
-    ss << this->GetResidueName() << "_" << this->GetInsertionCode() << "_" << this->GetResidueSequenceNumber() << "_" + this->GetChainId();
+    ss << this->GetResidueName() << "_" << this->GetResidueSequenceNumber() << "_";
+    if(this->GetInsertionCode() == " ")
+    {
+        ss << gmml::sNotSet << "_";
+    }
+    else
+    {
+        ss << this->GetInsertionCode() << "_";
+    }
+    if (this->GetChainId() == " ")
+    {
+        ss << gmml::sNotSet << "_";
+    }
+    else
+    {
+        ss << this->GetChainId() << "_";
+    }
+    ss << this->GetModelNumber();
     return ss.str();
 }
 double AtomRecord::CalculateDistance(const AtomRecord* otherAtom) const
@@ -250,4 +271,57 @@ void AtomRecord::Print(std::ostream &out) const
         out << temperatureFactor_;
     out << ", Element: " << element_
         << ", Charge: " << charge_ << std::endl;
+}
+void AtomRecord::Write(std::ostream& stream) const
+{ // Just copied from original class.
+    stream << std::left << std::setw(6) << this->GetRecordName();
+    if(this->GetSerialNumber() != gmml::iNotSet)
+        stream << std::right << std::setw(5) << this->GetSerialNumber();
+    else
+        stream << std::right << std::setw(5) << " ";
+    stream << std::left << std::setw(1) << " "
+            << std::left << std::setw(4) << this->GetName();
+    if(this->GetAlternateLocation() == gmml::sNotSet)
+        stream << std::left << std::setw(1) << " ";
+    else
+        stream << std::left << std::setw(1) << this->GetAlternateLocation();
+    stream << std::right << std::setw(3) << this->GetResidueName()
+                                       << std::left << std::setw(1) << " ";
+    if(this->GetChainId() == gmml::sNotSet)
+        stream << std::left << std::setw(1) << " ";
+    else
+        stream << std::left << std::setw(1) << this->GetChainId();
+    if(this->GetResidueSequenceNumber() != gmml::iNotSet)
+        stream << std::right << std::setw(4) << this->GetResidueSequenceNumber();
+    else
+        stream << std::right << std::setw(4) << " ";
+    if(this->GetInsertionCode() == gmml::sNotSet)
+        stream << std::left << std::setw(1) <<  " ";
+    else
+        stream << std::left << std::setw(1) << this->GetInsertionCode();
+    stream << std::left << std::setw(3) << " ";
+    if(this->GetCoordinate().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
+    {
+        stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetCoordinate().GetX()
+                                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetCoordinate().GetY()
+                                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetCoordinate().GetZ();
+    }
+    else
+    {
+        stream << std::right << std::setw(8) << " "
+                << std::right << std::setw(8) << " "
+                << std::right << std::setw(8) << " ";
+    }
+    if(this->GetOccupancy() != gmml::dNotSet)
+        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << this->GetOccupancy();
+    else
+        stream << std::right << std::setw(6) << " ";
+    if(this->GetTemperatureFactor() != gmml::dNotSet)
+        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << this->GetTemperatureFactor();
+    else
+        stream << std::right << std::setw(6) << " ";
+    stream << std::left << std::setw(10) << " "
+            << std::right << std::setw(2) << this->GetElementSymbol()
+            << std::left << std::setw(2) << this->GetCharge()
+            << std::endl;
 }
