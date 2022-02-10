@@ -293,23 +293,23 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
         {
             gmml::log(__LINE__, __FILE__, gmml::INF, "No CYS or CYX residues detected in this structure\n");
         }
-        for (auto &cysRes1 : cysResidues)
+        for (std::vector<pdb::PdbResidue>::iterator it1 = cysResidues.begin(); it1 != cysResidues.end(); ++it1)
         {
-            AtomRecord* sg1 = cysRes1.FindAtom("SG");
-            for (auto &cysRes2 : cysResidues)
+            AtomRecord* sg1 = it1->FindAtom("SG");
+            for (std::vector<pdb::PdbResidue>::iterator it2 = std::next(it1, 1); it2 != cysResidues.end(); ++it2)
             {
-                AtomRecord* sg2 = cysRes2.FindAtom("SG");
+                AtomRecord* sg2 = it2->FindAtom("SG");
                 if ( (sg1 != nullptr) && (sg2 != nullptr) )
                 {
                     double distance = sg1->CalculateDistance(sg2);
                     if (distance < gmml::dSulfurCutoff && distance > 0.001)
                     {
-                        cysRes1.SetName("CYX");
-                        cysRes2.SetName("CYX");
-                        this->AddConnection(cysRes1.FindAtom("SG"), cysRes2.FindAtom("SG"));
-                        ppInfo.cysBondResidues_.emplace_back(cysRes1.GetId(), cysRes2.GetId(), distance);
+                        it1->SetName("CYX");
+                        it2->SetName("CYX");
+                        this->AddConnection(it1->FindAtom("SG"), it2->FindAtom("SG"));
+                        ppInfo.cysBondResidues_.emplace_back(it1->GetId(), it2->GetId(), distance);
                         std::stringstream message;
-                        message << "Bonding " << cysRes1.GetId() << " and " << cysRes2.GetId() << " with distance " << distance;
+                        message << "Bonding " << it1->GetId() << " and " << it2->GetId() << " with distance " << distance;
                         gmml::log(__LINE__, __FILE__, gmml::INF, message.str());
                     }
                 }
