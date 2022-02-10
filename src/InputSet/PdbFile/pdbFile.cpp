@@ -322,33 +322,28 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
         this->GetCoordinateSection().ChangeResidueName(userSelectionPair.first, userSelectionPair.second);
     }
     // HIS protonation, automatic handling.
-    std::vector<pdb::PdbResidue> hisResidues;
     for(auto &residue : this->GetCoordinateSection().GetResidues())
     {
-        if (residue.GetName() == "HIS" || residue.GetName() == "HIE" || residue.GetName() == "HIE" || residue.GetName() == "HIP")
+        if (residue.GetName() == "HIE" || residue.GetName() == "HIE" || residue.GetName() == "HIP")
         {
             ppInfo.hisResidues_.emplace_back(residue.GetId());
         }
-        if (residue.GetName() == "HIS")
+        else if (residue.GetName() == "HIS")
         {
-            hisResidues.push_back(residue);
+            if ( (residue.FindAtom("HE2") == nullptr) && (residue.FindAtom("HD1") != nullptr) )
+            {
+                residue.SetName("HID");
+            }
+            else if ( (residue.FindAtom("HE2") != nullptr) && (residue.FindAtom("HD1") != nullptr) )
+            {
+                residue.SetName("HIP");
+            }
+            else // HIE is default
+            {
+                residue.SetName("HIE");
+            }
+            ppInfo.hisResidues_.emplace_back(residue.GetId());
         }
-    }
-    for (auto &hisRes : hisResidues)
-    {
-        if ( (hisRes.FindAtom("HE2") == nullptr) && (hisRes.FindAtom("HD1") != nullptr) )
-        {
-            hisRes.SetName("HID");
-        }
-        else if ( (hisRes.FindAtom("HE2") != nullptr) && (hisRes.FindAtom("HD1") != nullptr) )
-        {
-            hisRes.SetName("HIP");
-        }
-        else // HIE is default
-        {
-            hisRes.SetName("HIE");
-        }
-        ppInfo.hisResidues_.emplace_back(hisRes.GetId());
     }
     //Chain terminations
     for (std::vector<pdb::PdbResidue> chainOfResidues : this->GetCoordinateSection().GetProteinChains())
