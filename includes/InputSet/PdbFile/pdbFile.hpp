@@ -1,7 +1,6 @@
 #ifndef INCLUDES_INPUTSET_PDBFILE_PDBFILE_HPP
 #define INCLUDES_INPUTSET_PDBFILE_PDBFILE_HPP
 
-// ToDo Unrecognized DUMM in glycan residues like 0FA.
 // ToDo split preprocessor into separate class that inherits from this one or is friends?.
 // ToDo Get rid of coordinate section and just have this class hold the records
 // ToDo Ownership Hierarchy of PdbFile->Models->Chains->Residues->AtomRecords? This would solve the TER problem when reading in a tleap generated file where there isn't a chain ID, but there is a TER card.
