@@ -1,0 +1,21 @@
+Parsing inputfile
+Preprocesssing has begun
+Unrecognized atoms:
+Missing heavy atoms:
+Unrecognized residues:
+Gaps in amino acid chain:
+L | 21  | 23  | NHCH3 | COCH3
+L | 29  | 31  | NHCH3 | COCH3
+H | 18  | 22  | NHCH3 | COCH3
+H | 82  | 82A | NHCH3 | COCH3
+H | 82A | 82B | NHCH3 | COCH3
+H | 82B | 82C | NHCH3 | COCH3
+Histidine Protonation:
+HIE | L | 34
+HIE | H | 60
+Disulphide bonds:
+L | CYX | 23 | 1.95967 | L | CYX | 88
+H | CYX | 22 | 1.98487 | H | CYX | 92
+Chain terminations:
+L | 1  | NH3+ | 107  | CO2-
+H | 2  | NH3+ | 110  | CO2-
