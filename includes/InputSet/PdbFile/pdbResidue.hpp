@@ -43,6 +43,7 @@ public:
     void AddLabel(const std::string &label);
     void AddAtom(AtomRecord* atomRecord);
     void SetName(const std::string name);
+    inline void AddTerCard() {hasTerCard_ = true;}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
@@ -57,6 +58,7 @@ private:
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     std::vector<AtomRecord*> atomRecords_; // Residue does not own these. Owned by residues's owner.
+    bool hasTerCard_;
 };
 }
 #endif // GMML_INCLUDES_INPUTSET_PDBFILE_PDBRESIDUE_HPP
