@@ -14,8 +14,9 @@ CoordinateSection::CoordinateSection(std::stringstream &stream_block)
 {
     int currentModelNumber = 1;
 //    PdbResidue* currentResidue;
-//    std::string currentResidueId = "?_?_?_?_?"; // model_resname_insertionCode_resnumber_chain_
-//    std::string previousResidueId = "IJustNeedThisToBeDifferentFromCurrentResidueIdForTheinitialCheckOkDontJudgeMeImDoingMyBestOutHere";
+    std::vector<std::unique_ptr<AtomRecord>> atomRecords;
+    std::string currentResidueId = "?_?_?_?_?"; // model_resname_insertionCode_resnumber_chain_
+    std::string previousResidueId = "InitialValue";
     std::string line;
     while(getline(stream_block, line))
     {
@@ -37,7 +38,12 @@ CoordinateSection::CoordinateSection(std::stringstream &stream_block)
         else if ( (recordName == "ATOM") || (recordName == "HETATM") )
         {
             atomRecords_.push_back(std::make_unique<AtomRecord>(line, currentModelNumber));
-
+            atomRecords.push_back(std::make_unique<AtomRecord>(line, currentModelNumber));
+            if ( (previousResidueId != "InitialValue") && (previousResidueId != atomRecords.back()->GetResidueId()) )
+            {
+                //residues_.push_back(std::make_unique<PdbResidue>(atomRecords));
+                residues_.emplace_back(atomRecords);
+            }
 //            residues_.emplace_back(currentModelNumber, line, stream_block);
 
  //           atomRecords_.emplace_back(line, currentModelNumber);
@@ -55,11 +61,11 @@ CoordinateSection::CoordinateSection(std::stringstream &stream_block)
 //            }
 //            previousResidueId = currentResidueId;
         }
-//        std::cerr << "Residues so far are:\n";
-//        for (auto &residue : residues_)
-//        {
-//            residue.Print();
-//        }
+        std::cerr << "Residues so far are:\n";
+        for (auto &residue : residues_)
+        {
+            residue->Print();
+        }
     }
 }
 

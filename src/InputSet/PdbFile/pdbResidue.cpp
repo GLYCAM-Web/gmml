@@ -14,22 +14,10 @@ PdbResidue::PdbResidue(std::vector<AtomRecord*> atomRecords)
     atomRecords_ = atomRecords;
     hasTerCard_ = false;
 }
-PdbResidue::PdbResidue(int modelNumber, std::string &line, std::stringstream &stream_block)
+PdbResidue::PdbResidue(std::vector<std::unique_ptr<AtomRecord>>& atomRecords)
 {
-    atomRecords_.push_back(std::make_unique<AtomRecord>(line, modelNumber));
-    std::string currentResidueId = this->GetId();
-    std::string previousResidueId = currentResidueId;
-    if(currentResidueId == previousResidueId)
-    {
-        currentResidue->AddAtom(&newAtomRecord);
-        std::cout << "Added to current residue\n";
-    }
-    else
-    {
-        currentResidue = this->CreateNewResidue(&newAtomRecord);
-        std::cout << "New residue created!\n";
-    }
-    previousResidueId = currentResidueId;
+    atomRecordss_.swap(atomRecords); // atomRecords will become empty, atomRecords_ will contain contents of atomRecords.
+    hasTerCard_ = false;
 }
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //

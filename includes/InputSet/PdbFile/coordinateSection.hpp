@@ -51,8 +51,9 @@ private:
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
-    //            std::vector<pdb::PdbResidue> residues_;              // We organize by residue to mirror the rest of GMML structure.
     std::vector<std::unique_ptr<AtomRecord>> atomRecords_;
+//    std::vector<std::unique_ptr<PdbResidue>> residues_;
+    std::vector<PdbResidue*> residues_;
 };
 }
 #endif // GMML_INCLUDES_INPUTSET_PDBFILE_COORDINATESECTION_HPP

@@ -52,7 +52,7 @@ public:
     std::string GetUniprotIDs() const;
     const float& GetResolution() const;
     const float& GetBFactor() const;
-    friend pdb::PreprocessorInformation PreProcess(PreprocessorOptions options);
+    pdb::PreprocessorInformation PreProcess(PreprocessorOptions options);
     //////////////////////////////////////////////////////////
     //                        DISPLAY                       //
     //////////////////////////////////////////////////////////

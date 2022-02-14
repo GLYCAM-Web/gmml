@@ -22,7 +22,7 @@ public:
     //////////////////////////////////////////////////////////
     PdbResidue(AtomRecord* atomRecord);
     PdbResidue(std::vector<AtomRecord*> atomRecords);
-    PdbResidue(int modelNumber, std::string &line, std::stringstream &stream_block);
+    PdbResidue(std::vector<std::unique_ptr<AtomRecord>>& atomRecords);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -59,6 +59,7 @@ private:
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     std::vector<AtomRecord*> atomRecords_; // Residue does not own these. Owned by residues's owner.
+    std::vector<std::unique_ptr<AtomRecord>> atomRecordss_; // Residue does not own these. Owned by residues's owner.
     bool hasTerCard_;
 };
 }
