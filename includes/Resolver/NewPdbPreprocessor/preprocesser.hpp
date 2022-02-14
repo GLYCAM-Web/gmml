@@ -1,5 +1,5 @@
-//#ifndef GMML_INCLUDES_RESOLVER_PREPROCSSEDPDBFILE_HPP
-//#define GMML_INCLUDES_RESOLVER_PREPROCSSEDPDBFILE_HPP
+//#ifndef GMML_INCLUDES_RESOLVER_PREPROCSSER_HPP
+//#define GMML_INCLUDES_RESOLVER_PREPROCSSER_HPP
 //
 //#include <string>
 //#include <vector>
@@ -14,13 +14,15 @@
 //    //////////////////////////////////////////////////////////
 //    //                       CONSTRUCTOR                    //
 //    //////////////////////////////////////////////////////////
-//    Preprocesser(PdbFile &pdbFile);
+//    Preprocesser(PdbFile &pdbFile, const PreprocessorOptions options);
 //    //////////////////////////////////////////////////////////
 //    //                       ACCESSOR                       //
 //    //////////////////////////////////////////////////////////
 //    void Preprocess(PreprocessorOptions options);
+//    pdb::PreprocessorInformation PreProcess(PreprocessorOptions options);
+//
 //private:
 //};
 //}
 //
-//#endif // GMML_INCLUDES_RESOLVER_PREPROCSSEDPDBFILE_HPP
+//#endif // GMML_INCLUDES_RESOLVER_PREPROCSSER_HPP

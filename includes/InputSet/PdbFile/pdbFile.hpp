@@ -6,7 +6,8 @@
 // ToDo Ownership Hierarchy of PdbFile->Models->Chains->Residues->AtomRecords? This would solve the TER problem when reading in a tleap generated file where there isn't a chain ID, but there is a TER card.
 // ToDo Warning about gaps being 1 residue.
 // ToDo make more direct queries here instead of giving out HeaderRecord etc.
-// ToDo Connect records are funky in outputpdbfile
+// ToDo ACE/NME between residues with same number but an insertion code.
+// ToDo expand tests to include amber input and multiple models.
 
 #include <string>
 #include <vector>
@@ -38,7 +39,6 @@ public:
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-    std::vector<PdbResidue> GetResiduesWithName(const std::string name) const;
     inline std::string GetInputFilePath() const {return inFilePath_;}
     // These should be private and whatever info they give out should be directly queryable here.
     inline const HeaderRecord& GetHeaderRecord() const {return headerRecord_;}
@@ -52,7 +52,7 @@ public:
     std::string GetUniprotIDs() const;
     const float& GetResolution() const;
     const float& GetBFactor() const;
-    pdb::PreprocessorInformation PreProcess(PreprocessorOptions options);
+    friend pdb::PreprocessorInformation PreProcess(PreprocessorOptions options);
     //////////////////////////////////////////////////////////
     //                        DISPLAY                       //
     //////////////////////////////////////////////////////////

@@ -36,8 +36,11 @@ CoordinateSection::CoordinateSection(std::stringstream &stream_block)
         // ATOM
         else if ( (recordName == "ATOM") || (recordName == "HETATM") )
         {
- //           atomRecords_.emplace_back(line, currentModelNumber);
             atomRecords_.push_back(std::make_unique<AtomRecord>(line, currentModelNumber));
+
+//            residues_.emplace_back(currentModelNumber, line, stream_block);
+
+ //           atomRecords_.emplace_back(line, currentModelNumber);
             // This next thing is to pre-organize into residues. Maybe dumb.
 //            currentResidueId = newAtomRecord.GetResidueId();
 //            if(currentResidueId == previousResidueId)
@@ -276,7 +279,7 @@ void CoordinateSection::Write(std::ostream& stream) const
         std::string previousResidueName = "";
         std::string previousChainId = model.at(0).GetChainId();
         for (auto &residue: model) // Maybe I should just put the TER cards in the vector as AtomRecord?
-        { // if previous was NME, or it's a new chain, or it's a HETATM and starts previous residue name began a 0, insert a TER.
+        { // if previous was NME, or it's a new chain, or it's a HETATM and starts previous residue name began a 0 (e.g. glycam 0SA), insert a TER.
             if (previousResidueName == "NME" || previousChainId != residue.GetChainId() || (residue.GetRecordName() == "HETATM" && previousResidueName.substr(0,1) == "0"))
             {
                 stream << "TER\n";

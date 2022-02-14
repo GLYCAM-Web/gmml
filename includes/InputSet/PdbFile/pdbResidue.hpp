@@ -22,6 +22,7 @@ namespace pdb
             //////////////////////////////////////////////////////////
             PdbResidue(AtomRecord* atomRecord);
             PdbResidue(std::vector<AtomRecord*> atomRecords);
+            PdbResidue(int modelNumber, std::string &line, std::stringstream &stream_block);
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //
             //////////////////////////////////////////////////////////

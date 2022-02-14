@@ -12,6 +12,23 @@ PdbResidue::PdbResidue(std::vector<AtomRecord*> atomRecords)
 {
     atomRecords_ = atomRecords;
 }
+PdbResidue::PdbResidue(int modelNumber, std::string &line, std::stringstream &stream_block)
+{
+    atomRecords_.push_back(std::make_unique<AtomRecord>(line, modelNumber));
+    std::string currentResidueId = this->GetId();
+    std::string previousResidueId = currentResidueId;
+    if(currentResidueId == previousResidueId)
+    {
+        currentResidue->AddAtom(&newAtomRecord);
+        std::cout << "Added to current residue\n";
+    }
+    else
+    {
+        currentResidue = this->CreateNewResidue(&newAtomRecord);
+        std::cout << "New residue created!\n";
+    }
+    previousResidueId = currentResidueId;
+}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
