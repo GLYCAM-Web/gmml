@@ -13,7 +13,6 @@ typedef std::vector<std::unique_ptr<AtomRecord>>::iterator AtomRecordIterator;
 class CoordinateSection
 {
 public:
-
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
