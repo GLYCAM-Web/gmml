@@ -7,10 +7,12 @@ using pdb::PdbResidue;
 PdbResidue::PdbResidue(AtomRecord* atomRecord)
 {
     this->AddAtom(atomRecord);
+    hasTerCard_ = false;
 }
 PdbResidue::PdbResidue(std::vector<AtomRecord*> atomRecords)
 {
     atomRecords_ = atomRecords;
+    hasTerCard_ = false;
 }
 PdbResidue::PdbResidue(int modelNumber, std::string &line, std::stringstream &stream_block)
 {
@@ -164,5 +166,9 @@ void PdbResidue::Write(std::ostream& stream) const
     for(auto &atom : atomRecords_)
     {
         atom->Write(stream);
+    }
+    if(hasTerCard_)
+    {
+        stream << "TER\n";
     }
 }

@@ -14,51 +14,52 @@
 // By ownership I mean responsible for creating and managing lifetime of.
 namespace pdb
 {
-    class PdbResidue
-    {
-        public:
-            //////////////////////////////////////////////////////////
-            //                       CONSTRUCTOR                    //
-            //////////////////////////////////////////////////////////
-            PdbResidue(AtomRecord* atomRecord);
-            PdbResidue(std::vector<AtomRecord*> atomRecords);
-            PdbResidue(int modelNumber, std::string &line, std::stringstream &stream_block);
-            //////////////////////////////////////////////////////////
-            //                       ACCESSOR                       //
-            //////////////////////////////////////////////////////////
-            std::string GetId() const;
-            const std::string& GetChainId() const;
-            const std::string& GetName() const;
-            const std::string& GetRecordName() const;
-            const std::string& GetInsertionCode() const;
-            const int& GetSequenceNumber() const;
-            std::vector<std::string> GetAtomNames() const;
-            const std::string GetParmName() const;
-            const int& GetModelNumber() const;
-            AtomRecord* GetLastAtom() const;
-            AtomRecord* GetFirstAtom() const;
-            const std::string& GetLabel() const;
-            //////////////////////////////////////////////////////////
-            //                       MUTATOR                        //
-            //////////////////////////////////////////////////////////
-            void AddLabel(const std::string &label);
-            void AddAtom(AtomRecord* atomRecord);
-            void SetName(const std::string name);
-            //////////////////////////////////////////////////////////
-            //                       FUNCTIONS                      //
-            //////////////////////////////////////////////////////////
-            AtomRecord* FindAtom(const std::string& queryName) const;
-            //////////////////////////////////////////////////////////
-            //                       DISPLAY FUNCTION               //
-            //////////////////////////////////////////////////////////
-            void Print(std::ostream& out = std::cerr) const;
-            void Write(std::ostream& stream) const;
-
-        private:
-            //////////////////////////////////////////////////////////
-            //                       ATTRIBUTES                     //
-            //////////////////////////////////////////////////////////
-            std::vector<AtomRecord*> atomRecords_; // Residue does not own these. Owned by residues's owner.
-    };
+class PdbResidue
+{
+public:
+    //////////////////////////////////////////////////////////
+    //                       CONSTRUCTOR                    //
+    //////////////////////////////////////////////////////////
+    PdbResidue(AtomRecord* atomRecord);
+    PdbResidue(std::vector<AtomRecord*> atomRecords);
+    PdbResidue(int modelNumber, std::string &line, std::stringstream &stream_block);
+    //////////////////////////////////////////////////////////
+    //                       ACCESSOR                       //
+    //////////////////////////////////////////////////////////
+    std::string GetId() const;
+    const std::string& GetChainId() const;
+    const std::string& GetName() const;
+    const std::string& GetRecordName() const;
+    const std::string& GetInsertionCode() const;
+    const int& GetSequenceNumber() const;
+    std::vector<std::string> GetAtomNames() const;
+    const std::string GetParmName() const;
+    const int& GetModelNumber() const;
+    AtomRecord* GetLastAtom() const;
+    AtomRecord* GetFirstAtom() const;
+    const std::string& GetLabel() const;
+    //////////////////////////////////////////////////////////
+    //                       MUTATOR                        //
+    //////////////////////////////////////////////////////////
+    void AddLabel(const std::string &label);
+    void AddAtom(AtomRecord* atomRecord);
+    void SetName(const std::string name);
+    inline void AddTerCard() {hasTerCard_ = true;}
+    //////////////////////////////////////////////////////////
+    //                       FUNCTIONS                      //
+    //////////////////////////////////////////////////////////
+    AtomRecord* FindAtom(const std::string& queryName) const;
+    //////////////////////////////////////////////////////////
+    //                       DISPLAY FUNCTION               //
+    //////////////////////////////////////////////////////////
+    void Print(std::ostream& out = std::cerr) const;
+    void Write(std::ostream& stream) const;
+private:
+    //////////////////////////////////////////////////////////
+    //                       ATTRIBUTES                     //
+    //////////////////////////////////////////////////////////
+    std::vector<AtomRecord*> atomRecords_; // Residue does not own these. Owned by residues's owner.
+    bool hasTerCard_;
+};
 }
 #endif // GMML_INCLUDES_INPUTSET_PDBFILE_PDBRESIDUE_HPP
