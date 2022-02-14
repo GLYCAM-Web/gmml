@@ -1,5 +1,5 @@
 #!/bin/bash
-printf "Testing 019.test.newPDBClass.cpp... "
+printf "Testing 019.test.newPDBClass.cpp... ~5 seconds"
 g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/019.test.newPDBClass.cpp -lgmml -pthread -o newPdbClass
 for filepath in `ls tests/inputs/019.*.pdb`
 do

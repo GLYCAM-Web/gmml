@@ -1,0 +1,129 @@
+Parsing inputfile
+Preprocesssing has begun
+Unrecognized atoms:
+Missing heavy atoms:
+Unrecognized residues:
+Gaps in amino acid chain:
+Histidine Protonation:
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+Disulphide bonds:
+Chain terminations:
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
+A | 1  | NH3+ | 134  | CO2-
