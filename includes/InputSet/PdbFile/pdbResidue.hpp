@@ -14,15 +14,15 @@
 // By ownership I mean responsible for creating and managing lifetime of.
 namespace pdb
 {
-class PdbResidue
+class PdbResidue : public abstrab::Labels
 {
 public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
-    PdbResidue(AtomRecord* atomRecord);
-    PdbResidue(std::vector<AtomRecord*> atomRecords);
-    PdbResidue(std::vector<std::unique_ptr<AtomRecord>>& atomRecords);
+//    PdbResidue(AtomRecord* atomRecord);
+//    PdbResidue(std::vector<AtomRecord*> atomRecords);
+    PdbResidue(const std::string &line, const int& currentModelNumber);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -41,10 +41,11 @@ public:
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
-    void AddLabel(const std::string &label);
-    void AddAtom(AtomRecord* atomRecord);
+    //void AddAtom(AtomRecord* atomRecord);
+    void CreateAtom(const std::string& line, const int& currentModelNumber);
     void SetName(const std::string name);
     inline void AddTerCard() {hasTerCard_ = true;}
+    inline void RemoveTerCard() {hasTerCard_ = false;}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
@@ -58,9 +59,10 @@ private:
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
-    std::vector<AtomRecord*> atomRecords_; // Residue does not own these. Owned by residues's owner.
-    std::vector<std::unique_ptr<AtomRecord>> atomRecordss_; // Residue does not own these. Owned by residues's owner.
+    //std::vector<AtomRecord*> atomRecords_; // Residue does not own these. Owned by residues's owner.
+    std::vector<std::unique_ptr<AtomRecord>> atomRecords_; // Residue does not own these. Owned by residues's owner.
     bool hasTerCard_;
+    int modelNumber_;
 };
 }
 #endif // GMML_INCLUDES_INPUTSET_PDBFILE_PDBRESIDUE_HPP

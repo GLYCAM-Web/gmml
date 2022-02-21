@@ -276,15 +276,17 @@ void PdbFile::InsertCap(const PdbResidue& residue, const std::string& type)
 
 pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOptions)
 {
-    std::cout << "Preprocesssing has begun\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Preprocesssing has begun");
     PreprocessorInformation ppInfo;
     // CYS Disulfide bonds
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Cys disulphide bonds");
     for (auto &models: this->GetCoordinateSection().GetModels())
     {
-        std::vector<pdb::PdbResidue> cysResidues;
+        gmml::log(__LINE__, __FILE__, gmml::INF, "I ahve the models");
+        std::vector<pdb::PdbResidue*> cysResidues;
         for(auto &residue : models)
         {
-            if (residue.GetName() == "CYS" || residue.GetName() == "CYX")
+            if (residue->GetName() == "CYS" || residue->GetName() == "CYX")
             {
                 cysResidues.push_back(residue);
             }
@@ -293,23 +295,25 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
         {
             gmml::log(__LINE__, __FILE__, gmml::INF, "No CYS or CYX residues detected in this structure\n");
         }
-        for (std::vector<pdb::PdbResidue>::iterator it1 = cysResidues.begin(); it1 != cysResidues.end(); ++it1)
+        for (std::vector<pdb::PdbResidue*>::iterator it1 = cysResidues.begin(); it1 != cysResidues.end(); ++it1)
         {
-            AtomRecord* sg1 = it1->FindAtom("SG");
-            for (std::vector<pdb::PdbResidue>::iterator it2 = std::next(it1, 1); it2 != cysResidues.end(); ++it2)
+            PdbResidue* res1 = *it1;
+            AtomRecord* sg1 = res1->FindAtom("SG");
+            for (std::vector<pdb::PdbResidue*>::iterator it2 = std::next(it1, 1); it2 != cysResidues.end(); ++it2)
             {
-                AtomRecord* sg2 = it2->FindAtom("SG");
+                PdbResidue* res2 = *it2;
+                AtomRecord* sg2 = res2->FindAtom("SG");
                 if ( (sg1 != nullptr) && (sg2 != nullptr) )
                 {
                     double distance = sg1->CalculateDistance(sg2);
                     if (distance < gmml::dSulfurCutoff && distance > 0.001)
                     {
-                        it1->SetName("CYX");
-                        it2->SetName("CYX");
-                        this->AddConnection(it1->FindAtom("SG"), it2->FindAtom("SG"));
-                        ppInfo.cysBondResidues_.emplace_back(it1->GetId(), it2->GetId(), distance);
+                        res1->SetName("CYX");
+                        res2->SetName("CYX");
+                        this->AddConnection(res1->FindAtom("SG"), res2->FindAtom("SG"));
+                        ppInfo.cysBondResidues_.emplace_back(res1->GetId(), res2->GetId(), distance);
                         std::stringstream message;
-                        message << "Bonding " << it1->GetId() << " and " << it2->GetId() << " with distance " << distance;
+                        message << "Bonding " << res1->GetId() << " and " << res2->GetId() << " with distance " << distance;
                         gmml::log(__LINE__, __FILE__, gmml::INF, message.str());
                     }
                 }
@@ -317,6 +321,7 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
         }
     }
     // HIS protonation, user specified:
+    gmml::log(__LINE__, __FILE__, gmml::INF, "His protonation");
     for(auto &userSelectionPair : inputOptions.hisSelections_)
     {
         this->GetCoordinateSection().ChangeResidueName(userSelectionPair.first, userSelectionPair.second);
@@ -324,85 +329,88 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
     // HIS protonation, automatic handling.
     for(auto &residue : this->GetCoordinateSection().GetResidues())
     {
-        if (residue.GetName() == "HIE" || residue.GetName() == "HIE" || residue.GetName() == "HIP")
+        if (residue->GetName() == "HIE" || residue->GetName() == "HIE" || residue->GetName() == "HIP")
         {
-            ppInfo.hisResidues_.emplace_back(residue.GetId());
+            ppInfo.hisResidues_.emplace_back(residue->GetId());
         }
-        else if (residue.GetName() == "HIS")
+        else if (residue->GetName() == "HIS")
         {
-            if ( (residue.FindAtom("HE2") == nullptr) && (residue.FindAtom("HD1") != nullptr) )
+            if ( (residue->FindAtom("HE2") == nullptr) && (residue->FindAtom("HD1") != nullptr) )
             {
-                residue.SetName("HID");
+                residue->SetName("HID");
             }
-            else if ( (residue.FindAtom("HE2") != nullptr) && (residue.FindAtom("HD1") != nullptr) )
+            else if ( (residue->FindAtom("HE2") != nullptr) && (residue->FindAtom("HD1") != nullptr) )
             {
-                residue.SetName("HIP");
+                residue->SetName("HIP");
             }
             else // HIE is default
             {
-                residue.SetName("HIE");
+                residue->SetName("HIE");
             }
-            ppInfo.hisResidues_.emplace_back(residue.GetId());
+            ppInfo.hisResidues_.emplace_back(residue->GetId());
         }
     }
     //Chain terminations
-    for (std::vector<pdb::PdbResidue> chainOfResidues : this->GetCoordinateSection().GetProteinChains())
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Chain terminations");
+    for (std::vector<pdb::PdbResidue*> chainOfResidues : this->GetCoordinateSection().GetProteinChains())
     {
        //Do the thing
-       this->ModifyNTerminal(inputOptions.chainNTermination_, &chainOfResidues.front());
-       this->ModifyCTerminal(inputOptions.chainCTermination_, &chainOfResidues.back());
+       this->ModifyNTerminal(inputOptions.chainNTermination_, chainOfResidues.front());
+       this->ModifyCTerminal(inputOptions.chainCTermination_, chainOfResidues.back());
        //Log the thing
-       gmml::log(__LINE__, __FILE__, gmml::INF, "N term : " + chainOfResidues.front().GetId());
-       gmml::log(__LINE__, __FILE__, gmml::INF, "C term : " + chainOfResidues.back().GetId());
+       gmml::log(__LINE__, __FILE__, gmml::INF, "N term : " + chainOfResidues.front()->GetId());
+       gmml::log(__LINE__, __FILE__, gmml::INF, "C term : " + chainOfResidues.back()->GetId());
        //Report the thing
        std::stringstream startIndex, endIndex;
-       startIndex << chainOfResidues.front().GetSequenceNumber() << chainOfResidues.front().GetInsertionCode();
-       endIndex << chainOfResidues.back().GetSequenceNumber() << chainOfResidues.back().GetInsertionCode();
-       ppInfo.chainTerminals_.emplace_back(chainOfResidues.front().GetChainId(), startIndex.str(), endIndex.str(), inputOptions.chainNTermination_, inputOptions.chainCTermination_);
+       startIndex << chainOfResidues.front()->GetSequenceNumber() << chainOfResidues.front()->GetInsertionCode();
+       endIndex << chainOfResidues.back()->GetSequenceNumber() << chainOfResidues.back()->GetInsertionCode();
+       ppInfo.chainTerminals_.emplace_back(chainOfResidues.front()->GetChainId(), startIndex.str(), endIndex.str(), inputOptions.chainNTermination_, inputOptions.chainCTermination_);
     }
     // Missing Residues (gaps)
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Gaps");
     std::string previousChainId = "AUniqueInitialString";
     int previousSequenceNumber = -999999;
     int previousModelNumber = -999999;
     pdb::PdbResidue* previous = nullptr;
     for(auto &residue : this->GetCoordinateSection().GetResidues())
     {
-        if ((previousSequenceNumber != (residue.GetSequenceNumber() - 1)) && (previousChainId == residue.GetChainId() ) && (previousModelNumber == residue.GetModelNumber()) )
+        if ((previousSequenceNumber != (residue->GetSequenceNumber() - 1)) && (previousChainId == residue->GetChainId() ) && (previousModelNumber == residue->GetModelNumber()) )
         {
             gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + previous->GetId());
-            gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + residue.GetId());
+            gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + residue->GetId());
             this->InsertCap(*previous, inputOptions.gapCTermination_);
-            this->InsertCap(residue, inputOptions.gapNTermination_);
+            this->InsertCap(*residue, inputOptions.gapNTermination_);
             std::stringstream residueBefore, residueAfter;
             residueBefore << previous->GetSequenceNumber() << previous->GetInsertionCode();
-            residueAfter << residue.GetSequenceNumber() << residue.GetInsertionCode();
-            ppInfo.missingResidues_.emplace_back(residue.GetChainId(), residueBefore.str(), residueAfter.str(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
+            residueAfter << residue->GetSequenceNumber() << residue->GetInsertionCode();
+            ppInfo.missingResidues_.emplace_back(residue->GetChainId(), residueBefore.str(), residueAfter.str(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
         }
-        previous = &residue;
-        previousChainId = residue.GetChainId();
-        previousSequenceNumber = residue.GetSequenceNumber();
-        previousModelNumber = residue.GetModelNumber();
+        previous = residue;
+        previousChainId = residue->GetChainId();
+        previousSequenceNumber = residue->GetSequenceNumber();
+        previousModelNumber = residue->GetModelNumber();
     }
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Unrecognized or missing residues and atoms");
     parameters::Manager parmManager;
     for(auto &residue : this->GetCoordinateSection().GetResidues())
     {
-        std::vector<std::string> parmAtomNames = parmManager.GetAtomNamesForResidue(residue.GetParmName());
-        std::vector<std::string> parmHeavyAtomNames = parmManager.GetHeavyAtomNamesForResidue(residue.GetParmName());
-        // Unrecognized residue.
+        std::vector<std::string> parmAtomNames = parmManager.GetAtomNamesForResidue(residue->GetParmName());
+        std::vector<std::string> parmHeavyAtomNames = parmManager.GetHeavyAtomNamesForResidue(residue->GetParmName());
+        // Unrecognized residue->
         if (parmAtomNames.empty())
         {
-            gmml::log(__LINE__, __FILE__, gmml::INF, "ParmManager did not recognize residue: " + residue.GetParmName());
-            ppInfo.unrecognizedResidues_.emplace_back(residue.GetId());
+            gmml::log(__LINE__, __FILE__, gmml::INF, "ParmManager did not recognize residue: " + residue->GetParmName());
+            ppInfo.unrecognizedResidues_.emplace_back(residue->GetId());
         }
-        else // Recognized residue.
+        else // Recognized residue->
         {
-            std::vector<std::string> pdbAtomNames = residue.GetAtomNames();
+            std::vector<std::string> pdbAtomNames = residue->GetAtomNames();
             for (auto &parmHeavyAtomName : parmHeavyAtomNames) // What heavy atoms are missing from the pdb residue?
             {
                 if ( std::find(pdbAtomNames.begin(), pdbAtomNames.end(), parmHeavyAtomName) == pdbAtomNames.end() )
                 { // Residue missing a heavy atom.
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Atom named " + parmHeavyAtomName + " missing from " + residue.GetId());
-                    ppInfo.missingHeavyAtoms_.emplace_back(parmHeavyAtomName, residue.GetId());
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Atom named " + parmHeavyAtomName + " missing from " + residue->GetId());
+                    ppInfo.missingHeavyAtoms_.emplace_back(parmHeavyAtomName, residue->GetId());
                 }
             }
             for (auto &pdbAtomName : pdbAtomNames) // What atoms in the pdb residue are unrecognized?
@@ -410,12 +418,13 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
                 if ( std::find(parmAtomNames.begin(), parmAtomNames.end(), pdbAtomName) == parmAtomNames.end() )
                 {
                     // Residue contains unrecognized atom.
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Unrecognized atom named " + pdbAtomName + " in " + residue.GetId());
-                    ppInfo.unrecognizedAtoms_.emplace_back(pdbAtomName, residue.GetId());
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Unrecognized atom named " + pdbAtomName + " in " + residue->GetId());
+                    ppInfo.unrecognizedAtoms_.emplace_back(pdbAtomName, residue->GetId());
                 }
             }
         }
     }
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Preprocessing completed");
     return ppInfo;
 }
 

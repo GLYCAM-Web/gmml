@@ -24,10 +24,10 @@ public:
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
-    std::vector<std::vector<pdb::PdbResidue>> GetModels() const;
-    std::vector<std::vector<pdb::PdbResidue>> GetProteinChains(); // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
-    std::vector<pdb::PdbResidue> GetResidues() const; // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
-    std::vector<pdb::PdbResidue> FindResidues(const std::string selector); // Uh oh, private parts are exposed. Wee-ooo wee-ooo.
+    std::vector<std::vector<pdb::PdbResidue*>> GetModels() const;
+    std::vector<std::vector<pdb::PdbResidue*>> GetProteinChains(); // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
+    std::vector<pdb::PdbResidue*> GetResidues() const; // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
+    std::vector<pdb::PdbResidue*> FindResidues(const std::string selector); // Uh oh, private parts are exposed. Wee-ooo wee-ooo.
     void ChangeResidueName(const std::string& selector, const std::string& newName);
     AtomRecord* FindAtom(int serialNumber); // Conect records
     void DeleteAtomRecord(AtomRecord* atom);
@@ -41,8 +41,9 @@ public:
     void Write(std::ostream& stream) const;
 private:
     //////////////////////////////////////////////////////////
-    //                       ACCESSOR                       //
+    //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
+    std::string PeekAtResidueId(const std::string &line);
     //inline pdb::PdbResidue* GetCurrentResidue() {return &(residues_.front());}
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
@@ -52,8 +53,8 @@ private:
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     std::vector<std::unique_ptr<AtomRecord>> atomRecords_;
-//    std::vector<std::unique_ptr<PdbResidue>> residues_;
-    std::vector<PdbResidue*> residues_;
+    std::vector<std::unique_ptr<PdbResidue>> residues_;
+    //std::vector<PdbResidue*> residues_;
 };
 }
 #endif // GMML_INCLUDES_INPUTSET_PDBFILE_COORDINATESECTION_HPP

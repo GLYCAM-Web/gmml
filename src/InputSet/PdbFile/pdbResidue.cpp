@@ -4,21 +4,28 @@ using pdb::PdbResidue;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbResidue::PdbResidue(AtomRecord* atomRecord)
+//PdbResidue::PdbResidue(AtomRecord* atomRecord)
+//{
+//    this->AddAtom(atomRecord);
+//    hasTerCard_ = false;
+//}
+//
+//PdbResidue::PdbResidue(std::vector<AtomRecord*> atomRecords)
+//{
+//    atomRecords_ = atomRecords;
+//    hasTerCard_ = false;
+//}
+PdbResidue::PdbResidue(const std::string& line, const int& modelNumber)
 {
-    this->AddAtom(atomRecord);
+    atomRecords_.push_back(std::make_unique<AtomRecord>(line, modelNumber));
+    modelNumber_ = modelNumber;
     hasTerCard_ = false;
 }
-PdbResidue::PdbResidue(std::vector<AtomRecord*> atomRecords)
-{
-    atomRecords_ = atomRecords;
-    hasTerCard_ = false;
-}
-PdbResidue::PdbResidue(std::vector<std::unique_ptr<AtomRecord>>& atomRecords)
-{
-    atomRecordss_.swap(atomRecords); // atomRecords will become empty, atomRecords_ will contain contents of atomRecords.
-    hasTerCard_ = false;
-}
+//PdbResidue::PdbResidue(std::vector<std::unique_ptr<AtomRecord>>& atomRecords)
+//{
+//    atomRecordss_.swap(atomRecords); // atomRecords will become empty, atomRecords_ will contain contents of atomRecords.
+//    hasTerCard_ = false;
+//}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
@@ -38,7 +45,7 @@ pdb::AtomRecord* PdbResidue::GetLastAtom() const
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, "atomRecords in PdbResidue is empty. Impossible!?");
     }
-    return atomRecords_.back();
+    return atomRecords_.back().get();
 }
 
 pdb::AtomRecord* PdbResidue::GetFirstAtom() const
@@ -47,11 +54,7 @@ pdb::AtomRecord* PdbResidue::GetFirstAtom() const
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, "atomRecords in PdbResidue is empty. Impossible!?");
     }
-    return atomRecords_.front();
-}
-const std::string& PdbResidue::GetLabel() const
-{
-    return this->GetFirstAtom()->getLabel();
+    return atomRecords_.front().get();
 }
 
 const std::string& PdbResidue::GetChainId() const
@@ -62,17 +65,19 @@ const std::string& PdbResidue::GetName() const
 {
     return this->GetFirstAtom()->GetResidueName();
 }
+
 const std::string& PdbResidue::GetRecordName() const
 {
     return this->GetFirstAtom()->GetRecordName();
 }
+
 const std::string PdbResidue::GetParmName() const // If terminal, need to look up e.g. NPRO or CPRO instead of PRO.
 {
-    if (this->GetFirstAtom()->containsLabel("NTerminal"))
+    if (this->containsLabel("NTerminal"))
     {
         return "N" + this->GetName();
     }
-    else if (this->GetFirstAtom()->containsLabel("CTerminal"))
+    else if (this->containsLabel("CTerminal"))
     {
         return "C" + this->GetName();
     }
@@ -82,17 +87,20 @@ const int& PdbResidue::GetSequenceNumber() const
 {
     return this->GetFirstAtom()->GetResidueSequenceNumber();
 }
+
 const std::string& PdbResidue::GetInsertionCode() const
 {
     return this->GetFirstAtom()->GetInsertionCode();
 }
+
 std::string PdbResidue::GetId() const
 {
     return this->GetFirstAtom()->GetResidueId();
 }
+
 const int& PdbResidue::GetModelNumber() const
 {
-    return this->GetFirstAtom()->GetModelNumber();
+    return modelNumber_;
 }
 
 
@@ -103,14 +111,9 @@ pdb::AtomRecord* PdbResidue::FindAtom(const std::string& queryName) const
 {
     for(auto &atom : atomRecords_)
     {
-//        std::size_t found = atom->GetId().find(name);
-//        if (found != std::string::npos)
-//        {
-//            return atom;
-//        }
         if(atom->GetName() == queryName)
         {
-            return atom;
+            return atom.get();
         }
     }
     return nullptr;
@@ -119,17 +122,19 @@ pdb::AtomRecord* PdbResidue::FindAtom(const std::string& queryName) const
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-void PdbResidue::AddLabel(const std::string &label)
+void PdbResidue::CreateAtom(const std::string& line, const int& currentModelNumber)
 {
-    this->GetFirstAtom()->addLabel(label);
+    atomRecords_.push_back(std::make_unique<AtomRecord>(line, currentModelNumber));
     return;
 }
-void PdbResidue::AddAtom(AtomRecord* atomRecord)
-{
-    //std::cout << "Adding atom with id " << atomRecord->GetId() << " to residue.\n";
-    atomRecords_.push_back(atomRecord);
-    return;
-}
+
+//void PdbResidue::AddAtom(AtomRecord* atomRecord)
+//{
+//    //std::cout << "Adding atom with id " << atomRecord->GetId() << " to residue.\n";
+//    atomRecords_.push_back(atomRecord);
+//    return;
+//}
+
 void PdbResidue::SetName(const std::string name)
 {
     for(auto &atom : atomRecords_)
@@ -149,6 +154,7 @@ void PdbResidue::Print(std::ostream &out) const
         out << "    atom : " << atom->GetId() << " X: "  << atom->GetCoordinate().GetX() << " Y: "  << atom->GetCoordinate().GetY() << " Z: " << atom->GetCoordinate().GetZ() << "\n";
     }
 }
+
 void PdbResidue::Write(std::ostream& stream) const
 {
     for(auto &atom : atomRecords_)
