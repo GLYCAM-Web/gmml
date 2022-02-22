@@ -1,10 +1,11 @@
 #!/bin/bash
 printf "Testing 016.test.DrawGlycan.cc...\n"
 g++ -std=c++17 -I $GEMSHOME/gmml/ -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/016.test.DrawGlycan.cc -lgmml -pthread -o drawGlycan
-./drawGlycan > 016.output_drawGlycan.txt
-
+./drawGlycan
+> 016.output_drawGlycan.txt
 for dotFile in `ls *.dot`
 do
+	cat $dotFile >> 016.output_drawGlycan.txt
 	dotFileName="${dotFile%.*}"
     dot -Tsvg:cairo:cairo $dotFile -o $dotFileName.svg > /dev/null 2>&1
     rm $dotFile

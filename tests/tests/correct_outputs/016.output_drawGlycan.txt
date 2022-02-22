@@ -50,7 +50,6 @@ b13--13 [style=invis];
 13--12[label="a1-6"];
 
 }
-
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -103,7 +102,6 @@ b13--13 [style=invis];
 13--12[label="a1-6"];
 
 }
-
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -129,7 +127,6 @@ rankdir=LR nodesep="0.05" ranksep="0.8";
 7--6[label="b1-4"];
 
 }
-
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -184,7 +181,6 @@ b14--14 [style=invis];
 14--11[label="1-4"];
 
 }
-
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -225,7 +221,6 @@ b9--9 [style=invis];
 9--8[label="a1-4"];
 
 }
-
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -237,7 +232,6 @@ rankdir=LR nodesep="0.05" ranksep="0.8";
 2--1[label="a1-2"];
 
 }
-
 graph G {graph [splines=false forcelabels=true  dpi=72];
 node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
@@ -249,4 +243,3 @@ rankdir=LR nodesep="0.05" ranksep="0.8";
 2--1[label="b2-1"];
 
 }
-
