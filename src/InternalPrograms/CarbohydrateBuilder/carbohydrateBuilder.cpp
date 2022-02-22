@@ -7,7 +7,7 @@
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-using CondensedSequenceSpace::carbohydrateBuilder;
+using CondensedSequence::carbohydrateBuilder;
 
 carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath)
 {
@@ -71,7 +71,7 @@ void carbohydrateBuilder::GenerateSingle3DStructureSingleFile(std::string fileOu
     return;
 }
 
-void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequenceSpace::SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
+void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequence::SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
 {
 //     std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
 //     std::string linkageName; // Can be whatever the user wants it to be, default to same as index.
@@ -117,13 +117,13 @@ int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
 //     ResidueLinkageVector linkagesOrderedForPermutation = this->SplitLinkagesIntoPermutants(*(this->GetGlycosidicLinkages()));
 //     this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
 // }
-CondensedSequenceSpace::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()
+CondensedSequence::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()
 {
-    CondensedSequenceSpace::LinkageOptionsVector userOptionsForSequence;
+    CondensedSequence::LinkageOptionsVector userOptionsForSequence;
     for (auto &linkage : *(this->GetGlycosidicLinkages())) // I get back a pointer to the ResidueLinkageVector so I *() it to the first element
     {
        // std::cout << "linko nameo: " << linkage.GetName() << std::endl;
-        CondensedSequenceSpace::DihedralOptionsVector possibleRotamers, likelyRotamers;
+        CondensedSequence::DihedralOptionsVector possibleRotamers, likelyRotamers;
         std::vector<std::string> buffer;
         for (auto &rotatableDihedral : linkage.GetRotatableDihedralsWithMultipleRotamers())
         {
