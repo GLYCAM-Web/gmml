@@ -15,7 +15,7 @@ for svgFile in `ls *.svg`
 do
 	cmp $svgFile tests/correct_outputs/016.output_SVGs/$svgFile
 	if ! cmp $svgFile tests/correct_outputs/016.output_SVGs/$svgFile > /dev/null 2>&1; then
-		echo "Test FAILED!. Output file %s different to tests/correct_outputs/016.output_SVGs/%s\n" $svgFile $svgFile
+		printf "Test FAILED!. Output file %s different to tests/correct_outputs/016.output_SVGs/%s\n" $svgFile $svgFile
 	  	return 1;
 	fi
 	rm $svgFile
