@@ -18,7 +18,6 @@ ConectRecord::ConectRecord(std::string &line, pdb::CoordinateSection& coordinate
         try
         {
             serialNumber = std::stoi(codeUtils::RemoveWhiteSpace(serialNumberString));
-
         }
         catch (...) {} // this is fine, they might not all be present.
         if (serialNumber != 0)

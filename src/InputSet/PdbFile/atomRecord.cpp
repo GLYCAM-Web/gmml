@@ -118,7 +118,7 @@ AtomRecord::AtomRecord(const std::string& name, const GeometryTopology::Coordina
     coordinate_ = coord;
 }
 
-AtomRecord::AtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const GeometryTopology::Coordinate& coord , const std::string& chainId, const int& modelNumber, const int& serialNumber, const std::string& recordName, const std::string& alternateLocation, const std::string& insertionCode, const double& occupancy, const double& temperatureFactor, const std::string& element, const std::string& charge)
+AtomRecord::AtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const std::string& insertionCode, const GeometryTopology::Coordinate& coord , const std::string& chainId, const int& modelNumber, const int& serialNumber, const std::string& recordName, const std::string& alternateLocation, const double& occupancy, const double& temperatureFactor, const std::string& element, const std::string& charge)
 :
         modelNumber_(modelNumber),
         recordName_(recordName),

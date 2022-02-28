@@ -21,6 +21,14 @@ PdbResidue::PdbResidue(const std::string& line, const int& modelNumber)
     modelNumber_ = modelNumber;
     hasTerCard_ = false;
 }
+
+PdbResidue::PdbResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const PdbResidue *referenceResidue)
+{
+    atomRecords_.push_back(std::make_unique<AtomRecord>(atomName, residueName, referenceResidue->GetSequenceNumber() + 1, referenceResidue->GetInsertionCode(), atomCoord, referenceResidue->GetChainId(), referenceResidue->GetModelNumber()));
+    modelNumber_ = referenceResidue->GetModelNumber();
+    hasTerCard_ = false;
+}
+
 //PdbResidue::PdbResidue(std::vector<std::unique_ptr<AtomRecord>>& atomRecords)
 //{
 //    atomRecordss_.swap(atomRecords); // atomRecords will become empty, atomRecords_ will contain contents of atomRecords.
@@ -119,6 +127,18 @@ pdb::AtomRecord* PdbResidue::FindAtom(const std::string& queryName) const
     return nullptr;
 }
 
+pdb::AtomRecord* PdbResidue::FindAtom(const int& serialNumber) const
+{
+    AtomRecord* nullRecord = nullptr;
+    for(auto &atomRecord : atomRecords_)
+    {
+        if (atomRecord->GetSerialNumber() == serialNumber )
+        {
+            return atomRecord.get(); // get() gets the raw ptr, imo raw() would have been cooler and clearer.
+        }
+    }
+    return nullRecord;
+}
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
@@ -127,6 +147,13 @@ void PdbResidue::CreateAtom(const std::string& line, const int& currentModelNumb
     atomRecords_.push_back(std::make_unique<AtomRecord>(line, currentModelNumber));
     return;
 }
+
+void PdbResidue::CreateAtom(const std::string atomName, GeometryTopology::Coordinate& atomCoord)
+{
+    atomRecords_.push_back(std::make_unique<AtomRecord>(atomName, this->GetName(), this->GetSequenceNumber(), this->GetInsertionCode(), atomCoord, this->GetChainId(), this->GetModelNumber()));
+    return;
+}
+
 
 //void PdbResidue::AddAtom(AtomRecord* atomRecord)
 //{
@@ -143,6 +170,39 @@ void PdbResidue::SetName(const std::string name)
     }
     return;
 }
+
+bool PdbResidue::DeleteAtomRecord(AtomRecord* atom)
+{ // Passing in a raw ptr, but the vector is unique_ptr so gotta use i->get() to compare raws.
+    auto i = this->FindPositionOfAtom(atom);
+    if (i != atomRecords_.end())
+    {
+       i = atomRecords_.erase(i);
+       gmml::log(__LINE__,__FILE__,gmml::INF, "Atom " + atom->GetId() + " has been erased. You're welcome.");
+       return true;
+    }
+    return false;
+}
+
+
+std::vector<std::unique_ptr<pdb::AtomRecord>>::iterator PdbResidue::FindPositionOfAtom(AtomRecord* queryAtom)
+{
+    auto i = atomRecords_.begin();
+    auto e = atomRecords_.end();
+    while (i != e)
+    {
+        if (queryAtom == i->get())
+        {
+            return i;
+        }
+        else
+        {
+            ++i;
+        }
+    }
+    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find " + queryAtom->GetId() + " in atom records\n");
+    return e;
+}
+
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////

@@ -14,6 +14,7 @@
 // By ownership I mean responsible for creating and managing lifetime of.
 namespace pdb
 {
+typedef std::vector<std::unique_ptr<AtomRecord>>::iterator AtomRecordIterator;
 class PdbResidue : public abstrab::Labels
 {
 public:
@@ -23,6 +24,8 @@ public:
 //    PdbResidue(AtomRecord* atomRecord);
 //    PdbResidue(std::vector<AtomRecord*> atomRecords);
     PdbResidue(const std::string &line, const int& currentModelNumber);
+    PdbResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const PdbResidue *referenceResidue);
+
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -43,6 +46,7 @@ public:
     //////////////////////////////////////////////////////////
     //void AddAtom(AtomRecord* atomRecord);
     void CreateAtom(const std::string& line, const int& currentModelNumber);
+    void CreateAtom(const std::string atomName, GeometryTopology::Coordinate& atomCoord);
     void SetName(const std::string name);
     inline void AddTerCard() {hasTerCard_ = true;}
     inline void RemoveTerCard() {hasTerCard_ = false;}
@@ -50,6 +54,9 @@ public:
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
     AtomRecord* FindAtom(const std::string& queryName) const;
+    AtomRecord* FindAtom(const int& serialNumber) const;
+    bool DeleteAtomRecord(AtomRecord* atom);
+    AtomRecordIterator FindPositionOfAtom(AtomRecord* queryAtom);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////

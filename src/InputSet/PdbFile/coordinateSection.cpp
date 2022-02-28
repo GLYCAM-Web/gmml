@@ -48,14 +48,20 @@ CoordinateSection::CoordinateSection(std::stringstream &stream_block)
             }
         }
     }
-    std::cerr << "Residues constructed are:\n";
-    for (auto &residue : residues_)
-    {
-        residue->Print();
-    }
+//    for (auto &residue : residues_)
+//    {
+//        residue->Print();
+//    }
 }
 
-// This is bad as it repeats how to read a line and how to create a residue ID, but I need to know which residue to put the atom into before I construct it.
+//////////////////////////////////////////////////////////
+//                       FUNCTIONS                      //
+//////////////////////////////////////////////////////////
+
+
+
+
+// This is bad as it repeats how to read a line and how to create a residue ID, but I need to know which residue to put the atom into before I construct the atom.
 std::string CoordinateSection::PeekAtResidueId(const std::string &line)
 {
     // Dealing with number overruns for serialNumber and residueNumber
@@ -122,7 +128,7 @@ std::vector<std::vector<pdb::PdbResidue*>> CoordinateSection::GetProteinChains()
 
 std::vector<pdb::PdbResidue*> CoordinateSection::GetResidues() const
 {
-    std::vector<pdb::PdbResidue*> residues(residues_.size()); // reserve the right amount of memory.
+    std::vector<pdb::PdbResidue*> residues; // reserve the right amount of memory.
     for(auto &resUniquePtr : residues_)
     {
         residues.push_back(resUniquePtr.get());
@@ -139,7 +145,6 @@ std::vector<pdb::PdbResidue*> CoordinateSection::FindResidues(const std::string 
         if(found != std::string::npos)
         {
             matchingResidues.push_back(residue.get());
-            //std::cout << residue.GetId() << " contains " << selector << "\n";
         }
     }
     return matchingResidues;
@@ -153,78 +158,94 @@ void CoordinateSection::ChangeResidueName(const std::string& selector, const std
         if(found != std::string::npos)
         {
             residue->SetName(newName);
+            return;
         }
     }
     return;
 }
 
-pdb::AtomRecord* CoordinateSection::FindAtom(int serialNumber)
+pdb::AtomRecord* CoordinateSection::FindAtom(const int& serialNumber) const
 {
-    AtomRecord* nullRecord = nullptr;
-    for(auto &atomRecord : atomRecords_)
+    AtomRecord* foundAtom = nullptr;
+    for(auto &residue : residues_)
     {
-        if (atomRecord->GetSerialNumber() == serialNumber )
+        foundAtom = residue->FindAtom(serialNumber);
+        if ( foundAtom != nullptr )
         {
-            return atomRecord.get(); // get() gets the raw ptr, imo raw() would have been cooler and clearer.
+            return foundAtom; // get() gets the raw ptr, imo raw() would have been cooler and clearer.
         }
     }
-    return nullRecord;
+    return nullptr;
 }
 
-void CoordinateSection::DeleteAtomRecord(AtomRecord* atom)
-{ // Passing in a raw ptr, but the vector is unique_ptr so gotta use i->get() to compare raws.
-    auto i = this->FindPositionOfAtom(atom);
-    if (i != atomRecords_.end())
-    {
-       i = atomRecords_.erase(i);
-       gmml::log(__LINE__,__FILE__,gmml::INF, "Atom " + atom->GetId() + " has been erased. You're welcome.");
-    }
-    else
-    {
-        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not delete " + atom->GetId() + " as it was not found in atom records\n");
-    }
-    return;
-}
+//void CoordinateSection::DeleteAtomRecord(AtomRecord* atom)
+//{ // Passing in a raw ptr, but the vector is unique_ptr so gotta use i->get() to compare raws.
+//    for(auto &residue : residues_)
+//    {
+//        if (residue->DeleteAtomRecord(atom)) // returns true if it found and deleted the atomRecord
+//        {
+//            return;
+//        }
+//    }
+//    return;
+//}
 
-pdb::AtomRecordIterator CoordinateSection::CreateNewAtomRecord(std::string name, GeometryTopology::Coordinate& coord, AtomRecord* sisterAtom)
-{ // A bit wonky as position records the sisterAtom position in the vector, and then the new atom position to be returned.
-    AtomRecordIterator position = this->FindPositionOfAtom(sisterAtom);
-    if (position != atomRecords_.end())
-    {
-        ++position; // it is ok to insert at end(). I checked. It was ok. Ok.
-        position = atomRecords_.insert(position, std::make_unique<AtomRecord>(name, coord, sisterAtom));
-        gmml::log(__LINE__,__FILE__,gmml::INF, "New atom named " + name + " has been born; You're welcome.");
-    }
-    else
-    {
-        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create atom named " + name + " as sisterAtom was not found in atom records\n");
-    }
-    return position;
-}
-
-pdb::AtomRecordIterator CoordinateSection::CreateNewAtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const GeometryTopology::Coordinate& coord, const std::string& chainId, const int& modelNumber, AtomRecordIterator previousAtomPosition)
-{
-    //auto position = this->FindPositionOfAtom(previousAtom);
-    //if (position != atomRecords_.end())
-    //{
-        AtomRecordIterator newAtomPosition = atomRecords_.insert(++previousAtomPosition, std::make_unique<AtomRecord>(atomName, residueName, residueSequenceNumber, coord, chainId, modelNumber));
-        gmml::log(__LINE__,__FILE__,gmml::INF, "New atom named " + atomName + " has been born; You're welcome.");
-    //}
+//pdb::AtomRecordIterator CoordinateSection::CreateNewAtomRecord(std::string name, GeometryTopology::Coordinate& coord, AtomRecord* sisterAtom)
+//{ // A bit wonky as position records the sisterAtom position in the vector, and then the new atom position to be returned.
+//    AtomRecordIterator position = this->FindPositionOfAtom(sisterAtom);
+//    if (position != atomRecords_.end())
+//    {
+//        ++position; // it is ok to insert at end(). I checked. It was ok. Ok.
+//        position = atomRecords_.insert(position, std::make_unique<AtomRecord>(name, coord, sisterAtom));
+//        gmml::log(__LINE__,__FILE__,gmml::INF, "New atom named " + name + " has been born; You're welcome.");
+//    }
 //    else
 //    {
-//        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create atom named " + atomName + " as previousAtom was not found in atom records\n");
+//        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create atom named " + name + " as sisterAtom was not found in atom records\n");
 //    }
-    return newAtomPosition; // this is an iterator to where the unique ptr is, and get() returns a raw ptr.
+//    return position;
+//}
+
+//pdb::AtomRecordIterator CoordinateSection::CreateNewAtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const GeometryTopology::Coordinate& coord, const std::string& chainId, const int& modelNumber, AtomRecordIterator previousAtomPosition)
+//{
+//    //auto position = this->FindPositionOfAtom(previousAtom);
+//    //if (position != atomRecords_.end())
+//    //{
+//        AtomRecordIterator newAtomPosition = atomRecords_.insert(++previousAtomPosition, std::make_unique<AtomRecord>(atomName, residueName, residueSequenceNumber, coord, chainId, modelNumber));
+//        gmml::log(__LINE__,__FILE__,gmml::INF, "New atom named " + atomName + " has been born; You're welcome.");
+//    //}
+////    else
+////    {
+////        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create atom named " + atomName + " as previousAtom was not found in atom records\n");
+////    }
+//    return newAtomPosition; // this is an iterator to where the unique ptr is, and get() returns a raw ptr.
+//}
+
+
+pdb::PdbResidue* CoordinateSection::CreateNewResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const pdb::PdbResidue& referenceResidue)
+{
+    //Where the residue is in the vector matters. It should go after the reference residue.
+    pdb::PdbResidueIterator position = this->FindPositionOfResidue(&referenceResidue);
+    if (position != residues_.end())
+    {
+        ++position; // it is ok to insert at end(). I checked. It was ok. Ok.
+        position = residues_.insert(position, std::make_unique<PdbResidue>(residueName, atomName, atomCoord, &referenceResidue));
+        gmml::log(__LINE__,__FILE__,gmml::INF, "New residue named " + residueName + " has been born; You're welcome.");
+    }
+    else
+    {
+        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create residue named " + residueName + " as referenceResidue was not found\n");
+    }
+    return (*position).get(); // Wow ok, so dereference the reference to a uniquePtr, then use get() to create a raw ptr.
 }
 
-
-std::vector<std::unique_ptr<pdb::AtomRecord>>::iterator CoordinateSection::FindPositionOfAtom(AtomRecord* queryAtom)
+pdb::PdbResidueIterator CoordinateSection::FindPositionOfResidue(const PdbResidue* queryResidue)
 {
-    auto i = atomRecords_.begin();
-    auto e = atomRecords_.end();
+    auto i = residues_.begin();
+    auto e = residues_.end();
     while (i != e)
     {
-        if (queryAtom == i->get())
+        if (queryResidue == i->get())
         {
             return i;
         }
@@ -233,10 +254,9 @@ std::vector<std::unique_ptr<pdb::AtomRecord>>::iterator CoordinateSection::FindP
             ++i;
         }
     }
-    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find " + queryAtom->GetId() + " in atom records\n");
+    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find " + queryResidue->GetId() + " in atom records\n");
     return e;
 }
-
 //////////////////////////////////////////////////////////
 //                      ACCESSOR                        //
 //////////////////////////////////////////////////////////
@@ -257,9 +277,9 @@ std::vector<std::unique_ptr<pdb::AtomRecord>>::iterator CoordinateSection::FindP
 void CoordinateSection::Print(std::ostream &out) const
 {
     out << "The atom records are: " << "\n";
-    for (auto &atomRecord : atomRecords_)
+    for (auto &residue : residues_)
     {
-        atomRecord->Print(out);
+        residue->Print(out);
     }
 }
 void CoordinateSection::Write(std::ostream& stream) const

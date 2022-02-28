@@ -67,7 +67,7 @@ private:
     inline const std::vector<ConectRecord>& GetConectRecords() const {return conectRecords_;}
     inline CoordinateSection& GetCoordinateSection() {return coordinateSection_;}
     void AddConnection(AtomRecord* atom1, AtomRecord* atom2);
-    void DeleteAtomRecord(AtomRecord* atom);
+    //void DeleteAtomRecord(AtomRecord* atom);
     void ModifyNTerminal(const std::string& type, PdbResidue* nTerminalResidue);
     void ModifyCTerminal(const std::string& type, PdbResidue* residue);
     void InsertCap(const PdbResidue& residue, const std::string& type);

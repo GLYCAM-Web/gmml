@@ -1,5 +1,5 @@
 #!/bin/bash
-printf "Testing 019.test.newPDBClass.cpp... ~5 seconds"
+printf "Testing 019.test.newPDBClass.cpp... ~5 seconds. "
 g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/019.test.newPDBClass.cpp -lgmml -pthread -o newPdbClass
 for filepath in `ls tests/inputs/019.*.pdb`
 do
@@ -9,7 +9,8 @@ do
     	printf "Test FAILED!. output.txt different from tests/correct_outputs/$file-output.txt\n Compare using diff\n"
     	return 1;
 	elif !cmp  outputPdbfile.pdb tests/correct_outputs/$file-output.pdb > /dev/null 2>&1; then
-		printf "Test FAILED!. outputPdbfile.pdb different from tests/correct_outputs/$file-output.pdb\n Compare using diff or VMD\n"    	
+		printf "Test FAILED!. outputPdbfile.pdb different from tests/correct_outputs/$file-output.pdb\n Compare using diff or VMD\n"
+        return 1;
 	fi
 done
 printf "Test passed.\n"

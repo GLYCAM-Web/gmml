@@ -17,7 +17,7 @@ public:
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
     // Default constructor:
-    AtomRecord(const std::string& atomName = "", const std::string& residueName = "", const int& residueSequenceNumber = gmml::iNotSet, const GeometryTopology::Coordinate& coord = GeometryTopology::Coordinate(), const std::string& chainId = gmml::sNotSet, const int& modelNumber = 1, const int& serialNumber = gmml::iNotSet, const std::string& recordName = "ATOM",  const std::string& alternateLocation = gmml::sNotSet, const std::string& insertionCode = gmml::sNotSet, const double& occupancy = gmml::dNotSet, const double& temperatureFactor = gmml::dNotSet, const std::string& element = "", const std::string& charge = "");
+    AtomRecord(const std::string& atomName = "", const std::string& residueName = "", const int& residueSequenceNumber = gmml::iNotSet, const std::string& insertionCode = gmml::sNotSet, const GeometryTopology::Coordinate& coord = GeometryTopology::Coordinate(), const std::string& chainId = gmml::sNotSet, const int& modelNumber = 1, const int& serialNumber = gmml::iNotSet, const std::string& recordName = "ATOM",  const std::string& alternateLocation = gmml::sNotSet, const double& occupancy = gmml::dNotSet, const double& temperatureFactor = gmml::dNotSet, const std::string& element = "", const std::string& charge = "");
     // Constructor when reading lines:
     AtomRecord(const std::string& line, int modelNumber = 1);
     // Handy constructor that copies info from sisterAtom.
