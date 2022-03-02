@@ -401,6 +401,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       ///C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
     }
   }
+
   std::map <unsigned long long, Glycan::Monosaccharide* > ordered_monos_map =  std::map <unsigned long long, Glycan::Monosaccharide*>();
   for (std::vector <Glycan::Monosaccharide*>::iterator it = monos.begin(); it != monos.end(); it++)
   {
@@ -3433,7 +3434,6 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
   }
   // gmml::log(__LINE__, __FILE__,  gmml::INF, " Done iterating list" );
 
-
   std::vector<int> visited_monos = std::vector<int>();
   std::vector<Glycan::Oligosaccharide*> oligosaccharides = std::vector<Glycan::Oligosaccharide*>();
 
@@ -3850,6 +3850,7 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
       }
     }
   }
+
   // gmml::log(__LINE__, __FILE__,  gmml::INF, " End for loop ..." );
   // gmml::log(__LINE__, __FILE__,  gmml::INF, " Another for loop ..." );
   for(std::map<Glycan::Monosaccharide*, std::vector<Glycan::Monosaccharide*> >::iterator it = monos_table.begin(); it != monos_table.end(); it++)

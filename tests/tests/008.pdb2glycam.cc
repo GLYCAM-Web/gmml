@@ -45,8 +45,12 @@ int main(int argc, char* argv[])
     gmml::GlycamResidueNamingMap res_map = assemblyA.ExtractResidueGlycamNamingMap(oligos, oligo_id_map, oligo_residue_map);
     //std::cout << "TestUpdateResidueName2GlycamName()" << std::endl;
     assemblyA.TestUpdateResidueName2GlycamName(res_map, prep);
-    //std::cout << "RenameAtoms()" << std::endl;
-    assemblyA.RenameAtoms(oligo_residue_map, prep);
+    //Match and rename atoms
+    std::map<MolecularModeling::Atom*, MolecularModeling::Atom*> actual_template_match;
+    assemblyA.MatchPdbAtoms2Glycam(oligo_residue_map, prep, actual_template_match);
+    for (std::map<MolecularModeling::Atom*, MolecularModeling::Atom*>::iterator mapit = actual_template_match.begin(); mapit != actual_template_match.end(); mapit++){
+        mapit->first->SetName(mapit->second->GetName());
+    }
     //std::cout << "BuildPdbFileStructureFromAssembly()" << std::endl;
     PdbFileSpace::PdbFile *outputPdbFile = assemblyA.BuildPdbFileStructureFromAssembly();
     if (argc == 3)
