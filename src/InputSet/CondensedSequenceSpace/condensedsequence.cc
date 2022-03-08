@@ -23,7 +23,7 @@ CondensedSequence::CondensedSequence()
 
 CondensedSequence::CondensedSequence(std::string sequence)
 {
-	try
+    try
 	{
     	this->SetIsSequenceOkay(true); 
 		input_sequence_ = sequence;

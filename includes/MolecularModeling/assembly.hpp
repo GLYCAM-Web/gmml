@@ -1000,7 +1000,7 @@ public:
                                          std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map);
     void UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
     void TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
-    void RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map, std::string prep_file);
+    void MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map, std::string prep_file, std::map<MolecularModeling::Atom*, MolecularModeling::Atom*>& actual_template_match);
     int  RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& target_atoms, Atom* template_atoms, std::map<Atom*, std::string>& target_atom_label_map,
                                            std::map<Atom*, std::string>& template_atom_label_map, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match,
                                            std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match, std::vector<Atom*>& insertion_order,

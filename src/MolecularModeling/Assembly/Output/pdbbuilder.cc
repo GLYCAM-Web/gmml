@@ -327,7 +327,7 @@ void Assembly::ExtractPdbConnectSectionFromAssembly(PdbFileSpace::PdbConnectSect
             {
                 Atom* neighbor = *it1;
 		if (std::find(all_atoms.begin(), all_atoms.end(), neighbor) != all_atoms.end()){
-                    std::vector<std::string> neighbor_id_tokens = gmml::Split(neighbor->GetId(), "_");
+                    //std::vector<std::string> neighbor_id_tokens = gmml::Split(neighbor->GetId(), "_");
                     //bonded_atoms_serial_number_map[atom_serial_number].push_back(assembly_to_pdb_serial_number[gmml::ConvertString<int>(neighbor_id_tokens.at(1))]);
                     bonded_atoms_serial_number_map[atom_serial_number].push_back(assembly_to_pdb_serial_number[neighbor->GetIndex()]);
 		}
