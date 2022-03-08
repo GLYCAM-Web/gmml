@@ -958,8 +958,8 @@ std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::
     int cumulative_derivative_count = 0;
     std::map<int, int> condensed_06_index_map;
     for (unsigned int i = 0; i < this->condensed_sequence_residue_tree_.size(); i++){
-	int corresponding_06_index = i + cumulative_derivative_count;
-	condensed_06_index_map[i] = corresponding_06_index;
+	    int corresponding_06_index = i + cumulative_derivative_count;
+	    condensed_06_index_map[i] = corresponding_06_index;
         cumulative_derivative_count += this->condensed_sequence_residue_tree_[i]->GetDerivatives().size();
     }
 
@@ -969,8 +969,8 @@ std::string CondensedSequence::BuildLabeledCondensedSequence(CondensedSequence::
     if (label){
         int current_residue_label_index = 1, current_bond_label_index = 0;
         RecursivelyLabelCondensedSequence(reevaluated_parent_index, current_residue_label_index, current_bond_label_index, residue_label_map, bond_label_map, labeling_approach, longest_path,
-			                  condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map, rearranged_tree_by_labeling, rearranged_06_tree_by_labeling,
-					  condensed_06_index_map); 
+			                              condensed_residue_derivative_res_label_map, condensed_residue_derivative_bond_label_map, rearranged_tree_by_labeling, rearranged_06_tree_by_labeling,
+					                      condensed_06_index_map); 
     }
 
     this->RecursivelyBuildLabeledCondensedSequence(reevaluated_parent_index, branch_depth, labeled_sequence, reordering_approach, residue_label_map, bond_label_map, longest_path, label,

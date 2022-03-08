@@ -90,115 +90,116 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
     {
         int index = 0;
         Glycan::Oligosaccharide* oligo = *it;
-        //std::string oligo_name = oligo->oligosaccharide_name_;
         std::string oligo_name = oligo->IUPAC_name_;
         //In case that there is no terminal attached to the reducing end adds a temporary terminal residue to make the sequence parser able to parse the sequence
-        if(oligo->terminal_.compare("") == 0)
-            oligo_name = oligo_name + "1-OH";
+        if(oligo->terminal_.compare("") == 0){
+            std::cerr << "Error, no aglycone detected.Aborting\n";
+            throw;
+        }
 
         CondensedSequenceSpace::CondensedSequence* condensed_sequence = new CondensedSequenceSpace::CondensedSequence(oligo_name);
         //Gets the three letter code of all carbohydrates involved in current oligosaccharide
         CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree condensed_sequence_glycam06_residue_tree = condensed_sequence->GetCondensedSequenceGlycam06ResidueTree();
 
-	//If there is a terminal aglycone, allocate it to a new residue
-        if(oligo->terminal_.compare("") != 0)
-        {
-            MolecularModeling::Atom* anomeric_o = NULL;
-            MolecularModeling::Atom* anomeric_c = NULL;
-            if(oligo->root_->cycle_atoms_.at(0) != NULL)
-                anomeric_c = oligo->root_->cycle_atoms_.at(0);
+        //If for some reason there are no residues in the condensed sequence, which really shouldn't happen. Terminate the program as well.
+        if (condensed_sequence_glycam06_residue_tree.empty()){
+            std::cerr << "Error, no glycam 06 residues detected" << std::endl;
+            throw;
+        }
 
-            //Anomeric group has now been removed from sidegroup if it shouldn't be part of oligosaccharide (e.g. NLN nitrogen). So now, find anomeric oxygen from node neighbors of anomeric carbon.
-            AtomVector anomeric_c_neighbors = anomeric_c->GetNode()->GetNodeNeighbors();
-            for (unsigned int i=0; i< anomeric_c_neighbors.size(); i++){
-                if (!anomeric_c_neighbors[i]-> GetIsCycle() && (anomeric_c_neighbors[i]->GetName().substr(0,1) == "O" || anomeric_c_neighbors[i]->GetName().substr(0,1) == "S" ||
-                        anomeric_c_neighbors[i]->GetName().substr(0,1) == "N") ){
+        //Detect anomeric carbon and oxygen to determine aglycone atoms, which in regular PDB file is put in the same residue of the 1st sugar. For Glycam, this goes into a new residue, such as ROH. 
+        MolecularModeling::Atom* anomeric_o = NULL;
+        MolecularModeling::Atom* anomeric_c = NULL;
+        if(oligo->root_->cycle_atoms_.at(0) != NULL){
+            anomeric_c = oligo->root_->cycle_atoms_.at(0);
+	    }
 
-                    anomeric_o = anomeric_c_neighbors[i];
-                }
-            }
-	    
-            if(anomeric_o != NULL && anomeric_c != NULL)
-            {
-                AtomVector terminal_atoms = AtomVector();
-                std::string terminal = CheckTerminals(anomeric_o, terminal_atoms);
-                //Separating terminal residue in glycam naming
-                if(terminal.compare("") != 0)
-                {
-                    //TODO:
-                    //Add the residue mismatch into a structure for the Ontology usage
-                    std::string terminal_atom_id = anomeric_o->GetId();
-                    std::string terminal_residue_id = anomeric_o->GetResidue()->GetId();
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "terminal_atom_id is: " + terminal_atom_id);
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "terminal_residue_id is: " + terminal_residue_id);
-                    if(pdb_glycam_residue_map.find(terminal_atom_id) == pdb_glycam_residue_map.end())
-                        pdb_glycam_residue_map[terminal_atom_id] == std::vector<std::string>();
-
-                    pdb_glycam_residue_map[terminal_atom_id].push_back(condensed_sequence_glycam06_residue_tree.at(index)->GetName());
-
-
-                    oligo_id_map[oligo].push_back(terminal_atom_id);
-
-                    if(pdb_glycam_residue_map.find(terminal_residue_id) == pdb_glycam_residue_map.end())
-                        pdb_glycam_residue_map[terminal_residue_id] = std::vector<std::string>();
-                    pdb_glycam_residue_map[terminal_residue_id].push_back(condensed_sequence_glycam06_residue_tree.at(index)->GetName());
-                    oligo_id_map[oligo].push_back(terminal_residue_id);
-
-                    std::string new_terminal_residue_name = condensed_sequence_glycam06_residue_tree.at(index)->GetName();
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "new_terminal_residue_name is: " + new_terminal_residue_name);
-                    //			std::cout << "New terminal residue: " << new_terminal_residue_name << std::endl;
-                    //			std::cout << "Terminal atom name: " << terminal_atom->GetName() << std::endl;
-                    if ( !(anomeric_o->GetResidue()->CheckIfProtein()) )  //If this terminal atom is not part of protein,for example,NLN, then it should be in a new glycam residue, for example, ROH.
-                    {
-                        ResidueVector AllResiduesInAssembly = this->GetResidues();
-                        Residue* OldResidueForThisAtom = anomeric_o->GetResidue();
-                        gmml::log(__LINE__, __FILE__, gmml::INF, "OldResidueForThisAtom is: " + OldResidueForThisAtom->GetId());
-                        unsigned int OldResidueIndex = std::distance(AllResiduesInAssembly.begin(), std::find(AllResiduesInAssembly.begin(), AllResiduesInAssembly.end(), OldResidueForThisAtom));
-                        //If the old residue housing this terminal atom is not the last residue, BehindOldResidue = OldResidueIndex +1 is fine. But if it is, doing so will cause out_of_range.
-                        //So,if not the last one, insert residue. Otherwise, add residue.
-                        Residue* new_terminal_residue = new Residue(this,new_terminal_residue_name);
-                        if (OldResidueIndex != AllResiduesInAssembly.size()-1){	//If old residue is not the last residue
-                            int BehindOldResidue = OldResidueIndex +1;
-                            Residue* ResidueBehindOldResidue = AllResiduesInAssembly.at(BehindOldResidue);
-
-                            this ->InsertResidue(ResidueBehindOldResidue ,new_terminal_residue); //Terminal residue should go behind its original residue, i.e. in front of the residue behind origin.
-                        }
-
-                        else{	//Else, the old residue is the last residue.
-                            this ->AddResidue(new_terminal_residue);
-                        }
-                        oligo_residue_map[oligo].push_back(new_terminal_residue);
-                        //For example, the ROH coming from terminal BGC, should go after, instead of in front of BGC.
-                        //OG std::string new_terminal_residue_id = terminal_atom->GetId(); //This new residue takes the atom id as residue id. // OG: huh?
-                        //OG new_terminal_residue->SetId(new_terminal_residue_id);
-                        //OG Ok let's see if doing something more "sensible" breaks something else:
-                        int newResidueNumberInt = 1 + std::stoi(OldResidueForThisAtom->GetNumber()); // OG: You sometimes need to be -1, but I don't think that functionality
-                        // currently exists, and this thing is so bad I ain't putting any more time into it.
-                        new_terminal_residue->SetId(new_terminal_residue->CreateID(new_terminal_residue_name, OldResidueForThisAtom->GetChainID(), std::to_string(newResidueNumberInt) ));
-
-                        gmml::log(__LINE__, __FILE__, gmml::INF, "new_terminal_residue_id is: " + new_terminal_residue->GetId());
-
-                        //Get all the atoms that should go to this new terminal residue. Find all connected atoms of the terminal atom that's not on the sugar side of the old residue
-
-                        for (AtomVector::iterator atom_it = terminal_atoms.begin(); atom_it != terminal_atoms.end(); atom_it++){
-                            MolecularModeling::Atom* new_atom = *atom_it;
-                            //std::cout << "New terminal residue " << new_terminal_residue->GetName() << " adding atom " << new_atom->GetName() << std::endl;
-                            new_terminal_residue->AddAtom(new_atom);
-                            new_atom->SetResidue(new_terminal_residue);
-                            OldResidueForThisAtom->RemoveAtom(new_atom, false);
-                            gmml::log(__LINE__, __FILE__, gmml::INF, "New terminal residue id is: " + new_terminal_residue->GetId() );
-                            gmml::log(__LINE__, __FILE__, gmml::INF, "Adding atom with id: " + new_atom->GetId() );
-                        }
-
-                    }
-
-                }
+        //Anomeric group has now been removed from sidegroup if it shouldn't be part of oligosaccharide (e.g. NLN nitrogen). So now, find anomeric oxygen from node neighbors of anomeric carbon.
+        AtomVector anomeric_c_neighbors = anomeric_c->GetNode()->GetNodeNeighbors();
+        for (unsigned int i=0; i< anomeric_c_neighbors.size(); i++){
+	        MolecularModeling::Atom* this_neighbor = anomeric_c_neighbors[i];
+	        std::string element = this_neighbor->GetElementSymbol();
+            if (!this_neighbor-> GetIsCycle() && (element == "O" || element == "S" || element == "N") ){
+                anomeric_o = this_neighbor;
             }
         }
+	    
+        if(anomeric_o == NULL || anomeric_c == NULL)
+        {
+            std::cerr << "Either anomeric carbon or oxygen is not detected. Check your sugar structure. Aborting\n";
+            throw;
+        }
+
+        AtomVector terminal_atoms = AtomVector();
+        std::string terminal = CheckTerminals(anomeric_o, terminal_atoms);
+        if(terminal.compare("") == 0)
+        {
+            std::cerr << "Unknown aglycone detected.Aborting" << std::endl;
+            throw;
+        }
+
+        //TODO:
+        //Add the residue mismatch into a structure for the Ontology usage
+
+        //Separating terminal residue in glycam naming
+        std::string terminal_atom_id = anomeric_o->GetId();
+        std::string terminal_residue_id = anomeric_o->GetResidue()->GetId();
+        gmml::log(__LINE__, __FILE__, gmml::INF, "terminal_atom_id is: " + terminal_atom_id);
+        gmml::log(__LINE__, __FILE__, gmml::INF, "terminal_residue_id is: " + terminal_residue_id);
+        if(pdb_glycam_residue_map.find(terminal_atom_id) == pdb_glycam_residue_map.end()){
+            pdb_glycam_residue_map[terminal_atom_id] == std::vector<std::string>();
+        }
+
+        std::string aglycone_name = condensed_sequence_glycam06_residue_tree.at(0)->GetName();
+        pdb_glycam_residue_map[terminal_atom_id].push_back(aglycone_name);
+
+        oligo_id_map[oligo].push_back(terminal_atom_id);
+
+        if(pdb_glycam_residue_map.find(terminal_residue_id) == pdb_glycam_residue_map.end()){
+            pdb_glycam_residue_map[terminal_residue_id] = std::vector<std::string>();
+        }
+
+        pdb_glycam_residue_map[terminal_residue_id].push_back(aglycone_name);
+        oligo_id_map[oligo].push_back(terminal_residue_id);
+
+        gmml::log(__LINE__, __FILE__, gmml::INF, "aglycone_name is: " + aglycone_name);
+        //			std::cout << "New terminal residue: " << aglycone_name << std::endl;
+        //			std::cout << "Terminal atom name: " << terminal_atom->GetName() << std::endl;
+        if ( !(anomeric_o->GetResidue()->CheckIfProtein()) )  //If this terminal atom is not part of protein,for example,NLN, then it should be in a new glycam residue, for example, ROH.
+        {
+            ResidueVector AllResiduesInAssembly = this->GetResidues();
+            Residue* OldResidueForThisAtom = anomeric_o->GetResidue();
+            gmml::log(__LINE__, __FILE__, gmml::INF, "OldResidueForThisAtom is: " + OldResidueForThisAtom->GetId());
+            Residue* new_terminal_residue = new Residue(this,aglycone_name);
+            this ->InsertResidue(OldResidueForThisAtom ,new_terminal_residue); //Terminal residue should go behind its original residue, i.e. in front of the residue behind origin.
+
+            oligo_residue_map[oligo].push_back(new_terminal_residue);
+            //For example, the ROH coming from terminal BGC, should go in front of BGC.
+            //OG std::string new_terminal_residue_id = terminal_atom->GetId(); //This new residue takes the atom id as residue id. // OG: huh?
+            //OG new_terminal_residue->SetId(new_terminal_residue_id);
+            //OG Ok let's see if doing something more "sensible" breaks something else:
+            int newResidueNumberInt = std::stoi(OldResidueForThisAtom->GetNumber()) -1; // OG: You sometimes need to be -1, but I don't think that functionality
+            // currently exists, and this thing is so bad I ain't putting any more time into it.
+            new_terminal_residue->SetId(new_terminal_residue->CreateID(aglycone_name, OldResidueForThisAtom->GetChainID(), std::to_string(newResidueNumberInt) ));
+
+            gmml::log(__LINE__, __FILE__, gmml::INF, "new_terminal_residue_id is: " + new_terminal_residue->GetId());
+
+            //Get all the atoms that should go to this new terminal residue. Find all connected atoms of the terminal atom that's not on the sugar side of the old residue
+
+            for (AtomVector::iterator atom_it = terminal_atoms.begin(); atom_it != terminal_atoms.end(); atom_it++){
+                MolecularModeling::Atom* new_atom = *atom_it;
+                //std::cout << "New terminal residue " << new_terminal_residue->GetName() << " adding atom " << new_atom->GetName() << std::endl;
+                new_terminal_residue->AddAtom(new_atom);
+                new_atom->SetResidue(new_terminal_residue);
+                OldResidueForThisAtom->RemoveAtom(new_atom, false);
+                gmml::log(__LINE__, __FILE__, gmml::INF, "New terminal residue id is: " + new_terminal_residue->GetId() );
+                gmml::log(__LINE__, __FILE__, gmml::INF, "Adding atom with id: " + new_atom->GetId() );
+            }
+        }
+
         index++;
         this->ExtractOligosaccharideNamingMap(pdb_glycam_residue_map, oligo, condensed_sequence_glycam06_residue_tree, index, oligo_id_map, oligo, oligo_residue_map);
     }
-
     return pdb_glycam_residue_map;
 }
 
