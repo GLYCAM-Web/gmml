@@ -30,7 +30,7 @@ public:
 	{
 	}
 
-	inline AbstractObject(std::string name, unsigned long long index) :
+	inline AbstractObject(std::string name, unsigned int index) :
 			Labels(name), Index(index)
 	{
 	}
