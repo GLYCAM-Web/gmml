@@ -1,0 +1,44 @@
+#ifndef INCLUDES_CENTRALDATASTRUCTURE_MOLECULE_HPP
+#define INCLUDES_CENTRALDATASTRUCTURE_MOLECULE_HPP
+
+#include <vector>
+#include <memory> // unique_ptr
+
+#include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
+
+namespace cds
+{
+class Atom;
+class Residue;
+class Molecule : public glygraph::Node<Molecule>
+{
+public:
+    //////////////////////////////////////////////////////////
+    //                    CONSTRUCTOR                       //
+    //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    //                    ACCESSOR                          //
+    //////////////////////////////////////////////////////////
+    inline const int& getNumber() {return number_;}
+    std::vector<Atom*> getAtoms();
+    std::vector<Residue*> getResidues();
+    //////////////////////////////////////////////////////////
+    //                    MUTATOR                           //
+    //////////////////////////////////////////////////////////
+    inline void setNumber(const int& i) {number_ = i;}
+    //////////////////////////////////////////////////////////
+    //                    FUNCTIONS                         //
+    //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////
+    //                    DISPLAY                           //
+    //////////////////////////////////////////////////////////
+private:
+    //////////////////////////////////////////////////////////
+    //                    ATTRIBUTES                        //
+    //////////////////////////////////////////////////////////
+    std::vector<std::unique_ptr<Residue>> residues_;
+    int number_;
+};
+}
+
+#endif // MOLECULE_HPP

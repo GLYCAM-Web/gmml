@@ -1,0 +1,48 @@
+#ifndef INCLUDES_CENTRALDATASTRUCTURE_RESIDUE_HPP
+#define INCLUDES_CENTRALDATASTRUCTURE_RESIDUE_HPP
+
+#include <vector>
+#include <memory> // unique_ptr
+
+#include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
+#include "includes/Abstract/residue.hpp"
+
+namespace cds
+{
+class Molecule;
+class Atom;
+class Residue : public Abstract::Residue, public glygraph::Node<Residue>
+{
+public:
+    //////////////////////////////////////////////////////////
+    //                    CONSTRUCTOR                       //
+    //////////////////////////////////////////////////////////
+    Residue();
+    //////////////////////////////////////////////////////////
+    //                    ACCESSOR                          //
+    //////////////////////////////////////////////////////////
+    inline const int& getNumber() {return number_;}
+    std::vector<Atom*> getAtoms();
+    //////////////////////////////////////////////////////////
+    //                    MUTATOR                           //
+    //////////////////////////////////////////////////////////
+    inline void setNumber(const int& i) {number_ = i;}
+    //////////////////////////////////////////////////////////
+    //                    FUNCTIONS                         //
+    //////////////////////////////////////////////////////////
+
+    //////////////////////////////////////////////////////////
+    //                    DISPLAY                           //
+    //////////////////////////////////////////////////////////
+
+private:
+    //////////////////////////////////////////////////////////
+    //                    ATTRIBUTES                        //
+    //////////////////////////////////////////////////////////
+    std::vector<std::unique_ptr<Atom>> atoms_;
+    int number_;
+};
+}
+
+
+#endif // RESIDUE_HPP
