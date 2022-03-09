@@ -211,8 +211,8 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "[SP]1", "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"monosaccharide"}                  , ".1" , "O." , "C." , "H."  },
         { "[SP]1", "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"monosaccharide"}                  , ".1" , "O." , "C." , "C."  },
         { "[SP]1", "O6"     , "Omg"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"none"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  },
-        { "[SP]1", "O6"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  },
-        { "[SP]1", "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
+//        { "[SP]1", "O6"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  },
+//        { "[SP]1", "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
       // Ac ACX
         { "C2A"  , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"none"}       , {"monosaccharide"}                  , "C2A", "C1A", "O." , "C."  },
         { "C2A"  , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"none"}       , {"monosaccharide"}                  , "C1A", "O." , "C." , "H."  },

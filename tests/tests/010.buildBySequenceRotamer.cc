@@ -18,7 +18,7 @@ int main()
     //std::string condensed_sequence = "DNeup5Aca2-8DNeup5Aca2-8DNeup5Aca2-8DNeup5Aca2-8DNeup5Aca2-OH";
     //std::string condensed_sequence = "DGlcpNAca1-NLN";
     //std::string condensed_sequence = "DNeup5Aca2-7[DNeup5Aca2-8]DNeup5Aca2-OH";
-    CondensedSequenceSpace::carbohydrateBuilder carbBuilder(condensed_sequence, prep);
+    CondensedSequence::carbohydrateBuilder carbBuilder(condensed_sequence, prep);
     carbBuilder.Print();
  //    CondensedSequenceSpace::SingleRotamerInfoVector rotamerInfoVector =
 	// { 
