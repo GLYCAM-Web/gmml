@@ -50,25 +50,26 @@ namespace CondensedSequenceSpace
             std::vector<std::pair<std::string, std::vector<std::string> > > selected_rotamers_;
             std::vector<std::pair<std::string, double> > enabled_glycosidic_angles_;
     };
-    struct GraphVizDotConfig {
-        public:
-            bool show_config_labels_;
-            bool show_edge_labels_;
-            bool show_position_labels_;
-            int dpi_;
-            std::string file_name_;
-            std::string svg_directory_path_;
-
-            GraphVizDotConfig()
-            {
-                this->show_edge_labels_ = false;
-                this->show_config_labels_ = true;
-                this->show_position_labels_ = true;
-                this->dpi_ = 72;
-                this->svg_directory_path_ = "/programs/gw_misc/SNFG/V1/";
-                this->file_name_ = "oligosaccharide.dot";
-            }
-    };
+    // OG has moved this functionality into new class
+//    struct GraphVizDotConfig {
+//        public:
+//            bool show_config_labels_;
+//            bool show_edge_labels_;
+//            bool show_position_labels_;
+//            int dpi_;
+//            std::string file_name_;
+//            std::string svg_directory_path_;
+//
+//            GraphVizDotConfig()
+//            {
+//                this->show_edge_labels_ = false;
+//                this->show_config_labels_ = true;
+//                this->show_position_labels_ = true;
+//                this->dpi_ = 72;
+//                this->svg_directory_path_ = "/programs/gw_misc/SNFG/V1/";
+//                this->file_name_ = "oligosaccharide.dot";
+//            }
+//    };
     class CondensedSequence
     {
         public:
@@ -151,7 +152,7 @@ namespace CondensedSequenceSpace
             //                       DISPLAY FUNCTION               //
             //////////////////////////////////////////////////////////
             void Print(std::ostream& out = std::cerr);
-            void WriteGraphVizDotFile(GraphVizDotConfig& configs);
+           // void WriteGraphVizDotFile(GraphVizDotConfig& configs);
         private:
             void SetIsSequenceOkay(bool status);
             //////////////////////////////////////////////////////////

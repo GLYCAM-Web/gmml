@@ -5,7 +5,7 @@
 #include "../../../includes/Abstract/builder.hpp"
 #include "../../../includes/MolecularModeling/assembly.hpp" // This has to be relative for SWIG for unknown reasons.
 
-namespace CondensedSequenceSpace
+namespace CondensedSequence
 { // For specifying a specific shape to be built with GenerateSpecific3DStructure
 struct SingleRotamerInfo
 {
