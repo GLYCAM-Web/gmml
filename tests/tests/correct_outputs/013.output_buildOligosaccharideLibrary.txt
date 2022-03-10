@@ -130,6 +130,40 @@ inputResName: Fru
 ringType: f
 residueModifier: 
 configuration: b
+
+*********************
+Building DKDNpa2-8DKDOpa2-9DKDNpb2-7DKDOpb2-OME
+*********************
+Non-integral charge (-4.001). You cannot run MD with this.
+Non-integral charge (-4.001). You cannot run MD with this.
+
+
+*********************
+Building DKDOpa2-OME
+*********************
+
+*********************
+Building DKDOpb2-OME
+*********************
+
+*********************
+Building DKDNpa2-OME
+*********************
+
+*********************
+Building DKDNpb2-OME
+*********************
+Non-integral charge (-1.001). You cannot run MD with this.
+Non-integral charge (-1.001). You cannot run MD with this.
+
+
+*********************
+Building DNeupNAca2-OME
+*********************
+
+*********************
+Building DNeupNAcb2-OME
+*********************
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
@@ -153,3 +187,10 @@ configuration: b
 00027.pdb succesfully created.
 00028.pdb succesfully created.
 00029.pdb not created.
+00030.pdb not created.
+00031.pdb succesfully created.
+00032.pdb succesfully created.
+00033.pdb succesfully created.
+00034.pdb not created.
+00035.pdb succesfully created.
+00036.pdb succesfully created.

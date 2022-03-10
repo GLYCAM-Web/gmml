@@ -259,10 +259,10 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C."   , "OH"     , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "OH" , "CZ" , "CE1" },
         { "C."   , "OH"     , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "OH ", "CZ"  },
         // ROH 
-        { "C1"   , "O1"     , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"aldose"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
-        { "C2"   , "O1"     , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"ketose"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
-        { "C1"   , "O"      , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"aldose"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
-        { "C2"   , "O"      , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"ketose"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
+        { "C1"   , "O1"     , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"none"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
+        { "C2"   , "O1"     , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"none"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
+        { "C1"   , "O"      , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"none"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
+        { "C2"   , "O"      , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"none"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
     };
 }
 
