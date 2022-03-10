@@ -32,7 +32,7 @@ int main(int argc, char** argv)
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
         try
         {
-            CondensedSequenceSpace::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
+            CondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
             std::cout << carbBuilder.Print();
             std::string inputGlycanID = splitLine.at(0);
             carbBuilder.GenerateSingle3DStructureSingleFile(outputFolderName, "PDB", inputGlycanID);
