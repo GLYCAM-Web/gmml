@@ -1,12 +1,10 @@
-#ifndef GUESSES_CPP 
-#define GUESSES_CPP //Yao added definition guard 03/24/2020
-
 #include "includes/MolecularModeling/assembly.hpp"
 #include "includes/MolecularModeling/atom.hpp"
 #include "includes/MolecularModeling/atomnode.hpp"
-#include "includes/CodeUtils/logging.hpp";
+#include "includes/CodeUtils/logging.hpp"
+using MolecularModeling::Assembly;
 
-bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* carbon1, MolecularModeling::Atom* carbon2)
+bool Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* carbon1, MolecularModeling::Atom* carbon2)
 {
   bool bothCarbon = false;
   bool areNeighbors = false;
@@ -100,14 +98,14 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
           {
             if(local_debug > 0)
             {
-              debugStr << thisC2Neighbor->GetId() << ", " << carbon1->GetId() << ", " << carbon2->GetId() << " have an angle of " << MolecularModeling::Assembly::CalculateBondAngleByAtoms(thisC2Neighbor, carbon2, carbon1);
+              debugStr << thisC2Neighbor->GetId() << ", " << carbon1->GetId() << ", " << carbon2->GetId() << " have an angle of " << Assembly::CalculateBondAngleByAtoms(thisC2Neighbor, carbon2, carbon1);
               gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
               debugStr.str("");
-              debugStr << thisC1Neighbor->GetId() << ", " << carbon1->GetId() << ", " << carbon2->GetId() << " have an angle of " << MolecularModeling::Assembly::CalculateBondAngleByAtoms(thisC1Neighbor, carbon2, carbon1);
+              debugStr << thisC1Neighbor->GetId() << ", " << carbon1->GetId() << ", " << carbon2->GetId() << " have an angle of " << Assembly::CalculateBondAngleByAtoms(thisC1Neighbor, carbon2, carbon1);
               gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
               debugStr.str("");
             }
-            if((MolecularModeling::Assembly::CalculateBondAngleByAtoms(thisC2Neighbor, carbon2, carbon1) < 130) && (MolecularModeling::Assembly::CalculateBondAngleByAtoms(thisC2Neighbor, carbon2, carbon1) > 110) && (MolecularModeling::Assembly::CalculateBondAngleByAtoms(thisC1Neighbor, carbon2, carbon1) < 130) && (MolecularModeling::Assembly::CalculateBondAngleByAtoms(thisC1Neighbor, carbon2, carbon1) > 110))
+            if((Assembly::CalculateBondAngleByAtoms(thisC2Neighbor, carbon2, carbon1) < 130) && (Assembly::CalculateBondAngleByAtoms(thisC2Neighbor, carbon2, carbon1) > 110) && (Assembly::CalculateBondAngleByAtoms(thisC1Neighbor, carbon2, carbon1) < 130) && (Assembly::CalculateBondAngleByAtoms(thisC1Neighbor, carbon2, carbon1) > 110))
             {
             //  haveAll120angles = true;  // commenting out because not used
               if(local_debug > 0)
@@ -125,11 +123,11 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
             //If all 4 torsion angles are about 0 (+-5?)
             if(local_debug > 0)
             {
-              debugStr << carbon1->GetId() << ", " << carbon2->GetId() << ", " << thisC2Neighbor->GetId() << " and " << thisC1Neighbor->GetId() << " have a torsion angle of " << MolecularModeling::Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor);
+              debugStr << carbon1->GetId() << ", " << carbon2->GetId() << ", " << thisC2Neighbor->GetId() << " and " << thisC1Neighbor->GetId() << " have a torsion angle of " << Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor);
               gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
               debugStr.str("");
             }
-            if((MolecularModeling::Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) > 6.2 /*greater than about 355 degrees as the function returns radians*/) && (MolecularModeling::Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) < 0.09 /*less than about 5 degrees*/))
+            if((Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) > 6.2 /*greater than about 355 degrees as the function returns radians*/) && (Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) < 0.09 /*less than about 5 degrees*/))
             {
               areTrigonalPlanar = true;
               if(local_debug > 0)
@@ -139,7 +137,7 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
                 debugStr.str("");
               }
             }
-            else if((MolecularModeling::Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) < -6.2 /*less than about -355 degrees as the function returns radians*/) && (MolecularModeling::Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) > -0.09 /*greater than about -5 degrees*/))
+            else if((Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) < -6.2 /*less than about -355 degrees as the function returns radians*/) && (Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) > -0.09 /*greater than about -5 degrees*/))
             {
               areTrigonalPlanar = true;
               if(local_debug > 0)
@@ -149,7 +147,7 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
                 debugStr.str("");
               }
             }
-            else if ((MolecularModeling::Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) > 3.05 /*greater than about 175 degrees as the function returns radians*/) && (MolecularModeling::Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) < 3.22 /*less than about 185 degrees*/))
+            else if ((Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) > 3.05 /*greater than about 175 degrees as the function returns radians*/) && (Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) < 3.22 /*less than about 185 degrees*/))
             {
               areTrigonalPlanar = true;
               if(local_debug > 0)
@@ -159,7 +157,7 @@ bool MolecularModeling::Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* 
                 debugStr.str("");
               }
             }
-            else if ((MolecularModeling::Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) < -3.05 /*less than about -175 degrees as the function returns radians*/) && (MolecularModeling::Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) > -3.22 /*greater than about -185 degrees*/))
+            else if ((Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) < -3.05 /*less than about -175 degrees as the function returns radians*/) && (Assembly::CalculateTorsionAngleByAtoms(thisC1Neighbor, carbon1, carbon2, thisC2Neighbor) > -3.22 /*greater than about -185 degrees*/))
             {
               areTrigonalPlanar = true;
               if(local_debug > 0)
@@ -206,7 +204,7 @@ const std::map<std::string, std::pair<double, double> > bondLengthMap =
   {"SN", std::make_pair(1.62, 1.77)}
 };
 
-std::pair<double,double> MolecularModeling::Assembly::guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2)
+std::pair<double,double> Assembly::guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2)
 {//Using PDB bond length statistics provided by Chenghua on 2/5/19
 
   std::string bothAtoms = atom1->GetElementSymbol() + atom2->GetElementSymbol();
@@ -227,4 +225,3 @@ std::pair<double,double> MolecularModeling::Assembly::guessBondLengthByAtomType(
   
 
 }
-#endif //GUESSES_CPP
