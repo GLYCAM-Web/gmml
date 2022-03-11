@@ -86,39 +86,46 @@ if(WRAP_GMML)
 	#Get swig package
 	find_package(SWIG 4.0 COMPONENTS python REQUIRED)
 	#Get python lib package
-	find_package(PythonLibs)
+	find_package(Python3 3.9 COMPONENTS Interpreter Development REQUIRED)
 
-	if (SWIG_FOUND AND PYTHONLIBS_FOUND)
+	if (SWIG_FOUND AND Python3_FOUND)
 		message(STATUS "Wrapping GMML library in python...")
 		#Include ability to actually use our swig
 		include(${SWIG_USE_FILE})
 		#Include actual dir where python headers reside
-		include_directories(${PYTHON_INCLUDE_PATH})
-		message(STATUS "Using: ${SWIG_VERSION}")
-		message(STATUS "Using: ${PYTHONLIBS_VERSION_STRING}")
+		include_directories(${Python3_INCLUDE_DIRS})
+		message(STATUS "Swig Version: ${SWIG_VERSION}")
+		message(STATUS "Python Version: ${Python3_VERSION}")
+		message(STATUS "Python path: ${Python3_INCLUDE_DIRS}\n")
 
 		#have cpp property set on for file gmml.i
 		#This property is associated with the gmml.i file itself
 		set_property(SOURCE gmml.i PROPERTY CPLUSPLUS ON)
-		#Same as above but we are stating that the swig flags are none
-		set_property(SOURCE gmml.i PROPERTIES SWIG_FLAGS "")
 		#add a swig library with name ${PROJECT_NAME}_wrapped, wrapping the code
 		#in python, using our gmml.i as our source file for swig
 		swig_add_library(${PROJECT_NAME}_wrapped LANGUAGE python SOURCES gmml.i)
 		#Now we link the swig library to our gmml libary and our python library
 		#so it can actually be useful
-		swig_link_libraries(${PROJECT_NAME}_wrapped ${PROJECT_NAME} ${PYTHON_LIBRARIES})
+		swig_link_libraries(${PROJECT_NAME}_wrapped ${PROJECT_NAME} ${Python3_LIBRARIES})
 	else()
 	#We couldnt find swig or python libs
 		if (NOT SWIG_FOUND)
 			message(FATAL_ERROR "SWIG WAS NOT FOUND, YOU CANNOT WRAP")
-		elseif (NOT PYTHONLIBS_FOUND)
+		elseif (NOT Python3_FOUND)
 			message(FATAL_ERROR "PYTHON LIBRARY WAS NOT FOUND, YOU CANNOT WRAP")
 		else()
 			message(FATAL_ERROR "NO IDEA HOW YOU GOT HERE, THIS ISNT GOOD")
 		endif()
 	endif()
 endif()
+
+add_custom_command(LIBRARY ${PROJECT_NAME}
+	POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E make_directory ../lib/
+	COMMAND ${CMAKE_COMMAND} -E copy
+	${PROJECT_NAME} ../lib/
+	COMMAND_EXPAND_LISTS)
+
 
 #TO REMOVE, but kinda good reference
 #chuck all .o files to /build dir.

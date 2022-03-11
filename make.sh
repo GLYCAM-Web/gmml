@@ -215,16 +215,22 @@ fi
 # The -S (source) flag is for where the cmakelists file is located
 # and the -B (build dir) flag is for where everything will be built to
 echo "Creating makefile using cmake"
-echo "CMAKE_BUILD_TYPE: ${CMAKE_BUILD_TYPE_FLAG}"
-echo "Wrap GMML with SWIG: ${WRAP}"
+echo ""
 cmake ${CMAKE_BUILD_TYPE_FLAG} -S . -B ./cmakeBuild -DWRAP_GMML=${WRAP}
 
+
+#NOTE: All our build stuff is within the cmakeBuild dir
 echo "Making GMML."
 cd cmakeBuild
 make -j${NMP}
+cd ..
+if [ -f ./cmakeBuild/libgmml.so ]; then
+#	mkdir lib
+#	cp ./cmakeBuild/libgmml.so lib/
+else
+	echo "Warning: libgmml was not created!"
+fi
 
-mkdir lib
-cp cmakeBuild/libgmml.so .lib/
 
 ################################################################
 #########              WRAP UP TO GEMS                 #########
