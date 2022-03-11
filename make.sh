@@ -224,13 +224,6 @@ echo "Making GMML."
 cd cmakeBuild
 make -j${NMP}
 cd ..
-if [ -f ./cmakeBuild/libgmml.so ]; then
-#	mkdir lib
-#	cp ./cmakeBuild/libgmml.so lib/
-else
-	echo "Warning: libgmml was not created!"
-fi
-
 
 ################################################################
 #########              WRAP UP TO GEMS                 #########

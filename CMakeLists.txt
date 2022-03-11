@@ -107,6 +107,11 @@ if(WRAP_GMML)
 		#Now we link the swig library to our gmml libary and our python library
 		#so it can actually be useful
 		swig_link_libraries(${PROJECT_NAME}_wrapped ${PROJECT_NAME} ${Python3_LIBRARIES})
+
+		#to properly remove swig data
+		set_property(TARGET ${PROJECT_NAME}_wrapped PROPERTY 
+			ADDITIONAL_MAKE_CLEAN_FILES)
+
 	else()
 	#We couldnt find swig or python libs
 		if (NOT SWIG_FOUND)
@@ -119,13 +124,15 @@ if(WRAP_GMML)
 	endif()
 endif()
 
-add_custom_command(LIBRARY ${PROJECT_NAME}
+add_custom_command(TARGET ${PROJECT_NAME}
 	POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E make_directory ../lib/
 	COMMAND ${CMAKE_COMMAND} -E copy
-	${PROJECT_NAME} ../lib/
-	COMMAND_EXPAND_LISTS)
+	$<TARGET_FILE:${PROJECT_NAME}> ../lib/)
 
+#To allow make clean to remove the new lib dir
+set_property(DIRECTORY PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
+	"../lib")
 
 #TO REMOVE, but kinda good reference
 #chuck all .o files to /build dir.
