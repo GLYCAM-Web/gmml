@@ -51,7 +51,7 @@ add_library(${PROJECT_OBJ} OBJECT
 #use the denoted header
 set_target_properties(${PROJECT_OBJ} PROPERTIES
 	VERSION ${PROJECT_VERSION}
-	PUBLIC_HEADER includes/includes/gmml.hpp)
+	PUBLIC_HEADER includes/gmml.hpp)
 
 #same as the -I flag for qmake.
 file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/hDirectoryList.txt HDIRECTORIES)
