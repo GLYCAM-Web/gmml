@@ -44,7 +44,7 @@ Oligosaccharide::Oligosaccharide()
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 /*! \fn
-* A function to print out the oligosacchride name and the linkages between its monosacchrides
+* A function to print out the oligosaccharide name and the linkages between its monosaccharides
 * Print out the information in a defined structure
 * @param out An output stream, the print result will be written in the given output stream
 */
@@ -3852,4 +3852,9 @@ void Glycan::Oligosaccharide::CalculateOligosaccharideBFactor(Glycan::Oligosacch
     num_monos++;
   }
   oligo->oligosaccharide_b_factor_ = total_b_factor/num_monos;
+}
+
+void Glycan::Oligosaccharide::AddNote(Glycan::Note *note)
+{
+    oligo_notes_.push_back(note);
 }

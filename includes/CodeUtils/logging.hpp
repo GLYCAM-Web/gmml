@@ -5,14 +5,19 @@
 
 namespace gmml
 {
+  /* \todo DM 1-21-22
+  add __func__ to show the function name in the log
+  Add or edit logLevel values
+  */
     enum LogLevel
     {
         INF,
         ERR,
         WAR
     };
-/*! \fn
-      * A function in order to write the information/warning/error messages produced by the program into a log file
+/*! \brief A function to write information/warning/error messages into a log file
+
+      * @pre GMMLLOG environment variable has to be set, "GMML_Log.txt" will be ignored by git
       * @param line The line number producing the message
       * @param file_path The file path of the file which the message has been produced within in
       * @param level The type of the produced message INF/WAR/ERR

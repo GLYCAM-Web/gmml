@@ -27,6 +27,7 @@ Monosaccharide::Monosaccharide(const Monosaccharide &mono)
 Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<MolecularModeling::Atom*>& cycle_atoms, MolecularModeling::Assembly* this_assembly, std::string CCD_Path)
 {
   int local_debug = -1;
+  std::stringstream ss;
   residue_name_ = cycle_atoms[0]->GetResidue()->GetName();
   cycle_atoms[0]->GetResidue()->SetIsSugar(true);
   // std::cout << residue_name_ << "\n";
@@ -56,15 +57,22 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
   else
   {
     cycle_atoms_ = cycle_atoms;
+    if(local_debug > 0)
+    {//Print Error
+      ss.str("");
+      ss << "Unable to identify anomeric Carbon for ";
+      ss << residue_name_;
+      gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+      ss.str("");
+    }
   }
   if ((local_debug > 0) && (cycle_atoms_.empty()))
   {
-    gmml::log(__LINE__, __FILE__, gmml::INF, "This monosaccharide has no cycle atoms!!!");
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "This monosaccharide has no cycle atoms!!!");
     gmml::log(__LINE__, __FILE__, gmml::INF, cycle_atoms_str_);
     gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(cycle_atoms_.size()));
     gmml::log(__LINE__, __FILE__, gmml::INF, *cycle_atoms_str);
     gmml::log(__LINE__, __FILE__, gmml::INF, std::to_string(cycle_atoms.size()));
-
   }
   //Get BFMP
   if( cycle_atoms_.size() > 5 )
@@ -72,8 +80,24 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
     bfmp_ring_conformation_ = glylib::CalculateRingShapeBFMP(this);
   }
 
+  /*TODO
+  Add Cremer-Pople puckering information
+  */
+
   //Assign side_atoms_
   std::vector< std::string > orientations = GetSideGroupOrientations(this_assembly);//This also sets the first side atom for each ring position
+
+  if((local_debug > 0) && !orientations.empty())
+  {//Print info on orientations
+    for(int i = 0; i < orientations.size(); i++)
+    {
+      ss.str("");
+      ss << "Orientation at position " << i;
+      ss << " is " << orientations[i];
+      gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+      ss.str("");
+    }
+  }
 
   //this function sometimes deletes the anomeric carbon's neighbor...
   // this->InitiateDetectionOfCompleteSideGroupAtoms ();
@@ -85,7 +109,25 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
 
   //Assign Chemical Code, and SugarNames
   chemical_code_ = BuildChemicalCode(orientations);
+  if(local_debug > 0)
+  {//Print info on chemical_code_
+    ss.str("");
+    ss << "Chemical code for " << residue_name_;
+    ss << " is " << chemical_code_->toString();
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+    ss.str("");
+  }
+
   sugar_name_ = gmml::SugarStereoChemistryNameLookup(chemical_code_->toString());
+  if(local_debug > 0)
+  {//Print info on sugar_name_
+    ss.str("");
+    ss << "Printing Sugar Name info for " << residue_name_ << ":";
+    ss <<  sugar_name_.toString();
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+    ss.str("");
+  }
+
 
   ///CALCULATING B FACTOR
   float total_b_factor = 0;
@@ -484,10 +526,13 @@ MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Not
 
 std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(MolecularModeling::Assembly* this_assembly)
 {
-  //9/14/18 Removed side atom initialization in this function and either moved it to Yao's InitiateDetectionOfCompleteSideGroupAtoms()
+  //TODO: Remove assembly from required parameters
+
+  //9/14/18 Removed side atom initialization in this function and moved it to Yao's InitiateDetectionOfCompleteSideGroupAtoms()
   // Dave
-  int local_debug = 1;
+  int local_debug = -1;
   std::vector<std::string> orientations = std::vector<std::string>();
+
   if(!cycle_atoms_.empty())
   {
     int model_index_ = this_assembly->GetModelIndex();
@@ -699,10 +744,7 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
             }
             else if(index == cycle_atoms_.size() - 2 && neighbor->GetElementSymbol() == "C")///if the last ring carbon has a non-ring carbon neighbor
             {
-
-              //Add +n exocyclic flags TODO for Dave
-
-
+              neighbor->SetIsExocyclicCarbon(true);
 
               ///Check if neighbor of neighbor is oxygen or nitrogen
               MolecularModeling::AtomNode* neighbor_node = neighbor->GetNode();
@@ -804,7 +846,7 @@ void Glycan::Monosaccharide::InitiateDetectionOfCompleteSideGroupAtoms ()
         for (MolecularModeling::AtomVector::iterator atom_it = side_atom_neighbors.begin(); atom_it != side_atom_neighbors.end(); atom_it++)
         {
           MolecularModeling::Atom* neighbor = *atom_it;
-          if (neighbor->GetIsCycle())
+          if (neighbor->GetIsCycle())//Is this correct?  If it's a cycle it isnt a side atom
           {
             all_plus_one_side_atoms.push_back(side_atom);
             break;
@@ -985,7 +1027,7 @@ void Glycan::Monosaccharide::CheckIfSideChainIsTerminal(MolecularModeling::Atom*
 
 void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* this_assembly)
 {
-  int local_debug = 1;
+  int local_debug = -1;
   if (local_debug > 0)
   {
     std::stringstream debugStr;
@@ -1276,7 +1318,7 @@ std::string Glycan::Monosaccharide::GetFormula(MolecularModeling::Atom* target)/
 
 void Glycan::Monosaccharide::CountElements(MolecularModeling::Atom* thisAtom, std::vector<std::pair<std::string, int> >& elementVector)
 {
-  int local_debug = 1;
+  int local_debug = -1;
   if(local_debug > 0)
   {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Counting elements");
@@ -1335,6 +1377,7 @@ std::vector<MolecularModeling::Atom*> Glycan::Monosaccharide::ExtractAdditionalS
       if((*it1)->GetName().at(0) == 'C' && cycle_atoms_str_.find((*it1)->GetId()) == std::string::npos)///+2 carbon atom found
       {
         MolecularModeling::Atom* plus_two = (*it1);
+        plus_two->SetIsExocyclicCarbon(true);
         plus_sides.push_back(plus_two);
         side_atoms_.at(side_atoms_.size() - 1).at(1) = plus_two;///in side_atoms_ structure (std::vector<std::vector<MolecularModeling::Atom*>>) the second index of the last element is dedicated to +2 atom
 
@@ -1344,6 +1387,7 @@ std::vector<MolecularModeling::Atom*> Glycan::Monosaccharide::ExtractAdditionalS
           MolecularModeling::Atom* plus_three = (*it2);
           if(plus_three->GetName().at(0) == 'C' && plus_three->GetId().compare(side_atoms_.at(side_atoms_.size() - 1).at(0)->GetId()) != 0)///+3 carbon atom found
           {
+            plus_three->SetIsExocyclicCarbon(true);
             plus_sides.push_back(plus_three);
             side_atoms_.at(side_atoms_.size() - 1).at(2) = plus_three;///in side_atoms_ structure (std::vector<std::vector<MolecularModeling::Atom*>>) the third index of the last element is dedicated to +3 atom
             break;
