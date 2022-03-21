@@ -8,8 +8,8 @@ do
 	if !cmp  output.txt tests/correct_outputs/$file-output.txt > /dev/null 2>&1; then
     	printf "Test FAILED!. output.txt different from tests/correct_outputs/$file-output.txt\n Compare using diff\n"
     	return 1;
-	elif !cmp  outputPdbfile.pdb tests/correct_outputs/$file-output.pdb > /dev/null 2>&1; then
-		printf "Test FAILED!. outputPdbfile.pdb different from tests/correct_outputs/$file-output.pdb\n Compare using diff or VMD\n"
+	elif !cmp  outputPdbFile.pdb tests/correct_outputs/$file-output.pdb > /dev/null 2>&1; then
+		printf "Test FAILED!. outputPdbFile.pdb different from tests/correct_outputs/$file-output.pdb\n Compare using diff or VMD\n"
         return 1;
 	fi
 done
