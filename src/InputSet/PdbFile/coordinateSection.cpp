@@ -47,6 +47,11 @@ CoordinateSection::CoordinateSection(std::stringstream &stream_block)
                 residues_.back()->CreateAtom(line, currentModelNumber);
             }
         }
+        // TER . Indicating break in chain i.e. start of new molecule or a branch
+        else if ( (recordName == "TER") && (!residues_.empty()) )
+        {
+            residues_.back()->AddTerCard();
+        }
     }
 //    for (auto &residue : residues_)
 //    {
@@ -57,9 +62,6 @@ CoordinateSection::CoordinateSection(std::stringstream &stream_block)
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-
-
-
 
 // This is bad as it repeats how to read a line and how to create a residue ID, but I need to know which residue to put the atom into before I construct the atom.
 std::string CoordinateSection::PeekAtResidueId(const std::string &line)
@@ -74,7 +76,6 @@ std::string CoordinateSection::PeekAtResidueId(const std::string &line)
     std::string insertionCode = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
     return residueName + "_" + residueNumber + "_" + insertionCode + "_" + chainId;
 }
-
 
 std::vector<std::vector<pdb::PdbResidue*>> CoordinateSection::GetModels() const
 {
@@ -276,7 +277,6 @@ pdb::PdbResidueIterator CoordinateSection::FindPositionOfResidue(const PdbResidu
 ////////////////////////////////////////////////////////
 void CoordinateSection::Print(std::ostream &out) const
 {
-    out << "The atom records are: " << "\n";
     for (auto &residue : residues_)
     {
         residue->Print(out);
@@ -295,7 +295,7 @@ void CoordinateSection::Write(std::ostream& stream) const
         std::string previousChainId = model.at(0)->GetChainId();
         for (auto &residue: model) // Maybe I should just put the TER cards in the vector as AtomRecord?
         { // if previous was NME, or it's a new chain, or it's a HETATM and starts previous residue name began a 0 (e.g. glycam 0SA), insert a TER.
-            if (previousResidueName == "NME" || previousChainId != residue->GetChainId() || (residue->GetRecordName() == "HETATM" && previousResidueName.substr(0,1) == "0"))
+            if (previousChainId != residue->GetChainId() || (residue->GetRecordName() == "HETATM" && previousResidueName.substr(0,1) == "0"))
             {
                 stream << "TER\n";
             }

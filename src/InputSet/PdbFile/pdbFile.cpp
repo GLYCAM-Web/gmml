@@ -38,11 +38,11 @@ void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream)
         //std::cout << "Parsing the line: " << line << "\n";
         codeUtils::ExpandLine(line, pdb::iPdbLineLength);
         std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
-        std::vector<std::string> cards {"MODEL", "ATOM", "ANISOU", "TER", "HETATM", "ENDMDL"};
+        std::vector<std::string> coordSectionCards {"MODEL", "ATOM", "ANISOU", "TER", "HETATM", "ENDMDL"};
         std::vector<std::string> databaseCards {"DBREF", "DBREF1", "DBREF2"};
-        if(std::find(cards.begin(), cards.end(), recordName) != cards.end())
+        if(std::find(coordSectionCards.begin(), coordSectionCards.end(), recordName) != coordSectionCards.end())
         {
-            std::stringstream recordSection = this->ExtractHeterogenousRecordSection(pdbFileStream, line, cards);
+            std::stringstream recordSection = this->ExtractHeterogenousRecordSection(pdbFileStream, line, coordSectionCards);
             coordinateSection_ = CoordinateSection(recordSection);
         }
         else if(recordName == "HEADER")
@@ -246,6 +246,7 @@ void PdbFile::InsertCap(const PdbResidue& refResidue, const std::string& type)
         newNMEResidue->CreateAtom("HH31", hh31CoordNME);
         newNMEResidue->CreateAtom("HH32", hh32CoordNME);
         newNMEResidue->CreateAtom("HH33", hh33CoordNME);
+        newNMEResidue->AddTerCard();
 //        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("N", "NME", sequenceNumber, nCoordNME, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
 //        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("H", "NME", sequenceNumber, hCoordNME, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
 //        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("CH3", "NME", sequenceNumber, ch3CoordNME, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
