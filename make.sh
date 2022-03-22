@@ -205,10 +205,12 @@ if [ "$CLEAN" == "1" ]; then
 	if [ -d "./lib" ]; then
 		rm -rf ./lib
 	fi
+#Flattened build dir was removed, no longer need this for cleaning
+#Nice to keep here tho
 #NOTE: The flattened build dir is soon to be removed
-	if [ -d "./build" ]; then
-		rm -rf ./build
-	fi
+#	if [ -d "./build" ]; then
+#		rm -rf ./build
+#	fi
 fi
 
 #Note that we have to generate our makefile with cmake before we build
@@ -232,6 +234,6 @@ cd ..
 #Wrapping is handled by cmake
 
 echo ""
-echo "GMML compilation is finished at `date`".
+echo "GMML compilation and wrapping is finished at `date`".
 exit
 
