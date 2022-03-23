@@ -65,7 +65,7 @@ if [ $result -eq 1 ] ; then
     echo "Could not pull gmml"
     exit 1
 fi
-echo "Compiling gmml with ./make.sh no_clean no_wrap"
+echo "Compiling gmml using GEMS ./make.sh no_clean wrap"
 cd $GEMSHOME/
  git pull
  result=$? # record the exit status of previous command
@@ -76,8 +76,8 @@ cd $GEMSHOME/
  #Add these removes so the tests don't pass on an old version of the library
  rm -f gmml.py _gmml.so
  rm -rf ./gmml/lib
+ ./make.sh wrap 
  cd $GEMSHOME/gmml
- ./make.sh
 
 echo "Running mandatory tests..."
 cd $GEMSHOME/gmml/tests/
