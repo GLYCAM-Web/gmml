@@ -109,7 +109,7 @@ int Rotatable_dihedral::GetNumberOfRotamers(bool likelyShapesOnly)
 {
     if (this->GetMetadata().empty())
     {
-        std::cerr << "Error in Rotatable_dihedral::GetNumberOfRotamers; no metadata has been set.\n";
+        gmml::log(__LINE__,__FILE__,gmml::ERR, "Error in Rotatable_dihedral::GetNumberOfRotamers; no metadata has been set.\n");
         return 0;
     }
     else
@@ -131,8 +131,11 @@ std::vector<double> Rotatable_dihedral::GetAllPossibleAngleValues(int interval)
     std::vector<double> allPossibleAngleValues;
     if (assigned_metadata_.empty())
     {
-        std::cerr << "Error in Rotatable_dihedral::GetAllPossibleAngleValues; no metadata has been set for:\n"
-        << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
+        std::stringstream ss;
+        ss << "Error in Rotatable_dihedral::GetAllPossibleAngleValues; no metadata has been set for:\n"
+                << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
+        gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+        throw std::runtime_error(ss.str());
     }
     else
     {

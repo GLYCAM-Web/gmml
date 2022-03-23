@@ -81,8 +81,7 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequence::SingleR
     // With a conformer (aka rotamerSet), setting will be different as each rotatable_dihedral will be set to e.g. "A", whereas for linkages
     // with combinatorial rotamers (e,g, phi -g/t, omg gt/gg/tg), we need to set each dihedral as specified, but maybe it will be ok to go 
     // through and find the value for "A" in each rotatable dihedral.. yeah actually it should be fine. Leaving comment for time being.
-    try 
-    {
+
         for (auto &rotamerInfo : conformerInfo)
         {
             // std::cout << "linkage: " << rotamerInfo.linkageIndex << " " 
@@ -96,8 +95,7 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequence::SingleR
         //this->ResolveOverlaps();
         this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure"); 
         this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", "structure"); 
-    } catch (const char* msg) {
-        std::cerr << msg << std::endl;
+
     }
 }
 
@@ -329,7 +327,11 @@ Residue_linkage* carbohydrateBuilder::selectLinkageWithIndex(ResidueLinkageVecto
         if (linkage.GetIndex() == indexQuery)
             return &linkage;
     }
-    throw "Linkage not found in carbohydrateBuilder::selectLinkageWithIndex()";
+    // Error
+    std::stringstream ss;
+    ss << "Linkage numbered " << indexQuery << " not found in linkages for this carbohydrate\n";
+    gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+    throw std::runtime_error(ss.str());
 }
 
 // Just a placeholder until we have a map for linkage ids so the user won't see these underlying ones.

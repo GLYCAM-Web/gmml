@@ -58,8 +58,10 @@ std::vector<Rotatable_dihedral> Residue_linkage::GetRotatableDihedrals() const
 {
     if (rotatable_dihedrals_.empty())
     {
-        // LOG IT
-        //std::cerr << "rotatable_dihedrals in this linkage is empty: " << from_this_residue1_->GetId() << "-" << to_this_residue2_->GetId() << std::endl;
+        std::stringstream ss;
+        ss << "Error: rotatable_dihedrals in this linkage is empty: " << from_this_residue1_->GetId() << "-" << to_this_residue2_->GetId() << std::endl;
+        gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+        throw std::runtime_error(ss.str());
     }
     return rotatable_dihedrals_;
 }
@@ -109,9 +111,17 @@ Atom* Residue_linkage::GetToThisConnectionAtom2()
 bool Residue_linkage::CheckIfConformer()
 {
     if (rotatable_dihedrals_.empty())
-        std::cerr << "Error in Residue_linkage::checkIfConformer as rotatable_dihedrals_.empty()\n";
+    {
+        std::string errorMessage = "Error in Residue_linkage::checkIfConformer as rotatable_dihedrals_.empty()\n";
+        gmml::log(__LINE__,__FILE__,gmml::ERR, errorMessage);
+        throw std::runtime_error(errorMessage);
+    }
     else if (rotatable_dihedrals_.at(0).GetMetadata().empty())
-        std::cerr << "Error in Residue_linkage::checkIfConformer as rotatable_dihedrals_.at(0).GetMetadata().empty()\n";
+    {
+        std::string errorMessage = "Error in Residue_linkage::checkIfConformer as rotatable_dihedrals_.at(0).GetMetadata().empty()\n";
+        gmml::log(__LINE__,__FILE__,gmml::ERR, errorMessage);
+        throw std::runtime_error(errorMessage);
+    }
     else
     {
         if (rotatable_dihedrals_.at(0).GetMetadata().at(0).rotamer_type_.compare("permutation")==0)
@@ -119,7 +129,7 @@ bool Residue_linkage::CheckIfConformer()
         else
             return true;
     }
-    return false; //Default to shut up the compiler
+    return false; //Default to shut up the compiler. Shut up compiler gawd.
 }
 
 bool Residue_linkage::GetIfExtraAtoms()
@@ -245,7 +255,9 @@ void Residue_linkage::SetSpecificShape(std::string dihedralName, std::string sel
         if (rotatable_dihedral.SetSpecificShape(dihedralName, selectedRotamer))
             return; // Return once you manage to set a shape.
     }
-    throw "Did not set a shape as requested in Residue_linkage::SetSpecificShape()";  
+    std::string errorMessage = "Did not set " + dihedralName + " to " + selectedRotamer + " as requested in Residue_linkage::SetSpecificShape()";
+    gmml::log(__LINE__,__FILE__,gmml::ERR, errorMessage);
+    throw std::runtime_error(errorMessage);
 }
 
 void Residue_linkage::SetCustomDihedralAngles(std::vector <double> dihedral_angles)
@@ -260,9 +272,13 @@ void Residue_linkage::SetCustomDihedralAngles(std::vector <double> dihedral_angl
         }
     }
     else
-    {   // Really need to figure out this throwing exceptions lark.
-        std::cerr << "ERROR; attempted to set dihedral angles for set of dihedrals but with mismatching number of bonds to angles\n" << std::endl;
+    {
+        std::stringstream ss;
+        ss << "ERROR attempted to set " << dihedral_angles.size() << " dihedrals for a residue linkage with " << rotatable_dihedrals_.size() << " rotatable dihedrals\n These numbers need to match for this function to work\nSomething has gone wrong.";
+        gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+        throw std::runtime_error(ss.str());
     }
+    return;
 }
 
 void Residue_linkage::SetShapeToPrevious()
@@ -271,6 +287,7 @@ void Residue_linkage::SetShapeToPrevious()
     {
         rotatable_dihedral->SetDihedralAngleToPrevious();
     }
+    return;
 }
 
 void Residue_linkage::SetRandomDihedralAngles()
@@ -279,6 +296,7 @@ void Residue_linkage::SetRandomDihedralAngles()
     {
         rotatable_dihedral->RandomizeDihedralAngle();
     }
+    return;
 }
 
 void Residue_linkage::DetermineAtomsThatMove()
@@ -287,6 +305,7 @@ void Residue_linkage::DetermineAtomsThatMove()
     {
         rotatable_dihedral->DetermineAtomsThatMove();
     }
+    return;
 }
 
 void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance, int angleIncrement)
@@ -500,7 +519,11 @@ std::vector<Rotatable_dihedral> Residue_linkage::SplitAtomVectorIntoRotatableDih
     std::vector<Rotatable_dihedral> rotatable_dihedrals_generated;
     if(atoms.size() < 4)
     {
-//        std::cout << "ERROR; in Residue_linkage::SplitAtomVectorIntoRotatableDihedrals, not enough atoms in atom vector: " << atoms.size() << std::endl;
+        std::stringstream ss;
+        ss << "ERROR in Residue_linkage::SplitAtomVectorIntoRotatableDihedrals, not enough atoms in atom vector: " << atoms.size() << "\n";
+        ss << "This should be 4 or something is very wrong\n";
+        gmml::log(__LINE__,__FILE__,gmml::ERR,ss.str());
+        throw std::runtime_error(ss.str());
     }
     else
     {
@@ -527,8 +550,11 @@ gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Residue_linkage::FindMe
     // }
     if (matching_entries.empty())
     {
-        std::cerr << "No Metadata entries found for connection between " << from_this_connection_atom1->GetId() << " and " << to_this_connection_atom2 << "\n";
-        std::cerr << "Note that order should be reducing atom - anomeric atom\n";
+        std::stringstream ss;
+        ss << "No Metadata entries found for connection between " << from_this_connection_atom1->GetId() << " and " << to_this_connection_atom2->GetId() << "\n";
+        ss << "Note that order should be reducing atom - anomeric atom\n";
+        gmml::log(__LINE__,__FILE__,gmml::ERR,ss.str());
+        throw std::runtime_error(ss.str());
     }
     return matching_entries;
 }
@@ -558,8 +584,9 @@ void Residue_linkage::AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::G
         }
         else
         {
-           std::cerr << "Huge problem in residue_linkage.cpp AddMetadataToRotatableDihedrals. Tried to add metadata to a rotatable bond that does not exist.\n"
-                         "Check both dihedralangledata metadata and Residue_linkage::FindRotatableDihedralsConnectingResidues." << std::endl;
+            std::string errorMessage = "Huge problem in residue_linkage.cpp AddMetadataToRotatableDihedrals. Tried to add metadata to a rotatable bond that does not exist.\nCheck both dihedralangledata metadata and Residue_linkage::FindRotatableDihedralsConnectingResidues.\n";
+            gmml::log(__LINE__,__FILE__,gmml::ERR, errorMessage);
+            throw std::runtime_error(errorMessage);
         }
     }
 }
