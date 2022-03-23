@@ -74,13 +74,10 @@ cd $GEMSHOME/
      exit 1
  fi
  #Add these removes so the tests don't pass on an old version of the library
- rm -f ./gmml/bin/libgmml.so.1.0.0
- rm -f ./gmml/bin/libgmml.so
- rm -f ./gmml/bin/libgmml.so.1
- rm -f ./gmml/bin/libgmml.so.1.0
- rm -rf gmml_wrap.cxx gmml_wrap.o gmml.py gmml.pyc _gmml.so
- ./make.sh no_clean wrap
-cd -
+ rm -f gmml.py _gmml.so
+ rm -rf ./gmml/lib
+ cd $GEMSHOME/gmml
+ ./make.sh
 
 echo "Running mandatory tests..."
 cd $GEMSHOME/gmml/tests/
