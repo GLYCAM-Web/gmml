@@ -124,14 +124,12 @@ if(WRAP_GMML)
 	endif()
 endif()
 
-add_custom_command(TARGET ${PROJECT_NAME}
-	POST_BUILD
-	COMMAND ${CMAKE_COMMAND} -E make_directory ../lib/)
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+	COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/lib/)
 
-add_custom_command(TARGET ${PROJECT_NAME}
-	POST_BUILD
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy
-	$<TARGET_FILE:${PROJECT_NAME}> ../lib/)
+	$<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_SOURCE_DIR}/lib/)
 
 #To allow make clean to remove the new lib dir
 set_property(DIRECTORY PROPERTY ADDITIONAL_MAKE_CLEAN_FILES

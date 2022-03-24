@@ -65,7 +65,6 @@ if [ $result -eq 1 ] ; then
     echo "Could not pull gmml"
     exit 1
 fi
-echo "Compiling gmml using GEMS ./make.sh no_clean wrap"
 cd $GEMSHOME/
  git pull
  result=$? # record the exit status of previous command
@@ -76,6 +75,11 @@ cd $GEMSHOME/
  #Add these removes so the tests don't pass on an old version of the library
  rm -f gmml.py _gmml.so
  rm -rf ./gmml/lib
+if [ -d "./gmml/cmakeBuild" ]; then
+	 echo "Removing the libgmml.so from our cmakeBuild directory"
+	rm ./gmml/cmakeBuild/libgmml.so
+fi
+echo "Compiling gmml using GEMS ./make.sh no_clean wrap"
  ./make.sh wrap 
  cd $GEMSHOME/gmml
 
