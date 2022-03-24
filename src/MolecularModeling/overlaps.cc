@@ -1,7 +1,8 @@
-#include "../../includes/MolecularModeling/overlaps.hpp"
-#include "../../includes/MolecularModeling/atom.hpp"
-#include "../../includes/MolecularModeling/atomnode.hpp"
-#include "../../includes/common.hpp"
+#include "includes/MolecularModeling/overlaps.hpp"
+#include "includes/MolecularModeling/atom.hpp"
+#include "includes/MolecularModeling/atomnode.hpp"
+#include "includes/common.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 double gmml::CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB, bool print)
 {
@@ -24,8 +25,10 @@ double gmml::CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, Molec
     }
     if (totalOverlap < 0.0) // Negative number fail
     {
-    	std::cerr << "Negative overlap should not happen, this is a bug: " << totalOverlap << std::flush;
-        throw("Negative overlap in gmml::CalculateAtomicOverlaps()");
+        std::stringstream ss;
+    	ss << "Negative overlap should not happen, this is a bug: " << totalOverlap;
+    	gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+        throw std::runtime_error(ss.str());
     }
     return (totalOverlap / gmml::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
 }

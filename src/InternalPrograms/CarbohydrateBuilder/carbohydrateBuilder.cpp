@@ -15,20 +15,21 @@ carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::str
 	{
 		assembly_ = MolecularModeling::Assembly(condensedSequence, prepFilePath);
 	    this->InitializeClass(condensedSequence);
-	}
+	}	// Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
 	catch(const std::string &exceptionMessage)
 	{
         gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught this exception message: " + exceptionMessage);
 		this->SetStatus("ERROR", exceptionMessage);
-		// Better to throw once I figure out how to catch it in gems.
 	}
     catch (const std::runtime_error &error)
 	{
+        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
 	    this->SetStatus("ERROR", error.what());
 	}
 	catch (...)
 	{
-	    gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught a throw that was not anticipated. Curious. Death cometh.");
+	    gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught a throw that was not anticipated. Curious. Death cometh?");
+	    this->SetStatus("ERROR", "carbohydrateBuilder constructor caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.");
 	}
 }
 
