@@ -82,7 +82,6 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequence::SingleR
     // With a conformer (aka rotamerSet), setting will be different as each rotatable_dihedral will be set to e.g. "A", whereas for linkages
     // with combinatorial rotamers (e,g, phi -g/t, omg gt/gg/tg), we need to set each dihedral as specified, but maybe it will be ok to go 
     // through and find the value for "A" in each rotatable dihedral.. yeah actually it should be fine. Leaving comment for time being.
-
     for (auto &rotamerInfo : conformerInfo)
     {
         std::stringstream ss;
@@ -94,9 +93,11 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequence::SingleR
         std::string standardDihedralName = this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName);
         currentLinkage->SetSpecificShape(standardDihedralName, rotamerInfo.selectedRotamer);
     }
+    std::string fileName = "structure";
     this->ResolveOverlaps();
-    this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure");
-    this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", "structure");
+    this->Write3DStructureFile(fileOutputDirectory, "PDB", fileName);
+    this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", fileName);
+
     return;
 }
 
@@ -110,12 +111,11 @@ int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
     return numberOfShapes;
 }
 // Commenting out for as not being used, and will be confusing later. The front-end calls a differnt function that will build a single, specific rotamer.
-// void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
-// {
-//     std::cout << "Rotamer Permutator\n";
-//     ResidueLinkageVector linkagesOrderedForPermutation = this->SplitLinkagesIntoPermutants(*(this->GetGlycosidicLinkages()));
-//     this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
-// }
+ void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
+ {
+     ResidueLinkageVector linkagesOrderedForPermutation = this->SplitLinkagesIntoPermutants(*(this->GetGlycosidicLinkages()));
+     this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
+ }
 CondensedSequence::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()
 {
     CondensedSequence::LinkageOptionsVector userOptionsForSequence;
@@ -175,6 +175,7 @@ void carbohydrateBuilder::Write3DStructureFile(std::string fileOutputDirectory, 
         completeFileName += fileOutputDirectory + "/";
     }
     completeFileName += filename;
+    //std::cout << "Will write out " << completeFileName << ". Which is of type: " << fileType << "\n";
     // Use type to figure out which type to write, eg. PDB OFFFILE etc.
     if (fileType == "PDB") 
     { // int link_card_direction = -1, int connect_card_existance = 1, int model_index = -1 , bool useInputPDBResidueNumbers = true);
@@ -303,18 +304,18 @@ void carbohydrateBuilder::generateLinkagePermutationsRecursively(ResidueLinkageV
         if (rotamerCount <= maxRotamers)
         {
             linkage->SetSpecificShapeUsingMetadata(shapeNumber);
-        //std::cout << linkage->GetFromThisResidue1()->GetId() << "-" << linkage->GetToThisResidue2()->GetId() << ": " << (shapeNumber + 1) << " of " << linkage->GetNumberOfShapes() <<  "\n";
+            std::cout << linkage->GetFromThisResidue1()->GetId() << "-" << linkage->GetToThisResidue2()->GetId() << ": " << (shapeNumber + 1) << " of " << linkage->GetNumberOfShapes() <<  "\n";
             if(std::next(linkage) != end)
             {
                 this->generateLinkagePermutationsRecursively(std::next(linkage), end, maxRotamers, rotamerCount);
             }
-            else // At the end
-            {
+            //else // At the end
+           // {
             //Check for issues? Resolve
             //Figure out name of file: http://128.192.9.183/eln/gwscratch/2020/01/10/succinct-rotamer-set-labeling-for-sequences/
             //Write PDB file
-                this->Write3DStructureFile("PDB", std::to_string(rotamerCount));
-            }
+                this->Write3DStructureFile("./", "PDB", std::to_string(rotamerCount));
+           // }
         }
     }
     return;
