@@ -73,30 +73,30 @@ void carbohydrateBuilder::GenerateSingle3DStructureSingleFile(std::string fileOu
 
 void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequence::SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
 {
-//     std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
-//     std::string linkageName; // Can be whatever the user wants it to be, default to same as index.
-//     std::string dihedralName; // omg / phi / psi / chi1 / chi2
-//     std::string selectedRotamer; // gg / tg / g- etc
-//     std::string numericValue; // user entered 64 degrees. Could be a v2 feature.
+    //     std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
+    //     std::string linkageName; // Can be whatever the user wants it to be, default to same as index.
+    //     std::string dihedralName; // omg / phi / psi / chi1 / chi2
+    //     std::string selectedRotamer; // gg / tg / g- etc
+    //     std::string numericValue; // user entered 64 degrees. Could be a v2 feature.
     // With a conformer (aka rotamerSet), setting will be different as each rotatable_dihedral will be set to e.g. "A", whereas for linkages
     // with combinatorial rotamers (e,g, phi -g/t, omg gt/gg/tg), we need to set each dihedral as specified, but maybe it will be ok to go 
     // through and find the value for "A" in each rotatable dihedral.. yeah actually it should be fine. Leaving comment for time being.
 
-        for (auto &rotamerInfo : conformerInfo)
-        {
-            // std::cout << "linkage: " << rotamerInfo.linkageIndex << " " 
-            //     << this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName)
-            //     << " being set to " << rotamerInfo.selectedRotamer << std::endl;
-            int currentLinkageIndex = std::stoi(rotamerInfo.linkageIndex);
-            Residue_linkage *currentLinkage = this->selectLinkageWithIndex(glycosidicLinkages_, currentLinkageIndex);
-            std::string standardDihedralName = this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName);
-            currentLinkage->SetSpecificShape(standardDihedralName, rotamerInfo.selectedRotamer);
-        }
-        //this->ResolveOverlaps();
-        this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure"); 
-        this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", "structure"); 
-
+    for (auto &rotamerInfo : conformerInfo)
+    {
+        std::stringstream ss;
+        ss  << "linkage: " << rotamerInfo.linkageIndex << " " << this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName)
+                 << " being set to " << rotamerInfo.selectedRotamer << std::endl;
+        gmml::log(__LINE__,__FILE__, gmml::INF, ss.str());
+        int currentLinkageIndex = std::stoi(rotamerInfo.linkageIndex);
+        Residue_linkage *currentLinkage = this->selectLinkageWithIndex(glycosidicLinkages_, currentLinkageIndex);
+        std::string standardDihedralName = this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName);
+        currentLinkage->SetSpecificShape(standardDihedralName, rotamerInfo.selectedRotamer);
     }
+    this->ResolveOverlaps();
+    this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure");
+    this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", "structure");
+    return;
 }
 
 int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
@@ -207,12 +207,12 @@ void carbohydrateBuilder::SetDefaultShapeUsingMetadata()
     return;
 }
 
-
-void carbohydrateBuilder::ResolveOverlaps() // Need to consider rotamers.
+void carbohydrateBuilder::ResolveOverlaps()
 {
     for(auto &linkage : glycosidicLinkages_)
     {
-        linkage.SimpleWiggle(assembly_.GetAllAtomsOfAssembly(), assembly_.GetAllAtomsOfAssembly(), 0.1, 5);
+        AtomVector allAtomsOfAssembly = assembly_.GetAllAtomsOfAssembly();
+        linkage.SimpleWiggleCurrentRotamers(allAtomsOfAssembly, allAtomsOfAssembly,5);
     }
     return;
 }

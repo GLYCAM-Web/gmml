@@ -30,7 +30,7 @@ double gmml::CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, Molec
     return (totalOverlap / gmml::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
 }
 
-double gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB)
+double gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(MolecularModeling::AtomVector& atomsA, MolecularModeling::AtomVector& atomsB)
 {
     double totalOverlap = 0.0;
     for(auto &atomA : atomsA)
