@@ -12,8 +12,8 @@
 int main()
 {
     std::string prep = "../dat/prep/GLYCAM_06j-1.prep";
-    //std::string condensed_sequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH";
-    std::string condensed_sequence = "DNeup5Aca2-3DGalpb1-OH";
+    std::string condensed_sequence = "DNeup5Aca2-3DManp[2S,6Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH";
+    //std::string condensed_sequence = "DNeup5Aca2-3DGalpb1-OH";
     //std::string condensed_sequence = "DNeup5Aca2-8DNeup5Aca2-3DGlcpb1-OH";
     //std::string condensed_sequence = "DNeup5Aca2-8DNeup5Aca2-8DNeup5Aca2-8DNeup5Aca2-8DNeup5Aca2-OH";
     //std::string condensed_sequence = "DGlcpNAca1-NLN";
