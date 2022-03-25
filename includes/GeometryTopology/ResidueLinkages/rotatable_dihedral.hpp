@@ -30,7 +30,7 @@ public:
     AtomVector GetAtomsThatMove();
     bool GetIsAtomsThatMoveReversed();
     double GetPreviousDihedralAngle();
-    DihedralAngleDataVector GetMetadata();
+    DihedralAngleDataVector& GetMetadata();
     DihedralAngleDataVector GetLikelyMetadata();
     int GetNumberOfRotamers( bool likelyShapesOnly = false);
     std::vector<double> GetAllPossibleAngleValues(int interval = 5);
@@ -59,6 +59,9 @@ public:
     void SetRandomAngleEntryUsingMetadata(bool useRanges = true);
     void SetSpecificAngleEntryUsingMetadata(bool useRanges = false, int angleEntryNumber = 0);
     bool SetSpecificShape(std::string dihedralName, std::string selectedRotamer);
+    void WiggleWithinCurrentRotamer(AtomVector &overlapAtomSet1, AtomVector &overlapAtomSet2, const int &angleIncrement);
+    void WiggleUsingAllRotamers(MolecularModeling::AtomVector& overlapAtomSet1, MolecularModeling::AtomVector &overlapAtomSet2, const int &angleIncrement);
+
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
@@ -76,6 +79,10 @@ private:
     Atom* CreateHydrogenAtomForPsi(Atom *centralAtom);
     void SetWasEverRotated(bool wasEverRotated);
     bool CheckIfEverRotated();
+    inline void SetCurrentMetaData(DihedralAngleData &d) {currentMetadata_ = &d;}
+    inline DihedralAngleData* GetCurrentMetaData() {return currentMetadata_;}
+    double WiggleWithinRanges(AtomVector& overlapAtomSet1, AtomVector &overlapAtomSet2, const int &angleIncrement, const double& lowerBound, const double& upperBound);
+
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
@@ -91,6 +98,7 @@ private:
     // I often want to reset a dihedral angle after rotating it, so recording the previous angle makes this easy.
     double previous_dihedral_angle_;
     DihedralAngleDataVector assigned_metadata_;
+    DihedralAngleData* currentMetadata_;
     bool wasEverRotated_; // Need this, as it might add a H atom for psi
 };
 #endif // ROTATABLE_DIHEDRAL_H

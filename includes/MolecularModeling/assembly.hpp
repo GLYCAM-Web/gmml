@@ -992,6 +992,10 @@ public:
     /** \addtogroup Manipulators
                * @{
                */
+
+    void ObtainAllOligasaccharideResidues(Glycan::Oligosaccharide* oligo, ResidueVector& oligo_residues);
+    void PutAglyconeInNewResidueAndRearrangeGlycanResidues(std::vector<Glycan::Oligosaccharide*> oligosaccharides);
+
     gmml::GlycamResidueNamingMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides, std::map<Glycan::Oligosaccharide*, std::vector<std::string> >& oligo_id_map,
                                                                std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map);
     void ExtractOligosaccharideNamingMap(gmml::GlycamResidueNamingMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,

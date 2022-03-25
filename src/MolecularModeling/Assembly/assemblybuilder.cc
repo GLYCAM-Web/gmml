@@ -982,8 +982,9 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
     // Resovlving overlaps should be a separated function, but I don't want assembly to have a ResidueLinkageVector member. Need new, seperate class.
     for(auto &linkage : all_residue_linkages)
     {
-        //AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance, int angleIncrement
-        linkage.SimpleWiggle(this->GetAllAtomsOfAssembly(), this->GetAllAtomsOfAssembly(), 0.1, 5);
+        //AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, int angleIncrement
+        AtomVector allAtomsOfAssembly = this->GetAllAtomsOfAssembly();
+        linkage.SimpleWiggleCurrentRotamers(allAtomsOfAssembly, allAtomsOfAssembly, 5); // In case a specific rotamer is being created, don't want to step outside those bounds.
     }
 }
 

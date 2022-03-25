@@ -43,6 +43,7 @@ int main(int argc, char* argv[])
     }
     //std::cout << "ExtractResidueGlycamNamingMap()" << std::endl;
     gmml::GlycamResidueNamingMap res_map = assemblyA.ExtractResidueGlycamNamingMap(oligos, oligo_id_map, oligo_residue_map);
+    assemblyA.PutAglyconeInNewResidueAndRearrangeGlycanResidues(oligos);
     //std::cout << "TestUpdateResidueName2GlycamName()" << std::endl;
     assemblyA.TestUpdateResidueName2GlycamName(res_map, prep);
     //Match and rename atoms

@@ -87,6 +87,15 @@ void Residue::SetResidueNumber(std::string number)
     return;
 }
 
+void Residue::SetResidueNumber(unsigned int number)
+{
+    std::stringstream ss;
+    ss << number;
+    std::string newID = this->CreateID(this->GetName(), this->GetChainID(), ss.str());
+    this->SetId(newID);
+    return;
+}
+
 // Residue::Residue(Residue *residue)
 // {
 //     assembly_ = new Assembly(residue->GetAssembly());
