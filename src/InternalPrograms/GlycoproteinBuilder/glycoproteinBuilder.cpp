@@ -284,11 +284,13 @@ void GlycoproteinBuilder::Wiggle(OverlapType overlapType, int persistCycles, boo
         logss << "Stopping with all overlaps resolved.\n";
         stop = true;
     }
+    std::random_device rd;
+    std::mt19937 g(rd());
     while ( (cycle < persistCycles) && (stop == false) )
     {
         ++cycle;
         logss << "Cycle " << cycle << "/" << persistCycles << "\n";
-        std::random_shuffle (sites_with_overlaps.begin(), sites_with_overlaps.end());
+        std::shuffle(sites_with_overlaps.begin(), sites_with_overlaps.end(), g);
         for(auto &glycosite : sites_with_overlaps)
         {
             glycosite->Wiggle(overlapType, firstLinkageOnly, this->GetOverlapTolerance());
