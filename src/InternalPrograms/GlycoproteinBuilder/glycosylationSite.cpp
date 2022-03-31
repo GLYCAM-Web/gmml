@@ -1,4 +1,3 @@
-#include <bits/std_abs.h>
 #include <cstdlib>
 #include <iostream>
 #include <iterator>

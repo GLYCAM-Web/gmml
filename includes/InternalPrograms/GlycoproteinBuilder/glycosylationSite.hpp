@@ -2,7 +2,9 @@
 #define GMML_INCLUDES_INTERNALPROGRAMS_GLYCOPROTEINBUILDER_GLYCOSYLATIONSITE_HPP
 #include <iomanip> // For setting precision and formating in std::cout 
 #include <algorithm> //  std::erase, std::remove
-#include "includes/gmml.hpp"
+#include "includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
+#include "includes/gmml.hpp" // Ah no, this is silly. Only include what you need.
+
 
 enum OverlapType
 {

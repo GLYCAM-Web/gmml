@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <random>
 #include "includes/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.hpp"
 #include "includes/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
 #include "includes/InternalPrograms/io.hpp"
@@ -208,11 +210,13 @@ void GlycoproteinBuilder::RandomDescent(OverlapType overlapType, int persistCycl
 	}
 	//logss << "Initial torsions and overlaps:\n";
 	//this->PrintDihedralAnglesAndOverlapOfGlycosites();
+    std::random_device rd;
+    std::mt19937 g(rd());
 	while ( (cycle < persistCycles) && (stop == false) )
 	{
 		logss << "Cycle " << cycle << "/" << persistCycles << "\n";
 		++cycle;
-		std::random_shuffle (sites_with_overlaps.begin(), sites_with_overlaps.end());
+		std::shuffle(sites_with_overlaps.begin(), sites_with_overlaps.end(), g);
 		for(auto &current_glycosite : sites_with_overlaps)
 		{
 			// logss << "Checking " << current_glycosite->GetResidue()->GetId() << "\n";

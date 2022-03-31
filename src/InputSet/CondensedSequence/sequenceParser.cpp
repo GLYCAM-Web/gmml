@@ -1,5 +1,6 @@
 #include <string>
 #include <algorithm> // Reverse function.
+#include <sstream>
 #include "includes/InputSet/CondensedSequence/sequenceParser.hpp"
 #include "includes/CodeUtils/logging.hpp"
 

@@ -133,7 +133,7 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 	}
 	else if (childResidue.GetType() == Residue::Type::Sugar)
 	{
-		auto childLinkageNumber = linkageLabel.substr(1,1);
+		std::string childLinkageNumber = linkageLabel.substr(1,1);
 		childAtomName = "C" + childLinkageNumber;
 	}
 	Atom* childAtom = childResidue.GetAtom(childAtomName);
