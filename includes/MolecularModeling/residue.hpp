@@ -207,6 +207,7 @@ namespace MolecularModeling
             void SetId(std::string id);
             void SetChainID(std::string chain);
             void SetResidueNumber(std::string number);
+            void SetResidueNumber(unsigned int number);
             void SetIndex(unsigned long long index);
             /*! \fn                                                                                          //Added by ayush on 11/20/17 for residuenode in assembly
               * A mutator function in order to set the node of the current object
