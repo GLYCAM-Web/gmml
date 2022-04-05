@@ -617,6 +617,9 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   // Glycan::Oligosaccharide* testOligo = new Glycan::Oligosaccharide(ordered_monos, dataset_residue_names, this);
   // Glycan::Oligosaccharide* testOligo = new Glycan::Oligosaccharide();
   std::vector<Glycan::Oligosaccharide*> testOligos = createOligosaccharides(ordered_monos);
+  /*for (unsigned int i = 0; i < ordered_monos.size(); i++){
+      std::cout << "This mono cycle str: " << ordered_monos[i]->cycle_atoms_str_ << std::endl;
+  }*/
   testOligos = ExtractOligosaccharides( ordered_monos, dataset_residue_names, number_of_covalent_links, number_of_probable_non_covalent_complexes );
   if(local_debug > 0)
   {
@@ -953,6 +956,7 @@ Assembly::CycleMap Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
             doubleBond = guessIfC_CDoubleBond(atom1, atom2);
             if(doubleBond == true)
             {
+                std::cout << "Is double bond: " << atom1->GetResidue()->GetName() << "-" << atom1->GetName() << " and " << atom2->GetResidue()->GetName() << "-" << atom2->GetName() << std::endl;
                 all_single_bonds = false;
                 break;
             }

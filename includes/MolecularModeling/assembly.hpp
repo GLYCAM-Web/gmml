@@ -113,11 +113,31 @@ public:
     };
 
     //This structure is used for the MatchPdbAtoms2Glycam function for better recording and error handling. Yao 2022-03-26
+    struct Pdb2glycamMatchingTracker;
+    struct Pdb2glycamMatchingFailInfo
+    {
+        Pdb2glycamMatchingTracker* pdb2glycam_match_session_tracker = NULL;
+        int iteration_length = 0; 
+        MolecularModeling::Atom* failed_atom = NULL;
+        std::string failure_notice;
+
+        Pdb2glycamMatchingFailInfo(Pdb2glycamMatchingTracker* tracker, int depth, MolecularModeling::Atom* atom, std::string notice){
+            this->iteration_length = depth;
+            this->failed_atom = atom;
+            this->failure_notice = notice;
+            this->pdb2glycam_match_session_tracker = tracker;
+
+            if (this->pdb2glycam_match_session_tracker->largest_iteration_length < this->iteration_length){
+                this->pdb2glycam_match_session_tracker->largest_iteration_length = this->iteration_length;
+            }
+        }
+    };
     struct Pdb2glycamMatchingTracker
     {
         std::vector<std::map<MolecularModeling::Atom*, MolecularModeling::Atom*>> all_isomorphisms; //Records all possible matches
         //Records the 1st atom that cannot be matched in the last failed match attempt. Can be used for debugging if match failed. Should be ignored if at least one match can be found.
-        std::multimap<int, MolecularModeling::Atom*> iteration_length_first_mismatched_atom_map;
+        //std::multimap<int, MolecularModeling::Atom*> iteration_length_first_mismatched_atom_map;
+        std::vector<Pdb2glycamMatchingFailInfo*> failures;
         int largest_iteration_length = 0;
         Pdb2glycamMatchingTracker(){}
     };
@@ -1004,7 +1024,7 @@ public:
                */
 
     void ObtainAllOligasaccharideResidues(Glycan::Oligosaccharide* oligo, ResidueVector& oligo_residues);
-    void PutAglyconeInNewResidueAndRearrangeGlycanResidues(std::vector<Glycan::Oligosaccharide*> oligosaccharides);
+    void PutAglyconeInNewResidueAndRearrangeGlycanResidues(std::vector<Glycan::Oligosaccharide*> oligosaccharides, std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map);
 
     gmml::GlycamResidueNamingMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides, std::map<Glycan::Oligosaccharide*, std::vector<std::string> >& oligo_id_map,
                                                                std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map);

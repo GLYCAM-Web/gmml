@@ -97,9 +97,9 @@ namespace gmml
     };
 
     const std::string PROTEINS[] = {  "ALA", "ASP", "ASN", "ARG", "GLY",
-                                      "GLU", "GLN", "PRO", "HIS", "CYS",
+                                      "GLU", "GLN", "PRO", "HIS", "HIP","CYS",
                                       "VAL", "LEU", "THR", "SER", "LYS",
-                                      "MET", "TYR", "TRP", "PHE", "SEC",
+                                      "MET", "MSE", "TYR", "TRP", "PHE", "SEC",
                                       "ILE", "CYX", "HID", "HIE", "NLN",
                                       "OLY", "OLS", "OLT", "NALA", "NASP",
 				      "NASN", "NARG", "NGLY", "NGLU", "NGLN",
