@@ -90,7 +90,7 @@ void Assembly::ObtainAllOligasaccharideResidues(Glycan::Oligosaccharide* oligo, 
     return;
 }
 
-void Assembly::PutAglyconeInNewResidueAndRearrangeGlycanResidues(std::vector<Glycan::Oligosaccharide*> oligosaccharides){
+void Assembly::PutAglyconeInNewResidueAndRearrangeGlycanResidues(std::vector<Glycan::Oligosaccharide*> oligosaccharides, std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map){
     for(std::vector<Glycan::Oligosaccharide*>::iterator it = oligosaccharides.begin(); it != oligosaccharides.end(); it++){
         Glycan::Oligosaccharide* oligo = *it;
         MolecularModeling::Atom* anomeric_o = NULL;
@@ -170,6 +170,7 @@ void Assembly::PutAglyconeInNewResidueAndRearrangeGlycanResidues(std::vector<Gly
         {
             gmml::log(__LINE__, __FILE__, gmml::INF, "First sugar residue is: " + residue_with_aglycone->GetId());
             new_terminal_residue = new Residue(this,aglycone_name);
+            oligo_residue_map[oligo].push_back(new_terminal_residue);
 
             //If there is no preceding residue, simply add the new terminal residue, which will be the 1st residue
             if(no_preceding_residue){
@@ -240,6 +241,7 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
         int index = 0;
         Glycan::Oligosaccharide* oligo = *it;
         std::string oligo_name = oligo->IUPAC_name_;
+        std::cout << "Iupac name: " << oligo_name << std::endl;
         //In case that there is no terminal attached to the reducing end adds a temporary terminal residue to make the sequence parser able to parse the sequence
         if(oligo->terminal_.compare("") == 0){
             std::cerr << "Error, no aglycone detected.Aborting\n";
@@ -487,9 +489,7 @@ void Assembly::TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap res
             else if (glycam_names.size() > 1) // if not one to one
             {
                 //prevent residue from being named to its attached aglycones,whose names are also in the name vector
-                std::vector<std::string> known_aglycon_names = std::vector<std::string>();
-                known_aglycon_names.push_back("ROH");
-                known_aglycon_names.push_back("OME");
+                std::vector<std::string> known_aglycon_names = {"ROH","OME","TBT"};
                 for (std::vector<std::string>::iterator it3= glycam_names.begin(); it3!= glycam_names.end(); it3++){
                     //if this name is not a known aglycone
                     if (std::find(known_aglycon_names.begin(),known_aglycon_names.end(),*it3) == known_aglycon_names.end()){
@@ -506,19 +506,25 @@ void Assembly::TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap res
     }
 }
 
-void Assembly::MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map, std::string prep_file, std::map<MolecularModeling::Atom*, MolecularModeling::Atom*>& isomorphism_match)
+void Assembly::MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map, std::string prep_file, std::map<Glycan::Oligosaccharide*, Pdb2glycamMatchingTracker*>& match_tracker)
 {
     PrepFileSpace::PrepFile* prep = new PrepFileSpace::PrepFile(prep_file);
     for (std::map<Glycan::Oligosaccharide*, ResidueVector>::iterator mapit = oligo_residue_map.begin(); mapit != oligo_residue_map.end(); mapit++){ 
         Glycan::Oligosaccharide* oligo = mapit->first;
         ResidueVector corresponding_residues = mapit->second;
 
+        Pdb2glycamMatchingTracker* tracker = new Pdb2glycamMatchingTracker();
+        match_tracker[oligo] = tracker;
+
         std::string condensed_sequence = oligo->IUPAC_name_;
         MolecularModeling::Assembly template_assembly;
 
         template_assembly.BuildAssemblyFromCondensedSequence(condensed_sequence, prep);
         AtomVector template_atoms = template_assembly.GetAllAtomsOfAssembly();
-        //PdbFileSpace::PdbFile *outputPdbFile = template_assembly.BuildPdbFileStructureFromAssembly();
+        for (unsigned int i = 0; i < template_atoms.size(); i++){
+        }
+
+        PdbFileSpace::PdbFile *outputPdbFile = template_assembly.BuildPdbFileStructureFromAssembly();
         //outputPdbFile->Write("template.pdb");
 
         AtomVector target_atoms;
@@ -545,6 +551,7 @@ void Assembly::MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVe
             label += atom->GetElementSymbol();
             //label += atom->DetermineChirality();
             target_atom_label_map[atom] = label;
+            //std::cout << "Target atom " << atom->GetResidue()->GetName() << " has label " << label << std::endl;
         }
 
         std::map<Atom*, std::string> template_atom_label_map;
@@ -565,6 +572,7 @@ void Assembly::MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVe
             label += atom->GetElementSymbol();
             //label += atom->DetermineChirality();
             template_atom_label_map[atom] = label;
+            //std::cout << "Template atom " << atom->GetResidue()->GetName() << " has label " << label << std::endl;
         }
 
         Atom* target_start_atom = target_atoms[0];
@@ -575,43 +583,18 @@ void Assembly::MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVe
         std::vector<std::map<Atom*, Atom*> > template_target_vertex_match;
         template_target_vertex_match.push_back(empty_match);
 
-        std::vector<std::map<Atom*, Atom*> > all_isomorphisms;
+        //std::vector<std::map<Atom*, Atom*> > all_isomorphisms;
         std::vector<Atom*> target_insertion_order;
 
         for (MolecularModeling::AtomVector::iterator template_it = template_atoms.begin(); template_it != template_atoms.end(); template_it++){
             Atom* template_atom = *template_it;
+            int depth = 0;
             this->RecursiveMoleculeSubgraphMatching(target_start_atom, target_atoms, template_atom, target_atom_label_map, template_atom_label_map, target_template_vertex_match,
-                    template_target_vertex_match, target_insertion_order, all_isomorphisms);
+                  template_target_vertex_match, target_insertion_order, tracker, depth);
         }
-
-        std::cout << all_isomorphisms.size() << " matches found." << std::endl;
-        if (all_isomorphisms.empty()){
-            std::cout << "Isomorphism matching failed, cannot rename atoms." << std::endl;
-        }
-        else if (all_isomorphisms.size() >= 1){
-            //std::cout << "Isomorphism matching successful." << std::endl;
-            std::map<Atom*, Atom*>& first_isomorphism = all_isomorphisms[0];
-            /*for (std::map<Atom*, Atom*>::iterator mapit = first_isomorphism.begin(); mapit != first_isomorphism.end(); mapit++){
-                mapit->first->SetName(mapit->second->GetName()); //Remember to uncomment this.
-            }*/
-
-	    isomorphism_match = first_isomorphism;
-        }
-
-        /*if (all_isomorphisms.size() >= 1){
-	    //std::cout << "Warning: multiple matches detected, applied the first match." << std::endl;
-	    for (std::vector<std::map<Atom*, Atom*> >::iterator isos = all_isomorphisms.begin(); isos != all_isomorphisms.end(); isos++){
-		std::cout << "Match " << std::distance(all_isomorphisms.begin(), isos) << std::endl;
-		std::cout << "-----------------------" << std::endl;
-		std::map<Atom*, Atom*>& current_iso = *isos;
-		for (std::map<Atom*, Atom*>::iterator iso_it = current_iso.begin(); iso_it != current_iso.end(); iso_it++){
-		    std::cout << iso_it->first->GetResidue()->GetName() << "-" << iso_it->first->GetName() << " is matched to " << iso_it->second->GetResidue()->GetName() << "-" << iso_it->second->GetName() << std::endl;
-		}
-		std::cout << "-----------------------" << std::endl;
-	    }
-	}*/
 
     }
+    return;
 }
 
 bool Assembly::IfVertexAlreadyMatched(Atom* vertex_atom, std::vector<std::map<Atom*, Atom*> >& match_map)
@@ -682,9 +665,11 @@ void Assembly::RemoveDownstreamMatches(Atom* target_atom, std::vector<std::map<A
 }
 
 bool Assembly::IfMatchScenarioAlreadyExists(std::map<Atom*, Atom*>& target_template_vertex_match, 
-        std::vector<std::map<Atom*, Atom*> >& all_isomorphisms)
+        Pdb2glycamMatchingTracker* tracker)
 {
     bool match_already_exists = false;
+    std::vector<std::map<Atom*, Atom*>>& all_isomorphisms = tracker->all_isomorphisms;
+
     for (std::vector<std::map<Atom*, Atom*> >::iterator existing_isos_it = all_isomorphisms.begin();
             existing_isos_it != all_isomorphisms.end(); existing_isos_it++){
 
@@ -728,7 +713,7 @@ bool Assembly::IfMatchScenarioAlreadyExists(std::map<Atom*, Atom*>& target_templ
 int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& target_atoms, Atom* template_atom, 
         std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map,
         std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match, std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match,
-        std::vector<Atom*>& target_insertion_order, std::vector<std::map<Atom*, Atom*> >& all_isomorphisms)
+        std::vector<Atom*>& target_insertion_order, Pdb2glycamMatchingTracker* pdb2glycam_matching_tracker, int previous_call_depth)
 {
     //This function is intended to find multiple matches, but right now, only the 1st match is correct, the rest are wrong.
 
@@ -736,11 +721,12 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
     //0-Target vertex already matched.(Current not implemented, returns 5 when it's supposed to return 0)
     //1-Template vertex already matched
     //2-No equivalent template vertex exists(does not satisfy either vertex or edge equivalence)
-    //3-At least one equivalent template vertex exists, but a irreconcilable mismatches occured downstream.
+    //3-At least one equivalent template vertex exists, but a irreconcilable mismatches occur downstream.
     //4-An isomorphism is found downstream
     //5-A partial match is in progress, i.e. so far all vertex matches, but has not yet reached a complete isomorphism.
     //1-3 are mismatch, 0,4-5 are successful match.
 
+    int this_call_depth = previous_call_depth + 1;
     if (this->IfVertexAlreadyMatched(target_atom,  target_template_vertex_match)){
         return 0;  //Actually should return 0. Target vertex already matched by a previous pathway
     }
@@ -755,6 +741,12 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
         target_insertion_order.push_back(target_atom);
     }
     else{
+        /*std::stringstream mismatch_notice;
+        mismatch_notice << "Current target " << target_atom_label_map[target_atom] << " does not match current template " << template_atom_label_map[template_atom];
+        pdb2glycam_matching_tracker->failures.emplace_back(new Pdb2glycamMatchingFailInfo(pdb2glycam_matching_tracker, this_call_depth, target_atom, mismatch_notice.str()));
+        if (this_call_depth > pdb2glycam_matching_tracker->largest_iteration_length){
+            pdb2glycam_matching_tracker->largest_iteration_length = this_call_depth;
+        }*/
         return 2; //No equivalent template vertex exists.
     }
 
@@ -763,9 +755,9 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
     std::map<Atom*, bool> match_status_tracker;
 
     if (target_template_vertex_match[0].size() == target_atoms.size()){
-        bool match_scenario_already_exists = this-> IfMatchScenarioAlreadyExists(target_template_vertex_match[0], all_isomorphisms);
+        bool match_scenario_already_exists = this-> IfMatchScenarioAlreadyExists(target_template_vertex_match[0], pdb2glycam_matching_tracker);
         if (!match_scenario_already_exists){
-            all_isomorphisms.push_back(target_template_vertex_match[0]);
+            pdb2glycam_matching_tracker->all_isomorphisms.push_back(target_template_vertex_match[0]);
         }
 
         return 4; //An isomorphism match is found.
@@ -794,6 +786,12 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
     }
     //If there are less unmatched template neighbor than are there unmatched targets, downstream matching is guaranteed to fail. No need to actually calculate.
     if (unmatched_template_neighbors.size() < unmatched_target_neighbors.size()){
+        std::stringstream mismatch_notice;
+        mismatch_notice << "Less bonded template neighbors than target neighbors";
+        pdb2glycam_matching_tracker->failures.emplace_back(new Pdb2glycamMatchingFailInfo(pdb2glycam_matching_tracker, this_call_depth, target_atom, mismatch_notice.str()));
+        if (this_call_depth > pdb2glycam_matching_tracker->largest_iteration_length){
+            pdb2glycam_matching_tracker->largest_iteration_length = this_call_depth;
+        }
         return 3;//Current target vertex match, but downstream mismatch is impossible. 
     }
 
@@ -842,7 +840,7 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
             Atom* template_atom_to_match = *template_it;
             if (std::find(matched_template_neighbors.begin(), matched_template_neighbors.end(), template_atom_to_match) == matched_template_neighbors.end()){
                 int downstream_match_status = this->RecursiveMoleculeSubgraphMatching(next_target_atom, target_atoms, template_atom_to_match, target_atom_label_map, template_atom_label_map, 
-                        target_template_vertex_match, template_target_vertex_match, target_insertion_order, all_isomorphisms);
+                        target_template_vertex_match, template_target_vertex_match, target_insertion_order, pdb2glycam_matching_tracker, this_call_depth);
 
                 if (downstream_match_status == 4 || downstream_match_status == 5 || downstream_match_status == 0){
                     matched_template_this_target.push_back(template_atom_to_match);
@@ -948,18 +946,24 @@ int Assembly::RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& t
         this->RemoveDownstreamMatches(target_atom, target_template_vertex_match, template_target_vertex_match, target_insertion_order);
     }
 
+    std::stringstream mismatch_notice;
+    mismatch_notice << "This target itself has a match, but no downstream matches can be found.";
+    pdb2glycam_matching_tracker->failures.emplace_back(new Pdb2glycamMatchingFailInfo(pdb2glycam_matching_tracker, this_call_depth, target_atom, mismatch_notice.str()));
+    if (this_call_depth > pdb2glycam_matching_tracker->largest_iteration_length){
+        pdb2glycam_matching_tracker->largest_iteration_length = this_call_depth;
+    }
     return 3;  //Return upon downstream mismatch, but this target vertex itself matches. 
 }
 
-bool Assembly::CheckAndAcceptMatches(MolecularModeling::AtomVector& target_atoms, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match, std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match, std::vector<std::map<Atom*, Atom*> >& all_isomorphisms){
+bool Assembly::CheckAndAcceptMatches(MolecularModeling::AtomVector& target_atoms, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match, std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match, Pdb2glycamMatchingTracker* tracker){
     bool matches_accepted = false;
     for (std::vector<std::map<Atom*, Atom*> >::iterator vec_it = target_template_vertex_match.begin(); vec_it != target_template_vertex_match.end(); vec_it++){
         std::map<Atom*, Atom*>& pending_match = *vec_it;
         if (pending_match.size() == target_atoms.size()){
-            bool match_scenario_already_exists = this-> IfMatchScenarioAlreadyExists(pending_match, all_isomorphisms);
+            bool match_scenario_already_exists = this-> IfMatchScenarioAlreadyExists(pending_match, tracker);
             if (!match_scenario_already_exists){
                 //std::cout << "One isomorphism added" << std::endl;
-                all_isomorphisms.push_back(pending_match);
+                tracker->all_isomorphisms.push_back(pending_match);
             }
         }
     }
