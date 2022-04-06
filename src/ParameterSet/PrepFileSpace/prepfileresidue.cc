@@ -480,46 +480,63 @@ PrepFileSpace::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
     std::vector<int> neighbors = std::vector<int>();
     for(PrepFileSpace::PrepFileAtomVector::iterator it = this->atoms_.begin(); it != this->atoms_.end(); it++)
     {
-        parents.push_back(*it);
-        neighbors.push_back(0);
+        parents.push_back(*it); // parents starts off as just a list of each atom in the prep file, in index order.
+        neighbors.push_back(0); // this is used to indicate prep file LOOPS in the next for loop...
     }
     for(Loop::iterator it = loops_.begin(); it != loops_.end(); it++)
     {
+        std::stringstream ss;
         int from = (*it).first;
         int to = (*it).second;
-
         neighbors.at(from - 1) = 1;
         neighbors.at(to - 1) = 1;
+//        ss << "Loop from index " << from << " to index " << to << "\n";
+//        gmml::log(__LINE__,__FILE__, gmml::INF, ss.str());
     }
     for(PrepFileSpace::PrepFileAtomVector::iterator it = this->atoms_.begin(); it != this->atoms_.end(); it++)
     {
         PrepFileSpace::PrepFileAtom* atom = *it;
         int index = distance(atoms_.begin(), it);
-        if(stack.empty())
+//        gmml::log(__LINE__,__FILE__,gmml::INF,"Parents:");
+//        for (auto &parent: parents)
+//        {
+//            gmml::log(__LINE__,__FILE__,gmml::INF,parent->GetName());
+//        }
+//        gmml::log(__LINE__,__FILE__,gmml::INF,"Stack:");
+//        for (auto &elem: stack)
+//        {
+//            gmml::log(__LINE__,__FILE__,gmml::INF,elem->GetName());
+//        }
+//        std::stringstream ss;
+        if(stack.empty()) // This next bit fills the stack. If an atom has 4 neighbors, it will go onto the stack 4 times, unless it has a loop neighbor.
         {
             switch(atom->GetTopologicalType())
             {
-                case gmml::kTopTypeM:
+                case gmml::kTopTypeM: // Note there is no break, so it falls through to type3 if M or 4 is the case.
                 case gmml::kTopType4:
-                case gmml::kTopType3:
-                    if(neighbors.at(index) == 0)
+                case gmml::kTopType3: // Has 4 neighbors. So self in as parent 4 times for each child?
+   //                 ss << "Atom: " << atom->GetName() << " index: " << index << "type :3" << "with no stack\n";
+                    if(neighbors.at(index) == 0) // This is to record where the LOOPs are fml. So no LOOP connection means once more on the stack. Seems wrong but ok.
                         stack.push_back(atom);
                     stack.push_back(atom);
                     stack.push_back(atom);
                     stack.push_back(atom);
                     break;
                 case gmml::kTopTypeB:
+  //                  ss << "Atom: " << atom->GetName() << " index: " <<  index << "type :B" << "with no stack\n";
                     if(neighbors.at(index) == 0)
                         stack.push_back(atom);
                     stack.push_back(atom);
                     stack.push_back(atom);
                     break;
                 case gmml::kTopTypeS:
+  //                  ss << "Atom: " << atom->GetName() << " index: " << index << "type :S" << "with no stack\n";
                     if(neighbors.at(index) == 0)
                         stack.push_back(atom);
                     stack.push_back(atom);
                     break;
                 case gmml::kTopTypeE:
+    //                ss << "Atom: " << atom->GetName() << " index: " << index << "type :E" << "with no stack\n";
                     if(neighbors.at(index) == 0)
                         stack.push_back(atom);
                     break;
@@ -527,12 +544,22 @@ PrepFileSpace::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
         }
         else
         {
-            switch(atom->GetTopologicalType())
+            switch(atom->GetTopologicalType()) // Ok here we are both putting stuff on the stack and taking it off.
             {
-                case gmml::kTopTypeM:
-                case gmml::kTopType4:
-                case gmml::kTopType3:
-                    parents.at(index) = stack.at(stack.size() - 1);
+                case gmml::kTopTypeM: // OG 2022Apr06 Here is the fix. It seems to be ok to have too many parents on the stack for M type, but not too few. For TBT the M atom C2 had 4 children, so having 3 by default for M was insufficient. Pray this doesn't break anything and we move away from prep files before some poor soul has to read this again.
+    //                ss << "Atom: " << atom->GetName() << " index: " << index << " type: M" << " with stack:" << stack.back()->GetName() << " and neighbors " << neighbors.at(index) << "\n";
+                    parents.at(index) = stack.at(stack.size() - 1); // last thing on the stack goes onto parents for this index.
+                    stack.pop_back();
+                    if(neighbors.at(index) == 0)
+                        stack.push_back(atom);
+                    stack.push_back(atom);
+                    stack.push_back(atom);
+                    stack.push_back(atom);
+                    break;
+                case gmml::kTopType4: // Note there is no break, so it falls through to type3 if M or 4 is the case.
+                case gmml::kTopType3: // Ok so I'm of size 3, I will go on 3 times for each of my kids. Put take the last parent off the stack and assign it as my parent.
+   //                 ss << "Atom: " << atom->GetName() << " index: " << index << " type: 3" << " with stack:" << stack.back()->GetName() << " and neighbors " << neighbors.at(index) << "\n";
+                    parents.at(index) = stack.at(stack.size() - 1); // last thing on the stack goes onto parents for this index.
                     stack.pop_back();
                     if(neighbors.at(index) == 0)
                         stack.push_back(atom);
@@ -540,23 +567,31 @@ PrepFileSpace::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
                     stack.push_back(atom);
                     break;
                 case gmml::kTopTypeB:
+  //                  ss << "Atom: " << atom->GetName() << " index: " << index << " type: B" << " with stack:" << stack.back()->GetName() << "\n";
                     parents.at(index) = stack.at(stack.size() - 1);
                     stack.pop_back();
                     stack.push_back(atom);
                     stack.push_back(atom);
                     break;
                 case gmml::kTopTypeS:
+   //                 ss << "Atom: " << atom->GetName() << " index: " << index << " type: S" << " with stack:" << stack.back()->GetName() << "\n";
                     parents.at(index) = stack.at(stack.size() - 1);
                     stack.pop_back();
                     stack.push_back(atom);
                     break;
                 case gmml::kTopTypeE:
+   //                 ss << "Atom: " << atom->GetName() << " index: " << index << " type: E" << " with stack:" << stack.back()->GetName() << "\n";
                     parents.at(index) = stack.at(stack.size() - 1);
                     stack.pop_back();
                     break;
             }
         }
+    //    gmml::log(__LINE__,__FILE__,gmml::INF,ss.str());
     }
+//    for (auto &parent: parents)
+//    {
+//        gmml::log(__LINE__,__FILE__,gmml::INF,parent->GetName());
+//    }
     return parents;
 }
 

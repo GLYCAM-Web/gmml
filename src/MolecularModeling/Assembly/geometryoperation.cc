@@ -69,6 +69,7 @@
 #include "../../../includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
+//#include "includes/CodeUtils/logging.hpp"
 
 #include <unistd.h>
 #include <errno.h>
@@ -274,7 +275,9 @@ void Assembly::Grafting (MolecularModeling::Atom* tail_atom, MolecularModeling::
     translation_vector->SetZ(current_tail_atom_position->GetZ() - relative_tail_atom_position->GetZ());
     //Translate coordinates of all atoms in child residue by translation vector.
     MolecularModeling::AtomVector child_residue_atoms = head_atom_of_child_residue->GetResidue()->GetAtoms();
-    for (unsigned int i = 0; i < child_residue_atoms.size(); i++){
+    for (unsigned int i = 0; i < child_residue_atoms.size(); i++)
+    {
+        //gmml::log(__LINE__,__FILE__,gmml::INF,"Translating child atom: " + child_residue_atoms[i]->GetId());
         GeometryTopology::Coordinate* current_position = child_residue_atoms[i]->GetCoordinates().at(0);
         current_position->Translate(translation_vector->GetX(), translation_vector->GetY(), translation_vector->GetZ());
     }
