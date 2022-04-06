@@ -130,6 +130,10 @@ inputResName: Fru
 ringType: f
 residueModifier: 
 configuration: b
+
+*********************
+Building DGalpb1-OtBu
+*********************
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
@@ -153,3 +157,4 @@ configuration: b
 00027.pdb succesfully created.
 00028.pdb succesfully created.
 00029.pdb not created.
+00030.pdb succesfully created.
