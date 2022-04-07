@@ -14,6 +14,11 @@ public:
     cdsCoordinate();
     cdsCoordinate(double x, double y, double z);
     cdsCoordinate(const cdsCoordinate& c);
+//    //////////////////////////////////////////////////////////
+//    //                    OPERATOR                          //
+//    //////////////////////////////////////////////////////////
+//    cdsCoordinate& operator= (const cdsCoordinate& c);
+//    cdsCoordinate* operator= (const cdsCoordinate& c);
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////

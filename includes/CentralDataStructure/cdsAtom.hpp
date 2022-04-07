@@ -6,10 +6,11 @@
 #include <vector>
 
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
+#include "includes/CentralDataStructure/cdsCoordinate.hpp"
 
 namespace cds
 {
-class cdsCoordinate;
+//class cdsCoordinate;
 class cdsAtom : public glygraph::Node<cdsAtom>
 {
 public:

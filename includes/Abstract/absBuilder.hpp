@@ -2,19 +2,19 @@
 #define GMML_INCLUDES_ABSTRACT_BUILDER_HPP
 // My idea is that once there is more than one thing, or the status class needs more functionality
 // this will "have a" status that is a separate class, and this may have other things too.
-// Update: the status idea is bad, classes that aren't ok should throw. Stop-gap for now.
+// Update: the status idea is bad, classes that aren't ok should throw. Stop-gap for now, as I can't yet throw across SWIG and into gems.
 #include <string>
 namespace Abstract
 {
-	class Builder
+	class absBuilder
 	{
 	public:
         //example types {ERROR, WARNING, INFO, OK}; ENUMS are annoying to convert for JSON, so strings it is.
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
-        Builder() {statusType_ = "OK";}
-        Builder(std::string t, std::string s) : statusType_(t), statusMessage_(s) {};
+        absBuilder() {statusType_ = "OK";}
+        absBuilder(std::string t, std::string s) : statusType_(t), statusMessage_(s) {};
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////

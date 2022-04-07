@@ -34,7 +34,7 @@ void cdsAtom::setCoordinate(const cdsCoordinate& newCoord)
     else
     {
         cdsCoordinate* firstCoord = coordinates_.front().get();
-        firstCoord = newCoord; // Should copy the x,y,z from newCoord.
+        *firstCoord = newCoord; // Should copy the x,y,z from newCoord.
     }
     return;
 }

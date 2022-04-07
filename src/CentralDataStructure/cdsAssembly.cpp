@@ -1,7 +1,8 @@
 #include "includes/CentralDataStructure/cdsAssembly.hpp"
+
+#include "../../includes/CentralDataStructure/cdsResidue.hpp"
 #include "includes/CentralDataStructure/cdsAtom.hpp"
 #include "includes/CentralDataStructure/cdsMolecule.hpp"
-#include "includes/CentralDataStructure/cdsResidue.hpp"
 
 using cds::cdsAssembly;
 

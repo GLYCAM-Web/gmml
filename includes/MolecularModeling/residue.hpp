@@ -6,6 +6,8 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+
+#include "includes/Abstract/absResidue.hpp"
 #include "residueproperties.hpp"
 #include "../GeometryTopology/coordinate.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
@@ -13,7 +15,6 @@
 #include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp" // TemplateGraph
-#include "includes/Abstract/residue.hpp"
 
 namespace MolecularModeling
 {
@@ -23,7 +24,7 @@ namespace MolecularModeling
     //class PrepFileResidue; //This is not in the MolecularModeling namespace
     class Residue; // Forward declare for the vector typedef
     typedef std::vector<MolecularModeling::Residue*> ResidueVector;
-    class Residue : public ResidueProperties, public Abstract::Residue, public glygraph::Node<Residue>
+    class Residue : public ResidueProperties, public Abstract::absResidue, public glygraph::Node<Residue>
     {
         public:
             //////////////////////////////////////////////////////////

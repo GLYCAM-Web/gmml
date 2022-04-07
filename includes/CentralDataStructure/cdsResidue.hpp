@@ -4,14 +4,14 @@
 #include <vector>
 #include <memory> // unique_ptr
 
+#include "includes/Abstract/absResidue.hpp"
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
-#include "includes/Abstract/residue.hpp"
 
 namespace cds
 {
 class cdsMolecule;
 class cdsAtom;
-class cdsResidue : public Abstract::Residue, public glygraph::Node<cdsResidue>
+class cdsResidue : public Abstract::absResidue, public glygraph::Node<cdsResidue>
 {
 public:
     //////////////////////////////////////////////////////////

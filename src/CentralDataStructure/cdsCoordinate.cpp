@@ -13,6 +13,17 @@ cdsCoordinate::cdsCoordinate(double x, double y, double z) : x_(x), y_(y), z_(z)
 
 cdsCoordinate::cdsCoordinate(const cdsCoordinate &c) : x_(c.getX()), y_(c.getY()), z_(c.getZ()) {}
 //////////////////////////////////////////////////////////
+//                    OPERATOR                          //
+//////////////////////////////////////////////////////////
+//cdsCoordinate::cdsCoordinate& operator= (const cdsCoordinate* c)
+//{
+//
+//}
+//cdsCoordinate::cdsCoordinate* operator= (const cdsCoordinate& c)
+//{
+//
+//}
+//////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
 void cdsCoordinate::translate(const double x, const double y, const double z)

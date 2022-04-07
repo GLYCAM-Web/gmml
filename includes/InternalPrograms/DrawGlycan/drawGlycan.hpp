@@ -6,12 +6,13 @@
 // I don't know how to wrap that class, so I'm trying to keep it "on the other side of the line" when wrapping.
 
 #include <string>
-#include "includes/Abstract/builder.hpp"
+
+#include "includes/Abstract/absBuilder.hpp"
 #include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
 
 namespace CondensedSequence
 {
-class DrawGlycan : public Abstract::Builder
+class DrawGlycan : public Abstract::absBuilder
 {
 public:
     //////////////////////////////////////////////////////////
