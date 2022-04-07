@@ -5,15 +5,15 @@
 
 namespace cds
 {
-class Coordinate
+class cdsCoordinate
 {
 public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
-    Coordinate();
-    Coordinate(double x, double y, double z);
-    Coordinate(const Coordinate& c);
+    cdsCoordinate();
+    cdsCoordinate(double x, double y, double z);
+    cdsCoordinate(const cdsCoordinate& c);
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
@@ -30,11 +30,11 @@ public:
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
     void translate(const double x, const double y, const double z);
-    double distance(const Coordinate &c) const;
+    double distance(const cdsCoordinate &c) const;
     double getLength() const;
     void normalize();
-    double dotProduct(const Coordinate& c);
-    void crossProduct(const Coordinate& c);
+    double dotProduct(const cdsCoordinate& c);
+    void crossProduct(const cdsCoordinate& c);
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////

@@ -1,12 +1,12 @@
-#include "includes/CentralDataStructure/atom.hpp"
-#include "includes/CentralDataStructure/coordinate.hpp"
+#include "includes/CentralDataStructure/cdsAtom.hpp"
+#include "includes/CentralDataStructure/cdsCoordinate.hpp"
 
-using cds::Atom;
+using cds::cdsAtom;
 
 //////////////////////////////////////////////////////////
 //                    CONSTRUCTOR                       //
 //////////////////////////////////////////////////////////
-Atom::Atom(const std::string& name, const Coordinate& coord)
+cdsAtom::cdsAtom(const std::string& name, const cdsCoordinate& coord)
 {
     this->setName(name);
     this->addCoordinate(coord);
@@ -14,7 +14,7 @@ Atom::Atom(const std::string& name, const Coordinate& coord)
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
-cds::Coordinate* Atom::getCoordinate()
+cds::cdsCoordinate* cdsAtom::getCoordinate()
 {
     if(coordinates_.empty())
     {
@@ -25,7 +25,7 @@ cds::Coordinate* Atom::getCoordinate()
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
-void Atom::setCoordinate(const Coordinate& newCoord)
+void cdsAtom::setCoordinate(const cdsCoordinate& newCoord)
 {
     if(coordinates_.empty())
     {
@@ -33,15 +33,15 @@ void Atom::setCoordinate(const Coordinate& newCoord)
     }
     else
     {
-        Coordinate* firstCoord = coordinates_.front().get();
+        cdsCoordinate* firstCoord = coordinates_.front().get();
         firstCoord = newCoord; // Should copy the x,y,z from newCoord.
     }
     return;
 }
 
-void Atom::addCoordinate(const Coordinate& newCoord)
+void cdsAtom::addCoordinate(const cdsCoordinate& newCoord)
 {
-    coordinates_.push_back(std::make_unique<Coordinate>(newCoord));
+    coordinates_.push_back(std::make_unique<cdsCoordinate>(newCoord));
     return;
 }
 

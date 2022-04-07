@@ -9,24 +9,24 @@
 
 namespace cds
 {
-class Coordinate;
-class Atom : public glygraph::Node<Atom>
+class cdsCoordinate;
+class cdsAtom : public glygraph::Node<cdsAtom>
 {
 public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTORS                   //
     //////////////////////////////////////////////////////////
-    Atom();
-    Atom(const std::string& name, const Coordinate& coord);
+    cdsAtom();
+    cdsAtom(const std::string& name, const cdsCoordinate& coord);
     //////////////////////////////////////////////////////////
     //                       ACCESSORS                      //
     //////////////////////////////////////////////////////////
-    Coordinate* getCoordinate();
+    cdsCoordinate* getCoordinate();
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
-    void setCoordinate(const Coordinate& c);
-    void addCoordinate(const Coordinate& c);
+    void setCoordinate(const cdsCoordinate& c);
+    void addCoordinate(const cdsCoordinate& c);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
@@ -34,7 +34,7 @@ private:
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
-    std::vector<std::unique_ptr<Coordinate>> coordinates_;     /*!< Position of the atom >*/
+    std::vector<std::unique_ptr<cdsCoordinate>> coordinates_;     /*!< Position of the atom >*/
 };
 }
 #endif // ATOM_HPP

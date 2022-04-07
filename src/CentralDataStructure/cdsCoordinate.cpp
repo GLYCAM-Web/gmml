@@ -1,21 +1,21 @@
 #include <cmath> //sqrt
+#include "includes/CentralDataStructure/cdsCoordinate.hpp"
 
-#include "includes/CentralDataStructure/coordinate.hpp"
 
-using cds::Coordinate;
+using cds::cdsCoordinate;
 
 //////////////////////////////////////////////////////////
 //                    CONSTRUCTOR                       //
 //////////////////////////////////////////////////////////
-Coordinate::Coordinate() : x_(0.0), y_(0.0), z_(0.0) {}
+cdsCoordinate::cdsCoordinate() : x_(0.0), y_(0.0), z_(0.0) {}
 
-Coordinate::Coordinate(double x, double y, double z) : x_(x), y_(y), z_(z) {}
+cdsCoordinate::cdsCoordinate(double x, double y, double z) : x_(x), y_(y), z_(z) {}
 
-Coordinate::Coordinate(const Coordinate &c) : x_(c.getX()), y_(c.getY()), z_(c.getZ()) {}
+cdsCoordinate::cdsCoordinate(const cdsCoordinate &c) : x_(c.getX()), y_(c.getY()), z_(c.getZ()) {}
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
-void Coordinate::translate(const double x, const double y, const double z)
+void cdsCoordinate::translate(const double x, const double y, const double z)
 {
     x_ += x;
     y_ += y;
@@ -23,18 +23,18 @@ void Coordinate::translate(const double x, const double y, const double z)
     return;
 }
 
-double Coordinate::distance(const Coordinate &c)const
+double cdsCoordinate::distance(const cdsCoordinate &c)const
 {
     double dist = (x_ - c.getX()) * (x_ - c.getX()) + (y_ - c.getY()) * (y_ - c.getY()) + (z_ - c.getZ()) * (z_ - c.getZ());
     return sqrt(dist);
 }
 
-double Coordinate::getLength() const
+double cdsCoordinate::getLength() const
 {
     return sqrt((x_ * x_) + (y_ * y_) + (z_ * z_));
 }
 
-void Coordinate::normalize()
+void cdsCoordinate::normalize()
 {
     double length = this->getLength();
     if(length != 0.0)
@@ -46,12 +46,12 @@ void Coordinate::normalize()
     return;
 }
 
-double Coordinate::dotProduct(const Coordinate& c)
+double cdsCoordinate::dotProduct(const cdsCoordinate& c)
 {
     return ((x_ * c.getX()) + (y_ * c.getY()) + (z_ * c.getZ()));
 }
 
-void Coordinate::crossProduct(const Coordinate& c)
+void cdsCoordinate::crossProduct(const cdsCoordinate& c)
 {
     x_ = (y_ * c.getZ()) - (c.getY() * z_);
     y_ = (z_ * c.getX()) - (c.getZ() * x_);
@@ -61,7 +61,7 @@ void Coordinate::crossProduct(const Coordinate& c)
 //////////////////////////////////////////////////////////
 //                    DISPLAY                           //
 //////////////////////////////////////////////////////////
-void Coordinate::Print(std::ostream& out)
+void cdsCoordinate::Print(std::ostream& out)
 {
     out << "" << this->getX() << "  " << this->getY() << "  " << this->getX() << "\n";
     return;

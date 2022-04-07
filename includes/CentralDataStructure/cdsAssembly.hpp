@@ -9,23 +9,23 @@
 
 namespace cds
 {
-class Atom;
-class Residue;
-class Molecule;
-class Assembly : public glygraph::Node<Assembly>
+class cdsAtom;
+class cdsResidue;
+class cdsMolecule;
+class cdsAssembly : public glygraph::Node<cdsAssembly>
 {
 public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
-    Assembly();
+    cdsAssembly();
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
     inline const int& getNumber() {return number_ ;}
-    std::vector<Atom*> getAtoms();
-    std::vector<Residue*> getResidues();
-    std::vector<Molecule*> getMolecules();
+    std::vector<cdsAtom*> getAtoms();
+    std::vector<cdsResidue*> getResidues();
+    std::vector<cdsMolecule*> getMolecules();
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@ private:
     //////////////////////////////////////////////////////////
     //                    ATTRIBUTES                        //
     //////////////////////////////////////////////////////////
-    std::vector<std::unique_ptr<Molecule>> molecules_;
+    std::vector<std::unique_ptr<cdsMolecule>> molecules_;
     int number_;
 };
 }

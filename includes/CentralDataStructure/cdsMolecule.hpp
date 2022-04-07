@@ -8,9 +8,9 @@
 
 namespace cds
 {
-class Atom;
-class Residue;
-class Molecule : public glygraph::Node<Molecule>
+class cdsAtom;
+class cdsResidue;
+class cdsMolecule : public glygraph::Node<cdsMolecule>
 {
 public:
     //////////////////////////////////////////////////////////
@@ -20,8 +20,8 @@ public:
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
     inline const int& getNumber() {return number_;}
-    std::vector<Atom*> getAtoms();
-    std::vector<Residue*> getResidues();
+    std::vector<cdsAtom*> getAtoms();
+    std::vector<cdsResidue*> getResidues();
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
@@ -36,7 +36,7 @@ private:
     //////////////////////////////////////////////////////////
     //                    ATTRIBUTES                        //
     //////////////////////////////////////////////////////////
-    std::vector<std::unique_ptr<Residue>> residues_;
+    std::vector<std::unique_ptr<cdsResidue>> residues_;
     int number_;
 };
 }

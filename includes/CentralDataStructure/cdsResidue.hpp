@@ -9,20 +9,20 @@
 
 namespace cds
 {
-class Molecule;
-class Atom;
-class Residue : public Abstract::Residue, public glygraph::Node<Residue>
+class cdsMolecule;
+class cdsAtom;
+class cdsResidue : public Abstract::Residue, public glygraph::Node<cdsResidue>
 {
 public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
-    Residue();
+    cdsResidue();
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
     inline const int& getNumber() {return number_;}
-    std::vector<Atom*> getAtoms();
+    std::vector<cdsAtom*> getAtoms();
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ private:
     //////////////////////////////////////////////////////////
     //                    ATTRIBUTES                        //
     //////////////////////////////////////////////////////////
-    std::vector<std::unique_ptr<Atom>> atoms_;
+    std::vector<std::unique_ptr<cdsAtom>> atoms_;
     int number_;
 };
 }

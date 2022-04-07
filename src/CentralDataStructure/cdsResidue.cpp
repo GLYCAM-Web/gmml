@@ -1,18 +1,18 @@
-#include "includes/CentralDataStructure/residue.hpp"
-#include "includes/CentralDataStructure/atom.hpp"
+#include "includes/CentralDataStructure/cdsAtom.hpp"
+#include "includes/CentralDataStructure/cdsResidue.hpp"
 
-using cds::Residue;
+using cds::cdsResidue;
 
 //////////////////////////////////////////////////////////
 //                    CONSTRUCTOR                       //
 //////////////////////////////////////////////////////////
-Residue::Residue() : number_(0) {}
+cdsResidue::cdsResidue() : number_(0) {}
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
-std::vector<cds::Atom*> Residue::getAtoms()
+std::vector<cds::cdsAtom*> cdsResidue::getAtoms()
 {
-    std::vector<Atom*> atoms;
+    std::vector<cdsAtom*> atoms;
     for(auto &atomPtr : atoms_)
     {
         atoms.push_back(atomPtr.get());
