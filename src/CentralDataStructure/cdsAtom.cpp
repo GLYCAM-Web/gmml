@@ -26,7 +26,7 @@ cds::cdsCoordinate* cdsAtom::getCoordinate()
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
 void cdsAtom::setCoordinate(const cdsCoordinate& newCoord)
-{
+{ // Dealing with one coord, so want it to be the coord returned when someone calls getCoordiante.
     if(coordinates_.empty())
     {
         this->addCoordinate(newCoord);

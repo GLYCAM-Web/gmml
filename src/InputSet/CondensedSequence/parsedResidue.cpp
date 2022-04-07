@@ -4,13 +4,13 @@
 
 using CondensedSequence::ParsedResidue;
 
-ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType)
+ParsedResidue::ParsedResidue(std::string residueString, absResidue::Type specifiedType)
 : Node(residueString), fullResidueString_ (residueString)
 {
     this->ParseResidueStringIntoComponents(residueString, specifiedType);
 }
 
-ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor, ParsedResidue::Type specifiedType) 
+ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor, absResidue::Type specifiedType)
 : Node(residueString), fullResidueString_ (residueString)
 {
     this->ParseResidueStringIntoComponents(residueString, specifiedType);

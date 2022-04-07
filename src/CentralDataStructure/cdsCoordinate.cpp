@@ -1,9 +1,7 @@
 #include <cmath> //sqrt
 #include "includes/CentralDataStructure/cdsCoordinate.hpp"
 
-
 using cds::cdsCoordinate;
-
 //////////////////////////////////////////////////////////
 //                    CONSTRUCTOR                       //
 //////////////////////////////////////////////////////////

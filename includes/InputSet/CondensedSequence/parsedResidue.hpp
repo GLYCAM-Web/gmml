@@ -13,8 +13,8 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
-        ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType = ParsedResidue::Type::Undefined);
-        ParsedResidue(std::string residueString, ParsedResidue* neighbor, ParsedResidue::Type specifiedType = ParsedResidue::Type::Undefined);
+        ParsedResidue(std::string residueString, absResidue::Type specifiedType = absResidue::Type::Undefined);
+        ParsedResidue(std::string residueString, ParsedResidue* neighbor, absResidue::Type specifiedType = absResidue::Type::Undefined);
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
