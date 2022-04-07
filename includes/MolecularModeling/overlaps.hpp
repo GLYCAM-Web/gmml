@@ -1,5 +1,5 @@
-#ifndef OVERLAPS_HPP
-#define OVERLAPS_HPP
+#ifndef GMML_INCLUDES_MOLECULARMODELING_OVERLAPS_HPP
+#define GMML_INCLUDES_MOLECULARMODELING_OVERLAPS_HPP
 
 #include <vector>
 
@@ -13,7 +13,7 @@ typedef std::vector<MolecularModeling::Atom*> AtomVector;
 namespace gmml
 {
     double CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB, bool print = false);
-    double CalculateAtomicOverlapsBetweenNonBondedAtoms(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB);
+    double CalculateAtomicOverlapsBetweenNonBondedAtoms(MolecularModeling::AtomVector& atomsA, MolecularModeling::AtomVector& atomsB);
     double CalculateAtomicOverlaps(MolecularModeling::Atom *atomA, MolecularModeling::Atom *atomB, double radiusA = 0.0, double radiusB = 0.0);
 }
-#endif // OVERLAPS_HPP
+#endif // GMML_INCLUDES_MOLECULARMODELING_OVERLAPS_HPP

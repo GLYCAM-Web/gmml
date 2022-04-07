@@ -982,8 +982,9 @@ void Assembly::SetDihedralAngleGeometryWithMetadata()
     // Resovlving overlaps should be a separated function, but I don't want assembly to have a ResidueLinkageVector member. Need new, seperate class.
     for(auto &linkage : all_residue_linkages)
     {
-        //AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance, int angleIncrement
-        linkage.SimpleWiggle(this->GetAllAtomsOfAssembly(), this->GetAllAtomsOfAssembly(), 0.1, 5);
+        //AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, int angleIncrement
+        AtomVector allAtomsOfAssembly = this->GetAllAtomsOfAssembly();
+        linkage.SimpleWiggleCurrentRotamers(allAtomsOfAssembly, allAtomsOfAssembly, 5); // In case a specific rotamer is being created, don't want to step outside those bounds.
     }
 }
 
@@ -1431,6 +1432,16 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence, PrepFileSpace::PrepFile* prep_file)
 {
 //    std::cout << "Building Assembly From Condensed Sequence......" << std::endl;
+    std::vector<std::string> valid_aglycone_names = {"ROH", "OME", "TBT"};
+    std::string aglycone_name = condensed_sequence.substr(condensed_sequence.find_last_of("-") + 1);
+
+    //If the aglycone is something GLYCAM can't handle, default it to ROH.
+    if (std::find(valid_aglycone_names.begin(), valid_aglycone_names.end(), aglycone_name) == valid_aglycone_names.end()){
+        condensed_sequence.erase(condensed_sequence.find_last_of("-") + 1);
+        condensed_sequence += "ROH";
+    }
+
+
     CondensedSequenceSpace::CondensedSequence sequence (condensed_sequence);
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues_temp = sequence.GetCondensedSequenceGlycam06ResidueTree();
     //Here we are not really interested in the output reorganized sequence, but we are trying to rearrange the condensed 06 residue tree acccording to labeling order. 
@@ -1455,10 +1466,14 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
     std::multimap<int, std::pair<AtomVector*, std::string> > index_dihedral_map = std::multimap<int, std::pair<AtomVector*, std::string> >();
     for (std::map<int,std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> >::iterator it =
          glycam06_assembly_residue_map.begin(); it != glycam06_assembly_residue_map.end(); it++){
+
         CondensedSequenceSpace::CondensedSequenceGlycam06Residue* glycam_06_res = it->second.first;
         Residue* corresponding_assembly_residue = it->second.second;
+	std::string glycam_06_resname = glycam_06_res->GetName();
+
         //The atom and the only atom without a parent is the absolute parent(terminal).
         if (glycam_06_res->GetParentId() == gmml::iNotSet && glycam_06_res->GetName() != "Deoxy"){
+	    
             Residue* root = corresponding_assembly_residue;
             //  TURN OFF GEOMETRY OPS
             this->RecursivelySetAngleGeometry(root);
@@ -1473,8 +1488,8 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
             // However, the ResolveClashes function uses the index_dihedral_map, so that must be replaced at the same time.
 
 
-//            int linkage_index = 0;
-//            this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
+//          int linkage_index = 0;
+//          this->RecursivelyTagDihedrals(root, index_dihedral_map, linkage_index);
             break;
         }
     }

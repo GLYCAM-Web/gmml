@@ -5,7 +5,7 @@
 #include "../../../includes/Abstract/builder.hpp"
 #include "../../../includes/MolecularModeling/assembly.hpp" // This has to be relative for SWIG for unknown reasons.
 
-namespace CondensedSequenceSpace
+namespace CondensedSequence
 { // For specifying a specific shape to be built with GenerateSpecific3DStructure
 struct SingleRotamerInfo
 {
@@ -67,7 +67,7 @@ public:
     LinkageOptionsVector GenerateUserOptionsDataStruct();
     void GenerateSpecific3DStructure(SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
     // The following generates no files
-    //void GenerateUpToNRotamers(int maxRotamers = 32); // Will not be used by gems, but leaving the functionality as could be useful.
+    void GenerateUpToNRotamers(int maxRotamers = 32); // Will not be used by gems, but leaving the functionality as could be useful.
     int GetNumberOfShapes(bool likelyShapesOnly = false);
     std::string Print();
 private:

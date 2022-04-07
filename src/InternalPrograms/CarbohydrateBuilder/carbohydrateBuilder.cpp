@@ -7,7 +7,7 @@
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-using CondensedSequenceSpace::carbohydrateBuilder;
+using CondensedSequence::carbohydrateBuilder;
 
 carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath)
 {
@@ -16,20 +16,21 @@ carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::str
         gmml::log(__LINE__, __FILE__, gmml::INF, "Initializing the carbohydrate builder class with condensedSequence: " + condensedSequence + "\n and prepFilePath: " + prepFilePath);
 		assembly_ = MolecularModeling::Assembly(condensedSequence, prepFilePath);
 	    this->InitializeClass(condensedSequence);
-	}
+	}	// Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
 	catch(const std::string &exceptionMessage)
 	{
         gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught this exception message: " + exceptionMessage);
 		this->SetStatus("ERROR", exceptionMessage);
-		// Better to throw once I figure out how to catch it in gems.
 	}
     catch (const std::runtime_error &error)
 	{
+        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
 	    this->SetStatus("ERROR", error.what());
 	}
 	catch (...)
 	{
-	    gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught a throw that was not anticipated. Curious. Death cometh.");
+	    gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught a throw that was not anticipated. Curious. Death cometh?");
+	    this->SetStatus("ERROR", "carbohydrateBuilder constructor caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.");
 	}
 }
 
@@ -72,34 +73,33 @@ void carbohydrateBuilder::GenerateSingle3DStructureSingleFile(std::string fileOu
     return;
 }
 
-void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequenceSpace::SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
+void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequence::SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
 {
-//     std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
-//     std::string linkageName; // Can be whatever the user wants it to be, default to same as index.
-//     std::string dihedralName; // omg / phi / psi / chi1 / chi2
-//     std::string selectedRotamer; // gg / tg / g- etc
-//     std::string numericValue; // user entered 64 degrees. Could be a v2 feature.
+    //     std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
+    //     std::string linkageName; // Can be whatever the user wants it to be, default to same as index.
+    //     std::string dihedralName; // omg / phi / psi / chi1 / chi2
+    //     std::string selectedRotamer; // gg / tg / g- etc
+    //     std::string numericValue; // user entered 64 degrees. Could be a v2 feature.
     // With a conformer (aka rotamerSet), setting will be different as each rotatable_dihedral will be set to e.g. "A", whereas for linkages
     // with combinatorial rotamers (e,g, phi -g/t, omg gt/gg/tg), we need to set each dihedral as specified, but maybe it will be ok to go 
     // through and find the value for "A" in each rotatable dihedral.. yeah actually it should be fine. Leaving comment for time being.
-    try 
+    for (auto &rotamerInfo : conformerInfo)
     {
-        for (auto &rotamerInfo : conformerInfo)
-        {
-            // std::cout << "linkage: " << rotamerInfo.linkageIndex << " " 
-            //     << this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName)
-            //     << " being set to " << rotamerInfo.selectedRotamer << std::endl;
-            int currentLinkageIndex = std::stoi(rotamerInfo.linkageIndex);
-            Residue_linkage *currentLinkage = this->selectLinkageWithIndex(glycosidicLinkages_, currentLinkageIndex);
-            std::string standardDihedralName = this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName);
-            currentLinkage->SetSpecificShape(standardDihedralName, rotamerInfo.selectedRotamer);
-        }
-        //this->ResolveOverlaps();
-        this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure"); 
-        this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", "structure"); 
-    } catch (const char* msg) {
-        std::cerr << msg << std::endl;
+        std::stringstream ss;
+        ss  << "linkage: " << rotamerInfo.linkageIndex << " " << this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName)
+                 << " being set to " << rotamerInfo.selectedRotamer << std::endl;
+        gmml::log(__LINE__,__FILE__, gmml::INF, ss.str());
+        int currentLinkageIndex = std::stoi(rotamerInfo.linkageIndex);
+        Residue_linkage *currentLinkage = this->selectLinkageWithIndex(glycosidicLinkages_, currentLinkageIndex);
+        std::string standardDihedralName = this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName);
+        currentLinkage->SetSpecificShape(standardDihedralName, rotamerInfo.selectedRotamer);
     }
+    std::string fileName = "structure";
+    this->ResolveOverlaps();
+    this->Write3DStructureFile(fileOutputDirectory, "PDB", fileName);
+    this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", fileName);
+
+    return;
 }
 
 int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
@@ -112,19 +112,18 @@ int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
     return numberOfShapes;
 }
 // Commenting out for as not being used, and will be confusing later. The front-end calls a differnt function that will build a single, specific rotamer.
-// void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
-// {
-//     std::cout << "Rotamer Permutator\n";
-//     ResidueLinkageVector linkagesOrderedForPermutation = this->SplitLinkagesIntoPermutants(*(this->GetGlycosidicLinkages()));
-//     this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
-// }
-CondensedSequenceSpace::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()
+ void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
+ {
+     ResidueLinkageVector linkagesOrderedForPermutation = this->SplitLinkagesIntoPermutants(*(this->GetGlycosidicLinkages()));
+     this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
+ }
+CondensedSequence::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()
 {
-    CondensedSequenceSpace::LinkageOptionsVector userOptionsForSequence;
+    CondensedSequence::LinkageOptionsVector userOptionsForSequence;
     for (auto &linkage : *(this->GetGlycosidicLinkages())) // I get back a pointer to the ResidueLinkageVector so I *() it to the first element
     {
        // std::cout << "linko nameo: " << linkage.GetName() << std::endl;
-        CondensedSequenceSpace::DihedralOptionsVector possibleRotamers, likelyRotamers;
+        CondensedSequence::DihedralOptionsVector possibleRotamers, likelyRotamers;
         std::vector<std::string> buffer;
         for (auto &rotatableDihedral : linkage.GetRotatableDihedralsWithMultipleRotamers())
         {
@@ -177,6 +176,7 @@ void carbohydrateBuilder::Write3DStructureFile(std::string fileOutputDirectory, 
         completeFileName += fileOutputDirectory + "/";
     }
     completeFileName += filename;
+    //std::cout << "Will write out " << completeFileName << ". Which is of type: " << fileType << "\n";
     // Use type to figure out which type to write, eg. PDB OFFFILE etc.
     if (fileType == "PDB") 
     { // int link_card_direction = -1, int connect_card_existance = 1, int model_index = -1 , bool useInputPDBResidueNumbers = true);
@@ -210,12 +210,12 @@ void carbohydrateBuilder::SetDefaultShapeUsingMetadata()
     return;
 }
 
-
-void carbohydrateBuilder::ResolveOverlaps() // Need to consider rotamers.
+void carbohydrateBuilder::ResolveOverlaps()
 {
     for(auto &linkage : glycosidicLinkages_)
     {
-        linkage.SimpleWiggle(assembly_.GetAllAtomsOfAssembly(), assembly_.GetAllAtomsOfAssembly(), 0.1, 5);
+        AtomVector allAtomsOfAssembly = assembly_.GetAllAtomsOfAssembly();
+        linkage.SimpleWiggleCurrentRotamers(allAtomsOfAssembly, allAtomsOfAssembly,5);
     }
     return;
 }
@@ -305,18 +305,18 @@ void carbohydrateBuilder::generateLinkagePermutationsRecursively(ResidueLinkageV
         if (rotamerCount <= maxRotamers)
         {
             linkage->SetSpecificShapeUsingMetadata(shapeNumber);
-        //std::cout << linkage->GetFromThisResidue1()->GetId() << "-" << linkage->GetToThisResidue2()->GetId() << ": " << (shapeNumber + 1) << " of " << linkage->GetNumberOfShapes() <<  "\n";
+            std::cout << linkage->GetFromThisResidue1()->GetId() << "-" << linkage->GetToThisResidue2()->GetId() << ": " << (shapeNumber + 1) << " of " << linkage->GetNumberOfShapes() <<  "\n";
             if(std::next(linkage) != end)
             {
                 this->generateLinkagePermutationsRecursively(std::next(linkage), end, maxRotamers, rotamerCount);
             }
-            else // At the end
-            {
+            //else // At the end
+           // {
             //Check for issues? Resolve
             //Figure out name of file: http://128.192.9.183/eln/gwscratch/2020/01/10/succinct-rotamer-set-labeling-for-sequences/
             //Write PDB file
-                this->Write3DStructureFile("PDB", std::to_string(rotamerCount));
-            }
+                this->Write3DStructureFile("./", "PDB", std::to_string(rotamerCount));
+           // }
         }
     }
     return;
@@ -330,7 +330,11 @@ Residue_linkage* carbohydrateBuilder::selectLinkageWithIndex(ResidueLinkageVecto
         if (linkage.GetIndex() == indexQuery)
             return &linkage;
     }
-    throw "Linkage not found in carbohydrateBuilder::selectLinkageWithIndex()";
+    // Error
+    std::stringstream ss;
+    ss << "Linkage numbered " << indexQuery << " not found in linkages for this carbohydrate\n";
+    gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+    throw std::runtime_error(ss.str());
 }
 
 // Just a placeholder until we have a map for linkage ids so the user won't see these underlying ones.

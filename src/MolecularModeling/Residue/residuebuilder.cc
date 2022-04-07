@@ -55,6 +55,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *pr
     //std::stringstream residue_id;
     //Set id for testing purpose
     //residue_id << prep_residue->GetName() <<"_" << " " << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
+//    std::stringstream logss;
     for(PrepFileSpace::PrepFileAtomVector::iterator it1 = prep_atoms.begin(); it1 != prep_atoms.end(); it1++)
     {
         serial_number++;
@@ -71,9 +72,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *pr
             atom_id << assembly_atom->GetName() << "_" << assembly_atom->GetIndex() << "_" << this->GetId();
             assembly_atom->SetId(atom_id.str());
             //std::cout << "Atom id is now: " << assembly_atom->GetId() << std::endl;
-
             assembly_atom->SetNaming("glycam06");
-
             //Attention: SetAtomType()function is overloaded as MolecularModeling::Atom::SetAtomType() and MolecularModeling::MolecularDynamicAtom::SetAtomType(). You don't really know which one to use.
             //Likewise, GetAtomType() is also overloaded.
             //In my situation, I called MolecularModeling::MolecularModelingAtom::SetAtomType(), but later called MolecularModeling::Atom::GetAtomType(). The result is empty.
@@ -82,10 +81,8 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *pr
             assembly_atom->MolecularDynamicAtom::SetCharge(prep_atom->GetCharge());
             assembly_atom->MolecularDynamicAtom::SetMass(gmml::dNotSet);
             assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
-
             gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfoContainer AtomTypeMetaData;
             std::string element = AtomTypeMetaData.GetElementForAtomType(atom_type);
-
             assembly_atom->SetElementSymbol(element);
             int index = std::distance(prep_atoms.begin(), it1);
             PrepFileSpace::PrepFileAtom* parent_prep_atom = parent_atoms.at(index);
@@ -139,39 +136,39 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *pr
                 coordinate_list.push_back(great_grandparent_coordinate);
                 coordinate_list.push_back(grandparent_coordinate);
                 coordinate_list.push_back(parent_coordinate);
-// std::cout << "Starting to get Cartesian coordinates from internal coords for serial number:  " << std::endl;
-// std::cout << "  Index is greater than 2  ;  in prep residue:  " << prep_residue->GetName() << std::endl;
-// std::cout << "    Serial number:  " << serial_number << " ;  Prep Name:  " << prep_atom->GetName() << " ;  Assembly Name:  " << assembly_atom->GetName() << std::endl;
-// std::cout << "    Parent Name & index  : " << parent_atoms.at(index)->GetName() << "  " << parent_index << std::endl;
-// std::cout << "       X:   " << parent_coordinate->GetX() << std::endl;
-// std::cout << "       y:   " << parent_coordinate->GetY() << std::endl;
-// std::cout << "       Z:   " << parent_coordinate->GetZ() << std::endl;
-// std::cout << "    G Parent Name  & index : " << parent_atoms.at(parent_index)->GetName() << "  " << grandparent_index << std::endl;
-// std::cout << "       X:   " << grandparent_coordinate->GetX() << std::endl;
-// std::cout << "       y:   " << grandparent_coordinate->GetY() << std::endl;
-// std::cout << "       Z:   " << grandparent_coordinate->GetZ() << std::endl;
-// std::cout << "    G G Parent Name  & index : " << parent_atoms.at(grandparent_index)->GetName()  << "  " << great_grandparent_index << std::endl;
-// std::cout << "       X:   " << great_grandparent_coordinate->GetX() << std::endl;
-// std::cout << "       y:   " << great_grandparent_coordinate->GetY() << std::endl;
-// std::cout << "       Z:   " << great_grandparent_coordinate->GetZ() << std::endl;
+//                logss << "Index is greater than 2 in prep residue: " << prep_residue->GetName() << "\n";
+//                logss << "Serial number: " << serial_number << "\nPrep Name: " << prep_atom->GetName() << "\nAssembly Name: " << assembly_atom->GetName() << "\n";
+//                logss << "Parent Name & index :" << parent_atoms.at(index)->GetName() << "  " << parent_index << "\n";
+//                logss << "       X:   " << parent_coordinate->GetX() << "\n";
+//                logss << "       y:   " << parent_coordinate->GetY() << "\n";
+//                logss << "       Z:   " << parent_coordinate->GetZ() << "\n";
+//                logss << "Grand Parent Name  & index : " << parent_atoms.at(parent_index)->GetName() << "  " << grandparent_index << "\n";
+//                logss << "       X:   " << grandparent_coordinate->GetX() << "\n";
+//                logss << "       y:   " << grandparent_coordinate->GetY() << "\n";
+//                logss << "       Z:   " << grandparent_coordinate->GetZ() << "\n";
+//                logss << "Great Grand Parent Name  & index : " << parent_atoms.at(grandparent_index)->GetName()  << "  " << great_grandparent_index << "\n";
+//                logss << "       X:   " << great_grandparent_coordinate->GetX() << "\n";
+//                logss << "       y:   " << great_grandparent_coordinate->GetY() << "\n";
+//                logss << "       Z:   " << great_grandparent_coordinate->GetZ() << "\n";
             }
-// std::cout << "    My Prep Entry Info follows: " << std::endl;
-// std::cout << "       Bond:      " << prep_atom->GetBondLength()  << std::endl;
-// std::cout << "       Angle:     " << prep_atom->GetAngle()  << std::endl;
-// std::cout << "       Dihedral:  " << prep_atom->GetDihedral()  << std::endl;
-// std::cout << "    These coordinates are BEFORE the function : " << std::endl;
-// std::cout << "the size is:  "  << coordinate_list.size() << std::endl;
-// if ( coordinate_list.size() > 2 ) {
-// std::cout << "       [0]   X:   " << coordinate_list[0]->GetX() << std::endl;
-// std::cout << "             y:   " << coordinate_list[0]->GetY() << std::endl;
-// std::cout << "             Z:   " << coordinate_list[0]->GetZ() << std::endl;
-// std::cout << "       [1]   X:   " << coordinate_list[1]->GetX() << std::endl;
-// std::cout << "             y:   " << coordinate_list[1]->GetY() << std::endl;
-// std::cout << "             Z:   " << coordinate_list[1]->GetZ() << std::endl;
-// std::cout << "       [2]   X:   " << coordinate_list[2]->GetX() << std::endl;
-// std::cout << "             y:   " << coordinate_list[2]->GetY() << std::endl;
-// std::cout << "             Z:   " << coordinate_list[2]->GetZ() << std::endl;
-// }
+//            logss << "    My Prep Entry Info follows: " << "\n";
+//            logss << "       Bond:      " << prep_atom->GetBondLength()  << "\n";
+//            logss << "       Angle:     " << prep_atom->GetAngle()  << "\n";
+//            logss << "       Dihedral:  " << prep_atom->GetDihedral()  << "\n";
+//            logss << "    These coordinates are BEFORE the function : " << "\n";
+//            logss << "the size is:  "  << coordinate_list.size() <<" \n";
+            if ( coordinate_list.size() > 2 )
+            {
+//                logss << "       [0]   X:   " << coordinate_list[0]->GetX() << "\n";
+//                logss << "             y:   " << coordinate_list[0]->GetY() << "\n";
+//                logss << "             Z:   " << coordinate_list[0]->GetZ() << "\n";
+//                logss << "       [1]   X:   " << coordinate_list[1]->GetX() << "\n";
+//                logss << "             y:   " << coordinate_list[1]->GetY() << "\n";
+//                logss << "             Z:   " << coordinate_list[1]->GetZ() << "\n";
+//                logss << "       [2]   X:   " << coordinate_list[2]->GetX() << "\n";
+//                logss << "             y:   " << coordinate_list[2]->GetY() << "\n";
+//                logss << "             Z:   " << coordinate_list[2]->GetZ() << "\n";
+            }
             GeometryTopology::Coordinate* coordinate = new GeometryTopology::Coordinate();
             GeometryTopology::Coordinate rawcoordinate;
             double bond_length = prep_atom->GetBondLength();
@@ -232,6 +229,7 @@ void Residue::BuildResidueFromPrepFileResidue(PrepFileSpace::PrepFileResidue *pr
             this->AddAtom(assembly_atom);
     }*/
     }
+//    gmml::log(__LINE__,__FILE__, gmml::INF, logss.str());
 
     this->AddHeadAtom(head_atom);
     this->AddTailAtom(tail_atom);

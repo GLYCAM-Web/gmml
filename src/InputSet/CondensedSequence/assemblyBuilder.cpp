@@ -20,6 +20,7 @@ using MolecularModeling::Assembly;
 AssemblyBuilder::AssemblyBuilder(std::string inputSequence, std::string prepFilePath, Assembly *inputAssembly) : SequenceManipulator{inputSequence} 
 {
 	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependancy Oliver.
+	this->SetIndexByConnectivity();
 	codeutils::ensureFileExists(prepFilePath);
 	PrepFileSpace::PrepFile prepFile(prepFilePath);
 	this->SetPrepResidueMap(prepFile.GetResidues()); //A mapping between a residue name and its residue object
@@ -89,6 +90,7 @@ void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, Molecu
 		gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
 		Residue& newGmmlChild = assembly->CreateResidue(prepEntry->second, parsedChild->GetType());
 		newGmmlChild.addLabel(parsedChild->getLabel());
+		newGmmlChild.SetResidueNumber(parsedChild->getIndex()); // Number and index have become too intertwined. Need to fix this.
 		//newGmmlChild.AddEdge(&gmmlParent, parsedChild->GetLinkageName()); // I think this is wishlist versus BondResiduesDeduceAtoms.
 		this->BondResiduesDeduceAtoms(gmmlParent, newGmmlChild, parsedChild->GetLinkageName());
 		//this->InitializeInterResidueGeometry(gmmlParent, newGmmlChild); // I think this is wishlist versus BondResiduesDeduceAtoms.

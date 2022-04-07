@@ -31,7 +31,7 @@ int main(int argc, char** argv)
         StringVector splitLine = gmml::splitStringByDelimiter(line, delimiter);
         std::string inputSequence = splitLine.at(1);
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
-        CondensedSequenceSpace::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
+        CondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
         if (carbBuilder.IsStatusOk())
         {
             carbBuilder.Print();
