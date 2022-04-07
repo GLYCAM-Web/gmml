@@ -22,9 +22,10 @@ In order to build GMML, you are required to have the following software availabl
 * `boost`
 * `g++` (or a c++ compiler of your choice)
 * `make`
-* `python` (version >= 3.9.5)
-* `python-dev` (version >= 3.9.5, possibly not needed)
+* `python3.9` (version >= 3.9.5)
+* `python3.9-dev` (version >= 3.9.5, possibly not needed)
 * `git`
+* `swig` (Version 4.0.2)
 
 Installation instructions will vary according to what package manager your distro uses. If you are using apt as a package manager on a linux system, you should be able to use a command like this:
 
@@ -33,6 +34,8 @@ sudo apt-get update &&\
 sudo apt-get install libssl1.1 libssl-dev git python3.9 python3.9-dev libboost-all-dev cmake g++ git-all
 ```
 For other linux distros, please follow the instructions for the package managment software included with your system.
+
+Please note that swig 4.0.2 must be installed from [their website](https://www.swig.org/download.html)
 
 ---
 ## Obtaining the software
@@ -84,62 +87,77 @@ gmml$ cd tests/
 gmml/tests$ ./compile_run_tests.bash
 ```
 
+Please note that running GMML bare metal will cause some tests to fail. This is of no concern because these tests need some extra things running to check, but those are internal for now. 
+
 The output will tell you whether or not the library is behaving appropriately and if all tests are passed the output will look similar to the following:
 
 ```bash
-gmml/tests$ ./compile_run_tests.bash
-
-Number of tests found: 14
+Number of tests found: 18
 Beginning testing.
 
 
-Using test file:  000.test.buildBySequenceOldWay.sh
+Using test file:  000.test.buildBySequenceOldWay.sh 
 Testing buildBySequence... Test passed.
 
-Using test file:  001.test.buildBySequenceMetaWay.sh
+Using test file:  001.test.buildBySequenceMetaWay.sh 
 Testing buildBySequenceMeta... Test passed.
 
-Using test file:  002.test.createAssemblyWritePDB.sh
+Using test file:  002.test.createAssemblyWritePDB.sh 
 Testing create_Assembly_WritePDB... Test passed.
 
-Using test file:  003.test.SuperimpositionEigen.sh
+Using test file:  003.test.SuperimpositionEigen.sh 
 Testing superimposition_Eigen... Test passed.
 
-Using test file:  004.test.PDBpreprocessor.sh
-Testing PDBpreprocessor... Test passed.
+Using test file:  004.test.PDBpreprocessor.sh 
+Testing PDBPreprocessor... Test passed.
 
-Using test file:  005.test.Overlaps.sh
+Using test file:  005.test.Overlaps.sh 
 Testing Overlaps function... Test passed.
 
-Using test file:  006.test.BFMP-RingShapeCalculation.sh
+Using test file:  006.test.BFMP-RingShapeCalculation.sh 
 Testing BFMP Ring Shape Calculation... Test passed.
 
-Using test file:  007.test.DetectSugars.sh
+Using test file:  007.test.DetectSugars.sh 
 Testing detectSugars... Test passed.
 
-Using test file:  008.test.PDB2GlycamAndSubgraphMatching.sh
-Testing pdb2glycam and molecule subgraph matching... 1 matches found.
+Using test file:  008.test.PDB2GlycamAndSubgraphMatching.sh 
+Testing pdb2glycam and molecule subgraph matching... Iupac name: DGalpb1-4DGlcpNAcb1-3DGalpb1-4DGlcpb1-ROH
 Test passed.
 
-Using test file:  009.test.Reorder_and_Label_Sequence.sh
+Using test file:  009.test.Reorder_and_Label_Sequence.sh 
 Testing Sequence reordering and labeling... Test passed.
 
-Using test file:  010.test.buildBySequenceRotamer.sh
+Using test file:  010.test.buildBySequenceRotamer.sh 
 Testing buildBySequenceRotamer... Test passed.
 
-Using test file:  011.test.writeResNumbers.sh
+Using test file:  011.test.writeResNumbers.sh 
 Testing writing original and new residue numbers into a PDB file... Test passed.
 
-Using test file:  012.test.AddSolventNeutralize.sh
+Using test file:  012.test.AddSolventNeutralize.sh 
 Testing 012.AddSolventNeutralize... Test passed.
 
-Using test file:  013.test.buildOligoaccharideLibrary.sh
+Using test file:  013.test.buildOligoaccharideLibrary.sh 
 Testing buildOligosaccharide library... Test passed.
 
-14 tests were attempted
-14 tests passed
-14 were required
+Using test file:  014.test.SequenceParser.sh 
+Testing 014.test.SequenceParser.cc... Test passed.
+
+Using test file:  015.test.SequenceToAssembly.sh 
+Testing 015.test.SequenceAssembly.cc... Test FAILED!. Output file different
+
+Using test file:  016.test.DrawGlycan.sh 
+Testing 016.test.DrawGlycan.cc...
+ls: cannot access '*.svg': No such file or directory
+Test FAILED!. Output file different
+
+Using test file:  017.test.GlycoproteinBuilder.sh 
+Testing 017.test.GlycoproteinBuilder.cpp... Test passed.
+
+18 tests were attempted
+16 tests passed 
+18 were required
 ```
+
 ---
 ## Documentation
 
