@@ -2,19 +2,19 @@
 #define GMML_INPUTSET_CONDENSED_SEQUENCE_PARSED_RESIDUE_HPP
 
 #include <string>
+#include "includes/Abstract/absResidue.hpp"
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp" // TemplateGraph
-#include "includes/Abstract/residue.hpp"
 
 namespace CondensedSequence
 {
-	class ParsedResidue : public Abstract::Residue , public glygraph::Node<ParsedResidue>
+	class ParsedResidue : public Abstract::absResidue , public glygraph::Node<ParsedResidue>
 	{
 	public:
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
-        ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType = ParsedResidue::Type::Undefined);
-        ParsedResidue(std::string residueString, ParsedResidue* neighbor, ParsedResidue::Type specifiedType = ParsedResidue::Type::Undefined);
+        ParsedResidue(std::string residueString, absResidue::Type specifiedType = absResidue::Type::Undefined);
+        ParsedResidue(std::string residueString, ParsedResidue* neighbor, absResidue::Type specifiedType = absResidue::Type::Undefined);
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
