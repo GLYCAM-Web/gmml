@@ -5,9 +5,9 @@
 #include <sys/stat.h>
 #include "includes/InternalPrograms/GlycoproteinBuilder/glycosylationSite.hpp"
 #include "includes/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
-#include "includes/Abstract/builder.hpp"
+#include "includes/Abstract/absBuilder.hpp"
 
-class GlycoproteinBuilder : public Abstract::Builder
+class GlycoproteinBuilder : public Abstract::absBuilder
 {
 public:
     //////////////////////////////////////////////////////////

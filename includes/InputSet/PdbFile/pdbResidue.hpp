@@ -4,6 +4,8 @@
 #include <string>
 #include <iostream>
 #include <functional>
+
+#include "includes/CentralDataStructure/cdsResidue.hpp"
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
 
 // Oliver Jan 2022
@@ -15,7 +17,7 @@
 namespace pdb
 {
 typedef std::vector<std::unique_ptr<AtomRecord>>::iterator AtomRecordIterator;
-class PdbResidue : public abstrab::Labels
+class PdbResidue : public cds::cdsResidue<pdb::AtomRecord>
 {
 public:
     //////////////////////////////////////////////////////////
@@ -45,8 +47,8 @@ public:
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
     //void AddAtom(AtomRecord* atomRecord);
-    void CreateAtom(const std::string& line, const int& currentModelNumber);
-    void CreateAtom(const std::string atomName, GeometryTopology::Coordinate& atomCoord);
+    void CreateAtomFromLine(const std::string& line, const int& currentModelNumber);
+    //void CreateAtom(const std::string atomName, GeometryTopology::Coordinate& atomCoord);
     void SetName(const std::string name);
     inline void AddTerCard() {hasTerCard_ = true;}
     inline void RemoveTerCard() {hasTerCard_ = false;}
@@ -67,7 +69,7 @@ private:
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     //std::vector<AtomRecord*> atomRecords_; // Residue does not own these. Owned by residues's owner.
-    std::vector<std::unique_ptr<AtomRecord>> atomRecords_; // Residue does not own these. Owned by residues's owner.
+    //std::vector<std::unique_ptr<AtomRecord>> atomRecords_; // Residue does not own these. Owned by residues's owner.
     bool hasTerCard_;
     int modelNumber_;
 };

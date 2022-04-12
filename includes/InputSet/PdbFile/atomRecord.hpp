@@ -7,16 +7,18 @@
 #include "includes/GeometryTopology/coordinate.hpp"
 #include "includes/common.hpp" // gmml::iNotSet
 #include "includes/MolecularModeling/TemplateGraph/AbstractObject/includes/Labels.hpp"
+#include "includes/CentralDataStructure/cdsAtom.hpp"
 
 namespace pdb
 {
-class AtomRecord : public abstrab::Labels
+class AtomRecord : public cds::cdsAtom
 {
 public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
     // Default constructor:
+    AtomRecord(const AtomRecord &tempAtom);
     AtomRecord(const std::string& atomName = "", const std::string& residueName = "", const int& residueSequenceNumber = gmml::iNotSet, const std::string& insertionCode = gmml::sNotSet, const GeometryTopology::Coordinate& coord = GeometryTopology::Coordinate(), const std::string& chainId = gmml::sNotSet, const int& modelNumber = 1, const int& serialNumber = gmml::iNotSet, const std::string& recordName = "ATOM",  const std::string& alternateLocation = gmml::sNotSet, const double& occupancy = gmml::dNotSet, const double& temperatureFactor = gmml::dNotSet, const std::string& element = "", const std::string& charge = "");
     // Constructor when reading lines:
     AtomRecord(const std::string& line, int modelNumber = 1);

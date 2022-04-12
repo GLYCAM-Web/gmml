@@ -10,7 +10,6 @@
 
 namespace cds
 {
-//class cdsCoordinate;
 class cdsAtom : public glygraph::Node<cdsAtom>
 {
 public:
