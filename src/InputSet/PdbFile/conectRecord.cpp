@@ -8,7 +8,7 @@ using pdb::ConectRecord;
 //////////////////////////////////////////////////////////
 //                    CONSTRUCTOR                       //
 //////////////////////////////////////////////////////////
-ConectRecord::ConectRecord(std::string &line, pdb::PdbModel& coordinateSection)
+ConectRecord::ConectRecord(std::string &line, pdb::PdbModel& pdbModel)
 {
     std::vector<std::string> possibleSerialNumberStrings = {line.substr(6,5), line.substr(11,5), line.substr(16,5), line.substr(21,5), line.substr(26,5) };
     std::vector<AtomRecord*> atomRecords;
@@ -22,7 +22,7 @@ ConectRecord::ConectRecord(std::string &line, pdb::PdbModel& coordinateSection)
         catch (...) {} // this is fine, they might not all be present.
         if (serialNumber != 0)
         {
-            AtomRecord* foundAtom = coordinateSection.FindAtom(serialNumber);
+            AtomRecord* foundAtom = pdbModel.FindAtom(serialNumber);
             if (foundAtom != nullptr)
             {
                 atomRecords.push_back(foundAtom);

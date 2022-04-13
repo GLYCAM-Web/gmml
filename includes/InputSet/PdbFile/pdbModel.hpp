@@ -7,6 +7,7 @@
 //#include "includes/InputSet/PdbFile/pdbResidue.hpp"
 //#include "includes/InputSet/PdbFile/atomRecord.hpp"
 #include "includes/CentralDataStructure/cdsAssembly.hpp"
+#include "includes/InputSet/PdbFile/conectRecord.hpp"
 
 namespace pdb
 {
@@ -51,6 +52,8 @@ private:
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
     std::string PeekAtResidueId(const std::string &line);
+    void addConnection(AtomRecord* atom1, AtomRecord* atom2);
+    inline const std::vector<ConectRecord>& GetConectRecords() const {return conectRecords_;}
     //inline pdb::PdbResidue* GetCurrentResidue() {return &(residues_.front());}
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
@@ -62,6 +65,7 @@ private:
     //std::vector<std::unique_ptr<AtomRecord>> atomRecords_;
    // std::vector<std::unique_ptr<PdbResidue>> residues_;
     //std::vector<PdbResidue*> residues_;
+    std::vector<ConectRecord> conectRecords_;
 };
 }
 #endif // GMML_INCLUDES_INPUTSET_PDBFILE_COORDINATESECTION_HPP

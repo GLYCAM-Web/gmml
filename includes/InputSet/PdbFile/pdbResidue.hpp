@@ -49,9 +49,11 @@ public:
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
+    void modifyNTerminal(const std::string& type);
+    void modifyCTerminal(const std::string& type);
 //    AtomRecord* FindAtom(const std::string& queryName) const;
 //    AtomRecord* FindAtom(const int& serialNumber) const;
-    bool DeleteAtomRecord(AtomRecord* atom);
+   // bool DeleteAtomRecord(AtomRecord* atom);
     //AtomRecordIterator FindPositionOfAtom(AtomRecord* queryAtom);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //

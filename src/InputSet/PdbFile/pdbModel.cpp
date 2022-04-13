@@ -79,6 +79,13 @@ std::string PdbModel::PeekAtResidueId(const std::string &line)
     return residueName + "_" + residueNumber + "_" + insertionCode + "_" + chainId;
 }
 
+void PdbModel::addConnection(AtomRecord* atom1, AtomRecord* atom2)
+{
+    conectRecords_.emplace_back(std::vector{atom1, atom2});
+    return;
+}
+
+
 //std::vector<std::vector<pdb::PdbResidue*>> PdbAssembly::GetModels() const
 //{
 //    std::vector<std::vector<pdb::PdbResidue*>> models;

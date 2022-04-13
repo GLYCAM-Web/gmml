@@ -1,5 +1,6 @@
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
+#include "includes/GeometryTopology/geometrytopology.hpp" // get_cartesian_point_from_internal_coords
 #include "includes/CodeUtils/logging.hpp"
 using pdb::PdbResidue;
 //////////////////////////////////////////////////////////
@@ -114,14 +115,56 @@ const std::string PdbResidue::GetParmName() const // If terminal, need to look u
 //{
 //    return modelNumber_;
 //}
+//////////////////////////////////////////////////////////
+//                    MUTATOR                           //
+//////////////////////////////////////////////////////////
 
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
+void PdbResidue::modifyNTerminal(const std::string& type)
+{
+    gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + this->GetId());
+    if (type == "NH3+")
+    {
+        AtomRecord* atom = this->FindAtom("H");
+        if (atom != nullptr)
+        {
+            gmml::log(__LINE__,__FILE__,gmml::INF, "Deleting atom with id: " + atom->GetId());
+            this->deleteAtom(atom);
+        }
+    }
+    else
+    {
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "Cannot handle this type of terminal option: " + type);
+    }
+    return;
+}
 
-//////////////////////////////////////////////////////////
-//                          MUTATOR                     //
-//////////////////////////////////////////////////////////
+void PdbResidue::modifyCTerminal(const std::string& type)
+{
+    gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + this->GetId());
+    if (type == "CO2-")
+    {
+        AtomRecord* atom = this->FindAtom("OXT");
+        if (atom == nullptr)
+        {
+            // I don't like this, but at least it's somewhat contained:
+            AtomRecord* atomCA = this->FindAtom("CA");
+            AtomRecord* atomC = this->FindAtom("C");
+            AtomRecord* atomO = this->FindAtom("O");
+            GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->GetCoordinate(), atomC->GetCoordinate(), atomO->GetCoordinate(), 120.0, 180.0, 1.25);
+            this->createAtom("OXT", oxtCoord);
+            gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + atomO->GetId());
+        }
+    }
+    else
+    {
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "Cannot handle this type of terminal option: " + type);
+    }
+    return;
+}
+
 void PdbResidue::CreateAtomFromLine(const std::string& line, const int& currentModelNumber)
 {
     AtomRecord tempRecord(line, currentModelNumber);
@@ -129,6 +172,7 @@ void PdbResidue::CreateAtomFromLine(const std::string& line, const int& currentM
     //atoms_.push_back(std::make_unique<AtomRecord>(line, currentModelNumber));
     return;
 }
+
 
 //void PdbResidue::CreateAtom(const std::string atomName, GeometryTopology::Coordinate& atomCoord)
 //{

@@ -20,8 +20,9 @@
 #include "includes/InputSet/PdbFile/journalRecord.hpp"
 #include "includes/InputSet/PdbFile/remarkRecord.hpp"
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
+#include "includes/InputSet/PdbFile/atomRecord.hpp"
 #include "includes/InputSet/PdbFile/conectRecord.hpp"
-//#include "includes/InputSet/PdbFile/atomRecord.hpp"
+
 //#include "includes/InputSet/PdbFile/pdbResidue.hpp"
 //#include "includes/InputSet/PdbFile/pdbModel.hpp"
 #include "includes/CentralDataStructure/cdsEnsemble.hpp"
@@ -74,16 +75,16 @@ private:
     std::stringstream ExtractHeterogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, const std::vector<std::string> recordNames);
     std::stringstream ExtractHomogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, std::string previousName);
     inline const std::vector<DatabaseReference>& GetDatabaseReferences() const {return databaseReferences_;}
-    inline const std::vector<ConectRecord>& GetConectRecords() const {return conectRecords_;}
+//    inline const std::vector<ConectRecord>& GetConectRecords() const {return conectRecords_;}
 //    inline PdbModel& GetCoordinateSection() {return coordinateSection_;}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
-    void AddConnection(AtomRecord* atom1, AtomRecord* atom2);
+//    void AddConnection(AtomRecord* atom1, AtomRecord* atom2);
     //void DeleteAtomRecord(AtomRecord* atom);
-    void ModifyNTerminal(const std::string& type, PdbResidue* nTerminalResidue);
-    void ModifyCTerminal(const std::string& type, PdbResidue* residue);
-    void InsertCap(const PdbResidue& residue, const std::string& type);
+//    void ModifyNTerminal(const std::string& type, PdbResidue* nTerminalResidue);
+//    void ModifyCTerminal(const std::string& type, PdbResidue* residue);
+//    void InsertCap(const PdbResidue& residue, const std::string& type);
     //////////////////////////////////////////////////////////
     //                        ATTRIBUTES                    //
     //////////////////////////////////////////////////////////
@@ -95,7 +96,6 @@ private:
     RemarkRecord remarkRecord_;
 //    PdbModel coordinateSection_;
     std::vector<DatabaseReference> databaseReferences_;
-    std::vector<ConectRecord> conectRecords_;
 };
 }
 #endif /* INCLUDES_INPUTSET_PDBFILE_PDBFILE_HPP */

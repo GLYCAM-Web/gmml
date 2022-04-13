@@ -43,12 +43,13 @@ void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream)
         //std::cout << "Parsing the line: " << line << "\n";
         codeUtils::ExpandLine(line, pdb::iPdbLineLength);
         std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
-        std::vector<std::string> coordSectionCards {"MODEL", "ATOM", "ANISOU", "TER", "HETATM", "ENDMDL"};
+        std::vector<std::string> coordSectionCards {"MODEL", "ATOM", "ANISOU", "TER", "HETATM", "ENDMDL", "CONECT"};
         std::vector<std::string> databaseCards {"DBREF", "DBREF1", "DBREF2"};
         if(std::find(coordSectionCards.begin(), coordSectionCards.end(), recordName) != coordSectionCards.end())
         {
             std::stringstream recordSection = this->ExtractHeterogenousRecordSection(pdbFileStream, line, coordSectionCards);
-            coordinateSection_ = PdbModel(recordSection);
+            PdbModel temp = PdbModel(recordSection);
+            this->AddModel(temp);
         }
         else if(recordName == "HEADER")
         {
@@ -83,15 +84,15 @@ void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream)
                 databaseReferences_.emplace_back(line);
             }
         }
-        else if(recordName == "CONECT")
-        {
-            std::stringstream conectSection = this->ExtractHomogenousRecordSection(pdbFileStream, line, recordName);
-            std::string line;
-            while(getline(conectSection, line))
-            {
-                conectRecords_.emplace_back(line, coordinateSection_); // this is special as it needs the coordinateSection.
-            }
-        }
+//        else if(recordName == "CONECT")
+//        {
+//            std::stringstream conectSection = this->ExtractHomogenousRecordSection(pdbFileStream, line, recordName);
+//            std::string line;
+//            while(getline(conectSection, line))
+//            {
+//                conectRecords_.emplace_back(line, coordinateSection_); // this is special as it needs the coordinateSection.
+//            }
+//        }
     }
     return;
 }
@@ -168,11 +169,11 @@ const float& PdbFile::GetBFactor() const
     return this->GetRemarkRecord().GetBFactor();
 }
 
-void PdbFile::AddConnection(AtomRecord* atom1, AtomRecord* atom2)
-{
-    conectRecords_.emplace_back(std::vector{atom1, atom2});
-    return;
-}
+//void PdbFile::AddConnection(AtomRecord* atom1, AtomRecord* atom2)
+//{
+//    conectRecords_.emplace_back(std::vector{atom1, atom2});
+//    return;
+//}
 
 //void PdbFile::DeleteAtomRecord(AtomRecord* atom)
 //{
@@ -180,48 +181,48 @@ void PdbFile::AddConnection(AtomRecord* atom1, AtomRecord* atom2)
 //    return;
 //}
 
-void PdbFile::ModifyNTerminal(const std::string& type, PdbResidue* residue)
-{
-    gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + residue->GetId());
-    if (type == "NH3+")
-    {
-        AtomRecord* atom = residue->FindAtom("H");
-        if (atom != nullptr)
-        {
-            gmml::log(__LINE__,__FILE__,gmml::INF, "Deleting atom with id: " + atom->GetId());
-            residue->DeleteAtomRecord(atom);
-        }
-    }
-    else
-    {
-        gmml::log(__LINE__, __FILE__, gmml::WAR, "Cannot handle this type of terminal option: " + type);
-    }
-    return;
-}
-
-void PdbFile::ModifyCTerminal(const std::string& type, PdbResidue* residue)
-{
-    gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + residue->GetId());
-    if (type == "CO2-")
-    {
-        AtomRecord* atom = residue->FindAtom("OXT");
-        if (atom == nullptr)
-        {
-            // I don't like this, but at least it's somewhat contained:
-            AtomRecord* atomCA = residue->FindAtom("CA");
-            AtomRecord* atomC = residue->FindAtom("C");
-            AtomRecord* atomO = residue->FindAtom("O");
-            GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->GetCoordinate(), atomC->GetCoordinate(), atomO->GetCoordinate(), 120.0, 180.0, 1.25);
-            residue->createAtom("OXT", oxtCoord);
-            gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + atomO->GetId());
-        }
-    }
-    else
-    {
-        gmml::log(__LINE__, __FILE__, gmml::WAR, "Cannot handle this type of terminal option: " + type);
-    }
-    return;
-}
+//void PdbFile::ModifyNTerminal(const std::string& type, PdbResidue* residue)
+//{
+//    gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + residue->GetId());
+//    if (type == "NH3+")
+//    {
+//        AtomRecord* atom = residue->FindAtom("H");
+//        if (atom != nullptr)
+//        {
+//            gmml::log(__LINE__,__FILE__,gmml::INF, "Deleting atom with id: " + atom->GetId());
+//            residue->DeleteAtomRecord(atom);
+//        }
+//    }
+//    else
+//    {
+//        gmml::log(__LINE__, __FILE__, gmml::WAR, "Cannot handle this type of terminal option: " + type);
+//    }
+//    return;
+//}
+//
+//void PdbFile::ModifyCTerminal(const std::string& type, PdbResidue* residue)
+//{
+//    gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + residue->GetId());
+//    if (type == "CO2-")
+//    {
+//        AtomRecord* atom = residue->FindAtom("OXT");
+//        if (atom == nullptr)
+//        {
+//            // I don't like this, but at least it's somewhat contained:
+//            AtomRecord* atomCA = residue->FindAtom("CA");
+//            AtomRecord* atomC = residue->FindAtom("C");
+//            AtomRecord* atomO = residue->FindAtom("O");
+//            GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->GetCoordinate(), atomC->GetCoordinate(), atomO->GetCoordinate(), 120.0, 180.0, 1.25);
+//            residue->createAtom("OXT", oxtCoord);
+//            gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + atomO->GetId());
+//        }
+//    }
+//    else
+//    {
+//        gmml::log(__LINE__, __FILE__, gmml::WAR, "Cannot handle this type of terminal option: " + type);
+//    }
+//    return;
+//}
 
 //void PdbFile::SerializeAtomRecordNumbers()
 //{
