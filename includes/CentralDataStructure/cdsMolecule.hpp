@@ -7,8 +7,6 @@
 
 namespace cds
 {
-class cdsAtom;
-class cdsResidue;
 template <class residueT, class atomT>
 class cdsMolecule : public glygraph::Node<cdsMolecule<residueT,atomT>>
 {
@@ -34,6 +32,11 @@ public:
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
 private:
+    //////////////////////////////////////////////////////////
+    //                    FUNCTIONS                         //
+    //////////////////////////////////////////////////////////
+    residueT* createNewResidue(const std::string residueName, const residueT& positionReferenceResidue);
+    typename std::vector<std::unique_ptr<residueT>>::iterator findPositionOfResidue(const residueT* queryResidue);
     //////////////////////////////////////////////////////////
     //                    ATTRIBUTES                        //
     //////////////////////////////////////////////////////////
@@ -67,5 +70,46 @@ std::vector<const atomT*> cdsMolecule<residueT, atomT>::getAtoms() const
     }
     return atoms;
 }
+//////////////////////////////////////////////////////////
+//                    FUNCTIONS                         //
+//////////////////////////////////////////////////////////
+template< class residueT, class atomT >
+residueT* cdsMolecule<residueT, atomT>::createNewResidue(const std::string residueName, const residueT& positionReferenceResidue)
+{
+    //Where the residue is in the vector matters. It should go after the reference residue.
+    auto position = this->findPositionOfResidue(&positionReferenceResidue);
+    if (position != residues_.end())
+    {
+        ++position; // it is ok to insert at end(). I checked. It was ok. Ok.
+        position = residues_.insert(position, std::make_unique<residueT>(residueName, &positionReferenceResidue));
+        gmml::log(__LINE__,__FILE__,gmml::INF, "New residue named " + residueName + " has been born; You're welcome.");
+    }
+    else
+    {
+        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create residue named " + residueName + " as referenceResidue was not found\n");
+    }
+    return (*position).get(); // Wow ok, so dereference the reference to a uniquePtr, then use get() to create a raw ptr.
+}
+
+template< class residueT, class atomT >
+typename std::vector<std::unique_ptr<residueT>>::iterator cdsMolecule<residueT, atomT>::findPositionOfResidue(const residueT* queryResidue)
+{
+    auto i = residues_.begin();
+    auto e = residues_.end();
+    while (i != e)
+    {
+        if (queryResidue == i->get())
+        {
+            return i;
+        }
+        else
+        {
+            ++i;
+        }
+    }
+    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find " + queryResidue->GetId() + " in atom records\n");
+    return e;
+}
+
 } // namespace
 #endif // INCLUDES_CENTRALDATASTRUCTURE_MOLECULE_HPP

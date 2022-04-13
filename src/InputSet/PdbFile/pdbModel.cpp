@@ -1,16 +1,18 @@
-#include <includes/InputSet/PdbFile/pdbAssembly.hpp>
 #include <algorithm> // std::find
+
+#include "includes/InputSet/PdbFile/pdbModel.hpp"
+#include "includes/InputSet/PdbFile/pdbChain.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/common.hpp" // gmml::PROTEINS
-using pdb::PdbAssembly;
 
+using pdb::PdbModel;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbAssembly::PdbAssembly() {}
+PdbModel::PdbModel() {}
 
-PdbAssembly::PdbAssembly(std::stringstream &stream_block)
+PdbModel::PdbModel(std::stringstream &stream_block)
 {
     int currentModelNumber = 1;
 //    PdbResidue* currentResidue;
@@ -64,7 +66,7 @@ PdbAssembly::PdbAssembly(std::stringstream &stream_block)
 //////////////////////////////////////////////////////////
 
 // This is bad as it repeats how to read a line and how to create a residue ID, but I need to know which residue to put the atom into before I construct the atom.
-std::string PdbAssembly::PeekAtResidueId(const std::string &line)
+std::string PdbModel::PeekAtResidueId(const std::string &line)
 {
     // Dealing with number overruns for serialNumber and residueNumber
     int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
@@ -96,7 +98,7 @@ std::string PdbAssembly::PeekAtResidueId(const std::string &line)
 //    return models;
 //}
 
-std::vector<std::vector<pdb::PdbResidue*>> PdbAssembly::GetProteinChains()
+std::vector<std::vector<pdb::PdbResidue*>> PdbModel::GetProteinChains()
 {
     std::vector<std::vector<pdb::PdbResidue*>> chains;
     std::string previousChain = "AUniqueLittleString";
@@ -137,7 +139,7 @@ std::vector<std::vector<pdb::PdbResidue*>> PdbAssembly::GetProteinChains()
 //    return residues;
 //}
 
-std::vector<pdb::PdbResidue*> PdbAssembly::FindResidues(const std::string selector)
+std::vector<pdb::PdbResidue*> PdbModel::FindResidues(const std::string selector)
 {
     std::vector<pdb::PdbResidue*> matchingResidues;
     for(auto &residue : residues_)
@@ -151,7 +153,7 @@ std::vector<pdb::PdbResidue*> PdbAssembly::FindResidues(const std::string select
     return matchingResidues;
 }
 
-void PdbAssembly::ChangeResidueName(const std::string& selector, const std::string& newName)
+void PdbModel::ChangeResidueName(const std::string& selector, const std::string& newName)
 {
     for(auto &residue : residues_)
     {
@@ -165,7 +167,7 @@ void PdbAssembly::ChangeResidueName(const std::string& selector, const std::stri
     return;
 }
 
-pdb::AtomRecord* PdbAssembly::FindAtom(const int& serialNumber) const
+pdb::AtomRecord* PdbModel::FindAtom(const int& serialNumber) const
 {
     AtomRecord* foundAtom = nullptr;
     for(auto &residue : residues_)
@@ -223,7 +225,7 @@ pdb::AtomRecord* PdbAssembly::FindAtom(const int& serialNumber) const
 //}
 
 
-pdb::PdbResidue* PdbAssembly::CreateNewResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const pdb::PdbResidue& referenceResidue)
+pdb::PdbResidue* PdbModel::CreateNewResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const pdb::PdbResidue& referenceResidue)
 {
     //Where the residue is in the vector matters. It should go after the reference residue.
     pdb::PdbResidueIterator position = this->FindPositionOfResidue(&referenceResidue);
@@ -240,7 +242,8 @@ pdb::PdbResidue* PdbAssembly::CreateNewResidue(const std::string residueName, co
     return (*position).get(); // Wow ok, so dereference the reference to a uniquePtr, then use get() to create a raw ptr.
 }
 
-pdb::PdbResidueIterator PdbAssembly::FindPositionOfResidue(const PdbResidue* queryResidue)
+
+pdb::PdbResidueIterator PdbModel::FindPositionOfResidue(const PdbResidue* queryResidue)
 {
     auto i = residues_.begin();
     auto e = residues_.end();
@@ -275,14 +278,14 @@ pdb::PdbResidueIterator PdbAssembly::FindPositionOfResidue(const PdbResidue* que
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 ////////////////////////////////////////////////////////
-void PdbAssembly::Print(std::ostream &out) const
+void PdbModel::Print(std::ostream &out) const
 {
     for (auto &residue : residues_)
     {
         residue->Print(out);
     }
 }
-void PdbAssembly::Write(std::ostream& stream) const
+void PdbModel::Write(std::ostream& stream) const
 {
     std::vector<std::vector<pdb::PdbResidue*>> models = this->GetModels(); // Vectors of residues in a vector organized by model.
     for (auto &model : models)

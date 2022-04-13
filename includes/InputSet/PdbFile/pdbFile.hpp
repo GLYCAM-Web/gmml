@@ -13,7 +13,6 @@
 #include <vector>
 #include <fstream>      // std::ifstream
 
-#include "includes/InputSet/PdbFile/atomRecord.hpp"
 #include "includes/InputSet/PdbFile/headerRecord.hpp"
 #include "includes/InputSet/PdbFile/databaseReferenceRecord.hpp"
 #include "includes/InputSet/PdbFile/titleRecord.hpp"
@@ -22,13 +21,19 @@
 #include "includes/InputSet/PdbFile/remarkRecord.hpp"
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 #include "includes/InputSet/PdbFile/conectRecord.hpp"
-#include "includes/InputSet/PdbFile/pdbResidue.hpp"
-#include "pdbAssembly.hpp"
+//#include "includes/InputSet/PdbFile/atomRecord.hpp"
+//#include "includes/InputSet/PdbFile/pdbResidue.hpp"
+//#include "includes/InputSet/PdbFile/pdbModel.hpp"
+#include "includes/CentralDataStructure/cdsEnsemble.hpp"
 
 namespace pdb
 {
 const int iPdbLineLength = 80;
-class PdbFile
+class PdbModel;
+class PdbChain;
+class PbdResidue;
+class AtomRecord;
+class PdbFile : public cds::cdsEnsemble<PdbModel, PdbChain, PdbResidue, AtomRecord>
 {
 public:
     //////////////////////////////////////////////////////////
@@ -39,6 +44,7 @@ public:
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
+    inline std::vector<const PdbModel*> getModels() const {return this->getAssemblies();} // renaming cds inherited getter for niceness.
     inline std::string GetInputFilePath() const {return inFilePath_;}
     // These should be private and whatever info they give out should be directly queryable here.
     inline const HeaderRecord& GetHeaderRecord() const {return headerRecord_;}
@@ -56,16 +62,23 @@ public:
     //////////////////////////////////////////////////////////
     //                        DISPLAY                       //
     //////////////////////////////////////////////////////////
-    void Print(std::ostream& out = std::cout) const;
+    //void Print(std::ostream& out = std::cout) const;
     void Write(const std::string outName) const;
     void Write(std::ostream& stream) const;
 private:
+    //////////////////////////////////////////////////////////
+    //                       ACCESSOR                       //
+    //////////////////////////////////////////////////////////
+    //inline std::vector<PdbModel*>getModels() {return this->getAssemblies();}
     void ParseInFileStream(std::ifstream& pdbFileStream);
     std::stringstream ExtractHeterogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, const std::vector<std::string> recordNames);
     std::stringstream ExtractHomogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, std::string previousName);
     inline const std::vector<DatabaseReference>& GetDatabaseReferences() const {return databaseReferences_;}
     inline const std::vector<ConectRecord>& GetConectRecords() const {return conectRecords_;}
-    inline PdbAssembly& GetCoordinateSection() {return coordinateSection_;}
+//    inline PdbModel& GetCoordinateSection() {return coordinateSection_;}
+    //////////////////////////////////////////////////////////
+    //                       FUNCTIONS                      //
+    //////////////////////////////////////////////////////////
     void AddConnection(AtomRecord* atom1, AtomRecord* atom2);
     //void DeleteAtomRecord(AtomRecord* atom);
     void ModifyNTerminal(const std::string& type, PdbResidue* nTerminalResidue);
@@ -80,7 +93,7 @@ private:
     AuthorRecord authorRecord_;
     JournalRecord journalRecord_;
     RemarkRecord remarkRecord_;
-    PdbAssembly coordinateSection_;
+//    PdbModel coordinateSection_;
     std::vector<DatabaseReference> databaseReferences_;
     std::vector<ConectRecord> conectRecords_;
 };

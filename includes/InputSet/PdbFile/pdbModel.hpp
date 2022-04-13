@@ -14,14 +14,14 @@ class AtomRecord;
 class PdbResidue;
 class PdbChain;
 //typedef std::vector<std::unique_ptr<PdbResidue>>::iterator PdbResidueIterator;
-class PdbAssembly : public cds::cdsAssembly<PdbChain, PdbResidue, AtomRecord>
+class PdbModel : public cds::cdsAssembly<PdbChain, PdbResidue, AtomRecord>
 {
 public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
-    PdbAssembly();
-    PdbAssembly(std::stringstream& stream_block);
+    PdbModel();
+    PdbModel(std::stringstream& stream_block);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -30,8 +30,8 @@ public:
     //////////////////////////////////////////////////////////
     // This next func is a stopgap until ParamManager comes into being.
     PdbResidue* CreateNewResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const PdbResidue& referenceResidue);
-    std::vector<std::vector<pdb::PdbResidue*>> GetModels() const;
-    std::vector<std::vector<pdb::PdbResidue*>> GetProteinChains(); // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
+    //std::vector<std::vector<pdb::PdbResidue*>> GetModels() const;
+    std::vector<pdb::PdbChain*> GetProteinChains(); // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
     //std::vector<pdb::PdbResidue*> GetResidues() const; // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
     std::vector<pdb::PdbResidue*> FindResidues(const std::string selector); // Uh oh, private parts are exposed. Wee-ooo wee-ooo.
     void ChangeResidueName(const std::string& selector, const std::string& newName);

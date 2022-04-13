@@ -6,12 +6,12 @@
 
 #include "includes/Abstract/absResidue.hpp"
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
+#include "includes/GeometryTopology/coordinate.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
+using GeometryTopology::Coordinate;
 namespace cds
 {
-class cdsAtom;
-class cdsCoordinate;
 template<class T>
 class cdsResidue : public Abstract::absResidue, public glygraph::Node<cdsResidue<T>>
 {
@@ -30,14 +30,14 @@ public:
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
     inline void setNumber(const int& i) {number_ = i;}
-    void CreateAtom(const std::string atomName, cdsCoordinate& atomCoord);
-    void CreateAtom(T atom);
-    bool DeleteAtom(T* atom);
+    void createAtom(const std::string atomName, Coordinate& atomCoord);
+    void createAtom(T atom);
+    bool deleteAtom(T* atom);
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
     typename std::vector<std::unique_ptr<T>>::iterator FindPositionOfAtom(const T* queryAtom) const;
-    T* FindAtom(const std::string& queryName) const;
+    T* FindAtom(const std::string queryName) const;
     T* FindAtom(const int& serialNumber) const;
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
@@ -90,21 +90,21 @@ std::vector<std::string> cdsResidue<T>::getAtomNames() const
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
 template< class T >
-void cdsResidue<T>::CreateAtom(const std::string atomName, cdsCoordinate& atomCoord)
+void cdsResidue<T>::createAtom(const std::string atomName, Coordinate& atomCoord)
 {
     atoms_.push_back(std::make_unique<T>(atomName, this->GetName(), this->GetNumber(), this->GetInsertionCode(), atomCoord, this->GetChainId(), this->GetModelNumber()));
     return;
 }
 
 template< class T >
-void cdsResidue<T>::CreateAtom(T atom)
+void cdsResidue<T>::createAtom(T atom)
 {
     atoms_.push_back(std::make_unique<T>(atom));
     return;
 }
 
 template< class T >
-bool cdsResidue<T>::DeleteAtom(T* atom)
+bool cdsResidue<T>::deleteAtom(T* atom)
 { // Passing in a raw ptr, but the vector is unique_ptr so gotta use i->get() to compare raws.
     auto i = this->FindPositionOfAtom(atom); // auto makes my life easier
     if (i != atoms_.end())
@@ -140,7 +140,7 @@ typename std::vector<std::unique_ptr<T>>::iterator cdsResidue<T>::FindPositionOf
 }
 
 template< class T >
-T* cdsResidue<T>::FindAtom(const std::string& queryName) const
+T* cdsResidue<T>::FindAtom(const std::string queryName) const
 {
     for(auto &atom : atoms_)
     {

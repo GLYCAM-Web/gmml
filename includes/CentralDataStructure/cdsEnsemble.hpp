@@ -1,5 +1,5 @@
-#ifndef INCLUDES_CENTRALDATASTRUCTURE_ASSEMBLY_HPP
-#define INCLUDES_CENTRALDATASTRUCTURE_ASSEMBLY_HPP
+#ifndef INCLUDES_CENTRALDATASTRUCTURE_ENSEMBLE_HPP
+#define INCLUDES_CENTRALDATASTRUCTURE_ENSEMBLE_HPP
 
 #include <string>
 #include <vector>
@@ -8,25 +8,23 @@
 
 namespace cds
 {
-template <class moleculeT, class residueT, class atomT>
-class cdsAssembly : public glygraph::Node<cdsAssembly<moleculeT, residueT, atomT>>
+template <class assemblyT, class moleculeT, class residueT, class atomT>
+class cdsEnsemble : public glygraph::Node<cdsEnsemble<assemblyT, moleculeT, residueT, atomT>>
 {
 public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
-    cdsAssembly() : number_(0) {}
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
-    inline const int& getNumber() {return number_ ;}
     std::vector<const atomT*> getAtoms() const;
     std::vector<const residueT*> getResidues() const;
     std::vector<const moleculeT*> getMolecules() const;
+    std::vector<const assemblyT*> getAssemblies() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
-    inline void setNumber(const int& i) {number_ = i;}
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
@@ -37,25 +35,41 @@ private:
     //////////////////////////////////////////////////////////
     //                    ATTRIBUTES                        //
     //////////////////////////////////////////////////////////
-    std::vector<std::unique_ptr<moleculeT>> molecules_;
-    int number_;
+    std::vector<std::unique_ptr<assemblyT>> assemblies_;
+
 };
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
-template <class moleculeT, class residueT, class atomT>
-std::vector<const moleculeT*> cdsAssembly<moleculeT, residueT, atomT>::getMolecules() const
+
+template <class assemblyT, class moleculeT, class residueT, class atomT>
+std::vector<const assemblyT*> cdsEnsemble<assemblyT, moleculeT, residueT, atomT>::getAssemblies() const
+{
+    std::vector<const assemblyT*> assemblies;
+    for(auto &assPtr : assemblies_)
+    {
+        assemblies.push_back(assPtr.get()); // raw ptr from unique_ptr
+    }
+    return assemblies;
+}
+
+template <class assemblyT, class moleculeT, class residueT, class atomT>
+std::vector<const moleculeT*> cdsEnsemble<assemblyT, moleculeT, residueT, atomT>::getMolecules() const
 {
     std::vector<const moleculeT*> molecules;
-    for(auto &molPtr : molecules_)
+    for(auto &assPtr : this->getAssemblies())
     {
-        molecules.push_back(molPtr.get());
+        std::vector<const moleculeT*> currentAssMols;
+        currentAssMols.push_back(assPtr.getMolecules());
+        molecules.insert(molecules.end(),
+                std::make_move_iterator(currentAssMols.begin()),
+                std::make_move_iterator(currentAssMols.end()) );
     }
     return molecules;
 }
 
-template <class moleculeT, class residueT, class atomT>
-std::vector<const residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResidues() const
+template <class assemblyT, class moleculeT, class residueT, class atomT>
+std::vector<const residueT*> cdsEnsemble<assemblyT, moleculeT, residueT, atomT>::getResidues() const
 {
     std::vector<const residueT*> residues;
     for(auto &molPtr : this->getMolecules())
@@ -68,8 +82,8 @@ std::vector<const residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResidue
     return residues;
 }
 
-template <class moleculeT, class residueT, class atomT>
-std::vector<const atomT*> cdsAssembly<moleculeT, residueT, atomT>::getAtoms() const
+template <class assemblyT, class moleculeT, class residueT, class atomT>
+std::vector<const atomT*> cdsEnsemble<assemblyT, moleculeT, residueT, atomT>::getAtoms() const
 {
     std::vector<const atomT*> atoms;
     for(auto &residue : this->getResidues())
@@ -82,4 +96,4 @@ std::vector<const atomT*> cdsAssembly<moleculeT, residueT, atomT>::getAtoms() co
     return atoms;
 }
 } // namespace
-#endif // ASSEMBLY_HPP
+#endif // INCLUDES_CENTRALDATASTRUCTURE_ENSEMBLE_HPP

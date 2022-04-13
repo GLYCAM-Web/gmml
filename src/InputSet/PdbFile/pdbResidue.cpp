@@ -1,4 +1,5 @@
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
+#include "includes/InputSet/PdbFile/atomRecord.hpp"
 #include "includes/CodeUtils/logging.hpp"
 using pdb::PdbResidue;
 //////////////////////////////////////////////////////////
@@ -26,7 +27,7 @@ PdbResidue::PdbResidue(const std::string& line, const int& modelNumber)
 PdbResidue::PdbResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const PdbResidue *referenceResidue)
 {
     AtomRecord tempAtom(atomName, residueName, referenceResidue->GetSequenceNumber() + 1, referenceResidue->GetInsertionCode(), atomCoord, referenceResidue->GetChainId(), referenceResidue->GetModelNumber());
-    this->CreateAtom(tempAtom); // This should call the cdsResidue CreateAtom function.
+    this->createAtom(tempAtom); // This should call the cdsResidue CreateAtom function.
     //atoms_.push_back(std::make_unique<AtomRecord>(atomName, residueName, referenceResidue->GetSequenceNumber() + 1, referenceResidue->GetInsertionCode(), atomCoord, referenceResidue->GetChainId(), referenceResidue->GetModelNumber()));
     modelNumber_ = referenceResidue->GetModelNumber();
     hasTerCard_ = false;
@@ -124,7 +125,7 @@ const std::string PdbResidue::GetParmName() const // If terminal, need to look u
 void PdbResidue::CreateAtomFromLine(const std::string& line, const int& currentModelNumber)
 {
     AtomRecord tempRecord(line, currentModelNumber);
-    this->CreateAtom(tempRecord);
+    this->createAtom(tempRecord);
     //atoms_.push_back(std::make_unique<AtomRecord>(line, currentModelNumber));
     return;
 }
