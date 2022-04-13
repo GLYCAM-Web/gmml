@@ -8,7 +8,7 @@ using pdb::ConectRecord;
 //////////////////////////////////////////////////////////
 //                    CONSTRUCTOR                       //
 //////////////////////////////////////////////////////////
-ConectRecord::ConectRecord(std::string &line, pdb::CoordinateSection& coordinateSection)
+ConectRecord::ConectRecord(std::string &line, pdb::PdbAssembly& coordinateSection)
 {
     std::vector<std::string> possibleSerialNumberStrings = {line.substr(6,5), line.substr(11,5), line.substr(16,5), line.substr(21,5), line.substr(26,5) };
     std::vector<AtomRecord*> atomRecords;

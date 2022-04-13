@@ -1,16 +1,16 @@
+#include <includes/InputSet/PdbFile/pdbAssembly.hpp>
 #include <algorithm> // std::find
-#include "includes/InputSet/PdbFile/coordinateSection.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/common.hpp" // gmml::PROTEINS
-using pdb::CoordinateSection;
+using pdb::PdbAssembly;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-CoordinateSection::CoordinateSection() {}
+PdbAssembly::PdbAssembly() {}
 
-CoordinateSection::CoordinateSection(std::stringstream &stream_block)
+PdbAssembly::PdbAssembly(std::stringstream &stream_block)
 {
     int currentModelNumber = 1;
 //    PdbResidue* currentResidue;
@@ -64,7 +64,7 @@ CoordinateSection::CoordinateSection(std::stringstream &stream_block)
 //////////////////////////////////////////////////////////
 
 // This is bad as it repeats how to read a line and how to create a residue ID, but I need to know which residue to put the atom into before I construct the atom.
-std::string CoordinateSection::PeekAtResidueId(const std::string &line)
+std::string PdbAssembly::PeekAtResidueId(const std::string &line)
 {
     // Dealing with number overruns for serialNumber and residueNumber
     int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
@@ -77,26 +77,26 @@ std::string CoordinateSection::PeekAtResidueId(const std::string &line)
     return residueName + "_" + residueNumber + "_" + insertionCode + "_" + chainId;
 }
 
-std::vector<std::vector<pdb::PdbResidue*>> CoordinateSection::GetModels() const
-{
-    std::vector<std::vector<pdb::PdbResidue*>> models;
-    int previousModel = -123456789; // It would need to be very wrong to be this value.
-    for(auto &residue : residues_)
-    {
-        if (residue->GetModelNumber() != previousModel )
-        {
-            models.push_back(std::vector<PdbResidue*>{residue.get()});
-            previousModel = residue->GetModelNumber();
-        }
-        else
-        {
-            models.back().push_back(residue.get());
-        }
-    }
-    return models;
-}
+//std::vector<std::vector<pdb::PdbResidue*>> PdbAssembly::GetModels() const
+//{
+//    std::vector<std::vector<pdb::PdbResidue*>> models;
+//    int previousModel = -123456789; // It would need to be very wrong to be this value.
+//    for(auto &residue : residues_)
+//    {
+//        if (residue->GetModelNumber() != previousModel )
+//        {
+//            models.push_back(std::vector<PdbResidue*>{residue.get()});
+//            previousModel = residue->GetModelNumber();
+//        }
+//        else
+//        {
+//            models.back().push_back(residue.get());
+//        }
+//    }
+//    return models;
+//}
 
-std::vector<std::vector<pdb::PdbResidue*>> CoordinateSection::GetProteinChains()
+std::vector<std::vector<pdb::PdbResidue*>> PdbAssembly::GetProteinChains()
 {
     std::vector<std::vector<pdb::PdbResidue*>> chains;
     std::string previousChain = "AUniqueLittleString";
@@ -127,17 +127,17 @@ std::vector<std::vector<pdb::PdbResidue*>> CoordinateSection::GetProteinChains()
     return chains;
 }
 
-std::vector<pdb::PdbResidue*> CoordinateSection::GetResidues() const
-{
-    std::vector<pdb::PdbResidue*> residues; // reserve the right amount of memory.
-    for(auto &resUniquePtr : residues_)
-    {
-        residues.push_back(resUniquePtr.get());
-    }
-    return residues;
-}
+//std::vector<pdb::PdbResidue*> PdbAssembly::GetResidues() const
+//{
+//    std::vector<pdb::PdbResidue*> residues; // reserve the right amount of memory.
+//    for(auto &resUniquePtr : residues_)
+//    {
+//        residues.push_back(resUniquePtr.get());
+//    }
+//    return residues;
+//}
 
-std::vector<pdb::PdbResidue*> CoordinateSection::FindResidues(const std::string selector)
+std::vector<pdb::PdbResidue*> PdbAssembly::FindResidues(const std::string selector)
 {
     std::vector<pdb::PdbResidue*> matchingResidues;
     for(auto &residue : residues_)
@@ -151,7 +151,7 @@ std::vector<pdb::PdbResidue*> CoordinateSection::FindResidues(const std::string 
     return matchingResidues;
 }
 
-void CoordinateSection::ChangeResidueName(const std::string& selector, const std::string& newName)
+void PdbAssembly::ChangeResidueName(const std::string& selector, const std::string& newName)
 {
     for(auto &residue : residues_)
     {
@@ -165,7 +165,7 @@ void CoordinateSection::ChangeResidueName(const std::string& selector, const std
     return;
 }
 
-pdb::AtomRecord* CoordinateSection::FindAtom(const int& serialNumber) const
+pdb::AtomRecord* PdbAssembly::FindAtom(const int& serialNumber) const
 {
     AtomRecord* foundAtom = nullptr;
     for(auto &residue : residues_)
@@ -223,7 +223,7 @@ pdb::AtomRecord* CoordinateSection::FindAtom(const int& serialNumber) const
 //}
 
 
-pdb::PdbResidue* CoordinateSection::CreateNewResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const pdb::PdbResidue& referenceResidue)
+pdb::PdbResidue* PdbAssembly::CreateNewResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const pdb::PdbResidue& referenceResidue)
 {
     //Where the residue is in the vector matters. It should go after the reference residue.
     pdb::PdbResidueIterator position = this->FindPositionOfResidue(&referenceResidue);
@@ -240,7 +240,7 @@ pdb::PdbResidue* CoordinateSection::CreateNewResidue(const std::string residueNa
     return (*position).get(); // Wow ok, so dereference the reference to a uniquePtr, then use get() to create a raw ptr.
 }
 
-pdb::PdbResidueIterator CoordinateSection::FindPositionOfResidue(const PdbResidue* queryResidue)
+pdb::PdbResidueIterator PdbAssembly::FindPositionOfResidue(const PdbResidue* queryResidue)
 {
     auto i = residues_.begin();
     auto e = residues_.end();
@@ -275,14 +275,14 @@ pdb::PdbResidueIterator CoordinateSection::FindPositionOfResidue(const PdbResidu
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 ////////////////////////////////////////////////////////
-void CoordinateSection::Print(std::ostream &out) const
+void PdbAssembly::Print(std::ostream &out) const
 {
     for (auto &residue : residues_)
     {
         residue->Print(out);
     }
 }
-void CoordinateSection::Write(std::ostream& stream) const
+void PdbAssembly::Write(std::ostream& stream) const
 {
     std::vector<std::vector<pdb::PdbResidue*>> models = this->GetModels(); // Vectors of residues in a vector organized by model.
     for (auto &model : models)

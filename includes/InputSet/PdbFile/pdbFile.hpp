@@ -13,7 +13,6 @@
 #include <vector>
 #include <fstream>      // std::ifstream
 
-#include "includes/InputSet/PdbFile/coordinateSection.hpp"
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
 #include "includes/InputSet/PdbFile/headerRecord.hpp"
 #include "includes/InputSet/PdbFile/databaseReferenceRecord.hpp"
@@ -24,6 +23,7 @@
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 #include "includes/InputSet/PdbFile/conectRecord.hpp"
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
+#include "pdbAssembly.hpp"
 
 namespace pdb
 {
@@ -65,7 +65,7 @@ private:
     std::stringstream ExtractHomogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, std::string previousName);
     inline const std::vector<DatabaseReference>& GetDatabaseReferences() const {return databaseReferences_;}
     inline const std::vector<ConectRecord>& GetConectRecords() const {return conectRecords_;}
-    inline CoordinateSection& GetCoordinateSection() {return coordinateSection_;}
+    inline PdbAssembly& GetCoordinateSection() {return coordinateSection_;}
     void AddConnection(AtomRecord* atom1, AtomRecord* atom2);
     //void DeleteAtomRecord(AtomRecord* atom);
     void ModifyNTerminal(const std::string& type, PdbResidue* nTerminalResidue);
@@ -80,7 +80,7 @@ private:
     AuthorRecord authorRecord_;
     JournalRecord journalRecord_;
     RemarkRecord remarkRecord_;
-    CoordinateSection coordinateSection_;
+    PdbAssembly coordinateSection_;
     std::vector<DatabaseReference> databaseReferences_;
     std::vector<ConectRecord> conectRecords_;
 };

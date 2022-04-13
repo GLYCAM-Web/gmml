@@ -40,15 +40,15 @@ PdbResidue::PdbResidue(const std::string residueName, const std::string atomName
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
-std::vector<std::string> PdbResidue::GetAtomNames() const
-{
-    std::vector<std::string> foundAtomNames;
-    for(auto &atomRecord : this->getAtoms())
-    {
-        foundAtomNames.push_back(atomRecord->GetName());
-    }
-    return foundAtomNames;
-}
+//std::vector<std::string> PdbResidue::GetAtomNames() const
+//{
+//    std::vector<std::string> foundAtomNames;
+//    for(auto &atomRecord : this->getAtoms())
+//    {
+//        foundAtomNames.push_back(atomRecord->GetName());
+//    }
+//    return foundAtomNames;
+//}
 
 //pdb::AtomRecord* PdbResidue::GetLastAtom() const
 //{
@@ -109,10 +109,10 @@ const std::string PdbResidue::GetParmName() const // If terminal, need to look u
 //    return this->GetFirstAtom()->GetResidueId();
 //}
 
-const int& PdbResidue::GetModelNumber() const
-{
-    return modelNumber_;
-}
+//const int& PdbResidue::GetModelNumber() const
+//{
+//    return modelNumber_;
+//}
 
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //

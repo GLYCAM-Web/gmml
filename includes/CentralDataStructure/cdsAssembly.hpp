@@ -8,9 +8,6 @@
 
 namespace cds
 {
-class cdsAtom;
-class cdsResidue;
-class cdsMolecule;
 template <class moleculeT, class residueT, class atomT>
 class cdsAssembly : public glygraph::Node<cdsAssembly<moleculeT, residueT, atomT>>
 {
@@ -60,10 +57,10 @@ std::vector<const moleculeT*> cdsAssembly<moleculeT, residueT, atomT>::getMolecu
 template <class moleculeT, class residueT, class atomT>
 std::vector<const residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResidues() const
 {
-    std::vector<const cdsResidue*> residues;
+    std::vector<const residueT*> residues;
     for(auto &molPtr : molecules_)
     {
-        std::vector<const cdsResidue*> currentMoleculeResidues = molPtr->getResidues();
+        std::vector<const residueT*> currentMoleculeResidues = molPtr->getResidues();
         residues.insert(residues.end(),
                 std::make_move_iterator(currentMoleculeResidues.begin()),
                 std::make_move_iterator(currentMoleculeResidues.end()) );
@@ -74,10 +71,10 @@ std::vector<const residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResidue
 template <class moleculeT, class residueT, class atomT>
 std::vector<const atomT*> cdsAssembly<moleculeT, residueT, atomT>::getAtoms() const
 {
-    std::vector<const cdsAtom*> atoms;
+    std::vector<const atomT*> atoms;
     for(auto &residue : this->getResidues())
     {
-        std::vector<const cdsAtom*> currentResidueAtoms = residue->getAtoms();
+        std::vector<const atomT*> currentResidueAtoms = residue->getAtoms();
         atoms.insert( atoms.end(), // Concatenates the vectors. currentResidueAtoms isn't left in a defined state but that's ok here.
                 std::make_move_iterator(currentResidueAtoms.begin()),
                 std::make_move_iterator(currentResidueAtoms.end()) );

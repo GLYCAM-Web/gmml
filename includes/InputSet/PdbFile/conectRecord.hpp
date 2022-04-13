@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
-#include "includes/InputSet/PdbFile/coordinateSection.hpp"
+#include "pdbAssembly.hpp"
 
 namespace pdb
 {
@@ -17,7 +17,7 @@ namespace pdb
             //////////////////////////////////////////////////////////
             //                    CONSTRUCTOR                       //
             //////////////////////////////////////////////////////////
-            ConectRecord(std::string &line, CoordinateSection& coordinateSection);
+            ConectRecord(std::string &line, PdbAssembly& coordinateSection);
             ConectRecord(std::vector<AtomRecord*> atoms );
             //////////////////////////////////////////////////////////
             //                       ACCESSOR                       //

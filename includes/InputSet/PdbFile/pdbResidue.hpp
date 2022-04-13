@@ -8,16 +8,10 @@
 #include "includes/CentralDataStructure/cdsResidue.hpp"
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
 
-// Oliver Jan 2022
-// This class just holds (non-owning) references to atomEntries so that I can more efficiently pass information
-// out of the PdbFile class to other parts of GMML in a structure (residue) that is useful to the other parts.
-// An equivalent Record to "residue" doesn't directly exist in the PDB format. Rather residues are made from the information in ATOM records. A group of ATOM records with the same "chainID" and "resSeq" (aka residue number) belong in the same "residue".
-// This class is owned by CoordinateSection, which also owns the ATOM records. So the refs stored here should never be "dead".
-// By ownership I mean responsible for creating and managing lifetime of.
 namespace pdb
 {
-typedef std::vector<std::unique_ptr<AtomRecord>>::iterator AtomRecordIterator;
-class PdbResidue : public cds::cdsResidue<pdb::AtomRecord>
+//typedef std::vector<std::unique_ptr<AtomRecord>>::iterator AtomRecordIterator;
+class PdbResidue : public cds::cdsResidue<AtomRecord>
 {
 public:
     //////////////////////////////////////////////////////////
@@ -55,10 +49,10 @@ public:
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
-    AtomRecord* FindAtom(const std::string& queryName) const;
-    AtomRecord* FindAtom(const int& serialNumber) const;
+//    AtomRecord* FindAtom(const std::string& queryName) const;
+//    AtomRecord* FindAtom(const int& serialNumber) const;
     bool DeleteAtomRecord(AtomRecord* atom);
-    AtomRecordIterator FindPositionOfAtom(AtomRecord* queryAtom);
+    //AtomRecordIterator FindPositionOfAtom(AtomRecord* queryAtom);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////

@@ -25,6 +25,7 @@ public:
     //////////////////////////////////////////////////////////
     inline const int& getNumber() {return number_;}
     std::vector<const T*> getAtoms() const;
+    std::vector<std::string> getAtomNames() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
@@ -62,6 +63,18 @@ std::vector<const T*> cdsResidue<T>::getAtoms() const
     }
     return atoms;
 }
+
+template< class T >
+std::vector<std::string> cdsResidue<T>::getAtomNames() const
+{
+    std::vector<std::string> foundAtomNames;
+    for(auto &atom : this->getAtoms())
+    {
+        foundAtomNames.push_back(atom->getName());
+    }
+    return foundAtomNames;
+}
+
 
 //template< class T >
 //const std::vector<const T*> cdsResidue<T>::getAtoms() const

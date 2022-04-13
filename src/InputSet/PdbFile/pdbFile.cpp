@@ -43,7 +43,7 @@ void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream)
         if(std::find(coordSectionCards.begin(), coordSectionCards.end(), recordName) != coordSectionCards.end())
         {
             std::stringstream recordSection = this->ExtractHeterogenousRecordSection(pdbFileStream, line, coordSectionCards);
-            coordinateSection_ = CoordinateSection(recordSection);
+            coordinateSection_ = PdbAssembly(recordSection);
         }
         else if(recordName == "HEADER")
         {
@@ -144,7 +144,7 @@ std::stringstream PdbFile::ExtractHomogenousRecordSection(std::ifstream &pdbFile
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 std::string PdbFile::GetUniprotIDs() const
-{
+{f
     std::string UniprotIDs = "";
     for (auto &databaseReference : this->GetDatabaseReferences())
     {
