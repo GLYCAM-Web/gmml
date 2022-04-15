@@ -140,13 +140,13 @@ Using test file:  013.test.buildOligoaccharideLibrary.sh
 Testing buildOligosaccharide library... Test passed.
 
 Using test file:  014.test.SequenceParser.sh 
-Testing 014.test.SequenceParser.cc... Test passed.
+Testing 014.test.SequenceParser.cpp... Test passed.
 
 Using test file:  015.test.SequenceToAssembly.sh 
-Testing 015.test.SequenceAssembly.cc... Test FAILED!. Output file different
+Testing 015.test.SequenceAssembly.cpp... Test FAILED!. Output file different
 
 Using test file:  016.test.DrawGlycan.sh 
-Testing 016.test.DrawGlycan.cc...
+Testing 016.test.DrawGlycan.cpp...
 ls: cannot access '*.svg': No such file or directory
 Test FAILED!. Output file different
 

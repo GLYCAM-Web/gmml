@@ -1188,8 +1188,8 @@ void Assembly::UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue
 
 Here is the error:
 
-src/MolecularModeling/Assembly/glycamnaming.cc: In member function 'bool MolecularModeling::Assembly::PatternMatching(MolecularModeling::Residue*, MolecularModeling::Assembly::ResidueVector, gmml::GlycamAtomNameMap&, gmml::GlycamAtomNameMap&)':
-src/MolecularModeling/Assembly/glycamnaming.cc:568:1: warning: no return statement in function returning non-void [-Wreturn-type]
+src/MolecularModeling/Assembly/glycamnaming.cpp: In member function 'bool MolecularModeling::Assembly::PatternMatching(MolecularModeling::Residue*, MolecularModeling::Assembly::ResidueVector, gmml::GlycamAtomNameMap&, gmml::GlycamAtomNameMap&)':
+src/MolecularModeling/Assembly/glycamnaming.cpp:568:1: warning: no return statement in function returning non-void [-Wreturn-type]
  }
  ^
  */

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 printf "Testing buildBySequenceRotamer... "
-g++ -std=c++17 -I $GEMSHOME/gmml/ -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/010.buildBySequenceRotamer.cc -lgmml -pthread -o buildBySequenceRotamer
+g++ -std=c++17 -I $GEMSHOME/gmml/ -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/010.buildBySequenceRotamer.cpp -lgmml -pthread -o buildBySequenceRotamer
 ./buildBySequenceRotamer > 010.output_buildBySequenceRotamer.txt
 if [ -f structure.pdb ] && [ -f structure.off ]; then
     if ! cmp structure.pdb tests/correct_outputs/010.buildBySequenceRotamer.pdb > /dev/null 2>&1; then

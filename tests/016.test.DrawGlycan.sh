@@ -1,6 +1,6 @@
 #!/bin/bash
-printf "Testing 016.test.DrawGlycan.cc...\n"
-g++ -std=c++17 -I $GEMSHOME/gmml/ -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/016.test.DrawGlycan.cc -lgmml -pthread -o drawGlycan
+printf "Testing 016.test.DrawGlycan.cpp...\n"
+g++ -std=c++17 -I $GEMSHOME/gmml/ -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/016.test.DrawGlycan.cpp -lgmml -pthread -o drawGlycan
 ./drawGlycan
 > 016.output_drawGlycan.txt
 for dotFile in `ls *.dot`

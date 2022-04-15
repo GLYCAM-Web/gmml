@@ -1,7 +1,7 @@
 #!/bin/bash
 
 printf "Testing PDBPreprocessor... "
-g++ -std=c++0x -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/004.PDBPreprocessor.cc -lgmml -pthread -o PDBPreprocessor
+g++ -std=c++0x -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/004.PDBPreprocessor.cpp -lgmml -pthread -o PDBPreprocessor
 ./PDBPreprocessor > /dev/null 2>&1
 if [ -f Processed.pdb ]; then
     if ! cmp Processed.pdb tests/correct_outputs/Processed.pdb > /dev/null 2>&1; then

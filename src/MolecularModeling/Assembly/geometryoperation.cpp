@@ -1384,7 +1384,7 @@ double Assembly::CalculateBondAngleByAtoms(MolecularModeling::Atom *atom1, Molec
 
 // atom1Coordinates << atom1->GetId() << "X: " << a1->GetX() << " Y: " << a1->GetY() << " Z: " << a1->GetZ();
 // gmml::log(__LINE__, __FILE__, gmml::INF, atom1Coordinates.str());
-// OG Feb 2021. DO NOT USE CalculateTorsionAngleByAtoms. Only used by guesses.cc for now until bug sorted. USE GeometryTopology::CalculateDihedralAngle
+// OG Feb 2021. DO NOT USE CalculateTorsionAngleByAtoms. Only used by guesses.cpp for now until bug sorted. USE GeometryTopology::CalculateDihedralAngle
 double Assembly::CalculateTorsionAngleByAtoms(MolecularModeling::Atom *atom1, MolecularModeling::Atom *atom2, MolecularModeling::Atom *atom3, MolecularModeling::Atom *atom4)
 {
   

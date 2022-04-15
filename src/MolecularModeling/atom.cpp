@@ -67,8 +67,8 @@ Atom::Atom(const Atom* atom)
 
 /*! \todo  Figure out why the constructor below gets the error below and fix it.
 
-src/MolecularModeling/atom.cc: In copy constructor 'MolecularModeling::Atom::Atom(const MolecularModeling::Atom&)':
-src/MolecularModeling/atom.cc:51:1: warning: base class 'class MolecularModeling::MolecularDynamicAtom' should be explicitly initialized in the copy constructor [-Wextra]
+src/MolecularModeling/atom.cpp: In copy constructor 'MolecularModeling::Atom::Atom(const MolecularModeling::Atom&)':
+src/MolecularModeling/atom.cpp:51:1: warning: base class 'class MolecularModeling::MolecularDynamicAtom' should be explicitly initialized in the copy constructor [-Wextra]
  Atom::Atom(const Atom& atom)
  ^
 */

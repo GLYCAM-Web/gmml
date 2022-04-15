@@ -5124,8 +5124,8 @@ void Assembly::CalculateOligosaccharideBFactor(Glycan::Oligosaccharide* oligo, s
 
 Here is the error:
 
-src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc: At global scope:
-src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc:4014:61: warning: unused parameter 'parent_oligo' [-Wunused-parameter]
+src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cpp: At global scope:
+src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cpp:4014:61: warning: unused parameter 'parent_oligo' [-Wunused-parameter]
  double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo, Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id)
                                                              ^
 */

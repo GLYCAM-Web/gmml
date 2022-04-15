@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SourceCode="tests/009.reorderSequence.cc"
+SourceCode="tests/009.reorderSequence.cpp"
 Executable="reorderSequence"
 OutputFile="Reordered_Labeled_Sequences.txt"
 CompareFile="tests/correct_outputs/Reordered_Labeled_Sequences.txt"

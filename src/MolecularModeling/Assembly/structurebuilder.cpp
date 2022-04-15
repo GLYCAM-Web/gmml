@@ -253,7 +253,7 @@ void* BuildStructureByDistanceThread(void* args){
 
 void* BuildStructureByDistanceByOptimizedThread(void* args)
 {//This function should be changed to use atomic informatic to build structure by distance more intelligently
-  //Preferrably from the MetaData and not the PDB Statistics in guesses.cc
+  //Preferrably from the MetaData and not the PDB Statistics in guesses.cpp
 
   int local_debug = -1;
   MolecularModeling::DistanceCalculationThreadArgument* arg = (MolecularModeling::DistanceCalculationThreadArgument*)args;

@@ -27,7 +27,7 @@ void ClearAtomDescriptions(Residue *residue);
 AtomVector FindCyclePoints(Atom *atom);
 bool FindRotationPointsForNonCycles(Atom *previous_atom, Atom *current_atom, AtomVector *rotation_points);
 Atom* FindCyclePointNeighbor(const AtomVector atom_path, Atom *cycle_point);
-//commented out the below because it is commented out in the .cc file, and breaks GEMS -DM
+//commented out the below because it is commented out in the .cpp file, and breaks GEMS -DM
 // Atom* FindAtomNeighborThatMatchesQuery(Atom *atom, std::string query);
 Residue* FindResidue(Assembly &assembly, const std::string query);
 double GetMaxDistanceBetweenAtoms(AtomVector atoms);

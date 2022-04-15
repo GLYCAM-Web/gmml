@@ -9,7 +9,7 @@ export LD_LIBRARY_PATH
 
 echo "Testing the segfault generator... "
 
-COMMAND1='g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/isegfault.cc -lgmml -o isegfault '
+COMMAND1='g++ -std=c++0x -I $GEMSHOME/gmml/includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/isegfault.cpp -lgmml -o isegfault '
 COMMAND2='./isegfault > /dev/null  2>&1'
 
 echo "Compiling now with:"
