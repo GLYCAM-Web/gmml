@@ -1,7 +1,6 @@
-// See http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM for an explanation of atom formats in PDB files
 #ifndef GMML_INCLUDES_INPUTSET_PDBFILE_ATOMRECORD_HPP
 #define GMML_INCLUDES_INPUTSET_PDBFILE_ATOMRECORD_HPP
-
+// See http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM for an explanation of atom formats in PDB files
 #include <string>
 #include <iostream>
 #include "includes/GeometryTopology/coordinate.hpp"

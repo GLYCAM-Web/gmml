@@ -3,12 +3,31 @@
 //#include "includes/InputSet/PdbFile/atomRecord.hpp"
 #include "includes/GeometryTopology/coordinate.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp" // get_cartesian_point_from_internal_coords
+#include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
 using pdb::PdbChain;
 ////////////////////////////////////////////////////////////
 ////                       CONSTRUCTOR                    //
 ////////////////////////////////////////////////////////////
+PdbChain::PdbChain(std::stringstream &stream_block)
+{
+    std::string previousResidueId = "InitialValue";
+    std::string line;
+    while(getline(stream_block, line))
+    {
+        std::string residueId = this->PeekAtResidueId(line);
+        if (previousResidueId != residueId)
+        { // Create a residue;
+            residues_.push_back(std::make_unique<PdbResidue>(line, currentModelNumber));
+            previousResidueId = residueId;
+        }
+        else
+        { // Add to previous residue;
+            residues_.back()->CreateAtom(line, currentModelNumber);
+        }
+    }
+}
 //PdbChain::PdbChain(PdbResidue* pdbResidue)
 //{
 //    this->AddResidue(pdbResidue);
@@ -31,6 +50,8 @@ using pdb::PdbChain;
 ////////////////////////////////////////////////////////////
 ////                    FUNCTIONS                         //
 ////////////////////////////////////////////////////////////
+
+
 void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
 {
     // This approach is bad, should be using templates. When parameter manager is good we can use that to remove the get_carestian stuff
@@ -47,7 +68,7 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
         Coordinate hh31CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, 180.0, 1.09);
         Coordinate hh32CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, 60.0, 1.09);
         Coordinate hh33CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, -60.0, 1.09);
-        //AtomRecordIterator atomPosition = this->GetCoordinateSection().FindPositionOfAtom(refResidue.GetLastAtom());
+        //AtomRecordIterator atomPosGition = this->GetCoordinateSection().FindPositionOfAtom(refResidue.GetLastAtom());
         PdbResidue *newNMEResidue = this->createNewResidue("NME", refResidue);
         newNMEResidue->createAtom("N", nCoordNME);
         newNMEResidue->createAtom("H", hCoordNME);
@@ -100,6 +121,19 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
 //        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH33", "ACE", sequenceNumber, hh33CoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
         gmml::log(__LINE__, __FILE__, gmml::INF, "Created ACE residue: " + newACEResidue->GetId());
     }
+}
+
+std::string PdbChain::PeekAtResidueId(const std::string &line)
+{
+    // Dealing with number overruns for serialNumber and residueNumber
+    int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
+    std::string residueName = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
+    std::string chainId = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
+    int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));
+    std::string residueNumber = codeUtils::RemoveWhiteSpace(line.substr(22 + shift, 4 + secondShift));
+    // Insertion code gets shifted right by every overrun in residue number.
+    std::string insertionCode = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
+    return residueName + "_" + residueNumber + "_" + insertionCode + "_" + chainId;
 }
 
 ////////////////////////////////////////////////////////////

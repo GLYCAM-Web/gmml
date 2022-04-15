@@ -43,13 +43,13 @@ void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream)
         //std::cout << "Parsing the line: " << line << "\n";
         codeUtils::ExpandLine(line, pdb::iPdbLineLength);
         std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
-        std::vector<std::string> coordSectionCards {"MODEL", "ATOM", "ANISOU", "TER", "HETATM", "ENDMDL", "CONECT"};
+        std::vector<std::string> coordSectionCards {"MODEL", "ATOM", "ANISOU", "TER", "HETATM", "CONECT"};
         std::vector<std::string> databaseCards {"DBREF", "DBREF1", "DBREF2"};
         if(std::find(coordSectionCards.begin(), coordSectionCards.end(), recordName) != coordSectionCards.end())
         {
             std::stringstream recordSection = this->ExtractHeterogenousRecordSection(pdbFileStream, line, coordSectionCards);
             PdbModel temp = PdbModel(recordSection);
-            this->AddModel(temp);
+            this->addModel(temp);
         }
         else if(recordName == "HEADER")
         {
@@ -97,6 +97,8 @@ void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream)
     return;
 }
 // Initializers used by constructors
+// Should extract all lines that start with the strings in recordNames.
+// Returns when it hits a line that does not start with one of those records.
 std::stringstream PdbFile::ExtractHeterogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, const std::vector<std::string> recordNames)
 {
     std::streampos previousLinePosition = pdbFileStream.tellg(); // Save current line position

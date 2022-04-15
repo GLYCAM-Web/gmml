@@ -15,7 +15,6 @@ PdbModel::PdbModel() {}
 PdbModel::PdbModel(std::stringstream &stream_block)
 {
     int currentModelNumber = 1;
-//    PdbResidue* currentResidue;
     std::string previousResidueId = "InitialValue";
     std::string line;
     while(getline(stream_block, line))
@@ -35,6 +34,20 @@ PdbModel::PdbModel(std::stringstream &stream_block)
             }
         }
         // ATOM
+        //
+        else
+        {
+            // Gimme everything with the same chain, can be everything with no chain.
+            // Function that will read from stringstream until chain ID changes or TER or just not ATOM/HETATM
+            // Pass that into Chain constructor
+//            int shift = 0;
+//                shift = codeUtils::GetSizeOfIntInString(line.substr(12));
+//                chainId_ = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
+
+        }
+
+
+
         else if ( (recordName == "ATOM") || (recordName == "HETATM") )
         {
 //            atomRecords_.push_back(std::make_unique<AtomRecord>(line, currentModelNumber));
@@ -66,18 +79,18 @@ PdbModel::PdbModel(std::stringstream &stream_block)
 //////////////////////////////////////////////////////////
 
 // This is bad as it repeats how to read a line and how to create a residue ID, but I need to know which residue to put the atom into before I construct the atom.
-std::string PdbModel::PeekAtResidueId(const std::string &line)
-{
-    // Dealing with number overruns for serialNumber and residueNumber
-    int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
-    std::string residueName = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
-    std::string chainId = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
-    int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));
-    std::string residueNumber = codeUtils::RemoveWhiteSpace(line.substr(22 + shift, 4 + secondShift));
-    // Insertion code gets shifted right by every overrun in residue number.
-    std::string insertionCode = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
-    return residueName + "_" + residueNumber + "_" + insertionCode + "_" + chainId;
-}
+//std::string PdbModel::PeekAtResidueId(const std::string &line)
+//{
+//    // Dealing with number overruns for serialNumber and residueNumber
+//    int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
+//    std::string residueName = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
+//    std::string chainId = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
+//    int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));
+//    std::string residueNumber = codeUtils::RemoveWhiteSpace(line.substr(22 + shift, 4 + secondShift));
+//    // Insertion code gets shifted right by every overrun in residue number.
+//    std::string insertionCode = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
+//    return residueName + "_" + residueNumber + "_" + insertionCode + "_" + chainId;
+//}
 
 void PdbModel::addConnection(AtomRecord* atom1, AtomRecord* atom2)
 {

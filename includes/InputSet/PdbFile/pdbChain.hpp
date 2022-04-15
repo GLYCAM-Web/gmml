@@ -19,6 +19,7 @@ public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
+    PdbChain(std::stringstream &stream_block);
 //    PdbChain(PdbResidue pdbResidue);
 //    PdbChain(std::vector<PdbResidue> pdbResidues);
     //////////////////////////////////////////////////////////
@@ -38,6 +39,7 @@ public:
     //////////////////////////////////////////////////////////
   //  void Print(std::ostream& out = std::cerr) const;
 private:
+    std::string PeekAtResidueId(const std::string &line)
     //PdbResidue& GetFirstResidue() const;
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
