@@ -65,9 +65,19 @@ STRING(REGEX REPLACE "\n" ";" HDIRECTORIES "${HDIRECTORIES}")
 #Done this way so we dont have to have individual cmake files cascading through
 #Our filesystem, that is annoying and extra work
 include_directories(
-	"${CMAKE_SOURCE_DIR}"
+    "${CMAKE_SOURCE_DIR}"
 	"${HDIRECTORIES}"
 	)
+
+#Will be used once we get TRUs fixed so we dont run checks on the eigen library
+#file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/externalHDirectoryList.txt EXDIRECTORIES)
+#STRING(REGEX REPLACE "./" "${CMAKE_SOURCE_DIR}/" EXDIRECTORIES "${EXDIRECTORIES}")
+#STRING(REGEX REPLACE ";" "\\\\;" EXDIRECTORIES "${EXDIRECTORIES}")
+#STRING(REGEX REPLACE "\n" ";" EXDIRECTORIES "${EXDIRECTORIES}")
+#include_directories(SYSTEM 
+#    "${CMAKE_SOURCE_DIR}"
+#    "${EXDIRECTORIES}"
+#    )
 
 #for the project object value this passes -fpic which is needed
 #to make our files into a shared libary
