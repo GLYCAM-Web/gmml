@@ -2,7 +2,7 @@
 #include "includes/GeometryTopology/ResidueLinkages/rotatable_dihedral.hpp"
 #include "includes/MolecularModeling/atomnode.hpp" // For UpdateAtomsIfPsi
 #include "includes/utils.hpp"
-#include "includes/External_Libraries/PCG/pcg_random.hpp"
+#include "includes/External_Libraries/PCG/pcg_random.h"
 #include "includes/GeometryTopology/geometrytopology.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/MolecularModeling/overlaps.hpp"
