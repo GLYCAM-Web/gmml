@@ -13,6 +13,7 @@ do
         esac
 done
 
+#run-clang-tidy -p ./cmakeBuild/ -header-filter=\.hpp$ -fix
 
 echo "I know its rough, but this will be used until we finish fixing up our includes"
 if [ ${AUTO_RUN} == 1  ] && [ ! -d "./cmakeBuild" ]; then
@@ -35,28 +36,29 @@ if [ -d "./cmakeBuild" ]; then
     echo "Updating the file list cmake uses to build"
     ./updateCmakeFileList.sh
     #now we have to remove all the eigen stuff from our include list cause we dont want traversed at all
-    sed -i '/External_Libraries/d' ./cmakeFileLists/hDirectoryList.txt
+    #sed not needed cause we assume all external libs have .h and all internal code has .hpp
+    #sed -i '/External_Libraries/d' ./cmakeFileLists/hDirectoryList.txt
     echo "Rebuilding our tool chain so it has the new allHeaders.cpp known"
     #cause cmake cache
-    rm -rf ./cmakeBuild
     cmake ${CMAKE_BUILD_TYPE_FLAG} -S . -B ./cmakeBuild -DWRAP_GMML=${WRAP}
+    
+    #NO LONGER NEEDED CAUSE WE FILTER BY FILE EXTENSION
     #gmml/cmakeBuild
-    cd cmakeBuild
-	
-    mv compile_commands.json backup_compile_commands.json
+    #cd cmakeBuild
+    #mv compile_commands.json backup_compile_commands.json
     #basically making the compile commands json only include the allheaders cpp file. This is so 
     #clang will use the all headers file and only that file to walk all of our headers :o) 
     #this is to patch bad clang behvior due to some bad includes that we will eventually find
-    grep '\"file\":.*allHeaders.cpp' backup_compile_commands.json -B 3 -A 1 > compile_commands.json
-    sed -i '1s/^/[\n/' compile_commands.json 
-    sed -i '$a]' compile_commands.json
-    sed -i "s/},/}/" compile_commands.json
-    echo "Compile Commands workaround created, running clang so we can hit all our headers"
+    #grep '\"file\":.*allHeaders.cpp' backup_compile_commands.json -B 3 -A 1 > compile_commands.json
+    #sed -i '1s/^/[\n/' compile_commands.json 
+    #sed -i '$a]' compile_commands.json
+    #sed -i "s/},/}/" compile_commands.json
+    #echo "Compile Commands workaround created, running clang so we can hit all our headers"
     # gmml
-    cd ..
-    #now actually run clang on our header files
-    run-clang-tidy -p ./cmakeBuild -header-filter=.* -fix
-        
+    #cd ..
+    #now actually run clang on our header files, this should run it on everything we have
+    run-clang-tidy -p ./cmakeBuild -header-filter=\.hpp$ -fix
+            
     #Now to ask if we wanna keep the header walking compile commands, just in case. If not I just 
     #revert you back to your normal gmml status
     echo "This will delete the allHeaders.cpp and redo your make tooling and rebuild the lib. Basically this is if"
