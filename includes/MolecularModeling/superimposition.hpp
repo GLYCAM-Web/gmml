@@ -1,8 +1,9 @@
 #ifndef SUPERIMPOSITION_HPP
 #define SUPERIMPOSITION_HPP
 
-#include "../External_Libraries/Eigen_Algebra_Template_Library/Geometry"
 #include "../GeometryTopology/coordinate.hpp"
+#include "../../includes/External_Libraries/Eigen_Algebra_Template_Library/Core"
+#include "../../includes/External_Libraries/Eigen_Algebra_Template_Library/Geometry"
 #include "assembly.hpp"
 #include "atom.hpp"
 

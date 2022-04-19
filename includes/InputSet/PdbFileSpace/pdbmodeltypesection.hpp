@@ -4,10 +4,9 @@
 #ifndef PDBMODELTYPESECTION_HPP
 #define PDBMODELTYPESECTION_HPP
 
+#include <iostream>
 #include <string>
 #include <vector>
-#include <string>
-#include <iostream>
 
 namespace PdbFileSpace
 {

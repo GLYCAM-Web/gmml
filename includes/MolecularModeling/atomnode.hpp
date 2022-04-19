@@ -2,13 +2,12 @@
 #define ATOMNODE_HPP
 
 
-#include <string>
-#include <iostream>
-#include <vector>
+#include "../generictypedefs.hpp"
+#include "atom.hpp" // For AtomVector.
 #include <cstddef>
 #include <iostream>
-#include "atom.hpp" // For AtomVector.
-#include "../generictypedefs.hpp"
+#include <string>
+#include <vector>
 
 namespace MolecularModeling
 {

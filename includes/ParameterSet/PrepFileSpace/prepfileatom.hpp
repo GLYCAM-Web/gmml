@@ -1,10 +1,9 @@
 #ifndef PREPFILEATOM_HPP
 #define PREPFILEATOM_HPP
 
-#include <string>
-#include <iostream>
-#include <iostream>
 #include "../../common.hpp"
+#include <iostream>
+#include <string>
 
 namespace PrepFileSpace
 {
