@@ -4,12 +4,12 @@ AUTO_RUN=0
 while getopts "a" option
 do
         case "$option" in
-                        a)
-                                AUTO_RUN=1
-                                ;;
+            a)
+                   AUTO_RUN=1
+                   ;;
 			*)
-                                exit 1 
-                                ;;
+                  exit 1 
+                  ;;
         esac
 done
 
@@ -20,29 +20,32 @@ if [ ${AUTO_RUN} == 1  ] && [ ! -d "./cmakeBuild" ]; then
 	./make.sh -j $(grep -c ^processor /proc/cpuinfo) -c	
 fi	
 
-
 if [ -d "./cmakeBuild" ]; then
-    #Dont really want to do a bunch of regex now. In the future I will.
     #gmml/src
     cd src/
-    echo "Creating a cpp file that contains all of our source code headers"
+    echo "Creating a cpp file that contains all of our source code headers. This will not include any"
+    echo "external library headers because we dont want to lint code that isnt ours."
     find ../includes -iname "*.hpp" -o -iname "*.h" ! -path "*External_Libraries*" | sort > allHeaders.cpp
     #have to delete a couple of dirs in there cause the find command doesnt work completely its wonky
+    #delete all lines that include External_Libraries
     sed -i '/External_Libraries/d' ./allHeaders.cpp
-    sed -i -e 's/^/\#include "/' ./allHeaders.cpp 
+    #add #include " to the beginning of each line
+    sed -i -e 's/^/\#include "/' ./allHeaders.cpp
+    #add closing quotes for each line
     sed -i -e 's/.hpp/\.hpp\"/' ./allHeaders.cpp
     #gmml
     cd ../
-    echo "Updating the file list cmake uses to build"
-    ./updateCmakeFileList.sh
-    #now we have to remove all the eigen stuff from our include list cause we dont want traversed at all
-    #sed not needed cause we assume all external libs have .h and all internal code has .hpp
-    #sed -i '/External_Libraries/d' ./cmakeFileLists/hDirectoryList.txt
+    echo "Updating the file list cmake uses to build. It is also including out test files so we can"
+    echo "Lint our test files."
+    ./updateCmakeFileList.sh -t
     echo "Rebuilding our tool chain so it has the new allHeaders.cpp known"
-    #cause cmake cache
+    #regens our makefile and the compile commands file. There is no need
+    #to fully rebuild out codebase. I may be wrong but so far it seems like we are good.
     cmake ${CMAKE_BUILD_TYPE_FLAG} -S . -B ./cmakeBuild -DWRAP_GMML=${WRAP}
     
-    #NO LONGER NEEDED CAUSE WE FILTER BY FILE EXTENSION
+    #Below is no longer needed because we filter our lint by file extension. Keep in mind we currently have
+    #all external library headers end with .h and all our source code end with .hpp
+    #Going to keep the code cause it may be nice to use in the future.
     #gmml/cmakeBuild
     #cd cmakeBuild
     #mv compile_commands.json backup_compile_commands.json
@@ -56,41 +59,45 @@ if [ -d "./cmakeBuild" ]; then
     #echo "Compile Commands workaround created, running clang so we can hit all our headers"
     # gmml
     #cd ..
-    #now actually run clang on our header files, this should run it on everything we have
-    run-clang-tidy -p ./cmakeBuild -header-filter=\.hpp$ -fix
-            
-    #Now to ask if we wanna keep the header walking compile commands, just in case. If not I just 
-    #revert you back to your normal gmml status
+    
+    #now actually run clang on all our codes, this should run it on everything we have. This needs to run a
+    #couple of times because tool limitations. Don't worry, this brute force wont be here forever. I will
+    #eventually do a pattern like whats in the updateCmakeFileList script
+    run-clang-tidy $(find ./src ./tests -type f -name "*.cpp") -p ./cmakeBuild -header-filter=\.hpp$ -fix
+    run-clang-tidy $(find ./src ./tests -type f -name "*.cpp") -p ./cmakeBuild -header-filter=\.hpp$ -fix
+    run-clang-tidy $(find ./src ./tests -type f -name "*.cpp") -p ./cmakeBuild -header-filter=\.hpp$ -fix
+    run-clang-tidy $(find ./src ./tests -type f -name "*.cpp") -p ./cmakeBuild -header-filter=\.hpp$ -fix
+    
+    echo "Command that was run:"
+    echo "run-clang-tidy \$(find ./src ./tests -type f -name \"*.cpp\") -p ./cmakeBuild -header-filter=\.hpp$ -fix"
+                
+    #Now check if we want to revert back to nromal gmml. 
     echo "This will delete the allHeaders.cpp and redo your make tooling and rebuild the lib. Basically this is if"
-    echo"you just want to have the script be done. This will remake your code."
+    echo "you just want to have the script be done. This will remake your code."
     echo ""
     read -p "Revert GMML back to normal? [y/n]" -n 1 -r
     echo ""
     if [ ${AUTO_RUN} == 1  ] || [[ $REPLY =~ ^[Yy]$ ]] ; then
         echo "Removing src/allHeaders.cpp file"
         rm ./src/allHeaders.hpp
-        echo "Redoing filelists"
+        echo "Updating file lists cmake uses to walk our files."
         ./updateCmakeFileList.sh
-        echo "refreshing toolchain"
+        #Possibly do a clean compile? It honsestly isnt necessary from my understanding.
+        echo "Refreshing our toolchain"
         cmake ${CMAKE_BUILD_TYPE_FLAG} -S . -B ./cmakeBuild -DWRAP_GMML=${WRAP}
         #./make.sh -j $(grep -c ^processor /proc/cpuinfo) -c 
         echo "Completed"
         exit 0
     fi
-    echo "Okay header files have been run on, workaround complete, leaving everything set up to deal with headers. Just regen"
-    echo "the build tooling using:"
-    echo "cmake ${CMAKE_BUILD_TYPE_FLAG} -S . -B ./cmakeBuild -DWRAP_GMML=${WRAP}"
-    #cmake ${CMAKE_BUILD_TYPE_FLAG} -S . -B ./cmakeBuild -DWRAP_GMML=${WRAP}
+    echo "Okay header files have been run on, workaround complete, leaving everything set up to deal with headers. Once you are"
+    echo "done with the header workaround file rebuild you make toolchain with:"
+    echo "cmake ${CMAKE_BUILD_TYPE_FLAG} -S . -B ./cmakeBuild"
     echo "Now if you want to run clang on your src files go ahead. Good luck"
-    echo "if you want to run clang tools on your c files just refresh the build tooling"
-    echo "and then run:"
-    echo "run-clang-tidy -p ./cmakeBuild -header-filter=.* -fix"
-    echo "also maybe remove the build dir"
     AUTO_RUN=0
     exit 0    
 fi
 echo "run make.sh first you at least need the makefile"
-exit 0
+exit 1
 
 
 
