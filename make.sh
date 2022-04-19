@@ -205,13 +205,13 @@ if [ "$CLEAN" == "1" ]; then
 	if [ -d "./lib" ]; then
 		rm -rf ./lib
 	fi
-#Flattened build dir was removed, no longer need this for cleaning
-#Nice to keep here tho
-#NOTE: The flattened build dir is soon to be removed
-#	if [ -d "./build" ]; then
-#		rm -rf ./build
-#	fi
 fi
+
+#update all of the files we are gonna use. This cannot be auto forever but will be auto until i add proper flags for other scripts
+#to use and auto update.
+echo "Updating the cmake file list of all the files we need to walk and compile."
+./updateCmakeFileList.sh
+echo ""
 
 #Note that we have to generate our makefile with cmake before we build
 # The -S (source) flag is for where the cmakelists file is located
@@ -219,7 +219,6 @@ fi
 echo "Creating makefile using cmake"
 echo ""
 cmake ${CMAKE_BUILD_TYPE_FLAG} -S . -B ./cmakeBuild -DWRAP_GMML=${WRAP}
-
 
 #NOTE: All our build stuff is within the cmakeBuild dir
 echo "Making GMML."
