@@ -93,13 +93,11 @@ std::stringstream PdbModel::extractSingleChainFromRecordSection(std::stringstrea
     return singleChainSection;
 }
 
-
-void PdbModel::addConnection(const AtomRecord* atom1, const AtomRecord* atom2)
+void PdbModel::addConectRecord(const AtomRecord* atom1, const AtomRecord* atom2)
 {
     conectRecords_.emplace_back(std::vector{atom1, atom2});
     return;
 }
-
 
 //std::vector<std::vector<pdb::PdbResidue*>> PdbAssembly::GetModels() const
 //{
@@ -295,6 +293,38 @@ const pdb::AtomRecord* PdbModel::FindAtom(const int& serialNumber) const
 //{
 //
 //}
+void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo, const PreprocessorOptions &inputOptions)
+{
+    std::vector<pdb::PdbResidue*> cysResidues = this->getResiduesWithName(std::vector<std::string> {"CYS", "CYX"});
+    if (cysResidues.empty())
+    {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "No CYS or CYX residues detected in this structure\n");
+    }
+    for (std::vector<pdb::PdbResidue*>::iterator it1 = cysResidues.begin(); it1 != cysResidues.end(); ++it1)
+    { // I want to go through the list and compare from current item to end. Thus it2 = std::next it1
+        PdbResidue* cysRes1 = *it1;
+        AtomRecord* sgAtom1 = cysRes1->FindAtom("SG");
+        for (std::vector<pdb::PdbResidue*>::iterator it2 = std::next(it1, 1); it2 != cysResidues.end(); ++it2)
+        {
+            PdbResidue* cysRes2 = *it2;
+            AtomRecord* sgAtom2 = cysRes2->FindAtom("SG");
+            if ( (sgAtom1 != nullptr) && (sgAtom2 != nullptr) )
+            {
+                double distance = sgAtom1->CalculateDistance(sgAtom2);
+                if (distance < gmml::dSulfurCutoff && distance > 0.001)
+                {
+                    cysRes1->setName("CYX");
+                    cysRes2->setName("CYX");
+                    this->addConectRecord(cysRes1->FindAtom("SG"), cysRes2->FindAtom("SG"));
+                    ppInfo.cysBondResidues_.emplace_back(cysRes1->GetId(), cysRes2->GetId(), distance);
+                    std::stringstream message;
+                    message << "Bonding " << cysRes1->GetId() << " and " << cysRes2->GetId() << " with distance " << distance;
+                    gmml::log(__LINE__, __FILE__, gmml::INF, message.str());
+                }
+            }
+        }
+    }
+}
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 ////////////////////////////////////////////////////////

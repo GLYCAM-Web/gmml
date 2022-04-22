@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include <memory> // unique_ptr
+#include <algorithm> // std::find
+
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
 
 namespace cds
@@ -23,6 +25,8 @@ public:
     std::vector<const atomT*> getAtoms() const;
     std::vector<const residueT*> getResidues() const;
     std::vector<const moleculeT*> getMolecules() const;
+    std::vector<residueT*> getResidues();
+    std::vector<moleculeT*> getMolecules();
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
@@ -32,6 +36,7 @@ public:
     //////////////////////////////////////////////////////////
     void addMolecule(const moleculeT& molecule);
     void addMolecule(std::unique_ptr<moleculeT> myMolecule);
+    std::vector<residueT*> getResiduesWithName(std::vector<std::string> queryNames);
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
@@ -57,12 +62,37 @@ std::vector<const moleculeT*> cdsAssembly<moleculeT, residueT, atomT>::getMolecu
 }
 
 template <class moleculeT, class residueT, class atomT>
+std::vector<moleculeT*> cdsAssembly<moleculeT, residueT, atomT>::getMolecules()
+{
+    std::vector<moleculeT*> molecules;
+    for(auto &molPtr : molecules_)
+    {
+        molecules.push_back(molPtr.get());
+    }
+    return molecules;
+}
+
+template <class moleculeT, class residueT, class atomT>
 std::vector<const residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResidues() const
 {
     std::vector<const residueT*> residues;
     for(auto &molPtr : this->getMolecules())
     {
         std::vector<const residueT*> currentMoleculeResidues = molPtr->getResidues();
+        residues.insert(residues.end(),
+                std::make_move_iterator(currentMoleculeResidues.begin()),
+                std::make_move_iterator(currentMoleculeResidues.end()) );
+    }
+    return residues;
+}
+
+template <class moleculeT, class residueT, class atomT>
+std::vector<residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResidues()
+{
+    std::vector<residueT*> residues;
+    for(auto &molPtr : this->getMolecules())
+    {
+        std::vector<residueT*> currentMoleculeResidues = molPtr->getResidues();
         residues.insert(residues.end(),
                 std::make_move_iterator(currentMoleculeResidues.begin()),
                 std::make_move_iterator(currentMoleculeResidues.end()) );
@@ -97,6 +127,21 @@ void cdsAssembly<moleculeT, residueT, atomT>::addMolecule(std::unique_ptr<molecu
 {
     molecules_.push_back(std::move(myMolecule));
 }
+
+template <class moleculeT, class residueT, class atomT>
+typename std::vector<residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResiduesWithName(std::vector<std::string> queryNames)
+{
+    std::vector<residueT*> residuesWithName;
+    for(auto &residue : this->getResidues())
+    {
+        if (std::find(queryNames.begin(), queryNames.end(), residue->getName()) != queryNames.end())
+        {
+            residuesWithName.push_back(residue);
+        }
+    }
+    return residuesWithName;
+}
+
 
 } // namespace
 #endif // ASSEMBLY_HPP

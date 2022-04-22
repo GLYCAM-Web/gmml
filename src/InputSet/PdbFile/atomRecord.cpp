@@ -240,33 +240,49 @@ void AtomRecord::Print(std::ostream &out) const
 {
     out << "Serial Number: ";
     if(serialNumber_ == gmml::iNotSet)
+    {
         out << " ";
+    }
     else
+    {
         out << serialNumber_;
+    }
     out << ", Atom Name: " << atomName_
-        << ", Alternate Location: " << alternateLocation_
-        << ", Residue Name: " << residueName_
-        << ", Chain ID: " << chainId_
-        << ", Residue Sequence Number: ";
+            << ", Alternate Location: " << alternateLocation_
+            << ", Residue Name: " << residueName_
+            << ", Chain ID: " << chainId_
+            << ", Residue Sequence Number: ";
     if(residueSequenceNumber_ == gmml::iNotSet)
+    {
         out << " ";
+    }
     else
+    {
         out << residueSequenceNumber_;
+    }
     out << ", Inserion Code: " << insertionCode_
-        << ", Coordinate: ";
+            << ", Coordinate: ";
     coordinate_.Print(out);
     out << ", Occupancy: ";
     if(occupancy_ == gmml::dNotSet)
+    {
         out << " ";
+    }
     else
+    {
         out << occupancy_;
+    }
     out << ", Temperature Factor: ";
     if(temperatureFactor_ == gmml::dNotSet)
+    {
         out << " ";
+    }
     else
+    {
         out << temperatureFactor_;
+    }
     out << ", Element: " << element_
-        << ", Charge: " << charge_ << std::endl;
+            << ", Charge: " << charge_ << std::endl;
 }
 void AtomRecord::Write(std::ostream& stream) const
 { // Just copied from original class.

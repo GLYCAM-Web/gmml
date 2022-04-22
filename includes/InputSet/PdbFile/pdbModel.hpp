@@ -8,6 +8,7 @@
 //#include "includes/InputSet/PdbFile/atomRecord.hpp"
 #include "includes/CentralDataStructure/cdsAssembly.hpp"
 #include "includes/InputSet/PdbFile/conectRecord.hpp"
+#include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 
 namespace pdb
 {
@@ -45,7 +46,7 @@ public:
     //PdbResidueIterator FindPositionOfResidue(const PdbResidue* queryResidue);
     std::string extractChainId(const std::string &line);
     std::stringstream extractSingleChainFromRecordSection(std::stringstream &pdbFileStream, std::string line, const std::string& initialChainID);
-
+    void preProcessCysResidues(pdb::PreprocessorInformation &ppInfo, const PreprocessorOptions &inputOptions);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
@@ -56,7 +57,7 @@ private:
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
     std::string PeekAtResidueId(const std::string &line);
-    void addConnection(const AtomRecord* atom1, const AtomRecord* atom2);
+    void addConectRecord(const AtomRecord* atom1, const AtomRecord* atom2);
     inline const std::vector<ConectRecord>& GetConectRecords() const {return conectRecords_;}
     //inline pdb::PdbResidue* GetCurrentResidue() {return &(residues_.front());}
     //////////////////////////////////////////////////////////

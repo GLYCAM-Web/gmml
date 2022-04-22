@@ -5,8 +5,6 @@
 #include <iostream>
 #include <functional>
 
-//#include "includes/InputSet/PdbFile/atomRecord.hpp"
-//#include "includes/InputSet/PdbFile/pdbResidue.hpp"
 #include "includes/CentralDataStructure/cdsMolecule.hpp"
 
 namespace pdb
@@ -29,7 +27,6 @@ public:
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
-//    void AddResidue(PdbResidue &pdbResidue);
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////

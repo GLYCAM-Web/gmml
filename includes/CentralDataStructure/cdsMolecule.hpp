@@ -23,6 +23,7 @@ public:
     inline const int& getNumber() {return number_;}
     std::vector<const atomT*> getAtoms() const;
     std::vector<const residueT*> getResidues() const;
+    std::vector<residueT*> getResidues();
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
@@ -33,6 +34,7 @@ public:
     void addResidue(std::unique_ptr<residueT> myResidue);
     residueT* createNewResidue(const std::string& residueName, const residueT& positionReferenceResidue);
     typename std::vector<std::unique_ptr<residueT>>::iterator findPositionOfResidue(const residueT* queryResidue);
+    std::vector<residueT*> getResidues(std::vector<std::string> queryNames);
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
@@ -53,6 +55,17 @@ template< class residueT, class atomT >
 std::vector<const residueT*> cdsMolecule<residueT, atomT>::getResidues() const
 {
     std::vector<const residueT*> residues;
+    for(auto &residuePtr : residues_)
+    {
+        residues.push_back(residuePtr.get());
+    }
+    return residues;
+}
+
+template< class residueT, class atomT >
+std::vector<residueT*> cdsMolecule<residueT, atomT>::getResidues()
+{
+    std::vector<residueT*> residues;
     for(auto &residuePtr : residues_)
     {
         residues.push_back(residuePtr.get());
@@ -124,6 +137,20 @@ typename std::vector<std::unique_ptr<residueT>>::iterator cdsMolecule<residueT, 
     }
     gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find " + queryResidue->GetId() + " in atom records\n");
     return e;
+}
+
+template< class residueT, class atomT >
+typename std::vector<residueT*> cdsMolecule<residueT, atomT>::getResidues(std::vector<std::string> queryNames)
+{
+    std::vector<residueT*> foundResidues;
+    for(auto &residuePtr : residues_)
+    {
+        if (std::find(queryNames.begin(), queryNames.end(), residuePtr->GetName()) != queryNames.end())
+        {
+            foundResidues.push_back(residuePtr.get());
+        }
+    }
+    return foundResidues;
 }
 
 } // namespace
