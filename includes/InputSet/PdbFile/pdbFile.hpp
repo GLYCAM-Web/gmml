@@ -21,11 +21,11 @@
 #include "includes/InputSet/PdbFile/remarkRecord.hpp"
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
-#include "includes/InputSet/PdbFile/conectRecord.hpp"
-
-//#include "includes/InputSet/PdbFile/pdbResidue.hpp"
-//#include "includes/InputSet/PdbFile/pdbModel.hpp"
+#include "includes/InputSet/PdbFile/pdbResidue.hpp"
+#include "includes/InputSet/PdbFile/pdbChain.hpp"
+#include "includes/InputSet/PdbFile/pdbModel.hpp"
 #include "includes/CentralDataStructure/cdsEnsemble.hpp"
+//#include "includes/InputSet/PdbFile/conectRecord.hpp"
 
 namespace pdb
 {

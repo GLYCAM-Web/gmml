@@ -8,13 +8,15 @@ using pdb::AtomRecord;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-//AtomRecord::AtomRecord() : modelNumber_(1), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(""), residueName_(""), chainId_(""), residueSequenceNumber_(gmml::iNotSet), insertionCode_(""), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("") {}
+AtomRecord::AtomRecord(const std::string& name, const Coordinate& coord)
+: cdsAtom(name, coord)
+{
 
-AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(modelNumber), recordName_(""), serialNumber_(gmml::iNotSet), atomName_(""), alternateLocation_(gmml::sNotSet), residueName_(""), chainId_(gmml::sNotSet), residueSequenceNumber_(gmml::iNotSet), insertionCode_(gmml::sNotSet), occupancy_(gmml::dNotSet), temperatureFactor_(gmml::dNotSet), element_(""), charge_("")
+}
+AtomRecord::AtomRecord(const std::string &line)
 {
     //gmml::log(__LINE__, __FILE__, gmml::INF, "Parsing " + line);
     // In the PDB file the residue number overruns after 9999 and serial number overruns after 99999. First overun for serial doesn't matter as there should be a space between the number and the name. So the problem is above 999999
-    this->SetModelNumber(modelNumber);
     this->SetRecordName(codeUtils::RemoveWhiteSpace(line.substr(0,6)));
     // Dealing with number overruns for serialNumber and residueNumber
     int shift = 0;
@@ -100,49 +102,43 @@ AtomRecord::AtomRecord(const std::string &line, int modelNumber) : modelNumber_(
     }
 }
 
-AtomRecord::AtomRecord(const std::string& name, const GeometryTopology::Coordinate& coord, AtomRecord *sisterAtom)
-{
-    modelNumber_ = sisterAtom->GetModelNumber();
-    recordName_ = sisterAtom->GetRecordName();
-    serialNumber_ = sisterAtom->GetSerialNumber() + 1; // An ok default.
-    atomName_ = name;
-    alternateLocation_ = sisterAtom->GetAlternateLocation();
-    residueName_ = sisterAtom->GetResidueName();
-    chainId_ = sisterAtom->GetChainId();
-    residueSequenceNumber_ = sisterAtom->GetResidueSequenceNumber();
-    insertionCode_ = sisterAtom->GetInsertionCode();
-    occupancy_ = gmml::dNotSet; // Not accurate to copy this from sisterAtom
-    temperatureFactor_ = gmml::dNotSet; // Not accurate to copy this from sisterAtom
-    element_ = name.substr(0,1); // Just take first letter as element. Ok default.
-    charge_ = ""; // Idk when/how this is used. It being a string is weird.
-    coordinate_ = coord;
-}
+//AtomRecord::AtomRecord(const std::string& name, const GeometryTopology::Coordinate& coord, AtomRecord *sisterAtom)
+//{
+//    recordName_ = sisterAtom->GetRecordName();
+//    serialNumber_ = sisterAtom->GetSerialNumber() + 1; // An ok default.
+//    atomName_ = name;
+//    alternateLocation_ = sisterAtom->GetAlternateLocation();
+//    residueName_ = sisterAtom->GetResidueName();
+//    chainId_ = sisterAtom->GetChainId();
+//    residueSequenceNumber_ = sisterAtom->GetResidueSequenceNumber();
+//    insertionCode_ = sisterAtom->GetInsertionCode();
+//    occupancy_ = gmml::dNotSet; // Not accurate to copy this from sisterAtom
+//    temperatureFactor_ = gmml::dNotSet; // Not accurate to copy this from sisterAtom
+//    element_ = name.substr(0,1); // Just take first letter as element. Ok default.
+//    charge_ = ""; // Idk when/how this is used. It being a string is weird.
+//    coordinate_ = coord;
+//}
 
-AtomRecord::AtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const std::string& insertionCode, const GeometryTopology::Coordinate& coord , const std::string& chainId, const int& modelNumber, const int& serialNumber, const std::string& recordName, const std::string& alternateLocation, const double& occupancy, const double& temperatureFactor, const std::string& element, const std::string& charge)
-:
-        modelNumber_(modelNumber),
-        recordName_(recordName),
-        serialNumber_(serialNumber),
-        atomName_(atomName),
-        alternateLocation_(alternateLocation),
-        residueName_(residueName),
-        chainId_(chainId),
-        residueSequenceNumber_(residueSequenceNumber),
-        insertionCode_(insertionCode),
-        occupancy_(occupancy),
-        temperatureFactor_(temperatureFactor),
-        element_(element),
-        charge_(charge),
-        coordinate_(coord)
-{}
+//AtomRecord::AtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const std::string& insertionCode, const GeometryTopology::Coordinate& coord , const std::string& chainId, const int& modelNumber, const int& serialNumber, const std::string& recordName, const std::string& alternateLocation, const double& occupancy, const double& temperatureFactor, const std::string& element, const std::string& charge)
+//:
+//        recordName_(recordName),
+//        serialNumber_(serialNumber),
+//        atomName_(atomName),
+//        alternateLocation_(alternateLocation),
+//        residueName_(residueName),
+//        chainId_(chainId),
+//        residueSequenceNumber_(residueSequenceNumber),
+//        insertionCode_(insertionCode),
+//        occupancy_(occupancy),
+//        temperatureFactor_(temperatureFactor),
+//        element_(element),
+//        charge_(charge),
+//        coordinate_(coord)
+//{}
 
 /////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void AtomRecord::SetModelNumber(const int i)
-{
-    modelNumber_ = i;
-}
 void AtomRecord::SetRecordName(const std::string s)
 {
     recordName_ = s;
@@ -229,7 +225,7 @@ std::string AtomRecord::GetResidueId() const
     {
         ss << this->GetChainId() << "_";
     }
-    ss << this->GetModelNumber();
+   // ss << this->GetModelNumber();
     return ss.str();
 }
 double AtomRecord::CalculateDistance(const AtomRecord* otherAtom) const

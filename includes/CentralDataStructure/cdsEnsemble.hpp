@@ -9,7 +9,7 @@
 namespace cds
 {
 template <class assemblyT, class moleculeT, class residueT, class atomT>
-class cdsEnsemble : public glygraph::Node<cdsEnsemble<assemblyT, moleculeT, residueT, atomT>>
+class cdsEnsemble //: public glygraph::Node<cdsEnsemble<assemblyT, moleculeT, residueT, atomT>>
 {
 public:
     //////////////////////////////////////////////////////////
@@ -25,6 +25,7 @@ public:
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
+    void addAssembly(std::unique_ptr<assemblyT> myAssembly);
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
@@ -95,5 +96,21 @@ std::vector<const atomT*> cdsEnsemble<assemblyT, moleculeT, residueT, atomT>::ge
     }
     return atoms;
 }
+//////////////////////////////////////////////////////////
+//                    MUTATOR                           //
+//////////////////////////////////////////////////////////
+//template <class assemblyT, class moleculeT, class residueT, class atomT>
+//void cdsEnsemble<assemblyT, moleculeT, residueT, atomT>::addAssembly(const assemblyT& assembly)
+//{
+//    assemblies_.push_back(std::make_unique<assemblyT>(assembly));
+//    return;
+//}
+template <class assemblyT, class moleculeT, class residueT, class atomT>
+void cdsEnsemble<assemblyT, moleculeT, residueT, atomT>::addAssembly(std::unique_ptr<assemblyT> myAssembly)
+{
+    assemblies_.push_back(std::move(myAssembly));
+    return;
+}
+
 } // namespace
 #endif // INCLUDES_CENTRALDATASTRUCTURE_ENSEMBLE_HPP

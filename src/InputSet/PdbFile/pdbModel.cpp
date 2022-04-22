@@ -2,6 +2,7 @@
 
 #include "includes/InputSet/PdbFile/pdbModel.hpp"
 #include "includes/InputSet/PdbFile/pdbChain.hpp"
+#include "includes/InputSet/PdbFile/pdbResidue.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/common.hpp" // gmml::PROTEINS
@@ -29,49 +30,23 @@ PdbModel::PdbModel(std::stringstream &stream_block)
             }
             catch (...)
             {
-                gmml::log(__LINE__, __FILE__, gmml::ERR, "Model issue: this ain't an int: " + codeUtils::RemoveWhiteSpace(line.substr(10,4)));
+                gmml::log(__LINE__, __FILE__, gmml::WAR, "Model issue: this ain't an int: " + codeUtils::RemoveWhiteSpace(line.substr(10,4)));
                 currentModelNumber = 1; // Seems like a reasonable default.
             }
         }
         // ATOM
-        //
-        else
+        else if ( (recordName == "ATOM") || (recordName == "HETATM") )
         {
             // Gimme everything with the same chain, can be everything with no chain.
             // Function that will read from stringstream until chain ID changes or TER or just not ATOM/HETATM
-            // Pass that into Chain constructor
-//            int shift = 0;
-//                shift = codeUtils::GetSizeOfIntInString(line.substr(12));
-//                chainId_ = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
-
-        }
-
-
-
-        else if ( (recordName == "ATOM") || (recordName == "HETATM") )
-        {
-//            atomRecords_.push_back(std::make_unique<AtomRecord>(line, currentModelNumber));
-            std::string residueId = this->PeekAtResidueId(line);
-            if (previousResidueId != residueId)
-            { // Create a residue;
-                residues_.push_back(std::make_unique<PdbResidue>(line, currentModelNumber));
-                previousResidueId = residueId;
-            }
-            else
-            { // Add to previous residue;
-                residues_.back()->CreateAtom(line, currentModelNumber);
-            }
-        }
-        // TER . Indicating break in chain i.e. start of new molecule or a branch
-        else if ( (recordName == "TER") && (!residues_.empty()) )
-        {
-            residues_.back()->AddTerCard();
+            std::stringstream singleChainSection = this->extractSingleChainFromRecordSection(stream_block, line, this->extractChainId(line));
+            //this->addMolecule(PdbChain(singleChainSection, this->extractChainId(line)));
+            gmml::log(__LINE__,__FILE__,gmml::INF, "I'm about to die now?");
+            this->addMolecule(std::make_unique<PdbChain>(singleChainSection, this->extractChainId(line)));
         }
     }
-//    for (auto &residue : residues_)
-//    {
-//        residue->Print();
-//    }
+    gmml::log(__LINE__,__FILE__,gmml::INF, "PdbModel Constructor Complete Captain");
+    return;
 }
 
 //////////////////////////////////////////////////////////
@@ -92,7 +67,34 @@ PdbModel::PdbModel(std::stringstream &stream_block)
 //    return residueName + "_" + residueNumber + "_" + insertionCode + "_" + chainId;
 //}
 
-void PdbModel::addConnection(AtomRecord* atom1, AtomRecord* atom2)
+std::string PdbModel::extractChainId(const std::string &line)
+{   // serialNumber can overrun into position 12 in input.
+    int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
+    return codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
+}
+
+std::stringstream PdbModel::extractSingleChainFromRecordSection(std::stringstream &pdbFileStream, std::string line, const std::string& initialChainID)
+{
+    std::streampos previousLinePosition = pdbFileStream.tellg(); // Save current line position
+    std::stringstream singleChainSection;
+    std::string chainID = initialChainID;
+    while(chainID == initialChainID)
+    {
+        singleChainSection << line << std::endl;
+        previousLinePosition = pdbFileStream.tellg(); // Save current line position.
+        if(!std::getline(pdbFileStream, line))
+        {
+            break; // // If we hit the end, time to leave.
+        }
+        chainID = this->extractChainId(line);
+    }
+    pdbFileStream.seekg(previousLinePosition); // Go back to previous line position. E.g. was reading HEADER and found TITLE.
+    gmml::log(__LINE__,__FILE__,gmml::INF, singleChainSection.str());
+    return singleChainSection;
+}
+
+
+void PdbModel::addConnection(const AtomRecord* atom1, const AtomRecord* atom2)
 {
     conectRecords_.emplace_back(std::vector{atom1, atom2});
     return;
@@ -118,36 +120,36 @@ void PdbModel::addConnection(AtomRecord* atom1, AtomRecord* atom2)
 //    return models;
 //}
 
-std::vector<std::vector<pdb::PdbResidue*>> PdbModel::GetProteinChains()
-{
-    std::vector<std::vector<pdb::PdbResidue*>> chains;
-    std::string previousChain = "AUniqueLittleString";
-    int previousModelNumber = -99999;
-    for(auto &residue : residues_)
-    {
-        // This gmml::PROTEINS seems weird, but whatever, it works.
-        if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), residue->GetName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
-        {
-            if ( residue->GetChainId() != previousChain || residue->GetModelNumber() != previousModelNumber )
-            {
-                chains.emplace_back(std::vector<PdbResidue*>{residue.get()});
-                previousChain = residue->GetChainId();
-                previousModelNumber = residue->GetModelNumber();
-            }
-            else
-            {
-                chains.back().push_back(residue.get());
-            }
-        }
-    }
-    // Labels
-    for(auto &chain : chains)
-    {
-        chain.front()->addLabel("NTerminal");
-        chain.back()->addLabel("CTerminal");
-    }
-    return chains;
-}
+//std::vector<std::vector<pdb::PdbResidue*>> PdbModel::GetProteinChains()
+//{
+//    std::vector<std::vector<pdb::PdbResidue*>> chains;
+//    std::string previousChain = "AUniqueLittleString";
+//    int previousModelNumber = -99999;
+//    for(auto &residue : this->getResidues())
+//    {
+//        // This gmml::PROTEINS seems weird, but whatever, it works.
+//        if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), residue->GetName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
+//        {
+//            if ( residue->GetChainId() != previousChain || residue->GetModelNumber() != previousModelNumber )
+//            {
+//                chains.emplace_back(std::vector<PdbResidue*>{residue.get()});
+//                previousChain = residue->GetChainId();
+//                previousModelNumber = residue->GetModelNumber();
+//            }
+//            else
+//            {
+//                chains.back().push_back(residue.get());
+//            }
+//        }
+//    }
+//    // Labels
+//    for(auto &chain : chains)
+//    {
+//        chain.front()->addLabel("NTerminal");
+//        chain.back()->addLabel("CTerminal");
+//    }
+//    return chains;
+//}
 
 //std::vector<pdb::PdbResidue*> PdbAssembly::GetResidues() const
 //{
@@ -159,43 +161,41 @@ std::vector<std::vector<pdb::PdbResidue*>> PdbModel::GetProteinChains()
 //    return residues;
 //}
 
-std::vector<pdb::PdbResidue*> PdbModel::FindResidues(const std::string selector)
+//std::vector<pdb::PdbResidue*> PdbModel::FindResidues(const std::string selector)
+//{
+//    std::vector<pdb::PdbResidue*> matchingResidues;
+//    for(auto &residue : residues_)
+//    {
+//        std::size_t found = residue->GetId().find(selector);
+//        if(found != std::string::npos)
+//        {
+//            matchingResidues.push_back(residue.get());
+//        }
+//    }
+//    return matchingResidues;
+//}
+//
+//void PdbModel::ChangeResidueName(const std::string& selector, const std::string& newName)
+//{
+//    for(auto &residue : residues_)
+//    {
+//        std::size_t found = residue->GetId().find(selector);
+//        if(found != std::string::npos)
+//        {
+//            residue->SetName(newName);
+//            return;
+//        }
+//    }
+//    return;
+//}
+//
+const pdb::AtomRecord* PdbModel::FindAtom(const int& serialNumber) const
 {
-    std::vector<pdb::PdbResidue*> matchingResidues;
-    for(auto &residue : residues_)
+    for(auto &atom : this->getAtoms())
     {
-        std::size_t found = residue->GetId().find(selector);
-        if(found != std::string::npos)
+        if (atom->GetSerialNumber() == serialNumber)
         {
-            matchingResidues.push_back(residue.get());
-        }
-    }
-    return matchingResidues;
-}
-
-void PdbModel::ChangeResidueName(const std::string& selector, const std::string& newName)
-{
-    for(auto &residue : residues_)
-    {
-        std::size_t found = residue->GetId().find(selector);
-        if(found != std::string::npos)
-        {
-            residue->SetName(newName);
-            return;
-        }
-    }
-    return;
-}
-
-pdb::AtomRecord* PdbModel::FindAtom(const int& serialNumber) const
-{
-    AtomRecord* foundAtom = nullptr;
-    for(auto &residue : residues_)
-    {
-        foundAtom = residue->FindAtom(serialNumber);
-        if ( foundAtom != nullptr )
-        {
-            return foundAtom; // get() gets the raw ptr, imo raw() would have been cooler and clearer.
+            return atom;
         }
     }
     return nullptr;
@@ -245,42 +245,42 @@ pdb::AtomRecord* PdbModel::FindAtom(const int& serialNumber) const
 //}
 
 
-pdb::PdbResidue* PdbModel::CreateNewResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const pdb::PdbResidue& referenceResidue)
-{
-    //Where the residue is in the vector matters. It should go after the reference residue.
-    pdb::PdbResidueIterator position = this->FindPositionOfResidue(&referenceResidue);
-    if (position != residues_.end())
-    {
-        ++position; // it is ok to insert at end(). I checked. It was ok. Ok.
-        position = residues_.insert(position, std::make_unique<PdbResidue>(residueName, atomName, atomCoord, &referenceResidue));
-        gmml::log(__LINE__,__FILE__,gmml::INF, "New residue named " + residueName + " has been born; You're welcome.");
-    }
-    else
-    {
-        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create residue named " + residueName + " as referenceResidue was not found\n");
-    }
-    return (*position).get(); // Wow ok, so dereference the reference to a uniquePtr, then use get() to create a raw ptr.
-}
-
-
-pdb::PdbResidueIterator PdbModel::FindPositionOfResidue(const PdbResidue* queryResidue)
-{
-    auto i = residues_.begin();
-    auto e = residues_.end();
-    while (i != e)
-    {
-        if (queryResidue == i->get())
-        {
-            return i;
-        }
-        else
-        {
-            ++i;
-        }
-    }
-    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find " + queryResidue->GetId() + " in atom records\n");
-    return e;
-}
+//pdb::PdbResidue* PdbModel::CreateNewResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const pdb::PdbResidue& referenceResidue)
+//{
+//    //Where the residue is in the vector matters. It should go after the reference residue.
+//    pdb::PdbResidueIterator position = this->FindPositionOfResidue(&referenceResidue);
+//    if (position != residues_.end())
+//    {
+//        ++position; // it is ok to insert at end(). I checked. It was ok. Ok.
+//        position = residues_.insert(position, std::make_unique<PdbResidue>(residueName, atomName, atomCoord, &referenceResidue));
+//        gmml::log(__LINE__,__FILE__,gmml::INF, "New residue named " + residueName + " has been born; You're welcome.");
+//    }
+//    else
+//    {
+//        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create residue named " + residueName + " as referenceResidue was not found\n");
+//    }
+//    return (*position).get(); // Wow ok, so dereference the reference to a uniquePtr, then use get() to create a raw ptr.
+//}
+//
+//
+//pdb::PdbResidueIterator PdbModel::FindPositionOfResidue(const PdbResidue* queryResidue)
+//{
+//    auto i = residues_.begin();
+//    auto e = residues_.end();
+//    while (i != e)
+//    {
+//        if (queryResidue == i->get())
+//        {
+//            return i;
+//        }
+//        else
+//        {
+//            ++i;
+//        }
+//    }
+//    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find " + queryResidue->GetId() + " in atom records\n");
+//    return e;
+//}
 //////////////////////////////////////////////////////////
 //                      ACCESSOR                        //
 //////////////////////////////////////////////////////////
@@ -300,36 +300,24 @@ pdb::PdbResidueIterator PdbModel::FindPositionOfResidue(const PdbResidue* queryR
 ////////////////////////////////////////////////////////
 void PdbModel::Print(std::ostream &out) const
 {
-    for (auto &residue : residues_)
+    for (auto &residue : this->getResidues())
     {
-        residue->Print(out);
+       // residue->Print(out);
     }
 }
+
 void PdbModel::Write(std::ostream& stream) const
 {
-    std::vector<std::vector<pdb::PdbResidue*>> models = this->GetModels(); // Vectors of residues in a vector organized by model.
-    for (auto &model : models)
+    stream << "MODEL " << std::right << std::setw(4) << this->getModelNumber() << "\n";
+    for (auto &chain : this->getMolecules())
     {
-        if (models.size() > 1)
-        {
-            stream << "MODEL " << std::right << std::setw(4) << model.at(0)->GetModelNumber() << "\n";
-        }
-        std::string previousResidueName = "";
-        std::string previousChainId = model.at(0)->GetChainId();
-        for (auto &residue: model) // Maybe I should just put the TER cards in the vector as AtomRecord?
-        { // if previous was NME, or it's a new chain, or it's a HETATM and starts previous residue name began a 0 (e.g. glycam 0SA), insert a TER.
-            if (previousChainId != residue->GetChainId() || (residue->GetRecordName() == "HETATM" && previousResidueName.substr(0,1) == "0"))
-            {
-                stream << "TER\n";
-            }
-            residue->Write(stream);
-            previousResidueName = residue->GetName();
-            previousChainId = residue->GetChainId();
-        }
-        if (models.size() > 1)
-        {
-            stream << "ENDMDL\n";
-        }
+        chain->Write(stream);
     }
+    for (auto &conect : this->GetConectRecords())
+    {
+        conect.Write(stream);
+    }
+    stream << "ENDMDL\n";
+    return;
 }
 

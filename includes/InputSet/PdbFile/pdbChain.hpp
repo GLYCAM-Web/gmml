@@ -19,7 +19,7 @@ public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
-    PdbChain(std::stringstream &stream_block);
+    PdbChain(std::stringstream &stream_block, const std::string& chainId);
 //    PdbChain(PdbResidue pdbResidue);
 //    PdbChain(std::vector<PdbResidue> pdbResidues);
     //////////////////////////////////////////////////////////
@@ -38,13 +38,20 @@ public:
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
   //  void Print(std::ostream& out = std::cerr) const;
+    void Write(std::ostream& stream) const;
 private:
-    std::string PeekAtResidueId(const std::string &line)
+    //////////////////////////////////////////////////////////
+    //                       FUNCTIONS                      //
+    //////////////////////////////////////////////////////////
+    std::string extractResidueId(const std::string &line);
+    std::stringstream extractSingleResidueFromRecordSection(std::stringstream &pdbFileStream, std::string line);
+
     //PdbResidue& GetFirstResidue() const;
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     //std::vector<PdbResidue> pdbResidues_;
+    std::string chainId_;
 };
 }
 #endif // GMML_INCLUDES_INPUTSET_PDBFILE_PDBCHAIN_HPP

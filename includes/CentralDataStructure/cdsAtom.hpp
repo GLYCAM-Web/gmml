@@ -6,7 +6,7 @@
 #include <vector>
 
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
-#include "includes/CentralDataStructure/cdsCoordinate.hpp"
+//#include "includes/CentralDataStructure/cdsCoordinate.hpp"
 #include "includes/GeometryTopology/coordinate.hpp"
 using GeometryTopology::Coordinate;
 namespace cds
@@ -16,8 +16,7 @@ class cdsAtom : public glygraph::Node<cdsAtom>
 public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTORS                   //
-    //////////////////////////////////////////////////////////
-    cdsAtom();
+    cdsAtom() {}
     cdsAtom(const std::string& name, const Coordinate& coord);
     //////////////////////////////////////////////////////////
     //                       ACCESSORS                      //

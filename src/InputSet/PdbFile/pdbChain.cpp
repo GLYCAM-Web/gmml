@@ -1,3 +1,4 @@
+#include "includes/InputSet/PdbFile/pdbFunctions.hpp" // extractResidueId
 #include "includes/InputSet/PdbFile/pdbChain.hpp"
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
 //#include "includes/InputSet/PdbFile/atomRecord.hpp"
@@ -10,24 +11,30 @@ using pdb::PdbChain;
 ////////////////////////////////////////////////////////////
 ////                       CONSTRUCTOR                    //
 ////////////////////////////////////////////////////////////
-PdbChain::PdbChain(std::stringstream &stream_block)
+PdbChain::PdbChain(std::stringstream &stream_block, const std::string& chainId) : chainId_(chainId)
 {
-    std::string previousResidueId = "InitialValue";
+    gmml::log(__LINE__,__FILE__,gmml::INF, "Lo, death?");
+    std::cerr << "Does this message happen?" << std::endl;
     std::string line;
     while(getline(stream_block, line))
     {
-        std::string residueId = this->PeekAtResidueId(line);
-        if (previousResidueId != residueId)
-        { // Create a residue;
-            residues_.push_back(std::make_unique<PdbResidue>(line, currentModelNumber));
-            previousResidueId = residueId;
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Constructing chain with line: " + line);
+        std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
+        if ( (recordName == "ATOM") || (recordName == "HETATM") )
+        {
+            std::stringstream singleResidueSection = this->extractSingleResidueFromRecordSection(stream_block, line);
+            this->addResidue(std::make_unique<PdbResidue>(singleResidueSection));
         }
         else
-        { // Add to previous residue;
-            residues_.back()->CreateAtom(line, currentModelNumber);
+        {
+            gmml::log(__LINE__,__FILE__,gmml::INF, "In PdbChain Constructor with record that isn't cool: " + recordName);
+            break;
         }
     }
+    gmml::log(__LINE__,__FILE__,gmml::INF, "PdbChain Constructor Complete Captain");
+    return;
 }
+
 //PdbChain::PdbChain(PdbResidue* pdbResidue)
 //{
 //    this->AddResidue(pdbResidue);
@@ -51,6 +58,26 @@ PdbChain::PdbChain(std::stringstream &stream_block)
 ////                    FUNCTIONS                         //
 ////////////////////////////////////////////////////////////
 
+std::stringstream PdbChain::extractSingleResidueFromRecordSection(std::stringstream &pdbFileStream, std::string line)
+{
+    std::streampos previousLinePosition = pdbFileStream.tellg(); // Save current line position
+    std::stringstream singleResidueSection;
+    pdb::ResidueId residueId = pdb::extractResidueId(line);
+    pdb::ResidueId initialResidueId = residueId;
+    while(residueId == initialResidueId)
+    {
+        singleResidueSection << line << std::endl;
+        previousLinePosition = pdbFileStream.tellg(); // Save current line position.
+        if(!std::getline(pdbFileStream, line))
+        {
+            break; // // If we hit the end, time to leave.
+        }
+        residueId = pdb::extractResidueId(line);
+    }
+    pdbFileStream.seekg(previousLinePosition); // Go back to previous line position. E.g. was reading HEADER and found TITLE.
+    gmml::log(__LINE__,__FILE__,gmml::INF, singleResidueSection.str());
+    return singleResidueSection;
+}
 
 void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
 {
@@ -102,15 +129,16 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
       //  AtomRecordIterator atomPosition = this->GetCoordinateSection().FindPositionOfAtom(refResidue.GetFirstAtom());
 
         // With ACE we want to insert before the residue, so I'm finding the residue before here:
-        auto refPosition = this->GetCoordinateSection().FindPositionOfResidue(&refResidue);
+        auto refPosition = this->findPositionOfResidue(&refResidue);
         --refPosition;
         PdbResidue* previousResidue = (*refPosition).get(); // Its an iterator to a unique ptr, so deref and get the raw. Ugh.
-        PdbResidue *newACEResidue = this->GetCoordinateSection().CreateNewResidue("ACE", "C", cCoordACE, *previousResidue);
-        newACEResidue->CreateAtom("O", oCoordACE);
-        newACEResidue->CreateAtom("CH3", ch3CoordACE);
-        newACEResidue->CreateAtom("HH31", hh31CoordACE);
-        newACEResidue->CreateAtom("HH32", hh32CoordACE);
-        newACEResidue->CreateAtom("HH33", hh33CoordACE);
+        PdbResidue *newACEResidue = this->createNewResidue("ACE", *previousResidue);
+        newACEResidue->createAtom("C", cCoordACE);
+        newACEResidue->createAtom("O", oCoordACE);
+        newACEResidue->createAtom("CH3", ch3CoordACE);
+        newACEResidue->createAtom("HH31", hh31CoordACE);
+        newACEResidue->createAtom("HH32", hh32CoordACE);
+        newACEResidue->createAtom("HH33", hh33CoordACE);
 
 //        --atomPosition; // Want to insert before the first atom, inserting at begin() position is fine.
 //        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("C", "ACE", sequenceNumber, cCoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
@@ -123,18 +151,18 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
     }
 }
 
-std::string PdbChain::PeekAtResidueId(const std::string &line)
-{
-    // Dealing with number overruns for serialNumber and residueNumber
-    int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
-    std::string residueName = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
-    std::string chainId = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
-    int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));
-    std::string residueNumber = codeUtils::RemoveWhiteSpace(line.substr(22 + shift, 4 + secondShift));
-    // Insertion code gets shifted right by every overrun in residue number.
-    std::string insertionCode = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
-    return residueName + "_" + residueNumber + "_" + insertionCode + "_" + chainId;
-}
+//std::string PdbChain::extractResidueId(const std::string &line)
+//{
+//    // Dealing with number overruns for serialNumber and residueNumber
+//    int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
+//    std::string residueName = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
+//    std::string chainId = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
+//    int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));
+//    std::string residueNumber = codeUtils::RemoveWhiteSpace(line.substr(22 + shift, 4 + secondShift));
+//    // Insertion code gets shifted right by every overrun in residue number.
+//    std::string insertionCode = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
+//    return residueName + "_" + residueNumber + "_" + insertionCode + "_" + chainId;
+//}
 
 ////////////////////////////////////////////////////////////
 ////                          MUTATOR                     //
@@ -151,3 +179,12 @@ std::string PdbChain::PeekAtResidueId(const std::string &line)
 //        residue->Print();
 //    }
 //}
+void PdbChain::Write(std::ostream& stream) const
+{
+    for (auto &residue : this->getResidues())
+    {
+        residue->Write(stream);
+    }
+    stream << "TER\n";
+    return;
+}

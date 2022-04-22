@@ -6,7 +6,7 @@ using cds::cdsAtom;
 //////////////////////////////////////////////////////////
 //                    CONSTRUCTOR                       //
 //////////////////////////////////////////////////////////
-cdsAtom::cdsAtom(const std::string& name, const cdsCoordinate& coord)
+cdsAtom::cdsAtom(const std::string& name, const Coordinate& coord)
 {
     this->setName(name);
     this->addCoordinate(coord);
@@ -14,7 +14,7 @@ cdsAtom::cdsAtom(const std::string& name, const cdsCoordinate& coord)
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
-cds::cdsCoordinate* cdsAtom::getCoordinate()
+Coordinate* cdsAtom::getCoordinate()
 {
     if(coordinates_.empty())
     {
@@ -25,7 +25,7 @@ cds::cdsCoordinate* cdsAtom::getCoordinate()
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
-void cdsAtom::setCoordinate(const cdsCoordinate& newCoord)
+void cdsAtom::setCoordinate(const Coordinate& newCoord)
 { // Dealing with one coord, so want it to be the coord returned when someone calls getCoordiante.
     if(coordinates_.empty())
     {
@@ -33,15 +33,15 @@ void cdsAtom::setCoordinate(const cdsCoordinate& newCoord)
     }
     else
     {
-        cdsCoordinate* firstCoord = coordinates_.front().get();
+        Coordinate* firstCoord = coordinates_.front().get();
         *firstCoord = newCoord; // Should copy the x,y,z from newCoord.
     }
     return;
 }
 
-void cdsAtom::addCoordinate(const cdsCoordinate& newCoord)
+void cdsAtom::addCoordinate(const Coordinate& newCoord)
 {
-    coordinates_.push_back(std::make_unique<cdsCoordinate>(newCoord));
+    coordinates_.push_back(std::make_unique<Coordinate>(newCoord));
     return;
 }
 

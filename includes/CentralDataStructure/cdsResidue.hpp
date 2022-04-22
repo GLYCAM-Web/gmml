@@ -12,33 +12,34 @@
 using GeometryTopology::Coordinate;
 namespace cds
 {
-template<class Tatom>
-class cdsResidue : public Abstract::absResidue, public glygraph::Node<cdsResidue<Tatom>>
+template<class atomT>
+class cdsResidue : public Abstract::absResidue, public glygraph::Node<cdsResidue<atomT>>
 {
 public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
     cdsResidue() : number_(0) {}
+    cdsResidue(const std::string& residueName, const cdsResidue *referenceResidue);
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
-    inline const int& getNumber() {return number_;}
-    std::vector<const Tatom*> getAtoms() const;
+    inline const int& getNumber() const {return number_;}
+    std::vector<const atomT*> getAtoms() const;
     std::vector<std::string> getAtomNames() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
     inline void setNumber(const int& i) {number_ = i;}
     void createAtom(const std::string atomName, Coordinate& atomCoord);
-    void createAtom(Tatom atom);
-    bool deleteAtom(Tatom* atom);
+    void addAtom(std::unique_ptr<atomT> myAtom);
+    bool deleteAtom(atomT* atom);
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
-    typename std::vector<std::unique_ptr<Tatom>>::iterator FindPositionOfAtom(const T* queryAtom) const;
-    Tatom* FindAtom(const std::string queryName) const;
-    Tatom* FindAtom(const int& serialNumber) const;
+    typename std::vector<std::unique_ptr<atomT>>::iterator FindPositionOfAtom(const atomT* queryAtom);
+    atomT* FindAtom(const std::string queryName) const;
+    atomT* FindAtom(const int& queryNumber) const;
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
@@ -46,17 +47,26 @@ private:
     //////////////////////////////////////////////////////////
     //                    ATTRIBUTES                        //
     //////////////////////////////////////////////////////////
-    std::vector<std::unique_ptr<Tatom>> atoms_;
-    int number_;
+    std::vector<std::unique_ptr<atomT>> atoms_;
+    int number_ = 1;
 };
+
+//////////////////////////////////////////////////////////
+//                    CONSTRUCTOR                       //
+//////////////////////////////////////////////////////////
+template< class atomT >
+cdsResidue<atomT>::cdsResidue(const std::string& residueName, const cdsResidue *referenceResidue)
+{
+    this->setNumber(referenceResidue->getNumber() + 1);
+}
 
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
-template< class Tatom >
-std::vector<const Tatom*> cdsResidue<Tatom>::getAtoms() const
+template< class atomT >
+std::vector<const atomT*> cdsResidue<atomT>::getAtoms() const
 {
-    std::vector<const Tatom*> atoms;
+    std::vector<const atomT*> atoms;
     for(auto &atomPtr : atoms_)
     {
         atoms.push_back(atomPtr.get());
@@ -64,8 +74,8 @@ std::vector<const Tatom*> cdsResidue<Tatom>::getAtoms() const
     return atoms;
 }
 
-template< class Tatom >
-std::vector<std::string> cdsResidue<Tatom>::getAtomNames() const
+template< class atomT >
+std::vector<std::string> cdsResidue<atomT>::getAtomNames() const
 {
     std::vector<std::string> foundAtomNames;
     for(auto &atom : this->getAtoms())
@@ -76,10 +86,10 @@ std::vector<std::string> cdsResidue<Tatom>::getAtomNames() const
 }
 
 
-//template< class Tatom >
-//const std::vector<const Tatom*> cdsResidue<Tatom>::getAtoms() const
+//template< class atomT >
+//const std::vector<const atomT*> cdsResidue<atomT>::getAtoms() const
 //{
-//    const std::vector<const Tatom*> atoms;
+//    const std::vector<const atomT*> atoms;
 //    for(auto &atomPtr : atoms_)
 //    {
 //        atoms.push_back(atomPtr.get());
@@ -89,22 +99,24 @@ std::vector<std::string> cdsResidue<Tatom>::getAtomNames() const
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
-template< class Tatom >
-void cdsResidue<Tatom>::createAtom(const std::string atomName, Coordinate& atomCoord)
+template< class atomT >
+void cdsResidue<atomT>::createAtom(const std::string atomName, Coordinate& atomCoord)
 {
-    atoms_.push_back(std::make_unique<Tatom>(atomName, this->GetName(), this->GetNumber(), this->GetInsertionCode(), atomCoord, this->GetChainId(), this->GetModelNumber()));
+//    atoms_.push_back(std::make_unique<atomT>(atomName, this->getName(), this->getNumber(), this->GetInsertionCode(), atomCoord, this->GetChainId(), this->GetModelNumber()));
+    atoms_.push_back(std::make_unique<atomT>(atomName, atomCoord));
     return;
 }
 
-template< class Tatom >
-void cdsResidue<Tatom>::createAtom(Tatom atom)
+template< class atomT >
+void cdsResidue<atomT>::addAtom(std::unique_ptr<atomT> myAtom)
 {
-    atoms_.push_back(std::make_unique<Tatom>(atom));
+    atoms_.push_back(std::move(myAtom));
     return;
 }
 
-template< class Tatom >
-bool cdsResidue<Tatom>::deleteAtom(Tatom* atom)
+
+template< class atomT >
+bool cdsResidue<atomT>::deleteAtom(atomT* atom)
 { // Passing in a raw ptr, but the vector is unique_ptr so gotta use i->get() to compare raws.
     auto i = this->FindPositionOfAtom(atom); // auto makes my life easier
     if (i != atoms_.end())
@@ -119,11 +131,11 @@ bool cdsResidue<Tatom>::deleteAtom(Tatom* atom)
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
-template< class Tatom >
-typename std::vector<std::unique_ptr<Tatom>>::iterator cdsResidue<Tatom>::FindPositionOfAtom(const Tatom* queryAtom) const
+template< class atomT >
+typename std::vector<std::unique_ptr<atomT>>::iterator cdsResidue<atomT>::FindPositionOfAtom(const atomT* queryAtom)
 {
-    auto i = atoms_.begin();
-    auto e = atoms_.end();
+    typename std::vector<std::unique_ptr<atomT>>::iterator i = atoms_.begin();
+    typename std::vector<std::unique_ptr<atomT>>::iterator e = atoms_.end();
     while (i != e)
     {
         if (queryAtom == i->get())
@@ -139,8 +151,8 @@ typename std::vector<std::unique_ptr<Tatom>>::iterator cdsResidue<Tatom>::FindPo
     return e;
 }
 
-template< class Tatom >
-Tatom* cdsResidue<Tatom>::FindAtom(const std::string queryName) const
+template< class atomT >
+atomT* cdsResidue<atomT>::FindAtom(const std::string queryName) const
 {
     for(auto &atom : atoms_)
     {
@@ -152,15 +164,15 @@ Tatom* cdsResidue<Tatom>::FindAtom(const std::string queryName) const
     return nullptr;
 }
 
-template< class Tatom >
-Tatom* cdsResidue<Tatom>::FindAtom(const int& serialNumber) const
+template< class atomT >
+atomT* cdsResidue<atomT>::FindAtom(const int& queryNumber) const
 {
-    Tatom* nullRecord = nullptr;
-    for(auto &atomRecord : atoms_)
+    atomT* nullRecord = nullptr;
+    for(auto &atom : atoms_)
     {
-        if (atomRecord->GetNumber() == serialNumber )
+        if (atom->getNumber() == queryNumber )
         {
-            return atomRecord.get();
+            return atom.get();
         }
     }
     return nullRecord;

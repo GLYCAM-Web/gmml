@@ -3,7 +3,9 @@
 
 #include <vector>
 #include <memory> // unique_ptr
+
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 namespace cds
 {
@@ -28,6 +30,9 @@ public:
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
+    void addResidue(std::unique_ptr<residueT> myResidue);
+    residueT* createNewResidue(const std::string& residueName, const residueT& positionReferenceResidue);
+    typename std::vector<std::unique_ptr<residueT>>::iterator findPositionOfResidue(const residueT* queryResidue);
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
@@ -35,8 +40,6 @@ private:
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
-    residueT* createNewResidue(const std::string residueName, const residueT& positionReferenceResidue);
-    typename std::vector<std::unique_ptr<residueT>>::iterator findPositionOfResidue(const residueT* queryResidue);
     //////////////////////////////////////////////////////////
     //                    ATTRIBUTES                        //
     //////////////////////////////////////////////////////////
@@ -73,8 +76,20 @@ std::vector<const atomT*> cdsMolecule<residueT, atomT>::getAtoms() const
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
+//template< class residueT, class atomT>
+//void cdsMolecule<residueT, atomT>::addResidue(const residueT& residue)
+//{ // This is bad: residue contains a vector of unique_ptr, so you don't want to copy that.
+//    residues_.push_back(std::make_unique<residueT>(residue));
+//}
+
+template< class residueT, class atomT>
+void cdsMolecule<residueT, atomT>::addResidue(std::unique_ptr<residueT> myResidue)
+{ // This is good: myResidue contains a vector of unique_ptr, so you don't want to copy that.
+    residues_.push_back(std::move(myResidue));
+}
+
 template< class residueT, class atomT >
-residueT* cdsMolecule<residueT, atomT>::createNewResidue(const std::string residueName, const residueT& positionReferenceResidue)
+residueT* cdsMolecule<residueT, atomT>::createNewResidue(const std::string& residueName, const residueT& positionReferenceResidue)
 {
     //Where the residue is in the vector matters. It should go after the reference residue.
     auto position = this->findPositionOfResidue(&positionReferenceResidue);

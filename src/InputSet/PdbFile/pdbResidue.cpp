@@ -1,7 +1,12 @@
+#include <sstream>
+#include <string>
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
+#include "includes/InputSet/PdbFile/pdbFunctions.hpp" // extractResidueId
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp" // get_cartesian_point_from_internal_coords
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/strings.hpp" //RemoveWhiteSpace
+
 using pdb::PdbResidue;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -17,21 +22,30 @@ using pdb::PdbResidue;
 //    atoms_ = atomRecords;
 //    hasTerCard_ = false;
 //}
-PdbResidue::PdbResidue(const std::string& line, const int& modelNumber)
+//PdbResidue::PdbResidue(const std::string& line, const int& modelNumber)
+//{
+//    //atoms_.push_back(std::make_unique<AtomRecord>(line, modelNumber));
+//    this->CreateAtomFromLine(line, modelNumber);
+//    modelNumber_ = modelNumber;
+//    hasTerCard_ = false;
+//}
+PdbResidue::PdbResidue(std::stringstream &singleResidueSecion)
 {
-    //atoms_.push_back(std::make_unique<AtomRecord>(line, modelNumber));
-    this->CreateAtomFromLine(line, modelNumber);
-    modelNumber_ = modelNumber;
-    hasTerCard_ = false;
+    std::string line;
+    while(getline(singleResidueSecion, line))
+    {
+        std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
+        if ( (recordName == "ATOM") || (recordName == "HETATM") )
+        {
+            this->addAtom(std::make_unique<AtomRecord>(line));
+        }
+    }
 }
 
-PdbResidue::PdbResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const PdbResidue *referenceResidue)
+PdbResidue::PdbResidue(const std::string residueName, const PdbResidue *referenceResidue)
+: cds::cdsResidue<AtomRecord>(residueName, referenceResidue)
 {
-    AtomRecord tempAtom(atomName, residueName, referenceResidue->GetSequenceNumber() + 1, referenceResidue->GetInsertionCode(), atomCoord, referenceResidue->GetChainId(), referenceResidue->GetModelNumber());
-    this->createAtom(tempAtom); // This should call the cdsResidue CreateAtom function.
-    //atoms_.push_back(std::make_unique<AtomRecord>(atomName, residueName, referenceResidue->GetSequenceNumber() + 1, referenceResidue->GetInsertionCode(), atomCoord, referenceResidue->GetChainId(), referenceResidue->GetModelNumber()));
-    modelNumber_ = referenceResidue->GetModelNumber();
-    hasTerCard_ = false;
+    //pdbResidue specific stuff
 }
 
 //PdbResidue::PdbResidue(std::vector<std::unique_ptr<AtomRecord>>& atomRecords)
@@ -88,28 +102,29 @@ const std::string PdbResidue::GetParmName() const // If terminal, need to look u
 {
     if (this->containsLabel("NTerminal"))
     {
-        return "N" + this->GetName();
+        return "N" + this->getName();
     }
     else if (this->containsLabel("CTerminal"))
     {
-        return "C" + this->GetName();
+        return "C" + this->getName();
     }
-    return this->GetName();
+    return this->getName();
 }
 //const int& PdbResidue::GetSequenceNumber() const
 //{
 //    return this->GetFirstAtom()->GetResidueSequenceNumber();
 //}
 
-//const std::string& PdbResidue::GetInsertionCode() const
-//{
-//    return this->GetFirstAtom()->GetInsertionCode();
-//}
-//
-//std::string PdbResidue::GetId() const
-//{
-//    return this->GetFirstAtom()->GetResidueId();
-//}
+const std::string& PdbResidue::GetInsertionCode() const
+{
+    return insertionCode_;
+}
+
+const std::string& PdbResidue::GetId() const
+{
+    return this->getName() + "_" + this->GetInsertionCode();
+}
+
 
 //const int& PdbResidue::GetModelNumber() const
 //{
@@ -165,13 +180,13 @@ void PdbResidue::modifyCTerminal(const std::string& type)
     return;
 }
 
-void PdbResidue::CreateAtomFromLine(const std::string& line, const int& currentModelNumber)
-{
-    AtomRecord tempRecord(line, currentModelNumber);
-    this->createAtom(tempRecord);
-    //atoms_.push_back(std::make_unique<AtomRecord>(line, currentModelNumber));
-    return;
-}
+//void PdbResidue::CreateAtomFromLine(const std::string& line, const int& currentModelNumber)
+//{
+//    AtomRecord tempRecord(line, currentModelNumber);
+//    this->createAtom(tempRecord);
+//    //atoms_.push_back(std::make_unique<AtomRecord>(line, currentModelNumber));
+//    return;
+//}
 
 
 //void PdbResidue::CreateAtom(const std::string atomName, GeometryTopology::Coordinate& atomCoord)

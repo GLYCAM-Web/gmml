@@ -122,9 +122,10 @@
 ./src/InputSet/PdbFile/databaseReferenceRecord.cpp
 ./src/InputSet/PdbFile/titleRecord.cpp
 ./src/InputSet/PdbFile/remarkRecord.cpp
+./src/InputSet/PdbFile/pdbModel.cpp
 ./src/InputSet/PdbFile/pdbFile.cpp
-./src/InputSet/PdbFile/coordinateSection.cpp
 ./src/InputSet/PdbFile/pdbChain.cpp
+./src/InputSet/PdbFile/pdbFunctions.cpp
 ./src/InputSet/PdbFile/headerRecord.cpp
 ./src/InputSet/PdbFile/journalRecord.cpp
 ./src/InternalPrograms/GlycoproteinBuilder/glycosylationSite.cpp

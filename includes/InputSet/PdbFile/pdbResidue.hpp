@@ -19,15 +19,14 @@ public:
     //////////////////////////////////////////////////////////
 //    PdbResidue(AtomRecord* atomRecord);
 //    PdbResidue(std::vector<AtomRecord*> atomRecords);
-    PdbResidue(const std::string &line, const int& currentModelNumber);
-    PdbResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const PdbResidue *referenceResidue);
-
+    PdbResidue(std::stringstream &singleResidueSecion);
+    PdbResidue(const std::string residueName, const PdbResidue *referenceResidue);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-    std::string GetId() const;
+    //std::string GetId() const;
     const std::string& GetChainId() const;
-    const std::string& GetName() const;
+    //const std::string& GetName() const;
     const std::string& GetRecordName() const;
     const std::string& GetInsertionCode() const;
     const int& GetSequenceNumber() const;
@@ -37,6 +36,7 @@ public:
     AtomRecord* GetLastAtom() const;
     AtomRecord* GetFirstAtom() const;
     const std::string& GetLabel() const;
+    const std::string& GetId() const;
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
@@ -66,8 +66,8 @@ private:
     //////////////////////////////////////////////////////////
     //std::vector<AtomRecord*> atomRecords_; // Residue does not own these. Owned by residues's owner.
     //std::vector<std::unique_ptr<AtomRecord>> atomRecords_; // Residue does not own these. Owned by residues's owner.
-    bool hasTerCard_;
-    int modelNumber_;
+    std::string insertionCode_ = " ";
+    bool hasTerCard_ = false;
 };
 }
 #endif // GMML_INCLUDES_INPUTSET_PDBFILE_PDBRESIDUE_HPP

@@ -30,6 +30,8 @@ public:
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
+    void addMolecule(const moleculeT& molecule);
+    void addMolecule(std::unique_ptr<moleculeT> myMolecule);
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
@@ -81,5 +83,20 @@ std::vector<const atomT*> cdsAssembly<moleculeT, residueT, atomT>::getAtoms() co
     }
     return atoms;
 }
+//////////////////////////////////////////////////////////
+//                    FUNCTIONS                         //
+//////////////////////////////////////////////////////////
+//template <class moleculeT, class residueT, class atomT>
+//void cdsAssembly<moleculeT, residueT, atomT>::addMolecule(const moleculeT& molecule)
+//{
+//    molecules_.push_back(std::make_unique<moleculeT>(molecule));
+//}
+
+template <class moleculeT, class residueT, class atomT>
+void cdsAssembly<moleculeT, residueT, atomT>::addMolecule(std::unique_ptr<moleculeT> myMolecule)
+{
+    molecules_.push_back(std::move(myMolecule));
+}
+
 } // namespace
 #endif // ASSEMBLY_HPP

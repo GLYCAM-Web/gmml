@@ -1,5 +1,6 @@
 #include <iomanip> // setw
 #include "includes/InputSet/PdbFile/conectRecord.hpp"
+#include "includes/InputSet/PdbFile/pdbModel.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
@@ -11,7 +12,6 @@ using pdb::ConectRecord;
 ConectRecord::ConectRecord(std::string &line, pdb::PdbModel& pdbModel)
 {
     std::vector<std::string> possibleSerialNumberStrings = {line.substr(6,5), line.substr(11,5), line.substr(16,5), line.substr(21,5), line.substr(26,5) };
-    std::vector<AtomRecord*> atomRecords;
     for (auto &serialNumberString : possibleSerialNumberStrings)
     {
         int serialNumber = 0;
@@ -22,10 +22,10 @@ ConectRecord::ConectRecord(std::string &line, pdb::PdbModel& pdbModel)
         catch (...) {} // this is fine, they might not all be present.
         if (serialNumber != 0)
         {
-            AtomRecord* foundAtom = pdbModel.FindAtom(serialNumber);
+            const AtomRecord* foundAtom = pdbModel.FindAtom(serialNumber);
             if (foundAtom != nullptr)
             {
-                atomRecords.push_back(foundAtom);
+                atomRecordPtrs_.push_back(foundAtom);
             }
             else
             {
@@ -34,9 +34,9 @@ ConectRecord::ConectRecord(std::string &line, pdb::PdbModel& pdbModel)
         }
     }
 }
-ConectRecord::ConectRecord(std::vector<AtomRecord*> atoms)
+ConectRecord::ConectRecord(std::vector<const AtomRecord*> atomRecords)
 {
-    atomRecordPtrs_ = atoms;
+    atomRecordPtrs_ = std::move(atomRecords);
 }
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
