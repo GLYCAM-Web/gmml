@@ -13,12 +13,10 @@ using pdb::PdbChain;
 ////////////////////////////////////////////////////////////
 PdbChain::PdbChain(std::stringstream &stream_block, const std::string& chainId) : chainId_(chainId)
 {
-    gmml::log(__LINE__,__FILE__,gmml::INF, "Lo, death?");
-    std::cerr << "Does this message happen?" << std::endl;
     std::string line;
     while(getline(stream_block, line))
     {
-        gmml::log(__LINE__,__FILE__,gmml::INF, "Constructing chain with line: " + line);
+        //gmml::log(__LINE__,__FILE__,gmml::INF, "Constructing chain with line: " + line);
         std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
         if ( (recordName == "ATOM") || (recordName == "HETATM") )
         {

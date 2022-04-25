@@ -311,17 +311,17 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
             AtomRecord* sgAtom2 = cysRes2->FindAtom("SG");
             if ( (sgAtom1 != nullptr) && (sgAtom2 != nullptr) )
             {
-                gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");
+                //gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");
                 double distance = sgAtom1->CalculateDistance(sgAtom2);
                 if (distance < gmml::dSulfurCutoff && distance > 0.001)
                 {
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Distance less than cutoff");
+                  //  gmml::log(__LINE__, __FILE__, gmml::INF, "Distance less than cutoff");
                     cysRes1->setName("CYX");
                     cysRes2->setName("CYX");
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Names set");
+                   // gmml::log(__LINE__, __FILE__, gmml::INF, "Names set");
                     this->addConectRecord(sgAtom1, sgAtom2);
                     ppInfo.cysBondResidues_.emplace_back(cysRes1, cysRes2, distance);
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "ThisNoHappen?");
+                   // gmml::log(__LINE__, __FILE__, gmml::INF, "ThisNoHappen?");
                     std::stringstream message;
                     message << "Bonding " << cysRes1->getId() << " and " << cysRes2->getId() << " with distance " << distance;
                     gmml::log(__LINE__, __FILE__, gmml::INF, message.str());
