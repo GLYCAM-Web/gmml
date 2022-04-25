@@ -1,6 +1,7 @@
 #include <sstream>
 #include <string>
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
+#include "includes/InputSet/PdbFile/pdbResidueId.hpp" // residueId
 #include "includes/InputSet/PdbFile/pdbFunctions.hpp" // extractResidueId
 #include "includes/InputSet/PdbFile/atomRecord.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp" // get_cartesian_point_from_internal_coords
@@ -29,7 +30,8 @@ using pdb::PdbResidue;
 //    modelNumber_ = modelNumber;
 //    hasTerCard_ = false;
 //}
-PdbResidue::PdbResidue(std::stringstream &singleResidueSecion)
+PdbResidue::PdbResidue(std::stringstream &singleResidueSecion, std::string firstLine)
+: pdb::ResidueId(firstLine)
 {
     std::string line;
     while(getline(singleResidueSecion, line))
@@ -37,13 +39,18 @@ PdbResidue::PdbResidue(std::stringstream &singleResidueSecion)
         std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
         if ( (recordName == "ATOM") || (recordName == "HETATM") )
         {
+//            ResidueId resId = extractResidueId(line);
+//            this->setName(resId.residueName_);
+//            this->setNumber(std::stoi(resId.sequenceNumber_));
+//            this->setInsertionCode(resId.insertionCode_);
+//            this->setChainId(resId.chainId_);
             this->addAtom(std::make_unique<AtomRecord>(line));
         }
     }
 }
 
 PdbResidue::PdbResidue(const std::string residueName, const PdbResidue *referenceResidue)
-: cds::cdsResidue<AtomRecord>(residueName, referenceResidue)
+: cds::cdsResidue<AtomRecord>(residueName, referenceResidue), pdb::ResidueId()
 {
     //pdbResidue specific stuff
 }
@@ -115,15 +122,10 @@ const std::string PdbResidue::GetParmName() const // If terminal, need to look u
 //    return this->GetFirstAtom()->GetResidueSequenceNumber();
 //}
 
-const std::string& PdbResidue::GetInsertionCode() const
-{
-    return insertionCode_;
-}
-
-const std::string& PdbResidue::GetId() const
-{
-    return this->getName() + "_" + this->GetInsertionCode();
-}
+//const std::string& PdbResidue::GetId() const
+//{
+//    return this->getName() + "_" + this->getInsertionCode() + "_" + this->getChainId() + "_" + this->getModelNumber();
+//}
 
 
 //const int& PdbResidue::GetModelNumber() const
@@ -139,7 +141,7 @@ const std::string& PdbResidue::GetId() const
 //////////////////////////////////////////////////////////
 void PdbResidue::modifyNTerminal(const std::string& type)
 {
-    gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + this->GetId());
+    gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + this->getId());
     if (type == "NH3+")
     {
         AtomRecord* atom = this->FindAtom("H");
@@ -158,7 +160,7 @@ void PdbResidue::modifyNTerminal(const std::string& type)
 
 void PdbResidue::modifyCTerminal(const std::string& type)
 {
-    gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + this->GetId());
+    gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + this->getId());
     if (type == "CO2-")
     {
         AtomRecord* atom = this->FindAtom("OXT");
@@ -248,7 +250,7 @@ void PdbResidue::modifyCTerminal(const std::string& type)
 //////////////////////////////////////////////////////////
 void PdbResidue::Print(std::ostream &out) const
 {
-    out << "pdb::Residue : " << this->GetId() << std::endl;
+    out << "pdb::Residue : " << this->getId() << std::endl;
     for(auto &atom : this->getAtoms())
     {
         out << "    atom : " << atom->GetId() << " X: "  << atom->GetCoordinate().GetX() << " Y: "  << atom->GetCoordinate().GetY() << " Z: " << atom->GetCoordinate().GetZ() << "\n";

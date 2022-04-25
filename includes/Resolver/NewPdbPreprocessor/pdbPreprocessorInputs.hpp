@@ -3,7 +3,8 @@
 
 #include <string>
 #include <vector>
-#include "includes/utils.hpp" // gmml::Split
+//#include "includes/utils.hpp" // gmml::Split
+#include "includes/InputSet/PdbFile/pdbResidueId.hpp" // residueId
 #include "includes/CodeUtils/logging.hpp"
 
 // These structs are all for interacting with the website via gems.
@@ -38,39 +39,39 @@ struct PreprocessorOptions // This is inputs into the preprocessor function. Def
     std::vector<std::pair<std::string,std::string>> hisSelections_; // e.g. pair: residue id like this <"HIS_20_?_A_1", "HID">
 };
 
-struct ResidueId
-{
-    //Constructor
-    ResidueId(std::string inputId)
-    {
-        std::vector<std::string> tokens = gmml::Split(inputId, "_");
-        if (tokens.size() == 5)
-        {
-            inputId_ = inputId;
-            name_ = tokens.at(0);
-            number_ = tokens.at(1);
-            insertionCode_ = tokens.at(2);
-            chainId_ = tokens.at(3);
-            model_ = tokens.at(4);
-        }
-        else
-        {
-            gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not parse residue id info from this id: " + inputId);
-        }
-    }
-    // Members
-    std::string inputId_;
-    std::string name_;
-    std::string number_;
-    std::string insertionCode_;
-    std::string chainId_;
-    std::string model_;
-};
+//struct ResidueId
+//{
+//    //Constructor
+//    ResidueId(std::string inputId)
+//    {
+//        std::vector<std::string> tokens = gmml::Split(inputId, "_");
+//        if (tokens.size() == 4)
+//        {
+//            inputId_ = inputId;
+//            name_ = tokens.at(0);
+//            number_ = tokens.at(1);
+//            insertionCode_ = tokens.at(2);
+//            chainId_ = tokens.at(3);
+////            model_ = tokens.at(4);
+//        }
+//        else
+//        {
+//            gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not parse residue id info from this id: " + inputId);
+//        }
+//    }
+//    // Members
+//    std::string inputId_;
+//    std::string name_;
+//    std::string number_;
+//    std::string insertionCode_;
+//    std::string chainId_;
+////    std::string model_;
+//};
 
 struct DisulphideBond // The original spelling is phabulous.
 {
     //Constructor
-    DisulphideBond(std::string res1Id, std::string res2Id, double distance) : residue1_(res1Id), residue2_(res2Id), distance_(distance) {}
+    DisulphideBond(ResidueId *res1Id, ResidueId *res2Id, double distance) : residue1_(*res1Id), residue2_(*res2Id), distance_(distance) {}
     //Members
     ResidueId residue1_;
     ResidueId residue2_;

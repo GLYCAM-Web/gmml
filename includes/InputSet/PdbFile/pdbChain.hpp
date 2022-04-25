@@ -40,7 +40,7 @@ private:
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
-    std::string extractResidueId(const std::string &line);
+    //std::string extractResidueId(const std::string &line);
     std::stringstream extractSingleResidueFromRecordSection(std::stringstream &pdbFileStream, std::string line);
 
     //PdbResidue& GetFirstResidue() const;

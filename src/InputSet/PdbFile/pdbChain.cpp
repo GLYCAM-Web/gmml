@@ -23,7 +23,7 @@ PdbChain::PdbChain(std::stringstream &stream_block, const std::string& chainId) 
         if ( (recordName == "ATOM") || (recordName == "HETATM") )
         {
             std::stringstream singleResidueSection = this->extractSingleResidueFromRecordSection(stream_block, line);
-            this->addResidue(std::make_unique<PdbResidue>(singleResidueSection));
+            this->addResidue(std::make_unique<PdbResidue>(singleResidueSection, line));
         }
         else
         {
@@ -62,7 +62,7 @@ std::stringstream PdbChain::extractSingleResidueFromRecordSection(std::stringstr
 {
     std::streampos previousLinePosition = pdbFileStream.tellg(); // Save current line position
     std::stringstream singleResidueSection;
-    pdb::ResidueId residueId = pdb::extractResidueId(line);
+    pdb::ResidueId residueId(line);
     pdb::ResidueId initialResidueId = residueId;
     while(residueId == initialResidueId)
     {
@@ -72,7 +72,7 @@ std::stringstream PdbChain::extractSingleResidueFromRecordSection(std::stringstr
         {
             break; // // If we hit the end, time to leave.
         }
-        residueId = pdb::extractResidueId(line);
+        residueId = ResidueId(line);
     }
     pdbFileStream.seekg(previousLinePosition); // Go back to previous line position. E.g. was reading HEADER and found TITLE.
     gmml::log(__LINE__,__FILE__,gmml::INF, singleResidueSection.str());
@@ -147,7 +147,7 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
 //        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH31", "ACE", sequenceNumber, hh31CoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
 //        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH32", "ACE", sequenceNumber, hh32CoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
 //        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH33", "ACE", sequenceNumber, hh33CoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Created ACE residue: " + newACEResidue->GetId());
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Created ACE residue: " + newACEResidue->getId());
     }
 }
 
