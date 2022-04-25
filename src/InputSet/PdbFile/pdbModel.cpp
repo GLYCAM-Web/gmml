@@ -293,8 +293,9 @@ const pdb::AtomRecord* PdbModel::FindAtom(const int& serialNumber) const
 //{
 //
 //}
-void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo, const PreprocessorOptions &inputOptions)
+void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
 {
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Start CYS preprocessing for this Model\n");
     std::vector<pdb::PdbResidue*> cysResidues = this->getResiduesWithName(std::vector<std::string> {"CYS", "CYX"});
     if (cysResidues.empty())
     {
@@ -310,15 +311,19 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo, const
             AtomRecord* sgAtom2 = cysRes2->FindAtom("SG");
             if ( (sgAtom1 != nullptr) && (sgAtom2 != nullptr) )
             {
+                gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");
                 double distance = sgAtom1->CalculateDistance(sgAtom2);
                 if (distance < gmml::dSulfurCutoff && distance > 0.001)
                 {
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Distance less than cutoff");
                     cysRes1->setName("CYX");
                     cysRes2->setName("CYX");
-                    this->addConectRecord(cysRes1->FindAtom("SG"), cysRes2->FindAtom("SG"));
-                    ppInfo.cysBondResidues_.emplace_back(cysRes1->GetId(), cysRes2->GetId(), distance);
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Names set");
+                    this->addConectRecord(sgAtom1, sgAtom2);
+                    ppInfo.cysBondResidues_.emplace_back(cysRes1, cysRes2, distance);
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "ThisNoHappen?");
                     std::stringstream message;
-                    message << "Bonding " << cysRes1->GetId() << " and " << cysRes2->GetId() << " with distance " << distance;
+                    message << "Bonding " << cysRes1->getId() << " and " << cysRes2->getId() << " with distance " << distance;
                     gmml::log(__LINE__, __FILE__, gmml::INF, message.str());
                 }
             }

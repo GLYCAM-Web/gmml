@@ -304,9 +304,13 @@ const float& PdbFile::GetBFactor() const
 pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOptions)
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Preprocesssing has begun");
-    PreprocessorInformation ppInfo;
+    pdb::PreprocessorInformation ppInfo;
     // CYS Disulfide bonds
     gmml::log(__LINE__, __FILE__, gmml::INF, "Cys disulphide bonds");
+    for(auto &model: this->getAssemblies())
+    {
+        model->preProcessCysResidues(ppInfo);
+    }
 //    for (auto &models: this->GetCoordinateSection().GetModels())
 //    {
 //        gmml::log(__LINE__, __FILE__, gmml::INF, "I have the models");

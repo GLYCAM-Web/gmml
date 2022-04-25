@@ -46,7 +46,7 @@ public:
     //PdbResidueIterator FindPositionOfResidue(const PdbResidue* queryResidue);
     std::string extractChainId(const std::string &line);
     std::stringstream extractSingleChainFromRecordSection(std::stringstream &pdbFileStream, std::string line, const std::string& initialChainID);
-    void preProcessCysResidues(pdb::PreprocessorInformation &ppInfo, const PreprocessorOptions &inputOptions);
+    void preProcessCysResidues(pdb::PreprocessorInformation &ppInfo);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
