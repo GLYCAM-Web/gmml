@@ -27,6 +27,7 @@ public:
     inline const int& getNumber() const {return number_;}
     inline const std::string& getName() const {return name_;}
     std::vector<const atomT*> getAtoms() const;
+    //std::vector<atomT*> getAtoms();
     std::vector<std::string> getAtomNames() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
@@ -53,7 +54,6 @@ private:
     int number_ = 1;
     std::string name_ = "   ";
 };
-
 //////////////////////////////////////////////////////////
 //                    CONSTRUCTOR                       //
 //////////////////////////////////////////////////////////
@@ -63,7 +63,6 @@ cdsResidue<atomT>::cdsResidue(const std::string& residueName, const cdsResidue *
     this->setName(residueName);
     this->setNumber(referenceResidue->getNumber() + 1);
 }
-
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
@@ -88,12 +87,10 @@ std::vector<std::string> cdsResidue<atomT>::getAtomNames() const
     }
     return foundAtomNames;
 }
-
-
 //template< class atomT >
-//const std::vector<const atomT*> cdsResidue<atomT>::getAtoms() const
+//const std::vector<atomT*> cdsResidue<atomT>::getAtoms()
 //{
-//    const std::vector<const atomT*> atoms;
+//    std::vector<atomT*> atoms;
 //    for(auto &atomPtr : atoms_)
 //    {
 //        atoms.push_back(atomPtr.get());

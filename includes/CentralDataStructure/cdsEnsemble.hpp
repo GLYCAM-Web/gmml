@@ -22,6 +22,7 @@ public:
     std::vector<const residueT*> getResidues() const;
     std::vector<const moleculeT*> getMolecules() const;
     std::vector<const assemblyT*> getAssemblies() const;
+    std::vector<assemblyT*> getAssemblies();
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
@@ -47,6 +48,17 @@ template <class assemblyT, class moleculeT, class residueT, class atomT>
 std::vector<const assemblyT*> cdsEnsemble<assemblyT, moleculeT, residueT, atomT>::getAssemblies() const
 {
     std::vector<const assemblyT*> assemblies;
+    for(auto &assPtr : assemblies_)
+    {
+        assemblies.push_back(assPtr.get()); // raw ptr from unique_ptr
+    }
+    return assemblies;
+}
+
+template <class assemblyT, class moleculeT, class residueT, class atomT>
+std::vector<assemblyT*> cdsEnsemble<assemblyT, moleculeT, residueT, atomT>::getAssemblies()
+{
+    std::vector<assemblyT*> assemblies;
     for(auto &assPtr : assemblies_)
     {
         assemblies.push_back(assPtr.get()); // raw ptr from unique_ptr
