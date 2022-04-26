@@ -22,8 +22,8 @@ In order to build GMML, you are required to have the following software availabl
 * `boost`
 * `g++` (or a c++ compiler of your choice)
 * `make`
-* `python3.9` (version >= 3.9.5)
-* `python3.9-dev` (version >= 3.9.5, possibly not needed)
+* `python3.9` (version >= 3.9.12)
+* `python3.9-dev` (version >= 3.9.12, possibly not needed)
 * `git`
 * `swig` (Version 4.0.2)
 

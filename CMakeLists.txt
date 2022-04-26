@@ -58,7 +58,7 @@ file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/hDirectoryList.txt HDIRECTORIES)
 #this regex is needed because the relative pathing does not work when inputing from the file
 #this allows us to mimic relative pathing, also prevents the use of globbing in
 #cmake which is a big no-no. We do not glob, it invites anomalous behavior.
-STRING(REGEX REPLACE "./" "${CMAKE_SOURCE_DIR}/" HDIRECTORIES "${HDIRECTORIES}")
+STRING(REGEX REPLACE "\\./" "${CMAKE_SOURCE_DIR}/" HDIRECTORIES "${HDIRECTORIES}")
 STRING(REGEX REPLACE ";" "\\\\;" HDIRECTORIES "${HDIRECTORIES}")
 STRING(REGEX REPLACE "\n" ";" HDIRECTORIES "${HDIRECTORIES}")
 #Now let cmake know that our list is where all the include directories are
@@ -86,7 +86,7 @@ if(WRAP_GMML)
 	#Get swig package
 	find_package(SWIG 4.0 COMPONENTS python REQUIRED)
 	#Get python lib package
-	find_package(Python3 3.9 COMPONENTS Interpreter Development REQUIRED)
+	find_package(Python3 3.9.12 COMPONENTS Interpreter Development EXACT REQUIRED)
 
 	if (SWIG_FOUND AND Python3_FOUND)
 		message(STATUS "Wrapping GMML library in python...")
