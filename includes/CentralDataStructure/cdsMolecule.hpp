@@ -135,7 +135,7 @@ typename std::vector<std::unique_ptr<residueT>>::iterator cdsMolecule<residueT, 
             ++i;
         }
     }
-    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find position of " + queryResidue->getId() + " in vector\n");
+    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find position of " + queryResidue->printId() + " in vector\n"); // every class should have a print?
     return e;
 }
 

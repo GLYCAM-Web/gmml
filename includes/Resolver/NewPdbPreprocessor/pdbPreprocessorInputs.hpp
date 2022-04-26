@@ -14,11 +14,7 @@ namespace pdb
 struct PreprocessorOptions // This is inputs into the preprocessor function. Defaults are fine, can contain user options instead/aswell.
 {
     //Constructors
-    PreprocessorOptions() :
-        chainNTermination_("NH3+"), // aka zwitterionic
-        chainCTermination_("CO2-"), // aka zwitterionic
-        gapNTermination_("COCH3"), // aka ACE
-        gapCTermination_("NHCH3") {} // aka NME
+    PreprocessorOptions() {}
     PreprocessorOptions(
             std::vector<std::pair<std::string,std::string>> hisSelections,
             std::string chainNTermination = "NH3+",
@@ -32,10 +28,10 @@ struct PreprocessorOptions // This is inputs into the preprocessor function. Def
         gapCTermination_(gapCTermination),
         hisSelections_(hisSelections) {}
     // Members
-    std::string chainNTermination_;
-    std::string chainCTermination_;
-    std::string gapNTermination_;
-    std::string gapCTermination_;
+    std::string chainNTermination_ = "NH3+"; // aka zwitterionic
+    std::string chainCTermination_ = "CO2-"; // aka zwitterionic
+    std::string gapNTermination_ = "COCH3"; // aka ACE
+    std::string gapCTermination_ = "NHCH3"; // aka NME
     std::vector<std::pair<std::string,std::string>> hisSelections_; // e.g. pair: residue id like this <"HIS_20_?_A_1", "HID">
 };
 
@@ -71,7 +67,7 @@ struct PreprocessorOptions // This is inputs into the preprocessor function. Def
 struct DisulphideBond // The original spelling is phabulous.
 {
     //Constructor
-    DisulphideBond(ResidueId *res1Id, ResidueId *res2Id, double distance) : residue1_(*res1Id), residue2_(*res2Id), distance_(distance) {}
+    DisulphideBond(const ResidueId& res1Id, const ResidueId& res2Id, const double& distance) : residue1_(res1Id), residue2_(res2Id), distance_(distance) {}
     //Members
     ResidueId residue1_;
     ResidueId residue2_;
@@ -81,7 +77,7 @@ struct DisulphideBond // The original spelling is phabulous.
 struct GapInAminoAcidChain
 {
     //Constructor
-    GapInAminoAcidChain(std::string chain, std::string resBefore, std::string resAfter, std::string cTerm, std::string nterm) : chainId_(chain), residueBeforeGap_(resBefore), residueAfterGap_(resAfter), terminationBeforeGap_(cTerm), terminationAfterGap_(nterm) {}
+    GapInAminoAcidChain(const std::string& chain, const std::string& resBefore, const std::string& resAfter, const std::string& cTerm, const std::string& nterm) : chainId_(chain), residueBeforeGap_(resBefore), residueAfterGap_(resAfter), terminationBeforeGap_(cTerm), terminationAfterGap_(nterm) {}
     //Members
     std::string chainId_;
     std::string residueBeforeGap_;
@@ -126,7 +122,7 @@ struct GapInAminoAcidChain
 struct AtomInfo
 {
     // Constructor
-    AtomInfo(std::string atomName, ResidueId residue) : name_(atomName), residue_(residue) {}
+    AtomInfo(const std::string& atomName, const ResidueId& residue) : name_(atomName), residue_(residue) {}
     // Members
     std::string name_;
     ResidueId residue_;
@@ -136,7 +132,7 @@ struct AtomInfo
 struct ChainTerminal
 {
     // Constructor
-    ChainTerminal(std::string chainId, std::string startIndex, std::string endIndex, std::string nTerm, std::string cTerm) : chainId_(chainId), startIndex_(startIndex), endIndex_(endIndex), nTermination_(nTerm), cTermination_(cTerm) {}
+    ChainTerminal(const std::string& chainId, const std::string& startIndex, const std::string& endIndex, const std::string& nTerm, const std::string& cTerm) : chainId_(chainId), startIndex_(startIndex), endIndex_(endIndex), nTermination_(nTerm), cTermination_(cTerm) {}
     // Members
     std::string chainId_;
     std::string startIndex_;

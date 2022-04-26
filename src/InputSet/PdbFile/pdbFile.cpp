@@ -307,9 +307,10 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
     pdb::PreprocessorInformation ppInfo;
     // CYS Disulfide bonds
     gmml::log(__LINE__, __FILE__, gmml::INF, "Cys disulphide bonds");
-    for(auto &model: this->getAssemblies())
+    for(auto &model: this->getAssemblies()) // Now we do all, but maybe user can select at some point.
     {
         model->preProcessCysResidues(ppInfo);
+        model->preProcessHisResidues(ppInfo, inputOptions);
     }
 //    for (auto &models: this->GetCoordinateSection().GetModels())
 //    {

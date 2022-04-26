@@ -47,6 +47,7 @@ public:
     std::string extractChainId(const std::string &line);
     std::stringstream extractSingleChainFromRecordSection(std::stringstream &pdbFileStream, std::string line, const std::string& initialChainID);
     void preProcessCysResidues(pdb::PreprocessorInformation &ppInfo);
+    void preProcessHisResidues(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////

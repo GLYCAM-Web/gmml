@@ -1,8 +1,11 @@
 #include "includes/InputSet/PdbFile/pdbResidueId.hpp"
 #include "includes/CodeUtils/strings.hpp"
+#include "includes/common.hpp"
 
 using pdb::ResidueId;
-
+//////////////////////////////////////////////////////////
+//                       CONSTRUCTOR                    //
+//////////////////////////////////////////////////////////
 ResidueId::ResidueId(const std::string &line)
 {
     int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
@@ -14,16 +17,49 @@ ResidueId::ResidueId(const std::string &line)
     insertionCode_ = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
 }
 
-std::string ResidueId::getId() const
-{
-    return this->getName() + "_" + this->getNumberWithCode() + "_" + this->getChainId();
-}
-
-const std::string ResidueId::getNumberWithCode() const
+ResidueId::ResidueId(const std::string &name, const std::string &number, const std::string &insertionCode, const std::string &chainId) : residueName_(name), sequenceNumber_(number), insertionCode_(insertionCode), chainId_(chainId) {}
+//////////////////////////////////////////////////////////
+//                       FUNCTIONS                      //
+//////////////////////////////////////////////////////////
+const std::string ResidueId::getNumberAndInsertionCode() const
 {
     return this->getNumber() + this->getInsertionCode();
 }
-
+//////////////////////////////////////////////////////////
+//                       DISPLAY                        //
+//////////////////////////////////////////////////////////
+std::string ResidueId::print() const
+{
+    std::string formattedId;
+    if (this->getName().empty())
+    {
+        formattedId += gmml::sNotSet;
+    }
+    else
+    {
+        formattedId += this->getName();
+    }
+    formattedId += "_";
+    if (this->getNumberAndInsertionCode().empty())
+    {
+        formattedId += gmml::sNotSet;
+    }
+    else
+    {
+        formattedId += this->getNumberAndInsertionCode();
+    }
+    formattedId += "_";
+    if (this->getChainId().empty())
+    {
+        formattedId += gmml::sNotSet;
+    }
+    else
+    {
+        formattedId += this->getChainId();
+    }
+    std::cerr << formattedId;
+    return formattedId;
+}
 //pdb::ResidueId pdb::extractResidueId(const std::string &line)
 //{
 //    // Dealing with number overruns for serialNumber and residueNumber

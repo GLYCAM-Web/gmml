@@ -145,7 +145,7 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
 //        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH31", "ACE", sequenceNumber, hh31CoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
 //        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH32", "ACE", sequenceNumber, hh32CoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
 //        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH33", "ACE", sequenceNumber, hh33CoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Created ACE residue: " + newACEResidue->getId());
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Created ACE residue: " + newACEResidue->printId());
     }
 }
 

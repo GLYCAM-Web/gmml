@@ -12,13 +12,9 @@
 namespace pdb
 {
 //typedef std::vector<std::unique_ptr<AtomRecord>>::iterator AtomRecordIterator;
-class PdbResidue : public cds::cdsResidue<AtomRecord> , public pdb::ResidueId
+class PdbResidue : public cds::cdsResidue<AtomRecord>
 {
 public:
-    using ResidueId::getName; // I want ResidueId's implementation of these methods
-    using ResidueId::getNumber;
-    using ResidueId::setName;
-    using ResidueId::setNumber;
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
@@ -33,20 +29,30 @@ public:
     //inline const std::string& getChainId() const {return chainId_;}
     //inline const std::string& getInsertionCode() const {return insertionCode_;}
     //const std::string& GetName() const;
-    const std::string& GetRecordName() const;
-    std::vector<std::string> GetAtomNames() const;
-    const std::string GetParmName() const;
 //    AtomRecord* GetLastAtom() const;
 //    AtomRecord* GetFirstAtom() const;
-    const std::string& GetLabel() const;
+ //   const std::string& GetLabel() const;
     //const std::string& GetId() const;
+    ResidueId getId() const;
+//    inline const std::string& getName() const {return this->getId().getName();}
+//    inline const std::string& getNumber() const {return this->getId().getNumber();}
+    inline const std::string& getInsertionCode() const {return insertionCode_;}
+    inline const std::string& getChainId() const {return chainId_;}
+    const std::string& getNumberAndInsertionCode() const;
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
     //inline void setChainId(const std::string& s) {chainId_ = s;}
     //inline void setInsertionCode(const std::string& s) {insertionCode_ = s;}
+    const std::string& GetRecordName() const;
+    std::vector<std::string> GetAtomNames() const;
+    const std::string GetParmName() const;
     inline void AddTerCard() {hasTerCard_ = true;}
     inline void RemoveTerCard() {hasTerCard_ = false;}
+    inline void setInsertionCode(const std::string& s) {insertionCode_ = s;}
+    inline void setChainId(const std::string &s) {chainId_ = s;}
+//    inline void setResId(const ResidueId& id) {id_ = id;}
+//    inline void setName(const std::string& name) {id_.setName(name);}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
@@ -60,16 +66,22 @@ public:
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
+    inline std::string printId() const {return this->getId().print();}
     void Print(std::ostream& out = std::cerr) const;
     void Write(std::ostream& stream) const;
 private:
+    //////////////////////////////////////////////////////////
+    //                       ACCESSOR                       //
+    //////////////////////////////////////////////////////////
+    //inline ResidueId& getIdPrivate() {return id_;} // non const version.
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     //std::vector<AtomRecord*> atomRecords_; // Residue does not own these. Owned by residues's owner.
     //std::vector<std::unique_ptr<AtomRecord>> atomRecords_; // Residue does not own these. Owned by residues's owner.
-//    std::string chainId_ = "";
-//    std::string insertionCode_ = "";
+    std::string insertionCode_ = "";
+    std::string chainId_ = "";
+//    ResidueId id_;
     bool hasTerCard_ = false;
 };
 }

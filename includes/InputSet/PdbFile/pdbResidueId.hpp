@@ -4,7 +4,8 @@
 #include <string>
 
 namespace pdb
-{
+{ // This class is a way for me to centralize where res info is extracted from a pbd file line.
+  // This is used by PreprocessorInformation and PdbResidue.
 class ResidueId
 {
 public:
@@ -13,6 +14,7 @@ public:
     //////////////////////////////////////////////////////////
     ResidueId() {}
     ResidueId(const std::string &line);
+    ResidueId(const std::string &name, const std::string &number, const std::string &insertionCode, const std::string &chainId);
     //////////////////////////////////////////////////////////
     //                       ACCESSORS                      //
     //////////////////////////////////////////////////////////
@@ -30,8 +32,7 @@ public:
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
-    std::string getId() const;
-    const std::string getNumberWithCode() const;
+    const std::string getNumberAndInsertionCode() const;
     //////////////////////////////////////////////////////////
     //                       OVERLOADS                      //
     //////////////////////////////////////////////////////////
@@ -49,6 +50,10 @@ public:
                 (insertionCode_ != rhs.insertionCode_) ||
                 (chainId_ != rhs.chainId_));
             }
+    //////////////////////////////////////////////////////////
+    //                       DISPLAY                        //
+    //////////////////////////////////////////////////////////
+    std::string print() const;
 private:
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //

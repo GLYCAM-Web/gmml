@@ -25,7 +25,7 @@ public:
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
     inline const int& getNumber() const {return number_;}
-    inline const std::string& getName() const {return name_;}
+    inline virtual const std::string& getName() const {return name_;}
     std::vector<const atomT*> getAtoms() const;
     //std::vector<atomT*> getAtoms();
     std::vector<std::string> getAtomNames() const;

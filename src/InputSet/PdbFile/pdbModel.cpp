@@ -126,7 +126,7 @@ void PdbModel::addConectRecord(const AtomRecord* atom1, const AtomRecord* atom2)
 //    for(auto &residue : this->getResidues())
 //    {
 //        // This gmml::PROTEINS seems weird, but whatever, it works.
-//        if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), residue->GetName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
+//        if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), residue->getName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
 //        {
 //            if ( residue->GetChainId() != previousChain || residue->GetModelNumber() != previousModelNumber )
 //            {
@@ -173,20 +173,20 @@ void PdbModel::addConectRecord(const AtomRecord* atom1, const AtomRecord* atom2)
 //    return matchingResidues;
 //}
 //
-//void PdbModel::ChangeResidueName(const std::string& selector, const std::string& newName)
-//{
-//    for(auto &residue : residues_)
-//    {
-//        std::size_t found = residue->GetId().find(selector);
-//        if(found != std::string::npos)
-//        {
-//            residue->SetName(newName);
-//            return;
-//        }
-//    }
-//    return;
-//}
-//
+void PdbModel::ChangeResidueName(const std::string& selector, const std::string& newName)
+{
+    for(auto &residue : this->getResidues())
+    {
+        std::size_t found = residue->printId().find(selector);
+        if(found != std::string::npos)
+        {
+            residue->setName(newName);
+            return;
+        }
+    }
+    return;
+}
+
 const pdb::AtomRecord* PdbModel::FindAtom(const int& serialNumber) const
 {
     for(auto &atom : this->getAtoms())
@@ -311,25 +311,63 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
             AtomRecord* sgAtom2 = cysRes2->FindAtom("SG");
             if ( (sgAtom1 != nullptr) && (sgAtom2 != nullptr) )
             {
-                //gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");
+                gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");
                 double distance = sgAtom1->CalculateDistance(sgAtom2);
                 if (distance < gmml::dSulfurCutoff && distance > 0.001)
                 {
-                  //  gmml::log(__LINE__, __FILE__, gmml::INF, "Distance less than cutoff");
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Distance less than cutoff");
                     cysRes1->setName("CYX");
                     cysRes2->setName("CYX");
-                   // gmml::log(__LINE__, __FILE__, gmml::INF, "Names set");
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Names set");
                     this->addConectRecord(sgAtom1, sgAtom2);
-                    ppInfo.cysBondResidues_.emplace_back(cysRes1, cysRes2, distance);
-                   // gmml::log(__LINE__, __FILE__, gmml::INF, "ThisNoHappen?");
+                    ppInfo.cysBondResidues_.emplace_back(cysRes1->getId(), cysRes2->getId(), distance);
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "ThisNoHappen?");
                     std::stringstream message;
-                    message << "Bonding " << cysRes1->getId() << " and " << cysRes2->getId() << " with distance " << distance;
+                    message << "Bonding " << cysRes1->printId() << " and " << cysRes2->printId() << " with distance " << distance;
                     gmml::log(__LINE__, __FILE__, gmml::INF, message.str());
                 }
             }
         }
     }
 }
+
+void PdbModel::preProcessHisResidues(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
+{
+    // HIS protonation, user specified:
+    gmml::log(__LINE__, __FILE__, gmml::INF, "User His protonation");
+    for(auto &userSelectionPair : inputOptions.hisSelections_)
+    {
+        this->ChangeResidueName(userSelectionPair.first, userSelectionPair.second);
+    }
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Auto His protonation");
+    // HIS protonation, automatic handling.
+    for(auto &residue : this->getResidues())
+    {
+        if (residue->getName() == "HIE" || residue->getName() == "HID" || residue->getName() == "HIP")
+        {
+            ppInfo.hisResidues_.emplace_back(residue->getId());
+        }
+        else if (residue->getName() == "HIS")
+        {
+            if ( (residue->FindAtom("HE2") == nullptr) && (residue->FindAtom("HD1") != nullptr) )
+            {
+                residue->setName("HID");
+            }
+            else if ( (residue->FindAtom("HE2") != nullptr) && (residue->FindAtom("HD1") != nullptr) )
+            {
+                residue->setName("HIP");
+            }
+            else // HIE is default
+            {
+                residue->setName("HIE");
+            }
+            gmml::log(__LINE__, __FILE__, gmml::INF, "About to emplaceBack Id");
+            gmml::log(__LINE__, __FILE__, gmml::INF, residue->printId());
+            ppInfo.hisResidues_.emplace_back(residue->getId());
+        }
+    }
+}
+
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 ////////////////////////////////////////////////////////
