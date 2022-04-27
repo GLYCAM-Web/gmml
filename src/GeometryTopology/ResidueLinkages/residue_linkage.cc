@@ -2,8 +2,8 @@
 #include <algorithm> // reverse
 #include "includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "includes/MolecularModeling/overlaps.hpp"
-#include "includes/External_Libraries/PCG/pcg_extras.hpp"
-#include "includes/External_Libraries/PCG/pcg_random.hpp"
+#include "includes/External_Libraries/PCG/pcg_extras.h"
+#include "includes/External_Libraries/PCG/pcg_random.h"
 #include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp" // For lookup in GetName function
 #include "includes/CodeUtils/logging.hpp"
 
