@@ -24,9 +24,9 @@ echo ""
 #Grab all c++ files and chuck them into our file. We have the option to be able to also grab
 #the tests c++ files in case we want to lint/run tests on em
 echo "Hitting the list that contains all the paths to our source files"
-if  [ "${INCLUDE_TEST_FILES}" == 1 ] || ! diff cmakeFileLists/cFileList.txt <(find "./src" -name "*.cc" -o -name "*.cpp" | sort) ; then
+if  [ "${INCLUDE_TEST_FILES}" == 1 ] || ! diff cmakeFileLists/cFileList.txt <(find "./src" -name "*.cc" -o -name "*.cpp" |  LC_ALL=C.UTF-8 sort) ; then
 	if [ "${INCLUDE_TEST_FILES}" == 1 ]; then
-        diff cmakeFileLists/cFileList.txt <(find "./src" "./tests" -name "*.cc" -o -name "*.cpp" | sort)
+        diff cmakeFileLists/cFileList.txt <(find "./src" "./tests" -name "*.cc" -o -name "*.cpp" |  LC_ALL=C.UTF-8 sort)
     fi
 	if [ -f "./cmakeFileLists/cFileList.txt" ]; then
         echo "Previous data found, Removing old cc/cpp file list..."
@@ -34,9 +34,9 @@ if  [ "${INCLUDE_TEST_FILES}" == 1 ] || ! diff cmakeFileLists/cFileList.txt <(fi
     fi
     echo "Grabbing all *.cpp/*.cc files from /src/ and throwing into ./cmakeFileLists/cFileList.txt"
     if [ "${INCLUDE_TEST_FILES}" == 1 ]; then
-        find "./src" "./tests" -name "*.cc" -o -name "*.cpp" | sort &> ./cmakeFileLists/cFileList.txt
+        find "./src" "./tests" -name "*.cc" -o -name "*.cpp" |  LC_ALL=C.UTF-8 sort &> ./cmakeFileLists/cFileList.txt
     else
-        find "./src" -name "*.cc" -o -name "*.cpp" | sort &> ./cmakeFileLists/cFileList.txt
+        find "./src" -name "*.cc" -o -name "*.cpp" |  LC_ALL=C.UTF-8 sort &> ./cmakeFileLists/cFileList.txt
     fi
     FILES_UPDATED=1
     echo "Finished fixing up the list that has all our source files"
@@ -48,14 +48,14 @@ echo""
 #Get all OUR header files, none of the external libraries. This is important because when cmake uses these file lists
 #it will have all these files use the normal -I flag for gcc in the compile commands
 echo "Hitting the list that contains all our paths to our directories that have our headers"
-if ! diff cmakeFileLists/hDirectoryList.txt <( find "./includes" -type d ! -path "*External_Libraries*" | sort ) ; then
+if ! diff cmakeFileLists/hDirectoryList.txt <( find "./includes" -type d ! -path "*External_Libraries*" |  LC_ALL=C.UTF-8 sort ) ; then
     if [ -f "./cmakeFileLists/hDirectoryList.txt" ]; then
         echo "Previous data found, Removing old header file directory path list..."
         rm ./cmakeFileLists/hDirectoryList.txt
     fi
     echo "Grabbing all dir paths to our h/hpp files and throwing into ./cmakeFileLists/hDirectoryList.txt"
     #Grabs all our header code dirs
-    find "./includes" -type d ! -path "*External_Libraries*" | sort   &> ./cmakeFileLists/hDirectoryList.txt
+    find "./includes" -type d ! -path "*External_Libraries*" |  LC_ALL=C.UTF-8 sort   &> ./cmakeFileLists/hDirectoryList.txt
     FILES_UPDATED=1
     echo "Finished fixing up the list that has all our include dirs"
 else
@@ -67,14 +67,14 @@ echo ""
 #list to have all the files use the -isystem flag on the files which prevents linting on em and should help clean up
 #our build outputs.
 echo "Hitting the list that contains all our paths to the directories that have all our 3rd party libraries"
-if ! diff cmakeFileLists/externalHDirectoryList.txt <(find "./includes" -type d -path "*External_Libraries*" | sort) ; then
+if ! diff cmakeFileLists/externalHDirectoryList.txt <(find "./includes" -type d -path "*External_Libraries*" |  LC_ALL=C.UTF-8 sort) ; then
     if [ -f "./cmakeFileLists/externalHDirectoryList.txt" ]; then
         echo "Previous data found, Removing old header file directory path list..."
         rm ./cmakeFileLists/externalHDirectoryList.txt
     fi
     echo "Grabbing all dir paths to our external libraries h/hpp files and throwing into ./cmakeFileLists/externalHDirectoryList.txt"
     #grabs only the header dirs that correspond to our 3rd party libs
-    find . -type d -path "*External_Libraries*" | sort  &> ./cmakeFileLists/externalHDirectoryList.txt
+    find . -type d -path "*External_Libraries*" |  LC_ALL=C.UTF-8 sort  &> ./cmakeFileLists/externalHDirectoryList.txt
     FILES_UPDATED=1
     echo "Finished fixing up the list that has all our external lib include dirs."
 else

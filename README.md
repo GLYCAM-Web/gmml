@@ -77,6 +77,18 @@ Both the `build` and `lib` directories must remain untouched because `gems` util
 
 Please enter `./make.sh -h` for help regarding the make script.
 
+### Updating file lists and whatnot
+
+First off, **DO NOT JUST FIRE THE SCRIPT AND NOT KNOW WHAT IS GOING ON. THIS METHOD IS DONE SO I DONT HAVE TO FORCE PEOPLE TO USE A FULL CMAKE PATTERN, IF THESE GOOD GRACES ARE VIOLATED YOU WILL RUIN IT FOR EVERYONE BECAUSE I WILL BE FORCED TO REMOVE THIS WORKAROUND**. The reason I am making such a big deal about this is because no one should just auto grab what files we need to build and compile and run, we would have less knowledge about what our code is doing and it greatly increases the chances of introducing unknown behavior. So what is the usual method people use for cmake? Well, it is annoying and I am lazy so we do this workaround. Typically you have to have a `CMakeLists.txt` in every single directory that you add with the `add_subdirectory(<DIR HERE>)` cmake command. That is super annoying, but it has some merrits; mostly being that we know what is going on with out code. Other method that is **EXTREMELY FROWNED** is using cmake globbing (calling commands in the `CMakeLists.txt` file) to get all our `.cc/.cpp/.h/hpp` files. This is bad because its auto grabbing files to build and we should know whats going on with our code. So I did a middle of the ground method, we run a diff on the command thats used to grab the data thats in the file lists and on the file lists themselves. If the diff is different we update the lists, if not we dont update the lists. Thats about it. You can also pass a `-t` flag to the `updateCmakeFiles.sh` so it grabs all the test code files which we would want to do when we are running code analysis on our code base so we can lint the code and code. When you run the script, make sure you know whats going on and why each file is either being removed or added to file lists.
+
+The `cmakeFileLists` directory contains the ouput from our `updateCmakeFiles.sh` script. This script goes through and grabs all our files that we want to compile. There are 3 types:
+
+* `cFileList.txt` - this contains all of our cpp files and where they be
+
+* `hDirectoryList.txt` - this contains all of the directories that OUR source headers are. In the compiler this gets passed `-I` flag
+
+* `externalHDirectoryList.txt` - this contains all the directoires of the EXTERNAL source code headers. For example, the eigen library. This is done so our `compile_commands.json` will use all these files with the `-isystem` flag which makes running tools much easier. 
+
 ---
 ## Testing the Library
 

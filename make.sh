@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#variable that will be used to check if we are trying to run any linting
+#on our test files
+TESTIN_TIME=0
+
 ################################################################
 #########                 FUNCTIONS                    #########
 ################################################################
@@ -24,13 +28,59 @@ check_gemshome() {
 		echo "Error:  GEMSHOME environment variable is not set! It should be set to"
 		echo "$1"
 		exit 1
-	elif [ ! -d ${GEMSHOME} ]; then
+	elif [ ! -d "${GEMSHOME}" ]; then
 		echo ""
 		echo "Error:  GEMSHOME environment variable is set to ${GEMSHOME} -- this does"
 		echo "not appear to be a directory. It should be set to"
 		echo "$1"
 		exit 1
 	fi
+}
+
+#this function is needed to help block people from running code if they have
+#not updated the file lists that cmake uses and they are trying to run make
+#this is important because it allows us to continue to use my workaround
+#which allows us to use the ease of file globbing but without being bums
+#and doing bad cmake practices where it runs ops we dont know
+checkCMakeFileLists()
+{
+    echo "Checking our file lists to make sure you are good to compile"
+    BAD_FILE_LISTS=0
+    #check our cfiles stuff
+    if  [ "${TESTIN_TIME}" == 1 ] && ! diff cmakeFileLists/cFileList.txt <(find "./src" "./tests" -name "*.cc" -o -name "*.cpp" |  LC_ALL=C.UTF-8 sort); then
+        echo "Warning: you want to build for testing but the cfiles isnt"
+        echo "updated with the needed files. Read the readme."
+        BAD_FILE_LISTS=1
+    elif ! diff cmakeFileLists/cFileList.txt <(find "./src" -name "*.cc" -o -name "*.cpp" |  LC_ALL=C.UTF-8 sort); then
+        echo "Warning: you want to build but the cfiles isnt updated with"
+        echo "the needed files. Read the readme."
+        BAD_FILE_LISTS=1
+    fi
+    #check our hdirectory stuff
+    if ! diff cmakeFileLists/hDirectoryList.txt <( find "./includes" -type d ! -path "*External_Libraries*" |  LC_ALL=C.UTF-8 sort) ; then
+        echo "Warning: you want to build for testing but the hdirectory list file"
+        echo "isnt updated with the needed files. Read the readme."
+        BAD_FILE_LISTS=1
+    fi
+    #check our external lib stuff
+    if ! diff cmakeFileLists/externalHDirectoryList.txt <(find "./includes" -type d -path "*External_Libraries*" |  LC_ALL=C.UTF-8 sort) ; then
+        echo "Warning: you want to build for testing but the list of directories"
+        echo "for our external libs isnt updated with the needed files. Read" 
+        echo "the readme."
+        BAD_FILE_LISTS=1
+    fi
+    
+    if [ "${BAD_FILE_LISTS}" == 1 ]; then
+        echo "==============================================================="
+        echo "READ THE README, IT WILL EXPLAIN WHAT IS GOING ON. CHECK UNDER"
+        echo "THE COMPILING THE LIBRARY SECTION. IF PEOPLE CANNOT FOLLOW THIS"
+        echo "WORKAROUND I WILL IMPLEMENT CMAKE IN A MORE TRADIONAL WAY WHICH"
+        echo "WILL MAKE DEVELOPMENT MORE ANNOYING"
+        echo "==============================================================="
+        exit "${BAD_FILE_LISTS}"
+    fi
+    echo "File lists are good lets run it"
+   
 }
 
 ################################################################
@@ -69,10 +119,10 @@ printHelp()
 #########                CHECK SETTINGS                #########
 ################################################################
 
-echo "Starting installation of GMML at `date`".
+echo "Starting installation of GMML at $(date)".
 
-gemshome=`pwd`
-check_gemshome ${gemshome}
+gemshome=$(pwd)
+check_gemshome "${gemshome}"
 get_numprocs
 
 ################################################################
@@ -83,7 +133,7 @@ get_numprocs
 #Stuff in .git/hooks is ignored by git.
 #Solution: The folder .hooks is tracked by git.
 # Copy .hooks to .git/hooks during installation.
-cp -r $GEMSHOME/gmml/.hooks/* $GEMSHOME/gmml/.git/hooks/
+cp -r "${GEMSHOME}"/gmml/.hooks/* "${GEMSHOME}"/gmml/.git/hooks/
 #I don't think this is ideal, and is perhaps silly. OG Apr 2017.
 
 ################################################################
@@ -131,22 +181,22 @@ WRAP="0"
 
 while getopts "j:o:cw" option
 do
-	case "$option" in
+	case "${option}" in
 			j)
-				jIn=${OPTARG}
-				if [[ ${jIn} =~ ^[0-9]+$ ]]; then
-					NMP=${jIn}
+				jIn="${OPTARG}"
+				if [[ "${jIn}" =~ ^[0-9]+$ ]]; then
+					NMP="${jIn}"
 				else
 					printHelp
 				fi
 				;;
 			o)
-				oIn=${OPTARG}
-				if [ ${oIn} == "O0" ] || [ ${oIn} == "no_optimize" ]; then
+				oIn="${OPTARG}"
+				if [ "${oIn}" == "O0" ] || [ "${oIn}" == "no_optimize" ]; then
 					CMAKE_BUILD_TYPE_FLAG="-DCMAKE_BUILD_TYPE=RelWithDebInfo"
-				elif [ ${oIn} == "O2" ] || [ ${oIn} == "optimize" ]; then
+				elif [ "${oIn}" == "O2" ] || [ "${oIn}" == "optimize" ]; then
 					CMAKE_BUILD_TYPE_FLAG="-DCMAKE_BUILD_TYPE=Release"
-				elif [ ${oIn} == "debug" ] || [ ${oIn} == "OG" ]; then
+				elif [ "${oIn}" == "debug" ] || [ "${oIn}" == "OG" ]; then
 					CMAKE_BUILD_TYPE_FLAG="-DCMAKE_BUILD_TYPE=Debug"
 				else
 					printHelp
@@ -164,42 +214,27 @@ do
 	esac
 done
 
-printf "\nBuilding with these settings:\n"
-printf "GEMSHOME: $GEMSHOME\n"
-printf "TARGET_MAKE_FILE: $TARGET_MAKE_FILE\n"
-printf "CMake build type: $CMAKE_BUILD_TYPE_FLAG\n"
-printf "Wrap: $WRAP\n"
-printf "Clean: $CLEAN\n"
+#check our file lists before we do anything 
+checkCMakeFileLists
 
-#NOTE: DEFUNCT NEED TO REMOVE, HERE FOR REFERENCE ABOUT WHAT OLD FLAGS WERE
-#i=1
-#while [ ${i} -le $# ]; do
-#	argument="${!i}"
-#	if [ "$argument" = "clean" ]||[ "$argument" = "no_clean" ];then
-#		CLEAN="${!i}"
-#	elif [ "$argument" = "wrap" ]||[ "$argument" = "no_wrap" ];then
-#		WRAP_GMML="${!i}"
-#	elif [ "$argument" = "debug" ]||[ "$argument" = "no_debug" ];then
-#		DEBUG="${!i}"
-#	elif [ "$argument" = "optimize" ]||[ "$argument" = "no_optimize" ]||[ "$argument" = "O1" ]||[ "$argument" = "O2" ];then
-#		OPTIMIZE="${!i}"
-#	fi
-#	i=$[$i+1]
-#done
+printf "\nBuilding with these settings:\n"
+echo "GEMSHOME: ${GEMSHOME}"
+echo "TARGET_MAKE_FILE: ${TARGET_MAKE_FILE}"
+echo "CMake build type: ${CMAKE_BUILD_TYPE_FLAG}"
+echo "Wrap: ${WRAP}"
+echo "Clean: ${CLEAN}"
 
 ################################################################
 #########                  COMPILE GMML                #########
 ################################################################
 
-echo "Generating GMML $TARGET_MAKE_FILE."
+echo "Generating GMML ${TARGET_MAKE_FILE}."
 
-if [ "$CLEAN" == "1" ]; then
+if [ "${CLEAN}" == "1" ]; then
 	echo ""
 	echo "Cleaning GMML. Please note this is VERY aggressive!"
 	if [ -d "./cmakeBuild" ]; then
-		cd ./cmakeBuild
-		make -f $TARGET_MAKE_FILE clean
-		cd ..
+		(cd ./cmakeBuild; make -f "${TARGET_MAKE_FILE}" clean)
 		rm -rf ./cmakeBuild
 	fi
 	if [ -d "./lib" ]; then
@@ -218,14 +253,13 @@ fi
 # and the -B (build dir) flag is for where everything will be built to
 echo "Creating makefile using cmake"
 echo ""
-cmake ${CMAKE_BUILD_TYPE_FLAG} -S . -B ./cmakeBuild -DWRAP_GMML=${WRAP}
+cmake "${CMAKE_BUILD_TYPE_FLAG}" -S . -B ./cmakeBuild -DWRAP_GMML="${WRAP}" || { echo "ERROR RUNNING CMAKE ON GMML: $0 FAILED, EXITING" ; exit 1; }
 
 
 #NOTE: All our build stuff is within the cmakeBuild dir
 echo "Making GMML."
-cd cmakeBuild
-make -j${NMP}
-cd ..
+#cd cmakeBuild
+(cd cmakeBuild || exit 1; make -j"${NMP}" || { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; })
 
 ################################################################
 #########              WRAP UP TO GEMS                 #########
@@ -234,6 +268,6 @@ cd ..
 #Wrapping is handled by cmake
 
 echo ""
-echo "GMML compilation and wrapping is finished at `date`".
+echo "GMML compilation and wrapping is finished at $(date)".
 exit
 
