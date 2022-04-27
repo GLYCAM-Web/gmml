@@ -40,8 +40,10 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O0 -DNDEBUG")
 #fileListUpdate.sh script
 file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/cFileList.txt CFILES)
 #This changes our delimeter from a newline or spaces to just a semicolon
+STRING(REGEX REPLACE "\\./" "${CMAKE_SOURCE_DIR}/" CFILES ${CFILES})
 STRING(REGEX REPLACE ";" "\\\\;" CFILES "${CFILES}")
 STRING(REGEX REPLACE "\n" ";" CFILES "${CFILES}")
+STRING(REGEX REPLACE "[\n;]$" CFILES "${CFILES}")
 #add a library that will be an object libary built out of all our cfiles
 add_library(${PROJECT_OBJ} OBJECT
 	${CFILES}
@@ -53,7 +55,7 @@ set_target_properties(${PROJECT_OBJ} PROPERTIES
 	VERSION ${PROJECT_VERSION}
 	PUBLIC_HEADER includes/gmml.hpp)
 
-#same as the -I flag for qmake.
+#same as the -I flag for gcc.
 file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/hDirectoryList.txt HDIRECTORIES)
 #this regex is needed because the relative pathing does not work when inputing from the file
 #this allows us to mimic relative pathing, also prevents the use of globbing in
@@ -61,13 +63,26 @@ file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/hDirectoryList.txt HDIRECTORIES)
 STRING(REGEX REPLACE "\\./" "${CMAKE_SOURCE_DIR}/" HDIRECTORIES "${HDIRECTORIES}")
 STRING(REGEX REPLACE ";" "\\\\;" HDIRECTORIES "${HDIRECTORIES}")
 STRING(REGEX REPLACE "\n" ";" HDIRECTORIES "${HDIRECTORIES}")
+STRING(REGEX REPLACE "[\n;]$" HDIRECTORIES "${HDIRECTORIES}")
 #Now let cmake know that our list is where all the include directories are
 #Done this way so we dont have to have individual cmake files cascading through
 #Our filesystem, that is annoying and extra work
 include_directories(
+    PUBLIC
 	"${CMAKE_SOURCE_DIR}"
 	"${HDIRECTORIES}"
 	)
+
+#same as the -isystem flag for gcc. This is for all our external header file dirs
+#important cause tooling etc. 
+file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/externalHDirectoryList.txt EXHDIRECTORIES)
+STRING(REGEX REPLACE "\\./" "${CMAKE_SOURCE_DIR}/" EXHDIRECTORIES "${EXHDIRECTORIES}")
+STRING(REGEX REPLACE ";" "\\\\;" EXHDIRECTORIES "${EXHDIRECTORIES}")
+STRING(REGEX REPLACE "\n" ";" EXHDIRECTORIES "${EXHDIRECTORIES}")
+STRING(REGEX REPLACE "[\n;]$" EXHDIRECTORIES "${EXHDIRECTORIES}")
+include_directories(SYSTEM
+    "${EXHDIRECTORIES}"
+    )
 
 #for the project object value this passes -fpic which is needed
 #to make our files into a shared libary
