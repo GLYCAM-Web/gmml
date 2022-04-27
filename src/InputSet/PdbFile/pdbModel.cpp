@@ -305,6 +305,7 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
     }
     for (std::vector<pdb::PdbResidue*>::iterator it1 = cysResidues.begin(); it1 != cysResidues.end(); ++it1)
     { // I want to go through the list and compare from current item to end. Thus it2 = std::next it1
+
         PdbResidue* cysRes1 = *it1;
         AtomRecord* sgAtom1 = cysRes1->FindAtom("SG");
         for (std::vector<pdb::PdbResidue*>::iterator it2 = std::next(it1, 1); it2 != cysResidues.end(); ++it2)
@@ -313,17 +314,17 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
             AtomRecord* sgAtom2 = cysRes2->FindAtom("SG");
             if ( (sgAtom1 != nullptr) && (sgAtom2 != nullptr) )
             {
-                gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");
+                //gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");
                 double distance = sgAtom1->CalculateDistance(sgAtom2);
                 if (distance < gmml::dSulfurCutoff && distance > 0.001)
                 {
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Distance less than cutoff");
+                    //gmml::log(__LINE__, __FILE__, gmml::INF, "Distance less than cutoff");
                     cysRes1->setName("CYX");
                     cysRes2->setName("CYX");
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "Names set");
+                    //gmml::log(__LINE__, __FILE__, gmml::INF, "Names set");
                     this->addConectRecord(sgAtom1, sgAtom2);
                     ppInfo.cysBondResidues_.emplace_back(cysRes1->getId(), cysRes2->getId(), distance);
-                    gmml::log(__LINE__, __FILE__, gmml::INF, "ThisNoHappen?");
+                    //gmml::log(__LINE__, __FILE__, gmml::INF, "ThisNoHappen?");
                     std::stringstream message;
                     message << "Bonding " << cysRes1->printId() << " and " << cysRes2->printId() << " with distance " << distance;
                     gmml::log(__LINE__, __FILE__, gmml::INF, message.str());
@@ -377,7 +378,7 @@ void PdbModel::preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, co
     {
         gmml::log(__LINE__,__FILE__,gmml::INF, "Preprocessing started for this chain");
         //Do the thing
-        std::cerr << "AAAAAHHHHH " << inputOptions.chainNTermination_ << inputOptions.chainCTermination_ << "\n";
+       // std::cerr << "AAAAAHHHHH " << inputOptions.chainNTermination_ << inputOptions.chainCTermination_ << "\n";
         chain->ModifyTerminal(inputOptions.chainNTermination_);
         chain->ModifyTerminal(inputOptions.chainCTermination_);
         //Log the thing
@@ -386,11 +387,7 @@ void PdbModel::preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, co
         gmml::log(__LINE__, __FILE__, gmml::INF, "N term : " + nTer->printId());
         gmml::log(__LINE__, __FILE__, gmml::INF, "C term : " + cTer->printId());
         //Report the thing
-        std::cerr << "\nAAAAAHHHHH1 " << nTer->getChainId();
-        std::cerr << "\nAAAAAHHHHH2 " << cTer->getChainId();
-        std::cerr << "\nAAAAAHHHHH3 " << nTer->getNumberAndInsertionCode();
-        std::cerr << "\nAAAAAHHHHH4 " << cTer->getNumberAndInsertionCode();
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Everything that goes in is : " + nTer->getChainId() + ", " + nTer->getNumberAndInsertionCode() + ", " + cTer->getNumberAndInsertionCode()+ ", " + inputOptions.chainNTermination_ + ", " +  inputOptions.chainCTermination_);
+//        gmml::log(__LINE__, __FILE__, gmml::INF, "Everything that goes in is : " + nTer->getChainId() + ", " + nTer->getNumberAndInsertionCode() + ", " + cTer->getNumberAndInsertionCode()+ ", " + inputOptions.chainNTermination_ + ", " +  inputOptions.chainCTermination_);
 
         ppInfo.chainTerminals_.emplace_back(nTer->getChainId(), nTer->getNumberAndInsertionCode(), cTer->getNumberAndInsertionCode(), inputOptions.chainNTermination_, inputOptions.chainCTermination_);
         gmml::log(__LINE__,__FILE__,gmml::INF, "Preprocessing complete for this chain");

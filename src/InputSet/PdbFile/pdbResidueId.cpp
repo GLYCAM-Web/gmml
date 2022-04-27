@@ -57,7 +57,6 @@ std::string ResidueId::print() const
     {
         formattedId += this->getChainId();
     }
-    std::cerr << formattedId;
     return formattedId;
 }
 //pdb::ResidueId pdb::extractResidueId(const std::string &line)

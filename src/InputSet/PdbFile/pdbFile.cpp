@@ -305,8 +305,6 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Preprocesssing has begun");
     pdb::PreprocessorInformation ppInfo;
-    // CYS Disulfide bonds
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Cys disulphide bonds");
     for(auto &model: this->getAssemblies()) // Now we do all, but maybe user can select at some point.
     {
         model->preProcessCysResidues(ppInfo);
