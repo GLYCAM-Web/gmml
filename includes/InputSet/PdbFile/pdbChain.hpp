@@ -31,7 +31,7 @@ public:
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
     void InsertCap(const PdbResidue& refResidue, const std::string& type);
-    void ModifyTerminal(const std::string& type);
+    bool ModifyTerminal(const std::string& type);
     PdbResidue* getNTerminal();
     PdbResidue* getCTerminal();
     //////////////////////////////////////////////////////////

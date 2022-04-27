@@ -21,7 +21,7 @@ public:
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
-    inline const int& getNumber() {return number_ ;}
+    inline const int& getNumber()const {return number_ ;}
     std::vector<const atomT*> getAtoms() const;
     std::vector<const residueT*> getResidues() const;
     std::vector<const moleculeT*> getMolecules() const;

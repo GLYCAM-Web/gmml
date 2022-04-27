@@ -33,6 +33,7 @@ PdbModel::PdbModel(std::stringstream &stream_block)
                 gmml::log(__LINE__, __FILE__, gmml::WAR, "Model issue: this ain't an int: " + codeUtils::RemoveWhiteSpace(line.substr(10,4)));
                 currentModelNumber = 1; // Seems like a reasonable default.
             }
+            this->setNumber(currentModelNumber);
         }
         // ATOM
         else if ( (recordName == "ATOM") || (recordName == "HETATM") )
@@ -41,7 +42,7 @@ PdbModel::PdbModel(std::stringstream &stream_block)
             // Function that will read from stringstream until chain ID changes or TER or just not ATOM/HETATM
             std::stringstream singleChainSection = this->extractSingleChainFromRecordSection(stream_block, line, this->extractChainId(line));
             //this->addMolecule(PdbChain(singleChainSection, this->extractChainId(line)));
-            gmml::log(__LINE__,__FILE__,gmml::INF, "I'm about to die now?");
+//            gmml::log(__LINE__,__FILE__,gmml::INF, "I'm about to die now?");
             this->addMolecule(std::make_unique<PdbChain>(singleChainSection, this->extractChainId(line)));
         }
     }
@@ -78,7 +79,8 @@ std::stringstream PdbModel::extractSingleChainFromRecordSection(std::stringstrea
     std::streampos previousLinePosition = pdbFileStream.tellg(); // Save current line position
     std::stringstream singleChainSection;
     std::string chainID = initialChainID;
-    while(chainID == initialChainID)
+    std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
+    while((chainID == initialChainID) && ( (recordName == "ATOM") || (recordName == "HETATM") ))
     {
         singleChainSection << line << std::endl;
         previousLinePosition = pdbFileStream.tellg(); // Save current line position.
@@ -87,9 +89,10 @@ std::stringstream PdbModel::extractSingleChainFromRecordSection(std::stringstrea
             break; // // If we hit the end, time to leave.
         }
         chainID = this->extractChainId(line);
+        recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
     }
     pdbFileStream.seekg(previousLinePosition); // Go back to previous line position. E.g. was reading HEADER and found TITLE.
-    gmml::log(__LINE__,__FILE__,gmml::INF, singleChainSection.str());
+    gmml::log(__LINE__,__FILE__,gmml::INF, "Single chain section is:\n" + singleChainSection.str() + "\nEnd of single chain section.");
     return singleChainSection;
 }
 
@@ -332,6 +335,7 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
             }
         }
     }
+    return;
 }
 
 void PdbModel::preProcessHisResidues(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
@@ -369,6 +373,7 @@ void PdbModel::preProcessHisResidues(pdb::PreprocessorInformation &ppInfo, const
             ppInfo.hisResidues_.emplace_back(residue->getId());
         }
     }
+    return;
 }
 
 void PdbModel::preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
@@ -376,22 +381,25 @@ void PdbModel::preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, co
     gmml::log(__LINE__, __FILE__, gmml::INF, "Chain terminations");
     for (auto &chain : this->getMolecules())
     {
-        gmml::log(__LINE__,__FILE__,gmml::INF, "Preprocessing started for this chain");
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Chain termination processing started for this chain");
         //Do the thing
-       // std::cerr << "AAAAAHHHHH " << inputOptions.chainNTermination_ << inputOptions.chainCTermination_ << "\n";
-        chain->ModifyTerminal(inputOptions.chainNTermination_);
-        chain->ModifyTerminal(inputOptions.chainCTermination_);
-        //Log the thing
-        PdbResidue* nTer = chain->getNTerminal();
-        PdbResidue* cTer = chain->getCTerminal();
-        gmml::log(__LINE__, __FILE__, gmml::INF, "N term : " + nTer->printId());
-        gmml::log(__LINE__, __FILE__, gmml::INF, "C term : " + cTer->printId());
-        //Report the thing
-//        gmml::log(__LINE__, __FILE__, gmml::INF, "Everything that goes in is : " + nTer->getChainId() + ", " + nTer->getNumberAndInsertionCode() + ", " + cTer->getNumberAndInsertionCode()+ ", " + inputOptions.chainNTermination_ + ", " +  inputOptions.chainCTermination_);
-
-        ppInfo.chainTerminals_.emplace_back(nTer->getChainId(), nTer->getNumberAndInsertionCode(), cTer->getNumberAndInsertionCode(), inputOptions.chainNTermination_, inputOptions.chainCTermination_);
+        if (chain->ModifyTerminal(inputOptions.chainNTermination_) && chain->ModifyTerminal(inputOptions.chainCTermination_) )
+        {
+            //Log the thing
+            PdbResidue* nTer = chain->getNTerminal();
+            PdbResidue* cTer = chain->getCTerminal();
+            gmml::log(__LINE__, __FILE__, gmml::INF, "N term : " + nTer->printId());
+            gmml::log(__LINE__, __FILE__, gmml::INF, "C term : " + cTer->printId());
+            //Report the thing
+            ppInfo.chainTerminals_.emplace_back(nTer->getChainId(), nTer->getNumberAndInsertionCode(), cTer->getNumberAndInsertionCode(), inputOptions.chainNTermination_, inputOptions.chainCTermination_);
+        }
+        else
+        {
+            gmml::log(__LINE__,__FILE__,gmml::INF, "Could not modify terminals of this chain.");
+        }
         gmml::log(__LINE__,__FILE__,gmml::INF, "Preprocessing complete for this chain");
     }
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Chain termination processing complete");
     return;
 }
 
@@ -402,13 +410,13 @@ void PdbModel::Print(std::ostream &out) const
 {
     for (auto &residue : this->getResidues())
     {
-       // residue->Print(out);
+        residue->Print(out);
     }
 }
 
 void PdbModel::Write(std::ostream& stream) const
 {
-    stream << "MODEL " << std::right << std::setw(4) << this->getModelNumber() << "\n";
+    stream << "MODEL " << std::right << std::setw(4) << this->getNumber() << "\n";
     for (auto &chain : this->getMolecules())
     {
         chain->Write(stream);

@@ -13,6 +13,7 @@ using pdb::PdbChain;
 ////////////////////////////////////////////////////////////
 PdbChain::PdbChain(std::stringstream &stream_block, const std::string& chainId) : chainId_(chainId)
 {
+    gmml::log(__LINE__,__FILE__,gmml::INF, "Constructing PdbChain from stream_block >>>>>>>>>:\n" + stream_block.str() + "\n<<<<<<<<<<<<<< end stream_block");
     std::string line;
     while(getline(stream_block, line))
     {
@@ -73,7 +74,7 @@ std::stringstream PdbChain::extractSingleResidueFromRecordSection(std::stringstr
         residueId = ResidueId(line);
     }
     pdbFileStream.seekg(previousLinePosition); // Go back to previous line position. E.g. was reading HEADER and found TITLE.
-    gmml::log(__LINE__,__FILE__,gmml::INF, singleResidueSection.str());
+    gmml::log(__LINE__,__FILE__,gmml::INF, "Single residue section is:\n" + singleResidueSection.str() + "\nEnd of single residue section.");
     return singleResidueSection;
 }
 
@@ -149,12 +150,12 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
     }
 }
 
-void PdbChain::ModifyTerminal(const std::string& type)
+bool PdbChain::ModifyTerminal(const std::string& type)
 {
     if (type == "NH3+") // For now, leaving it to tleap to add the correct H's
     {
         PdbResidue* nTermResidue = this->getNTerminal();
-        if (nTermResidue == nullptr) { return; }
+        if (nTermResidue == nullptr) { return false; }
         gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + nTermResidue->printId());
         AtomRecord* atom = nTermResidue->FindAtom("H");
         if (atom != nullptr)
@@ -166,7 +167,7 @@ void PdbChain::ModifyTerminal(const std::string& type)
     else if (type == "CO2-")
     {
         PdbResidue* cTermResidue = this->getCTerminal();
-        if (cTermResidue == nullptr) { return; }
+        if (cTermResidue == nullptr) { return false; }
         gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + cTermResidue->printId());
         AtomRecord* atom = cTermResidue->FindAtom("OXT");
         if (atom == nullptr)
@@ -181,14 +182,15 @@ void PdbChain::ModifyTerminal(const std::string& type)
         }
         else
         {
-            gmml::log(__LINE__,__FILE__,gmml::INF, "OXT atom already exists@ " + cTermResidue->FindAtom("OXT")->GetId());
+            gmml::log(__LINE__,__FILE__,gmml::INF, "OXT atom already exists: " + cTermResidue->FindAtom("OXT")->GetId());
         }
     }
     else
     {
         gmml::log(__LINE__, __FILE__, gmml::WAR, "Cannot handle this type of terminal option: " + type);
+        return false;
     }
-    return;
+    return true;
 }
 
 // Only makes sense for proteins.

@@ -27,7 +27,7 @@ public:
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-    inline int getModelNumber() const {return modelNumber_;}
+//    inline int getModelNumber() const {return modelNumber_;}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
@@ -72,7 +72,6 @@ private:
     //std::vector<std::unique_ptr<AtomRecord>> atomRecords_;
    // std::vector<std::unique_ptr<PdbResidue>> residues_;
     //std::vector<PdbResidue*> residues_;
-    int modelNumber_ = 1;
     std::vector<ConectRecord> conectRecords_;
 };
 }
