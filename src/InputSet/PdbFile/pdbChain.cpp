@@ -149,6 +149,72 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
     }
 }
 
+void PdbChain::ModifyTerminal(const std::string& type)
+{
+    if (type == "NH3+") // For now, leaving it to tleap to add the correct H's
+    {
+        PdbResidue* nTermResidue = this->getNTerminal();
+        if (nTermResidue == nullptr) { return; }
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + nTermResidue->printId());
+        AtomRecord* atom = nTermResidue->FindAtom("H");
+        if (atom != nullptr)
+        {
+            gmml::log(__LINE__,__FILE__,gmml::INF, "Deleting atom with id: " + atom->GetId());
+            nTermResidue->deleteAtom(atom);
+        }
+    }
+    else if (type == "CO2-")
+    {
+        PdbResidue* cTermResidue = this->getCTerminal();
+        if (cTermResidue == nullptr) { return; }
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + cTermResidue->printId());
+        AtomRecord* atom = cTermResidue->FindAtom("OXT");
+        if (atom == nullptr)
+        {
+            // I don't like this, but at least it's somewhat contained:
+            AtomRecord* atomCA = cTermResidue->FindAtom("CA");
+            AtomRecord* atomC = cTermResidue->FindAtom("C");
+            AtomRecord* atomO = cTermResidue->FindAtom("O");
+            GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->GetCoordinate(), atomC->GetCoordinate(), atomO->GetCoordinate(), 120.0, 180.0, 1.25);
+            cTermResidue->createAtom("OXT", oxtCoord);
+            gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + atomO->GetId());
+        }
+        else
+        {
+            gmml::log(__LINE__,__FILE__,gmml::INF, "OXT atom already exists@ " + cTermResidue->FindAtom("OXT")->GetId());
+        }
+    }
+    else
+    {
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "Cannot handle this type of terminal option: " + type);
+    }
+    return;
+}
+
+// Only makes sense for proteins.
+// Assumes vector is populated from N-terminal to C-terminal.
+pdb::PdbResidue* PdbChain::getNTerminal()
+{
+    std::vector<PdbResidue*> proteinResidues = this->getResidues(gmml::proteinResidueNames);
+    if (proteinResidues.empty())
+    {
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "Looked for terminal residue of chain with protein residues.");
+        return nullptr;
+    }
+    return proteinResidues.front();
+}
+
+pdb::PdbResidue* PdbChain::getCTerminal()
+{
+    std::vector<PdbResidue*> proteinResidues = this->getResidues(gmml::proteinResidueNames);
+    if (proteinResidues.empty())
+    {
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "Looked for terminal residue of chain with protein residues.");
+        return nullptr;
+    }
+    return proteinResidues.back();
+}
+
 //std::string PdbChain::extractResidueId(const std::string &line)
 //{
 //    // Dealing with number overruns for serialNumber and residueNumber

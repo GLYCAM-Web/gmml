@@ -72,7 +72,7 @@ pdb::ResidueId PdbResidue::getId() const
     ResidueId temp(this->getName(), std::to_string(this->getNumber()), this->getInsertionCode(), this->getChainId());
     return temp;
 }
-const std::string& PdbResidue::getNumberAndInsertionCode() const
+const std::string PdbResidue::getNumberAndInsertionCode() const
 {
     return std::to_string(this->getNumber()) + this->getInsertionCode();
 }

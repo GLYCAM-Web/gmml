@@ -34,9 +34,9 @@ public:
     // This next func is a stopgap until ParamManager comes into being.
 //    PdbResidue* CreateNewResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const PdbResidue& referenceResidue);
     //std::vector<std::vector<pdb::PdbResidue*>> GetModels() const;
-    std::vector<pdb::PdbChain*> GetProteinChains(); // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
+   // std::vector<pdb::PdbChain*> GetProteinChains(); // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
     //std::vector<pdb::PdbResidue*> GetResidues() const; // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
-    std::vector<pdb::PdbResidue*> FindResidues(const std::string selector); // Uh oh, private parts are exposed. Wee-ooo wee-ooo.
+   // std::vector<pdb::PdbResidue*> FindResidues(const std::string selector); // Uh oh, private parts are exposed. Wee-ooo wee-ooo.
     void ChangeResidueName(const std::string& selector, const std::string& newName);
     const AtomRecord* FindAtom(const int& serialNumber) const; // Conect records
   //  void DeleteAtomRecord(AtomRecord* atom);
@@ -48,6 +48,7 @@ public:
     std::stringstream extractSingleChainFromRecordSection(std::stringstream &pdbFileStream, std::string line, const std::string& initialChainID);
     void preProcessCysResidues(pdb::PreprocessorInformation &ppInfo);
     void preProcessHisResidues(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
+    void preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////

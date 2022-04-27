@@ -38,7 +38,7 @@ public:
 //    inline const std::string& getNumber() const {return this->getId().getNumber();}
     inline const std::string& getInsertionCode() const {return insertionCode_;}
     inline const std::string& getChainId() const {return chainId_;}
-    const std::string& getNumberAndInsertionCode() const;
+    const std::string getNumberAndInsertionCode() const;
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////

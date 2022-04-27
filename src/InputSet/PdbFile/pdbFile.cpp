@@ -311,6 +311,7 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
     {
         model->preProcessCysResidues(ppInfo);
         model->preProcessHisResidues(ppInfo, inputOptions);
+        model->preProcessChainTerminals(ppInfo, inputOptions);
     }
 //    for (auto &models: this->GetCoordinateSection().GetModels())
 //    {

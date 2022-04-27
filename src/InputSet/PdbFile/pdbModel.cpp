@@ -118,35 +118,35 @@ void PdbModel::addConectRecord(const AtomRecord* atom1, const AtomRecord* atom2)
 //    return models;
 //}
 
-//std::vector<std::vector<pdb::PdbResidue*>> PdbModel::GetProteinChains()
+//std::vector<pdb::PdbChain*> PdbModel::GetProteinChains()
 //{
-//    std::vector<std::vector<pdb::PdbResidue*>> chains;
-//    std::string previousChain = "AUniqueLittleString";
-//    int previousModelNumber = -99999;
-//    for(auto &residue : this->getResidues())
+//    std::vector<pdb::PdbChain*> proteinChains;
+//    std::string previousChain = "InitialValue";
+//    for(auto &chain : this->getMolecules())
 //    {
+//        proteinChains.emplace_back(chain->getResidues(gmml::proteinResidueNames));
 //        // This gmml::PROTEINS seems weird, but whatever, it works.
 //        if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), residue->getName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
 //        {
-//            if ( residue->GetChainId() != previousChain || residue->GetModelNumber() != previousModelNumber )
+//            if ( residue->getChainId() != previousChain || residue->getModelNumber() != previousModelNumber )
 //            {
-//                chains.emplace_back(std::vector<PdbResidue*>{residue.get()});
+//                proteinChains.emplace_back(std::vector<PdbResidue*>{residue.get()});
 //                previousChain = residue->GetChainId();
 //                previousModelNumber = residue->GetModelNumber();
 //            }
 //            else
 //            {
-//                chains.back().push_back(residue.get());
+//                proteinChains.back().push_back(residue.get());
 //            }
 //        }
 //    }
 //    // Labels
-//    for(auto &chain : chains)
+//    for(auto &chain : proteinChains)
 //    {
 //        chain.front()->addLabel("NTerminal");
 //        chain.back()->addLabel("CTerminal");
 //    }
-//    return chains;
+//    return proteinChains;
 //}
 
 //std::vector<pdb::PdbResidue*> PdbAssembly::GetResidues() const
@@ -184,6 +184,7 @@ void PdbModel::ChangeResidueName(const std::string& selector, const std::string&
             return;
         }
     }
+    gmml::log(__LINE__, __FILE__, gmml::WAR, "Could not find residue to rename with this selector " + selector);
     return;
 }
 
@@ -196,6 +197,7 @@ const pdb::AtomRecord* PdbModel::FindAtom(const int& serialNumber) const
             return atom;
         }
     }
+    gmml::log(__LINE__, __FILE__, gmml::WAR, "Could not find atom with this serialNumber " + serialNumber);
     return nullptr;
 }
 
@@ -366,6 +368,34 @@ void PdbModel::preProcessHisResidues(pdb::PreprocessorInformation &ppInfo, const
             ppInfo.hisResidues_.emplace_back(residue->getId());
         }
     }
+}
+
+void PdbModel::preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
+{
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Chain terminations");
+    for (auto &chain : this->getMolecules())
+    {
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Preprocessing started for this chain");
+        //Do the thing
+        std::cerr << "AAAAAHHHHH " << inputOptions.chainNTermination_ << inputOptions.chainCTermination_ << "\n";
+        chain->ModifyTerminal(inputOptions.chainNTermination_);
+        chain->ModifyTerminal(inputOptions.chainCTermination_);
+        //Log the thing
+        PdbResidue* nTer = chain->getNTerminal();
+        PdbResidue* cTer = chain->getCTerminal();
+        gmml::log(__LINE__, __FILE__, gmml::INF, "N term : " + nTer->printId());
+        gmml::log(__LINE__, __FILE__, gmml::INF, "C term : " + cTer->printId());
+        //Report the thing
+        std::cerr << "\nAAAAAHHHHH1 " << nTer->getChainId();
+        std::cerr << "\nAAAAAHHHHH2 " << cTer->getChainId();
+        std::cerr << "\nAAAAAHHHHH3 " << nTer->getNumberAndInsertionCode();
+        std::cerr << "\nAAAAAHHHHH4 " << cTer->getNumberAndInsertionCode();
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Everything that goes in is : " + nTer->getChainId() + ", " + nTer->getNumberAndInsertionCode() + ", " + cTer->getNumberAndInsertionCode()+ ", " + inputOptions.chainNTermination_ + ", " +  inputOptions.chainCTermination_);
+
+        ppInfo.chainTerminals_.emplace_back(nTer->getChainId(), nTer->getNumberAndInsertionCode(), cTer->getNumberAndInsertionCode(), inputOptions.chainNTermination_, inputOptions.chainCTermination_);
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Preprocessing complete for this chain");
+    }
+    return;
 }
 
 //////////////////////////////////////////////////////////

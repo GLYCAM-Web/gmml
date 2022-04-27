@@ -145,7 +145,7 @@ typename std::vector<residueT*> cdsMolecule<residueT, atomT>::getResidues(std::v
     std::vector<residueT*> foundResidues;
     for(auto &residuePtr : residues_)
     {
-        if (std::find(queryNames.begin(), queryNames.end(), residuePtr->GetName()) != queryNames.end())
+        if (std::find(queryNames.begin(), queryNames.end(), residuePtr->getName()) != queryNames.end())
         {
             foundResidues.push_back(residuePtr.get());
         }
