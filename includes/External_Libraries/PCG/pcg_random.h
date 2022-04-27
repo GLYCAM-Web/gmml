@@ -99,7 +99,7 @@
  *        bound
  */
 
-#include "pcg_extras.hpp"
+#include "pcg_extras.h"
 
 namespace pcg_detail {
 
