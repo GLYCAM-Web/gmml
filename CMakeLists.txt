@@ -43,7 +43,7 @@ file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/cFileList.txt CFILES)
 STRING(REGEX REPLACE "\\./" "${CMAKE_SOURCE_DIR}/" CFILES ${CFILES})
 STRING(REGEX REPLACE ";" "\\\\;" CFILES "${CFILES}")
 STRING(REGEX REPLACE "\n" ";" CFILES "${CFILES}")
-STRING(REGEX REPLACE "[\n;]$" CFILES "${CFILES}")
+STRING(REGEX REPLACE "[\n;]$" "" CFILES "${CFILES}")
 #add a library that will be an object libary built out of all our cfiles
 add_library(${PROJECT_OBJ} OBJECT
 	${CFILES}
@@ -63,7 +63,7 @@ file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/hDirectoryList.txt HDIRECTORIES)
 STRING(REGEX REPLACE "\\./" "${CMAKE_SOURCE_DIR}/" HDIRECTORIES "${HDIRECTORIES}")
 STRING(REGEX REPLACE ";" "\\\\;" HDIRECTORIES "${HDIRECTORIES}")
 STRING(REGEX REPLACE "\n" ";" HDIRECTORIES "${HDIRECTORIES}")
-STRING(REGEX REPLACE "[\n;]$" HDIRECTORIES "${HDIRECTORIES}")
+STRING(REGEX REPLACE "[\n;]$" "" HDIRECTORIES "${HDIRECTORIES}")
 #Now let cmake know that our list is where all the include directories are
 #Done this way so we dont have to have individual cmake files cascading through
 #Our filesystem, that is annoying and extra work
@@ -79,7 +79,7 @@ file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/externalHDirectoryList.txt EXHDIREC
 STRING(REGEX REPLACE "\\./" "${CMAKE_SOURCE_DIR}/" EXHDIRECTORIES "${EXHDIRECTORIES}")
 STRING(REGEX REPLACE ";" "\\\\;" EXHDIRECTORIES "${EXHDIRECTORIES}")
 STRING(REGEX REPLACE "\n" ";" EXHDIRECTORIES "${EXHDIRECTORIES}")
-STRING(REGEX REPLACE "[\n;]$" EXHDIRECTORIES "${EXHDIRECTORIES}")
+STRING(REGEX REPLACE "[\n;]$" "" EXHDIRECTORIES "${EXHDIRECTORIES}")
 include_directories(SYSTEM
     "${EXHDIRECTORIES}"
     )
