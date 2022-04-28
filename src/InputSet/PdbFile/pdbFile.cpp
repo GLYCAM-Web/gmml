@@ -7,7 +7,7 @@
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/InputSet/PdbFile/databaseReferenceRecord.hpp"
 #include "includes/common.hpp" // gmml::dSulfurCutoff
-#include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
+//#include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
 #include "includes/GeometryTopology/geometrytopology.hpp"
 #include "includes/InputSet/PdbFile/pdbModel.hpp"
 #include "includes/InputSet/PdbFile/pdbChain.hpp"
@@ -106,9 +106,12 @@ std::stringstream PdbFile::ExtractHeterogenousRecordSection(std::ifstream &pdbFi
     std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
     while(std::find(recordNames.begin(), recordNames.end(), recordName) != recordNames.end())
     {
-        std::stringstream partialRecordSection = this->ExtractHomogenousRecordSection(pdbFileStream, line, recordName);
-        recordSection << partialRecordSection.str();
-        previousLinePosition = pdbFileStream.tellg(); // Save current line position.
+        if(recordName != "ANISOU") // Do nothing for ANISOU
+        {
+            std::stringstream partialRecordSection = this->ExtractHomogenousRecordSection(pdbFileStream, line, recordName);
+            recordSection << partialRecordSection.str();
+            previousLinePosition = pdbFileStream.tellg(); // Save current line position.
+        }
         if(!std::getline(pdbFileStream, line)) // If we hit the end
         {
             break; // Time to leave.
@@ -133,16 +136,19 @@ std::stringstream PdbFile::ExtractHomogenousRecordSection(std::ifstream &pdbFile
     {
         codeUtils::ExpandLine(line, pdb::iPdbLineLength);
         recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
-        if (recordName == previousName)
+        if(recordName != "ANISOU") // Do nothing for ANISOU
         {
-            recordSection << line << std::endl;
-            previousName = recordName;
-            previousLinePosition = pdbFileStream.tellg(); // Save current line position.
-        }
-        else
-        {
-            break;
-        }
+            if (recordName == previousName)
+            {
+                recordSection << line << std::endl;
+                previousName = recordName;
+                previousLinePosition = pdbFileStream.tellg(); // Save current line position.
+            }
+            else
+            {
+                break;
+            }
+        } // Do nothing for ANISOU
     }
     pdbFileStream.seekg(previousLinePosition); // Go back to previous line position. E.g. was reading HEADER and found TITLE.
     //std::cout << "At end. Returning this record section:\n" << recordSection.str() << "\nEND RECORD SECTION\n";
@@ -310,6 +316,8 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
         model->preProcessCysResidues(ppInfo);
         model->preProcessHisResidues(ppInfo, inputOptions);
         model->preProcessChainTerminals(ppInfo, inputOptions);
+        model->preProcessGaps(ppInfo, inputOptions);
+        model->preProcessMissingUnrecognized(ppInfo);
     }
 //    for (auto &models: this->GetCoordinateSection().GetModels())
 //    {

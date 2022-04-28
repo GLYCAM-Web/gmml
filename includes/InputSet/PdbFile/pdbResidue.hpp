@@ -44,8 +44,8 @@ public:
     //////////////////////////////////////////////////////////
     //inline void setChainId(const std::string& s) {chainId_ = s;}
     //inline void setInsertionCode(const std::string& s) {insertionCode_ = s;}
-    const std::string& GetRecordName() const;
-    std::vector<std::string> GetAtomNames() const;
+    //const std::string& GetRecordName() const;
+    //std::vector<std::string> GetAtomNames() const;
     const std::string GetParmName() const;
     inline void AddTerCard() {hasTerCard_ = true;}
     inline void RemoveTerCard() {hasTerCard_ = false;}
@@ -63,6 +63,7 @@ public:
 //    AtomRecord* FindAtom(const int& serialNumber) const;
    // bool DeleteAtomRecord(AtomRecord* atom);
     //AtomRecordIterator FindPositionOfAtom(AtomRecord* queryAtom);
+    //bool isSequentialTo(const PdbResidue& queryResidue) const;
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////

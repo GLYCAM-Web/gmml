@@ -38,6 +38,7 @@ public:
     //std::vector<pdb::PdbResidue*> GetResidues() const; // Exposed for PdbFile. Hmm maybe this shouldn't be a separate class.
    // std::vector<pdb::PdbResidue*> FindResidues(const std::string selector); // Uh oh, private parts are exposed. Wee-ooo wee-ooo.
     void ChangeResidueName(const std::string& selector, const std::string& newName);
+    // ToDo This might change to be up in cdsAssembly if we remove serialNumbers from AtomRecords and change to using number.
     const AtomRecord* FindAtom(const int& serialNumber) const; // Conect records
   //  void DeleteAtomRecord(AtomRecord* atom);
 //    AtomRecordIterator CreateNewAtomRecord(std::string name, GeometryTopology::Coordinate& coord, AtomRecord* sisterAtom);
@@ -45,10 +46,13 @@ public:
 //    AtomRecordIterator FindPositionOfAtom(AtomRecord* queryAtom);
     //PdbResidueIterator FindPositionOfResidue(const PdbResidue* queryResidue);
     std::string extractChainId(const std::string &line);
-    std::stringstream extractSingleChainFromRecordSection(std::stringstream &pdbFileStream, std::string line, const std::string& initialChainID);
+    std::stringstream extractSingleChainFromRecordSection(std::stringstream &stream_block, std::string line, const std::string& initialChainID);
+    //Preprocessing functions
     void preProcessCysResidues(pdb::PreprocessorInformation &ppInfo);
     void preProcessHisResidues(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
     void preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
+    void preProcessGaps(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
+    void preProcessMissingUnrecognized(pdb::PreprocessorInformation &ppInfo);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
@@ -58,7 +62,7 @@ private:
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
-    std::string PeekAtResidueId(const std::string &line);
+    //std::string PeekAtResidueId(const std::string &line);
     void addConectRecord(const AtomRecord* atom1, const AtomRecord* atom2);
     inline const std::vector<ConectRecord>& GetConectRecords() const {return conectRecords_;}
     //inline pdb::PdbResidue* GetCurrentResidue() {return &(residues_.front());}

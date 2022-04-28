@@ -30,6 +30,8 @@ PdbChain::PdbChain(std::stringstream &stream_block, const std::string& chainId) 
             break;
         }
     }
+    gmml::log(__LINE__,__FILE__,gmml::INF, "Adding NTerminal and CTerminal tags if protein present");
+    this->tagTerminalResidues();
     gmml::log(__LINE__,__FILE__,gmml::INF, "PdbChain Constructor Complete Captain");
     return;
 }
@@ -56,6 +58,21 @@ PdbChain::PdbChain(std::stringstream &stream_block, const std::string& chainId) 
 ////////////////////////////////////////////////////////////
 ////                    FUNCTIONS                         //
 ////////////////////////////////////////////////////////////
+
+void PdbChain::tagTerminalResidues()
+{
+    PdbResidue* nTer = this->getNTerminal();
+    if (nTer != nullptr)
+    {
+        nTer->addLabel("NTerminal");
+    }
+    PdbResidue* cTer = this->getCTerminal();
+    if (cTer != nullptr)
+    {
+        cTer->addLabel("CTerminal");
+    }
+    return;
+}
 
 std::stringstream PdbChain::extractSingleResidueFromRecordSection(std::stringstream &pdbFileStream, std::string line)
 {
@@ -216,6 +233,35 @@ pdb::PdbResidue* PdbChain::getCTerminal()
     }
     return proteinResidues.back();
 }
+
+
+//void PdbChain::addCapsToGaps(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
+//{
+////    // Missing Residues (gaps)
+////    gmml::log(__LINE__, __FILE__, gmml::INF, "Gaps");
+//// //   std::string previousChainId = "AUniqueInitialString";
+////    int previousSequenceNumber = -999999;
+//// //   int previousModelNumber = -999999;
+////    pdb::PdbResidue* previous = nullptr;
+////    for(auto &residue : this->getResidues())
+////    {
+////        // WE WILL HAVE TO CHECK DISTANCES!!! 1UCY has reverse ordered insertion codes
+////        // KABAT can mean skipped numbers that are bonded.
+////        if ((previousSequenceNumber != (residue->getNumber() - 1)) && (true) )
+////        {
+////            gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + previous->getId());
+////            gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + residue->getId());
+////            this->InsertCap(*previous, inputOptions.gapCTermination_);
+////            this->InsertCap(*residue, inputOptions.gapNTermination_);
+////            std::stringstream residueBefore, residueAfter;
+////            residueBefore << previous->getNumber() << previous->getInsertionCode();
+////            residueAfter << residue->getNumber() << residue->getInsertionCode();
+////            ppInfo.missingResidues_.emplace_back(residue->getChainId(), residueBefore.str(), residueAfter.str(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
+////        }
+////        previous = residue;
+////        previousSequenceNumber = residue->getNumber();
+////    }
+//}
 
 //std::string PdbChain::extractResidueId(const std::string &line)
 //{

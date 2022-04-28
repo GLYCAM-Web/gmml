@@ -6,7 +6,7 @@
 #include <functional>
 
 #include "includes/CentralDataStructure/cdsMolecule.hpp"
-
+//#include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 namespace pdb
 {
 class AtomRecord;
@@ -30,10 +30,12 @@ public:
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
+    void tagTerminalResidues();
     void InsertCap(const PdbResidue& refResidue, const std::string& type);
     bool ModifyTerminal(const std::string& type);
     PdbResidue* getNTerminal();
     PdbResidue* getCTerminal();
+    // addCapsToGaps(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////

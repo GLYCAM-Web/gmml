@@ -6,6 +6,8 @@
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/common.hpp" // gmml::PROTEINS
+#include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
+
 
 using pdb::PdbModel;
 //////////////////////////////////////////////////////////
@@ -74,24 +76,24 @@ std::string PdbModel::extractChainId(const std::string &line)
     return codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
 }
 
-std::stringstream PdbModel::extractSingleChainFromRecordSection(std::stringstream &pdbFileStream, std::string line, const std::string& initialChainID)
+std::stringstream PdbModel::extractSingleChainFromRecordSection(std::stringstream &stream_block, std::string line, const std::string& initialChainID)
 {
-    std::streampos previousLinePosition = pdbFileStream.tellg(); // Save current line position
+    std::streampos previousLinePosition = stream_block.tellg(); // Save current line position
     std::stringstream singleChainSection;
     std::string chainID = initialChainID;
     std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
-    while((chainID == initialChainID) && ( (recordName == "ATOM") || (recordName == "HETATM") ))
+    while((chainID == initialChainID) && (recordName != "TER") )
     {
         singleChainSection << line << std::endl;
-        previousLinePosition = pdbFileStream.tellg(); // Save current line position.
-        if(!std::getline(pdbFileStream, line))
+        previousLinePosition = stream_block.tellg(); // Save current line position.
+        if(!std::getline(stream_block, line))
         {
             break; // // If we hit the end, time to leave.
         }
         chainID = this->extractChainId(line);
         recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
     }
-    pdbFileStream.seekg(previousLinePosition); // Go back to previous line position. E.g. was reading HEADER and found TITLE.
+    stream_block.seekg(previousLinePosition); // Go back to previous line position. E.g. was reading HEADER and found TITLE.
     gmml::log(__LINE__,__FILE__,gmml::INF, "Single chain section is:\n" + singleChainSection.str() + "\nEnd of single chain section.");
     return singleChainSection;
 }
@@ -403,6 +405,73 @@ void PdbModel::preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, co
     return;
 }
 
+void PdbModel::preProcessGaps(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
+{
+    // Missing Residues (gaps)
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Gaps");
+    std::string previousChainId = "AUniqueInitialString";
+    int previousSequenceNumber = -999999;
+    //   int previousModelNumber = -999999;
+    pdb::PdbResidue* previous = nullptr;
+    for(auto &chain : this->getMolecules())
+    {
+        for(auto &residue : chain->getResidues())
+        {   // ToDo WE WILL HAVE TO CHECK DISTANCES!!! 1UCY has reverse ordered insertion codes
+            // KABAT can mean skipped numbers that are bonded.
+            if ((previousSequenceNumber != (residue->getNumber() - 1)) && previousChainId == residue->getChainId())
+            {
+                //Log it
+                gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + previous->printId());
+                gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + residue->printId());
+                // Do it
+                chain->InsertCap(*previous, inputOptions.gapCTermination_);
+                chain->InsertCap(*residue, inputOptions.gapNTermination_);
+                // Record it
+                ppInfo.missingResidues_.emplace_back(previous->getChainId(), previous->getNumberAndInsertionCode(), residue->getNumberAndInsertionCode(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
+            }
+            previous = residue;
+            previousSequenceNumber = residue->getNumber();
+        }
+    }
+}
+
+void PdbModel::preProcessMissingUnrecognized(pdb::PreprocessorInformation &ppInfo)
+{
+    parameters::Manager parmManager;
+    for(auto &residue : this->getResidues())
+    {
+        std::vector<std::string> parmAtomNames = parmManager.GetAtomNamesForResidue(residue->GetParmName());
+        std::vector<std::string> parmHeavyAtomNames = parmManager.GetHeavyAtomNamesForResidue(residue->GetParmName());
+        // Unrecognized residue->
+        if (parmAtomNames.empty())
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "ParmManager did not recognize residue: " + residue->GetParmName());
+            ppInfo.unrecognizedResidues_.emplace_back(residue->getId());
+        }
+        else // Recognized residue->
+        {
+            std::vector<std::string> pdbAtomNames = residue->getAtomNames();
+            for (auto &parmHeavyAtomName : parmHeavyAtomNames) // What heavy atoms are missing from the pdb residue?
+            {
+                if ( std::find(pdbAtomNames.begin(), pdbAtomNames.end(), parmHeavyAtomName) == pdbAtomNames.end() )
+                { // Residue missing a heavy atom.
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Atom named " + parmHeavyAtomName + " missing from " + residue->printId());
+                    ppInfo.missingHeavyAtoms_.emplace_back(parmHeavyAtomName, residue->getId());
+                }
+            }
+            for (auto &pdbAtomName : pdbAtomNames) // What atoms in the pdb residue are unrecognized?
+            {
+                if ( std::find(parmAtomNames.begin(), parmAtomNames.end(), pdbAtomName) == parmAtomNames.end() )
+                {
+                    // Residue contains unrecognized atom.
+                    gmml::log(__LINE__, __FILE__, gmml::INF, "Unrecognized atom named " + pdbAtomName + " in " + residue->printId());
+                    ppInfo.unrecognizedAtoms_.emplace_back(pdbAtomName, residue->getId());
+                }
+            }
+        }
+    }
+    return;
+}
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 ////////////////////////////////////////////////////////

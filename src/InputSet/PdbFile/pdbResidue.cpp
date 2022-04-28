@@ -195,6 +195,19 @@ void PdbResidue::modifyCTerminal(const std::string& type)
     return;
 }
 
+//bool PdbResidue::isSequentialTo(const PdbResidue& queryResidue) const
+//{ // True if we have either Residue 100 and 101, or we can have 100A and 100B
+//  // False if we have 100 and 102, or we have 100A and 100C
+//  // False if we have 100A and 101A? Well yes, A implies B should exist? or no?
+//    if ( (this->getNumber() == queryResidue.getNumber() + 1 ) &&
+//            (this->getInsertionCode() == queryResidue.getInsertionCode()) )
+//    {
+//        return true;
+//    }
+//    else if ( this->getNumber() == queryResidue.getNumber() )
+//    return false;
+//}
+
 //void PdbResidue::CreateAtomFromLine(const std::string& line, const int& currentModelNumber)
 //{
 //    AtomRecord tempRecord(line, currentModelNumber);
