@@ -66,9 +66,9 @@ void SequenceParser::ParseLabelledInput(std::string inString)
 
 bool SequenceParser::ParseCondensedSequence(const std::string sequence)
 {
-    // Reading from the end of the string.
+    // Reading from the rightmost end of the string.
 	size_t i = (sequence.find_last_of('-') + 1);
-    if ( isdigit(sequence[i]) )
+    if ( isdigit(sequence[i]) ) // Indicates ano-ano and not e.g. Sugar-OME or -ROH etc
     { // e.g. DGlcpa1-2DFrufb or 
         ++i; // ano-ano
         if (sequence[i] == ']') // e.g. DGlcpa1-2[LFucpa1-1]DFrufb
