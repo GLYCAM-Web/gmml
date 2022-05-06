@@ -22,3 +22,5 @@
 00028_DGlcp[4D,3Me]b1-2DManp[6H]a1-OH
 00029_DFrufb2-6DFrufb2-6[DFrufb2-6DFrufb2-1]DFrufb2-6DFrufb2-6DFrufb2-OH
 00030_DGalpb1-OtBu
+00031_dUAa1-OME
+00032_dUA-OME
