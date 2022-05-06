@@ -40,7 +40,7 @@ int main(int argc, char** argv)
         }
         else
         {
-            std::cerr << carbBuilder.GetStatusMessage() << std::endl;
+            std::cerr << "Error thrown by gmml was: " << carbBuilder.GetStatusMessage() << std::endl;
         }
     }
 }
