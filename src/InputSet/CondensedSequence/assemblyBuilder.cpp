@@ -102,9 +102,12 @@ void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, Molecu
 }
 
 // All this stuff should go into Residue. Residue has private Head and child atoms with private getters/setters. Solves this mess.
+// There is way too much checking going on in there. Guarantees need be made elsewhere during construction.
 void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parentResidue, MolecularModeling::Residue& childResidue, std::string linkageLabel)
 {
 	std::stringstream logss;
+	logss << "Here with parent " << parentResidue.GetId() << " and child: " << childResidue.GetId() << " and linkageLabel: " << linkageLabel;
+	gmml::log(__LINE__,__FILE__,gmml::INF, logss.str());
 	// This is using the new Node<Residue> functionality and the old AtomNode 
 	parentResidue.addChild(linkageLabel, &childResidue);
 	// Now go figure out how which Atoms to bond to each other in the residues.
@@ -122,6 +125,12 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 		{ // label will be just a single number.
 			linkPosition = 0;
 		}
+		else if (linkageLabel.size() < 4)
+		{
+		    std::string message = "The deduced linkageLabel is too small:\n" + linkageLabel + ".\nWe require anomer, start atom number, a dash, and connecting atom number. Example:\na1-4";
+		    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+		    throw std::runtime_error(message);
+		}
 		if(!isdigit(linkageLabel.substr(linkPosition).at(0)))
 		{
 		    std::string message = "Could not convert the last linkage number to an integer: " + linkageLabel;
@@ -137,6 +146,13 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 	    throw std::runtime_error(logss.str());
 	}
 	Atom* parentAtom = parentResidue.GetAtom(parentAtomName);
+	if (parentAtom == nullptr)
+	{
+	    std::string message = "Did not find atom named " + parentAtomName + " in residue: " + parentResidue.GetId();
+	    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+	    throw std::runtime_error(message);
+	}
+	gmml::log(__LINE__,__FILE__,gmml::INF, parentAtom->GetId());
 	// Now get child atom
 	if (childResidue.GetType() == Residue::Type::Derivative)
 	{
@@ -167,6 +183,7 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 	    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
 	    throw std::runtime_error(message);
 	}
+    gmml::log(__LINE__,__FILE__,gmml::INF, childAtom->GetId());
 	// Now bond the atoms. Needs to change when AtomNode goes away.
 	childAtom->GetNode()->AddNodeNeighbor(parentAtom);
 	parentAtom->GetNode()->AddNodeNeighbor(childAtom);
