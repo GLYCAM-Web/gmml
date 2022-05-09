@@ -1,4 +1,5 @@
 #include <sstream>
+#include <cctype> // isDigit
 #include "includes/InputSet/CondensedSequence/assemblyBuilder.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeAglyconeInfo.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.hpp"
@@ -68,7 +69,6 @@ void AssemblyBuilder::GenerateResidues(Assembly *assembly)
 void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, MolecularModeling::Residue& gmmlParent, 
 	Assembly* assembly)
 {	
-	//std::cout << "Recurve Gen Res" << std::endl;
 	if (parsedChild->GetType() == ParsedResidue::Type::Deoxy)
 	{
 		gmml::log(__LINE__, __FILE__, gmml::INF, "Dealing with deoxy for " + gmmlParent.GetName());
@@ -102,9 +102,12 @@ void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, Molecu
 }
 
 // All this stuff should go into Residue. Residue has private Head and child atoms with private getters/setters. Solves this mess.
+// There is way too much checking going on in there. Guarantees need be made elsewhere during construction.
 void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parentResidue, MolecularModeling::Residue& childResidue, std::string linkageLabel)
 {
 	std::stringstream logss;
+	logss << "Here with parent " << parentResidue.GetId() << " and child: " << childResidue.GetId() << " and linkageLabel: " << linkageLabel;
+	gmml::log(__LINE__,__FILE__,gmml::INF, logss.str());
 	// This is using the new Node<Residue> functionality and the old AtomNode 
 	parentResidue.addChild(linkageLabel, &childResidue);
 	// Now go figure out how which Atoms to bond to each other in the residues.
@@ -122,9 +125,34 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 		{ // label will be just a single number.
 			linkPosition = 0;
 		}
+		else if (linkageLabel.size() < 4)
+		{
+		    std::string message = "The deduced linkageLabel is too small:\n" + linkageLabel + ".\nWe require anomer, start atom number, a dash, and connecting atom number. Example:\na1-4";
+		    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+		    throw std::runtime_error(message);
+		}
+		if(!isdigit(linkageLabel.substr(linkPosition).at(0)))
+		{
+		    std::string message = "Could not convert the last linkage number to an integer: " + linkageLabel;
+		    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+		    throw std::runtime_error(message);
+		}
 		parentAtomName = selection::GetNonCarbonHeavyAtomNumbered(parentResidue.GetAtoms(), linkageLabel.substr(linkPosition));
 	}
+	else
+	{
+	    logss << "Error: parent residue: " << parentResidue.GetName() << " with type " << parentResidue.GetType() << " isn't either Aglycone or Sugar, and derivatives cannot be parents.";
+	    gmml::log(__LINE__,__FILE__, gmml::ERR, logss.str());
+	    throw std::runtime_error(logss.str());
+	}
 	Atom* parentAtom = parentResidue.GetAtom(parentAtomName);
+	if (parentAtom == nullptr)
+	{
+	    std::string message = "Did not find atom named " + parentAtomName + " in residue: " + parentResidue.GetId();
+	    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+	    throw std::runtime_error(message);
+	}
+	gmml::log(__LINE__,__FILE__,gmml::INF, parentAtom->GetId());
 	// Now get child atom
 	if (childResidue.GetType() == Residue::Type::Derivative)
 	{
@@ -133,10 +161,29 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 	}
 	else if (childResidue.GetType() == Residue::Type::Sugar)
 	{
-		auto childLinkageNumber = linkageLabel.substr(1,1);
+		std::string childLinkageNumber = linkageLabel.substr(1,1);
+		if(!isdigit(childLinkageNumber.at(0)))
+		{
+		    std::string message = "Could not convert the first linkage number to an integer: " + childLinkageNumber;
+		    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+		    throw std::runtime_error(message);
+		}
 		childAtomName = "C" + childLinkageNumber;
 	}
+	else
+	{
+	    logss << "Error: child residue: " << childResidue.GetName() << " with type " << childResidue.GetType() << " is neither derivative or Sugar (aglycones cannot be children)";
+	    gmml::log(__LINE__,__FILE__, gmml::ERR, logss.str());
+	    throw std::runtime_error(logss.str());
+	}
 	Atom* childAtom = childResidue.GetAtom(childAtomName);
+	if (childAtom == nullptr)
+	{
+	    std::string message = "Did not find atom named " + childAtomName + " in residue: " + childResidue.GetId();
+	    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+	    throw std::runtime_error(message);
+	}
+    gmml::log(__LINE__,__FILE__,gmml::INF, childAtom->GetId());
 	// Now bond the atoms. Needs to change when AtomNode goes away.
 	childAtom->GetNode()->AddNodeNeighbor(parentAtom);
 	parentAtom->GetNode()->AddNodeNeighbor(childAtom);
@@ -169,7 +216,6 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 		if ( (neighbor->GetName().at(0) != 'H') && (neighbor != childAtom ) )
 		{
 			parentAtomNeighbor = neighbor;
-			//std::cout << "Found neighbor, I'll set the angle now!\n";
 			whyOhGodWhy.SetAngle(parentAtomNeighbor, parentAtom, childAtom, angle_to_set);
 		}
 	}

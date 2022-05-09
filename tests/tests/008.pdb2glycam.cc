@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
     amino_libs.push_back("../dat/CurrentParams/leaprc.ff12SB_2014-04-24/amino12.lib");
     amino_libs.push_back("../dat/CurrentParams/leaprc.ff12SB_2014-04-24/aminoct12.lib");
     amino_libs.push_back("../dat/CurrentParams/leaprc.ff12SB_2014-04-24/aminont12.lib");
-    std::string prep = "../dat/prep/GLYCAM_06j-1.prep";
+    std::string prep = "../dat/prep/GLYCAM_06j-1_GAGS.prep";
     MolecularModeling::Assembly assemblyA (argv[1], gmml::InputFileType::PDB);
     //std::cout << "BuildStructureByDistance()" << std::endl;
     assemblyA.BuildStructureByDistance();
