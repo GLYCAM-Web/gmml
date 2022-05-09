@@ -143,6 +143,14 @@ Building dUAa1-OME
 Building dUA-OME
 *********************
 Error thrown by gmml was: Could not convert the first linkage number to an integer: -
+
+*********************
+Building dUA-4DGalpb1-OH
+*********************
+Error thrown by gmml was: The deduced linkageLabel is too small:
+A-4.
+We require anomer, start atom number, a dash, and connecting atom number. Example:
+a1-4
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
@@ -169,3 +177,4 @@ Error thrown by gmml was: Could not convert the first linkage number to an integ
 00030.pdb succesfully created.
 00031.pdb succesfully created.
 00032.pdb not created.
+00033.pdb not created.
