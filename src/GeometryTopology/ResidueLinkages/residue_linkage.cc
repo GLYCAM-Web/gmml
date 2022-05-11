@@ -584,19 +584,19 @@ gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Residue_linkage::FindMe
     return matching_entries;
 }
 
+// This is funky. Either better checking or a redesign?
+// Update March 2022: No need to throw in case of branched 2-7 or 2-8 when there is something on the 2-9 so the linkage finder algo doesn't detect those as rotatable by this linkage, but the meta data for those dihedrals is still found. I think separating out the adding metadata information into a separate step from the linkage finding step was a mistake. Also trying to make it so generic that it doesn't need to look at atom names is also hurting when trying to figure out errors.. I would like to throw when it's not a 2-7/2-8 and it's found too much metadata.
 void Residue_linkage::AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata)
 {
-    // First clear any metadata already in place.
     for (auto & rotatableDihedral : rotatable_dihedrals_)
     {
-        rotatableDihedral.ClearMetadata();
+        rotatableDihedral.ClearMetadata(); // First clear any metadata already in place.
     }
     for (const auto& entry : metadata)
     {
-//        int bond_number = int (entry.number_of_bonds_from_anomeric_carbon_); // typecast to an int
         int vector_position = (entry.number_of_bonds_from_anomeric_carbon_ - 1); // vectors start at 0.
 //        std::cout << "Adding to position: "<< vector_position << " in vector of size: " << rotatable_dihedrals_.size() << std::endl;
-        if (vector_position <= rotatable_dihedrals_.size())
+        if (vector_position < rotatable_dihedrals_.size())
         {
             rotatable_dihedrals_.at(vector_position).AddMetadata(entry);
 //            std::cout << "Set " << entry.dihedral_angle_name_ << " meta data for "
@@ -609,11 +609,12 @@ void Residue_linkage::AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::G
         }
         else
         {
-            std::string errorMessage = "Huge problem in residue_linkage.cpp AddMetadataToRotatableDihedrals. Tried to add metadata to a rotatable bond that does not exist.\nCheck both dihedralangledata metadata and Residue_linkage::FindRotatableDihedralsConnectingResidues.\n";
-            gmml::log(__LINE__,__FILE__,gmml::ERR, errorMessage);
-            throw std::runtime_error(errorMessage);
+            std::string message = "Tried to add metadata to a rotatable bond that does not exist.\nCheck both dihedralangledata metadata and Residue_linkage::FindRotatableDihedralsConnectingResidues.\nNote this is normal for a sialic acid with multiple 2-7, 2-8 and or 2-9 linkages\n";
+            gmml::log(__LINE__,__FILE__,gmml::WAR, message);
+            //throw std::runtime_error(message);
         }
     }
+    return;
 }
 
 void Residue_linkage::SetResidues(Residue *residue1, Residue *residue2)
