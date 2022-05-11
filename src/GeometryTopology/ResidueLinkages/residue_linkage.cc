@@ -588,6 +588,14 @@ gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Residue_linkage::FindMe
 // Update March 2022: No need to throw in case of branched 2-7 or 2-8 when there is something on the 2-9 so the linkage finder algo doesn't detect those as rotatable by this linkage, but the meta data for those dihedrals is still found. I think separating out the adding metadata information into a separate step from the linkage finding step was a mistake. Also trying to make it so generic that it doesn't need to look at atom names is also hurting when trying to figure out errors.. I would like to throw when it's not a 2-7/2-8 and it's found too much metadata.
 void Residue_linkage::AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata)
 {
+    // Adding another sanity check to this insanity
+    if (rotatable_dihedrals_.size() > metadata.size())
+    {
+        std::stringstream ss;
+        ss << "Problem with the metadata found in gmml for this linkage. The number of identified rotatable dihedrals: " << rotatable_dihedrals_.size() << " is greater than the number of metadata items: " << metadata.size() << " found for this linkage:\n" << this->Print();
+        gmml::log(__LINE__,__FILE__,gmml::WAR, ss.str());
+        throw std::runtime_error(ss.str());
+    }
     for (auto & rotatableDihedral : rotatable_dihedrals_)
     {
         rotatableDihedral.ClearMetadata(); // First clear any metadata already in place.
