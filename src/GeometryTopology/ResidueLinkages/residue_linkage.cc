@@ -611,9 +611,9 @@ void Residue_linkage::AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::G
 //                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(0)->GetId() << ", "
 //                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(1)->GetId() << ", "
 //                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(2)->GetId() << ", "
-//                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(3)->GetId() << "\n";
-//            std::cout << "Added " << entry.index_ << " = " << entry.default_angle_value_ << " to: \n";
-//            rotatable_dihedrals_.at(vector_position).Print();
+//                      << rotatable_dihedrals_.at(vector_position).GetAtoms().at(3)->GetId() << ". ";
+//            std::cout << "Index: " << entry.index_ << ", angle: " << entry.default_angle_value_ << "\n";
+            //rotatable_dihedrals_.at(vector_position).Print();
         }
         else
         {
@@ -622,6 +622,7 @@ void Residue_linkage::AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::G
             //throw std::runtime_error(message);
         }
     }
+//    std::cout << "\n";
     return;
 }
 
