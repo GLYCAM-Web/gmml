@@ -151,6 +151,15 @@ Error thrown by the carbohydrateBuilder in gmml during construction was: The ded
 A-4.
 We require anomer, start atom number, a dash, and connecting atom number. Example:
 a1-4
+
+*********************
+Building DManpa1-9DGlcpNAcb1-OH
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: Could not find prep entry for DGlcpNAc. GLYCAM code used to search is: 9YB
+
+*********************
+Building DNeup5Ac[7A,8A,9A]a2-8DNeup5Ac[9A]a2-9[DNeup5Aca2-8DNeup5Ac[7A,9A]a2-8[DNeup5Aca2-7]DNeup5Aca2-8]DNeup5Ac[7A]a2-OH
+*********************
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
@@ -178,3 +187,5 @@ a1-4
 00031.pdb succesfully created.
 00032.pdb not created.
 00033.pdb not created.
+00034.pdb not created.
+00035.pdb succesfully created.
