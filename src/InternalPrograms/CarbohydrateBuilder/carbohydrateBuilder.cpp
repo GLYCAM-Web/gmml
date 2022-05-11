@@ -14,6 +14,7 @@ carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::str
 	try
 	{
 		assembly_ = MolecularModeling::Assembly(condensedSequence, prepFilePath);
+		gmml::log(__LINE__,__FILE__,gmml::INF, "Assembly constructor complete. Initializing the rest of the class\n");
 	    this->InitializeClass(condensedSequence);
 	}	// Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
 	catch(const std::string &exceptionMessage)
