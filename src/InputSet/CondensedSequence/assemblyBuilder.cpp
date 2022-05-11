@@ -80,7 +80,7 @@ void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, Molecu
 	{
 		std::string errorMessage = "Could not find prep entry for " + parsedChild->GetName() + ". GLYCAM code used to search is: " + this->GetGlycamResidueName(*parsedChild);
 		gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
-		throw errorMessage;
+		throw std::runtime_error(errorMessage);
 	}
 	else
 	{
