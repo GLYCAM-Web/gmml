@@ -510,6 +510,7 @@ double Rotatable_dihedral::WiggleWithinRanges(MolecularModeling::AtomVector& ove
     double bestDihedral = lowerBound;
     double currentOverlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
     double lowestOverlap = currentOverlap;
+//    std::cout << "Starting wiggle with overlap : " << currentOverlap << " . Current Angle: " << currentDihedral << " lowerBound: " << lowerBound << " upperBound: " << upperBound << "\n";
     while(currentDihedral < upperBound)
     {
         currentDihedral += angleIncrement; // increment
@@ -642,6 +643,7 @@ std::string Rotatable_dihedral::Print()
 {
    std::stringstream logss;
    logss << atom1_->GetName() << ", " << atom2_->GetName() << ", " << atom3_->GetName() << ", " << atom4_->GetName() << ": " << this->CalculateDihedralAngle()  << ".\n";
+//   std::cout << logss.str();
    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
    return logss.str();
 }

@@ -364,7 +364,8 @@ void Residue_linkage::SimpleWiggleCurrentRotamers(AtomVector& overlapAtomSet1, A
 {
     for(auto &rotatable_dihedral : this->GetRotatableDihedrals())
      {
-         rotatable_dihedral.WiggleWithinCurrentRotamer(overlapAtomSet1, overlapAtomSet2, angleIncrement);
+//        std::cout << "SimpleWiggling current rotamer: " << rotatable_dihedral.Print() << "\n";
+        rotatable_dihedral.WiggleWithinCurrentRotamer(overlapAtomSet1, overlapAtomSet2, angleIncrement);
      }
 }
 
@@ -404,12 +405,19 @@ void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_t
     this->SetResidues(from_this_residue1, to_this_residue2);
     this->SetIfReversedAtomsThatMove(reverseAtomsThatMove);
     this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
-    //std::cout << "Maybe Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
+//    std::cout << "Maybe Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
     if(this->CheckIfViableLinkage())
     {
-        //std::cout << "Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
+//        std::cout << "Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
+//        std::cout << "Connection atoms are from: " << from_this_connection_atom1_->GetId() << " to " << to_this_connection_atom2_->GetId() << std::endl;
         rotatable_dihedrals_ = this->FindRotatableDihedralsConnectingResidues(from_this_connection_atom1_, to_this_connection_atom2_);
+//        std::cout << "Finding metadata for " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata = this->FindMetadata(from_this_connection_atom1_, to_this_connection_atom2_);
+//        std::cout << "Metadata found:\n";
+//        for (auto &dihedralAngleData : metadata)
+//        {
+//            std::cout << dihedralAngleData.print() << std::endl;
+//        }
         this->AddMetadataToRotatableDihedrals(metadata);
     }
     this->SetIndex(this->GenerateIndex());
@@ -434,10 +442,10 @@ std::vector<Rotatable_dihedral> Residue_linkage::FindRotatableDihedralsConnectin
     // Search neighbors other than connected atom. Ie search out in both directions, but remain within same residue.
     // Warning, residue may have fused cycles!
     // Will fail for non-protein residues without cycles. As don't have a non-rotatable bond to anchor from. Can code that later (and deal with branches from these residues).
-    //std::cout << "Finding rot bonds for " << from_this_connection_atom1->GetResidue()->GetId() << " and " << to_this_connection_atom2->GetResidue()->GetId() << "\n";
+//    std::cout << "Finding rot bonds for " << from_this_connection_atom1->GetResidue()->GetId() << " and " << to_this_connection_atom2->GetResidue()->GetId() << "\n";
 
     AtomVector from_this_residue1_cycle_points = selection::FindCyclePoints(from_this_connection_atom1);
-    //std::cout << "Moving onto second residue.\n";
+//    std::cout << "Moving onto second residue.\n";
     AtomVector to_this_residue2_cycle_points = selection::FindCyclePoints(to_this_connection_atom2);
     // Need to reverse one of these, so when concatenated, they are ordered ok. This might not be ok.
     //std::reverse(to_this_residue2_cycle_points.begin(), to_this_residue2_cycle_points.end());
@@ -447,11 +455,12 @@ std::vector<Rotatable_dihedral> Residue_linkage::FindRotatableDihedralsConnectin
     // Now that have a list of rotation points. Split into pairs and find rotatable bonds between them
     bool found = false;
     AtomVector connecting_atoms = {from_this_connection_atom1, to_this_connection_atom2};
-    
-    // std::cout << "cycle point atoms are:\n";
-    // for(auto & atom : from_this_residue1_cycle_points)
-    //     std::cout << atom->GetId() << "\n";
-    // std::cout << "\n";
+//     std::cout << "cycle point atoms are:\n";
+//     for(auto & atom : from_this_residue1_cycle_points)
+//     {
+//         std::cout << atom->GetId() << "\n";
+//     }
+//     std::cout << "\n";
     std::vector<Rotatable_dihedral> rotatableDihedralsInBranches;
     for(int i = 0; i < from_this_residue1_cycle_points.size(); i = i+2)
     {
@@ -460,7 +469,7 @@ std::vector<Rotatable_dihedral> Residue_linkage::FindRotatableDihedralsConnectin
 
         found = false;
         connecting_atoms.clear();
-        //std::cout << "Finding Path between:" << cycle_point1->GetId() << " and " << cycle_point2->GetId() << "\n";
+//        std::cout << "Finding Path between:" << cycle_point1->GetId() << " and " << cycle_point2->GetId() << "\n";
         selection::FindPathBetweenTwoAtoms(cycle_point1, cycle_point2, &connecting_atoms, &found);
         selection::ClearAtomDescriptions(cycle_point1->GetResidue());
         selection::ClearAtomDescriptions(cycle_point2->GetResidue());
@@ -473,10 +482,10 @@ std::vector<Rotatable_dihedral> Residue_linkage::FindRotatableDihedralsConnectin
         connecting_atoms.insert(connecting_atoms.begin(), neighbor1);
         connecting_atoms.push_back(neighbor2);
 
-        // std::cout << "Updated Path between:\n " << cycle_point1->GetId() << " and " << cycle_point2->GetId() << "\n";
-        // for (const auto& atom : connecting_atoms)
-        //     std::cout << atom->GetId() << "\n";
-        // std::cout << "\n";
+//         std::cout << "Updated Path between:\n " << cycle_point1->GetId() << " and " << cycle_point2->GetId() << "\n";
+//         for (const auto& atom : connecting_atoms)
+//             std::cout << atom->GetId() << "\n";
+//         std::cout << "\n";
         selection::ClearAtomDescriptions(cycle_point1->GetResidue());
         selection::ClearAtomDescriptions(cycle_point2->GetResidue());
         // This mess was made to address the branching in 2-7 and 2-8 linkages. 
@@ -503,9 +512,9 @@ std::vector<Rotatable_dihedral> Residue_linkage::FindRotatableDihedralsConnectin
                                 Atom *neighbor = selection::FindCyclePointNeighbor(foundPath, branch.GetRoot());
                                 //foundPath.insert(foundPath.begin(), neighbor);
                                 foundPath.push_back(neighbor);
-                                // std::cout << "Found atoms:\n";
-                                // for (auto &atom: foundPath)
-                                //     std::cout << atom->GetId() << "\n";
+//                                 std::cout << "Found atoms:\n";
+//                                 for (auto &atom: foundPath)
+//                                     std::cout << atom->GetId() << "\n";
                                 std::vector<Rotatable_dihedral> temp = this->SplitAtomVectorIntoRotatableDihedrals(foundPath);
                                 rotatableDihedralsInBranches.insert( rotatableDihedralsInBranches.end(), temp.begin(), temp.end() );
                             }
@@ -514,16 +523,16 @@ std::vector<Rotatable_dihedral> Residue_linkage::FindRotatableDihedralsConnectin
                 }
             }
         } // End dealing with branching linkages
-        // std::cout << "These are the assigned branched rotatable_dihedrals:\n";
-        // for (auto &dihedral : rotatableDihedralsInBranches)
-        //     dihedral.Print();
+//         std::cout << "These are the assigned branched rotatable_dihedrals:\n";
+//         for (auto &dihedral : rotatableDihedralsInBranches)
+//             dihedral.Print();
     }
     std::vector<Rotatable_dihedral> rotatable_dihedrals = this->SplitAtomVectorIntoRotatableDihedrals(connecting_atoms);
     // Add any linkage branches (in 2-7 and 2-8) to the rest. 
     rotatable_dihedrals.insert( rotatable_dihedrals.end(), rotatableDihedralsInBranches.begin(), rotatableDihedralsInBranches.end() );
-    // std::cout << "These are the assigned rotatable_dihedrals:\n";
-    // for (auto &dihedral : rotatable_dihedrals)
-    //     dihedral.Print();
+//     std::cout << "These are the assigned rotatable_dihedrals:\n";
+//     for (auto &dihedral : rotatable_dihedrals)
+//         dihedral.Print();
     return rotatable_dihedrals;
 }
 
