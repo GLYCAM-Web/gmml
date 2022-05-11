@@ -34,6 +34,7 @@ struct DihedralAngleData
     std::string atom2_ ;
     std::string atom3_ ;
     std::string atom4_ ;
+    inline std::string  print() { return atom1_ + "_" + atom2_ + "_" + atom3_ + "_" + atom4_ + " : " + rotamer_name_;  }
     inline bool operator== (const DihedralAngleData &other) {return (this->index_ == other.index_ && this->number_of_bonds_from_anomeric_carbon_ == other.number_of_bonds_from_anomeric_carbon_);}
     inline bool operator!= (const DihedralAngleData &other) {return (this->index_ != other.index_ || this->number_of_bonds_from_anomeric_carbon_ != other.number_of_bonds_from_anomeric_carbon_);}
 } ;
