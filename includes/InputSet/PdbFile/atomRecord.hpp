@@ -29,7 +29,6 @@ public:
     //////////////////////////////////////////////////////////
     inline const std::string& GetRecordName() const {return recordName_;}
     inline const int& GetSerialNumber() const {return serialNumber_;}
-    inline const std::string& GetName() const {return atomName_;}
     inline const std::string& GetResidueName() const {return residueName_;}
     inline const std::string& GetChainId() const {return chainId_;}
     inline const int& GetResidueSequenceNumber() const {return residueSequenceNumber_;}
@@ -62,7 +61,6 @@ private:
     void SetModelNumber(const int i);
     void SetRecordName(const std::string s);
     void SetSerialNumber(const int atom_serial_number);
-    void SetAtomName(const std::string atom_name);
     void SetAlternateLocation(const std::string atom_alternate_location);
     void SetChainId(const std::string atom_chain_id);
     void SetResidueSequenceNumber(const int atom_residue_sequence_number);
@@ -78,7 +76,6 @@ private:
     //////////////////////////////////////////////////////////
     std::string recordName_;                      // Can be HETATM or ATOM
     int serialNumber_ = gmml::iNotSet;                            // Atom serial number in a model card of a pdb file
-    std::string atomName_ = "";                        // Atom name in a single atom record in a model card of a pdb file
     std::string alternateLocation_ = "";               // Atom residue name in a single atom record in a model card of a pdb file
     std::string residueName_ = "";                     // Residue name that the atom is assigned to
     std::string chainId_ = "";                         // Chain id that the atom belongs to

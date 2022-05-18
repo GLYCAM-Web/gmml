@@ -63,7 +63,6 @@ public:
     //////////////////////////////////////////////////////////
     //                        DISPLAY                       //
     //////////////////////////////////////////////////////////
-    //void Print(std::ostream& out = std::cout) const;
     void Write(const std::string outName) const;
     void Write(std::ostream& stream) const;
 private:

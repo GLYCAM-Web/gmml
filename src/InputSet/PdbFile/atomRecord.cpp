@@ -30,11 +30,16 @@ AtomRecord::AtomRecord(const std::string &line)
         gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to serialNumber from: " + line.substr(6, 6 + shift));
         serialNumber_ = gmml::iNotSet;
     }
-    atomName_ = codeUtils::RemoveWhiteSpace(line.substr(12 + shift, 4));
-    if (atomName_.empty())
+    std::string atomName = codeUtils::RemoveWhiteSpace(line.substr(12 + shift, 4));
+    if (atomName.empty())
     {
-        atomName_ = "    ";
+        this->setName("    ");
     }
+    else
+    {
+        this->setName(atomName);
+    }
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Hi, my name is " + this->getName());
     //alternateLocation_ = ""; // OG Dec2021, we don't want alt locations in gmml for now. Messes with the preprocessor.
     residueName_ = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
     if (residueName_.empty())
@@ -147,10 +152,6 @@ void AtomRecord::SetSerialNumber(const int atom_serial_number)
 {
     serialNumber_ = atom_serial_number;
 }
-void AtomRecord::SetAtomName(const std::string atom_name)
-{
-    atomName_ = atom_name;
-}
 void AtomRecord::SetAlternateLocation(const std::string atom_alternate_location)
 {
     alternateLocation_ = atom_alternate_location;
@@ -201,7 +202,7 @@ void AtomRecord::SetCharge(const std::string atom_charge)
 std::string AtomRecord::GetId() const
 {
     std::stringstream ss;
-    ss << this->GetName() << "_" << this->GetSerialNumber() << "_" << this->GetResidueId();
+    ss << this->getName() << "_" << this->GetSerialNumber() << "_" << this->GetResidueId();
     return ss.str();
 }
 // I don't want to store the insertion code or chainId as ?, as that looks odd outside of the ID context, so I store as " " when undefined and change that to ? when getting the ID.
@@ -247,7 +248,7 @@ void AtomRecord::Print(std::ostream &out) const
     {
         out << serialNumber_;
     }
-    out << ", Atom Name: " << atomName_
+    out << ", Atom Name: " << this->getName()
             << ", Alternate Location: " << alternateLocation_
             << ", Residue Name: " << residueName_
             << ", Chain ID: " << chainId_
@@ -292,7 +293,7 @@ void AtomRecord::Write(std::ostream& stream) const
     else
         stream << std::right << std::setw(5) << " ";
     stream << std::left << std::setw(1) << " "
-            << std::left << std::setw(4) << this->GetName();
+            << std::left << std::setw(4) << this->getName();
     if(this->GetAlternateLocation() == gmml::sNotSet)
         stream << std::left << std::setw(1) << " ";
     else

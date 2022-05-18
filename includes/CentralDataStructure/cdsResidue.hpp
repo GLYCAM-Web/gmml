@@ -157,7 +157,7 @@ atomT* cdsResidue<atomT>::FindAtom(const std::string queryName) const
 {
     for(auto &atom : atoms_)
     {
-        if(atom->GetName() == queryName)
+        if(atom->getName() == queryName)
         {
             return atom.get();
         }
