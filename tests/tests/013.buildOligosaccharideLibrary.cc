@@ -36,7 +36,8 @@ int main(int argc, char** argv)
         {
             carbBuilder.Print();
             std::string inputGlycanID = splitLine.at(0);
-            carbBuilder.GenerateSingle3DStructureSingleFile(outputFolderName, "PDB", inputGlycanID);
+            //carbBuilder.GenerateSingle3DStructureSingleFile(outputFolderName, "PDB", inputGlycanID);
+            carbBuilder.GenerateSingle3DStructureDefaultFiles(outputFolderName, inputGlycanID);
             if (!carbBuilder.IsStatusOk()) // This is bad. Fix me once gems can catch what the carbBuilder throws.
             {
                 std::cerr << "Error thrown by the carbohydrateBuilder in gmml during 3D structure generation was: " << carbBuilder.GetStatusMessage() << std::endl;
