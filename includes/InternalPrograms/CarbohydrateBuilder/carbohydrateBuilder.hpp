@@ -62,8 +62,8 @@ public:
     //////////////////////////////////////////////////////////
     //                        FUNCTIONS                     //
     //////////////////////////////////////////////////////////
-    void GenerateSingle3DStructureDefaultFiles(std::string fileOutputDirectory = "unspecified");
-    void GenerateSingle3DStructureSingleFile(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string = "structure");
+    void GenerateSingle3DStructureDefaultFiles(std::string fileOutputDirectory = "unspecified", std::string outputFileNaming = "structure");
+    void GenerateSingle3DStructureSingleFile(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string outputFileNaming = "structure");
     LinkageOptionsVector GenerateUserOptionsDataStruct();
     void GenerateSpecific3DStructure(SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
     // The following generates no files

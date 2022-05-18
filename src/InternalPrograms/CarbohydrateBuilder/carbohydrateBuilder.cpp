@@ -57,14 +57,14 @@ ResidueLinkageVector* carbohydrateBuilder::GetGlycosidicLinkages()
 //                      FUNCTIONS                       //
 //////////////////////////////////////////////////////////
 
-void carbohydrateBuilder::GenerateSingle3DStructureDefaultFiles(std::string fileOutputDirectory)
+void carbohydrateBuilder::GenerateSingle3DStructureDefaultFiles(std::string fileOutputDirectory, std::string outputFileNaming)
 {
     try
     {
         this->SetDefaultShapeUsingMetadata();
         this->ResolveOverlaps();
-        this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure");
-        this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", "structure");
+        this->Write3DStructureFile(fileOutputDirectory, "PDB", outputFileNaming);
+        this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", outputFileNaming);
     }   // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
     catch(const std::string &exceptionMessage)
     {
