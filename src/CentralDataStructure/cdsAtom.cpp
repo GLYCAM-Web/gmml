@@ -6,9 +6,12 @@ using cds::cdsAtom;
 //////////////////////////////////////////////////////////
 //                    CONSTRUCTOR                       //
 //////////////////////////////////////////////////////////
+cdsAtom::cdsAtom()
+: Node<cdsAtom> ("DEFAULT CDS ATOM") {}
+
 cdsAtom::cdsAtom(const std::string& name, const Coordinate& coord)
+: Node<cdsAtom> (name)
 {
-    this->setName(name);
     this->addCoordinate(coord);
 }
 //////////////////////////////////////////////////////////

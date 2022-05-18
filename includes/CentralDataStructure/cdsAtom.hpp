@@ -16,7 +16,7 @@ class cdsAtom : public glygraph::Node<cdsAtom>
 public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTORS                   //
-    cdsAtom() {}
+    cdsAtom();
     cdsAtom(const std::string& name, const Coordinate& coord);
     //////////////////////////////////////////////////////////
     //                       ACCESSORS                      //
