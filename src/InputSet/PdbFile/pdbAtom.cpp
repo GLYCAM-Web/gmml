@@ -107,40 +107,6 @@ pdbAtom::pdbAtom(const std::string &line)
     }
 }
 
-//AtomRecord::AtomRecord(const std::string& name, const GeometryTopology::Coordinate& coord, AtomRecord *sisterAtom)
-//{
-//    recordName_ = sisterAtom->GetRecordName();
-//    serialNumber_ = sisterAtom->GetSerialNumber() + 1; // An ok default.
-//    atomName_ = name;
-//    alternateLocation_ = sisterAtom->GetAlternateLocation();
-//    residueName_ = sisterAtom->GetResidueName();
-//    chainId_ = sisterAtom->GetChainId();
-//    residueSequenceNumber_ = sisterAtom->GetResidueSequenceNumber();
-//    insertionCode_ = sisterAtom->GetInsertionCode();
-//    occupancy_ = gmml::dNotSet; // Not accurate to copy this from sisterAtom
-//    temperatureFactor_ = gmml::dNotSet; // Not accurate to copy this from sisterAtom
-//    element_ = name.substr(0,1); // Just take first letter as element. Ok default.
-//    charge_ = ""; // Idk when/how this is used. It being a string is weird.
-//    coordinate_ = coord;
-//}
-
-//AtomRecord::AtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const std::string& insertionCode, const GeometryTopology::Coordinate& coord , const std::string& chainId, const int& modelNumber, const int& serialNumber, const std::string& recordName, const std::string& alternateLocation, const double& occupancy, const double& temperatureFactor, const std::string& element, const std::string& charge)
-//:
-//        recordName_(recordName),
-//        serialNumber_(serialNumber),
-//        atomName_(atomName),
-//        alternateLocation_(alternateLocation),
-//        residueName_(residueName),
-//        chainId_(chainId),
-//        residueSequenceNumber_(residueSequenceNumber),
-//        insertionCode_(insertionCode),
-//        occupancy_(occupancy),
-//        temperatureFactor_(temperatureFactor),
-//        element_(element),
-//        charge_(charge),
-//        coordinate_(coord)
-//{}
-
 /////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
@@ -256,6 +222,7 @@ void pdbAtom::Print(std::ostream &out) const
     out << ", Element: " << element_
             << ", Charge: " << charge_ << std::endl;
 }
+
 void pdbAtom::Write(std::ostream& stream) const
 { // Just copied from original class.
     stream << std::left << std::setw(6) << this->GetRecordName();

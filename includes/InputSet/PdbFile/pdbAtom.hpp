@@ -18,12 +18,8 @@ public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
-    // Default constructor:
-    //AtomRecord(const AtomRecord &tempAtom);
     pdbAtom(const std::string& name, const Coordinate& coord);
     pdbAtom(const std::string& line);
-    // Handy constructor that copies info from sisterAtom.
-//    AtomRecord(const std::string& name, const GeometryTopology::Coordinate& coord, AtomRecord *sisterAtom);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -34,7 +30,6 @@ public:
     inline const int& GetResidueSequenceNumber() const {return residueSequenceNumber_;}
     inline const std::string& GetInsertionCode() const {return insertionCode_;}
     inline const std::string& GetAlternateLocation() const {return alternateLocation_;}
-    //inline const Coordinate& GetCoordinate() const {return coordinate_;}
     inline const double& GetOccupancy() const {return occupancy_;}
     inline const double& GetTemperatureFactor() const {return temperatureFactor_;}
     inline const std::string& GetElementSymbol() const {return element_;}
@@ -42,13 +37,11 @@ public:
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
-//    void SetResidueName(const std::string atom_residue_name); // Make friend of pdb::Residue?
     //////////////////////////////////////////////////////////
     //                       FUNCTION                       //
     //////////////////////////////////////////////////////////
     std::string GetId() const;
     std::string GetId(const std::string &residueId) const;
-//    std::string GetResidueId() const;
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
