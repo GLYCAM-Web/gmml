@@ -20,7 +20,7 @@
 #include "includes/InputSet/PdbFile/journalRecord.hpp"
 #include "includes/InputSet/PdbFile/remarkRecord.hpp"
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
-#include "includes/InputSet/PdbFile/atomRecord.hpp"
+#include "includes/InputSet/PdbFile/pdbAtom.hpp"
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
 #include "includes/InputSet/PdbFile/pdbChain.hpp"
 #include "includes/InputSet/PdbFile/pdbModel.hpp"
@@ -33,8 +33,8 @@ const int iPdbLineLength = 80;
 class PdbModel;
 class PdbChain;
 class PbdResidue;
-class AtomRecord;
-class PdbFile : public cds::cdsEnsemble<PdbModel, PdbChain, PdbResidue, AtomRecord>
+class pdbAtom;
+class PdbFile : public cds::cdsEnsemble<PdbModel, PdbChain, PdbResidue, pdbAtom>
 {
 public:
     //////////////////////////////////////////////////////////

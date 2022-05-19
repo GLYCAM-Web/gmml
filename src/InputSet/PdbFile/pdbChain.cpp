@@ -174,7 +174,7 @@ bool PdbChain::ModifyTerminal(const std::string& type)
         PdbResidue* nTermResidue = this->getNTerminal();
         if (nTermResidue == nullptr) { return false; }
         gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + nTermResidue->printId());
-        AtomRecord* atom = nTermResidue->FindAtom("H");
+        pdbAtom* atom = nTermResidue->FindAtom("H");
         if (atom != nullptr)
         {
             gmml::log(__LINE__,__FILE__,gmml::INF, "Deleting atom with id: " + atom->GetId());
@@ -186,13 +186,13 @@ bool PdbChain::ModifyTerminal(const std::string& type)
         PdbResidue* cTermResidue = this->getCTerminal();
         if (cTermResidue == nullptr) { return false; }
         gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + cTermResidue->printId());
-        AtomRecord* atom = cTermResidue->FindAtom("OXT");
+        pdbAtom* atom = cTermResidue->FindAtom("OXT");
         if (atom == nullptr)
         {
             // I don't like this, but at least it's somewhat contained:
-            AtomRecord* atomCA = cTermResidue->FindAtom("CA");
-            AtomRecord* atomC = cTermResidue->FindAtom("C");
-            AtomRecord* atomO = cTermResidue->FindAtom("O");
+            pdbAtom* atomCA = cTermResidue->FindAtom("CA");
+            pdbAtom* atomC = cTermResidue->FindAtom("C");
+            pdbAtom* atomO = cTermResidue->FindAtom("O");
             GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->GetCoordinate(), atomC->GetCoordinate(), atomO->GetCoordinate(), 120.0, 180.0, 1.25);
             cTermResidue->createAtom("OXT", oxtCoord);
             gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + atomO->GetId());

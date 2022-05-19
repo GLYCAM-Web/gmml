@@ -7,12 +7,12 @@
 
 #include "includes/InputSet/PdbFile/pdbResidueId.hpp"
 #include "includes/CentralDataStructure/cdsResidue.hpp"
-#include "includes/InputSet/PdbFile/atomRecord.hpp"
+#include "includes/InputSet/PdbFile/pdbAtom.hpp"
 
 namespace pdb
 {
 //typedef std::vector<std::unique_ptr<AtomRecord>>::iterator AtomRecordIterator;
-class PdbResidue : public cds::cdsResidue<AtomRecord>
+class PdbResidue : public cds::cdsResidue<pdbAtom>
 {
 public:
     //////////////////////////////////////////////////////////

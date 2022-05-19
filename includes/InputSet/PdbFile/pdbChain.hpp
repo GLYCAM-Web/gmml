@@ -9,9 +9,9 @@
 //#include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 namespace pdb
 {
-class AtomRecord;
+class pdbAtom;
 class PdbResidue;
-class PdbChain : public cds::cdsMolecule<PdbResidue, AtomRecord>
+class PdbChain : public cds::cdsMolecule<PdbResidue, pdbAtom>
 {
 public:
     //////////////////////////////////////////////////////////

@@ -12,7 +12,7 @@ using GeometryTopology::Coordinate;
 
 namespace pdb
 {
-class AtomRecord : public cds::cdsAtom
+class pdbAtom : public cds::cdsAtom
 {
 public:
     //////////////////////////////////////////////////////////
@@ -20,8 +20,8 @@ public:
     //////////////////////////////////////////////////////////
     // Default constructor:
     //AtomRecord(const AtomRecord &tempAtom);
-    AtomRecord(const std::string& name, const Coordinate& coord);
-    AtomRecord(const std::string& line);
+    pdbAtom(const std::string& name, const Coordinate& coord);
+    pdbAtom(const std::string& line);
     // Handy constructor that copies info from sisterAtom.
 //    AtomRecord(const std::string& name, const GeometryTopology::Coordinate& coord, AtomRecord *sisterAtom);
     //////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ public:
     //////////////////////////////////////////////////////////
     std::string GetId() const;
     std::string GetResidueId() const;
-    double CalculateDistance(const AtomRecord* otherAtom) const;
+    double CalculateDistance(const pdbAtom* otherAtom) const;
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////

@@ -1,19 +1,19 @@
-#include "includes/InputSet/PdbFile/atomRecord.hpp"
+#include "includes/InputSet/PdbFile/pdbAtom.hpp"
 #include "includes/common.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
-using pdb::AtomRecord;
+using pdb::pdbAtom;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-AtomRecord::AtomRecord(const std::string& name, const Coordinate& coord)
+pdbAtom::pdbAtom(const std::string& name, const Coordinate& coord)
 : cdsAtom(name, coord)
 {
 
 }
-AtomRecord::AtomRecord(const std::string &line)
+pdbAtom::pdbAtom(const std::string &line)
 {
     //gmml::log(__LINE__, __FILE__, gmml::INF, "Parsing " + line);
     // In the PDB file the residue number overruns after 9999 and serial number overruns after 99999. First overun for serial doesn't matter as there should be a space between the number and the name. So the problem is above 999999
@@ -144,51 +144,51 @@ AtomRecord::AtomRecord(const std::string &line)
 /////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void AtomRecord::SetRecordName(const std::string s)
+void pdbAtom::SetRecordName(const std::string s)
 {
     recordName_ = s;
 }
-void AtomRecord::SetSerialNumber(const int atom_serial_number)
+void pdbAtom::SetSerialNumber(const int atom_serial_number)
 {
     serialNumber_ = atom_serial_number;
 }
-void AtomRecord::SetAlternateLocation(const std::string atom_alternate_location)
+void pdbAtom::SetAlternateLocation(const std::string atom_alternate_location)
 {
     alternateLocation_ = atom_alternate_location;
 }
-void AtomRecord::SetResidueName(const std::string atom_residue_name)
+void pdbAtom::SetResidueName(const std::string atom_residue_name)
 {
     residueName_ = atom_residue_name;
 }
-void AtomRecord::SetChainId(const std::string atom_chain_id)
+void pdbAtom::SetChainId(const std::string atom_chain_id)
 {
     chainId_ = atom_chain_id;
 }
-void AtomRecord::SetResidueSequenceNumber(const int atom_residue_sequence_number)
+void pdbAtom::SetResidueSequenceNumber(const int atom_residue_sequence_number)
 {
     residueSequenceNumber_ = atom_residue_sequence_number;
 }
-void AtomRecord::SetInsertionCode(const std::string atom_insertion_code)
+void pdbAtom::SetInsertionCode(const std::string atom_insertion_code)
 {
     insertionCode_ = atom_insertion_code;
 }
-void AtomRecord::SetCoordinate(const GeometryTopology::Coordinate c)
+void pdbAtom::SetCoordinate(const GeometryTopology::Coordinate c)
 {
     coordinate_ = c;
 }
-void AtomRecord::SetOccupancy(const double atom_occupancy)
+void pdbAtom::SetOccupancy(const double atom_occupancy)
 {
     occupancy_ = atom_occupancy;
 }
-void AtomRecord::SetTempretureFactor(const double atom_temperature_factor)
+void pdbAtom::SetTempretureFactor(const double atom_temperature_factor)
 {
     temperatureFactor_ = atom_temperature_factor;
 }
-void AtomRecord::SetElement(const std::string atom_element_symbol)
+void pdbAtom::SetElement(const std::string atom_element_symbol)
 {
     element_ = atom_element_symbol;
 }
-void AtomRecord::SetCharge(const std::string atom_charge)
+void pdbAtom::SetCharge(const std::string atom_charge)
 {
     charge_ = atom_charge;
 }
@@ -199,14 +199,14 @@ void AtomRecord::SetCharge(const std::string atom_charge)
 //////////////////////////////////////////////////////////
 //                       FUNCTION                       //
 //////////////////////////////////////////////////////////
-std::string AtomRecord::GetId() const
+std::string pdbAtom::GetId() const
 {
     std::stringstream ss;
     ss << this->getName() << "_" << this->GetSerialNumber() << "_" << this->GetResidueId();
     return ss.str();
 }
 // I don't want to store the insertion code or chainId as ?, as that looks odd outside of the ID context, so I store as " " when undefined and change that to ? when getting the ID.
-std::string AtomRecord::GetResidueId() const
+std::string pdbAtom::GetResidueId() const
 {
     std::stringstream ss;
     ss << this->GetResidueName() << "_" << this->GetResidueSequenceNumber() << "_";
@@ -229,7 +229,7 @@ std::string AtomRecord::GetResidueId() const
    // ss << this->GetModelNumber();
     return ss.str();
 }
-double AtomRecord::CalculateDistance(const AtomRecord* otherAtom) const
+double pdbAtom::CalculateDistance(const pdbAtom* otherAtom) const
 {
     return this->GetCoordinate().Distance(otherAtom->GetCoordinate());
 }
@@ -237,7 +237,7 @@ double AtomRecord::CalculateDistance(const AtomRecord* otherAtom) const
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void AtomRecord::Print(std::ostream &out) const
+void pdbAtom::Print(std::ostream &out) const
 {
     out << "Serial Number: ";
     if(serialNumber_ == gmml::iNotSet)
@@ -285,7 +285,7 @@ void AtomRecord::Print(std::ostream &out) const
     out << ", Element: " << element_
             << ", Charge: " << charge_ << std::endl;
 }
-void AtomRecord::Write(std::ostream& stream) const
+void pdbAtom::Write(std::ostream& stream) const
 { // Just copied from original class.
     stream << std::left << std::setw(6) << this->GetRecordName();
     if(this->GetSerialNumber() != gmml::iNotSet)

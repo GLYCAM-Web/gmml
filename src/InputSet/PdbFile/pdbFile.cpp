@@ -12,7 +12,7 @@
 #include "includes/InputSet/PdbFile/pdbModel.hpp"
 #include "includes/InputSet/PdbFile/pdbChain.hpp"
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
-#include "includes/InputSet/PdbFile/atomRecord.hpp"
+#include <includes/InputSet/PdbFile/pdbAtom.hpp>
 
 using pdb::PdbFile;
 //////////////////////////////////////////////////////////

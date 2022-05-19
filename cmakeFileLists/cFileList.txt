@@ -118,9 +118,9 @@
 ./src/InputSet/PdbFile/authorRecord.cpp
 ./src/InputSet/PdbFile/conectRecord.cpp
 ./src/InputSet/PdbFile/pdbResidue.cpp
-./src/InputSet/PdbFile/atomRecord.cpp
 ./src/InputSet/PdbFile/databaseReferenceRecord.cpp
 ./src/InputSet/PdbFile/titleRecord.cpp
+./src/InputSet/PdbFile/pdbAtom.cpp
 ./src/InputSet/PdbFile/remarkRecord.cpp
 ./src/InputSet/PdbFile/pdbModel.cpp
 ./src/InputSet/PdbFile/pdbFile.cpp

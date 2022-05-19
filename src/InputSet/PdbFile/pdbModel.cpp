@@ -98,7 +98,7 @@ std::stringstream PdbModel::extractSingleChainFromRecordSection(std::stringstrea
     return singleChainSection;
 }
 
-void PdbModel::addConectRecord(const AtomRecord* atom1, const AtomRecord* atom2)
+void PdbModel::addConectRecord(const pdbAtom* atom1, const pdbAtom* atom2)
 {
     conectRecords_.emplace_back(std::vector{atom1, atom2});
     return;
@@ -193,7 +193,7 @@ void PdbModel::ChangeResidueName(const std::string& selector, const std::string&
     return;
 }
 
-const pdb::AtomRecord* PdbModel::FindAtom(const int& serialNumber) const
+const pdb::pdbAtom* PdbModel::FindAtom(const int& serialNumber) const
 {
     for(auto &atom : this->getAtoms())
     {
@@ -312,11 +312,11 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
     { // I want to go through the list and compare from current item to end. Thus it2 = std::next it1
 
         PdbResidue* cysRes1 = *it1;
-        AtomRecord* sgAtom1 = cysRes1->FindAtom("SG");
+        pdbAtom* sgAtom1 = cysRes1->FindAtom("SG");
         for (std::vector<pdb::PdbResidue*>::iterator it2 = std::next(it1, 1); it2 != cysResidues.end(); ++it2)
         {
             PdbResidue* cysRes2 = *it2;
-            AtomRecord* sgAtom2 = cysRes2->FindAtom("SG");
+            pdbAtom* sgAtom2 = cysRes2->FindAtom("SG");
             if ( (sgAtom1 != nullptr) && (sgAtom2 != nullptr) )
             {
                 //gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");

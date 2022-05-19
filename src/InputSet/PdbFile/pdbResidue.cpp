@@ -3,10 +3,10 @@
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
 #include "includes/InputSet/PdbFile/pdbResidueId.hpp" // residueId
 #include "includes/InputSet/PdbFile/pdbFunctions.hpp" // extractResidueId
-#include "includes/InputSet/PdbFile/atomRecord.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp" // get_cartesian_point_from_internal_coords
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp" //RemoveWhiteSpace
+#include "includes/InputSet/PdbFile/pdbAtom.hpp"
 
 using pdb::PdbResidue;
 //////////////////////////////////////////////////////////
@@ -43,14 +43,14 @@ PdbResidue::PdbResidue(std::stringstream &singleResidueSecion, std::string first
         std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
         if ( (recordName == "ATOM") || (recordName == "HETATM") )
         {
-            this->addAtom(std::make_unique<AtomRecord>(line));
+            this->addAtom(std::make_unique<pdbAtom>(line));
         }
     }
     return;
 }
 
 PdbResidue::PdbResidue(const std::string residueName, const PdbResidue *referenceResidue)
-: cds::cdsResidue<AtomRecord>(residueName, referenceResidue)
+: cds::cdsResidue<pdbAtom>(residueName, referenceResidue)
 { // should instead call copy constructor and then rename with residueName?
 //    this->setName(residueName); // handled by cdsResidue cTor
 //    this->setNumber(referenceResidue->getNumber()); // handled by cdsResidue cTor
@@ -157,7 +157,7 @@ void PdbResidue::modifyNTerminal(const std::string& type)
     gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + this->printId());
     if (type == "NH3+")
     {
-        AtomRecord* atom = this->FindAtom("H");
+        pdbAtom* atom = this->FindAtom("H");
         if (atom != nullptr)
         {
             gmml::log(__LINE__,__FILE__,gmml::INF, "Deleting atom with id: " + atom->GetId());
@@ -176,13 +176,13 @@ void PdbResidue::modifyCTerminal(const std::string& type)
     gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + this->printId());
     if (type == "CO2-")
     {
-        AtomRecord* atom = this->FindAtom("OXT");
+        pdbAtom* atom = this->FindAtom("OXT");
         if (atom == nullptr)
         {
             // I don't like this, but at least it's somewhat contained:
-            AtomRecord* atomCA = this->FindAtom("CA");
-            AtomRecord* atomC = this->FindAtom("C");
-            AtomRecord* atomO = this->FindAtom("O");
+            pdbAtom* atomCA = this->FindAtom("CA");
+            pdbAtom* atomC = this->FindAtom("C");
+            pdbAtom* atomO = this->FindAtom("O");
             GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->GetCoordinate(), atomC->GetCoordinate(), atomO->GetCoordinate(), 120.0, 180.0, 1.25);
             this->createAtom("OXT", oxtCoord);
             gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + atomO->GetId());

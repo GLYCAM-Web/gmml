@@ -12,11 +12,11 @@
 
 namespace pdb
 {
-class AtomRecord;
+class pdbAtom;
 class PdbResidue;
 class PdbChain;
 //typedef std::vector<std::unique_ptr<PdbResidue>>::iterator PdbResidueIterator;
-class PdbModel : public cds::cdsAssembly<PdbChain, PdbResidue, AtomRecord>
+class PdbModel : public cds::cdsAssembly<PdbChain, PdbResidue, pdbAtom>
 {
 public:
     //////////////////////////////////////////////////////////
@@ -39,7 +39,7 @@ public:
    // std::vector<pdb::PdbResidue*> FindResidues(const std::string selector); // Uh oh, private parts are exposed. Wee-ooo wee-ooo.
     void ChangeResidueName(const std::string& selector, const std::string& newName);
     // ToDo This might change to be up in cdsAssembly if we remove serialNumbers from AtomRecords and change to using number.
-    const AtomRecord* FindAtom(const int& serialNumber) const; // Conect records
+    const pdbAtom* FindAtom(const int& serialNumber) const; // Conect records
   //  void DeleteAtomRecord(AtomRecord* atom);
 //    AtomRecordIterator CreateNewAtomRecord(std::string name, GeometryTopology::Coordinate& coord, AtomRecord* sisterAtom);
 //    AtomRecordIterator CreateNewAtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const GeometryTopology::Coordinate& coord, const std::string& chainId, const int& modelNumber, AtomRecordIterator previousAtomPosition);
@@ -63,7 +63,7 @@ private:
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
     //std::string PeekAtResidueId(const std::string &line);
-    void addConectRecord(const AtomRecord* atom1, const AtomRecord* atom2);
+    void addConectRecord(const pdbAtom* atom1, const pdbAtom* atom2);
     inline const std::vector<ConectRecord>& GetConectRecords() const {return conectRecords_;}
     //inline pdb::PdbResidue* GetCurrentResidue() {return &(residues_.front());}
     //////////////////////////////////////////////////////////
