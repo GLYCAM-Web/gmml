@@ -7,6 +7,7 @@
 #include <algorithm> // std::find
 
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 namespace cds
 {
@@ -37,6 +38,7 @@ public:
     void addMolecule(const moleculeT& molecule);
     void addMolecule(std::unique_ptr<moleculeT> myMolecule);
     std::vector<residueT*> getResiduesWithName(std::vector<std::string> queryNames);
+    const atomT* findAtom(const int& serialNumber);
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
@@ -140,6 +142,20 @@ typename std::vector<residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResi
         }
     }
     return residuesWithName;
+}
+
+template <class moleculeT, class residueT, class atomT>
+const atomT* cdsAssembly<moleculeT, residueT, atomT>::findAtom(const int& serialNumber)
+{
+    for(auto &atom : this->getAtoms())
+    {
+        if (atom->GetSerialNumber() == serialNumber)
+        {
+            return atom;
+        }
+    }
+    gmml::log(__LINE__, __FILE__, gmml::WAR, "Could not find atom with this serialNumber " + serialNumber);
+    return nullptr;
 }
 
 

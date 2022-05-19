@@ -22,7 +22,7 @@ ConectRecord::ConectRecord(std::string &line, pdb::PdbModel& pdbModel)
         catch (...) {} // this is fine, they might not all be present.
         if (serialNumber != 0)
         {
-            const pdbAtom* foundAtom = pdbModel.FindAtom(serialNumber);
+            const pdbAtom* foundAtom = pdbModel.findAtom(serialNumber);
             if (foundAtom != nullptr)
             {
                 atomRecordPtrs_.push_back(foundAtom);

@@ -6,6 +6,7 @@
 #include <functional>
 
 #include "includes/CentralDataStructure/cdsMolecule.hpp"
+#include "includes/InputSet/PdbFile/pdbResidue.hpp"
 //#include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 namespace pdb
 {

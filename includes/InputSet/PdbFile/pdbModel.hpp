@@ -3,12 +3,11 @@
 
 #include <vector>
 #include <iostream>
-//#include "includes/InputSet/PdbFile/pdbChain.hpp"
-//#include "includes/InputSet/PdbFile/pdbResidue.hpp"
-//#include "includes/InputSet/PdbFile/atomRecord.hpp"
+
 #include "includes/CentralDataStructure/cdsAssembly.hpp"
 #include "includes/InputSet/PdbFile/conectRecord.hpp"
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
+#include "includes/InputSet/PdbFile/pdbChain.hpp"
 
 namespace pdb
 {
@@ -32,7 +31,6 @@ public:
     //////////////////////////////////////////////////////////
     void ChangeResidueName(const std::string& selector, const std::string& newName);
 //    const pdbAtom* FindAtom(const int& serialNumber) const; // Conect records
-    const pdbAtom* FindAtom(const int& serialNumber) const; // Conect records
     std::string extractChainId(const std::string &line);
     std::stringstream extractSingleChainFromRecordSection(std::stringstream &stream_block, std::string line, const std::string& initialChainID);
     //Preprocessing functions

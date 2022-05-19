@@ -20,9 +20,6 @@
 #include "includes/InputSet/PdbFile/journalRecord.hpp"
 #include "includes/InputSet/PdbFile/remarkRecord.hpp"
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
-#include "includes/InputSet/PdbFile/pdbAtom.hpp"
-#include "includes/InputSet/PdbFile/pdbResidue.hpp"
-#include "includes/InputSet/PdbFile/pdbChain.hpp"
 #include "includes/InputSet/PdbFile/pdbModel.hpp"
 #include "includes/CentralDataStructure/cdsEnsemble.hpp"
 //#include "includes/InputSet/PdbFile/conectRecord.hpp"
@@ -30,10 +27,6 @@
 namespace pdb
 {
 const int iPdbLineLength = 80;
-class PdbModel;
-class PdbChain;
-class PbdResidue;
-class pdbAtom;
 class PdbFile : public cds::cdsEnsemble<PdbModel, PdbChain, PdbResidue, pdbAtom>
 {
 public:
@@ -69,21 +62,13 @@ private:
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-    //inline std::vector<PdbModel*>getModels() {return this->getAssemblies();}
     void ParseInFileStream(std::ifstream& pdbFileStream);
     std::stringstream ExtractHeterogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, const std::vector<std::string> recordNames);
     std::stringstream ExtractHomogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, std::string previousName);
     inline const std::vector<DatabaseReference>& GetDatabaseReferences() const {return databaseReferences_;}
-//    inline const std::vector<ConectRecord>& GetConectRecords() const {return conectRecords_;}
-//    inline PdbModel& GetCoordinateSection() {return coordinateSection_;}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
-//    void AddConnection(AtomRecord* atom1, AtomRecord* atom2);
-    //void DeleteAtomRecord(AtomRecord* atom);
-//    void ModifyNTerminal(const std::string& type, PdbResidue* nTerminalResidue);
-//    void ModifyCTerminal(const std::string& type, PdbResidue* residue);
-//    void InsertCap(const PdbResidue& residue, const std::string& type);
     //////////////////////////////////////////////////////////
     //                        ATTRIBUTES                    //
     //////////////////////////////////////////////////////////
@@ -93,7 +78,6 @@ private:
     AuthorRecord authorRecord_;
     JournalRecord journalRecord_;
     RemarkRecord remarkRecord_;
-//    PdbModel coordinateSection_;
     std::vector<DatabaseReference> databaseReferences_;
 };
 }

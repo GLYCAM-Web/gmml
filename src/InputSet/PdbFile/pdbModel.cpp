@@ -193,19 +193,7 @@ void PdbModel::ChangeResidueName(const std::string& selector, const std::string&
     return;
 }
 
-const pdb::pdbAtom* PdbModel::FindAtom(const int& serialNumber) const
-{
-    for(auto &atom : this->getAtoms())
-    {
-        if (atom->GetSerialNumber() == serialNumber)
-        {
-            return atom;
-        }
-    }
-    gmml::log(__LINE__, __FILE__, gmml::WAR, "Could not find atom with this serialNumber " + serialNumber);
-    return nullptr;
-}
-
+//const pdb::pdbAtom* PdbModel::FindAtom(const int& serialNumber) const
 //{
 //    for(auto &atom : this->getAtoms())
 //    {
