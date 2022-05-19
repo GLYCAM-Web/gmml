@@ -56,20 +56,6 @@ PdbModel::PdbModel(std::stringstream &stream_block)
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 
-// This is bad as it repeats how to read a line and how to create a residue ID, but I need to know which residue to put the atom into before I construct the atom.
-//std::string PdbModel::PeekAtResidueId(const std::string &line)
-//{
-//    // Dealing with number overruns for serialNumber and residueNumber
-//    int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
-//    std::string residueName = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
-//    std::string chainId = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
-//    int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));
-//    std::string residueNumber = codeUtils::RemoveWhiteSpace(line.substr(22 + shift, 4 + secondShift));
-//    // Insertion code gets shifted right by every overrun in residue number.
-//    std::string insertionCode = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
-//    return residueName + "_" + residueNumber + "_" + insertionCode + "_" + chainId;
-//}
-
 std::string PdbModel::extractChainId(const std::string &line)
 {   // serialNumber can overrun into position 12 in input.
     int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
@@ -104,25 +90,6 @@ void PdbModel::addConectRecord(const pdbAtom* atom1, const pdbAtom* atom2)
     return;
 }
 
-//std::vector<std::vector<pdb::PdbResidue*>> PdbAssembly::GetModels() const
-//{
-//    std::vector<std::vector<pdb::PdbResidue*>> models;
-//    int previousModel = -123456789; // It would need to be very wrong to be this value.
-//    for(auto &residue : residues_)
-//    {
-//        if (residue->GetModelNumber() != previousModel )
-//        {
-//            models.push_back(std::vector<PdbResidue*>{residue.get()});
-//            previousModel = residue->GetModelNumber();
-//        }
-//        else
-//        {
-//            models.back().push_back(residue.get());
-//        }
-//    }
-//    return models;
-//}
-
 //std::vector<pdb::PdbChain*> PdbModel::GetProteinChains()
 //{
 //    std::vector<pdb::PdbChain*> proteinChains;
@@ -154,30 +121,6 @@ void PdbModel::addConectRecord(const pdbAtom* atom1, const pdbAtom* atom2)
 //    return proteinChains;
 //}
 
-//std::vector<pdb::PdbResidue*> PdbAssembly::GetResidues() const
-//{
-//    std::vector<pdb::PdbResidue*> residues; // reserve the right amount of memory.
-//    for(auto &resUniquePtr : residues_)
-//    {
-//        residues.push_back(resUniquePtr.get());
-//    }
-//    return residues;
-//}
-
-//std::vector<pdb::PdbResidue*> PdbModel::FindResidues(const std::string selector)
-//{
-//    std::vector<pdb::PdbResidue*> matchingResidues;
-//    for(auto &residue : residues_)
-//    {
-//        std::size_t found = residue->GetId().find(selector);
-//        if(found != std::string::npos)
-//        {
-//            matchingResidues.push_back(residue.get());
-//        }
-//    }
-//    return matchingResidues;
-//}
-//
 void PdbModel::ChangeResidueName(const std::string& selector, const std::string& newName)
 {
     for(auto &residue : this->getResidues())
@@ -192,19 +135,6 @@ void PdbModel::ChangeResidueName(const std::string& selector, const std::string&
     gmml::log(__LINE__, __FILE__, gmml::WAR, "Could not find residue to rename with this selector " + selector);
     return;
 }
-
-//const pdb::pdbAtom* PdbModel::FindAtom(const int& serialNumber) const
-//{
-//    for(auto &atom : this->getAtoms())
-//    {
-//        if (atom->GetSerialNumber() == serialNumber)
-//        {
-//            return atom;
-//        }
-//    }
-//    gmml::log(__LINE__, __FILE__, gmml::WAR, "Could not find atom with this serialNumber " + serialNumber);
-//    return nullptr;
-//}
 
 //////////////////////////////////////////////////////////
 //                      FUNCTIONS                       //

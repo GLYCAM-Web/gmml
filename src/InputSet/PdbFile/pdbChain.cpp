@@ -1,7 +1,6 @@
 #include "includes/InputSet/PdbFile/pdbFunctions.hpp" // extractResidueId
 #include "includes/InputSet/PdbFile/pdbChain.hpp"
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
-//#include "includes/InputSet/PdbFile/atomRecord.hpp"
 #include "includes/GeometryTopology/coordinate.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp" // get_cartesian_point_from_internal_coords
 #include "includes/CodeUtils/strings.hpp"
@@ -36,25 +35,10 @@ PdbChain::PdbChain(std::stringstream &stream_block, const std::string& chainId) 
     return;
 }
 
-//PdbChain::PdbChain(PdbResidue* pdbResidue)
-//{
-//    this->AddResidue(pdbResidue);
-//}
-//PdbChain::PdbChain(std::vector<PdbResidue*> pdbResidues)
-//{
-//    pdbResidues_ = pdbResidues;
-//}
 ////////////////////////////////////////////////////////////
 ////                         ACCESSOR                     //
 ////////////////////////////////////////////////////////////
-//pdb::PdbResidue* PdbChain::GetFirstResidue() const
-//{
-//    return pdbResidues_.front();
-//}
-//const std::string& PdbChain::GetChainId() const
-//{
-//    return this->GetFirstResidue()->GetChainId();
-//}
+
 ////////////////////////////////////////////////////////////
 ////                    FUNCTIONS                         //
 ////////////////////////////////////////////////////////////
@@ -111,7 +95,6 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
         Coordinate hh31CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, 180.0, 1.09);
         Coordinate hh32CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, 60.0, 1.09);
         Coordinate hh33CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, -60.0, 1.09);
-        //AtomRecordIterator atomPosGition = this->GetCoordinateSection().FindPositionOfAtom(refResidue.GetLastAtom());
         PdbResidue *newNMEResidue = this->createNewResidue("NME", refResidue);
         newNMEResidue->createAtom("N", nCoordNME);
         newNMEResidue->createAtom("H", hCoordNME);
@@ -120,12 +103,6 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
         newNMEResidue->createAtom("HH32", hh32CoordNME);
         newNMEResidue->createAtom("HH33", hh33CoordNME);
         newNMEResidue->AddTerCard();
-//        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("N", "NME", sequenceNumber, nCoordNME, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
-//        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("H", "NME", sequenceNumber, hCoordNME, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
-//        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("CH3", "NME", sequenceNumber, ch3CoordNME, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
-//        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH31", "NME", sequenceNumber, hh31CoordNME, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
-//        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH32", "NME", sequenceNumber, hh32CoordNME, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
-//        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH33", "NME", sequenceNumber, hh33CoordNME, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
     }
     else if (type == "COCH3") // ACE
     {
@@ -142,8 +119,6 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
         Coordinate hh32CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, 60.0, 1.09);
         Coordinate hh33CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, -60.0, 1.09);
         // Ok this next bit is convoluted, but I look up the position of the first atom in the protein residue and insert the new Atom before it, and get passed back the position of the newly created atom, so I can use that when creating the next one and so on.
-      //  AtomRecordIterator atomPosition = this->GetCoordinateSection().FindPositionOfAtom(refResidue.GetFirstAtom());
-
         // With ACE we want to insert before the residue, so I'm finding the residue before here:
         auto refPosition = this->findPositionOfResidue(&refResidue);
         --refPosition;
@@ -155,14 +130,6 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
         newACEResidue->createAtom("HH31", hh31CoordACE);
         newACEResidue->createAtom("HH32", hh32CoordACE);
         newACEResidue->createAtom("HH33", hh33CoordACE);
-
-//        --atomPosition; // Want to insert before the first atom, inserting at begin() position is fine.
-//        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("C", "ACE", sequenceNumber, cCoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
-//        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("O", "ACE", sequenceNumber, oCoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
-//        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("CH3", "ACE", sequenceNumber, ch3CoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
-//        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH31", "ACE", sequenceNumber, hh31CoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
-//        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH32", "ACE", sequenceNumber, hh32CoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
-//        atomPosition = this->GetCoordinateSection().CreateNewAtomRecord("HH33", "ACE", sequenceNumber, hh33CoordACE, refResidue.GetChainId(), refResidue.GetModelNumber(), atomPosition);
         gmml::log(__LINE__, __FILE__, gmml::INF, "Created ACE residue: " + newACEResidue->printId());
     }
 }
@@ -263,18 +230,6 @@ pdb::PdbResidue* PdbChain::getCTerminal()
 ////    }
 //}
 
-//std::string PdbChain::extractResidueId(const std::string &line)
-//{
-//    // Dealing with number overruns for serialNumber and residueNumber
-//    int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
-//    std::string residueName = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
-//    std::string chainId = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
-//    int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));
-//    std::string residueNumber = codeUtils::RemoveWhiteSpace(line.substr(22 + shift, 4 + secondShift));
-//    // Insertion code gets shifted right by every overrun in residue number.
-//    std::string insertionCode = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
-//    return residueName + "_" + residueNumber + "_" + insertionCode + "_" + chainId;
-//}
 
 ////////////////////////////////////////////////////////////
 ////                          MUTATOR                     //
