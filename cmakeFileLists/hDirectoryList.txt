@@ -10,6 +10,7 @@
 ./includes/InputSet/TopologyFileSpace
 ./includes/InputSet/Utilities
 ./includes/InputSet/PdbFile
+./includes/InputSet/PdbFile/SectionClasses
 ./includes/InternalPrograms
 ./includes/InternalPrograms/GlycoproteinBuilder
 ./includes/InternalPrograms/CarbohydrateBuilder

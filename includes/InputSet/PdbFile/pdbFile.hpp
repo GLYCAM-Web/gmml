@@ -13,16 +13,15 @@
 #include <vector>
 #include <fstream>      // std::ifstream
 
-#include "includes/InputSet/PdbFile/headerRecord.hpp"
-#include "includes/InputSet/PdbFile/databaseReferenceRecord.hpp"
-#include "includes/InputSet/PdbFile/titleRecord.hpp"
-#include "includes/InputSet/PdbFile/authorRecord.hpp"
-#include "includes/InputSet/PdbFile/journalRecord.hpp"
-#include "includes/InputSet/PdbFile/remarkRecord.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/headerRecord.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/databaseReferenceRecord.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/titleRecord.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/authorRecord.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/journalRecord.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/remarkRecord.hpp"
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 #include "includes/InputSet/PdbFile/pdbModel.hpp"
 #include "includes/CentralDataStructure/cdsEnsemble.hpp"
-//#include "includes/InputSet/PdbFile/conectRecord.hpp"
 
 namespace pdb
 {

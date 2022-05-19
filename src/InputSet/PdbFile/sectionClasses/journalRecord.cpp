@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "includes/InputSet/PdbFile/journalRecord.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/journalRecord.hpp"
 #include "includes/utils.hpp"
 
 using pdb::JournalRecord;

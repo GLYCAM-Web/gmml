@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "includes/InputSet/PdbFile/authorRecord.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/authorRecord.hpp"
 #include "includes/utils.hpp"
 
 using pdb::AuthorRecord;

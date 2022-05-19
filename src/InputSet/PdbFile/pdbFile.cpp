@@ -5,7 +5,6 @@
 #include "includes/CodeUtils/files.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
-#include "includes/InputSet/PdbFile/databaseReferenceRecord.hpp"
 #include "includes/common.hpp" // gmml::dSulfurCutoff
 //#include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
 #include "includes/GeometryTopology/geometrytopology.hpp"

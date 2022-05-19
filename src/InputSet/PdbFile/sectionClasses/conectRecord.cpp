@@ -1,5 +1,5 @@
 #include <iomanip> // setw
-#include "includes/InputSet/PdbFile/conectRecord.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/conectRecord.hpp"
 #include "includes/InputSet/PdbFile/pdbModel.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"
@@ -34,6 +34,7 @@ ConectRecord::ConectRecord(std::string &line, pdb::PdbModel& pdbModel)
         }
     }
 }
+
 ConectRecord::ConectRecord(std::vector<const pdbAtom*> atomRecords)
 {
     atomRecordPtrs_ = std::move(atomRecords);

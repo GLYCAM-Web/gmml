@@ -1,4 +1,4 @@
-#include "includes/InputSet/PdbFile/headerRecord.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/headerRecord.hpp"
 #include "includes/utils.hpp"
 #include "includes/CodeUtils/strings.hpp"
 

@@ -5,7 +5,7 @@
 #include <iostream>
 
 #include "includes/CentralDataStructure/cdsAssembly.hpp"
-#include "includes/InputSet/PdbFile/conectRecord.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/conectRecord.hpp"
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 #include "includes/InputSet/PdbFile/pdbChain.hpp"
 

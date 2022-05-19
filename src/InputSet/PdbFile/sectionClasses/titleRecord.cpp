@@ -1,7 +1,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "includes/InputSet/PdbFile/titleRecord.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/titleRecord.hpp"
 #include "includes/utils.hpp"
 
 using pdb::TitleRecord;
