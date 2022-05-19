@@ -206,93 +206,18 @@ const pdb::pdbAtom* PdbModel::FindAtom(const int& serialNumber) const
     return nullptr;
 }
 
-//void CoordinateSection::DeleteAtomRecord(AtomRecord* atom)
-//{ // Passing in a raw ptr, but the vector is unique_ptr so gotta use i->get() to compare raws.
-//    for(auto &residue : residues_)
+//{
+//    for(auto &atom : this->getAtoms())
 //    {
-//        if (residue->DeleteAtomRecord(atom)) // returns true if it found and deleted the atomRecord
+//        if (atom->GetSerialNumber() == serialNumber)
 //        {
-//            return;
+//            return atom;
 //        }
 //    }
-//    return;
+//    gmml::log(__LINE__, __FILE__, gmml::WAR, "Could not find atom with this serialNumber " + serialNumber);
+//    return nullptr;
 //}
 
-//pdb::AtomRecordIterator CoordinateSection::CreateNewAtomRecord(std::string name, GeometryTopology::Coordinate& coord, AtomRecord* sisterAtom)
-//{ // A bit wonky as position records the sisterAtom position in the vector, and then the new atom position to be returned.
-//    AtomRecordIterator position = this->FindPositionOfAtom(sisterAtom);
-//    if (position != atomRecords_.end())
-//    {
-//        ++position; // it is ok to insert at end(). I checked. It was ok. Ok.
-//        position = atomRecords_.insert(position, std::make_unique<AtomRecord>(name, coord, sisterAtom));
-//        gmml::log(__LINE__,__FILE__,gmml::INF, "New atom named " + name + " has been born; You're welcome.");
-//    }
-//    else
-//    {
-//        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create atom named " + name + " as sisterAtom was not found in atom records\n");
-//    }
-//    return position;
-//}
-
-//pdb::AtomRecordIterator CoordinateSection::CreateNewAtomRecord(const std::string& atomName, const std::string& residueName, const int& residueSequenceNumber, const GeometryTopology::Coordinate& coord, const std::string& chainId, const int& modelNumber, AtomRecordIterator previousAtomPosition)
-//{
-//    //auto position = this->FindPositionOfAtom(previousAtom);
-//    //if (position != atomRecords_.end())
-//    //{
-//        AtomRecordIterator newAtomPosition = atomRecords_.insert(++previousAtomPosition, std::make_unique<AtomRecord>(atomName, residueName, residueSequenceNumber, coord, chainId, modelNumber));
-//        gmml::log(__LINE__,__FILE__,gmml::INF, "New atom named " + atomName + " has been born; You're welcome.");
-//    //}
-////    else
-////    {
-////        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create atom named " + atomName + " as previousAtom was not found in atom records\n");
-////    }
-//    return newAtomPosition; // this is an iterator to where the unique ptr is, and get() returns a raw ptr.
-//}
-
-
-//pdb::PdbResidue* PdbModel::CreateNewResidue(const std::string residueName, const std::string atomName, GeometryTopology::Coordinate& atomCoord, const pdb::PdbResidue& referenceResidue)
-//{
-//    //Where the residue is in the vector matters. It should go after the reference residue.
-//    pdb::PdbResidueIterator position = this->FindPositionOfResidue(&referenceResidue);
-//    if (position != residues_.end())
-//    {
-//        ++position; // it is ok to insert at end(). I checked. It was ok. Ok.
-//        position = residues_.insert(position, std::make_unique<PdbResidue>(residueName, atomName, atomCoord, &referenceResidue));
-//        gmml::log(__LINE__,__FILE__,gmml::INF, "New residue named " + residueName + " has been born; You're welcome.");
-//    }
-//    else
-//    {
-//        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create residue named " + residueName + " as referenceResidue was not found\n");
-//    }
-//    return (*position).get(); // Wow ok, so dereference the reference to a uniquePtr, then use get() to create a raw ptr.
-//}
-//
-//
-//pdb::PdbResidueIterator PdbModel::FindPositionOfResidue(const PdbResidue* queryResidue)
-//{
-//    auto i = residues_.begin();
-//    auto e = residues_.end();
-//    while (i != e)
-//    {
-//        if (queryResidue == i->get())
-//        {
-//            return i;
-//        }
-//        else
-//        {
-//            ++i;
-//        }
-//    }
-//    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find " + queryResidue->GetId() + " in atom records\n");
-//    return e;
-//}
-//////////////////////////////////////////////////////////
-//                      ACCESSOR                        //
-//////////////////////////////////////////////////////////
-
-//////////////////////////////////////////////////////////
-//                      MUTATOR                         //
-//////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////
 //                      FUNCTIONS                       //
 //////////////////////////////////////////////////////////
