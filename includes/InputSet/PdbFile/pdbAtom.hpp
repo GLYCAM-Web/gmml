@@ -34,7 +34,7 @@ public:
     inline const int& GetResidueSequenceNumber() const {return residueSequenceNumber_;}
     inline const std::string& GetInsertionCode() const {return insertionCode_;}
     inline const std::string& GetAlternateLocation() const {return alternateLocation_;}
-    inline const Coordinate& GetCoordinate() const {return coordinate_;}
+    //inline const Coordinate& GetCoordinate() const {return coordinate_;}
     inline const double& GetOccupancy() const {return occupancy_;}
     inline const double& GetTemperatureFactor() const {return temperatureFactor_;}
     inline const std::string& GetElementSymbol() const {return element_;}
@@ -42,13 +42,13 @@ public:
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
-    void SetResidueName(const std::string atom_residue_name); // Make friend of pdb::Residue?
+//    void SetResidueName(const std::string atom_residue_name); // Make friend of pdb::Residue?
     //////////////////////////////////////////////////////////
     //                       FUNCTION                       //
     //////////////////////////////////////////////////////////
     std::string GetId() const;
-    std::string GetResidueId() const;
-    double CalculateDistance(const pdbAtom* otherAtom) const;
+    std::string GetId(const std::string &residueId) const;
+//    std::string GetResidueId() const;
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
@@ -65,7 +65,7 @@ private:
     void SetChainId(const std::string atom_chain_id);
     void SetResidueSequenceNumber(const int atom_residue_sequence_number);
     void SetInsertionCode(const std::string atom_insertion_code);
-    void SetCoordinate(const Coordinate c);
+//    void SetCoordinate(const Coordinate c);
     void SetOccupancy(double atom_occupancy);
     void SetTempretureFactor(const double atom_temperature_factor);
     void SetElement(const std::string atom_element_symbol);
@@ -85,7 +85,6 @@ private:
     double temperatureFactor_ = gmml::dNotSet;                    // Atom temperature factor
     std::string element_ = "";                         // Atom element symbol
     std::string charge_ = "";                          // Atom charge
-    Coordinate coordinate_;     // Atom coordinate
     //std::vector<AtomRecord*> alternateLocations_; // Alternate atom locations, as a vector of atom cards, as there is   more information that may be needed (such as ID (A,B,C, etc), %occupancy, etc)
 };
 }

@@ -25,6 +25,15 @@ Coordinate* cdsAtom::getCoordinate()
     }
     return coordinates_.front().get();
 }
+
+const Coordinate* cdsAtom::getCoordinate() const
+{
+    if(coordinates_.empty())
+    {
+        return nullptr;
+    }
+    return coordinates_.front().get();
+}
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
@@ -46,5 +55,13 @@ void cdsAtom::addCoordinate(const Coordinate& newCoord)
 {
     coordinates_.push_back(std::make_unique<Coordinate>(newCoord));
     return;
+}
+//////////////////////////////////////////////////////////
+//                    FUNCTIONS                         //
+//////////////////////////////////////////////////////////
+
+double cdsAtom::calculateDistance(const cdsAtom* otherAtom) const
+{
+    return this->getCoordinate()->Distance(otherAtom->getCoordinate());
 }
 

@@ -103,8 +103,8 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
     {
 //        int sequenceNumber = refResidue.GetSequenceNumber() + 1; // Single gaps will end up with the same ACE NME resid numbers. Otherwise good.
         const Coordinate& cCoordProtein = refResidue.FindAtom("C")->getCoordinate();
-        const Coordinate& caCoordProtein = refResidue.FindAtom("CA")->GetCoordinate();
-        const Coordinate& oCoordProtein = refResidue.FindAtom("O")->GetCoordinate();
+        const Coordinate& caCoordProtein = refResidue.FindAtom("CA")->getCoordinate();
+        const Coordinate& oCoordProtein = refResidue.FindAtom("O")->getCoordinate();
         Coordinate nCoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordProtein, caCoordProtein, cCoordProtein, 120.0, 180.0, 1.4);
         Coordinate hCoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordProtein, caCoordProtein, nCoordNME, 109.0, 180.0, 1.0);
         Coordinate ch3CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(caCoordProtein, cCoordProtein, nCoordNME, 125.0, 180.0, 1.48);
@@ -131,9 +131,9 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
     {
 //        int sequenceNumber = refResidue.GetSequenceNumber() - 1; // Single gaps will end up with the same ACE NME resid numbers. Otherwise good.
         // These are the atoms in residue that I use to build the ACE out from.
-        const Coordinate& cCoordProtein = refResidue.FindAtom("C")->GetCoordinate();
-        const Coordinate& caCoordProtein = refResidue.FindAtom("CA")->GetCoordinate();
-        const Coordinate& nCoordProtein = refResidue.FindAtom("N")->GetCoordinate();
+        const Coordinate& cCoordProtein = refResidue.FindAtom("C")->getCoordinate();
+        const Coordinate& caCoordProtein = refResidue.FindAtom("CA")->getCoordinate();
+        const Coordinate& nCoordProtein = refResidue.FindAtom("N")->getCoordinate();
         // This is bad, should use templates loaded from lib/prep file instead.
         Coordinate cCoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(cCoordProtein, caCoordProtein, nCoordProtein, 120.0, -130.0, 1.4);
         Coordinate oCoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(caCoordProtein, nCoordProtein, cCoordACE, 120.0, 0.0, 1.23);
@@ -193,7 +193,7 @@ bool PdbChain::ModifyTerminal(const std::string& type)
             pdbAtom* atomCA = cTermResidue->FindAtom("CA");
             pdbAtom* atomC = cTermResidue->FindAtom("C");
             pdbAtom* atomO = cTermResidue->FindAtom("O");
-            GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->GetCoordinate(), atomC->GetCoordinate(), atomO->GetCoordinate(), 120.0, 180.0, 1.25);
+            GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->getCoordinate(), atomC->getCoordinate(), atomO->getCoordinate(), 120.0, 180.0, 1.25);
             cTermResidue->createAtom("OXT", oxtCoord);
             gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + atomO->GetId());
         }

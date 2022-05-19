@@ -183,7 +183,7 @@ void PdbResidue::modifyCTerminal(const std::string& type)
             pdbAtom* atomCA = this->FindAtom("CA");
             pdbAtom* atomC = this->FindAtom("C");
             pdbAtom* atomO = this->FindAtom("O");
-            GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->GetCoordinate(), atomC->GetCoordinate(), atomO->GetCoordinate(), 120.0, 180.0, 1.25);
+            GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->getCoordinate(), atomC->getCoordinate(), atomO->getCoordinate(), 120.0, 180.0, 1.25);
             this->createAtom("OXT", oxtCoord);
             gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + atomO->GetId());
         }
@@ -279,7 +279,7 @@ void PdbResidue::Print(std::ostream &out) const
     out << "pdb::Residue : " << this->printId() << std::endl;
     for(auto &atom : this->getAtoms())
     {
-        out << "    atom : " << atom->GetId() << " X: "  << atom->GetCoordinate().GetX() << " Y: "  << atom->GetCoordinate().GetY() << " Z: " << atom->GetCoordinate().GetZ() << "\n";
+        out << "    atom : " << atom->GetId() << " X: "  << atom->getCoordinate()->GetX() << " Y: "  << atom->getCoordinate()->GetY() << " Z: " << atom->getCoordinate()->GetZ() << "\n";
     }
 }
 

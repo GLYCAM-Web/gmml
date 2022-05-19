@@ -320,7 +320,7 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
             if ( (sgAtom1 != nullptr) && (sgAtom2 != nullptr) )
             {
                 //gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");
-                double distance = sgAtom1->CalculateDistance(sgAtom2);
+                double distance = sgAtom1->calculateDistance(sgAtom2);
                 if (distance < gmml::dSulfurCutoff && distance > 0.001)
                 {
                     //gmml::log(__LINE__, __FILE__, gmml::INF, "Distance less than cutoff");

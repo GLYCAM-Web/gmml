@@ -74,7 +74,7 @@ pdbAtom::pdbAtom(const std::string &line)
     }
     try
     {
-        coordinate_ = GeometryTopology::Coordinate(codeUtils::RemoveWhiteSpace(line.substr(30 + shift, 8)), codeUtils::RemoveWhiteSpace(line.substr(38 + shift, 8)), codeUtils::RemoveWhiteSpace(line.substr(46 + shift, 8)));
+        this->setCoordinate(GeometryTopology::Coordinate(codeUtils::RemoveWhiteSpace(line.substr(30 + shift, 8)), codeUtils::RemoveWhiteSpace(line.substr(38 + shift, 8)), codeUtils::RemoveWhiteSpace(line.substr(46 + shift, 8))));
     }
     catch (...)
     {
@@ -156,10 +156,6 @@ void pdbAtom::SetAlternateLocation(const std::string atom_alternate_location)
 {
     alternateLocation_ = atom_alternate_location;
 }
-void pdbAtom::SetResidueName(const std::string atom_residue_name)
-{
-    residueName_ = atom_residue_name;
-}
 void pdbAtom::SetChainId(const std::string atom_chain_id)
 {
     chainId_ = atom_chain_id;
@@ -171,10 +167,6 @@ void pdbAtom::SetResidueSequenceNumber(const int atom_residue_sequence_number)
 void pdbAtom::SetInsertionCode(const std::string atom_insertion_code)
 {
     insertionCode_ = atom_insertion_code;
-}
-void pdbAtom::SetCoordinate(const GeometryTopology::Coordinate c)
-{
-    coordinate_ = c;
 }
 void pdbAtom::SetOccupancy(const double atom_occupancy)
 {
@@ -202,36 +194,15 @@ void pdbAtom::SetCharge(const std::string atom_charge)
 std::string pdbAtom::GetId() const
 {
     std::stringstream ss;
-    ss << this->getName() << "_" << this->GetSerialNumber() << "_" << this->GetResidueId();
+    ss << this->getName() << "_" << this->GetSerialNumber();
     return ss.str();
 }
-// I don't want to store the insertion code or chainId as ?, as that looks odd outside of the ID context, so I store as " " when undefined and change that to ? when getting the ID.
-std::string pdbAtom::GetResidueId() const
+
+std::string pdbAtom::GetId(const std::string &residueId) const
 {
     std::stringstream ss;
-    ss << this->GetResidueName() << "_" << this->GetResidueSequenceNumber() << "_";
-    if(this->GetInsertionCode() == " ")
-    {
-        ss << gmml::sNotSet << "_";
-    }
-    else
-    {
-        ss << this->GetInsertionCode() << "_";
-    }
-    if (this->GetChainId() == " ")
-    {
-        ss << gmml::sNotSet << "_";
-    }
-    else
-    {
-        ss << this->GetChainId() << "_";
-    }
-   // ss << this->GetModelNumber();
+    ss << this->GetId() << "_" << residueId;
     return ss.str();
-}
-double pdbAtom::CalculateDistance(const pdbAtom* otherAtom) const
-{
-    return this->GetCoordinate().Distance(otherAtom->GetCoordinate());
 }
 
 //////////////////////////////////////////////////////////
@@ -263,7 +234,7 @@ void pdbAtom::Print(std::ostream &out) const
     }
     out << ", Inserion Code: " << insertionCode_
             << ", Coordinate: ";
-    coordinate_.Print(out);
+    this->getCoordinate()->Print(out);
     out << ", Occupancy: ";
     if(occupancy_ == gmml::dNotSet)
     {
@@ -313,11 +284,11 @@ void pdbAtom::Write(std::ostream& stream) const
     else
         stream << std::left << std::setw(1) << this->GetInsertionCode();
     stream << std::left << std::setw(3) << " ";
-    if(this->GetCoordinate().CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
+    if(this->getCoordinate()->CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
     {
-        stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetCoordinate().GetX()
-                                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetCoordinate().GetY()
-                                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetCoordinate().GetZ();
+        stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->getCoordinate()->GetX()
+                                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->getCoordinate()->GetY()
+                                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->getCoordinate()->GetZ();
     }
     else
     {
