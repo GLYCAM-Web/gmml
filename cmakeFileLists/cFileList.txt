@@ -233,6 +233,7 @@
 ./src/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.cpp
 ./src/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.cc
 ./src/MolecularMetadata/GLYCAM/bondlengthbytypepair.cpp
+./src/MolecularMetadata/atomicBonds.cpp
 ./src/MolecularMetadata/glycoprotein.cpp
 ./src/CentralDataStructure/cdsMolecule.cpp
 ./src/CentralDataStructure/cdsCoordinate.cpp

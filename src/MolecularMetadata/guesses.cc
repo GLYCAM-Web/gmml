@@ -189,39 +189,39 @@ bool Assembly::guessIfC_CDoubleBond(MolecularModeling::Atom* carbon1, MolecularM
   return false;
 }
 
-const std::map<std::string, std::pair<double, double> > bondLengthMap =
-{
-  {"CC", std::make_pair(1.22, 1.67)},
-  {"CO", std::make_pair(1.07975, 1.67025)},
-  {"OC", std::make_pair(1.07975, 1.67025)},
-  {"CN", std::make_pair(1.26, 1.55)},
-  {"NC", std::make_pair(1.26, 1.55)},
-  {"OP", std::make_pair(1.35, 1.776)},
-  {"PO", std::make_pair(1.35, 1.776)},
-  {"OS", std::make_pair(1.43, 1.78)},
-  {"SO", std::make_pair(1.43, 1.78)},
-  {"NS", std::make_pair(1.62, 1.77)},
-  {"SN", std::make_pair(1.62, 1.77)}
-};
-
-std::pair<double,double> Assembly::guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2)
-{//Using PDB bond length statistics provided by Chenghua on 2/5/19
-
-  std::string bothAtoms = atom1->GetElementSymbol() + atom2->GetElementSymbol();
-
-  if(bondLengthMap.find(bothAtoms) != bondLengthMap.end())
-  {
-    std::pair<double,double> cutoffDistances = bondLengthMap.at(bothAtoms);
-    // std::stringstream logStream;
-    // logStream << "Using binding cutoff of " << cutoffDistance;
-    // gmml::log(__LINE__, __FILE__,  gmml::INF, logStream.str());
-    return cutoffDistances;
-  }
-  else
-  {
-    // gmml::log(__LINE__, __FILE__,  gmml::INF, "Using default binding cutoff of 1.65");
-    return std::make_pair(gmml::minCutOff, gmml::maxCutOff);
-  }
-  
-
-}
+//const std::map<std::string, std::pair<double, double> > bondLengthMap =
+//{
+//  {"CC", std::make_pair(1.22, 1.67)},
+//  {"CO", std::make_pair(1.07975, 1.67025)},
+//  {"OC", std::make_pair(1.07975, 1.67025)},
+//  {"CN", std::make_pair(1.26, 1.55)},
+//  {"NC", std::make_pair(1.26, 1.55)},
+//  {"OP", std::make_pair(1.35, 1.776)},
+//  {"PO", std::make_pair(1.35, 1.776)},
+//  {"OS", std::make_pair(1.43, 1.78)},
+//  {"SO", std::make_pair(1.43, 1.78)},
+//  {"NS", std::make_pair(1.62, 1.77)},
+//  {"SN", std::make_pair(1.62, 1.77)}
+//};
+//
+//std::pair<double,double> Assembly::guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2)
+//{//Using PDB bond length statistics provided by Chenghua on 2/5/19
+//
+//  std::string bothAtoms = atom1->GetElementSymbol() + atom2->GetElementSymbol();
+//
+//  if(bondLengthMap.find(bothAtoms) != bondLengthMap.end())
+//  {
+//    std::pair<double,double> cutoffDistances = bondLengthMap.at(bothAtoms);
+//    // std::stringstream logStream;
+//    // logStream << "Using binding cutoff of " << cutoffDistance;
+//    // gmml::log(__LINE__, __FILE__,  gmml::INF, logStream.str());
+//    return cutoffDistances;
+//  }
+//  else
+//  {
+//    // gmml::log(__LINE__, __FILE__,  gmml::INF, "Using default binding cutoff of 1.65");
+//    return std::make_pair(gmml::minCutOff, gmml::maxCutOff);
+//  }
+//
+//
+//}
