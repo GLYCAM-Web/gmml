@@ -99,11 +99,11 @@ double Coordinate::Distance(const Coordinate *coordinate) const
     return this->Distance(*coordinate);
 }
 
-double Coordinate::length()
+double Coordinate::length() const
 {
-    double length = (x_ * x_) + (y_ * y_) + (z_ * z_);
-    return sqrt(length);
+    return sqrt( (this->GetX() * this->GetX()) + (this->GetY() * this->GetY()) + (this->GetZ() * this->GetZ()) );
 }
+
 void Coordinate::Normalize()
 {
     double length = this->length();
