@@ -49,6 +49,7 @@ PdbModel::PdbModel(std::stringstream &stream_block)
         }
     }
     gmml::log(__LINE__,__FILE__,gmml::INF, "PdbModel Constructor Complete Captain");
+    //this->bondAtomsByDistance(); // Just testing this functionality. It's just a test bro.
     return;
 }
 

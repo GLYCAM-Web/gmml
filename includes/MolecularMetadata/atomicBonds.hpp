@@ -4,6 +4,9 @@
 #include <utility>
 #include <map>
 
+#include "includes/CentralDataStructure/cdsAtom.hpp"
+
+
 namespace atomicBonds
 {
 const double maxCutOff = 1.65;
@@ -23,9 +26,10 @@ const std::map<std::string, std::pair<double, double> > bondLengthMap =
   {"NS", std::make_pair(1.62, 1.77)},
   {"SN", std::make_pair(1.62, 1.77)}
 };
-
-std::pair<double,double> getBondLengthByAtomType(const std::string atom1Element, const std::string atom2Element);
-
+// FUNCTIONS
+std::pair<double,double> getBondLengthByAtomType(const std::string& atom1Element, const std::string& atom2Element);
+double getMaxBondLengthByAtomType(const std::string &atom1Element, const std::string &atom2Element);
+bool bondAtomsIfClose(cds::cdsAtom* atom1, cds::cdsAtom* atom2);
 }
 
 
