@@ -27,7 +27,7 @@ public:
     inline const int& getNumber() const {return number_;}
     inline virtual const std::string& getName() const {return name_;}
     std::vector<const atomT*> getAtoms() const;
-    //std::vector<atomT*> getAtoms();
+    std::vector<atomT*> getAtoms();
     std::vector<std::string> getAtomNames() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
@@ -70,6 +70,17 @@ template< class atomT >
 std::vector<const atomT*> cdsResidue<atomT>::getAtoms() const
 {
     std::vector<const atomT*> atoms;
+    for(auto &atomPtr : atoms_)
+    {
+        atoms.push_back(atomPtr.get());
+    }
+    return atoms;
+}
+
+template< class atomT >
+std::vector<atomT*> cdsResidue<atomT>::getAtoms()
+{
+    std::vector<atomT*> atoms;
     for(auto &atomPtr : atoms_)
     {
         atoms.push_back(atomPtr.get());

@@ -26,6 +26,7 @@ public:
     std::vector<const atomT*> getAtoms() const;
     std::vector<const residueT*> getResidues() const;
     std::vector<const moleculeT*> getMolecules() const;
+    std::vector<atomT*> getAtoms();
     std::vector<residueT*> getResidues();
     std::vector<moleculeT*> getMolecules();
     //////////////////////////////////////////////////////////
@@ -109,6 +110,20 @@ std::vector<const atomT*> cdsAssembly<moleculeT, residueT, atomT>::getAtoms() co
     for(auto &residue : this->getResidues())
     {
         std::vector<const atomT*> currentResidueAtoms = residue->getAtoms();
+        atoms.insert( atoms.end(), // Concatenates the vectors. currentResidueAtoms isn't left in a defined state but that's ok here.
+                std::make_move_iterator(currentResidueAtoms.begin()),
+                std::make_move_iterator(currentResidueAtoms.end()) );
+    }
+    return atoms;
+}
+
+template <class moleculeT, class residueT, class atomT>
+std::vector<atomT*> cdsAssembly<moleculeT, residueT, atomT>::getAtoms()
+{
+    std::vector<atomT*> atoms;
+    for(auto &residue : this->getResidues())
+    {
+        std::vector<atomT*> currentResidueAtoms = residue->getAtoms();
         atoms.insert( atoms.end(), // Concatenates the vectors. currentResidueAtoms isn't left in a defined state but that's ok here.
                 std::make_move_iterator(currentResidueAtoms.begin()),
                 std::make_move_iterator(currentResidueAtoms.end()) );
