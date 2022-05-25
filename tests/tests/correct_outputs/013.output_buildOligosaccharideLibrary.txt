@@ -160,6 +160,14 @@ Error thrown by the carbohydrateBuilder in gmml during construction was: Could n
 *********************
 Building DNeup5Ac[7A,8A,9A]a2-8DNeup5Ac[9A]a2-9[DNeup5Aca2-8DNeup5Ac[7A,9A]a2-8[DNeup5Aca2-7]DNeup5Aca2-8]DNeup5Ac[7A]a2-OH
 *********************
+
+*********************
+Building DGlcpNSa1-4DGlcpNS[3S,6S]a1-4DGlcpNS[6S]a1-4DGlcpNS[3S]a1-4DGlcpNSa1-3DGlcpNSa1-6DGlcpNSa1-OH
+*********************
+
+*********************
+Building LGlcpNSa1-4LGlcpNS[3S,6S]a1-4LGlcpNS[6S]a1-4LGlcpNS[3S]a1-4LGlcpNSa1-3LGlcpNSa1-6LGlcpNSa1-OH
+*********************
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
@@ -189,3 +197,5 @@ Building DNeup5Ac[7A,8A,9A]a2-8DNeup5Ac[9A]a2-9[DNeup5Aca2-8DNeup5Ac[7A,9A]a2-8[
 00033.pdb not created.
 00034.pdb not created.
 00035.pdb succesfully created.
+00036.pdb succesfully created.
+00037.pdb succesfully created.
