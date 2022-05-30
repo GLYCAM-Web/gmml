@@ -168,6 +168,30 @@ Building DGlcpNSa1-4DGlcpNS[3S,6S]a1-4DGlcpNS[6S]a1-4DGlcpNS[3S]a1-4DGlcpNSa1-3D
 *********************
 Building LGlcpNSa1-4LGlcpNS[3S,6S]a1-4LGlcpNS[6S]a1-4LGlcpNS[3S]a1-4LGlcpNSa1-3LGlcpNSa1-6LGlcpNSa1-OH
 *********************
+
+*********************
+Building DGlcpa1-[4DGlcpa1-]<4>2DGlcpa1-[4DGlcpa1-6[LFucpa1-2]DManpa1-]<2>OH
+*********************
+
+*********************
+Building <
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: Number of repeating units not specified correctly in repeating sequence: <
+
+*********************
+Building Bad<15>OH
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: Not enough information before '>' in input. Did you forget the head residue? : Bad<15>OH
+
+*********************
+Building DGlcpa1-4DGlcpa1-6DManpa1-<15>OH
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: Missing or incorrect usage of ']' in repeating sequence: DGlcpa1-4DGlcpa1-6DManpa1-<15>OH
+
+*********************
+Building DGlcpa1-4DGlcpa1-[4DGlcpa1-]<>OH
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: Number of repeating units not specified correctly in repeating sequence: DGlcpa1-4DGlcpa1-[4DGlcpa1-]<>OH
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
@@ -199,3 +223,8 @@ Building LGlcpNSa1-4LGlcpNS[3S,6S]a1-4LGlcpNS[6S]a1-4LGlcpNS[3S]a1-4LGlcpNSa1-3L
 00035.pdb succesfully created.
 00036.pdb succesfully created.
 00037.pdb succesfully created.
+00038.pdb succesfully created.
+00039.pdb not created.
+00040.pdb not created.
+00041.pdb not created.
+00042.pdb not created.
