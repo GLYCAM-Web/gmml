@@ -1,6 +1,8 @@
 # GMML
 The GLYCAM Molecular Modeling Library (GMML) is typically used as a library accessed by GEMS (GLYCAM Extensible Modeling Script).
 
+[Overview](#overview)
+
 [Prerequisites](#prerequisites)
 
 [Obtaining the software](#obtaining-the-software)
@@ -12,6 +14,22 @@ The GLYCAM Molecular Modeling Library (GMML) is typically used as a library acce
 [Documentation](#documentation)
 
 ---
+## Overview
+
+GMML provides a library for common molecular modeling tasks.  It is 
+particularly well-tuned for models of carbohydrates and systems that
+contain carbohydrates.
+
+### Used by [GLYCAM-Web](https/glycam.org)
+
+This code also serves as the main molecular modeling engine for GLYCAM-Web.  
+
+### Funding Sources
+
+We are very grateful to our funders.  
+[Please check them out!](https://github.com/GLYCAM-Web/website/blob/master/funding.md)
+
+
 ## Prerequisites
 
 In order to build GMML, you are required to have the following software available on your system:
