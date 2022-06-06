@@ -74,7 +74,7 @@ void cdsAtom::addBond(cdsAtom* otherAtom)
     this->addNeighbor("bondByDistance", otherAtom);
 }
 
-std::string cdsAtom::getElement() // derived classes should overwrite if more explicit about element.
+const std::string cdsAtom::getElement() const // derived classes should overwrite if more explicit about element.
 {
     std::string name = this->getName();
     if (!name.empty())
@@ -87,11 +87,18 @@ std::string cdsAtom::getElement() // derived classes should overwrite if more ex
     gmml::log(__LINE__,__FILE__,gmml::WAR, "Did not find an element for atom named: " + name);
     return "";
 }
-
-void cdsAtom::bondIfClose(cdsAtom* otherAtom)
+bool cdsAtom::isWithinBondingDistance(cdsAtom* otherAtom)
 {
     double maxLength = atomicBonds::getMaxBondLengthByAtomType(this->getElement(), otherAtom->getElement());
     if (this->getCoordinate()->withinDistance(otherAtom->getCoordinate(), maxLength))
+    {
+        return true;
+    }
+    return false;
+}
+void cdsAtom::bondIfClose(cdsAtom* otherAtom)
+{
+    if (this->isWithinBondingDistance(otherAtom))
     {
         this->addBond(otherAtom);
         //std::stringstream ss;

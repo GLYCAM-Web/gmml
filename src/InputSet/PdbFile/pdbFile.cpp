@@ -176,7 +176,8 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
         model->preProcessCysResidues(ppInfo);
         model->preProcessHisResidues(ppInfo, inputOptions);
         model->preProcessChainTerminals(ppInfo, inputOptions);
-        model->preProcessGaps(ppInfo, inputOptions);
+//        model->preProcessGaps(ppInfo, inputOptions);
+        model->preProcessGapsUsingDistance(ppInfo, inputOptions);
         model->preProcessMissingUnrecognized(ppInfo);
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, "Preprocessing completed");

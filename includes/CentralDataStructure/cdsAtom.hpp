@@ -31,9 +31,10 @@ public:
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
-    std::string getElement();
+    const std::string getElement() const;
     double calculateDistance(const cdsAtom* otherAtom) const;
     void addBond(cdsAtom* otherAtom);
+    bool isWithinBondingDistance(cdsAtom* otherAtom);
     void bondIfClose(cdsAtom* otherAtom);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //

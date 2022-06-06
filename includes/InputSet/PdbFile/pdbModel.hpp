@@ -38,6 +38,7 @@ public:
     void preProcessHisResidues(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
     void preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
     void preProcessGaps(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
+    void preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
     void preProcessMissingUnrecognized(pdb::PreprocessorInformation &ppInfo);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
