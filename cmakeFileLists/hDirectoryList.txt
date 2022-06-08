@@ -17,6 +17,7 @@
 ./includes/InternalPrograms/CarbohydrateBuilder
 ./includes/InternalPrograms/DrawGlycan
 ./includes/InternalPrograms/GlycoproteinBuilder
+./includes/InternalPrograms/Sequence
 ./includes/MolecularMetadata
 ./includes/MolecularMetadata/AMBER
 ./includes/MolecularMetadata/GLYCAM
