@@ -16,7 +16,7 @@ public:
 	{
 		this->setIndex(this->generateIndex());
 	}
-	Index(unsigned long long index)
+	Index(unsigned int index)
 	{
 		this->setIndex(index);
 	}
@@ -33,11 +33,9 @@ public:
 	{
 	}
 
-	//copy assignment
 	inline Index& operator=(const Index &rhs)
 	{
-		this->index_m = rhs.index_m;
-		return *this;
+		return *this = Index(rhs);
 	}
 
 	//move assignment
@@ -50,14 +48,14 @@ public:
 	//////////////////////////////////////////////////////////
 	//                       ACCESSOR                       //
 	//////////////////////////////////////////////////////////
-	inline unsigned long long getIndex() const
+	inline unsigned int getIndex() const
 	{
 		return index_m;
 	}
 	//////////////////////////////////////////////////////////
 	//                       MUTATOR                        //
 	//////////////////////////////////////////////////////////
-	inline void setIndex(unsigned long long index)
+	inline void setIndex(unsigned int index)
 	{
 		index_m = index;
 	}
@@ -65,15 +63,15 @@ private:
 	//////////////////////////////////////////////////////////
 	//                       FUNCTIONS                      //
 	//////////////////////////////////////////////////////////
-	inline unsigned long long generateIndex()
+	inline unsigned int generateIndex()
 	{
-		static unsigned long long s_NodeIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
+		static unsigned int s_NodeIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
 		return s_NodeIndex++; // makes copy of index, increments the real index, then returns the value in the copy
 	}
 	//////////////////////////////////////////////////////////
 	//                       ATTRIBUTES                     //
 	//////////////////////////////////////////////////////////
-	unsigned long long index_m;
+	unsigned int index_m;
 };
 
 }

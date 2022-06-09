@@ -9,7 +9,7 @@ int main(int argc, char** argv)
     if (argc != 5)
     {
         std::cerr << "Usage:   ./buildOligosaccharideLibrary <List IDs and sequences> <Char delimiter used in list> <Folder to put outputs> <Prepfile>\n";
-        std::cerr << "Example: ./buildOligosaccharideLibrary exampleLibrary.txt _ outputs/ ../../dat/prep/GLYCAM_06j-1.prep\n";
+        std::cerr << "Example: ./buildOligosaccharideLibrary exampleLibrary.txt _ outputs/ ../../dat/prep/GLYCAM_06j-1_GAGS.prep\n";
         std::cerr << "Don't use a delimiter that appears in glycan sequences or ids. Like - or , or [] etc\n";
         std::exit(EXIT_FAILURE); 
     }
@@ -32,7 +32,7 @@ int main(int argc, char** argv)
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
         try
         {
-            CondensedSequenceSpace::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
+            CondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
             std::cout << carbBuilder.Print();
             std::string inputGlycanID = splitLine.at(0);
             carbBuilder.GenerateSingle3DStructureSingleFile(outputFolderName, "PDB", inputGlycanID);

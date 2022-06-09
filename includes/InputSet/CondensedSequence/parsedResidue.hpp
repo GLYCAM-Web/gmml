@@ -3,7 +3,7 @@
 
 #include <string>
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp" // TemplateGraph
-#include "includes/MolecularModeling/Abstract/Residue.hpp"
+#include "includes/Abstract/residue.hpp"
 
 namespace CondensedSequence
 {

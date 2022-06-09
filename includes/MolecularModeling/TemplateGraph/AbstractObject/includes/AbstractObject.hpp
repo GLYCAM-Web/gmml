@@ -30,7 +30,7 @@ public:
 	{
 	}
 
-	inline AbstractObject(std::string name, unsigned long long index) :
+	inline AbstractObject(std::string name, unsigned int index) :
 			Labels(name), Index(index)
 	{
 	}
@@ -55,12 +55,15 @@ public:
 	//copy assignment
 	inline AbstractObject& operator=(const AbstractObject &rhs)
 	{
-		return *this;
+		return *this = AbstractObject(rhs);
 	}
 
 	//move assignment
 	inline AbstractObject& operator=(AbstractObject &&rhs)
 	{
+		this->setName(rhs.getName());
+		this->setLabels(rhs.getLabels());
+		this->setIndex(rhs.getIndex());
 		return *this;
 	}
 

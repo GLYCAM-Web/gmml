@@ -401,6 +401,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       ///C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
     }
   }
+
   std::map <unsigned long long, Glycan::Monosaccharide* > ordered_monos_map =  std::map <unsigned long long, Glycan::Monosaccharide*>();
   for (std::vector <Glycan::Monosaccharide*>::iterator it = monos.begin(); it != monos.end(); it++)
   {
@@ -619,6 +620,9 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   // Glycan::Oligosaccharide* testOligo = new Glycan::Oligosaccharide(ordered_monos, dataset_residue_names, this);
   // Glycan::Oligosaccharide* testOligo = new Glycan::Oligosaccharide();
   std::vector<Glycan::Oligosaccharide*> testOligos = createOligosaccharides(ordered_monos);
+  /*for (unsigned int i = 0; i < ordered_monos.size(); i++){
+      std::cout << "This mono cycle str: " << ordered_monos[i]->cycle_atoms_str_ << std::endl;
+  }*/
   testOligos = ExtractOligosaccharides( ordered_monos, dataset_residue_names, number_of_covalent_links, number_of_probable_non_covalent_complexes );
   if(local_debug > 0)
   {
@@ -964,6 +968,7 @@ Assembly::CycleMap Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
             doubleBond = guessIfC_CDoubleBond(atom1, atom2);
             if(doubleBond == true)
             {
+                std::cout << "Is double bond: " << atom1->GetResidue()->GetName() << "-" << atom1->GetName() << " and " << atom2->GetResidue()->GetName() << "-" << atom2->GetName() << std::endl;
                 all_single_bonds = false;
                 break;
             }
@@ -3446,7 +3451,6 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
   }
   // gmml::log(__LINE__, __FILE__,  gmml::INF, " Done iterating list" );
 
-
   std::vector<int> visited_monos = std::vector<int>();
   std::vector<Glycan::Oligosaccharide*> oligosaccharides = std::vector<Glycan::Oligosaccharide*>();
 
@@ -3863,6 +3867,7 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
       }
     }
   }
+
   // gmml::log(__LINE__, __FILE__,  gmml::INF, " End for loop ..." );
   // gmml::log(__LINE__, __FILE__,  gmml::INF, " Another for loop ..." );
   for(std::map<Glycan::Monosaccharide*, std::vector<Glycan::Monosaccharide*> >::iterator it = monos_table.begin(); it != monos_table.end(); it++)

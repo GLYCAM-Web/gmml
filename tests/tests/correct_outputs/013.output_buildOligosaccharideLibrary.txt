@@ -2,8 +2,7 @@
 *********************
 Building DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
 *********************
-Test level caught exception: Could not find prep entry for DNeu5Ac Glycam: 0Sa
-
+Error thrown by the carbohydrateBuilder in gmml during construction was: Could not find prep entry for DNeu5Ac. GLYCAM code used to search is: 0Sa
 
 *********************
 Building DNeup5Aca2-9DNeup5Aca2-8DNeup5Aca2-7DNeup5Aca2-3DGlcpb1-6DManpb1-OME
@@ -20,7 +19,7 @@ Building DFrufb2-1DGlcpa
 *********************
 Building DGlcpa1-R
 *********************
-Test level caught exception: No residue code found in GMML metadata for residue: R
+Error thrown by the carbohydrateBuilder in gmml during construction was: Cannot create 3D structure as no GLYCAM residue code was found in the GMML metadata for residue: R
 
 *********************
 Building LRhapa1-6DGlcpb1-OH
@@ -33,8 +32,7 @@ Building LRhapa1-6DGalpb1-OH
 *********************
 Building DNeupNAca2-4DGalpb1-3LIdopa1-OH
 *********************
-Test level caught exception: Could not find prep entry for LIdop Glycam: 3iA
-
+Error thrown by the carbohydrateBuilder in gmml during construction was: Could not find prep entry for LIdop. GLYCAM code used to search is: 3iA
 
 *********************
 Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
@@ -43,8 +41,7 @@ Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
 *********************
 Building DGlcpA1-OH
 *********************
-Test level caught exception: Could not find prep entry for DGlcp Glycam: 0G
-
+Error thrown by the carbohydrateBuilder in gmml during construction was: Could not find prep entry for DGlcp. GLYCAM code used to search is: 0G
 
 *********************
 Building DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
@@ -69,7 +66,15 @@ Building DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp
 *********************
 Building LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
 *********************
-Test level caught exception: No linkage code found in GMML metadata for linkage: 4,5
+Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 4,5
+Check these inputs for mistakes: 
+Inputs:
+linkages: 4,5
+isomer: L
+inputResName: Fru
+ringType: p
+residueModifier: 
+configuration: a
 
 *********************
 Building DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
@@ -78,12 +83,28 @@ Building DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManp
 *********************
 Building DLyxpa1-2[DManpb1-4][LGulpb1-6]DGlcpa1-2[LGalpa1-5][LFucpa1-1]DFrufb
 *********************
-Test level caught exception: No linkage code found in GMML metadata for linkage: 1,2,5
+Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 1,2,5
+Check these inputs for mistakes: 
+Inputs:
+linkages: 1,2,5
+isomer: D
+inputResName: Fru
+ringType: f
+residueModifier: 
+configuration: b
 
 *********************
 Building DManpb1-4[DLyxpa1-2][LGulpb1-6]DGlcpa1-2[LFucpa1-1][LGalpa1-5]DFrufb
 *********************
-Test level caught exception: No linkage code found in GMML metadata for linkage: 1,2,5
+Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 1,2,5
+Check these inputs for mistakes: 
+Inputs:
+linkages: 1,2,5
+isomer: D
+inputResName: Fru
+ringType: f
+residueModifier: 
+configuration: b
 
 *********************
 Building DFrupa2-6DManpa1-OH
@@ -100,7 +121,77 @@ Building DGlcp[4D,3Me]b1-2DManp[6H]a1-OH
 *********************
 Building DFrufb2-6DFrufb2-6[DFrufb2-6DFrufb2-1]DFrufb2-6DFrufb2-6DFrufb2-OH
 *********************
-Test level caught exception: No linkage code found in GMML metadata for linkage: 1,6
+Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 1,6
+Check these inputs for mistakes: 
+Inputs:
+linkages: 1,6
+isomer: D
+inputResName: Fru
+ringType: f
+residueModifier: 
+configuration: b
+
+*********************
+Building DGalpb1-OtBu
+*********************
+
+*********************
+Building dUAa1-OME
+*********************
+
+*********************
+Building dUA-OME
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: Could not convert the first linkage number to an integer: -
+
+*********************
+Building dUA-4DGalpb1-OH
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: The deduced linkageLabel is too small:
+A-4.
+We require anomer, start atom number, a dash, and connecting atom number. Example:
+a1-4
+
+*********************
+Building DManpa1-9DGlcpNAcb1-OH
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: Could not find prep entry for DGlcpNAc. GLYCAM code used to search is: 9YB
+
+*********************
+Building DNeup5Ac[7A,8A,9A]a2-8DNeup5Ac[9A]a2-9[DNeup5Aca2-8DNeup5Ac[7A,9A]a2-8[DNeup5Aca2-7]DNeup5Aca2-8]DNeup5Ac[7A]a2-OH
+*********************
+
+*********************
+Building DGlcpNSa1-4DGlcpNS[3S,6S]a1-4DGlcpNS[6S]a1-4DGlcpNS[3S]a1-4DGlcpNSa1-3DGlcpNSa1-6DGlcpNSa1-OH
+*********************
+
+*********************
+Building LGlcpNSa1-4LGlcpNS[3S,6S]a1-4LGlcpNS[6S]a1-4LGlcpNS[3S]a1-4LGlcpNSa1-3LGlcpNSa1-6LGlcpNSa1-OH
+*********************
+
+*********************
+Building DGlcpa1-[4DGlcpa1-]<4>2DGlcpa1-[4DGlcpa1-6[LFucpa1-2]DManpa1-]<2>OH
+*********************
+
+*********************
+Building <
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: Number of repeating units not specified correctly in repeating sequence: <
+
+*********************
+Building Bad<15>OH
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: Not enough information before '>' in input. Did you forget the head residue? : Bad<15>OH
+
+*********************
+Building DGlcpa1-4DGlcpa1-6DManpa1-<15>OH
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: Missing or incorrect usage of ']' in repeating sequence: DGlcpa1-4DGlcpa1-6DManpa1-<15>OH
+
+*********************
+Building DGlcpa1-4DGlcpa1-[4DGlcpa1-]<>OH
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: Number of repeating units not specified correctly in repeating sequence: DGlcpa1-4DGlcpa1-[4DGlcpa1-]<>OH
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
@@ -124,3 +215,16 @@ Test level caught exception: No linkage code found in GMML metadata for linkage:
 00027.pdb succesfully created.
 00028.pdb succesfully created.
 00029.pdb not created.
+00030.pdb succesfully created.
+00031.pdb succesfully created.
+00032.pdb not created.
+00033.pdb not created.
+00034.pdb not created.
+00035.pdb succesfully created.
+00036.pdb succesfully created.
+00037.pdb succesfully created.
+00038.pdb succesfully created.
+00039.pdb not created.
+00040.pdb not created.
+00041.pdb not created.
+00042.pdb not created.
