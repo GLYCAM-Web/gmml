@@ -110,6 +110,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 	if (!derivatives.empty())
 	{
 		derivatives.pop_back(); // Remove the last ","
+		std::reverse(derivatives.begin(), derivatives.end()); // order should be 2S,6S, not 6S,2S.
 		outputResidueString += "[";
 		for (auto &derivative : derivatives)
 		{
