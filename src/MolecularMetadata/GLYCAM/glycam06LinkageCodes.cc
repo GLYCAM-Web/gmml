@@ -1,5 +1,8 @@
-#include "../../../includes/MolecularMetadata/GLYCAM/glycam06LinkageCodes.hpp"
 #include <iostream> // for cout, can remove after debug
+#include <algorithm> // sort
+
+#include "includes/MolecularMetadata/GLYCAM/glycam06LinkageCodes.hpp"
+#include "includes/CodeUtils/string.hpp"
 
 using gmml::MolecularMetadata::GLYCAM::Glycam06LinkageCodesLookupContainer;
 
@@ -8,10 +11,13 @@ using gmml::MolecularMetadata::GLYCAM::Glycam06LinkageCodesLookupContainer;
 //////////////////////////////////////////////////////////
 
 std::string Glycam06LinkageCodesLookupContainer::GetCodeForLinkages(std::string queryLinkage)
-{ // e.g. input = Fuc, output = F.
+{ // e.g. input is 2,3, or 3,2 and output is "Z".
     for (const auto& entry : Glycam06LinkageCodesLookup_)
     {
-        if (entry.linkage_ == queryLinkage)
+        std::vector<std::string> linkages = gmml::split(entry.linkage_, ','); // These are already sorted.
+        std::vector<std::string> queryLinkages = gmml::split(queryLinkage, ',');
+        std::sort(queryLinkages.begin(), queryLinkages.end()); // These might not be sorted
+        if( std::equal(linkages.begin(), linkages.end(), queryLinkages.begin(), queryLinkages.end()) )
         {
             return entry.glycamLinkageCode_;
         }
