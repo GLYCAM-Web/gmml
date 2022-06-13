@@ -17,19 +17,23 @@ g++ -std=c++0x -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmm
 
 if [ ! -f ${CompareFile} ] ; then
 	printf "Test FAILED!  (cannot find comparison results)\n"
+	echo "Exit Code: 1"
 	return 1
 fi
 
 if [ -f ${OutputFile} ]; then
     if ! cmp ${OutputFile} ${CompareFile} > /dev/null 2>&1; then
-	printf "Test FAILED! (comparison of results).\n"
-        return 1;
+	printf "Test FAILED! (comparison of results)\n"
+        echo "Exit Code: 1"
+        return 1
     else
         printf "Test passed.\n"
         rm ${Executable} ${OutputFile}
-        return 0;
+        echo "Exit Code: 0"
+        return 0
     fi
 else
-    printf "Test FAILED!  (no output file) .\n"
-    return 1;
+    printf "Test FAILED!  (no output file)\n"
+    echo "Exit Code: 1"
+    return 1
 fi
