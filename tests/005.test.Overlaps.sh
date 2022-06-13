@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "Testing Overlaps function... "
+printf "Testing 005.overlaps.cc... "
 g++ -std=c++0x -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/005.overlaps.cc -lgmml -pthread -o overlaps
 ./overlaps > overlaps.txt 2> /dev/null
 if [ -f overlaps.txt ]; then

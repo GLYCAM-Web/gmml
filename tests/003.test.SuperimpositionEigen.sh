@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "Testing superimposition_Eigen... "
+printf "Testing 003.superimpositionEigen.cc... "
 g++ -std=c++0x -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/003.superimpositionEigen.cc -lgmml -pthread -o superimposition_Eigen
 ./superimposition_Eigen > /dev/null 2>&1
 if [ -f moved.pdb ]; then

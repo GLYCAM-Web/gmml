@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "Testing buildBySequenceMeta... "
+printf "Testing 001.buildBySequenceMeta.cc... "
 g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/001.buildBySequenceMeta.cc -lgmml -pthread -o buildBySequenceMeta
 ./buildBySequenceMeta > /dev/null 2>&1      
 if [ -f structure.pdb ]; then

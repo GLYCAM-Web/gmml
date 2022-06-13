@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "Testing buildBySequenceRotamer... "
+printf "Testing 010.buildBySequenceRotamer.cc... "
 g++ -std=c++17 -I $GEMSHOME/gmml/ -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/010.buildBySequenceRotamer.cc -lgmml -pthread -o buildBySequenceRotamer
 ./buildBySequenceRotamer > 010.output_buildBySequenceRotamer.txt
 if [ -f structure.pdb ] && [ -f structure.off ]; then

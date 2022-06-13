@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "Testing create_Assembly_WritePDB... "
+printf "Testing 002.create_Assembly_WritePDB.cc... "
 g++ -std=c++0x -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/002.create_Assembly_WritePDB.cc -lgmml -pthread -o create_Assembly_WritePDB
 ./create_Assembly_WritePDB > /dev/null 2>&1
 if [ -f test-NLN.pdb ]; then

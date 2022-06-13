@@ -1,8 +1,9 @@
 #!/bin/bash
 
-printf "Testing pdb2glycam and molecule subgraph matching... "
+#printf "Testing 008.pdb2glycam.cc and molecule subgraph matching... "
 g++ -std=c++0x -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/008.pdb2glycam.cc -lgmml -pthread -o pdb2glycam
 ./pdb2glycam tests/inputs/pdb2glycam_4YG0.pdb
+printf "Testing 008.pdb2glycam.cc and molecule subgraph matching... "
 if [ -f pdb2glycam_output.pdb ]; then
     if ! cmp pdb2glycam_output.pdb tests/correct_outputs/pdb2glycam_4YG0_output.pdb > /dev/null 2>&1; then
         printf "\nTest FAILED!\n pdb2glycam_output.pdb does not match tests/correct_outputs/pdb2glycam_4YG0_output.pdb"

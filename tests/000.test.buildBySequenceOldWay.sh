@@ -1,6 +1,6 @@
 #!/bin/bash
 
-printf "Testing buildBySequence... "
+printf "Testing 000.buildBySequence.cc... "
 g++ -std=c++0x -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/000.buildBySequence.cc -lgmml -pthread -o buildBySequence
 ./buildBySequence > /dev/null 2>&1
 #./buildBySequence

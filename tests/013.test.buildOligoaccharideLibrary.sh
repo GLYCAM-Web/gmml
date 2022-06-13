@@ -1,5 +1,5 @@
 #!/bin/bash
-printf "Testing buildOligosaccharide library... "
+printf "Testing 013.buildOligosaccharideLibrary.cc... "
 g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/013.buildOligosaccharideLibrary.cc -lgmml -pthread -o buildOligosaccharideLibrary
 rm -r 013.outputs/ >/dev/null 2>&1
 mkdir 013.outputs/
