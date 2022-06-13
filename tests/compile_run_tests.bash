@@ -18,12 +18,12 @@ GMML_PASSED_TESTS=0
 
 ##### PRETTY PRINT STUFF #####
 #lazy and dont want to have to type all these color variables a bunch
-#no color
-NO_COLOR='\033[0m'
 RED='\033[0;31m' 
 GREEN='\033[0;32m'
-NORMAL_STYLE='\033[0m'
+YELLOW='\033[0;33m'
 BOLD_STYLE='\033[1m'
+#Done by combo of these 2: NORMAL_STYLE='\033[0m' & NO_COLOR='\033[0m'
+RESET_STYLE='\033[0m\033[0m'
 
 ################################################################
 ##########               Print help message         ############
@@ -77,13 +77,15 @@ do
 done
 
 echo ""
-echo "#### Beginning GMML tests ####"
+echo -e "${YELLOW}${BOLD_STYLE}#### Beginning GMML tests ####${RESET_STYLE}"
 echo "Number of tests found: ${#GMML_TEST_FILE_LIST[@]}"
 echo "Begining testing using ${GMML_TEST_JOBS} jobs."
 echo ""
 
 mkdir -v ./tempTestOutputs
 echo ""
+#always delete this dir before we exit for any reason, get rid of em cause no useful info in em
+trap "rm -rf ./tempTestOutputs" EXIT
 
 #Gonna be used in the main loop, here so its close to first usage.
 JOB_PIDS=()
@@ -93,7 +95,7 @@ cleaningUpJobs()
 {
     #first check if we be in sync, if not, we abort and freak out
     if  [ ${#JOB_PIDS[@]} != ${#JOB_OUTPUT_FILES[@]} ] ; then
-        echo -e "${RED}${BOLD_STYLE}!!!! WARNING PID LIST AND FILE LIST OUT OF SYNC ABORTING !!!!${NORMAL_STYLE}${NO_COLOR}"
+        echo -e "${RED}${BOLD_STYLE}!!!! WARNING PID LIST AND FILE LIST OUT OF SYNC ABORTING !!!!${RESET_STYLE}"
         #nuke all subshells
         kill 0
         exit 1
@@ -117,7 +119,7 @@ cleaningUpJobs()
             elif [[ ${DUMB_EXIT_CODE} == 1 ]]; then
                 ((GMML_FAILED_TESTS++))
             else
-                echo -e "${RED}${BOLD_STYLE}!!!! WARNING: EXIT CODE LINE INCORRECT, EXITING WHOLE SCRIPT !!!!${NORMAL_STYLE}${NO_COLOR}"
+                echo -e "${RED}${BOLD_STYLE}!!!! WARNING: EXIT CODE LINE INCORRECT, EXITING WHOLE SCRIPT !!!!${RESET_STYLE}"
                 #nuke all subshells
                 kill 0
                 exit 1
@@ -125,7 +127,6 @@ cleaningUpJobs()
             echo ""
             #color and output the jobs output
             GREP_COLOR="1;31" grep --color=always '.*FAILED.*\|$' "${JOB_OUTPUT_FILES[${CURR_INDEX}]}" | GREP_COLOR="1;32" grep --color '.*passed.*\|$'
-            echo ""
             
             #Now remove the PID from our "scheduler" array, ngl more of a tracker
             unset JOB_PIDS["${CURR_INDEX}"]
@@ -147,9 +148,10 @@ for CURRENT_TEST in "${GMML_TEST_FILE_LIST[@]}" ; do
         #Once a job completes, we then need to go ahead and clean up our dirty job scheduler/tracker
         wait -n
         cleaningUpJobs
+        echo ""
     fi
     #let user know whats going on
-    echo "Beginning test: ${CURRENT_TEST}"
+    echo -e "${YELLOW}${BOLD_STYLE}Beginning test:${RESET_STYLE} ${CURRENT_TEST}"
     
     #Wanted to do below but couldnt figure out force check that the only .sh
     #we would be replacing would be at the very end like I can with sed....
@@ -176,9 +178,6 @@ done
 wait
 cleaningUpJobs
 
-#get rid of these, no useful info in em
-rm -rf ./tempTestOutputs
-
 case "${GMML_PASSED_TESTS}" in
     ${#GMML_TEST_FILE_LIST[@]})
         RESULT_COLOR=${GREEN}${BOLD_STYLE}
@@ -188,25 +187,25 @@ case "${GMML_PASSED_TESTS}" in
         ;;
 esac
 
-echo -e """${RESULT_COLOR}
+echo -e """
+${RESULT_COLOR}
 #### GMML TESTS COMPLETED ####
 Required tests: ${#GMML_TEST_FILE_LIST[@]}
 Passed tests:   ${GMML_PASSED_TESTS}
-Failed tests:   ${GMML_FAILED_TESTS}${NO_COLOR}${NORMAL_STYLE}"""
+Failed tests:   ${GMML_FAILED_TESTS}${RESET_STYLE}"""
 
 #Ps paranoid programming
 if [ "${GMML_PASSED_TESTS}" == "${#GMML_TEST_FILE_LIST[@]}" ] ; then 
-    echo -e "${GREEN}${BOLD_STYLE}GMML TESTS PASSED${NORMAL_STYLE}${NO_COLOR}\n"
+    echo -e "${GREEN}${BOLD_STYLE}GMML TESTS PASSED${RESET_STYLE}\n"
     #delete output files here
     exit 0
 elif [[ $(( GMML_PASSED_TESTS + GMML_FAILED_TESTS )) != "${#GMML_TEST_FILE_LIST[@]}" ]] ; then
-    echo -e "${RED}${BOLD_STYLE}!!! ERROR WE DIDNT GET EXIT CODES FROM ALL NEEDED SCRIPTS !!!${NORMAL_STYLE}${NO_COLOR}\n"
+    echo -e "${RED}${BOLD_STYLE}!!! ERROR WE DIDNT GET EXIT CODES FROM ALL NEEDED SCRIPTS !!!${RESET_STYLE}\n"
     exit 1
 elif [ "${GMML_FAILED_TESTS}" != 0 ] ; then
-    echo -e "${RED}${BOLD_STYLE}!!! ${GMML_FAILED_TESTS} GMML TESTS FAILED !!!${NORMAL_STYLE}${NO_COLOR}\n"
+    echo -e "${RED}${BOLD_STYLE}!!! ${GMML_FAILED_TESTS} GMML TESTS FAILED !!!${RESET_STYLE}\n"
     exit 1
 else
-    echo -e "${RED}${BOLD_STYLE}!!! SOMETHING BORKED OH NO NOT GOOD !!!${NORMAL_STYLE}${NO_COLOR}\n"
+    echo -e "${RED}${BOLD_STYLE}!!! SOMETHING BORKED OH NO NOT GOOD !!!${RESET_STYLE}\n"
     exit 1
 fi
-
