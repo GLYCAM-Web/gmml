@@ -3,7 +3,7 @@
 ################################################################
 ##########               Cool variables             ############
 ################################################################
-GMML_TEST_JOBS=1
+GMML_TEST_JOBS=4
 #Get base list of all files we want so we dont need to deal with
 #figuring out file list more than once, we want to take advantage of output splitting 
 #here so we can hit the list ez pz
