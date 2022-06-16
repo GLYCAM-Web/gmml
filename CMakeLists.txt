@@ -40,6 +40,9 @@ if (NOT SWIG_FOUND OR NOT Python3_FOUND)
     message(FATAL_ERROR "ERROR COULD NOT FIND NEEDED PREREQUISITS")
 endif()
 
+#actually let us use swig
+include(${SWIG_USE_FILE})
+
 #export compile commands for sourcetrail, etc.
 #it is just a json of how commands interact, most tools use this
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -50,6 +53,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 #but setting the flag is easier, it just passes the -pthred flag
 #to gcc, nice and easy. You can add more custom flags here
 set(CMAKE_CXX_FLAGS -pthread)
+
+#Now we get swig stuff ready before we try to declare the library targets
+set_property(SOURCE gmml.i PROPERTY CPLUSPLUS ON)
 
 #in order to have 2 seperate values to keep track of.
 #done in order to move our *.o files to a directory that will keep
@@ -100,14 +106,6 @@ STRING(REGEX REPLACE "\\./" "${CMAKE_SOURCE_DIR}/" HDIRECTORIES "${HDIRECTORIES}
 STRING(REGEX REPLACE ";" "\\\\;" HDIRECTORIES "${HDIRECTORIES}")
 STRING(REGEX REPLACE "\n" ";" HDIRECTORIES "${HDIRECTORIES}")
 STRING(REGEX REPLACE "[\n;]$" "" HDIRECTORIES "${HDIRECTORIES}")
-#Now let cmake know that our list is where all the include directories are
-#Done this way so we dont have to have individual cmake files cascading through
-#Our filesystem, that is annoying and extra work
-include_directories(
-    PUBLIC
-	"${CMAKE_SOURCE_DIR}"
-	"${HDIRECTORIES}"
-	)
 
 #same as the -isystem flag for gcc. This is for all our external header file dirs
 #important cause tooling etc. 
@@ -116,6 +114,15 @@ STRING(REGEX REPLACE "\\./" "${CMAKE_SOURCE_DIR}/" EXHDIRECTORIES "${EXHDIRECTOR
 STRING(REGEX REPLACE ";" "\\\\;" EXHDIRECTORIES "${EXHDIRECTORIES}")
 STRING(REGEX REPLACE "\n" ";" EXHDIRECTORIES "${EXHDIRECTORIES}")
 STRING(REGEX REPLACE "[\n;]$" "" EXHDIRECTORIES "${EXHDIRECTORIES}")
+
+#Now let cmake know that our list is where all the include directories are
+#Done this way so we dont have to have individual cmake files cascading through
+#Our filesystem, that is annoying and extra work
+include_directories(
+    PUBLIC
+	"${CMAKE_SOURCE_DIR}"
+	"${HDIRECTORIES}"
+	)
 include_directories(SYSTEM
     "${EXHDIRECTORIES}"
     )
@@ -135,23 +142,16 @@ add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:${PROJECT_OBJ}>)
 #we have -DWRAP_GMML(=1? hopefully dont need =1)
 if(WRAP_GMML)
 	#Get swig package
-	find_package(SWIG 4.0 COMPONENTS python REQUIRED)
 	#Get python lib package
-	find_package(Python3 3.9.12 COMPONENTS Interpreter Development EXACT REQUIRED)
 
 	if (SWIG_FOUND AND Python3_FOUND)
 		message(STATUS "Wrapping GMML library in python...")
 		#Include ability to actually use our swig
-		include(${SWIG_USE_FILE})
 		#Include actual dir where python headers reside
 		include_directories(${Python3_INCLUDE_DIRS})
-		message(STATUS "Swig Version: ${SWIG_VERSION}")
-		message(STATUS "Python Version: ${Python3_VERSION}")
-		message(STATUS "Python path: ${Python3_INCLUDE_DIRS}\n")
 
 		#have cpp property set on for file gmml.i
 		#This property is associated with the gmml.i file itself
-		set_property(SOURCE gmml.i PROPERTY CPLUSPLUS ON)
 		#add a swig library with name ${PROJECT_NAME}_wrapped, wrapping the code
 		#in python, using our gmml.i as our source file for swig
 		swig_add_library(${PROJECT_NAME}_wrapped LANGUAGE python SOURCES gmml.i)
