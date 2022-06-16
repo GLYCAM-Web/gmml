@@ -29,6 +29,17 @@ message(STATUS "Swig Version: ${SWIG_VERSION}")
 message(STATUS "Python Version: ${Python3_VERSION}")
 message(STATUS "Python path: ${Python3_INCLUDE_DIRS}\n")
 
+#ngl wont be hit cause of the required flags but w/e
+if (NOT SWIG_FOUND OR NOT Python3_FOUND)
+    if (NOT SWIG_FOUND)
+        message(WARNING "SWIG WAS NOT FOUND, YOU CANNOT WRAP")
+    endif()
+    if (NOT Python3_FOUND)
+        message(WARNING "PYTHON LIBRARY WAS NOT FOUND, YOU CANNOT WRAP")
+    endif()
+    message(FATAL_ERROR "ERROR COULD NOT FIND NEEDED PREREQUISITS")
+endif()
+
 #export compile commands for sourcetrail, etc.
 #it is just a json of how commands interact, most tools use this
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
