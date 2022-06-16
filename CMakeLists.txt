@@ -4,6 +4,31 @@ cmake_minimum_required(VERSION 3.13.4)
 #are named, how you create objects, etc.
 project(gmml VERSION 1.0.0 DESCRIPTION "GLYCAM Molecular Modeling Library")
 
+#Exit if user doesnt have a new enough compiler to use c++17
+#Need to check its at least version 7.0 cause that is supposed to
+#be when c++17 was full supported by g++
+if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 7.0)
+    message(WARNING "Compiler used: ${CMAKE_CXX_COMPILER_ID}")
+    message(WARNING "Compiler version used: ${CMAKE_CXX_COMPILER_VERSION}")
+    message(WARNING "Error, your compiler version is a high enough version")
+    #fatal error msg causes it to stop and exit
+    message(FATAL_ERROR "Check gcc version is at least 7.0")
+endif()
+
+#Show user what compiler they using
+message(STATUS "#### Tools cmake is using ####")
+message(STATUS "Compiler used: ${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "Compiler version:${CMAKE_CXX_COMPILER_VERSION}")
+
+#Get swig package
+find_package(SWIG 4.0 COMPONENTS python REQUIRED)
+#Get python lib package
+find_package(Python3 3.9.12 COMPONENTS Interpreter Development EXACT REQUIRED)
+#Show user what swig and python they using
+message(STATUS "Swig Version: ${SWIG_VERSION}")
+message(STATUS "Python Version: ${Python3_VERSION}")
+message(STATUS "Python path: ${Python3_INCLUDE_DIRS}\n")
+
 #export compile commands for sourcetrail, etc.
 #it is just a json of how commands interact, most tools use this
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
