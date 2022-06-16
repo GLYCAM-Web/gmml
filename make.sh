@@ -144,7 +144,8 @@ cp -r "${GEMSHOME}"/gmml/.hooks/* "${GEMSHOME}"/gmml/.git/hooks/
 CLEAN="0"
 TARGET_MAKE_FILE="Makefile"
 CMAKE_BUILD_TYPE_FLAG="-DCMAKE_BUILD_TYPE=Release"
-WRAP="0"
+#blank means all
+MAKE_TARGET="all"
 
 ################################################################
 #########               COMMAND LINE INPUTS            #########
@@ -206,7 +207,7 @@ do
 				CLEAN="1"
 				;;
 			w)
-				WRAP="1"
+				MAKE_TARGET="gmml_wrapped"
 				;;
 			*)
 				printHelp
@@ -219,9 +220,8 @@ checkCMakeFileLists
 
 printf "\nBuilding with these settings:\n"
 echo "GEMSHOME: ${GEMSHOME}"
-echo "TARGET_MAKE_FILE: ${TARGET_MAKE_FILE}"
 echo "CMake build type: ${CMAKE_BUILD_TYPE_FLAG}"
-echo "Wrap: ${WRAP}"
+echo "Build Target: ${MAKE_TARGET}"
 echo "Clean: ${CLEAN}"
 
 ################################################################
@@ -253,22 +253,25 @@ fi
 # and the -B (build dir) flag is for where everything will be built to
 echo "Creating makefile using cmake"
 echo ""
-cmake "${CMAKE_BUILD_TYPE_FLAG}" -S . -B ./cmakeBuild -DWRAP_GMML="${WRAP}" || { echo "ERROR RUNNING CMAKE ON GMML: $0 FAILED, EXITING" ; exit 1; }
+cmake "${CMAKE_BUILD_TYPE_FLAG}" -S . -B ./cmakeBuild || { echo "ERROR RUNNING CMAKE ON GMML: $0 FAILED, EXITING" ; exit 1; }
 
 
 #NOTE: All our build stuff is within the cmakeBuild dir
 echo "Making GMML."
 cd cmakeBuild || { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; }
-make -j"${NMP}" || { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; }
+make -j"${NMP}" ${MAKE_TARGET} || { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; }
 cd ..
 
 ################################################################
 #########              WRAP UP TO GEMS                 #########
 ################################################################
 
+STUPID_WRAPPED_MSG=""
 #Wrapping is handled by cmake
-
+if [ "${MAKE_TARGET}" == "gmml_wrapped" ]; then
+    STUPID_WRAPPED_MSG=" and wrapping"
+fi
 echo ""
-echo "GMML compilation and wrapping is finished at $(date)".
+echo "GMML compilation${STUPID_WRAPPED_MSG} is finished at $(date)".
 exit
 
