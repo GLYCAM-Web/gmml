@@ -178,6 +178,7 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
         model->preProcessChainTerminals(ppInfo, inputOptions);
         model->preProcessGaps(ppInfo, inputOptions);
         model->preProcessMissingUnrecognized(ppInfo);
+        // What about setting charges doofus?
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, "Preprocessing completed");
     return ppInfo;
