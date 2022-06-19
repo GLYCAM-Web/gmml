@@ -1,5 +1,7 @@
 #include "includes/InternalPrograms/functionsForGMML.hpp"
+#include "includes/ParameterSet/OffFileSpace/offfile.hpp"
 #include "includes/CodeUtils/logging.hpp"
+
 void gmml::WritePDBFile(MolecularModeling::Assembly &ass, std::string workingDirectory, std::string fileNamePrefix, bool includeOutputFileCount)
 {
 	static int outputFileCount = 0;
@@ -15,6 +17,23 @@ void gmml::WritePDBFile(MolecularModeling::Assembly &ass, std::string workingDir
 	gmml::log(__LINE__, __FILE__, gmml::INF, "Writing output file:\n" + fullOutputFileName + "\n");
 	outputPdbFile->Write(fullOutputFileName);
 	delete outputPdbFile;
+}
+
+void gmml::WriteOffFile(MolecularModeling::Assembly &ass, std::string workingDirectory, std::string fileNamePrefix, bool includeOutputFileCount)
+{
+    static int outputFileCount = 0;
+    outputFileCount++;
+    if (includeOutputFileCount)
+    {
+        std::stringstream ss;
+        ss << "_" << std::setw(5) << std::setfill('0') << outputFileCount;
+        fileNamePrefix += ss.str();
+    }
+    std::string fullOutputFileName = workingDirectory + fileNamePrefix + ".off";
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Writing output file:\n" + fullOutputFileName + "\n");
+    OffFileSpace::OffFile frankTheOffFile;
+    int CoordinateIndex = 0;
+    frankTheOffFile.Write(fullOutputFileName, CoordinateIndex, &ass);
 }
 
 bool gmml::startsWith(std::string bigString, std::string smallString)
