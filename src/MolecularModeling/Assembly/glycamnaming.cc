@@ -241,7 +241,7 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
         int index = 0;
         Glycan::Oligosaccharide* oligo = *it;
         std::string oligo_name = oligo->IUPAC_name_;
-        std::cout << "Iupac name: " << oligo_name << std::endl;
+        //std::cout << "Iupac name: " << oligo_name << std::endl;
         //In case that there is no terminal attached to the reducing end adds a temporary terminal residue to make the sequence parser able to parse the sequence
         if(oligo->terminal_.compare("") == 0){
             std::cerr << "Error, no aglycone detected.Aborting\n";

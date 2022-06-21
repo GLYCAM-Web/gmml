@@ -258,8 +258,9 @@ cmake "${CMAKE_BUILD_TYPE_FLAG}" -S . -B ./cmakeBuild -DWRAP_GMML="${WRAP}" || {
 
 #NOTE: All our build stuff is within the cmakeBuild dir
 echo "Making GMML."
-#cd cmakeBuild
-(cd cmakeBuild || exit 1; make -j"${NMP}" || { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; })
+cd cmakeBuild || { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; }
+make -j"${NMP}" || { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; }
+cd ..
 
 ################################################################
 #########              WRAP UP TO GEMS                 #########
