@@ -1,8 +1,15 @@
+#There is a little cruft in here, but it is things that were done in
+#order to make the previous build logic work. The cruft is depricated
+#but all the wonky workarounds will hopefully be somewhat useful in the
+#future.
 cmake_minimum_required(VERSION 3.13.4)
 
 #you always have to create a project. This is what your files
 #are named, how you create objects, etc.
 project(gmml VERSION 1.0.0 DESCRIPTION "GLYCAM Molecular Modeling Library")
+
+set(CMAKE_CXX_COMPILER g++)
+set(CMAKE_C_COMPILER gcc)
 
 #Exit if user doesnt have a new enough compiler to use c++17
 #Need to check its at least version 7.0 cause that is supposed to
@@ -27,7 +34,7 @@ find_package(Python3 3.9.12 COMPONENTS Interpreter Development EXACT REQUIRED)
 #Show user what swig and python they using
 message(STATUS "Swig Version: ${SWIG_VERSION}")
 message(STATUS "Python Version: ${Python3_VERSION}")
-message(STATUS "Python path: ${Python3_INCLUDE_DIRS}\n")
+message(STATUS "Python path: ${Python3_INCLUDE_DIRS}")
 message(STATUS "##############################")
 
 
