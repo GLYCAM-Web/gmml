@@ -36,14 +36,14 @@ In order to build GMML, you are required to have the following software availabl
 
 * `libssl1.1`
 * `libssl-dev`
-* `cmake` (Version >= 3.13.4)
+* `cmake` (Version >= `3.13.4`)
 * `boost`
-* `g++` (or a c++ compiler of your choice)
+* `g++` (Version >= `7.0`)
 * `make`
-* `python3.9` (version >= 3.9.12)
-* `python3.9-dev` (version >= 3.9.12, possibly not needed)
+* `python3.9` (Version `3.9.12`)
+* `python3.9-dev` (Version `3.9.12`)
 * `git`
-* `swig` (Version 4.0.2)
+* `swig` (Version `4.0.2`)
 
 Installation instructions will vary according to what package manager your distro uses. If you are using apt as a package manager on a linux system, you should be able to use a command like this:
 
@@ -76,7 +76,13 @@ To compile the library first make sure you are still in the `gmml` directory.
 pwd
 ./gmml
 ```
-To control the number of processors used during the *`make`* process, use the `-j` flag for our `make.sh`, so to run with 8 cores we would run `./make.sh -j 8`
+To control the number of processors used during the *`make`* process, use the `-j` flag for our `make.sh`, so to run with 8 cores we would run `./make.sh -j 8`.
+
+Also, we have the option to wrap our code using `swig`. There are two methods to do this.
+
+1. Once the makefile is generated using `cmake`, you can go into the `cmakeBuild` directory (or wherever you threw the makefile) and use the `gmml_wrapped` make target.
+
+2. You can just call, from the base `GMML` directory, `./make.sh -w` 
 
 Now all one must do is run the make script.
 
