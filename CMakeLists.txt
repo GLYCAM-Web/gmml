@@ -23,19 +23,21 @@ if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 7.0)
 endif()
 
 #Show user what compiler they using
-message(STATUS "#### Tools cmake is using ####")
+message(STATUS "\n##### Tools cmake is using #####")
+message(STATUS "CMake Version: ${CMAKE_VERSION}")
 message(STATUS "Compiler used: ${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "Compiler version:${CMAKE_CXX_COMPILER_VERSION}")
 
 #Get swig package
 find_package(SWIG 4.0 COMPONENTS python REQUIRED)
-#Get python lib package
+#Get python lib package, if needed change this to line below to make reqs more lax
+#find_package(Python3 3.9 COMPONENTS Interpreter Development REQUIRED)
 find_package(Python3 3.9.12 COMPONENTS Interpreter Development EXACT REQUIRED)
 #Show user what swig and python they using
 message(STATUS "Swig Version: ${SWIG_VERSION}")
 message(STATUS "Python Version: ${Python3_VERSION}")
 message(STATUS "Python path: ${Python3_INCLUDE_DIRS}")
-message(STATUS "##############################")
+message(STATUS "##############################\n")
 
 
 #ngl wont be hit cause of the required flags but w/e
@@ -71,6 +73,9 @@ set_property(SOURCE gmml.i PROPERTY CPLUSPLUS ON)
 swig_add_library(${PROJECT_NAME}_wrapped LANGUAGE python SOURCES gmml.i)
 #removes the gmml_wrapped build dealio from make all target
 set_target_properties(${PROJECT_NAME}_wrapped PROPERTIES EXCLUDE_FROM_ALL True)
+#makes sure the actual module produced by swig for wrapping is good, cmake 3.14
+#forward renames the module to whatever the target name is i.e. gmml_wrapped
+set_target_properties(${PROJECT_NAME}_wrapped PROPERTIES OUTPUT_NAME gmml)
 
 #in order to have 2 seperate values to keep track of.
 #done in order to move our *.o files to a directory that will keep
