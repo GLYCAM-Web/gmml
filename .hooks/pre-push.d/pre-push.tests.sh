@@ -40,7 +40,7 @@ cp -r $GEMSHOME/gmml/.hooks/* $GEMSHOME/gmml/.git/hooks/
 
 #### Allow skipping tests ####
 branch=`git rev-parse --abbrev-ref HEAD`
-if [[ "$branch" != "gmml-dev" ]] && [[ "$branch" != "gmml-test" ]]; then
+if [[ "$branch" != "gmml-dev" ]] && [[ "$branch" != "gmml-test" ]] && [[ "$branch" != "stable" ]]; then
     printf "Branch is %s\nSkipping tests is allowed.\nDo you want to skip them?\ns=skip\na=abort\nEnter anything to run tests.\n" $branch
     read -p "Enter response: " response < /dev/tty
     if [[ $response == [sS] ]]; then
@@ -79,8 +79,8 @@ if [ -d "./gmml/cmakeBuild" ]; then
 	 echo "Removing the libgmml.so from our cmakeBuild directory"
 	rm ./gmml/cmakeBuild/libgmml.so
 fi
-echo "Compiling gmml using GEMS ./make.sh no_clean wrap"
- ./make.sh wrap 
+echo "Compiling gmml using GEMS ./make.sh, no wrap flag cause it auto wraps"
+ ./make.sh 
  cd $GEMSHOME/gmml
 
 echo "Running mandatory tests..."
