@@ -89,7 +89,7 @@ checkCMakeFileLists()
 
 printHelp()
 {
-	echo ""
+	echo "*************************************************************"
 	echo "If you are a user then this $0 is not for you:"
 	echo "go to the GEMS home dir; If needed GEMS $0 will spawn GMML building."
 	echo ""
@@ -99,8 +99,6 @@ printHelp()
 	echo "GEMSHOME should be set to the parent of the gmml directory."
 	echo "After isolated GMML is built the next step is testing; do this:"
 	echo "cd tests; compile_run_tests.bash"
-	echo ""
-
 	printf "*************************************************************\n"
 	printf "Please note that once GMML is built, you can test it by running:\n"
 	printf "cd tests; ./compile_run_tests.bash\n"
@@ -110,6 +108,7 @@ printHelp()
 	printf "\t-j <NUM_JOBS>\t\tBuild GMML with <NUM_JOBS>\n"
 	printf "\t-o <O0/O2/OG/debug>\tBuild GMML using no optimization, 2nd \n\t\t\t\tlevel optimization, or with debug symbols\n"
 	printf "\t-w\t\t\tWrap gmml in python using swig\n"
+	printf "\t-h\t\t\tPrint this help message and exit\n"
 	printf "*************************************************************\n"
 	echo "Exiting."
 	exit 1
@@ -118,8 +117,6 @@ printHelp()
 ################################################################
 #########                CHECK SETTINGS                #########
 ################################################################
-
-echo "Starting installation of GMML at $(date)".
 
 gemshome=$(pwd)
 check_gemshome "${gemshome}"
@@ -180,12 +177,12 @@ MAKE_TARGET="all"
 # Please refer to https://blog.feabhas.com/2021/07/cmake-part-1-the-dark-arts/
 # Follow the paradigm
 
-while getopts "j:o:cw" option
+while getopts "j:o:cwh" option
 do
 	case "${option}" in
 			j)
 				jIn="${OPTARG}"
-				if [[ "${jIn}" =~ ^[0-9]+$ ]]; then
+				if [[ "${jIn}" =~ ^[1-9][0-9]*$ ]]; then
 					NMP="${jIn}"
 				else
 					printHelp
@@ -209,11 +206,16 @@ do
 			w)
 				MAKE_TARGET="gmml_wrapped"
 				;;
+            h)
+                printHelp
+                ;;
 			*)
 				printHelp
 				;;
 	esac
 done
+
+echo "Starting installation of GMML at $(date)".
 
 #check our file lists before we do anything 
 checkCMakeFileLists
