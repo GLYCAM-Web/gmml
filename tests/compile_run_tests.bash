@@ -76,10 +76,12 @@ do
     esac
 done
 
+START_TIME=$(date +%s)
+
 echo ""
 echo -e "${YELLOW}${BOLD_STYLE}#### Beginning GMML tests ####${RESET_STYLE}"
-echo "Number of tests found: ${#GMML_TEST_FILE_LIST[@]}"
-echo "Begining testing using ${GMML_TEST_JOBS} jobs."
+echo -e "Number of tests found:\t${#GMML_TEST_FILE_LIST[@]}"
+echo -e "Number of testing jobs:\t${GMML_TEST_JOBS}"
 echo ""
 
 mkdir -v ./tempTestOutputs
@@ -187,25 +189,29 @@ case "${GMML_PASSED_TESTS}" in
         ;;
 esac
 
+#dont want to make another variable
+START_TIME=$(( $(date +%s) - START_TIME ))
 echo -e """
 ${RESULT_COLOR}
 #### GMML TESTS COMPLETED ####
-Required tests: ${#GMML_TEST_FILE_LIST[@]}
-Passed tests:   ${GMML_PASSED_TESTS}
-Failed tests:   ${GMML_FAILED_TESTS}${RESET_STYLE}"""
+Required tests:\t${#GMML_TEST_FILE_LIST[@]}
+Passed tests:\t${GMML_PASSED_TESTS}
+Failed tests:\t${GMML_FAILED_TESTS}
+Time taken:\t${START_TIME} seconds
+##############################
+"""
 
 #Ps paranoid programming
 if [ "${GMML_PASSED_TESTS}" == "${#GMML_TEST_FILE_LIST[@]}" ] ; then 
-    echo -e "${GREEN}${BOLD_STYLE}GMML TESTS PASSED${RESET_STYLE}\n"
-    #delete output files here
+    echo -e "ALL GMML TESTS PASSED${RESET_STYLE}\n"
     exit 0
 elif [[ $(( GMML_PASSED_TESTS + GMML_FAILED_TESTS )) != "${#GMML_TEST_FILE_LIST[@]}" ]] ; then
-    echo -e "${RED}${BOLD_STYLE}!!! ERROR WE DIDNT GET EXIT CODES FROM ALL NEEDED SCRIPTS !!!${RESET_STYLE}\n"
+    echo -e "!!! ERROR WE DIDNT GET EXIT CODES FROM ALL NEEDED SCRIPTS !!!${RESET_STYLE}\n"
     exit 1
 elif [ "${GMML_FAILED_TESTS}" != 0 ] ; then
-    echo -e "${RED}${BOLD_STYLE}!!! ${GMML_FAILED_TESTS} GMML TESTS FAILED !!!${RESET_STYLE}\n"
+    echo -e "!!! ${GMML_FAILED_TESTS} GMML TEST(S) FAILED !!!${RESET_STYLE}\n"
     exit 1
 else
-    echo -e "${RED}${BOLD_STYLE}!!! SOMETHING BORKED OH NO NOT GOOD !!!${RESET_STYLE}\n"
+    echo -e "!!! SOMETHING BORKED OH NO NOT GOOD !!!${RESET_STYLE}\n"
     exit 1
 fi
