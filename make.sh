@@ -240,12 +240,6 @@ if [ "${CLEAN}" == "1" ]; then
 	if [ -d "./lib" ]; then
 		rm -rf ./lib
 	fi
-#Flattened build dir was removed, no longer need this for cleaning
-#Nice to keep here tho
-#NOTE: The flattened build dir is soon to be removed
-#	if [ -d "./build" ]; then
-#		rm -rf ./build
-#	fi
 fi
 
 #Note that we have to generate our makefile with cmake before we build
@@ -259,7 +253,7 @@ cmake "${CMAKE_BUILD_TYPE_FLAG}" -S . -B ./cmakeBuild || { echo "ERROR RUNNING C
 #NOTE: All our build stuff is within the cmakeBuild dir
 echo "Making GMML."
 cd cmakeBuild || { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; }
-make -j"${NMP}" ${MAKE_TARGET} || { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; }
+make -j"${NMP}" "${MAKE_TARGET}" || { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; }
 cd ..
 
 ################################################################
