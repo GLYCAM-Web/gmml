@@ -118,17 +118,23 @@ cleaningUpJobs()
             DUMB_EXIT_CODE=$(tail -c -2 "${JOB_OUTPUT_FILES[${CURR_INDEX}]}")            
             if [[ ${DUMB_EXIT_CODE} == 0 ]]; then
                 ((GMML_PASSED_TESTS++))
+                echo -e "${GREEN}${BOLD_STYLE}"
+                cat "${JOB_OUTPUT_FILES[${CURR_INDEX}]}"
             elif [[ ${DUMB_EXIT_CODE} == 1 ]]; then
                 ((GMML_FAILED_TESTS++))
+                echo -e "${RED}${BOLD_STYLE}"
+                cat "${JOB_OUTPUT_FILES[${CURR_INDEX}]}"
             else
                 echo -e "${RED}${BOLD_STYLE}!!!! WARNING: EXIT CODE LINE INCORRECT, EXITING WHOLE SCRIPT !!!!${RESET_STYLE}"
+                echo "FROM FILE: ${JOB_OUTPUT_FILES[${CURR_INDEX}]}"
+                echo "EXIT CODE GRABBED: ${DUMB_EXIT_CODE}"
+                echo "----- FILE DUMP BELOW -----"
+                cat ${JOB_OUTPUT_FILES[${CURR_INDEX}]}
                 #nuke all subshells
                 kill 0
                 exit 1
             fi
-            echo ""
-            #color and output the jobs output
-            GREP_COLOR="1;31" grep --color=always '.*FAILED.*\|$' "${JOB_OUTPUT_FILES[${CURR_INDEX}]}" | GREP_COLOR="1;32" grep --color '.*passed.*\|$'
+            echo -ne "${RESET_STYLE}"
             
             #Now remove the PID from our "scheduler" array, ngl more of a tracker
             unset JOB_PIDS["${CURR_INDEX}"]
