@@ -8,8 +8,7 @@ cmake_minimum_required(VERSION 3.13.4)
 #are named, how you create objects, etc.
 project(gmml VERSION 1.0.0 DESCRIPTION "GLYCAM Molecular Modeling Library")
 
-set(CMAKE_CXX_COMPILER g++)
-set(CMAKE_C_COMPILER gcc)
+################## BEGIN GETTING TOOLING TOGETHER ###################
 
 #Exit if user doesnt have a new enough compiler to use c++17
 #Need to check its at least version 7.0 cause that is supposed to
@@ -22,37 +21,42 @@ if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 7.0)
     message(FATAL_ERROR "Check gcc version is at least 7.0")
 endif()
 
-#Show user what compiler they using
-message(STATUS "\n##### Tools cmake is using #####")
-message(STATUS "CMake Version: ${CMAKE_VERSION}")
-message(STATUS "Compiler used: ${CMAKE_CXX_COMPILER_ID}")
-message(STATUS "Compiler version:${CMAKE_CXX_COMPILER_VERSION}")
-
 #Get swig package
 find_package(SWIG 4.0 COMPONENTS python REQUIRED)
-#Get python lib package, if needed change this to line below to make reqs more lax
-#find_package(Python3 3.9 COMPONENTS Interpreter Development REQUIRED)
-find_package(Python3 3.9.12 COMPONENTS Interpreter Development EXACT REQUIRED)
-#Show user what swig and python they using
-message(STATUS "Swig Version: ${SWIG_VERSION}")
-message(STATUS "Python Version: ${Python3_VERSION}")
-message(STATUS "Python path: ${Python3_INCLUDE_DIRS}")
-message(STATUS "##############################\n")
+#Get python lib package
+find_package(Python3 3.9 COMPONENTS Interpreter Development EXACT REQUIRED)
 
-
-#ngl wont be hit cause of the required flags but w/e
-if (NOT SWIG_FOUND OR NOT Python3_FOUND)
-    if (NOT SWIG_FOUND)
-        message(WARNING "SWIG WAS NOT FOUND, YOU CANNOT WRAP")
-    endif()
-    if (NOT Python3_FOUND)
-        message(WARNING "PYTHON LIBRARY WAS NOT FOUND, YOU CANNOT WRAP")
-    endif()
-    message(FATAL_ERROR "ERROR COULD NOT FIND NEEDED PREREQUISITS")
-endif()
-
+#Show user what compiler they using
+message("")
+message("################## TOOLS CMAKE IS USING ###################")
+message(STATUS "CMake Version:\t${CMAKE_VERSION}")
+message("")
+#https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER_ID.html
+message(STATUS "C++ Compiler Used:\t${CMAKE_CXX_COMPILER_ID}")
+message(STATUS "C++ Compiler Ver:\t${CMAKE_CXX_COMPILER_VERSION}")
+message(STATUS "C++ Compiler Path:\t${CMAKE_CXX_COMPILER}")
+message("")
+message(STATUS "C Compiler Used:\t${CMAKE_C_COMPILER_ID}")
+message(STATUS "C Compiler Version:\t${CMAKE_C_COMPILER_VERSION}")
+message(STATUS "C Compiler Path:\t${CMAKE_C_COMPILER}")
+message("")
+message(STATUS "Swig Executable:\t${SWIG_EXECUTABLE}")
+message(STATUS "Swig Version:\t${SWIG_VERSION}")
+message(STATUS "Swig Library Dir:\t${SWIG_DIR}")
+message("")
+message(STATUS "Python Interpreter:\t${Python3_EXECUTABLE}")
+message(STATUS "Python Version:\t${Python3_VERSION}")
+message(STATUS "Python Include Dir:\t${Python3_INCLUDE_DIRS}")
+message(STATUS "Python Library Dir:\t${Python3_LIBRARY_DIRS}")
+message("###########################################################\n")
 #actually let us use swig
 include(${SWIG_USE_FILE})
+
+################## END GETTING TOOLING TOGETHER ###################
+
+
+
+################## BEGIN SETTING BASE COMPILE FLAGS ###################
 
 #export compile commands for sourcetrail, etc.
 #it is just a json of how commands interact, most tools use this
@@ -64,18 +68,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 #but setting the flag is easier, it just passes the -pthred flag
 #to gcc, nice and easy. You can add more custom flags here
 set(CMAKE_CXX_FLAGS -pthread)
-
-#have cpp property set on for file gmml.i
-#This property is associated with the gmml.i file itself
-set_property(SOURCE gmml.i PROPERTY CPLUSPLUS ON)
-#add a swig library with name ${PROJECT_NAME}_wrapped, wrapping the code
-#in python, using our gmml.i as our source file for swig
-swig_add_library(${PROJECT_NAME}_wrapped LANGUAGE python SOURCES gmml.i)
-#removes the gmml_wrapped build dealio from make all target
-set_target_properties(${PROJECT_NAME}_wrapped PROPERTIES EXCLUDE_FROM_ALL True)
-#makes sure the actual module produced by swig for wrapping is good, cmake 3.14
-#forward renames the module to whatever the target name is i.e. gmml_wrapped
-set_target_properties(${PROJECT_NAME}_wrapped PROPERTIES OUTPUT_NAME gmml)
 
 #in order to have 2 seperate values to keep track of.
 #done in order to move our *.o files to a directory that will keep
@@ -91,12 +83,16 @@ set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O0 -DNDEBUG")
 
+################## END SETTING BASE COMPILE FLAGS ###################
+
 #since we want to output .so we need to add lib
 #this creates a library with the name lib<project obj name>.so
 #well more so a bunch of objects that are made to create a library
 #Please note that all *.cc/cpp files must be placed here. Run command
 #below in the . directory to make life less painful.
 # $find ./src/ -name \*.cc -o -name \*.cpp
+
+################## BEGIN READING THE FILE LISTS ###################
 
 #Now if we want to add any fresh files to our system run teh included
 #fileListUpdate.sh script
@@ -106,15 +102,7 @@ STRING(REGEX REPLACE "\\./" "${CMAKE_SOURCE_DIR}/" CFILES ${CFILES})
 STRING(REGEX REPLACE ";" "\\\\;" CFILES "${CFILES}")
 STRING(REGEX REPLACE "\n" ";" CFILES "${CFILES}")
 STRING(REGEX REPLACE "[\n;]$" "" CFILES "${CFILES}")
-#add a library that will be an object libary built out of all our cfiles
-add_library(${PROJECT_NAME} SHARED
-	${CFILES}
-	)
 
-#Sets whatever will be made from the PROJECT_OBJ to our project version and to
-#use the denoted header
-set_target_properties(${PROJECT_NAME} PROPERTIES
-	PUBLIC_HEADER includes/gmml.hpp)
 
 #same as the -I flag for gcc.
 file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/hDirectoryList.txt HDIRECTORIES)
@@ -134,35 +122,62 @@ STRING(REGEX REPLACE ";" "\\\\;" EXHDIRECTORIES "${EXHDIRECTORIES}")
 STRING(REGEX REPLACE "\n" ";" EXHDIRECTORIES "${EXHDIRECTORIES}")
 STRING(REGEX REPLACE "[\n;]$" "" EXHDIRECTORIES "${EXHDIRECTORIES}")
 
-#Now let cmake know that our list is where all the include directories are
-#Done this way so we dont have to have individual cmake files cascading through
-#Our filesystem, that is annoying and extra work
-include_directories(
-    PUBLIC
-	"${CMAKE_SOURCE_DIR}"
-	"${HDIRECTORIES}"
-	)
-include_directories(SYSTEM
+################## END READING THE FILE LISTS ###################
+
+
+
+################## BEGIN SETTING UP GMML TARGET ###################
+#add a library that will be an object libary built out of all our cfiles, this will
+#be our baseline normal gmml that isnt wrapped
+add_library(${PROJECT_NAME} SHARED
+	${CFILES})
+
+#Add the headers to our specific gmml target
+target_include_directories(${PROJECT_NAME} PUBLIC
+	"${CMAKE_SOURCE_DIR}" "${HDIRECTORIES}")
+#Declaring the system will cause the compile commands to have the 
+#prefix -isystem which should cause the autotooling to ignore these files
+target_include_directories(${PROJECT_NAME} PUBLIC SYSTEM
     "${EXHDIRECTORIES}"
     )
-
+	
+#Specifies the header file we are gonna make into a shared object file,
+#since our gmml.hpp is a god file we just include that
+set_target_properties(${PROJECT_NAME} PROPERTIES
+	PUBLIC_HEADER "includes/gmml.hpp")
+    
 #for the project object value this passes -fpic which is needed
 #to make our files into a shared libary
 target_compile_options(${PROJECT_NAME} PUBLIC "-fPIC" -Wall -W)
+################## END SETTING UP GMML TARGET ###################
+
+
+
+################## BEGIN SETTING UP GMML_WRAPPED TARGET ###################
+#have cpp property set on for file gmml.i
+#This property is associated with the gmml.i file itself
+set_property(SOURCE gmml.i PROPERTY CPLUSPLUS ON)
+#add a swig library with name ${PROJECT_NAME}_wrapped, wrapping the code
+#in python, using our gmml.i as our source file for swig
+swig_add_library(${PROJECT_NAME}_wrapped LANGUAGE python SOURCES gmml.i)
+#makes sure the actual module produced by swig for wrapping is good, cmake 3.14
+#forward renames the module to whatever the target name is i.e. gmml_wrapped
+set_target_properties(${PROJECT_NAME}_wrapped PROPERTIES OUTPUT_NAME gmml)
+#add the python headers so we can actually use them and wrap gmml in python
 target_include_directories(${PROJECT_NAME}_wrapped PUBLIC ${Python3_INCLUDE_DIRS})
 
 #Now we link the swig library to our gmml libary and our python library
 #so it can actually be useful
 swig_link_libraries(${PROJECT_NAME}_wrapped ${PROJECT_NAME} ${Python3_LIBRARIES})
+################## END SETTING UP GMML_WRAPPED TARGET ###################
+
 
 #links a library out of our group of objects. Recall, done in this manner
 #to easily allow for the preservation of *.o files which is utilized
 #by gems during swig wrapping
 #add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:${PROJECT_OBJ}>)
 
-#to properly remove swig data
-set_property(TARGET ${PROJECT_NAME}_wrapped PROPERTY 
-    ADDITIONAL_MAKE_CLEAN_FILES)
+################## BEING COPYING BUILT FILES TO NEEDED DIRS ###################
 
 #NOTE THAT THIS WILL NOT RUN IF WE DO NOT REHIT OUR TARGET, i.e. ALL BUILD IS EXACT SAME
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
@@ -173,9 +188,20 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy
 	$<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_SOURCE_DIR}/lib/)
 
+################## END COPYING BUILT FILES TO NEEDED DIRS ###################
+
+
+
+################## BEGIN ALL BUILT FILES INCLUDED IN `make clean` ###################
+#to properly remove swig data
+set_property(TARGET ${PROJECT_NAME}_wrapped PROPERTY 
+    ADDITIONAL_MAKE_CLEAN_FILES)
+
 #To allow make clean to remove the new lib dir
 set_property(DIRECTORY PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
 	"../lib")
+	
+################## END ALL BUILT FILES INCLUDED IN `make clean` ###################
 
 #TO REMOVE, but kinda good reference
 #chuck all .o files to /build dir.

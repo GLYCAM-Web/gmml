@@ -108,6 +108,8 @@ printHelp()
 	printf "\t-j <NUM_JOBS>\t\tBuild GMML with <NUM_JOBS>\n"
 	printf "\t-o <O0/O2/OG/debug>\tBuild GMML using no optimization, 2nd \n\t\t\t\tlevel optimization, or with debug symbols\n"
 	printf "\t-w\t\t\tWrap gmml in python using swig\n"
+	printf "\t-t\t\t\tChange up our lists that index our source code to also\n"
+	printf "\t\t\t\tindex our testing files, this is needed for when we run autotooling\n"
 	printf "\t-h\t\t\tPrint this help message and exit\n"
 	printf "*************************************************************\n"
 	echo "Exiting."
@@ -141,8 +143,9 @@ cp -r "${GEMSHOME}"/gmml/.hooks/* "${GEMSHOME}"/gmml/.git/hooks/
 CLEAN="0"
 TARGET_MAKE_FILE="Makefile"
 CMAKE_BUILD_TYPE_FLAG="-DCMAKE_BUILD_TYPE=Release"
-#blank means all
-MAKE_TARGET="all"
+#target gmml_wrapped = swig wrapped gmml
+#target gmml = just gmml with no wrap
+MAKE_TARGET="gmml"
 
 ################################################################
 #########               COMMAND LINE INPUTS            #########
@@ -177,7 +180,7 @@ MAKE_TARGET="all"
 # Please refer to https://blog.feabhas.com/2021/07/cmake-part-1-the-dark-arts/
 # Follow the paradigm
 
-while getopts "j:o:cwh" option
+while getopts "j:o:cwht" option
 do
 	case "${option}" in
 			j)
@@ -201,8 +204,11 @@ do
 				fi
 				;;
 			c)
-				CLEAN="1"
+				CLEAN=1
 				;;
+			t)
+                TESTIN_TIME=1
+                ;;
 			w)
 				MAKE_TARGET="gmml_wrapped"
 				;;
@@ -215,28 +221,27 @@ do
 	esac
 done
 
-echo "Starting installation of GMML at $(date)".
+echo  "Starting GMML Build"
+START_TIME=$(date +%s)
 
 #check our file lists before we do anything 
 checkCMakeFileLists
 
-printf "\nBuilding with these settings:\n"
-echo "GEMSHOME: ${GEMSHOME}"
-echo "CMake build type: ${CMAKE_BUILD_TYPE_FLAG}"
-echo "Build Target: ${MAKE_TARGET}"
-echo "Clean: ${CLEAN}"
-
+echo -e "\n###### Building GMML with these settings ######"
+echo -e "Build Jobs:\t${NMP}"
+echo -e "Build Type:\t${CMAKE_BUILD_TYPE_FLAG}"
+echo -e "Make Target:\t${MAKE_TARGET}"
+echo -e "Agro Clean:\t${CLEAN}"
+echo -e "Hit Test Files:\t${TESTIN_TIME}"
+echo "###############################################"
 ################################################################
 #########                  COMPILE GMML                #########
 ################################################################
-
-echo "Generating GMML ${TARGET_MAKE_FILE}."
 
 if [ "${CLEAN}" == "1" ]; then
 	echo ""
 	echo "Cleaning GMML. Please note this is VERY aggressive!"
 	if [ -d "./cmakeBuild" ]; then
-		(cd ./cmakeBuild; make -f "${TARGET_MAKE_FILE}" clean)
 		rm -rf ./cmakeBuild
 	fi
 	if [ -d "./lib" ]; then
@@ -247,15 +252,17 @@ fi
 #Note that we have to generate our makefile with cmake before we build
 # The -S (source) flag is for where the cmakelists file is located
 # and the -B (build dir) flag is for where everything will be built to
-echo "Creating makefile using cmake"
-echo ""
-cmake "${CMAKE_BUILD_TYPE_FLAG}" -S . -B ./cmakeBuild || { echo "ERROR RUNNING CMAKE ON GMML: $0 FAILED, EXITING" ; exit 1; }
-
+echo -e "\nCreating GMML makefile using cmake"
+cmake "${CMAKE_BUILD_TYPE_FLAG}" -S . -B ./cmakeBuild -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ \
+|| { echo "ERROR RUNNING CMAKE ON GMML: $0 FAILED, EXITING" ; exit 1; }
 
 #NOTE: All our build stuff is within the cmakeBuild dir
-echo "Making GMML."
+echo -e "\nMaking GMML"
 cd cmakeBuild || { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; }
-make -j"${NMP}" "${MAKE_TARGET}" || { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; }
+#actually use the makefile
+make -j"${NMP}" "${MAKE_TARGET}" \
+|| { echo "ERROR BUILDING GMML: $0 FAILED, EXITING" ; exit 1; }
+
 cd ..
 
 ################################################################
@@ -268,6 +275,7 @@ if [ "${MAKE_TARGET}" == "gmml_wrapped" ]; then
     STUPID_WRAPPED_MSG=" and wrapping"
 fi
 echo ""
-echo "GMML compilation${STUPID_WRAPPED_MSG} is finished at $(date)".
-exit
+echo "GMML compilation${STUPID_WRAPPED_MSG} is finished at $(date)."
+echo "Time Taken: $(( $(date +%s) - START_TIME )) seconds"
+exit 0
 
