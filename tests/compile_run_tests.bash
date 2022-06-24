@@ -18,12 +18,10 @@ GMML_PASSED_TESTS=0
 
 ##### PRETTY PRINT STUFF #####
 #lazy and dont want to have to type all these color variables a bunch
-RED='\033[0;31m' 
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BOLD_STYLE='\033[1m'
-#Done by combo of these 2: NORMAL_STYLE='\033[0m' & NO_COLOR='\033[0m'
-RESET_STYLE='\033[0m\033[0m'
+RESET_STYLE='\033[0m'
+PASSED_STYLE='\033[0;32m\033[1m'
+INFO_STYLE='\033[0;33m\033[1m'
+ERROR_STYLE='\033[0;31m\033[1m'
 
 ################################################################
 ##########               Print help message         ############
@@ -87,14 +85,17 @@ done
 START_TIME=$(date +%s)
 
 echo -e "
-${YELLOW}${BOLD_STYLE}#### Beginning GMML tests ####${RESET_STYLE}
+${INFO_STYLE}#### Beginning GMML tests ####${RESET_STYLE}
 Number of tests found:\t${#GMML_TEST_FILE_LIST[@]}
 Number of testing jobs:\t${GMML_TEST_JOBS}
 "
 
 mkdir -v ./tempTestOutputs
 echo ""
-#always delete this dir before we exit for any reason, get rid of em cause no useful info in em
+#when this script wants to exit, trap will run the code before the exit code is actually returned
+#this allows us to automatically delete the temp files no matter what happens. They are deleted if
+#you use ctrl-c to exit, an error happens and the code exits, the script completes and the code
+#exits, etc. etc.
 trap "rm -rf ./tempTestOutputs" EXIT
 
 #Gonna be used in the main loop, here so its close to first usage.
@@ -108,8 +109,8 @@ cleaningUpJobs()
     #first check if we be in sync, if not, we abort and freak out
     #${#JOB_PIDS[@]} returns the amount of indicies the array has
     if  [ ${#JOB_PIDS[@]} != ${#JOB_OUTPUT_FILES[@]} ] ; then
-        echo -e "${RED}${BOLD_STYLE}!!!! WARNING PID LIST AND FILE LIST OUT OF SYNC ABORTING !!!!${RESET_STYLE}"
-        #nuke all subshells that were spawned in this script, very important
+        echo -e "${ERROR_STYLE}!!!! WARNING PID LIST AND FILE LIST OUT OF SYNC ABORTING !!!!${RESET_STYLE}"
+        #nuke all running subshells that were spawned in this script, very important
         kill 0
         exit 1
     fi
@@ -133,13 +134,13 @@ cleaningUpJobs()
                 #When we actually DO arithmatic we need to surround our code with ((....)) in order
                 #to let bash know we are dealing with numbers and adding them
                 ((GMML_PASSED_TESTS++))
-                echo -e "${GREEN}${BOLD_STYLE}"
+                echo -e "${PASSED_STYLE}"
             elif [[ ${DUMB_EXIT_CODE} == 1 ]]; then
                 ((GMML_FAILED_TESTS++))
                 FAILED_JOB_OUTPUTS+=("${JOB_OUTPUT_FILES[${CURR_INDEX}]}")
-                echo -e "${RED}${BOLD_STYLE}"
+                echo -e "${ERROR_STYLE}"
             else
-                echo -e "${RED}${BOLD_STYLE}!!!! WARNING: EXIT CODE LINE INCORRECT, EXITING WHOLE SCRIPT !!!!${RESET_STYLE}"
+                echo -e "${ERROR_STYLE}!!!! WARNING: EXIT CODE LINE INCORRECT, EXITING WHOLE SCRIPT !!!!${RESET_STYLE}"
                 echo "FROM FILE: ${JOB_OUTPUT_FILES[${CURR_INDEX}]}"
                 echo "EXIT CODE GRABBED: ${DUMB_EXIT_CODE}"
                 echo "----- FILE DUMP BELOW -----"
@@ -174,7 +175,7 @@ for CURRENT_TEST in "${GMML_TEST_FILE_LIST[@]}" ; do
         echo ""
     fi
     #let user know whats going on
-    echo -e "${YELLOW}${BOLD_STYLE}Beginning test:${RESET_STYLE} ${CURRENT_TEST}"
+    echo -e "${INFO_STYLE}Beginning test:${RESET_STYLE} ${CURRENT_TEST}"
     
     #Wanted to do below but couldnt figure out force check that the only .sh
     #we would be replacing would be at the very end like I can with sed....
@@ -217,12 +218,12 @@ case "${GMML_PASSED_TESTS}" in
 #if we passed as many tests as we have, we know we passed all tests thus we
 #go ahead and prepare the output to be green
     ${#GMML_TEST_FILE_LIST[@]})
-        RESULT_COLOR=${GREEN}${BOLD_STYLE}
+        RESULT_COLOR=${PASSED_STYLE}
         ;;
 #if our passed tests does not equal our number of tests, we know something is
 #wrong so we go ahead and do the spooky red output
     *)
-        RESULT_COLOR=${RED}${BOLD_STYLE}
+        RESULT_COLOR=${ERROR_STYLE}
         ;;
 esac
 
