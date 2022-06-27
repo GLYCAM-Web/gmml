@@ -59,6 +59,9 @@ public:
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
+    // These two being public is funky. For evaluation I don't want to bother with this, so they only trigger when 3D structures are generated, but for gp builder, I don't write 3D structure until the end and so it does it's count internal bonds while the shape isn't good. Making public while I come up with a better idea. Probably carb builder needs an eval constructor, or that might go into sequence. I think these need to be done by default to be safe.
+    void SetDefaultShapeUsingMetadata();
+    void ResolveOverlaps();
     //////////////////////////////////////////////////////////
     //                        FUNCTIONS                     //
     //////////////////////////////////////////////////////////
@@ -73,8 +76,6 @@ public:
 private:
     void Write3DStructureFile(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string filename = "output");
     void SetInputSequenceString(std::string sequence);
-    void SetDefaultShapeUsingMetadata();
-    void ResolveOverlaps();
     void FigureOutResidueLinkagesInGlycan(MolecularModeling::Residue *from_this_residue1, MolecularModeling::Residue *to_this_residue2, ResidueLinkageVector *residue_linkages);
     void InitializeClass(std::string condensedSequence);
     // This does not belong in this class:

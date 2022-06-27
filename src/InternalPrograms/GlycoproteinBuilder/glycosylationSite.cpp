@@ -94,6 +94,8 @@ void GlycosylationSite::BuildGlycan(std::string glycanInputType, std::string gly
 	    gmml::log(__LINE__, __FILE__, gmml::INF, "Generating assembly from sequence with " + glycanInput);
 	    gmml::log(__LINE__, __FILE__, gmml::INF, "Prepfile location is: " + prepFileLocation);
 		CondensedSequence::carbohydrateBuilder carbBuilder(glycanInput, prepFileLocation);
+		carbBuilder.SetDefaultShapeUsingMetadata();
+		carbBuilder.ResolveOverlaps();
 		this->SetGlycan(carbBuilder.GetAssembly());
 	}
 	else if (glycanInputType == "Library")
