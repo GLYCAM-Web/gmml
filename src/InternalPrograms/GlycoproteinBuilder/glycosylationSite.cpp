@@ -130,6 +130,7 @@ void GlycosylationSite::AttachGlycan(Assembly* glycoprotein)
 	this->RenumberGlycanToMatch(*glycoprotein);
     gmml::log(__LINE__, __FILE__, gmml::INF, "SuperimposedGlycanToGlycosite");
 	this->Rename_Protein_Residue_To_GLYCAM_Nomenclature();
+	gmml::WritePDBFile(glycan_,"./" , this->GetResidue()->GetId() + "_glycan", false);
 	glycoprotein->MergeAssembly(&glycan_); // Add glycan to glycoprotein assembly, allows SetDihedral later. May not be necessary anymore with new Rotatable Dihedral class.
 	gmml::log(__LINE__, __FILE__, gmml::INF, "Merge done");
 	all_residue_linkages_.emplace_back(glycan_.GetResidues().at(0), residue_);

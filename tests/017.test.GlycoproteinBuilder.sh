@@ -9,7 +9,7 @@ if ! cmp  tests/inputs/GlycoProtein_All_Resolved.pdb tests/correct_outputs/017.G
     return 1
 else
     printf "Test passed.\n"
-    rm gpBuilder 017.output_GlycoproteinBuilder.txt tests/inputs/GlycoProtein_All_Resolved.pdb tests/inputs/GlycoProtein_All_Resolved.off
+    rm gpBuilder 017.output_GlycoproteinBuilder.txt #tests/inputs/GlycoProtein_All_Resolved.pdb #tests/inputs/GlycoProtein_All_Resolved.off
     echo "Exit Code: 0"
     return 0
 fi
