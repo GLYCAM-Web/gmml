@@ -451,6 +451,10 @@ void GlycosylationSite::SetDefaultDihedralAnglesUsingMetadata()
     {
         linkage.SetDefaultShapeUsingMetadata();
     }
+    if( ! this->NoNewInternalCloseContacts() )
+    {
+        this->ResetDihedralAngles();
+    }
     return;
 }
 
@@ -472,6 +476,10 @@ void GlycosylationSite::SetRandomDihedralAnglesUsingMetadataForNthLinkage(int li
     if(linkage_number < all_residue_linkages_.size())
     {
         all_residue_linkages_.at(linkage_number).SetRandomShapeUsingMetadata();
+    }
+    if( ! this->NoNewInternalCloseContacts() )
+    {
+        this->ResetDihedralAngles();
     }
     return;
 }
