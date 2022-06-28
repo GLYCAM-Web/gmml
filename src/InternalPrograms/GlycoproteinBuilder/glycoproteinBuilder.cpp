@@ -126,6 +126,8 @@ void GlycoproteinBuilder::ConvertInputStructEntries(GlycoproteinBuilderInputs in
 void GlycoproteinBuilder::WriteOutputFiles()
 {
 	gmml::WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved", false);
+	this->GetGlycoproteinAssembly().SerializeResidueNumbers();
+	gmml::WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved_Serialized", false);
 	this->GetGlycoproteinAssembly().SetName("GLYCOPROTEINBUILDER"); // For reading off file into tleap
 	gmml::WriteOffFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved", false);
 //    this->DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(this->GetGlycosites(), this->GetOverlapTolerance());

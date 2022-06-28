@@ -460,6 +460,10 @@ void GlycosylationSite::SetRandomDihedralAnglesUsingMetadata()
     {
         linkage.SetRandomShapeUsingMetadata();
     }
+    if( ! this->NoNewInternalCloseContacts() )
+    {
+        this->ResetDihedralAngles();
+    }
     return;
 }
 
