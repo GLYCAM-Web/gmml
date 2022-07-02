@@ -8,7 +8,9 @@ INFO_STYLE='\033[0;33m\033[1m'
 ERROR_STYLE='\033[0;31m\033[1m'
 #variable that will be used to check if we are trying to run any linting
 #on our test files
-TESTIN_TIME=0
+AUTO_TESTIN_TIME=0
+
+gemshome=$(pwd)
 
 ################################################################
 #########                 FUNCTIONS                    #########
@@ -50,30 +52,40 @@ check_gemshome() {
 #and doing bad cmake practices where it runs ops we dont know
 checkCMakeFileLists()
 {
+    #if we are doing the auto testing stuff just fix up our lists auto
+    if [ "${AUTO_TESTIN_TIME}" == 1 ]; then
+        echo -e "${INFO_STYLE}###### Auto running the cmake file list update to include test files ######${RESET_STYLE}"
+        mkdir ./.tempCmakeLists
+        cp ./cmakeFileLists/* ./.tempCmakeLists/
+        trap 'cp -fv ./.tempCmakeLists/* ./cmakeFileLists/ && rm -rfv ${gemshome}/.tempCmakeLists && echo -e "${INFO_STYLE}###### Cmake file lists restored to state before script was run ######${RESET_STYLE}"' EXIT
+        ./updateCmakeFileList.sh -t || { echo -e "${ERROR_STYLE}ERROR AUTO UPDATING CMAKEFILELISTS, EXITING${RESET_STYLE}" ; exit 1; }
+        echo -e "${PASSED_STYLE}###### Auto updating cmakefilelists to include tests succeded ######${RESET_STYLE}\n"
+    fi
+    
     echo -e "${INFO_STYLE}###### Checking our cmake file lists to make sure they match files in our codebase ######"
     BAD_FILE_LISTS=0
     #check our cfiles stuff
     echo -e "${RESET_STYLE}\tEnsuring the list of all c/cpp files, cFileList.txt, matches\n\tour current source code${INFO_STYLE}"
-    if  [ "${TESTIN_TIME}" == 1 ] && ! diff cmakeFileLists/cFileList.txt <(find "./src" "./tests" -name "*.cc" -o -name "*.cpp" |  LC_ALL=C.UTF-8 sort); then
-        echo -e "\tWarning: you want to build for testing but the cfiles isnt"
+    if  [ "${AUTO_TESTIN_TIME}" == 1 ] && ! diff cmakeFileLists/cFileList.txt <(find "./src" "./tests" -name "*.cc" -o -name "*.cpp" |  LC_ALL=C.UTF-8 sort); then
+        echo -e "\n\tWarning: you want to build for testing but the cfiles isnt"
         echo -e "\tupdated with the needed files. Read the readme. Script will exit."
         BAD_FILE_LISTS=1
-    elif ! diff cmakeFileLists/cFileList.txt <(find "./src" -name "*.cc" -o -name "*.cpp" |  LC_ALL=C.UTF-8 sort); then
-        echo -e "\tWarning: you want to build but the cfiles isnt updated with"
+    elif  [ "${AUTO_TESTIN_TIME}" == 0 ] && ! diff cmakeFileLists/cFileList.txt <(find "./src" -name "*.cc" -o -name "*.cpp" |  LC_ALL=C.UTF-8 sort); then
+        echo -e "\n\tWarning: you want to build but the cfiles isnt updated with"
         echo -e "\tthe needed files. Read the readme. Script will exit."
         BAD_FILE_LISTS=1
     fi
     #check our hdirectory stuff
     echo -e "\n${RESET_STYLE}\tEnsuring the list of all header directories, hDirectoryList.txt,\n\tmatches our current source code${INFO_STYLE}"
     if ! diff cmakeFileLists/hDirectoryList.txt <( find "./includes" -type d ! -path "*External_Libraries*" |  LC_ALL=C.UTF-8 sort) ; then
-        echo -e "\tWarning: you want to build for testing but the hdirectory list file"
+        echo -e "\n\tWarning: you want to build but the hdirectory list file"
         echo -e "\tisnt updated with the needed files. Read the readme. Script will exit."
         BAD_FILE_LISTS=1
     fi
     #check our external lib stuff
     echo -e "${RESET_STYLE}\n\tEnsuring the list of all external lib header directories, \n\texternalHDirectoryList.txt, matches our current source code${INFO_STYLE}"
     if ! diff cmakeFileLists/externalHDirectoryList.txt <(find "./includes" -type d -path "*External_Libraries*" |  LC_ALL=C.UTF-8 sort) ; then
-        echo -e "\tWarning: you want to build for testing but the list of directories"
+        echo -e "\n\tWarning: you want to build for but the list of directories"
         echo -e "\tfor our external libs isnt updated with the needed files. Read" 
         echo -e "\tthe readme. Script will exit."
         BAD_FILE_LISTS=1
@@ -91,8 +103,7 @@ checkCMakeFileLists()
         echo -e "===============================================================${RESET_STYLE}\n"
         exit 1
     fi
-    echo -e "${PASSED_STYLE}CMake file lists are good, lets run it${RESET_STYLE}"
-   
+    echo -e "${PASSED_STYLE}###### CMake file lists are good, lets run it ######${RESET_STYLE}"
 }
 
 ################################################################
@@ -116,10 +127,9 @@ run cd ./tests/, then run ./compile_run_tests.bash
 Options are as follows:
 \t-c\t\t\tClean all files from previous builds
 \t-j <NUM_JOBS>\t\tBuild GMML with <NUM_JOBS>
-\t-o <O0/O2/OG/debug>\tBuild GMML using no optimization, 2nd \n\t\t\t\t\tlevel optimization, or with debug symbols
+\t-o <O0/O2/OG/debug>\tBuild GMML using no optimization, 2nd
+\t\t\t\t\tlevel optimization, or with debug symbols
 \t-w\t\t\tWrap gmml in python using swig
-\t-t\t\t\tChange up our lists that index our source code to also
-\t\t\t\t\tindex our test files, needed for running autotooling
 \t-h\t\t\tPrint this help message and exit
 *************************************************************
 Exiting."
@@ -127,10 +137,30 @@ exit 1
 }
 
 ################################################################
+#########        SOME DUMB FUNCTIONS                   #########
+################################################################
+optionsBorked()
+{
+    [ "$#" == 2 ] || { echo -e "${ERROR_STYLE}ERROR OPTIONS BORKED NOT USED CORRECT${RESET_STYLE}"; exit 1; }
+    case $2 in
+        badArg) 
+                echo -e "${ERROR_STYLE}ERROR: OPTION -${1} PASSED INCORRECT ARGUMENT${RESET_STYLE}"
+                printHelp
+                ;;
+        notArg)
+                echo -e "${ERROR_STYLE}ERROR: OPTION -${1} DOES NOT ALLOW AN ARGUMENT${RESET_STYLE}"
+                printHelp
+                ;;
+        *)
+                echo -e "${ERROR_STYLE}ERROR OPTIONS BORKED HIT WILD CARD ${RESET_STYLE}"
+                exit 1
+                ;;
+    esac
+}
+
+################################################################
 #########                CHECK SETTINGS                #########
 ################################################################
-
-gemshome=$(pwd)
 check_gemshome "${gemshome}"
 get_numprocs
 
@@ -189,7 +219,7 @@ MAKE_TARGET="gmml"
 # Please refer to https://blog.feabhas.com/2021/07/cmake-part-1-the-dark-arts/
 # Follow the paradigm
 #check the compile_run_tests.sh file for a description of what this stuff is
-while getopts "j:o:cwht" option
+while getopts "j:o:cwht:" option
 do
 	case "${option}" in
 			j)
@@ -197,7 +227,7 @@ do
 				if [[ "${jIn}" =~ ^[1-9][0-9]*$ ]]; then
 					NMP="${jIn}"
 				else
-					printHelp
+					optionsBorked "${option}" "badArg"
 				fi
 				;;
 			o)
@@ -209,46 +239,65 @@ do
 				elif [ "${oIn}" == "debug" ] || [ "${oIn}" == "OG" ]; then
 					CMAKE_BUILD_TYPE_FLAG="-DCMAKE_BUILD_TYPE=Debug"
 				else
-					printHelp
+					optionsBorked "${option}" "badArg"
 				fi
 				;;
 			c)
+                #to make sure we arent passing anything extra to this, we use a 
+                #indirect expansion of optind, which contains next index of
+                #something interesting aka character. This takes the index, gets
+                #the variable it relates to, then 0 is the index we start at
+                #aka offset then we have length of 1 cause we only care about next
+                #character to ensure next arg is a flag. Remnant of trying to get optional multiflag passing
+                #stuff where u can have a flag w/wout arguments
+                { [ -z "${!OPTIND:0:1}" ] || [ "${!OPTIND:0:1}" == "-" ]; } || { optionsBorked "${option}" "notArg"; }
 				CLEAN=1
 				;;
 			t)
-                TESTIN_TIME=1
+                tIn="${OPTARG}"
+                if [ "${tIn}" == "auto" ]; then
+                    AUTO_TESTIN_TIME=1
+                else
+                    optionsBorked "${option}" "badArg"
+                fi    
                 ;;
 			w)
+                { [ -z "${!OPTIND:0:1}" ] || [ "${!OPTIND:0:1}" == "-" ]; } || { optionsBorked "${option}" "notArg"; }
 				MAKE_TARGET="gmml_wrapped"
 				;;
             h)
                 printHelp
                 ;;
 			*)
+                echo -e "${ERROR_STYLE}ERROR INCORRECT FLAG PASSED${RESET_STYLE}"
 				printHelp
 				;;
 	esac
 done
 
-echo -e "\n${INFO_STYLE}###### Starting GMML Build Script ######${RESET_STYLE}"
 START_TIME=$(date +%s)
+
+echo -e "\n${INFO_STYLE}###### Running GMML make.sh with these settings ######${RESET_STYLE}
+Build Jobs:\t${NMP}
+Build Type:\t${CMAKE_BUILD_TYPE_FLAG}
+Make Target:\t${MAKE_TARGET}
+Agro Clean:\t${CLEAN}"
+
+if [ "${AUTO_TESTIN_TIME}" == 1 ]; then
+    echo -e "Auto test prep: ${AUTO_TESTIN_TIME}"
+fi
+
 echo -e "Steps this script takes:
 \t1) Check the indexed file lists present in cmakeFileLists are correct
 \t2) If we want to aggressively clean all traces of GMML, do so
 \t3) Generate the Makefile, and build directory, for GMML by using CMake
 \t4) cd to generated dir, then use the generated Makefile with our specified target
 \t5) Script completed
+###############################################
 "
 #check our file lists before we do anything 
 checkCMakeFileLists
 
-echo -e "\n${INFO_STYLE}###### Running GMML make.sh with these settings ######${RESET_STYLE}
-Build Jobs:\t${NMP}
-Build Type:\t${CMAKE_BUILD_TYPE_FLAG}
-Make Target:\t${MAKE_TARGET}
-Agro Clean:\t${CLEAN}
-Hit Test Files:\t${TESTIN_TIME}
-###############################################"
 ################################################################
 #########                  COMPILE GMML                #########
 ################################################################
@@ -261,7 +310,7 @@ if [ "${CLEAN}" == "1" ]; then
 	if [ -d "./lib" ]; then
 		rm -rf ./lib
 	fi
-	echo -e "${PASSED_STYLE}Aggressive clean has been completed, all compiled/wrapped\n\tGMML code has been completely removed from this dir${RESET_STYLE}"
+	echo -e "${PASSED_STYLE}###### All compiled/wrapped GMML has been completely removed ######${RESET_STYLE}"
 fi
 
 #Note that we have to generate our makefile with cmake before we build
@@ -275,14 +324,21 @@ echo -e "\n${INFO_STYLE}###### Generating GMML makefile using cmake ######${RESE
 #in that directory.
 cmake "${CMAKE_BUILD_TYPE_FLAG}" -S . -B ./cmakeBuild -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ \
 || { echo -e "${ERROR_STYLE}ERROR RUNNING CMAKE ON GMML: $0 FAILED, EXITING${RESET_STYLE}" ; exit 1; }
-echo -e "${PASSED_STYLE}All GMML build files have been successfully generated by CMake${RESET_STYLE}"
+echo -e "${PASSED_STYLE}###### All GMML build files have been successfully generated by CMake ######${RESET_STYLE}"
+
+#Now if we are just trying to run some linting etc. using tools on our codebase
+#and want to also check out the testing source code files, we know that the whole
+#thing will not compile, thus we reset the indexed file lists to their original state.
+#and exit without compiling or anything fun
+if [ "${AUTO_TESTIN_TIME}" == 1 ]; then
+    echo -e "${INFO_STYLE}###### Restoring cmake file lists to their original state ######${RESET_STYLE}"
+    #trap func takes care of the restore
+    exit 0
+fi
 
 #NOTE: All our build stuff is within the cmakeBuild dir
-echo -e "\n${INFO_STYLE}###### Build files generated, now actually making GMML in ./gmml/cmakeBuild/ ######"
-echo -e "###### COMMAND USED: ./gmml/cmakeBuild$ make -j${NMP} ${MAKE_TARGET} ######${RESET_STYLE}"
-
+echo -e "\n${INFO_STYLE}###### Now actually making GMML, COMMAND USED: ./gmml/cmakeBuild$ make -j${NMP} ${MAKE_TARGET} ######${RESET_STYLE}"
 cd cmakeBuild || { echo -e "${ERROR_STYLE}ERROR BUILDING GMML: $0 FAILED, EXITING${RESET_STYLE}" ; exit 1; }
-
 #actually use the makefile that cmake generated
 make -j"${NMP}" "${MAKE_TARGET}" \
 || { echo -e "${ERROR_STYLE}ERROR BUILDING GMML: $0 FAILED, EXITING${RESET_STYLE}" ; exit 1; }
