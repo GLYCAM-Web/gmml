@@ -11,12 +11,14 @@ do
         echo "$i.pdb succesfully created." >> 013.output_buildOligosaccharideLibrary.txt
         if ! cmp 013.outputs/$i.pdb tests/correct_outputs/013.outputs/$i.pdb > /dev/null 2>&1; then
         	echo "Test FAILED! Created pdb file 013.outputs/$i.pdb is different from tests/correct_outputs/013.outputs/$i.pdb"
+        	echo "Exit Code: 1"
         	return 1
         fi
     else
         echo "$i.pdb not created." >> 013.output_buildOligosaccharideLibrary.txt
         if [ -f tests/correct_outputs/013.outputs/$i.pdb ]; then
         	echo "Test FAILED! Did not create $i.pdb, yet it exists in tests/correct_outputs/013.outputs/$i.pdb"
+        	echo "Exit Code: 1"
         	return 1
         fi
     fi
