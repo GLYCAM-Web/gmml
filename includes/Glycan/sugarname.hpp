@@ -1,5 +1,5 @@
-#ifndef SUGARNAME_HPP
-#define SUGARNAME_HPP
+#ifndef GMML_INCLUDES_GLYCAN_SUGARNAME_HPP
+#define GMML_INCLUDES_GLYCAN_SUGARNAME_HPP
 
 #include <string>
 
@@ -19,4 +19,4 @@ namespace Glycan
     } ;
 }
 
-#endif // SUGARNAME_HPP
+#endif // GMML_INCLUDES_GLYCAN_SUGARNAME_HPP

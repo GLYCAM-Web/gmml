@@ -1,5 +1,5 @@
-#ifndef CIFFILE_HPP
-#define CIFFILE_HPP
+#ifndef GMML_INCLUDES_INPUTSET_CIFFILESPACE_CIFFILE_HPP
+#define GMML_INCLUDES_INPUTSET_CIFFILESPACE_CIFFILE_HPP
 
 #include <string>
 #include <vector>
@@ -98,4 +98,4 @@ namespace CifFileSpace{
     };
 }
 
-#endif // CIFFILE_HPP
+#endif // GMML_INCLUDES_INPUTSET_CIFFILESPACE_CIFFILE_HPP

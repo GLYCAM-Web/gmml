@@ -1,5 +1,5 @@
-#ifndef GEOMETRY_TOPOLOGY_ROTATION_HPP
-#define GEOMETRY_TOPOLOGY_ROTATION_HPP
+#ifndef GMML_INCLUDES_GEOMETRYTOPOLOGY_ROTATION_HPP
+#define GMML_INCLUDES_GEOMETRYTOPOLOGY_ROTATION_HPP
 
 #include <iostream>
 #include "coordinate.hpp"
@@ -50,4 +50,4 @@ namespace GeometryTopology
             //////////////////////////////////////////////////////////
         };
 }
-#endif // GEOMETRY_TOPOLOGY_ROTATION_HPP
+#endif // GMML_INCLUDES_GEOMETRYTOPOLOGY_ROTATION_HPP

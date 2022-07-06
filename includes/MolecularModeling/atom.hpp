@@ -1,5 +1,5 @@
-#ifndef ATOM_HPP
-#define ATOM_HPP
+#ifndef GMML_INCLUDES_MOLECULARMODELING_ATOM_HPP
+#define GMML_INCLUDES_MOLECULARMODELING_ATOM_HPP
 
 #include <string>
 #include <iostream>
@@ -367,4 +367,4 @@ namespace MolecularModeling
     //			This would allow someone to do: std::cerr << AtomObject << std::endl;
     // std::ostream& operator<<( std::ostream& out, const Atom& atom );
 }
-#endif // ATOM_HPP
+#endif // GMML_INCLUDES_MOLECULARMODELING_ATOM_HPP

@@ -1,5 +1,5 @@
-#ifndef SELECTIONS_H
-#define SELECTIONS_H
+#ifndef GMML_INCLUDES_MOLECULARMODELING_SELECTIONS_SELECTIONS_HPP
+#define GMML_INCLUDES_MOLECULARMODELING_SELECTIONS_SELECTIONS_HPP
 
 #include "../atom.hpp"
 #include "../atomnode.hpp"
@@ -70,4 +70,4 @@ private:
 void FindEndsOfBranchesFromLinkageAtom(Atom *currentAtom, Atom* previousAtom, Branch *branch);
 std::string GetNonCarbonHeavyAtomNumbered(AtomVector atoms, std::string queryNumber);
 }
-#endif // SELECTIONS_H
+#endif // GMML_INCLUDES_MOLECULARMODELING_SELECTIONS_SELECTIONS_HPP

@@ -1,5 +1,5 @@
-#ifndef CHEMICALCODE_HPP
-#define CHEMICALCODE_HPP
+#ifndef GMML_INCLUDES_GLYCAN_CHEMICALCODE_HPP
+#define GMML_INCLUDES_GLYCAN_CHEMICALCODE_HPP
 
 #include <string>
 #include <vector>
@@ -122,4 +122,4 @@ namespace Glycan
     } ;
 }
 
-#endif // CHEMICALCODE_HPP
+#endif // GMML_INCLUDES_GLYCAN_CHEMICALCODE_HPP

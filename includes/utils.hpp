@@ -1,5 +1,5 @@
-#ifndef UTILS_HPP
-#define UTILS_HPP
+#ifndef GMML_INCLUDES_UTILS_HPP
+#define GMML_INCLUDES_UTILS_HPP
 
 #include <ctime>
 #include <string>
@@ -701,4 +701,4 @@ namespace gmml
 }
 
 
-#endif // UTILS_HPP
+#endif // GMML_INCLUDES_UTILS_HPP

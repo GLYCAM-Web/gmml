@@ -1,5 +1,5 @@
-#ifndef MOLECULE_HPP
-#define MOLECULE_HPP
+#ifndef GMML_INCLUDES_MOLECULARMODELING_MOLECULE_HPP
+#define GMML_INCLUDES_MOLECULARMODELING_MOLECULE_HPP
 
 #include <string>
 #include <iostream>
@@ -105,4 +105,4 @@ namespace MolecularModeling
     };
 }
 
-#endif // MOLECULE_HPP
+#endif // GMML_INCLUDES_MOLECULARMODELING_MOLECULE_HPP

@@ -1,5 +1,5 @@
-#ifndef EDGE_HPP
-#define EDGE_HPP
+#ifndef GMML_INCLUDES_MOLECULARMODELING_GRAPH_EDGE_HPP
+#define GMML_INCLUDES_MOLECULARMODELING_GRAPH_EDGE_HPP
 
 #include <string>
 #include <iostream>
@@ -126,4 +126,4 @@ namespace GraphDS
            double weight_;                     /*!<  Weight between between two node/ Length of Edge >*/
     };
 }
-#endif // EDGE_HPP
+#endif // GMML_INCLUDES_MOLECULARMODELING_GRAPH_EDGE_HPP

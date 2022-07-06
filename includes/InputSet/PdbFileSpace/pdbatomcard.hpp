@@ -3,8 +3,8 @@
 
 // See http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM for an explaination of atom formats in PDB files
 
-#ifndef PDBATOMCARD_HPP
-#define PDBATOMCARD_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBATOMCARD_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBATOMCARD_HPP
 
 #include <string>
 #include <iostream>
@@ -256,4 +256,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif// PDBATOMCARD_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBATOMCARD_HPP

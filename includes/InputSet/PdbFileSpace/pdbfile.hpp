@@ -1,8 +1,8 @@
 //Author: Alireza Khatamian
 //Modified by: Dave Montgomery
 
-#ifndef PDBFILE_HPP
-#define PDBFILE_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBFILE_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBFILE_HPP
 
 #include "inputfile.hpp"
 #include <string>
@@ -1385,4 +1385,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBFILE_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBFILE_HPP

@@ -1,5 +1,5 @@
-#ifndef CELL_HPP
-#define CELL_HPP
+#ifndef GMML_INCLUDES_GEOMETRYTOPOLOGY_CELL_HPP
+#define GMML_INCLUDES_GEOMETRYTOPOLOGY_CELL_HPP
 
 #include <iostream>
 
@@ -82,4 +82,4 @@ namespace GeometryTopology
     };
 }
 
-#endif // CELL_HPP
+#endif // GMML_INCLUDES_GEOMETRYTOPOLOGY_CELL_HPP

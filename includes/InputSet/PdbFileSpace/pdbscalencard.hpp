@@ -1,8 +1,8 @@
 // Created by: Delaram Rahbarinia
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBSCALENCARD_HPP
-#define PDBSCALENCARD_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSCALENCARD_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSCALENCARD_HPP
 
 #include <string>
 #include <sstream>
@@ -108,4 +108,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBSCALENCARD_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSCALENCARD_HPP

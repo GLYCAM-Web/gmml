@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBHETEROGENSECTION_HPP
-#define PDBHETEROGENSECTION_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHETEROGENSECTION_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHETEROGENSECTION_HPP
 
 #include <string>
 #include <map>
@@ -93,4 +93,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBHETEROGENSECTION_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHETEROGENSECTION_HPP

@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia
 
-#ifndef PDBHETEROGENCARD_HPP
-#define PDBHETEROGENCARD_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHETEROGENCARD_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHETEROGENCARD_HPP
 
 #include <string>
 #include <iostream>
@@ -146,4 +146,4 @@ namespace PdbFileSpace
             std::string dscr_;                  /*!< Short description for a heterogen >*/
     };
 }
-#endif // PDBHETEROGENCARD_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHETEROGENCARD_HPP

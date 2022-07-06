@@ -1,5 +1,5 @@
-#ifndef MONOSACCHARIDE_HPP
-#define MONOSACCHARIDE_HPP
+#ifndef GMML_INCLUDES_GLYCAN_MONOSACCHARIDE_HPP
+#define GMML_INCLUDES_GLYCAN_MONOSACCHARIDE_HPP
 
 #include <string>
 #include <vector>
@@ -86,4 +86,4 @@ namespace Glycan
   } ;
 }
 
-#endif // MONOSACCHARIDE_HPP
+#endif // GMML_INCLUDES_GLYCAN_MONOSACCHARIDE_HPP

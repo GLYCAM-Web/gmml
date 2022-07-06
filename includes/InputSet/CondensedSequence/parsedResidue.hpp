@@ -1,5 +1,5 @@
-#ifndef GMML_INPUTSET_CONDENSED_SEQUENCE_PARSED_RESIDUE_HPP
-#define GMML_INPUTSET_CONDENSED_SEQUENCE_PARSED_RESIDUE_HPP
+#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_PARSEDRESIDUE_HPP
+#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_PARSEDRESIDUE_HPP
 
 #include <string>
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp" // TemplateGraph
@@ -82,4 +82,4 @@ namespace CondensedSequence
         std::string linkage_;                     // 1-4, 2-6, 1- (when connected to OH) etc
 	};
 }
-#endif
+#endif // GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_PARSEDRESIDUE_HPP

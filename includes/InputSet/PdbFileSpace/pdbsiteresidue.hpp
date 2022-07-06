@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia
 
-#ifndef PDBSITERESIDUE_HPP
-#define PDBSITERESIDUE_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSITERESIDUE_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSITERESIDUE_HPP
 
 #include <string>
 #include <iostream>
@@ -113,4 +113,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBSITERESIDUE_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSITERESIDUE_HPP

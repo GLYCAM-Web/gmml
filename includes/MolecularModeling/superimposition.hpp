@@ -1,5 +1,5 @@
-#ifndef SUPERIMPOSITION_HPP
-#define SUPERIMPOSITION_HPP
+#ifndef GMML_INCLUDES_MOLECULARMODELING_SUPERIMPOSITION_HPP
+#define GMML_INCLUDES_MOLECULARMODELING_SUPERIMPOSITION_HPP
 
 #include "../External_Libraries/Eigen_Algebra_Template_Library/Geometry"
 #include "../GeometryTopology/coordinate.hpp"
@@ -49,4 +49,4 @@ void Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving)
 }
 
 
-#endif // SUPERIMPOSITION_HPP
+#endif // GMML_INCLUDES_MOLECULARMODELING_SUPERIMPOSITION_HPP

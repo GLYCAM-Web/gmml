@@ -1,8 +1,8 @@
 // Created by: Delaram Rahbarinia
 // Modified by: Alireza Khatamian, Delaram Rahbarinia
 
-#ifndef PDBMODELSECTION_HPP
-#define PDBMODELSECTION_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBMODELSECTION_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBMODELSECTION_HPP
 
 #include <string>
 #include <map>
@@ -97,4 +97,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBMODELSECTION_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBMODELSECTION_HPP

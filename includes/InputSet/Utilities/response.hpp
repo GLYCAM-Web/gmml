@@ -1,5 +1,5 @@
-#ifndef RESPONSE_HPP
-#define RESPONSE_HPP
+#ifndef GMML_INCLUDES_INPUTSET_UTILITIES_RESPONSE_HPP
+#define GMML_INCLUDES_INPUTSET_UTILITIES_RESPONSE_HPP
 
 #include <string>
 #include <vector>
@@ -40,4 +40,4 @@ namespace InputOutput
 	    Tags tags;
     };
 }
-#endif
+#endif // GMML_INCLUDES_INPUTSET_UTILITIES_RESPONSE_HPP

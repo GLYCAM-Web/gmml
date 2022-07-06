@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBFORMULACARD_HPP
-#define PDBFORMULACARD_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBFORMULACARD_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBFORMULACARD_HPP
 
 #include <string>
 #include <iostream>
@@ -108,4 +108,4 @@ namespace PdbFileSpace
             std::string chemical_formula_;          /*!< Chemical formula of the object >*/
     };
 }
-#endif // PDBFORMULACARD_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBFORMULACARD_HPP

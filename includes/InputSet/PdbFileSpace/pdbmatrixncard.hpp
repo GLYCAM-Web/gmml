@@ -1,8 +1,8 @@
 // Created by: Delaram Rahbarinia
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBMATRIXNCARD_HPP
-#define PDBMATRIXNCARD_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBMATRIXNCARD_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBMATRIXNCARD_HPP
 
 #include <string>
 #include <iostream>
@@ -131,4 +131,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBMATRIXNCARD_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBMATRIXNCARD_HPP

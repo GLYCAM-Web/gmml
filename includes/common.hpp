@@ -1,5 +1,5 @@
-#ifndef COMMON_HPP
-#define COMMON_HPP
+#ifndef GMML_INCLUDES_COMMON_HPP
+#define GMML_INCLUDES_COMMON_HPP
 
 #include <string>
 #include <vector>
@@ -1056,4 +1056,4 @@ namespace gmml
     };
 }
 
-#endif // COMMON_HPP
+#endif // GMML_INCLUDES_COMMON_HPP

@@ -1,5 +1,5 @@
-#ifndef CODE_UTILS_HPP
-#define CODE_UTILS_HPP
+#ifndef GMML_INCLUDES_CODEUTILS_CODETESTS_HPP
+#define GMML_INCLUDES_CODEUTILS_CODETESTS_HPP
 
 #include "../common.hpp"
 
@@ -49,4 +49,4 @@ namespace CodeUtils
     };
 }
 
-#endif // CODE_UTILS_HPP
+#endif // GMML_INCLUDES_CODEUTILS_CODETESTS_HPP

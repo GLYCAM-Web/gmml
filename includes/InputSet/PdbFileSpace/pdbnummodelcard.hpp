@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia
 
-#ifndef PDBNUMMODELCARD_HPP
-#define PDBNUMMODELCARD_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBNUMMODELCARD_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBNUMMODELCARD_HPP
 
 #include <string>
 #include <sstream>
@@ -92,4 +92,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBNUMMODELCARD_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBNUMMODELCARD_HPP

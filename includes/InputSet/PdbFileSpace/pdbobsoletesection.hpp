@@ -1,7 +1,7 @@
 // Created by: Dave Montgomery
 
-#ifndef PDBOBSOLETESECTION_HPP
-#define PDBOBSOLETESECTION_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBOBSOLETESECTION_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBOBSOLETESECTION_HPP
 
 #include <string>
 #include <vector>
@@ -114,4 +114,4 @@ namespace PdbFileSpace
             ObsoleteCardVector obsolete_cards_;   /*!< Vector of obsolete cards >*/
     };
 }
-#endif // PDBOBSOLETESECTION_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBOBSOLETESECTION_HPP

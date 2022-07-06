@@ -1,8 +1,8 @@
 // Created by: Delaram Rahbarinia
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBSITESECTION_HPP
-#define PDBSITESECTION_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSITESECTION_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSITESECTION_HPP
 
 #include <string>
 #include <map>
@@ -92,4 +92,4 @@ namespace PdbFileSpace
 }
 
 
-#endif // PDBSITESECTION_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSITESECTION_HPP

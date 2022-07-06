@@ -1,7 +1,7 @@
 //Author: Dave Montgomery
 // This is a class created to use PrintOntology at the assembly level
-#ifndef INPUT_FILE_HPP
-#define INPUT_FILE_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_INPUTFILE_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_INPUTFILE_HPP
 
 // #include "pdbfile.hpp"
 #include "../../common.hpp"
@@ -62,4 +62,4 @@ namespace PdbFileSpace
   };
 }
 
-#endif // INPUT_FILE_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_INPUTFILE_HPP

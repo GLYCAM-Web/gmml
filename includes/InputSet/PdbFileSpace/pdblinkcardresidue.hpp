@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia
 
-#ifndef PdbLinkCardResidue_HPP
-#define PdbLinkCardResidue_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBLINKCARDRESIDUE_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBLINKCARDRESIDUE_HPP
 
 #include <string>
 #include <iostream>
@@ -155,4 +155,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PdbLinkCardResidue_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBLINKCARDRESIDUE_HPP

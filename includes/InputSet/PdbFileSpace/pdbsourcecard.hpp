@@ -1,7 +1,7 @@
 // Created by: Dave Montgomery
 
-#ifndef PDBSOURCECARD_HPP
-#define PDBSOURCECARD_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSOURCECARD_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSOURCECARD_HPP
 
 #include <string>
 #include <iostream>
@@ -93,4 +93,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBSOURCECARD_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSOURCECARD_HPP

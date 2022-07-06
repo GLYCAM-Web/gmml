@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBTITLESECTION_HPP
-#define PDBTITLESECTION_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBTITLESECTION_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBTITLESECTION_HPP
 
 #include <string>
 #include <sstream>
@@ -91,4 +91,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBTITLESECTION_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBTITLESECTION_HPP

@@ -1,5 +1,5 @@
-#ifndef NODE_HPP
-#define NODE_HPP
+#ifndef GMML_INCLUDES_MOLECULARMODELING_GRAPH_NODE_HPP
+#define GMML_INCLUDES_MOLECULARMODELING_GRAPH_NODE_HPP
 
 #include <string>
 #include <iostream>
@@ -165,4 +165,4 @@ namespace GraphDS
           };
 }
 
-#endif // NODE_HPP
+#endif // GMML_INCLUDES_MOLECULARMODELING_GRAPH_NODE_HPP

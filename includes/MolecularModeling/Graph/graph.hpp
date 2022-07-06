@@ -1,5 +1,5 @@
-#ifndef GRAPH_HPP
-#define GRAPH_HPP
+#ifndef GMML_INCLUDES_MOLECULARMODELING_GRAPH_GRAPH_HPP
+#define GMML_INCLUDES_MOLECULARMODELING_GRAPH_GRAPH_HPP
 
 #include <string>
 #include <iostream>
@@ -136,4 +136,4 @@ class Graph
             std::string graph_name_;           /*!< Name of the Graph assigned >*/
     };
 }
-#endif // GRAPH_HPP
+#endif // GMML_INCLUDES_MOLECULARMODELING_GRAPH_GRAPH_HPP

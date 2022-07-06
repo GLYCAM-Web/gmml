@@ -1,5 +1,5 @@
-#ifndef GEOMETRYTOPOLOGY_HPP
-#define GEOMETRYTOPOLOGY_HPP
+#ifndef GMML_INCLUDES_GEOMETRYTOPOLOGY_GEOMETRYTOPOLOGY_HPP
+#define GMML_INCLUDES_GEOMETRYTOPOLOGY_GEOMETRYTOPOLOGY_HPP
 
 #include "../MolecularModeling/atom.hpp"
 #include "coordinate.hpp"
@@ -22,7 +22,7 @@ double CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Co
 
 }
 
-#endif // GEOMETRYTOPOLOGY_HPP
+#endif // GMML_INCLUDES_GEOMETRYTOPOLOGY_GEOMETRYTOPOLOGY_HPP
 
 //Eigen:
 //Vector3d v(1,2,3);

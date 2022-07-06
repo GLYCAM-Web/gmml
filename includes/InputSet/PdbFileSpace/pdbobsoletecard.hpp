@@ -1,7 +1,7 @@
 // Created by: Dave Montgomery
 
-#ifndef PDBOBSOLETECARD_HPP
-#define PDBOBSOLETECARD_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBOBSOLETECARD_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBOBSOLETECARD_HPP
 
 #include <string>
 #include <vector>
@@ -96,4 +96,4 @@ namespace PdbFileSpace
             std::vector<std::string> identifier_codes_;          /*!< Replacement Entries >*/
     };
 }
-#endif // PDBOBSOLETECARD_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBOBSOLETECARD_HPP

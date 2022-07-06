@@ -1,5 +1,5 @@
-#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_MANIPULATOR_HPP
-#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_MANIPULATOR_HPP
+#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCEMANIPULATOR_HPP
+#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCEMANIPULATOR_HPP
 
 #include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
 #include "includes/InputSet/CondensedSequence/sequenceParser.hpp"
@@ -38,4 +38,4 @@ namespace CondensedSequence
         std::string GetGraphVizLineForResidue(ParsedResidue &residue, GraphVizDotConfig &configs);
     };
 }
-#endif
+#endif // GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCEMANIPULATOR_HPP

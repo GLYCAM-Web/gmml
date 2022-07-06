@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBHELIXCARD_HPP
-#define PDBHELIXCARD_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHELIXCARD_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHELIXCARD_HPP
 
 #include <string>
 #include <vector>
@@ -177,4 +177,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBHELIXCARD_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHELIXCARD_HPP

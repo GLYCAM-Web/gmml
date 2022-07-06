@@ -1,8 +1,8 @@
 // Created by: Delaram Rahbarinia
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBCONNECTSECTION_HPP
-#define PDBCONNECTSECTION_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBCONNECTSECTION_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBCONNECTSECTION_HPP
 
 #include <string>
 #include <map>
@@ -94,4 +94,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBCONNECTSECTION_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBCONNECTSECTION_HPP

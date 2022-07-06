@@ -1,5 +1,5 @@
-#ifndef ROTATABLE_DIHEDRAL_H
-#define ROTATABLE_DIHEDRAL_H
+#ifndef GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_ROTATABLE_DIHEDRAL_HPP
+#define GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_ROTATABLE_DIHEDRAL_HPP
 /*
  * This class stores the four atoms that define a dihedral angle, the atoms that move when it is rotated
  * and, if moved, the previous dihedral angle, which allows me to reset easily.
@@ -101,4 +101,4 @@ private:
     DihedralAngleData* currentMetadata_;
     bool wasEverRotated_; // Need this, as it might add a H atom for psi
 };
-#endif // ROTATABLE_DIHEDRAL_H
+#endif // GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_ROTATABLE_DIHEDRAL_HPP

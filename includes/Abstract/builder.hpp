@@ -35,4 +35,4 @@ namespace Abstract
         std::string statusMessage_;
 	};
 }
-#endif
+#endif // GMML_INCLUDES_ABSTRACT_BUILDER_HPP

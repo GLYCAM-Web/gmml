@@ -1,5 +1,5 @@
-#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_PARSER_HPP
-#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_PARSER_HPP
+#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCEPARSER_HPP
+#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCEPARSER_HPP
 
 #include <string>
 #include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
@@ -50,4 +50,4 @@ namespace CondensedSequence
         std::vector<std::unique_ptr<ParsedResidue>> parsedResidues_;
     };
 }
-#endif
+#endif // GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCEPARSER_HPP

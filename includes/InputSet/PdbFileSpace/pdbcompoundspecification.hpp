@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia
 
-#ifndef PDBCOMPOUNDSPECIFICATION_HPP
-#define PDBCOMPOUNDSPECIFICATION_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBCOMPOUNDSPECIFICATION_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBCOMPOUNDSPECIFICATION_HPP
 
 #include <string>
 #include <vector>
@@ -206,4 +206,4 @@ namespace PdbFileSpace
             std::string comments_;                                  /*!< Comments >*/
     };
 }
-#endif // PDBCOMPOUNDSPECIFICATION_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBCOMPOUNDSPECIFICATION_HPP

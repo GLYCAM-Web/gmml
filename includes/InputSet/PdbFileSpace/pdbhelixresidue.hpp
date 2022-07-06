@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia
 
-#ifndef PDBHELIXRESIDUE_HPP
-#define PDBHELIXRESIDUE_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHELIXRESIDUE_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHELIXRESIDUE_HPP
 
 #include <string>
 #include <iostream>
@@ -114,4 +114,4 @@ namespace PdbFileSpace
             char residue_insertion_code_;       /*!< Insertion code of the helix residue >*/
     };
 }
-#endif // PDBHELIXRESIDUE_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHELIXRESIDUE_HPP

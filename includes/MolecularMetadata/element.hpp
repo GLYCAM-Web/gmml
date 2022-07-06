@@ -1,5 +1,5 @@
-#ifndef GMML_ELEMENT_META_HPP
-#define GMML_ELEMENT_META_HPP
+#ifndef GMML_INCLUDES_MOLECULARMETADATA_ELEMENT_HPP
+#define GMML_INCLUDES_MOLECULARMETADATA_ELEMENT_HPP
 
 #include <string>
 #include <iostream>
@@ -186,4 +186,4 @@ namespace MolecularMetadata
     };
 }
 
-#endif // GMML_ELEMENT_META_HPP
+#endif // GMML_INCLUDES_MOLECULARMETADATA_ELEMENT_HPP

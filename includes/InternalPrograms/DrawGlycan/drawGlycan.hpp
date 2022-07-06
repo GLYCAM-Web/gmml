@@ -1,5 +1,5 @@
-#ifndef GMML_INCLUDES_INTERNALPROGRAMS_DRAWGLYCAN_DRAWGLYCAN_HPP_
-#define GMML_INCLUDES_INTERNALPROGRAMS_DRAWGLYCAN_DRAWGLYCAN_HPP_
+#ifndef GMML_INCLUDES_INTERNALPROGRAMS_DRAWGLYCAN_DRAWGLYCAN_HPP
+#define GMML_INCLUDES_INTERNALPROGRAMS_DRAWGLYCAN_DRAWGLYCAN_HPP
 
 // OG Feb 2022
 // This class only exists so I can wrap it into gems without swig having to know about SequenceManipulator and the template Node class
@@ -30,4 +30,4 @@ private:
     //////////////////////////////////////////////////////////
 };
 } // namespace
-#endif /* INCLUDES_INTERNALPROGRAMS_DRAWGLYCAN_DRAWGLYCAN_HPP_ */
+#endif // GMML_INCLUDES_INTERNALPROGRAMS_DRAWGLYCAN_DRAWGLYCAN_HPP

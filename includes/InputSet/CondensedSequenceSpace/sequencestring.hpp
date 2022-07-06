@@ -1,5 +1,5 @@
-#ifndef SEQUENCESTRING_HPP
-#define SEQUENCESTRING_HPP
+#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCESPACE_SEQUENCESTRING_HPP
+#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCESPACE_SEQUENCESTRING_HPP
 
 #include <string>
 
@@ -46,4 +46,4 @@ namespace CondensedSequenceSpace
 //////////////////////////////////////////////////////////
 std::ostream& operator<<(std::ostream&, const CondensedSequenceSpace::SequenceString&);
 
-#endif // SEQUENCESTRING_HPP
+#endif // GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCESPACE_SEQUENCESTRING_HPP

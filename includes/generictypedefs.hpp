@@ -1,5 +1,5 @@
-#ifndef GENERICTYPEDEFS_HPP
-#define GENERICTYPEDEFS_HPP
+#ifndef GMML_INCLUDES_GENERICTYPEDEFS_HPP
+#define GMML_INCLUDES_GENERICTYPEDEFS_HPP
 
 #include <string>
 #include <vector>
@@ -9,4 +9,4 @@ typedef std::vector<bool> BooleanVector;
 typedef std::pair <std::string, std::string> StringPair;
 typedef std::vector <StringPair> StringPairVector;
 
-#endif // GENERICTYPEDEFS_HPP
+#endif // GMML_INCLUDES_GENERICTYPEDEFS_HPP

@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBHELIXSECTION_HPP
-#define PDBHELIXSECTION_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHELIXSECTION_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHELIXSECTION_HPP
 
 #include <string>
 #include <map>
@@ -93,4 +93,4 @@ namespace PdbFileSpace
             HelixCardMap helix_cards_;              /*!< Mapping of helix with helix identifier as key >*/
     };
 }
-#endif // PDBHELIXSECTION_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHELIXSECTION_HPP

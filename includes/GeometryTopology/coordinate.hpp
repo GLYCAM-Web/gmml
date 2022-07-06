@@ -1,5 +1,5 @@
-#ifndef COORDINATE_HPP
-#define COORDINATE_HPP
+#ifndef GMML_INCLUDES_GEOMETRYTOPOLOGY_COORDINATE_HPP
+#define GMML_INCLUDES_GEOMETRYTOPOLOGY_COORDINATE_HPP
 
 #include <ostream>
 #include <iomanip>
@@ -184,4 +184,4 @@ namespace GeometryTopology
     };
 }
 
-#endif // COORDINATE_HPP
+#endif // GMML_INCLUDES_GEOMETRYTOPOLOGY_COORDINATE_HPP

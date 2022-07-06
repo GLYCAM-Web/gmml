@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBFORMULASECTION_HPP
-#define PDBFORMULASECTION_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBFORMULASECTION_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBFORMULASECTION_HPP
 
 #include <string>
 #include <map>
@@ -93,4 +93,4 @@ namespace PdbFileSpace
             FormulaCardMap formula_cards_;           /*!< Map of formulas with heterogen identifier as key >*/
     };
 }
-#endif // PDBFORMULASECTION_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBFORMULASECTION_HPP

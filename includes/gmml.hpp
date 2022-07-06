@@ -1,5 +1,5 @@
-#ifndef GMML_HPP
-#define GMML_HPP
+#ifndef GMML_INCLUDES_GMML_HPP
+#define GMML_INCLUDES_GMML_HPP
 
 #include "common.hpp"
 #include "generictypedefs.hpp"
@@ -183,4 +183,4 @@
 typedef std::vector<MolecularModeling::ResidueNode*> ResidueNodeVector;
 
 
-#endif // GMML_HPP
+#endif // GMML_INCLUDES_GMML_HPP

@@ -1,5 +1,5 @@
-#ifndef NOTE_HPP
-#define NOTE_HPP
+#ifndef GMML_INCLUDES_GLYCAN_NOTE_HPP
+#define GMML_INCLUDES_GLYCAN_NOTE_HPP
 
 #include <string>
 
@@ -85,4 +85,4 @@ namespace Glycan
     } ;
 }
 
-#endif // NOTE_HPP
+#endif // GMML_INCLUDES_GLYCAN_NOTE_HPP

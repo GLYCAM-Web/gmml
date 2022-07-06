@@ -1,5 +1,5 @@
-#ifndef DOCKINGATOM_HPP
-#define DOCKINGATOM_HPP
+#ifndef GMML_INCLUDES_MOLECULARMODELING_DOCKINGATOM_HPP
+#define GMML_INCLUDES_MOLECULARMODELING_DOCKINGATOM_HPP
 
 #include <string>
 #include <iostream>
@@ -46,4 +46,4 @@ namespace MolecularModeling
     };
 }
 
-#endif // DOCKINGATOM_HPP
+#endif // GMML_INCLUDES_MOLECULARMODELING_DOCKINGATOM_HPP

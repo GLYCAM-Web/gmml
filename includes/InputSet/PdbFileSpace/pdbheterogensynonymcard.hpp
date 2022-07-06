@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia
 
-#ifndef PDBHETEROGENSYNONYM_HPP
-#define PDBHETEROGENSYNONYM_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHETEROGENSYNONYMCARD_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHETEROGENSYNONYMCARD_HPP
 
 #include <string>
 #include <vector>
@@ -100,4 +100,4 @@ namespace PdbFileSpace
             std::vector<std::string> heterogen_synonyms_;   /*!< List of synonyms for a heterogen specified by its identifier >*/
     };
 }
-#endif // PDBHETEROGENSYNONYM_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHETEROGENSYNONYMCARD_HPP

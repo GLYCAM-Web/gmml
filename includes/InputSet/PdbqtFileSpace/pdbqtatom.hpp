@@ -1,5 +1,5 @@
-#ifndef PDBQTATOM_HPP
-#define PDBQTATOM_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBQTFILESPACE_PDBQTATOM_HPP
+#define GMML_INCLUDES_INPUTSET_PDBQTFILESPACE_PDBQTATOM_HPP
 
 #include <string>
 #include "../../GeometryTopology/coordinate.hpp"
@@ -237,4 +237,4 @@ namespace PdbqtFileSpace
     };
 }
 
-#endif // PDBQTATOM_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBQTFILESPACE_PDBQTATOM_HPP

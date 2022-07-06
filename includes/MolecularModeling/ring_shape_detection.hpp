@@ -1,5 +1,5 @@
-#ifndef ring_shape_detection_HPP
-#define ring_shape_detection_HPP
+#ifndef GMML_INCLUDES_MOLECULARMODELING_RING_SHAPE_DETECTION_HPP
+#define GMML_INCLUDES_MOLECULARMODELING_RING_SHAPE_DETECTION_HPP
 
 #include <stdio.h>
 #include <sstream>
@@ -60,4 +60,4 @@ namespace gmml
 {
     GeometryTopology::CoordinateVector GetCycleAtomCoordinates( Glycan::Monosaccharide* mono );
 }
-#endif // ring_shape_detection_HPP
+#endif // GMML_INCLUDES_MOLECULARMODELING_RING_SHAPE_DETECTION_HPP

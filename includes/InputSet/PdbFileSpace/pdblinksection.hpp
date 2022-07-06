@@ -1,8 +1,8 @@
 // Created by: Delaram Rahbarinia
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBLINKSECTION_HPP
-#define PDBLINKSECTION_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBLINKSECTION_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBLINKSECTION_HPP
 
 #include <string>
 #include <vector>
@@ -103,4 +103,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBLINKSECTION_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBLINKSECTION_HPP

@@ -1,5 +1,5 @@
-#ifndef GRID_HPP
-#define GRID_HPP
+#ifndef GMML_INCLUDES_GEOMETRYTOPOLOGY_GRID_HPP
+#define GMML_INCLUDES_GEOMETRYTOPOLOGY_GRID_HPP
 
 #include <vector>
 #include "../MolecularModeling/assembly.hpp"
@@ -81,4 +81,4 @@ namespace GeometryTopology
     };
 }
 
-#endif // GRID_HPP
+#endif // GMML_INCLUDES_GEOMETRYTOPOLOGY_GRID_HPP

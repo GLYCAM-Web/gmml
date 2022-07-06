@@ -1,5 +1,5 @@
-#ifndef ABSTRACT_RESIDUE_HPP
-#define ABSTRACT_RESIDUE_HPP
+#ifndef GMML_INCLUDES_ABSTRACT_RESIDUE_HPP
+#define GMML_INCLUDES_ABSTRACT_RESIDUE_HPP
 
 namespace Abstract
 {
@@ -22,4 +22,4 @@ namespace Abstract
         Residue::Type type_;  // enum Type. See enum above.   
 	};
 }
-#endif
+#endif // GMML_INCLUDES_ABSTRACT_RESIDUE_HPP

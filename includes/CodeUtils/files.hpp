@@ -43,4 +43,4 @@ inline void ensureDirectoryExists (const std::string& pathName)
 
 
 }
-#endif //GMML_INCLUDES_CODEUTILS_FILES_HPP
+#endif // GMML_INCLUDES_CODEUTILS_FILES_HPP

@@ -1,5 +1,5 @@
-#ifndef PLANE_HPP
-#define PLANE_HPP
+#ifndef GMML_INCLUDES_GEOMETRYTOPOLOGY_PLANE_HPP
+#define GMML_INCLUDES_GEOMETRYTOPOLOGY_PLANE_HPP
 
 #include <ostream>
 #include <iomanip>
@@ -77,4 +77,4 @@ namespace GeometryTopology
     };
 }
 
-#endif // PLANE_HPP
+#endif // GMML_INCLUDES_GEOMETRYTOPOLOGY_PLANE_HPP

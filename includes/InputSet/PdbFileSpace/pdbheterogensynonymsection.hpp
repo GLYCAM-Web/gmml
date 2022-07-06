@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBHETEROGENSYNONYMSECTION_HPP
-#define PDBHETEROGENSYNONYMSECTION_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHETEROGENSYNONYMSECTION_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHETEROGENSYNONYMSECTION_HPP
 
 #include <string>
 #include <map>
@@ -93,4 +93,4 @@ namespace PdbFileSpace
             HeterogenSynonymCardMap heterogens_synonym_cards_;   /*!< Map of heterogen synonyms with heterogen identifier as key >*/
     };
 }
-#endif // PDBHETEROGENSYNONYMSECTION_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBHETEROGENSYNONYMSECTION_HPP

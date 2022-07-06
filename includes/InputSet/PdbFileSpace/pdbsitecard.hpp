@@ -1,8 +1,8 @@
 // Created by: Delaram Rahbarinia
 // Modified by: Alireza Khatamian, Delaram Rahbarinia, Dave Montgomery
 
-#ifndef PDBSITECARD_HPP
-#define PDBSITECARD_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSITECARD_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSITECARD_HPP
 
 #include <string>
 #include <sstream>
@@ -115,4 +115,4 @@ namespace PdbFileSpace
 }
 
 
-#endif // PDBSITECARD_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSITECARD_HPP

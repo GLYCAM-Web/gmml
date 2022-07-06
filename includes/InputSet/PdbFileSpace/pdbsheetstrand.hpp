@@ -1,8 +1,8 @@
 // Created by: Alireza Khatamian
 // Modified by: Alireza Khatamian, Delaram Rahbarinia
 
-#ifndef PDBSHEETSTRAND_HPP
-#define PDBSHEETSTRAND_HPP
+#ifndef GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSHEETSTRAND_HPP
+#define GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSHEETSTRAND_HPP
 
 #include <string>
 #include <vector>
@@ -140,4 +140,4 @@ namespace PdbFileSpace
     };
 }
 
-#endif // PDBSHEETSTRAND_HPP
+#endif // GMML_INCLUDES_INPUTSET_PDBFILESPACE_PDBSHEETSTRAND_HPP
