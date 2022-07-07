@@ -14,7 +14,8 @@ Sequence::Sequence(std::string condensedSequence)
         this->setInputSequence(condensedSequence);
         this->setInterpretedSequence(manipulator.Print());
         this->setIndexOrdered(manipulator.ReorderSequence());
-        this->setIndexLabeled(manipulator.LabelSequence());
+        bool withLabels = true;
+        this->setIndexLabeled(manipulator.Print(withLabels));
     }
     catch(const std::string &exceptionMessage)
     {
