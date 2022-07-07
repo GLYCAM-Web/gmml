@@ -508,6 +508,7 @@ void Assembly::TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap res
 
 void Assembly::MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map, std::string prep_file, std::map<Glycan::Oligosaccharide*, Pdb2glycamMatchingTracker*>& match_tracker)
 {
+    int local_debug = 1;
     PrepFileSpace::PrepFile* prep = new PrepFileSpace::PrepFile(prep_file);
     for (std::map<Glycan::Oligosaccharide*, ResidueVector>::iterator mapit = oligo_residue_map.begin(); mapit != oligo_residue_map.end(); mapit++){ 
         Glycan::Oligosaccharide* oligo = mapit->first;
@@ -518,7 +519,11 @@ void Assembly::MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVe
 
         std::string condensed_sequence = oligo->IUPAC_name_;
         MolecularModeling::Assembly template_assembly;
-
+        if(local_debug > 0)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Condensed sequence is: " + condensed_sequence);
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Building template assembly");
+        }
         template_assembly.BuildAssemblyFromCondensedSequence(condensed_sequence, prep);
         AtomVector template_atoms = template_assembly.GetAllAtomsOfAssembly();
         for (unsigned int i = 0; i < template_atoms.size(); i++){
@@ -589,6 +594,13 @@ void Assembly::MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVe
         for (MolecularModeling::AtomVector::iterator template_it = template_atoms.begin(); template_it != template_atoms.end(); template_it++){
             Atom* template_atom = *template_it;
             int depth = 0;
+            if(local_debug > 0)
+            {
+                gmml::log(__LINE__, __FILE__, gmml::INF, "Template atom is: " + template_atom->GetName());
+                gmml::log(__LINE__, __FILE__, gmml::INF, "Depth is: " + std::to_string(depth));
+                gmml::log(__LINE__, __FILE__, gmml::INF, "Target atom is: " + target_start_atom->GetName());
+                gmml::log(__LINE__, __FILE__, gmml::INF, "About to run RecursiveMoleculeSubgraphMatching()");
+            }
             this->RecursiveMoleculeSubgraphMatching(target_start_atom, target_atoms, template_atom, target_atom_label_map, template_atom_label_map, target_template_vertex_match,
                   template_target_vertex_match, target_insertion_order, tracker, depth);
         }
