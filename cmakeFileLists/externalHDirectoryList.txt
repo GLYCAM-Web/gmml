@@ -1,7 +1,5 @@
 ./includes/External_Libraries
 ./includes/External_Libraries/Eigen_Algebra_Template_Library
-./includes/External_Libraries/Eigen_Algebra_Template_Library/build
-./includes/External_Libraries/Eigen_Algebra_Template_Library/build/default
 ./includes/External_Libraries/Eigen_Algebra_Template_Library/src
 ./includes/External_Libraries/Eigen_Algebra_Template_Library/src/Cholesky
 ./includes/External_Libraries/Eigen_Algebra_Template_Library/src/CholmodSupport
