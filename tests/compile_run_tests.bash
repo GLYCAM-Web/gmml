@@ -3,7 +3,7 @@
 ################################################################
 ##########               Cool variables             ############
 ################################################################
-GMML_TEST_JOBS=1
+GMML_TEST_JOBS=4
 #Get base list of all files we want so we dont need to deal with
 #figuring out file list more than once, we want to take advantage of output splitting 
 #here so we can hit the list ez pz
@@ -18,12 +18,10 @@ GMML_PASSED_TESTS=0
 
 ##### PRETTY PRINT STUFF #####
 #lazy and dont want to have to type all these color variables a bunch
-RED='\033[0;31m' 
-GREEN='\033[0;32m'
-YELLOW='\033[0;33m'
-BOLD_STYLE='\033[1m'
-#Done by combo of these 2: NORMAL_STYLE='\033[0m' & NO_COLOR='\033[0m'
-RESET_STYLE='\033[0m\033[0m'
+RESET_STYLE='\033[0m'
+PASSED_STYLE='\033[0;32m\033[1m'
+INFO_STYLE='\033[0;33m\033[1m'
+ERROR_STYLE='\033[0;31m\033[1m'
 
 ################################################################
 ##########               Print help message         ############
@@ -31,37 +29,41 @@ RESET_STYLE='\033[0m\033[0m'
 
 printHelp()
 {
-        echo ""
-        echo "==== GMML TEST RUNNING SCRIPT ===="
-        echo "$0 is used to allow us to run multiple of our test scripts at"
-        echo "once. This is not to be confused with compiling the test code,"
-        echo "we will be running multiple of our scripts at once. There are"
-        echo "some light GNU utils that could be used to make this cleaner but"
-        echo "we want to keep these bash scripts as bare bones as possible."
-        echo ""
-        echo "We find tests to run by globbing \"*.test.*.sh\", to disable a"
-        echo "test just change the file name of test you would like to disable"
-        echo "so it does not match that glob."
-        echo "*************************************************************"
-        printf "Options are as follows:\n"
-        printf "\t-j <NUM_JOBS>\t\tRun <NUM_JOBS> scripts at once\n"
-        printf "\t-h \t\t\tPrint this msg\n"
-        echo "*************************************************************"
-        echo ""
-        echo "Exiting"
-        exit 1
+echo -e "
+===== GMML TEST RUNNING SCRIPT =====
+$0 is used to allow us to run multiple of our
+test scripts at once. This is not to be confused with compiling
+the test code, we will be running multiple of our scripts at once.
+There exists some GNU utils that could be used to accomplish this
+but we want to keep these bash scripts as bare bones as possible.
+
+We find tests to run by globbing \"*.test.*.sh\", to disable a
+test just change the file name of test you would like to disable
+so it does not match that glob.
+*************************************************************
+Options are as follows:
+\t-j <NUM_JOBS>\t\tRun <NUM_JOBS> scripts at once
+\t-h \t\t\tPrint this msg
+*************************************************************
+Exiting"
+exit 1
 }
 
 ################################################################
 #########               COMMAND LINE INPUTS            #########
 ################################################################
-
+#get opts allows for users to pass flags to the script, i.e. calling
+#./compile_run_tests.bash -j 11 will allow us to run the script with 11 jobs.
+#The colon after j (in the while decleration) means that said flag expects an "input"
+#The lack of a colon after h means that said flag does not accept any "input"
 while getopts "j:h" option
 do
     case "${option}" in
         j)
             jIn=${OPTARG}
-            if [[ ${jIn} =~ ^[0-9]+$ ]]; then
+            #Whenever you are doing anything like regex, dealing with arithmatic checks, etc.
+            #you use [[ .... ]], if we are just comparing two strings tho you can use [ ... ]
+            if [[ ${jIn} =~ ^[1-9][0-9]*$ ]]; then
                 GMML_TEST_JOBS=${jIn}
             else
                 printHelp
@@ -70,33 +72,45 @@ do
         h)
             printHelp
             ;;
+        #we need a wildcard case so that our script will print out the help msg
+        #if a user passes an unexpected flag
         *)
             printHelp
             ;;
     esac
 done
+#$(....) runs the command in the subshell, strips trailing whitespaces, newlines, etc.
+#and once all completes in the subshell it outputs the final info that would be sent to
+#the stdout buffer and sets the variable to said value
+START_TIME=$(date +%s)
 
-echo ""
-echo -e "${YELLOW}${BOLD_STYLE}#### Beginning GMML tests ####${RESET_STYLE}"
-echo "Number of tests found: ${#GMML_TEST_FILE_LIST[@]}"
-echo "Begining testing using ${GMML_TEST_JOBS} jobs."
-echo ""
+echo -e "
+${INFO_STYLE}#### Beginning GMML tests ####${RESET_STYLE}
+Number of tests found:\t${#GMML_TEST_FILE_LIST[@]}
+Number of testing jobs:\t${GMML_TEST_JOBS}
+"
 
 mkdir -v ./tempTestOutputs
 echo ""
-#always delete this dir before we exit for any reason, get rid of em cause no useful info in em
+#when this script wants to exit, trap will run the code before the exit code is actually returned
+#this allows us to automatically delete the temp files no matter what happens. They are deleted if
+#you use ctrl-c to exit, an error happens and the code exits, the script completes and the code
+#exits, etc. etc.
 trap "rm -rf ./tempTestOutputs" EXIT
 
 #Gonna be used in the main loop, here so its close to first usage.
+#These are set up as empty arrays
 JOB_PIDS=()
 JOB_OUTPUT_FILES=()
+FAILED_JOB_OUTPUTS=()
 
 cleaningUpJobs()
 {
     #first check if we be in sync, if not, we abort and freak out
+    #${#JOB_PIDS[@]} returns the amount of indicies the array has
     if  [ ${#JOB_PIDS[@]} != ${#JOB_OUTPUT_FILES[@]} ] ; then
-        echo -e "${RED}${BOLD_STYLE}!!!! WARNING PID LIST AND FILE LIST OUT OF SYNC ABORTING !!!!${RESET_STYLE}"
-        #nuke all subshells
+        echo -e "${ERROR_STYLE}!!!! WARNING PID LIST AND FILE LIST OUT OF SYNC ABORTING !!!!${RESET_STYLE}"
+        #nuke all running subshells that were spawned in this script, very important
         kill 0
         exit 1
     fi
@@ -114,19 +128,29 @@ cleaningUpJobs()
             #gonna have to run the tail command at least once, and possibly more,
             #so just take the hit once and we are good. Gotta use 2 cause include newline
             DUMB_EXIT_CODE=$(tail -c -2 "${JOB_OUTPUT_FILES[${CURR_INDEX}]}")            
+            #Since we are checking arithmatic values, we need to use [[ .... ]] so bash doesnt
+            #treat whats in the brackets as a string
             if [[ ${DUMB_EXIT_CODE} == 0 ]]; then
+                #When we actually DO arithmatic we need to surround our code with ((....)) in order
+                #to let bash know we are dealing with numbers and adding them
                 ((GMML_PASSED_TESTS++))
+                echo -e "${PASSED_STYLE}"
             elif [[ ${DUMB_EXIT_CODE} == 1 ]]; then
                 ((GMML_FAILED_TESTS++))
+                FAILED_JOB_OUTPUTS+=("${JOB_OUTPUT_FILES[${CURR_INDEX}]}")
+                echo -e "${ERROR_STYLE}"
             else
-                echo -e "${RED}${BOLD_STYLE}!!!! WARNING: EXIT CODE LINE INCORRECT, EXITING WHOLE SCRIPT !!!!${RESET_STYLE}"
+                echo -e "${ERROR_STYLE}!!!! WARNING: EXIT CODE LINE INCORRECT, EXITING WHOLE SCRIPT !!!!${RESET_STYLE}"
+                echo "FROM FILE: ${JOB_OUTPUT_FILES[${CURR_INDEX}]}"
+                echo "EXIT CODE GRABBED: ${DUMB_EXIT_CODE}"
+                echo "----- FILE DUMP BELOW -----"
+                cat "${JOB_OUTPUT_FILES[${CURR_INDEX}]}"
                 #nuke all subshells
                 kill 0
                 exit 1
             fi
-            echo ""
-            #color and output the jobs output
-            GREP_COLOR="1;31" grep --color=always '.*FAILED.*\|$' "${JOB_OUTPUT_FILES[${CURR_INDEX}]}" | GREP_COLOR="1;32" grep --color '.*passed.*\|$'
+            cat "${JOB_OUTPUT_FILES[${CURR_INDEX}]}"
+            echo -ne "${RESET_STYLE}"
             
             #Now remove the PID from our "scheduler" array, ngl more of a tracker
             unset JOB_PIDS["${CURR_INDEX}"]
@@ -139,33 +163,45 @@ cleaningUpJobs()
         fi
     done
 }
-                   
 
 for CURRENT_TEST in "${GMML_TEST_FILE_LIST[@]}" ; do 
     #When we have all our wanted jobs running, we wait for 1 or more to exit then clean up our finished jobs
     if [ ${#JOB_PIDS[@]} == "${GMML_TEST_JOBS}" ] && [ ${#JOB_OUTPUT_FILES[@]} == "${GMML_TEST_JOBS}" ] ; then
-        #This waits for 1, or more, job to complete
+        #This waits for 1, or more, job(s) to complete
         #Once a job completes, we then need to go ahead and clean up our dirty job scheduler/tracker
         wait -n
+        #after a script finishes we know we gotta take care of it, so we call the cleaningUpJobs function
         cleaningUpJobs
         echo ""
     fi
     #let user know whats going on
-    echo -e "${YELLOW}${BOLD_STYLE}Beginning test:${RESET_STYLE} ${CURRENT_TEST}"
+    echo -e "${INFO_STYLE}Beginning test:${RESET_STYLE} ${CURRENT_TEST}"
     
     #Wanted to do below but couldnt figure out force check that the only .sh
     #we would be replacing would be at the very end like I can with sed....
     #CURRENT_TEST_OUTPUT_FILENAME="${CURRENT_TEST//.sh/.output.txt}"
     
     #do some sed stuff to make our filename, this is a POSIX compliant method
+    #Basically we first take the dir path and append the current_test name to the end of it after
+    #replacing .sh with .output.txt, the sed -e means that we treat the next thing as an expression, "s" means we
+    #are dealing with a substitute with sed, then / is a delimeter to the next part for the pattern we are matching,
+    #we then have to escape the period with \. so it actually knows we are trying to match a period. Thus, what we are
+    #matching is .sh, the $ as the end means that we are only matching .sh when it is at the END of the string, we then
+    #have our delimeter / again in order to change to the bit where we define what the .sh is going to be replaced with,
+    #finally the final / just means we are done with the pattern dealio
     CURRENT_TEST_OUTPUT_FILENAME="./tempTestOutputs/"$(echo "${CURRENT_TEST}" | sed -e "s/\.sh$/.output.txt/")
   
-    #actually run the script we currently want to run
+    #actually run the script we currently want to run, the &> redirects the stderr output and the stdout
+    #output from our script to the file we define. Finally the & at the end runs the command in a subshell
+    #that will not block this script. This means that instead of waiting for the command to complete, we just
+    #spawn it in a subshell and continue running this script while the subshell does its thing.
     source "${CURRENT_TEST}" &> "${CURRENT_TEST_OUTPUT_FILENAME}" &
     
     #NOTE: Both below MUST ALWAYS BE IN SYNC, lazy way of doing some
     #instability to try and catch bad behavior..... bad idea? who knows!
-    #Add the most recent job PID to our PID array
+    #Add the most recent job PID to our PID array. $! is the most recent ***SUBSHELL*** PID that this script
+    #created. If we wanted the PID of THIS script (not the subshell) we would use $$ but that is useless in
+    #this context
     JOB_PIDS+=($!)
     #Add corresponding output file to our output file array
     JOB_OUTPUT_FILES+=("${CURRENT_TEST_OUTPUT_FILENAME}")
@@ -179,33 +215,45 @@ wait
 cleaningUpJobs
 
 case "${GMML_PASSED_TESTS}" in
+#if we passed as many tests as we have, we know we passed all tests thus we
+#go ahead and prepare the output to be green
     ${#GMML_TEST_FILE_LIST[@]})
-        RESULT_COLOR=${GREEN}${BOLD_STYLE}
+        RESULT_COLOR=${PASSED_STYLE}
         ;;
+#if our passed tests does not equal our number of tests, we know something is
+#wrong so we go ahead and do the spooky red output
     *)
-        RESULT_COLOR=${RED}${BOLD_STYLE}
+        RESULT_COLOR=${ERROR_STYLE}
         ;;
 esac
 
-echo -e """
-${RESULT_COLOR}
-#### GMML TESTS COMPLETED ####
-Required tests: ${#GMML_TEST_FILE_LIST[@]}
-Passed tests:   ${GMML_PASSED_TESTS}
-Failed tests:   ${GMML_FAILED_TESTS}${RESET_STYLE}"""
+#dont want to make another variable
+#START_TIME=$(( $(date +%s) - START_TIME ))
+echo -e "${RESULT_COLOR}
+######## GMML TESTS COMPLETED ########
+Required tests:\t${#GMML_TEST_FILE_LIST[@]}
+Passed tests:\t${GMML_PASSED_TESTS}
+Failed tests:\t${GMML_FAILED_TESTS}
+Time taken:\t$(( $(date +%s) - START_TIME )) seconds
+######################################
+"
 
 #Ps paranoid programming
 if [ "${GMML_PASSED_TESTS}" == "${#GMML_TEST_FILE_LIST[@]}" ] ; then 
-    echo -e "${GREEN}${BOLD_STYLE}GMML TESTS PASSED${RESET_STYLE}\n"
-    #delete output files here
+    echo -e "ALL GMML TESTS PASSED${RESET_STYLE}\n"
     exit 0
 elif [[ $(( GMML_PASSED_TESTS + GMML_FAILED_TESTS )) != "${#GMML_TEST_FILE_LIST[@]}" ]] ; then
-    echo -e "${RED}${BOLD_STYLE}!!! ERROR WE DIDNT GET EXIT CODES FROM ALL NEEDED SCRIPTS !!!${RESET_STYLE}\n"
+    echo -e "!!! ERROR WE DIDNT GET EXIT CODES FROM ALL NEEDED SCRIPTS !!!${RESET_STYLE}\n"
     exit 1
 elif [ "${GMML_FAILED_TESTS}" != 0 ] ; then
-    echo -e "${RED}${BOLD_STYLE}!!! ${GMML_FAILED_TESTS} GMML TESTS FAILED !!!${RESET_STYLE}\n"
+    echo -e "!!! OUTPUT OF THE ${GMML_FAILED_TESTS} GMML TEST(S) THAT FAILED !!!\n"
+    for BORKED_FILE in "${FAILED_JOB_OUTPUTS[@]}"; do
+        cat "${BORKED_FILE}"
+        echo ""
+    done
+    echo -e "!!! FINISHED PRINTING FAILED TESTS !!!${RESET_STYLE}\n"
     exit 1
 else
-    echo -e "${RED}${BOLD_STYLE}!!! SOMETHING BORKED OH NO NOT GOOD !!!${RESET_STYLE}\n"
+    echo -e "!!! SOMETHING BORKED OH NO NOT GOOD !!!${RESET_STYLE}\n"
     exit 1
 fi

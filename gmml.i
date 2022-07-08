@@ -45,6 +45,8 @@
 #include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
 #include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
 
+#include "includes/InternalPrograms/Sequence/sequence.hpp"
+
 //#include "includes/InputSet/CifFileSpace/ciffileatom.hpp"
 //#include "includes/InputSet/CifFileSpace/ciffile.hpp"
 //#include "includes/InputSet/CifFileSpace/ciffileprocessingexception.hpp"
@@ -233,6 +235,8 @@ std::ostream & get_cout() { return std::cout; }
 
 %include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
 %include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
+
+%include "includes/InternalPrograms/Sequence/sequence.hpp"
 
 %include "includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
 %include "includes/InputSet/PdbFileSpace/pdbatomcard.hpp"

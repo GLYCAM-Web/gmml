@@ -66,10 +66,10 @@ Building DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp
 *********************
 Building LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 4,5
+Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 5,4
 Check these inputs for mistakes: 
 Inputs:
-linkages: 4,5
+linkages: 5,4
 isomer: L
 inputResName: Fru
 ringType: p
@@ -83,10 +83,10 @@ Building DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManp
 *********************
 Building DLyxpa1-2[DManpb1-4][LGulpb1-6]DGlcpa1-2[LGalpa1-5][LFucpa1-1]DFrufb
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 1,2,5
+Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 5,2,1
 Check these inputs for mistakes: 
 Inputs:
-linkages: 1,2,5
+linkages: 5,2,1
 isomer: D
 inputResName: Fru
 ringType: f
@@ -96,10 +96,10 @@ configuration: b
 *********************
 Building DManpb1-4[DLyxpa1-2][LGulpb1-6]DGlcpa1-2[LFucpa1-1][LGalpa1-5]DFrufb
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 1,2,5
+Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 5,2,1
 Check these inputs for mistakes: 
 Inputs:
-linkages: 1,2,5
+linkages: 5,2,1
 isomer: D
 inputResName: Fru
 ringType: f
@@ -121,10 +121,10 @@ Building DGlcp[4D,3Me]b1-2DManp[6H]a1-OH
 *********************
 Building DFrufb2-6DFrufb2-6[DFrufb2-6DFrufb2-1]DFrufb2-6DFrufb2-6DFrufb2-OH
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 1,6
+Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 6,1
 Check these inputs for mistakes: 
 Inputs:
-linkages: 1,6
+linkages: 6,1
 isomer: D
 inputResName: Fru
 ringType: f

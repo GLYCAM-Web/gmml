@@ -16,6 +16,7 @@ do
 	cmp $svgFile tests/correct_outputs/016.output_SVGs/$svgFile
 	if ! cmp $svgFile tests/correct_outputs/016.output_SVGs/$svgFile > /dev/null 2>&1; then
 		printf "Test FAILED! Output file %s different to tests/correct_outputs/016.output_SVGs/%s\n" $svgFile $svgFile
+	  	echo "Exit Code: 1"
 	  	return 1
 	fi
 	rm $svgFile
