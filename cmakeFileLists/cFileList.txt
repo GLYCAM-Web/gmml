@@ -131,7 +131,6 @@
 ./src/InternalPrograms/GlycoproteinBuilder/glycosylationSite.cpp
 ./src/InternalPrograms/GlycoproteinBuilder/gpInputStructs.cpp
 ./src/InternalPrograms/Sequence/sequence.cpp
-./src/InternalPrograms/beadResidues.cpp
 ./src/InternalPrograms/functionsForGMML.cpp
 ./src/MolecularMetadata/GLYCAM/amberatomtypeinfo.cpp
 ./src/MolecularMetadata/GLYCAM/amberelements.cpp
@@ -177,6 +176,7 @@
 ./src/MolecularModeling/Selections/selections.cc
 ./src/MolecularModeling/atom.cc
 ./src/MolecularModeling/atomnode.cc
+./src/MolecularModeling/beadResidues.cpp
 ./src/MolecularModeling/dockingatom.cc
 ./src/MolecularModeling/moleculardynamicatom.cc
 ./src/MolecularModeling/molecule.cc

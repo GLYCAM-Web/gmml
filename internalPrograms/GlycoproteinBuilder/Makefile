@@ -20,7 +20,6 @@ BUILD = ./build
 BIN = ./bin
 
 all:$(BIN)/gpBuilder \
-	$(BUILD)/beadResidues.o \
 	$(BUILD)/glycoproteinBuilder.o \
 	$(BUILD)/glycosylationSite.o \
     $(BUILD)/gpInputStructs.o \
@@ -28,14 +27,12 @@ all:$(BIN)/gpBuilder \
 	$(BUILD)/functionsForGMML.o \
 
 $(BIN)/gpBuilder: \
-		$(BUILD)/beadResidues.o \
 		$(BUILD)/glycoproteinBuilder.o \
 		$(BUILD)/glycosylationSite.o \
         $(BUILD)/gpInputStructs.o \
 		$(BUILD)/functionsForGMML.o \
 		$(BUILD)/main.o 
 	$(CC) \
-		$(BUILD)/beadResidues.o \
 		$(BUILD)/glycoproteinBuilder.o \
 		$(BUILD)/glycosylationSite.o \
         $(BUILD)/gpInputStructs.o \
@@ -43,16 +40,10 @@ $(BIN)/gpBuilder: \
 		$(BUILD)/main.o \
 	$(LINK) $(RUNTIME) -o $(BIN)/gpBuilder
 
-$(BUILD)/beadResidues.o: $(SRC)/beadResidues.cpp \
-		$(INC)/beadResidues.hpp \
-		$(INCGP)/glycosylationSite.hpp 
-	$(COMPILE) $(SRC)/beadResidues.cpp -o $(BUILD)/beadResidues.o
-
 $(BUILD)/glycoproteinBuilder.o: $(SRCGP)/glycoproteinBuilder.cpp \
 		$(INCGP)/glycoproteinBuilder.hpp \
         $(INCGP)/gpInputStructs.hpp \
 		$(INCGP)/glycosylationSite.hpp \
-		$(INC)/beadResidues.hpp \
 		$(INC)/functionsForGMML.hpp
 	$(COMPILE) $(SRCGP)/glycoproteinBuilder.cpp -o $(BUILD)/glycoproteinBuilder.o
 

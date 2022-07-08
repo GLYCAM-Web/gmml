@@ -8,7 +8,7 @@
 
 #include "includes/InternalPrograms/GlycoproteinBuilder/glycosylationSite.hpp"
 #include "includes/InternalPrograms/functionsForGMML.hpp"
-#include "includes/InternalPrograms/beadResidues.hpp"
+#include "includes/MolecularModeling/beadResidues.hpp"
 #include "includes/GeometryTopology/coordinate.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp"
 #include "includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
