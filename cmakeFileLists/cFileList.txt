@@ -1,6 +1,7 @@
 ./src/CodeUtils/codetests.cc
 ./src/CodeUtils/directories.cpp
 ./src/CodeUtils/logging.cpp
+./src/CodeUtils/strings.cpp
 ./src/GeometryTopology/ResidueLinkages/residue_linkage.cc
 ./src/GeometryTopology/ResidueLinkages/rotatable_dihedral.cc
 ./src/GeometryTopology/cell.cc

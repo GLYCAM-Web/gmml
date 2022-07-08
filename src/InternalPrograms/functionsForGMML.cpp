@@ -36,10 +36,6 @@ void gmml::WriteOffFile(MolecularModeling::Assembly &ass, std::string workingDir
     frankTheOffFile.Write(fullOutputFileName, CoordinateIndex, &ass);
 }
 
-bool gmml::startsWith(std::string bigString, std::string smallString)
-{
-	return (bigString.compare(0, smallString.length(), smallString) == 0);
-}
 
 int gmml::CountInternalBonds(Assembly &ass)
 {

@@ -4,10 +4,11 @@
 #include <vector>
 #include <sstream>
 
-#include "includes/CodeUtils/logging.hpp"
 
 namespace gmml
 {
+
+bool startsWith(std::string bigString, std::string smallString);
 
 template<typename Out>
 inline void split(const std::string &s, char delim, Out result)
