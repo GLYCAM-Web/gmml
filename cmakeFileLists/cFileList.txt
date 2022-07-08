@@ -1,4 +1,5 @@
 ./src/CodeUtils/codetests.cc
+./src/CodeUtils/directories.cpp
 ./src/CodeUtils/logging.cpp
 ./src/GeometryTopology/ResidueLinkages/residue_linkage.cc
 ./src/GeometryTopology/ResidueLinkages/rotatable_dihedral.cc

@@ -1,8 +1,10 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <sys/stat.h> // mkdir
+#include <sys/stat.h> // stat
+
 #include "includes/gmml.hpp"
+#include "includes/CodeUtils/string.hpp"
 
 int main(int argc, char** argv)
 {
@@ -28,7 +30,7 @@ int main(int argc, char** argv)
     std::string line;
     while (std::getline(infile, line))
     {
-        StringVector splitLine = gmml::splitStringByDelimiter(line, delimiter);
+        StringVector splitLine = gmml::split(line, delimiter);
         std::string inputSequence = splitLine.at(1);
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
         CondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);

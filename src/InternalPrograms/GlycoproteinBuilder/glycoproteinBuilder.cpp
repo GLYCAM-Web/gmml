@@ -6,6 +6,7 @@
 #include "includes/InternalPrograms/functionsForGMML.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/files.hpp"
+#include "includes/CodeUtils/directories.hpp"
 
 // ToDo Check for negative overlap in case the funk gets funky.
 // ToDo The cout for accepting overlap changes doesn't match the values printed. Why? Is it making them high, not printing, accepting lower, then rejecting, etc?
@@ -15,7 +16,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 GlycoproteinBuilder::GlycoproteinBuilder(std::string inputFile)
 {
-    GlycoproteinBuilderInputs inputStruct = GPInputs::readGPInputFile(Find_Program_workingDirectory(), inputFile);
+    GlycoproteinBuilderInputs inputStruct = GPInputs::readGPInputFile(gmml::Find_Program_workingDirectory(), inputFile);
 	this->InitializeGlycoproteinBuilder(inputStruct);
 }
 GlycoproteinBuilder::GlycoproteinBuilder(std::string inputFile, std::string workingDirectory)
@@ -37,7 +38,7 @@ void GlycoproteinBuilder::SetWorkingDirectory(std::string workingDirectory)
 {
 	if (workingDirectory == "Default") // This value is set in the default constructor for the input struct
 	{
-		workingDirectory_ = Find_Program_workingDirectory();
+		workingDirectory_ = gmml::Find_Program_workingDirectory();
 	}
 	else
 	{
@@ -50,7 +51,7 @@ void GlycoproteinBuilder::SetPrepFileLocation(std::string prepFileLocation)
 {
 	if (prepFileLocation == "Default") // This value is set in the default constructor for the input struct
 	{
-		prepFileLocation_ = Find_Program_Installation_Directory() + "/../dat/prep/GLYCAM_06j-1_GAGS.prep";
+		prepFileLocation_ = gmml::Find_Program_Installation_Directory() + "/../dat/prep/GLYCAM_06j-1_GAGS.prep";
 	}
 	else
 	{
