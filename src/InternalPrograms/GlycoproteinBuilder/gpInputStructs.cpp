@@ -1,6 +1,5 @@
 #include "includes/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
 #include "includes/InternalPrograms/functionsForGMML.hpp"
-#include "includes/InternalPrograms/io.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/string.hpp"
 

@@ -1,6 +1,5 @@
 #include "includes/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.hpp"
 #include "includes/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
-#include "includes/InternalPrograms/io.hpp"
 #include "includes/InternalPrograms/beadResidues.hpp"
 #include "includes/InternalPrograms/metropolisCriterion.hpp"
 #include "includes/InternalPrograms/functionsForGMML.hpp"

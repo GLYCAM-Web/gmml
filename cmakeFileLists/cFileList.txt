@@ -132,7 +132,6 @@
 ./src/InternalPrograms/Sequence/sequence.cpp
 ./src/InternalPrograms/beadResidues.cpp
 ./src/InternalPrograms/functionsForGMML.cpp
-./src/InternalPrograms/io.cpp
 ./src/MolecularMetadata/GLYCAM/amberatomtypeinfo.cpp
 ./src/MolecularMetadata/GLYCAM/amberelements.cpp
 ./src/MolecularMetadata/GLYCAM/bondlengthbytypepair.cpp
