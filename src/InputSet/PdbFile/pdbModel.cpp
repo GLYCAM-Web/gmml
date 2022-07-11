@@ -7,6 +7,7 @@
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/common.hpp" // gmml::PROTEINS
 #include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
+#include "includes/CentralDataStructure/cdsSelections.hpp"
 
 
 using pdb::PdbModel;
@@ -288,7 +289,7 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo,
         std::cout << "\n\nNewChain\n\n";
 //        std::vector<pdb::PdbResidue*> residues = chain->getResidues();
         // GET PROTEIN RESIDUES how??? Selections?? i.e.
-        std::vector<pdb::PdbResidue*> proteinResidues = cds::selectResidues(chain->getResidues(), "PROTEIN");
+        std::vector<pdb::PdbResidue*> proteinResidues = cds::selectProteinResidues(chain->getResidues(), Abstract::absResidue::Type::Protein);
         // Above would allow for assembly, chain or ensemble to resuse the same function.
         for(std::vector<pdb::PdbResidue*>::iterator it1 = proteinResidues.begin(); it1 != proteinResidues.end(); ++it1)
         {
@@ -310,7 +311,7 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo,
                     chain->InsertCap(*res1, inputOptions.gapCTermination_);
                     chain->InsertCap(*res2, inputOptions.gapNTermination_);
                     // Record it
-                    ppInfo.missingResidues_.emplace_back(res1->getChainId(), res2->getNumberAndInsertionCode(), res2->getNumberAndInsertionCode(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
+                    ppInfo.missingResidues_.emplace_back(res1->getChainId(), res1->getNumberAndInsertionCode(), res2->getNumberAndInsertionCode(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
                 }
             }
         }
