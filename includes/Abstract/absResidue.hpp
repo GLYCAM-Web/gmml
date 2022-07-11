@@ -1,6 +1,8 @@
 #ifndef GMML_INCLUDES_ABSTRACT_RESIDUE_HPP
 #define GMML_INCLUDES_ABSTRACT_RESIDUE_HPP
 
+#include <string>
+
 namespace Abstract
 {
 	class absResidue 
@@ -10,11 +12,15 @@ namespace Abstract
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        inline absResidue::Type GetType() {return type_;}
+        inline absResidue::Type GetType() const {return type_;}
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
         inline void SetType(absResidue::Type type) {type_ = type;}
+        //////////////////////////////////////////////////////////
+        //                       FUNCTIONS                      //
+        //////////////////////////////////////////////////////////
+        Type determineType(const std::string &residueName) const;
     private:      
         //////////////////////////////////////////////////////////
         //                       ATTRRIBUTES                    //
