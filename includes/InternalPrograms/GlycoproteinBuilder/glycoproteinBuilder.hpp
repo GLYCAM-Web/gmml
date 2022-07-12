@@ -13,6 +13,7 @@ public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
+	GlycoproteinBuilder(std::string inputFile);
     GlycoproteinBuilder(std::string inputFile = "Default", std::string workingDirectory = "Default");
     GlycoproteinBuilder(GlycoproteinBuilderInputs inputStruct);
     //////////////////////////////////////////////////////////

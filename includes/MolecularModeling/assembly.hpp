@@ -1533,6 +1533,7 @@ public:
     double CalculatePsiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
     double CalculatePhiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
     bool guessIfC_CDoubleBond(MolecularModeling::Atom* carbon1, MolecularModeling::Atom* carbon2);
+    std::pair<double,double> guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2);
 //    std::pair<double,double> guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2);
     void GetAuthorNaming(std::vector< std::string > amino_lib_files, Glycan::Monosaccharide* mono, std::string CCD_Path);
     bool checkIfNucleotide(Glycan::Monosaccharide* mono);
