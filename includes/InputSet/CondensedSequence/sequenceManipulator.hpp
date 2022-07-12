@@ -25,7 +25,7 @@ namespace CondensedSequence
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
         std::string ReorderSequence();
-        std::string LabelSequence();
+        void LabelSequence();
         void SetIndexByConnectivity();
         std::string Print(const bool withLabels = false);
         std::vector<ParsedResidue*> GetParsedResiduesOrderedByConnectivity();

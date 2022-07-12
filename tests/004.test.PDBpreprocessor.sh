@@ -10,14 +10,17 @@ do
         filename=$(basename $filePath)
         if ! cmp Processed.pdb tests/correct_outputs/$filename > /dev/null 2>&1; then
             printf "Test FAILED!.\nINFO: These files are different: Processed.pdb tests/correct_outputs/$filename\n"
+        	echo "Exit Code: 1"
             return 1
         else
             printf "Test passed for $filePath.\n"
         fi
     else
         printf "Test FAILED!.\nProcessed.pdb was not created for $filePath.\n"
+        echo "Exit Code: 1"
         return 1
 	fi
 done
 rm Processed.pdb PDBPreprocessor > /dev/null 2>&1
+echo "Exit Code: 0"	
 return 0

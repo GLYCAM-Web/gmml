@@ -219,7 +219,8 @@ std::string ParsedResidue::Print()
                 << this->GetResidueModifier() << "_"
                 << this->GetRingShape() << "_"
 				<< this->GetConfiguration() << "_"
-				<< this->GetLinkage() << ".\n";
+				<< this->GetLinkage() << ". Type: "
+                << this->GetType() << ".\n";
     return ss.str();
 }
 

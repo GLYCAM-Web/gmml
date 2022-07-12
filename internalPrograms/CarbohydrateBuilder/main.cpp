@@ -2,6 +2,8 @@
 #include <string>
 #include <fstream>
 #include <sys/stat.h> // mkdir
+
+#include "includes/CodeUtils/string.hpp"
 #include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
 int main(int argc, char** argv)
@@ -9,7 +11,7 @@ int main(int argc, char** argv)
     if (argc != 5)
     {
         std::cerr << "Usage:   ./buildOligosaccharideLibrary <List IDs and sequences> <Char delimiter used in list> <Folder to put outputs> <Prepfile>\n";
-        std::cerr << "Example: ./buildOligosaccharideLibrary exampleLibrary.txt _ outputs/ ../../dat/prep/GLYCAM_06j-1.prep\n";
+        std::cerr << "Example: ./buildOligosaccharideLibrary exampleLibrary.txt _ outputs/ ../../dat/prep/GLYCAM_06j-1_GAGS.prep\n";
         std::cerr << "Don't use a delimiter that appears in glycan sequences or ids. Like - or , or [] etc\n";
         std::exit(EXIT_FAILURE); 
     }
@@ -27,7 +29,7 @@ int main(int argc, char** argv)
     std::string line;
     while (std::getline(infile, line))
     {
-        StringVector splitLine = gmml::splitStringByDelimiter(line, delimiter);
+        StringVector splitLine = gmml::split(line, delimiter);
         std::string inputSequence = splitLine.at(1);
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
         try

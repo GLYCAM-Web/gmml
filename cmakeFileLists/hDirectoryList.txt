@@ -6,6 +6,7 @@
 ./includes/MolecularModeling
 ./includes/MolecularModeling/Selections
 ./includes/MolecularModeling/Graph
+./includes/MolecularModeling/Selections
 ./includes/MolecularModeling/TemplateGraph
 ./includes/MolecularModeling/TemplateGraph/GraphStructure
 ./includes/MolecularModeling/TemplateGraph/GraphStructure/include

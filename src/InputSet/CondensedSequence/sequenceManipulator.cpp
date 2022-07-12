@@ -36,7 +36,7 @@ std::vector<ParsedResidue*> SequenceManipulator::GetParsedResiduesOrderedByConne
     return rawResidues;
 }
 
-std::string SequenceManipulator::LabelSequence()
+void SequenceManipulator::LabelSequence()
 {
 	this->SetIndexByConnectivity();
 	std::stringstream ss;
@@ -52,7 +52,7 @@ std::string SequenceManipulator::LabelSequence()
 			ss.str( std::string() ); ss.clear(); // Must do both of these to clear the stream
 		}
 	}
-	return this->Print();
+	return;
 }
 
 void SequenceManipulator::SetIndexByConnectivity()
@@ -82,13 +82,13 @@ std::string SequenceManipulator::Print(const bool withLabels)
 	int branchStackSize = 0;
 	this->RecurvePrint(this->GetTerminal(), branchStackSize, output, withLabels);
 	std::reverse(output.begin(), output.end()); // Reverse order, as it starts from terminal.
-	std::stringstream logss;
+	std::stringstream ss;
 	for (auto &label : output)
 	{
-		logss << label;
+		ss << label;
 	}
-	gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-	return logss.str();
+	gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+	return ss.str();
 }
 
 void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels)
@@ -110,6 +110,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 	if (!derivatives.empty())
 	{
 		derivatives.pop_back(); // Remove the last ","
+		std::reverse(derivatives.begin(), derivatives.end()); // order should be 2S,6S, not 6S,2S.
 		outputResidueString += "[";
 		for (auto &derivative : derivatives)
 		{

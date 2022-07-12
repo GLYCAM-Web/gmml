@@ -14,6 +14,7 @@ if grep -q "Program got to end ok" test1_output; then
         echo "Test passed."
         ((tests_passed++))
         rm test1_output
+	rm ASN_*_glycan.pdb
     else
         echo "Structure files different, ( tests/simple/savedOutput_GlycoProtein_All_Resolved.pdb Vs tests/simple/GlycoProtein_All_Resolved.pdb ) test FAILED!"
     fi

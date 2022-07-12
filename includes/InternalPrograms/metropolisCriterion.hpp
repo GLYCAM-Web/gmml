@@ -4,7 +4,7 @@
 #include <cmath>
 #include <stdio.h>
 #include <random>
-#include "includes/External_Libraries/PCG/pcg_random.hpp" // $GEMSHOME/gmml/includes is in the makefile
+#include "includes/External_Libraries/PCG/pcg_random.h" // $GEMSHOME/gmml/includes is in the makefile
 
 namespace monte_carlo
 {

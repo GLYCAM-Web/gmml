@@ -1,10 +1,10 @@
-#include "includes/InternalPrograms/io.hpp"
+#include "includes/CodeUtils/directories.hpp"
 #include "includes/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.hpp"
 #include "includes/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
 
 int main(int argc, char* argv[])
 {
-    std::string workingDirectory = Find_Program_workingDirectory(); // Default behaviour.
+    std::string workingDirectory = gmml::Find_Program_workingDirectory(); // Default behaviour.
     std::string inputFile = "input.txt";
     if (argc == 1 || argc > 3)
     {

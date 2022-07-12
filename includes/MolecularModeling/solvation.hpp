@@ -37,7 +37,7 @@ namespace MolecularModeling
           /// \param closeness
           /// \param lib_file
           ///
-       void AddSolvent(double extension, double closeness, string lib_file);
+       void AddSolvent(double extension, double closeness, std::string lib_file);
        void SplitSolvent(Assembly* solvent, Assembly* solute);
 
 

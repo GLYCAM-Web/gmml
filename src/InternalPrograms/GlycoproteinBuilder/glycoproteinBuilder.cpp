@@ -1,11 +1,11 @@
 #include "includes/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.hpp"
 #include "includes/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
-#include "includes/InternalPrograms/io.hpp"
-#include "includes/InternalPrograms/beadResidues.hpp"
+#include "includes/MolecularModeling/beadResidues.hpp"
 #include "includes/InternalPrograms/metropolisCriterion.hpp"
 #include "includes/InternalPrograms/functionsForGMML.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/files.hpp"
+#include "includes/CodeUtils/directories.hpp"
 #include "includes/ParameterSet/OffFileSpace/offfile.hpp"
 
 // ToDo Check for negative overlap in case the funk gets funky.
@@ -14,6 +14,11 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
+GlycoproteinBuilder::GlycoproteinBuilder(std::string inputFile)
+{
+    GlycoproteinBuilderInputs inputStruct = GPInputs::readGPInputFile(gmml::Find_Program_workingDirectory(), inputFile);
+	this->InitializeGlycoproteinBuilder(inputStruct);
+}
 GlycoproteinBuilder::GlycoproteinBuilder(std::string inputFile, std::string workingDirectory)
 {
     try
@@ -49,7 +54,7 @@ void GlycoproteinBuilder::SetWorkingDirectory(std::string workingDirectory)
 {
 	if (workingDirectory == "Default") // This value is set in the default constructor for the input struct
 	{
-		workingDirectory_ = Find_Program_workingDirectory();
+		workingDirectory_ = gmml::Find_Program_workingDirectory();
 	}
 	else
 	{
@@ -63,7 +68,7 @@ void GlycoproteinBuilder::SetPrepFileLocation(std::string prepFileLocation)
 {
 	if (prepFileLocation == "Default") // This value is set in the default constructor for the input struct
 	{
-		prepFileLocation_ = Find_Program_Installation_Directory() + "/../dat/prep/GLYCAM_06j-1_GAGS.prep";
+		prepFileLocation_ = gmml::Find_Program_Installation_Directory() + "/../dat/prep/GLYCAM_06j-1_GAGS.prep";
 	}
 	else
 	{
@@ -136,35 +141,16 @@ void GlycoproteinBuilder::ConvertInputStructEntries(GlycoproteinBuilderInputs in
 void GlycoproteinBuilder::WriteOutputFiles()
 {
 	gmml::WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved", false);
-//  Write an off file:
-    this->GetGlycoproteinAssembly().SetName("GLYCOPROTEIN"); // Necessary for off file to load into tleap
-    try
-    {
-        this->GetGlycoproteinAssembly().SetChargesAndAtomTypes();
-        OffFileSpace::OffFile frankTheOffFile;
-        int CoordinateIndex = 0;
-        std::string completeFileName = this->GetWorkingDirectory() + "/GlycoProtein_All_Resolved.off";
-        frankTheOffFile.Write(completeFileName, CoordinateIndex, &this->GetGlycoproteinAssembly());
-    }
-    catch (const std::runtime_error &error)
-    {
-        // Probably set status here.
-        std::stringstream ss;
-        ss << "Could not generate off file: " << error.what();
-        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-        this->SetStatus("ERROR", ss.str());
-    }
-    catch (...)
-    {
-        gmml::log(__LINE__, __FILE__, gmml::ERR, "Could not generate off file: Unexpected exception caught when setting charges and atom types");
-        this->SetStatus("ERROR", "Could not generate off file: Unexpected exception caught when setting charges and atom types");
-    }
+	this->GetGlycoproteinAssembly().SerializeResidueNumbers();
+	gmml::WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved_Serialized", false);
+	this->GetGlycoproteinAssembly().SetName("GLYCOPROTEINBUILDER"); // For reading off file into tleap
+	gmml::WriteOffFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved", false);
 //    this->DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(this->GetGlycosites(), this->GetOverlapTolerance());
 //	std::stringstream logss;	
 //    logss << "Atomic overlap is " << this->CalculateOverlaps(ATOMIC) << "\n";
 //    logss << "Global overlap is " << this->GetGlobalOverlap() << "\n";
 //	  gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-//    this->PrintDihedralAnglesAndOverlapOfGlycosites();
+    this->PrintDihedralAnglesAndOverlapOfGlycosites();
 //	  this->WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_Resolved", false);
     return;
 }

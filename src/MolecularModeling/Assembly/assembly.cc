@@ -506,6 +506,11 @@ MolecularModeling::AtomVector Assembly::GetAllAtomsOfAssemblyExceptProteinWaterR
 MolecularModeling::ResidueVector Assembly::GetAllResiduesOfAssembly()
 {
     ResidueVector all_residues_of_assembly = ResidueVector();
+    ResidueVector residues = this->GetResidues();
+    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
+    {
+        all_residues_of_assembly.push_back(*it);
+    }
     AssemblyVector sub_assemblies = this->GetAssemblies();
     for(AssemblyVector::iterator it = sub_assemblies.begin(); it != sub_assemblies.end(); it++)
     {
@@ -515,11 +520,6 @@ MolecularModeling::ResidueVector Assembly::GetAllResiduesOfAssembly()
         {
             all_residues_of_assembly.push_back(*it1);
         }
-    }
-    ResidueVector residues = this->GetResidues();
-    for(ResidueVector::iterator it = residues.begin(); it != residues.end(); it++)
-    {
-        all_residues_of_assembly.push_back(*it);
     }
     return all_residues_of_assembly;
 }
@@ -1292,6 +1292,15 @@ void Assembly::EnsureIntegralCharge()
 }
 
 
+void Assembly::SerializeResidueNumbers()
+{
+    int num = 0;
+    for (auto &residue : this->GetAllResiduesOfAssembly())
+    {
+        residue->SetResidueNumber(++num);
+    }
+    return;
+}
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////

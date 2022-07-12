@@ -16,7 +16,7 @@ Assembly created without throwing an exception for: DGlcpNAcb1-4DGlcpAb1-4DGlcpA
 -----------------------------------------------------------------------------------------------------
 
 Sequence 4: dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
-Test level caught error: Could not find prep entry for LIdopA(2SO). GLYCAM code used to search is: YuA2
+Test level caught runtime error: Could not find prep entry for LIdopA(2SO). GLYCAM code used to search is: YuA2
 -----------------------------------------------------------------------------------------------------
 
 Sequence 5: dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
@@ -60,7 +60,7 @@ Test level caught error: Error: we can't parse this residue: "Boo"
 -----------------------------------------------------------------------------------------------------
 
 Sequence 14: dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4LIdopA(2SO)a1-4DGlcpNSa1-4DGlcpA[2S]b1-OH
-Test level caught error: Could not find prep entry for LIdopA(2SO). GLYCAM code used to search is: YuA2
+Test level caught runtime error: Could not find prep entry for LIdopA(2SO). GLYCAM code used to search is: YuA2
 -----------------------------------------------------------------------------------------------------
 
 Sequence 15: DGlNAcb1-OH

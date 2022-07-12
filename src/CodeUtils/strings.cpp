@@ -61,3 +61,8 @@ int codeUtils::GetSizeOfIntInString(const std::string str)
 //      return true;
 //  return false;
 //}
+
+bool gmml::startsWith(std::string bigString, std::string smallString)
+{
+	return (bigString.compare(0, smallString.length(), smallString) == 0);
+}

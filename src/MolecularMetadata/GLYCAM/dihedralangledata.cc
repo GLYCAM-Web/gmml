@@ -134,14 +134,14 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         // 2-7 linkages copied from GlycamWeb Jan 2021. Branching in the linkage causes oddities with the bond number and which atoms are chosen for the torsion.
         { "C2"   , "O7"     , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C3" , "C2" , "O." , "C."  },
         { "C2"   , "O7"     , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C." , "O." , "C." , "H."  },
-        { "C2"   , "O7"     , "Omg7" ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 3 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O7" , "C7" , "C6" , "O6"  },
-        { "C2"   , "O7"     , "Omg9" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 4 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "C7"  },
-        { "C2"   , "O7"     , "Omg8" ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 5 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C9" , "C8" , "C7" , "O7"  },
+        { "C.*"  , "O7"     , "Omg7" ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 3 , 1 , {"none"}                , {"ulosonate"}    , "O7" , "C7" , "C6" , "O6"  },
+        { "C.*"  , "O7"     , "Omg9" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 4 , 1 , {"none"}                , {"ulosonate"}    , "O9" , "C9" , "C8" , "C7"  },
+        { "C.*"  , "O7"     , "Omg8" ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 5 , 1 , {"none"}                , {"ulosonate"}    , "C9" , "C8" , "C7" , "O7"  },
         // 2-9 linkages copied from GlycamWeb Jan 2021.
         { "C2"   , "O9"     , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C3" , "C2" , "O." , "C."  },
-        { "C2"   , "O9"     , "Omg9" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 3 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "C7"  },
-        { "C2"   , "O9"     , "Omg8" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 4 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "C9" , "C8" , "C7" , "C6"  },
-        { "C2"   , "O9"     , "Omg7" , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 5 , 1 , {"ulosonate", "alpha"}  , {"ulosonate"}    , "O7" , "C7" , "C6" , "O6"  },
+        { "C.*"  , "O9"     , "Omg9" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 3 , 1 , {"none"}                , {"ulosonate"}    , "O9" , "C9" , "C8" , "C7"  },
+        { "C.*"  , "O9"     , "Omg8" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 4 , 1 , {"none"}                , {"ulosonate"}    , "C9" , "C8" , "C7" , "C6"  },
+        { "C.*"  , "O9"     , "Omg7" , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 5 , 1 , {"none"}                , {"ulosonate"}    , "O7" , "C7" , "C6" , "O6"  },
          // Internal 2-8 linkages   
         { "C2"   , "O8"     , "Phi"  , -79.5  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 1 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
         { "C2"   , "O8"     , "Psi"  ,  88.1  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 2 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
@@ -205,22 +205,27 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C1"   , "O1"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 3 , 1 , {"none"}       , {"ketose"}                , "O1" , "C1" , "C2" , "O5" },
       // Common sugar derivatives
       // Phosphate/sulfate
-        { "[SP]1", "N[2]"   , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"monosaccharide"}                  , "O." , ".1" , "N." , "C."  },
-        { "[SP]1", "N[2]"   , "Psi"  , -40.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"monosaccharide"}                  , ".1" , "N." , "C." , "H."  },
-        { "[SP]1", "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"none"}       , {"monosaccharide"}                  , "O." , ".1" , "O." , "C."  },
-        { "[SP]1", "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"monosaccharide"}                  , ".1" , "O." , "C." , "H."  },
-        { "[SP]1", "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"none"}       , {"monosaccharide"}                  , ".1" , "O." , "C." , "C."  },
-        { "[SP]1", "O6"     , "Omg"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"none"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  },
-//        { "[SP]1", "O6"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  },
-//        { "[SP]1", "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"none"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
+        { "[SP]1", "N[2]"   , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"derivative"}       , {"monosaccharide"}                  , "O." , ".1" , "N." , "C."  },
+        { "[SP]1", "N[2]"   , "Psi"  , -40.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"derivative"}       , {"monosaccharide"}                  , ".1" , "N." , "C." , "H."  },
+        { "[SP]1", "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 1 , 1 , {"derivative"}       , {"monosaccharide"}                  , "O." , ".1" , "O." , "C."  },
+        { "[SP]1", "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"derivative"}       , {"monosaccharide"}                  , ".1" , "O." , "C." , "H."  },
+        { "[SP]1", "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 2 , 1 , {"derivative"}       , {"monosaccharide"}                  , ".1" , "O." , "C." , "C."  },
+        { "[SP]1", "O6"     , "Omg"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"derivative"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  },
+//        These two were removed to stop them showing up as options the carb builder, but for some applications like grafting you may want them enabled. No functionality for that context yet tho.
+//        { "[SP]1", "O6"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"derivative"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  },
+//        { "[SP]1", "O6"     , "Omg"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "tg" , 3 , 3 , {"derivative"}       , {"gauche-effect=galacto"} , "O6" , "C6" , "C5" , "O5"  },
       // Ac ACX
-        { "C1A"  , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"none"}       , {"monosaccharide"}                  , "C2A", "C1A", "O." , "C."  },
-        { "C1A"  , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"none"}       , {"monosaccharide"}                  , "C1A", "O." , "C." , "H."  },
-        { "C1A"  , "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 2 , 1 , {"none"}       , {"monosaccharide"}                  , "C1A", "O." , "C." , "C."  },
+        { "C1A"  , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"derivative"}       , {"monosaccharide"}                  , "C2A", "C1A", "O." , "C."  },
+        { "C1A"  , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"derivative"}       , {"monosaccharide"}                  , "C1A", "O." , "C." , "H."  },
+        { "C1A"  , "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 2 , 1 , {"derivative"}       , {"monosaccharide"}                  , "C1A", "O." , "C." , "C."  },
       // Me MEX
-        { "CH3"  , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"none"}       , {"monosaccharide"}                  , "CH3", "O." , "C." , "H."  },
-        { "CH3"  , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"none"}       , {"monosaccharide"}                  , "CH3", "O." , "C." , "H."  },
-        { "CH3"  , "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 2 , 1 , {"none"}       , {"monosaccharide"}                  , "CH3", "O." , "C." , "C."  },
+        { "CH3"  , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"derivative"}       , {"monosaccharide"}                  , "CH3", "O." , "C." , "H."  },
+        { "CH3"  , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "c"  , 2 , 1 , {"derivative"}       , {"monosaccharide"}                  , "CH3", "O." , "C." , "H."  },
+        { "CH3"  , "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 2 , 1 , {"derivative"}       , {"monosaccharide"}                  , "CH3", "O." , "C." , "C."  },
+      // Any derivative linked to O8 of Sia. Copied from 2-8 linkage values.
+        { ".*"   , "O8"     , "Omg8" ,-160.4  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 3 , 1 , {"derivative"}                        , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { ".*"   , "O8"     , "Omg7" , -59.6  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 4 , 1 , {"derivative"}                        , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { ".*"   , "O8"     , "Omg9" ,  73.4  ,  20.0  ,  20.0  , 1.0   , "permutation" , ""   , 5 , 1 , {"derivative"}                        , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
         // Protein linkages
         // ASN // Values are from Petrescu et al 2004.
         { "C."   , "ND2"    , "Chi1" , 191.6  ,  14.4  ,  14.4  , 0.497 , "conformer"   , "A"  , 4 , 1 , {"none"}       , {"amino-acid"}            , "CG" , "CB" , "CA" , "N"   },
