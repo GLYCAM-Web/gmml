@@ -3,6 +3,10 @@
 #include <ctype.h> // isdigit
 #include "includes/CodeUtils/strings.hpp"
 
+bool codeUtils::startsWith(std::string bigString, std::string smallString)
+{
+	return (bigString.compare(0, smallString.length(), smallString) == 0);
+}
 
 std::string codeUtils::FindStringInStringMap(const std::string s, const std::unordered_map<std::string, std::string> &sMap)
 {
@@ -52,17 +56,4 @@ int codeUtils::GetSizeOfIntInString(const std::string str)
         }
     }
     return size;
-}
-
-
-//bool codeUtils::isStringInVector(const std::string s, const std::vector<std::string> &v)
-//{
-//  if (std::find(v.begin(), v.end(), s) != v.end())
-//      return true;
-//  return false;
-//}
-
-bool gmml::startsWith(std::string bigString, std::string smallString)
-{
-	return (bigString.compare(0, smallString.length(), smallString) == 0);
 }
