@@ -187,7 +187,7 @@
 #include "includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
 #include "includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 
-#include "includes/Abstract/builder.hpp"
+#include "includes/Abstract/absBuilder.hpp"
 #include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
 //#include "includes/External_Libraries/json.hpp"
@@ -377,7 +377,7 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
 %include "includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 
-%include "includes/Abstract/builder.hpp"
+%include "includes/Abstract/absBuilder.hpp"
 %include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
 //%include "includes/External_Libraries/json.hpp"
