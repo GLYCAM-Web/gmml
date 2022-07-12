@@ -5,9 +5,12 @@
 #include <vector>
 #include <memory> // unique_ptr
 #include <algorithm> // std::find
+//#include <thread> // thread
 
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/MolecularMetadata/atomicBonds.hpp" // bondIfClose
+
 
 namespace cds
 {
@@ -40,6 +43,7 @@ public:
     void addMolecule(std::unique_ptr<moleculeT> myMolecule);
     std::vector<residueT*> getResiduesWithName(std::vector<std::string> queryNames);
     const atomT* findAtom(const int& serialNumber);
+    void bondAtomsByDistance();
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
@@ -173,6 +177,30 @@ const atomT* cdsAssembly<moleculeT, residueT, atomT>::findAtom(const int& serial
     return nullptr;
 }
 
+// Simple for now, asked P to make a fast one.
+template <class moleculeT, class residueT, class atomT>
+void cdsAssembly<moleculeT, residueT, atomT>::bondAtomsByDistance()
+{
+//    std::vector<std::thread> threads;
+//    int maxThreads = 11;
+//    int i = 1;
+    std::vector<atomT*> atoms = this->getAtoms();
+    //typename std::vector<std::unique_ptr<atomT>>::iterator;
+    for(typename std::vector<atomT*>::iterator it1 = atoms.begin(); it1 != atoms.end(); ++it1)
+    {
+        atomT* atom1 = *it1;
+        for(typename std::vector<atomT*>::iterator it2 = std::next(it1); it2 != atoms.end(); ++it2)
+        {
+            atomT* atom2 = *it2;
+            //gmml::log(__LINE__,__FILE__,gmml::INF, "Checking " + atom1->GetId() + " vs " + atom2->GetId());
+            // Need to mutex lock the add node function in atom1? What about accessing atom2 as a node in that context? Probably also needs to lock.
+            //std::thread t(&atomicBonds::bondAtomsIfClose, atom1, atom2);
+            //t.join(); This makes it linear.
+            atomicBonds::bondAtomsIfClose(atom1, atom2);
+        }
+    }
+    return;
+}
 
 } // namespace
 #endif // ASSEMBLY_HPP

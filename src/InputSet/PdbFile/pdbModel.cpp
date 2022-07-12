@@ -7,6 +7,7 @@
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/common.hpp" // gmml::PROTEINS
 #include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
+#include "includes/CentralDataStructure/cdsSelections.hpp"
 
 
 using pdb::PdbModel;
@@ -49,6 +50,7 @@ PdbModel::PdbModel(std::stringstream &stream_block)
         }
     }
     gmml::log(__LINE__,__FILE__,gmml::INF, "PdbModel Constructor Complete Captain");
+    //this->bondAtomsByDistance(); // Just testing this functionality. It's just a test bro.
     return;
 }
 
@@ -276,6 +278,45 @@ void PdbModel::preProcessGaps(pdb::PreprocessorInformation &ppInfo, const pdb::P
             previousSequenceNumber = residue->getNumber();
         }
     }
+}
+
+void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
+{
+    // Missing Residues (gaps); If two sequential protein residues in the same molecule aren't close enough to bond: this is a gap regardless of residue number/insertion code. User will want caps(ACE/NME) or zwitterionic, we can't know ourselves without knowledge of the system, but most of the time caps.
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Gaps");
+    for(auto &chain : this->getMolecules())
+    {
+        std::cout << "\n\nNewChain\n\n";
+//        std::vector<pdb::PdbResidue*> residues = chain->getResidues();
+        // GET PROTEIN RESIDUES how??? Selections?? i.e.
+        std::vector<pdb::PdbResidue*> proteinResidues = cds::selectProteinResidues(chain->getResidues(), Abstract::absResidue::Type::Protein);
+        // Above would allow for assembly, chain or ensemble to resuse the same function.
+        for(std::vector<pdb::PdbResidue*>::iterator it1 = proteinResidues.begin(); it1 != proteinResidues.end(); ++it1)
+        {
+            std::vector<pdb::PdbResidue*>::iterator it2 = std::next(it1);
+            if (it2 != proteinResidues.end())
+            {
+                pdb::PdbResidue* res1 = *it1;
+                pdb::PdbResidue* res2 = *it2;
+                std::cout << "res1 is " + res1->getNumberAndInsertionCode() + "_" + res1->getChainId() << std::endl;
+                std::cout << "res2 is " + res2->getNumberAndInsertionCode() + "_" + res2->getChainId() << std::endl;
+                pdb::pdbAtom* res1AtomC = res1->FindAtom("C");
+                pdb::pdbAtom* res2AtomN = res2->FindAtom("N");
+                if ( !res1AtomC->isWithinBondingDistance(res2AtomN) )
+                { // GAP detected
+                    //Log it
+                    gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + (*it1)->printId());
+                    gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + (*it2)->printId());
+                    // Do it
+                    chain->InsertCap(*res1, inputOptions.gapCTermination_);
+                    chain->InsertCap(*res2, inputOptions.gapNTermination_);
+                    // Record it
+                    ppInfo.missingResidues_.emplace_back(res1->getChainId(), res1->getNumberAndInsertionCode(), res2->getNumberAndInsertionCode(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
+                }
+            }
+        }
+    }
+    return;
 }
 
 void PdbModel::preProcessMissingUnrecognized(pdb::PreprocessorInformation &ppInfo)

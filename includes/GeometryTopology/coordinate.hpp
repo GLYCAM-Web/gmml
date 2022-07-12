@@ -89,13 +89,13 @@ namespace GeometryTopology
               * @param z A double value on Z axis for the origin of translation
               */
             void Translate(double x, double y, double z);
-
             /*! \fn
               * Compare current object with the given coordinate and return true if they are the same
               * @param coordinate A coordinate to be compared with the current object
               * @return A boolean value as a result of comparison
               */
             bool CompareTo(Coordinate coordinate) const;
+            bool withinDistance(const Coordinate *coordinate, const double distance) const;
 
             /*! \fn
               * Calculate the distance between current object coordinate and the given coordinate
@@ -115,7 +115,7 @@ namespace GeometryTopology
               * Calculate the length of the vector
               * @return Length of the vector
               */
-            double length();
+            double length() const;
             /*! \fn
               * Normalize the vector and update it on the current object
               */
