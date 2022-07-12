@@ -23,7 +23,7 @@ AssemblyBuilder::AssemblyBuilder(std::string inputSequence, std::string prepFile
 {
 	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependancy Oliver.
 	this->SetIndexByConnectivity();
-    gmml::ensureFileExists(prepFilePath);
+    codeUtils::ensureFileExists(prepFilePath);
 	PrepFileSpace::PrepFile prepFile(prepFilePath);
 	gmml::log(__LINE__,__FILE__,gmml::INF,"Prepfile used is " + prepFilePath);
 	this->SetPrepResidueMap(prepFile.GetResidues()); //A mapping between a residue name and its residue object

@@ -3,7 +3,7 @@
 
 #include <string>
 
-namespace codeutils
+namespace codeUtils
 {
 bool isNumberIntegral(double number);
 }

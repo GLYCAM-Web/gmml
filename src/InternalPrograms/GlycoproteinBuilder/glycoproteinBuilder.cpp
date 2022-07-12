@@ -16,7 +16,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 GlycoproteinBuilder::GlycoproteinBuilder(std::string inputFile)
 {
-    GlycoproteinBuilderInputs inputStruct = GPInputs::readGPInputFile(gmml::Find_Program_workingDirectory(), inputFile);
+    GlycoproteinBuilderInputs inputStruct = GPInputs::readGPInputFile(codeUtils::Find_Program_workingDirectory(), inputFile);
 	this->InitializeGlycoproteinBuilder(inputStruct);
 }
 GlycoproteinBuilder::GlycoproteinBuilder(std::string inputFile, std::string workingDirectory)
@@ -54,7 +54,7 @@ void GlycoproteinBuilder::SetWorkingDirectory(std::string workingDirectory)
 {
 	if (workingDirectory == "Default") // This value is set in the default constructor for the input struct
 	{
-		workingDirectory_ = gmml::Find_Program_workingDirectory();
+		workingDirectory_ = codeUtils::Find_Program_workingDirectory();
 	}
 	else
 	{
@@ -68,7 +68,7 @@ void GlycoproteinBuilder::SetPrepFileLocation(std::string prepFileLocation)
 {
 	if (prepFileLocation == "Default") // This value is set in the default constructor for the input struct
 	{
-		prepFileLocation_ = gmml::Find_Program_Installation_Directory() + "/../dat/prep/GLYCAM_06j-1_GAGS.prep";
+		prepFileLocation_ = codeUtils::Find_Program_Installation_Directory() + "/../dat/prep/GLYCAM_06j-1_GAGS.prep";
 	}
 	else
 	{

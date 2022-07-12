@@ -71,6 +71,7 @@
 #include "includes/GeometryTopology/cell.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/files.hpp"
+#include "includes/CodeUtils/directories.hpp"
 #include "includes/CodeUtils/numbers.hpp"
 
 #include <unistd.h>
@@ -1214,8 +1215,8 @@ void Assembly::CreateOffFileFromAssembly(std::string file_name, int CoordinateIn
 void Assembly::SetChargesAndAtomTypes()
 {
     // Find $GMMLHOME
-    std::string gmmlHomeDir = codeutils::getGmmlHomeDir();
-    gmml::log(__LINE__, __FILE__, gmml::INF, "gmmlhome is: " + codeutils::getGmmlHomeDir());
+    std::string gmmlHomeDir = codeUtils::getGmmlHomeDir();
+    gmml::log(__LINE__, __FILE__, gmml::INF, "gmmlhome is: " + codeUtils::getGmmlHomeDir());
     // Library files of 3D structures with parameters for simulations.
     std::vector<std::string> libFiles, prepFiles;
     libFiles.push_back(gmmlHomeDir + "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/amino12.lib");
@@ -1281,7 +1282,7 @@ void Assembly::EnsureIntegralCharge()
     ss << std::fixed;
     ss << "Total charge is: " << std::setprecision(5) << charge << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-    if (!codeutils::isNumberIntegral(charge))
+    if (!codeUtils::isNumberIntegral(charge))
     {
         std::stringstream errorMessage;
         errorMessage << "Non-integral charge (" << charge << "). You cannot run MD with this.\n";

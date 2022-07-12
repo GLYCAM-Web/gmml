@@ -3,13 +3,10 @@
 
 #include <string>
 
-namespace codeutils
+namespace codeUtils
 {
 bool doesFileExist(const std::string& fileName);
 void ensureFileExists(const std::string& fileName);
-bool doesDirectoryExist(const std::string& pathName);
-void ensureDirectoryExists (const std::string& pathName);
-std::string getEnvVar( std::string const & key );
-std::string getGmmlHomeDir();
+std::string SplitFilename (const std::string& str);
 }
 #endif //GMML_INCLUDES_CODEUTILS_FILES_HPP

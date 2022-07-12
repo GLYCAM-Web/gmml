@@ -5,7 +5,7 @@
 #include <string>
 //#include "includes/CodeUtils/logging.hpp"
 
-namespace gmml
+namespace codeUtils
 {
 
 #ifdef WINDOWS
@@ -19,24 +19,9 @@ namespace gmml
 
 std::string Find_Program_Installation_Directory();
 std::string Find_Program_workingDirectory();
-
-inline bool doesDirectoryExist(const std::string& pathName)
-{
-    struct stat info;
-    if( stat( pathName.c_str(), &info ) != 0 )
-        return false; //printf( "cannot access %s\n", pathname );
-    else if( info.st_mode & S_IFDIR )  // S_ISDIR() doesn't exist on my windows
-        return true; //printf( "%s is a directory\n", pathname );
-    else
-        return false; //printf( "%s is no directory\n", pathname );
-}
-
-inline void ensureDirectoryExists (const std::string& pathName)
-{
-    if (!doesDirectoryExist(pathName))
-    {
-        throw "Directory " + pathName + " does not exist";
-    }
-}
+bool doesDirectoryExist(const std::string& pathName);
+void ensureDirectoryExists (const std::string& pathName);
+std::string getEnvVar( std::string const & key );
+std::string getGmmlHomeDir();
 }
 #endif //GMML_INCLUDES_CODEUTILS_DIRECTORIES_HPP

@@ -6,6 +6,7 @@
 #include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 
 #include "includes/CodeUtils/files.hpp"
+#include "includes/CodeUtils/directories.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
 using parameters::Manager;
@@ -14,8 +15,8 @@ Manager::Manager()
 {
     // How exactly this happens can be improved, but the information should only ever be loaded into gmml in one place.
     // Find $GMMLHOME
-    std::string gmmlHomeDir = codeutils::getGmmlHomeDir();
-    gmml::log(__LINE__, __FILE__, gmml::INF, "gmmlhome is: " + codeutils::getGmmlHomeDir());
+    std::string gmmlHomeDir = codeUtils::getGmmlHomeDir();
+    gmml::log(__LINE__, __FILE__, gmml::INF, "gmmlhome is: " + codeUtils::getGmmlHomeDir());
     // Library files of 3D structures with parameters for simulations.
     // DUCT_TAPE until I get a generic library templates class thingy
 //    std::vector<LibraryFileSpace::LibraryFile> libFiles;

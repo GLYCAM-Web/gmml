@@ -4,7 +4,7 @@
 
 int main(int argc, char* argv[])
 {
-    std::string workingDirectory = gmml::Find_Program_workingDirectory(); // Default behaviour.
+    std::string workingDirectory = codeUtils::Find_Program_workingDirectory(); // Default behaviour.
     std::string inputFile = "input.txt";
     if (argc == 1 || argc > 3)
     {
