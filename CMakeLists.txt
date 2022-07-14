@@ -26,6 +26,13 @@ find_package(SWIG 4.0 COMPONENTS python REQUIRED)
 #Get python lib package
 find_package(Python3 3.9 COMPONENTS Interpreter Development EXACT REQUIRED)
 
+#let the user know that we doin testin time B)
+if (TESTING)
+    message("")
+    message(WARNING "DOING A TESTING BUILD, PLEASE NOTE THAT ABSOLUTELY NOTHING REGARDING WRAPPING THE CODE WILL BE CREATED!!!")
+endif()
+
+
 #Show user what compiler they using
 message("################## TOOLS CMAKE IS USING ###################")
 message(STATUS "CMake Version:\t${CMAKE_VERSION}")
@@ -136,7 +143,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 	"${CMAKE_SOURCE_DIR}" "${HDIRECTORIES}")
 #Declaring the system will cause the compile commands to have the 
 #prefix -isystem which should cause the autotooling to ignore these files
-target_include_directories(${PROJECT_NAME} PUBLIC SYSTEM
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
     "${EXHDIRECTORIES}"
     )
 	
@@ -153,21 +160,26 @@ target_compile_options(${PROJECT_NAME} PUBLIC "-fPIC" -Wall -W)
 
 
 ################## BEGIN SETTING UP GMML_WRAPPED TARGET ###################
-#have cpp property set on for file gmml.i
-#This property is associated with the gmml.i file itself
-set_property(SOURCE gmml.i PROPERTY CPLUSPLUS ON)
-#add a swig library with name ${PROJECT_NAME}_wrapped, wrapping the code
-#in python, using our gmml.i as our source file for swig
-swig_add_library(${PROJECT_NAME}_wrapped LANGUAGE python SOURCES gmml.i)
-#makes sure the actual module produced by swig for wrapping is good, cmake 3.14
-#forward renames the module to whatever the target name is i.e. gmml_wrapped
-set_target_properties(${PROJECT_NAME}_wrapped PROPERTIES OUTPUT_NAME gmml)
-#add the python headers so we can actually use them and wrap gmml in python
-target_include_directories(${PROJECT_NAME}_wrapped PUBLIC ${Python3_INCLUDE_DIRS})
+#Done cause when we try to lint etc. if we end up using a cxx file in the compilecommands
+#our tooling gets mad slow. Keep in mind this removes the ability to make a wrapped gmml
+#so you will have to remake your cmake file. 
+if (NOT TESTING)
+    #have cpp property set on for file gmml.i
+    #This property is associated with the gmml.i file itself
+    set_property(SOURCE gmml.i PROPERTY CPLUSPLUS ON)
+    #add a swig library with name ${PROJECT_NAME}_wrapped, wrapping the code
+    #in python, using our gmml.i as our source file for swig
+    swig_add_library(${PROJECT_NAME}_wrapped LANGUAGE python SOURCES gmml.i)
+    #makes sure the actual module produced by swig for wrapping is good, cmake 3.14
+    #forward renames the module to whatever the target name is i.e. gmml_wrapped
+    set_target_properties(${PROJECT_NAME}_wrapped PROPERTIES OUTPUT_NAME gmml)
+    #add the python headers so we can actually use them and wrap gmml in python
+    target_include_directories(${PROJECT_NAME}_wrapped PUBLIC ${Python3_INCLUDE_DIRS})
 
-#Now we link the swig library to our gmml libary and our python library
-#so it can actually be useful
-swig_link_libraries(${PROJECT_NAME}_wrapped ${PROJECT_NAME} ${Python3_LIBRARIES})
+    #Now we link the swig library to our gmml libary and our python library
+    #so it can actually be useful
+    swig_link_libraries(${PROJECT_NAME}_wrapped ${PROJECT_NAME} ${Python3_LIBRARIES})
+endif()
 ################## END SETTING UP GMML_WRAPPED TARGET ###################
 
 
@@ -192,10 +204,14 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 
 
 ################## BEGIN ALL BUILT FILES INCLUDED IN `make clean` ###################
-#to properly remove swig data
-set_property(TARGET ${PROJECT_NAME}_wrapped PROPERTY 
-    ADDITIONAL_MAKE_CLEAN_FILES)
-
+#cause if we are testing we dont genertate the wrapped target at all, thus we cant
+#apply properties to the target without getting wack behavior
+if (NOT TESTING)
+    #to properly remove swig data
+    set_property(TARGET ${PROJECT_NAME}_wrapped PROPERTY 
+        ADDITIONAL_MAKE_CLEAN_FILES)
+endif()
+    
 #To allow make clean to remove the new lib dir
 set_property(DIRECTORY PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
 	"../lib")
