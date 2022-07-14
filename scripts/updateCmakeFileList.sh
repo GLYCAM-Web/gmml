@@ -20,7 +20,11 @@ echo "This script will walk through all the source and header files and put them
 echo "This was done because it prevents us from having to adhere to some more annoying cmake"
 echo "paradigms."
 echo ""
-
+#So I dont have to change up all teh paths after moving this dude into the scripts folder i just
+#go up a dir. This does cause us to always have to call this script from within this directory,
+#i.e. if we call this script in another script, the otehr scripts shell must cd into this scripts
+#directory and then call this update script....
+cd ..
 #Grab all c++ files and chuck them into our file. We have the option to be able to also grab
 #the tests c++ files in case we want to lint/run tests on em
 echo "Hitting the list that contains all the paths to our source files"

@@ -1,6 +1,7 @@
 #ifndef PDBQTFILE_HPP
 #define PDBQTFILE_HPP
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <map>
