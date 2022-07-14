@@ -29,6 +29,8 @@ using PdbPreprocessorSpace::PdbPreprocessor;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
+PdbPreprocessor::PdbPreprocessor() : pdbFile_ ( *(new PdbFileSpace::PdbFile()) ) {}
+
 PdbPreprocessor::PdbPreprocessor(PdbFileSpace::PdbFile &pdbFile) : pdbFile_ (pdbFile)
 {
     this->Preprocess();
