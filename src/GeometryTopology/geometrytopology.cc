@@ -10,6 +10,11 @@ Coordinate GeometryTopology::subtract_coordinates(const Coordinate& minuaend, co
     return new_coordinate;
 }
 
+Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(const Coordinate* a, const Coordinate* b, const Coordinate* c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
+{
+	return GeometryTopology::get_cartesian_point_from_internal_coords(*a, *b, *c, theta_Degrees, phi_Degrees, distance_Angstrom);
+}
+
 Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(const Coordinate& a, const Coordinate& b, const Coordinate& c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
 {     // theta is the angle between 3 atoms. Phi is the torsion between 4 atoms.
     //Convert from Degrees to Radians
