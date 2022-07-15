@@ -55,7 +55,6 @@ backupCompileCommands()
     fi
     echo -e "${INFO_STYLE}###### CREATING BACKUP OF THE COMPILE_COMMANDS.json FILE ######${RESET_STYLE}"
     mv -v ./cmakeBuild/compile_commands.json ./compile_commands_BACKUP.json
-    trap 'restoreCompileCommands' EXIT
     return 0
 }
 
@@ -153,7 +152,6 @@ repairHeaders()
      run-clang-tidy -checks='-*, llvm-include-order' -p ./cmakeBuild/ -header-filter=.hpp -fix || \
         { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR HEADERS CHANGES${RESET_STYLE}" ; exit 1; }
     
-    
     restoreCompileCommands
     return 0
 }
@@ -162,7 +160,7 @@ repairHeaders()
 #basically a wrapper. Does keep code more understandable tho
 formatAsOne()
 {
-    clang-format -i "$(find ./src ./includes ./tests -type f -iname "*.cc" -o -iname "*.cpp" -o -iname "*.hpp")"
+    clang-format -i $(find ./src ./includes ./tests -type f -iname "*.cc" -o -iname "*.cpp" -o -iname "*.hpp")
 }
 
 #loop through all reqs and check if we got em, if not we exit
