@@ -262,6 +262,9 @@ do
 				;;
 			t)
                 tIn="${OPTARG}"
+                #NOTE: Add in some other flag where we only audo update the 
+                #cmake lists in a normal way instead of always hitting all 
+                #test files
                 if [ "${tIn}" == "auto" ]; then
                     AUTO_TESTIN_TIME=1
                     #since we have to worry about tooling working on generated files
