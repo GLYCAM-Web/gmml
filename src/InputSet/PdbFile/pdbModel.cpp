@@ -92,37 +92,6 @@ void PdbModel::addConectRecord(const pdbAtom* atom1, const pdbAtom* atom2)
     return;
 }
 
-//std::vector<pdb::PdbChain*> PdbModel::GetProteinChains()
-//{
-//    std::vector<pdb::PdbChain*> proteinChains;
-//    std::string previousChain = "InitialValue";
-//    for(auto &chain : this->getMolecules())
-//    {
-//        proteinChains.emplace_back(chain->getResidues(gmml::proteinResidueNames));
-//        // This gmml::PROTEINS seems weird, but whatever, it works.
-//        if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), residue->getName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
-//        {
-//            if ( residue->getChainId() != previousChain || residue->getModelNumber() != previousModelNumber )
-//            {
-//                proteinChains.emplace_back(std::vector<PdbResidue*>{residue.get()});
-//                previousChain = residue->GetChainId();
-//                previousModelNumber = residue->GetModelNumber();
-//            }
-//            else
-//            {
-//                proteinChains.back().push_back(residue.get());
-//            }
-//        }
-//    }
-//    // Labels
-//    for(auto &chain : proteinChains)
-//    {
-//        chain.front()->addLabel("NTerminal");
-//        chain.back()->addLabel("CTerminal");
-//    }
-//    return proteinChains;
-//}
-
 void PdbModel::ChangeResidueName(const std::string& selector, const std::string& newName)
 {
     for(auto &residue : this->getResidues())
