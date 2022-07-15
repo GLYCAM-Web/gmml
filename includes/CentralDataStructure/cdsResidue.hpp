@@ -36,13 +36,13 @@ public:
     inline void setName(const std::string& s) {name_ = s;}
     void createAtom(const std::string atomName, Coordinate& atomCoord);
     void addAtom(std::unique_ptr<atomT> myAtom);
-    bool deleteAtom(atomT* atom);
+    bool deleteAtom(const atomT* atom);
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
     typename std::vector<std::unique_ptr<atomT>>::iterator FindPositionOfAtom(const atomT* queryAtom);
-    atomT* FindAtom(const std::string queryName) const;
-    atomT* FindAtom(const int& queryNumber) const;
+    const atomT* FindAtom(const std::string queryName) const;
+    const atomT* FindAtom(const int& queryNumber) const;
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
@@ -128,7 +128,7 @@ void cdsResidue<atomT>::addAtom(std::unique_ptr<atomT> myAtom)
 
 
 template< class atomT >
-bool cdsResidue<atomT>::deleteAtom(atomT* atom)
+bool cdsResidue<atomT>::deleteAtom(const atomT* atom)
 { // Passing in a raw ptr, but the vector is unique_ptr so gotta use i->get() to compare raws.
     auto i = this->FindPositionOfAtom(atom); // auto makes my life easier
     if (i != atoms_.end())

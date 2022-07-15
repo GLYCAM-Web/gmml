@@ -157,11 +157,11 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
     { // I want to go through the list and compare from current item to end. Thus it2 = std::next it1
 
         PdbResidue* cysRes1 = *it1;
-        pdbAtom* sgAtom1 = cysRes1->FindAtom("SG");
+        const pdbAtom* sgAtom1 = cysRes1->FindAtom("SG");
         for (std::vector<pdb::PdbResidue*>::iterator it2 = std::next(it1, 1); it2 != cysResidues.end(); ++it2)
         {
             PdbResidue* cysRes2 = *it2;
-            pdbAtom* sgAtom2 = cysRes2->FindAtom("SG");
+            const pdbAtom* sgAtom2 = cysRes2->FindAtom("SG");
             if ( (sgAtom1 != nullptr) && (sgAtom2 != nullptr) )
             {
                 //gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");
@@ -300,8 +300,8 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo,
                 pdb::PdbResidue* res2 = *it2;
                 std::cout << "res1 is " + res1->getNumberAndInsertionCode() + "_" + res1->getChainId() << std::endl;
                 std::cout << "res2 is " + res2->getNumberAndInsertionCode() + "_" + res2->getChainId() << std::endl;
-                pdb::pdbAtom* res1AtomC = res1->FindAtom("C");
-                pdb::pdbAtom* res2AtomN = res2->FindAtom("N");
+                const pdb::pdbAtom* res1AtomC = res1->FindAtom("C");
+                const pdb::pdbAtom* res2AtomN = res2->FindAtom("N");
                 if ( !res1AtomC->isWithinBondingDistance(res2AtomN) )
                 { // GAP detected
                     //Log it

@@ -87,7 +87,7 @@ void PdbResidue::modifyNTerminal(const std::string& type)
     gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + this->printId());
     if (type == "NH3+")
     {
-        pdbAtom* atom = this->FindAtom("H");
+        const pdbAtom* atom = this->FindAtom("H");
         if (atom != nullptr)
         {
             gmml::log(__LINE__,__FILE__,gmml::INF, "Deleting atom with id: " + atom->GetId());
@@ -106,13 +106,13 @@ void PdbResidue::modifyCTerminal(const std::string& type)
     gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + this->printId());
     if (type == "CO2-")
     {
-        pdbAtom* atom = this->FindAtom("OXT");
+        const pdbAtom* atom = this->FindAtom("OXT");
         if (atom == nullptr)
         {
             // I don't like this, but at least it's somewhat contained:
-            pdbAtom* atomCA = this->FindAtom("CA");
-            pdbAtom* atomC = this->FindAtom("C");
-            pdbAtom* atomO = this->FindAtom("O");
+            const pdbAtom* atomCA = this->FindAtom("CA");
+            const pdbAtom* atomC = this->FindAtom("C");
+            const pdbAtom* atomO = this->FindAtom("O");
             GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->getCoordinate(), atomC->getCoordinate(), atomO->getCoordinate(), 120.0, 180.0, 1.25);
             this->createAtom("OXT", oxtCoord);
             gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + atomO->GetId());

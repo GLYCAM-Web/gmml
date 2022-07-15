@@ -34,7 +34,7 @@ public:
     const std::string getElement() const;
     double calculateDistance(const cdsAtom* otherAtom) const;
     void addBond(cdsAtom* otherAtom);
-    bool isWithinBondingDistance(cdsAtom* otherAtom);
+    bool isWithinBondingDistance(const cdsAtom* otherAtom) const;
     void bondIfClose(cdsAtom* otherAtom);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //

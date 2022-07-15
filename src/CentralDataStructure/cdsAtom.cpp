@@ -87,7 +87,7 @@ const std::string cdsAtom::getElement() const // derived classes should overwrit
     gmml::log(__LINE__,__FILE__,gmml::WAR, "Did not find an element for atom named: " + name);
     return "";
 }
-bool cdsAtom::isWithinBondingDistance(cdsAtom* otherAtom)
+bool cdsAtom::isWithinBondingDistance(const cdsAtom* otherAtom) const
 {
     double maxLength = atomicBonds::getMaxBondLengthByAtomType(this->getElement(), otherAtom->getElement());
     if (this->getCoordinate()->withinDistance(otherAtom->getCoordinate(), maxLength))
