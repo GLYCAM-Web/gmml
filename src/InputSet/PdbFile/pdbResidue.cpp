@@ -2,7 +2,6 @@
 #include <string>
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
 #include "includes/InputSet/PdbFile/pdbResidueId.hpp" // residueId
-#include "includes/InputSet/PdbFile/pdbFunctions.hpp" // extractResidueId
 #include "includes/GeometryTopology/geometrytopology.hpp" // get_cartesian_point_from_internal_coords
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp" //RemoveWhiteSpace

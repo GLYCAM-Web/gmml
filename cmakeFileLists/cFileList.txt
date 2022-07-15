@@ -36,7 +36,6 @@
 ./src/InputSet/PdbFile/pdbAtom.cpp
 ./src/InputSet/PdbFile/pdbChain.cpp
 ./src/InputSet/PdbFile/pdbFile.cpp
-./src/InputSet/PdbFile/pdbFunctions.cpp
 ./src/InputSet/PdbFile/pdbModel.cpp
 ./src/InputSet/PdbFile/pdbResidue.cpp
 ./src/InputSet/PdbFile/pdbResidueId.cpp

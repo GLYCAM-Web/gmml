@@ -1,4 +1,3 @@
-#include "includes/InputSet/PdbFile/pdbFunctions.hpp" // extractResidueId
 #include "includes/InputSet/PdbFile/pdbChain.hpp"
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
 #include "includes/GeometryTopology/coordinate.hpp"
