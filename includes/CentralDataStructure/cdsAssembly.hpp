@@ -150,20 +150,6 @@ void cdsAssembly<moleculeT, residueT, atomT>::addMolecule(std::unique_ptr<molecu
 }
 
 template <class moleculeT, class residueT, class atomT>
-typename std::vector<residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResiduesWithName(std::vector<std::string> queryNames)
-{
-    std::vector<residueT*> residuesWithName;
-    for(auto &residue : this->getResidues())
-    {
-        if (std::find(queryNames.begin(), queryNames.end(), residue->getName()) != queryNames.end())
-        {
-            residuesWithName.push_back(residue);
-        }
-    }
-    return residuesWithName;
-}
-
-template <class moleculeT, class residueT, class atomT>
 const atomT* cdsAssembly<moleculeT, residueT, atomT>::findAtom(const int& serialNumber)
 {
     for(auto &atom : this->getAtoms())

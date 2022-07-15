@@ -5,7 +5,7 @@ using Abstract::absResidue;
 
 absResidue::Type absResidue::determineType(const std::string &residueName) const
 {
-	if ( codeUtils::isThingPresentInContainer(gmml::proteinResidueNames.begin(), gmml::proteinResidueNames.end(), residueName) )
+	if ( codeUtils::isElementPresent(gmml::proteinResidueNames.begin(), gmml::proteinResidueNames.end(), residueName) )
 	{
 		return absResidue::Type::Protein;
 	}

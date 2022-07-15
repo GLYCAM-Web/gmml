@@ -8,6 +8,7 @@
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
 #include "includes/GeometryTopology/coordinate.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/templatedSelections.hpp"
 
 using GeometryTopology::Coordinate;
 namespace cds
@@ -164,30 +165,15 @@ typename std::vector<std::unique_ptr<atomT>>::iterator cdsResidue<atomT>::FindPo
 }
 
 template< class atomT >
-atomT* cdsResidue<atomT>::FindAtom(const std::string queryName) const
+const atomT* cdsResidue<atomT>::FindAtom(const std::string queryName) const
 {
-    for(auto &atom : atoms_)
-    {
-        if(atom->getName() == queryName)
-        {
-            return atom.get();
-        }
-    }
-    return nullptr;
+	return codeUtils::findElementWithName(this->getAtoms(), queryName);
 }
 
 template< class atomT >
-atomT* cdsResidue<atomT>::FindAtom(const int& queryNumber) const
+const atomT* cdsResidue<atomT>::FindAtom(const int& queryNumber) const
 {
-    atomT* nullRecord = nullptr;
-    for(auto &atom : atoms_)
-    {
-        if (atom->getNumber() == queryNumber )
-        {
-            return atom.get();
-        }
-    }
-    return nullRecord;
+	return codeUtils::findElementWithNumber(this->getAtoms(), queryNumber);
 }
 
 

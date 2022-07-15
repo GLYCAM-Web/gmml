@@ -5,7 +5,7 @@
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
-#include "includes/common.hpp" // gmml::PROTEINS
+#include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
 #include "includes/CentralDataStructure/cdsSelections.hpp"
 
@@ -117,7 +117,7 @@ void PdbModel::ChangeResidueName(const std::string& selector, const std::string&
 void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Start CYS preprocessing for this Model\n");
-    std::vector<pdb::PdbResidue*> cysResidues = this->getResiduesWithName(std::vector<std::string> {"CYS", "CYX"});
+    std::vector<pdb::PdbResidue*> cysResidues = codeUtils::getElementsWithNames(this->getResidues(), std::vector<std::string> {"CYS", "CYX"});
     if (cysResidues.empty())
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "No CYS or CYX residues detected in this structure\n");
@@ -255,11 +255,8 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo,
     gmml::log(__LINE__, __FILE__, gmml::INF, "Gaps");
     for(auto &chain : this->getMolecules())
     {
-        std::cout << "\n\nNewChain\n\n";
-//        std::vector<pdb::PdbResidue*> residues = chain->getResidues();
-        // GET PROTEIN RESIDUES how??? Selections?? i.e.
-        std::vector<pdb::PdbResidue*> proteinResidues = cds::selectProteinResidues(chain->getResidues(), Abstract::absResidue::Type::Protein);
-        // Above would allow for assembly, chain or ensemble to resuse the same function.
+//        std::vector<pdb::PdbResidue*> proteinResidues = cds::selectResiduesByType(chain->getResidues(), Abstract::absResidue::Type::Protein);
+    	std::vector<pdb::PdbResidue*> proteinResidues = cds::selectResiduesByType(chain->getResidues(), Abstract::absResidue::Type::Protein);
         for(std::vector<pdb::PdbResidue*>::iterator it1 = proteinResidues.begin(); it1 != proteinResidues.end(); ++it1)
         {
             std::vector<pdb::PdbResidue*>::iterator it2 = std::next(it1);
