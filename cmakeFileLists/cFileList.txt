@@ -1,9 +1,6 @@
 ./src/Abstract/absResidue.cpp
-./src/CentralDataStructure/cdsAssembly.cpp
 ./src/CentralDataStructure/cdsAtom.cpp
 ./src/CentralDataStructure/cdsCoordinate.cpp
-./src/CentralDataStructure/cdsMolecule.cpp
-./src/CentralDataStructure/cdsResidue.cpp
 ./src/CodeUtils/codetests.cc
 ./src/CodeUtils/directories.cpp
 ./src/CodeUtils/files.cpp
