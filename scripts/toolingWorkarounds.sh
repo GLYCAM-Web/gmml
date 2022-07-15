@@ -127,13 +127,11 @@ repairHeaders()
     #Now, since our directory structure is not something that LLVM auto stuff
     #expects we gotta do some gross stuff
     BASE_PATH_AS_GUARD_STYLE="$(cd .. && echo "${PWD}" && cd ./gmml/)" || { echo -e "${ERROR_STYLE}ERROR CANNOT GET BASE LINE PATH${RESET_STYLE}" ; exit 1; }
-    echo "OKAY PATH HERE: ${BASE_PATH_AS_GUARD_STYLE}"
     #Make all capital letters
     BASE_PATH_AS_GUARD_STYLE="${BASE_PATH_AS_GUARD_STYLE^^}"
     #now replace all forward slashs with underscores, using # as the operator
     #seperator in sed so its easier to look at
     BASE_PATH_AS_GUARD_STYLE=$(echo "${BASE_PATH_AS_GUARD_STYLE}" | sed -e "s#\/#\_#g" | sed -e "1s#\_##")
-    echo "OKAY STYLED PATH HERE: ${BASE_PATH_AS_GUARD_STYLE}"
     
     #this whole block of find then sedding basically just removes the extra long
     #total system path from the pattern. Has to be done cause our code structure
@@ -149,7 +147,7 @@ repairHeaders()
         { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR HEADERS CHANGES${RESET_STYLE}" ; exit 1; }
     
     #Now we sort the order of includes just so it looks nicer and more consistent
-     run-clang-tidy -checks='-*, llvm-include-order' -p ./cmakeBuild/ -header-filter=.hpp -fix || \
+     run-clang-tidy -checks='-*, llvm-include-order, readability-braces-around-statements, llvm-namespace-comment' -p ./cmakeBuild/ -header-filter=.hpp -fix || \
         { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR HEADERS CHANGES${RESET_STYLE}" ; exit 1; }
     
     
@@ -160,10 +158,30 @@ repairHeaders()
     return 0
 }
 
+#now this does some gentle fixes for our actual source files
+repairSources()
+{
+    #first make sure that our compile_commands.json etc. is nice and goode
+    ./make.sh -t "auto"
+    
+    run-clang-tidy -checks='-*, readability-duplicate-include' -p ./cmakeBuild/ -fix || \
+        { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR SOURCES CHANGES${RESET_STYLE}" ; exit 1; }
+    
+    #Now we sort the order of includes just so it looks nicer and more consistent
+     run-clang-tidy -checks='-*, llvm-include-order, readability-braces-around-statements, llvm-namespace-comment' -p ./cmakeBuild/ -fix || \
+        { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR SOURCES CHANGES${RESET_STYLE}" ; exit 1; }
+    
+    run-clang-tidy -p ./cmakeBuild/ -fix
+}
+
+
 #run the actual clang formatter on all code, since its a simple command its 
 #basically a wrapper. Does keep code more understandable tho
 formatAsOne()
 {
+    #we need to take advantage of word splitting so the clang prog is given a list
+    #of files instead of one long file name
+    # shellcheck disable=SC2046
     clang-format -i $(find ./src ./includes ./tests -type f -iname "*.cc" -o -iname "*.cpp" -o -iname "*.hpp")
 }
 
@@ -225,11 +243,13 @@ do
                 headerstime)
                     repairHeaders
                     ;;
+                sourcestime)
+                    repairSources
+                    ;;
                 formattime)
                     formatAsOne
                     ;;
                 *)
-                    optionsBorkedMsg "${option}" "badArg"
                     printHelp
                     ;;
             esac
