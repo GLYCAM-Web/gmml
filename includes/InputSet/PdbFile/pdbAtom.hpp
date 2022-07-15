@@ -24,7 +24,7 @@ public:
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
     inline const std::string& GetRecordName() const {return recordName_;}
-    inline const int& GetSerialNumber() const {return serialNumber_;}
+    inline const int& getNumber() const {return serialNumber_;}
     inline const std::string& GetResidueName() const {return residueName_;}
     inline const std::string& GetChainId() const {return chainId_;}
     inline const int& GetResidueSequenceNumber() const {return residueSequenceNumber_;}

@@ -9,6 +9,7 @@
 
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/MolecularMetadata/atomicBonds.hpp" // bondIfClose
 
 
@@ -41,8 +42,7 @@ public:
     //////////////////////////////////////////////////////////
     void addMolecule(const moleculeT& molecule);
     void addMolecule(std::unique_ptr<moleculeT> myMolecule);
-    std::vector<residueT*> getResiduesWithName(std::vector<std::string> queryNames);
-    const atomT* findAtom(const int& serialNumber);
+    const atomT* findAtom(const int& serialNumber) const;
     void bondAtomsByDistance();
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
@@ -150,17 +150,9 @@ void cdsAssembly<moleculeT, residueT, atomT>::addMolecule(std::unique_ptr<molecu
 }
 
 template <class moleculeT, class residueT, class atomT>
-const atomT* cdsAssembly<moleculeT, residueT, atomT>::findAtom(const int& serialNumber)
+const atomT* cdsAssembly<moleculeT, residueT, atomT>::findAtom(const int& serialNumber) const
 {
-    for(auto &atom : this->getAtoms())
-    {
-        if (atom->GetSerialNumber() == serialNumber)
-        {
-            return atom;
-        }
-    }
-    gmml::log(__LINE__, __FILE__, gmml::WAR, "Could not find atom with this serialNumber " + serialNumber);
-    return nullptr;
+	return codeUtils::findElementWithNumber(this->getAtoms(), serialNumber);
 }
 
 // Simple for now, asked P to make a fast one.

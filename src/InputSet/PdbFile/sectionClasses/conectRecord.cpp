@@ -56,7 +56,7 @@ void ConectRecord::Print(std::ostream& out) const
     out << std::setw(5);
     for (auto &atomRecordPtr : atomRecordPtrs_)
     {
-        out << std::right << atomRecordPtr->GetSerialNumber();
+        out << std::right << atomRecordPtr->getNumber();
     }
     out << "\n";
 }
@@ -67,7 +67,7 @@ void ConectRecord::Write(std::ostream& stream) const
     stream << std::setw(5);
     for (auto &atomRecordPtr : atomRecordPtrs_)
     {
-        stream << " " << std::right << atomRecordPtr->GetSerialNumber();
+        stream << " " << std::right << atomRecordPtr->getNumber();
     }
     stream << "\n";
 }

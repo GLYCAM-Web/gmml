@@ -3,10 +3,8 @@
 
 #include "includes/Abstract/absResidue.hpp"
 
-#include <iostream>
-#include <string>
-#include <utility>
 #include <vector>
+
 namespace cds
 {
 template< class residueT>

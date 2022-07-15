@@ -6,6 +6,7 @@
 
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/templatedSelections.hpp"
 
 namespace cds
 {
@@ -142,15 +143,7 @@ typename std::vector<std::unique_ptr<residueT>>::iterator cdsMolecule<residueT, 
 template< class residueT, class atomT >
 typename std::vector<residueT*> cdsMolecule<residueT, atomT>::getResidues(std::vector<std::string> queryNames)
 {
-    std::vector<residueT*> foundResidues;
-    for(auto &residuePtr : residues_)
-    {
-        if (std::find(queryNames.begin(), queryNames.end(), residuePtr->getName()) != queryNames.end())
-        {
-            foundResidues.push_back(residuePtr.get());
-        }
-    }
-    return foundResidues;
+	return codeUtils::getElementsWithNames(this->getResidues(), queryNames);
 }
 
 } // namespace

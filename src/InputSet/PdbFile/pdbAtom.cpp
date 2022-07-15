@@ -160,7 +160,7 @@ void pdbAtom::SetCharge(const std::string atom_charge)
 std::string pdbAtom::GetId() const
 {
     std::stringstream ss;
-    ss << this->getName() << "_" << this->GetSerialNumber();
+    ss << this->getName() << "_" << this->getNumber();
     return ss.str();
 }
 
@@ -226,8 +226,8 @@ void pdbAtom::Print(std::ostream &out) const
 void pdbAtom::Write(std::ostream& stream) const
 { // Just copied from original class.
     stream << std::left << std::setw(6) << this->GetRecordName();
-    if(this->GetSerialNumber() != gmml::iNotSet)
-        stream << std::right << std::setw(5) << this->GetSerialNumber();
+    if(this->getNumber() != gmml::iNotSet)
+        stream << std::right << std::setw(5) << this->getNumber();
     else
         stream << std::right << std::setw(5) << " ";
     stream << std::left << std::setw(1) << " "
