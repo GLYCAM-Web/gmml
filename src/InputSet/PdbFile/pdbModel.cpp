@@ -219,35 +219,35 @@ void PdbModel::preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, co
     return;
 }
 
-void PdbModel::preProcessGaps(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
-{
-    // Missing Residues (gaps)
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Gaps");
-    std::string previousChainId = "AUniqueInitialString";
-    int previousSequenceNumber = -999999;
-    //   int previousModelNumber = -999999;
-    pdb::PdbResidue* previous = nullptr;
-    for(auto &chain : this->getMolecules())
-    {
-        for(auto &residue : chain->getResidues())
-        {   // ToDo WE WILL HAVE TO CHECK DISTANCES!!! 1UCY has reverse ordered insertion codes
-            // KABAT can mean skipped numbers that are bonded.
-            if ((previousSequenceNumber != (residue->getNumber() - 1)) && previousChainId == residue->getChainId())
-            {
-                //Log it
-                gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + previous->printId());
-                gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + residue->printId());
-                // Do it
-                chain->InsertCap(*previous, inputOptions.gapCTermination_);
-                chain->InsertCap(*residue, inputOptions.gapNTermination_);
-                // Record it
-                ppInfo.missingResidues_.emplace_back(previous->getChainId(), previous->getNumberAndInsertionCode(), residue->getNumberAndInsertionCode(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
-            }
-            previous = residue;
-            previousSequenceNumber = residue->getNumber();
-        }
-    }
-}
+//void PdbModel::preProcessGaps(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
+//{
+//    // Missing Residues (gaps)
+//    gmml::log(__LINE__, __FILE__, gmml::INF, "Gaps");
+//    std::string previousChainId = "AUniqueInitialString";
+//    int previousSequenceNumber = -999999;
+//    //   int previousModelNumber = -999999;
+//    pdb::PdbResidue* previous = nullptr;
+//    for(auto &chain : this->getMolecules())
+//    {
+//        for(auto &residue : chain->getResidues())
+//        {   // ToDo WE WILL HAVE TO CHECK DISTANCES!!! 1UCY has reverse ordered insertion codes
+//            // KABAT can mean skipped numbers that are bonded.
+//            if ((previousSequenceNumber != (residue->getNumber() - 1)) && previousChainId == residue->getChainId())
+//            {
+//                //Log it
+//                gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + previous->printId());
+//                gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + residue->printId());
+//                // Do it
+//                chain->InsertCap(*previous, inputOptions.gapCTermination_);
+//                chain->InsertCap(*residue, inputOptions.gapNTermination_);
+//                // Record it
+//                ppInfo.missingResidues_.emplace_back(previous->getChainId(), previous->getNumberAndInsertionCode(), residue->getNumberAndInsertionCode(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
+//            }
+//            previous = residue;
+//            previousSequenceNumber = residue->getNumber();
+//        }
+//    }
+//}
 
 void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
 {
