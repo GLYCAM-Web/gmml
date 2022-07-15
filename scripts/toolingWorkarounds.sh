@@ -170,8 +170,6 @@ repairSources()
     #Now we sort the order of includes just so it looks nicer and more consistent
      run-clang-tidy -checks='-*, llvm-include-order, readability-braces-around-statements, llvm-namespace-comment' -p ./cmakeBuild/ -fix || \
         { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR SOURCES CHANGES${RESET_STYLE}" ; exit 1; }
-    
-    run-clang-tidy -p ./cmakeBuild/ -fix
 }
 
 
