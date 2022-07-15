@@ -34,8 +34,7 @@ restoreCompileCommands()
          echo -e "${ERROR_STYLE}ERROR COMPILE_COMMANDS_BACKUP.JSON FILE WAS NOT FOUND${RESET_STYLE}"
          exit 1
     fi
-    cp -fv ./compile_commands_BACKUP.json ./cmakeBuild/compile_commands.json || { echo -e "${ERROR_STYLE}ERROR COULDNT RESTORE THE COMPILE_COMMANDS.JSON TO PREVIOUS STATE${RESET_STYLE}"; exit 1; }
-    trap 'rm -v ./compile_commands_BACKUP.json' EXIT
+    mv -fv ./compile_commands_BACKUP.json ./cmakeBuild/compile_commands.json || { echo -e "${ERROR_STYLE}ERROR COULDNT RESTORE THE COMPILE_COMMANDS.JSON TO PREVIOUS STATE${RESET_STYLE}"; exit 1; }
     echo -e "${PASSED_STYLE}###### compile_commands.json restored to original state ######${RESET_STYLE}"
     return 0
 }
@@ -82,8 +81,6 @@ autoAllHeadersFile()
     #NOTE: Probably gonna change to like auto_testing or something idk, need to figure out
     #if i want to keep the compile commands + lists with all the test files indexed
     ./make.sh -t "auto"
-    #to remove but just so i can keep going for now
-    exit 0
     trap 'rm -v ./src/allHeaders.cpp && echo -e "${INFO_STYLE}###### Allheaders.cpp workaround file removed.######${INFO_STYLE}"' EXIT
     return 0
 }
@@ -125,23 +122,18 @@ repairHeaders()
     #any endif macro directive. This is a little sloppy, and does cause a couple extra
     #comments to be made in places they shouldnt but we will leave that be for now.....
     find ./includes -iname "*.hpp" -print0 | xargs -0 sed -i "s/\#endif$/\#endif \/\/ TEMP_COMMENT /"
-    #This does the following to all header files:
-    #   - fixes up all header guards to a normal pattern
-    #   - sorts includes so they look purdy
-    #   - removes duplicate includes (dumbly I might add, not near as good as IWYU)
-    #   -
-    run-clang-tidy -checks='-*, readability-duplicate-include, llvm-include-order, llvm-header-guard' \
-        -p ./cmakeBuild/ -header-filter=.hpp -fix || \
+    #First we have to make sure the header guards are actually proper
+    run-clang-tidy -checks='-*, llvm-header-guard' -p ./cmakeBuild/ -header-filter=.hpp -fix || \
         { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR HEADERS CHANGES${RESET_STYLE}" ; exit 1; }
     #Now, since our directory structure is not something that LLVM auto stuff
     #expects we gotta do some gross stuff
-    BASE_PATH_AS_GUARD_STYLE=$(cd .. && ${PWD} && cd ./gmml/) || { echo -e "${ERROR_STYLE}ERROR CANNOT GET BASE LINE PATH${RESET_STYLE}" ; exit 1; }
+    BASE_PATH_AS_GUARD_STYLE="$(cd .. && echo "${PWD}" && cd ./gmml/)" || { echo -e "${ERROR_STYLE}ERROR CANNOT GET BASE LINE PATH${RESET_STYLE}" ; exit 1; }
     echo "OKAY PATH HERE: ${BASE_PATH_AS_GUARD_STYLE}"
     #Make all capital letters
     BASE_PATH_AS_GUARD_STYLE="${BASE_PATH_AS_GUARD_STYLE^^}"
     #now replace all forward slashs with underscores, using # as the operator
     #seperator in sed so its easier to look at
-    BASE_PATH_AS_GUARD_STYLE=$(echo "${BASE_PATH_AS_GUARD_STYLE}" | sed -e "s#/#\_#")
+    BASE_PATH_AS_GUARD_STYLE=$(echo "${BASE_PATH_AS_GUARD_STYLE}" | sed -e "s#\/#\_#g" | sed -e "1s#\_##")
     echo "OKAY STYLED PATH HERE: ${BASE_PATH_AS_GUARD_STYLE}"
     
     #this whole block of find then sedding basically just removes the extra long
@@ -150,11 +142,27 @@ repairHeaders()
     find . -type f -iname "*.hpp" -print0 | xargs -0 sed -i "s/\#ifndef.*${BASE_PATH_AS_GUARD_STYLE}_/\#ifndef /"
     find . -type f -iname "*.hpp" -print0 | xargs -0 sed -i "s/\#define.*${BASE_PATH_AS_GUARD_STYLE}_/\#define /"
     find . -type f -iname "*.hpp" -print0 | xargs -0 sed -i "s/\#endif.*\/\/.*${BASE_PATH_AS_GUARD_STYLE}_/\#endif \/\/ /"
-
+    
+    #once our header guards are good we then ensure all duplicate includes are removed
+    #it is only the llvm dupe remover and it is pretty dumb, eventuall we wanna
+    #use IWYU
+     run-clang-tidy -checks='-*, readability-duplicate-include' -p ./cmakeBuild/ -header-filter=.hpp -fix || \
+        { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR HEADERS CHANGES${RESET_STYLE}" ; exit 1; }
+    
+    #Now we sort the order of includes just so it looks nicer and more consistent
+     run-clang-tidy -checks='-*, llvm-include-order' -p ./cmakeBuild/ -header-filter=.hpp -fix || \
+        { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR HEADERS CHANGES${RESET_STYLE}" ; exit 1; }
     
     
     restoreCompileCommands
     return 0
+}
+
+#run the actual clang formatter on all code, since its a simple command its 
+#basically a wrapper. Does keep code more understandable tho
+formatAsOne()
+{
+    clang-format -i "$(find ./src ./includes ./tests -type f -iname "*.cc" -o -iname "*.cpp" -o -iname "*.hpp")"
 }
 
 #loop through all reqs and check if we got em, if not we exit
@@ -162,7 +170,7 @@ MISSING_PROGS=0
 for CURR_PROG_CHECK in "${REQUIRED_PROGRAMS[@]}"; do
     command -v "${CURR_PROG_CHECK}" | grep -o "${CURR_PROG_CHECK}" > /dev/null || { echo -e "${ERROR_STYLE}ERROR MISSING PROGRAM:${CURR_PROG_CHECK}${RESET_STYLE}" ; MISSING_PROGS=1; }
 done
-if [ "${#MISSING_PROGS[@]}" -gt 0 ]; then
+if [ "${MISSING_PROGS}" -gt 0 ]; then
     echo -e "\n${ERROR_STYLE}ERROR MISSING REQUIRED PROGRAMS, GO INSTALL THE"
     echo -e "PROGRAMS LISTED ABOVE IN ORDER TO RUN THIS CODE."
     exit 1
@@ -204,13 +212,19 @@ exit 1
 while getopts "r:h" option
 do
     case "${option}" in
-        #to run a specific tool blurb
+        #NOTE: GONNA NEED TO CHANGE THIS PATTERN, SINCE SO FRAGILE AS IS
+        #CANT JUST HAVE TESTS RUN OUT OF A SPECIFIC ORDER. ENFORCE STEPS
+        #WE TAKE!!!
+        #to RUN a specific tool blurb
         r)
             rIn="${OPTARG}"
             rIn="${rIn,,}"
-            case "${sIn}" in
+            case "${rIn}" in
                 headerstime)
                     repairHeaders
+                    ;;
+                formattime)
+                    formatAsOne
                     ;;
                 *)
                     optionsBorkedMsg "${option}" "badArg"
@@ -235,3 +249,4 @@ echo "Cool script started"
 
 
 echo "cool script ended"
+exit 0
