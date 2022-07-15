@@ -120,7 +120,7 @@ repairHeaders()
     #get all OUR header files and when we find em we add a temp comment ad the end of
     #any endif macro directive. This is a little sloppy, and does cause a couple extra
     #comments to be made in places they shouldnt but we will leave that be for now.....
-    find ./includes -iname "*.hpp" -print0 | xargs -0 sed -i "s/\#endif$/\#endif \/\/ TEMP_COMMENT /"
+    find ./includes -iname "*.hpp" -print0 | xargs -0 sed -i "s/\#endif$/\#endif \/\/ TEMP_COMMENT/g"
     #First we have to make sure the header guards are actually proper
     run-clang-tidy -checks='-*, llvm-header-guard' -p ./cmakeBuild/ -header-filter=.hpp -fix || \
         { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR HEADERS CHANGES${RESET_STYLE}" ; exit 1; }
@@ -151,6 +151,10 @@ repairHeaders()
     #Now we sort the order of includes just so it looks nicer and more consistent
      run-clang-tidy -checks='-*, llvm-include-order' -p ./cmakeBuild/ -header-filter=.hpp -fix || \
         { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR HEADERS CHANGES${RESET_STYLE}" ; exit 1; }
+    
+    
+    #Now remove all the temp comments left over lol 
+    find ./includes -iname "*.hpp" -print0 | xargs -0 sed -i "s/\#endif \/\/ TEMP_COMMENT$/\#endif/g"
     
     restoreCompileCommands
     return 0
