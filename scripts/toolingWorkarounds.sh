@@ -1,18 +1,34 @@
 #!/bin/bash
 
+
+#A bunch of info on this can be found on:
+#https://releases.llvm.org/14.0.0/tools/clang/tools/extra/docs/clang-tidy/checks/list.html
+
 ################################################################
 ##########               Cool variables             ############
 ################################################################
 #this is to just run all of the needed workarounds automagically, first we are gonna
 #need to check if all our needed programs are installed :o), all the clang-tidy etc.
 #stuff needs to be built off of clang-14
-REQUIRED_PROGRAMS=("clang-14" "clang" "clang-tidy" "clang-format")
+REQUIRED_PROGRAMS=("clang-14" "clang" "clang-tidy" "clang-format" "find-all-symbols")
 ##### PRETTY PRINT STUFF #####
 #lazy and dont want to have to type all these color variables a bunch
 RESET_STYLE='\033[0m'
 PASSED_STYLE='\033[0;32m\033[1m'
 INFO_STYLE='\033[0;33m\033[1m'
 ERROR_STYLE='\033[0;31m\033[1m'
+##### TRACKING WHAT TO RUN #####
+#this is done beacuse depending on how the codebase is, and how flags are passed
+#could cause a test to fail. For instance if we do not "repair" the header files
+#before we run other tooling, the other tooling has a very high chance of breaking.
+#Also so i can keep track of all the checks and make logical groups out of em
+RUN_REPAIR_HEADERS=0
+RUN_REPAIR_SOURCES=0
+RUN_FORMAT=0
+RUN_MISC_CHECKS=0
+#https://releases.llvm.org/14.0.0/tools/clang/tools/extra/docs/clang-include-fixer.html
+RUN_INCLUDE_FIXER=0
+
 
 
 ################################################################
@@ -80,7 +96,7 @@ autoAllHeadersFile()
     #NOTE: Probably gonna change to like auto_testing or something idk, need to figure out
     #if i want to keep the compile commands + lists with all the test files indexed
     ./make.sh -t "auto"
-    trap 'rm -v ./src/allHeaders.cpp && echo -e "${INFO_STYLE}###### Allheaders.cpp workaround file removed.######${INFO_STYLE}"' EXIT
+    trap 'rm -v ./src/allHeaders.cpp && echo -e "${INFO_STYLE}###### Allheaders.cpp workaround file removed.######${RESET_STYLE}"' EXIT
     return 0
 }
 
@@ -88,7 +104,7 @@ autoAllHeadersFile()
 #commands in it, this is for when we are running 
 mangleCompileCommands()
 {
-    echo -e "${INFO_STYLE}###### Making allHeaders.cpp the only thing in compile_commands.json ######${INFO_STYLE}"
+    echo -e "${INFO_STYLE}###### Making allHeaders.cpp the only thing in compile_commands.json ######${RESET_STYLE}"
     #generate the actual all header file & gen the new compile commands file
     autoAllHeadersFile
     #back up the compile commands
@@ -104,7 +120,7 @@ mangleCompileCommands()
     #remove the comma at the end of the bracket from the lines we ripped out
     sed -i "s/},/}/" ./cmakeBuild/compile_commands.json
     
-    echo -e "${PASSED_STYLE}###### allHeaders.cpp now the only thing in compile_commands.json ######${INFO_STYLE}"
+    echo -e "${PASSED_STYLE}###### allHeaders.cpp now the only thing in compile_commands.json ######${RESET_STYLE}"
     return 0
 }
 
@@ -114,9 +130,11 @@ mangleCompileCommands()
 #NOTE: NEED A BETTER NAME!!!
 repairHeaders()
 {
-    #go ahead and get whats needed to run on all our header files
+    #go ahead and get whats needed to run on all our header files, this function
+    #ends up running make so we know compile commands gonna be generated
     mangleCompileCommands
     
+    echo -e "${INFO_STYLE}###### BEGINNING REPAIR ALL HEADERS ######${RESET_STYLE}"
     #get all OUR header files and when we find em we add a temp comment ad the end of
     #any endif macro directive. This is a little sloppy, and does cause a couple extra
     #comments to be made in places they shouldnt but we will leave that be for now.....
@@ -158,9 +176,31 @@ repairHeaders()
     return 0
 }
 
+#run the clang-include-fixer, doc below
+#https://releases.llvm.org/14.0.0/tools/clang/tools/extra/docs/clang-include-fixer.html
+includeFixer()
+{
+    echo -e "${INFO_STYLE}###### BEGINNING INCLUDE FIXER ######${RESET_STYLE}"
+    #first make sure that the compile_commands.json is made proper
+    ./make.sh -t "auto"
+    #first gotta generate the db for the tool to use
+    run-find-all-symbols -p=./cmakeBuild
+    #run clang include fixer on every single source file
+    #we need to take advantage of word splitting so the fixer prog is given a list
+    #of files instead of one long file name
+    # shellcheck disable=SC2046
+    clang-include-fixer -db=yaml $(find ./src ./tests -type -f -iname "*.cpp" -o -iname "*.cc")
+    
+    #trap to remove the generated yaml file but first need to run to ensure i know
+    #what yaml is called
+   # trap 'rm -v ./src/allHeaders.cpp && echo -e "${INFO_STYLE}###### Allheaders.cpp workaround file removed.######${RESET_STYLE}"' EXIT
+   echo -e "${PASSED_STYLE}###### END INCLUDE FIXER ######${RESET_STYLE}"
+}
+
 #now this does some gentle fixes for our actual source files
 repairSources()
 {
+    echo -e "${INFO_STYLE}###### BEGINNING REPAIR SOURCES ######${RESET_STYLE}"
     #first make sure that our compile_commands.json etc. is nice and goode
     ./make.sh -t "auto"
     
@@ -170,12 +210,30 @@ repairSources()
     #Now we sort the order of includes just so it looks nicer and more consistent
      run-clang-tidy -checks='-*, llvm-include-order, readability-braces-around-statements, llvm-namespace-comment' -p ./cmakeBuild/ -fix || \
         { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR SOURCES CHANGES${RESET_STYLE}" ; exit 1; }
+        
+    echo -e "${PASSED_STYLE}###### END REPAIR SOURCES ######${RESET_STYLE}"
+}
+
+#run misc checks that will help our code be mo better (faster, 
+miscChecks()
+{
+    echo -e "${INFO_STYLE}###### BEGINNING MISC CHECKS ######${RESET_STYLE}"
+    #we are assuming that before running this the user has already ensured
+    #all header files and source files have been repaired
+    #may use: misc-*,-misc-unused-parameters,-misc-non-private-member-variables-in-classes,-misc-no-recursion
+    run-clang-tidy -checks='-*, misc-*' -p ./cmakeBuild/ -header-filter=.hpp -fix || \
+        { echo -e "${ERROR_STYLE}ERROR RUN MISC CHECKS ON HEADERS${RESET_STYLE}" ; exit 1; }
+
+    run-clang-tidy -checks='-*, misc-*' -p ./cmakeBuild/ -fix || \
+        { echo -e "${ERROR_STYLE}ERROR COULDNT RUN MISC CHECKS ON SOURCES${RESET_STYLE}" ; exit 1; }
+        
+    echo -e "${PASSED_STYLE}###### END MISC CHECKS######${RESET_STYLE}"
 }
 
 
 #run the actual clang formatter on all code, since its a simple command its 
 #basically a wrapper. Does keep code more understandable tho
-formatAsOne()
+formatFiles()
 {
     #we need to take advantage of word splitting so the clang prog is given a list
     #of files instead of one long file name
@@ -186,7 +244,7 @@ formatAsOne()
 #loop through all reqs and check if we got em, if not we exit
 MISSING_PROGS=0
 for CURR_PROG_CHECK in "${REQUIRED_PROGRAMS[@]}"; do
-    command -v "${CURR_PROG_CHECK}" | grep -o "${CURR_PROG_CHECK}" > /dev/null || { echo -e "${ERROR_STYLE}ERROR MISSING PROGRAM:${CURR_PROG_CHECK}${RESET_STYLE}" ; MISSING_PROGS=1; }
+    { command -v "${CURR_PROG_CHECK}" | grep -o "${CURR_PROG_CHECK}" > /dev/null && echo -e "${CURR_PROG_CHECK} status:\t${PASSED_STYLE}installed${RESET_STYLE}"; } || { echo -e "${CURR_PROG_CHECK} status:\t${PASSED_STYLE}installed${RESET_STYLE}" ; MISSING_PROGS=1; }
 done
 if [ "${MISSING_PROGS}" -gt 0 ]; then
     echo -e "\n${ERROR_STYLE}ERROR MISSING REQUIRED PROGRAMS, GO INSTALL THE"
@@ -238,14 +296,20 @@ do
             rIn="${OPTARG}"
             rIn="${rIn,,}"
             case "${rIn}" in
-                headerstime)
-                    repairHeaders
+                headers)
+                    RUN_REPAIR_HEADERS=1
                     ;;
-                sourcestime)
-                    repairSources
+                sources)
+                    RUN_REPAIR_SOURCES=1
                     ;;
-                formattime)
-                    formatAsOne
+                format)
+                    RUN_FORMAT=1
+                    ;;
+                misc)
+                    RUN_MISC_CHECKS=1
+                    ;;
+                include)
+                    RUN_INCLUDE_FIXER=1
                     ;;
                 *)
                     printHelp
@@ -263,10 +327,20 @@ do
     esac
 done
 
-
 echo "Cool script started"
+#run the repair and fix up headers func
+[ "${RUN_REPAIR_HEADERS}" == 1 ] && repairHeaders
+#run the repair and fix up sources func
+[ "${RUN_REPAIR_SOURCES}" == 1 ] && repairSources
+#run the include fixer, may need to put this before the 
+#repair headers but i am not as sure about how this works
+#and if it will actually fix everything
+[ "${RUN_INCLUDE_FIXER}" == 1 ] && includeFixer
+#run the misc checks
+[ "${RUN_MISC_CHECKS}" == 1 ] && miscChecks
 
 
-
+#run the formatter, always want to do this last....
+[ "${RUN_FORMAT}" == 1 ] && formatFiles
 echo "cool script ended"
 exit 0
