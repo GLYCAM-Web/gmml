@@ -95,7 +95,7 @@ autoAllHeadersFile()
     #update our cmake file lists and ensure we regenerate our compile_commands.json
     #NOTE: Probably gonna change to like auto_testing or something idk, need to figure out
     #if i want to keep the compile commands + lists with all the test files indexed
-    ./make.sh -t "auto"
+    ./make.sh -t "tests"
     trap 'rm -v ./src/allHeaders.cpp && echo -e "${INFO_STYLE}###### Allheaders.cpp workaround file removed.######${RESET_STYLE}"' EXIT
     return 0
 }
@@ -182,7 +182,7 @@ includeFixer()
 {
     echo -e "${INFO_STYLE}###### BEGINNING INCLUDE FIXER ######${RESET_STYLE}"
     #first make sure that the compile_commands.json is made proper
-    ./make.sh -t "auto"
+    ./make.sh -t "tests"
     #first gotta generate the db for the tool to use
     run-find-all-symbols -p=./cmakeBuild
     #run clang include fixer on every single source file
@@ -202,7 +202,7 @@ repairSources()
 {
     echo -e "${INFO_STYLE}###### BEGINNING REPAIR SOURCES ######${RESET_STYLE}"
     #first make sure that our compile_commands.json etc. is nice and goode
-    ./make.sh -t "auto"
+    ./make.sh -t "tests"
     
     run-clang-tidy -checks='-*, readability-duplicate-include' -p ./cmakeBuild/ -fix || \
         { echo -e "${ERROR_STYLE}ERROR COULDNT APPLY REPAIR SOURCES CHANGES${RESET_STYLE}" ; exit 1; }

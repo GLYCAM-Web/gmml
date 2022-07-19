@@ -14,6 +14,7 @@ ERROR_STYLE='\033[0;31m\033[1m'
 #cxx file which takes a bonkers amount of time (adds like 10 ish
 #minutes it is wack)
 AUTO_TESTIN_TIME=0
+ALL_HEADERS_TESTIN_TIME=0
 
 gemshome=$(pwd)
 
@@ -64,7 +65,15 @@ checkCMakeFileLists()
         cp ./cmakeFileLists/* ./.tempCmakeLists/
         trap 'cp -fv ./.tempCmakeLists/* ./cmakeFileLists/ && rm -rfv ${gemshome}/.tempCmakeLists && echo -e "${PASSED_STYLE}###### Cmake file lists restored to state before script was run ######${RESET_STYLE}"' EXIT
         cd ./scripts/ ||  { echo -e "${ERROR_STYLE}ERROR HELPER SCRIPT DIR NOT FOUND, EXITING${RESET_STYLE}" ; exit 1; }
-        ./updateCmakeFileList.sh -t || { echo -e "${ERROR_STYLE}ERROR AUTO UPDATING CMAKEFILELISTS, EXITING${RESET_STYLE}" ; exit 1; }
+        
+        #now we have to either index all our test files or dont, this option has to be 
+        #available because some testing does break when we include testing files.
+        if [ "${ALL_HEADERS_TESTIN_TIME}" == 1 ]; then
+            ./updateCmakeFileList.sh -t || { echo -e "${ERROR_STYLE}ERROR AUTO UPDATING CMAKEFILELISTS, EXITING${RESET_STYLE}" ; exit 1; }
+        else
+            
+            ./updateCmakeFileList.sh || { echo -e "${ERROR_STYLE}ERROR AUTO UPDATING CMAKEFILELISTS, EXITING${RESET_STYLE}" ; exit 1; }
+        fi
         cd ..
         echo -e "${PASSED_STYLE}###### Auto updating cmakefilelists to include tests succeded ######${RESET_STYLE}\n"
     fi
@@ -262,6 +271,7 @@ do
 				;;
 			t)
                 tIn="${OPTARG}"
+                tIn="${tIn,,}"
                 #NOTE: Add in some other flag where we only audo update the 
                 #cmake lists in a normal way instead of always hitting all 
                 #test files
@@ -269,6 +279,14 @@ do
                     AUTO_TESTIN_TIME=1
                     #since we have to worry about tooling working on generated files
                     #we dont want it to run on, we have to run a clean if we do auto tooling stuff.
+                    CLEAN=1
+                #index all the test files to put into the
+                #compile_commands.json, we dont want to always
+                #index the test files because indexing them
+                #can cause some of the auto tooling to break
+                elif [ "${tIn}" == "tests" ]; then
+                    ALL_HEADERS_TESTIN_TIME=1
+                    AUTO_TESTIN_TIME=1
                     CLEAN=1
                 else
                     optionsBorked "${option}" "badArg"
