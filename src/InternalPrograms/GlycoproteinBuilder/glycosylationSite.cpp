@@ -8,7 +8,7 @@
 
 #include "includes/InternalPrograms/GlycoproteinBuilder/glycosylationSite.hpp"
 #include "includes/InternalPrograms/functionsForGMML.hpp"
-#include "includes/InternalPrograms/beadResidues.hpp"
+#include "includes/MolecularModeling/beadResidues.hpp"
 #include "includes/GeometryTopology/coordinate.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp"
 #include "includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
@@ -94,6 +94,8 @@ void GlycosylationSite::BuildGlycan(std::string glycanInputType, std::string gly
 	    gmml::log(__LINE__, __FILE__, gmml::INF, "Generating assembly from sequence with " + glycanInput);
 	    gmml::log(__LINE__, __FILE__, gmml::INF, "Prepfile location is: " + prepFileLocation);
 		CondensedSequence::carbohydrateBuilder carbBuilder(glycanInput, prepFileLocation);
+		carbBuilder.SetDefaultShapeUsingMetadata();
+		carbBuilder.ResolveOverlaps();
 		this->SetGlycan(carbBuilder.GetAssembly());
 	}
 	else if (glycanInputType == "Library")
@@ -130,6 +132,7 @@ void GlycosylationSite::AttachGlycan(Assembly* glycoprotein)
 	this->RenumberGlycanToMatch(*glycoprotein);
     gmml::log(__LINE__, __FILE__, gmml::INF, "SuperimposedGlycanToGlycosite");
 	this->Rename_Protein_Residue_To_GLYCAM_Nomenclature();
+	gmml::WritePDBFile(glycan_,"./" , this->GetResidue()->GetId() + "_glycan", false);
 	glycoprotein->MergeAssembly(&glycan_); // Add glycan to glycoprotein assembly, allows SetDihedral later. May not be necessary anymore with new Rotatable Dihedral class.
 	gmml::log(__LINE__, __FILE__, gmml::INF, "Merge done");
 	all_residue_linkages_.emplace_back(glycan_.GetResidues().at(0), residue_);
@@ -448,6 +451,10 @@ void GlycosylationSite::SetDefaultDihedralAnglesUsingMetadata()
     {
         linkage.SetDefaultShapeUsingMetadata();
     }
+    if( ! this->NoNewInternalCloseContacts() )
+    {
+        this->ResetDihedralAngles();
+    }
     return;
 }
 
@@ -457,6 +464,10 @@ void GlycosylationSite::SetRandomDihedralAnglesUsingMetadata()
     {
         linkage.SetRandomShapeUsingMetadata();
     }
+    if( ! this->NoNewInternalCloseContacts() )
+    {
+        this->ResetDihedralAngles();
+    }
     return;
 }
 
@@ -465,6 +476,10 @@ void GlycosylationSite::SetRandomDihedralAnglesUsingMetadataForNthLinkage(int li
     if(linkage_number < all_residue_linkages_.size())
     {
         all_residue_linkages_.at(linkage_number).SetRandomShapeUsingMetadata();
+    }
+    if( ! this->NoNewInternalCloseContacts() )
+    {
+        this->ResetDihedralAngles();
     }
     return;
 }

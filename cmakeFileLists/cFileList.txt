@@ -1,5 +1,7 @@
 ./src/CodeUtils/codetests.cc
+./src/CodeUtils/directories.cpp
 ./src/CodeUtils/logging.cpp
+./src/CodeUtils/strings.cpp
 ./src/GeometryTopology/ResidueLinkages/residue_linkage.cc
 ./src/GeometryTopology/ResidueLinkages/rotatable_dihedral.cc
 ./src/GeometryTopology/cell.cc
@@ -128,9 +130,8 @@
 ./src/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.cpp
 ./src/InternalPrograms/GlycoproteinBuilder/glycosylationSite.cpp
 ./src/InternalPrograms/GlycoproteinBuilder/gpInputStructs.cpp
-./src/InternalPrograms/beadResidues.cpp
+./src/InternalPrograms/Sequence/sequence.cpp
 ./src/InternalPrograms/functionsForGMML.cpp
-./src/InternalPrograms/io.cpp
 ./src/MolecularMetadata/GLYCAM/amberatomtypeinfo.cpp
 ./src/MolecularMetadata/GLYCAM/amberelements.cpp
 ./src/MolecularMetadata/GLYCAM/bondlengthbytypepair.cpp
@@ -175,6 +176,7 @@
 ./src/MolecularModeling/Selections/selections.cc
 ./src/MolecularModeling/atom.cc
 ./src/MolecularModeling/atomnode.cc
+./src/MolecularModeling/beadResidues.cpp
 ./src/MolecularModeling/dockingatom.cc
 ./src/MolecularModeling/moleculardynamicatom.cc
 ./src/MolecularModeling/molecule.cc

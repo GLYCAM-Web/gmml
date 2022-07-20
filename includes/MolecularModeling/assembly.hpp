@@ -2007,7 +2007,7 @@ public:
               * @param CoordinateIndex The index of the coordinate set
               */
     void CreateOffFileFromAssembly(std::string file_name, int CoordinateIndex);
-
+    void SerializeResidueNumbers();
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////

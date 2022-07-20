@@ -1,7 +1,7 @@
 #include "includes/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
 #include "includes/InternalPrograms/functionsForGMML.hpp"
-#include "includes/InternalPrograms/io.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/string.hpp"
 
 GlycoproteinBuilderInputs GPInputs::readGPInputFile(std::string workingDirectory, std::string inputFileName)
 {
@@ -20,31 +20,31 @@ GlycoproteinBuilderInputs GPInputs::readGPInputFile(std::string workingDirectory
         getline(infile, strInput);
         if(gmml::startsWith(strInput, "Protein:"))
         {
-        	gpInputs.substrateFileName_ = split(strInput, ':').at(1);
+        	gpInputs.substrateFileName_ = gmml::split(strInput, ':').at(1);
         }
         if(gmml::startsWith(strInput, "NumberOfOutputStructures:"))
         {
-        	gpInputs.number3DStructures_ = split(strInput, ':').at(1);
+        	gpInputs.number3DStructures_ = gmml::split(strInput, ':').at(1);
         }
         if(gmml::startsWith(strInput, "prepFileLocation:"))
         {
-        	gpInputs.prepFileLocation_ = split(strInput, ':').at(1);
+        	gpInputs.prepFileLocation_ = gmml::split(strInput, ':').at(1);
         }
         if(gmml::startsWith(strInput, "maxThreads:"))
         {
-        	gpInputs.maxThreads_ = split(strInput, ':').at(1);
+        	gpInputs.maxThreads_ = gmml::split(strInput, ':').at(1);
         }
         if(gmml::startsWith(strInput, "persistCycles:"))
         {
-        	gpInputs.persistCycles_ = split(strInput, ':').at(1);
+        	gpInputs.persistCycles_ = gmml::split(strInput, ':').at(1);
         }
         if(gmml::startsWith(strInput, "overlapTolerance:"))
         {
-        	gpInputs.overlapTolerance_ = split(strInput, ':').at(1);
+        	gpInputs.overlapTolerance_ = gmml::split(strInput, ':').at(1);
         }
         if(gmml::startsWith(strInput, "isDeterministic:"))
         {
-        	gpInputs.isDeterministic_ = split(strInput, ':').at(1);
+        	gpInputs.isDeterministic_ = gmml::split(strInput, ':').at(1);
         }
         if(strInput == "ProteinResidue, GlycanInputType, GlycanName:")
         {
@@ -52,7 +52,7 @@ GlycoproteinBuilderInputs GPInputs::readGPInputFile(std::string workingDirectory
             getline(infile, tempBuffer);
             while(tempBuffer != "END")
             {
-                std::vector<std::string> splitLine = split(tempBuffer, '|');
+                std::vector<std::string> splitLine = gmml::split(tempBuffer, '|');
                 gpInputs.glycositesInputVector_.emplace_back(splitLine.at(0), splitLine.at(1), splitLine.at(2));
                 getline(infile, tempBuffer);
             }

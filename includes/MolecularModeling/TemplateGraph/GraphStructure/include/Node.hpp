@@ -89,8 +89,8 @@ namespace glygraph
 		std::sort(inEdges_m.begin(), inEdges_m.end(),
 				[](Edge<T> *e1, Edge<T> *e2)
 				{ // Lambda function for doing the sort.
-							return ( *(e1->getSourceNode()->getDeriviedClass()) < *(e2->getSourceNode()->getDeriviedClass()) );
-						});
+							return ( *(e1->getSourceNode()->getDeriviedClass()) > *(e2->getSourceNode()->getDeriviedClass()) );
+				});
 		return;
 	}
 
