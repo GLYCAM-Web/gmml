@@ -9,8 +9,6 @@
 
 #include "../GeometryTopology/coordinate.hpp"
 #include "moleculardynamicatom.hpp"
-#include "quantommechanicatom.hpp"
-#include "dockingatom.hpp"
 #include "oligosaccharidedetectionatom.hpp"
 
 namespace MolecularModeling
@@ -19,7 +17,7 @@ namespace MolecularModeling
     class AtomNode;
     class Atom;
     typedef std::vector<MolecularModeling::Atom*> AtomVector; // Do this here so it can be used within the class, and is known
-    class Atom : public MolecularDynamicAtom, public QuantomMechanicAtom, public DockingAtom, public OligoSaccharideDetectionAtom
+    class Atom : public MolecularDynamicAtom, public OligoSaccharideDetectionAtom
     {
         public:
             //////////////////////////////////////////////////////////

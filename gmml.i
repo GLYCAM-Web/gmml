@@ -164,9 +164,7 @@
 #include "includes/MolecularMetadata/molecularmetadata.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
 
-#include "includes/MolecularModeling/dockingatom.hpp"
 #include "includes/MolecularModeling/moleculardynamicatom.hpp"
-#include "includes/MolecularModeling/quantommechanicatom.hpp"
 #include "includes/MolecularModeling/atom.hpp"
 #include "includes/MolecularModeling/residue.hpp"
 #include "includes/MolecularModeling/atomnode.hpp"
@@ -206,7 +204,7 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/utils.hpp"
 %include "includes/generictypedefs.hpp"
 %include "includes/CodeUtils/codetests.hpp"
-#include "includes/CodeUtils/logging.hpp"
+%include "includes/CodeUtils/logging.hpp"
 %include "includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
 %include "includes/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp"
 %include "includes/GeometryTopology/coordinate.hpp"
@@ -349,9 +347,7 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/MolecularMetadata/molecularmetadata.hpp"
 %include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
 
-%include "includes/MolecularModeling/dockingatom.hpp"
 %include "includes/MolecularModeling/moleculardynamicatom.hpp"
-%include "includes/MolecularModeling/quantommechanicatom.hpp"
 %include "includes/MolecularModeling/atom.hpp"
 %include "includes/MolecularModeling/residue.hpp"
 %include "includes/MolecularModeling/atomnode.hpp"
