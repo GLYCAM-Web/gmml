@@ -7,8 +7,6 @@
 
 %{
 #define SWIG_FILE_WITH_INIT
-//#include "/usr/include/sql.h"
-//#include "/usr/include/sqlext.h"
 
 #include "includes/gmml.hpp"
 #include "includes/common.hpp"
@@ -46,10 +44,6 @@
 #include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
 
 #include "includes/InternalPrograms/Sequence/sequence.hpp"
-
-//#include "includes/InputSet/CifFileSpace/ciffileatom.hpp"
-//#include "includes/InputSet/CifFileSpace/ciffile.hpp"
-//#include "includes/InputSet/CifFileSpace/ciffileprocessingexception.hpp"
 
 #include "includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
 #include "includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
@@ -188,16 +182,11 @@
 #include "includes/Abstract/builder.hpp"
 #include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
-//#include "includes/External_Libraries/json.hpp"
-
 %}
 
 %inline %{
 std::ostream & get_cout() { return std::cout; }
 %}
-
-//%include "/usr/include/sql.h"
-//%include "/usr/include/sqlext.h"
 
 %include "includes/gmml.hpp"
 %include "includes/common.hpp"
@@ -323,10 +312,6 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/InputSet/PdbqtFileSpace/pdbqtrootcard.hpp"
 %include "includes/InputSet/PdbqtFileSpace/pdbqttorsionaldofcard.hpp"
 
-//%include "includes/InputSet/CifFileSpace/ciffileatom.hpp"
-//%include "includes/InputSet/CifFileSpace/ciffile.hpp"
-//%include "includes/InputSet/CifFileSpace/ciffileprocessingexception.hpp"
-
 %include "includes/Resolver/PdbPreprocessor/pdbpreprocessor.hpp"
 %include "includes/Resolver/PdbPreprocessor/pdbpreprocessorchaintermination.hpp"
 %include "includes/Resolver/PdbPreprocessor/pdbpreprocessordisulfidebond.hpp"
@@ -375,8 +360,6 @@ std::ostream & get_cout() { return std::cout; }
 
 %include "includes/Abstract/builder.hpp"
 %include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
-
-//%include "includes/External_Libraries/json.hpp"
 
 
 %template(string_vector) std::vector<std::string>;
@@ -652,7 +635,6 @@ std::ostream & get_cout() { return std::cout; }
 %template() std::pair<int, TopologyFileSpace::TopologyDihedralType*>;
 %template(dihedral_type_map_Topology_file) std::map<int, TopologyFileSpace::TopologyDihedralType*>;
 
-
 ///PDBQT file///
 //typedef std::map<std::string, PdbFileSpace::PdbFile::PdbAtomCardVector* > PdbResidueAtomsMap;
 %template() std::pair<std::string, PdbFileSpace::PdbFile::PdbAtomCardVector* >;
@@ -681,10 +663,6 @@ std::ostream & get_cout() { return std::cout; }
 
 //typedef std::vector<PdbqtFileSpace::PdbqtBranchCard*> BranchCardVector;
 %template(pdbqt_branch_card_vector) std::vector<PdbqtFileSpace::PdbqtBranchCard*>;
-
-///Cif File///
-//typedef std::vector<CifFileSpace::CifFileAtom*> CifFileAtomVector;
-//%template(cif_atom_vector) std::vector<CifFileSpace::CifFileAtom*>;
 
 ///Condensed Sequence///
 //typedef std::vector<CondensedSequenceSpace::CondensedSequenceResidue*> CondensedSequenceResidueVector;

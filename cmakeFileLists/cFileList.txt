@@ -13,9 +13,6 @@
 ./src/Glycan/glycosidiclinkage.cc
 ./src/Glycan/monosaccharide.cc
 ./src/Glycan/oligosaccharide.cc
-./src/InputSet/CifFileSpace/ciffile.cc
-./src/InputSet/CifFileSpace/ciffileatom.cc
-./src/InputSet/CifFileSpace/ciffileprocessingexception.cc
 ./src/InputSet/CondensedSequence/assemblyBuilder.cpp
 ./src/InputSet/CondensedSequence/parsedResidue.cpp
 ./src/InputSet/CondensedSequence/sequenceManipulator.cpp
