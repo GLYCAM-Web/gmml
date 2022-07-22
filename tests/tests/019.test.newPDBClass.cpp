@@ -1,7 +1,7 @@
 #include "includes/gmml.hpp"
 #include "includes/InputSet/PdbFile/pdbFile.hpp"
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
-
+#include "includes/CentralDataStructure/cdsFunctions.hpp" // bondAtomsByDistance
 #include <string>
 
 int main(int argc, char* argv[])
@@ -15,7 +15,11 @@ int main(int argc, char* argv[])
     pdb::PdbFile pdbFile(argv[1]);
     pdb::PreprocessorOptions options; // Default values are good.
     pdb::PreprocessorInformation ppInfo = pdbFile.PreProcess(options);
-    pdbFile.Write("./outputPdbFile.pdb");
+    for (auto & assembly : pdbFile.getAssemblies()) // Just testing, doing it this way to get around const in Ensemble.
+    {
+    	cds::bondAtomsByDistance(assembly->getAtoms());
+    }
+    	pdbFile.Write("./outputPdbFile.pdb");
     // Just showing what's in the ppInfo and how to access it
     std::cout << "Unrecognized atoms:\n";
     for(auto &unrecognized : ppInfo.unrecognizedAtoms_)
