@@ -27,7 +27,7 @@ find_package(SWIG 4.0 COMPONENTS python REQUIRED)
 find_package(Python3 3.9 COMPONENTS Interpreter Development EXACT REQUIRED)
 
 #Show user what compiler they using
-message("################## TOOLS CMAKE IS USING ###################")
+message("################## TOOLS CMAKE IS USING ###################\n")
 message(STATUS "CMake Version:\t${CMAKE_VERSION}")
 message("")
 #https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER_ID.html
