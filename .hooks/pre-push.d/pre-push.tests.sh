@@ -38,6 +38,7 @@ check_gemshome $gemshome
 ## OG Oct 2021 have the hooks update themselves.
 cp -r $GEMSHOME/gmml/.hooks/* $GEMSHOME/gmml/.git/hooks/
 
+TEST_SKIP=0
 #### Allow skipping tests ####
 branch=`git rev-parse --abbrev-ref HEAD`
 if [[ "$branch" != "gmml-dev" ]] && [[ "$branch" != "gmml-test" ]] && [[ "$branch" != "stable" ]]; then
@@ -45,7 +46,7 @@ if [[ "$branch" != "gmml-dev" ]] && [[ "$branch" != "gmml-test" ]] && [[ "$branc
     read -p "Enter response: " response < /dev/tty
     if [[ $response == [sS] ]]; then
         printf "Skipping tests!\n"
-        exit 0;
+        TEST_SKIP=1
     elif [[ $response == [aA] ]]; then
         printf "Abort!\n"
         exit 1;
@@ -53,25 +54,35 @@ if [[ "$branch" != "gmml-dev" ]] && [[ "$branch" != "gmml-test" ]] && [[ "$branc
         printf "Running tests.\n"
     fi
 fi
-#### Allow skipping tests ####
 
-
-
-#Compile gmml if not compiled:
-echo "Pulling all changes"
-git pull
-result=$? # record the exit status of previous command
-if [ $result -eq 1 ] ; then
-    echo "Could not pull gmml"
-    exit 1
+#sane git checking
+echo "Checking if our current branch is on remote"
+if [ -n "$(git branch --remotes --contains "$(git rev-parse --abbrev-ref HEAD)")" ]; then
+    #we hit here if our branch is actually on remote, thus we must check
+    #that the current branch is up to date on remote
+    echo "Branch is on remote, now to check if local is behind remote"
+    if [ "$(git rev-list --left-only --count origin/"$(git rev-parse --abbrev-ref HEAD)"..."$(git rev-parse --abbrev-ref HEAD)")" != 0 ]; then
+        #here the given value is non zero thus remote is ahead of our local so we want to go ahead and stop everything and just exit with an error
+        echo "ERROR: REMOTE IS AHEAD OF YOUR LOCAL BRANCH, PULL BEFORE YOU TRY TO PUSH"
+        #since remote is ahead of local we know we want to stop the push and make the user pull the new code
+        exit 1
+    fi
+    echo "Local branch is not behind the remote branch, proceeding"
+else
+    echo "Branch is not on remote, so no need to check if local is behind remote, proceeding"
 fi
-cd $GEMSHOME/
- git pull
- result=$? # record the exit status of previous command
- if [ $result -eq 1 ] ; then
-     echo "Could not pull gems"
-     exit 1
- fi
+
+#if we dont wanna do tests we just exit here cause we know we are kosher to push
+if [ "${TEST_SKIP}" == 1 ]; then
+    echo "Skipping tests, you are good to push."
+    exit 0
+else
+    echo "Beginning tests"
+fi
+
+#we only hit here if we know that we arent skipping tests and the local branch is not behind the remote branch (if the 
+#remote branch even exists so lets run it
+
  #Add these removes so the tests don't pass on an old version of the library
  rm -f gmml.py _gmml.so
  rm -rf ./gmml/lib
