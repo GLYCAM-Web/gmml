@@ -8,7 +8,7 @@
 #include <set>
 
 #include "./amberatomtypeinfo.hpp"
-#include "./bonglengthbytypepair.hpp"
+#include "./bondlengthbytypepair.hpp"
 
 namespace gmml
 {

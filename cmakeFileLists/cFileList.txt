@@ -13,9 +13,6 @@
 ./src/Glycan/glycosidiclinkage.cc
 ./src/Glycan/monosaccharide.cc
 ./src/Glycan/oligosaccharide.cc
-./src/InputSet/CifFileSpace/ciffile.cc
-./src/InputSet/CifFileSpace/ciffileatom.cc
-./src/InputSet/CifFileSpace/ciffileprocessingexception.cc
 ./src/InputSet/CondensedSequence/assemblyBuilder.cpp
 ./src/InputSet/CondensedSequence/parsedResidue.cpp
 ./src/InputSet/CondensedSequence/sequenceManipulator.cpp
@@ -169,7 +166,6 @@
 ./src/MolecularModeling/Graph/graph.cc
 ./src/MolecularModeling/Graph/node.cc
 ./src/MolecularModeling/Residue/residue.cc
-./src/MolecularModeling/Residue/residue3dtemplatelibrary.cc
 ./src/MolecularModeling/Residue/residuebuilder.cc
 ./src/MolecularModeling/Residue/residuenode.cc
 ./src/MolecularModeling/Residue/residueproperties.cc
@@ -177,12 +173,10 @@
 ./src/MolecularModeling/atom.cc
 ./src/MolecularModeling/atomnode.cc
 ./src/MolecularModeling/beadResidues.cpp
-./src/MolecularModeling/dockingatom.cc
 ./src/MolecularModeling/moleculardynamicatom.cc
 ./src/MolecularModeling/molecule.cc
 ./src/MolecularModeling/oligosaccharidedetectionatom.cc
 ./src/MolecularModeling/overlaps.cc
-./src/MolecularModeling/quantommechanicatom.cc
 ./src/MolecularModeling/ring_shape_detection.cc
 ./src/MolecularModeling/superimposition.cc
 ./src/ParameterSet/LibraryFileSpace/libraryfile.cc

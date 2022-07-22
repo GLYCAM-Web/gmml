@@ -5,7 +5,6 @@
 ./includes/GeometryTopology/ResidueLinkages
 ./includes/Glycan
 ./includes/InputSet
-./includes/InputSet/CifFileSpace
 ./includes/InputSet/CondensedSequence
 ./includes/InputSet/CondensedSequenceSpace
 ./includes/InputSet/CoordinateFileSpace
