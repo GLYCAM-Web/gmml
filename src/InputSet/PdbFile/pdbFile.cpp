@@ -176,7 +176,6 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
         model->preProcessCysResidues(ppInfo);
         model->preProcessHisResidues(ppInfo, inputOptions);
         model->preProcessChainTerminals(ppInfo, inputOptions);
-//        model->preProcessGaps(ppInfo, inputOptions);
         model->preProcessGapsUsingDistance(ppInfo, inputOptions);
         model->preProcessMissingUnrecognized(ppInfo);
         // What about setting charges doofus?
