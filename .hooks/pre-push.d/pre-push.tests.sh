@@ -56,7 +56,9 @@ if [[ "$branch" != "gmml-dev" ]] && [[ "$branch" != "gmml-test" ]] && [[ "$branc
 fi
 
 #sane git checking
-echo "Checking if our current branch is on remote"
+echo "Checking if our current branch is on remote, if the branch status below is empty"
+echo "then we know that the branch is not on remote."
+echo "Branch status: $(git branch --remotes --contains "$(git rev-parse --abbrev-ref HEAD)")"
 if [ -n "$(git branch --remotes --contains "$(git rev-parse --abbrev-ref HEAD)")" ]; then
     #we hit here if our branch is actually on remote, thus we must check
     #that the current branch is up to date on remote
