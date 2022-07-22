@@ -45,7 +45,7 @@ if [[ "$branch" != "gmml-dev" ]] && [[ "$branch" != "gmml-test" ]] && [[ "$branc
     printf "Branch is %s\nSkipping tests is allowed.\nDo you want to skip them?\ns=skip\na=abort\nEnter anything to run tests.\n" $branch
     read -p "Enter response: " response < /dev/tty
     if [[ $response == [sS] ]]; then
-        printf "Skipping tests!\n"
+        echo -e "Skipping tests!\n"
         TEST_SKIP=1
     elif [[ $response == [aA] ]]; then
         printf "Abort!\n"
@@ -57,9 +57,10 @@ fi
 
 #sane git checking
 echo "Checking if our current branch is on remote, if the branch status below is empty"
-echo "then we know that the branch is not on remote."
-echo "Branch status: $(git branch --remotes --contains "$(git rev-parse --abbrev-ref HEAD)")"
-if [ -n "$(git branch --remotes --contains "$(git rev-parse --abbrev-ref HEAD)")" ]; then
+echo -e "then we know that the branch is not on remote.\n"
+echo "Branch hash and name: $(git ls-remote --heads origin "$(git rev-parse --abbrev-ref HEAD)")"
+echo ""
+if [ -n "$(git ls-remote --heads origin "$(git rev-parse --abbrev-ref HEAD)")" ]; then
     #we hit here if our branch is actually on remote, thus we must check
     #that the current branch is up to date on remote
     echo "Branch is on remote, now to check if local is behind remote"
@@ -73,7 +74,6 @@ if [ -n "$(git branch --remotes --contains "$(git rev-parse --abbrev-ref HEAD)")
 else
     echo "Branch is not on remote, so no need to check if local is behind remote, proceeding"
 fi
-
 #if we dont wanna do tests we just exit here cause we know we are kosher to push
 if [ "${TEST_SKIP}" == 1 ]; then
     echo "Skipping tests, you are good to push."
