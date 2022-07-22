@@ -136,7 +136,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 	"${CMAKE_SOURCE_DIR}" "${HDIRECTORIES}")
 #Declaring the system will cause the compile commands to have the 
 #prefix -isystem which should cause the autotooling to ignore these files
-target_include_directories(${PROJECT_NAME} PUBLIC SYSTEM
+target_include_directories(${PROJECT_NAME} SYSTEM PUBLIC
     "${EXHDIRECTORIES}"
     )
 	
