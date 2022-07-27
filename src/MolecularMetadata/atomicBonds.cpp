@@ -1,19 +1,20 @@
 #include "includes/MolecularMetadata/atomicBonds.hpp"
 //#include "includes/CentralDataStructure/cdsAtom.hpp"
 
-#include <mutex>
+//#include <mutex>
 
 using namespace atomicBonds;
 
 bool atomicBonds::bondAtomsIfClose(cds::cdsAtom* atom1, cds::cdsAtom* atom2)
 {
-	std::mutex mtx;           // mutex for critical section
+	//std::mutex mtx;           // mutex for critical section
     double maxLength = atomicBonds::getMaxBondLengthByAtomType(atom1->getElement(), atom2->getElement());
     if (atom1->getCoordinate()->withinDistance(atom2->getCoordinate(), maxLength))
     {
-    	mtx.lock();
+    	// std::lock_guard<std::mutex> guard(mtx); // pre C++17 version
+    	//std::lock_guard guard(mtx);//RAII, the mutex will be unlocked upon guard destruction. Exception safe.
     	atom1->addBond(atom2);
-    	mtx.unlock();
+    	//std::cout << "Bonded " << atom1->getName() << "_" << atom1->getIndex() << " to " << atom2->getName() << "_" << atom2->getIndex() << std::endl;
         //std::stringstream ss;
         //std::cout << "Bonded " << atom1->getName() << "_" << atom1->getIndex() << " to " << atom2->getName() << "_" << atom2->getIndex() << "\n";
         //gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());

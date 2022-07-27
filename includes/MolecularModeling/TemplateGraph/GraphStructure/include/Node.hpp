@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <unordered_set>
+#include <mutex> // lock
 
 namespace glygraph
 {
@@ -251,7 +252,10 @@ namespace glygraph
   template<class T>
   inline void Node<T>::addNeighbor(std::string edgeName_t, Node<T> *const &newNeighbor_t)
   {
+	std::mutex mtx;
+  	std::lock_guard guard(mtx);//RAII, the mutex will be unlocked upon guard destruction. Exception safe.
     this->addChild(edgeName_t, newNeighbor_t);
+    return;
   }
 
   template<class T>
