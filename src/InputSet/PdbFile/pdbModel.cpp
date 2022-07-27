@@ -8,6 +8,7 @@
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
 #include "includes/CentralDataStructure/cdsSelections.hpp"
+#include "includes/CentralDataStructure/cdsFunctions.hpp"
 
 
 using pdb::PdbModel;
@@ -321,6 +322,11 @@ void PdbModel::preProcessMissingUnrecognized(pdb::PreprocessorInformation &ppInf
         }
     }
     return;
+}
+
+void PdbModel::bondAtomsByDistance()
+{
+	cds::bondAtomsByDistance(this->getAtoms());
 }
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //

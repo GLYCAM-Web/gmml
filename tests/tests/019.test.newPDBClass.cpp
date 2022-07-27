@@ -14,11 +14,14 @@ int main(int argc, char* argv[])
     }
     pdb::PdbFile pdbFile(argv[1]);
     pdb::PreprocessorOptions options; // Default values are good.
+    std::cout << "Preprocessing\n";
     pdb::PreprocessorInformation ppInfo = pdbFile.PreProcess(options);
     for (auto & assembly : pdbFile.getAssemblies()) // Just testing, doing it this way to get around const in Ensemble.
     {
-    	cds::bondAtomsByDistance(assembly->getAtoms());
+    	std::cout << "Bonding atoms by distance for assembly\n";
+    	assembly->bondAtomsByDistance();
     }
+    std::cout << "Finished bonding atoms by distance\n";
     	pdbFile.Write("./outputPdbFile.pdb");
     // Just showing what's in the ppInfo and how to access it
     std::cout << "Unrecognized atoms:\n";
