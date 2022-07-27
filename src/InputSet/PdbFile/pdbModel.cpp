@@ -264,8 +264,8 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo,
             {
                 pdb::PdbResidue* res1 = *it1;
                 pdb::PdbResidue* res2 = *it2;
-                std::cout << "res1 is " + res1->getNumberAndInsertionCode() + "_" + res1->getChainId() << std::endl;
-                std::cout << "res2 is " + res2->getNumberAndInsertionCode() + "_" + res2->getChainId() << std::endl;
+//                std::cout << "res1 is " + res1->getNumberAndInsertionCode() + "_" + res1->getChainId() << std::endl;
+//                std::cout << "res2 is " + res2->getNumberAndInsertionCode() + "_" + res2->getChainId() << std::endl;
                 const pdb::pdbAtom* res1AtomC = res1->FindAtom("C");
                 const pdb::pdbAtom* res2AtomN = res2->FindAtom("N");
                 if ( !res1AtomC->isWithinBondingDistance(res2AtomN) )
