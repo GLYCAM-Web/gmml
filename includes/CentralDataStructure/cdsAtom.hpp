@@ -8,6 +8,8 @@
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
 //#include "includes/CentralDataStructure/cdsCoordinate.hpp"
 #include "includes/GeometryTopology/coordinate.hpp"
+#include "includes/common.hpp"
+
 using GeometryTopology::Coordinate;
 namespace cds
 {
@@ -23,6 +25,8 @@ public:
     //////////////////////////////////////////////////////////
     Coordinate* getCoordinate();
     const Coordinate* getCoordinate() const;
+    inline const double& getCharge() const { return charge_;};
+
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
@@ -44,6 +48,7 @@ private:
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     std::vector<std::unique_ptr<Coordinate>> coordinates_;     /*!< Position of the atom >*/
+    double charge_ = gmml::dNotSet;
 };
 }
 #endif // ATOM_HPP

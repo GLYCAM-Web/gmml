@@ -8,8 +8,10 @@
 
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/numbers.hpp"
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/MolecularMetadata/atomicBonds.hpp" // bondIfClose
+#include "includes/CentralDataStructure/cdsFunctions.hpp"
 
 
 namespace cds
@@ -42,6 +44,7 @@ public:
     void addMolecule(const moleculeT& molecule);
     void addMolecule(std::unique_ptr<moleculeT> myMolecule);
     const atomT* findAtom(const int& serialNumber) const;
+    void EnsureIntegralCharge();
     //void bondAtomsByDistance();
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
@@ -154,30 +157,23 @@ const atomT* cdsAssembly<moleculeT, residueT, atomT>::findAtom(const int& serial
 	return codeUtils::findElementWithNumber(this->getAtoms(), serialNumber);
 }
 
-// Simple for now, asked P to make a fast one.
-//template <class moleculeT, class residueT, class atomT>
-//void cdsAssembly<moleculeT, residueT, atomT>::bondAtomsByDistance()
-//{
-////    std::vector<std::thread> threads;
-////    int maxThreads = 11;
-////    int i = 1;
-//    std::vector<atomT*> atoms = this->getAtoms();
-//    //typename std::vector<std::unique_ptr<atomT>>::iterator;
-//    for(typename std::vector<atomT*>::iterator it1 = atoms.begin(); it1 != atoms.end(); ++it1)
-//    {
-//        atomT* atom1 = *it1;
-//        for(typename std::vector<atomT*>::iterator it2 = std::next(it1); it2 != atoms.end(); ++it2)
-//        {
-//            atomT* atom2 = *it2;
-//            //gmml::log(__LINE__,__FILE__,gmml::INF, "Checking " + atom1->GetId() + " vs " + atom2->GetId());
-//            // Need to mutex lock the add node function in atom1? What about accessing atom2 as a node in that context? Probably also needs to lock.
-//            //std::thread t(&atomicBonds::bondAtomsIfClose, atom1, atom2);
-//            //t.join(); This makes it linear.
-//            atomicBonds::bondAtomsIfClose(atom1, atom2);
-//        }
-//    }
-//    return;
-//}
+template <class moleculeT, class residueT, class atomT>
+void cdsAssembly<moleculeT, residueT, atomT>::EnsureIntegralCharge()
+{
+	double charge = cds::getCharge(this->getAtoms());
+	std::stringstream ss;
+	ss << std::fixed;
+	ss << "Total charge is: " << std::setprecision(5) << charge << std::endl;
+	gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+	if (!codeUtils::isNumberIntegral(charge))
+	{
+		std::stringstream errorMessage;
+		errorMessage << "Non-integral charge (" << charge << "). You cannot run MD with this.\n";
+		std::cerr << errorMessage.str();
+		throw errorMessage.str();
+	}
+	return;
+}
 
 } // namespace
 #endif // ASSEMBLY_HPP

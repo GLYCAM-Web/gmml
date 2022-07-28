@@ -68,6 +68,20 @@ void bondAtomsByDistance(std::vector<atomT*> atoms)
     return;
 }
 
+template <typename atomT>
+double getCharge(std::vector<atomT*> atoms)
+{
+	double totalCharge = 0.0;
+	for(auto &atom : atoms)
+	{
+		if (atom->getCharge() != gmml::dNotSet)
+		{
+			totalCharge += atom->getCharge();
+		}
+	}
+	return totalCharge;
+}
+
 } // namespace
 
 
