@@ -28,6 +28,6 @@ inline unsigned long const calculateNumberOfThreads(unsigned long const length)
 	unsigned long const num_threads = std::min(hardware_threads, max_threads); // Choose whatever is the lesser (of two weevils).
 	return num_threads;
 	//unsigned long const block_size = length / num_threads;
-}
+};
 } // namespace
 #endif /* INCLUDES_CODEUTILS_THREADS_HPP_ */
