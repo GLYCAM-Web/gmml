@@ -3,7 +3,7 @@
 #include <fstream>
 #include <sys/stat.h> // mkdir
 
-#include "includes/CodeUtils/string.hpp"
+#include "includes/CodeUtils/strings.hpp"
 #include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
 int main(int argc, char** argv)
@@ -29,7 +29,7 @@ int main(int argc, char** argv)
     std::string line;
     while (std::getline(infile, line))
     {
-        StringVector splitLine = gmml::split(line, delimiter);
+        StringVector splitLine = codeUtils::split(line, delimiter);
         std::string inputSequence = splitLine.at(1);
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
         try
