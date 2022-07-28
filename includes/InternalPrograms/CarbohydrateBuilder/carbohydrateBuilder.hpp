@@ -2,7 +2,7 @@
 #define GMML_INCLUDES_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
 #include <string>
 #include <vector>
-#include "includes/MolecularModeling/assembly.hpp" // This has to be relative for SWIG for unknown reasons.
+#include "includes/MolecularModeling/assembly.hpp"
 #include "includes/Abstract/absBuilder.hpp"
 
 namespace CondensedSequence
@@ -54,12 +54,17 @@ public:
     //                       ACCESSORS                      //
     //////////////////////////////////////////////////////////
     std::string GetInputSequenceString();
-    MolecularModeling::Assembly* GetAssembly(); // Should become a move of unique_ptr. Treat this class like a factor.
+    MolecularModeling::Assembly* GetAssembly();
     ResidueLinkageVector* GetGlycosidicLinkages(); // Dodgy. Why do I do this?
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
-    // These two being public is funky. For evaluation I don't want to bother with this, so they only trigger when 3D structures are generated, but for gp builder, I don't write 3D structure until the end and so it does it's count internal bonds while the shape isn't good. Making public while I come up with a better idea. Probably carb builder needs an eval constructor, or that might go into sequence. I think these need to be done by default to be safe.
+    // These two being public is funky.
+    // For evaluation I don't want to bother with this, so they only trigger when 3D structures are generated,
+    // but for gp builder, I don't write 3D structure until the end and so it does it's count internal bonds while the shape isn't good.
+    // Making public while I come up with a better idea.
+    // Probably carb builder needs an eval constructor, or that might go into sequence.
+    // Actually I think these need to be done by default to be safe.
     void SetDefaultShapeUsingMetadata();
     void ResolveOverlaps();
     //////////////////////////////////////////////////////////

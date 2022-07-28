@@ -27,6 +27,7 @@ private:
     void InitializeLibResidueMap(std::vector<std::string> &libFiles);
     void SetGlycamResidueNames(std::vector<std::string> &libFiles, std::vector<std::string> &prepFiles);
     PrepFileSpace::PrepFileResidue* FindPrepResidue(std::string residueName);
+    // Attributes
     std::map<std::string, std::string> residueNamesToSelfMap_; // Silly
     std::map<std::string, std::vector<std::string>> residueNamesToTheirAtomsNameMap_;
     std::map<std::string, LibraryFileSpace::LibraryFileResidue*> libResMap_;
