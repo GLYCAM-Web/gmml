@@ -111,21 +111,11 @@ size_t SequenceParser::seekRepeatStart(const std::string &inputSequence, size_t 
 std::string SequenceParser::Print()
 {
     std::string output = "";
-    for (auto &residue : this->GetParsedResidues())
+    for (auto &residue : this->getResidues())
     {
         output += residue->Print();
     }
     return output;
-}
-
-std::vector<ParsedResidue*> SequenceParser::GetParsedResidues()
-{
-    std::vector<ParsedResidue*> rawResidues;
-    for(auto &residue : parsedResidues_)
-    {
-        rawResidues.push_back(residue.get());
-    }
-    return rawResidues;
 }
 
 void SequenceParser::ParseLabelledInput(std::string inString)
@@ -155,13 +145,13 @@ bool SequenceParser::ParseCondensedSequence(const std::string sequence)
         {
             ++i;
         }
-        parsedResidues_.push_back(std::make_unique<ParsedResidue>(sequence.substr(i), ParsedResidue::Type::Sugar));
+        this->addResidue(std::make_unique<ParsedResidue>(sequence.substr(i), ParsedResidue::Type::Sugar));
     }
     else
     { // e.g. DGlcpa1-OH
-        parsedResidues_.push_back(std::make_unique<ParsedResidue>(sequence.substr(i), ParsedResidue::Type::Aglycone));
+    	this->addResidue(std::make_unique<ParsedResidue>(sequence.substr(i), ParsedResidue::Type::Aglycone));
     }
-    auto terminal = parsedResidues_.back().get();
+    auto terminal = this->getResidues().back();
     this->RecurveParseAlt(i, sequence, terminal); 
     return true;
 }
@@ -247,14 +237,14 @@ ParsedResidue* SequenceParser::SaveResidue(const size_t windowStart, const size_
     if (residueString.find('-') != std::string::npos)
     {
         logss << "Saving " << residueString << " with parent " << parent->GetName() <<  std::endl;
-        parsedResidues_.push_back(std::make_unique<ParsedResidue>(residueString, parent));
-        auto newRes = parsedResidues_.back().get();
+        this->addResidue(std::make_unique<ParsedResidue>(residueString, parent));
+        auto newRes = this->getResidues().back();
         if(this->DerivativesExist())
         {
             for(auto &derivative : this->ExtractDerivatives())
             {
                 logss << "Saving derivative: " << derivative << " with parent " << newRes->GetName() <<  std::endl;
-                parsedResidues_.push_back(std::make_unique<ParsedResidue>(derivative, newRes));
+                this->addResidue(std::make_unique<ParsedResidue>(derivative, newRes));
             }
         }
         gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());

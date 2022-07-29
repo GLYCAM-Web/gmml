@@ -35,7 +35,7 @@ AssemblyBuilder::AssemblyBuilder(std::string inputSequence, std::string prepFile
 void AssemblyBuilder::GenerateResidues(Assembly *assembly)
 {
 	std::vector<MolecularModeling::Residue> createdResidues;
-	createdResidues.reserve(this->GetParsedResidues().size());
+	createdResidues.reserve(this->getResidues().size());
 	CondensedSequence::ParsedResidue *aglycone = this->GetTerminal();
 	auto result = this->GetPrepResidueMap()->find(this->GetGlycamResidueName(*aglycone));
 	std::stringstream ss;

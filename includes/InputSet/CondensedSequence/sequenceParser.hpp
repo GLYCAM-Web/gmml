@@ -3,10 +3,12 @@
 
 #include <string>
 #include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
+#include "includes/CentralDataStructure/cdsMolecule.hpp"
+#include "includes/CentralDataStructure/cdsAtom.hpp"
 
 namespace CondensedSequence
 {
-    class SequenceParser
+    class SequenceParser : public cds::cdsMolecule<ParsedResidue, cds::cdsAtom>
     {
     public:
         //////////////////////////////////////////////////////////
@@ -17,7 +19,6 @@ namespace CondensedSequence
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
         std::string Print();
-        std::vector<ParsedResidue*> GetParsedResidues();
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
@@ -47,7 +48,6 @@ namespace CondensedSequence
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
     	std::vector<std::string> savedDerivatives_;
-        std::vector<std::unique_ptr<ParsedResidue>> parsedResidues_;
     };
 }
 #endif

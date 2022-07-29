@@ -17,7 +17,7 @@ bool file_exists(const char *filename)
 
 std::string SequenceManipulator::ReorderSequence()
 {	// Just doing the default by ascending link number for now.
-	for (auto &residue : this->GetParsedResidues())
+	for (auto &residue : this->getResidues())
 	{
 		residue->sortInEdgesBySourceTObjectComparator();
 	}
