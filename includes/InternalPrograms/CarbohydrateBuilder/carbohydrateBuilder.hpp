@@ -71,7 +71,8 @@ public:
     void GenerateSpecific3DStructure(SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory = "unspecified");
     // The following generates no files
     void GenerateUpToNRotamers(int maxRotamers = 32); // Will not be used by gems, but leaving the functionality as could be useful.
-    unsigned long long int GetNumberOfShapes(bool likelyShapesOnly = false);
+    //unsigned long long int GetNumberOfShapes(bool likelyShapesOnly = false);
+    std::string GetNumberOfShapes(bool likelyShapesOnly = false);
     std::string Print();
 private:
     void Write3DStructureFile(std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string filename = "output");
