@@ -102,7 +102,7 @@ check_if_branch_behind()
             #the left repo that has origin tacked onto it., the right side
             if [ "$(git rev-list --left-only --count origin/"${CURRENT_BRANCH}"..."${CURRENT_BRANCH}")" != 0 ] || [ "${CURRENT_BRANCH}" == "HEAD" ]; then
                 #here the given value is non zero thus remote is ahead of our local so we want to go ahead and stop everything and just exit with an error
-                echo -e "${RED_BOLD}ERROR${RESET_STYLE}: $1 REMOTE IS AHEAD OF YOUR LOCAL BRANCH, PULL BEFORE YOU TRY TO PUSH"
+                echo -e "${RED_BOLD}ERROR:${RESET_STYLE} $1 REMOTE IS AHEAD OF YOUR LOCAL BRANCH, PULL BEFORE YOU TRY TO PUSH"
                 #since remote is ahead of local we know we want to stop the push and make the user pull the new code,
                 #BUT we want to go ahead and check both repos first and THEN exit so the user can know if they
                 #need to pull both GEMS and GMML. Basically this var is only populated if local branch is behind origin branch
@@ -111,8 +111,9 @@ check_if_branch_behind()
                 else
                     BRANCH_IS_BEHIND="\t$1"
                 fi
+            else
+                echo -e "${GREEN_BOLD}passed...${RESET_STYLE}Local branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} on repo ${YELLOW_BOLD}$1${RESET_STYLE} is not behind the remote branch, proceeding"
             fi
-            echo -e "${GREEN_BOLD}passed...${RESET_STYLE}Local branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} on repo ${YELLOW_BOLD}$1${RESET_STYLE} is not behind the remote branch, proceeding"
         else
             echo -e "${GREEN_BOLD}passed...${RESET_STYLE} Branch is not on remote, so no need to check if local is behind remote, proceeding"
         fi
@@ -201,7 +202,7 @@ if [ "${result}" -eq 0 ]; then
         echo "Sometimes the changes you make are fine, and you just need to update what the correct output is by overwriting the old output. Make sure it is ok though, or you will be mur-didely-urdered."
         exit 1
     else
-        echo "${GREEN_BOLD}All tests have passed. Pushing allowed.${RESET_STYLE}"
+        echo -e "${GREEN_BOLD}All tests have passed. Pushing allowed.${RESET_STYLE}"
         exit 0
     fi
 else
