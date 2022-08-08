@@ -92,14 +92,15 @@ check_if_branch_behind()
         echo -e "First checking if ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} is on remote, if the branch status below is empty"
         echo "then we know that the branch is not on remote."
         echo "Branch hash and name on origin: $(git ls-remote --heads origin "${CURRENT_BRANCH}")"
-        #check if we get a non-empty return aka branch is on remote
-        if [ -n "$(git ls-remote --heads origin "${CURRENT_BRANCH}")" ]; then
+        #check if we get a non-empty return aka branch is on remote, if we are on a head branch we want to "force" acceptance to go ahead
+        #and add if our branch name is HEAD then we fail
+        if [ -n "$(git ls-remote --heads origin "${CURRENT_BRANCH}")" ] || [ "${CURRENT_BRANCH}" == "HEAD" ]; then
             #we hit here if our branch is actually on remote, thus we must check
             #that the current branch is up to date on remote
             echo -e "\nBranch is present on remote, now to check if local is behind remote"
             #the left only part of this command shows how many commits behind the repo on the right is from
             #the left repo that has origin tacked onto it., the right side
-            if [ "$(git rev-list --left-only --count origin/"${CURRENT_BRANCH}"..."${CURRENT_BRANCH}")" != 0 ]; then
+            if [ "$(git rev-list --left-only --count origin/"${CURRENT_BRANCH}"..."${CURRENT_BRANCH}")" != 0 ] || [ "${CURRENT_BRANCH}" == "HEAD" ]; then
                 #here the given value is non zero thus remote is ahead of our local so we want to go ahead and stop everything and just exit with an error
                 echo -e "${RED_BOLD}ERROR${RESET_STYLE}: $1 REMOTE IS AHEAD OF YOUR LOCAL BRANCH, PULL BEFORE YOU TRY TO PUSH"
                 #since remote is ahead of local we know we want to stop the push and make the user pull the new code,
