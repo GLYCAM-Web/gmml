@@ -43,6 +43,17 @@ check_dir_exists()
     fi
 }
 
+cd ../
+gemshome=$(pwd)
+cd -
+check_gemshome "${gemshome}"
+
+## OG Oct 2021 have the hooks update themselves.
+#TODO: Do this more auto like, if this script is updated the first run the next time will not
+#reflect the made changes due to the old script calling the copy then continuing.
+cp -r "${GEMSHOME}"/gmml/.hooks/* "${GEMSHOME}"/gmml/.git/hooks/
+
+
 #imagine this means "check if current branch is behind origin of the same branch". Basically all
 #we are doing are checking either the GEMS or GMML repo to ensure there are no commits that the
 #user has not pulled.
@@ -65,20 +76,18 @@ check_if_branch_behind()
         fi
         CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
         #let the user know what is going on, i.e. what branch is being checked and in what repo
-        echo -e "Ensuring branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} in repo ${YELLOW_BOLD}$1${RESET_STYLE}"
-        echo "is up to date...." 
+        echo -e "\nEnsuring branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} in repo ${YELLOW_BOLD}$1${RESET_STYLE} is up to date...." 
         
         #Done to check if we actually need to hit up origin to see if we are behind, the "branch hash and name on origin"
         #part is mostly there to bug check
-        echo -e "\nFirst checking if ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} is on remote, if the branch status below is empty"
-        echo -e "then we know that the branch is not on remote.\n"
+        echo -e "First checking if ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} is on remote, if the branch status below is empty"
+        echo "then we know that the branch is not on remote."
         echo "Branch hash and name on origin: $(git ls-remote --heads origin "${CURRENT_BRANCH}")"
-        echo ""
         #check if we get a non-empty return aka branch is on remote
         if [ -n "$(git ls-remote --heads origin "${CURRENT_BRANCH}")" ]; then
             #we hit here if our branch is actually on remote, thus we must check
             #that the current branch is up to date on remote
-            echo "Branch is present on remote, now to check if local is behind remote"
+            echo -e "\nBranch is present on remote, now to check if local is behind remote"
             #the left only part of this command shows how many commits behind the repo on the right is from
             #the left repo that has origin tacked onto it., the right side 
             if [ "$(git rev-list --left-only --count origin/"${CURRENT_BRANCH}"..."${CURRENT_BRANCH}")" != 0 ]; then
@@ -92,12 +101,12 @@ check_if_branch_behind()
                 else
                     BRANCH_IS_BEHIND="\t$1"
                 fi
-                
             fi
-                echo -e "${GREEN_BOLD}passed...${RESET_STYLE}Local branch is not behind the remote branch, proceeding"
+                echo -e "${GREEN_BOLD}passed...${RESET_STYLE}Local branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} on repo ${YELLOW_BOLD}$1${RESET_STYLE} is not behind the remote branch, proceeding"
         else
             echo -e "${GREEN_BOLD}passed...${RESET_STYLE} Branch is not on remote, so no need to check if local is behind remote, proceeding"
         fi
+        cd "${GEMSHOME}"/gmml
     #bad input, so end script
     else
         echo -e "${RED_BOLD}ERROR${RESET_STYLE} Incorrect param given to check_if_branch_behind function. Exiting."
@@ -106,20 +115,11 @@ check_if_branch_behind()
     fi
 } #End ensuring branches not behind function
 
-cd ../
-gemshome=$(pwd)
-cd -
-check_gemshome "${gemshome}"
-
-## OG Oct 2021 have the hooks update themselves.
-cp -r "${GEMSHOME}"/gmml/.hooks/* "${GEMSHOME}"/gmml/.git/hooks/
-
-
 
 #before we try anything major we first figure out if any branches are behind.
 check_if_branch_behind "GMML"
 check_if_branch_behind "GEMS"
-
+echo -e "\nChecking if branches are behind remote completed\n"
 #if they are behind then the string we are checking wont be empty, thus we should exit.
 if [ -n "${BRANCH_IS_BEHIND}" ]; then
     echo -e "${RED_BOLD}failed...${RESET_STYLE} At least one of you branches are behind."
