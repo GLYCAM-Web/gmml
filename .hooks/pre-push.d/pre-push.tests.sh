@@ -53,7 +53,6 @@ check_gemshome "${gemshome}"
 #reflect the made changes due to the old script calling the copy then continuing.
 cp -r "${GEMSHOME}"/gmml/.hooks/* "${GEMSHOME}"/gmml/.git/hooks/
 
-
 #imagine this means "check if current branch is behind origin of the same branch". Basically all
 #we are doing are checking either the GEMS or GMML repo to ensure there are no commits that the
 #user has not pulled.
@@ -63,12 +62,22 @@ cp -r "${GEMSHOME}"/gmml/.hooks/* "${GEMSHOME}"/gmml/.git/hooks/
 check_if_branch_behind()
 {
     #we check we have a single arg, then if the single arg is what we want.
-    if [ "$#" == 1 ] && { [ "$1" == "GEMS" ] || [ "$1" == "GMML" ]; }; then
-    #TODO: More legit error checking in this
+    if [ "$#" == 1 ] && {
+        [ "$1" == "GEMS" ] || [ "$1" == "GMML" ]
+    }; then
+        #TODO: More legit error checking in this
         if [ "$1" == "GEMS" ]; then
-            cd "${GEMSHOME}" || { echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}"; echo "Exiting..."; exit 1; }
+            cd "${GEMSHOME}" || {
+                echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}"
+                echo "Exiting..."
+                exit 1
+            }
         elif [ "$1" == "GMML" ]; then
-            cd "${GEMSHOME}/gmml" || { echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"; echo "Exiting..."; exit 1; }
+            cd "${GEMSHOME}/gmml" || {
+                echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"
+                echo "Exiting..."
+                exit 1
+            }
         else
             echo -e "${RED_BOLD}Error checking if branch was behind when changing dir!${RESET_STYLE}"
             echo "Given param: $1"
@@ -76,8 +85,8 @@ check_if_branch_behind()
         fi
         CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
         #let the user know what is going on, i.e. what branch is being checked and in what repo
-        echo -e "\nEnsuring branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} in repo ${YELLOW_BOLD}$1${RESET_STYLE} is up to date...." 
-        
+        echo -e "\nEnsuring branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} in repo ${YELLOW_BOLD}$1${RESET_STYLE} is up to date...."
+
         #Done to check if we actually need to hit up origin to see if we are behind, the "branch hash and name on origin"
         #part is mostly there to bug check
         echo -e "First checking if ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} is on remote, if the branch status below is empty"
@@ -89,7 +98,7 @@ check_if_branch_behind()
             #that the current branch is up to date on remote
             echo -e "\nBranch is present on remote, now to check if local is behind remote"
             #the left only part of this command shows how many commits behind the repo on the right is from
-            #the left repo that has origin tacked onto it., the right side 
+            #the left repo that has origin tacked onto it., the right side
             if [ "$(git rev-list --left-only --count origin/"${CURRENT_BRANCH}"..."${CURRENT_BRANCH}")" != 0 ]; then
                 #here the given value is non zero thus remote is ahead of our local so we want to go ahead and stop everything and just exit with an error
                 echo -e "${RED_BOLD}ERROR${RESET_STYLE}: $1 REMOTE IS AHEAD OF YOUR LOCAL BRANCH, PULL BEFORE YOU TRY TO PUSH"
@@ -102,7 +111,7 @@ check_if_branch_behind()
                     BRANCH_IS_BEHIND="\t$1"
                 fi
             fi
-                echo -e "${GREEN_BOLD}passed...${RESET_STYLE}Local branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} on repo ${YELLOW_BOLD}$1${RESET_STYLE} is not behind the remote branch, proceeding"
+            echo -e "${GREEN_BOLD}passed...${RESET_STYLE}Local branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} on repo ${YELLOW_BOLD}$1${RESET_STYLE} is not behind the remote branch, proceeding"
         else
             echo -e "${GREEN_BOLD}passed...${RESET_STYLE} Branch is not on remote, so no need to check if local is behind remote, proceeding"
         fi
@@ -115,7 +124,6 @@ check_if_branch_behind()
     fi
 } #End ensuring branches not behind function
 
-
 #before we try anything major we first figure out if any branches are behind.
 check_if_branch_behind "GMML"
 check_if_branch_behind "GEMS"
@@ -127,9 +135,6 @@ if [ -n "${BRANCH_IS_BEHIND}" ]; then
     echo "Exiting..."
     exit 1
 fi
-
-
-
 
 TEST_SKIP=0
 #### Allow skipping tests ####
@@ -148,42 +153,12 @@ if [[ "${branch}" != "gmml-dev" ]] && [[ "${branch}" != "gmml-test" ]] && [[ "${
     fi
 fi
 
-
-#check if the 
-
-
-#sane git checking to ensure both GEMS and GMML are at the most recent available commit
-#on the current branch for each, ensures neither branch is behind.
-# echo "Checking if our current branch is on remote, if the branch status below is empty"
-# echo -e "then we know that the branch is not on remote.\n"
-# echo "Branch hash and name: $(git ls-remote --heads origin "$(git rev-parse --abbrev-ref HEAD)")"
-# echo ""
-# if [ -n "$(git ls-remote --heads origin "$(git rev-parse --abbrev-ref HEAD)")" ]; then
-#     #we hit here if our branch is actually on remote, thus we must check
-#     #that the current branch is up to date on remote
-#     echo "Branch is on remote, now to check if local is behind remote"
-#     if [ "$(git rev-list --left-only --count origin/"$(git rev-parse --abbrev-ref HEAD)"..."$(git rev-parse --abbrev-ref HEAD)")" != 0 ]; then
-#         #here the given value is non zero thus remote is ahead of our local so we want to go ahead and stop everything and just exit with an error
-#         echo "ERROR: REMOTE IS AHEAD OF YOUR LOCAL BRANCH, PULL BEFORE YOU TRY TO PUSH"
-#         #since remote is ahead of local we know we want to stop the push and make the user pull the new code
-#         exit 1
-#     fi
-#     echo "Local branch is not behind the remote branch, proceeding"
-# else
-#     echo "Branch is not on remote, so no need to check if local is behind remote, proceeding"
-# fi
-#if we dont wanna do tests we just exit here cause we know we are kosher to push
-
-
 if [ "${TEST_SKIP}" == 1 ]; then
     echo "Skipping tests, you are good to push."
     exit 0
 else
     echo "Beginning tests"
 fi
-
-#we only hit here if we know that we arent skipping tests and the local branch is not behind the remote branch (if the
-#remote branch even exists so lets run it
 
 #Add these removes so the tests don't pass on an old version of the library
 rm -f gmml.py _gmml.so
@@ -194,17 +169,29 @@ if [ -d "./gmml/cmakeBuild" ]; then
 fi
 echo "Compiling gmml using GEMS ./make.sh, no wrap flag cause it auto wraps"
 ./make.sh
-cd "${GEMSHOME}"/gmml || { echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"; echo "Exiting..."; exit 1; }
+cd "${GEMSHOME}"/gmml || {
+    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"
+    echo "Exiting..."
+    exit 1
+}
 
 echo "Running mandatory tests..."
-cd "${GEMSHOME}"/gmml/tests/ || { echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml/tests/"; echo "Exiting..."; exit 1; }
+cd "${GEMSHOME}"/gmml/tests/ || {
+    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml/tests/"
+    echo "Exiting..."
+    exit 1
+}
 
 bash compile_run_tests.bash
 result=$? # record the exit status from compile_run_tests.bash
 cd -
 if [ "${result}" -eq 0 ]; then
     echo "GMML level tests have passed. Doing gems level tests."
-    cd "${GEMSHOME}"/tests/ || { echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/tests"; echo "Exiting..."; exit 1; }
+    cd "${GEMSHOME}"/tests/ || {
+        echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/tests"
+        echo "Exiting..."
+        exit 1
+    }
     bash run_tests.sh
     gems_tests_result=$? # record the exit status of previous command
     if [ "${gems_tests_result}" -ne 0 ]; then
