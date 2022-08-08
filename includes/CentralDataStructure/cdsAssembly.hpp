@@ -44,8 +44,6 @@ public:
     void addMolecule(const moleculeT& molecule);
     void addMolecule(std::unique_ptr<moleculeT> myMolecule);
     const atomT* findAtom(const int& serialNumber) const;
-    void EnsureIntegralCharge();
-    //void bondAtomsByDistance();
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
@@ -157,23 +155,6 @@ const atomT* cdsAssembly<moleculeT, residueT, atomT>::findAtom(const int& serial
 	return codeUtils::findElementWithNumber(this->getAtoms(), serialNumber);
 }
 
-template <class moleculeT, class residueT, class atomT>
-void cdsAssembly<moleculeT, residueT, atomT>::EnsureIntegralCharge()
-{
-	double charge = cds::getCharge(this->getAtoms());
-	std::stringstream ss;
-	ss << std::fixed;
-	ss << "Total charge is: " << std::setprecision(5) << charge << std::endl;
-	gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-	if (!codeUtils::isNumberIntegral(charge))
-	{
-		std::stringstream errorMessage;
-		errorMessage << "Non-integral charge (" << charge << "). You cannot run MD with this.\n";
-		std::cerr << errorMessage.str();
-		throw errorMessage.str();
-	}
-	return;
-}
 
 } // namespace
 #endif // ASSEMBLY_HPP

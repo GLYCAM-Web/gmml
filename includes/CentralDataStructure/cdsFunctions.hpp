@@ -82,6 +82,24 @@ double getCharge(std::vector<atomT*> atoms)
 	return totalCharge;
 }
 
+template <typename atomT>
+void EnsureIntegralCharge(std::vector<atomT*> atoms)
+{
+	double charge = cds::getCharge(atoms);
+	std::stringstream ss;
+	ss << std::fixed;
+	ss << "Total charge is: " << std::setprecision(5) << charge << std::endl;
+	gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+	if (!codeUtils::isNumberIntegral(charge))
+	{
+		std::stringstream errorMessage;
+		errorMessage << "Non-integral charge (" << charge << "). You cannot run MD with this.\n";
+		std::cerr << errorMessage.str();
+		throw errorMessage.str();
+	}
+	return;
+}
+
 } // namespace
 
 
