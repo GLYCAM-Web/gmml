@@ -5,6 +5,9 @@
 #include "includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 
+// Created to serve old gmml's setup. I don't want to pass out any classes like prep file or library file, they should only be used internally
+// by a 3dTemplate class.
+
 namespace parameters
 {
 class Manager
@@ -13,6 +16,7 @@ public:
     Manager();
     double GetChargeForResidue(std::string residueName);
     LibraryFileSpace::LibraryFileResidue* FindLibResidue(std::string residueName);
+    PrepFileSpace::PrepFileResidue* FindPrepResidue(std::string residueName);
     inline std::map<std::string, std::string> GetAllResidueNameMap() {return residueNamesToSelfMap_;}
     inline std::map<std::string, std::vector<std::string>> GetResidueNamesToTheirAtomNamesMap() { return residueNamesToTheirAtomsNameMap_;}
     // Ok don't do this, figure out what they want and implement that query here:
@@ -26,7 +30,6 @@ private:
     void InitializePrepResidueMap(std::vector<std::string> &prepFiles);
     void InitializeLibResidueMap(std::vector<std::string> &libFiles);
     void SetGlycamResidueNames(std::vector<std::string> &libFiles, std::vector<std::string> &prepFiles);
-    PrepFileSpace::PrepFileResidue* FindPrepResidue(std::string residueName);
     // Attributes
     std::map<std::string, std::string> residueNamesToSelfMap_; // Silly
     std::map<std::string, std::vector<std::string>> residueNamesToTheirAtomsNameMap_;

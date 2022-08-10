@@ -216,6 +216,9 @@
 ./src/ParameterSet/ParameterFileSpace/parameterfiledihedral.cc
 ./src/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.cc
 ./src/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.cc
+./src/ParameterSet/PrepFile/PrepResidue.cpp
+./src/ParameterSet/PrepFile/prepAtom.cpp
+./src/ParameterSet/PrepFile/prepFile.cpp
 ./src/ParameterSet/PrepFileSpace/prepfile.cc
 ./src/ParameterSet/PrepFileSpace/prepfileatom.cc
 ./src/ParameterSet/PrepFileSpace/prepfileprocessingexception.cc

@@ -40,6 +40,7 @@
 ./includes/ParameterSet/LibraryFileSpace
 ./includes/ParameterSet/OffFileSpace
 ./includes/ParameterSet/ParameterFileSpace
+./includes/ParameterSet/PrepFile
 ./includes/ParameterSet/PrepFileSpace
 ./includes/Resolver
 ./includes/Resolver/NewPdbPreprocessor
