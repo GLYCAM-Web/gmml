@@ -6,7 +6,8 @@
 #include "includes/common.hpp"
 #include "includes/utils.hpp"
 #include "includes/ParameterSet/PrepFile/prepFile.hpp"
-#include "includes/ParameterSet/PrepFile/PrepResidue.hpp"
+
+#include "includes/ParameterSet/PrepFile/prepResidue.hpp"
 #include "includes/ParameterSet/PrepFile/prepAtom.hpp"
 #include "includes/CodeUtils/files.hpp" // ensureFileExists
 

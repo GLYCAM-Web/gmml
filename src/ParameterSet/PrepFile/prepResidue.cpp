@@ -1,13 +1,11 @@
-#include "includes/ParameterSet/PrepFile/PrepResidue.hpp"
-#include "includes/ParameterSet/PrepFile/prepAtom.hpp"
-
 #include <sstream>
 #include <fstream>
 #include <iostream>
 #include <iomanip>
 #include <ios>
 
-
+#include "includes/ParameterSet/PrepFile/prepResidue.hpp"
+#include "includes/ParameterSet/PrepFile/prepAtom.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/utils.hpp" //Trim
 
