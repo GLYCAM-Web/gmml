@@ -283,227 +283,86 @@ namespace MolecularModeling
             bool CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom);
             bool CheckIfOtherAtomIsWithinOverlapDistance(Atom* otherAtom);
 
-      //////////////////////////////////////////////////////////
-      //                       MUTATOR                        //
-      //////////////////////////////////////////////////////////
-      /** \addtogroup Manipulators
-      * @{
-      */
-      /*! \fn
-      * A mutator function in order to set the residue of the current object
-      * Set the residue_ attribute of the current atom
-      * @param residue The residue attribute of the current object
-      */
-      void SetResidue(MolecularModeling::Residue* residue);
-      /*! \fn
-      * A mutator function in order to set the name of the current object
-      * Set the name_ attribute of the current atom
-      * @param name The name attribute of the current object
-      */
-      void SetName(std::string name);
-      /*! \fn
-      * A mutator function in order to set the coordinates of the current object
-      * Set the coordinates_ attribute of the current atom
-      * @param coordinates The coordinates attribute of the current object
-      */
-      void SetCoordinates(GeometryTopology::CoordinateVector coordinates);
-      /*! \fn
-      * A function in order to add the coordinate to the current object
-      * Set the coordinates_ attribute of the current atom
-      * @param coordinate The coordinate of the current object
-      */
-      void AddCoordinate(GeometryTopology::Coordinate* coordinate);
-      /*! \fn
-      * A function in order to add a new node to the current object
-      * Set the nodes_ attribute of the current atom
-      * @param node The new node to be added
-      */
-      void AddNode(MolecularModeling::AtomNode* node);
-      /*! \fn
-      * A mutator function in order to set the chemical type of the current object
-      * Set the chemical_type_ attribute of the current atom
-      * @param chemical_type The chemical type attribute of the current object
-      */
-      void SetChemicalType(std::string chemical_type);
-      /*! \fn
-      * A mutator function in order to set the description of the current object
-      * Set the description_ attribute of the current atom
-      * @param description The description attribute of the current object
-      */
-      void SetDescription(std::string description);
-      /*! \fn
-      * A mutator function in order to set the element symbol of the current object
-      * Set the element_symbol_ attribute of the current atom
-      * @param element_symbol The element symbol attribute of the current object
-      */
-      void SetElementSymbol(std::string element_symbol);
-      /*! \fn
-      * A mutator function in order to set the nodes of the current object
-      * Set the nodes_ attribute of the current atom
-      * @param node The node attribute of the current object
-      */
-      void SetNodes(std::vector<MolecularModeling::AtomNode*> nodes);
-      /*! \fn
-      * A mutator function in order to set the node of the current object
-      * Set the nodes_ attribute of the current atom
-      * @param node The node attribute of the current object
-      */
-      void SetNode(MolecularModeling::AtomNode* node);
-      /*! \fn
-      * A mutator function in order to set the id of the current object
-      * Set the id_ attribute of the current atom
-      * @param id The identification of the current object
-      */
-      void SetId(std::string id);
-      /*! \fn
-      * A mutator function in order to set the is_ring_ attribute of the current object
-      * Set the is_ring_ attribute of the current atom
-      * @param is_ring The boolean value representing if the current atom object is in aring or not
-      */
-      void SetIsRing(bool is_ring);
-      /*! \fn
-      * A mutator function in order to set the is_exocyclic_C_ attribute of the current object
-      * Set the is_exocyclic_C_ attribute of the current atom
-      * @param is_exocyclic_C_ The boolean value representing if the current atom object is in an exocyclic carbon or not
-      */
-      void SetIsExocyclicCarbon(bool is_exocyclic_C);
-      //Added by ayush on 11/12/17 for molecules in assembly like atom type as O,C,H
-      /*! \fn
-      * A mutator function in order to set the atom type of the current object
-      * Set the atom_type_ attribute of the current atom
-      * @param atom_type The std::string stypes attribute of the current object
-      */
-      void SetAtomType(std::string atome_type);
-      /*! \fn
-      * A function to generate the index for an Atom.
-      */
-      unsigned long long generateAtomIndex();
-      //Added by Dave on 03/23/18 for adding B Factor to ontology
-      /*! \fn
-      * A mutator function in order to set the b factor of the current object
-      * Set the b_factor_ attribute of the current atom
-      * @param b_factor The b factor attribute of the current object
-      */
-      void SetBFactor(float b_factor);
-      /*! \fn
-      * An mutator function in order to set the input index
-      * @param input_index_ The input index attribute of the current object
-      */
-      void SetInputIndex(int input_index);
-      /*! \fn
-      * An mutator function in order to set the occupancy
-      * Set the occupancy_ attribute of the current atom
-      * @param occupancy The new occupancy value of the current object
-      */
-      void SetOccupancy(float occupancy);
-      /** @}*/
+	    /*! \fn
+	    * A function to determine the chirality of this atom
+	    */
+	    std::string DetermineChirality(); //Added by Yao 08/26/2019
+	    std::multimap<int, Atom*> GetAtomicNumbersOfNeighbors(AtomVector& neighbors, AtomVector& visited_atoms); //A helper function for chirality determination
+	    int CompareBranches(std::vector<int>& vec1, std::vector<int>& vec2);
+	    std::vector<std::vector<int> > SortBranchesInDescendingOrder(std::vector<std::vector<int> >& originally_ordered_branches);
+	    std::vector<std::pair<Atom*, int> > SortPrimaryNeighborBranchesInDescendingOrder(std::map<Atom*, std::vector<std::vector<int> > >& comparison_result_tracker);
+	    int CompareTwoSetsOfBranches(std::vector<std::vector<int> > set1, std::vector<std::vector<int> > set2);
+	    std::map<std::vector<int>, std::vector<int> > MakeDuplicateRanksHigherRankIndicesMap(std::vector<int> &ranks);
+	    std::vector<std::vector<int> > ObtainBranchInfo (std::vector<AtomVector>& branches, AtomVector& visited_atoms);
+	    std::vector<AtomVector> MakeNextLevelOfBranches(std::vector<AtomVector>& current_branches, AtomVector& visited_atoms);
+	    void RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int> >& duplicate_higher_indices_map, std::vector<int>& ranks,
+  	      AtomVector visited_atoms, std::map<Atom*, std::vector<AtomVector> >& comparison_progress_tracker);
+	    std::map<std::vector<int>, std::vector<int> > ComparePrimaryNeighbors(std::vector<int>& ranks);
+	    void InitializeComparisonTracker(std::map<std::vector<int>, std::vector<int> >& duplicate_value_indices_versus_higher_rank_indices, AtomVector& visisted_atoms,
+	      std::map<Atom*, std::vector<AtomVector> >& comparison_progress_tracker);
+	    
+	    std::string DetermineRSAssignment(AtomVector& ordered_primary_neighbors, Atom* fake_hydrogen);
+	    double GetDihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4);
+	    AtomVector GetRankedPrimaryNeighbors(std::vector<int>& ranks);
+	    Atom PlaceFakeHydrogen();
 
-      //////////////////////////////////////////////////////////
-      //                       FUNCTIONS                      //
-      //////////////////////////////////////////////////////////
-      /*! \fn
-      * A function to find connected Atoms to this Atom.
-      * @param visitedAtoms The AtomVector used to find connected atoms.
-      */
-      void FindConnectedAtoms(AtomVector& visitedAtoms, int coord_index = 0);
-      /*! \fn
-      * A function to aget the distance between this Atom and another.
-      * @param otherAtoms The Atom used to get the distance from this Atom.
-      */
-      double GetDistanceToAtom(Atom* otherAtom);
-      /*! \fn
-      * A function to get the distance between this Atom's Coordinates
-      * and another set of Coordinates.
-      * @param coordinate The GeometryTopology::Coordinate used to get the distance from this Atom's Coordinates.
-      */
-      double GetDistanceToCoordinate(GeometryTopology::Coordinate* coordinate);
-      /*! \fn
-      * A function to check if another atom is within bonding distance
-      * @param otherAtom The other atom.
-      */
-      bool CheckIfOtherAtomIsWithinBondingDistance(Atom* otherAtom);
-      bool CheckIfOtherAtomIsWithinOverlapDistance(Atom* otherAtom);
+            //////////////////////////////////////////////////////////
+            //                       DISPLAY FUNCTION               //
+            //////////////////////////////////////////////////////////
+            /*! \fn
+            * A function to print out the atom contents in a structural format
+            * Print out the information in a defined structure
+            * @param out An output stream, the print result will be written in the given output stream
+            */
+            void Print(std::ostream& = std::cerr); // @TODO DT - See the TODO below for operator<<
+            //////////////////////////////////////////////////////////
+            //                   OVERLOADED OPERATORS               //
+            //////////////////////////////////////////////////////////
+            // @TODO DT - Not sure if these are needed, but I am going to leave them
+            // 				here for potential furthur discussion.
+            //			The potential benefit would be to allow someone to make deep copies of an
+            //				Atom object to an already initialized Atom object.
+            // void operator=(const Atom&);
+            // void operator=(const Atom*);
+            bool operator== (const Atom &otherAtom);
+            bool operator!= (const Atom &otherAtom);
 
-      /*! \fn
-      * A function to determine the chirality of this atom
-      */
-      std::string DetermineChirality(); //Added by Yao 08/26/2019
-      std::multimap<int, Atom*> GetAtomicNumbersOfNeighbors(AtomVector& neighbors, AtomVector& visited_atoms); //A helper function for chirality determination
-      int CompareBranches(std::vector<int>& vec1, std::vector<int>& vec2);
-      std::vector<std::vector<int> > SortBranchesInDescendingOrder(std::vector<std::vector<int> >& originally_ordered_branches);
-      std::vector<std::pair<Atom*, int> > SortPrimaryNeighborBranchesInDescendingOrder(std::map<Atom*, std::vector<std::vector<int> > >& comparison_result_tracker);
-      int CompareTwoSetsOfBranches(std::vector<std::vector<int> > set1, std::vector<std::vector<int> > set2);
-      std::map<std::vector<int>, std::vector<int> > MakeDuplicateRanksHigherRankIndicesMap(std::vector<int> &ranks);
-      std::vector<std::vector<int> > ObtainBranchInfo (std::vector<AtomVector>& branches, AtomVector& visited_atoms);
-      std::vector<AtomVector> MakeNextLevelOfBranches(std::vector<AtomVector>& current_branches, AtomVector& visited_atoms);
-      void RecursivelyCompareBranches(std::map<std::vector<int>, std::vector<int> >& duplicate_higher_indices_map, std::vector<int>& ranks,
-          AtomVector visited_atoms, std::map<Atom*, std::vector<AtomVector> >& comparison_progress_tracker);
-      std::map<std::vector<int>, std::vector<int> > ComparePrimaryNeighbors(std::vector<int>& ranks);
-      void InitializeComparisonTracker(std::map<std::vector<int>, std::vector<int> >& duplicate_value_indices_versus_higher_rank_indices, AtomVector& visisted_atoms,
-        std::map<Atom*, std::vector<AtomVector> >& comparison_progress_tracker);
 
-      std::string DetermineRSAssignment(AtomVector& ordered_primary_neighbors, Atom* fake_hydrogen);
-      double GetDihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4);
-      AtomVector GetRankedPrimaryNeighbors(std::vector<int>& ranks);
-      Atom PlaceFakeHydrogen();
+        private:
+            //////////////////////////////////////////////////////////
+            //                       ATTRIBUTES                     //
+            //////////////////////////////////////////////////////////
+            MolecularModeling::Residue* residue_;                 /*!< A pointer back to the residue that this atom belongs to >*/
+            std::string name_ = "";                 /*!< Name of the atom >*/
+            GeometryTopology::CoordinateVector coordinates_;     /*!< Position of the atom >*/
+            std::string chemical_type_;        /*!< A descriptor to determines the chemical type of the atom >*/
+            std::string description_;          /*!< Short description of the atom >*/
+            std::string element_symbol_;       /*!< Element symbol of the atom >*/
+            //MolecularModeling::AtomNode* node_;                   /*!< A Pointer to a node of the graph structure that indicates this atom >*/
+	    std::vector<MolecularModeling::AtomNode*> nodes_;
+            std::string id_;                   /*!< An identifier for an atom which is generated based on the type of the input file from which the structure has to be built
+                    			Mostly it is like "residue_name:atom_name" >*/
+            bool is_ring_;                     /*!< A boolean value which represents if an atom is involved in a sugar ring or not. This attribute is set during the Sugar ID process >*/
+            bool is_exocyclic_C_ = false; /*!< A boolean value which represents if an atom is an exocyclic carbon of a sugar. This attribute is set during the Sugar ID process >*/
+            unsigned long long index_;         /*!< A unqiue index for each atom in an assembly >*/
+            std::string atom_type_;                /*!< List the atom type in an assembly >*/      //Added by ayush on 13/11/17 for molecules in assembly to set the atom type as an attribute like O,H
+            float b_factor_;                  /*!< Gives the B Factor for the atom >*/            //Added by Dave on 03/23/18 for adding B Factor to ontology
+	    float occupancy_;                 /*!< Gives the occupancy for the atom >*/            //Added by Yao on 01/07/21
 
-      //////////////////////////////////////////////////////////
-      //                       DISPLAY FUNCTION               //
-      //////////////////////////////////////////////////////////
-      /*! \fn
-      * A function to print out the atom contents in a structural format
-      * Print out the information in a defined structure
-      * @param out An output stream, the print result will be written in the given output stream
-      */
-      void Print(std::ostream& = std::cerr); // @TODO DT - See the TODO below for operator<<
+	    int input_index_;                 /*Records the index of atom as in the inut PDB file*/ //Added by Yao on 04/06/20
 
-      //////////////////////////////////////////////////////////
-      //                   OVERLOADED OPERATORS               //
-      //////////////////////////////////////////////////////////
-      // @TODO DT - Not sure if these are needed, but I am going to leave them
-      // 				here for potential furthur discussion.
-      //			The potential benefit would be to allow someone to make deep copies of an
-      //				Atom object to an already initialized Atom object.
-      // void operator=(const Atom&);
-      // void operator=(const Atom*);
-      bool operator== (const Atom &otherAtom);
-      bool operator!= (const Atom &otherAtom);
-
-    private:
-      //////////////////////////////////////////////////////////
-      //                       ATTRIBUTES                     //
-      //////////////////////////////////////////////////////////
-      MolecularModeling::Residue* residue_;                 /*!< A pointer back to the residue that this atom belongs to >*/
-      std::string name_ = "";                 /*!< Name of the atom >*/
-      GeometryTopology::CoordinateVector coordinates_;     /*!< Position of the atom >*/
-      std::string chemical_type_;        /*!< A descriptor to determines the chemical type of the atom >*/
-      std::string description_;          /*!< Short description of the atom >*/
-      std::string element_symbol_;       /*!< Element symbol of the atom >*/
-      //MolecularModeling::AtomNode* node_;                   /*!< A Pointer to a node of the graph structure that indicates this atom >*/
-      std::vector<MolecularModeling::AtomNode*> nodes_;
-      std::string id_;                   /*!< An identifier for an atom which is generated based on the type of the input file from which the structure has to be built
-              			Mostly it is like "residue_name:atom_name" >*/
-      bool is_ring_;                     /*!< A boolean value which represents if an atom is involved in a sugar ring or not. This attribute is set during the Sugar ID process >*/
-      bool is_exocyclic_C_ = false; /*!< A boolean value which represents if an atom is an exocyclic carbon of a sugar. This attribute is set during the Sugar ID process >*/
-      unsigned long long index_;         /*!< A unqiue index for each atom in an assembly >*/
-      std::string atom_type_;                /*!< List the atom type in an assembly >*/      //Added by ayush on 13/11/17 for molecules in assembly to set the atom type as an attribute like O,H
-      float b_factor_;                  /*!< Gives the B Factor for the atom >*/            //Added by Dave on 03/23/18 for adding B Factor to ontology
-      float occupancy_;                 /*!< Gives the occupancy for the atom >*/            //Added by Yao on 01/07/21
-
-      int input_index_;                 /*Records the index of atom as in the inut PDB file*/ //Added by Yao on 04/06/20
-
-      //////////////////////////////////////////////////////////
-      //                   HELPER FUNCTIONS                   //
-      //////////////////////////////////////////////////////////
-      void Copy(const Atom* atom);
-      void SetAttributes( MolecularModeling::Residue* residue, std::string name, GeometryTopology::CoordinateVector coordinates,
-                            std::string chemical_type, std::string description, std::string element_symbol,
-                            std::vector<AtomNode*> atomnode, std::string id, bool is_ring, std::string atom_type);
-  };
-  // @TODO DT - Get this working. For some reason it causes a Seg Fault.
-  //			Ideally this function would be where the printing code is and the
-  //			class Print function would call this operator.
-  //			This would allow someone to do: std::cerr << AtomObject << std::endl;
-  // std::ostream& operator<<( std::ostream& out, const Atom& atom );
+            //////////////////////////////////////////////////////////
+            //                   HELPER FUNCTIONS                   //
+            //////////////////////////////////////////////////////////
+            void Copy(const Atom* atom);
+            void SetAttributes( MolecularModeling::Residue* residue, std::string name, GeometryTopology::CoordinateVector coordinates,
+                                std::string chemical_type, std::string description, std::string element_symbol,
+                                std::vector<AtomNode*> atomnode, std::string id, bool is_ring, std::string atom_type);
+    };
+    // @TODO DT - Get this working. For some reason it causes a Seg Fault.
+    //			Ideally this function would be where the printing code is and the
+    //			class Print function would call this operator.
+    //			This would allow someone to do: std::cerr << AtomObject << std::endl;
+    // std::ostream& operator<<( std::ostream& out, const Atom& atom );
 }
 #endif // ATOM_HPP
