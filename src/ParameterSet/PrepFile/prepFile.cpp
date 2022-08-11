@@ -6,10 +6,10 @@
 #include "includes/common.hpp"
 #include "includes/utils.hpp"
 #include "includes/ParameterSet/PrepFile/prepFile.hpp"
-
 #include "includes/ParameterSet/PrepFile/prepResidue.hpp"
 #include "includes/ParameterSet/PrepFile/prepAtom.hpp"
 #include "includes/CodeUtils/files.hpp" // ensureFileExists
+#include "includes/CodeUtils/strings.hpp" // split
 
 using prep::PrepFile;
 
@@ -23,7 +23,7 @@ PrepFile::PrepFile(const std::string& prep_file)
 	std::ifstream in_file(prep_file.c_str());
 	if(in_file.is_open())
 	{
-		ReadAllResidues(in_file);
+		this->ReadAllResidues(in_file);
 		in_file.close();            /// Close the prep file
 	}
 	else
@@ -32,13 +32,13 @@ PrepFile::PrepFile(const std::string& prep_file)
 	}
 }
 
-PrepFile::PrepFile(const std::string& prep_file, std::vector<std::string>& query_residue_names)
+PrepFile::PrepFile(const std::string& prep_file, std::vector<std::string>& queryNames)
 {
 	codeUtils::ensureFileExists(prep_file);
 	std::ifstream in_file(prep_file.c_str());
 	if(in_file.is_open())
 	{
-		ReadOnlyQueryResidues(in_file, query_residue_names);
+		this->ReadQueryResidues(in_file, queryNames);
 		in_file.close();            /// Close the prep files
 	}
 	else
@@ -117,61 +117,93 @@ void PrepFile::ReadAllResidues(std::ifstream &in_file)
 	std::cout << "Ok this is done with line as:\n " << line << std::endl;
 }
 
-void PrepFile::ReadOnlyQueryResidues(std::ifstream &in_file, std::vector<std::string>& query_residue_names)
+void PrepFile::ReadQueryResidues(std::ifstream &in_file, std::vector<std::string>& queryNames)
 {
-	std::string query_names_str;
-	std::string header1, header2;
-	getline(in_file, header1);
-	getline(in_file, header2);
-	//Have to reach the line containing residue name to tell if this residue should be read. However, residue processing starts from the residue title line, which is two lines above
-	//Sadly, for getline() there is no easy way back.
-	//So, the position of the title line is set as a stream pointer. When reading a residue, make the stream pointer go back to this checkpoint.
-	std::streampos one_line_before_residue_title;
-	one_line_before_residue_title = in_file.tellg();
-	std::string line_str;
-	getline(in_file, line_str);
-	getline(in_file, line_str);
-	std::stringstream temp_stream;
-	std::string resname,intx,kform;
-	getline(in_file, line_str);
-	temp_stream << line_str;
-	temp_stream >> resname >> intx >> kform;
-	if (std::find(query_residue_names.begin(), query_residue_names.end(), resname) != query_residue_names.end() )
-	{
-		in_file.seekg(one_line_before_residue_title);  //go back to one line before residue title, so the rest of the codes works correctly
-	    //this->addResidue(std::make_unique<PrepResidue>(in_file));
-		one_line_before_residue_title = in_file.tellg();
-	}
-	resname.clear();
-	intx.clear();
-	kform.clear();
-	while (getline(in_file, line_str))
-	{
-		if (line_str.find("STOP") != std::string::npos)
-		{
-			break;
-		}
-		if (line_str.find("DONE") != std::string::npos)
-		{
-			one_line_before_residue_title = in_file.tellg();
-			getline(in_file, line_str);
-			getline(in_file, line_str);
-			getline(in_file, line_str);
-			std::stringstream line_stream;
-			line_stream << line_str;
-			line_stream >> resname >> intx >> kform;
-		}
-		if (std::find(query_residue_names.begin(), query_residue_names.end(), resname) != query_residue_names.end() )
-		{
-			in_file.seekg(one_line_before_residue_title);  //go back to one line before residue title, so the rest of the codes works correctly
-		    //this->addResidue(std::make_unique<PrepResidue>(in_file));
-			one_line_before_residue_title = in_file.tellg();
-		}
-		resname.clear();
-		intx.clear();
-		kform.clear();
-	}
+	std::string line;
+	getline(in_file, line);
+	getline(in_file, line); // first two lines are always blank apparently. smh.
+	getline(in_file, line); // This should be first line of residue entry.
+    while (gmml::Trim(line).find("STOP") == std::string::npos)           /// End of file
+    {
+    	std::streampos firstResidueLinePosition = in_file.tellg(); // save correct position to start reading residue
+    	// Need to move to line with residue name on it.
+    	getline(in_file, line); // title
+    	getline(in_file, line); // residue name appears here
+    	std::vector<std::string> residueNameLine = codeUtils::split(line, ' '); // front() string will be name
+    	//std::cout << "Current residue name is: " << residueNameLine.front() << std::endl;
+    	if (std::find(queryNames.begin(), queryNames.end(), residueNameLine.front()) != queryNames.end() )
+    	{
+    		std::cout << "Found query residue: " << residueNameLine.front() << "\n";
+    		in_file.seekg(firstResidueLinePosition);  //go back here so the residue constructor works
+    		this->addResidue(std::make_unique<PrepResidue>(in_file, line));
+    	}
+    	else
+    	{ // need to flush the lines until we find a residue we want.
+    		while(gmml::Trim(line).find("DONE") == std::string::npos)
+    		{
+    			getline(in_file, line);
+    		}
+    	}
+        getline(in_file, line); // This should be first line of next residue entry or STOP.
+        //std::cout << "Back out and line is: " << line << std::endl;
+    }
+	std::cout << "Ok this is done with line as:\n " << line << std::endl;
 }
+
+//void PrepFile::ReadOnlyQueryResidues(std::ifstream &in_file, std::vector<std::string>& query_residue_names)
+//{
+//	std::string query_names_str;
+//	std::string header1, header2;
+//	getline(in_file, header1);
+//	getline(in_file, header2);
+//	//Have to reach the line containing residue name to tell if this residue should be read. However, residue processing starts from the residue title line, which is two lines above
+//	//Sadly, for getline() there is no easy way back.
+//	//So, the position of the title line is set as a stream pointer. When reading a residue, make the stream pointer go back to this checkpoint.
+//	std::streampos one_line_before_residue_title = in_file.tellg();
+//	std::string line;
+//	getline(in_file, line);
+//	getline(in_file, line);
+//	std::stringstream temp_stream;
+//	std::string resname,intx,kform;
+//	getline(in_file, line);
+//	temp_stream << line;
+//	temp_stream >> resname >> intx >> kform;
+//	if (std::find(query_residue_names.begin(), query_residue_names.end(), resname) != query_residue_names.end() )
+//	{
+//		in_file.seekg(one_line_before_residue_title);  //go back to one line before residue title, so the rest of the codes works correctly
+//	    //this->addResidue(std::make_unique<PrepResidue>(in_file));
+//		one_line_before_residue_title = in_file.tellg();
+//	}
+//	resname.clear();
+//	intx.clear();
+//	kform.clear();
+//	while (getline(in_file, line))
+//	{
+//		if (line.find("STOP") != std::string::npos)
+//		{
+//			break;
+//		}
+//		if (line.find("DONE") != std::string::npos)
+//		{
+//			one_line_before_residue_title = in_file.tellg();
+//			getline(in_file, line);
+//			getline(in_file, line);
+//			getline(in_file, line);
+//			std::stringstream line_stream;
+//			line_stream << line;
+//			line_stream >> resname >> intx >> kform;
+//		}
+//		if (std::find(query_residue_names.begin(), query_residue_names.end(), resname) != query_residue_names.end() )
+//		{
+//			in_file.seekg(one_line_before_residue_title);  //go back to one line before residue title, so the rest of the codes works correctly
+//		    //this->addResidue(std::make_unique<PrepResidue>(in_file));
+//			one_line_before_residue_title = in_file.tellg();
+//		}
+//		resname.clear();
+//		intx.clear();
+//		kform.clear();
+//	}
+//}
 
 void PrepFile::Write(const std::string& prep_file)
 {

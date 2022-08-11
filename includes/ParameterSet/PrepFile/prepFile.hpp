@@ -22,7 +22,7 @@ public:
 	//                       Constructor                    //
 	//////////////////////////////////////////////////////////
 	PrepFile(const std::string& prep_file);
-	PrepFile(const std::string& prep_file, std::vector<std::string>& query_residue_names);
+	PrepFile(const std::string& prep_file, std::vector<std::string>& queryNames);
 	//////////////////////////////////////////////////////////
 	//                           ACCESSOR                   //
 	//////////////////////////////////////////////////////////
@@ -46,7 +46,8 @@ private:
 	//                           MUTATOR                    //
 	//////////////////////////////////////////////////////////
     void ReadAllResidues(std::ifstream& in_file);
-    void ReadOnlyQueryResidues(std::ifstream &in_file, std::vector<std::string>& query_residue_names);
+    void ReadQueryResidues(std::ifstream &in_file, std::vector<std::string>& queryNames);
+    //void ReadOnlyQueryResidues(std::ifstream &in_file, std::vector<std::string>& query_residue_names);
 	//////////////////////////////////////////////////////////
 	//                         ATTRIBUTES                   //
 	//////////////////////////////////////////////////////////

@@ -9,5 +9,12 @@ int main()
     {
     	prepResidue->SetConnectivities();
     }
+    std::cout << "*\n*\n*\n*\n*\n*\n*\n*\n*\n";
+    std::vector<std::string> residuesToLoadFromPrep = {"0GA", "4YB", "4uA", "Cake", "4YA"};
+    prep::PrepFile glycamPrepFileSelect(prepFilePath, residuesToLoadFromPrep);
+    for ( auto &prepResidue : glycamPrepFileSelect.getResidues() )
+    {
+    	prepResidue->SetConnectivities();
+    }
 
 }
