@@ -7,11 +7,11 @@
 #include <vector>
 
 #include "includes/CentralDataStructure/cdsMolecule.hpp"
+#include "includes/ParameterSet/PrepFile/prepResidue.hpp"
+#include "includes/ParameterSet/PrepFile/prepAtom.hpp"
 
 namespace prep
 {
-class PrepAtom;
-class PrepResidue;
 class PrepFile : public cds::cdsMolecule<PrepResidue, PrepAtom>
 {
 public:
