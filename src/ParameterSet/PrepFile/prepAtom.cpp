@@ -39,7 +39,7 @@ std::string PrepAtom::GetType() const
 	return type_;
 }
 
-gmml::TopologicalType PrepAtom::GetTopologicalType() const
+prep::TopologicalType PrepAtom::GetTopologicalType() const
 {
 	return topological_type_;
 }
@@ -78,21 +78,21 @@ double PrepAtom::GetCharge() const
 {
 	return charge_;
 }
-//std::string PrepAtom::GetStringFormatOfTopologicalType(gmml::TopologicalType topological_type)
+//std::string PrepAtom::GetStringFormatOfTopologicalType(TopologicalType topological_type)
 //{
 //    switch(topological_type)
 //    {
-//        case gmml::kTopTypeE:
+//        case kTopTypeE:
 //            return "E";
-//        case gmml::kTopTypeS:
+//        case kTopTypeS:
 //            return "S";
-//        case gmml::kTopTypeB:
+//        case kTopTypeB:
 //            return "B";
-//        case gmml::kTopType3:
+//        case kTopType3:
 //            return "3";
-//        case gmml::kTopType4:
+//        case kTopType4:
 //            return "4";
-//        case gmml::kTopTypeM:
+//        case kTopTypeM:
 //            return "M";
 //        default:
 //            return "E";
@@ -102,39 +102,39 @@ std::string PrepAtom::GetStringFormatOfTopologicalType() const
 {
 	switch(this->GetTopologicalType())
 	{
-	case gmml::kTopTypeE:
+	case kTopTypeE:
 		return "E";
-	case gmml::kTopTypeS:
+	case kTopTypeS:
 		return "S";
-	case gmml::kTopTypeB:
+	case kTopTypeB:
 		return "B";
-	case gmml::kTopType3:
+	case kTopType3:
 		return "3";
-	case gmml::kTopType4:
+	case kTopType4:
 		return "4";
-	case gmml::kTopTypeM:
+	case kTopTypeM:
 		return "M";
 	default:
 		return "E";
 	}
 }
 
-gmml::TopologicalType PrepAtom::GetTopologicalTypeFromString(std::string topological_type) const
+prep::TopologicalType PrepAtom::GetTopologicalTypeFromString(std::string topological_type) const
 {
 	if(topological_type.compare("E") == 0)
-		return gmml::kTopTypeE;
+		return kTopTypeE;
 	if(topological_type.compare("S") == 0)
-		return gmml::kTopTypeS;
+		return kTopTypeS;
 	if(topological_type.compare("B") == 0)
-		return gmml::kTopTypeB;
+		return kTopTypeB;
 	if(topological_type.compare("3") == 0)
-		return gmml::kTopType3;
+		return kTopType3;
 	if(topological_type.compare("4") == 0)
-		return gmml::kTopType4;
+		return kTopType4;
 	if(topological_type.compare("M") == 0)
-		return gmml::kTopTypeM;
+		return kTopTypeM;
 	else
-		return gmml::kTopTypeE;
+		return kTopTypeE;
 }
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
@@ -149,7 +149,7 @@ void PrepAtom::SetType(const std::string type)
 	type_ = type;
 }
 
-void PrepAtom::SetTopologicalType(gmml::TopologicalType topological_type)
+void PrepAtom::SetTopologicalType(TopologicalType topological_type)
 {
 	topological_type_ = topological_type;
 }
@@ -184,40 +184,40 @@ void PrepAtom::SetCharge(double charge){
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////
-gmml::TopologicalType PrepAtom::ExtractAtomTopologicalType(std::istream &ss)
+prep::TopologicalType PrepAtom::ExtractAtomTopologicalType(std::istream &ss)
 {
 	std::string s;
 	ss >> s;
 	if (s == "M")
-		return gmml::kTopTypeM;
+		return kTopTypeM;
 	else if (s == "S")
-		return gmml::kTopTypeS;
+		return kTopTypeS;
 	else if (s == "B")
-		return gmml::kTopTypeB;
+		return kTopTypeB;
 	else if (s == "E")
-		return gmml::kTopTypeE;
+		return kTopTypeE;
 	else
-		return gmml::kTopType3;
+		return kTopType3;
 }
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
-void PrepAtom::Print(std::ostream &out)
+void PrepAtom::Print(std::ostream &out) const
 {
 	out << std::setw(3) << this->GetIndex()
         				<< std::setw(6) << this->getName()
 						<< std::setw(6) << type_;
-	if(topological_type_ == gmml::kTopTypeE)
+	if(topological_type_ == kTopTypeE)
 		out << std::setw(3) << "E";
-	else if(topological_type_ == gmml::kTopTypeS)
+	else if(topological_type_ == kTopTypeS)
 		out << std::setw(3) << "S";
-	else if(topological_type_ == gmml::kTopTypeB)
+	else if(topological_type_ == kTopTypeB)
 		out << std::setw(3) << "B";
-	else if(topological_type_ == gmml::kTopType3)
+	else if(topological_type_ == kTopType3)
 		out << std::setw(3) << "3";
-	else if(topological_type_ == gmml::kTopType4)
+	else if(topological_type_ == kTopType4)
 		out << std::setw(3) << "4";
-	else if(topological_type_ == gmml::kTopTypeM)
+	else if(topological_type_ == kTopTypeM)
 		out << std::setw(3) << "M";
 	else
 		out << std::setw(3) << "-";

@@ -8,7 +8,16 @@
 #include "includes/CentralDataStructure/cdsAtom.hpp"
 
 namespace prep
+{ // repeated from common or utils as they should be here, not in gmml scope. Left over there as the old class needs them until I delete it.
+enum TopologicalType
 {
+	kTopTypeE,
+	kTopTypeS,
+	kTopTypeB,
+	kTopType3,
+	kTopType4,
+	kTopTypeM
+};
 class PrepAtom : public cds::cdsAtom
 {
 public:
@@ -19,17 +28,19 @@ public:
 	//////////////////////////////////////////////////////////
 	//                         FUNCTIONS                    //
 	//////////////////////////////////////////////////////////
+	inline void visit() {++visitCount_;}
 	//////////////////////////////////////////////////////////
 	//                     DISPLAY FUNCTIONS                //
 	//////////////////////////////////////////////////////////
-	void Print(std::ostream& out = std::cerr);
+	void Print(std::ostream& out = std::cerr) const;
 	void Write(std::ostream &stream) const;
 	//////////////////////////////////////////////////////////
 	//                           ACCESSOR                   //
 	//////////////////////////////////////////////////////////
+	inline const int& GetVisits() const {return visitCount_;}
 	int GetIndex() const;
 	std::string GetType() const;
-	gmml::TopologicalType GetTopologicalType() const;
+	TopologicalType GetTopologicalType() const;
 	int GetBondIndex() const;
 	int GetAngleIndex() const;
 	int GetDihedralIndex() const;
@@ -42,7 +53,7 @@ public:
 	//////////////////////////////////////////////////////////
 	void SetIndex(int index);
 	void SetType(std::string type);
-	void SetTopologicalType(gmml::TopologicalType topological_type);
+	void SetTopologicalType(TopologicalType topological_type);
 	void SetBondIndex(int bond_index);
 	void SetAngleIndex(int angle_index);
 	void SetDihedralIndex(int dihedral_index);
@@ -54,16 +65,16 @@ private:
 	//////////////////////////////////////////////////////////
 	//                         FUNCTIONS                    //
 	//////////////////////////////////////////////////////////
-	gmml::TopologicalType ExtractAtomTopologicalType(std::istream& ss);
-	std::string GetStringFormatOfTopologicalType(gmml::TopologicalType topological_type) const;
+	TopologicalType ExtractAtomTopologicalType(std::istream& ss);
+	std::string GetStringFormatOfTopologicalType(TopologicalType topological_type) const;
 	std::string GetStringFormatOfTopologicalType() const;
-	gmml::TopologicalType GetTopologicalTypeFromString(std::string topological_type) const;
+	TopologicalType GetTopologicalTypeFromString(std::string topological_type) const;
 	//////////////////////////////////////////////////////////
 	//                         ATTRIBUTES                   //
 	//////////////////////////////////////////////////////////
 	int index_ = 0;                                 /*!< Atom index; fill by the first column of the residue section of the file */
 	std::string type_ = "";                          /*!< Atom type; fill by the third column of the residue section of the file */
-	gmml::TopologicalType topological_type_ = gmml::kTopTypeM;          /*!< Topological type (for chain extraction of the residue); fill by th 4th column of the residue section of the file */
+	TopologicalType topological_type_ = kTopTypeM;          /*!< Topological type (for chain extraction of the residue); fill by th 4th column of the residue section of the file */
 	int bond_index_ = 0;;                            /*!< Bond index; fill by the 5th column of the residue section of the file */
 	int angle_index_ = 0;;                           /*!< Angle index; fill by the 6th column of the residue section of the file */
 	int dihedral_index_ = 0;                        /*!< Dihedral index; fill by the 7th column of the residue section of the file */
@@ -71,6 +82,7 @@ private:
 	double angle_ = gmml::dNotSet;                              /*!< Angle; fill by the 9th column of the residue section of the file */
 	double dihedral_ = gmml::dNotSet;                           /*!< Dihedral; fill by the 10th column of the residue section of the file */
 	double charge_ = gmml::dNotSet;                             /*!< Charge; fill by the 11th column of the residue section of the file */
+	int visitCount_ = 0;
 	/*!< Sample line of the atom section of a prep file: 4 H1   H1  M  3  2  1  1.000    90.0     180.0     0.0 */
 };
 }
