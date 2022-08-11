@@ -155,9 +155,9 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequence::SingleR
     return;
 }
 
-int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
+unsigned long long int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
 {
-    int numberOfShapes = 1;
+	unsigned long long int numberOfShapes = 1;
     try
     {
         for(auto &linkage : (*this->GetGlycosidicLinkages()))

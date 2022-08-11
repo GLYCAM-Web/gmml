@@ -1,7 +1,5 @@
 #include "../../includes/MolecularModeling/atom.hpp"
-#include "../../includes/MolecularModeling/quantommechanicatom.hpp"
 #include "../../includes/MolecularModeling/moleculardynamicatom.hpp"
-#include "../../includes/MolecularModeling/dockingatom.hpp"
 #include "../../includes/MolecularModeling/oligosaccharidedetectionatom.hpp"
 #include "../../includes/MolecularModeling/atomnode.hpp"
 #include "../../includes/MolecularModeling/residue.hpp"
