@@ -18,6 +18,7 @@ using prep::PrepFile;
 //////////////////////////////////////////////////////////
 PrepFile::PrepFile(const std::string& prep_file)
 {
+	std::cout << "Constructor entered" << std::endl;
 	codeUtils::ensureFileExists(prep_file);
 	std::ifstream in_file(prep_file.c_str());
 	if(in_file.is_open())
@@ -103,10 +104,17 @@ PrepFile::PrepFile(const std::string& prep_file, std::vector<std::string>& query
 //////////////////////////////////////////////////////////
 void PrepFile::ReadAllResidues(std::ifstream &in_file)
 {
-	std::string header1, header2;
-	getline(in_file, header1);
-	getline(in_file, header2);
-    this->addResidue(std::make_unique<PrepResidue>(in_file));
+	std::string line;
+	getline(in_file, line);
+	getline(in_file, line); // first two lines are always blank apparently. smh.
+	getline(in_file, line); // This should be first line of residue entry.
+    while (gmml::Trim(line).find("STOP") == std::string::npos)           /// End of file
+    {
+        this->addResidue(std::make_unique<PrepResidue>(in_file, line));
+        getline(in_file, line); // This should be first line of next residue entry or STOP.
+        std::cout << "Back out and line is: " << line << std::endl;
+    }
+	std::cout << "Ok this is done with line as:\n " << line << std::endl;
 }
 
 void PrepFile::ReadOnlyQueryResidues(std::ifstream &in_file, std::vector<std::string>& query_residue_names)
@@ -131,7 +139,7 @@ void PrepFile::ReadOnlyQueryResidues(std::ifstream &in_file, std::vector<std::st
 	if (std::find(query_residue_names.begin(), query_residue_names.end(), resname) != query_residue_names.end() )
 	{
 		in_file.seekg(one_line_before_residue_title);  //go back to one line before residue title, so the rest of the codes works correctly
-	    this->addResidue(std::make_unique<PrepResidue>(in_file));
+	    //this->addResidue(std::make_unique<PrepResidue>(in_file));
 		one_line_before_residue_title = in_file.tellg();
 	}
 	resname.clear();
@@ -156,7 +164,7 @@ void PrepFile::ReadOnlyQueryResidues(std::ifstream &in_file, std::vector<std::st
 		if (std::find(query_residue_names.begin(), query_residue_names.end(), resname) != query_residue_names.end() )
 		{
 			in_file.seekg(one_line_before_residue_title);  //go back to one line before residue title, so the rest of the codes works correctly
-		    this->addResidue(std::make_unique<PrepResidue>(in_file));
+		    //this->addResidue(std::make_unique<PrepResidue>(in_file));
 			one_line_before_residue_title = in_file.tellg();
 		}
 		resname.clear();

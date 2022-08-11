@@ -2,6 +2,7 @@
 #define INCLUDES_PARAMETERSET_PREPFILE_PREPRESIDUE_HPP_
 
 #include "includes/CentralDataStructure/cdsResidue.hpp"
+#include "includes/ParameterSet/PrepFile/prepAtom.hpp"
 
 #include <string>
 #include <map>
@@ -16,7 +17,6 @@ enum GeometryType { kGeometryCorrect, kGeometryChange };
 enum DummyAtomPosition { kPositionAll, kPositionBeg };
 enum DummyAtomOmission { kOmit, kNomit };
 enum SectionType { kSectionLoop, kSectionImproper, kSectionDone, kSectionOther };
-class PrepAtom;
 class PrepResidue : public cds::cdsResidue<PrepAtom>
 {
 public:
@@ -28,7 +28,7 @@ public:
 	//////////////////////////////////////////////////////////
 	//                       Constructor                    //
 	//////////////////////////////////////////////////////////
-	PrepResidue(std::ifstream& in_file);
+	PrepResidue(std::ifstream& in_file, std::string& line);
 	//////////////////////////////////////////////////////////
 	//                       ACCESSOR                       //
 	//////////////////////////////////////////////////////////
@@ -49,6 +49,8 @@ public:
 	//////////////////////////////////////////////////////////
 	//                     FUNCTIONS                        //
 	//////////////////////////////////////////////////////////
+	void SetConnectivities();
+	//void RecursivelySetConnectivities(std::vector<PrepAtom*>::iterator& currentAtom, std::vector<PrepAtom*>::iterator connectionPoint, std::vector<PrepAtom*>::iterator& lastAtom);
 	std::vector<std::string> GetAtomNames() const;
 	std::vector<std::string> GetHeavyAtomNames() const;
 	double CalculatePrepResidueCharge();

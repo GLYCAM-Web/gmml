@@ -15,15 +15,10 @@ using prep::PrepResidue;
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 
-PrepResidue::PrepResidue(std::ifstream& in_file)
+PrepResidue::PrepResidue(std::ifstream& in_file, std::string &line)
 {
-    std::string line, name, dummy_atom_type;
+    std::string name, dummy_atom_type;
     std::istringstream ss;
-    getline(in_file, line);             /// Read the first line of a residue section
-    if (gmml::Trim(line).find("STOP") != std::string::npos)           /// End of file
-    {
-        return; // Throw Exception?
-    }
     this->SetTitle(line);             /// Set title of the residue
     getline(in_file, line);             /// Blank line, skip
     getline(in_file, line);             /// Read the next line
@@ -46,7 +41,6 @@ PrepResidue::PrepResidue(std::ifstream& in_file)
     {
         this->addAtom(std::make_unique<PrepAtom>(line));
     }
-
     /// Process the extra sections: IMPROPER, LOOP, DONE
     bool done = false;
     while (!done)
@@ -75,8 +69,6 @@ PrepResidue::PrepResidue(std::ifstream& in_file)
         }
     }
 }
-
-
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
@@ -142,6 +134,7 @@ std::string PrepResidue::GetStringFormatOfCoordinateType(prep::CoordinateType co
             return "";
     }
 }
+
 std::string PrepResidue::GetStringFormatOfCoordinateType() const
 {
     switch(coordinate_type_)
@@ -154,6 +147,7 @@ std::string PrepResidue::GetStringFormatOfCoordinateType() const
             return "";
     }
 }
+
 std::string PrepResidue::GetStringFormatOfOutputFormat(prep::OutputFormat output_format) const
 {
     switch(output_format)
@@ -166,6 +160,7 @@ std::string PrepResidue::GetStringFormatOfOutputFormat(prep::OutputFormat output
             return "";
     }
 }
+
 std::string PrepResidue::GetStringFormatOfOutputFormat() const
 {
     switch(output_format_)
@@ -178,6 +173,7 @@ std::string PrepResidue::GetStringFormatOfOutputFormat() const
             return "";
     }
 }
+
 std::string PrepResidue::GetStringFormatOfGeometryType(prep::GeometryType geometry_type) const
 {
     switch(geometry_type)
@@ -190,6 +186,7 @@ std::string PrepResidue::GetStringFormatOfGeometryType(prep::GeometryType geomet
             return "";
     }
 }
+
 std::string PrepResidue::GetStringFormatOfGeometryType() const
 {
     switch(geometry_type_)
@@ -202,6 +199,7 @@ std::string PrepResidue::GetStringFormatOfGeometryType() const
             return "";
     }
 }
+
 std::string PrepResidue::GetStringFormatOfDummyAtomPosition(DummyAtomPosition dummy_atom_position) const
 {
     switch(dummy_atom_position)
@@ -214,6 +212,7 @@ std::string PrepResidue::GetStringFormatOfDummyAtomPosition(DummyAtomPosition du
             return "";
     }
 }
+
 std::string PrepResidue::GetStringFormatOfDummyAtomPosition() const
 {
     switch(dummy_atom_position_)
@@ -226,6 +225,7 @@ std::string PrepResidue::GetStringFormatOfDummyAtomPosition() const
             return "";
     }
 }
+
 std::string PrepResidue::GetStringFormatOfDummyAtomOmission(prep::DummyAtomOmission dummy_atom_omission) const
 {
     switch(dummy_atom_omission)
@@ -238,6 +238,7 @@ std::string PrepResidue::GetStringFormatOfDummyAtomOmission(prep::DummyAtomOmiss
             return "";
     }
 }
+
 std::string PrepResidue::GetStringFormatOfDummyAtomOmission() const
 {
     switch(dummy_atom_omission_)
@@ -250,6 +251,7 @@ std::string PrepResidue::GetStringFormatOfDummyAtomOmission() const
             return "";
     }
 }
+
 std::string PrepResidue::GetStringFormatOfSectionType(SectionType section_type) const
 {
     switch(section_type)
@@ -266,6 +268,7 @@ std::string PrepResidue::GetStringFormatOfSectionType(SectionType section_type) 
             return "";
     }
 }
+
 prep::CoordinateType PrepResidue::GetCoordinateTypeFromString(std::string coordinate_type) const
 {
     if(coordinate_type.compare("INT") == 0)
@@ -275,6 +278,7 @@ prep::CoordinateType PrepResidue::GetCoordinateTypeFromString(std::string coordi
     else
         return prep::kINT;
 }
+
 prep::OutputFormat PrepResidue::GetOutputFormatFromString(std::string output_format) const
 {
     if(output_format.compare("Formatted") == 0)
@@ -284,6 +288,7 @@ prep::OutputFormat PrepResidue::GetOutputFormatFromString(std::string output_for
     else
         return prep::kBinary;
 }
+
 prep::GeometryType PrepResidue::GetGeometryTypeFromString(std::string geometry_type) const
 {
     if(geometry_type.compare("GeometryCorrect") == 0)
@@ -293,6 +298,7 @@ prep::GeometryType PrepResidue::GetGeometryTypeFromString(std::string geometry_t
     else
         return prep::kGeometryCorrect;
 }
+
 prep::DummyAtomPosition PrepResidue::GetDummyAtomPositionFromString(std::string dummy_atom_position) const
 {
     if(dummy_atom_position.compare("PositionAll") == 0)
@@ -302,6 +308,7 @@ prep::DummyAtomPosition PrepResidue::GetDummyAtomPositionFromString(std::string 
     else
         return prep::kPositionBeg;
 }
+
 prep::DummyAtomOmission PrepResidue::GetDummyAtomOmissionFromString(std::string dummy_atom_omission) const
 {
     if(dummy_atom_omission.compare("Omit") == 0)
@@ -311,6 +318,7 @@ prep::DummyAtomOmission PrepResidue::GetDummyAtomOmissionFromString(std::string 
     else
         return prep::kOmit;
 }
+
 prep::SectionType PrepResidue::GetSectionTypeFromString(std::string section_type) const
 {
     if(section_type.compare("SectionLoop") == 0)
@@ -347,11 +355,9 @@ std::vector<std::string> PrepResidue::GetHeavyAtomNames() const
     }
     return foundAtoms;
 }
-
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
-
 void PrepResidue::SetTitle(const std::string title){
     title_ = title;
 }
@@ -401,13 +407,37 @@ void PrepResidue::AddLoop(std::pair<std::string, std::string> loop)
 	loops_.push_back(loop);
 	return;
 }
-
-
-
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////
-/// Create a new residue from a given stream
+
+// can recursively look up incoming connections to find bond, angle and dihedral atoms. Just skip dummies.
+//currentAtom->DeterminePosition(); // could do this once connectivity is set
+
+void PrepResidue::SetConnectivities()
+{
+	std::cout << "Attempting to set connectivities in prepResidue: " << this->getName() << std::endl;
+	std::cout << "Number of atoms: " << this->getAtoms().size() << std::endl;
+	std::cout << "First atom is " << this->getAtoms().front()->getName() << std::endl;
+	std::vector<PrepAtom*> connectionPointStack;
+	connectionPointStack.push_back(this->getAtoms().front());
+	//while(currentAtom != this->getAtoms().end())
+	for(auto &currentAtom : this->getAtoms())
+	{
+		//connectionPointStack.back()->addBond(currentAtom);
+		std::cout << "Bonded " << connectionPointStack.back()->getName() << " to " << currentAtom->getName() << std::endl;;
+		connectionPointStack.back()->visit();
+		if (connectionPointStack.back()->GetVisits() >= connectionPointStack.back()->GetTopologicalType())
+		{
+			connectionPointStack.pop_back();
+		}
+		if(currentAtom->GetTopologicalType() > kTopTypeE)
+		{
+			connectionPointStack.push_back(currentAtom);
+		}
+		++currentAtom;
+	}
+}
 
 /// Return residue name from a stream line which is the first column of the 3rd line in each residue section
 std::string PrepResidue::ExtractResidueName(std::istream& ss)
