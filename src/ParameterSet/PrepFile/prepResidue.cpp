@@ -24,16 +24,16 @@ PrepResidue::PrepResidue(std::ifstream& in_file, std::string &line)
     getline(in_file, line);             /// Read the next line
     // I guess you can extract with spaces as the default delimiter with >> from a stringstream
     ss.str(line);                       /// Create an stream from the read line
-    this->setName(this->ExtractResidueName(ss));
-    this->SetCoordinateType(this->ExtractResidueCoordinateType(ss));
-    this->SetOutputFormat(this->ExtractResidueOutputFormat(ss));
+    this->ExtractResidueName(ss);
+    this->ExtractResidueCoordinateType(ss);
+    this->ExtractResidueOutputFormat(ss);
     ss.clear();
     getline(in_file, line);             /// Read the next line
-    this->SetGeometryType(this->ExtractResidueGeometryType(ss));
-    this->SetDummyAtomOmission(this->ExtractResidueDummyAtomOmission(ss));
+    this->ExtractResidueGeometryType(ss);
+    this->ExtractResidueDummyAtomOmission(ss);
     ss >> dummy_atom_type;
     this->SetDummyAtomType(dummy_atom_type);
-    this->SetDummyAtomPosition(this->ExtractResidueDummyAtomPosition(ss));
+    this->ExtractResidueDummyAtomPosition(ss);
     getline(in_file, line);             /// Read the next line
     this->SetCharge(gmml::ConvertString<double>(line));
     /// Process atoms of the residue
@@ -58,7 +58,7 @@ PrepResidue::PrepResidue(std::ifstream& in_file, std::string &line)
                 this->ExtractLoops(in_file);
                 break;
             case prep::kSectionImproper:
-                this->SetImproperDihedrals(this->ExtractImproperDihedral(in_file));
+                this->ExtractImproperDihedral(in_file);
                 break;
             case prep::kSectionDone:
                 done = true;
@@ -135,35 +135,9 @@ std::string PrepResidue::GetStringFormatOfCoordinateType(prep::CoordinateType co
     }
 }
 
-std::string PrepResidue::GetStringFormatOfCoordinateType() const
-{
-    switch(coordinate_type_)
-    {
-        case prep::kINT:
-            return "INT";
-        case prep::kXYZ:
-            return "XYZ";
-        default:
-            return "";
-    }
-}
-
 std::string PrepResidue::GetStringFormatOfOutputFormat(prep::OutputFormat output_format) const
 {
     switch(output_format)
-    {
-        case prep::kFormatted:
-            return "FRM";
-        case prep::kBinary:
-            return "BIN";
-        default:
-            return "";
-    }
-}
-
-std::string PrepResidue::GetStringFormatOfOutputFormat() const
-{
-    switch(output_format_)
     {
         case prep::kFormatted:
             return "FRM";
@@ -187,19 +161,6 @@ std::string PrepResidue::GetStringFormatOfGeometryType(prep::GeometryType geomet
     }
 }
 
-std::string PrepResidue::GetStringFormatOfGeometryType() const
-{
-    switch(geometry_type_)
-    {
-        case prep::kGeometryCorrect:
-            return "CORRECT";
-        case prep::kGeometryChange:
-            return "CHANGE";
-        default:
-            return "";
-    }
-}
-
 std::string PrepResidue::GetStringFormatOfDummyAtomPosition(DummyAtomPosition dummy_atom_position) const
 {
     switch(dummy_atom_position)
@@ -213,35 +174,9 @@ std::string PrepResidue::GetStringFormatOfDummyAtomPosition(DummyAtomPosition du
     }
 }
 
-std::string PrepResidue::GetStringFormatOfDummyAtomPosition() const
-{
-    switch(dummy_atom_position_)
-    {
-        case prep::kPositionAll:
-            return "ALL";
-        case prep::kPositionBeg:
-            return "BEG";
-        default:
-            return "";
-    }
-}
-
 std::string PrepResidue::GetStringFormatOfDummyAtomOmission(prep::DummyAtomOmission dummy_atom_omission) const
 {
     switch(dummy_atom_omission)
-    {
-        case prep::kOmit:
-            return "OMIT";
-        case prep::kNomit:
-            return "NOMIT";
-        default:
-            return "";
-    }
-}
-
-std::string PrepResidue::GetStringFormatOfDummyAtomOmission() const
-{
-    switch(dummy_atom_omission_)
     {
         case prep::kOmit:
             return "OMIT";
@@ -416,16 +351,16 @@ void PrepResidue::AddLoop(std::pair<std::string, std::string> loop)
 
 void PrepResidue::SetConnectivities()
 {
-	std::cout << "Attempting to set connectivities in prepResidue: " << this->getName() << std::endl;
-	std::cout << "Number of atoms: " << this->getAtoms().size() << std::endl;
-	std::cout << "First atom is " << this->getAtoms().front()->getName() << std::endl;
+	//std::cout << "Attempting to set connectivities in prepResidue: " << this->getName() << std::endl;
+	//std::cout << "Number of atoms: " << this->getAtoms().size() << std::endl;
+	//std::cout << "First atom is " << this->getAtoms().front()->getName() << std::endl;
 	std::vector<PrepAtom*> connectionPointStack;
 	connectionPointStack.push_back(this->getAtoms().front());
 	//while(currentAtom != this->getAtoms().end())
 	for(auto &currentAtom : this->getAtoms())
 	{
-		//connectionPointStack.back()->addBond(currentAtom);
-		std::cout << "Bonded " << connectionPointStack.back()->getName() << " to " << currentAtom->getName() << std::endl;;
+		connectionPointStack.back()->addBond(currentAtom);
+		//std::cout << "Bonded " << connectionPointStack.back()->getName() << " to " << currentAtom->getName() << std::endl;;
 		connectionPointStack.back()->visit();
 		if (connectionPointStack.back()->GetVisits() >= connectionPointStack.back()->GetTopologicalType())
 		{
@@ -440,66 +375,76 @@ void PrepResidue::SetConnectivities()
 }
 
 /// Return residue name from a stream line which is the first column of the 3rd line in each residue section
-std::string PrepResidue::ExtractResidueName(std::istream& ss)
+void PrepResidue::ExtractResidueName(std::istream& ss)
 {
     std::string name;
     ss >> name;
-    return name;
+    this->setName(name);
+    return;
 }
 
 /// Return coordinate type from a stream line which is the 2nd column of the 3rd line in each residue section
-prep::CoordinateType PrepResidue::ExtractResidueCoordinateType(std::istream &ss)
+void PrepResidue::ExtractResidueCoordinateType(std::istream &ss)
 {
     std::string s;
     ss >> s;
     if (s == "XYZ")
-        return prep::kXYZ;
+    {
+    	this->SetCoordinateType(prep::kXYZ);
+    }
     else
-        return prep::kINT;
+    {
+    	this->SetCoordinateType(prep::kINT);
+    }
+    return;
 }
 
 /// Return output format from a stream line which is the 3rd column of the 3rd line in each residue section
-prep::OutputFormat PrepResidue::ExtractResidueOutputFormat(std::istream& ss)
+void PrepResidue::ExtractResidueOutputFormat(std::istream& ss)
 {
     int val;
     ss >> val;
     if (val == 1)
-        return prep::kBinary;
+    	this->SetOutputFormat(prep::kBinary);
     else
-        return prep::kFormatted;
+    	this->SetOutputFormat(prep::kFormatted);
+    return;
 }
 
 /// Return geometry type from a stream line which is the first column of the 4th line in each residue section
-prep::GeometryType PrepResidue::ExtractResidueGeometryType(std::istream& ss)
+void PrepResidue::ExtractResidueGeometryType(std::istream& ss)
 {
     std::string s;
     ss >> s;
     if (s == "CHANGE")
-        return prep::kGeometryChange;
+    	this->SetGeometryType(prep::kGeometryChange);
     else
-        return prep::kGeometryCorrect;
+    	this->SetGeometryType(prep::kGeometryCorrect);
+    return;
 }
 
 /// Return dummy atom omission from a stream line which is the 2nd column of the 4th line in each residue section
-prep::DummyAtomOmission PrepResidue::ExtractResidueDummyAtomOmission(std::istream &ss)
+void PrepResidue::ExtractResidueDummyAtomOmission(std::istream &ss)
 {
     std::string s;
     ss >> s;
     if (s == "NOMIT")
-        return prep::kNomit;
+    	this->SetDummyAtomOmission(prep::kNomit);
     else
-        return prep::kOmit;
+    	this->SetDummyAtomOmission(prep::kOmit);
+    return;
 }
 
 /// Return dummy atom position from a stream line which is the 4th column of the 4th line in each residue section
-prep::DummyAtomPosition PrepResidue::ExtractResidueDummyAtomPosition(std::istream &ss)
+void PrepResidue::ExtractResidueDummyAtomPosition(std::istream &ss)
 {
     std::string s;
     ss >> s;
     if (s == "ALL")
-        return prep::kPositionAll;
+    	this->SetDummyAtomPosition(prep::kPositionAll);
     else
-        return prep::kPositionBeg;
+        this->SetDummyAtomPosition(prep::kPositionBeg);
+    return;
 }
 
 /// Return a corresponding title from a stream line which may appear in each residue section
@@ -533,7 +478,7 @@ void PrepResidue::ExtractLoops(std::ifstream &in_file)
 }
 
 /// Parse the improper dihedral section of each residue section and return a std::vector of improper dihedrals
-std::vector<PrepResidue::Dihedral> PrepResidue::ExtractImproperDihedral(std::ifstream &in_file)
+void PrepResidue::ExtractImproperDihedral(std::ifstream &in_file)
 {
     std::string line;
     std::stringstream ss;
@@ -558,7 +503,8 @@ std::vector<PrepResidue::Dihedral> PrepResidue::ExtractImproperDihedral(std::ifs
         dihedrals.push_back(dihedral);                  /// Create a new dihedral into the std::vector of dihedrals
         getline(in_file, line);                         /// Read the next line
     }
-    return dihedrals;
+    this->SetImproperDihedrals(dihedrals);
+    return;
 }
 
 //////////////////////////////////////////////////////////
@@ -682,10 +628,10 @@ void PrepResidue::Print(std::ostream& out)
 void PrepResidue::Write(std::ostream &stream)
 {
 	stream << this->GetTitle() << std::endl << std::endl
-			<< std::left << std::setw(4) << this->getName() << " " << std::right << std::setw(3) << this->GetStringFormatOfCoordinateType() << " "
+			<< std::left << std::setw(4) << this->getName() << " " << std::right << std::setw(3) << this->GetStringFormatOfCoordinateType(this->GetCoordinateType()) << " "
 			<< std::setw(1) << this->GetOutputFormat() << std::endl
-			<< this->GetStringFormatOfGeometryType() << " " << this->GetStringFormatOfDummyAtomOmission() << " "
-			<< this->GetDummyAtomType() << " " << this->GetStringFormatOfDummyAtomPosition() << std::endl
+			<< this->GetStringFormatOfGeometryType(this->GetGeometryType()) << " " << this->GetStringFormatOfDummyAtomOmission(this->GetDummyAtomOmission()) << " "
+			<< this->GetDummyAtomType() << " " << this->GetStringFormatOfDummyAtomPosition(this->GetDummyAtomPosition()) << std::endl
 			<< std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetCharge() << std::endl;
 	for(auto &atom : this->getAtoms())
 	{

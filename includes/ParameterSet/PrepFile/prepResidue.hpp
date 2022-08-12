@@ -60,15 +60,15 @@ private:
 	//////////////////////////////////////////////////////////
 	//                         FUNCTIONS                    //
 	//////////////////////////////////////////////////////////
-	std::string ExtractResidueName(std::istream& ss);
-	CoordinateType ExtractResidueCoordinateType(std::istream& ss);
-	OutputFormat ExtractResidueOutputFormat(std::istream& ss);
-	GeometryType ExtractResidueGeometryType(std::istream& ss);
-	DummyAtomOmission ExtractResidueDummyAtomOmission(std::istream& ss);
-	DummyAtomPosition ExtractResidueDummyAtomPosition(std::istream& ss);
-	SectionType ExtractSectionType(std::string& line);
+	void ExtractResidueName(std::istream& ss);
+	void ExtractResidueCoordinateType(std::istream& ss);
+	void ExtractResidueOutputFormat(std::istream& ss);
+	void ExtractResidueGeometryType(std::istream& ss);
+	void ExtractResidueDummyAtomOmission(std::istream& ss);
+	void ExtractResidueDummyAtomPosition(std::istream& ss);
+	prep::SectionType ExtractSectionType(std::string& line);
 	void ExtractLoops(std::ifstream& in_file);
-	DihedralVector ExtractImproperDihedral(std::ifstream& in_file);
+	void ExtractImproperDihedral(std::ifstream& in_file);
 	//////////////////////////////////////////////////////////
 	//                         ACCESSOR                     //
 	//////////////////////////////////////////////////////////
@@ -83,15 +83,10 @@ private:
 	DihedralVector GetImproperDihedrals() const;
 	std::vector<std::pair<std::string, std::string>> GetLoops() const;
 	std::string GetStringFormatOfCoordinateType(CoordinateType coordinate_type) const;
-	std::string GetStringFormatOfCoordinateType() const;
 	std::string GetStringFormatOfOutputFormat(OutputFormat output_format) const;
-	std::string GetStringFormatOfOutputFormat() const;
 	std::string GetStringFormatOfGeometryType(GeometryType geometry_type) const;
-	std::string GetStringFormatOfGeometryType() const;
 	std::string GetStringFormatOfDummyAtomPosition(DummyAtomPosition dummy_atom_position) const;
-	std::string GetStringFormatOfDummyAtomPosition() const;
 	std::string GetStringFormatOfDummyAtomOmission(DummyAtomOmission dummy_atom_omission) const;
-	std::string GetStringFormatOfDummyAtomOmission() const;
 	std::string GetStringFormatOfSectionType(SectionType section_type) const;
 	CoordinateType GetCoordinateTypeFromString(std::string coordinate_type) const;
 	OutputFormat GetOutputFormatFromString(std::string output_format) const;

@@ -112,9 +112,9 @@ void PrepFile::ReadAllResidues(std::ifstream &in_file)
     {
         this->addResidue(std::make_unique<PrepResidue>(in_file, line));
         getline(in_file, line); // This should be first line of next residue entry or STOP.
-        std::cout << "Back out and line is: " << line << std::endl;
+        //std::cout << "Back out and line is: " << line << std::endl;
     }
-	std::cout << "Ok this is done with line as:\n " << line << std::endl;
+	//std::cout << "Ok this is done with line as:\n " << line << std::endl;
 }
 
 void PrepFile::ReadQueryResidues(std::ifstream &in_file, std::vector<std::string>& queryNames)
@@ -133,7 +133,7 @@ void PrepFile::ReadQueryResidues(std::ifstream &in_file, std::vector<std::string
     	//std::cout << "Current residue name is: " << residueNameLine.front() << std::endl;
     	if (std::find(queryNames.begin(), queryNames.end(), residueNameLine.front()) != queryNames.end() )
     	{
-    		std::cout << "Found query residue: " << residueNameLine.front() << "\n";
+    		//std::cout << "Found query residue: " << residueNameLine.front() << "\n";
     		in_file.seekg(firstResidueLinePosition);  //go back here so the residue constructor works
     		this->addResidue(std::make_unique<PrepResidue>(in_file, line));
     	}
@@ -147,63 +147,8 @@ void PrepFile::ReadQueryResidues(std::ifstream &in_file, std::vector<std::string
         getline(in_file, line); // This should be first line of next residue entry or STOP.
         //std::cout << "Back out and line is: " << line << std::endl;
     }
-	std::cout << "Ok this is done with line as:\n " << line << std::endl;
+	//std::cout << "Ok this is done with line as:\n " << line << std::endl;
 }
-
-//void PrepFile::ReadOnlyQueryResidues(std::ifstream &in_file, std::vector<std::string>& query_residue_names)
-//{
-//	std::string query_names_str;
-//	std::string header1, header2;
-//	getline(in_file, header1);
-//	getline(in_file, header2);
-//	//Have to reach the line containing residue name to tell if this residue should be read. However, residue processing starts from the residue title line, which is two lines above
-//	//Sadly, for getline() there is no easy way back.
-//	//So, the position of the title line is set as a stream pointer. When reading a residue, make the stream pointer go back to this checkpoint.
-//	std::streampos one_line_before_residue_title = in_file.tellg();
-//	std::string line;
-//	getline(in_file, line);
-//	getline(in_file, line);
-//	std::stringstream temp_stream;
-//	std::string resname,intx,kform;
-//	getline(in_file, line);
-//	temp_stream << line;
-//	temp_stream >> resname >> intx >> kform;
-//	if (std::find(query_residue_names.begin(), query_residue_names.end(), resname) != query_residue_names.end() )
-//	{
-//		in_file.seekg(one_line_before_residue_title);  //go back to one line before residue title, so the rest of the codes works correctly
-//	    //this->addResidue(std::make_unique<PrepResidue>(in_file));
-//		one_line_before_residue_title = in_file.tellg();
-//	}
-//	resname.clear();
-//	intx.clear();
-//	kform.clear();
-//	while (getline(in_file, line))
-//	{
-//		if (line.find("STOP") != std::string::npos)
-//		{
-//			break;
-//		}
-//		if (line.find("DONE") != std::string::npos)
-//		{
-//			one_line_before_residue_title = in_file.tellg();
-//			getline(in_file, line);
-//			getline(in_file, line);
-//			getline(in_file, line);
-//			std::stringstream line_stream;
-//			line_stream << line;
-//			line_stream >> resname >> intx >> kform;
-//		}
-//		if (std::find(query_residue_names.begin(), query_residue_names.end(), resname) != query_residue_names.end() )
-//		{
-//			in_file.seekg(one_line_before_residue_title);  //go back to one line before residue title, so the rest of the codes works correctly
-//		    //this->addResidue(std::make_unique<PrepResidue>(in_file));
-//			one_line_before_residue_title = in_file.tellg();
-//		}
-//		resname.clear();
-//		intx.clear();
-//		kform.clear();
-//	}
-//}
 
 void PrepFile::Write(const std::string& prep_file)
 {
@@ -228,13 +173,12 @@ void PrepFile::Write(const std::string& prep_file)
 
 void PrepFile::Write(std::ofstream &stream)
 {
-	stream << std::endl
-			<< std::endl;
+	stream << "\n" << "\n";
 	for(auto &residue: this->getResidues())
 	{
 		residue->Write(stream);
 	}
-	stream << "STOP";
+	stream << "STOP\n";
 }
 
 //////////////////////////////////////////////////////////
