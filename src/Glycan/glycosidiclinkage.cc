@@ -312,6 +312,8 @@ GlycosidicLinkage::GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide*
       gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
       ss.str("");
       ss << "Linkage name is " << linkage_name_;
+      gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+      ss.str("");
       ss << "Linkage residue name is " << residue_linkage_name_;
       gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
       ss.str("");

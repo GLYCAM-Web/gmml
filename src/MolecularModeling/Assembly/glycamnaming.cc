@@ -508,12 +508,20 @@ void Assembly::TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap res
 
 void Assembly::MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map, std::string prep_file, std::map<Glycan::Oligosaccharide*, Pdb2glycamMatchingTracker*>& match_tracker)
 {
-    int local_debug = 1;
+    int local_debug = -1;
+    if(local_debug > 0)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Initializing prep file");
+    }
     PrepFileSpace::PrepFile* prep = new PrepFileSpace::PrepFile(prep_file);
-    for (std::map<Glycan::Oligosaccharide*, ResidueVector>::iterator mapit = oligo_residue_map.begin(); mapit != oligo_residue_map.end(); mapit++){ 
+    for (std::map<Glycan::Oligosaccharide*, ResidueVector>::iterator mapit = oligo_residue_map.begin(); mapit != oligo_residue_map.end(); mapit++)
+    { 
+        if(local_debug > 0)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Oligosaccharide: " + std::to_string(std::distance(oligo_residue_map.begin(), mapit)));
+        }
         Glycan::Oligosaccharide* oligo = mapit->first;
         ResidueVector corresponding_residues = mapit->second;
-
         Pdb2glycamMatchingTracker* tracker = new Pdb2glycamMatchingTracker();
         match_tracker[oligo] = tracker;
 

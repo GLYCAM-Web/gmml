@@ -1207,7 +1207,7 @@ std::vector<Glycan::Oligosaccharide*> Glycan::Oligosaccharide::createOligosaccha
       {
         Glycan::GlycosidicLinkage* thisLinkage = (*monoNeighbor).first;
         // std::stringstream ss;
-        // ss << this_mono->cycle_atoms_[0]->GetResidue()->GetId() << " is being compared to " << thisLinkage->non_reducing_mono_->cycle_atoms_[0]->GetResidue()->GetId() << " and the linkage type is " << thisLinkage->inverse_linkage_type_;
+        // ss << this_mono->cycle_atoms_[0]->GetResidue()->GetId() << " is being compared to " << thisLinkage->non_reducing_mono_->cycle_atoms_[0]->GetResidue()->GetId() << " and the linkage type is " << thisLinkage->linkage_type_;
         // gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
         if(this_mono->cycle_atoms_[0]->GetResidue()->GetId() == thisLinkage->non_reducing_mono_->cycle_atoms_[0]->GetResidue()->GetId())
         {//if this mono has a mono neighbor at the anomeric carbon, it can't be the root (attached to terminal)
@@ -1431,7 +1431,7 @@ void Glycan::Oligosaccharide::indexMono(Glycan::Monosaccharide* thisMono, int th
           std::vector<std::string> linkageStringVector;
           for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
           {
-            linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+            linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->linkage_type_);
           }
           //go through vector
           //index lower linkage locant
@@ -1675,7 +1675,7 @@ void Glycan::Oligosaccharide::indexMono(Glycan::Monosaccharide* thisMono, int th
                 gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
                 testLog.str(std::string());//clear stringstream
               }
-              linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+              linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->linkage_type_);
             }
             else if(thisMono->mono_neighbors_[i].second->is_indexed_)
             {//Has already been considered
@@ -1695,7 +1695,7 @@ void Glycan::Oligosaccharide::indexMono(Glycan::Monosaccharide* thisMono, int th
                 gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
                 testLog.str(std::string());//clear stringstream
               }
-              linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+              linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->linkage_type_);
               // equalBranches.push_back(thisMono->mono_neighbors_[i]);
             }
             else
@@ -1895,7 +1895,7 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::IUPACindexMono(Gly
           std::vector<std::string> linkageStringVector;
           for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
           {
-            linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+            linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->linkage_type_);
           }
           //go through vector
           //index lower linkage locant
@@ -2140,7 +2140,7 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::IUPACindexMono(Gly
                 testLog.str(std::string());//clear stringstream
               }
 
-              linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+              linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->linkage_type_);
             }
             else if(thisMono->mono_neighbors_[i].second->is_indexed_)
             {//Already considered
@@ -2162,7 +2162,7 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::IUPACindexMono(Gly
                 testLog.str(std::string());//clear stringstream
               }
 
-              linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+              linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->linkage_type_);
             }
             else
             {
@@ -2533,9 +2533,9 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
       if(!thisMono->mono_neighbors_[0].second->is_visited_)//temp fix to handle anomeric anomeric infinite loop
       {
         Glycan::Monosaccharide* thisMonoNeighbor = thisMono->mono_neighbors_[0].second;
-        thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[0].first->inverse_linkage_type_ +
+        thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[0].first->linkage_type_ +
                                  thisMonoName + thisOligo->IUPAC_name_;
-        thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[0].first->inverse_linkage_type_ +
+        thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[0].first->linkage_type_ +
                                         thisMonoAuthorName + thisOligo->author_IUPAC_name_;
         thisMono->is_visited_ = true;
         // thisMonoNeighbor->is_visited_ = true;
@@ -2617,16 +2617,16 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
           shortestBranchLocation = std::distance(branchMaxLengths.begin(), std::min_element(branchMaxLengths.begin(), branchMaxLengths.end()));
           if(i < thisMono->mono_neighbors_.size() - 1) //no countedBackwards flag as there is nothing backwards from root
           {
-            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ + "]" +
+            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ + "]" +
                                     thisOligo->IUPAC_name_;
-            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ + "]" +
+            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ + "]" +
                                             thisOligo->author_IUPAC_name_;
           }
           else//last branch doesnt get brackets
           {
-            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ +
+            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ +
                                     thisOligo->IUPAC_name_;
-            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ +
+            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ +
                                     thisOligo->author_IUPAC_name_;
           }
           thisMono->is_visited_ = true;
@@ -2657,16 +2657,16 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
             linkageStringVector.push_back("0");
             if((i < thisMono->mono_neighbors_.size() - 1) && (!thisMono->mono_neighbors_[shortestBranchLocation].second->is_visited_))
             {
-              thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ + "]" +
+              thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ + "]" +
                                        thisOligo->IUPAC_name_;
-              thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ + "]" +
+              thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ + "]" +
                                        thisOligo->author_IUPAC_name_;
             }
             else if (!thisMono->mono_neighbors_[shortestBranchLocation].second->is_visited_)
             {
-              thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ +
+              thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ +
                                       thisOligo->IUPAC_name_;
-              thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ +
+              thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ +
                                       thisOligo->author_IUPAC_name_;
             }
             thisMono->is_visited_ = true;
@@ -2693,7 +2693,7 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
                 gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId());
               }
 
-              linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+              linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->linkage_type_);
               // equalBranches.push_back(thisMono->mono_neighbors_[i]);
             }
             else if((branchMaxLengths[i] == equalBranchLength)&& (thisMono->mono_neighbors_[i].second->is_visited_))
@@ -2719,23 +2719,23 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
           {
             if(i < linkageStringVector.size() - 1)
             {
-              thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+              thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ + "]" +
                                         thisOligo->IUPAC_name_;
-              thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+              thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ + "]" +
                                               thisOligo->author_IUPAC_name_;
             }
             else
             {
               if(local_debug > 0)
               {
-                gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_);
+                gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_);
               }
 
               thisOligo->IUPAC_name_ = /*thisMono->mono_neighbors_[highestIndexLocation].second->sugar_name_.monosaccharide_short_name_ +*/
-                                       thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
+                                       thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ +
                                        thisOligo->IUPAC_name_;
               thisOligo->author_IUPAC_name_ = /*thisMono->mono_neighbors_[highestIndexLocation].second->sugar_name_.monosaccharide_short_name_ +*/
-                                       thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
+                                       thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ +
                                        thisOligo->author_IUPAC_name_;
             }
             thisMono->is_visited_ = true;
@@ -2769,9 +2769,9 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
       }
       if(!thisMonoNeighbor->is_visited_)
       {
-        thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[neighborNum].first->inverse_linkage_type_ +
+        thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[neighborNum].first->linkage_type_ +
                                 thisMonoName + thisOligo->IUPAC_name_;
-        thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[neighborNum].first->inverse_linkage_type_ +
+        thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[neighborNum].first->linkage_type_ +
                                 thisMonoAuthorName + thisOligo->author_IUPAC_name_;
         thisMono->is_visited_ = true;
         thisOligo->mono_nodes_.push_back(thisMonoNeighbor);
@@ -2837,23 +2837,23 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
         {
           if((i < thisMono->mono_neighbors_.size() - 1) && (countedBackwards))
           {
-            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ + "]" +
+            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ + "]" +
                                     thisOligo->IUPAC_name_;
-            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ + "]" +
+            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ + "]" +
                                             thisOligo->author_IUPAC_name_;
           }
           else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
           {
-            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ + "]" +
+            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ + "]" +
                                     thisOligo->IUPAC_name_;
-            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ + "]" +
+            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ + "]" +
                                      thisOligo->author_IUPAC_name_;
           }
           else//last branch doesnt get brackets
           {
-            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ +
+            thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ +
                                     thisOligo->IUPAC_name_;
-            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ +
+            thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ +
                                     thisOligo->author_IUPAC_name_;
           }
           thisMono->is_visited_ = true;
@@ -2903,7 +2903,7 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
       std::vector<std::string> linkageStringVector;
       for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
       {
-        linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+        linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->linkage_type_);
       }
       std::vector<bool> isNeighborNamed(thisMono->mono_neighbors_.size(), false);
       int shortestBranchLocation = std::distance(branchMaxLengths.begin(), std::min_element(branchMaxLengths.begin(), branchMaxLengths.end()));
@@ -2929,23 +2929,23 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
           {
             if((i < thisMono->mono_neighbors_.size() - 1) && (countedBackwards))
             {
-              thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ + "]" +
+              thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ + "]" +
                                        thisOligo->IUPAC_name_;
-              thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ + "]" +
+              thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ + "]" +
                                        thisOligo->author_IUPAC_name_;
             }
             else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
             {
-              thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ + "]" +
+              thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ + "]" +
                                       thisOligo->IUPAC_name_;
-              thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ + "]" +
+              thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ + "]" +
                                       thisOligo->author_IUPAC_name_;
             }
             else
             {
-              thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ +
+              thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ +
                                       thisOligo->IUPAC_name_;
-              thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->inverse_linkage_type_ +
+              thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[shortestBranchLocation].first->linkage_type_ +
                                       thisOligo->author_IUPAC_name_;
             }
             thisMono->is_visited_ = true;
@@ -3017,9 +3017,9 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
             {
               if(thisMono->is_root_ && i < thisMono->mono_neighbors_.size() - 1)
               {
-                thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+                thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ + "]" +
                                           thisOligo->IUPAC_name_;
-                thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+                thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ + "]" +
                                                 thisOligo->author_IUPAC_name_;
               }
               else if((i < thisMono->mono_neighbors_.size() - 1) && (countedBackwards))
@@ -3028,9 +3028,9 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
                 {
                   gmml::log(__LINE__, __FILE__,  gmml::INF, "Counted Backwards");
                 }
-                thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+                thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ + "]" +
                                           thisOligo->IUPAC_name_;
-                thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+                thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ + "]" +
                                                 thisOligo->author_IUPAC_name_;
               }
               else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
@@ -3039,16 +3039,16 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
                 {
                   gmml::log(__LINE__, __FILE__,  gmml::INF, "Didn't count Backwards");
                 }
-                thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+                thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ + "]" +
                                          thisOligo->IUPAC_name_;
-                thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+                thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ + "]" +
                                          thisOligo->author_IUPAC_name_;
               }
               else
               {
-                thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
+                thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ +
                                          thisOligo->IUPAC_name_;
-                thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
+                thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ +
                                          thisOligo->author_IUPAC_name_;
               }
               if(local_debug > 0)
@@ -3096,7 +3096,7 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
       //     if((branchMaxLengths[i] == equalBranchLength) && (!thisMono->mono_neighbors_[i].second->is_visited_))
       //     {
       //       // gmml::log(__LINE__, __FILE__,  gmml::INF, thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId());
-      //       linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->inverse_linkage_type_);
+      //       linkageStringVector.push_back(thisMono->mono_neighbors_[i].first->linkage_type_);
       //     }
       //     else if((branchMaxLengths[i] == equalBranchLength)&& (thisMono->mono_neighbors_[i].second->is_visited_))
       //     {
@@ -3123,24 +3123,24 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
       //     if((i < thisMono->mono_neighbors_.size() - 1) && (countedBackwards))
       //     {
       //       // gmml::log(__LINE__, __FILE__,  gmml::INF, "Counted Backwards");
-      //       thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+      //       thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ + "]" +
       //                                 thisOligo->IUPAC_name_;
-      //       thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+      //       thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ + "]" +
       //                                       thisOligo->author_IUPAC_name_;
       //     }
       //     else if((i < thisMono->mono_neighbors_.size() - 2) && (!countedBackwards))
       //     {
       //       // gmml::log(__LINE__, __FILE__,  gmml::INF, "Didn't count Backwards");
-      //       thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+      //       thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ + "]" +
       //                                thisOligo->IUPAC_name_;
-      //       thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ + "]" +
+      //       thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ + "]" +
       //                                thisOligo->author_IUPAC_name_;
       //     }
       //     else
       //     {
-      //       thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
+      //       thisOligo->IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ +
       //                                thisOligo->IUPAC_name_;
-      //       thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->inverse_linkage_type_ +
+      //       thisOligo->author_IUPAC_name_ = thisMono->mono_neighbors_[highestIndexLocation].first->linkage_type_ +
       //                                thisOligo->author_IUPAC_name_;
       //     }
       //     // gmml::log(__LINE__, __FILE__,  gmml::INF, thisOligo->IUPAC_name_);
