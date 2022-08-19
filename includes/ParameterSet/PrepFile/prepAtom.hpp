@@ -28,6 +28,8 @@ public:
 	//////////////////////////////////////////////////////////
 	//                         FUNCTIONS                    //
 	//////////////////////////////////////////////////////////
+	void Determine3dCoordinate();
+	void FindDihedralAtoms(std::vector<PrepAtom*>& foundAtoms, int currentDepth = 0, const int& targetDepth = 4);
 	inline void visit() {++visitCount_;}
 	//////////////////////////////////////////////////////////
 	//                     DISPLAY FUNCTIONS                //

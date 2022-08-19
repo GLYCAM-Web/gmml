@@ -184,6 +184,55 @@ void PrepAtom::SetCharge(double charge){
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////
+void PrepAtom::FindDihedralAtoms(std::vector<PrepAtom*>& foundAtoms, int currentDepth, const int& targetDepth)
+{
+
+
+//	 ToDo PrepAtom::FindDihedralAtoms is the function that exposed the weakness in the design. I can't use Node class functions here, I get back
+//	 the wrong type ie:
+//	 error: invalid conversion from ‘__gnu_cxx::__alloc_traits<std::allocator<glygraph::Node<cds::cdsAtom>*>, glygraph::Node<cds::cdsAtom>*>::value_type’ {aka ‘glygraph::Node<cds::cdsAtom>*’} to ‘prep::PrepAtom*’
+//	 There are two issues. getParents should return:
+//	std::vector<T*> Node<T>::getParents() and not std::vector<Node<T> *> Node<T>::getParents()
+//	 The other issue is that prepAtom inherits from glygraph::Node<cds::cdsAtom>, but it should instead be a node ie.
+//	 PrepAtom : public glygraph::Node<prepAtom>, which is the CRTP we are using everywhere. It can get atom attributes
+//	 the same as we give Residue attributes ie. PrepAtom : public glygraph::Node<prepAtom>, public Abstract::Atom
+//	 I can convert cds::Atom into Abstrac::Atom and inherit it in pdbAtom and prepAtom.
+//	 Another option is to have cds::Atom be a template like cds::Residue and higher classes are, but I can't conceptualize it
+//	 properly. cdsResidue contains atoms whose type is templated. So it cna have prepAtoms or pdbAtoms or whatever when
+//	 it becomes a prepResidue like here: class PrepResidue : public cds::cdsResidue<PrepAtom>
+//     but I don't get what I should have cdsAtom be. Coordinate is concrete so there's nothing to template. I what I need is
+//	 for it to be Abstract::Atom...
+
+
+
+
+	//PrepAtom* firstParent = foundAtoms.back()->getParents().front(); // Go up the first one only
+	//std::cout << firstParent->getName() << std::endl;
+	//std::cout << firstParent->GetType() << std::endl;
+//	foundAtoms.push_back(firstParent);
+//	if(currentDepth == targetDepth)
+//	{
+//		return;
+//	}
+//	this->FindDihedralAtoms(foundAtoms, ++currentDepth, targetDepth);
+//	return;
+}
+
+
+void PrepAtom::Determine3dCoordinate()
+{
+	std::cout << "Determining 3d Coordinates!\n";
+	std::vector<PrepAtom*> foundAtoms;
+	foundAtoms.push_back(this);
+	this->FindDihedralAtoms(foundAtoms);
+	std::cout << "Found these atoms:\n";
+	for(auto &dihedralAtom : foundAtoms)
+	{
+		std::cout << dihedralAtom->getName() << std::endl;
+	}
+	return;
+}
+
 prep::TopologicalType PrepAtom::ExtractAtomTopologicalType(std::istream &ss)
 {
 	std::string s;
