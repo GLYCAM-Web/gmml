@@ -55,6 +55,19 @@ const T* findElementWithName(const std::vector<const T*>& inputVector, const std
 }
 
 template <class T>
+T* findElementWithName(const std::vector<T*>& inputVector, const std::string& queryName)
+{
+	for (auto & element : inputVector)
+	{
+		if ( element->getName() == queryName )
+		{
+			return element;
+		}
+	}
+	return nullptr;
+}
+
+template <class T>
 const T* findElementWithNumber(const std::vector<const T*>& inputVector, const int& queryNumber)
 {
 	for (const auto & element : inputVector)

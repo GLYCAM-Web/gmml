@@ -26,7 +26,6 @@ public:
     Coordinate* getCoordinate();
     const Coordinate* getCoordinate() const;
     inline const double& getCharge() const { return charge_;};
-
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
