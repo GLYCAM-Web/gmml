@@ -9,6 +9,7 @@
 
 namespace cds
 {
+// Helper struct for next function.
 // Haven't yet figured out why this needs to be a struct for std::thread.
 template <typename RandomAccessIterator, typename atomT> // atom1 passed in to give a type to the compiler
 struct bondAtomsByDistanceThread
