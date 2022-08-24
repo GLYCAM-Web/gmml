@@ -101,22 +101,29 @@ PdbFile::PdbFile()
 
 PdbFile::PdbFile(const std::string &pdb_file)
 {
+    int local_debug = -1;
     this->Initialize();
     path_ = pdb_file;
     std::ifstream in_file;
     if(std::ifstream(pdb_file.c_str()))
     {
-        gmml::log(__LINE__, __FILE__,  gmml::INF, "Opening PDB file ...");
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__,  gmml::INF, "Opening PDB file ...");
+        }
         // std::cout << "Opening PDB file ..." << std::endl;
         in_file.open(pdb_file.c_str());
     }
     else
     {
-        gmml::log(__LINE__, __FILE__,  gmml::ERR, "PDB file not found");
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__,  gmml::ERR, "PDB file not found");
+        }
         throw PdbFileProcessingException(__LINE__, "PDB file not found");
     }
 
-    // Oliver 2020-Sep-30 Dave commented out the below in 2019, but 
+    // Oliver 2020-Sep-30 Dave commented out the below in 2019, but
     // std::string line = "";
     // std::string temp = "";
     // std::stringstream ss;
@@ -159,7 +166,10 @@ PdbFile::PdbFile(const std::string &pdb_file)
     if(header_ != NULL)
     {
       std::string PDBname = header_->GetIdentifierCode();
-      gmml::log(__LINE__, __FILE__,  gmml::INF, PDBname);
+      if(local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, PDBname);
+      }
     }
 
     in_file.close();            /// Close the pdb files
@@ -4936,11 +4946,15 @@ bool PdbFile::ParseMasterCard(std::ifstream& stream, std::string& line)
 
 bool PdbFile::ParseEndCard(std::ifstream& stream, std::string& line)
 {
+    int local_debug = -1;
     std::stringstream stream_block;
     stream_block << line << std::endl;
     if(!getline(stream, line))
     {
+      if(local_debug > 0)
+      {
         gmml::log(__LINE__, __FILE__,  gmml::INF, "End of file" );
+      }
         // std::cout << "End of file" << std::endl;
         return true;
     }
@@ -7847,7 +7861,7 @@ void PdbFile::ResolveConnectivityCards(std::ostream& stream)
             else
                 stream << std::left << std::setw(49) << " "
                        << std::endl;
-	    
+
 	    //stream << std::endl;
         }
         else

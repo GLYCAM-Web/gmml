@@ -26,7 +26,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
       query << "( COUNT( DISTINCT *) as ?count) \n";
       query << Ontology::WHERE_CLAUSE << Ontology::SELECT_CLAUSE;;
     }
-    query << " DISTINCT ?pdb ?oligo ?oligo_sequence \n";
+    query << " DISTINCT ?pdb (STRAFTER(str(?oligo), \"#\") as ?oligo) ?oligo_sequence \n";
     if(isComment == 1)
     {
       query << "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments) ";

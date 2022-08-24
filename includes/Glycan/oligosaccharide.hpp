@@ -44,7 +44,7 @@ namespace Glycan
 
     //FUNCTIONS
     /*! \fn
-              * A function to print out the oligosacchride name and the linkages between its monosacchrides
+              * A function to print out the oligosacchride name and the linkages between its monosaccharides
               * Print out the information in a defined structure
               * @param out An output stream, the print result will be written in the given output stream
               */
@@ -87,6 +87,7 @@ namespace Glycan
     std::string CheckOMETerminal(MolecularModeling::Atom* target, std::vector<MolecularModeling::Atom*> & terminal_atoms);
     std::string CheckROHTerminal(MolecularModeling::Atom* target, std::vector<MolecularModeling::Atom*> & terminal_atoms);
     std::string CheckTBTTerminal(MolecularModeling::Atom* target, std::vector<MolecularModeling::Atom*> & terminal_atoms);
+    void AddNote(Glycan::Note *note);
   };
 }
 
