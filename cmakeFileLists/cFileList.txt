@@ -1,5 +1,5 @@
+./src/Abstract/absAtom.cpp
 ./src/Abstract/absResidue.cpp
-./src/CentralDataStructure/cdsAtom.cpp
 ./src/CentralDataStructure/cdsCoordinate.cpp
 ./src/CodeUtils/codetests.cc
 ./src/CodeUtils/directories.cpp
