@@ -4,9 +4,6 @@
 #include <utility>
 #include <map>
 
-#include "includes/CentralDataStructure/cdsAtom.hpp"
-
-
 namespace atomicBonds
 {
 const double maxCutOff = 1.65;
@@ -28,9 +25,28 @@ const std::map<std::string, std::pair<double, double> > bondLengthMap =
 };
 // FUNCTIONS
 std::pair<double,double> getBondLengthByAtomType(const std::string& atom1Element, const std::string& atom2Element);
+
 double getMaxBondLengthByAtomType(const std::string &atom1Element, const std::string &atom2Element);
-bool bondAtomsIfClose(cds::cdsAtom* atom1, cds::cdsAtom* atom2);
+
+template<class atomT>
+inline bool bondAtomsIfClose(atomT* atom1, atomT* atom2)
+{
+	//std::mutex mtx;           // mutex for critical section
+    double maxLength = atomicBonds::getMaxBondLengthByAtomType(atom1->getElement(), atom2->getElement());
+    if (atom1->getCoordinate()->withinDistance(atom2->getCoordinate(), maxLength))
+    {
+    	// std::lock_guard<std::mutex> guard(mtx); // pre C++17 version
+    	//std::lock_guard guard(mtx);//RAII, the mutex will be unlocked upon guard destruction. Exception safe.
+    	atom1->addBond(atom2);
+    	//std::cout << "Bonded " << atom1->getName() << "_" << atom1->getIndex() << " to " << atom2->getName() << "_" << atom2->getIndex() << std::endl;
+        //std::stringstream ss;
+        //std::cout << "Bonded " << atom1->getName() << "_" << atom1->getIndex() << " to " << atom2->getName() << "_" << atom2->getIndex() << "\n";
+        //gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
+    }
+    return false;
 }
+
+} // namespace
 
 
 
