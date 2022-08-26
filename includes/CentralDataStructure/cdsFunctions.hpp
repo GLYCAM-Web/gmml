@@ -3,7 +3,9 @@
 
 #include "includes/MolecularMetadata/atomicBonds.hpp"
 #include "includes/CodeUtils/threads.hpp"
+#include "includes/common.hpp" //dNotSet
 
+#include <iomanip> // setprecision
 #include <vector>
 #include <thread>
 
