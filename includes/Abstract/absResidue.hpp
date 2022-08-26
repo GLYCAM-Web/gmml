@@ -25,7 +25,7 @@ namespace Abstract
         //////////////////////////////////////////////////////////
         //                       ATTRRIBUTES                    //
         //////////////////////////////////////////////////////////
-        absResidue::Type type_;  // enum Type. See enum above.   
+        absResidue::Type type_ = Undefined;  // enum Type. See enum above.
 	};
 }
 #endif
