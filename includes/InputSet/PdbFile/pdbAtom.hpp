@@ -12,7 +12,7 @@ using GeometryTopology::Coordinate;
 
 namespace pdb
 {
-class pdbAtom : public cds::cdsAtom
+class pdbAtom : public cds::cdsAtom<pdbAtom>
 {
 public:
     //////////////////////////////////////////////////////////

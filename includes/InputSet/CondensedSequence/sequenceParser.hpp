@@ -4,11 +4,11 @@
 #include <string>
 #include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
 #include "includes/CentralDataStructure/cdsMolecule.hpp"
-#include "includes/CentralDataStructure/cdsAtom.hpp"
+#include "includes/CentralDataStructure/atom.hpp"
 
 namespace CondensedSequence
 {
-    class SequenceParser : public cds::cdsMolecule<ParsedResidue, cds::cdsAtom>
+    class SequenceParser : public cds::cdsMolecule<ParsedResidue, cds::Atom>
     {
     public:
         //////////////////////////////////////////////////////////

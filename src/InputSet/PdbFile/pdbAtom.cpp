@@ -9,9 +9,9 @@ using pdb::pdbAtom;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 pdbAtom::pdbAtom(const std::string& name, const Coordinate& coord)
-: cdsAtom(name, coord)
 {
-
+	this->setCoordinate(coord);
+	this->setName(name);
 }
 pdbAtom::pdbAtom(const std::string &line)
 {

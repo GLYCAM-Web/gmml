@@ -18,7 +18,7 @@ enum TopologicalType
 	kTopType4,
 	kTopTypeM
 };
-class PrepAtom : public cds::cdsAtom
+class PrepAtom : public cds::cdsAtom<PrepAtom>
 {
 public:
 	//////////////////////////////////////////////////////////
