@@ -349,8 +349,9 @@ void PrepResidue::AddLoop(std::pair<std::string, std::string> loop)
 // Read about Amber Prep format. kTopTypeE is an "E" atom. The type determines connectivity and the order the atoms are
 // listed matters for what gets connected to what. This function goes through each atom and
 // bonds it to the correct atom according to the prep file tree structure. Loops are explicitly defined in their own section.
-// If I then travel up the first (because loops you can have two) incoming edge of each atom I'll be traversing
-// the atoms that define the bond, angle and dihedral
+// In Determine3dStructre if I travel up the first (because loops you can have two) incoming edge of each atom I'll be traversing
+// the atoms that define the bond, angle and dihedral so I can get a 3D coordinate for each atom in order, starting with the DUMM atoms
+// for the first real atom.
 void PrepResidue::SetConnectivities()
 {
 	//std::cout << "Attempting to set connectivities in prepResidue: " << this->getName() << std::endl;
@@ -384,13 +385,9 @@ void PrepResidue::SetConnectivities()
 	}
 }
 
-// Travel up the first incoming edge of each atom to traverse the atoms that define bond, angle and dihedral.
-// Each atoms position is defined by these connecting atoms
-// I set the first dummy atom position to 0,0,0.
 void PrepResidue::Generate3dStructure()
-{
-	//set up
-	// can recursively look up incoming connections to find bond, angle and dihedral atoms. Just skip dummies.
+{   // Travel up the first incoming edge of each atom to traverse the atoms that define bond, angle and dihedral.
+	// Each atoms position is defined by these connecting atoms. I set the first dummy atom position to 0,0,0.
 	if( (this->getAtoms().size() > 4) && (this->getAtoms().at(2)->getName() == "DUMM") )
 	{
 		// Set dummy atoms
@@ -400,20 +397,19 @@ void PrepResidue::Generate3dStructure()
 		// Use dummies as start for creating the other atoms.
 		std::vector<PrepAtom*>::iterator it1 = this->getAtoms().begin();
 		std::advance(it1, 3);
-		std::cout << "it1 is now pointing at atom: " << (*it1)->getName() << "\n";
+//		std::cout << "it1 is now pointing at atom: " << (*it1)->getName() << "\n";
 		while (it1 != this->getAtoms().end())
 		{
 			(*it1)->Determine3dCoordinate();
 			++it1;
 		}
 	}
-	else
+	else // If we ever encounter the Kxyz type of prep file, write the code to handle it here.
 	{
 		std::string message = "Did not find dummy atoms in prep entry for " + this->getName();
 		gmml::log(__LINE__,__FILE__,gmml::ERR, message);
 		throw std::runtime_error(message);
 	}
-
 }
 
 /// Return residue name from a stream line which is the first column of the 3rd line in each residue section
@@ -557,7 +553,7 @@ double PrepResidue::CalculatePrepResidueCharge()
 	double residue_charge = 0.0;
 	for(auto &atom : this->getAtoms())
 	{
-		residue_charge += atom->GetCharge();
+		residue_charge += atom->getCharge();
 	}
 	return residue_charge;
 }
