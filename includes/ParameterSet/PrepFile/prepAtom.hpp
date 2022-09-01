@@ -24,12 +24,12 @@ public:
 	//////////////////////////////////////////////////////////
 	//                       Constructor                    //
 	//////////////////////////////////////////////////////////
-	PrepAtom(std::string& line);
+	PrepAtom(const std::string& line);
 	//////////////////////////////////////////////////////////
 	//                         FUNCTIONS                    //
 	//////////////////////////////////////////////////////////
 	void Determine3dCoordinate();
-	void FindDihedralAtoms(std::vector<PrepAtom*>& foundAtoms, int currentDepth = 0, const int& targetDepth = 4);
+	void FindDihedralAtoms(std::vector<PrepAtom*>& foundAtoms, int currentDepth = 0, const int& targetDepth = 3);
 	inline void visit() {++visitCount_;}
 	//////////////////////////////////////////////////////////
 	//                     DISPLAY FUNCTIONS                //

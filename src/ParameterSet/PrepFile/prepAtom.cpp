@@ -4,36 +4,31 @@
 
 #include "includes/common.hpp"
 #include "includes/ParameterSet/PrepFile/prepAtom.hpp"
+#include "includes/GeometryTopology/geometrytopology.hpp" //get_cartesian_point_from_internal_coords()
+#include "includes/CodeUtils/strings.hpp"
 
 using prep::PrepAtom;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-PrepAtom::PrepAtom(std::string& line)
+PrepAtom::PrepAtom(const std::string& line)
 {
-	std::string temp;
 	std::stringstream ss(line);
-	ss >> index_
-	>> temp
-	>> type_;
-	this->setName(temp);
+	this->setIndex(codeUtils::extractFromStream(ss, int()));
+	this->setName(codeUtils::extractFromStream(ss, std::string()));
+	this->SetType(codeUtils::extractFromStream(ss, std::string()));
 	this->SetTopologicalType(this->ExtractAtomTopologicalType(ss));
-	ss >> bond_index_
-	>> angle_index_
-	>> dihedral_index_
-	>> bond_length_
-	>> angle_
-	>> dihedral_
-	>> charge_;
+	this->SetBondIndex(codeUtils::extractFromStream(ss, int()));
+	this->SetAngleIndex(codeUtils::extractFromStream(ss, int()));
+	this->SetDihedralIndex(codeUtils::extractFromStream(ss, int()));
+	this->SetBondLength(codeUtils::extractFromStream(ss, double()));
+	this->SetAngle(codeUtils::extractFromStream(ss, double()));
+	this->SetDihedral(codeUtils::extractFromStream(ss, double()));
+	this->setCharge(codeUtils::extractFromStream(ss, double()));
 }
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
-int PrepAtom::GetIndex() const
-{
-	return index_;
-}
-
 std::string PrepAtom::GetType() const
 {
 	return type_;
@@ -74,30 +69,6 @@ double PrepAtom::GetDihedral() const
 	return dihedral_;
 }
 
-double PrepAtom::GetCharge() const
-{
-	return charge_;
-}
-//std::string PrepAtom::GetStringFormatOfTopologicalType(TopologicalType topological_type)
-//{
-//    switch(topological_type)
-//    {
-//        case kTopTypeE:
-//            return "E";
-//        case kTopTypeS:
-//            return "S";
-//        case kTopTypeB:
-//            return "B";
-//        case kTopType3:
-//            return "3";
-//        case kTopType4:
-//            return "4";
-//        case kTopTypeM:
-//            return "M";
-//        default:
-//            return "E";
-//    }
-//}
 std::string PrepAtom::GetStringFormatOfTopologicalType() const
 {
 	switch(this->GetTopologicalType())
@@ -139,10 +110,7 @@ prep::TopologicalType PrepAtom::GetTopologicalTypeFromString(std::string topolog
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
-void PrepAtom::SetIndex(int index)
-{
-	index_ = index;
-}
+
 
 void PrepAtom::SetType(const std::string type)
 {
@@ -177,59 +145,44 @@ void PrepAtom::SetAngle(double angle){
 void PrepAtom::SetDihedral(double dihedral){
 	dihedral_ = dihedral;
 }
-
-void PrepAtom::SetCharge(double charge){
-	charge_ = charge;
-}
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////
 void PrepAtom::FindDihedralAtoms(std::vector<PrepAtom*>& foundAtoms, int currentDepth, const int& targetDepth)
 {
-
-
-//	 ToDo PrepAtom::FindDihedralAtoms is the function that exposed the weakness in the design. I can't use Node class functions here, I get back
-//	 the wrong type ie:
-//	 error: invalid conversion from ‘__gnu_cxx::__alloc_traits<std::allocator<glygraph::Node<cds::cdsAtom>*>, glygraph::Node<cds::cdsAtom>*>::value_type’ {aka ‘glygraph::Node<cds::cdsAtom>*’} to ‘prep::PrepAtom*’
-//	 There are two issues. getParents should return:
-//	std::vector<T*> Node<T>::getParents() and not std::vector<Node<T> *> Node<T>::getParents()
-//	 The other issue is that prepAtom inherits from glygraph::Node<cds::cdsAtom>, but it should instead be a node ie.
-//	 PrepAtom : public glygraph::Node<prepAtom>, which is the CRTP we are using everywhere. It can get atom attributes
-//	 the same as we give Residue attributes ie. PrepAtom : public glygraph::Node<prepAtom>, public Abstract::Atom
-//	 I can convert cds::Atom into Abstrac::Atom and inherit it in pdbAtom and prepAtom.
-//	 Another option is to have cds::Atom be a template like cds::Residue and higher classes are, but I can't conceptualize it
-//	 properly. cdsResidue contains atoms whose type is templated. So it cna have prepAtoms or pdbAtoms or whatever when
-//	 it becomes a prepResidue like here: class PrepResidue : public cds::cdsResidue<PrepAtom>
-//     but I don't get what I should have cdsAtom be. Coordinate is concrete so there's nothing to template. I what I need is
-//	 for it to be Abstract::Atom...
-
-
-
-
-	//PrepAtom* firstParent = foundAtoms.back()->getParents().front(); // Go up the first one only
-	//std::cout << firstParent->getName() << std::endl;
-	//std::cout << firstParent->GetType() << std::endl;
-//	foundAtoms.push_back(firstParent);
-//	if(currentDepth == targetDepth)
-//	{
-//		return;
-//	}
-//	this->FindDihedralAtoms(foundAtoms, ++currentDepth, targetDepth);
-//	return;
+	//std::cout << "Depth is " << currentDepth << " with target " << targetDepth << "\n";
+	if(currentDepth == targetDepth)
+	{
+		return;
+	}
+	PrepAtom* parent = foundAtoms.back()->getParents().front(); // Go up the first parent only. Loops may create another, but they should be ignored.
+	foundAtoms.push_back(parent);
+	this->FindDihedralAtoms(foundAtoms, ++currentDepth, targetDepth);
+	return;
 }
-
 
 void PrepAtom::Determine3dCoordinate()
 {
-	std::cout << "Determining 3d Coordinates!\n";
+	//std::cout << "Determining 3d Coordinates for " << this->getName() << "\n";
 	std::vector<PrepAtom*> foundAtoms;
 	foundAtoms.push_back(this);
 	this->FindDihedralAtoms(foundAtoms);
-	std::cout << "Found these atoms:\n";
-	for(auto &dihedralAtom : foundAtoms)
+	if (foundAtoms.at(3)->getCoordinate() == nullptr)
 	{
-		std::cout << dihedralAtom->getName() << std::endl;
+		std::string message = "This atom has no coordinate: " + foundAtoms.at(3)->getName();
+		gmml::log(__LINE__,__FILE__,gmml::ERR, message);
+		throw std::runtime_error(message);
 	}
+	this->setCoordinate(
+			GeometryTopology::get_cartesian_point_from_internal_coords(
+			foundAtoms.at(3)->getCoordinate(),
+			foundAtoms.at(2)->getCoordinate(),
+			foundAtoms.at(1)->getCoordinate(),
+			this->GetAngle(),
+			this->GetDihedral(),
+			this->GetBondLength()
+			)
+	);
 	return;
 }
 
@@ -248,15 +201,22 @@ prep::TopologicalType PrepAtom::ExtractAtomTopologicalType(std::istream &ss)
 	else
 		return kTopType3;
 }
+
+//void PrepAtom::ExtractIndex(std::istream &ss)
+//{
+//	int index;
+//	ss >> index;
+//	this->setIndex(index);
+//}
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
 void PrepAtom::Print(std::ostream &out) const
 {
-	out << std::setw(3) << this->GetIndex()
+	out << std::setw(3) << this->getIndex()
         				<< std::setw(6) << this->getName()
-						<< std::setw(6) << type_;
-	if(topological_type_ == kTopTypeE)
+						<< std::setw(6) << this->GetType();
+	if(this->GetTopologicalType() == kTopTypeE)
 		out << std::setw(3) << "E";
 	else if(topological_type_ == kTopTypeS)
 		out << std::setw(3) << "S";
@@ -271,22 +231,22 @@ void PrepAtom::Print(std::ostream &out) const
 	else
 		out << std::setw(3) << "-";
 
-	out << std::setw(4) << bond_index_
-			<< std::setw(4) << angle_index_
-			<< std::setw(4) << dihedral_index_
-			<< std::setw(10) << bond_length_
-			<< std::setw(10) << angle_
-			<< std::setw(10) << dihedral_
-			<< std::setw(10) << charge_;
+	out << std::setw(4) << this->GetBondIndex()
+			<< std::setw(4) << this->GetAngleIndex()
+			<< std::setw(4) << this->GetDihedralIndex()
+			<< std::setw(10) << this->GetBondLength()
+			<< std::setw(10) << this->GetAngle()
+			<< std::setw(10) << this->GetDihedral()
+			<< std::setw(10) << this->getCharge();
 	//        << endl;
 }
 
 void PrepAtom::Write(std::ostream &stream) const
 {
-	stream << std::right << std::setw(2) << this->GetIndex() << " " << std::left << std::setw(4) << this->getName() << " " << std::left << std::setw(3) << this->GetType() << " " << std::setw(1) << this->GetStringFormatOfTopologicalType() << " " << std::right << std::setw(2) << this->GetBondIndex() << " " << std::right << std::setw(2) << this->GetAngleIndex() << " " << std::right << std::setw(2) << this->GetDihedralIndex() << " ";
+	stream << std::right << std::setw(2) << this->getIndex() << " " << std::left << std::setw(4) << this->getName() << " " << std::left << std::setw(3) << this->GetType() << " " << std::setw(1) << this->GetStringFormatOfTopologicalType() << " " << std::right << std::setw(2) << this->GetBondIndex() << " " << std::right << std::setw(2) << this->GetAngleIndex() << " " << std::right << std::setw(2) << this->GetDihedralIndex() << " ";
 	stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetBondLength() << " ";
 	stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetAngle() << " ";
 	stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetDihedral();
-	stream << "    " << std::right << std::setw(8) << std::fixed << std::setprecision(4) << this->GetCharge() << std::endl;
+	stream << "    " << std::right << std::setw(8) << std::fixed << std::setprecision(4) << this->getCharge() << std::endl;
 }
 
