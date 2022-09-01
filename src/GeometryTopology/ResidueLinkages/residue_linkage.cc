@@ -402,22 +402,47 @@ std::string Residue_linkage::Print()
 //////////////////////////////////////////////////////////
 void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_this_residue2, bool reverseAtomsThatMove)
 {
+    //set local debug flag
+    int local_debug = -1;
+
+
     this->SetResidues(from_this_residue1, to_this_residue2);
     this->SetIfReversedAtomsThatMove(reverseAtomsThatMove);
     this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
-//    std::cout << "Maybe Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
+    if(local_debug > 0)
+    {
+        // std::cout << "Maybe Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Maybe Finding connection between " + from_this_residue1->GetId() + " :: " + to_this_residue2->GetId());
+    }
     if(this->CheckIfViableLinkage())
     {
 //        std::cout << "Finding connection between " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
 //        std::cout << "Connection atoms are from: " << from_this_connection_atom1_->GetId() << " to " << to_this_connection_atom2_->GetId() << std::endl;
+        if(local_debug > 0)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Finding connection between " + from_this_residue1->GetId() + " :: " + to_this_residue2->GetId());
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Connection atoms are from: " + from_this_connection_atom1_->GetId() + " to " + to_this_connection_atom2_->GetId());
+        }
         rotatable_dihedrals_ = this->FindRotatableDihedralsConnectingResidues(from_this_connection_atom1_, to_this_connection_atom2_);
 //        std::cout << "Finding metadata for " << from_this_residue1->GetId() << " :: " << to_this_residue2->GetId() << std::endl;
+        if(local_debug > 0)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Finding metadata for " + from_this_residue1->GetId() + " :: " + to_this_residue2->GetId());
+        }
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata = this->FindMetadata(from_this_connection_atom1_, to_this_connection_atom2_);
-//        std::cout << "Metadata found:\n";
-//        for (auto &dihedralAngleData : metadata)
-//        {
-//            std::cout << dihedralAngleData.print() << std::endl;
-//        }
+      //  std::cout << "Metadata found:\n";
+      //  for (auto &dihedralAngleData : metadata)
+      //  {
+      //      std::cout << dihedralAngleData.print() << std::endl;
+      //  }
+        if(local_debug > 0)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Metadata found:");
+            for (auto &dihedralAngleData : metadata)
+            {
+                gmml::log(__LINE__, __FILE__, gmml::INF, dihedralAngleData.print());
+            }
+        }
         this->AddMetadataToRotatableDihedrals(metadata);
     }
     this->SetIndex(this->GenerateIndex());

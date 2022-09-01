@@ -1,4 +1,4 @@
-#include <pthread.h> // For the mutex. 
+#include <pthread.h> // For the mutex.
 #include <math.h>
 #include <fstream>
 #include <stdio.h>
@@ -655,9 +655,12 @@ void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, in
 ///First and second version
 void Assembly::BuildStructureByDistance(int number_of_threads, double cutoff, int model_index)
 {
-  int local_debug = 0;
+  int local_debug = -1;
     // std::cout << "Building structure by distance ..." << std::endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
+    if (local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by distance ...");
+    }
     model_index_ = model_index;
 
     pthread_t threads[number_of_threads];

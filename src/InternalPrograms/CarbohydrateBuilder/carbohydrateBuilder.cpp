@@ -156,9 +156,41 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequence::SingleR
     return;
 }
 
-int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
+//unsigned long long int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
+//{
+//	unsigned long long int numberOfShapes = 1;
+//    try
+//    {
+//        for(auto &linkage : (*this->GetGlycosidicLinkages()))
+//        {
+//            numberOfShapes = (numberOfShapes * linkage.GetNumberOfShapes(likelyShapesOnly));
+//        }
+//    }   // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
+//    catch(const std::string &exceptionMessage)
+//    {
+//        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught this exception message: " + exceptionMessage);
+//        this->SetStatus("ERROR", exceptionMessage);
+//    }
+//    catch (const std::runtime_error &error)
+//    {
+//        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+//        this->SetStatus("ERROR", error.what());
+//    }
+//    catch (...)
+//    {
+//        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught a throw that was not anticipated. Curious. Death cometh?");
+//        this->SetStatus("ERROR", "carbohydrateBuilder caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.");
+//    }
+//    return numberOfShapes;
+//}
+
+std::string carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
 {
-    int numberOfShapes = 1;
+	if ( (*this->GetGlycosidicLinkages()).size() > 32 )
+	{
+		return ">2^32";
+	}
+	unsigned long long int numberOfShapes = 1;
     try
     {
         for(auto &linkage : (*this->GetGlycosidicLinkages()))
@@ -181,8 +213,9 @@ int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
         gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught a throw that was not anticipated. Curious. Death cometh?");
         this->SetStatus("ERROR", "carbohydrateBuilder caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.");
     }
-    return numberOfShapes;
+    return std::to_string(numberOfShapes);
 }
+
 // Commenting out for as not being used, and will be confusing later. The front-end calls a differnt function that will build a single, specific rotamer.
  void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
  {

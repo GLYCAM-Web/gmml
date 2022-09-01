@@ -284,13 +284,13 @@ Assembly::TemplateAssembly* Assembly::BuildTemplateAssemblyFromPrepFile (std::ve
     //testing
 
     return template_assembly;
-    
+
 }
 
 std::map<int, std::pair<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, Residue*> >
 Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree& glycam06_residue_tree, TemplateAssembly* template_assembly)
 {
-    
+
     ResidueVector all_template_residues = template_assembly->GetResidues();
     ResidueVector newly_added_residues = ResidueVector();
     std::map<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*, CondensedSequenceSpace::CondensedSequenceGlycam06Residue*> condensed_sequence_child_parent_map =
@@ -330,12 +330,12 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
                     {
                         template_residue_id = gmml::BLANK_SPACE; // It's an actual question mark.
                     }
-                    // Oliver Jul2020 
+                    // Oliver Jul2020
                     // For the serial_number + 1, it's set to 0 above and used in the index_condensed_sequence_assembly_residue_map below... But I can't have a 0 residue number
                     // Going to have the default chain be "A".
-                    residue_id_stream << template_residue->GetName() << "_" << "A" << "_" << (residue_serial_number + 1) << "_" << gmml::BLANK_SPACE << "_" 
+                    residue_id_stream << template_residue->GetName() << "_" << "A" << "_" << (residue_serial_number + 1) << "_" << gmml::BLANK_SPACE << "_"
                     << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE;// << template_residue_id;
-                   
+
                     //std::string residue_id = template_residue->GetName() + "_" + serial_number_stream.str() + "_" + template_residue->GetId();
                     assembly_residue->SetId(residue_id_stream.str());
                     index_condensed_sequence_assembly_residue_map[residue_serial_number].first = condensed_sequence_residue;
@@ -364,7 +364,7 @@ Assembly::ConvertCondensedSequence2AssemblyResidues(CondensedSequenceSpace::Cond
                         GeometryTopology::Coordinate* copy_coordinate = new GeometryTopology::Coordinate(template_atom->GetCoordinates().at(0));
                         template_atom_copy->AddCoordinate(copy_coordinate);
                         std::stringstream atom_id_stream;
-                        //Oliver Jul2020: What is this mess? Why is there a " "? 
+                        //Oliver Jul2020: What is this mess? Why is there a " "?
                         //atom_id_stream << template_atom->GetName() << "_" << atom_serial_number << "_" << template_residue->GetName() << "_" << "A" << "_" << " " << "_" << "?_" << "?_" << " " << std::endl;
                         atom_id_stream << template_atom->GetName() << "_" << atom_serial_number << "_" << residue_id_stream.str();
                         template_atom_copy->SetId(atom_id_stream.str());
@@ -1444,15 +1444,15 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string condensed_sequence
 
     CondensedSequenceSpace::CondensedSequence sequence (condensed_sequence);
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues_temp = sequence.GetCondensedSequenceGlycam06ResidueTree();
-    //Here we are not really interested in the output reorganized sequence, but we are trying to rearrange the condensed 06 residue tree acccording to labeling order. 
+    //Here we are not really interested in the output reorganized sequence, but we are trying to rearrange the condensed 06 residue tree acccording to labeling order.
     //Harded to coded to reorder and label based on lowest index. In the future, give this funcction arguments to specify this option. But fow now, changing this function declaration I will have to
-    //change many other things. 
-    sequence.BuildLabeledCondensedSequence(CondensedSequenceSpace::CondensedSequence::Reordering_Approach::LOWEST_INDEX, 
+    //change many other things.
+    sequence.BuildLabeledCondensedSequence(CondensedSequenceSpace::CondensedSequence::Reordering_Approach::LOWEST_INDEX,
 		                           CondensedSequenceSpace::CondensedSequence::Reordering_Approach::LOWEST_INDEX, true);
 
     //Now the 06 residue tree should have the desired order.
     CondensedSequenceSpace::CondensedSequence::CondensedSequenceGlycam06ResidueTree glycam06_residues = sequence.GetCondensedSequenceGlycam06ResidueTree();
-    
+
     //    CondensedSequenceSpace::CondensedSequence::CondensedSequenceResidueTree res_tree = sequence.GetCondensedSequenceResidueTree();
     //    CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo info = sequence.GetCondensedSequenceRotamersAndGlycosidicAnglesInfo(res_tree);
 
@@ -1756,7 +1756,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
 }
 
 // Oliver Jul2020: This needs to go away now, there is metadata to set all this.
-void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly, CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo 
+void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly, CondensedSequenceSpace::CondensedSequence::CondensedSequenceRotamersAndGlycosidicAnglesInfo
                                                      rotamers_glycosidic_angles_info, std::multimap<int, std::pair<AtomVector*, std::string> >& index_dihedral_map)
 {
     std::vector<std::pair<AtomVector*, std::vector<double> > > all_dihedral_rotation_values = std::vector<std::pair<AtomVector*, std::vector<double> > >();
@@ -1848,7 +1848,7 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
         }
         rotamer_coordinate_sets.push_back(new_rotamer_coordinate_set);
     }
-    
+
     AtomVector all_atoms_of_assembly = working_assembly->GetAllAtomsOfAssembly();
     //Empty current atoms coordinates
     for (unsigned int i = 0; i < all_atoms_of_assembly.size(); i++){
@@ -1861,8 +1861,8 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
             all_atoms_of_assembly[j]->AddCoordinate(rotamer_set[j]);
         }
     }
-    
-    
+
+
 }
 
 /** ***************************************************************************
@@ -1872,19 +1872,28 @@ void Assembly::GenerateRotamersForCondensedSequence (Assembly* working_assembly,
 void Assembly::BuildAssemblyFromPdbFile(std::string pdb_file_path, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files,
                                         std::vector<std::string> other_lib_files, std::vector<std::string> prep_files, std::string parameter_file)
 {
+    int local_debug = -1;
     // std::cout << "Building assembly from pdb file ..." << std::endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
+    if(local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
+    }
     //    std::cout << "Reading PDB file into PdbFileSpace::PdbFile structure." << std::endl;
     PdbFileSpace::PdbFile* pdb_file=NULL;
+
     try
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Reading PDB file into PdbFileSpace::PdbFile structure ...");
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, "Reading PDB file into PdbFileSpace::PdbFile structure ...");
+        }
         pdb_file = new PdbFileSpace::PdbFile(pdb_file_path);
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {
          throw "Generating PdbFileSpace::PdbFile structure from " + pdb_file_path + " failed:\n" + ex.message_;
     }
+
     this->BuildAssemblyFromPdbFile(pdb_file, amino_lib_files, glycam_lib_files, other_lib_files, prep_files, parameter_file);
 }
 
@@ -1892,36 +1901,54 @@ void Assembly::BuildAssemblyFromAtomStream(std::stringstream& atomStream)
 {
 //    std::cout << "Building assembly from stringstream ..." << std::endl;
     //    std::cout << "Reading PDB file into PdbFileSpace::PdbFile structure." << std::endl;
+    int local_debug = -1;
+
     PdbFileSpace::PdbFile* pdb_file=NULL;
     try
     {
+      if(local_debug > 0)
+      {
         gmml::log(__LINE__, __FILE__, gmml::INF, "Reading stringstream into PdbFileSpace::PdbFile structure ...");
-        pdb_file = new PdbFileSpace::PdbFile(atomStream);
+      }
+      pdb_file = new PdbFileSpace::PdbFile(atomStream);
     }
     catch(PdbFileSpace::PdbFileProcessingException &ex)
     {
 //        std::cout << "Generating PdbFileSpace::PdbFile structure from stringstream failed." << std::endl;
-    }
+      if(local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Generating PdbFileSpace::PdbFile structure from stringstream failed.");
+      }
     std::vector<std::string> amino_lib_files;
     std::vector<std::string> glycam_lib_files;
     std::vector<std::string> other_lib_files;
     std::vector<std::string> prep_files;
     std::string parameter_file;
     this->BuildAssemblyFromPdbFile(pdb_file, amino_lib_files, glycam_lib_files, other_lib_files, prep_files, parameter_file);
+  }
 }
 
 void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::vector<std::string> amino_lib_files, std::vector<std::string> glycam_lib_files,
                                         std::vector<std::string> other_lib_files, std::vector<std::string> prep_files, std::string parameter_file)
 {
-    //    std::cout << "Building assembly from pdb file ..." << std::endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
+    int local_debug = -1;
+    if(local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdb file ...");
+    }
     try
     {
         this->ClearAssembly();
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Assembly cleared ...");
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, "Assembly cleared ...");
+        }
         // this->pdb_file_ = pdb_file;
         ParameterFileSpace::ParameterFile* parameter = NULL;
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Parameter File Created ...");
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__, gmml::INF, "Parameter File Created ...");
+        }
         ParameterFileSpace::ParameterFile::AtomTypeMap atom_type_map = ParameterFileSpace::ParameterFile::AtomTypeMap();
         if(parameter_file.compare("") != 0)
         {
@@ -1950,7 +1977,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
 
         std::vector<std::string> key_order = std::vector<std::string>();
         PdbFileSpace::PdbFile::PdbResidueAtomsMap residue_atoms_map = pdb_file->GetAllAtomsInOrder(key_order);
-        
+
         this->input_file_ = pdb_file;
         // std::stringstream out_stream;
         // this->input_file_->PrintOntology(out_stream);
@@ -1965,7 +1992,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
             PdbFileSpace::PdbFile::PdbAtomCardVector* atoms = residue_atoms_map[residue_key];
             Residue* residue = new Residue();
             residue->SetAssembly(this);
-            
+
 
             for(PdbFileSpace::PdbFile::PdbAtomCardVector::iterator it1 = atoms->begin(); it1 != atoms->end(); it1++)
             {
@@ -1990,7 +2017,7 @@ void Assembly::BuildAssemblyFromPdbFile(PdbFileSpace::PdbFile *pdb_file, std::ve
                 key = ss.str();
                 Atom* new_atom = new Atom();
                 residue->SetName(residue_name);
-                
+
                 std::string atom_name = atom->GetAtomName();
                 new_atom->SetName(atom_name);
                 float atom_b_factor = atom->GetAtomTempretureFactor();
@@ -2221,8 +2248,8 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile *pdbqt_file,
     gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from pdbqt file ...");
     //Source of metadata: http://autodock.scripps.edu/faqs-help/manual/autodock-4-2-user-guide/AutoDock4.2_UserGuide.pdf
     std::map<std::string, std::string> ad_type_element_symbol_map = {
-            {"C","C"}, {"A","C"}, {"HD","H"}, {"H","H"}, {"HS","H"}, {"N","N"}, {"NA","N"}, {"NS","N"}, {"NR", "N"}, {"OA","O"}, {"OS","O"}, {"F","F"}, {"Mg","Mg"}, {"MG","Mg"}, {"P","P"}, {"SA","S"}, 
-	    {"S","S"}, {"Cl","Cl"}, {"CL","Cl"}, {"CA","Ca"}, {"Ca","Ca"}, {"MN","Mn"}, {"Mn","Mn"}, {"FE","Fe"}, {"Fe","Fe"}, {"ZN","Zn"}, {"Zn","Zn"}, {"BR","Br"}, {"Br","Br"}, {"I","I"}, {"Z","Z"}, 
+            {"C","C"}, {"A","C"}, {"HD","H"}, {"H","H"}, {"HS","H"}, {"N","N"}, {"NA","N"}, {"NS","N"}, {"NR", "N"}, {"OA","O"}, {"OS","O"}, {"F","F"}, {"Mg","Mg"}, {"MG","Mg"}, {"P","P"}, {"SA","S"},
+	    {"S","S"}, {"Cl","Cl"}, {"CL","Cl"}, {"CA","Ca"}, {"Ca","Ca"}, {"MN","Mn"}, {"Mn","Mn"}, {"FE","Fe"}, {"Fe","Fe"}, {"ZN","Zn"}, {"Zn","Zn"}, {"BR","Br"}, {"Br","Br"}, {"I","I"}, {"Z","Z"},
 	    {"G","C"}, {"GA","C"}, {"J","C"}, {"Q","C"}
     };
     try
@@ -2530,7 +2557,7 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile *libra
 	    gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfoContainer AtomTypeMetaData;
             std::string element = AtomTypeMetaData.GetElementForAtomType(library_atom->GetType());
 	    assembly_atom->SetElementSymbol(element);
-	     
+
             if(parameter != NULL)
             {
                 if(atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
@@ -2582,7 +2609,7 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile *libra
 
             std::vector<MolecularModeling::AtomNode*> nodes(1, new_node);
             assembly_atom->SetNodes(nodes);
-	
+
 	}
         residues_.push_back(assembly_residue);
     }

@@ -561,7 +561,7 @@ public:
     void Grafting(MolecularModeling::Atom* parent_tail_atom, MolecularModeling::Atom* child_head_atom, double head_tail_bond_length);  //Added by Yao 08/20/2019.
     void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
     void RemoveHydrogenAtAttachedPosition(Residue* residue, int branch_index);
-    void RemoveAllHydrogenAtoms(); 
+    void RemoveAllHydrogenAtoms();
     void SetDerivativeAngle(Residue* residue, Residue* parent_residue, int branch_index);
     void AdjustCharge(Residue* residue, Residue* parent_residue, int branch_index);
     void SetAttachedResidueBond(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
@@ -1302,10 +1302,10 @@ public:
     void ExtractOntologyInfoByNameOfGlycan(std::string stereo_name, std::string stereo_condensed_name, std::string name, std::string condensed_name, std::string output_file_type = "csv");
     /*! \fn
             * A function in order to extract information from ontology based on the different parts of the sugar name
-            * @param isomer The isomer(D/L) part of the monosacchride name
-            * @param ring_type The ring type(p/f) part of the monosacchride name
+            * @param isomer The isomer(D/L) part of the monosaccharide name
+            * @param ring_type The ring type(p/f) part of the monosaccharide name
             * @param name The complete name of the sugar e.g. 2-sulfo-b-D-mannopyranose
-            * @param configuration The configuration(a/b/x) part of the monosacchride name
+            * @param configuration The configuration(a/b/x) part of the monosaccharide name
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
     void ExtractOntologyInfoByNamePartsOfGlycan(std::string isomer, std::string ring_type, std::string configuration, std::string output_file_type = "csv");
@@ -1344,7 +1344,7 @@ public:
     void ExtractOntologyInfoByOligosaccharideNameSequenceByRegex(std::string oligo_name_pattern, std::string output_file_type = "csv");
     /*! \fn
             * A function in order to extract information from ontology based on the orientations of the side atoms of a monosaccharide structure
-            * @param ring_type The ring type(p/f) part of the monosacchride name
+            * @param ring_type The ring type(p/f) part of the monosaccharide name
             * @param anomeric_orientation The orientation of the side oxygen attached to anomeric carbon of the ring
             * @param minus_one_orientation The orientation of the side carbon attached to anomeric carbon of the ring
             * @param index_two_orientation The orientation of the side oxygen attached to second carbon of the ring
@@ -1363,7 +1363,7 @@ public:
     std::string ExtractOntologyInfoByOligosaccharideNameSequenceByRegexGF(std::string oligo_name_pattern, std::string url, std::string output_file_type = "csv");
     /*! \fn
             * A function used in GlyFinder project in order to extract information from ontology based on the orientations of the side atoms of a monosaccharide structure
-            * @param ring_type The ring type(p/f) part of the monosacchride name
+            * @param ring_type The ring type(p/f) part of the monosaccharide name
             * @param anomeric_orientation The orientation of the side oxygen attached to anomeric carbon of the ring
             * @param minus_one_orientation The orientation of the side carbon attached to anomeric carbon of the ring
             * @param index_two_orientation The orientation of the side oxygen attached to second carbon of the ring
@@ -1376,8 +1376,8 @@ public:
                                               std::string index_three_orientation, std::string index_four_orientation = "", std::string plus_one_orientation = "", std::string output_file_type = "csv");
     /*! \fn
             * A function in order to extract information from ontology based on a specific modification/derivative pattern
-            * @param ring_type The ring type(p/f) part of the monosacchride name
-            * @param derivative_modification_map A mapping between the monosacchride's atom position/index and the derivative/modification attached to it
+            * @param ring_type The ring type(p/f) part of the monosaccharide name
+            * @param derivative_modification_map A mapping between the monosaccharide's atom position/index and the derivative/modification attached to it
             * e.g. derivative_modification_map['2'] = 'xC-N-C=OCH3'
             * @param output_file_type The format of the result to expect from query execution. e.g. csv, json, xml
             */
@@ -1466,7 +1466,7 @@ public:
             */
     void ExtractTorsionAnglesFromPDB(std::vector<std::string> amino_lib_files, std::string disaccharide);
     /*! \fn
-            * A function in order to check if a parent and child oligosaccharide matches the given monosaccharid names and linkage indeces
+            * A function in order to check if a parent and child oligosaccharide matches the given monosaccharide names and linkage indeces
             * if the values matches, the function calculates the phi/psi angle(s)
             * @param oligo An Assembly Oligosaccharide object that is going to be checked for matching the given values
             * @param phi_angle The phi angle that is going to be calculated by this function
@@ -1780,7 +1780,7 @@ public:
     //Moved to monosaccharide class
     // void UpdatePdbCode( Glycan::Monosaccharide * mono );
     /*! \fn
-              * A function in order to extract oligosacchride structure based on the linkages between monosacchrides
+              * A function in order to extract oligosacchride structure based on the linkages between monosaccharides
               * @param monos The list of extracted monosaccharide object
               * @param dataset_residue_names List of known terminal residue names
               * @param number_of_covalent_links Number of sugars that covalenly bond to a protein
@@ -1840,14 +1840,14 @@ public:
     /*! \fn
               * A recursive function in order to build the tree like structure of the oligosacchrides (a directed graph made from the molecular graph structure of monosaccharides.
                 each monosaccharide is a node and their linkages are the edges)
-              * @param key The root monosacchride(node) of each oligosacchride
+              * @param key The root monosaccharide(node) of each oligosacchride
               * @param value The monosaccharide attached to the key monosacharide
               * @param oligo The oligosaccharide object to be constructed by the function
-              * @param visited_monos The monosacchride objects that have been visited by previous calls to the function
-              * @param monos_table A mapping between a monosacchride object and the list of monosacchrides attached to it
-              * @param monos_table_linkages A mapping between a monosacchride object and the list of atoms that are involved in the linkages with the monosacchrides attached to
-                the current monosacchride object
-              * @param visited_linkages The list of linkages(atoms involved in the linkages between monosacchrides) that have been visited so far by calls to the function
+              * @param visited_monos The monosaccharide objects that have been visited by previous calls to the function
+              * @param monos_table A mapping between a monosaccharide object and the list of monosaccharides attached to it
+              * @param monos_table_linkages A mapping between a monosaccharide object and the list of atoms that are involved in the linkages with the monosaccharides attached to
+                the current monosaccharide object
+              * @param visited_linkages The list of linkages(atoms involved in the linkages between monosaccharides) that have been visited so far by calls to the function
               */
     void BuildOligosaccharideTreeStructure(Glycan::Monosaccharide* key, std::vector<Glycan::Monosaccharide*> val, Glycan::Oligosaccharide* oligo,
                                            std::vector<int>& visited_monos, std::map<Glycan::Monosaccharide*, std::vector<Glycan::Monosaccharide*> > monos_table,

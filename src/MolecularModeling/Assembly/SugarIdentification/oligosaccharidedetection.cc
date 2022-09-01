@@ -377,8 +377,8 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   ///ANOMERIC CARBON DETECTION and SORTING
   std::vector< std::string > anomeric_carbons_status = std::vector< std::string >();
   std::vector< Glycan::Note* > anomeric_notes = std::vector< Glycan::Note* >();
-  CycleMap sorted_cycles = CycleMap();
-  MolecularModeling::AtomVector AllAnomericCarbons = MolecularModeling::AtomVector();
+  // CycleMap sorted_cycles = CycleMap();
+  // MolecularModeling::AtomVector AllAnomericCarbons = MolecularModeling::AtomVector();
   for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
   {
     MolecularModeling::AtomVector cycle_atoms = ( *it ).second;
@@ -575,8 +575,11 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
     mono->mono_id_ = mono_id_;
     *it = mono;
   }
-  gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-  logss.str( std::string() ); logss.clear();  // Must do both of these to clear the stream;
+  if(local_debug > 0)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+    logss.str( std::string() ); logss.clear();  // Must do both of these to clear the stream;
+  }
   //Checking if any sugar named residue is not detected
   MolecularModeling::ResidueVector all_residues = GetAllResiduesOfAssembly();
   for(MolecularModeling::ResidueVector::iterator it = all_residues.begin(); it != all_residues.end(); it++)
@@ -682,18 +685,24 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       if(individualOntologies)
       {
         std::string gmmo = this->GetSourceFile();
-        gmmo = gmmo.substr(0,gmmo.size()-4) + ".ttl";
+        gmmo = gmmo.substr(gmmo.find_last_of("/") + 1);//Get base file name
+        gmmo = gmmo.substr(0,gmmo.size()-4) + ".ttl";//replace .pdb with .ttl
 
         // gmmo.insert(gmmo.size()-8, gmmo.substr(gmmo.size()-7, 2));
         // gmmo.insert(gmmo.size()-8, "/");
         // std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
-        std::string ontologyDirectory = "Ontologies";
+        char* gemshome_env_var = std::getenv("GEMSHOME");
+        std::string GEMSHOME(gemshome_env_var);
+        std::string ontologyDirectory = GEMSHOME + "/Ontologies";
         std::string gmmoDirectory = ontologyDirectory + "/" + gmmo.substr(gmmo.size()-7, 2);
-        gmmo = ontologyDirectory + "/" + gmmo.substr(gmmo.size()-7, 2) + "/" + gmmo;
+        gmmo = gmmoDirectory + "/" + gmmo;
         mkdir(ontologyDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
         mkdir(gmmoDirectory.c_str(),  S_IRWXU | S_IRWXG | S_IRWXO);
-        out_file.open( gmmo.c_str(), std::fstream::out | std::fstream::trunc);
+        out_file.open( gmmo.c_str(), std::ofstream::out);
+        // gmml::log(__LINE__, __FILE__,  gmml::INF, gmmo);
         out_file << Ontology::TTL_FILE_PREFIX << "\n";
+        this->PopulateOntology( out_file, testOligos );
+        out_file.close();
       }
       else
       {
@@ -714,7 +723,10 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       out_file.close();
     }
   }
-  gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+  if(local_debug > 0)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+  }
   return testOligos;
 }
 
@@ -1206,7 +1218,7 @@ MolecularModeling::AtomVector Assembly::SortCycle(MolecularModeling::AtomVector 
                 sorted_cycle_stream << anomeric_atom->GetId() << "-";
                 anomeric_atom->SetIsRing(true);
                 MolecularModeling::Atom* a0 = cycle.at(0);
-                if(a0->GetName().substr(0,1).compare("O") == 0)///a0 is oxygen so the std::vector is in reverse order
+                if(a0->GetElementSymbol().compare("O") == 0)///a0 is oxygen so the std::vector is in reverse order
                 {
                     for(MolecularModeling::AtomVector::iterator it1 = it - 1; it1 != cycle.begin(); it1--)///atoms before the anomeric atom in reverse order
                     {
@@ -1236,7 +1248,7 @@ MolecularModeling::AtomVector Assembly::SortCycle(MolecularModeling::AtomVector 
             else///anomeric is not at the end of the cycle
             {
                 MolecularModeling::Atom* next_atom = cycle.at(index + 1);
-                if(next_atom->GetName().substr(0,1).compare("O") == 0)///next atom is oxygen so the std::vector is in reverse order
+                if(next_atom->GetElementSymbol().compare("O") == 0)///next atom is oxygen so the std::vector is in reverse order
                 {
                     for(MolecularModeling::AtomVector::iterator it1 = it; it1 != cycle.begin(); it1--) ///atoms befor anomeric atom down to beginning of the std::vector
                     {
@@ -1689,7 +1701,7 @@ MolecularModeling::AtomVector Assembly::SortCycle(MolecularModeling::AtomVector 
 //     return;
 // } //CheckIfSideChainIsTerminal
 
-// Glycan::ChemicalCode* Assembly::BuildChemicalCode(std::vector<std::string> orientations)
+/* Glycan::ChemicalCode* Assembly::BuildChemicalCode(std::vector<std::string> orientations)
 // {
 //     Glycan::ChemicalCode* code = new Glycan::ChemicalCode();
 //     if(orientations.size() == 5 )
@@ -1764,6 +1776,7 @@ MolecularModeling::AtomVector Assembly::SortCycle(MolecularModeling::AtomVector 
 //
 //     return code;
 // }
+*/
 
 // MolecularModeling::AtomVector Assembly::ExtractAdditionalSideAtoms(Glycan::Monosaccharide *mono)
 // {
@@ -5430,7 +5443,7 @@ void Assembly::GetAuthorNaming(std::vector< std::string > amino_lib_files, Glyca
     }
 
     // Build by Distance
-    CCDassembly.BuildStructureByDistance(10);
+    CCDassembly.BuildStructureByDistance(4);
     // Find the Sugars.
     std::vector<Glycan::Oligosaccharide*> authorOligos = CCDassembly.ExtractSugars(amino_lib_files, false, false, false, CCD_Path);
     //The vector is really just a monosaccharide

@@ -86,7 +86,7 @@ namespace Ontology
     const std::string derivative = "gmmo:derivative";
     const std::string seq_derivative = "gmmo:sequenceDerivative";
     const std::string glycosidic_linkage = "gmmo:glycosidicLinkage";
-    const std::string linkageIndeces = "gmmo:linkageIndeces";
+    const std::string linkageType = "gmmo:linkageType";
     const std::string id = "gmmo:identifier";
     const std::string sequence_linkage = "gmmo:sequenceLinkage";
     const std::string isomer = "gmmo:isomer";

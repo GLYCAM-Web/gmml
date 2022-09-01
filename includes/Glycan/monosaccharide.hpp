@@ -22,16 +22,16 @@ namespace Glycan
   class Monosaccharide
   {
     public:
-      int mono_id_;                                                        /*!< The unique identifier of a monosacchride >*/
-      std::vector<std::vector<MolecularModeling::Atom*> > side_atoms_;    /*!< The list of side atoms of the ring of the monosacchride >*/
-      std::vector<MolecularModeling::Atom*> cycle_atoms_;                 /*!< The list of ring atoms of the ring of the monosacchride >*/
-      ChemicalCode* chemical_code_;                                       /*!< The chemical code structure of the monosacchride (Glycode: http://glycam.org/docs/gmml/2016/03/31/glycode-internal-monosaccharide-representation/)>*/
-      ChemicalCode* author_chemical_code_;                                        /*!< The chemical code structure of the monosacchride based on the author's residue naming (Glycode: http://glycam.org/docs/gmml/2016/03/31/glycode-internal-monosaccharide-representation/)>*/
-      SugarName sugar_name_;                                              /*!< The sugar name object assigned to the monosacchride >*/
+      int mono_id_;                                                        /*!< The unique identifier of a monosaccharide >*/
+      std::vector<std::vector<MolecularModeling::Atom*> > side_atoms_;    /*!< The list of side atoms of the ring of the monosaccharide >*/
+      std::vector<MolecularModeling::Atom*> cycle_atoms_;                 /*!< The list of ring atoms of the ring of the monosaccharide >*/
+      ChemicalCode* chemical_code_;                                       /*!< The chemical code structure of the monosaccharide (Glycode: http://glycam.org/docs/gmml/2016/03/31/glycode-internal-monosaccharide-representation/)>*/
+      ChemicalCode* author_chemical_code_;                                        /*!< The chemical code structure of the monosaccharide based on the author's residue naming (Glycode: http://glycam.org/docs/gmml/2016/03/31/glycode-internal-monosaccharide-representation/)>*/
+      SugarName sugar_name_;                                              /*!< The sugar name object assigned to the monosaccharide >*/
       SugarName author_sugar_name_;                                       /*!< The sugar name object assigned to the residue name given by the author >*/
-      std::vector<std::pair<std::string, std::string> > derivatives_map_; /*!< A mapping between the monosacchride's atom position/index and the derivative/modification attached to it >*/
+      std::vector<std::pair<std::string, std::string> > derivatives_map_; /*!< A mapping between the monosaccharide's atom position/index and the derivative/modification attached to it >*/
       std::vector<std::pair<std::string, std::string> > unknown_derivatives_; /*!< Added so the unknown derivates don't mess up naming based on derivatives_map_ >*/
-      std::string cycle_atoms_str_;                                       /*!< The string version of atom identifiers of the ring of the monosacchride >*/
+      std::string cycle_atoms_str_;                                       /*!< The string version of atom identifiers of the ring of the monosaccharide >*/
       std::string anomeric_status_;                                       /*!< The detection status of the anomeric carbon >*/
       MolecularModeling::Atom* anomeric_carbon_pointer_ = NULL;
       std::string bfmp_ring_conformation_;                                /*!< The ring conformation of the monosaccharide, currently detected by an external program (BFMP) >*/

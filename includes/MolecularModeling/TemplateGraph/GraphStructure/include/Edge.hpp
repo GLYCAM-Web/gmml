@@ -8,11 +8,6 @@
 
 namespace glygraph
 {
-
-  // TODO: Ensure that this is correct forward declare
-  template<class T>
-  class Node;
-
   template<class T>
   class Edge : public GenericGraphObject
   {
@@ -21,9 +16,9 @@ namespace glygraph
      *  CONSTRUCTORS/DESTRUCTORS
      ***********************************************/
     Edge();
-    Edge(std::string name_t, Node<T> *const &sourceNode_t, Node<T> *const &targetNode_t);
-    Edge(std::string name_t, std::vector<std::string> labels_t, Node<T> *const &sourceNode_t,
-         Node<T> *const &targetNode_t);
+    Edge(std::string name_t, T* const &sourceNode_t, T* const &targetNode_t);
+    Edge(std::string name_t, std::vector<std::string> labels_t, T* const &sourceNode_t,
+         T* const &targetNode_t);
 
     // copy constructor
     Edge(const Edge<T> &rhs);
@@ -40,25 +35,25 @@ namespace glygraph
     virtual ~Edge();
 
     //	Return our weak to ensure alive.
-    Node<T> *getTargetNode() const;
-    Node<T> *getSourceNode() const;
+    T *getTargetNode() const;
+    T* getSourceNode() const;
 
     /************************************************
      *  GETTER/SETTER
      ***********************************************/
     // NOTE: Using shared pointer to get our source and sink in order to ensure
     // 			source and sink are good and alive.
-    void setSourceNode(Node<T> *source_t);
-    void setTargetNode(Node<T> *target_t);
+    void setSourceNode(T *source_t);
+    void setTargetNode(T *target_t);
 
   private:
     /************************************************
      *  ATTRIBUTES
      ***********************************************/
     // NOTE: Source node = the node that has a unique_ptr to this edge
-    Node<T> *sourceNode_m;
+    T *sourceNode_m;
     // NOTE: Sink node = the node that has a raw pointer to this edge
-    Node<T> *targetNode_m;
+    T *targetNode_m;
   };
 
   template<class T>
@@ -70,7 +65,7 @@ namespace glygraph
   }
 
   template<class T>
-  inline Edge<T>::Edge(std::string name_t, Node<T> *const &sourceNode_t, Node<T> *const &targetNode_t)
+  inline Edge<T>::Edge(std::string name_t, T *const &sourceNode_t, T *const &targetNode_t)
       : GenericGraphObject(name_t)
   {
     this->targetNode_m = targetNode_t;
@@ -78,8 +73,8 @@ namespace glygraph
   }
 
   template<class T>
-  inline Edge<T>::Edge(std::string name_t, std::vector<std::string> labels_t, Node<T> *const &sourceNode_t,
-                       Node<T> *const &targetNode_t)
+  inline Edge<T>::Edge(std::string name_t, std::vector<std::string> labels_t, T *const &sourceNode_t,
+                       T *const &targetNode_t)
       : GenericGraphObject(name_t, labels_t)
   {
     this->targetNode_m = targetNode_t;
@@ -151,25 +146,25 @@ namespace glygraph
   }
 
   template<class T>
-  inline void Edge<T>::setSourceNode(Node<T> *source_t)
+  inline void Edge<T>::setSourceNode(T *source_t)
   {
     this->sourceNode_m = source_t;
   }
 
   template<class T>
-  inline void Edge<T>::setTargetNode(Node<T> *target_t)
+  inline void Edge<T>::setTargetNode(T *target_t)
   {
     this->targetNode_m = target_t;
   }
 
   template<class T>
-  inline Node<T> *Edge<T>::getTargetNode() const
+  inline T* Edge<T>::getTargetNode() const
   {
     return this->targetNode_m;
   }
 
   template<class T>
-  inline Node<T> *Edge<T>::getSourceNode() const
+  inline T* Edge<T>::getSourceNode() const
   {
     return this->sourceNode_m;
   }

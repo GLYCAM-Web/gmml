@@ -124,11 +124,11 @@ namespace gmml
 				      "NPRO", "NHIS", "NCYS", "NVAL", "NLEU",
 				      "NTHR", "NSER", "NLYS", "NMET", "NTYR",
 				      "NTRP", "NPHE", "NSEC", "NILE", "NCYX",
-				      "NHID", "NHIE", "CNALA", "CNASP", 
-                                      "CASN", "CARG", "CGLY", "CGLU", "CGLN", 
-                                      "CPRO", "CHIS", "CCYS", "CVAL", "CLEU", 
-                                      "CTHR", "CSER", "CLYS", "CMET", "CTYR", 
-                                      "CTRP", "CPHE", "CSEC", "CILE", "CCYX", 
+				      "NHID", "NHIE", "CNALA", "CNASP",
+                                      "CASN", "CARG", "CGLY", "CGLU", "CGLN",
+                                      "CPRO", "CHIS", "CCYS", "CVAL", "CLEU",
+                                      "CTHR", "CSER", "CLYS", "CMET", "CTYR",
+                                      "CTRP", "CPHE", "CSEC", "CILE", "CCYX",
                                       "CHID", "CHIE"};
 
     const int PROTEINSSIZE = ( sizeof( PROTEINS ) / sizeof( PROTEINS[ 0 ] ) );
@@ -449,7 +449,7 @@ namespace gmml
         {"_2_3^4P^a^+1",  "b-D-gulopyranose",       "DGulpb",     "D", "", "P", "b", "", "", "GL0"},
         {"_4^2^3P^a^+1",  "b-D-mannopyranose",      "DManpb",     "D", "", "P", "b", "", "", "BMA"},
         {"_3^2^4P^a^+1",  "b-D-idopyranose",        "DIdopb",     "D", "", "P", "b", "", "", ""   },
-        {"_2^3^4P^a^+1",  "b-D-galactopyranose",    "DGalpb",     "D", "", "P", "b", "", "", "GAL"},//GLB is also b-D-galactose; waiting on PDB response
+        {"_2^3^4P^a^+1",  "b-D-galactopyranose",    "DGalpb",     "D", "", "P", "b", "", "", "GAL"},
         {"^2^3^4P^a^+1",  "b-D-talopyranose",       "DTalpb",     "D", "", "P", "b", "", "", ""   },
         ///Alpha D Ketohexapyranoses
         {"_2_3_4P_a^-1",  "a-D-psicopyranose",      "DPsipa",     "D", "", "P", "a", "", "", "PSJ"},

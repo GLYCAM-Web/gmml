@@ -1,5 +1,6 @@
+#include <eigen3/Eigen/Geometry>
+
 #include "../../includes/GeometryTopology/geometrytopology.hpp"
-#include "../../includes/External_Libraries/Eigen_Algebra_Template_Library/Geometry"
 #include "../../includes/utils.hpp"
 
 using GeometryTopology::Coordinate;
