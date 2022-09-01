@@ -1,4 +1,5 @@
 #include "includes/ParameterSet/PrepFile/prepFile.hpp"
+#include <fstream>
 
 int main()
 {
@@ -10,12 +11,33 @@ int main()
 //    	prepResidue->SetConnectivities();
 //    }
 //    std::cout << "*\n*\n*\n*\n*\n*\n*\n*\n*\n";
-    std::vector<std::string> residuesToLoadFromPrep = {"0GA", "4YB", "4uA", "Cake", "4YA"};
+    //std::vector<std::string> residuesToLoadFromPrep = {"0GA", "4YB", "4uA", "Cake", "4YA"};
+    std::vector<std::string> residuesToLoadFromPrep = {"0GA"};
     prep::PrepFile glycamPrepFileSelect(prepFilePath, residuesToLoadFromPrep);
     for ( auto &prepResidue : glycamPrepFileSelect.getResidues() )
     {
     	prepResidue->SetConnectivities();
     	prepResidue->Generate3dStructure();
     }
-
+    // Need a central place for this:
+    std::string outName = "./prepAsPdbFile.pdb";
+    std::ofstream outFileStream;
+    try
+    {
+        outFileStream.open(outName.c_str());
+    }
+    catch(...)
+    {
+        gmml::log(__LINE__,__FILE__,gmml::ERR, "Output file could not be created:\n" + outName);
+        throw std::runtime_error("Output file could not be created:\n" + outName);
+    }
+    try
+    {
+    	glycamPrepFileSelect.WritePdb(outFileStream);
+    }
+    catch(...)
+    {
+        gmml::log(__LINE__,__FILE__,gmml::ERR, "Error when writing pdbFile class to file:\n" + outName);
+        throw std::runtime_error("Error when writing pdbFile class to file:\n" + outName);
+    }
 }
