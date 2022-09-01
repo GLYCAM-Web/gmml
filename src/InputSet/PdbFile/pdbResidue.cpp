@@ -138,12 +138,5 @@ void PdbResidue::Print(std::ostream &out) const
 
 void PdbResidue::Write(std::ostream& stream) const
 {
-    for(auto &atom : this->getAtoms())
-    {
-        atom->Write(stream);
-    }
-    if(hasTerCard_)
-    {
-        stream << "TER\n";
-    }
+    this->WritePdb(stream, this->HasTerCard());
 }

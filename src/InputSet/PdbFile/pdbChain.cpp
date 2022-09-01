@@ -247,10 +247,6 @@ pdb::PdbResidue* PdbChain::getCTerminal()
 //}
 void PdbChain::Write(std::ostream& stream) const
 {
-    for (auto &residue : this->getResidues())
-    {
-        residue->Write(stream);
-    }
-    stream << "TER\n";
+    this->WritePdb(stream);
     return;
 }
