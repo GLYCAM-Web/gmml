@@ -53,11 +53,9 @@ void absAtom::addCoordinate(const Coordinate& newCoord)
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
-
 double absAtom::calculateDistance(const absAtom* otherAtom) const
 {
     return this->getCoordinate()->Distance(otherAtom->getCoordinate());
 }
-
 
 

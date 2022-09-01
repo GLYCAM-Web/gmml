@@ -391,13 +391,13 @@ void PrepResidue::Generate3dStructure()
 {
 	//set up
 	// can recursively look up incoming connections to find bond, angle and dihedral atoms. Just skip dummies.
-	//currentAtom->DeterminePosition(); // could do this once connectivity is set
-	// Set dummy atoms
 	if( (this->getAtoms().size() > 4) && (this->getAtoms().at(2)->getName() == "DUMM") )
 	{
+		// Set dummy atoms
 		this->getAtoms().at(0)->setCoordinate(GeometryTopology::Coordinate(0, 0, 0));
 		this->getAtoms().at(1)->setCoordinate(GeometryTopology::Coordinate(0.5, 0, 0));
 		this->getAtoms().at(2)->setCoordinate(GeometryTopology::Coordinate(-0.75, 0.35, 0));
+		// Use dummies as start for creating the other atoms.
 		std::vector<PrepAtom*>::iterator it1 = this->getAtoms().begin();
 		std::advance(it1, 3);
 		std::cout << "it1 is now pointing at atom: " << (*it1)->getName() << "\n";
@@ -406,7 +406,6 @@ void PrepResidue::Generate3dStructure()
 			(*it1)->Determine3dCoordinate();
 			++it1;
 		}
-
 	}
 	else
 	{
