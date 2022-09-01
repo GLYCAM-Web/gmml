@@ -33,5 +33,12 @@ inline std::vector<std::string> split(const std::string &s, char delim)
     return elems;
 }
 
+template<class T>
+inline T extractFromStream(std::istream &ss, T temp)
+{
+	ss >> temp;
+	return temp;
+}
+
 }
 #endif //GMML_INCLUDES_CODEUTILS_STRINGS_HPP
