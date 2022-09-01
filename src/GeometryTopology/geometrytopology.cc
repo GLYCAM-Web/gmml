@@ -10,32 +10,18 @@ Coordinate GeometryTopology::subtract_coordinates(const Coordinate& minuaend, co
     return new_coordinate;
 }
 
-Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(const Coordinate* a, const Coordinate* b, const Coordinate* c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
+Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(const Coordinate* a, const Coordinate* b, const Coordinate* c, double angle_Degrees, double dihedral_Degrees, double distance_Angstrom)
 {
-	return GeometryTopology::get_cartesian_point_from_internal_coords(*a, *b, *c, theta_Degrees, phi_Degrees, distance_Angstrom);
+	return GeometryTopology::get_cartesian_point_from_internal_coords(*a, *b, *c, angle_Degrees, dihedral_Degrees, distance_Angstrom);
 }
 
-Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(const Coordinate& a, const Coordinate& b, const Coordinate& c, double theta_Degrees, double phi_Degrees, double distance_Angstrom)
-{     // theta is the angle between 3 atoms. Phi is the torsion between 4 atoms.
-    //Convert from Degrees to Radians
-    if ( theta_Degrees < 0.0 ) {theta_Degrees += 360.0;}
-    double theta_Radians = gmml::ConvertDegree2Radian(theta_Degrees);
-    double phi_Radians = gmml::ConvertDegree2Radian(phi_Degrees);
-    //! \todo Add these to the debugging mechanism once the DebugLevel class (or whatever) is implemented.
-    // std::cout << "   The three coords are:  " << std::endl;
-    // std::cout << "      a:  " << std::endl;
-    // std::cout << "         X  :  " << a.GetX() << std::endl;
-    // std::cout << "         Y  :  " << a.GetY() << std::endl;
-    // std::cout << "         Z  :  " << a.GetZ() << std::endl;
-    // std::cout << "      b:  " << std::endl;
-    // std::cout << "         X  :  " << b.GetX() << std::endl;
-    // std::cout << "         Y  :  " << b.GetY() << std::endl;
-    // std::cout << "         Z  :  " << b.GetZ() << std::endl;
-    // std::cout << "      c:  " << std::endl;
-    // std::cout << "         X  :  " << c.GetX() << std::endl;
-    // std::cout << "         Y  :  " << c.GetY() << std::endl;
-    // std::cout << "         Z  :  " << c.GetZ() << std::endl;
-
+Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(const Coordinate& a, const Coordinate& b, const Coordinate& c, double angle_Degrees, double dihedral_Degrees, double distance_Angstrom)
+{
+//	std::cout << "Distance: " << distance_Angstrom << std::endl;
+//	std::cout << "Angle: " << angle_Degrees << std::endl;
+//	std::cout << "Dihedral: " << dihedral_Degrees << std::endl;
+    double theta_Radians = gmml::ConvertDegree2Radian(angle_Degrees);
+    double phi_Radians = gmml::ConvertDegree2Radian(dihedral_Degrees);
     Coordinate lmn_x, lmn_y, lmn_z;
     double x_p, y_p, z_p;
 
@@ -61,18 +47,13 @@ Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(const Coor
     double new_z = lmn_x.GetZ()*x_p + lmn_y.GetZ()*y_p + lmn_z.GetZ()*z_p + c.GetZ();
 
     Coordinate new_coordinate ( new_x, new_y, new_z );
-    //! \todo Add these to the debugging mechanism once the DebugLevel class (or whatever) is implemented.
-    // std::cout << "   The NEW coords are:  " << std::endl;
-    // std::cout << "         X  :  " << new_coordinate.GetX() << std::endl;
-    // std::cout << "         Y  :  " << new_coordinate.GetY() << std::endl;
-    // std::cout << "         Z  :  " << new_coordinate.GetZ() << std::endl;
     return new_coordinate;
 }
 
 Coordinate GeometryTopology::get_cartesian_point_from_internal_coords(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c,
-                                                                                        double theta_Degrees, double phi_Degrees,  double distance_Angstrom)
+                                                                                        double angle_Degrees, double dihedral_Degrees,  double distance_Angstrom)
 {
-    return GeometryTopology::get_cartesian_point_from_internal_coords(a->GetCoordinate(), b->GetCoordinate(), c->GetCoordinate(), theta_Degrees, phi_Degrees, distance_Angstrom);
+    return GeometryTopology::get_cartesian_point_from_internal_coords(a->GetCoordinate(), b->GetCoordinate(), c->GetCoordinate(), angle_Degrees, dihedral_Degrees, distance_Angstrom);
 }
 
 double GeometryTopology::calculateDistanceFromPointToLineBetweenTwoPoints(const Coordinate& queryPoint, const Coordinate& linePointA, const Coordinate& linePointB)
