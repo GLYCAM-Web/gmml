@@ -40,7 +40,6 @@ public:
 	//                           ACCESSOR                   //
 	//////////////////////////////////////////////////////////
 	inline const int& GetVisits() const {return visitCount_;}
-	int GetIndex() const;
 	std::string GetType() const;
 	TopologicalType GetTopologicalType() const;
 	int GetBondIndex() const;
@@ -49,11 +48,9 @@ public:
 	double GetBondLength() const;
 	double GetAngle() const;
 	double GetDihedral() const;
-	double GetCharge() const;
 	//////////////////////////////////////////////////////////
 	//                           MUTATOR                    //
 	//////////////////////////////////////////////////////////
-	void SetIndex(int index);
 	void SetType(std::string type);
 	void SetTopologicalType(TopologicalType topological_type);
 	void SetBondIndex(int bond_index);
@@ -62,19 +59,16 @@ public:
 	void SetBondLength(double bond_length);
 	void SetAngle(double angle);
 	void SetDihedral(double dihedral);
-	void SetCharge(double charge);
 private:
 	//////////////////////////////////////////////////////////
 	//                         FUNCTIONS                    //
 	//////////////////////////////////////////////////////////
 	TopologicalType ExtractAtomTopologicalType(std::istream& ss);
-	std::string GetStringFormatOfTopologicalType(TopologicalType topological_type) const;
 	std::string GetStringFormatOfTopologicalType() const;
 	TopologicalType GetTopologicalTypeFromString(std::string topological_type) const;
 	//////////////////////////////////////////////////////////
 	//                         ATTRIBUTES                   //
 	//////////////////////////////////////////////////////////
-	int index_ = 0;                                 /*!< Atom index; fill by the first column of the residue section of the file */
 	std::string type_ = "";                          /*!< Atom type; fill by the third column of the residue section of the file */
 	TopologicalType topological_type_ = kTopTypeM;          /*!< Topological type (for chain extraction of the residue); fill by th 4th column of the residue section of the file */
 	int bond_index_ = 0;;                            /*!< Bond index; fill by the 5th column of the residue section of the file */
@@ -83,7 +77,6 @@ private:
 	double bond_length_ = gmml::dNotSet;                        /*!< Bond length; fill by the 8th column of the residue section of the file */
 	double angle_ = gmml::dNotSet;                              /*!< Angle; fill by the 9th column of the residue section of the file */
 	double dihedral_ = gmml::dNotSet;                           /*!< Dihedral; fill by the 10th column of the residue section of the file */
-	double charge_ = gmml::dNotSet;                             /*!< Charge; fill by the 11th column of the residue section of the file */
 	int visitCount_ = 0;
 	/*!< Sample line of the atom section of a prep file: 4 H1   H1  M  3  2  1  1.000    90.0     180.0     0.0 */
 };
