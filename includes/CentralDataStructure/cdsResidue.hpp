@@ -47,6 +47,7 @@ public:
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
+    void WritePdb(std::ostream& stream, bool addTerCard = false) const;
 private:
     //////////////////////////////////////////////////////////
     //                    ATTRIBUTES                        //
@@ -175,7 +176,21 @@ const atomT* cdsResidue<atomT>::FindAtom(const int& queryNumber) const
 {
 	return codeUtils::findElementWithNumber(this->getAtoms(), queryNumber);
 }
-
+//////////////////////////////////////////////////////////
+//                    DISPLAY                           //
+//////////////////////////////////////////////////////////
+template< class atomT >
+void cdsResidue<atomT>::WritePdb(std::ostream& stream, const bool addTerCard) const
+{
+    for(auto &atom : this->getAtoms())
+    {
+        atom->WritePdb(stream);
+    }
+    if(addTerCard)
+    {
+        stream << "TER\n";
+    }
+}
 
 } // namespace
 #endif // INCLUDES_CENTRALDATASTRUCTURE_RESIDUE_HPP

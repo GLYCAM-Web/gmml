@@ -39,6 +39,7 @@ public:
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
+    void WritePdb(std::ostream& stream) const;
 private:
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
@@ -144,6 +145,19 @@ template< class residueT, class atomT >
 typename std::vector<residueT*> cdsMolecule<residueT, atomT>::getResidues(std::vector<std::string> queryNames)
 {
 	return codeUtils::getElementsWithNames(this->getResidues(), queryNames);
+}
+
+//////////////////////////////////////////////////////////
+//                    DISPLAY                           //
+//////////////////////////////////////////////////////////
+template< class residueT, class atomT >
+void cdsMolecule<residueT, atomT>::WritePdb(std::ostream& stream) const
+{
+    for (auto &residue : this->getResidues())
+    {
+        residue->WritePdb(stream);
+    }
+    stream << "TER\n";
 }
 
 } // namespace
