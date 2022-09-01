@@ -26,6 +26,7 @@ public:
     inline const std::string& getInsertionCode() const {return insertionCode_;}
     inline const std::string& getChainId() const {return chainId_;}
     const std::string getNumberAndInsertionCode() const;
+    inline const bool HasTerCard() const {return hasTerCard_;}
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
