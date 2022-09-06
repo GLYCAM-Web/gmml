@@ -192,5 +192,15 @@ void cdsResidue<atomT>::WritePdb(std::ostream& stream, const bool addTerCard) co
     }
 }
 
+template< class atomT >
+void cdsResidue<atomT>::Print(std::ostream& out) const
+{
+	out << this->getName();
+	for (auto &atom : this->getAtoms())
+	{
+		atom->Print(out);
+	}
+}
+
 } // namespace
 #endif // INCLUDES_CENTRALDATASTRUCTURE_RESIDUE_HPP
