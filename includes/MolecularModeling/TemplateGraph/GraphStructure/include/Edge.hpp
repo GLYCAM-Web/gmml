@@ -34,9 +34,10 @@ namespace glygraph
 
     virtual ~Edge();
 
-    //	Return our weak to ensure alive.
-    T *getTargetNode() const;
-    T* getSourceNode() const;
+    T* getTargetNode();
+    T* getSourceNode();
+    const T* getTargetNode() const;
+    const T* getSourceNode() const;
 
     /************************************************
      *  GETTER/SETTER
@@ -51,17 +52,17 @@ namespace glygraph
      *  ATTRIBUTES
      ***********************************************/
     // NOTE: Source node = the node that has a unique_ptr to this edge
-    T *sourceNode_m;
+    T* sourceNode_m;
     // NOTE: Sink node = the node that has a raw pointer to this edge
-    T *targetNode_m;
+    T* targetNode_m;
   };
 
   template<class T>
   inline Edge<T>::Edge()
   {
     //badBehavior(__LINE__, __func__, "Warning calling default constructor");
-    this->targetNode_m = NULL;
-    this->sourceNode_m = NULL;
+    this->targetNode_m = nullptr;
+    this->sourceNode_m = nullptr;
   }
 
   template<class T>
@@ -158,13 +159,25 @@ namespace glygraph
   }
 
   template<class T>
-  inline T* Edge<T>::getTargetNode() const
+  inline T* Edge<T>::getTargetNode()
+  {
+	  return this->targetNode_m;
+  }
+
+  template<class T>
+  inline T* Edge<T>::getSourceNode()
+  {
+	  return this->sourceNode_m;
+  }
+
+  template<class T>
+  inline const T* Edge<T>::getTargetNode() const
   {
     return this->targetNode_m;
   }
 
   template<class T>
-  inline T* Edge<T>::getSourceNode() const
+  inline const T* Edge<T>::getSourceNode() const
   {
     return this->sourceNode_m;
   }
