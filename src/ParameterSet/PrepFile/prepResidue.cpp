@@ -410,7 +410,20 @@ void PrepResidue::Generate3dStructure()
 		gmml::log(__LINE__,__FILE__,gmml::ERR, message);
 		throw std::runtime_error(message);
 	}
+	this->DeleteDummyAtoms();
+	return;
 }
+
+void PrepResidue::DeleteDummyAtoms()
+{
+	for( auto dummyAtom : codeUtils::getElementsWithNames(this->getAtoms(), {"DUMM"}) )
+	{
+		gmml::log(__LINE__,__FILE__,gmml::INF, "Deleting: " + dummyAtom->getName() );
+		this->deleteAtom(dummyAtom);
+	}
+	return;
+}
+
 
 /// Return residue name from a stream line which is the first column of the 3rd line in each residue section
 void PrepResidue::ExtractResidueName(std::istream& ss)

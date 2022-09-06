@@ -3,7 +3,6 @@
 
 #include <string>
 #include <iostream>
-#include <iostream>
 #include "includes/common.hpp"
 #include "includes/CentralDataStructure/cdsAtom.hpp"
 

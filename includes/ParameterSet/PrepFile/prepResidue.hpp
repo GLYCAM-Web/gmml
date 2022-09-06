@@ -50,6 +50,7 @@ public:
 	//                     FUNCTIONS                        //
 	//////////////////////////////////////////////////////////
 	void Generate3dStructure();
+	void DeleteDummyAtoms();
 	void SetConnectivities();
 	//void RecursivelySetConnectivities(std::vector<PrepAtom*>::iterator& currentAtom, std::vector<PrepAtom*>::iterator connectionPoint, std::vector<PrepAtom*>::iterator& lastAtom);
 	std::vector<std::string> GetAtomNames() const;
