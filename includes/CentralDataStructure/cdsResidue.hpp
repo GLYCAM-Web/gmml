@@ -136,7 +136,7 @@ bool cdsResidue<atomT>::deleteAtom(const atomT* atom)
     if (i != atoms_.end())
     {
        i = atoms_.erase(i);
-       gmml::log(__LINE__,__FILE__,gmml::INF, "Atom " + atom->GetId() + " has been erased. You're welcome.");
+       gmml::log(__LINE__,__FILE__,gmml::INF, "Atom " + atom->getName() + " has been erased. You're welcome.");
        return true;
     }
     return false;
@@ -161,7 +161,7 @@ typename std::vector<std::unique_ptr<atomT>>::iterator cdsResidue<atomT>::FindPo
             ++i;
         }
     }
-    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find " + queryAtom->GetId() + " in atom records\n");
+    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find " + queryAtom->getName() + " in atom records\n");
     return e;
 }
 
