@@ -9,6 +9,7 @@
 #include "includes/GeometryTopology/coordinate.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/templatedSelections.hpp"
+#include "includes/CentralDataStructure/cdsFunctions.hpp"
 
 using GeometryTopology::Coordinate;
 namespace cds
@@ -44,10 +45,12 @@ public:
     typename std::vector<std::unique_ptr<atomT>>::iterator FindPositionOfAtom(const atomT* queryAtom);
     const atomT* FindAtom(const std::string queryName) const;
     const atomT* FindAtom(const int& queryNumber) const;
+    std::vector<const atomT*> getAtomsConnectedToOtherResidues() const;
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
     void WritePdb(std::ostream& stream, bool addTerCard = false) const;
+    void Print(std::ostream& out) const;
 private:
     //////////////////////////////////////////////////////////
     //                    ATTRIBUTES                        //
@@ -175,6 +178,23 @@ template< class atomT >
 const atomT* cdsResidue<atomT>::FindAtom(const int& queryNumber) const
 {
 	return codeUtils::findElementWithNumber(this->getAtoms(), queryNumber);
+}
+
+template< class atomT >
+std::vector<const atomT*> cdsResidue<atomT>::getAtomsConnectedToOtherResidues() const
+{
+	std::vector<const atomT*> foundAtoms;
+	for(auto &atom : this->getAtoms())
+	{
+		for(auto &neighbor : atom->getNeighbors())
+		{ // check if neighbor is not one of the atoms in this residue.
+			if(!codeUtils::isElementPresent(this->getAtoms().begin(), this->getAtoms().end(), neighbor) )
+			{
+				foundAtoms.push_back(neighbor);
+			}
+		}
+	}
+	return foundAtoms;
 }
 //////////////////////////////////////////////////////////
 //                    DISPLAY                           //
