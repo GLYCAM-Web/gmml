@@ -23,11 +23,13 @@ public:
     //////////////////////////////////////////////////////////
     Coordinate* getCoordinate();
     const Coordinate* getCoordinate() const;
-    inline const double& getCharge() const { return charge_;};
+    inline double getCharge() const { return charge_;}
+    inline std::string getType() const {return atomType_;}
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
     inline void setCharge(const double c) {charge_ = c;}
+    inline void setType(const std::string s) {atomType_ = s;}
     void setCoordinate(const Coordinate& c);
     void addCoordinate(const Coordinate& c);
     //////////////////////////////////////////////////////////
@@ -37,13 +39,13 @@ public:
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
-
 private:
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     std::vector<std::unique_ptr<Coordinate>> coordinates_;     /*!< Position of the atom >*/
     double charge_ = gmml::dNotSet;
+    std::string atomType_ = " ";
 };
 }
 #endif // INCLUDES_ABSTRACT_ATOM_HPP
