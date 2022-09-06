@@ -168,13 +168,8 @@ namespace GeometryTopology
             //////////////////////////////////////////////////////////
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////
-            /*! \fn
-              * A function to print out a coordinate
-              * Print out the current coordinate in a defined structure
-              * @param out An output stream, the print result will be written in the given output stream
-              */
             void Print(std::ostream& out = std::cerr) const;
-
+            std::string Print() const;
 	private:
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //

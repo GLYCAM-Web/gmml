@@ -586,3 +586,10 @@ void Coordinate::Print(std::ostream& out) const
     else
         out << std::setw(10) << x_ << ", " << std::setw(10) << y_ << ", " << std::setw(10) << z_;
 }
+std::string Coordinate::Print() const
+{
+	std::stringstream ss;
+	this->Print(ss);
+	return ss.str();
+}
+
