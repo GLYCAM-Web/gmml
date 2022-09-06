@@ -1,4 +1,5 @@
 #include "includes/ParameterSet/PrepFile/prepFile.hpp"
+#include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include <fstream>
 
 int main()
@@ -11,8 +12,8 @@ int main()
 //    	prepResidue->SetConnectivities();
 //    }
 //    std::cout << "*\n*\n*\n*\n*\n*\n*\n*\n*\n";
-    //std::vector<std::string> residuesToLoadFromPrep = {"0GA", "4YB", "4uA", "Cake", "4YA"};
-    std::vector<std::string> residuesToLoadFromPrep = {"0GA"};
+    std::vector<std::string> residuesToLoadFromPrep = {"0GA", "4YB", "4uA", "Cake", "4YA"};
+    //std::vector<std::string> residuesToLoadFromPrep = {"0GA"};
     prep::PrepFile glycamPrepFileSelect(prepFilePath, residuesToLoadFromPrep);
     for ( auto &prepResidue : glycamPrepFileSelect.getResidues() )
     {
@@ -20,24 +21,47 @@ int main()
     	prepResidue->Generate3dStructure();
     }
     // Need a central place for this:
-    std::string outName = "./prepAsPdbFile.pdb";
+    std::string fileName = "./prepAsPdbFile.pdb";
     std::ofstream outFileStream;
     try
     {
-        outFileStream.open(outName.c_str());
+    	outFileStream.open(fileName.c_str());
+    	glycamPrepFileSelect.WritePdb(outFileStream);
+    	outFileStream.close();
     }
     catch(...)
     {
-        gmml::log(__LINE__,__FILE__,gmml::ERR, "Output file could not be created:\n" + outName);
-        throw std::runtime_error("Output file could not be created:\n" + outName);
+        gmml::log(__LINE__,__FILE__,gmml::ERR, "Error when writing pdbFile class to file:\n" + fileName);
+        throw std::runtime_error("Error when writing pdbFile class to file:\n" + fileName);
     }
+    // OFF molecule
+    glycamPrepFileSelect.setName("MOLECULE");
+    fileName = "./prepAsOffFile.off";
     try
     {
-    	glycamPrepFileSelect.WritePdb(outFileStream);
+    	std::ofstream outFileStream;
+    	outFileStream.open(fileName.c_str());
+    	cds::WriteMoleculeToOffFile(glycamPrepFileSelect.getResidues(), outFileStream, glycamPrepFileSelect.getName());
+    	outFileStream.close();
     }
     catch(...)
     {
-        gmml::log(__LINE__,__FILE__,gmml::ERR, "Error when writing pdbFile class to file:\n" + outName);
-        throw std::runtime_error("Error when writing pdbFile class to file:\n" + outName);
+    	gmml::log(__LINE__,__FILE__,gmml::ERR, "Error when writing to file:\n" + fileName);
+    	throw std::runtime_error("Error when writing to file:\n" + fileName);
+    }
+    // OFF separate residues
+    glycamPrepFileSelect.setName("LIBRARY");
+    fileName = "./prepAsLibFile.lib";
+    try
+    {
+    	std::ofstream outFileStream;
+    	outFileStream.open(fileName.c_str());
+    	cds::WriteResiduesToOffFile(glycamPrepFileSelect.getResidues(), outFileStream);
+    	outFileStream.close();
+    }
+    catch(...)
+    {
+    	gmml::log(__LINE__,__FILE__,gmml::ERR, "Error when writing to file:\n" + fileName);
+    	throw std::runtime_error("Error when writing to file:\n" + fileName);
     }
 }

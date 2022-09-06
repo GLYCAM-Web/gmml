@@ -7,6 +7,7 @@
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/templatedSelections.hpp"
+#include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 
 namespace cds
 {
@@ -40,6 +41,7 @@ public:
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
     void WritePdb(std::ostream& stream) const;
+    void WriteOff(std::ostream& stream) const;
 private:
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
@@ -158,6 +160,12 @@ void cdsMolecule<residueT, atomT>::WritePdb(std::ostream& stream) const
         residue->WritePdb(stream);
     }
     stream << "TER\n";
+}
+
+template< class residueT, class atomT >
+void cdsMolecule<residueT, atomT>::WriteOff(std::ostream& stream) const
+{
+	cds::WriteMoleculeToOffFile(this->getResidues(), stream, this->getName());
 }
 
 } // namespace
