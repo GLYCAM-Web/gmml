@@ -4,6 +4,7 @@
 #include "includes/MolecularMetadata/atomicBonds.hpp"
 #include "includes/CodeUtils/threads.hpp"
 #include "includes/common.hpp" //dNotSet
+#include "includes/CodeUtils/numbers.hpp"
 
 #include <iomanip> // setprecision
 #include <vector>
@@ -12,7 +13,7 @@
 namespace cds
 {
 // Helper struct for next function.
-// Haven't yet figured out why this needs to be a struct for std::thread.
+// Haven't yet figured out why this needs to be a struct for std::thread. Probably it's to provide the type.
 template <typename RandomAccessIterator, typename atomT> // atom1 passed in to give a type to the compiler
 struct bondAtomsByDistanceThread
 {
