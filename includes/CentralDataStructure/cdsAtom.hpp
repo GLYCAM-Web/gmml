@@ -12,6 +12,7 @@
 #include "includes/common.hpp"
 #include "includes/Abstract/absAtom.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/MolecularMetadata/elementattributes.hpp"
 
 namespace cds
 {
@@ -36,7 +37,8 @@ public:
 	void addBond(atomT* otherAtom);
 	void bondIfClose(atomT* otherAtom);
     bool isWithinBondingDistance(const atomT* otherAtom) const;
-    const std::string getElement() const;
+    std::string getElement() const;
+    int getAtomicNumber() const;
 	//////////////////////////////////////////////////////////
 	//                       DISPLAY FUNCTION               //
 	//////////////////////////////////////////////////////////
@@ -89,7 +91,7 @@ void cdsAtom<atomT>::bondIfClose(atomT* otherAtom)
 }
 
 template <class atomT>
-const std::string cdsAtom<atomT>::getElement() const // derived classes should overwrite if more explicit about element.
+std::string cdsAtom<atomT>::getElement() const // derived classes should overwrite if more explicit about element.
 {
     std::string name = this->getName();
     if (!name.empty())
@@ -101,6 +103,12 @@ const std::string cdsAtom<atomT>::getElement() const // derived classes should o
     }
     gmml::log(__LINE__,__FILE__,gmml::WAR, "Did not find an element for atom named: " + name);
     return "";
+}
+
+template <class atomT>
+int cdsAtom<atomT>::getAtomicNumber() const
+{
+	return MolecularMetadata::findElementAtomicNumber(this->getElement());
 }
 
 template <class atomT>
@@ -116,7 +124,7 @@ bool cdsAtom<atomT>::isWithinBondingDistance(const atomT* otherAtom) const
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-template <class atomT>
+template <class atomT> // This or just construct a pdbAtom class and write from there?
 void cdsAtom<atomT>::WritePdb(std::ostream &stream,
 		std::string residueName,
 		std::string residueNumber,
