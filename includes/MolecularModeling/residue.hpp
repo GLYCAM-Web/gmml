@@ -42,7 +42,7 @@ namespace MolecularModeling
             Residue(Assembly* assembly, std::string name);
             Residue(PrepFileSpace::PrepFileResidue *prep_residue);
             Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type);
-            // Residue(Residue* residue);
+//            Residue(const Residue* residue); // Copy ctor for Template Edge.
             // Residue(Residue& residue);
 
             //////////////////////////////////////////////////////////
@@ -87,17 +87,17 @@ namespace MolecularModeling
               * An accessor function in order to access to the chemical type
               * @return chemical_residue_ attribute of the current object of this class
               */
-            std::string GetChemicalType();
+            std::string GetChemicalType() const;
             /*! \fn
               * An accessor function in order to access to the description
               * @return description_ attribute of the current object of this class
               */
-            std::string GetDescription();
+            std::string GetDescription() const;
             /*! \fn
               * An accessor function in order to access to the id
               * @return id_ attribute of the current object of this class
               */
-            std::string GetId();
+            std::string GetId() const;
             /*! \fn                                                                              //Added by ayush on 11/20/17 for residuenodes in assembly
               * An accessor function in order to access to the node
               * @return residuenode_ attribute of the current object of this class

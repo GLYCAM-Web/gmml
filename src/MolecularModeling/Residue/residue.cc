@@ -188,15 +188,15 @@ MolecularModeling::AtomVector Residue::GetTailAtoms()
 {
     return tail_atoms_;
 }
-std::string Residue::GetChemicalType()
+std::string Residue::GetChemicalType() const
 {
     return chemical_type_;
 }
-std::string Residue::GetDescription()
+std::string Residue::GetDescription() const
 {
     return description_;
 }
-std::string Residue::GetId()
+std::string Residue::GetId() const
 {
     return id_;
 }
