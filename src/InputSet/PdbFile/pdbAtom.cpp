@@ -224,55 +224,64 @@ void pdbAtom::Print(std::ostream &out) const
 }
 
 void pdbAtom::Write(std::ostream& stream) const
-{ // Just copied from original class.
-    stream << std::left << std::setw(6) << this->GetRecordName();
-    if(this->getNumber() != gmml::iNotSet)
-        stream << std::right << std::setw(5) << this->getNumber();
-    else
-        stream << std::right << std::setw(5) << " ";
-    stream << std::left << std::setw(1) << " "
-            << std::left << std::setw(4) << this->getName();
-    if(this->GetAlternateLocation() == gmml::sNotSet)
-        stream << std::left << std::setw(1) << " ";
-    else
-        stream << std::left << std::setw(1) << this->GetAlternateLocation();
-    stream << std::right << std::setw(3) << this->GetResidueName()
-                                       << std::left << std::setw(1) << " ";
-    if(this->GetChainId() == gmml::sNotSet)
-        stream << std::left << std::setw(1) << " ";
-    else
-        stream << std::left << std::setw(1) << this->GetChainId();
-    if(this->GetResidueSequenceNumber() != gmml::iNotSet)
-        stream << std::right << std::setw(4) << this->GetResidueSequenceNumber();
-    else
-        stream << std::right << std::setw(4) << " ";
-    if(this->GetInsertionCode() == gmml::sNotSet)
-        stream << std::left << std::setw(1) <<  " ";
-    else
-        stream << std::left << std::setw(1) << this->GetInsertionCode();
-    stream << std::left << std::setw(3) << " ";
-    if(this->getCoordinate()->CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
-    {
-        stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->getCoordinate()->GetX()
-                                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->getCoordinate()->GetY()
-                                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->getCoordinate()->GetZ();
-    }
-    else
-    {
-        stream << std::right << std::setw(8) << " "
-                << std::right << std::setw(8) << " "
-                << std::right << std::setw(8) << " ";
-    }
-    if(this->GetOccupancy() != gmml::dNotSet)
-        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << this->GetOccupancy();
-    else
-        stream << std::right << std::setw(6) << " ";
-    if(this->GetTemperatureFactor() != gmml::dNotSet)
-        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << this->GetTemperatureFactor();
-    else
-        stream << std::right << std::setw(6) << " ";
-    stream << std::left << std::setw(10) << " "
-            << std::right << std::setw(2) << this->GetElementSymbol()
-            << std::left << std::setw(2) << this->GetCharge()
-            << std::endl;
+{
+	this->WritePdb( stream,
+				    this->GetResidueName(),
+					std::to_string(this->GetResidueSequenceNumber()),
+					this->GetRecordName(),
+					this->GetChainId(),
+					this->GetInsertionCode(),
+					this->GetAlternateLocation(),
+					std::to_string(this->GetOccupancy()),
+					std::to_string(this->GetTemperatureFactor()));
+//    stream << std::left << std::setw(6) << this->GetRecordName();
+//    if(this->getNumber() != gmml::iNotSet)
+//        stream << std::right << std::setw(5) << this->getNumber();
+//    else
+//        stream << std::right << std::setw(5) << " ";
+//    stream << std::left << std::setw(1) << " "
+//            << std::left << std::setw(4) << this->getName();
+//    if(this->GetAlternateLocation() == gmml::sNotSet)
+//        stream << std::left << std::setw(1) << " ";
+//    else
+//        stream << std::left << std::setw(1) << this->GetAlternateLocation();
+//    stream << std::right << std::setw(3) << this->GetResidueName()
+//                                       << std::left << std::setw(1) << " ";
+//    if(this->GetChainId() == gmml::sNotSet)
+//        stream << std::left << std::setw(1) << " ";
+//    else
+//        stream << std::left << std::setw(1) << this->GetChainId();
+//    if(this->GetResidueSequenceNumber() != gmml::iNotSet)
+//        stream << std::right << std::setw(4) << this->GetResidueSequenceNumber();
+//    else
+//        stream << std::right << std::setw(4) << " ";
+//    if(this->GetInsertionCode() == gmml::sNotSet)
+//        stream << std::left << std::setw(1) <<  " ";
+//    else
+//        stream << std::left << std::setw(1) << this->GetInsertionCode();
+//    stream << std::left << std::setw(3) << " ";
+//    if(this->getCoordinate()->CompareTo(GeometryTopology::Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == false)
+//    {
+//        stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->getCoordinate()->GetX()
+//                                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->getCoordinate()->GetY()
+//                                           << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->getCoordinate()->GetZ();
+//    }
+//    else
+//    {
+//        stream << std::right << std::setw(8) << " "
+//                << std::right << std::setw(8) << " "
+//                << std::right << std::setw(8) << " ";
+//    }
+//    if(this->GetOccupancy() != gmml::dNotSet)
+//        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << this->GetOccupancy();
+//    else
+//        stream << std::right << std::setw(6) << " ";
+//    if(this->GetTemperatureFactor() != gmml::dNotSet)
+//        stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << this->GetTemperatureFactor();
+//    else
+//        stream << std::right << std::setw(6) << " ";
+//    stream << std::left << std::setw(10) << " "
+//            << std::right << std::setw(2) << this->GetElementSymbol()
+//            << std::left << std::setw(2) << this->GetCharge()
+//            << std::endl;
 }
