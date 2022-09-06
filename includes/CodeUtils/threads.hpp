@@ -10,7 +10,7 @@
 
 namespace codeUtils
 {
-inline unsigned long const calculateNumberOfThreads(unsigned long const length)
+inline unsigned long calculateNumberOfThreads(unsigned long const length)
 {
 	// Work out details of data and from that the number of threads to use
 	//unsigned long const length = std::distance(first, last);
@@ -25,7 +25,7 @@ inline unsigned long const calculateNumberOfThreads(unsigned long const length)
 	{
 		hardware_threads = 4;
 	}
-	unsigned long const num_threads = std::min(hardware_threads, max_threads); // Choose whatever is the lesser (of two weevils).
+	unsigned long num_threads = std::min(hardware_threads, max_threads); // Choose whatever is the lesser (of two weevils).
 	return num_threads;
 	//unsigned long const block_size = length / num_threads;
 };
