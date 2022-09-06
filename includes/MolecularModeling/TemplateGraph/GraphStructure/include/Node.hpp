@@ -23,7 +23,10 @@ namespace glygraph
     Node(std::string name_t, std::string label_t);
 
     // copy constructor
-    Node(const Node<T> &rhs);
+   // Node(const Node<T> &rhs);
+
+    // copy constructor
+    Node(const T &rhs);
 
     // move constructor
     Node(Node<T> &&rhs);
@@ -47,6 +50,8 @@ namespace glygraph
     }
 
     std::vector<T*> getNeighbors();
+    std::vector<const T*> getNeighbors() const;
+
 
     std::vector<Edge<T>*> getEdges() const;
     std::vector<Edge<T>*> getOutEdges() const;
@@ -95,8 +100,10 @@ namespace glygraph
 		return;
 	}
 
-    std::vector<T* > getChildren();
+    std::vector<T*> getChildren();
+    std::vector<const T*> getChildren() const;
     std::vector<T*> getParents();
+    std::vector<const T*> getParents() const;
 
   private:
     /************************************************
@@ -158,7 +165,7 @@ namespace glygraph
 
   // Copy constructor
   template<class T>
-  inline Node<T>::Node(const Node<T> &rhs)
+  inline Node<T>::Node(const T &rhs)
       : GenericGraphObject(rhs.getName(), rhs.getLabels(), rhs.getConnectivityTypeIdentifier())
   {
     // std::cout << "\n\tGiven object ptr: " << rhs.objectPtr << "\n\n";
@@ -225,6 +232,15 @@ namespace glygraph
     parentsVec.insert(parentsVec.end(), childrenVec.begin(), childrenVec.end());
 
     return parentsVec;
+  }
+
+  template<class T>
+  inline std::vector<const T* > Node<T>::getNeighbors() const
+  {
+	  std::vector<const T*> childrenVec = this->getChildren();
+	  std::vector<const T*> parentsVec  = this->getParents();
+	  parentsVec.insert(parentsVec.end(), childrenVec.begin(), childrenVec.end());
+	  return parentsVec;
   }
 
   template<class T>
@@ -363,6 +379,17 @@ namespace glygraph
   }
 
   template<class T>
+  inline std::vector<const T*> Node<T>::getChildren() const
+  {
+	  std::vector<const T*> childrenVecToReturn;
+	  for (std::unique_ptr<Edge<T>> const &currOutEdge : this->outEdges_m)
+	  {
+		  childrenVecToReturn.push_back(currOutEdge.get()->getTargetNode());
+	  }
+	  return childrenVecToReturn;
+  }
+
+  template<class T>
   inline void Node<T>::edgeConnectionUpdate()
   {
     // So even tho we moved all the references to an edge, we have
@@ -380,12 +407,23 @@ namespace glygraph
   template<class T>
   inline std::vector<T*> Node<T>::getParents()
   {
-    std::vector<T*> parentsVecToReturn;
-    for (Edge<T> *currInEdge : this->inEdges_m)
-      {
-        parentsVecToReturn.push_back(currInEdge->getSourceNode());
-      }
-    return parentsVecToReturn;
+	  std::vector<T*> parentsVecToReturn;
+	  for (Edge<T> *currInEdge : this->inEdges_m)
+	  {
+		  parentsVecToReturn.push_back(currInEdge->getSourceNode());
+	  }
+	  return parentsVecToReturn;
+  }
+
+  template<class T>
+  inline std::vector<const T*> Node<T>::getParents() const
+  {
+	  std::vector<const T*> parentsVecToReturn;
+	  for (Edge<T> *currInEdge : this->inEdges_m)
+	  {
+		  parentsVecToReturn.push_back(currInEdge->getSourceNode());
+	  }
+	  return parentsVecToReturn;
   }
 
   template<class T>
