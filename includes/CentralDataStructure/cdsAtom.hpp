@@ -142,7 +142,10 @@ void cdsAtom<atomT>::WritePdb(std::ostream &stream,
     stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << occupancy;
     stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << temperatureFactor << std::left << std::setw(10) << " ";
     stream << std::right << std::setw(2) << this->getElement();
-    stream << std::left << std::setw(2) << std::to_string(this->getCharge()) << std::endl;
+    if (this->getCharge() != gmml::dNotSet)
+    {
+    	stream << std::left << std::setw(2) << std::to_string(this->getCharge()) << std::endl;
+    }
     return;
 }
 } // namespace
