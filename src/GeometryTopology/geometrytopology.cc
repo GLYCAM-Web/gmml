@@ -146,3 +146,75 @@ double GeometryTopology::CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, 
     }
     return (current_dihedral_angle * (180 / gmml::PI_RADIAN) ); // Convert to degrees
 }
+
+void GeometryTopology::SetDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, const double dihedral_angle, std::vector<Coordinate*> movingCoords )
+{
+	Coordinate b1 = a2;
+	b1.operator -(*a1);
+	Coordinate b2 = a3;
+	b2.operator -(*a2);
+	Coordinate b3 = a4;
+	b3.operator -(*a3);
+	Coordinate b4 = b2;
+	b4.operator *(-1);
+	Coordinate b2xb3 = b2;
+	b2xb3.CrossProduct(b3);
+	Coordinate b1_m_b2n = b1;
+	b1_m_b2n.operator *(b2.length());
+	Coordinate b1xb2 = b1;
+	b1xb2.CrossProduct(b2);
+	double current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
+	double** dihedral_angle_matrix = gmml::GenerateRotationMatrix(&b4, a2, current_dihedral - gmml::ConvertDegree2Radian(dihedral_angle));
+	for(auto &coord : movingCoords)
+	{
+		double x =dihedral_angle_matrix[0][0] * coord->GetX() + dihedral_angle_matrix[0][1] * coord->GetY() +
+				dihedral_angle_matrix[0][2] * coord->GetZ() + dihedral_angle_matrix[0][3];
+		double y = dihedral_angle_matrix[1][0] * coord->GetX() + dihedral_angle_matrix[1][1] * coord->GetY() +
+				dihedral_angle_matrix[1][2] * coord->GetZ() + dihedral_angle_matrix[1][3];
+		double z = dihedral_angle_matrix[2][0] * coord->GetX() + dihedral_angle_matrix[2][1] * coord->GetY() +
+				dihedral_angle_matrix[2][2] * coord->GetZ() + dihedral_angle_matrix[2][3];
+		coord->SetX(x);
+		coord->SetY(y);
+		coord->SetZ(z);
+	}
+}
+
+void GeometryTopology::SetAngle(Atom *a, Atom *b, Atom *c, const double angle)
+{
+	std::vector<Atom*> atomsToRotate = {b};
+	c->FindConnectedAtoms(atomsToRotate); // this is too slow, just get the coords here.
+	std::vector<Coordinate*> coords;
+	for(auto & atom : atomsToRotate)
+	{
+		coords.push_back(atom->GetCoordinate());
+	}
+	GeometryTopology::SetAngle(a->GetCoordinate(), b->GetCoordinate(), c->GetCoordinate(), angle, coords);
+}
+
+
+void GeometryTopology::SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, const double angle, std::vector<Coordinate*> coordinatesToMove)
+{
+    double current_angle = 0.0;
+    Coordinate b1 = a1;
+    b1.operator -(*a2);
+    Coordinate b2 = a3;
+    b2.operator -(*a2);
+    current_angle = acos((b1.DotProduct(b2)) / (b1.length() * b2.length() + gmml::DIST_EPSILON));
+    double rotation_angle = gmml::ConvertDegree2Radian(angle) - current_angle;
+    Coordinate direction = b1;
+    direction.CrossProduct(b2);
+    direction.Normalize();
+    double** rotation_matrix = gmml::GenerateRotationMatrix(&direction, a2, rotation_angle);
+    for(auto &atom_coordinate : coordinatesToMove)
+    {
+    	double x = rotation_matrix[0][0] * atom_coordinate->GetX() + rotation_matrix[0][1] * atom_coordinate->GetY() +
+    			rotation_matrix[0][2] * atom_coordinate->GetZ() + rotation_matrix[0][3];
+    	double y = rotation_matrix[1][0] * atom_coordinate->GetX() + rotation_matrix[1][1] * atom_coordinate->GetY() +
+    			rotation_matrix[1][2] * atom_coordinate->GetZ() + rotation_matrix[1][3];
+    	double z = rotation_matrix[2][0] * atom_coordinate->GetX() + rotation_matrix[2][1] * atom_coordinate->GetY() +
+    			rotation_matrix[2][2] * atom_coordinate->GetZ() + rotation_matrix[2][3];
+        atom_coordinate->SetX(x);
+        atom_coordinate->SetY(y);
+        atom_coordinate->SetZ(z);
+    }
+}

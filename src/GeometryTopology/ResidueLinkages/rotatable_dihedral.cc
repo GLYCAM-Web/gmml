@@ -188,67 +188,20 @@ void Rotatable_dihedral::SetDihedralAngle(const double dihedral_angle)
         a3 = atom2_->GetCoordinate();
         a4 = atom1_->GetCoordinate();
     }
-    GeometryTopology::Coordinate b1 = a2;
-    b1.operator -(*a1);
-    GeometryTopology::Coordinate b2 = a3;
-    b2.operator -(*a2);
-    GeometryTopology::Coordinate b3 = a4;
-    b3.operator -(*a3);
-    GeometryTopology::Coordinate b4 = b2;
-    b4.operator *(-1);
-    GeometryTopology::Coordinate b2xb3 = b2;
-    b2xb3.CrossProduct(b3);
-    GeometryTopology::Coordinate b1_m_b2n = b1;
-    b1_m_b2n.operator *(b2.length());
-    GeometryTopology::Coordinate b1xb2 = b1;
-    b1xb2.CrossProduct(b2);
-    double current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
-    double** dihedral_angle_matrix = gmml::GenerateRotationMatrix(&b4, a2, current_dihedral - gmml::ConvertDegree2Radian(dihedral_angle));
-    this->RecordPreviousDihedralAngle(gmml::ConvertRadian2Degree(current_dihedral));
-
-    // Yo you should add something here that checks if atoms_that_move_ is set. Yeah you.
-
+    this->RecordPreviousDihedralAngle(this->CalculateDihedralAngle());
     std::stringstream ss;
     ss << "Setting dihedral for " << atom1_->GetId() << ":"  << atom2_->GetId() << ":"  << atom3_->GetId() << ":"  << atom4_->GetId() <<  ": " << dihedral_angle << "\n";
     gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
-    for(AtomVector::iterator it = atoms_that_move_.begin(); it != atoms_that_move_.end(); it++)
+    std::vector<Coordinate*> coordinatesToMove;
+    for(auto &atom : this->GetAtomsThatMove())
     {
-        Atom *atom = *it;
-    //    std::cout << ", " << atom->GetId();
-        GeometryTopology::Coordinate* atom_coordinate = atom->GetCoordinate();
-        GeometryTopology::Coordinate result;
-        result.SetX(dihedral_angle_matrix[0][0] * atom_coordinate->GetX() + dihedral_angle_matrix[0][1] * atom_coordinate->GetY() +
-                dihedral_angle_matrix[0][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[0][3]);
-        result.SetY(dihedral_angle_matrix[1][0] * atom_coordinate->GetX() + dihedral_angle_matrix[1][1] * atom_coordinate->GetY() +
-                dihedral_angle_matrix[1][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[1][3]);
-        result.SetZ(dihedral_angle_matrix[2][0] * atom_coordinate->GetX() + dihedral_angle_matrix[2][1] * atom_coordinate->GetY() +
-                dihedral_angle_matrix[2][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[2][3]);
-
-        atom->GetCoordinate()->SetX(result.GetX());
-        atom->GetCoordinate()->SetY(result.GetY());
-        atom->GetCoordinate()->SetZ(result.GetZ());
+    	coordinatesToMove.push_back(atom->GetCoordinate());
     }
-    if(!extra_atoms_that_move_.empty())
+    for(auto &atom : extra_atoms_that_move_)
     {
-        for(AtomVector::iterator it = extra_atoms_that_move_.begin(); it != extra_atoms_that_move_.end(); it++)
-        {
-            Atom *atom = *it;
-            //std::cout << ", " << atom->GetId();
-            GeometryTopology::Coordinate* atom_coordinate = atom->GetCoordinate();
-            GeometryTopology::Coordinate result;
-            result.SetX(dihedral_angle_matrix[0][0] * atom_coordinate->GetX() + dihedral_angle_matrix[0][1] * atom_coordinate->GetY() +
-                    dihedral_angle_matrix[0][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[0][3]);
-            result.SetY(dihedral_angle_matrix[1][0] * atom_coordinate->GetX() + dihedral_angle_matrix[1][1] * atom_coordinate->GetY() +
-                    dihedral_angle_matrix[1][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[1][3]);
-            result.SetZ(dihedral_angle_matrix[2][0] * atom_coordinate->GetX() + dihedral_angle_matrix[2][1] * atom_coordinate->GetY() +
-                    dihedral_angle_matrix[2][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[2][3]);
-
-            atom->GetCoordinate()->SetX(result.GetX());
-            atom->GetCoordinate()->SetY(result.GetY());
-            atom->GetCoordinate()->SetZ(result.GetZ());
-        }
+    	coordinatesToMove.push_back(atom->GetCoordinate());
     }
-  //  std::cout << std::endl;
+    GeometryTopology::SetDihedralAngle(a1, a2, a3, a4, dihedral_angle, coordinatesToMove);
     return;
 }
 
