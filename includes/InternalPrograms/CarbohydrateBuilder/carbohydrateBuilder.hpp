@@ -20,7 +20,7 @@ typedef std::vector<SingleRotamerInfo> SingleRotamerInfoVector;
 struct DihedralOptions
 {   // CONSTRUCTOR
     DihedralOptions () {}
-    DihedralOptions(std::string name, std::vector<std::string> rotamers) : dihedralName_ (name), rotamers_ (rotamers) {}
+    DihedralOptions(const std::string name, const std::vector<std::string> rotamers) : dihedralName_ (name), rotamers_ (rotamers) {}
     // DATA
     std::string dihedralName_; // omg / phi / psi / chi1 / chi2
     std::vector<std::string> rotamers_; // gg / tg / g- etc

@@ -20,7 +20,11 @@ Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, C
 
 double CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, bool returnRadians = false);
 
+void SetDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, const double dihedral_angle, std::vector<Coordinate*> movingCoords);
 
+void SetAngle(Atom *a, Atom *b, Atom *c, const double angle);
+
+void SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, const double angle, std::vector<Coordinate*> coordinatesToMove);
 }
 
 #endif // GEOMETRYTOPOLOGY_HPP
