@@ -471,8 +471,7 @@ MolecularModeling::Residue* selection::FindResidue(MolecularModeling::Assembly &
         }
     }
     std::cerr << "Residue " << query << " not found in assembly!" << std::endl;
-    MolecularModeling::Residue* residuePointerToNothing;
-    return residuePointerToNothing;
+    return nullptr;
 }
 
 MolecularModeling::AtomVector selection::FindOtherAtomsWithinMolecule(MolecularModeling::Atom *queryAtom)
