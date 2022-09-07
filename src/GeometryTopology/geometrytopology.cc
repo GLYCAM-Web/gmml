@@ -118,24 +118,24 @@ Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(Coordinat
     return newCoord;
 }
 
-double GeometryTopology::CalculateDihedralAngle(GeometryTopology::Coordinate* a1, GeometryTopology::Coordinate* a2, GeometryTopology::Coordinate* a3, GeometryTopology::Coordinate* a4, bool returnRadians)
+double GeometryTopology::CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, bool returnRadians)
 {   // returns Degrees by default, must set bool returnRadians to true for radians.
-    GeometryTopology::Coordinate b1 = a2;
+    Coordinate b1 = a2;
     b1.operator -(*a1);
-    GeometryTopology::Coordinate b2 = a3;
+    Coordinate b2 = a3;
     b2.operator -(*a2);
-    GeometryTopology::Coordinate b3 = a4;
+    Coordinate b3 = a4;
     b3.operator -(*a3);
-    GeometryTopology::Coordinate b4 = b2;
+    Coordinate b4 = b2;
     b4.operator *(-1);
 
-    GeometryTopology::Coordinate b2xb3 = b2;
+    Coordinate b2xb3 = b2;
     b2xb3.CrossProduct(b3);
 
-    GeometryTopology::Coordinate b1_m_b2n = b1;
+    Coordinate b1_m_b2n = b1;
     b1_m_b2n.operator *(b2.length());
 
-    GeometryTopology::Coordinate b1xb2 = b1;
+    Coordinate b1xb2 = b1;
     b1xb2.CrossProduct(b2);
 
     double current_dihedral_angle = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
