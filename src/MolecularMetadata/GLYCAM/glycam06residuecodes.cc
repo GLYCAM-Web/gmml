@@ -13,7 +13,7 @@ using gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookupContaine
 //                      QUERY FUNCTIONS                 //
 //////////////////////////////////////////////////////////
 
-std::string Glycam06ResidueNamesToCodesLookupContainer::GetCodeForResidue(std::string queryResidueName)
+std::string Glycam06ResidueNamesToCodesLookupContainer::GetCodeForResidue(std::string queryResidueName) const
 { // e.g. input = Fuc, output = F.
     for (const auto& entry : ResidueNamesCodesTypesLookupTable_)
     {
@@ -24,7 +24,7 @@ std::string Glycam06ResidueNamesToCodesLookupContainer::GetCodeForResidue(std::s
 }
 
 // This won't be correct all the time (see Tyv), but should be ok for displaying labels to humans.
-std::string Glycam06ResidueNamesToCodesLookupContainer::GetResidueForCode(std::string residueNameInGLYCAMFormat)
+std::string Glycam06ResidueNamesToCodesLookupContainer::GetResidueForCode(std::string residueNameInGLYCAMFormat) const
 {   // residueNameInGLYCAMFormat. E.g. 0GB, 3YB, 3BC.
 //    std::cout << "Input name is " << residueNameInGLYCAMFormat << std::endl;
     if (residueNameInGLYCAMFormat.length() < 3)

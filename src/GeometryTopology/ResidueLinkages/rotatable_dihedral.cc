@@ -84,7 +84,7 @@ DihedralAngleDataVector Rotatable_dihedral::GetLikelyMetadata() const
     return returningMetadata;
 }
 
-int Rotatable_dihedral::GetNumberOfRotamers(bool likelyShapesOnly)
+int Rotatable_dihedral::GetNumberOfRotamers(bool likelyShapesOnly) const
 {
     if (this->GetMetadata().empty())
     {
@@ -105,7 +105,7 @@ int Rotatable_dihedral::GetNumberOfRotamers(bool likelyShapesOnly)
     }
 }
 
-std::vector<double> Rotatable_dihedral::GetAllPossibleAngleValues(int interval)
+std::vector<double> Rotatable_dihedral::GetAllPossibleAngleValues(const int interval) const
 {
     std::vector<double> allPossibleAngleValues;
     if (assigned_metadata_.empty())
@@ -135,7 +135,7 @@ std::vector<double> Rotatable_dihedral::GetAllPossibleAngleValues(int interval)
     return allPossibleAngleValues;
 }
 
-std::string Rotatable_dihedral::GetName()
+std::string Rotatable_dihedral::GetName() const
 {
     if (this->GetLikelyMetadata().empty())
         return "Boo";
@@ -605,28 +605,17 @@ void Rotatable_dihedral::SetWasEverRotated(bool wasEverRotated)
     wasEverRotated_ = wasEverRotated;
 }
 
-bool Rotatable_dihedral::CheckIfEverRotated()
+bool Rotatable_dihedral::CheckIfEverRotated() const
 {
     return wasEverRotated_;
 }
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-std::string Rotatable_dihedral::Print()
+std::string Rotatable_dihedral::Print() const
 {
-   std::stringstream logss;
-   logss << atom1_->GetName() << ", " << atom2_->GetName() << ", " << atom3_->GetName() << ", " << atom4_->GetName() << ": " << this->CalculateDihedralAngle()  << ".\n";
-//   std::cout << logss.str();
-   gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-   return logss.str();
+   std::stringstream ss;
+   ss << atom1_->GetName() << ", " << atom2_->GetName() << ", " << atom3_->GetName() << ", " << atom4_->GetName() << ": " << this->CalculateDihedralAngle()  << ".\n";
+   gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+   return ss.str();
 }
-//////////////////////////////////////////////////////////
-//                       OPERATORS                      //
-//////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream& os, Rotatable_dihedral& rotatable_dihedral)
-{
-    AtomVector atoms = rotatable_dihedral.GetAtoms();
-    os << atoms.at(0)->GetName() << ", " << atoms.at(1)->GetName() << ", " << atoms.at(2)->GetName() << ", " << atoms.at(3)->GetName() << ": " 
-    << rotatable_dihedral.CalculateDihedralAngle() << ".\n";
-    return os;
-} // operator<<
