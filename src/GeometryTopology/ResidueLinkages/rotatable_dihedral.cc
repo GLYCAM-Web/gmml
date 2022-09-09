@@ -529,20 +529,7 @@ void Rotatable_dihedral::UpdateAtomsIfPsi()
 
 Atom* Rotatable_dihedral::CreateHydrogenAtomForPsi(Atom *centralAtom)
 {
-    if(centralAtom->GetNode()->GetNodeNeighbors().size() != 3)
-    {
-        std::stringstream ss;
-        ss << "Error in Rotatable_dihedral::CreateHydrogenAtomForPsi. centralAtom neighbors = " <<
-                  centralAtom->GetNode()->GetNodeNeighbors().size() << " for " << centralAtom->GetId();
-        gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
-        throw std::runtime_error(ss.str());
-    }
-    std::vector<Coordinate*> threeNeighborCoords;
-    for (auto &neighbor : centralAtom->GetNode()->GetNodeNeighbors())
-    {
-        threeNeighborCoords.push_back(neighbor->GetCoordinate());
-    }
-    Coordinate newCoord = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(centralAtom->GetCoordinate(), threeNeighborCoords);
+    Coordinate newCoord = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(centralAtom);
     Atom *newAtom = new Atom(centralAtom->GetResidue(), "HHH", newCoord);
     centralAtom->GetResidue()->AddAtom(newAtom);
     centralAtom->GetNode()->AddNodeNeighbor(newAtom);

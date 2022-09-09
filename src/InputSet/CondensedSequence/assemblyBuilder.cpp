@@ -11,7 +11,7 @@
 #include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/files.hpp"
-
+#include "includes/GeometryTopology/geometrytopology.hpp"
 
 //using Abstract::Residue; // For Residue::Type
 
@@ -207,17 +207,17 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 	gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
 	MolecularModeling::Assembly whyOhGodWhy; // Doing as few changes as possible. These functions should be in a geometryTopology namespace.	
 	whyOhGodWhy.SetResidueResidueBondDistance(parentAtom, childAtom);
+	//GeometryTopology::SetDistance(parentAtom, childAtom);
 	// Angle
 	logss << "Setting angles.\n";
 	gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
 	const double angle_to_set = 109.4;
-	Atom* parentAtomNeighbor;
-	for (auto &neighbor : parentAtom->GetNode()->GetNodeNeighbors())
+	for (auto &parentAtomNeighbor : parentAtom->GetNode()->GetNodeNeighbors())
 	{ 
-		if ( (neighbor->GetName().at(0) != 'H') && (neighbor != childAtom ) )
+		if ( (parentAtomNeighbor->GetName().at(0) != 'H') && (parentAtomNeighbor != childAtom ) )
 		{
-			parentAtomNeighbor = neighbor;
-			whyOhGodWhy.SetAngle(parentAtomNeighbor, parentAtom, childAtom, angle_to_set);
+			//whyOhGodWhy.SetAngle(parentAtomNeighbor, parentAtom, childAtom, angle_to_set);
+			GeometryTopology::SetAngle(parentAtomNeighbor, parentAtom, childAtom, angle_to_set);
 		}
 	}
 	return;	

@@ -1292,22 +1292,22 @@ void Assembly::SetDihedral(MolecularModeling::Atom *atom1, MolecularModeling::At
 void Assembly::SetAngle(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2, MolecularModeling::Atom* atom3, double angle)
 {
     double current_angle = 0.0;
-    GeometryTopology::Coordinate* a1 = atom1->GetCoordinates().at(model_index_);
-    GeometryTopology::Coordinate* a2 = atom2->GetCoordinates().at(model_index_);
-    GeometryTopology::Coordinate* a3 = atom3->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate a1 = atom1->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate a2 = atom2->GetCoordinates().at(model_index_);
+    GeometryTopology::Coordinate a3 = atom3->GetCoordinates().at(model_index_);
 
-    GeometryTopology::Coordinate* b1 = new GeometryTopology::Coordinate(*a1);
-    b1->operator -(*a2);
-    GeometryTopology::Coordinate* b2 = new GeometryTopology::Coordinate(*a3);
-    b2->operator -(*a2);
+    GeometryTopology::Coordinate b1 = a1;
+    b1.operator -(a2);
+    GeometryTopology::Coordinate b2 = a3;
+    b2.operator -(a2);
 
-    current_angle = acos((b1->DotProduct(*b2)) / (b1->length() * b2->length() + gmml::DIST_EPSILON));
+    current_angle = acos((b1.DotProduct(b2)) / (b1.length() * b2.length() + gmml::DIST_EPSILON));
     double rotation_angle = gmml::ConvertDegree2Radian(angle) - current_angle;
 
-    GeometryTopology::Coordinate* direction = new GeometryTopology::Coordinate(*b1);
-    direction->CrossProduct(*b2);
-    direction->Normalize();
-    double** rotation_matrix = gmml::GenerateRotationMatrix(direction, a2, rotation_angle);
+    GeometryTopology::Coordinate direction = b1;
+    direction.CrossProduct(b2);
+    direction.Normalize();
+    double** rotation_matrix = gmml::GenerateRotationMatrix(&direction, &a2, rotation_angle);
 
     AtomVector atomsToRotate = AtomVector();
     atomsToRotate.push_back(atom2);
@@ -1316,17 +1316,17 @@ void Assembly::SetAngle(MolecularModeling::Atom* atom1, MolecularModeling::Atom*
     for(AtomVector::iterator it = atomsToRotate.begin() + 1; it != atomsToRotate.end(); it++)
     {
         GeometryTopology::Coordinate* atom_coordinate = (*it)->GetCoordinates().at(model_index_);
-        GeometryTopology::Coordinate* result = new GeometryTopology::Coordinate();
-        result->SetX(rotation_matrix[0][0] * atom_coordinate->GetX() + rotation_matrix[0][1] * atom_coordinate->GetY() +
-                rotation_matrix[0][2] * atom_coordinate->GetZ() + rotation_matrix[0][3]);
-        result->SetY(rotation_matrix[1][0] * atom_coordinate->GetX() + rotation_matrix[1][1] * atom_coordinate->GetY() +
-                rotation_matrix[1][2] * atom_coordinate->GetZ() + rotation_matrix[1][3]);
-        result->SetZ(rotation_matrix[2][0] * atom_coordinate->GetX() + rotation_matrix[2][1] * atom_coordinate->GetY() +
-                rotation_matrix[2][2] * atom_coordinate->GetZ() + rotation_matrix[2][3]);
+        //GeometryTopology::Coordinate* result = new GeometryTopology::Coordinate();
+        double x = rotation_matrix[0][0] * atom_coordinate->GetX() + rotation_matrix[0][1] * atom_coordinate->GetY() +
+                rotation_matrix[0][2] * atom_coordinate->GetZ() + rotation_matrix[0][3];
+        double y = rotation_matrix[1][0] * atom_coordinate->GetX() + rotation_matrix[1][1] * atom_coordinate->GetY() +
+                rotation_matrix[1][2] * atom_coordinate->GetZ() + rotation_matrix[1][3];
+        double z = rotation_matrix[2][0] * atom_coordinate->GetX() + rotation_matrix[2][1] * atom_coordinate->GetY() +
+                rotation_matrix[2][2] * atom_coordinate->GetZ() + rotation_matrix[2][3];
 
-        (*it)->GetCoordinates().at(model_index_)->SetX(result->GetX());
-        (*it)->GetCoordinates().at(model_index_)->SetY(result->GetY());
-        (*it)->GetCoordinates().at(model_index_)->SetZ(result->GetZ());
+        (*it)->GetCoordinates().at(model_index_)->SetX(x);
+        (*it)->GetCoordinates().at(model_index_)->SetY(y);
+        (*it)->GetCoordinates().at(model_index_)->SetZ(z);
     }
 }
 

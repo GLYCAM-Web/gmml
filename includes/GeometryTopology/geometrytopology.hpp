@@ -16,7 +16,9 @@ Coordinate subtract_coordinates(Coordinate minuaend, Coordinate subtrahend);
 
 double calculateDistanceFromPointToLineBetweenTwoPoints(Coordinate queryPoint, Coordinate linePointA, Coordinate linePointB);
 
-Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors);
+Coordinate CreateMissingCoordinateForTetrahedralAtom(Atom *atom, const double distance = 1.0);
+
+Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors, const double distance);
 
 double CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, bool returnRadians = false);
 
@@ -25,6 +27,9 @@ void SetDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate
 void SetAngle(Atom *a, Atom *b, Atom *c, const double angle);
 
 void SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, const double angle, std::vector<Coordinate*> coordinatesToMove);
+
+void SetDistance(Atom *a, Atom *b);
+
 }
 
 #endif // GEOMETRYTOPOLOGY_HPP

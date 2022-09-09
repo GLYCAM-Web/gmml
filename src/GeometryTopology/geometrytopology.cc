@@ -2,6 +2,9 @@
 
 #include "../../includes/GeometryTopology/geometrytopology.hpp"
 #include "../../includes/utils.hpp"
+#include "includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
+#include "includes/CodeUtils/logging.hpp"
+#include "includes/MolecularModeling/atomnode.hpp"
 
 using GeometryTopology::Coordinate;
 
@@ -101,7 +104,26 @@ double GeometryTopology::calculateDistanceFromPointToLineBetweenTwoPoints(Coordi
     return height;
 }
 
-Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors)
+Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(Atom *centralAtom, const double distance)
+{
+	if(centralAtom->GetNode()->GetNodeNeighbors().size() != 4)
+	{
+		std::stringstream ss;
+		ss << "Error in CreateMissingCoordinateForTetrahedralAtom. centralAtom neighbors = " <<
+				centralAtom->GetNode()->GetNodeNeighbors().size() << " for " << centralAtom->GetId();
+		gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+		throw std::runtime_error(ss.str());
+	}
+	std::vector<Coordinate*> threeNeighborCoords;
+	for (auto &neighbor : centralAtom->GetNode()->GetNodeNeighbors())
+	{
+		threeNeighborCoords.push_back(neighbor->GetCoordinate());
+	}
+    return GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(centralAtom->GetCoordinate(), threeNeighborCoords, distance);
+}
+
+
+Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors, const double distance)
 {
     Eigen::Vector3d combinedVs;
     for(auto &neighbor : threeNeighbors)
@@ -112,9 +134,9 @@ Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(Coordinat
         combinedVs += temp;
     }
     combinedVs.normalize();
-    Coordinate newCoord(centralCoord->GetX() + combinedVs(0),
-                        centralCoord->GetY() + combinedVs(1),
-                        centralCoord->GetZ() + combinedVs(2));
+    Coordinate newCoord(centralCoord->GetX() + (combinedVs(0) * distance),
+                        centralCoord->GetY() + (combinedVs(1) * distance),
+                        centralCoord->GetZ() + (combinedVs(2))  * distance);
     return newCoord;
 }
 
@@ -181,23 +203,26 @@ void GeometryTopology::SetDihedralAngle(Coordinate* a1, Coordinate* a2, Coordina
 
 void GeometryTopology::SetAngle(Atom *a, Atom *b, Atom *c, const double angle)
 {
-	std::vector<Atom*> atomsToRotate = {b};
+	std::vector<Atom*> atomsToRotate;
+	atomsToRotate.push_back(b);
 	c->FindConnectedAtoms(atomsToRotate); // this is too slow, just get the coords here.
 	std::vector<Coordinate*> coords;
+	atomsToRotate.erase(atomsToRotate.begin()); //feck
 	for(auto & atom : atomsToRotate)
 	{
 		coords.push_back(atom->GetCoordinate());
 	}
 	GeometryTopology::SetAngle(a->GetCoordinate(), b->GetCoordinate(), c->GetCoordinate(), angle, coords);
+	return;
 }
 
 
 void GeometryTopology::SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, const double angle, std::vector<Coordinate*> coordinatesToMove)
 {
     double current_angle = 0.0;
-    Coordinate b1 = a1;
+    Coordinate b1 = *a1;
     b1.operator -(*a2);
-    Coordinate b2 = a3;
+    Coordinate b2 = *a3;
     b2.operator -(*a2);
     current_angle = acos((b1.DotProduct(b2)) / (b1.length() * b2.length() + gmml::DIST_EPSILON));
     double rotation_angle = gmml::ConvertDegree2Radian(angle) - current_angle;
@@ -217,4 +242,22 @@ void GeometryTopology::SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, 
         atom_coordinate->SetY(y);
         atom_coordinate->SetZ(z);
     }
+}
+
+void GeometryTopology::SetDistance(Atom *a, Atom *b)
+{ // Figure out distance
+	gmml::MolecularMetadata::GLYCAM::BondLengthByTypePairContainer bondLengthByTypePairContainer;
+	double distance = bondLengthByTypePairContainer.GetBondLengthForAtomTypes(a->MolecularDynamicAtom::GetAtomType(), b->MolecularDynamicAtom::GetAtomType());
+	// Figure out position of where the b atom should end up relative to a
+	Coordinate c = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(a, distance);
+	// Figure out which atoms will move
+	std::vector<Atom*> atomsToRotate;
+	atomsToRotate.push_back(a);
+	b->FindConnectedAtoms(atomsToRotate); // this is too slow, just get the coords here.
+	atomsToRotate.erase(atomsToRotate.begin()); //feck
+	for(auto & atom : atomsToRotate)
+	{
+		atom->GetCoordinate()->Translate(c.GetX(), c.GetY(), c.GetZ());
+	}
+	return;
 }
