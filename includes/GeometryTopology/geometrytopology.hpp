@@ -4,10 +4,11 @@
 #include "../MolecularModeling/atom.hpp"
 #include "coordinate.hpp"
 
+using MolecularModeling::Atom;
 namespace GeometryTopology
 {
 
-Coordinate get_cartesian_point_from_internal_coords(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c, double theta_Degrees, double phi_Degrees, double distance_Angstrom);
+Coordinate get_cartesian_point_from_internal_coords(Atom *a, Atom *b, Atom *c, double theta_Degrees, double phi_Degrees, double distance_Angstrom);
 
 Coordinate get_cartesian_point_from_internal_coords(const Coordinate* a, const Coordinate* b, const Coordinate* c, double theta_Degrees, double phi_Degrees, double distance_Angstrom);
 
@@ -17,10 +18,19 @@ Coordinate subtract_coordinates(const Coordinate& minuaend, const Coordinate& su
 
 double calculateDistanceFromPointToLineBetweenTwoPoints(const Coordinate& queryPoint, const Coordinate& linePointA, const Coordinate& linePointB);
 
-Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors);
+Coordinate CreateMissingCoordinateForTetrahedralAtom(Atom *atom, const double distance = 1.0);
+
+Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors, const double distance);
 
 double CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, bool returnRadians = false);
 
+void SetDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, const double dihedral_angle, std::vector<Coordinate*> movingCoords);
+
+void SetAngle(Atom *a, Atom *b, Atom *c, const double angle);
+
+void SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, const double angle, std::vector<Coordinate*> coordinatesToMove);
+
+void SetDistance(Atom *a, Atom *b);
 
 }
 

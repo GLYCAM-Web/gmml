@@ -21,7 +21,7 @@ using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
 //            && entry1.index_ == entry2.index_ );
 //}
 
-DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2)
+DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(const MolecularModeling::Atom* linking_atom1, const MolecularModeling::Atom* linking_atom2) const
 {
     DihedralAngleDataVector matching_entries;
     Glycam06NamesToTypesLookupContainer metadata_residueNamesToTypes;
@@ -59,7 +59,7 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(Molecul
 // Some entries have conditions for the first or second residue to have a particular type (aka tag).
 // Most entries have "none" for condition. This checks first if condition is "none", and therefore satisfied.
 // Otherwise (else if) it checks if any of the residue_types match the condition for the entry, e.g. gauche_effect=galacto.
-bool DihedralAngleDataContainer::checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::vector<std::string> entry_conditions)
+bool DihedralAngleDataContainer::checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::vector<std::string> entry_conditions) const
 {
     for (const auto& entry_condition : entry_conditions)
     {   // If no condition, return true. If can't find the condition in the list return false, otherwise, having found the condition(s), return true.

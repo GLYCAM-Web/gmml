@@ -62,7 +62,7 @@ public:
     //                      QUERY FUNCTIONS                 //
     //////////////////////////////////////////////////////////
     // Pass in the two atoms on either side the residue-residue linkage
-    DihedralAngleDataVector GetEntriesForLinkage(MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2);
+    DihedralAngleDataVector GetEntriesForLinkage(const MolecularModeling::Atom* linking_atom1, const MolecularModeling::Atom* linking_atom2) const;
 
 private:
     //////////////////////////////////////////////////////////
@@ -71,7 +71,7 @@ private:
     // Some entries have conditions for the first or second residue to have a particular type (aka tag).
     // Most entries have "none" for condition. This checks first if condition is "none", and therefore satisfied.
     // Otherwise (else if) it checks if any of the residue_types match the condition for the entry, e.g. gauche_effect=galacto.
-    bool checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::vector<std::string> entry_conditions);
+    bool checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::vector<std::string> entry_conditions) const;
     
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
