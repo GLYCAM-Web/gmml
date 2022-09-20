@@ -34,3 +34,4 @@
 00040_Bad<15>OH
 00041_DGlcpa1-4DGlcpa1-6DManpa1-<15>OH
 00042_DGlcpa1-4DGlcpa1-[4DGlcpa1-]<>OH
+00043_DArafb1-2DArafa1-3DArafa1-5DArafa1-OME
