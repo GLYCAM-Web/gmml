@@ -49,7 +49,7 @@ public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTORS                   //
     //////////////////////////////////////////////////////////
-    carbohydrateBuilder(std::string condensedSequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH", std::string prepFilePath = "../dat/prep/GLYCAM_06j-1_GAGS.prep");
+    carbohydrateBuilder(std::string condensedSequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH", std::string prepFilePath = "../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep");
     //////////////////////////////////////////////////////////
     //                       ACCESSORS                      //
     //////////////////////////////////////////////////////////
