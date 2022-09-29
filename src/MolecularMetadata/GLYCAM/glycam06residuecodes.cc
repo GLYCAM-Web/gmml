@@ -132,6 +132,8 @@ Glycam06ResidueNamesToCodesLookupContainer::Glycam06ResidueNamesToCodesLookupCon
         {"NeupNGca"    , "GL" , "Saccharide"},
         {"KDNpa"       , "KN" , "Saccharide"},
         {"KDOpa"       , "KO" , "Saccharide"},
+		{"KDNpb"       , "Kn" , "Saccharide"},
+		{"KDOpb"       , "Ko" , "Saccharide"},
         {"Bacpb"       , "BC" , "Saccharide"},
         {"ROH"         , "ROH", "Aglycone"  },
         {"OH"          , "ROH", "Aglycone"  },
