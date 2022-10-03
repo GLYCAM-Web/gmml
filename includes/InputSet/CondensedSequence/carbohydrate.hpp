@@ -6,13 +6,13 @@
 
 namespace CondensedSequence
 {
-    class AssemblyBuilder : public SequenceManipulator
+    class Carbohydrate : public SequenceManipulator
     {
     public:
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
-        AssemblyBuilder(std::string inputSequence, std::string prepFilePath, MolecularModeling::Assembly *inputAssembly);
+    	Carbohydrate(std::string inputSequence, std::string prepFilePath);
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
@@ -35,10 +35,10 @@ namespace CondensedSequence
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
         void EnsureIntegralCharge(double charge);
-        void GenerateResidues(MolecularModeling::Assembly *inputAssembly);
-        void RecurveGenerateResidues(ParsedResidue *currentChild, MolecularModeling::Residue &parent, MolecularModeling::Assembly* assembly); 
-        void BondResiduesDeduceAtoms(MolecularModeling::Residue& parentResidue, MolecularModeling::Residue& childResidue, std::string linkageLabel);
-        std::string GetGlycamResidueName(ParsedResidue &residue);
+//        void RecurveGenerateResidues(ParsedResidue *currentChild, MolecularModeling::Residue &parent, MolecularModeling::Assembly* assembly);
+//        void BondResiduesDeduceAtoms(MolecularModeling::Residue& parentResidue, MolecularModeling::Residue& childResidue, std::string linkageLabel);
+        std::vector<std::string> GetGlycamNamesOfResidues() const;
+        std::string GetGlycamResidueName(ParsedResidue *residue) const;
         //////////////////////////////////////////////////////////
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////

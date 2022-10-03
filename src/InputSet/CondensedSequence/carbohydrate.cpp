@@ -238,7 +238,7 @@ std::vector<std::string> Carbohydrate::GetGlycamNamesOfResidues() const
 }
 
 
-std::string Carbohydrate::GetGlycamResidueName(const ParsedResidue *residue) const
+std::string Carbohydrate::GetGlycamResidueName(ParsedResidue *residue) const
 {
     std::string linkages = "";
     if (residue->GetType() == ParsedResidue::Type::Sugar)
