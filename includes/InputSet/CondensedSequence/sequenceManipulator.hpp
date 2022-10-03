@@ -17,7 +17,7 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        inline ParsedResidue* GetTerminal() {return this->getResidues().front();}
+        inline ParsedResidue* GetTerminal() const {return this->getResidues().front();}
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////

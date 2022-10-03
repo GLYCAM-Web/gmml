@@ -18,16 +18,16 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        std::string GetName(const bool withLabels = false);
-        std::string GetLinkageName(const bool withLabels = false);
-        inline std::string GetInputString() {return fullResidueString_;}
-        inline std::string GetIsomer() {return isomer_;}
-        inline std::string GetResidueName() {return residueName_;}
-        inline std::string GetRingType() {return ringType_;}
-        inline std::string GetRingShape() {return ringShape_;}
-        inline std::string GetResidueModifier() {return residueModifier_;}
-        inline std::string GetConfiguration() {return configuration_;}
-        inline std::string GetLinkage() {return linkage_;}
+        std::string GetName(const bool withLabels = false) const;
+        std::string GetLinkageName(const bool withLabels = false) const;
+        inline std::string GetInputString() const {return fullResidueString_;}
+        inline std::string GetIsomer() const {return isomer_;}
+        inline std::string GetResidueName() const {return residueName_;}
+        inline std::string GetRingType() const {return ringType_;}
+        inline std::string GetRingShape() const {return ringShape_;}
+        inline std::string GetResidueModifier() const {return residueModifier_;}
+        inline std::string GetConfiguration() const {return configuration_;}
+        inline std::string GetLinkage() const {return linkage_;}
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
@@ -35,14 +35,14 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        std::string GetLink();
-        std::vector<ParsedResidue*> GetChildren();
-        std::vector<ParsedResidue*> GetParents();
-        std::string GetChildLinkagesForGlycamResidueNaming();
-        std::string Print();
-        std::string GetGlycamResidueName();
-        std::string GetGraphVizLine(std::string SnfgFilePath = "");
-        std::string GetMonosaccharideName();
+        std::string GetLink() const;
+        std::vector<ParsedResidue*> GetChildren() const;
+        std::vector<ParsedResidue*> GetParents() const;
+        std::string GetChildLinkagesForGlycamResidueNaming() const;
+        std::string Print() const;
+        std::string GetGlycamResidueName() const;
+        std::string GetGraphVizLine(std::string SnfgFilePath = "") const;
+        std::string GetMonosaccharideName() const;
         //////////////////////////////////////////////////////////
         //                  OPERATOR OVERLOADING                //
         //////////////////////////////////////////////////////////

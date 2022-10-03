@@ -30,7 +30,7 @@ void ParsedResidue::AddLinkage(ParsedResidue* otherRes)
     return;
 }
 
-std::string ParsedResidue::GetLink()
+std::string ParsedResidue::GetLink() const
 {
     std::string linkage = this->GetLinkage();
     switch (this->GetType())
@@ -46,7 +46,7 @@ std::string ParsedResidue::GetLink()
     }
 }
 
-std::vector<ParsedResidue*> ParsedResidue::GetChildren()
+std::vector<ParsedResidue*> ParsedResidue::GetChildren() const
 {
 	std::vector<ParsedResidue*> resRet;
 	for (glygraph::Node<ParsedResidue>* currNodeRes : this->getParents())
@@ -56,7 +56,7 @@ std::vector<ParsedResidue*> ParsedResidue::GetChildren()
     return resRet;
 }
 
-std::vector<ParsedResidue*> ParsedResidue::GetParents()
+std::vector<ParsedResidue*> ParsedResidue::GetParents() const
 {
 	std::vector<ParsedResidue*> resRet;
 	for (glygraph::Node<ParsedResidue>* currNodeRes : this->getChildren())
@@ -66,7 +66,7 @@ std::vector<ParsedResidue*> ParsedResidue::GetParents()
     return resRet;
 }
 
-std::string ParsedResidue::GetChildLinkagesForGlycamResidueNaming()
+std::string ParsedResidue::GetChildLinkagesForGlycamResidueNaming() const
 {
     std::string linkages;
     for (auto &child : this->GetChildren())
@@ -87,7 +87,7 @@ std::string ParsedResidue::GetChildLinkagesForGlycamResidueNaming()
     return linkages;
 }
 
-std::string ParsedResidue::GetName(const bool withLabels)
+std::string ParsedResidue::GetName(const bool withLabels) const
 {
     if (withLabels)
     {
@@ -96,7 +96,7 @@ std::string ParsedResidue::GetName(const bool withLabels)
     return this->GetIsomer() + this->GetResidueName() + this->GetRingType() + this->GetResidueModifier() + this->GetRingShape();
 }
 
-std::string ParsedResidue::GetLinkageName(const bool withLabels)
+std::string ParsedResidue::GetLinkageName(const bool withLabels) const
 {   // Should only ever be zero or one outEdges in my current design.
     for (auto &linkage : this->getOutEdges())
     {
@@ -210,7 +210,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
     gmml::log(__LINE__, __FILE__, gmml::INF, this->Print());
 }
 
-std::string ParsedResidue::Print()
+std::string ParsedResidue::Print() const
 {
 	std::stringstream ss;
     ss << this->GetIsomer() << "_" 
@@ -224,7 +224,7 @@ std::string ParsedResidue::Print()
     return ss.str();
 }
 
-std::string ParsedResidue::GetMonosaccharideName()
+std::string ParsedResidue::GetMonosaccharideName() const
 {
     return this->GetIsomer() + this->GetResidueName() + this->GetResidueModifier() + this->GetRingShape();
 }

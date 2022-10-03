@@ -13,7 +13,6 @@
 #include "includes/MolecularMetadata/atomicBonds.hpp" // bondIfClose
 #include "includes/CentralDataStructure/cdsFunctions.hpp"
 
-
 namespace cds
 {
 template <class moleculeT, class residueT, class atomT>
@@ -28,12 +27,12 @@ public:
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
     inline const int& getNumber()const {return number_ ;}
-    std::vector<const atomT*> getAtoms() const;
-    std::vector<const residueT*> getResidues() const;
-    std::vector<const moleculeT*> getMolecules() const;
-    std::vector<atomT*> getAtoms();
-    std::vector<residueT*> getResidues();
-    std::vector<moleculeT*> getMolecules();
+//    std::vector<const atomT*> getAtoms() const;
+//    std::vector<const residueT*> getResidues() const;
+//    std::vector<const moleculeT*> getMolecules() const;
+    std::vector<atomT*> getAtoms() const;
+    std::vector<residueT*> getResidues() const;
+    std::vector<moleculeT*> getMolecules() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
@@ -57,19 +56,19 @@ private:
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
-template <class moleculeT, class residueT, class atomT>
-std::vector<const moleculeT*> cdsAssembly<moleculeT, residueT, atomT>::getMolecules() const
-{
-    std::vector<const moleculeT*> molecules;
-    for(auto &molPtr : molecules_)
-    {
-        molecules.push_back(molPtr.get());
-    }
-    return molecules;
-}
+//template <class moleculeT, class residueT, class atomT>
+//std::vector<const moleculeT*> cdsAssembly<moleculeT, residueT, atomT>::getMolecules() const
+//{
+//    std::vector<const moleculeT*> molecules;
+//    for(auto &molPtr : molecules_)
+//    {
+//        molecules.push_back(molPtr.get());
+//    }
+//    return molecules;
+//}
 
 template <class moleculeT, class residueT, class atomT>
-std::vector<moleculeT*> cdsAssembly<moleculeT, residueT, atomT>::getMolecules()
+std::vector<moleculeT*> cdsAssembly<moleculeT, residueT, atomT>::getMolecules() const
 {
     std::vector<moleculeT*> molecules;
     for(auto &molPtr : molecules_)
@@ -79,22 +78,22 @@ std::vector<moleculeT*> cdsAssembly<moleculeT, residueT, atomT>::getMolecules()
     return molecules;
 }
 
-template <class moleculeT, class residueT, class atomT>
-std::vector<const residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResidues() const
-{
-    std::vector<const residueT*> residues;
-    for(auto &molPtr : this->getMolecules())
-    {
-        std::vector<const residueT*> currentMoleculeResidues = molPtr->getResidues();
-        residues.insert(residues.end(),
-                std::make_move_iterator(currentMoleculeResidues.begin()),
-                std::make_move_iterator(currentMoleculeResidues.end()) );
-    }
-    return residues;
-}
+//template <class moleculeT, class residueT, class atomT>
+//std::vector<const residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResidues() const
+//{
+//    std::vector<const residueT*> residues;
+//    for(auto &molPtr : this->getMolecules())
+//    {
+//        std::vector<const residueT*> currentMoleculeResidues = molPtr->getResidues();
+//        residues.insert(residues.end(),
+//                std::make_move_iterator(currentMoleculeResidues.begin()),
+//                std::make_move_iterator(currentMoleculeResidues.end()) );
+//    }
+//    return residues;
+//}
 
 template <class moleculeT, class residueT, class atomT>
-std::vector<residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResidues()
+std::vector<residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResidues() const
 {
     std::vector<residueT*> residues;
     for(auto &molPtr : this->getMolecules())
@@ -107,22 +106,22 @@ std::vector<residueT*> cdsAssembly<moleculeT, residueT, atomT>::getResidues()
     return residues;
 }
 
-template <class moleculeT, class residueT, class atomT>
-std::vector<const atomT*> cdsAssembly<moleculeT, residueT, atomT>::getAtoms() const
-{
-    std::vector<const atomT*> atoms;
-    for(auto &residue : this->getResidues())
-    {
-        std::vector<const atomT*> currentResidueAtoms = residue->getAtoms();
-        atoms.insert( atoms.end(), // Concatenates the vectors. currentResidueAtoms isn't left in a defined state but that's ok here.
-                std::make_move_iterator(currentResidueAtoms.begin()),
-                std::make_move_iterator(currentResidueAtoms.end()) );
-    }
-    return atoms;
-}
+//template <class moleculeT, class residueT, class atomT>
+//std::vector<const atomT*> cdsAssembly<moleculeT, residueT, atomT>::getAtoms() const
+//{
+//    std::vector<const atomT*> atoms;
+//    for(auto &residue : this->getResidues())
+//    {
+//        std::vector<const atomT*> currentResidueAtoms = residue->getAtoms();
+//        atoms.insert( atoms.end(), // Concatenates the vectors. currentResidueAtoms isn't left in a defined state but that's ok here.
+//                std::make_move_iterator(currentResidueAtoms.begin()),
+//                std::make_move_iterator(currentResidueAtoms.end()) );
+//    }
+//    return atoms;
+//}
 
 template <class moleculeT, class residueT, class atomT>
-std::vector<atomT*> cdsAssembly<moleculeT, residueT, atomT>::getAtoms()
+std::vector<atomT*> cdsAssembly<moleculeT, residueT, atomT>::getAtoms() const
 {
     std::vector<atomT*> atoms;
     for(auto &residue : this->getResidues())

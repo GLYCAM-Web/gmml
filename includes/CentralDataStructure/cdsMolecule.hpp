@@ -24,8 +24,8 @@ public:
     //////////////////////////////////////////////////////////
     inline const int& getNumber() {return number_;}
     std::vector<const atomT*> getAtoms() const;
-    std::vector<const residueT*> getResidues() const;
-    std::vector<residueT*> getResidues();
+   // std::vector<const residueT*> getResidues() const;
+    std::vector<residueT*> getResidues() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
@@ -55,19 +55,19 @@ private:
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
-template< class residueT, class atomT >
-std::vector<const residueT*> cdsMolecule<residueT, atomT>::getResidues() const
-{
-    std::vector<const residueT*> residues;
-    for(auto &residuePtr : residues_)
-    {
-        residues.push_back(residuePtr.get());
-    }
-    return residues;
-}
+//template< class residueT, class atomT >
+//std::vector<const residueT*> cdsMolecule<residueT, atomT>::getResidues() const
+//{
+//    std::vector<const residueT*> residues;
+//    for(auto &residuePtr : residues_)
+//    {
+//        residues.push_back(residuePtr.get());
+//    }
+//    return residues;
+//}
 
 template< class residueT, class atomT >
-std::vector<residueT*> cdsMolecule<residueT, atomT>::getResidues()
+std::vector<residueT*> cdsMolecule<residueT, atomT>::getResidues() const
 {
     std::vector<residueT*> residues;
     for(auto &residuePtr : residues_)
