@@ -20,6 +20,7 @@
 ./src/Glycan/oligosaccharide.cc
 ./src/Glycan/ontologyGmmlInterface.cpp
 ./src/InputSet/CondensedSequence/assemblyBuilder.cpp
+./src/InputSet/CondensedSequence/carbohydrate.cpp
 ./src/InputSet/CondensedSequence/parsedResidue.cpp
 ./src/InputSet/CondensedSequence/sequenceManipulator.cpp
 ./src/InputSet/CondensedSequence/sequenceParser.cpp
