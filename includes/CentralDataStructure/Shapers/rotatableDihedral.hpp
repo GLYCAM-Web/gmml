@@ -5,12 +5,11 @@
  * and, if moved, the previous dihedral angle, which allows me to reset easily.
  */
 
-#include "../../MolecularModeling/atom.hpp"
+#include "includes/CentralDataStructure/atom.hpp"
 #include "../../MolecularModeling/residue.hpp"
 #include "../../MolecularMetadata/GLYCAM/dihedralangledata.hpp"
 
-using MolecularModeling::Atom;
-using MolecularModeling::AtomVector;
+using cds::Atom;
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleData;
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
 
@@ -46,8 +45,8 @@ public:
     void SetRandomAngleEntryUsingMetadata(bool useRanges = true);
     void SetSpecificAngleEntryUsingMetadata(bool useRanges = false, int angleEntryNumber = 0);
     bool SetSpecificShape(std::string dihedralName, std::string selectedRotamer);
-    void WiggleWithinCurrentRotamer(AtomVector &overlapAtomSet1, AtomVector &overlapAtomSet2, const int &angleIncrement);
-    void WiggleUsingAllRotamers(MolecularModeling::AtomVector& overlapAtomSet1, MolecularModeling::AtomVector &overlapAtomSet2, const int &angleIncrement);
+    void WiggleWithinCurrentRotamer(std::vector<Atom*> &overlapAtomSet1, std::vector<Atom*> &overlapAtomSet2, const int &angleIncrement);
+    void WiggleUsingAllRotamers(std::vector<Atom*>& overlapAtomSet1, std::vector<Atom*> &overlapAtomSet2, const int &angleIncrement);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
@@ -56,15 +55,15 @@ private:
     //////////////////////////////////////////////////////////
     //                  PRIVATE ACCESSORS                   //
     //////////////////////////////////////////////////////////
-    AtomVector GetAtoms() const;
-    AtomVector GetAtomsThatMove() const;
+    std::vector<Atom*> GetAtoms() const;
+    std::vector<Atom*> GetAtomsThatMove() const;
     bool GetIsAtomsThatMoveReversed() const;
     double GetPreviousDihedralAngle() const;
     std::vector<double> GetAllPossibleAngleValues(const int interval = 5) const;
     //////////////////////////////////////////////////////////
     //                  PRIVATE MUTATORS                    //
     //////////////////////////////////////////////////////////
-    void AddExtraAtomsThatMove(AtomVector extraAtoms);
+    void AddExtraAtomsThatMove(std::vector<Atom*> extraAtoms);
     // Takes in a set of ranges, e.g. 10 to 30, 45-55 etc. Randomly selects a range and randomly sets value within that range.
     double RandomizeDihedralAngleWithinRanges(std::vector<std::pair<double,double> > ranges);
     // Randomly sets dihedral angle to a value within the given range. E.g. Between 25 and 30 degrees.
@@ -73,9 +72,9 @@ private:
     //////////////////////////////////////////////////////////
     //                  PRIVATE FUNCTIONS                   //
     //////////////////////////////////////////////////////////
-    void Initialize(AtomVector atoms, bool reverseAtomsThatMove = true);
-    void SetAtoms(AtomVector atoms);
-    void SetAtomsThatMove(AtomVector atoms);
+    void Initialize(std::vector<Atom*> atoms, bool reverseAtomsThatMove = true);
+    void SetAtoms(std::vector<Atom*> atoms);
+    void SetAtomsThatMove(std::vector<Atom*> atoms);
     void SetIsAtomsThatMoveReversed(bool isAtomsThatMoveReversed);
     void RecordPreviousDihedralAngle(double dihedral_angle);
     void UpdateAtomsIfPsi();
@@ -84,7 +83,7 @@ private:
     bool CheckIfEverRotated() const;
     inline void SetCurrentMetaData(const DihedralAngleData &d) {currentMetadata_ = &d;}
     inline const DihedralAngleData* GetCurrentMetaData() {return currentMetadata_;}
-    double WiggleWithinRanges(AtomVector& overlapAtomSet1, AtomVector &overlapAtomSet2, const int &angleIncrement, const double& lowerBound, const double& upperBound);
+    double WiggleWithinRanges(std::vector<Atom*>& overlapAtomSet1, std::vector<Atom*> &overlapAtomSet2, const int &angleIncrement, const double& lowerBound, const double& upperBound);
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
@@ -94,8 +93,8 @@ private:
     Atom *atom3_;
     Atom *atom4_;
     // A vector of pointers to the atoms that are connected to atom2_ and atom3_, and will be rotated when that bond is rotated.
-    AtomVector atoms_that_move_;
-    AtomVector extra_atoms_that_move_;
+    std::vector<Atom*> atoms_that_move_;
+    std::vector<Atom*> extra_atoms_that_move_;
     bool isAtomsThatMoveReversed_;
     // I often want to reset a dihedral angle after rotating it, so recording the previous angle makes this easy.
     double previous_dihedral_angle_;
