@@ -1,34 +1,30 @@
-#ifndef GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_RESIDUE_LINKAGE_HPP
-#define GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_RESIDUE_LINKAGE_HPP
+#ifndef GMML_INCLUDES_CENTRAL_DATA_STRUCTURE_SHAPERS_RESIDUE_LINKAGE_HPP
+#define GMML_INCLUDES_CENTRAL_DATA_STRUCTURE_SHAPERS_RESIDUE_LINKAGE_HPP
 /*
  * This class figures out the rotatable bonds between two residues
  * Starts/ends at the CA atoms in proteins. Looks for cycles (as they aren't rotatable).
- * Stores each rotatable bond as a rotatable_dihedral object.
+ * Stores each rotatable bond as a RotatableDihedral object.
  */
-//#include "gmml.hpp"
-#include "includes/MolecularModeling/atom.hpp"
-#include "includes/MolecularModeling/residue.hpp"
+#include "includes/CentralDataStructure/cdsAtom.hpp"
+#include "includes/CentralDataStructure/cdsResidue.hpp"
 #include "includes/MolecularModeling/Selections/selections.hpp"
-#include "includes/GeometryTopology/ResidueLinkages/rotatable_dihedral.hpp"
+#include "includes/CentralDataStructure/Shapers/rotatableDihedral.hpp"
 
-using MolecularModeling::Residue;
-using MolecularModeling::ResidueVector;
-
-class Residue_linkage;
-typedef std::vector<Residue_linkage> ResidueLinkageVector;
-class Residue_linkage
+namespace cds
+{
+class ResidueLinkage
 {
 public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
-    Residue_linkage(Residue *nonReducingResidue1, Residue *reducingResidue2, bool reverseAtomsThatMove = true);
-    Residue_linkage(Residue *nonReducingResidue1, Residue *reducingResidue2, AtomVector alsoMovingAtoms, bool reverseAtomsThatMove = true);
+    ResidueLinkage(Residue *nonReducingResidue1, Residue *reducingResidue2, bool reverseAtomsThatMove = true);
+    ResidueLinkage(Residue *nonReducingResidue1, Residue *reducingResidue2, AtomVector alsoMovingAtoms, bool reverseAtomsThatMove = true);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-    std::vector<Rotatable_dihedral> GetRotatableDihedrals() const;
-    std::vector<Rotatable_dihedral> GetRotatableDihedralsWithMultipleRotamers() const;
+    std::vector<RotatableDihedral> GetRotatableDihedrals() const;
+    std::vector<RotatableDihedral> GetRotatableDihedralsWithMultipleRotamers() const;
     int GetNumberOfRotatableDihedrals() const;
     int GetNumberOfShapes(const bool likelyShapesOnly = false) const;
     Residue* GetFromThisResidue1() const;
@@ -41,7 +37,7 @@ public:
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
-    void SetRotatableDihedrals(std::vector<Rotatable_dihedral> rotatableDihedrals);
+    void SetRotatableDihedrals(std::vector<RotatableDihedral> rotatableDihedrals);
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
@@ -53,7 +49,7 @@ public:
     void SetShapeToPrevious();
     void SetRandomDihedralAngles();
     void DetermineAtomsThatMove();
-    // Simple meaning you only check each rotatable_dihedral in series, not every combination.
+    // Simple meaning you only check each RotatableDihedral in series, not every combination.
     void SimpleWiggle(AtomVector& overlapAtomSet1, AtomVector& overlapAtomSet2, const int angleIncrement = 5);
     void SimpleWiggleCurrentRotamers(AtomVector& overlapAtomSet1, AtomVector& overlapAtomSet2, const int angleIncrement = 5);
     void SetIndex(unsigned long long index);
@@ -73,11 +69,11 @@ private:
     void AddExtraAtomsThatMove(AtomVector extraAtoms);
     void InitializeClass(Residue *from_this_residue1, Residue *to_this_residue2, bool reverseAtomsThatMove);
     bool CheckIfViableLinkage() const;
-    std::vector<Rotatable_dihedral> FindRotatableDihedralsConnectingResidues(Atom *from_this_connection_atom1, Atom *to_this_connection_atom2);
+    std::vector<RotatableDihedral> FindRotatableDihedralsConnectingResidues(Atom *from_this_connection_atom1, Atom *to_this_connection_atom2);
     //AtomVector DealWithBranchesFromLinkages(AtomVector linearLinkageAtoms, Atom *cycle_point1, Atom *cycle_point2);
     // Previous function generates a list of linearly connected atoms that define the rotatable bonds
-    // This function splits that list into groups of 4 and creates rotatable_dihedral objects
-    std::vector<Rotatable_dihedral> SplitAtomVectorIntoRotatableDihedrals(AtomVector atoms);
+    // This function splits that list into groups of 4 and creates RotatableDihedral objects
+    std::vector<RotatableDihedral> SplitAtomVectorIntoRotatableDihedrals(AtomVector atoms);
     gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector FindMetadata(const Atom *from_this_connection_atom1, const Atom *to_this_connection_atom2) const;
     void AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata);
     void SetResidues(Residue *residue1, Residue *residue2);
@@ -93,11 +89,12 @@ private:
     Residue* to_this_residue2_;
     Atom* from_this_connection_atom1_;
     Atom* to_this_connection_atom2_;
-    std::vector<Rotatable_dihedral> rotatable_dihedrals_;
+    std::vector<RotatableDihedral> RotatableDihedrals_;
     bool reverseAtomsThatMove_;
     AtomVector extraAtomsThatMove_;
     bool isExtraAtoms_ = true;
     unsigned long long index_;
     std::string name_; //e.g. "DGalpb1-6DGlcpNAc"
 };
+} //namespace
 #endif // GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_RESIDUE_LINKAGE_HPP

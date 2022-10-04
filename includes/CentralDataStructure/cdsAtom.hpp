@@ -39,9 +39,11 @@ public:
     bool isWithinBondingDistance(const atomT* otherAtom) const;
     std::string getElement() const;
     int getAtomicNumber() const;
+    virtual std::string getId() const;
 	//////////////////////////////////////////////////////////
 	//                       DISPLAY FUNCTION               //
 	//////////////////////////////////////////////////////////
+    // No, paint this like you painted your offWriter
     void WritePdb(std::ostream &stream,
         		std::string residueName = " ",
     			std::string residueNumber = " ",
@@ -110,6 +112,12 @@ int cdsAtom<atomT>::getAtomicNumber() const
 {
 	return MolecularMetadata::findElementAtomicNumber(this->getElement());
 }
+template <class atomT>
+std::string cdsAtom<atomT>::getId() const
+{
+	return this->getName();
+}
+
 
 template <class atomT>
 bool cdsAtom<atomT>::isWithinBondingDistance(const atomT* otherAtom) const

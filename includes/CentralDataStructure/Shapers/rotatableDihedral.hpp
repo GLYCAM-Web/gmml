@@ -1,5 +1,5 @@
-#ifndef GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_ROTATABLE_DIHEDRAL_HPP
-#define GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_ROTATABLE_DIHEDRAL_HPP
+#ifndef GMML_INCLUDES_CENTRAL_DATA_STRUCTURE_SHAPERS_ROTATABLE_DIHEDRAL_HPP
+#define GMML_INCLUDES_CENTRAL_DATA_STRUCTURE_SHAPERS_ROTATABLE_DIHEDRAL_HPP
 /*
  * This class stores the four atoms that define a dihedral angle, the atoms that move when it is rotated
  * and, if moved, the previous dihedral angle, which allows me to reset easily.
@@ -7,20 +7,22 @@
 
 #include "includes/CentralDataStructure/atom.hpp"
 #include "../../MolecularModeling/residue.hpp"
-#include "../../MolecularMetadata/GLYCAM/dihedralangledata.hpp"
+#include "includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
 
 using cds::Atom;
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleData;
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
 
-class Rotatable_dihedral
+namespace cds
+{
+class RotatableDihedral
 {
 public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
-    Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, bool reverseAtomsThatMove = true);
-    Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, AtomVector extraAtomsThatMove, bool reverseAtomsThatMove = true);
+    RotatableDihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, bool reverseAtomsThatMove = true);
+    RotatableDihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, std::vector<Atom*> extraAtomsThatMove, bool reverseAtomsThatMove = true);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -102,4 +104,5 @@ private:
     const DihedralAngleData* currentMetadata_;
     bool wasEverRotated_; // Need this, as it might add a H atom for psi
 };
+} // namespace
 #endif // ROTATABLE_DIHEDRAL_H

@@ -4,7 +4,9 @@
 #include "includes/common.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
-double gmml::CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, MolecularModeling::AtomVector atomsB, bool print)
+using MolecularModeling::Atom;
+
+double gmml::CalculateAtomicOverlaps(std::vector<Atom*> atomsA, std::vector<Atom*> atomsB, bool print)
 {
     double totalOverlap = 0.0;
     double currentOverlap = 0.0;
@@ -33,7 +35,7 @@ double gmml::CalculateAtomicOverlaps(MolecularModeling::AtomVector atomsA, Molec
     return (totalOverlap / gmml::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
 }
 
-double gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(MolecularModeling::AtomVector& atomsA, MolecularModeling::AtomVector& atomsB)
+double gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(std::vector<Atom*>& atomsA, std::vector<Atom*>& atomsB)
 {
     double totalOverlap = 0.0;
     for(auto &atomA : atomsA)
@@ -41,7 +43,7 @@ double gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(MolecularModeling::Ato
         for(auto &atomB : atomsB)
         {
             bool isNeighbor = false;
-            MolecularModeling::AtomVector neighbors = atomA->GetNode()->GetNodeNeighbors();
+            std::vector<Atom*> neighbors = atomA->GetNode()->GetNodeNeighbors();
             for(auto &neighbor : neighbors)
             {
                 if (atomB->GetIndex() == neighbor->GetIndex())

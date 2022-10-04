@@ -20,7 +20,7 @@ double calculateDistanceFromPointToLineBetweenTwoPoints(const Coordinate& queryP
 
 Coordinate CreateMissingCoordinateForTetrahedralAtom(Atom *atom, const double distance = 1.0);
 
-Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors, const double distance);
+Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors, const double distance = 1.0);
 
 double CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, bool returnRadians = false);
 
