@@ -1,18 +1,25 @@
 #ifndef GMML_INCLUDES_CENTRAL_DATA_STRUCTURE_SHAPERS_ROTATABLE_DIHEDRAL_HPP
 #define GMML_INCLUDES_CENTRAL_DATA_STRUCTURE_SHAPERS_ROTATABLE_DIHEDRAL_HPP
-/*
- * This class stores the four atoms that define a dihedral angle, the atoms that move when it is rotated
- * and, if moved, the previous dihedral angle, which allows me to reset easily.
- */
 
-//#include "includes/CentralDataStructure/cdsAtom.hpp"
 #include "includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/External_Libraries/PCG/pcg_random.h"
+#include "includes/CentralDataStructure/Overlaps/cdsOverlaps.hpp"
+
+#include <random>
 
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleData;
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
+using GeometryTopology::Coordinate;
 
+// Seed with a real random value, if available
+static pcg_extras::seed_seq_from<std::random_device> seed_source;
+// Make a random number engine
+static pcg32 rng(seed_source); // Eclipse complains about ambiguity, and yet it compiles...
+
+// This class stores the four atoms that define a dihedral angle, the atoms that move when it is rotated
+// and, if moved, the previous dihedral angle, which allows me to reset easily.
 namespace cds
 {
 template<class atomT>
@@ -35,14 +42,10 @@ public:
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
-    // Based on connectivities, this figures out which atoms will move when the dihedral is rotated.
-    void DetermineAtomsThatMove();
-    // Sets the dihedral angle by rotating the bond between atom2 and atom3, moving atom4 and connected.
-    void SetDihedralAngle(double dihedral_angle);
-    // Sets the dihedral to previous dihedral angle
-    void SetDihedralAngleToPrevious();
-    // Randomly sets dihedral angle values between 0 and 360
-    double RandomizeDihedralAngle();
+    void DetermineAtomsThatMove(); // Based on connectivities, this figures out which atoms will move when the dihedral is rotated.
+    void SetDihedralAngle(double dihedral_angle); // Sets the dihedral angle by rotating the bond between atom2 and atom3, moving atom4 and connected.
+    void SetDihedralAngleToPrevious(); // Sets the dihedral to previous dihedral angle
+    double RandomizeDihedralAngle(); // Randomly sets dihedral angle values between 0 and 360
     void AddMetadata(DihedralAngleData metadata);
     inline void ClearMetadata() {assigned_metadata_.clear();}
     void SetRandomAngleEntryUsingMetadata(bool useRanges = true);
@@ -67,11 +70,8 @@ private:
     //                  PRIVATE MUTATORS                    //
     //////////////////////////////////////////////////////////
     void AddExtraAtomsThatMove(std::vector<atomT*> extraAtoms);
-    // Takes in a set of ranges, e.g. 10 to 30, 45-55 etc. Randomly selects a range and randomly sets value within that range.
-    double RandomizeDihedralAngleWithinRanges(std::vector<std::pair<double,double> > ranges);
-    // Randomly sets dihedral angle to a value within the given range. E.g. Between 25 and 30 degrees.
-    void SetMetadata(DihedralAngleDataVector metadataVector);
-    double RandomizeDihedralAngleWithinRange(double min, double max);
+    double RandomizeDihedralAngleWithinRanges(std::vector<std::pair<double,double> > ranges); // Takes in a set of ranges, e.g. 10 to 30, 45-55 etc. Randomly selects a range and randomly sets value within that range.
+    double RandomizeDihedralAngleWithinRange(double min, double max);// Randomly sets dihedral angle to a value within the given range. E.g. Between 25 and 30 degrees.
     //////////////////////////////////////////////////////////
     //                  PRIVATE FUNCTIONS                   //
     //////////////////////////////////////////////////////////
@@ -99,8 +99,7 @@ private:
     std::vector<atomT*> atoms_that_move_;
     std::vector<atomT*> extra_atoms_that_move_;
     bool isAtomsThatMoveReversed_;
-    // I often want to reset a dihedral angle after rotating it, so recording the previous angle makes this easy.
-    double previous_dihedral_angle_;
+    double previous_dihedral_angle_; // I often want to reset a dihedral angle after rotating it, so recording the previous angle makes this easy.
     DihedralAngleDataVector assigned_metadata_;
     const DihedralAngleData* currentMetadata_;
     bool wasEverRotated_; // Need this, as it might add a H atom for psi
@@ -319,14 +318,6 @@ double RotatableDihedral<atomT>::RandomizeDihedralAngleWithinRanges(std::vector<
     int range_selection = distr(rng);
     // create an angle within the selected range
     return this->RandomizeDihedralAngleWithinRange(ranges.at(range_selection).first, ranges.at(range_selection).second);
-}
-
-template<class atomT>
-void RotatableDihedral<atomT>::SetMetadata(DihedralAngleDataVector metadataVector)
-{
-    assigned_metadata_ = metadataVector;
-    this->UpdateAtomsIfPsi();
-    return;
 }
 
 template<class atomT>
@@ -577,7 +568,7 @@ atomT* RotatableDihedral<atomT>::CreateHydrogenAtomForPsi(atomT* centralAtom)
         threeNeighborCoords.push_back(neighbor->getCoordinate());
     }
     Coordinate newCoord = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(centralAtom->getCoordinate(), threeNeighborCoords);
-    atomT* newAtom = new Atom(centralAtom->GetResidue(), "HHH", newCoord);
+    atomT* newAtom = new atomT(centralAtom->GetResidue(), "HHH", newCoord);
     centralAtom->GetResidue()->AddAtom(newAtom);
     centralAtom->GetNode()->AddNodeNeighbor(newAtom);
     // Have to create a new node for this new atom.
@@ -595,5 +586,5 @@ std::string RotatableDihedral<atomT>::Print() const
    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
    return ss.str();
 }
-} // namespace
-#endif // ROTATABLE_DIHEDRAL_H
+}//namespace
+#endif

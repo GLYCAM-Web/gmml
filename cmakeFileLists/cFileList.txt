@@ -1,7 +1,5 @@
 ./src/Abstract/absAtom.cpp
 ./src/Abstract/absResidue.cpp
-./src/CentralDataStructure/Shapers/residueLinkage.cpp
-./src/CentralDataStructure/Shapers/rotatableDihedral.cpp
 ./src/CentralDataStructure/cdsCoordinate.cpp
 ./src/CodeUtils/codetests.cc
 ./src/CodeUtils/directories.cpp

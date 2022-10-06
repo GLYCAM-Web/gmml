@@ -606,7 +606,6 @@ void ResidueLinkage<residueT, atomT>::AddMetadataToRotatableDihedrals(gmml::Mole
     return;
 }
 
-
 template<class residueT, class atomT>
 void ResidueLinkage<residueT, atomT>::SetResidues(residueT* residue1, residueT* residue2)
 {
