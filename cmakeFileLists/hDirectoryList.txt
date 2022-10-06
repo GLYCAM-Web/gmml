@@ -1,6 +1,7 @@
 ./includes
 ./includes/Abstract
 ./includes/CentralDataStructure
+./includes/CentralDataStructure/Shapers
 ./includes/CentralDataStructure/Writers
 ./includes/CodeUtils
 ./includes/GeometryTopology

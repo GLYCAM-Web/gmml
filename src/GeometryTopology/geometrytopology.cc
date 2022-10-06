@@ -90,7 +90,7 @@ double GeometryTopology::calculateDistanceFromPointToLineBetweenTwoPoints(const 
     return height;
 }
 
-Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(Atom *centralAtom, const double distance)
+Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(MolecularModeling::Atom *centralAtom, const double distance)
 {
 	if(centralAtom->GetNode()->GetNodeNeighbors().size() != 4)
 	{
@@ -187,9 +187,9 @@ void GeometryTopology::SetDihedralAngle(Coordinate* a1, Coordinate* a2, Coordina
 	}
 }
 
-void GeometryTopology::SetAngle(Atom *a, Atom *b, Atom *c, const double angle)
+void GeometryTopology::SetAngle(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c, const double angle)
 {
-	std::vector<Atom*> atomsToRotate;
+	std::vector<MolecularModeling::Atom*> atomsToRotate;
 	atomsToRotate.push_back(b);
 	c->FindConnectedAtoms(atomsToRotate); // this is too slow, just get the coords here.
 	std::vector<Coordinate*> coords;
@@ -230,14 +230,14 @@ void GeometryTopology::SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, 
     }
 }
 
-void GeometryTopology::SetDistance(Atom *a, Atom *b)
+void GeometryTopology::SetDistance(MolecularModeling::Atom *a, MolecularModeling::Atom *b)
 { // Figure out distance
 	gmml::MolecularMetadata::GLYCAM::BondLengthByTypePairContainer bondLengthByTypePairContainer;
 	double distance = bondLengthByTypePairContainer.GetBondLengthForAtomTypes(a->MolecularDynamicAtom::GetAtomType(), b->MolecularDynamicAtom::GetAtomType());
 	// Figure out position of where the b atom should end up relative to a
 	Coordinate c = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(a, distance);
 	// Figure out which atoms will move
-	std::vector<Atom*> atomsToRotate;
+	std::vector<MolecularModeling::Atom*> atomsToRotate;
 	atomsToRotate.push_back(a);
 	b->FindConnectedAtoms(atomsToRotate); // this is too slow, just get the coords here.
 	atomsToRotate.erase(atomsToRotate.begin()); //feck

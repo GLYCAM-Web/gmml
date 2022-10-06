@@ -3,6 +3,7 @@
 #include "includes/MolecularModeling/atomnode.hpp"
 #include "includes/common.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/constants.hpp"
 
 using MolecularModeling::Atom;
 
