@@ -42,12 +42,19 @@ int main(int argc, char* argv[]) {
 
     // Get command line argument, which should be an PDB file.
     std::string pdb_file(argv[1]);
+
     // Initialize an Assembly from the PDB file.
     MolecularModeling::Assembly assembly(pdb_file, gmml::PDB);
+
     // Build by Distance
+    // using 3 cores
     assembly.BuildStructureByDistance(3);
+    // using 6 cores
+    // assembly.BuildStructureByDistance(6);
+
     // Remove Hydrgens
-    assembly.RemoveAllHydrogenAtoms();    
+    assembly.RemoveAllHydrogenAtoms(); 
+
     // Find the Sugars.
     assembly.ExtractSugars(aminolibs, false, true);
     //Note that to have individual ontology (.ttl) files or to have CCD lookup, you must provide

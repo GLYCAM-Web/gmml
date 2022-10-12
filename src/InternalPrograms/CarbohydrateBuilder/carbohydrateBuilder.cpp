@@ -7,29 +7,41 @@
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-using CondensedSequenceSpace::carbohydrateBuilder;
-using CondensedSequenceSpace::CondensedSequence;
+using CondensedSequence::carbohydrateBuilder;
 
 carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath)
-: assembly_(condensedSequence, prepFilePath)
 {
-    this->InitializeClass(condensedSequence);
+	try
+	{
+		assembly_ = MolecularModeling::Assembly(condensedSequence, prepFilePath);
+		gmml::log(__LINE__,__FILE__,gmml::INF, "Assembly constructor complete. Initializing the rest of the class\n");
+	    this->InitializeClass(condensedSequence);
+	}	// Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
+	catch(const std::string &exceptionMessage)
+	{
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught this exception message: " + exceptionMessage);
+		this->SetStatus("ERROR", exceptionMessage);
+	}
+    catch (const std::runtime_error &error)
+	{
+        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+	    this->SetStatus("ERROR", error.what());
+	}
+	catch (...)
+	{
+	    gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class constructor caught a throw that was not anticipated. Curious. Death cometh?");
+	    this->SetStatus("ERROR", "carbohydrateBuilder constructor caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.");
+	}
 }
 
 //////////////////////////////////////////////////////////
 //                       ACCESSORS                      //
 //////////////////////////////////////////////////////////
 
-CondensedSequence carbohydrateBuilder::GetCondensedSequence()
-{
-    return condensedSequence_;
-}
-
 std::string carbohydrateBuilder::GetInputSequenceString()
 {
     return inputSequenceString_;
 }
-
 
 MolecularModeling::Assembly* carbohydrateBuilder::GetAssembly()
 {
@@ -40,103 +52,224 @@ ResidueLinkageVector* carbohydrateBuilder::GetGlycosidicLinkages()
 {
     return &glycosidicLinkages_;
 }
+
 //////////////////////////////////////////////////////////
 //                      FUNCTIONS                       //
 //////////////////////////////////////////////////////////
 
-void carbohydrateBuilder::GenerateSingle3DStructureDefaultFiles(std::string fileOutputDirectory)
+void carbohydrateBuilder::GenerateSingle3DStructureDefaultFiles(std::string fileOutputDirectory, std::string outputFileNaming)
 {
-    this->SetDefaultShapeUsingMetadata();
-    this->ResolveOverlaps();
-    this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure");
-    this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", "structure");
+    try
+    {
+        this->SetDefaultShapeUsingMetadata();
+        this->ResolveOverlaps();
+        this->Write3DStructureFile(fileOutputDirectory, "PDB", outputFileNaming);
+        this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", outputFileNaming);
+    }   // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
+    catch(const std::string &exceptionMessage)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught this exception message: " + exceptionMessage);
+        this->SetStatus("ERROR", exceptionMessage);
+    }
+    catch (const std::runtime_error &error)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+        this->SetStatus("ERROR", error.what());
+    }
+    catch (...)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught a throw that was not anticipated. Curious. Death cometh?");
+        this->SetStatus("ERROR", "carbohydrateBuilder caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.");
+    }
     return;
 }
 void carbohydrateBuilder::GenerateSingle3DStructureSingleFile(std::string fileOutputDirectory, std::string type, std::string outputFileNaming)
 {
-    this->SetDefaultShapeUsingMetadata();
-    this->ResolveOverlaps();
-    this->Write3DStructureFile(fileOutputDirectory, type, outputFileNaming);
+    try
+    {
+        this->SetDefaultShapeUsingMetadata();
+        this->ResolveOverlaps();
+        this->Write3DStructureFile(fileOutputDirectory, type, outputFileNaming);
+    }   // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
+    catch(const std::string &exceptionMessage)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught this exception message: " + exceptionMessage);
+        this->SetStatus("ERROR", exceptionMessage);
+    }
+    catch (const std::runtime_error &error)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+        this->SetStatus("ERROR", error.what());
+    }
+    catch (...)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught a throw that was not anticipated. Curious. Death cometh?");
+        this->SetStatus("ERROR", "carbohydrateBuilder caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.");
+    }
     return;
 }
 
-void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequenceSpace::SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
+void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequence::SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
 {
-//     std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
-//     std::string linkageName; // Can be whatever the user wants it to be, default to same as index.
-//     std::string dihedralName; // omg / phi / psi / chi1 / chi2
-//     std::string selectedRotamer; // gg / tg / g- etc
-//     std::string numericValue; // user entered 64 degrees. Could be a v2 feature.
+    //     std::string linkageIndex; // What Dan is calling linkageLabel. Internal index determined at C++ level and given to frontend to track.
+    //     std::string linkageName; // Can be whatever the user wants it to be, default to same as index.
+    //     std::string dihedralName; // omg / phi / psi / chi1 / chi2
+    //     std::string selectedRotamer; // gg / tg / g- etc
+    //     std::string numericValue; // user entered 64 degrees. Could be a v2 feature.
     // With a conformer (aka rotamerSet), setting will be different as each rotatable_dihedral will be set to e.g. "A", whereas for linkages
     // with combinatorial rotamers (e,g, phi -g/t, omg gt/gg/tg), we need to set each dihedral as specified, but maybe it will be ok to go 
     // through and find the value for "A" in each rotatable dihedral.. yeah actually it should be fine. Leaving comment for time being.
-    try 
+    try
     {
         for (auto &rotamerInfo : conformerInfo)
         {
-            // std::cout << "linkage: " << rotamerInfo.linkageIndex << " " 
-            //     << this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName)
-            //     << " being set to " << rotamerInfo.selectedRotamer << std::endl;
+            std::stringstream ss;
+            ss  << "linkage: " << rotamerInfo.linkageIndex << " " << this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName)
+                         << " being set to " << rotamerInfo.selectedRotamer << std::endl;
+            gmml::log(__LINE__,__FILE__, gmml::INF, ss.str());
             int currentLinkageIndex = std::stoi(rotamerInfo.linkageIndex);
             Residue_linkage *currentLinkage = this->selectLinkageWithIndex(glycosidicLinkages_, currentLinkageIndex);
             std::string standardDihedralName = this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName);
             currentLinkage->SetSpecificShape(standardDihedralName, rotamerInfo.selectedRotamer);
         }
-        //this->ResolveOverlaps();
-        this->Write3DStructureFile(fileOutputDirectory, "PDB", "structure"); 
-        this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", "structure"); 
-    } catch (const char* msg) {
-        std::cerr << msg << std::endl;
+        std::string fileName = "structure";
+        this->ResolveOverlaps();
+        this->Write3DStructureFile(fileOutputDirectory, "PDB", fileName);
+        this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", fileName);
+    }   // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
+    catch(const std::string &exceptionMessage)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught this exception message: " + exceptionMessage);
+        this->SetStatus("ERROR", exceptionMessage);
     }
+    catch (const std::runtime_error &error)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+        this->SetStatus("ERROR", error.what());
+    }
+    catch (...)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught a throw that was not anticipated. Curious. Death cometh?");
+        this->SetStatus("ERROR", "carbohydrateBuilder caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.");
+    }
+    return;
 }
 
-int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
+//unsigned long long int carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
+//{
+//	unsigned long long int numberOfShapes = 1;
+//    try
+//    {
+//        for(auto &linkage : (*this->GetGlycosidicLinkages()))
+//        {
+//            numberOfShapes = (numberOfShapes * linkage.GetNumberOfShapes(likelyShapesOnly));
+//        }
+//    }   // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
+//    catch(const std::string &exceptionMessage)
+//    {
+//        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught this exception message: " + exceptionMessage);
+//        this->SetStatus("ERROR", exceptionMessage);
+//    }
+//    catch (const std::runtime_error &error)
+//    {
+//        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+//        this->SetStatus("ERROR", error.what());
+//    }
+//    catch (...)
+//    {
+//        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught a throw that was not anticipated. Curious. Death cometh?");
+//        this->SetStatus("ERROR", "carbohydrateBuilder caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.");
+//    }
+//    return numberOfShapes;
+//}
+
+std::string carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
 {
-    int numberOfShapes = 1;
-    for(auto &linkage : (*this->GetGlycosidicLinkages()))
+	if ( (*this->GetGlycosidicLinkages()).size() > 32 )
+	{
+		return ">2^32";
+	}
+	unsigned long long int numberOfShapes = 1;
+    try
     {
-        numberOfShapes = (numberOfShapes * linkage.GetNumberOfShapes(likelyShapesOnly));
-    }
-    return numberOfShapes;
-}
-// Commenting out for as not being used, and will be confusing later. The front-end calls a differnt function that will build a single, specific rotamer.
-// void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
-// {
-//     std::cout << "Rotamer Permutator\n";
-//     ResidueLinkageVector linkagesOrderedForPermutation = this->SplitLinkagesIntoPermutants(*(this->GetGlycosidicLinkages()));
-//     this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
-// }
-CondensedSequenceSpace::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()
-{
-    CondensedSequenceSpace::LinkageOptionsVector userOptionsForSequence;
-    for (auto &linkage : *(this->GetGlycosidicLinkages())) // I get back a pointer to the ResidueLinkageVector so I *() it to the first element
-    {
-       // std::cout << "linko nameo: " << linkage.GetName() << std::endl;
-        CondensedSequenceSpace::DihedralOptionsVector possibleRotamers, likelyRotamers;
-        std::vector<std::string> buffer;
-        for (auto &rotatableDihedral : linkage.GetRotatableDihedralsWithMultipleRotamers())
+        for(auto &linkage : (*this->GetGlycosidicLinkages()))
         {
-            for (auto &metadata : rotatableDihedral.GetMetadata())
-            {
-                buffer.push_back(metadata.rotamer_name_);
-            }
-            possibleRotamers.emplace_back(rotatableDihedral.GetName(), buffer);
-            buffer.clear();
-            for (auto &metadata : rotatableDihedral.GetLikelyMetadata())
-            {
-                buffer.push_back(metadata.rotamer_name_); 
-            }
-            likelyRotamers.emplace_back(rotatableDihedral.GetName(), buffer);
-            buffer.clear();
-        }   
-        // If there are multiple rotamers for this linkage
-        if (!linkage.GetRotatableDihedralsWithMultipleRotamers().empty()) 
-        {   // Build struct in vector with emplace_back via constructor in struct
-            userOptionsForSequence.emplace_back(linkage.GetName(), std::to_string(linkage.GetIndex()),
-                                            linkage.GetFromThisResidue1()->GetNumber(),
-                                            linkage.GetToThisResidue2()->GetNumber(),
-                                            likelyRotamers, possibleRotamers);
+            numberOfShapes = (numberOfShapes * linkage.GetNumberOfShapes(likelyShapesOnly));
         }
+    }   // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
+    catch(const std::string &exceptionMessage)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught this exception message: " + exceptionMessage);
+        this->SetStatus("ERROR", exceptionMessage);
+    }
+    catch (const std::runtime_error &error)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+        this->SetStatus("ERROR", error.what());
+    }
+    catch (...)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught a throw that was not anticipated. Curious. Death cometh?");
+        this->SetStatus("ERROR", "carbohydrateBuilder caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.");
+    }
+    return std::to_string(numberOfShapes);
+}
+
+// Commenting out for as not being used, and will be confusing later. The front-end calls a differnt function that will build a single, specific rotamer.
+ void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
+ {
+     ResidueLinkageVector linkagesOrderedForPermutation = this->SplitLinkagesIntoPermutants(*(this->GetGlycosidicLinkages()));
+     this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
+ }
+CondensedSequence::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()
+{
+    CondensedSequence::LinkageOptionsVector userOptionsForSequence;
+    try
+    {
+        for (auto &linkage : *(this->GetGlycosidicLinkages())) // I get back a pointer to the ResidueLinkageVector so I *() it to the first element
+        {
+            // std::cout << "linko nameo: " << linkage.GetName() << std::endl;
+            CondensedSequence::DihedralOptionsVector possibleRotamers, likelyRotamers;
+            std::vector<std::string> buffer;
+            for (auto &rotatableDihedral : linkage.GetRotatableDihedralsWithMultipleRotamers())
+            {
+                for (auto &metadata : rotatableDihedral.GetMetadata())
+                {
+                    buffer.push_back(metadata.rotamer_name_);
+                }
+                possibleRotamers.emplace_back(rotatableDihedral.GetName(), buffer);
+                buffer.clear();
+                for (auto &metadata : rotatableDihedral.GetLikelyMetadata())
+                {
+                    buffer.push_back(metadata.rotamer_name_);
+                }
+                likelyRotamers.emplace_back(rotatableDihedral.GetName(), buffer);
+                buffer.clear();
+            }
+            // If there are multiple rotamers for this linkage
+            if (!linkage.GetRotatableDihedralsWithMultipleRotamers().empty())
+            {   // Build struct in vector with emplace_back via constructor in struct
+                userOptionsForSequence.emplace_back(linkage.GetName(), std::to_string(linkage.GetIndex()),
+                        linkage.GetFromThisResidue1()->GetNumber(),
+                        linkage.GetToThisResidue2()->GetNumber(),
+                        likelyRotamers, possibleRotamers);
+            }
+        }
+    }   // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
+    catch(const std::string &exceptionMessage)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught this exception message: " + exceptionMessage);
+        this->SetStatus("ERROR", exceptionMessage);
+    }
+    catch (const std::runtime_error &error)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+        this->SetStatus("ERROR", error.what());
+    }
+    catch (...)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught a throw that was not anticipated. Curious. Death cometh?");
+        this->SetStatus("ERROR", "carbohydrateBuilder caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.");
     }
     return userOptionsForSequence;
 }
@@ -165,6 +298,7 @@ void carbohydrateBuilder::Write3DStructureFile(std::string fileOutputDirectory, 
         completeFileName += fileOutputDirectory + "/";
     }
     completeFileName += filename;
+    //std::cout << "Will write out " << completeFileName << ". Which is of type: " << fileType << "\n";
     // Use type to figure out which type to write, eg. PDB OFFFILE etc.
     if (fileType == "PDB") 
     { // int link_card_direction = -1, int connect_card_existance = 1, int model_index = -1 , bool useInputPDBResidueNumbers = true);
@@ -198,12 +332,12 @@ void carbohydrateBuilder::SetDefaultShapeUsingMetadata()
     return;
 }
 
-
-void carbohydrateBuilder::ResolveOverlaps() // Need to consider rotamers.
+void carbohydrateBuilder::ResolveOverlaps()
 {
     for(auto &linkage : glycosidicLinkages_)
     {
-        linkage.SimpleWiggle(assembly_.GetAllAtomsOfAssembly(), assembly_.GetAllAtomsOfAssembly(), 0.1, 5);
+        AtomVector allAtomsOfAssembly = assembly_.GetAllAtomsOfAssembly();
+        linkage.SimpleWiggleCurrentRotamers(allAtomsOfAssembly, allAtomsOfAssembly,5);
     }
     return;
 }
@@ -241,7 +375,6 @@ void carbohydrateBuilder::FigureOutResidueLinkagesInGlycan(MolecularModeling::Re
 void carbohydrateBuilder::InitializeClass(std::string inputSequenceString)
 {
     this->SetInputSequenceString(inputSequenceString);
-    assembly_.SetName("CONDENSEDSEQUENCE"); // Necessary for off file to load into tleap
     //assembly_.BuildAssemblyFromCondensedSequence(inputSequenceString, &prepFile);
         // So in the above BuildAssemblyFromCondensedSequence code, linkages are generated that are inaccessible to me.
         // Condensed sequence should be separated so I can handle everything here, but it's a mess.
@@ -294,18 +427,18 @@ void carbohydrateBuilder::generateLinkagePermutationsRecursively(ResidueLinkageV
         if (rotamerCount <= maxRotamers)
         {
             linkage->SetSpecificShapeUsingMetadata(shapeNumber);
-        //std::cout << linkage->GetFromThisResidue1()->GetId() << "-" << linkage->GetToThisResidue2()->GetId() << ": " << (shapeNumber + 1) << " of " << linkage->GetNumberOfShapes() <<  "\n";
+            std::cout << linkage->GetFromThisResidue1()->GetId() << "-" << linkage->GetToThisResidue2()->GetId() << ": " << (shapeNumber + 1) << " of " << linkage->GetNumberOfShapes() <<  "\n";
             if(std::next(linkage) != end)
             {
                 this->generateLinkagePermutationsRecursively(std::next(linkage), end, maxRotamers, rotamerCount);
             }
-            else // At the end
-            {
+            //else // At the end
+           // {
             //Check for issues? Resolve
             //Figure out name of file: http://128.192.9.183/eln/gwscratch/2020/01/10/succinct-rotamer-set-labeling-for-sequences/
             //Write PDB file
-                this->Write3DStructureFile("PDB", std::to_string(rotamerCount));
-            }
+                this->Write3DStructureFile("./", "PDB", std::to_string(rotamerCount));
+           // }
         }
     }
     return;
@@ -319,7 +452,11 @@ Residue_linkage* carbohydrateBuilder::selectLinkageWithIndex(ResidueLinkageVecto
         if (linkage.GetIndex() == indexQuery)
             return &linkage;
     }
-    throw "Linkage not found in carbohydrateBuilder::selectLinkageWithIndex()";
+    // Error
+    std::stringstream ss;
+    ss << "Linkage numbered " << indexQuery << " not found in linkages for this carbohydrate\n";
+    gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+    throw std::runtime_error(ss.str());
 }
 
 // Just a placeholder until we have a map for linkage ids so the user won't see these underlying ones.

@@ -1,7 +1,9 @@
 #ifndef LAZY_PRINTERS_HPP
 #define LAZY_PRINTERS_HPP
 
-#include <iostream>
+#include <sstream>
+
+#include "includes/CodeUtils/logging.hpp"
 
 // LAZY INFORMATION OUTPUT
 inline void lazyInfo(int lineCalled_t, const char *funcName_t)

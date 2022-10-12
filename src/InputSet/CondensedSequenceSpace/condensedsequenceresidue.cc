@@ -127,8 +127,9 @@ CondensedSequenceResidue::CondensedSequenceResidue(std::string residue_string, C
                     //throw CondensedSequenceProcessingException("Invalid isomer in residue " + residue_string);
 	        }
 
-                if(dash_index <= 2)
+                if(dash_index <= 2){
                     throw CondensedSequenceProcessingException("Invalid residue in sequence");
+		}
 
                 char configuration_letter = residue_string[dash_index - 2];
                 if(configuration_letter == 'A' || configuration_letter == 'a')

@@ -1,19 +1,22 @@
 #!/bin/bash
 
-printf "Testing buildBySequence... "
-g++ -std=c++0x -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/000.buildBySequence.cc -lgmml -pthread -o buildBySequence
+printf "Testing 000.buildBySequence.cc... "
+g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/000.buildBySequence.cc -lgmml -pthread -o buildBySequence
 ./buildBySequence > /dev/null 2>&1
 #./buildBySequence
 if [ -f buildBySequence.pdb ]; then
     if ! cmp buildBySequence.pdb tests/correct_outputs/buildBySequence.pdb > /dev/null 2>&1; then
-        printf "Test FAILED!.\n"
-        return 1;
+        printf "Test FAILED!\n"
+        echo "Exit Code: 1"
+        return 1
     else
-        printf "Test passed.\n"
+        printf "Test passed\n"
         rm buildBySequence buildBySequence.pdb
-        return 0;
+        echo "Exit Code: 0"
+        return 0
     fi
 else
-    printf "Test FAILED!.\n"
-    return 1;
+    printf "Test FAILED!\n"
+    echo "Exit Code: 1"
+    return 1
 fi

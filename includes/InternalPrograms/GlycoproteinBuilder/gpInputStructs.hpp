@@ -4,7 +4,6 @@
 #include <string>
 #include <vector>
 #include <iostream>
-#include "includes/InternalPrograms/io.hpp"
 
 struct GlycositeInput
 {
@@ -21,7 +20,7 @@ struct GlycoproteinBuilderInputs // This are all strings to make it easy to conv
 	GlycoproteinBuilderInputs() :  workingDirectory_ ("Default"), prepFileLocation_ ("Default"), substrateFileName_ ("Undefined"),
 			number3DStructures_("1"), maxThreads_("1"), persistCycles_ ("5"), overlapTolerance_("0.1"), isDeterministic_("false") {}
 	std::string workingDirectory_;						// Default is to figure out current directory.
-	std::string prepFileLocation_;						// Default is to figure out install directory + ../dat/prep/GLYCAM_06j-1_GAGS.prep.
+	std::string prepFileLocation_;						// Default is to figure out install directory + ../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep.
 	std::string substrateFileName_;						// Default is "Undefined", program will throw if left as "Undefined".
 	std::string number3DStructures_;					// Default is 1. //ToDo Implement this.
 	std::string maxThreads_; 							// Default is 1. //ToDo Implement this.

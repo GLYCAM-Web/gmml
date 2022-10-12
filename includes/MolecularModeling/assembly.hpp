@@ -112,6 +112,36 @@ public:
       }
     };
 
+    //This structure is used for the MatchPdbAtoms2Glycam function for better recording and error handling. Yao 2022-03-26
+    struct Pdb2glycamMatchingTracker;
+    struct Pdb2glycamMatchingFailInfo
+    {
+        Pdb2glycamMatchingTracker* pdb2glycam_match_session_tracker = NULL;
+        int iteration_length = 0; 
+        MolecularModeling::Atom* failed_atom = NULL;
+        std::string failure_notice;
+
+        Pdb2glycamMatchingFailInfo(Pdb2glycamMatchingTracker* tracker, int depth, MolecularModeling::Atom* atom, std::string notice){
+            this->iteration_length = depth;
+            this->failed_atom = atom;
+            this->failure_notice = notice;
+            this->pdb2glycam_match_session_tracker = tracker;
+
+            if (this->pdb2glycam_match_session_tracker->largest_iteration_length < this->iteration_length){
+                this->pdb2glycam_match_session_tracker->largest_iteration_length = this->iteration_length;
+            }
+        }
+    };
+    struct Pdb2glycamMatchingTracker
+    {
+        std::vector<std::map<MolecularModeling::Atom*, MolecularModeling::Atom*>> all_isomorphisms; //Records all possible matches
+        //Records the 1st atom that cannot be matched in the last failed match attempt. Can be used for debugging if match failed. Should be ignored if at least one match can be found.
+        //std::multimap<int, MolecularModeling::Atom*> iteration_length_first_mismatched_atom_map;
+        std::vector<Pdb2glycamMatchingFailInfo*> failures;
+        int largest_iteration_length = 0;
+        Pdb2glycamMatchingTracker(){}
+    };
+
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
@@ -992,6 +1022,10 @@ public:
     /** \addtogroup Manipulators
                * @{
                */
+
+    void ObtainAllOligasaccharideResidues(Glycan::Oligosaccharide* oligo, ResidueVector& oligo_residues);
+    void PutAglyconeInNewResidueAndRearrangeGlycanResidues(std::vector<Glycan::Oligosaccharide*> oligosaccharides, std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map);
+
     gmml::GlycamResidueNamingMap ExtractResidueGlycamNamingMap(OligosaccharideVector oligosaccharides, std::map<Glycan::Oligosaccharide*, std::vector<std::string> >& oligo_id_map,
                                                                std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map);
     void ExtractOligosaccharideNamingMap(gmml::GlycamResidueNamingMap& pdb_glycam_map, Glycan::Oligosaccharide* oligosaccharide,
@@ -1000,16 +1034,15 @@ public:
                                          std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map);
     void UpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
     void TestUpdateResidueName2GlycamName(gmml::GlycamResidueNamingMap residue_glycam_map, std::string prep_file);
-    void RenameAtoms(std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map, std::string prep_file);
+    void MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVector>& oligo_residue_map, std::string prep_file, std::map<Glycan::Oligosaccharide*, Pdb2glycamMatchingTracker*>& match_tracker);
     int  RecursiveMoleculeSubgraphMatching(Atom* target_atom, AtomVector& target_atoms, Atom* template_atoms, std::map<Atom*, std::string>& target_atom_label_map,
                                            std::map<Atom*, std::string>& template_atom_label_map, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match,
                                            std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match, std::vector<Atom*>& insertion_order,
-                                           std::vector<std::map<Atom*, Atom*> >& all_isomorphisms);
-    bool CheckAndAcceptMatches(MolecularModeling::AtomVector& target_atoms, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match, std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match, std::vector<std::map<Atom*, Atom*> >& all_isomorphisms);
+                                           Pdb2glycamMatchingTracker* tracker, int depth);
+    bool CheckAndAcceptMatches(MolecularModeling::AtomVector& target_atoms, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match, std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match,         Pdb2glycamMatchingTracker* tracker);
     bool AllAtomEdgesMatch(Atom* target_atom, Atom* template_atom, std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map);
     bool AtomVertexMatch(Atom* target_atom, Atom* template_atom, std::map<Atom*, std::string>& target_atom_label_map, std::map<Atom*, std::string>& template_atom_label_map);
-    bool IfMatchScenarioAlreadyExists(std::map<Atom*, Atom*>& target_template_vertex_match,
-                                        std::vector<std::map<Atom*, Atom*> >& all_isomorphisms);
+    bool IfMatchScenarioAlreadyExists(std::map<Atom*, Atom*>& target_template_vertex_match, Pdb2glycamMatchingTracker* tracker);
     void RemoveDownstreamMatches(Atom* target_atom, std::vector<std::map<Atom*, Atom*> >& target_template_vertex_match,
                                  std::vector<std::map<Atom*, Atom*> >& template_target_vertex_match, std::vector<Atom*> target_insertion_order);
     bool IfVertexAlreadyMatched(Atom* vertex_atom, std::vector<std::map<Atom*, Atom*> >& match_map);
@@ -1974,7 +2007,7 @@ public:
               * @param CoordinateIndex The index of the coordinate set
               */
     void CreateOffFileFromAssembly(std::string file_name, int CoordinateIndex);
-
+    void SerializeResidueNumbers();
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////

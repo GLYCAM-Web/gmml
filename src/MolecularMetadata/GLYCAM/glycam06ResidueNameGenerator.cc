@@ -3,7 +3,6 @@
 #include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include <locale> // for isLower()
-#include <sstream> // for string stream
 
 namespace gmml
 {
@@ -24,19 +23,20 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, std::string isome
 	Example output:
 	UYB, 0GA etc. See glycam naming / nomenclature.
 */
-
-
 	// Link code e.g. 0, 1, 2, W, Z etc
-	//std::cout << "\nInputs:\nlinkages: " << linkages << "\nisomer: " << isomer << "\ninputResName: " << inputResName << "\nringType: " << ringType << "\nresidueModifier: " << residueModifier << "\nconfiguration: " << configuration << std::endl;
-	std::string linkCode = "";
+	std::string inputs = "\nInputs:\nlinkages: " + linkages + "\nisomer: " + isomer + "\ninputResName: " + inputResName + "\nringType: " + ringType + "\nresidueModifier: " + residueModifier + "\nconfiguration: " + configuration;
+    gmml::log(__LINE__, __FILE__, gmml::INF, inputs);
+
+	std::string linkCode = ""; // Can be empty for e.g. ROH
 	if(!linkages.empty())
 	{
 		Glycam06LinkageCodesLookupContainer linkageCodeLookup;
 		linkCode = linkageCodeLookup.GetCodeForLinkages(linkages);
 		if (linkCode.empty())
 		{
-			auto message = "No linkage code found in GMML metadata for linkage: " + linkages;
-			throw message;
+			std::string message = "No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: " + linkages + "\nCheck these inputs for mistakes: " + inputs;
+			gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+	        throw std::runtime_error(message);
 		}
 	}
 
@@ -76,8 +76,9 @@ std::string Glycam06ResidueNameGenerator(std::string linkages, std::string isome
 	}
 	if (residueCode.empty())
 	{
-		std::string message = "No residue code found in GMML metadata for residue: " + isomer + inputResName + ringType + residueModifier + configuration;
-		throw message;
+		std::string message = "Cannot create 3D structure as no GLYCAM residue code was found in the GMML metadata for residue: " + isomer + inputResName + ringType + residueModifier + configuration;
+        gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+		throw std::runtime_error(message);
 	}
 
 	if (residueCode.size() > 1)

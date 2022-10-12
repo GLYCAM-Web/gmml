@@ -3,7 +3,7 @@
 #include <sys/stat.h> // To check if file exists using stat
 #include <sys/types.h> // The s_IFDIR
 #include <string>
-#include "includes/CodeUtils/logging.hpp"
+//#include "includes/CodeUtils/logging.hpp"
 
 namespace gmml
 {
@@ -22,23 +22,14 @@ inline void ensureFileExists(const std::string& fileName)
     }
 }
 
-inline bool doesDirectoryExist(const std::string& pathName)
-{
-    struct stat info;
-    if( stat( pathName.c_str(), &info ) != 0 )
-        return false; //printf( "cannot access %s\n", pathname );
-    else if( info.st_mode & S_IFDIR )  // S_ISDIR() doesn't exist on my windows
-        return true; //printf( "%s is a directory\n", pathname );
-    else
-        return false; //printf( "%s is no directory\n", pathname );
-}
 
-inline void ensureDirectoryExists (const std::string& pathName)
+inline std::string SplitFilename (const std::string& str)
 {
-    if (!doesDirectoryExist(pathName))
-    {
-        throw "Directory " + pathName + " does not exist";
-    }
+	//std::cout << "Splitting: " << str << '\n';
+	std::size_t found = str.find_last_of("/\\");
+	//  std::cout << " path: " << str.substr(0,found) << '\n';
+	//  std::cout << " file: " << str.substr(found+1) << '\n';
+	return str.substr(0,found);
 }
 
 

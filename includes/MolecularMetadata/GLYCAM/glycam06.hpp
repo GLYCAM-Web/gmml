@@ -7,22 +7,15 @@
 #include <vector>
 #include <set>
 
+#include "./amberatomtypeinfo.hpp"
+#include "./bondlengthbytypepair.hpp"
+
 namespace gmml
 {
 	namespace MolecularMetadata
 	{
 		namespace GLYCAM
 		{
-		  // Move this to an amber space once the proper design is apparent
-		  typedef struct
-		  {
-		    std::string type_ ;                 // The atom type
-		    std::string element_ ;              // The element symbol
-		    std::string amber_hybridization_ ;  // Hybridization expected by AMBER
-		    std::string hybridization_ ;        // Hybridization a chemist would specify
-		    double vdw_radius_ ;                // Default non-bonded atom radius
-		    std::string note_;                  // Note about this atom type
-		  } AmberAtomTypeInfo;
 
 		  const AmberAtomTypeInfo Glycam06j1AtomTypes[] =
 		  {
@@ -67,13 +60,6 @@ namespace gmml
 
 		  // Fix the following to be in C++ syntax....
 		  // alias GLYCAM06ATOMTYPES=Glycam06j1AtomTypes;
-
-		  typedef struct {
-		    std::string type1_;  // One of the atom types
-		    std::string type2_;  // The other atom type
-		    double length_;      // Default length in Angstroms
-		    std::string note_;   // Note about this bond.
-		  } BondLengthByTypePair;
 
 		  const BondLengthByTypePair Glycam06j1BondLengths[] =
 		  {

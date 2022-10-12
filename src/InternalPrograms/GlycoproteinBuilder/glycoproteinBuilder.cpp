@@ -1,11 +1,11 @@
 #include "includes/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.hpp"
 #include "includes/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
-#include "includes/InternalPrograms/io.hpp"
-#include "includes/InternalPrograms/beadResidues.hpp"
+#include "includes/MolecularModeling/beadResidues.hpp"
 #include "includes/InternalPrograms/metropolisCriterion.hpp"
 #include "includes/InternalPrograms/functionsForGMML.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/files.hpp"
+#include "includes/CodeUtils/directories.hpp"
 
 // ToDo Check for negative overlap in case the funk gets funky.
 // ToDo The cout for accepting overlap changes doesn't match the values printed. Why? Is it making them high, not printing, accepting lower, then rejecting, etc?
@@ -15,7 +15,7 @@ using MolecularModeling::Assembly;
 //////////////////////////////////////////////////////////
 GlycoproteinBuilder::GlycoproteinBuilder(std::string inputFile)
 {
-    GlycoproteinBuilderInputs inputStruct = GPInputs::readGPInputFile(Find_Program_workingDirectory(), inputFile);
+    GlycoproteinBuilderInputs inputStruct = GPInputs::readGPInputFile(gmml::Find_Program_workingDirectory(), inputFile);
 	this->InitializeGlycoproteinBuilder(inputStruct);
 }
 GlycoproteinBuilder::GlycoproteinBuilder(std::string inputFile, std::string workingDirectory)
@@ -37,7 +37,7 @@ void GlycoproteinBuilder::SetWorkingDirectory(std::string workingDirectory)
 {
 	if (workingDirectory == "Default") // This value is set in the default constructor for the input struct
 	{
-		workingDirectory_ = Find_Program_workingDirectory();
+		workingDirectory_ = gmml::Find_Program_workingDirectory();
 	}
 	else
 	{
@@ -50,7 +50,7 @@ void GlycoproteinBuilder::SetPrepFileLocation(std::string prepFileLocation)
 {
 	if (prepFileLocation == "Default") // This value is set in the default constructor for the input struct
 	{
-		prepFileLocation_ = Find_Program_Installation_Directory() + "/../dat/prep/GLYCAM_06j-1_GAGS.prep";
+		prepFileLocation_ = gmml::Find_Program_Installation_Directory() + "/../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep";
 	}
 	else
 	{
@@ -126,12 +126,16 @@ void GlycoproteinBuilder::ConvertInputStructEntries(GlycoproteinBuilderInputs in
 void GlycoproteinBuilder::WriteOutputFiles()
 {
 	gmml::WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved", false);
+	this->GetGlycoproteinAssembly().SerializeResidueNumbers();
+	gmml::WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved_Serialized", false);
+	this->GetGlycoproteinAssembly().SetName("GLYCOPROTEINBUILDER"); // For reading off file into tleap
+	gmml::WriteOffFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved", false);
 //    this->DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(this->GetGlycosites(), this->GetOverlapTolerance());
 //	std::stringstream logss;	
 //    logss << "Atomic overlap is " << this->CalculateOverlaps(ATOMIC) << "\n";
 //    logss << "Global overlap is " << this->GetGlobalOverlap() << "\n";
 //	  gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-//    this->PrintDihedralAnglesAndOverlapOfGlycosites();
+    this->PrintDihedralAnglesAndOverlapOfGlycosites();
 //	  this->WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_Resolved", false);
     return;
 }

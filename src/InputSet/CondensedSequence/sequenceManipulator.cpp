@@ -1,6 +1,7 @@
 #include <sstream>
 #include <sys/stat.h> // for checking if file exists
 #include <fstream>  // writing outputDotFile
+#include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Graph.hpp"
 #include "includes/CodeUtils/logging.hpp"
@@ -14,13 +15,13 @@ bool file_exists(const char *filename)
     return (stat (filename, &buffer) == 0);
 }
 
-void SequenceManipulator::ReorderSequence()
+std::string SequenceManipulator::ReorderSequence()
 {	// Just doing the default by ascending link number for now.
 	for (auto &residue : this->GetParsedResidues())
 	{
 		residue->sortInEdgesBySourceTObjectComparator();
 	}
-	return;
+	return this->Print();
 }
 
 std::vector<ParsedResidue*> SequenceManipulator::GetParsedResiduesOrderedByConnectivity()
@@ -81,13 +82,13 @@ std::string SequenceManipulator::Print(const bool withLabels)
 	int branchStackSize = 0;
 	this->RecurvePrint(this->GetTerminal(), branchStackSize, output, withLabels);
 	std::reverse(output.begin(), output.end()); // Reverse order, as it starts from terminal.
-	std::stringstream logss;
+	std::stringstream ss;
 	for (auto &label : output)
 	{
-		logss << label;
+		ss << label;
 	}
-	gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-	return logss.str();
+	gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+	return ss.str();
 }
 
 void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels)
@@ -109,6 +110,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 	if (!derivatives.empty())
 	{
 		derivatives.pop_back(); // Remove the last ","
+		std::reverse(derivatives.begin(), derivatives.end()); // order should be 2S,6S, not 6S,2S.
 		outputResidueString += "[";
 		for (auto &derivative : derivatives)
 		{

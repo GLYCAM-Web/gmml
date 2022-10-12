@@ -36,6 +36,8 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         bool CheckSequenceSanity(std::string sequence);
         void ParseLabelledInput(std::string inString);
+        std::string parseRepeatingUnits(const std::string inputSequence);
+        size_t seekRepeatStart(const std::string &inputSequence, size_t startPosition);
         bool ParseCondensedSequence(std::string inString);
         void RecurveParse(size_t &currentIndex, std::string sequence, ParsedResidue* parent);
         void RecurveParseAlt(size_t &currentIndex, std::string sequence, ParsedResidue* parent);
