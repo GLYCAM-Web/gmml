@@ -20,45 +20,43 @@ const std::string USAGE = "\n"
 "    detect_sugars PDB_file.pdb > output_file_name\n";
 
 int main(int argc, char* argv[]) {
-    // First get the GEMSHOME environment variable
-    char* gemshome_env_var = std::getenv("GEMSHOME");
-    std::string GEMSHOME(gemshome_env_var);
+  // First get the GEMSHOME environment variable
+  char* gemshome_env_var = std::getenv("GEMSHOME");
+  std::string GEMSHOME(gemshome_env_var);
 
-    // Check if the environment variable exists.
-    if(GEMSHOME == "") {
-        std::cout << GEMSHOME_ERROR << std::endl;
-        return EXIT_FAILURE;
-    }
+  // Check if the environment variable exists.
+  if(GEMSHOME == "") {
+      std::cout << GEMSHOME_ERROR << std::endl;
+      return EXIT_FAILURE;
+  }
 
-    // Check to make sure we have enough command line arguments.
-    if(argc < 2) {
-        std::cout << USAGE << std::endl;
-        return EXIT_FAILURE;
-    }
+  // Check to make sure we have enough command line arguments.
+  if(argc < 2) {
+      std::cout << USAGE << std::endl;
+      return EXIT_FAILURE;
+  }
 
-    // Get the Amino Lib file from GMML.
-    std::vector<std::string> aminolibs;
-    aminolibs.push_back(GEMSHOME + "/gmml/dat/CurrentParams/leaprc.ff12SB_2014-04-24/amino12.lib");
+  // Get the Amino Lib file from GMML.
+  std::vector<std::string> aminolibs;
+  aminolibs.push_back(GEMSHOME + "/gmml/dat/CurrentParams/leaprc.ff12SB_2014-04-24/amino12.lib");
 
-    // Get command line argument, which should be an PDB file.
-    std::string pdb_file(argv[1]);
 
-    // Initialize an Assembly from the PDB file.
-    MolecularModeling::Assembly assembly(pdb_file, gmml::PDB);
+  // Initialize an Assembly from the PDB file.
+  // Get command line argument, which should be an PDB file.
+  std::string pdb_file(argv[1]);
+  // Initialize an Assembly from the PDB file.
+  MolecularModeling::Assembly assembly(pdb_file, gmml::PDB);
 
-    // Build by Distance
-    // using 3 cores
-    assembly.BuildStructureByDistance(3);
-    // using 6 cores
-    // assembly.BuildStructureByDistance(6);
-
-    // Remove Hydrgens
-    assembly.RemoveAllHydrogenAtoms(); 
-
-    // Find the Sugars.
-    assembly.ExtractSugars(aminolibs, false, true);
-    //Note that to have individual ontology (.ttl) files or to have CCD lookup, you must provide
-    //a bool (true) for individual ontologies, and the path to the CCD which right now is just in my home directory
-    // YAY! We made it!
-    return EXIT_SUCCESS;
+  // Remove Hydrgens & Build by Distance
+  assembly.RemoveAllHydrogenAtoms();
+  assembly.BuildStructureByDistance(3);
+  
+  // Find the Sugars.
+  bool glyprobity_report = false;
+  bool populate_ontology = true;
+  bool individualOntologies = false;
+  assembly.ExtractSugars(aminolibs, glyprobity_report, populate_ontology, individualOntologies);
+  
+  // YAY! We made it!
+  return EXIT_SUCCESS;
 }

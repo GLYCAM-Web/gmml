@@ -247,6 +247,7 @@ namespace MolecularModeling
             double CalculateAtomicOverlaps(Assembly *assemblyB);
             double CalculateAtomicOverlaps(AtomVector assemblyBAtoms);
             bool CheckIfProtein();
+            bool CheckIfNucleicAcid();
             bool CheckIfWater();
             //GeometryTopology::Coordinate GetRingCenter(); disabled by OG. GetIsRing returns true for all atoms even when IsRing wasn't set.
             GeometryTopology::Coordinate GetGeometricCenter();

@@ -494,15 +494,29 @@ double Residue::CalculateAtomicOverlaps(AtomVector assemblyBAtoms)
 bool Residue::CheckIfProtein()
 {
   int local_debug = -1;
-    if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), this->GetName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
+  if( std::find( gmml::PROTEINS, ( gmml::PROTEINS + gmml::PROTEINSSIZE ), this->GetName() ) != ( gmml::PROTEINS + gmml::PROTEINSSIZE ) )
+  {
+    if (local_debug > 0)
     {
-      if (local_debug > 0)
-      {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Protein Found");
-      }
-      return true;
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Protein Found");
     }
-    return false;
+    return true;
+  }
+  return false;
+}
+
+bool Residue::CheckIfNucleicAcid()
+{
+  int local_debug = -1;
+  if( std::find( gmml::NUCLEICACIDS, ( gmml::NUCLEICACIDS + gmml::NUCLEICACIDSSIZE ), this->GetName() ) != ( gmml::NUCLEICACIDS + gmml::NUCLEICACIDSSIZE ) )
+  {
+    if (local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Nucleic Acid Found");
+    }
+    return true;
+  }
+  return false;
 }
 
 bool Residue::CheckIfWater() {

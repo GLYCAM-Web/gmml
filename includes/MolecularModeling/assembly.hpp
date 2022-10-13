@@ -270,6 +270,11 @@ public:
               */
     ResidueVector GetAllProteinResiduesOfAssembly();
     /*! \fn
+              * A functions that extracts all nucleic acid residues of an assembly
+              * @return Vector of all nucleic acid residues in the current object of assembly
+              */
+    ResidueVector GetAllNucleicAcidResiduesOfAssembly();
+    /*! \fn
               * A function to return all coordinates of all atoms in all residues and assemblies of an assembly
               * @return List of all coordinates of all atoms in all residues and assemblies of an assembly
               */
@@ -562,6 +567,8 @@ public:
     void AttachResidues(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);
     void RemoveHydrogenAtAttachedPosition(Residue* residue, int branch_index);
     void RemoveAllHydrogenAtoms();
+    void RemoveAllProteinResidues();
+    void RemoveAllNucleicAcidResidues();
     void SetDerivativeAngle(Residue* residue, Residue* parent_residue, int branch_index);
     void AdjustCharge(Residue* residue, Residue* parent_residue, int branch_index);
     void SetAttachedResidueBond(Residue* residue, Residue* parent_residue, int branch_index, std::string parameter_file);

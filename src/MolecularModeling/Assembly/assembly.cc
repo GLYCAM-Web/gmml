@@ -535,6 +535,22 @@ MolecularModeling::ResidueVector Assembly::GetAllProteinResiduesOfAssembly()
     }
     return protein_residues;
 }
+
+MolecularModeling::ResidueVector Assembly::GetAllNucleicAcidResiduesOfAssembly()
+{
+    ResidueVector nucleic_acid_residues;
+    ResidueVector all_residues = this->GetAllResiduesOfAssembly();
+    for (ResidueVector::iterator it1 = all_residues.begin(); it1 != all_residues.end(); ++it1)
+    {
+        Residue *current_residue = *it1;
+        if (current_residue->CheckIfNucleicAcid()==1) // the current residue is an amino acid
+        {
+            nucleic_acid_residues.push_back(current_residue);
+        }
+    }
+    return nucleic_acid_residues;
+}
+
 GeometryTopology::CoordinateVector Assembly::GetAllCoordinates()
 {
     GeometryTopology::CoordinateVector coordinates;
