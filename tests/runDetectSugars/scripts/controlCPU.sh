@@ -25,6 +25,7 @@ CPUS="$2"
 
 ## Check if CPUS is a valid unsigned integer. If not, set to default value of 1.
 if [ "${CPUS}" == "" ] || ! [[ ${CPUS} =~ ^[0-9]+$ ]] ; then
+	# 1 is the default because my script to run the archive uses 20 CPU cores to build by distance
 	CPUS=1
 fi
 

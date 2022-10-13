@@ -1,11 +1,34 @@
-//Instructions for making the ontology
+//////////////////////////////////////////
+// Instructions for making the ontology //
+//////////////////////////////////////////
 
-In home directory,
-git clone -b gems-dev https://github.com/GLYCAM-Web/gems.git
-cd gems
-git clone -b gmml-dev https://github.com/GLYCAM-Web/gmml.git
-./make.sh
-cd ~/OntologyScripts
-nohup ./controlCPU.sh /programs/repos/PDB/all 1 &
+// You should be in the GRPC container of a running Development Environment
+// If not, do that first.  
 
-//1 CPU used because the detect_sugars_runArchive.cc file uses 20 CPUS to build the structure.
+// If GMML wasn't compiled (IE you used bin/start.sh instead of Start-All-DevEnv.bash):
+
+	cd $GEMSHOME/gmml/
+	./make.sh
+
+// Compile a modified detect_sugars with settings for building the database for Virtuoso
+// See gmml/tests/tests/detect_sugars_RunArchive.cc for more
+
+	cd tests/
+  g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ \
+		tests/detect_sugars_RunArchive.cc -lgmml -pthread -o archiveRun_detect_sugars
+
+// Run the files from the PDB
+
+	cd runDetectSugars/scripts/
+
+	nohup ./controlCPU.sh /programs/repos/PDB/all 2 &
+
+// 2 CPUs used because the detect_sugars_runArchive.cc file uses 20 CPUS to build the structure
+// and they don't build the structure the entire time (using 1 core for everything else)
+
+// If you want to run a subset of PDBs, make a list of PDB IDs in a file called UpdatedPDBs.txt
+// in the scripts directory (One PDB per line, case doesn't matter)
+// and uncomment the "if grep ...UpdatedPDBs.txt; then" and the  "fi" statement atthe end of run_PDB
+// in ontology.sh.
+
+//Then, run as above with nohup
