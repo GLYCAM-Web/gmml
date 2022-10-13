@@ -83,7 +83,6 @@ int main(int argc, char* argv[]) {
     bool populate_ontology = true;
     bool individualOntologies = true;
     assembly.ExtractSugars(aminolibs, glyprobity_report, populate_ontology, individualOntologies, CCDHOME);
-
   }
 
   // YAY! We made it!

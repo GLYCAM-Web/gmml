@@ -32693,3 +32693,4 @@ ZIPFILE: pdb6zzy.ent.gz
 FILENAME: 6zzy
 FILEDEST: /programs/gems/PDB/processed/6ZZY.pdb
 REPDEST: /programs/gems/PDB/all-reports/6ZZY.txt
+It appears you don't have the partner script, ontology.sh. It is needed to run the rest.
