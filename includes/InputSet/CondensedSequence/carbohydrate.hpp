@@ -1,8 +1,7 @@
-#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_ASSEMBLY_BUILDER_HPP
-#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_ASSEMBLY_BUILDER_HPP
+#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_HPP
+#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_HPP
 
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
-#include "includes/MolecularModeling/residue.hpp"
 
 namespace CondensedSequence
 {
@@ -26,11 +25,11 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        inline std::map<std::string, PrepFileSpace::PrepFileResidue*>* GetPrepResidueMap() {return &prepResidueMap_;}
-        //////////////////////////////////////////////////////////
-        //                       MUTATOR                        //
-        //////////////////////////////////////////////////////////
-        inline void SetPrepResidueMap(std::map<std::string, PrepFileSpace::PrepFileResidue*> prepMap) { prepResidueMap_ = prepMap;}
+//        inline std::map<std::string, PrepFileSpace::PrepFileResidue*>* GetPrepResidueMap() {return &prepResidueMap_;}
+//        //////////////////////////////////////////////////////////
+//        //                       MUTATOR                        //
+//        //////////////////////////////////////////////////////////
+//        inline void SetPrepResidueMap(std::map<std::string, PrepFileSpace::PrepFileResidue*> prepMap) { prepResidueMap_ = prepMap;}
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
@@ -42,8 +41,7 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
-        std::map<std::string, PrepFileSpace::PrepFileResidue*> prepResidueMap_;
-        std::vector<MolecularModeling::Residue> createdResidues_;
+        //std::map<std::string, PrepFileSpace::PrepFileResidue*> prepResidueMap_;
     };
 }
 #endif

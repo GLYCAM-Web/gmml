@@ -24,7 +24,6 @@ public:
     //////////////////////////////////////////////////////////
     inline const int& getNumber() {return number_;}
     std::vector<const atomT*> getAtoms() const;
-   // std::vector<const residueT*> getResidues() const;
     std::vector<residueT*> getResidues() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
@@ -34,9 +33,12 @@ public:
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
     void addResidue(std::unique_ptr<residueT> myResidue);
+    residueT* addResidue(residueT* myResidue);
     residueT* createNewResidue(const std::string& residueName, const residueT& positionReferenceResidue);
     typename std::vector<std::unique_ptr<residueT>>::iterator findPositionOfResidue(const residueT* queryResidue);
     std::vector<residueT*> getResidues(std::vector<std::string> queryNames);
+    residueT* getResidue(const std::string& queryName);
+    void deleteResidue(residueT*);
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
@@ -105,6 +107,13 @@ void cdsMolecule<residueT, atomT>::addResidue(std::unique_ptr<residueT> myResidu
     residues_.push_back(std::move(myResidue));
 }
 
+template< class residueT, class atomT>
+residueT* cdsMolecule<residueT, atomT>::addResidue(residueT* myResidue)
+{
+    residues_.push_back(std::make_unique<residueT>(myResidue));
+    return residues_.back();
+}
+
 template< class residueT, class atomT >
 residueT* cdsMolecule<residueT, atomT>::createNewResidue(const std::string& residueName, const residueT& positionReferenceResidue)
 {
@@ -139,7 +148,7 @@ typename std::vector<std::unique_ptr<residueT>>::iterator cdsMolecule<residueT, 
             ++i;
         }
     }
-    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find position of " + queryResidue->printId() + " in vector\n"); // every class should have a print?
+    gmml::log(__LINE__,__FILE__,gmml::ERR, "Did not find position of " + queryResidue->getName() + " in vector\n"); // every class should have a print?
     return e;
 }
 
@@ -147,6 +156,26 @@ template< class residueT, class atomT >
 typename std::vector<residueT*> cdsMolecule<residueT, atomT>::getResidues(std::vector<std::string> queryNames)
 {
 	return codeUtils::getElementsWithNames(this->getResidues(), queryNames);
+}
+
+template< class residueT, class atomT >
+residueT* cdsMolecule<residueT, atomT>::getResidue(const std::string& queryName)
+{
+    return codeUtils::findElementWithName(this->getResidues(), queryName);
+}
+
+template< class residueT, class atomT >
+void cdsMolecule<residueT, atomT>::deleteResidue(residueT* residue)
+{
+    std::cout << "Gonna erase this mofo: " << std::endl;
+    auto i = this->findPositionOfResidue(residue); // auto makes my life easier
+    if (i != residues_.end())
+    {
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Residue " + residue->getName() + " has been erased. You're welcome.");
+        i = residues_.erase(i);
+    }
+    std::cout << "Done " << std::endl;
+    return;
 }
 
 //////////////////////////////////////////////////////////

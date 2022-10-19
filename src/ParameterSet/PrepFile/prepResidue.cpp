@@ -574,8 +574,9 @@ double PrepResidue::CalculatePrepResidueCharge()
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
-void PrepResidue::Print(std::ostream& out)
+std::string PrepResidue::Print() const
 {
+    std::stringstream out;
 //    BondedAtomIndexMap bonded_atoms_map = this->GetBondingsOfResidue();
     out << "Title: " << title_ << std::endl;
     out << std::setw(10) << "ResName"
@@ -658,11 +659,11 @@ void PrepResidue::Print(std::ostream& out)
 //    }
 
     out << std::endl << "Improper dihedrals" << std::endl;
-    for(std::vector<Dihedral>::iterator it = improper_dihedrals_.begin(); it != improper_dihedrals_.end(); it++)
+    for(auto &improperDihedral : this->GetImproperDihedrals())
     {
-        for(Dihedral::iterator it1 = it->begin(); it1 != it->end(); it1++)
+        for (auto &dihedralComponent : improperDihedral)
         {
-            out << std::setw(6) << (*it1);
+            out << std::setw(6) << dihedralComponent;
         }
         out << std::endl;
     }
@@ -674,6 +675,7 @@ void PrepResidue::Print(std::ostream& out)
 //    }
 
     out << std::endl;
+    return out.str();
 }
 
 void PrepResidue::Write(std::ostream &stream)

@@ -5,13 +5,15 @@
 using CondensedSequence::ParsedResidue;
 
 ParsedResidue::ParsedResidue(std::string residueString, absResidue::Type specifiedType)
-: Node(residueString), fullResidueString_ (residueString)
+: fullResidueString_ (residueString)
+//: Node(residueString), fullResidueString_ (residueString)
 {
     this->ParseResidueStringIntoComponents(residueString, specifiedType);
 }
 
 ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor, absResidue::Type specifiedType)
-: Node(residueString), fullResidueString_ (residueString)
+//: Node(residueString), fullResidueString_ (residueString)
+: fullResidueString_ (residueString)
 {
     this->ParseResidueStringIntoComponents(residueString, specifiedType);
 	this->AddLinkage(neighbor);
@@ -49,9 +51,10 @@ std::string ParsedResidue::GetLink() const
 std::vector<ParsedResidue*> ParsedResidue::GetChildren() const
 {
 	std::vector<ParsedResidue*> resRet;
-	for (glygraph::Node<ParsedResidue>* currNodeRes : this->getParents())
+	//for (glygraph::Node<ParsedResidue>* currNodeRes : this->getParents())
+	for (auto& currNodeRes : this->getParents())
 	{
-		resRet.push_back(currNodeRes->getDeriviedClass());
+		resRet.push_back(static_cast<ParsedResidue*>(currNodeRes));
 	}
     return resRet;
 }
@@ -59,9 +62,10 @@ std::vector<ParsedResidue*> ParsedResidue::GetChildren() const
 std::vector<ParsedResidue*> ParsedResidue::GetParents() const
 {
 	std::vector<ParsedResidue*> resRet;
-	for (glygraph::Node<ParsedResidue>* currNodeRes : this->getChildren())
+//	for (glygraph::Node<ParsedResidue>* currNodeRes : this->getChildren())
+	for (auto &currNodeRes : this->getChildren())
 	{
-		resRet.push_back(currNodeRes->getDeriviedClass());
+		resRet.push_back(static_cast<ParsedResidue*>(currNodeRes));
 	}
     return resRet;
 }

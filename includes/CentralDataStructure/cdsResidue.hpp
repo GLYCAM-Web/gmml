@@ -23,6 +23,10 @@ public:
     //////////////////////////////////////////////////////////
     cdsResidue() {}
     cdsResidue(const std::string& residueName, const cdsResidue *referenceResidue);
+//    // Copy ctor
+//    cdsResidue(const atomT &rhs);
+//    // dtor
+//    virtual ~cdsResidue();
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
@@ -39,6 +43,7 @@ public:
     void createAtom(const std::string atomName, Coordinate& atomCoord);
     void addAtom(std::unique_ptr<atomT> myAtom);
     bool deleteAtom(const atomT* atom);
+    std::vector<std::unique_ptr<atomT>> extractAtoms() {return std::move(atoms_);}
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
@@ -68,6 +73,21 @@ cdsResidue<atomT>::cdsResidue(const std::string& residueName, const cdsResidue *
     this->setName(residueName);
     this->setNumber(referenceResidue->getNumber() + 1);
 }
+
+//// Copy ctor
+//template< class atomT >
+//cdsResidue<atomT>::cdsResidue(const atomT &rhs) : glygraph::Node<cdsResidue<atomT>>(rhs)
+//{
+//    std::cout << "cdsResidue copy ctor called\n";
+//    number_ = rhs.getNumber();
+//}
+//// dtor
+//template< class atomT >
+//cdsResidue<atomT>::~cdsResidue()
+//{
+//
+//}
+
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
@@ -138,9 +158,9 @@ bool cdsResidue<atomT>::deleteAtom(const atomT* atom)
     auto i = this->FindPositionOfAtom(atom); // auto makes my life easier
     if (i != atoms_.end())
     {
-       i = atoms_.erase(i);
-       gmml::log(__LINE__,__FILE__,gmml::INF, "Atom " + atom->getName() + " has been erased. You're welcome.");
-       return true;
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Atom " + atom->getName() + " has been erased. You're welcome.");
+        i = atoms_.erase(i); // this costs a lot as everything after i gets shifted.
+        return true;
     }
     return false;
 }

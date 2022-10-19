@@ -59,11 +59,9 @@ private:
 	//                       ATTRIBUTES                     //
 	//////////////////////////////////////////////////////////
 };
-
 //////////////////////////////////////////////////////////
-//                    FUNCTIONS                         //
+//                       CONSTRUCTORS                   //
 //////////////////////////////////////////////////////////
-
 template <class atomT>
 cdsAtom<atomT>::cdsAtom(const std::string& name, const Coordinate& coord)
 : Abstract::absAtom(coord)
@@ -72,6 +70,9 @@ cdsAtom<atomT>::cdsAtom(const std::string& name, const Coordinate& coord)
 }
 
 
+//////////////////////////////////////////////////////////
+//                    FUNCTIONS                         //
+//////////////////////////////////////////////////////////
 template <class atomT>
 void cdsAtom<atomT>::addBond(atomT *otherAtom)
 {

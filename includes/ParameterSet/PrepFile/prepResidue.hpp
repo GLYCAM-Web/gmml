@@ -56,7 +56,7 @@ public:
 	std::vector<std::string> GetAtomNames() const;
 	std::vector<std::string> GetHeavyAtomNames() const;
 	double CalculatePrepResidueCharge();
-	void Print(std::ostream& out = std::cerr);
+	std::string Print() const;
 	void Write(std::ostream &stream);
 private:
 	//////////////////////////////////////////////////////////

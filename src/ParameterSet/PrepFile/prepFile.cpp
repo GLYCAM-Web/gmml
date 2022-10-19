@@ -32,7 +32,7 @@ PrepFile::PrepFile(const std::string& prep_file)
 	}
 }
 
-PrepFile::PrepFile(const std::string& prep_file, std::vector<std::string>& queryNames)
+PrepFile::PrepFile(const std::string& prep_file, const std::vector<std::string> queryNames)
 {
 	codeUtils::ensureFileExists(prep_file);
 	std::ifstream in_file(prep_file.c_str());
@@ -86,19 +86,23 @@ PrepFile::PrepFile(const std::string& prep_file, std::vector<std::string>& query
 //////////////////////////////////////////////////////////
 //                         MUTATORS                     //
 //////////////////////////////////////////////////////////
+void PrepFile::SetAtomConnectivities()
+{
+    for ( auto &residue : this->getResidues() )
+    {
+        residue->SetConnectivities();
+    }
+    return;
+}
 
-
-//void PrepFile::SetResidues(ResidueMap residues)
-//{
-//    residues_.clear();
-//    for(ResidueMap::iterator it = residues.begin(); it != residues.end(); it++)
-//    {
-//        prep::PrepResidue* residue = (*it).second;
-//        std::string residue_name = (*it).first;
-//        residues_[residue_name] = residue;
-//    }
-//}
-
+void PrepFile::Generate3dStructures()
+{
+    for ( auto &residue : this->getResidues() )
+    {
+        residue->Generate3dStructure();
+    }
+    return;
+}
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////
@@ -117,13 +121,14 @@ void PrepFile::ReadAllResidues(std::ifstream &in_file)
 	//std::cout << "Ok this is done with line as:\n " << line << std::endl;
 }
 
-void PrepFile::ReadQueryResidues(std::ifstream &in_file, std::vector<std::string>& queryNames)
+// Reads each line of the file. If it finds one of the query residues it reads it in. Won't read in query repeats twice.
+void PrepFile::ReadQueryResidues(std::ifstream &in_file, const std::vector<std::string>& queryNames)
 {
 	std::string line;
 	getline(in_file, line);
 	getline(in_file, line); // first two lines are always blank apparently. smh.
 	getline(in_file, line); // This should be first line of residue entry.
-    while (gmml::Trim(line).find("STOP") == std::string::npos)           /// End of file
+    while (gmml::Trim(line).find("STOP") == std::string::npos) // While not at end of file
     {
     	std::streampos firstResidueLinePosition = in_file.tellg(); // save correct position to start reading residue
     	// Need to move to line with residue name on it.
@@ -133,7 +138,7 @@ void PrepFile::ReadQueryResidues(std::ifstream &in_file, std::vector<std::string
     	//std::cout << "Current residue name is: " << residueNameLine.front() << std::endl;
     	if (std::find(queryNames.begin(), queryNames.end(), residueNameLine.front()) != queryNames.end() )
     	{
-    		//std::cout << "Found query residue: " << residueNameLine.front() << "\n";
+    		std::cout << "Found query residue: " << residueNameLine.front() << "\n";
     		in_file.seekg(firstResidueLinePosition);  //go back here so the residue constructor works
     		this->addResidue(std::make_unique<PrepResidue>(in_file, line));
     	}
@@ -184,11 +189,13 @@ void PrepFile::Write(std::ofstream &stream)
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
-void PrepFile::Print(std::ostream& out)
+std::string PrepFile::Print() const
 {
+    std::string out;
 	for(auto &residue : this->getResidues() )
 	{
-		out << "**********************************************************************************" << std::endl;
-		residue->Print(out);
+		out += "**********************************************************************************\n";
+		out += residue->Print();
 	}
+	return out;
 }

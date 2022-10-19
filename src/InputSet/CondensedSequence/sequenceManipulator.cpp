@@ -28,7 +28,7 @@ std::vector<ParsedResidue*> SequenceManipulator::GetParsedResiduesOrderedByConne
 {
     std::vector<ParsedResidue*> rawResidues;
     // Go via Graph so order decided by connectivity, depth first traversal:
-    glygraph::Graph<ParsedResidue> sequenceGraph(this->GetTerminal());
+    glygraph::Graph<ParsedResidue*> sequenceGraph(this->GetTerminal());
     for(auto &node : sequenceGraph.getNodes())
     {
         rawResidues.push_back(node->getDeriviedClass());

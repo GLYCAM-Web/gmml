@@ -10,27 +10,49 @@
 #include "includes/CodeUtils/files.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp"
 #include "includes/ParameterSet/PrepFile/prepFile.hpp"
+#include "includes/ParameterSet/PrepFile/prepResidue.hpp"
+#include "includes/ParameterSet/PrepFile/prepAtom.hpp"
+#include "includes/CodeUtils/logging.hpp"
+#include "includes/CentralDataStructure/cdsResidue.hpp"
+#include "includes/CentralDataStructure/cdsMolecule.hpp"
 
-using Abstract::absResidue; // For Residue::Type
+//using Abstract::absResidue; // For Residue::Type
 using CondensedSequence::Carbohydrate;
 
 Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) : SequenceManipulator{inputSequence}
 {
-	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependency Oliver.
+	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependency Oliver. Update: Fixed. Test the fix Oliver.
 	this->SetIndexByConnectivity();
 	codeUtils::ensureFileExists(prepFilePath);
-	prep::PrepFile prepFile(prepFilePath);
-	gmml::log(__LINE__,__FILE__,gmml::INF,"Prepfile used is " + prepFilePath);
-	std::vector<std::string> residuesToLoadFromPrep = {"0GA", "4YB", "4uA", "Cake", "4YA"};
-	//std::vector<std::string> residuesToLoadFromPrep = {"0GA"};
-	prep::PrepFile glycamPrepFileSelect(prepFilePath, residuesToLoadFromPrep);
-	for ( auto &prepResidue : glycamPrepFileSelect.getResidues() )
+	std::vector<std::string> residuesToLoadFromPrepFile = this->GetGlycamNamesOfResidues();
+	prep::PrepFile glycamPrepFileSelect(prepFilePath, this->GetGlycamNamesOfResidues());
+	// Only want to do this next step for selected residues, not the whole prep file.
+	glycamPrepFileSelect.SetAtomConnectivities();
+	glycamPrepFileSelect.Generate3dStructures();
+	cds::cdsMolecule<cds::cdsResidue<cds::Atom>, cds::Atom> theVanToMordor;
+	std::cout << "Going into this loop" << std::endl;
+	for( auto &parsedResidue: this->getResidues() )
 	{
-		prepResidue->SetConnectivities();
-		prepResidue->Generate3dStructure();
+	    std::cout << "parsedResidue is " << parsedResidue->getName() << std::endl;
+	    std::cout << "it's glycam name is " << this->GetGlycamResidueName(parsedResidue) << std::endl;
+	    prep::PrepResidue* prepResidue = glycamPrepFileSelect.getResidue(this->GetGlycamResidueName(parsedResidue));
+	    if (prepResidue == nullptr)
+	    {
+	        std::string message = "Did not find prep entry for " + parsedResidue->getName() + " with glycam residue code: " + this->GetGlycamResidueName(parsedResidue);
+	        gmml::log(__LINE__,__FILE__,gmml::ERR, message);
+	        throw(std::runtime_error(message));
+	    }
+	    std::cout << "prepResidue is " << prepResidue->getName() << std::endl;
+	    cds::cdsResidue<cds::Atom>* newResidue(parsedResidue);
+//	    cds::cdsResidue<cds::Atom>* newResidue = theVanToMordor.addResidue(parsedResidue); // ParsedResidue has the correct residue connectivities, prepResidue has the atoms.
+//	    for (auto &prepAtom : prepResidue->getAtoms())
+//	    {
+//	        newResidue->addAtom(std::make_unique<cds::Atom>(prepAtom));
+//	    }
+
 	}
-//	this->SetPrepResidueMap(prepFile.GetResidues()); //A mapping between a residue name and its residue object
-//	this->GenerateResidues(inputAssembly);
+
+	//Ensure integralCharge can be a free function that accepts atom vector right?
 //	this->EnsureIntegralCharge(inputAssembly->GetTotalCharge());
 	return;
 }
@@ -230,10 +252,13 @@ void Carbohydrate::EnsureIntegralCharge(double charge)
 std::vector<std::string> Carbohydrate::GetGlycamNamesOfResidues() const
 {
 	std::vector<std::string> names(this->getResidues().size()); // set size of vec for speed.
+    std::cout << "Glycam names are: ";
 	for(auto &residue : this->getResidues())
 	{
-		names.push_back(this->GetGlycamResidueName(residue));
+	    names.push_back(this->GetGlycamResidueName(residue));
+	    std::cout << names.back();
 	}
+	std::cout << "\n";
 	return names;
 }
 

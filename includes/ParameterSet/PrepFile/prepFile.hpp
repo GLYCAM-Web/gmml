@@ -22,13 +22,15 @@ public:
 	//                       Constructor                    //
 	//////////////////////////////////////////////////////////
 	PrepFile(const std::string& prep_file);
-	PrepFile(const std::string& prep_file, std::vector<std::string>& queryNames);
+	PrepFile(const std::string& prep_file, const std::vector<std::string> queryNames);
 	//////////////////////////////////////////////////////////
 	//                           ACCESSOR                   //
 	//////////////////////////////////////////////////////////
 	//////////////////////////////////////////////////////////
 	//                           MUTATOR                    //
 	//////////////////////////////////////////////////////////
+	void SetAtomConnectivities();
+	void Generate3dStructures();
 	//////////////////////////////////////////////////////////
 	//                         FUNCTIONS                    //
 	//////////////////////////////////////////////////////////
@@ -37,7 +39,7 @@ public:
 	//////////////////////////////////////////////////////////
 	//                     DISPLAY FUNCTIONS                //
 	//////////////////////////////////////////////////////////
-	void Print(std::ostream& out = std::cerr);
+	std::string Print() const;
 private:
 	//////////////////////////////////////////////////////////
 	//                           ACCESSOR                   //
@@ -46,7 +48,7 @@ private:
 	//                           MUTATOR                    //
 	//////////////////////////////////////////////////////////
     void ReadAllResidues(std::ifstream& in_file);
-    void ReadQueryResidues(std::ifstream &in_file, std::vector<std::string>& queryNames);
+    void ReadQueryResidues(std::ifstream &in_file, const std::vector<std::string>& queryNames);
     //void ReadOnlyQueryResidues(std::ifstream &in_file, std::vector<std::string>& query_residue_names);
 	//////////////////////////////////////////////////////////
 	//                         ATTRIBUTES                   //
