@@ -1,17 +1,13 @@
 #ifndef GMML_INPUTSET_CONDENSED_SEQUENCE_PARSED_RESIDUE_HPP
 #define GMML_INPUTSET_CONDENSED_SEQUENCE_PARSED_RESIDUE_HPP
 
-#include <string>
-//#include "includes/Abstract/absResidue.hpp"
-#include "includes/CentralDataStructure/cdsResidue.hpp"
+#include "includes/CentralDataStructure/residue.hpp"
 #include "includes/CentralDataStructure/atom.hpp"
-#include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp" // TemplateGraph
-
-
+#include <string>
 namespace CondensedSequence
 {
 //	class ParsedResidue : public Abstract::absResidue , public glygraph::Node<ParsedResidue>
-class ParsedResidue : public cds::cdsResidue<cds::Atom>
+class ParsedResidue : public cds::Residue
 	{
 	public:
         //////////////////////////////////////////////////////////
@@ -43,7 +39,7 @@ class ParsedResidue : public cds::cdsResidue<cds::Atom>
         std::vector<ParsedResidue*> GetChildren() const;
         std::vector<ParsedResidue*> GetParents() const;
         std::string GetChildLinkagesForGlycamResidueNaming() const;
-        std::string Print() const;
+        std::string PrintToString() const;
         std::string GetGraphVizLine(std::string SnfgFilePath = "") const;
         std::string GetMonosaccharideName() const;
         //////////////////////////////////////////////////////////

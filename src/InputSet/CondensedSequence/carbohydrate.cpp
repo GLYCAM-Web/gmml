@@ -31,11 +31,12 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 	glycamPrepFileSelect.Generate3dStructures();
 	cds::cdsMolecule<cds::cdsResidue<cds::Atom>, cds::Atom> theVanToMordor;
 	std::cout << "Going into this loop" << std::endl;
-	for( auto &parsedResidue: this->getResidues() )
+	for( auto &cdsResidue: this->getResidues() )
 	{
+	    ParsedResidue* parsedResidue = static_cast<ParsedResidue*>(cdsResidue);
 	    std::cout << "parsedResidue is " << parsedResidue->getName() << std::endl;
 	    std::cout << "it's glycam name is " << this->GetGlycamResidueName(parsedResidue) << std::endl;
-	    prep::PrepResidue* prepResidue = glycamPrepFileSelect.getResidue(this->GetGlycamResidueName(parsedResidue));
+	    cds::Residue* prepResidue = glycamPrepFileSelect.getResidue(this->GetGlycamResidueName(parsedResidue));
 	    if (prepResidue == nullptr)
 	    {
 	        std::string message = "Did not find prep entry for " + parsedResidue->getName() + " with glycam residue code: " + this->GetGlycamResidueName(parsedResidue);
@@ -43,7 +44,6 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 	        throw(std::runtime_error(message));
 	    }
 	    std::cout << "prepResidue is " << prepResidue->getName() << std::endl;
-	    cds::cdsResidue<cds::Atom>* newResidue(parsedResidue);
 //	    cds::cdsResidue<cds::Atom>* newResidue = theVanToMordor.addResidue(parsedResidue); // ParsedResidue has the correct residue connectivities, prepResidue has the atoms.
 //	    for (auto &prepAtom : prepResidue->getAtoms())
 //	    {
@@ -255,7 +255,7 @@ std::vector<std::string> Carbohydrate::GetGlycamNamesOfResidues() const
     std::cout << "Glycam names are: ";
 	for(auto &residue : this->getResidues())
 	{
-	    names.push_back(this->GetGlycamResidueName(residue));
+	    names.push_back(this->GetGlycamResidueName(static_cast<ParsedResidue*>(residue)));
 	    std::cout << names.back();
 	}
 	std::cout << "\n";

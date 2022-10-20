@@ -211,10 +211,10 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         std::string message = "Error: we can't parse this residue: \"" + residueString + "\""; 
         throw message;
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, this->Print());
+    gmml::log(__LINE__, __FILE__, gmml::INF, this->PrintToString());
 }
 
-std::string ParsedResidue::Print() const
+std::string ParsedResidue::PrintToString() const
 {
 	std::stringstream ss;
     ss << this->GetIsomer() << "_" 

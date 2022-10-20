@@ -1,14 +1,13 @@
 #ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_PARSER_HPP
 #define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_PARSER_HPP
 
-#include <string>
 #include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
-#include "includes/CentralDataStructure/cdsMolecule.hpp"
+#include "includes/CentralDataStructure/molecule.hpp"
 #include "includes/CentralDataStructure/atom.hpp"
-
+#include <string>
 namespace CondensedSequence
 {
-    class SequenceParser : public cds::cdsMolecule<ParsedResidue, cds::Atom>
+    class SequenceParser : public cds::Molecule
     {
     public:
         //////////////////////////////////////////////////////////

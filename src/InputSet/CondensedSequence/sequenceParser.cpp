@@ -113,7 +113,7 @@ std::string SequenceParser::Print()
     std::string output = "";
     for (auto &residue : this->getResidues())
     {
-        output += residue->Print();
+        output += static_cast<ParsedResidue*>(residue)->PrintToString();
     }
     return output;
 }
@@ -151,7 +151,7 @@ bool SequenceParser::ParseCondensedSequence(const std::string sequence)
     { // e.g. DGlcpa1-OH
     	this->addResidue(std::make_unique<ParsedResidue>(sequence.substr(i), ParsedResidue::Type::Aglycone));
     }
-    auto terminal = this->getResidues().back();
+    ParsedResidue* terminal = static_cast<ParsedResidue*>(this->getResidues().back());
     this->RecurveParseAlt(i, sequence, terminal); 
     return true;
 }
@@ -238,12 +238,12 @@ ParsedResidue* SequenceParser::SaveResidue(const size_t windowStart, const size_
     {
         logss << "Saving " << residueString << " with parent " << parent->GetName() <<  std::endl;
         this->addResidue(std::make_unique<ParsedResidue>(residueString, parent));
-        auto newRes = this->getResidues().back();
+        ParsedResidue* newRes = static_cast<ParsedResidue*>(this->getResidues().back());
         if(this->DerivativesExist())
         {
             for(auto &derivative : this->ExtractDerivatives())
             {
-                logss << "Saving derivative: " << derivative << " with parent " << newRes->GetName() <<  std::endl;
+                logss << "Saving derivative: " << derivative << " with parent " << newRes->getName() <<  std::endl;
                 this->addResidue(std::make_unique<ParsedResidue>(derivative, newRes));
             }
         }
