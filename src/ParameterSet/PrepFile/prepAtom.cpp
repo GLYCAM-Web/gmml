@@ -2,10 +2,12 @@
 #include <iomanip>
 #include <ios>
 
-#include "includes/common.hpp"
+#include "includes/common.hpp" // ToDo find out what's necessary in here and move to dedicated file in CodeUtils
 #include "includes/ParameterSet/PrepFile/prepAtom.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp" //get_cartesian_point_from_internal_coords()
 #include "includes/CodeUtils/strings.hpp"
+#include "includes/CodeUtils/logging.hpp"
+
 
 using prep::PrepAtom;
 //////////////////////////////////////////////////////////
@@ -155,7 +157,7 @@ void PrepAtom::FindDihedralAtoms(std::vector<PrepAtom*>& foundAtoms, int current
 	{
 		return;
 	}
-	PrepAtom* parent = foundAtoms.back()->getParents().front(); // Go up the first parent only. Loops may create another, but they should be ignored.
+	PrepAtom* parent = static_cast<PrepAtom*>(foundAtoms.back()->getParents().front()); // Go up the first parent only. Loops may create another, but they should be ignored.
 	foundAtoms.push_back(parent);
 	this->FindDihedralAtoms(foundAtoms, ++currentDepth, targetDepth);
 	return;

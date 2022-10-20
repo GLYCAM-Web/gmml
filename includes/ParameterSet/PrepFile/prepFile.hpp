@@ -1,18 +1,18 @@
 #ifndef INCLUDES_PARAMETERSET_PREPFILE_PREPFILE_HPP_
 #define INCLUDES_PARAMETERSET_PREPFILE_PREPFILE_HPP_
 
+#include "includes/CentralDataStructure/molecule.hpp"
+#include "includes/ParameterSet/PrepFile/prepResidue.hpp"
+#include "includes/ParameterSet/PrepFile/prepAtom.hpp"
+
 #include <map>
 #include <string>
 #include <iostream>
 #include <vector>
 
-#include "includes/CentralDataStructure/cdsMolecule.hpp"
-#include "includes/ParameterSet/PrepFile/prepResidue.hpp"
-#include "includes/ParameterSet/PrepFile/prepAtom.hpp"
-
 namespace prep
 {
-class PrepFile : public cds::cdsMolecule<PrepResidue, PrepAtom>
+class PrepFile : public cds::Molecule
 {
 public:
 	//////////////////////////////////////////////////////////

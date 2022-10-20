@@ -358,20 +358,21 @@ void PrepResidue::SetConnectivities()
 	//std::cout << "Number of atoms: " << this->getAtoms().size() << std::endl;
 	//std::cout << "First atom is " << this->getAtoms().front()->getName() << std::endl;
 	std::vector<PrepAtom*> connectionPointStack;
-	connectionPointStack.push_back(this->getAtoms().front());
+	connectionPointStack.push_back( static_cast<PrepAtom*>(this->getAtoms().front()) );
 	//while(currentAtom != this->getAtoms().end())
 	for(auto &currentAtom : this->getAtoms())
 	{
-		connectionPointStack.back()->addBond(currentAtom);
+	    PrepAtom* currentAtomAsPrepType = static_cast<PrepAtom*>(currentAtom);
+		connectionPointStack.back()->addBond(currentAtomAsPrepType);
 		//std::cout << "Bonded " << connectionPointStack.back()->getName() << " to " << currentAtom->getName() << std::endl;;
 		connectionPointStack.back()->visit();
 		if (connectionPointStack.back()->GetVisits() >= connectionPointStack.back()->GetTopologicalType())
 		{
 			connectionPointStack.pop_back();
 		}
-		if(currentAtom->GetTopologicalType() > kTopTypeE)
+		if(currentAtomAsPrepType->GetTopologicalType() > kTopTypeE)
 		{
-			connectionPointStack.push_back(currentAtom);
+			connectionPointStack.push_back(currentAtomAsPrepType);
 		}
 		++currentAtom;
 	}
@@ -379,8 +380,8 @@ void PrepResidue::SetConnectivities()
 	for(auto &loop: this->GetLoops())
 	{
 		std::cout << "Bonding loop " << loop.first << " to " << loop.second << "\n";
-		PrepAtom* firstAtom = codeUtils::findElementWithName(this->getAtoms(), loop.first);
-		PrepAtom* secondAtom = codeUtils::findElementWithName(this->getAtoms(), loop.second);
+		PrepAtom* firstAtom = static_cast<PrepAtom*>(codeUtils::findElementWithName(this->getAtoms(), loop.first));
+		PrepAtom* secondAtom = static_cast<PrepAtom*>(codeUtils::findElementWithName(this->getAtoms(), loop.second));
 		firstAtom->addBond(secondAtom);
 	}
 }
@@ -395,12 +396,13 @@ void PrepResidue::Generate3dStructure()
 		this->getAtoms().at(1)->setCoordinate(GeometryTopology::Coordinate(0.5, 0, 0));
 		this->getAtoms().at(2)->setCoordinate(GeometryTopology::Coordinate(-0.75, 0.35, 0));
 		// Use dummies as start for creating the other atoms.
-		std::vector<PrepAtom*>::iterator it1 = this->getAtoms().begin();
+		std::vector<cds::Atom*>::iterator it1 = this->getAtoms().begin();
 		std::advance(it1, 3);
 //		std::cout << "it1 is now pointing at atom: " << (*it1)->getName() << "\n";
 		while (it1 != this->getAtoms().end())
 		{
-			(*it1)->Determine3dCoordinate();
+		    PrepAtom* it1AsPrepAtom = static_cast<PrepAtom*>(*it1);
+		    it1AsPrepAtom->Determine3dCoordinate();
 			++it1;
 		}
 	}
@@ -688,7 +690,7 @@ void PrepResidue::Write(std::ostream &stream)
 			<< std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetCharge() << std::endl;
 	for(auto &atom : this->getAtoms())
 	{
-		atom->Write(stream);
+		static_cast<PrepAtom*>(atom)->Write(stream);
 	}
 	stream << std::endl;
 	if (this->GetImproperDihedrals().size() > 0)

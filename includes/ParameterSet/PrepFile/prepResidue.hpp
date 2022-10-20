@@ -1,7 +1,7 @@
 #ifndef INCLUDES_PARAMETERSET_PREPFILE_PREPRESIDUE_HPP_
 #define INCLUDES_PARAMETERSET_PREPFILE_PREPRESIDUE_HPP_
 
-#include "includes/CentralDataStructure/cdsResidue.hpp"
+#include "includes/CentralDataStructure/residue.hpp"
 #include "includes/ParameterSet/PrepFile/prepAtom.hpp"
 
 #include <string>
@@ -17,7 +17,7 @@ enum GeometryType { kGeometryCorrect, kGeometryChange };
 enum DummyAtomPosition { kPositionAll, kPositionBeg };
 enum DummyAtomOmission { kOmit, kNomit };
 enum SectionType { kSectionLoop, kSectionImproper, kSectionDone, kSectionOther };
-class PrepResidue : public cds::cdsResidue<PrepAtom>
+class PrepResidue : public cds::Residue
 {
 public:
 	//////////////////////////////////////////////////////////

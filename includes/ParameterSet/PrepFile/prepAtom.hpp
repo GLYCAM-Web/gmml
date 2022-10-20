@@ -4,7 +4,7 @@
 #include <string>
 #include <iostream>
 #include "includes/common.hpp"
-#include "includes/CentralDataStructure/cdsAtom.hpp"
+#include "includes/CentralDataStructure/atom.hpp"
 
 namespace prep
 { // repeated from common or utils as they should be here, not in gmml scope. Left over there as the old class needs them until I delete it.
@@ -17,7 +17,7 @@ enum TopologicalType
 	kTopType4,
 	kTopTypeM
 };
-class PrepAtom : public cds::cdsAtom<PrepAtom>
+class PrepAtom : public cds::Atom
 {
 public:
 	//////////////////////////////////////////////////////////
@@ -79,6 +79,5 @@ private:
 	int visitCount_ = 0;
 	/*!< Sample line of the atom section of a prep file: 4 H1   H1  M  3  2  1  1.000    90.0     180.0     0.0 */
 };
-}
-
+} // namespace
 #endif // INCLUDES_PARAMETERSET_PREPFILE_PREPFILEATOM_HPP

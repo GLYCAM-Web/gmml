@@ -1,8 +1,3 @@
-#include <fstream>
-#include <iostream>
-#include <iomanip>
-#include <ios>
-
 #include "includes/common.hpp"
 #include "includes/utils.hpp"
 #include "includes/ParameterSet/PrepFile/prepFile.hpp"
@@ -10,9 +5,12 @@
 #include "includes/ParameterSet/PrepFile/prepAtom.hpp"
 #include "includes/CodeUtils/files.hpp" // ensureFileExists
 #include "includes/CodeUtils/strings.hpp" // split
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+#include <ios>
 
 using prep::PrepFile;
-
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
@@ -90,7 +88,7 @@ void PrepFile::SetAtomConnectivities()
 {
     for ( auto &residue : this->getResidues() )
     {
-        residue->SetConnectivities();
+        static_cast<PrepResidue*>(residue)->SetConnectivities();
     }
     return;
 }
@@ -99,7 +97,7 @@ void PrepFile::Generate3dStructures()
 {
     for ( auto &residue : this->getResidues() )
     {
-        residue->Generate3dStructure();
+        static_cast<PrepResidue*>(residue)->Generate3dStructure();
     }
     return;
 }
@@ -181,7 +179,7 @@ void PrepFile::Write(std::ofstream &stream)
 	stream << "\n" << "\n";
 	for(auto &residue: this->getResidues())
 	{
-		residue->Write(stream);
+	    static_cast<PrepResidue*>(residue)->Write(stream);
 	}
 	stream << "STOP\n";
 }
@@ -195,7 +193,7 @@ std::string PrepFile::Print() const
 	for(auto &residue : this->getResidues() )
 	{
 		out += "**********************************************************************************\n";
-		out += residue->Print();
+		out += static_cast<PrepResidue*>(residue)->Print();
 	}
 	return out;
 }
