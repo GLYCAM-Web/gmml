@@ -1,5 +1,6 @@
 #include "includes/ParameterSet/PrepFile/prepFile.hpp"
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
+#include "includes/CodeUtils/logging.hpp"
 #include <fstream>
 
 int main()
@@ -15,8 +16,9 @@ int main()
     std::vector<std::string> residuesToLoadFromPrep = {"0GA", "4YB", "4uA", "Cake", "4YA"};
     //std::vector<std::string> residuesToLoadFromPrep = {"0GA"};
     prep::PrepFile glycamPrepFileSelect(prepFilePath, residuesToLoadFromPrep);
-    for ( auto &prepResidue : glycamPrepFileSelect.getResidues() )
+    for ( auto &cdsResidue : glycamPrepFileSelect.getResidues() )
     {
+        prep::PrepResidue* prepResidue = static_cast<prep::PrepResidue*>(cdsResidue);
     	prepResidue->SetConnectivities();
     	prepResidue->Generate3dStructure();
     }
