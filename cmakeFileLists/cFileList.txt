@@ -1,6 +1,11 @@
 ./src/Abstract/absAtom.cpp
 ./src/Abstract/absResidue.cpp
+./src/CentralDataStructure/assembly.cpp
+./src/CentralDataStructure/atom.cpp
 ./src/CentralDataStructure/cdsCoordinate.cpp
+./src/CentralDataStructure/ensemble.cpp
+./src/CentralDataStructure/molecule.cpp
+./src/CentralDataStructure/residue.cpp
 ./src/CodeUtils/codetests.cc
 ./src/CodeUtils/directories.cpp
 ./src/CodeUtils/files.cpp
