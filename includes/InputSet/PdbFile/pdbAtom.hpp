@@ -1,25 +1,23 @@
 #ifndef GMML_INCLUDES_INPUTSET_PDBFILE_ATOMRECORD_HPP
 #define GMML_INCLUDES_INPUTSET_PDBFILE_ATOMRECORD_HPP
 // See http://www.wwpdb.org/documentation/file-format-content/format33/sect9.html#ATOM for an explanation of atom formats in PDB files
+//#include "includes/GeometryTopology/coordinate.hpp"
+//#include "includes/MolecularModeling/TemplateGraph/AbstractObject/includes/Labels.hpp"
+#include "includes/CentralDataStructure/atom.hpp"
+#include "includes/CodeUtils/constants.hpp" // codeUtils::iNotSet
 #include <string>
 #include <iostream>
-#include "includes/GeometryTopology/coordinate.hpp"
-#include "includes/common.hpp" // gmml::iNotSet
-#include "includes/MolecularModeling/TemplateGraph/AbstractObject/includes/Labels.hpp"
-#include "includes/CentralDataStructure/cdsAtom.hpp"
-
-using GeometryTopology::Coordinate;
-
+//using GeometryTopology::Coordinate;
 namespace pdb
 {
-class pdbAtom : public cds::cdsAtom<pdbAtom>
+class PdbAtom : public cds::Atom
 {
 public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
-    pdbAtom(const std::string& name, const Coordinate& coord);
-    pdbAtom(const std::string& line);
+    PdbAtom(const std::string& name, const Coordinate& coord);
+    PdbAtom(const std::string& line);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -68,14 +66,14 @@ private:
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     std::string recordName_;                      // Can be HETATM or ATOM
-    int serialNumber_ = gmml::iNotSet;                            // Atom serial number in a model card of a pdb file
+    int serialNumber_ = codeUtils::iNotSet;                            // Atom serial number in a model card of a pdb file
     std::string alternateLocation_ = "";               // Atom residue name in a single atom record in a model card of a pdb file
     std::string residueName_ = "";                     // Residue name that the atom is assigned to
     std::string chainId_ = "";                         // Chain id that the atom belongs to
-    int residueSequenceNumber_ = gmml::iNotSet;                   // Sequence number of the residue that the atom is assigned to
+    int residueSequenceNumber_ = codeUtils::iNotSet;                   // Sequence number of the residue that the atom is assigned to
     std::string insertionCode_ = "";                   // Insertion code for the atom in it belonging residue
-    double occupancy_ = gmml::dNotSet;                            // Atom occupancy
-    double temperatureFactor_ = gmml::dNotSet;                    // Atom temperature factor
+    double occupancy_ = codeUtils::dNotSet;                            // Atom occupancy
+    double temperatureFactor_ = codeUtils::dNotSet;                    // Atom temperature factor
     std::string element_ = "";                         // Atom element symbol
     std::string charge_ = "";                          // Atom charge
     //std::vector<AtomRecord*> alternateLocations_; // Alternate atom locations, as a vector of atom cards, as there is   more information that may be needed (such as ID (A,B,C, etc), %occupancy, etc)
