@@ -17,17 +17,8 @@ Residue::Residue(const std::string& residueName, const Residue *referenceResidue
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
-std::vector<const Atom*> Residue::getAtoms() const
-{
-    std::vector<const Atom*> atoms;
-    for(auto &atomPtr : atoms_)
-    {
-        atoms.push_back(atomPtr.get());
-    }
-    return atoms;
-}
 
-std::vector<Atom*> Residue::getAtoms()
+std::vector<Atom*> Residue::getAtoms() const
 {
     std::vector<Atom*> atoms;
     for(auto &atomPtr : atoms_)
@@ -49,13 +40,6 @@ std::vector<std::string> Residue::getAtomNames() const
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
-void Residue::createAtom(const std::string atomName, Coordinate& atomCoord)
-{
-//    atoms_.push_back(std::make_unique<Atom>(atomName, this->getName(), this->getNumber(), this->GetInsertionCode(), atomCoord, this->GetChainId(), this->GetModelNumber()));
-    atoms_.push_back(std::make_unique<Atom>(atomName, atomCoord));
-    return;
-}
-
 void Residue::addAtom(std::unique_ptr<Atom> myAtom)
 {
     atoms_.push_back(std::move(myAtom));

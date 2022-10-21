@@ -24,15 +24,13 @@ public:
     //////////////////////////////////////////////////////////
     inline const int& getNumber() const {return number_;}
     inline virtual const std::string& getName() const {return name_;}
-    std::vector<const Atom*> getAtoms() const;
-    std::vector<Atom*> getAtoms();
+    std::vector<Atom*> getAtoms() const;
     std::vector<std::string> getAtomNames() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
     inline void setNumber(const int& i) {number_ = i;}
     inline void setName(const std::string& s) {name_ = s;}
-    void createAtom(const std::string atomName, Coordinate& atomCoord);
     void addAtom(std::unique_ptr<Atom> myAtom);
     bool deleteAtom(const Atom* atom);
     std::vector<std::unique_ptr<Atom>> extractAtoms() {return std::move(atoms_);}

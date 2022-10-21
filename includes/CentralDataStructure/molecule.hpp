@@ -31,7 +31,8 @@ public:
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
     void addResidue(std::unique_ptr<Residue> myResidue);
-    Residue* createNewResidue(const std::string& residueName, const Residue& positionReferenceResidue);
+    Residue* insertNewResidue(std::unique_ptr<Residue> myResidue, const Residue& positionReferenceResidue);
+//    Residue* createNewResidue(const std::string& residueName, const Residue& positionReferenceResidue);
     typename std::vector<std::unique_ptr<Residue>>::iterator findPositionOfResidue(const Residue* queryResidue);
     std::vector<Residue*> getResidues(std::vector<std::string> queryNames);
     Residue* getResidue(const std::string& queryName);

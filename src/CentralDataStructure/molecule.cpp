@@ -26,22 +26,38 @@ void Molecule::addResidue(std::unique_ptr<Residue> myResidue)
     residues_.push_back(std::move(myResidue));
 }
 
-Residue* Molecule::createNewResidue(const std::string& residueName, const Residue& positionReferenceResidue)
+Residue* Molecule::insertNewResidue(std::unique_ptr<Residue> myResidue, const Residue& positionReferenceResidue)
 {
-    //Where the residue is in the vector matters. It should go after the reference residue.
     auto position = this->findPositionOfResidue(&positionReferenceResidue);
     if (position != residues_.end())
     {
+        gmml::log(__LINE__,__FILE__,gmml::INF, "New residue named " + myResidue->getName() + " will be born; You're welcome.");
         ++position; // it is ok to insert at end(). I checked. It was ok. Ok.
-        position = residues_.insert(position, std::make_unique<Residue>(residueName, &positionReferenceResidue));
-        gmml::log(__LINE__,__FILE__,gmml::INF, "New residue named " + residueName + " has been born; You're welcome.");
+        position = residues_.insert(position, std::move(myResidue));
     }
     else
     {
-        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create residue named " + residueName + " as referenceResidue was not found\n");
+        gmml::log(__LINE__,__FILE__,gmml::WAR, "Could not create residue named " + myResidue->getName() + " as referenceResidue was not found\n");
     }
-    return (*position).get(); // Wow ok, so dereference the reference to a uniquePtr, then use get() to create a raw ptr.
+    return (*position).get(); // Dereference the reference to a uniquePtr, then use get() to create a raw ptr...
 }
+
+//Residue* Molecule::createNewResidue(const std::string& residueName, const Residue& positionReferenceResidue)
+//{
+//    //Where the residue is in the vector matters. It should go after the reference residue.
+//    auto position = this->findPositionOfResidue(&positionReferenceResidue);
+//    if (position != residues_.end())
+//    {
+//        ++position; // it is ok to insert at end(). I checked. It was ok. Ok.
+//        position = residues_.insert(position, std::make_unique<Residue>(residueName, &positionReferenceResidue));
+//        gmml::log(__LINE__,__FILE__,gmml::INF, "New residue named " + residueName + " has been born; You're welcome.");
+//    }
+//    else
+//    {
+//        gmml::log(__LINE__,__FILE__,gmml::ERR, "Could not create residue named " + residueName + " as referenceResidue was not found\n");
+//    }
+//    return (*position).get(); // Wow ok, so dereference the reference to a uniquePtr, then use get() to create a raw ptr.
+//}
 
 std::vector<std::unique_ptr<Residue>>::iterator Molecule::findPositionOfResidue(const Residue* queryResidue)
 {
