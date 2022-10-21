@@ -152,12 +152,12 @@ void PrepAtom::SetDihedral(double dihedral){
 //////////////////////////////////////////////////////////
 void PrepAtom::FindDihedralAtoms(std::vector<PrepAtom*>& foundAtoms, int currentDepth, const int& targetDepth)
 {
-	//std::cout << "Depth is " << currentDepth << " with target " << targetDepth << "\n";
+	//std::cout << "Depth is " << currentDepth << " with target " << targetDepth << std::endl;
 	if(currentDepth == targetDepth)
 	{
 		return;
 	}
-	PrepAtom* parent = static_cast<PrepAtom*>(foundAtoms.back()->getParents().front()); // Go up the first parent only. Loops may create another, but they should be ignored.
+	PrepAtom* parent = static_cast<PrepAtom*>(foundAtoms.back()->getParents().front()); // Go up the first parent only. Loops may create another parent, but they should be ignored.
 	foundAtoms.push_back(parent);
 	this->FindDihedralAtoms(foundAtoms, ++currentDepth, targetDepth);
 	return;

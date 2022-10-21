@@ -379,7 +379,7 @@ void PrepResidue::SetConnectivities()
 	// Now bond any atoms defined in loops.
 	for(auto &loop: this->GetLoops())
 	{
-		std::cout << "Bonding loop " << loop.first << " to " << loop.second << "\n";
+		//gmml::log(__LINE__,__FILE__, gmml::INF, "Bonding loop " + loop.first + " to " + loop.second + "\n");
 		PrepAtom* firstAtom = static_cast<PrepAtom*>(codeUtils::findElementWithName(this->getAtoms(), loop.first));
 		PrepAtom* secondAtom = static_cast<PrepAtom*>(codeUtils::findElementWithName(this->getAtoms(), loop.second));
 		firstAtom->addBond(secondAtom);
@@ -396,10 +396,11 @@ void PrepResidue::Generate3dStructure()
 		this->getAtoms().at(1)->setCoordinate(GeometryTopology::Coordinate(0.5, 0, 0));
 		this->getAtoms().at(2)->setCoordinate(GeometryTopology::Coordinate(-0.75, 0.35, 0));
 		// Use dummies as start for creating the other atoms.
-		std::vector<cds::Atom*>::iterator it1 = this->getAtoms().begin();
+		std::vector<cds::Atom*> atomsInResidue = this->getAtoms();
+		std::vector<cds::Atom*>::iterator it1 = atomsInResidue.begin();
 		std::advance(it1, 3);
 //		std::cout << "it1 is now pointing at atom: " << (*it1)->getName() << "\n";
-		while (it1 != this->getAtoms().end())
+		while (it1 != atomsInResidue.end())
 		{
 		    PrepAtom* it1AsPrepAtom = static_cast<PrepAtom*>(*it1);
 		    it1AsPrepAtom->Determine3dCoordinate();
