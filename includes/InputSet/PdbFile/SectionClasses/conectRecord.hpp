@@ -4,8 +4,7 @@
 #include <string>
 #include <iostream>
 
-#include "includes/InputSet/PdbFile/pdbAtom.hpp"
-//#include "includes/InputSet/PdbFile/pdbModel.hpp"
+#include "includes/CentralDataStructure/atom.hpp"
 
 namespace pdb
 {
@@ -19,7 +18,7 @@ public:
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
     ConectRecord(std::string &line, PdbModel& pdbModel);
-    ConectRecord(std::vector<const pdbAtom*> atomRecords);
+    ConectRecord(std::vector<const cds::Atom*> atomRecords);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -37,7 +36,7 @@ private:
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
-    std::vector<const pdbAtom*> atomRecordPtrs_;
+    std::vector<const cds::Atom*> atomRecordPtrs_;
 };
 }
 
