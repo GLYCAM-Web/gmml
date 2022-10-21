@@ -1,18 +1,17 @@
 #ifndef GMML_INCLUDES_INPUTSET_PDBFILE_PDBCHAIN_HPP
 #define GMML_INCLUDES_INPUTSET_PDBFILE_PDBCHAIN_HPP
 
-#include <string>
-#include <iostream>
-#include <functional>
-
-#include "includes/CentralDataStructure/cdsMolecule.hpp"
+#include "includes/CentralDataStructure/molecule.hpp"
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
 //#include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
+#include <string>
+#include <iostream>
+//#include <functional>
 namespace pdb
 {
-class pdbAtom;
+class PdbAtom;
 class PdbResidue;
-class PdbChain : public cds::cdsMolecule<PdbResidue, pdbAtom>
+class PdbChain : public cds::Molecule
 {
 public:
     //////////////////////////////////////////////////////////

@@ -1,20 +1,19 @@
 #ifndef GMML_INCLUDES_INPUTSET_PDBFILE_PDBMODEL_HPP
 #define GMML_INCLUDES_INPUTSET_PDBFILE_PDBMODEL_HPP
 
+#include "includes/CentralDataStructure/assembly.hpp"
+#include "includes/InputSet/PdbFile/SectionClasses/conectRecord.hpp"
+#include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
+//#include "includes/InputSet/PdbFile/pdbChain.hpp"
 #include <vector>
 #include <iostream>
 
-#include "includes/CentralDataStructure/cdsAssembly.hpp"
-#include "includes/InputSet/PdbFile/SectionClasses/conectRecord.hpp"
-#include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
-#include "includes/InputSet/PdbFile/pdbChain.hpp"
-
 namespace pdb
 {
-class pdbAtom;
+class PdbAtom;
 class PdbResidue;
 class PdbChain;
-class PdbModel : public cds::cdsAssembly<PdbChain, PdbResidue, pdbAtom>
+class PdbModel : public cds::Assembly
 {
 public:
     //////////////////////////////////////////////////////////
@@ -50,7 +49,7 @@ private:
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
-    void addConectRecord(const pdbAtom* atom1, const pdbAtom* atom2);
+    void addConectRecord(const cds::Atom* atom1, const cds::Atom* atom2);
     inline const std::vector<ConectRecord>& GetConectRecords() const {return conectRecords_;}
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //

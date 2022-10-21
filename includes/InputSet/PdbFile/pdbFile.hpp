@@ -8,11 +8,6 @@
 // ToDo make more direct queries here instead of giving out HeaderRecord etc.
 // ToDo ACE/NME between residues with same number but an insertion code.
 // ToDo expand tests to include amber input and multiple models.
-
-#include <string>
-#include <vector>
-#include <fstream>      // std::ifstream
-
 #include "includes/InputSet/PdbFile/SectionClasses/headerRecord.hpp"
 #include "includes/InputSet/PdbFile/SectionClasses/databaseReferenceRecord.hpp"
 #include "includes/InputSet/PdbFile/SectionClasses/titleRecord.hpp"
@@ -20,13 +15,17 @@
 #include "includes/InputSet/PdbFile/SectionClasses/journalRecord.hpp"
 #include "includes/InputSet/PdbFile/SectionClasses/remarkRecord.hpp"
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
-#include "includes/InputSet/PdbFile/pdbModel.hpp"
-#include "includes/CentralDataStructure/cdsEnsemble.hpp"
+#include "includes/CentralDataStructure/ensemble.hpp"
+
+#include <string>
+#include <vector>
+//#include <fstream>      // std::ifstream
 
 namespace pdb
 {
 const int iPdbLineLength = 80;
-class PdbFile : public cds::cdsEnsemble<PdbModel, PdbChain, PdbResidue, pdbAtom>
+class PdbModel;
+class PdbFile : public cds::Ensemble
 {
 public:
     //////////////////////////////////////////////////////////
@@ -37,7 +36,6 @@ public:
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-    inline std::vector<const PdbModel*> getModels() const {return this->getAssemblies();} // renaming cds inherited getter for niceness.
     inline std::string GetInputFilePath() const {return inFilePath_;}
     // These should be private and whatever info they give out should be directly queryable here.
     inline const HeaderRecord& GetHeaderRecord() const {return headerRecord_;}

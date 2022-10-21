@@ -4,6 +4,7 @@
 #include "includes/GeometryTopology/geometrytopology.hpp" // get_cartesian_point_from_internal_coords
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/biology.hpp" // proteinResidueNames
 
 using pdb::PdbChain;
 ////////////////////////////////////////////////////////////
@@ -94,14 +95,14 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
         Coordinate hh31CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, 180.0, 1.09);
         Coordinate hh32CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, 60.0, 1.09);
         Coordinate hh33CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, -60.0, 1.09);
-        PdbResidue *newNMEResidue = this->createNewResidue("NME", refResidue);
-        newNMEResidue->createAtom("N", nCoordNME);
-        newNMEResidue->createAtom("H", hCoordNME);
-        newNMEResidue->createAtom("CH3", ch3CoordNME);
-        newNMEResidue->createAtom("HH31", hh31CoordNME);
-        newNMEResidue->createAtom("HH32", hh32CoordNME);
-        newNMEResidue->createAtom("HH33", hh33CoordNME);
-        newNMEResidue->AddTerCard();
+        cds::Residue* newNMEResidue = this->insertNewResidue(std::make_unique<PdbResidue>("NME", &refResidue), refResidue );
+        newNMEResidue->addAtom(std::make_unique<PdbAtom>("N", nCoordNME));
+        newNMEResidue->addAtom(std::make_unique<PdbAtom>("H", hCoordNME));
+        newNMEResidue->addAtom(std::make_unique<PdbAtom>("CH3", ch3CoordNME));
+        newNMEResidue->addAtom(std::make_unique<PdbAtom>("HH31", hh31CoordNME));
+        newNMEResidue->addAtom(std::make_unique<PdbAtom>("HH32", hh32CoordNME));
+        newNMEResidue->addAtom(std::make_unique<PdbAtom>("HH33", hh33CoordNME));
+        static_cast<PdbResidue*>(newNMEResidue)->AddTerCard();
     }
     else if (type == "COCH3") // ACE
     {
@@ -121,15 +122,15 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
         // With ACE we want to insert before the residue, so I'm finding the residue before here:
         auto refPosition = this->findPositionOfResidue(&refResidue);
         --refPosition;
-        PdbResidue* previousResidue = (*refPosition).get(); // Its an iterator to a unique ptr, so deref and get the raw. Ugh.
-        PdbResidue *newACEResidue = this->createNewResidue("ACE", *previousResidue);
-        newACEResidue->createAtom("C", cCoordACE);
-        newACEResidue->createAtom("O", oCoordACE);
-        newACEResidue->createAtom("CH3", ch3CoordACE);
-        newACEResidue->createAtom("HH31", hh31CoordACE);
-        newACEResidue->createAtom("HH32", hh32CoordACE);
-        newACEResidue->createAtom("HH33", hh33CoordACE);
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Created ACE residue: " + newACEResidue->printId());
+        PdbResidue* previousResidue = static_cast<PdbResidue*>((*refPosition).get()); // Its an iterator to a unique ptr, so deref and get the raw. Ugh.
+        cds::Residue* newACEResidue = this->insertNewResidue(std::make_unique<PdbResidue>("ACE", previousResidue), *previousResidue);
+        newACEResidue->addAtom(std::make_unique<PdbAtom>("C", cCoordACE));
+        newACEResidue->addAtom(std::make_unique<PdbAtom>("O", oCoordACE));
+        newACEResidue->addAtom(std::make_unique<PdbAtom>("CH3", ch3CoordACE));
+        newACEResidue->addAtom(std::make_unique<PdbAtom>("HH31", hh31CoordACE));
+        newACEResidue->addAtom(std::make_unique<PdbAtom>("HH32", hh32CoordACE));
+        newACEResidue->addAtom(std::make_unique<PdbAtom>("HH33", hh33CoordACE));
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Created ACE residue: " + static_cast<PdbResidue*>(newACEResidue)->printId());
     }
 }
 
@@ -140,7 +141,7 @@ bool PdbChain::ModifyTerminal(const std::string& type)
         PdbResidue* nTermResidue = this->getNTerminal();
         if (nTermResidue == nullptr) { return false; }
         gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + nTermResidue->printId());
-        const pdbAtom* atom = nTermResidue->FindAtom("H");
+        const PdbAtom* atom = static_cast<const PdbAtom*>(nTermResidue->FindAtom("H"));
         if (atom != nullptr)
         {
             gmml::log(__LINE__,__FILE__,gmml::INF, "Deleting atom with id: " + atom->GetId());
@@ -152,20 +153,20 @@ bool PdbChain::ModifyTerminal(const std::string& type)
         PdbResidue* cTermResidue = this->getCTerminal();
         if (cTermResidue == nullptr) { return false; }
         gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + cTermResidue->printId());
-        const pdbAtom* atom = cTermResidue->FindAtom("OXT");
+        const cds::Atom* atom = cTermResidue->FindAtom("OXT");
         if (atom == nullptr)
         {
             // I don't like this, but at least it's somewhat contained:
-            const pdbAtom* atomCA = cTermResidue->FindAtom("CA");
-            const pdbAtom* atomC = cTermResidue->FindAtom("C");
-            const pdbAtom* atomO = cTermResidue->FindAtom("O");
+            const cds::Atom* atomCA = cTermResidue->FindAtom("CA");
+            const cds::Atom* atomC = cTermResidue->FindAtom("C");
+            const cds::Atom* atomO = cTermResidue->FindAtom("O");
             GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->getCoordinate(), atomC->getCoordinate(), atomO->getCoordinate(), 120.0, 180.0, 1.25);
-            cTermResidue->createAtom("OXT", oxtCoord);
-            gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + atomO->GetId());
+            cTermResidue->addAtom(std::make_unique<PdbAtom>("OXT", oxtCoord));
+            gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + static_cast<const PdbAtom*>(atomO)->GetId());
         }
         else
         {
-            gmml::log(__LINE__,__FILE__,gmml::INF, "OXT atom already exists: " + cTermResidue->FindAtom("OXT")->GetId());
+            gmml::log(__LINE__,__FILE__,gmml::INF, "OXT atom already exists: " + static_cast<const PdbAtom*>(atom)->GetId());
         }
     }
     else
@@ -180,24 +181,24 @@ bool PdbChain::ModifyTerminal(const std::string& type)
 // Assumes vector is populated from N-terminal to C-terminal.
 pdb::PdbResidue* PdbChain::getNTerminal()
 {
-    std::vector<PdbResidue*> proteinResidues = this->getResidues(gmml::proteinResidueNames);
+    std::vector<cds::Residue*> proteinResidues = this->getResidues(biology::proteinResidueNames);
     if (proteinResidues.empty())
     {
         gmml::log(__LINE__, __FILE__, gmml::WAR, "Looked for terminal residue of chain with protein residues.");
         return nullptr;
     }
-    return proteinResidues.front();
+    return static_cast<PdbResidue*>(proteinResidues.front());
 }
 
 pdb::PdbResidue* PdbChain::getCTerminal()
 {
-    std::vector<PdbResidue*> proteinResidues = this->getResidues(gmml::proteinResidueNames);
+    std::vector<cds::Residue*> proteinResidues = this->getResidues(biology::proteinResidueNames);
     if (proteinResidues.empty())
     {
         gmml::log(__LINE__, __FILE__, gmml::WAR, "Looked for terminal residue of chain with protein residues.");
         return nullptr;
     }
-    return proteinResidues.back();
+    return static_cast<PdbResidue*>(proteinResidues.back());
 }
 
 

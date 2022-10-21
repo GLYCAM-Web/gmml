@@ -1,17 +1,11 @@
-#include <fstream>      // std::ifstream
-#include <algorithm>    // std::find
-
 #include "includes/InputSet/PdbFile/pdbFile.hpp"
+#include "includes/InputSet/PdbFile/pdbModel.hpp"
 #include "includes/CodeUtils/files.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
-#include "includes/common.hpp" // gmml::dSulfurCutoff
-//#include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
 #include "includes/GeometryTopology/geometrytopology.hpp"
-#include "includes/InputSet/PdbFile/pdbModel.hpp"
-#include "includes/InputSet/PdbFile/pdbChain.hpp"
-#include "includes/InputSet/PdbFile/pdbResidue.hpp"
-#include <includes/InputSet/PdbFile/pdbAtom.hpp>
+#include <fstream>      // std::ifstream
+#include <algorithm>    // std::find
 
 using pdb::PdbFile;
 //////////////////////////////////////////////////////////
@@ -171,14 +165,15 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Preprocesssing has begun");
     pdb::PreprocessorInformation ppInfo;
-    for(auto &model: this->getAssemblies()) // Now we do all, but maybe user can select at some point.
+    for(auto &cdsAssembly: this->getAssemblies()) // Now we do all, but maybe user can select at some point.
     {
+        PdbModel* model = static_cast<PdbModel*>(cdsAssembly);
         model->preProcessCysResidues(ppInfo);
         model->preProcessHisResidues(ppInfo, inputOptions);
         model->preProcessChainTerminals(ppInfo, inputOptions);
         model->preProcessGapsUsingDistance(ppInfo, inputOptions);
         model->preProcessMissingUnrecognized(ppInfo);
-        // What about setting charges doofus?
+        // ToDo What about setting charges doofus?
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, "Preprocessing completed");
     return ppInfo;
@@ -205,7 +200,9 @@ void PdbFile::Write(const std::string outName) const
         gmml::log(__LINE__,__FILE__,gmml::ERR, "Error when writing pdbFile class to file:\n" + outName);
         throw std::runtime_error("Error when writing pdbFile class to file:\n" + outName);
     }
+    return;
 }
+
 void PdbFile::Write(std::ostream& out) const
 {
     this->GetHeaderRecord().Write(out);
@@ -217,8 +214,9 @@ void PdbFile::Write(std::ostream& out) const
     {
         dbref.Write(out);
     }
-    for (auto &model : this->getModels())
+    for (auto &model : this->getAssemblies())
     {
-        model->Write(out);
+        static_cast<PdbModel*>(model)->Write(out);
     }
+    return;
 }

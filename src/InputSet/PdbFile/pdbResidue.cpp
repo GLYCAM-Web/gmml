@@ -32,7 +32,7 @@ PdbResidue::PdbResidue(std::stringstream &singleResidueSecion, std::string first
 }
 
 PdbResidue::PdbResidue(const std::string residueName, const PdbResidue *referenceResidue)
-: cds::cdsResidue<pdbAtom>(residueName, referenceResidue)
+: cds::Residue(residueName, referenceResidue)
 { // should instead call copy constructor and then rename with residueName?
 //    this->setName(residueName); // handled by cdsResidue cTor
 //    this->setNumber(referenceResidue->getNumber()); // handled by cdsResidue cTor
@@ -86,10 +86,10 @@ void PdbResidue::modifyNTerminal(const std::string& type)
     gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + this->printId());
     if (type == "NH3+")
     {
-        const pdbAtom* atom = this->FindAtom("H");
+        const cds::Atom* atom = this->FindAtom("H");
         if (atom != nullptr)
         {
-            gmml::log(__LINE__,__FILE__,gmml::INF, "Deleting atom with id: " + atom->GetId());
+            gmml::log(__LINE__,__FILE__,gmml::INF, "Deleting atom with id: " + static_cast<const PdbAtom*>(atom)->GetId());
             this->deleteAtom(atom);
         }
     }
@@ -105,16 +105,16 @@ void PdbResidue::modifyCTerminal(const std::string& type)
     gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + this->printId());
     if (type == "CO2-")
     {
-        const pdbAtom* atom = this->FindAtom("OXT");
+        const cds::Atom* atom = this->FindAtom("OXT");
         if (atom == nullptr)
         {
             // I don't like this, but at least it's somewhat contained:
-            const pdbAtom* atomCA = this->FindAtom("CA");
-            const pdbAtom* atomC = this->FindAtom("C");
-            const pdbAtom* atomO = this->FindAtom("O");
+            const cds::Atom* atomCA = this->FindAtom("CA");
+            const cds::Atom* atomC = this->FindAtom("C");
+            const cds::Atom* atomO = this->FindAtom("O");
             GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->getCoordinate(), atomC->getCoordinate(), atomO->getCoordinate(), 120.0, 180.0, 1.25);
-            this->createAtom("OXT", oxtCoord);
-            gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + atomO->GetId());
+            this->addAtom(std::make_unique<PdbAtom>("OXT", oxtCoord));
+            gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + static_cast<const PdbAtom*>(atomO)->GetId());
         }
     }
     else
@@ -132,7 +132,7 @@ void PdbResidue::Print(std::ostream &out) const
     out << "pdb::Residue : " << this->printId() << std::endl;
     for(auto &atom : this->getAtoms())
     {
-        out << "    atom : " << atom->GetId() << " X: "  << atom->getCoordinate()->GetX() << " Y: "  << atom->getCoordinate()->GetY() << " Z: " << atom->getCoordinate()->GetZ() << "\n";
+        out << "    atom : " << static_cast<const PdbAtom*>(atom)->GetId() << " X: "  << atom->getCoordinate()->GetX() << " Y: "  << atom->getCoordinate()->GetY() << " Z: " << atom->getCoordinate()->GetZ() << "\n";
     }
 }
 

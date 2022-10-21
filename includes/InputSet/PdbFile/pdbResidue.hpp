@@ -1,17 +1,17 @@
 #ifndef GMML_INCLUDES_INPUTSET_PDBFILE_PDBRESIDUE_HPP
 #define GMML_INCLUDES_INPUTSET_PDBFILE_PDBRESIDUE_HPP
 
+#include "includes/InputSet/PdbFile/pdbResidueId.hpp"
+#include "includes/CentralDataStructure/residue.hpp"
 #include <string>
 #include <iostream>
-#include <functional>
 
-#include "includes/InputSet/PdbFile/pdbResidueId.hpp"
-#include "includes/CentralDataStructure/cdsResidue.hpp"
-#include "includes/InputSet/PdbFile/pdbAtom.hpp"
+#include "pdbAtom.hpp"
+//#include <functional>
 
 namespace pdb
 {
-class PdbResidue : public cds::cdsResidue<pdbAtom>
+class PdbResidue : public cds::Residue
 {
 public:
     //////////////////////////////////////////////////////////

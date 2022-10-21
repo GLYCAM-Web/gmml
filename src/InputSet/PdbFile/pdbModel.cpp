@@ -1,5 +1,3 @@
-#include <algorithm> // std::find
-
 #include "includes/InputSet/PdbFile/pdbModel.hpp"
 #include "includes/InputSet/PdbFile/pdbChain.hpp"
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
@@ -9,8 +7,7 @@
 #include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
 #include "includes/CentralDataStructure/cdsSelections.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp"
-
-
+#include <algorithm> // std::find
 using pdb::PdbModel;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -87,7 +84,7 @@ std::stringstream PdbModel::extractSingleChainFromRecordSection(std::stringstrea
     return singleChainSection;
 }
 
-void PdbModel::addConectRecord(const pdbAtom* atom1, const pdbAtom* atom2)
+void PdbModel::addConectRecord(const cds::Atom* atom1, const cds::Atom* atom2)
 {
     conectRecords_.emplace_back(std::vector{atom1, atom2});
     return;
@@ -97,7 +94,7 @@ void PdbModel::ChangeResidueName(const std::string& selector, const std::string&
 {
     for(auto &residue : this->getResidues())
     {
-        std::size_t found = residue->printId().find(selector);
+        std::size_t found = static_cast<PdbResidue*>(residue)->printId().find(selector);
         if(found != std::string::npos)
         {
             residue->setName(newName);
@@ -118,20 +115,20 @@ void PdbModel::ChangeResidueName(const std::string& selector, const std::string&
 void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Start CYS preprocessing for this Model\n");
-    std::vector<pdb::PdbResidue*> cysResidues = codeUtils::getElementsWithNames(this->getResidues(), std::vector<std::string> {"CYS", "CYX"});
+    std::vector<cds::Residue*> cysResidues = codeUtils::getElementsWithNames(this->getResidues(), std::vector<std::string> {"CYS", "CYX"});
     if (cysResidues.empty())
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "No CYS or CYX residues detected in this structure\n");
     }
-    for (std::vector<pdb::PdbResidue*>::iterator it1 = cysResidues.begin(); it1 != cysResidues.end(); ++it1)
+    for (std::vector<cds::Residue*>::iterator it1 = cysResidues.begin(); it1 != cysResidues.end(); ++it1)
     { // I want to go through the list and compare from current item to end. Thus it2 = std::next it1
 
-        PdbResidue* cysRes1 = *it1;
-        const pdbAtom* sgAtom1 = cysRes1->FindAtom("SG");
-        for (std::vector<pdb::PdbResidue*>::iterator it2 = std::next(it1, 1); it2 != cysResidues.end(); ++it2)
+        PdbResidue* cysRes1 = static_cast<PdbResidue*>(*it1);
+        const cds::Atom* sgAtom1 = cysRes1->FindAtom("SG");
+        for (std::vector<cds::Residue*>::iterator it2 = std::next(it1, 1); it2 != cysResidues.end(); ++it2)
         {
-            PdbResidue* cysRes2 = *it2;
-            const pdbAtom* sgAtom2 = cysRes2->FindAtom("SG");
+            PdbResidue* cysRes2 = static_cast<PdbResidue*>(*it2);
+            const cds::Atom* sgAtom2 = cysRes2->FindAtom("SG");
             if ( (sgAtom1 != nullptr) && (sgAtom2 != nullptr) )
             {
                 //gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");
@@ -165,8 +162,9 @@ void PdbModel::preProcessHisResidues(pdb::PreprocessorInformation &ppInfo, const
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, "Auto His protonation");
     // HIS protonation, automatic handling.
-    for(auto &residue : this->getResidues())
+    for(auto &cdsresidue : this->getResidues())
     {
+        PdbResidue *residue = static_cast<PdbResidue*>(cdsresidue);
         if (residue->getName() == "HIE" || residue->getName() == "HID" || residue->getName() == "HIP")
         {
             ppInfo.hisResidues_.emplace_back(residue->getId());
@@ -196,8 +194,9 @@ void PdbModel::preProcessHisResidues(pdb::PreprocessorInformation &ppInfo, const
 void PdbModel::preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Chain terminations");
-    for (auto &chain : this->getMolecules())
+    for (auto &cdsMolecule : this->getMolecules())
     {
+        PdbChain* chain = static_cast<PdbChain*>(cdsMolecule);
         gmml::log(__LINE__,__FILE__,gmml::INF, "Chain termination processing started for this chain");
         //Do the thing
         if (chain->ModifyTerminal(inputOptions.chainNTermination_) && chain->ModifyTerminal(inputOptions.chainCTermination_) )
@@ -220,60 +219,31 @@ void PdbModel::preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, co
     return;
 }
 
-//void PdbModel::preProcessGaps(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
-//{
-//    // Missing Residues (gaps)
-//    gmml::log(__LINE__, __FILE__, gmml::INF, "Gaps");
-//    std::string previousChainId = "AUniqueInitialString";
-//    int previousSequenceNumber = -999999;
-//    //   int previousModelNumber = -999999;
-//    pdb::PdbResidue* previous = nullptr;
-//    for(auto &chain : this->getMolecules())
-//    {
-//        for(auto &residue : chain->getResidues())
-//        {   // ToDo WE WILL HAVE TO CHECK DISTANCES!!! 1UCY has reverse ordered insertion codes
-//            // KABAT can mean skipped numbers that are bonded.
-//            if ((previousSequenceNumber != (residue->getNumber() - 1)) && previousChainId == residue->getChainId())
-//            {
-//                //Log it
-//                gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + previous->printId());
-//                gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + residue->printId());
-//                // Do it
-//                chain->InsertCap(*previous, inputOptions.gapCTermination_);
-//                chain->InsertCap(*residue, inputOptions.gapNTermination_);
-//                // Record it
-//                ppInfo.missingResidues_.emplace_back(previous->getChainId(), previous->getNumberAndInsertionCode(), residue->getNumberAndInsertionCode(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
-//            }
-//            previous = residue;
-//            previousSequenceNumber = residue->getNumber();
-//        }
-//    }
-//}
-
 void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions)
 {
     // Missing Residues (gaps); If two sequential protein residues in the same molecule aren't close enough to bond: this is a gap regardless of residue number/insertion code. User will want caps(ACE/NME) or zwitterionic, we can't know ourselves without knowledge of the system, but most of the time caps.
     gmml::log(__LINE__, __FILE__, gmml::INF, "Gaps");
-    for(auto &chain : this->getMolecules())
+    for(auto &cdsMolecule : this->getMolecules())
     {
+        PdbChain* chain = static_cast<PdbChain*>(cdsMolecule);
 //        std::vector<pdb::PdbResidue*> proteinResidues = cds::selectResiduesByType(chain->getResidues(), Abstract::absResidue::Type::Protein);
-    	std::vector<pdb::PdbResidue*> proteinResidues = cds::selectResiduesByType(chain->getResidues(), Abstract::absResidue::Type::Protein);
-        for(std::vector<pdb::PdbResidue*>::iterator it1 = proteinResidues.begin(); it1 != proteinResidues.end(); ++it1)
+    	std::vector<cds::Residue*> proteinResidues = cds::selectResiduesByType(chain->getResidues(), Abstract::absResidue::Type::Protein);
+        for(std::vector<cds::Residue*>::iterator it1 = proteinResidues.begin(); it1 != proteinResidues.end(); ++it1)
         {
-            std::vector<pdb::PdbResidue*>::iterator it2 = std::next(it1);
+            std::vector<cds::Residue*>::iterator it2 = std::next(it1);
             if (it2 != proteinResidues.end())
             {
-                pdb::PdbResidue* res1 = *it1;
-                pdb::PdbResidue* res2 = *it2;
+                PdbResidue* res1 = static_cast<PdbResidue*>(*it1);
+                PdbResidue* res2 = static_cast<PdbResidue*>(*it2);
 //                std::cout << "res1 is " + res1->getNumberAndInsertionCode() + "_" + res1->getChainId() << std::endl;
 //                std::cout << "res2 is " + res2->getNumberAndInsertionCode() + "_" + res2->getChainId() << std::endl;
-                const pdb::pdbAtom* res1AtomC = res1->FindAtom("C");
-                const pdb::pdbAtom* res2AtomN = res2->FindAtom("N");
+                const cds::Atom* res1AtomC = res1->FindAtom("C");
+                const cds::Atom* res2AtomN = res2->FindAtom("N");
                 if ( !res1AtomC->isWithinBondingDistance(res2AtomN) )
                 { // GAP detected
                     //Log it
-                    gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + (*it1)->printId());
-                    gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + (*it2)->printId());
+                    gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + res1->printId());
+                    gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + res2->printId());
                     // Do it
                     chain->InsertCap(*res1, inputOptions.gapCTermination_);
                     chain->InsertCap(*res2, inputOptions.gapNTermination_);
@@ -289,8 +259,9 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo,
 void PdbModel::preProcessMissingUnrecognized(pdb::PreprocessorInformation &ppInfo)
 {
     parameters::Manager parmManager;
-    for(auto &residue : this->getResidues())
+    for(auto &cdsResidue : this->getResidues())
     {
+        PdbResidue* residue = static_cast<PdbResidue*>(cdsResidue);
         std::vector<std::string> parmAtomNames = parmManager.GetAtomNamesForResidue(residue->GetParmName());
         std::vector<std::string> parmHeavyAtomNames = parmManager.GetHeavyAtomNamesForResidue(residue->GetParmName());
         // Unrecognized residue->
@@ -342,9 +313,9 @@ void PdbModel::Print(std::ostream &out) const
 void PdbModel::Write(std::ostream& stream) const
 {
     stream << "MODEL " << std::right << std::setw(4) << this->getNumber() << "\n";
-    for (auto &chain : this->getMolecules())
+    for (auto &cdsMolecule : this->getMolecules())
     {
-        chain->Write(stream);
+        static_cast<PdbChain*>(cdsMolecule)->Write(stream);
     }
     for (auto &conect : this->GetConectRecords())
     {
@@ -353,4 +324,3 @@ void PdbModel::Write(std::ostream& stream) const
     stream << "ENDMDL\n";
     return;
 }
-
