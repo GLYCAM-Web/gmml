@@ -1,19 +1,19 @@
-#include "includes/InputSet/PdbFile/pdbAtom.hpp"
-#include "includes/common.hpp"
+#include "../../../includes/InputSet/PdbFile/pdbAtom.hpp"
+#include "includes/CodeUtils/constants.hpp" // gmml::iNotSet
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
-using pdb::pdbAtom;
+using pdb::PdbAtom;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-pdbAtom::pdbAtom(const std::string& name, const Coordinate& coord)
-{
-	this->setCoordinate(coord);
-	this->setName(name);
-}
-pdbAtom::pdbAtom(const std::string &line)
+//pdbAtom::pdbAtom(const std::string& name, const Coordinate& coord)
+//{
+//	this->setCoordinate(coord);
+//	this->setName(name);
+//}
+PdbAtom::PdbAtom(const std::string &line)
 {
     //gmml::log(__LINE__, __FILE__, gmml::INF, "Parsing " + line);
     // In the PDB file the residue number overruns after 9999 and serial number overruns after 99999. First overun for serial doesn't matter as there should be a space between the number and the name. So the problem is above 999999
@@ -28,7 +28,7 @@ pdbAtom::pdbAtom(const std::string &line)
     catch (...)
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to serialNumber from: " + line.substr(6, 6 + shift));
-        serialNumber_ = gmml::iNotSet;
+        serialNumber_ = codeUtils::iNotSet;
     }
     std::string atomName = codeUtils::RemoveWhiteSpace(line.substr(12 + shift, 4));
     if (atomName.empty())
@@ -59,7 +59,7 @@ pdbAtom::pdbAtom(const std::string &line)
     catch (...)
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, "Error setting residue number from this line:\n" + line);
-        residueSequenceNumber_ = gmml::iNotSet;
+        residueSequenceNumber_ = codeUtils::iNotSet;
     }
     // Insertion code gets shifted right by every overrun in residue number.
     insertionCode_ = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
@@ -107,46 +107,49 @@ pdbAtom::pdbAtom(const std::string &line)
     }
 }
 
+PdbAtom::PdbAtom(const std::string& name, const Coordinate& coord)
+: cds::Atom(name, coord) {}
+
 /////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void pdbAtom::SetRecordName(const std::string s)
+void PdbAtom::SetRecordName(const std::string s)
 {
     recordName_ = s;
 }
-void pdbAtom::SetSerialNumber(const int atom_serial_number)
+void PdbAtom::SetSerialNumber(const int atom_serial_number)
 {
     serialNumber_ = atom_serial_number;
 }
-void pdbAtom::SetAlternateLocation(const std::string atom_alternate_location)
+void PdbAtom::SetAlternateLocation(const std::string atom_alternate_location)
 {
     alternateLocation_ = atom_alternate_location;
 }
-void pdbAtom::SetChainId(const std::string atom_chain_id)
+void PdbAtom::SetChainId(const std::string atom_chain_id)
 {
     chainId_ = atom_chain_id;
 }
-void pdbAtom::SetResidueSequenceNumber(const int atom_residue_sequence_number)
+void PdbAtom::SetResidueSequenceNumber(const int atom_residue_sequence_number)
 {
     residueSequenceNumber_ = atom_residue_sequence_number;
 }
-void pdbAtom::SetInsertionCode(const std::string atom_insertion_code)
+void PdbAtom::SetInsertionCode(const std::string atom_insertion_code)
 {
     insertionCode_ = atom_insertion_code;
 }
-void pdbAtom::SetOccupancy(const double atom_occupancy)
+void PdbAtom::SetOccupancy(const double atom_occupancy)
 {
     occupancy_ = atom_occupancy;
 }
-void pdbAtom::SetTempretureFactor(const double atom_temperature_factor)
+void PdbAtom::SetTempretureFactor(const double atom_temperature_factor)
 {
     temperatureFactor_ = atom_temperature_factor;
 }
-void pdbAtom::SetElement(const std::string atom_element_symbol)
+void PdbAtom::SetElement(const std::string atom_element_symbol)
 {
     element_ = atom_element_symbol;
 }
-void pdbAtom::SetCharge(const std::string atom_charge)
+void PdbAtom::SetCharge(const std::string atom_charge)
 {
     charge_ = atom_charge;
 }
@@ -157,14 +160,14 @@ void pdbAtom::SetCharge(const std::string atom_charge)
 //////////////////////////////////////////////////////////
 //                       FUNCTION                       //
 //////////////////////////////////////////////////////////
-std::string pdbAtom::GetId() const
+std::string PdbAtom::GetId() const
 {
     std::stringstream ss;
     ss << this->getName() << "_" << this->getNumber();
     return ss.str();
 }
 
-std::string pdbAtom::GetId(const std::string &residueId) const
+std::string PdbAtom::GetId(const std::string &residueId) const
 {
     std::stringstream ss;
     ss << this->GetId() << "_" << residueId;
@@ -174,10 +177,10 @@ std::string pdbAtom::GetId(const std::string &residueId) const
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void pdbAtom::Print(std::ostream &out) const
+void PdbAtom::Print(std::ostream &out) const
 {
     out << "Serial Number: ";
-    if(serialNumber_ == gmml::iNotSet)
+    if(serialNumber_ == codeUtils::iNotSet)
     {
         out << " ";
     }
@@ -190,7 +193,7 @@ void pdbAtom::Print(std::ostream &out) const
             << ", Residue Name: " << residueName_
             << ", Chain ID: " << chainId_
             << ", Residue Sequence Number: ";
-    if(residueSequenceNumber_ == gmml::iNotSet)
+    if(residueSequenceNumber_ == codeUtils::iNotSet)
     {
         out << " ";
     }
@@ -202,7 +205,7 @@ void pdbAtom::Print(std::ostream &out) const
             << ", Coordinate: ";
     this->getCoordinate()->Print(out);
     out << ", Occupancy: ";
-    if(occupancy_ == gmml::dNotSet)
+    if(occupancy_ == codeUtils::dNotSet)
     {
         out << " ";
     }
@@ -211,7 +214,7 @@ void pdbAtom::Print(std::ostream &out) const
         out << occupancy_;
     }
     out << ", Temperature Factor: ";
-    if(temperatureFactor_ == gmml::dNotSet)
+    if(temperatureFactor_ == codeUtils::dNotSet)
     {
         out << " ";
     }
@@ -223,7 +226,7 @@ void pdbAtom::Print(std::ostream &out) const
             << ", Charge: " << charge_ << std::endl;
 }
 
-void pdbAtom::Write(std::ostream& stream) const
+void PdbAtom::Write(std::ostream& stream) const // ToDo this can perhaps be moved to a free function, so that cds::Atom type atoms can be written out into a PDB format.
 {
 	this->WritePdb( stream,
 				    this->GetResidueName(),
@@ -235,7 +238,7 @@ void pdbAtom::Write(std::ostream& stream) const
 					std::to_string(this->GetOccupancy()),
 					std::to_string(this->GetTemperatureFactor()));
 //    stream << std::left << std::setw(6) << this->GetRecordName();
-//    if(this->getNumber() != gmml::iNotSet)
+//    if(this->getNumber() != codeUtils::iNotSet)
 //        stream << std::right << std::setw(5) << this->getNumber();
 //    else
 //        stream << std::right << std::setw(5) << " ";
@@ -251,7 +254,7 @@ void pdbAtom::Write(std::ostream& stream) const
 //        stream << std::left << std::setw(1) << " ";
 //    else
 //        stream << std::left << std::setw(1) << this->GetChainId();
-//    if(this->GetResidueSequenceNumber() != gmml::iNotSet)
+//    if(this->GetResidueSequenceNumber() != codeUtils::iNotSet)
 //        stream << std::right << std::setw(4) << this->GetResidueSequenceNumber();
 //    else
 //        stream << std::right << std::setw(4) << " ";

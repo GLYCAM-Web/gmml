@@ -1,3 +1,4 @@
+#include <includes/InputSet/PdbFile/pdbAtom.hpp>
 #include <sstream>
 #include <string>
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
@@ -5,7 +6,6 @@
 #include "includes/GeometryTopology/geometrytopology.hpp" // get_cartesian_point_from_internal_coords
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp" //RemoveWhiteSpace
-#include "includes/InputSet/PdbFile/pdbAtom.hpp"
 
 using pdb::PdbResidue;
 //////////////////////////////////////////////////////////
@@ -24,7 +24,7 @@ PdbResidue::PdbResidue(std::stringstream &singleResidueSecion, std::string first
         std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
         if ( (recordName == "ATOM") || (recordName == "HETATM") )
         {
-            this->addAtom(std::make_unique<pdbAtom>(line));
+            this->addAtom(std::make_unique<PdbAtom>(line));
         }
     }
     this->SetType( this->determineType( this->getName() ) );
