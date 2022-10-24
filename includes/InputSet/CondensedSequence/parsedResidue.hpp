@@ -15,6 +15,7 @@ class ParsedResidue : public cds::Residue
         //////////////////////////////////////////////////////////
         ParsedResidue(std::string residueString, absResidue::Type specifiedType = absResidue::Type::Undefined);
         ParsedResidue(std::string residueString, ParsedResidue* neighbor, absResidue::Type specifiedType = absResidue::Type::Undefined);
+        ~ParsedResidue() {std::cout << "ParsedResidue dtor for " << this->getName() << ", ";}
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////

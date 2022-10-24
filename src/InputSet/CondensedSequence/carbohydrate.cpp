@@ -13,24 +13,17 @@
 #include "includes/ParameterSet/PrepFile/prepResidue.hpp"
 #include "includes/ParameterSet/PrepFile/prepAtom.hpp"
 #include "includes/CodeUtils/logging.hpp"
-#include "includes/CentralDataStructure/cdsResidue.hpp"
-#include "includes/CentralDataStructure/cdsMolecule.hpp"
+#include "includes/CentralDataStructure/residue.hpp"
+#include "includes/CentralDataStructure/molecule.hpp"
 
 //using Abstract::absResidue; // For Residue::Type
 using CondensedSequence::Carbohydrate;
 
 Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) : SequenceManipulator{inputSequence}
 {
-	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependency Oliver. Update: Fixed. Test the fix Oliver.
-	this->SetIndexByConnectivity();
-	codeUtils::ensureFileExists(prepFilePath);
-	std::vector<std::string> residuesToLoadFromPrepFile = this->GetGlycamNamesOfResidues();
-	prep::PrepFile glycamPrepFileSelect(prepFilePath, this->GetGlycamNamesOfResidues());
-	// Only want to do this next step for selected residues, not the whole prep file.
-	glycamPrepFileSelect.SetAtomConnectivities();
-	glycamPrepFileSelect.Generate3dStructures();
-	cds::cdsMolecule<cds::cdsResidue<cds::Atom>, cds::Atom> theVanToMordor;
-	std::cout << "Going into this loop" << std::endl;
+	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependency Oliver. Update: Fixed. Todo: Confirm/Test the fix Oliver. Just delete this line and test you toolbag.
+	this->SetIndexByConnectivity(); // For reporting residue index numbers to the user
+	prep::PrepFile glycamPrepFileSelect(prepFilePath, this->GetGlycamNamesOfResidues()); // PrepFile is a cds::Molecule i.e. contains a vector of residues.
 	for( auto &cdsResidue: this->getResidues() )
 	{
 	    ParsedResidue* parsedResidue = static_cast<ParsedResidue*>(cdsResidue);
@@ -44,13 +37,12 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 	        throw(std::runtime_error(message));
 	    }
 	    std::cout << "prepResidue is " << prepResidue->getName() << std::endl;
-//	    cds::cdsResidue<cds::Atom>* newResidue = theVanToMordor.addResidue(parsedResidue); // ParsedResidue has the correct residue connectivities, prepResidue has the atoms.
-//	    for (auto &prepAtom : prepResidue->getAtoms())
-//	    {
-//	        newResidue->addAtom(std::make_unique<cds::Atom>(prepAtom));
-//	    }
-
+	    // ParsedResidue has the correct residue connectivities, prepResidue has the atoms.
+	    parsedResidue->setAtoms(prepResidue->extractAtoms()); // This moves the atoms, i.e. for prepResidue "Moved from objects are left in a valid but unspecified state"
+	    glycamPrepFileSelect.deleteResidue(prepResidue); // Death to the prepResidue, if there are repeats with the same name, the next search would find the one without atoms.
+        std::cout << "Finished moving atoms from prepResidue to parsed Residue. Adventure awaits! Huzzah!" << std::endl;
 	}
+	std::cout << "Are there any dtors here today?\n";
 
 	//Ensure integralCharge can be a free function that accepts atom vector right?
 //	this->EnsureIntegralCharge(inputAssembly->GetTotalCharge());

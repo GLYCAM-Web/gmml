@@ -15,8 +15,8 @@ public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
-    Molecule() : number_(0) {}
-    virtual ~Molecule() = default;
+    Molecule() : number_(0) {std::cout << "Molecule default ctor\n";}
+    virtual ~Molecule() {std::cout << "Molecule default dtor for " << this->getName() << "\n";}
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
@@ -31,9 +31,9 @@ public:
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
     void addResidue(std::unique_ptr<Residue> myResidue);
+    void setResidues(std::vector<std::unique_ptr<Residue>> myResidues);
     Residue* insertNewResidue(std::unique_ptr<Residue> myResidue, const Residue& positionReferenceResidue);
-//    Residue* createNewResidue(const std::string& residueName, const Residue& positionReferenceResidue);
-    typename std::vector<std::unique_ptr<Residue>>::iterator findPositionOfResidue(const Residue* queryResidue);
+    std::vector<std::unique_ptr<Residue>>::iterator findPositionOfResidue(const Residue* queryResidue);
     std::vector<Residue*> getResidues(std::vector<std::string> queryNames);
     Residue* getResidue(const std::string& queryName);
     void deleteResidue(Residue*);

@@ -8,6 +8,7 @@ ParsedResidue::ParsedResidue(std::string residueString, absResidue::Type specifi
 : fullResidueString_ (residueString)
 //: Node(residueString), fullResidueString_ (residueString)
 {
+    this->setName(residueString);
     this->ParseResidueStringIntoComponents(residueString, specifiedType);
 }
 
@@ -15,6 +16,7 @@ ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor,
 //: Node(residueString), fullResidueString_ (residueString)
 : fullResidueString_ (residueString)
 {
+    this->setName(residueString);
     this->ParseResidueStringIntoComponents(residueString, specifiedType);
 	this->AddLinkage(neighbor);
 }

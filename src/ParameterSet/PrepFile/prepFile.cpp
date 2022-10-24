@@ -9,6 +9,7 @@
 #include <iostream>
 #include <iomanip>
 #include <ios>
+#include <algorithm> // count
 
 using prep::PrepFile;
 //////////////////////////////////////////////////////////
@@ -43,6 +44,10 @@ PrepFile::PrepFile(const std::string& prep_file, const std::vector<std::string> 
 	{
 		throw std::runtime_error( "Prep file exists but couldn't be opened.");
 	}
+	// Note that I'm assuming that given a list of query names, the user wants
+	// to use all these residues, thus this isn't wasteful:
+    this->SetAtomConnectivities();
+    this->Generate3dStructures();
 }
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
@@ -137,8 +142,14 @@ void PrepFile::ReadQueryResidues(std::ifstream &in_file, const std::vector<std::
     	if (std::find(queryNames.begin(), queryNames.end(), residueNameLine.front()) != queryNames.end() )
     	{
     		std::cout << "Found query residue: " << residueNameLine.front() << "\n";
-    		in_file.seekg(firstResidueLinePosition);  //go back here so the residue constructor works
-    		this->addResidue(std::make_unique<PrepResidue>(in_file, line));
+    		int numberOfTimesToReadInResidue = std::count(queryNames.begin(), queryNames.end(), residueNameLine.front());
+    		std::cout << residueNameLine.front() << " will be read in " << numberOfTimesToReadInResidue << " times.\n";
+    		while(numberOfTimesToReadInResidue > 0)
+    		{
+    		    in_file.seekg(firstResidueLinePosition);  //go back here so the residue constructor works
+    		    this->addResidue(std::make_unique<PrepResidue>(in_file, line));
+    		    --numberOfTimesToReadInResidue;
+    		}
     	}
     	else
     	{ // need to flush the lines until we find a residue we want.

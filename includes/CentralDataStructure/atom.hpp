@@ -16,9 +16,9 @@ public:
 	//////////////////////////////////////////////////////////
 	//                       CONSTRUCTORS                   //
 	//////////////////////////////////////////////////////////
-	Atom() {};
+	Atom() {std::cout << "Atom default ctor\n";};
 	Atom(const std::string& name, const Coordinate& coord);
-	virtual ~Atom() = default;
+	virtual ~Atom() {std::cout << "cds::Atom default dtor for " << this->getName() << "\n";}
     //////////////////////////////////////////////////////////
 	//                       ACCESSORS                      //
 	//////////////////////////////////////////////////////////

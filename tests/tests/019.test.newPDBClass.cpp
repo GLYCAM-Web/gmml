@@ -16,10 +16,10 @@ int main(int argc, char* argv[])
     pdb::PreprocessorOptions options; // Default values are good.
     std::cout << "Preprocessing\n";
     pdb::PreprocessorInformation ppInfo = pdbFile.PreProcess(options);
-    for (auto & assembly : pdbFile.getAssemblies()) // Just testing, doing it this way to get around const in Ensemble.
+    for (auto &assembly : pdbFile.getAssemblies()) // Just testing, doing it this way to get around const in Ensemble. ToDo: Why is there a const blockage in Ensemble?
     {
     	std::cout << "Bonding atoms by distance for assembly\n";
-    	assembly->bondAtomsByDistance();
+    	cds::bondAtomsByDistance(assembly->getAtoms());
     }
     std::cout << "Finished bonding atoms by distance\n";
     	pdbFile.Write("./outputPdbFile.pdb");

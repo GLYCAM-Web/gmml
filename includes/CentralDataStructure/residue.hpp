@@ -16,9 +16,9 @@ public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
-    Residue() {}
+    Residue() {std::cout << "Residue default ctor\n";}
     Residue(const std::string& residueName, const Residue *referenceResidue);
-    virtual ~Residue() = default;
+    virtual ~Residue() {std::cout << "cdsResidue Dtor for " << this->getName() << "\n";}
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
@@ -31,6 +31,7 @@ public:
     //////////////////////////////////////////////////////////
     inline void setNumber(const int& i) {number_ = i;}
     inline void setName(const std::string& s) {name_ = s;}
+    inline void setAtoms(std::vector<std::unique_ptr<Atom>> v) {atoms_ = std::move(v);}
     void addAtom(std::unique_ptr<Atom> myAtom);
     bool deleteAtom(const Atom* atom);
     std::vector<std::unique_ptr<Atom>> extractAtoms() {return std::move(atoms_);}
