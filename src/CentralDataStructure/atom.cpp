@@ -70,6 +70,18 @@ bool Atom::isWithinBondingDistance(const Atom* otherAtom) const
     return false;
 }
 //////////////////////////////////////////////////////////
+//                   OVERLOADED OPERATORS               //
+//////////////////////////////////////////////////////////
+bool Atom::operator== (const Atom &otherAtom)
+{
+    return (this->getIndex() == otherAtom.getIndex());
+}
+
+bool Atom::operator!= (const Atom &otherAtom)
+{
+    return (this->getIndex() != otherAtom.getIndex());
+}
+//////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
 
