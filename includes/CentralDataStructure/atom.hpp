@@ -34,6 +34,11 @@ public:
     std::string getElement() const;
     int getAtomicNumber() const;
     virtual std::string getId() const;
+    //////////////////////////////////////////////////////////
+    //                   OVERLOADED OPERATORS               //
+    //////////////////////////////////////////////////////////
+    bool operator== (const Atom &otherAtom);
+    bool operator!= (const Atom &otherAtom);
 	//////////////////////////////////////////////////////////
 	//                       DISPLAY FUNCTION               //
 	//////////////////////////////////////////////////////////
