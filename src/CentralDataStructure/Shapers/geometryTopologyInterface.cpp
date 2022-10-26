@@ -16,7 +16,7 @@ std::vector<Coordinate*> GeometryTopology::getCoordinatesFromAtoms(std::vector<c
     return coordinates;
 }
 
-Coordinate CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centralAtom, const double distance)
+Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centralAtom, const double distance)
 {
     if(centralAtom->getNeighbors().size() != 4)
     {

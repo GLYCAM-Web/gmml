@@ -131,7 +131,7 @@ void SequenceParser::ParseLabelledInput(std::string inString)
 	// 		std::cout << " " << subtoken << " \n";
 	// 	}
 	// }
-    throw "Error: We can't handle labeled stuff yet: " + inString + "\n";
+    throw "Error: SequenceParser can't handle labeled stuff yet: " + inString + "\n";
 }
 
 bool SequenceParser::ParseCondensedSequence(const std::string sequence)
