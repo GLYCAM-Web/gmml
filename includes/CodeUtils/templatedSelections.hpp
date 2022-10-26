@@ -2,7 +2,8 @@
 #define INCLUDES_CODEUTILS_TEMPLATEDSELECTIONS_HPP_
 
 #include <vector>
-
+#include <algorithm> // find
+//ToDo move this to CentralDataStructure/Selections and rename the namespace
 namespace codeUtils
 {
 template <class RandomAccessIterator, class T>
