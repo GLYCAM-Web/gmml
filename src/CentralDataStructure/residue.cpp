@@ -4,6 +4,7 @@
 #include "includes/CodeUtils/constants.hpp" // sNotSet
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp"
+#include "includes/CentralDataStructure/Shapers/geometryTopologyInterface.hpp"
 #include "includes/InputSet/PdbFile/pdbResidueId.hpp"
 
 using cds::Residue;
@@ -45,6 +46,11 @@ std::string Residue::getId(std::string moleculeNumber) const
     const std::string insertionCode = codeUtils::sNotSet;
     pdb::ResidueId temp(this->getName(), std::to_string(this->getNumber()), insertionCode, moleculeNumber);
     return temp.print();
+}
+
+std::vector<Coordinate*> Residue::getCoordinates() const
+{
+    return GeometryTopology::getCoordinatesFromAtoms(this->getAtoms());
 }
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //

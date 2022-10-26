@@ -27,6 +27,7 @@ public:
     std::vector<Atom*> getAtoms() const;
     std::vector<std::string> getAtomNames() const;
     std::string getId(std::string moleculeNumber = codeUtils::sNotSet) const;
+    std::vector<Coordinate*> getCoordinates() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
