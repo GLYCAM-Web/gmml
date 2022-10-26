@@ -42,6 +42,13 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 	    glycamPrepFileSelect.deleteResidue(prepResidue); // Death to the prepResidue, if there are repeats with the same name, the next search would find the one without atoms.
         std::cout << "Finished moving atoms from prepResidue to parsed Residue. Adventure awaits! Huzzah!" << std::endl;
 	}
+	for( auto &cdsResidue: this->getResidues() )
+	{
+	    for( auto &childNeighbor : cdsResidue->getChildren())
+	    {
+	        this->BondResiduesDeduceAtoms(cdsResidue, childNeighbor);
+	    }
+	}
 	std::cout << "Are there any dtors here today?\n";
 
 	//Ensure integralCharge can be a free function that accepts atom vector right?
@@ -121,27 +128,27 @@ void Carbohydrate::EnsureIntegralCharge(double charge)
 //}
 
 
-void Carbohydrate::BondResiduesDeduceAtoms(cds::Residue& parentResidue, cds::Residue& childResidue, std::string linkageLabel)
+void Carbohydrate::BondResiduesDeduceAtoms(cds::Residue* parentResidue, cds::Residue* childResidue)
 {
     using Abstract::ResidueType;
     using cds::Atom;
-	gmml::log(__LINE__,__FILE__,gmml::INF, "Here with parent " + parentResidue.getId() + " and child: " + childResidue.getId() + " and linkageLabel: " + linkageLabel);
+    std::string linkageLabel = static_cast<ParsedResidue*>(childResidue)->GetLinkageName();
+	gmml::log(__LINE__,__FILE__,gmml::INF, "Here with parent " + parentResidue->getId() + " and child: " + childResidue->getId() + " and linkageLabel: " + linkageLabel);
 	// This is using the new Node<Residue> functionality and the old AtomNode
-	parentResidue.addChild(linkageLabel, &childResidue);
 	// Now go figure out how which Atoms to bond to each other in the residues.
 	// Rule: Can't ever have a child aglycone or a parent derivative.
 	Atom* parentAtom = nullptr;
 	std::string childAtomName, parentAtomName;
-	if (parentResidue.GetType() == ResidueType::Aglycone)
+	if (parentResidue->GetType() == ResidueType::Aglycone)
 	{
 		gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeAglyconeConnectionAtomLookup connectionAtomLookup;
-		parentAtomName = connectionAtomLookup.GetConnectionAtomForResidue(parentResidue.getName());
-		parentAtom = parentResidue.FindAtom(parentAtomName);
+		parentAtomName = connectionAtomLookup.GetConnectionAtomForResidue(parentResidue->getName());
+		parentAtom = parentResidue->FindAtom(parentAtomName);
 	}
-	else if (parentResidue.GetType() == ResidueType::Sugar)
+	else if (parentResidue->GetType() == ResidueType::Sugar)
 	{ // Linkage example: childb1-4parent, it's never parentb1-4child
 		size_t linkPosition = 3;
-		if (childResidue.GetType() == ResidueType::Derivative)
+		if (childResidue->GetType() == ResidueType::Derivative)
 		{ // label will be just a single number.
 			linkPosition = 0;
 		}
@@ -157,28 +164,28 @@ void Carbohydrate::BondResiduesDeduceAtoms(cds::Residue& parentResidue, cds::Res
 		    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
 		    throw std::runtime_error(message);
 		}
-		parentAtom = TemplatedSelections::getNonCarbonHeavyAtomNumbered(parentResidue.getAtoms(), linkageLabel.substr(linkPosition));
+		parentAtom = TemplatedSelections::getNonCarbonHeavyAtomNumbered(parentResidue->getAtoms(), linkageLabel.substr(linkPosition));
 	}
 	else
 	{
-	    std::string message = "Error: parent residue: " + parentResidue.getName() + " isn't either Aglycone or Sugar, and derivatives cannot be parents.";
+	    std::string message = "Error: parent residue: " + parentResidue->getName() + " isn't either Aglycone or Sugar, and derivatives cannot be parents.";
 	    gmml::log(__LINE__,__FILE__, gmml::ERR, message);
 	    throw std::runtime_error(message);
 	}
 	if (parentAtom == nullptr)
 	{
-	    std::string message = "Did not find connection atom in residue: " + parentResidue.getId();
+	    std::string message = "Did not find connection atom in residue: " + parentResidue->getId();
 	    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
 	    throw std::runtime_error(message);
 	}
 	gmml::log(__LINE__,__FILE__,gmml::INF, parentAtom->getId());
 	// Now get child atom
-	if (childResidue.GetType() == ResidueType::Derivative)
+	if (childResidue->GetType() == ResidueType::Derivative)
 	{
 		gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeAglyconeConnectionAtomLookup connectionAtomLookup;
-		childAtomName = connectionAtomLookup.GetConnectionAtomForResidue(childResidue.getName());
+		childAtomName = connectionAtomLookup.GetConnectionAtomForResidue(childResidue->getName());
 	}
-	else if (childResidue.GetType() == ResidueType::Sugar)
+	else if (childResidue->GetType() == ResidueType::Sugar)
 	{
 		std::string childLinkageNumber = linkageLabel.substr(1,1);
 		if(!isdigit(childLinkageNumber.at(0)))
@@ -191,14 +198,14 @@ void Carbohydrate::BondResiduesDeduceAtoms(cds::Residue& parentResidue, cds::Res
 	}
 	else
 	{
-	    std::string message = "Error: child residue: " + childResidue.getName() + " is neither derivative or Sugar (aglycones cannot be children)";
+	    std::string message = "Error: child residue: " + childResidue->getName() + " is neither derivative or Sugar (aglycones cannot be children)";
 	    gmml::log(__LINE__,__FILE__, gmml::ERR, message);
 	    throw std::runtime_error(message);
 	}
-	Atom* childAtom = childResidue.FindAtom(childAtomName);
+	Atom* childAtom = childResidue->FindAtom(childAtomName);
 	if (childAtom == nullptr)
 	{
-	    std::string message = "Did not find atom named " + childAtomName + " in residue: " + childResidue.getId();
+	    std::string message = "Did not find atom named " + childAtomName + " in residue: " + childResidue->getId();
 	    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
 	    throw std::runtime_error(message);
 	}
@@ -206,25 +213,24 @@ void Carbohydrate::BondResiduesDeduceAtoms(cds::Residue& parentResidue, cds::Res
 	// Now bond the atoms. Needs to change when AtomNode goes away.
 	childAtom->addBond(parentAtom); // parentAtom also connected to childAtom. Fancy.
 	std::stringstream logss;
-	logss << "Bonded " << parentResidue.getName() << "@" << parentAtom->getName() << " to " << childResidue.getName() << "@" << childAtomName << std::endl;
+	logss << "Bonded " << parentResidue->getName() << "@" << parentAtom->getName() << " to " << childResidue->getName() << "@" << childAtomName << std::endl;
 	// Charge adjustment
-	if (childResidue.GetType() == ResidueType::Derivative)
+	if (childResidue->GetType() == ResidueType::Derivative)
 	{
 		logss << "Charge Adjustment.\n";
 		gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeChargeAdjustmentLookupContainer lookup;
-		std::string adjustAtomName = lookup.GetAdjustmentAtom(childResidue.getName());
+		std::string adjustAtomName = lookup.GetAdjustmentAtom(childResidue->getName());
 		adjustAtomName += linkageLabel.substr(0,1);
-		Atom* atomToAdjust = parentResidue.FindAtom(adjustAtomName);
-		logss << "    Derivative is " << childResidue.getName() << ". Adjusting charge on " << atomToAdjust->getName() << "\n";
-		logss << "    Adjusting by: " << lookup.GetAdjustmentCharge(childResidue.getName()) << "\n";
+		Atom* atomToAdjust = parentResidue->FindAtom(adjustAtomName);
+		logss << "    Derivative is " << childResidue->getName() << ". Adjusting charge on " << atomToAdjust->getName() << "\n";
+		logss << "    Adjusting by: " << lookup.GetAdjustmentCharge(childResidue->getName()) << "\n";
 		gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-		atomToAdjust->setCharge(atomToAdjust->getCharge() + lookup.GetAdjustmentCharge(childResidue.getName()) );
+		atomToAdjust->setCharge(atomToAdjust->getCharge() + lookup.GetAdjustmentCharge(childResidue->getName()) );
 	}
 	// Geometry
 	logss << "Setting bond distance.\n";
 	gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-	//whyOhGodWhy.SetResidueResidueBondDistance(parentAtom, childAtom);
-	//GeometryTopology::SetDistance(parentAtom, childAtom);
+	GeometryTopology::FindAtomsToMoveSetDistance(parentAtom, childAtom);
 	// Angle
 	logss << "Setting angles.\n";
 	gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
@@ -233,8 +239,7 @@ void Carbohydrate::BondResiduesDeduceAtoms(cds::Residue& parentResidue, cds::Res
 	{
 		if ( (parentAtomNeighbor->getName().at(0) != 'H') && (parentAtomNeighbor != childAtom ) )
 		{
-			//whyOhGodWhy.SetAngle(parentAtomNeighbor, parentAtom, childAtom, angle_to_set);
-			GeometryTopology::SetAngle(parentAtomNeighbor, parentAtom, childAtom, angle_to_set);
+			GeometryTopology::SetAngle(parentAtomNeighbor->getCoordinate(), parentAtom->getCoordinate(), childAtom->getCoordinate(), angle_to_set, childResidue->getCoordinates());
 		}
 	}
 	return;

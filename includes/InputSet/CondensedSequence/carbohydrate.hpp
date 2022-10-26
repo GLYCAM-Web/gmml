@@ -34,7 +34,7 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         void EnsureIntegralCharge(double charge);
 //        void RecurveGenerateResidues(ParsedResidue *currentChild, MolecularModeling::Residue &parent, MolecularModeling::Assembly* assembly);
-        void BondResiduesDeduceAtoms(cds::Residue& parentResidue, cds::Residue& childResidue, std::string linkageLabel);
+        void BondResiduesDeduceAtoms(cds::Residue* parentResidue, cds::Residue* childResidue);
         std::vector<std::string> GetGlycamNamesOfResidues() const;
         std::string GetGlycamResidueName(ParsedResidue *residue) const;
         //////////////////////////////////////////////////////////
