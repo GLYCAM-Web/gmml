@@ -4,7 +4,7 @@
 #include <string>
 
 namespace pdb
-{ // This class is a way for me to centralize where res info is extracted from a pbd file line.
+{ // This class is a way for me to centralize where res info is extracted from a pdb file line.
   // This is used by PreprocessorInformation and PdbResidue.
 class ResidueId
 {
@@ -50,6 +50,11 @@ public:
                 (insertionCode_ != rhs.insertionCode_) ||
                 (chainId_ != rhs.chainId_));
             }
+    friend std::ostream& operator<<(std::ostream& os, const ResidueId& rId)
+    {
+        os << rId.print();
+        return os;
+    }
     //////////////////////////////////////////////////////////
     //                       DISPLAY                        //
     //////////////////////////////////////////////////////////

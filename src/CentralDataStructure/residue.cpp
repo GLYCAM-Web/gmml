@@ -1,8 +1,10 @@
 #include "includes/CentralDataStructure/residue.hpp"
 #include "includes/GeometryTopology/coordinate.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/constants.hpp" // sNotSet
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp"
+#include "includes/InputSet/PdbFile/pdbResidueId.hpp"
 
 using cds::Residue;
 using cds::Atom;
@@ -36,6 +38,13 @@ std::vector<std::string> Residue::getAtomNames() const
         foundAtomNames.push_back(atom->getName());
     }
     return foundAtomNames;
+}
+
+std::string Residue::getId(std::string moleculeNumber) const
+{
+    const std::string insertionCode = codeUtils::sNotSet;
+    pdb::ResidueId temp(this->getName(), std::to_string(this->getNumber()), insertionCode, moleculeNumber);
+    return temp.print();
 }
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //

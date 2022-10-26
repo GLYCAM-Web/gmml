@@ -26,6 +26,7 @@ public:
     inline virtual const std::string& getName() const {return name_;}
     std::vector<Atom*> getAtoms() const;
     std::vector<std::string> getAtomNames() const;
+    std::string getId(std::string moleculeNumber = codeUtils::sNotSet) const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
