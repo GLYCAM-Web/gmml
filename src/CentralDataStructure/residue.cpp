@@ -120,6 +120,24 @@ std::vector<const Atom*> Residue::getAtomsConnectedToOtherResidues() const
     }
     return foundAtoms;
 }
+
+void Residue::MakeDeoxy(std::string oxygenNumber)
+{ // if oxygenNumber is 6, then C6-O6-H6O becomes C6-Hd
+    Atom* hydrogenAtom = this->FindAtom("H" + oxygenNumber + "O");
+    Atom* oxygenAtom = this->FindAtom("O" + oxygenNumber);
+    Atom* carbonAtom = this->FindAtom("C" + oxygenNumber);
+    // Add O and H charge to the C atom.
+    carbonAtom->setCharge(carbonAtom->getCharge() + oxygenAtom->getCharge() + hydrogenAtom->getCharge());
+    // Delete the H of O-H
+    this->deleteAtom(hydrogenAtom);
+    // Now transform the Oxygen to a Hd. Easier than deleting O and creating H. Note: this H looks weird in LiteMol as bond length is too long.
+//    std::string newID = oxygenAtom->getId();
+//    newID.replace(0,oxygenAtom->getName().size(),"Hd");
+    oxygenAtom->setName("Hd");
+    oxygenAtom->setType("H1");
+    oxygenAtom->setCharge(0.0000);
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Completed MakeDeoxy\n");
+}
 //////////////////////////////////////////////////////////
 //                    DISPLAY                           //
 //////////////////////////////////////////////////////////

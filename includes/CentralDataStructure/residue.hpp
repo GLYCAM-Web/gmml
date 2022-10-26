@@ -44,6 +44,7 @@ public:
     Atom* FindAtom(const std::string queryName) const;
     Atom* FindAtom(const int& queryNumber) const;
     std::vector<const Atom*> getAtomsConnectedToOtherResidues() const;
+    void MakeDeoxy(std::string oxygenNumber);
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////

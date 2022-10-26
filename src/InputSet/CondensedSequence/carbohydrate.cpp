@@ -29,6 +29,7 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 	    ParsedResidue* parsedResidue = static_cast<ParsedResidue*>(cdsResidue);
 	    std::cout << "parsedResidue is " << parsedResidue->getName() << std::endl;
 	    std::cout << "it's glycam name is " << this->GetGlycamResidueName(parsedResidue) << std::endl;
+        std::cout << "it's label is " << parsedResidue->getLabel() << std::endl;
 	    cds::Residue* prepResidue = glycamPrepFileSelect.getResidue(this->GetGlycamResidueName(parsedResidue));
 	    if (prepResidue == nullptr)
 	    {
@@ -41,15 +42,23 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 	    parsedResidue->setAtoms(prepResidue->extractAtoms()); // This moves the atoms, i.e. for prepResidue "Moved from objects are left in a valid but unspecified state"
 	    glycamPrepFileSelect.deleteResidue(prepResidue); // Death to the prepResidue, if there are repeats with the same name, the next search would find the one without atoms.
         std::cout << "Finished moving atoms from prepResidue to parsed Residue. Adventure awaits! Huzzah!" << std::endl;
+        if (parsedResidue->GetType() == Abstract::ResidueType::Deoxy)
+        {
+            std::cout << "Dealing with deoxy for " << parsedResidue->getName() << "\n";
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Dealing with deoxy for " + parsedResidue->getName());
+            parsedResidue->MakeDeoxy(parsedResidue->GetLink());
+        }
 	}
+    std::cout << "\n\n\nOn to setting 3d structure!\n\n";
 	for( auto &cdsResidue: this->getResidues() )
 	{
-	    for( auto &childNeighbor : cdsResidue->getChildren())
+	    for( auto &childNeighbor : cdsResidue->getParents()) //
 	    {
+	        std::cout << "Setting connection between " << cdsResidue->getName() << " and it's child " << childNeighbor->getName() << ", which has label: " << childNeighbor->getLabel() << "\n";
 	        this->BondResiduesDeduceAtoms(cdsResidue, childNeighbor);
 	    }
 	}
-	std::cout << "Are there any dtors here today?\n";
+	std::cout << "\n\nAre there any dtors here today?\n\n";
 
 	//Ensure integralCharge can be a free function that accepts atom vector right?
 //	this->EnsureIntegralCharge(inputAssembly->GetTotalCharge());
