@@ -39,8 +39,8 @@ public:
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
     typename std::vector<std::unique_ptr<Atom>>::iterator FindPositionOfAtom(const Atom* queryAtom);
-    const Atom* FindAtom(const std::string queryName) const;
-    const Atom* FindAtom(const int& queryNumber) const;
+    Atom* FindAtom(const std::string queryName) const;
+    Atom* FindAtom(const int& queryNumber) const;
     std::vector<const Atom*> getAtomsConnectedToOtherResidues() const;
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //

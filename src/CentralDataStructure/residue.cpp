@@ -80,12 +80,12 @@ typename std::vector<std::unique_ptr<Atom>>::iterator Residue::FindPositionOfAto
     return e;
 }
 
-const Atom* Residue::FindAtom(const std::string queryName) const
+Atom* Residue::FindAtom(const std::string queryName) const
 {
     return codeUtils::findElementWithName(this->getAtoms(), queryName);
 }
 
-const Atom* Residue::FindAtom(const int& queryNumber) const
+Atom* Residue::FindAtom(const int& queryNumber) const
 {
     return codeUtils::findElementWithNumber(this->getAtoms(), queryNumber);
 }
