@@ -1,5 +1,6 @@
 ./src/Abstract/absAtom.cpp
 ./src/Abstract/absResidue.cpp
+./src/CentralDataStructure/Shapers/geometryTopologyInterface.cpp
 ./src/CentralDataStructure/assembly.cpp
 ./src/CentralDataStructure/atom.cpp
 ./src/CentralDataStructure/ensemble.cpp
