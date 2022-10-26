@@ -41,7 +41,7 @@ namespace MolecularModeling
             Residue();
             Residue(Assembly* assembly, std::string name);
             Residue(PrepFileSpace::PrepFileResidue *prep_residue);
-            Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type);
+            Residue(PrepFileSpace::PrepFileResidue *prep_residue, Abstract::ResidueType type);
 //            Residue(const Residue* residue); // Copy ctor for Template Edge.
             // Residue(Residue& residue);
 

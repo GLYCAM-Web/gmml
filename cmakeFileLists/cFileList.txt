@@ -2,7 +2,6 @@
 ./src/Abstract/absResidue.cpp
 ./src/CentralDataStructure/assembly.cpp
 ./src/CentralDataStructure/atom.cpp
-./src/CentralDataStructure/cdsCoordinate.cpp
 ./src/CentralDataStructure/ensemble.cpp
 ./src/CentralDataStructure/molecule.cpp
 ./src/CentralDataStructure/residue.cpp

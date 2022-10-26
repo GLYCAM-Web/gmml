@@ -2,6 +2,7 @@
 ./includes/Abstract
 ./includes/CentralDataStructure
 ./includes/CentralDataStructure/Overlaps
+./includes/CentralDataStructure/Selections
 ./includes/CentralDataStructure/Shapers
 ./includes/CentralDataStructure/Writers
 ./includes/CodeUtils

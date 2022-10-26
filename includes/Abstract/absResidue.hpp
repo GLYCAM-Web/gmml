@@ -5,27 +5,28 @@
 
 namespace Abstract
 {
+    enum ResidueType {Aglycone, Sugar, Derivative, Solvent, Protein, Deoxy, Undefined};
 	class absResidue 
 	{
 	public:
-        enum Type {Aglycone, Sugar, Derivative, Solvent, Protein, Deoxy, Undefined};  
+        //enum Type {Aglycone, Sugar, Derivative, Solvent, Protein, Deoxy, Undefined};
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        inline absResidue::Type GetType() const {return type_;}
+        inline ResidueType GetType() const {return type_;}
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
-        inline void SetType(absResidue::Type type) {type_ = type;}
+        inline void SetType(ResidueType type) {type_ = type;}
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        Type determineType(const std::string &residueName) const;
+        ResidueType determineType(const std::string &residueName) const;
     private:      
         //////////////////////////////////////////////////////////
         //                       ATTRRIBUTES                    //
         //////////////////////////////////////////////////////////
-        absResidue::Type type_ = Undefined;  // enum Type. See enum above.
+        ResidueType type_ = Undefined;  // enum Type. See enum above.
 	};
 }
 #endif

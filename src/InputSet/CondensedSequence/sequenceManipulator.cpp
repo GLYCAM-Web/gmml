@@ -100,7 +100,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 	std::vector<std::string> derivatives;
 	for (auto &neighbor : neighbors)
 	{
-		if (neighbor->GetType() == ParsedResidue::Type::Derivative)
+		if (neighbor->GetType() == Abstract::ResidueType::Derivative)
 		{
 			--numberOfNeighbors;
 			derivatives.push_back(neighbor->GetLinkageName(withLabels) + neighbor->GetName(withLabels));
@@ -130,7 +130,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 	size_t loopCount = 0;
 	for (auto &neighbor : neighbors)
 	{
-		if (neighbor->GetType() != ParsedResidue::Type::Derivative)
+		if (neighbor->GetType() != Abstract::ResidueType::Derivative)
 		{
 			++loopCount;
 			if (loopCount < numberOfNeighbors)
@@ -155,7 +155,7 @@ std::string SequenceManipulator::PrintGraphViz(GraphVizDotConfig &configs)
 	ss << "rankdir=LR nodesep=\"0.05\" ranksep=\"0.8\";\n";
 	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
 	{
-		if (residue->GetType() != ParsedResidue::Type::Derivative) 
+		if (residue->GetType() != Abstract::ResidueType::Derivative)
 		{
 			ss << this->GetGraphVizLineForResidue(*residue, configs) << "\n";
 		}
@@ -178,7 +178,7 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
     std::stringstream ss;
     ss << residue.getIndex() << " [";
     // Aglycone
-    if (residue.GetType() == ParsedResidue::Type::Aglycone)
+    if (residue.GetType() == Abstract::ResidueType::Aglycone)
     {
         ss << "shape=box label=\"" << residue.GetMonosaccharideName() << "\"]";
         return ss.str();
@@ -202,7 +202,7 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
     std::string derivativeStr = "";
     for (auto &childLink : residue.GetChildren())
     {
-        if (childLink->GetType() == ParsedResidue::Type::Derivative) 
+        if (childLink->GetType() == Abstract::ResidueType::Derivative)
         {
             derivativeStr += childLink->GetLinkageName() + childLink->GetName() + " ";
         }

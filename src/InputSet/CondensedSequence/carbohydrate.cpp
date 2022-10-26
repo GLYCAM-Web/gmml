@@ -257,7 +257,7 @@ std::vector<std::string> Carbohydrate::GetGlycamNamesOfResidues() const
 std::string Carbohydrate::GetGlycamResidueName(ParsedResidue *residue) const
 {
     std::string linkages = "";
-    if (residue->GetType() == ParsedResidue::Type::Sugar)
+    if (residue->GetType() == Abstract::ResidueType::Sugar)
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "Checking for glycosidic linkages that connect to " + residue->GetResidueName());
         linkages = residue->GetChildLinkagesForGlycamResidueNaming();

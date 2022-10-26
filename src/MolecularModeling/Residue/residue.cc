@@ -45,7 +45,7 @@ Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue) : Node()
     this->BuildResidueFromPrepFileResidue(prep_residue);
  }
 
-Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type) : Node()
+Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Abstract::ResidueType type) : Node()
 {
     this->SetIndex(this->generateIndex());
     this->SetName(prep_residue->GetName());

@@ -11,13 +11,13 @@
 namespace cds
 {
 
-inline std::string getOffType(const Abstract::absResidue::Type queryType)
+inline std::string getOffType(const Abstract::ResidueType queryType)
 {
-	if ( queryType == Abstract::absResidue::Type::Protein )
+	if ( queryType == Abstract::ResidueType::Protein )
 	{
 		return "p";
 	}
-	if ( queryType == Abstract::absResidue::Type::Solvent )
+	if ( queryType == Abstract::ResidueType::Solvent )
 	{
 		return "w";
 	}

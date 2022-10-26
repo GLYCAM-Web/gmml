@@ -227,7 +227,7 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo,
     {
         PdbChain* chain = static_cast<PdbChain*>(cdsMolecule);
 //        std::vector<pdb::PdbResidue*> proteinResidues = cds::selectResiduesByType(chain->getResidues(), Abstract::absResidue::Type::Protein);
-    	std::vector<cds::Residue*> proteinResidues = cds::selectResiduesByType(chain->getResidues(), Abstract::absResidue::Type::Protein);
+    	std::vector<cds::Residue*> proteinResidues = cds::selectResiduesByType(chain->getResidues(), Abstract::ResidueType::Protein);
         for(std::vector<cds::Residue*>::iterator it1 = proteinResidues.begin(); it1 != proteinResidues.end(); ++it1)
         {
             std::vector<cds::Residue*>::iterator it2 = std::next(it1);

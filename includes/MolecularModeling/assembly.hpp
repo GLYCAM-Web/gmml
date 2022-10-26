@@ -312,7 +312,7 @@ public:
               * This line repeats the same thing above, but in a different way
               * @param PrepFileSpace::PrepFileResidue* and a Residue::Type that is defaulted to type "Undefined"
               */
-    Residue& CreateResidue(PrepFileSpace::PrepFileResidue*, Residue::Type residueType = Residue::Type::Undefined);
+    Residue& CreateResidue(PrepFileSpace::PrepFileResidue*, Abstract::ResidueType residueType = Abstract::ResidueType::Undefined);
     /*! \fn
               * A mutator function in order to set the name of the current object
               * Set the name_ attribute of the current assembly

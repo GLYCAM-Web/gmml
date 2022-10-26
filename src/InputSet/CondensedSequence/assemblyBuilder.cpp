@@ -2,7 +2,7 @@
 #include <cctype> // isDigit
 #include "includes/InputSet/CondensedSequence/assemblyBuilder.hpp"
 
-#include "includes/Abstract/absResidue.hpp" // For the Residue::Type
+#include "includes/Abstract/absResidue.hpp" // For the Abstract::ResidueType
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeAglyconeInfo.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp" // To get glycam name for ParsedResidue
@@ -14,7 +14,7 @@
 #include "includes/CodeUtils/files.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp"
 
-//using Abstract::Residue; // For Residue::Type
+//using Abstract::Residue; // For Abstract::ResidueType
 
 using CondensedSequence::AssemblyBuilder;
 using MolecularModeling::Assembly;
@@ -54,7 +54,7 @@ void AssemblyBuilder::GenerateResidues(Assembly *assembly)
 void AssemblyBuilder::RecurveGenerateResidues(ParsedResidue* parsedChild, MolecularModeling::Residue& gmmlParent, 
 	Assembly* assembly)
 {	
-	if (parsedChild->GetType() == ParsedResidue::Type::Deoxy)
+	if (parsedChild->GetType() == Abstract::ResidueType::Deoxy)
 	{
 		gmml::log(__LINE__, __FILE__, gmml::INF, "Dealing with deoxy for " + gmmlParent.GetName());
 		gmmlParent.MakeDeoxy(parsedChild->GetLink());
@@ -98,15 +98,15 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 	// Now go figure out how which Atoms to bond to each other in the residues.
 	// Rule: Can't ever have a child aglycone or a parent derivative.
 	std::string parentAtomName, childAtomName;
-	if (parentResidue.GetType() == Residue::Type::Aglycone)
+	if (parentResidue.GetType() == Abstract::ResidueType::Aglycone)
 	{ 
 		gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeAglyconeConnectionAtomLookup connectionAtomLookup;
 		parentAtomName = connectionAtomLookup.GetConnectionAtomForResidue(parentResidue.GetName());
 	}
-	else if (parentResidue.GetType() == Residue::Type::Sugar)
+	else if (parentResidue.GetType() == Abstract::ResidueType::Sugar)
 	{ // Linkage example: childb1-4parent, it's never parentb1-4child 
 		size_t linkPosition = 3;
-		if (childResidue.GetType() == Residue::Type::Derivative)
+		if (childResidue.GetType() == Abstract::ResidueType::Derivative)
 		{ // label will be just a single number.
 			linkPosition = 0;
 		}
@@ -139,12 +139,12 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 	}
 	gmml::log(__LINE__,__FILE__,gmml::INF, parentAtom->GetId());
 	// Now get child atom
-	if (childResidue.GetType() == Residue::Type::Derivative)
+	if (childResidue.GetType() == Abstract::ResidueType::Derivative)
 	{
 		gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeAglyconeConnectionAtomLookup connectionAtomLookup;
 		childAtomName = connectionAtomLookup.GetConnectionAtomForResidue(childResidue.GetName());	
 	}
-	else if (childResidue.GetType() == Residue::Type::Sugar)
+	else if (childResidue.GetType() == Abstract::ResidueType::Sugar)
 	{
 		std::string childLinkageNumber = linkageLabel.substr(1,1);
 		if(!isdigit(childLinkageNumber.at(0)))
@@ -174,7 +174,7 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 	parentAtom->GetNode()->AddNodeNeighbor(childAtom);
 	logss << "Bonded " << parentResidue.GetName() << "@" << parentAtomName << " to " << childResidue.GetName() << "@" << childAtomName << std::endl;
 	// Charge adjustment
-	if (childResidue.GetType() == Residue::Type::Derivative)
+	if (childResidue.GetType() == Abstract::ResidueType::Derivative)
 	{
 		logss << "Charge Adjustment.\n";
 		gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeChargeAdjustmentLookupContainer lookup;
@@ -210,7 +210,7 @@ void AssemblyBuilder::BondResiduesDeduceAtoms(MolecularModeling::Residue& parent
 std::string AssemblyBuilder::GetGlycamResidueName(ParsedResidue &residue)
 {
     std::string linkages = "";
-    if (residue.GetType() == ParsedResidue::Type::Sugar)
+    if (residue.GetType() == Abstract::ResidueType::Sugar)
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "Checking for glycosidic linkages that connect to " + residue.GetResidueName());
         linkages = residue.GetChildLinkagesForGlycamResidueNaming();

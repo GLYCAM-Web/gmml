@@ -611,7 +611,7 @@ MolecularModeling::MoleculeVector Assembly::GetMolecules()
 //////////////////////////////////////////////////////////
 //                          MUTATOR                     //
 //////////////////////////////////////////////////////////
-Residue& Assembly::CreateResidue(PrepFileSpace::PrepFileResidue* prepResidue, Residue::Type residueType)
+Residue& Assembly::CreateResidue(PrepFileSpace::PrepFileResidue* prepResidue, Abstract::ResidueType residueType)
 {
     Residue* newRes = new Residue(prepResidue, residueType); 
     residues_.push_back(newRes);

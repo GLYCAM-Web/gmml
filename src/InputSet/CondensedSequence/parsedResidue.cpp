@@ -4,7 +4,7 @@
 
 using CondensedSequence::ParsedResidue;
 
-ParsedResidue::ParsedResidue(std::string residueString, absResidue::Type specifiedType)
+ParsedResidue::ParsedResidue(std::string residueString, Abstract::ResidueType specifiedType)
 : fullResidueString_ (residueString)
 //: Node(residueString), fullResidueString_ (residueString)
 {
@@ -12,7 +12,7 @@ ParsedResidue::ParsedResidue(std::string residueString, absResidue::Type specifi
     this->ParseResidueStringIntoComponents(residueString, specifiedType);
 }
 
-ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor, absResidue::Type specifiedType)
+ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor, Abstract::ResidueType specifiedType)
 //: Node(residueString), fullResidueString_ (residueString)
 : fullResidueString_ (residueString)
 {
@@ -23,7 +23,7 @@ ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue* neighbor,
 
 void ParsedResidue::AddLinkage(ParsedResidue* otherRes) 
 {
-    if ( this->GetType() == Type::Sugar ) 
+    if ( this->GetType() == Abstract::ResidueType::Sugar )
     {
         this->addChild(this->GetConfiguration() + this->GetLinkage(), otherRes);
     }
@@ -39,11 +39,11 @@ std::string ParsedResidue::GetLink() const
     std::string linkage = this->GetLinkage();
     switch (this->GetType())
     {
-        case (Type::Sugar):
+        case (Abstract::ResidueType::Sugar):
             return linkage.substr(linkage.size() - 1, 1);
-        case (Type::Derivative):
+        case (Abstract::ResidueType::Derivative):
             return linkage.substr(linkage.size() - 1, 1);
-        case (Type::Deoxy):
+        case (Abstract::ResidueType::Deoxy):
             return linkage.substr(0, 1);
         default:
             return "0";
@@ -77,7 +77,7 @@ std::string ParsedResidue::GetChildLinkagesForGlycamResidueNaming() const
     std::string linkages;
     for (auto &child : this->GetChildren())
     {   // For glycam residue name, e.g. 2YB, do not want deoxy linkages to impact the residue name.
-        if (child->GetType() != Type::Deoxy)
+        if (child->GetType() != Abstract::ResidueType::Deoxy)
         {
             linkages += (child->GetLink() + ",");
         }
@@ -118,7 +118,7 @@ std::string ParsedResidue::GetLinkageName(const bool withLabels) const
     return ""; // aglycone/reducing terminal will not have linkage.
 }
 
-void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, ParsedResidue::Type specifiedType)
+void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, Abstract::ResidueType specifiedType)
 {
 
     std::stringstream logss;
@@ -133,10 +133,10 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
     this->SetConfiguration("");
     this->SetLinkage("");
     this->SetType(specifiedType);
-	if ( (residueString.find('-') != std::string::npos) || (specifiedType == Type::Sugar) )
+	if ( (residueString.find('-') != std::string::npos) || (specifiedType == Abstract::ResidueType::Sugar) )
     { // E.g. DManpNAca1-4 . Isomer (D or L), residueName (ManNAc), ring type (f or p), configuration (a or b), linkage (1-4)
     	// Reading from front.
-        this->SetType(Type::Sugar);
+        this->SetType(Abstract::ResidueType::Sugar);
         // Assumptions
         size_t residueStart = 1; // e.g. Gal, Glc, Ido
         size_t modifierStart = 5; // E.g. NAc, A, A(1C4)
@@ -196,15 +196,15 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
     }
     else if ( isdigit(residueString[0]) )
     { // A derivative e.g. 3S, 6Me. Linkage followed by residue name. No configuration.
-        this->SetType(Type::Derivative);
+        this->SetType(Abstract::ResidueType::Derivative);
     	this->SetLinkage(residueString.substr(0, 1));
     	this->SetResidueName(residueString.substr(1)); // From position 1 to the end.
         if ( (this->GetResidueName() == "D") || (this->GetResidueName() == "H") ) // Supporting both for now.
         {
-            this->SetType(Type::Deoxy);
+            this->SetType(Abstract::ResidueType::Deoxy);
         }
     }
-    else if (specifiedType == Type::Aglycone)
+    else if (specifiedType == Abstract::ResidueType::Aglycone)
     { // A terminal
     	this->SetResidueName(residueString);
     }

@@ -8,7 +8,7 @@
 namespace cds
 {
 template< class residueT>
-inline typename std::vector<residueT*> selectResiduesByType(std::vector<residueT*> inputResidues, Abstract::absResidue::Type queryType)
+inline typename std::vector<residueT*> selectResiduesByType(std::vector<residueT*> inputResidues, Abstract::ResidueType queryType)
 {
 	std::vector<residueT*> selectedResidues;
 	for(auto & residue : inputResidues)
