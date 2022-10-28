@@ -24,7 +24,7 @@ public:
 	//                       Constructor                    //
 	//////////////////////////////////////////////////////////
 	PrepAtom(const std::string& line);
-	~PrepAtom() {std::cout << "PrepAtom dtor for " << this->getName() << ", ";}
+	~PrepAtom() {}//{std::cout << "PrepAtom dtor for " << this->getName() << ", ";}
 	//////////////////////////////////////////////////////////
 	//                         FUNCTIONS                    //
 	//////////////////////////////////////////////////////////
