@@ -30,6 +30,7 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 	    std::cout << "parsedResidue is " << parsedResidue->getName() << std::endl;
 	    std::cout << "it's glycam name is " << this->GetGlycamResidueName(parsedResidue) << std::endl;
         std::cout << "it's label is " << parsedResidue->getLabel() << std::endl;
+        std::cout << parsedResidue->PrintToString() << std::endl;
 	    cds::Residue* prepResidue = glycamPrepFileSelect.getResidue(this->GetGlycamResidueName(parsedResidue));
 	    if (prepResidue == nullptr)
 	    {
@@ -52,14 +53,14 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
     std::cout << "\n\n\nOn to setting 3d structure!\n\n";
 	for( auto &cdsResidue: this->getResidues() )
 	{
-	    for( auto &childNeighbor : cdsResidue->getParents()) //
+	    for( auto &parentNeighbor : cdsResidue->getParents()) //
 	    {
-	        std::cout << "Setting connection between " << cdsResidue->getName() << " and it's child " << childNeighbor->getName() << ", which has label: " << childNeighbor->getLabel() << "\n";
-	        this->BondResiduesDeduceAtoms(cdsResidue, childNeighbor);
+	        std::cout << "Setting connection between " << cdsResidue->getName() << " and it's parent " << parentNeighbor->getName() << ", which has linkageLabel: "
+	                << static_cast<ParsedResidue*>(parentNeighbor)->GetLinkageName() << "\n";
+	        this->BondResiduesDeduceAtoms(cdsResidue, parentNeighbor);
 	    }
 	}
-	std::cout << "\n\nAre there any dtors here today?\n\n";
-
+	std::cout << "\n\nAre there any premature dtors here today?\n\n";
 	//Ensure integralCharge can be a free function that accepts atom vector right?
 //	this->EnsureIntegralCharge(inputAssembly->GetTotalCharge());
 	return;
@@ -136,13 +137,12 @@ void Carbohydrate::EnsureIntegralCharge(double charge)
 //	return;
 //}
 
-
-void Carbohydrate::BondResiduesDeduceAtoms(cds::Residue* parentResidue, cds::Residue* childResidue)
+void Carbohydrate::BondResiduesDeduceAtoms(cds::Residue* childResidue, cds::Residue* parentResidue)
 {
     using Abstract::ResidueType;
     using cds::Atom;
     std::string linkageLabel = static_cast<ParsedResidue*>(childResidue)->GetLinkageName();
-	gmml::log(__LINE__,__FILE__,gmml::INF, "Here with parent " + parentResidue->getId() + " and child: " + childResidue->getId() + " and linkageLabel: " + linkageLabel);
+	gmml::log(__LINE__,__FILE__,gmml::INF, "Here with child " + childResidue->getId() + " and parent: " + parentResidue->getId() + " and linkageLabel: " + linkageLabel);
 	// This is using the new Node<Residue> functionality and the old AtomNode
 	// Now go figure out how which Atoms to bond to each other in the residues.
 	// Rule: Can't ever have a child aglycone or a parent derivative.
@@ -237,7 +237,7 @@ void Carbohydrate::BondResiduesDeduceAtoms(cds::Residue* parentResidue, cds::Res
 		atomToAdjust->setCharge(atomToAdjust->getCharge() + lookup.GetAdjustmentCharge(childResidue->getName()) );
 	}
 	// Geometry
-	logss << "Setting bond distance.\n";
+	logss << "Setting bond distance between " << parentAtom->getName() << " and " << childAtom->getName() << ".\n";
 	gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
 	GeometryTopology::FindAtomsToMoveSetDistance(parentAtom, childAtom);
 	// Angle
@@ -248,7 +248,7 @@ void Carbohydrate::BondResiduesDeduceAtoms(cds::Residue* parentResidue, cds::Res
 	{
 		if ( (parentAtomNeighbor->getName().at(0) != 'H') && (parentAtomNeighbor != childAtom ) )
 		{
-			GeometryTopology::SetAngle(parentAtomNeighbor->getCoordinate(), parentAtom->getCoordinate(), childAtom->getCoordinate(), angle_to_set, childResidue->getCoordinates());
+			GeometryTopology::SetAngle(parentAtomNeighbor->getCoordinate(), parentAtom->getCoordinate(), childAtom->getCoordinate(), angle_to_set, parentResidue->getCoordinates());
 		}
 	}
 	return;

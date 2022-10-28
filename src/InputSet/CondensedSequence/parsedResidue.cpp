@@ -25,12 +25,13 @@ void ParsedResidue::AddLinkage(ParsedResidue* otherRes)
 {
     if ( this->GetType() == Abstract::ResidueType::Sugar )
     {
-        this->addChild(this->GetConfiguration() + this->GetLinkage(), otherRes);
+        this->addParent(this->GetConfiguration() + this->GetLinkage(), otherRes);
     }
     else
     {
-        this->addChild(this->GetLinkage(), otherRes);
+        this->addParent(this->GetLinkage(), otherRes);
     }
+    std::cout << this->getName() << " with linkage " << this->GetLinkage() << " has parent " << otherRes->getName() << std::endl;
     return;
 }
 
@@ -53,8 +54,7 @@ std::string ParsedResidue::GetLink() const
 std::vector<ParsedResidue*> ParsedResidue::GetChildren() const
 {
 	std::vector<ParsedResidue*> resRet;
-	//for (glygraph::Node<ParsedResidue>* currNodeRes : this->getParents())
-	for (auto& currNodeRes : this->getParents())
+	for (auto& currNodeRes : this->getChildren())
 	{
 		resRet.push_back(static_cast<ParsedResidue*>(currNodeRes));
 	}
@@ -64,8 +64,7 @@ std::vector<ParsedResidue*> ParsedResidue::GetChildren() const
 std::vector<ParsedResidue*> ParsedResidue::GetParents() const
 {
 	std::vector<ParsedResidue*> resRet;
-//	for (glygraph::Node<ParsedResidue>* currNodeRes : this->getChildren())
-	for (auto &currNodeRes : this->getChildren())
+	for (auto &currNodeRes : this->getParents())
 	{
 		resRet.push_back(static_cast<ParsedResidue*>(currNodeRes));
 	}
@@ -103,8 +102,10 @@ std::string ParsedResidue::GetName(const bool withLabels) const
 }
 
 std::string ParsedResidue::GetLinkageName(const bool withLabels) const
-{   // Should only ever be zero or one outEdges in my current design.
-    for (auto &linkage : this->getOutEdges())
+{   // Should only ever be zero or one inEdges in my current design.
+    // e.g  Galb1-4[Glcb1-3]Manb1-OH. OH is the parent to Manb, the linkage is b1-.
+    // Manb is parent (has out edges) to both Glc and Gal, but they only have one in edge each from Manb. The inedge from Man to Gal has the linkage name 1-4.
+    for (auto &linkage : this->getInEdges())
     {
         if (withLabels)
         {
