@@ -40,13 +40,22 @@ std::string ResidueId::print() const
         formattedId += this->getName();
     }
     formattedId += "_";
-    if (this->getNumberAndInsertionCode().empty())
+    if (this->getNumber().empty())
     {
         formattedId += gmml::sNotSet;
     }
     else
     {
-        formattedId += this->getNumberAndInsertionCode();
+        formattedId += this->getNumber();
+    }
+    formattedId += "_";
+    if (this->getInsertionCode().empty())
+    {
+        formattedId += gmml::sNotSet;
+    }
+    else
+    {
+        formattedId += this->getInsertionCode();
     }
     formattedId += "_";
     if (this->getChainId().empty())
