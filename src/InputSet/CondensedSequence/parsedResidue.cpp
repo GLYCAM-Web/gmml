@@ -71,6 +71,18 @@ std::vector<ParsedResidue*> ParsedResidue::GetParents() const
     return resRet;
 }
 
+ParsedResidue* ParsedResidue::GetParent() const
+{
+    std::vector<cds::Residue*> parents = this->getParents();
+    if (parents.empty())
+    {
+        std::string message = "Bad situation: Parsed residue named " + this->getName() + " has no parent\n";
+        gmml::log(__LINE__,__FILE__,gmml::ERR, message);
+        throw std::runtime_error(message);
+    }
+    return static_cast<ParsedResidue*>(parents.front());
+}
+
 std::string ParsedResidue::GetChildLinkagesForGlycamResidueNaming() const
 {
     std::string linkages;

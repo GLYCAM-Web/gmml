@@ -39,6 +39,7 @@ class ParsedResidue : public cds::Residue
         std::string GetLink() const;
         std::vector<ParsedResidue*> GetChildren() const;
         std::vector<ParsedResidue*> GetParents() const;
+        ParsedResidue* GetParent() const;
         std::string GetChildLinkagesForGlycamResidueNaming() const;
         std::string PrintToString() const;
         std::string GetGraphVizLine(std::string SnfgFilePath = "") const;
