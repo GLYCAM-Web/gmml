@@ -95,7 +95,7 @@ Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(Molecular
 	if(centralAtom->GetNode()->GetNodeNeighbors().size() != 4)
 	{
 		std::stringstream ss;
-		ss << "Error in CreateMissingCoordinateForTetrahedralAtom. centralAtom neighbors = " <<
+		ss << "Error in CreateMissingCoordinateForTetrahedralAtom. centralAtom neighbors is " <<
 				centralAtom->GetNode()->GetNodeNeighbors().size() << " for " << centralAtom->GetId();
 		gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
 		throw std::runtime_error(ss.str());
