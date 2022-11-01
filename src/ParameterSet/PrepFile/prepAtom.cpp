@@ -16,7 +16,7 @@ using prep::PrepAtom;
 PrepAtom::PrepAtom(const std::string& line)
 {
 	std::stringstream ss(line);
-	this->setIndex(codeUtils::extractFromStream(ss, int()));
+	this->setNumber(codeUtils::extractFromStream(ss, int()));
 	this->setName(codeUtils::extractFromStream(ss, std::string()));
 	this->SetType(codeUtils::extractFromStream(ss, std::string()));
 	this->SetTopologicalType(this->ExtractAtomTopologicalType(ss));
@@ -27,6 +27,7 @@ PrepAtom::PrepAtom(const std::string& line)
 	this->SetAngle(codeUtils::extractFromStream(ss, double()));
 	this->SetDihedral(codeUtils::extractFromStream(ss, double()));
 	this->setCharge(codeUtils::extractFromStream(ss, double()));
+//	std::cout << "Prep atom ctor with " << this->getName() << "_" << this->getIndex() << "\n";
 }
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
@@ -215,7 +216,7 @@ prep::TopologicalType PrepAtom::ExtractAtomTopologicalType(std::istream &ss)
 //////////////////////////////////////////////////////////
 void PrepAtom::Print(std::ostream &out) const
 {
-	out << std::setw(3) << this->getIndex()
+	out << std::setw(3) << this->getNumber()
         				<< std::setw(6) << this->getName()
 						<< std::setw(6) << this->GetType();
 	if(this->GetTopologicalType() == kTopTypeE)
@@ -245,7 +246,7 @@ void PrepAtom::Print(std::ostream &out) const
 
 void PrepAtom::Write(std::ostream &stream) const
 {
-	stream << std::right << std::setw(2) << this->getIndex() << " " << std::left << std::setw(4) << this->getName() << " " << std::left << std::setw(3) << this->GetType() << " " << std::setw(1) << this->GetStringFormatOfTopologicalType() << " " << std::right << std::setw(2) << this->GetBondIndex() << " " << std::right << std::setw(2) << this->GetAngleIndex() << " " << std::right << std::setw(2) << this->GetDihedralIndex() << " ";
+	stream << std::right << std::setw(2) << this->getNumber() << " " << std::left << std::setw(4) << this->getName() << " " << std::left << std::setw(3) << this->GetType() << " " << std::setw(1) << this->GetStringFormatOfTopologicalType() << " " << std::right << std::setw(2) << this->GetBondIndex() << " " << std::right << std::setw(2) << this->GetAngleIndex() << " " << std::right << std::setw(2) << this->GetDihedralIndex() << " ";
 	stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetBondLength() << " ";
 	stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetAngle() << " ";
 	stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetDihedral();
