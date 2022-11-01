@@ -108,11 +108,12 @@ Atom* Residue::FindAtom(const int& queryNumber) const
 std::vector<const Atom*> Residue::getAtomsConnectedToOtherResidues() const
 {
     std::vector<const Atom*> foundAtoms;
-    for(auto &atom : this->getAtoms())
+    std::vector<Atom*> residueAtoms = this->getAtoms();
+    for(auto &atom : residueAtoms)
     {
         for(auto &neighbor : atom->getNeighbors())
         { // check if neighbor is not one of the atoms in this residue.
-            if(!codeUtils::isElementPresent(this->getAtoms().begin(), this->getAtoms().end(), neighbor) )
+            if(std::find(residueAtoms.begin(), residueAtoms.end(), neighbor) == residueAtoms.end())
             {
                 foundAtoms.push_back(neighbor);
             }
