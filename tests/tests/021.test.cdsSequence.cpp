@@ -1,5 +1,7 @@
-#include <iostream>
 #include "includes/InputSet/CondensedSequence/carbohydrate.hpp"
+#include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
+#include "includes/CodeUtils/logging.hpp"
+#include <iostream>
 
 int main ()
 {	
@@ -18,7 +20,8 @@ int main ()
     std::string s13 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH";
     std::string s14 = "dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4LIdopA(2SO)a1-4DGlcpNSa1-4DGlcpA[2S]b1-OH";
     std::string s15 = "DGlNAcb1-OH";
-    std::string s16 = "DManpa1-4DManpa1-4DManpa1-4DManpa1-4DManpa1-4DManpa1-4DManpa1-4DManpa1-OME";
+    std::string s16 = "DManpa1-4DManpa1-4DManpa1-4DManpa1-4DManpa1-4DManp[6D]a1-4DManp[2S,6S]a1-4DManpa1-OME";
+    std::string s17 = "DManpa1-OME";
     //std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7};
     std::vector<std::string> sequences {s16};
     //std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16};
@@ -29,12 +32,49 @@ int main ()
     for (auto &sequence : sequences)
     {	
         try
-        {   // WARNING, this is just a test, the generated 3D structures are not correct. Look in 013.buildOligosaccharideLibrary for how to build 3D structures.
+        {
             loopCounter++;
-        	std::cout << "Sequence " << loopCounter << ": " << sequence << "\n";
+            std::cout << "Sequence " << loopCounter << ": " << sequence << "\n";
             //MolecularModeling::Assembly ass(sequence, prepFilePath); // WARNING. Just a test. 3D structures are not correct.
-        	CondensedSequence::Carbohydrate theVanToMordor(sequence, prepFilePath);
-        	std::cout << "Structure created without throwing an exception for: " << sequence << "\n\n";
+            CondensedSequence::Carbohydrate theVanToMordor(sequence, prepFilePath);
+            std::cout << "Structure created without throwing an exception for: " << sequence << "\n\n";
+            for(auto &residue : theVanToMordor.getResidues())
+            {
+                std::cout << "Residue:\n";
+                residue->Print(std::cout);
+                std::cout << "\n";
+            }
+            std::cout << "*****\n\n\n";
+            // Outputs for fun:
+            theVanToMordor.setName("HiMyNameIs " + sequence);
+            std::string fileName = "./sequenceAsPdbFile.pdb";
+            std::ofstream outFileStream;
+            try
+            {
+                outFileStream.open(fileName.c_str());
+                theVanToMordor.WritePdb(outFileStream);
+                outFileStream.close();
+            }
+            catch(...)
+            {
+                gmml::log(__LINE__,__FILE__,gmml::ERR, "Error when writing pdbFile class to file:\n" + fileName);
+                throw std::runtime_error("Error when writing pdbFile class to file:\n" + fileName);
+            }
+            //OFF molecule
+            fileName = "./sequenceAsOffFile.off";
+            try
+            {
+                std::ofstream outFileStream;
+                outFileStream.open(fileName.c_str());
+                cds::WriteMoleculeToOffFile(theVanToMordor.getResidues(), outFileStream, theVanToMordor.getName());
+                outFileStream.close();
+            }
+            catch(...)
+            {
+                gmml::log(__LINE__,__FILE__,gmml::ERR, "Error when writing to file:\n" + fileName);
+                throw std::runtime_error("Error when writing to file:\n" + fileName);
+            }
+            std::cout << "Beep beep the van has arrived\n";
         }
         catch (const std::string &exception)
         {
