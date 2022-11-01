@@ -16,9 +16,12 @@ public:
 	//////////////////////////////////////////////////////////
 	//                       CONSTRUCTORS                   //
 	//////////////////////////////////////////////////////////
-	Atom() {}//{std::cout << "Atom default ctor\n";};
+	Atom() {
+	    //std::cout << "Atom default ctor with name_index: " << this->getName() << "_ " << this->getIndex() << "\n";
+	}
 	Atom(const std::string& name, const Coordinate& coord);
-	virtual ~Atom() {}//{std::cout << "cds::Atom default dtor for " << this->getName() << "\n";}
+	virtual ~Atom() {//std::cout << "cds::Atom default dtor for " << this->getName() << "_" << this->getIndex() << "\n";
+	}
     //////////////////////////////////////////////////////////
 	//                       ACCESSORS                      //
 	//////////////////////////////////////////////////////////

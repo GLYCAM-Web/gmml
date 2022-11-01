@@ -16,9 +16,10 @@ public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
-    Residue() {std::cout << "Residue default ctor\n";}
+    Residue() {//std::cout << "Residue default ctor\n";
+    }
     Residue(const std::string& residueName, const Residue *referenceResidue);
-    virtual ~Residue() {std::cout << "cdsResidue Dtor for " << this->getName() << "\n";}
+    virtual ~Residue() {} //std::cout << "cdsResidue Dtor for " << this->getName() << "\n";}
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////

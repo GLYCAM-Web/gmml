@@ -15,8 +15,8 @@ public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
-    Molecule() : number_(0) {std::cout << "Molecule default ctor\n";}
-    virtual ~Molecule() {std::cout << "Molecule default dtor for " << this->getName() << "\n";}
+    Molecule() : number_(0) {}//std::cout << "Molecule default ctor\n";}
+    virtual ~Molecule() {}//std::cout << "Molecule default dtor for " << this->getName() << "\n";}
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
