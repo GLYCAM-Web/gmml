@@ -155,9 +155,11 @@ void Residue::WritePdb(std::ostream& stream, const bool addTerCard) const
 
 void Residue::Print(std::ostream& out) const
 {
-    out << this->getName();
+    out << "Name: " << this->getName() << ", index:" << this->getIndex() << ":\n";
     for (auto &atom : this->getAtoms())
     {
         atom->Print(out);
+        out << "\n";
     }
+    std::cout << "\n";
 }
