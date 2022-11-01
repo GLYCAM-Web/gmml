@@ -99,7 +99,7 @@ void GlycosylationSite::BuildGlycan(std::string glycanInputType, std::string gly
 		this->SetGlycan(carbBuilder.GetAssembly());
 	}
 	else if (glycanInputType == "Library")
-	{
+	{ // No charges being set in this case. ToDo fix when we move to new cds classes. OG Nov 2022.
 	    gmml::log(__LINE__, __FILE__, gmml::INF, "Generating assembly from PDB with " + glycanInput);
 		MolecularModeling::Assembly glycan(glycanInput, gmml::InputFileType::PDB);
 		glycan.BuildStructureByDistance();

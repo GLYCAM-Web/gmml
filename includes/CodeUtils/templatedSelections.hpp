@@ -6,6 +6,8 @@
 //ToDo move this to CentralDataStructure/Selections and rename the namespace
 namespace codeUtils
 {
+
+//ToDo: get rid of this, passing in iterators can be funky and how the comparison happens is hard to control.
 template <class RandomAccessIterator, class T>
 bool isElementPresent( RandomAccessIterator first, RandomAccessIterator last, const T& value )
 {
