@@ -37,7 +37,6 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 		{
 			stream << " \"" << atom->getName() << "\" " << "\"" << atom->getType() << "\" " << "0" << " " << residue->getIndex() << " " << FLAG << " "
 					<< atomNumberInResidue << " " << atom->getAtomicNumber() << " " << std::fixed << atom->getCharge() << std::endl;
-
 			atomNumberInResidue++;
 		}
 	}
@@ -104,11 +103,12 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	stream << "!entry." << unitName << ".unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x" << std::endl;
 	for(auto &residue : residues)
 	{
-		for(auto &atom : residue->getAtomsConnectedToOtherResidues())
+	    auto atomsConnectedToOtherResidues = residue->getAtomsConnectedToOtherResidues();
+		for(auto &atom : atomsConnectedToOtherResidues)
 		{
 			stream << " " << atom->getIndex();
 		}
-		int columnsWithZero = 6 - residue->getAtomsConnectedToOtherResidues().size();
+		int columnsWithZero = 6 - atomsConnectedToOtherResidues.size();
 		for (int i = 0; i < columnsWithZero; ++i)
 		{
 			stream << " " << "0";
