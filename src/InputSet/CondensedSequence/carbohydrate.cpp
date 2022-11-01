@@ -23,54 +23,31 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 {
 	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependency Oliver. Update: Fixed. Todo: Confirm/Test the fix Oliver. Just delete this line and test you toolbag.
 	this->SetIndexByConnectivity(); // For reporting residue index numbers to the user
+	// Find relevant Prep residues:
 	prep::PrepFile glycamPrepFileSelect(prepFilePath, this->GetGlycamNamesOfResidues()); // PrepFile is a cds::Molecule i.e. contains a vector of residues.
 	for( auto &cdsResidue: this->getResidues() )
 	{
-	    ParsedResidue* parsedResidue = static_cast<ParsedResidue*>(cdsResidue);
-	    std::cout << "parsedResidue is " << parsedResidue->getName() << std::endl;
-	    std::cout << "it's glycam name is " << this->GetGlycamResidueName(parsedResidue) << std::endl;
-        std::cout << "it's label is " << parsedResidue->getLabel() << std::endl;
-        std::cout << parsedResidue->PrintToString() << std::endl;
-        // Deoxy
-        if (parsedResidue->GetType() == Abstract::ResidueType::Deoxy)
-        {
-            std::cout << "Dealing with deoxy for " << parsedResidue->getName() << "\n";
-            gmml::log(__LINE__, __FILE__, gmml::INF, "Dealing with deoxy for " + parsedResidue->getName());
-            cds::Residue* residueToBeDeoxified = parsedResidue->getParents().at(0);
-            residueToBeDeoxified->MakeDeoxy(parsedResidue->GetLink());
-            this->deleteResidue(parsedResidue); // Remove the deoxy derivative now.
-        }
-        else // Not Deoxy
-        {
-            cds::Residue* prepResidue = glycamPrepFileSelect.getResidue(this->GetGlycamResidueName(parsedResidue));
-            if (prepResidue == nullptr)
+	    // Move atoms from prep file into parsedResidues.
+	    if (cdsResidue->GetType() != Abstract::ResidueType::Deoxy)
+	    {
+	        ParsedResidue* parsedResidue = static_cast<ParsedResidue*>(cdsResidue);
+	        this->MoveAtomsFromPrepResidueToParsedResidue(glycamPrepFileSelect, parsedResidue);
+	        if (parsedResidue->GetType() == Abstract::ResidueType::Derivative)
             {
-                std::string message = "Did not find prep entry for " + parsedResidue->getName() + " with glycam residue code: " + this->GetGlycamResidueName(parsedResidue);
-                gmml::log(__LINE__,__FILE__,gmml::ERR, message);
-                throw(std::runtime_error(message));
-            }
-            std::cout << "prepResidue is " << prepResidue->getName() << std::endl;
-            // ParsedResidue has the correct residue connectivities, prepResidue has the atoms.
-            parsedResidue->setAtoms(prepResidue->extractAtoms()); // This moves the atoms, i.e. for prepResidue "Moved from objects are left in a valid but unspecified state"
-            glycamPrepFileSelect.deleteResidue(prepResidue); // Death to the prepResidue, if there are repeats with the same name, the next search would find the one without atoms.
-            std::cout << "Finished moving atoms from prepResidue to parsed Residue. Adventure awaits! Huzzah!" << std::endl;
-            // Charge adjustment. If residue is Derivaitve, the parent residue connection atom's charge is adjusted.
-            if (parsedResidue->GetType() == Abstract::ResidueType::Derivative)
-            {
-                std::stringstream ss;
-                ss << "Charge Adjustment.\n";
-                gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeChargeAdjustmentLookupContainer lookup;
-                std::string adjustAtomName = lookup.GetAdjustmentAtom(parsedResidue->getName());
-                adjustAtomName += parsedResidue->GetLinkageName().substr(0,1);
-                cds::Atom* atomToAdjust = parsedResidue->getParents().at(0)->FindAtom(adjustAtomName);
-                ss << "    Derivative is " << parsedResidue->getName() << ". Adjusting charge on " << atomToAdjust->getName() << "\n";
-                ss << "    Adjusting by: " << lookup.GetAdjustmentCharge(parsedResidue->getName()) << "\n";
-                gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-                atomToAdjust->setCharge(atomToAdjust->getCharge() + lookup.GetAdjustmentCharge(parsedResidue->getName()) );
+	            this->DerivativeChargeAdjustment(parsedResidue);
             }
         }
 	}
+	// Apply any deoxy
+	for( auto &cdsResidue: this->getResidues() )
+	{
+	    if( cdsResidue->GetType() == Abstract::ResidueType::Deoxy)
+	    {
+	        this->ApplyDeoxy(static_cast<ParsedResidue*>(cdsResidue));
+	    }
+	}
     std::cout << "\n\n\nOn to setting 3d structure!\n\n";
+    // Set 3D structure
 	for( auto &cdsResidue: this->getResidues() )
 	{
 	    for( auto &parentNeighbor : cdsResidue->getParents()) //
@@ -84,6 +61,45 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 	//Ensure integralCharge can be a free function that accepts atom vector right?
 //	this->EnsureIntegralCharge(inputAssembly->GetTotalCharge());
 	return;
+}
+
+void Carbohydrate::ApplyDeoxy(ParsedResidue* deoxyResidue)
+{
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Dealing with deoxy for " + deoxyResidue->getName());
+    ParsedResidue* residueToBeDeoxified = deoxyResidue->GetParent();
+    residueToBeDeoxified->MakeDeoxy(deoxyResidue->GetLink());
+    this->deleteResidue(deoxyResidue); // Remove the deoxy derivative now.
+    return;
+}
+
+void Carbohydrate::MoveAtomsFromPrepResidueToParsedResidue(prep::PrepFile& prepResidues, ParsedResidue* parsedResidue)
+{
+    cds::Residue* prepResidue = prepResidues.getResidue(this->GetGlycamResidueName(parsedResidue));
+    if (prepResidue == nullptr)
+    {
+        std::string message = "Did not find prep entry for " + parsedResidue->getName() + " with glycam residue code: " + this->GetGlycamResidueName(parsedResidue);
+        gmml::log(__LINE__,__FILE__,gmml::ERR, message);
+        throw(std::runtime_error(message));
+    }
+    parsedResidue->setAtoms(prepResidue->extractAtoms()); // This moves the atoms, i.e. for prepResidue "Moved from objects are left in a valid but unspecified state"
+    prepResidues.deleteResidue(prepResidue); // Death to the prepResidue, if there are repeats with the same name, the next search would find the one without atoms.
+    //std::cout << "Finished moving atoms from prepResidue to parsed Residue. Adventure awaits! Huzzah!" << std::endl;
+    return;
+}
+
+void Carbohydrate::DerivativeChargeAdjustment(ParsedResidue* parsedResidue)
+{
+    gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeChargeAdjustmentLookupContainer lookup;
+    std::string adjustAtomName = lookup.GetAdjustmentAtom(parsedResidue->getName());
+    adjustAtomName += parsedResidue->GetLinkageName().substr(0,1);
+    cds::Atom* atomToAdjust = parsedResidue->GetParent()->FindAtom(adjustAtomName);
+    atomToAdjust->setCharge(atomToAdjust->getCharge() + lookup.GetAdjustmentCharge(parsedResidue->getName()));
+    // Log it:
+    std::stringstream ss;
+    ss << "Charge Adjustment.\n" << "    Derivative is " << parsedResidue->getName() << ". Adjusting charge on " << atomToAdjust->getName() << "\n";
+    ss << "    Adjusting by: " << lookup.GetAdjustmentCharge(parsedResidue->getName()) << "\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+    return;
 }
 
 void Carbohydrate::EnsureIntegralCharge(double charge)

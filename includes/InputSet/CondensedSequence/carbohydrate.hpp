@@ -2,6 +2,7 @@
 #define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_HPP
 
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
+#include "includes/ParameterSet/PrepFile/prepFile.hpp"
 namespace CondensedSequence
 {
     class Carbohydrate : public SequenceManipulator
@@ -32,6 +33,9 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
+    	void ApplyDeoxy(ParsedResidue* deoxyResidue);
+    	void MoveAtomsFromPrepResidueToParsedResidue(prep::PrepFile& prepResidues, ParsedResidue* parsedResidue);
+    	void DerivativeChargeAdjustment(ParsedResidue* parsedResidue);
         void EnsureIntegralCharge(double charge);
 //        void RecurveGenerateResidues(ParsedResidue *currentChild, MolecularModeling::Residue &parent, MolecularModeling::Assembly* assembly);
         void BondResiduesDeduceAtoms(cds::Residue* parentResidue, cds::Residue* childResidue);
