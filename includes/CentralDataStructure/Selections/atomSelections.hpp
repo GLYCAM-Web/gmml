@@ -14,10 +14,10 @@ atomT* getNonCarbonHeavyAtomNumbered(std::vector<atomT*> atoms, const std::strin
 {
     for (auto &atom : atoms)
     {    // Assumes atom names like C2, O2 or N2. Nothing else should match.
-        if (atom->getName().size() > 2)
+        if (atom->getName().size() > 1)
         {
             const std::string number = atom->getName().substr(1);
-            const std::string element = atom->getName().substr(0);
+            const std::string element = atom->getName().substr(0,1); // Only the first character
             if ( (number == queryNumber) && (element != "C") && (element != "H"))
             {
                 return atom;
