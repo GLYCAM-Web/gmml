@@ -200,9 +200,6 @@ Building DArafb1-2DArafa1-3DArafa1-5DArafa1-OME
 *********************
 Building DKDNpa2-8DKDOpa2-9DKDNpb2-7DKDOpb2-OME
 *********************
-Non-integral charge (-4.001). You cannot run MD with this.
-Error thrown by the carbohydrateBuilder in gmml during construction was: Non-integral charge (-4.001). You cannot run MD with this.
-
 
 *********************
 Building DKDOpa2-OME
@@ -220,9 +217,6 @@ Building DKDNpa2-OME
 *********************
 Building DKDNpb2-OME
 *********************
-Non-integral charge (-1.001). You cannot run MD with this.
-Error thrown by the carbohydrateBuilder in gmml during construction was: Non-integral charge (-1.001). You cannot run MD with this.
-
 
 *********************
 Building DNeupNAca2-OME
@@ -268,10 +262,10 @@ Building DNeupNAcb2-OME
 00041.pdb not created.
 00042.pdb not created.
 00043.pdb succesfully created.
-00044.pdb not created.
+00044.pdb succesfully created.
 00045.pdb succesfully created.
 00046.pdb not created.
 00047.pdb succesfully created.
-00048.pdb not created.
+00048.pdb succesfully created.
 00049.pdb succesfully created.
 00050.pdb succesfully created.
