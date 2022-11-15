@@ -192,6 +192,39 @@ Error thrown by the carbohydrateBuilder in gmml during construction was: Missing
 Building DGlcpa1-4DGlcpa1-[4DGlcpa1-]<>OH
 *********************
 Error thrown by the carbohydrateBuilder in gmml during construction was: Number of repeating units not specified correctly in repeating sequence: DGlcpa1-4DGlcpa1-[4DGlcpa1-]<>OH
+
+*********************
+Building DArafb1-2DArafa1-3DArafa1-5DArafa1-OME
+*********************
+
+*********************
+Building DKDNpa2-8DKDOpa2-9DKDNpb2-7DKDOpb2-OME
+*********************
+
+*********************
+Building DKDOpa2-OME
+*********************
+
+*********************
+Building DKDOpb2-OME
+*********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: carbohydrateBuilder constructor caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.
+
+*********************
+Building DKDNpa2-OME
+*********************
+
+*********************
+Building DKDNpb2-OME
+*********************
+
+*********************
+Building DNeupNAca2-OME
+*********************
+
+*********************
+Building DNeupNAcb2-OME
+*********************
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
@@ -228,3 +261,11 @@ Error thrown by the carbohydrateBuilder in gmml during construction was: Number 
 00040.pdb not created.
 00041.pdb not created.
 00042.pdb not created.
+00043.pdb succesfully created.
+00044.pdb succesfully created.
+00045.pdb succesfully created.
+00046.pdb not created.
+00047.pdb succesfully created.
+00048.pdb succesfully created.
+00049.pdb succesfully created.
+00050.pdb succesfully created.

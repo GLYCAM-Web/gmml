@@ -184,7 +184,7 @@ cd "${GEMSHOME}"/gmml/tests/ || {
     exit 1
 }
 
-bash compile_run_tests.bash
+nice -7 ./compile_run_tests.bash -j "$(nproc --all)"
 result=$? # record the exit status from compile_run_tests.bash
 cd -
 if [ "${result}" -eq 0 ]; then
@@ -206,7 +206,7 @@ if [ "${result}" -eq 0 ]; then
         exit 0
     fi
 else
-    echo "${RED_BOLD}
+    echo -e "${RED_BOLD}
          *****************************************************************
          The GMML level tests have failed! 
          Push cancelled.
