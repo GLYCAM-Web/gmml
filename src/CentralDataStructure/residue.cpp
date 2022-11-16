@@ -16,6 +16,7 @@ Residue::Residue(const std::string& residueName, const Residue *referenceResidue
 {
     this->setName(residueName);
     this->setNumber(referenceResidue->getNumber() + 1);
+    this->determineType(residueName);
 }
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
