@@ -84,6 +84,8 @@ void carbohydrateBuilder::GenerateSingle3DStructureDefaultFiles(std::string file
     }
     return;
 }
+
+//ToDo why are there two of these very similar functions?
 void carbohydrateBuilder::GenerateSingle3DStructureSingleFile(std::string fileOutputDirectory, std::string type, std::string outputFileNaming)
 {
     try
