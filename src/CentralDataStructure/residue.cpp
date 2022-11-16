@@ -61,6 +61,12 @@ void Residue::addAtom(std::unique_ptr<Atom> myAtom)
     return;
 }
 
+//void Residue::addAtom(Atom* myAtom)
+//{
+//    atoms_.push_back(std::make_unique<Atom>(myAtom));
+//    return;
+//}
+
 bool Residue::deleteAtom(const Atom* atom)
 { // Passing in a raw ptr, but the vector is unique_ptr so gotta use i->get() to compare raws.
     auto i = this->FindPositionOfAtom(atom); // auto makes my life easier
