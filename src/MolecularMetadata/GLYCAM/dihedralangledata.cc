@@ -1,27 +1,15 @@
+#include "includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
 #include <regex>
-#include "../../../includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
-
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataContainer;
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
-
 //////////////////////////////////////////////////////////
 //                      QUERY FUNCTIONS                 //
 //////////////////////////////////////////////////////////
 // Pass in the two atoms on either side the residue-residue linkage
-
-
-// I think this can go away:
-//bool OverWriteEntry(gmml::MolecularMetadata::GLYCAM::DihedralAngleData entry1, gmml::MolecularMetadata::GLYCAM::DihedralAngleData entry2)
-//{
-//   return (entry1.number_of_bonds_from_anomeric_carbon_ == entry2.number_of_bonds_from_anomeric_carbon_
-//            && entry1.index_ == entry2.index_ );
-//}
-
-DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(const MolecularModeling::Atom* linking_atom1, const MolecularModeling::Atom* linking_atom2) const
+DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(const std::string atom1Name, const std::string residue1Name, const std::string atom2Name, const std::string residue2Name) const
 {
     DihedralAngleDataVector matching_entries;
     Glycam06NamesToTypesLookupContainer metadata_residueNamesToTypes;
@@ -33,12 +21,12 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(const M
         std::regex regex1(entry.linking_atom1_, std::regex_constants::ECMAScript);
         std::regex regex2(entry.linking_atom2_, std::regex_constants::ECMAScript);
         // If metadata entry matches (regex query) to the two linking atom names
-        if ( (std::regex_match(linking_atom1->GetName(), regex1)) && (std::regex_match(linking_atom2->GetName(), regex2)) )
+        if ( (std::regex_match(atom1Name, regex1)) && (std::regex_match(atom2Name, regex2)) )
         {
             // Some entries have conditions for the residue, that they have certain tags. Make sure any conditions are met:
             //std::cout << "Matched. Checking if conditions apply.\n";
-            std::vector<std::string> residue1_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom1->GetResidue()->GetName());
-            std::vector<std::string> residue2_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom2->GetResidue()->GetName());
+            std::vector<std::string> residue1_types = metadata_residueNamesToTypes.GetTypesForResidue(residue1Name);
+            std::vector<std::string> residue2_types = metadata_residueNamesToTypes.GetTypesForResidue(residue2Name);
             if ( (checkIfResidueConditionsAreSatisfied(residue1_types, entry.residue1_conditions_))
                  && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_conditions_)) )
             {
