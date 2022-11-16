@@ -18,6 +18,19 @@ std::vector<Residue*> Molecule::getResidues() const
     }
     return residues;
 }
+
+std::vector<Atom*> Molecule::getAtoms() const
+{
+    std::vector<Atom*> atoms;
+    for(auto &residue : this->getResidues())
+    {
+        std::vector<Atom*> currentResidueAtoms = residue->getAtoms();
+        // Concatenates the vectors. currentResidueAtoms isn't left in a defined state but that's ok here.
+        atoms.insert( atoms.end(), std::make_move_iterator(currentResidueAtoms.begin()),
+                std::make_move_iterator(currentResidueAtoms.end()) );
+    }
+    return atoms;
+}
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
