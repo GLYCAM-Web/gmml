@@ -29,7 +29,6 @@ Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(cds::Atom
     std::vector<Coordinate*> threeNeighborCoords;
     for (auto &neighbor : centralAtom->getNeighbors())
     {
-        //std::cout << "Tetra neighbor is " << neighbor->getName() << std::endl;
         threeNeighborCoords.push_back(neighbor->getCoordinate());
     }
     return GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(centralAtom->getCoordinate(), threeNeighborCoords, distance);
@@ -39,30 +38,38 @@ void GeometryTopology::FindAtomsToMoveAndSetAngle(cds::Atom* a, cds::Atom* b, cd
 {
     std::vector<cds::Atom*> atomsToMove;
     atomsToMove.push_back(b);
-    TemplatedSelections::FindConnectedAtoms(atomsToMove, c);
+    cdsSelections::FindConnectedAtoms(atomsToMove, c);
     atomsToMove.erase(atomsToMove.begin()); // this is expensive
     std::vector<Coordinate*> coordsToMove = GeometryTopology::getCoordinatesFromAtoms(atomsToMove);
     GeometryTopology::SetAngle(a->getCoordinate(), b->getCoordinate(), c->getCoordinate(), angle, coordsToMove);
     return;
 }
 
-// a is parent (e.g. O of OME), b is child (e.g. C1 of Gal1-)
-void GeometryTopology::FindAtomsToMoveSetDistance(cds::Atom* a, cds::Atom* b)
+// parentAtom (e.g. O of OME), childAtom (e.g. C1 of Gal1-, S1 of SO3)
+void GeometryTopology::FindAtomsToMoveSetDistance(cds::Atom* parentAtom, cds::Atom* childAtom)
 { // Figure out distance
+//    std::cout << "parent is " << parentAtom->getName() << " " << parentAtom->getCoordinate()->ToString() << "\n";
+//    std::cout << "child is " << childAtom->getName() << " " << childAtom->getCoordinate()->ToString() << "\n";
     gmml::MolecularMetadata::GLYCAM::BondLengthByTypePairContainer bondLengthByTypePairContainer;
-    double distance = bondLengthByTypePairContainer.GetBondLengthForAtomTypes(a->getType(), b->getType());
+    std::cout << "Types for parent is " << parentAtom->getType() << " and child is " << childAtom->getType() << "\n";
+    double distance = bondLengthByTypePairContainer.GetBondLengthForAtomTypes(parentAtom->getType(), childAtom->getType());
+    std::cout << "distance to new atom sill be: " << distance << "\n";
     // Create an atom c that is will superimpose onto the a atom, bringing b atom with it.
-    Coordinate c = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(b, distance);
-    //c.Print(std::cout);
-    Coordinate cToa(a->getCoordinate()->GetX() - c.GetX(), a->getCoordinate()->GetY() - c.GetY(), a->getCoordinate()->GetZ() - c.GetZ());
+    Coordinate c = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(childAtom, distance);
+//    std::cout << "New tetraAtom for child is: " << c.ToString() << "\n";
+    Coordinate cToParent(parentAtom->getCoordinate()->GetX() - c.GetX(), parentAtom->getCoordinate()->GetY() - c.GetY(), parentAtom->getCoordinate()->GetZ() - c.GetZ());
+//    std::cout << "cToParent is " << cToParent.ToString() << "\n";
     // Figure out which atoms will move
     std::vector<cds::Atom*> atomsToRotate;
-    atomsToRotate.push_back(a);
-    TemplatedSelections::FindConnectedAtoms(atomsToRotate, b);
-    atomsToRotate.erase(atomsToRotate.begin());
+    atomsToRotate.push_back(parentAtom); // add Parent atom so search doesn't go through it.
+    cdsSelections::FindConnectedAtoms(atomsToRotate, childAtom);
+    atomsToRotate.erase(atomsToRotate.begin()); // delete the parentAtom
     for(auto & atom : atomsToRotate)
     {
-        atom->getCoordinate()->Translate(cToa.GetX(), cToa.GetY(), cToa.GetZ());
+        atom->getCoordinate()->Translate(cToParent.GetX(), cToParent.GetY(), cToParent.GetZ());
+//       std::cout << "Moved " << atom->getName() << " to new position:\n";
+//        atom->getCoordinate()->Print(std::cout);
+//        std::cout << "\n";
     }
     return;
 }
