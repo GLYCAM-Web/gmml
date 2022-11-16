@@ -78,7 +78,7 @@ private:
     // Previous function generates a list of linearly connected atoms that define the rotatable bonds
     // This function splits that list into groups of 4 and creates rotatable_dihedral objects
     std::vector<Rotatable_dihedral> SplitAtomVectorIntoRotatableDihedrals(AtomVector atoms);
-    gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector FindMetadata(const Atom *from_this_connection_atom1, const Atom *to_this_connection_atom2) const;
+    gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector FindMetadata() const;
     void AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata);
     void SetResidues(Residue *residue1, Residue *residue2);
     void SetConnectionAtoms(Residue *residue1, Residue *residue2);

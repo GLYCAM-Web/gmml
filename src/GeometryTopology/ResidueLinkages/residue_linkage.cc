@@ -372,7 +372,7 @@ void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_t
         {
             gmml::log(__LINE__, __FILE__, gmml::INF, "Finding metadata for " + from_this_residue1->GetId() + " :: " + to_this_residue2->GetId());
         }
-        gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata = this->FindMetadata(from_this_connection_atom1_, to_this_connection_atom2_);
+        gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata = this->FindMetadata();
       //  std::cout << "Metadata found:\n";
       //  for (auto &dihedralAngleData : metadata)
       //  {
@@ -532,10 +532,14 @@ std::vector<Rotatable_dihedral> Residue_linkage::SplitAtomVectorIntoRotatableDih
     return rotatable_dihedrals_generated;
 }
 
-gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Residue_linkage::FindMetadata(const Atom *from_this_connection_atom1, const Atom *to_this_connection_atom2) const
+gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Residue_linkage::FindMetadata() const
 {
     gmml::MolecularMetadata::GLYCAM::DihedralAngleDataContainer DihedralAngleMetadata;
-    gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector matching_entries = DihedralAngleMetadata.GetEntriesForLinkage(from_this_connection_atom1, to_this_connection_atom2);
+    gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector matching_entries = DihedralAngleMetadata.GetEntriesForLinkage(
+            this->GetFromThisConnectionAtom1()->GetName(),
+            this->GetFromThisResidue1()->GetName(),
+            this->GetToThisConnectionAtom2()->GetName(),
+            this->GetToThisResidue2()->GetName());
     //std::cout << "Found these " << matching_entries.size() << " entries:\n";
     // for (const auto& entry : matching_entries)
     // {
@@ -544,7 +548,7 @@ gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Residue_linkage::FindMe
     if (matching_entries.empty())
     {
         std::stringstream ss;
-        ss << "No Metadata entries found for connection between " << from_this_connection_atom1->GetId() << " and " << to_this_connection_atom2->GetId() << "\n";
+        ss << "No Metadata entries found for connection between " << this->GetFromThisConnectionAtom1()->GetId() << " and " << this->GetToThisConnectionAtom2()->GetId() << "\n";
         ss << "Note that order should be reducing atom - anomeric atom\n";
         gmml::log(__LINE__,__FILE__,gmml::ERR,ss.str());
         throw std::runtime_error(ss.str());
