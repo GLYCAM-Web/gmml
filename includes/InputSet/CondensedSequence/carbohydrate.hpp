@@ -3,9 +3,12 @@
 
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/ParameterSet/PrepFile/prepFile.hpp"
+#include "includes/CentralDataStructure/Shapers/residueLinkage.hpp"
+#include "includes/Abstract/absBuilder.hpp"
+#include <vector>
 namespace CondensedSequence
 {
-    class Carbohydrate : public SequenceManipulator
+    class Carbohydrate : public SequenceManipulator, public Abstract::absBuilder
     {
     public:
         //////////////////////////////////////////////////////////
@@ -21,6 +24,7 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
+    	void Generate3DStructureFiles(std::string fileOutputDirectory = "unspecified", std::string outputFileNaming = "structure");
     private:
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
@@ -38,13 +42,18 @@ namespace CondensedSequence
     	void DerivativeChargeAdjustment(ParsedResidue* parsedResidue);
         void EnsureIntegralCharge(double charge);
 //        void RecurveGenerateResidues(ParsedResidue *currentChild, MolecularModeling::Residue &parent, MolecularModeling::Assembly* assembly);
-        void BondResiduesDeduceAtoms(cds::Residue* parentResidue, cds::Residue* childResidue);
+        void ConnectAndSetGeometry(cds::Residue* parentResidue, cds::Residue* childResidue);
         std::vector<std::string> GetGlycamNamesOfResidues() const;
         std::string GetGlycamResidueName(ParsedResidue *residue) const;
+        void FigureOutResidueLinkages(cds::Residue* from_this_residue1, cds::Residue* to_this_residue2);
+        void SetDefaultShapeUsingMetadata();
+        void ResolveOverlaps();
         //////////////////////////////////////////////////////////
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
         //std::map<std::string, PrepFileSpace::PrepFileResidue*> prepResidueMap_;
+        std::string inputSequenceString_;
+        std::vector<cds::ResidueLinkage> glycosidicLinkages_;
     };
 }
 #endif
