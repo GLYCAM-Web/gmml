@@ -107,6 +107,10 @@ public:
 		this->labels_m = labels_t;
 	}
 
+	inline void clearLabels()
+	{
+	    this->labels_m.clear();
+	}
 	/************************************************
 	 *  MUTATORS
 	 ***********************************************/
