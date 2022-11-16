@@ -169,7 +169,7 @@ namespace GeometryTopology
             //                     DISPLAY FUNCTIONS                //
             //////////////////////////////////////////////////////////
             void Print(std::ostream& out = std::cerr) const;
-            std::string Print() const;
+            std::string ToString() const;
 	private:
             //////////////////////////////////////////////////////////
             //                         ATTRIBUTES                   //
