@@ -68,7 +68,7 @@ void GlycoproteinBuilder::SetPrepFileLocation(std::string prepFileLocation)
 {
 	if (prepFileLocation == "Default") // This value is set in the default constructor for the input struct
 	{
-		prepFileLocation_ = gmml::Find_Program_Installation_Directory() + "/../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep";
+		prepFileLocation_ = codeUtils::Find_Program_Installation_Directory() + "/../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep";
 	}
 	else
 	{
