@@ -82,7 +82,7 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	for(auto &residue : residues)
 	{
 		stream << " \"" << "U" << "\"" << " " << 0 << " " << "\"" << "R" << "\"" << " " << residue->getIndex() << std::endl;
-		for (int atomCounter = 0; atomCounter < residue->getAtoms().size(); ++atomCounter)
+		for (long unsigned int atomCounter = 0; atomCounter < residue->getAtoms().size(); ++atomCounter)
 		{
 			stream << " \"" << "R" << "\"" << " " << residue->getIndex() << " " << "\"" << "A" << "\"" << " " << atomCounter << std::endl;
 		}
@@ -134,7 +134,7 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	stream << " " <<"0.0" << std::endl;
 	//WriteVelocitiesSection
 	stream << "!entry." << unitName << ".unit.velocities table  dbl x  dbl y  dbl z" << std::endl;
-	int totalNumberOfAtoms = 0;
+	// ToDo loop through based on atom vector size, as compiler complains about unused atom variable.
 	for(auto &residue : residues)
 	{
 		for (auto &atom : residue->getAtoms())
