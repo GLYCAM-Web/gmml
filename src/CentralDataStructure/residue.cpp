@@ -111,6 +111,12 @@ Atom* Residue::FindAtom(const int& queryNumber) const
     return codeUtils::findElementWithNumber(this->getAtoms(), queryNumber);
 }
 
+bool Residue::contains(const Atom* queryAtom) const
+{
+    std::vector<Atom*> atoms = this->getAtoms();
+    return ( std::find(atoms.begin(), atoms.end(), queryAtom) != atoms.end() );
+}
+
 std::vector<const Atom*> Residue::getAtomsConnectedToOtherResidues() const
 {
     std::vector<const Atom*> foundAtoms;

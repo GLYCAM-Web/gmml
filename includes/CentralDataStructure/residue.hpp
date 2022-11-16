@@ -44,6 +44,7 @@ public:
     typename std::vector<std::unique_ptr<Atom>>::iterator FindPositionOfAtom(const Atom* queryAtom);
     Atom* FindAtom(const std::string queryName) const;
     Atom* FindAtom(const int& queryNumber) const;
+    bool contains(const Atom* queryAtom) const;
     std::vector<const Atom*> getAtomsConnectedToOtherResidues() const;
     void MakeDeoxy(std::string oxygenNumber);
     //////////////////////////////////////////////////////////
