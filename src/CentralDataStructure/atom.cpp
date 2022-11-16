@@ -15,6 +15,15 @@ Atom::Atom(const std::string& name, const Coordinate& coord)
     this->setName(name);
 }
 
+// This copy constructor causes const issues in Edge<T>
+//Atom::Atom(Atom* refAtom) : Abstract::absAtom(refAtom->getCoordinate()), Node(*refAtom)
+//{
+//    this->setName(refAtom->getName());
+//    this->setType(refAtom->getType());
+//    this->setCharge(refAtom->getCharge());
+//    this->setNumber(refAtom->getNumber());
+//}
+
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
