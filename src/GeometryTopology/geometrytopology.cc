@@ -155,7 +155,7 @@ double GeometryTopology::CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, 
     return (current_dihedral_angle * (180 / gmml::PI_RADIAN) ); // Convert to degrees
 }
 
-void GeometryTopology::SetDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, const double dihedral_angle, std::vector<Coordinate*> movingCoords )
+void GeometryTopology::SetDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, const double dihedral_angle, std::vector<Coordinate*>& movingCoords )
 {
 	Coordinate b1 = a2;
 	b1.operator -(*a1);
@@ -218,6 +218,9 @@ void GeometryTopology::SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, 
     double** rotation_matrix = gmml::GenerateRotationMatrix(&direction, a2, rotation_angle);
     for(auto &atom_coordinate : coordinatesToMove)
     {
+//        std::cout << "Old coordinate Before setting angle is: ";
+//        atom_coordinate->Print(std::cout);
+//        std::cout << "\n";
     	double x = rotation_matrix[0][0] * atom_coordinate->GetX() + rotation_matrix[0][1] * atom_coordinate->GetY() +
     			rotation_matrix[0][2] * atom_coordinate->GetZ() + rotation_matrix[0][3];
     	double y = rotation_matrix[1][0] * atom_coordinate->GetX() + rotation_matrix[1][1] * atom_coordinate->GetY() +
@@ -227,6 +230,9 @@ void GeometryTopology::SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, 
         atom_coordinate->SetX(x);
         atom_coordinate->SetY(y);
         atom_coordinate->SetZ(z);
+//        std::cout << "New coordinate after setting angle is: ";
+//        atom_coordinate->Print(std::cout);
+//        std::cout << "\n";
     }
 }
 
