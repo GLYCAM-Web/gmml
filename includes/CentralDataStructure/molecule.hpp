@@ -21,7 +21,7 @@ public:
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
     inline const int& getNumber() {return number_;}
-    std::vector<const Atom*> getAtoms() const;
+    std::vector<Atom*> getAtoms() const;
     std::vector<Residue*> getResidues() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
