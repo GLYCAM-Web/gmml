@@ -155,18 +155,6 @@ void Residue::MakeDeoxy(std::string oxygenNumber)
 //////////////////////////////////////////////////////////
 //                    DISPLAY                           //
 //////////////////////////////////////////////////////////
-void Residue::WritePdb(std::ostream& stream, const bool addTerCard) const
-{
-    for(auto &atom : this->getAtoms())
-    {
-        atom->WritePdb(stream);
-    }
-    if(addTerCard)
-    {
-        stream << "TER\n";
-    }
-}
-
 void Residue::Print(std::ostream& out) const
 {
     out << "Name: " << this->getName() << ", index:" << this->getIndex() << ":\n";

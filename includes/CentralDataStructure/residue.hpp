@@ -47,10 +47,10 @@ public:
     bool contains(const Atom* queryAtom) const;
     std::vector<const Atom*> getAtomsConnectedToOtherResidues() const;
     void MakeDeoxy(std::string oxygenNumber);
+    Coordinate calculateGeometricCenter() const;
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
-    void WritePdb(std::ostream& stream, bool addTerCard = false) const;
     virtual void Print(std::ostream& out) const;
     //////////////////////////////////////////////////////////
     //                  OPERATOR OVERLOADING                //

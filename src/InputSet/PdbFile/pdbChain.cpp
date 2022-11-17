@@ -247,7 +247,11 @@ pdb::PdbResidue* PdbChain::getCTerminal()
 //    }
 //}
 void PdbChain::Write(std::ostream& stream) const
-{
-    this->WritePdb(stream);
+{ // We must call the PdbResidue::Write function to get all the info in each Pdb class. Otherwise you get defaults if you call cdsMolecule::WritePdb
+    for(auto &residue : this->getResidues())
+    {
+        static_cast<const PdbResidue*>(residue)->Write(stream);
+    }
+    stream << "TER\n";
     return;
 }

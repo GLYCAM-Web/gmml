@@ -47,17 +47,6 @@ public:
 	//                       DISPLAY FUNCTION               //
 	//////////////////////////////////////////////////////////
     virtual void Print(std::ostream& out) const;
-    // No, paint this like you painted your offWriter
-    void WritePdb(std::ostream &stream,
-        		std::string residueName = " ",
-    			std::string residueNumber = " ",
-    			std::string recordName = "ATOM",
-    			std::string chainId = " ",
-    			std::string insertionCode = " ",
-    			std::string alternativeLocation = " ",
-    			std::string occupancy = " ",
-    			std::string temperatureFactor = " "
-    			) const;
 private:
 	//////////////////////////////////////////////////////////
 	//                       ATTRIBUTES                     //

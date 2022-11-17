@@ -93,44 +93,8 @@ bool Atom::operator!= (const Atom &otherAtom)
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-
 void Atom::Print(std::ostream& out) const
 {
     out << this->getName() << ", ";
-    return;
-}
-
-
-
- // This or just construct a pdbAtom class and write from there? No. This should be a free templated(?) function
-void Atom::WritePdb(std::ostream &stream,
-        std::string residueName,
-        std::string residueNumber,
-        std::string recordName,
-        std::string chainId,
-        std::string insertionCode,
-        std::string alternativeLocation,
-        std::string occupancy,
-        std::string temperatureFactor
-        ) const
-{
-    stream << std::left << std::setw(6) << recordName;
-    stream << std::right << std::setw(5) << this->getIndex() << std::left << std::setw(1) << " ";
-    stream << std::left << std::setw(4) << this->getName();
-    stream << std::left << std::setw(1) << alternativeLocation;
-    stream << std::right << std::setw(3) << residueName << std::left << std::setw(1) << " ";
-    stream << std::left << std::setw(1) << chainId;
-    stream << std::right << std::setw(4) << residueNumber;
-    stream << std::left << std::setw(1) << insertionCode << std::left << std::setw(3) << " ";
-    stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->getCoordinate()->GetX();
-    stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->getCoordinate()->GetY();
-    stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->getCoordinate()->GetZ();
-    stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << occupancy;
-    stream << std::right << std::setw(6) << std::fixed << std::setprecision(2) << temperatureFactor << std::left << std::setw(10) << " ";
-    stream << std::right << std::setw(2) << this->getElement();
-    if (this->getCharge() != codeUtils::dNotSet)
-    {
-        stream << std::left << std::setw(2) << std::to_string(this->getCharge()) << std::endl;
-    }
     return;
 }

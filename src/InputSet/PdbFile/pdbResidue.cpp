@@ -6,6 +6,7 @@
 #include "includes/GeometryTopology/geometrytopology.hpp" // get_cartesian_point_from_internal_coords
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp" //RemoveWhiteSpace
+#include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
 
 using pdb::PdbResidue;
 //////////////////////////////////////////////////////////
@@ -73,7 +74,6 @@ const std::string PdbResidue::GetParmName() const // If terminal, need to look u
     }
     return this->getName();
 }
-
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
@@ -138,5 +138,12 @@ void PdbResidue::Print(std::ostream &out) const
 
 void PdbResidue::Write(std::ostream& stream) const
 {
-    this->WritePdb(stream, this->HasTerCard());
+    for(auto &atom : this->getAtoms())
+    {
+        static_cast<const PdbAtom*>(atom)->Write(stream);
+    }
+    if(this->HasTerCard())
+    {
+        stream << "TER\n";
+    }
 }

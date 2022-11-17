@@ -2,6 +2,7 @@
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
+#include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
 
 using cds::Molecule;
 using cds::Residue;
@@ -106,11 +107,7 @@ void Molecule::deleteResidue(Residue* residue)
 //////////////////////////////////////////////////////////
 void Molecule::WritePdb(std::ostream& stream) const
 {
-    for (auto &residue : this->getResidues())
-    {
-        residue->WritePdb(stream);
-    }
-    stream << "TER\n";
+    cds::writeMoleculeToPdb(stream, this->getResidues());
 }
 
 void Molecule::WriteOff(std::ostream& stream) const
