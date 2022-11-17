@@ -28,6 +28,7 @@ public:
     std::vector<std::string> getAtomNames() const;
     std::string getId(std::string moleculeNumber = codeUtils::sNotSet) const;
     std::vector<Coordinate*> getCoordinates() const;
+    Coordinate getGeometricCenter() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
@@ -66,6 +67,7 @@ private:
     std::vector<std::unique_ptr<Atom>> atoms_;
     int number_ = 1;
     std::string name_ = "   ";
+    Coordinate geometricCenter_;
 };
 } // namespace
 #endif // INCLUDES_CENTRALDATASTRUCTURE_RESIDUE_HPP

@@ -4,7 +4,8 @@
 #include "includes/CodeUtils/constants.hpp" // sNotSet
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp"
-#include "includes/CentralDataStructure/Shapers/geometryTopologyInterface.hpp"
+#include "includes/CentralDataStructure/Measurements/measurements.hpp"
+//#include "includes/CentralDataStructure/Shapers/geometryTopologyInterface.hpp"
 #include "includes/InputSet/PdbFile/pdbResidueId.hpp"
 
 using cds::Residue;
@@ -51,7 +52,16 @@ std::string Residue::getId(std::string moleculeNumber) const
 
 std::vector<Coordinate*> Residue::getCoordinates() const
 {
-    return GeometryTopology::getCoordinatesFromAtoms(this->getAtoms());
+    return cds::getCoordinatesFromAtoms(this->getAtoms());
+}
+
+Coordinate Residue::getGeometricCenter() const
+{
+    if (geometricCenter_.GetX() == codeUtils::dNotSet)
+    {
+        geometricCenter_ = this->calculateGeometricCenter();
+    }
+    return geometricCenter_;
 }
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
@@ -151,6 +161,11 @@ void Residue::MakeDeoxy(std::string oxygenNumber)
     oxygenAtom->setType("H1");
     oxygenAtom->setCharge(0.0000);
     gmml::log(__LINE__, __FILE__, gmml::INF, "Completed MakeDeoxy\n");
+}
+
+Coordinate Residue::calculateGeometricCenter() const
+{
+    return cds::calculateGeometricCenter(this->getCoordinates());
 }
 //////////////////////////////////////////////////////////
 //                    DISPLAY                           //

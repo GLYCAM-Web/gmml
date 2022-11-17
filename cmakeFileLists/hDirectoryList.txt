@@ -1,6 +1,7 @@
 ./includes
 ./includes/Abstract
 ./includes/CentralDataStructure
+./includes/CentralDataStructure/Measurements
 ./includes/CentralDataStructure/Overlaps
 ./includes/CentralDataStructure/Selections
 ./includes/CentralDataStructure/Shapers

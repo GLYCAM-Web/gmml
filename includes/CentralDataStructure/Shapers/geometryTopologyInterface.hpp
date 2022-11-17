@@ -14,7 +14,6 @@
 using GeometryTopology::Coordinate;
 namespace GeometryTopology
 {
-std::vector<Coordinate*> getCoordinatesFromAtoms(std::vector<cds::Atom*> atoms);
 Coordinate CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centralAtom, const double distance);
 void FindAtomsToMoveAndSetAngle(cds::Atom* a, cds::Atom* b, cds::Atom* c, const double angle);
 void FindAtomsToMoveSetDistance(cds::Atom* a, cds::Atom* b);

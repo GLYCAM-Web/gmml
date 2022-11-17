@@ -1,20 +1,11 @@
 #include "includes/CentralDataStructure/Shapers/geometryTopologyInterface.hpp"
+#include "includes/CentralDataStructure/Measurements/measurements.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
 #include "includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
 using GeometryTopology::Coordinate;
-
-std::vector<Coordinate*> GeometryTopology::getCoordinatesFromAtoms(std::vector<cds::Atom*> atoms)
-{
-    std::vector<Coordinate*> coordinates;
-    for(auto & atom : atoms)
-    {
-        coordinates.push_back(atom->getCoordinate());
-    }
-    return coordinates;
-}
 
 Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centralAtom, const double distance)
 {
@@ -40,7 +31,7 @@ void GeometryTopology::FindAtomsToMoveAndSetAngle(cds::Atom* a, cds::Atom* b, cd
     atomsToMove.push_back(b);
     cdsSelections::FindConnectedAtoms(atomsToMove, c);
     atomsToMove.erase(atomsToMove.begin()); // this is expensive
-    std::vector<Coordinate*> coordsToMove = GeometryTopology::getCoordinatesFromAtoms(atomsToMove);
+    std::vector<Coordinate*> coordsToMove = cds::getCoordinatesFromAtoms(atomsToMove);
     GeometryTopology::SetAngle(a->getCoordinate(), b->getCoordinate(), c->getCoordinate(), angle, coordsToMove);
     return;
 }
