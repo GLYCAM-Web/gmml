@@ -59,7 +59,6 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	//WriteChildSequenceSection
 	stream << "!entry." << unitName << ".unit.childsequence single int" << std::endl;
 	stream << " " << residues.size() + 1 << std::endl;
-
 	//WriteConnectSection
 	// ToDo: this should be the atom number of the atoms that are bonded to the unit before and after. They were set to zero in the original, as below. Is this ok?
 	stream << "!entry." << unitName << ".unit.connect array int" << std::endl;
@@ -128,10 +127,10 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	//WriteSolventCapSection
 	stream << "!entry." << unitName << ".unit.solventcap array dbl" << std::endl;
 	stream << " " << "-1.000000" << std::endl;
-	stream << " " <<"0.0" << std::endl;
-	stream << " " <<"0.0" << std::endl;
-	stream << " " <<"0.0" << std::endl;
-	stream << " " <<"0.0" << std::endl;
+	stream << " " << "0.0" << std::endl;
+	stream << " " << "0.0" << std::endl;
+	stream << " " << "0.0" << std::endl;
+	stream << " " << "0.0" << std::endl;
 	//WriteVelocitiesSection
 	stream << "!entry." << unitName << ".unit.velocities table  dbl x  dbl y  dbl z" << std::endl;
 	// ToDo loop through based on atom vector size, as compiler complains about unused atom variable.
@@ -145,6 +144,7 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	return;
 }
 
+// ToDo shouldn't this have a .lib suffix?
 template <typename residueT>
 void WriteResiduesToOffFile(std::vector<residueT*> residues, std::ostream& stream)
 { // For writing each residue separately
@@ -160,6 +160,7 @@ void WriteResiduesToOffFile(std::vector<residueT*> residues, std::ostream& strea
 	return;
 }
 
+//ToDo We need another one that writes multiple molecules as a single unit off file for e.g. gp builder.
 template <typename residueT>
 void WriteMoleculeToOffFile(std::vector<residueT*> residues, std::ostream& stream, const std::string unitName)
 { // For writing residues together as a molecule
@@ -170,5 +171,4 @@ void WriteMoleculeToOffFile(std::vector<residueT*> residues, std::ostream& strea
 }
 
 } // namespace
-
 #endif
