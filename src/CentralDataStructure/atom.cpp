@@ -3,6 +3,7 @@
 #include "includes/CodeUtils/constants.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/MolecularMetadata/elementattributes.hpp"
+#include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
 #include <ctype.h> // isalpha
 
 using cds::Atom;
@@ -66,7 +67,7 @@ int Atom::getAtomicNumber() const
 
 std::string Atom::getId() const
 {
-    return this->getName();
+    return this->getName() + "_" + std::to_string(this->getIndex());
 }
 
 bool Atom::isWithinBondingDistance(const Atom* otherAtom) const
