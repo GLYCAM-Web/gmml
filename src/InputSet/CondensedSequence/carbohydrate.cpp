@@ -39,6 +39,7 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
             {
                 ParsedResidue* parsedResidue = static_cast<ParsedResidue*>(cdsResidue);
                 this->MoveAtomsFromPrepResidueToParsedResidue(glycamPrepFileSelect, parsedResidue);
+                // Deal with adjusting charges for derivatives
                 if (parsedResidue->GetType() == Abstract::ResidueType::Derivative)
                 {
                     this->DerivativeChargeAdjustment(parsedResidue);
@@ -64,9 +65,35 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
                 this->ConnectAndSetGeometry(cdsResidue, parentNeighbor);
             }
         }
-        std::cout << "Resolving overlaps" << std::endl;
+        // Set torsions now that everything is attached and the molecule is whole.
+//        for( auto &cdsResidue: this->getResidues() )
+//        {
+//            for( auto &parentNeighbor : cdsResidue->getParents()) //
+//            {
+//                std::cout << "Finding rotatable dihedrals and applying metadata." << std::endl;
+//                cds::ResidueLinkage& linkage = glycosidicLinkages_.emplace_back(cdsResidue, parentNeighbor);
+//                std::cout << "Setting default shape" << std::endl;
+//                linkage.SetDefaultShapeUsingMetadata();
+//            }
+//        }
+//        this->Generate3DStructureFiles("./", "defaultGeometry");
+//        // Wiggle to resolve overlaps:
+//        std::cout << "Resolving overlaps" << std::endl;
+//        std::vector<cds::Atom*> allAtomsInCarb = this->getAtoms();
+
+//        this->ResolveOverlaps();
+//        std::cout << "Overlaps resolved" << std::endl;
+
+        // Ok if have done greedy then the atoms to move needs to beupdated for every linkage:
+        std::cout << "Re-determining atoms that need to move for each linkage:" << std::endl;
+        for (auto &linkage : glycosidicLinkages_)
+        {
+            linkage.DetermineAtomsThatMove();
+        }
+        std::cout << "Final overlap resolution" << std::endl;
         this->ResolveOverlaps();
         std::cout << "Overlaps resolved" << std::endl;
+        std::cout << "Number of residues is " << this->getResidues().size() << "\n";
     }
     catch(const std::string &exceptionMessage)
     {
@@ -300,14 +327,18 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
             break;
         }
     }
+    // Yo if you do this here, then the atoms that move in RotatableDihedral class won't include atoms that get added later. You need to trigger an update of that if you want to wiggle later.
     std::cout << "Finding rotatable dihedrals and applying metadata." << std::endl;
     cds::ResidueLinkage& linkage = glycosidicLinkages_.emplace_back(childResidue, parentResidue);
     std::cout << "Setting default shape" << std::endl;
     linkage.SetDefaultShapeUsingMetadata();
-//    std::cout << "Wiggling what we have" << std::endl;
+    std::cout << "Wiggling what we have" << std::endl;
 //    std::vector<cds::Atom*> allAtomsInCarb = this->getAtoms();
 //    linkage.SimpleWiggleCurrentRotamers(allAtomsInCarb, allAtomsInCarb, 5);
-//    std::cout << "Overlaps resosdflved" << std::endl;
+    std::vector<cds::Atom*> childAtoms = childResidue->getAtoms(); // keeps them alive in memory
+    std::vector<cds::Atom*> parentAtoms = parentResidue->getAtoms(); // keeps them alive in memory
+    linkage.SimpleWiggleCurrentRotamers(childAtoms, parentAtoms, 5);
+    std::cout << "Overlaps resolved greedily" << std::endl;
     return;
   }
 

@@ -116,14 +116,22 @@ void RotatableDihedral::DetermineAtomsThatMove()
     std::vector<cds::Atom*> atoms_that_move;
     if (this->GetIsAtomsThatMoveReversed())
     {
+        std::cout << "Blocking access via " << atom3_->getName() << ", we will search outward from " << atom2_->getName() << "\n";
         atoms_that_move.push_back(atom3_);
         cdsSelections::FindConnectedAtoms(atoms_that_move, atom2_);
     }
     else
     {
+        std::cout << "Blocking access via " << atom2_->getName() << ", we will search outward from " << atom3_->getName() << "\n";
         atoms_that_move.push_back(atom2_);
         cdsSelections::FindConnectedAtoms(atoms_that_move, atom3_);
     }
+    std::cout << "Have determined that the following atoms will move:\n";
+    for (auto & atom : atoms_that_move)
+    {
+        std::cout << atom->getName() << ", ";
+    }
+    std::cout << "\n";
     this->SetAtomsThatMove(atoms_that_move);
 }
 
@@ -345,6 +353,7 @@ void RotatableDihedral::WiggleWithinCurrentRotamer(std::vector<cds::Atom*>& over
     double lowerBound = (this->GetCurrentMetaData()->default_angle_value_ - this->GetCurrentMetaData()->lower_deviation_);
     double upperBound = (this->GetCurrentMetaData()->default_angle_value_ + this->GetCurrentMetaData()->upper_deviation_);
     // Set to lowest deviation, work through to highest. Set best value and return it for reference.
+    //this->WiggleWithinRanges(overlapAtomSet1, overlapAtomSet2, angleIncrement, lowerBound, upperBound);
     this->WiggleWithinRangesDistanceCheck(overlapAtomSet1, overlapAtomSet2, angleIncrement, lowerBound, upperBound);
     return;
 }
