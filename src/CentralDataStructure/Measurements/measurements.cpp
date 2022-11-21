@@ -1,6 +1,6 @@
 #include "includes/CentralDataStructure/Measurements/measurements.hpp"
 
-Coordinate cds::calculateGeometricCenter(std::vector<Coordinate*> coords)
+Coordinate cds::calculateGeometricCenter(const std::vector<Coordinate*> coords)
 {
     double x = 0.0;
     double y = 0.0;

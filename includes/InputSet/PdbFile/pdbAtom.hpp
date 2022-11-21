@@ -66,14 +66,14 @@ private:
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     std::string recordName_;                      // Can be HETATM or ATOM
-    int serialNumber_ = codeUtils::iNotSet;                            // Atom serial number in a model card of a pdb file
+    int serialNumber_ = constants::iNotSet;                            // Atom serial number in a model card of a pdb file
     std::string alternateLocation_ = "";               // Atom residue name in a single atom record in a model card of a pdb file
     std::string residueName_ = "";                     // Residue name that the atom is assigned to
     std::string chainId_ = "";                         // Chain id that the atom belongs to
-    int residueSequenceNumber_ = codeUtils::iNotSet;                   // Sequence number of the residue that the atom is assigned to
+    int residueSequenceNumber_ = constants::iNotSet;                   // Sequence number of the residue that the atom is assigned to
     std::string insertionCode_ = "";                   // Insertion code for the atom in it belonging residue
-    double occupancy_ = codeUtils::dNotSet;                            // Atom occupancy
-    double temperatureFactor_ = codeUtils::dNotSet;                    // Atom temperature factor
+    double occupancy_ = constants::dNotSet;                            // Atom occupancy
+    double temperatureFactor_ = constants::dNotSet;                    // Atom temperature factor
     std::string element_ = "";                         // Atom element symbol
     std::string charge_ = "";                          // Atom charge
     //std::vector<AtomRecord*> alternateLocations_; // Alternate atom locations, as a vector of atom cards, as there is   more information that may be needed (such as ID (A,B,C, etc), %occupancy, etc)

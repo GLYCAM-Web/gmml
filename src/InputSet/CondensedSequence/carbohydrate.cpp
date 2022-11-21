@@ -80,7 +80,6 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 //        // Wiggle to resolve overlaps:
 //        std::cout << "Resolving overlaps" << std::endl;
 //        std::vector<cds::Atom*> allAtomsInCarb = this->getAtoms();
-
 //        this->ResolveOverlaps();
 //        std::cout << "Overlaps resolved" << std::endl;
 
@@ -323,7 +322,7 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
         if ( (parentAtomNeighbor->getName().at(0) != 'H') && (parentAtomNeighbor != childAtom ) )
         {
             std::cout << "Setting angle between\nparentNeighbor " << parentAtomNeighbor->getName() << " " << parentAtomNeighbor->getCoordinate()->ToString() << "\nparent " << parentAtom->getName() << " " << parentAtom->getCoordinate()->ToString() << "\nand child " << childAtom->getName() << " " << childAtom->getCoordinate()->ToString() << "\nchild residue " << childResidue->getName() << " will move\n";
-            GeometryTopology::SetAngle(parentAtomNeighbor->getCoordinate(), parentAtom->getCoordinate(), childAtom->getCoordinate(), codeUtils::DEFAULT_ANGLE, childResidue->getCoordinates());
+            GeometryTopology::SetAngle(parentAtomNeighbor->getCoordinate(), parentAtom->getCoordinate(), childAtom->getCoordinate(), constants::DEFAULT_ANGLE, childResidue->getCoordinates());
             break;
         }
     }
@@ -333,14 +332,14 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
     std::cout << "Setting default shape" << std::endl;
     linkage.SetDefaultShapeUsingMetadata();
     std::cout << "Wiggling what we have" << std::endl;
-//    std::vector<cds::Atom*> allAtomsInCarb = this->getAtoms();
-//    linkage.SimpleWiggleCurrentRotamers(allAtomsInCarb, allAtomsInCarb, 5);
+    //    std::vector<cds::Atom*> allAtomsInCarb = this->getAtoms();
+    //    linkage.SimpleWiggleCurrentRotamers(allAtomsInCarb, allAtomsInCarb, 5);
     std::vector<cds::Atom*> childAtoms = childResidue->getAtoms(); // keeps them alive in memory
     std::vector<cds::Atom*> parentAtoms = parentResidue->getAtoms(); // keeps them alive in memory
     linkage.SimpleWiggleCurrentRotamers(childAtoms, parentAtoms, 5);
     std::cout << "Overlaps resolved greedily" << std::endl;
     return;
-  }
+}
 
 // Gonna choke on cyclic glycans. Add a check for IsVisited when that is required.
 void Carbohydrate::FigureOutResidueLinkages(cds::Residue* from_this_residue1, cds::Residue* to_this_residue2)

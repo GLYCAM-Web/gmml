@@ -29,7 +29,7 @@ PdbAtom::PdbAtom(const std::string &line)
     catch (...)
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to serialNumber from: " + line.substr(6, 6 + shift));
-        serialNumber_ = codeUtils::iNotSet;
+        serialNumber_ = constants::iNotSet;
     }
     std::string atomName = codeUtils::RemoveWhiteSpace(line.substr(12 + shift, 4));
     if (atomName.empty())
@@ -60,7 +60,7 @@ PdbAtom::PdbAtom(const std::string &line)
     catch (...)
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, "Error setting residue number from this line:\n" + line);
-        residueSequenceNumber_ = codeUtils::iNotSet;
+        residueSequenceNumber_ = constants::iNotSet;
     }
     // Insertion code gets shifted right by every overrun in residue number.
     insertionCode_ = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
@@ -180,7 +180,7 @@ std::string PdbAtom::GetId(const std::string &residueId) const
 void PdbAtom::Print(std::ostream &out) const
 {
     out << "Serial Number: ";
-    if(serialNumber_ == codeUtils::iNotSet)
+    if(serialNumber_ == constants::iNotSet)
     {
         out << " ";
     }
@@ -193,7 +193,7 @@ void PdbAtom::Print(std::ostream &out) const
             << ", Residue Name: " << residueName_
             << ", Chain ID: " << chainId_
             << ", Residue Sequence Number: ";
-    if(residueSequenceNumber_ == codeUtils::iNotSet)
+    if(residueSequenceNumber_ == constants::iNotSet)
     {
         out << " ";
     }
@@ -205,7 +205,7 @@ void PdbAtom::Print(std::ostream &out) const
             << ", Coordinate: ";
     this->getCoordinate()->Print(out);
     out << ", Occupancy: ";
-    if(occupancy_ == codeUtils::dNotSet)
+    if(occupancy_ == constants::dNotSet)
     {
         out << " ";
     }
@@ -214,7 +214,7 @@ void PdbAtom::Print(std::ostream &out) const
         out << occupancy_;
     }
     out << ", Temperature Factor: ";
-    if(temperatureFactor_ == codeUtils::dNotSet)
+    if(temperatureFactor_ == constants::dNotSet)
     {
         out << " ";
     }

@@ -46,9 +46,9 @@ private:
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     std::vector<std::unique_ptr<Coordinate>> coordinates_;     /*!< Position of the atom >*/
-    double charge_ = codeUtils::dNotSet;
+    double charge_ = constants::dNotSet;
     std::string atomType_ = " ";
-    int number_ = codeUtils::iNotSet;
+    int number_ = constants::iNotSet;
 };
 }
 #endif // INCLUDES_ABSTRACT_ATOM_HPP

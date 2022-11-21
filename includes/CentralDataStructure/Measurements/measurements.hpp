@@ -8,7 +8,7 @@ using GeometryTopology::Coordinate;
 
 namespace cds
 {
-Coordinate calculateGeometricCenter(std::vector<Coordinate*> coords);
+Coordinate calculateGeometricCenter(const std::vector<Coordinate*> coords);
 std::vector<Coordinate*> getCoordinatesFromAtoms(std::vector<cds::Atom*> atoms);
 } // namespace
 #endif /* INCLUDES_CENTRALDATASTRUCTURE_MEASUREMENTS_MEASUREMENTS_HPP_ */

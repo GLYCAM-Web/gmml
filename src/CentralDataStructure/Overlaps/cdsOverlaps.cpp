@@ -56,16 +56,16 @@ double cds::CalculateAtomicOverlaps(cds::Atom* atomA, cds::Atom* atomB, double r
         { // then calculate the surface area of the buried (smaller) sphere.
             if (radiusA < radiusB)
             {
-                overlap = 4 * codeUtils::PI_RADIAN * (radiusA*radiusA);
+                overlap = 4 * constants::PI_RADIAN * (radiusA*radiusA);
             }
             else
             {
-                overlap = 4 * codeUtils::PI_RADIAN * (radiusB*radiusB);
+                overlap = 4 * constants::PI_RADIAN * (radiusB*radiusB);
             }
         }
         else // Normal situation, partial overlap we need to calculate
         { // Eqn 1, Rychkov and Petukhov, J. Comput. Chem., 2006, Joint Neighbours. Each atom against each atom, so overlap can be "double" counted. See paper.
-            overlap = ( 2 * (codeUtils::PI_RADIAN) * radiusA* ( radiusA - distance / 2 - ( ( (radiusA*radiusA) - (radiusB*radiusB) ) / (2 * distance) ) ) );
+            overlap = ( 2 * (constants::PI_RADIAN) * radiusA* ( radiusA - distance / 2 - ( ( (radiusA*radiusA) - (radiusB*radiusB) ) / (2 * distance) ) ) );
         }
     }
     if ( (overlap < 0.0) || (radiusA == -0.1) || (radiusB == -0.1) )
@@ -91,7 +91,7 @@ double cds::CalculateAtomicOverlaps(std::vector<cds::Atom*> atomsA, std::vector<
                 totalOverlap += currentOverlap;
                 if (print)
                 {
-                    std::cout << atomA->getId() << "::" << atomB->getId() << ": " << (currentOverlap / codeUtils::CARBON_SURFACE_AREA) << "\n";
+                    std::cout << atomA->getId() << "::" << atomB->getId() << ": " << (currentOverlap / constants::CARBON_SURFACE_AREA) << "\n";
                 }
             }
         }
@@ -103,7 +103,7 @@ double cds::CalculateAtomicOverlaps(std::vector<cds::Atom*> atomsA, std::vector<
         gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
         throw std::runtime_error(ss.str());
     }
-    return (totalOverlap / codeUtils::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
+    return (totalOverlap / constants::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
 }
 double cds::CalculateAtomicOverlapsBetweenNonBondedAtoms(std::vector<cds::Atom*>& atomsA, std::vector<cds::Atom*>& atomsB)
 {
@@ -125,7 +125,7 @@ double cds::CalculateAtomicOverlapsBetweenNonBondedAtoms(std::vector<cds::Atom*>
             }
         }
     }
-    return (totalOverlap / codeUtils::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
+    return (totalOverlap / constants::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
 }
 
 unsigned int cds::CountOverlappingAtoms(std::vector<cds::Atom*>& atomsA, std::vector<cds::Atom*>& atomsB)

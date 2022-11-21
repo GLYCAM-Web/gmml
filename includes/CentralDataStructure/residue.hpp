@@ -26,7 +26,7 @@ public:
     inline virtual const std::string& getName() const {return name_;}
     std::vector<Atom*> getAtoms() const;
     std::vector<std::string> getAtomNames() const;
-    std::string getId(std::string moleculeNumber = codeUtils::sNotSet) const;
+    std::string getId(std::string moleculeNumber = constants::sNotSet) const;
     std::vector<Coordinate*> getCoordinates() const;
     Coordinate getGeometricCenter() const;
     //////////////////////////////////////////////////////////
