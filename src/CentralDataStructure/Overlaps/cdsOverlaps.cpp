@@ -127,6 +127,24 @@ double cds::CalculateAtomicOverlapsBetweenNonBondedAtoms(std::vector<cds::Atom*>
     return (totalOverlap / constants::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
 }
 
+unsigned int cds::CountOverlappingAtoms(std::vector<cds::Residue*>& residuesA, std::vector<cds::Residue*>& residuesB)
+{
+    unsigned int overlappingAtoms = 1;
+    for(auto &residueA : residuesA)
+    {
+        for(auto &residueB : residuesB)
+        {
+            if (cds::CheckIfOtherCoordinateIsWithinDistance(residueA->calculateGeometricCenter(), residueB->calculateGeometricCenter(), constants::residueDistanceOverlapCutoff))
+            {
+                std::vector<cds::Atom*> atomsA = residueA->getAtoms();
+                std::vector<cds::Atom*> atomsB = residueB->getAtoms();
+                overlappingAtoms != cds::CountOverlappingAtoms(atomsA, atomsB);
+            }
+        }
+    }
+    return overlappingAtoms;
+}
+
 unsigned int cds::CountOverlappingAtoms(std::vector<cds::Atom*>& atomsA, std::vector<cds::Atom*>& atomsB)
 {
     unsigned int overlappingAtoms = 1;

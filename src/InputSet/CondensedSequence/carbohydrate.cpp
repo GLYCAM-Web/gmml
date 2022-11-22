@@ -83,14 +83,15 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 //        this->ResolveOverlaps();
 //        std::cout << "Overlaps resolved" << std::endl;
 
-        // Ok if have done greedy then the atoms to move needs to beupdated for every linkage:
+        // Ok if have done greedy then the atoms-to-move needs to be updated for every linkage:
         std::cout << "Re-determining atoms that need to move for each linkage:" << std::endl;
         for (auto &linkage : glycosidicLinkages_)
         {
             linkage.DetermineAtomsThatMove();
         }
         std::cout << "Final overlap resolution" << std::endl;
-        this->ResolveOverlaps();
+        //this->ResolveOverlaps();
+        this->ResolveOverlapsSmarter();
         std::cout << "Overlaps resolved" << std::endl;
         std::cout << "Number of residues is " << this->getResidues().size() << "\n";
     }
@@ -337,7 +338,7 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
     std::vector<cds::Atom*> childAtoms = childResidue->getAtoms(); // keeps them alive in memory
     std::vector<cds::Atom*> parentAtoms = parentResidue->getAtoms(); // keeps them alive in memory
     linkage.SimpleWiggleCurrentRotamers(childAtoms, parentAtoms, 5);
-    std::cout << "Overlaps resolved greedily" << std::endl;
+    std::cout << "Atomic overlaps resolved with parent" << std::endl;
     return;
 }
 
@@ -422,6 +423,14 @@ void Carbohydrate::ResolveOverlaps()
     {
         std::vector<cds::Atom*> allAtomsInCarb = this->getAtoms();
         linkage.SimpleWiggleCurrentRotamers(allAtomsInCarb, allAtomsInCarb, 5);
+
     }
     return;
 }
+
+void Carbohydrate::ResolveOverlapsSmarter()
+{
+    overlapResolution::intraMolecular(glycosidicLinkages_, this->getResidues());
+    return;
+}
+

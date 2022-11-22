@@ -51,9 +51,9 @@ public:
     void SetShapeToPrevious();
     void SetRandomDihedralAngles();
     void DetermineAtomsThatMove();
-    // Simple meaning you only check each RotatableDihedral in series, not every combination.
     void SimpleWiggle(std::vector<cds::Atom*>& overlapAtomSet1, std::vector<cds::Atom*>& overlapAtomSet2, const int angleIncrement = 5);
     void SimpleWiggleCurrentRotamers(std::vector<cds::Atom*>& overlapAtomSet1, std::vector<cds::Atom*>& overlapAtomSet2, const int angleIncrement = 5);
+    void SimpleWiggleCurrentRotamers(std::vector<cds::Residue*>& overlapSet1, std::vector<cds::Residue*>& overlapSet2, const int angleIncrement = 5);
     inline void SetIndex(unsigned long long index) {index_ = index;}
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //

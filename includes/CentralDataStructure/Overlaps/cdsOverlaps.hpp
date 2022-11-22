@@ -5,6 +5,7 @@
 #include "includes/CodeUtils/constants.hpp"
 #include "includes/GeometryTopology/coordinate.hpp"
 #include "includes/CentralDataStructure/atom.hpp"
+#include "includes/CentralDataStructure/residue.hpp"
 
 #include <sstream>
 #include <vector>
@@ -21,5 +22,7 @@ double CalculateAtomicOverlaps(Atom* atomA, Atom* atomB, double radiusA = 0.0, d
 double CalculateAtomicOverlaps(std::vector<Atom*> atomsA, std::vector<Atom*> atomsB, bool print = false);
 double CalculateAtomicOverlapsBetweenNonBondedAtoms(std::vector<Atom*>& atomsA, std::vector<Atom*>& atomsB);
 unsigned int CountOverlappingAtoms(std::vector<Atom*>& atomsA, std::vector<Atom*>& atomsB);
+unsigned int CountOverlappingAtoms(std::vector<cds::Residue*>& atomsA, std::vector<cds::Residue*>& atomsB);
+
 } // namespace
 #endif

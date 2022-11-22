@@ -53,6 +53,8 @@ public:
     void SetSpecificAngleEntryUsingMetadata(bool useRanges = false, long unsigned int angleEntryNumber = 0);
     bool SetSpecificShape(std::string dihedralName, std::string selectedRotamer);
     void WiggleWithinCurrentRotamer(std::vector<cds::Atom*> &overlapAtomSet1, std::vector<cds::Atom*> &overlapAtomSet2, const int &angleIncrement);
+    void WiggleWithinCurrentRotamer(std::vector<cds::Residue*>& overlapResidueSet1, std::vector<cds::Residue*> &overlapResidueSet2, const int &angleIncrement);
+
     void WiggleUsingAllRotamers(std::vector<cds::Atom*>& overlapAtomSet1, std::vector<cds::Atom*> &overlapAtomSet2, const int &angleIncrement);
     bool IsThereHydrogenForPsiAngle(); // ToDo which of these functions are only public for ResidueLinkage? How about friend function huh?
     std::unique_ptr<cds::Atom> CreateHydrogenAtomForPsiAngle();
@@ -88,6 +90,8 @@ private:
     inline const DihedralAngleData* GetCurrentMetaData() {return currentMetadata_;}
     double WiggleWithinRanges(std::vector<cds::Atom*>& overlapAtomSet1, std::vector<cds::Atom*> &overlapAtomSet2, const int &angleIncrement, const double& lowerBound, const double& upperBound);
     double WiggleWithinRangesDistanceCheck(std::vector<cds::Atom*>& overlapAtomSet1, std::vector<cds::Atom*> &overlapAtomSet2, const int &angleIncrement, const double& lowerBound, const double& upperBound);
+    double WiggleWithinRangesDistanceCheck(std::vector<cds::Residue*>& overlapResidueSet1, std::vector<cds::Residue*> &overlapResidueSet2, const int &angleIncrement, const double& lowerBound, const double& upperBound);
+
     inline std::vector<Coordinate*>& GetCoordinatesThatMove() {return coordinatesThatMove_;}
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
