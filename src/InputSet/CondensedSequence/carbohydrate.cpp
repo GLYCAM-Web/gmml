@@ -90,8 +90,7 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
             linkage.DetermineAtomsThatMove();
         }
         std::cout << "Final overlap resolution" << std::endl;
-        //this->ResolveOverlaps();
-        this->ResolveOverlapsSmarter();
+        this->ResolveOverlaps();
         std::cout << "Overlaps resolved" << std::endl;
         std::cout << "Number of residues is " << this->getResidues().size() << "\n";
     }
@@ -425,12 +424,6 @@ void Carbohydrate::ResolveOverlaps()
         linkage.SimpleWiggleCurrentRotamers(allAtomsInCarb, allAtomsInCarb, 5);
 
     }
-    return;
-}
-
-void Carbohydrate::ResolveOverlapsSmarter()
-{
-    overlapResolution::intraMolecular(glycosidicLinkages_, this->getResidues());
     return;
 }
 
