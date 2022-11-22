@@ -101,9 +101,8 @@ namespace glygraph
 	}
 
     std::vector<T*> getChildren() const;
-    //std::vector<const T*> getChildren() const;
     std::vector<T*> getParents() const;
-   // std::vector<const T*> getParents() const;
+    T* getParent() const;
 
   private:
     /************************************************
@@ -415,16 +414,15 @@ namespace glygraph
 	  return parentsVecToReturn;
   }
 
-//  template<class T>
-//  inline std::vector<const T*> Node<T>::getParents() const
-//  {
-//	  std::vector<const T*> parentsVecToReturn;
-//	  for (Edge<T> *currInEdge : this->inEdges_m)
-//	  {
-//		  parentsVecToReturn.push_back(currInEdge->getSourceNode());
-//	  }
-//	  return parentsVecToReturn;
-//  }
+  template<class T>
+  inline T* Node<T>::getParent() const
+  {
+      if (this->inEdges_m.size() > 0)
+      {
+          return this->inEdges_m.front()->getSourceNode();
+      }
+      return nullptr;
+  }
 
   template<class T>
   inline void Node<T>::removeInEdge(Edge<T> *edgeToRemove_t)
