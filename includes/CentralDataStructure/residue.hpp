@@ -28,7 +28,7 @@ public:
     std::vector<std::string> getAtomNames() const;
     std::string getId(std::string moleculeNumber = constants::sNotSet) const;
     std::vector<Coordinate*> getCoordinates() const;
-    Coordinate getGeometricCenter() const;
+    const Coordinate* getGeometricCenter();
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ public:
     bool contains(const Atom* queryAtom) const;
     std::vector<const Atom*> getAtomsConnectedToOtherResidues() const;
     void MakeDeoxy(std::string oxygenNumber);
-    Coordinate calculateGeometricCenter() const;
+    const Coordinate* calculateGeometricCenter();
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////

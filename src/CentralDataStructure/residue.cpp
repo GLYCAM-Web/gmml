@@ -55,13 +55,13 @@ std::vector<Coordinate*> Residue::getCoordinates() const
     return cds::getCoordinatesFromAtoms(this->getAtoms());
 }
 
-Coordinate Residue::getGeometricCenter() const
+const Coordinate* Residue::getGeometricCenter()
 {
-    if (geometricCenter_.GetX() == codeUtils::dNotSet)
+    if (geometricCenter_.GetX() == constants::dNotSet)
     {
-        geometricCenter_ = this->calculateGeometricCenter();
+        return this->calculateGeometricCenter();
     }
-    return geometricCenter_;
+    return &geometricCenter_;
 }
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
@@ -163,9 +163,10 @@ void Residue::MakeDeoxy(std::string oxygenNumber)
     gmml::log(__LINE__, __FILE__, gmml::INF, "Completed MakeDeoxy\n");
 }
 
-Coordinate Residue::calculateGeometricCenter() const
+const Coordinate* Residue::calculateGeometricCenter()
 {
-    return cds::calculateGeometricCenter(this->getCoordinates());
+    geometricCenter_ = cds::calculateGeometricCenter(this->getCoordinates());
+    return &geometricCenter_;
 }
 //////////////////////////////////////////////////////////
 //                    DISPLAY                           //

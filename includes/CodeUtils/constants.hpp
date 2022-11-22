@@ -5,6 +5,8 @@
 namespace constants
 {
 
+const double residueDistanceOverlapCutoff = 9.0;
+const double maxCutOff = 1.65; // ToDo this value seems low if checking distance for bonding?
 const double DEFAULT_ANGLE = 109.4;
 const double CARBON_SURFACE_AREA = 36.31681103;
 const double MAX_RESIDUE_DIAMETER = 9.0;

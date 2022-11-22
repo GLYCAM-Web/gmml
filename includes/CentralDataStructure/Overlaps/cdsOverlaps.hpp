@@ -15,9 +15,8 @@ namespace cds
 using GeometryTopology::Coordinate;
 using cds::Atom;
 // ToDo this should be in Coordinate.
-const double maxCutOff = 1.65; // ToDo this value seems low if checking distance for bonding?
-bool CheckIfOtherCoordinateIsWithinDistance(Coordinate* a, Coordinate* b, const double distance);
-bool CheckIfOtherCoordinateIsWithinDistanceA(Coordinate* a, Coordinate* b, const double distance);
+bool CheckIfOtherCoordinateIsWithinDistance(const Coordinate* a, const Coordinate* b, const double distance);
+bool CheckIfOtherCoordinateIsWithinDistanceA(const Coordinate* a, const Coordinate* b, const double distance);
 double CalculateAtomicOverlaps(Atom* atomA, Atom* atomB, double radiusA = 0.0, double radiusB = 0.0);
 double CalculateAtomicOverlaps(std::vector<Atom*> atomsA, std::vector<Atom*> atomsB, bool print = false);
 double CalculateAtomicOverlapsBetweenNonBondedAtoms(std::vector<Atom*>& atomsA, std::vector<Atom*>& atomsB);

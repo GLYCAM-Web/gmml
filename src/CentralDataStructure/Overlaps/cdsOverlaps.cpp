@@ -1,9 +1,8 @@
 #include "includes/CentralDataStructure/Overlaps/cdsOverlaps.hpp"
-
+#include "includes/CodeUtils/constants.hpp" // maxcutoff
 using GeometryTopology::Coordinate;
-// ToDo this should be in Coordinate.
-const double maxCutOff = 1.65; // ToDo this value seems low if checking distance for bonding?
-bool cds::CheckIfOtherCoordinateIsWithinDistance(Coordinate* a, Coordinate* b, const double distance)
+// I meant to time which is faster
+bool cds::CheckIfOtherCoordinateIsWithinDistance(const Coordinate* a, const Coordinate* b, const double distance)
 {
     double xDiff = a->GetX() - b->GetX();
     double yDiff = a->GetY() - b->GetY();
@@ -15,7 +14,7 @@ bool cds::CheckIfOtherCoordinateIsWithinDistance(Coordinate* a, Coordinate* b, c
     return false;
 }
 
-bool cds::CheckIfOtherCoordinateIsWithinDistanceA(Coordinate* a, Coordinate* b, const double distance)
+bool cds::CheckIfOtherCoordinateIsWithinDistanceA(const Coordinate* a, const Coordinate* b, const double distance)
 {
     double xDiff = std::abs(a->GetX() - b->GetX());
     double yDiff = std::abs(a->GetY() - b->GetY());
@@ -85,7 +84,7 @@ double cds::CalculateAtomicOverlaps(std::vector<cds::Atom*> atomsA, std::vector<
     {
         for(auto &atomB : atomsB)
         {   // if not the same atom (index is unique)
-            if ( (atomA->getIndex() != atomB->getIndex()) && (cds::CheckIfOtherCoordinateIsWithinDistance(atomA->getCoordinate(), atomB->getCoordinate(), cds::maxCutOff*2)) )
+            if ( (atomA->getIndex() != atomB->getIndex()) && (cds::CheckIfOtherCoordinateIsWithinDistance(atomA->getCoordinate(), atomB->getCoordinate(), constants::maxCutOff*2)) )
             {
                 currentOverlap = cds::CalculateAtomicOverlaps(atomA, atomB);
                 totalOverlap += currentOverlap;
@@ -119,7 +118,7 @@ double cds::CalculateAtomicOverlapsBetweenNonBondedAtoms(std::vector<cds::Atom*>
                 if (atomB->getIndex() == neighbor->getIndex())
                     isNeighbor = true;
             }
-            if ( (isNeighbor == false) && (atomA->getIndex() != atomB->getIndex()) && (cds::CheckIfOtherCoordinateIsWithinDistance(atomA->getCoordinate(), atomB->getCoordinate(), cds::maxCutOff)))
+            if ( (isNeighbor == false) && (atomA->getIndex() != atomB->getIndex()) && (cds::CheckIfOtherCoordinateIsWithinDistance(atomA->getCoordinate(), atomB->getCoordinate(), constants::maxCutOff)))
             {
                 totalOverlap += cds::CalculateAtomicOverlaps(atomA, atomB);
             }
@@ -135,7 +134,7 @@ unsigned int cds::CountOverlappingAtoms(std::vector<cds::Atom*>& atomsA, std::ve
     {
         for(auto &atomB : atomsB)
         {
-            if (cds::CheckIfOtherCoordinateIsWithinDistance(atomA->getCoordinate(), atomB->getCoordinate(), cds::maxCutOff))
+            if (cds::CheckIfOtherCoordinateIsWithinDistance(atomA->getCoordinate(), atomB->getCoordinate(), constants::maxCutOff))
             {
                 ++overlappingAtoms;
             }
