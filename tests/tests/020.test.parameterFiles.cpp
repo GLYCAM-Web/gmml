@@ -16,12 +16,6 @@ int main()
     std::vector<std::string> residuesToLoadFromPrep = {"0GA", "4YB", "4uA", "Cake", "4YA"};
     //std::vector<std::string> residuesToLoadFromPrep = {"0GA"};
     prep::PrepFile glycamPrepFileSelect(prepFilePath, residuesToLoadFromPrep);
-    for ( auto &cdsResidue : glycamPrepFileSelect.getResidues() )
-    {
-        prep::PrepResidue* prepResidue = static_cast<prep::PrepResidue*>(cdsResidue);
-    	prepResidue->SetConnectivities();
-    	prepResidue->Generate3dStructure();
-    }
     // Need a central place for this:
     std::string fileName = "./prepAsPdbFile.pdb";
     std::ofstream outFileStream;
