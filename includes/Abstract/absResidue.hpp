@@ -1,7 +1,7 @@
 #ifndef GMML_INCLUDES_ABSTRACT_RESIDUE_HPP
 #define GMML_INCLUDES_ABSTRACT_RESIDUE_HPP
 
-#include <string>
+#include "includes/CodeUtils/constants.hpp" // iNotSet
 
 namespace Abstract
 {
@@ -14,19 +14,22 @@ public:
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
     inline ResidueType GetType() const {return type_;}
+    inline unsigned int getNumber() const {return number_;}
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
     inline void SetType(ResidueType type) {type_ = type;}
+    inline void setNumber(unsigned int i) {number_ = i;}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
-    ResidueType determineType(const std::string &residueName) const;
+    ResidueType determineType(const std::string &residueName);
 private:
     //////////////////////////////////////////////////////////
     //                       ATTRRIBUTES                    //
     //////////////////////////////////////////////////////////
     ResidueType type_ = Undefined;  // enum Type. See enum above.
+    unsigned int number_ = constants::iNotSet;
 };
 }
 #endif
