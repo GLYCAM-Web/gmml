@@ -8,7 +8,7 @@ fileList=("libAsPdbFile.pdb" "libAsOffFile.off" "libAsLibFile.lib")
 for file in ${fileList[@]}; 
 do
   	if [ -f $file ]; then
-  	    if ! cmp $file tests/correct_outputs/020.$file  > /dev/null 2>&1; then
+  	    if ! cmp $file tests/correct_outputs/022.$file  > /dev/null 2>&1; then
   	        printf "Test FAILED!\n $file is different from tests/correct_outputs/022.$file\n"
             echo "Exit Code: 1"
             return 1
