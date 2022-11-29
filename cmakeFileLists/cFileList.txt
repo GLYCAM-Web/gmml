@@ -2,6 +2,9 @@
 ./src/Abstract/absResidue.cpp
 ./src/CentralDataStructure/Measurements/measurements.cpp
 ./src/CentralDataStructure/Overlaps/cdsOverlaps.cpp
+./src/CentralDataStructure/Readers/LibraryAtom.cpp
+./src/CentralDataStructure/Readers/LibraryFile.cpp
+./src/CentralDataStructure/Readers/LibraryResidue.cpp
 ./src/CentralDataStructure/Selections/atomSelections.cpp
 ./src/CentralDataStructure/Selections/shaperSelections.cpp
 ./src/CentralDataStructure/Shapers/geometryTopologyInterface.cpp

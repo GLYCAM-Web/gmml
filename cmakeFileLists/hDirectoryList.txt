@@ -3,6 +3,7 @@
 ./includes/CentralDataStructure
 ./includes/CentralDataStructure/Measurements
 ./includes/CentralDataStructure/Overlaps
+./includes/CentralDataStructure/Readers
 ./includes/CentralDataStructure/Selections
 ./includes/CentralDataStructure/Shapers
 ./includes/CentralDataStructure/Writers
