@@ -17,7 +17,7 @@ PdbFile::PdbFile()
     inFilePath_ = "GMML-Generated";
 }
 PdbFile::PdbFile(const std::string &pdbFilePath) : inFilePath_(pdbFilePath)
-{
+{   //ToDo have a generic file opener in codeUtils
     std::ifstream pdbFileStream(pdbFilePath);
     if(pdbFileStream.fail())
     {

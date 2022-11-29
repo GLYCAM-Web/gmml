@@ -3,12 +3,9 @@
 
 #include "includes/InputSet/PdbFile/pdbResidueId.hpp"
 #include "includes/CentralDataStructure/residue.hpp"
+#include "includes/InputSet/PdbFile/pdbAtom.hpp"
 #include <string>
 #include <iostream>
-
-#include "pdbAtom.hpp"
-//#include <functional>
-
 namespace pdb
 {
 class PdbResidue : public cds::Residue
