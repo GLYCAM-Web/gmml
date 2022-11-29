@@ -1,7 +1,7 @@
 #include "includes/Abstract/absResidue.hpp"
 #include "includes/CodeUtils/biology.hpp"
 #include "includes/CodeUtils/templatedSelections.hpp"
-#include "iostream"; //std::cout
+
 using Abstract::absResidue;
 
 Abstract::ResidueType absResidue::determineType(const std::string &residueName)

@@ -9,7 +9,7 @@ LibraryResidue::LibraryResidue(std::stringstream& residueStream, const std::stri
     std::string line;
     while(getline(residueStream, line) && line.front() != '!')// Iterate until to the next section that indicates by ! at the beginning of the read line
     { // Process atom section
-        std::cout << "Creating atom with line: " << line << std::endl;
+        //std::cout << "Creating atom with line: " << line << std::endl;
         this->addAtom(std::make_unique<LibraryAtom>(line));
     }
     std::vector<cds::Atom*> createdAtoms = this->getAtoms();

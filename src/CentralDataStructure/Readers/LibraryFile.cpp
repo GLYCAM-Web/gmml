@@ -6,8 +6,6 @@
 
 namespace lib
 {
-LibraryFile::LibraryFile() {}
-
 LibraryFile::LibraryFile(const std::string &filePath)
 {
     codeUtils::ensureFileExists(filePath);
@@ -32,7 +30,7 @@ void LibraryFile::ParseInFileStream(std::ifstream& inputFileStream)
         getline(inputFileStream, line);
     }
     // Read in the array of residue names
-    std::cout << "First readable line is " << line << "\n";
+    //std::cout << "First readable line is " << line << "\n";
     std::vector<std::string> residueNames;
     if(line.find("index") != std::string::npos)
     {
@@ -53,17 +51,16 @@ void LibraryFile::ParseInFileStream(std::ifstream& inputFileStream)
     for(auto & residueName : residueNames)
     {   // Process the atom section of the file for the corresponding residue
 
-        std::cout << "Starting to read residue " << residueName << " with line:\n" << line << "\n";
+        //std::cout << "Starting to read residue " << residueName << " with line:\n" << line << "\n";
         std::stringstream residueStream;
         residueStream = this->ExtractUnitSection(inputFileStream, residueName);
-        std::cout << "Residue stream is:\n" << residueStream.str() << "\n fin. " << std::endl;
+        //std::cout << "Residue stream is:\n" << residueStream.str() << "\n fin. " << std::endl;
         this->addResidue(std::make_unique<LibraryResidue>(residueStream, residueName));
     }
 }
 
 std::stringstream LibraryFile::ExtractUnitSection(std::ifstream& inputFileStream, const std::string unitName)
 {
-   // std::streampos previousLinePosition = inputFileStream.tellg();
     std::stringstream extractedSection;
     std::string entryLineStart = "!entry." + unitName + ".unit";
     std::string line;
@@ -71,14 +68,12 @@ std::stringstream LibraryFile::ExtractUnitSection(std::ifstream& inputFileStream
     {
         if ( line.find("!entry") != std::string::npos && line.find(entryLineStart) == std::string::npos )
         { // If line is an "entry" line that doesn't match this unit, time to leave.
-            std::cout << "I have never seen this line before in my life: " << line << std::endl;
-          //  inputFileStream.seekg(previousLinePosition); // Rewind one step so can read from !entry.
+            //std::cout << "I have never seen this line before in my life: " << line << std::endl;
             return extractedSection;
         }
         extractedSection << line << std::endl;
-       //previousLinePosition = inputFileStream.tellg(); // Save current line position
     }
     return extractedSection;
 }
 
-} /* namespace GlycoproteinBuilder */
+} // namespace
