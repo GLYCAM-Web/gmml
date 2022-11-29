@@ -5,13 +5,16 @@
 #include <unordered_map>
 #include <vector>
 #include <sstream>
+#include <algorithm> // erase remove
 
 namespace codeUtils
 {
 // Functions
 bool startsWith(std::string bigString, std::string smallString);
 std::string FindStringInStringMap(const std::string s, const std::unordered_map<std::string, std::string> &sMap);
-std::string RemoveWhiteSpace(std::string s);
+std::string RemoveWhiteSpace(std::string str);
+void RemoveSpaces(std::string& str);
+void RemoveQuotes(std::string& str);
 void ExpandLine(std::string &line, int length);
 int GetSizeOfIntInString(const std::string str);
 
@@ -40,5 +43,5 @@ inline T extractFromStream(std::istream &ss, T temp)
 	return temp;
 }
 
-}
+} // namespace
 #endif //GMML_INCLUDES_CODEUTILS_STRINGS_HPP

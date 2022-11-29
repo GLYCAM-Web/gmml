@@ -1,7 +1,7 @@
+#include "includes/CodeUtils/strings.hpp"
 #include <sstream>
 #include <iomanip> // std::setw
 #include <ctype.h> // isdigit
-#include "includes/CodeUtils/strings.hpp"
 
 bool codeUtils::startsWith(std::string bigString, std::string smallString)
 {
@@ -18,11 +18,22 @@ std::string codeUtils::FindStringInStringMap(const std::string s, const std::uno
     return "";
 }
 
-std::string codeUtils::RemoveWhiteSpace(std::string s)
+std::string codeUtils::RemoveWhiteSpace(std::string str)
 {
-    s.erase(s.find_last_not_of(" ") + 1);
-    s.erase(0, s.find_first_not_of(" "));
-    return s;
+    codeUtils::RemoveSpaces(str);
+//    s.erase(s.find_last_not_of(" ") + 1);
+//    s.erase(0, s.find_first_not_of(" "));
+    return str;
+}
+
+void codeUtils::RemoveSpaces(std::string& str)
+{
+    str.erase(std::remove_if(str.begin(), str.end(), ::isspace), str.end());
+}
+
+void codeUtils::RemoveQuotes(std::string& str)
+{
+    str.erase(std::remove(str.begin(), str.end(), '\"'), str.end());
 }
 
 void codeUtils::ExpandLine(std::string &line, int length)
