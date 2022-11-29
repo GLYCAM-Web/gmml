@@ -35,7 +35,7 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 		unsigned int atomNumberInResidue = 1;
 		for(auto &atom : residue->getAtoms())
 		{
-			stream << " \"" << atom->getName() << "\" " << "\"" << atom->getType() << "\" " << "0" << " " << residue->getIndex() << " " << FLAG << " "
+			stream << " \"" << atom->getName() << "\" " << "\"" << atom->getType() << "\" " << "0" << " " << residue->getNumber() << " " << FLAG << " "
 					<< atomNumberInResidue << " " << atom->getAtomicNumber() << " " << std::fixed << atom->getCharge() << std::endl;
 			atomNumberInResidue++;
 		}
@@ -46,7 +46,7 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	{
 		for(auto &atom : residue->getAtoms())
 		{
-			stream << " \"" << atom->getName() << "\" " << "\"" << atom->getType() << "\" " << 0 << " " << -1 << " " << 0.0 << std::endl;
+			stream << " \"" << atom->getName() << "\" " << "\"" << atom->getType() << "\" " << 0 << " " << -1 << " " << std::setprecision(1) <<  0.0 << std::endl;
 		}
 	}
 	//WriteBoundBoxSection
@@ -60,10 +60,10 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	stream << "!entry." << unitName << ".unit.childsequence single int" << std::endl;
 	stream << " " << residues.size() + 1 << std::endl;
 	//WriteConnectSection
-	// ToDo: this should be the atom number of the atoms that are bonded to the unit before and after. They were set to zero in the original, as below. Is this ok?
+	// Note: this is silly but fine for most cases. If you're reading this it's because it mattered and you need to make it better.
 	stream << "!entry." << unitName << ".unit.connect array int" << std::endl;
-	stream << " " << 0 << std::endl;
-	stream << " " << 0 << std::endl;
+	stream << " " << 1 << std::endl;
+	stream << " " << residues.back()->getAtoms().back()->getNumber() << std::endl;
 	//WriteConnectivitySection
 	stream << "!entry." << unitName << ".unit.connectivity table  int atom1x  int atom2x  int flags" << std::endl;
 	for(auto &residue : residues)
@@ -72,7 +72,7 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 		{
 			for(auto &neighbor : atom->getChildren())
 			{
-				stream << " " << atom->getIndex() << " " << neighbor->getIndex() << " " << 1 << std::endl;
+				stream << " " << atom->getNumber() << " " << neighbor->getNumber() << " " << 1 << std::endl;
 			}
 		}
 	}
@@ -80,10 +80,10 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	stream << "!entry." << unitName << ".unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx" << std::endl;
 	for(auto &residue : residues)
 	{
-		stream << " \"" << "U" << "\"" << " " << 0 << " " << "\"" << "R" << "\"" << " " << residue->getIndex() << std::endl;
-		for (long unsigned int atomCounter = 0; atomCounter < residue->getAtoms().size(); ++atomCounter)
+		stream << " \"" << "U" << "\"" << " " << 0 << " " << "\"" << "R" << "\"" << " " << residue->getNumber() << std::endl;
+		for(auto &atom : residue->getAtoms())
 		{
-			stream << " \"" << "R" << "\"" << " " << residue->getIndex() << " " << "\"" << "A" << "\"" << " " << atomCounter << std::endl;
+			stream << " \"" << "R" << "\"" << " " << residue->getNumber() << " " << "\"" << "A" << "\"" << " " << atom->getNumber() << std::endl;
 		}
 	}
 	//WriteNameSection
@@ -95,7 +95,7 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	{
 		for(auto &atom : residue->getAtoms())
 		{
-			stream << " " << std::fixed << atom->getCoordinate()->GetX() << " "<< std::fixed << atom->getCoordinate()->GetY() << " " << std::fixed << atom->getCoordinate()->GetZ() << std::endl;
+			stream << std::setprecision(6) << std::fixed << " " << atom->getCoordinate()->GetX() << " " << atom->getCoordinate()->GetY() << " " << atom->getCoordinate()->GetZ() << std::endl;
 		}
 	}
 	//WriteResidueConnectSection
@@ -105,7 +105,7 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	    auto atomsConnectedToOtherResidues = residue->getAtomsConnectedToOtherResidues();
 		for(auto &atom : atomsConnectedToOtherResidues)
 		{
-			stream << " " << atom->getIndex();
+			stream << " " << atom->getNumber();
 		}
 		int columnsWithZero = 6 - atomsConnectedToOtherResidues.size();
 		for (int i = 0; i < columnsWithZero; ++i)
@@ -119,10 +119,10 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	for(auto &residue : residues)
 	{
 		unsigned int childseq = residue->getAtoms().size() + 1;
-		unsigned int startatomx = residue->getAtoms().front()->getIndex();
+		unsigned int startatomx = residue->getAtoms().front()->getNumber();
 		std::string restype = cds::getOffType(residue->GetType());
 		unsigned int imagingx = 0;
-		stream << " \"" << residue->getName() << "\"" << " " << residue->getIndex() << " " << childseq << " " << startatomx << " " << "\""<<restype <<"\""<< " " << imagingx << std::endl;
+		stream << " \"" << residue->getName() << "\"" << " " << residue->getNumber() << " " << childseq << " " << startatomx << " " << "\""<< restype <<"\""<< " " << imagingx << std::endl;
 	}
 	//WriteSolventCapSection
 	stream << "!entry." << unitName << ".unit.solventcap array dbl" << std::endl;
@@ -144,6 +144,24 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	return;
 }
 
+template <typename residueT>
+void SerializeResidueAndAtomNumbers(std::vector<residueT*> residues)
+{
+    unsigned int newAtomNumber = 1;
+    unsigned int newResidueNumber = 1;
+    for(auto &residue : residues)
+    {
+        residue->setNumber(newResidueNumber);
+        ++newResidueNumber;
+        for(auto &atom : residue->getAtoms())
+        {
+            atom->setNumber(newAtomNumber);
+            ++newAtomNumber;
+        }
+    }
+    return;
+}
+
 // ToDo shouldn't this have a .lib suffix?
 template <typename residueT>
 void WriteResiduesToOffFile(std::vector<residueT*> residues, std::ostream& stream)
@@ -155,6 +173,7 @@ void WriteResiduesToOffFile(std::vector<residueT*> residues, std::ostream& strea
 	}
 	for(auto &residue : residues)
 	{
+        cds::SerializeResidueAndAtomNumbers(std::vector<residueT*>{residue});
 		cds::WriteOffFileUnit(std::vector<residueT*>{residue}, stream, residue->getName());
 	}
 	return;
@@ -166,6 +185,7 @@ void WriteMoleculeToOffFile(std::vector<residueT*> residues, std::ostream& strea
 { // For writing residues together as a molecule
 	stream << "!!index array str" << std::endl;
 	stream << " \"" << unitName << "\"" << std::endl;
+    cds::SerializeResidueAndAtomNumbers(residues);
 	cds::WriteOffFileUnit(residues, stream, unitName);
 	return;
 }
