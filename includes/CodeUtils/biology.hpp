@@ -10,17 +10,17 @@ const std::vector<std::string> proteinResidueNames = { "ALA", "ASP", "ASN", "ARG
             "GLU", "GLN", "PRO", "HIS", "HIP","CYS",
             "VAL", "LEU", "THR", "SER", "LYS",
             "MET", "MSE", "TYR", "TRP", "PHE", "SEC",
-            "ILE", "CYX", "HID", "HIE", "NLN",
-            "OLY", "OLS", "OLT", "NALA", "NASP",
+            "ILE", "CYX", "CYM", "HID", "HIE", "NLN",
+            "OLY", "OLS", "OLT", "ASH", "GLH", "HYP", "LYN", "NALA", "NASP",
 "NASN", "NARG", "NGLY", "NGLU", "NGLN",
 "NPRO", "NHIS", "NCYS", "NVAL", "NLEU",
 "NTHR", "NSER", "NLYS", "NMET", "NTYR",
-"NTRP", "NPHE", "NSEC", "NILE", "NCYX",
-"NHID", "NHIE", "CNALA", "CNASP",
+"NTRP", "NPHE", "NSEC", "NILE", "NCYX", "NCYM",
+"NHID", "NHIE", "NASH", "NGLH", "NHYP", "NLYN", "CNALA", "CNASP"
             "CASN", "CARG", "CGLY", "CGLU", "CGLN",
             "CPRO", "CHIS", "CCYS", "CVAL", "CLEU",
             "CTHR", "CSER", "CLYS", "CMET", "CTYR",
-            "CTRP", "CPHE", "CSEC", "CILE", "CCYX",
-            "CHID", "CHIE"};
+            "CTRP", "CPHE", "CSEC", "CILE", "CCYX", "CCYM",
+            "CHID", "CHIE", "CASH", "CGLH", "CHYP", "CLYN"};
 }// namespace
 #endif
