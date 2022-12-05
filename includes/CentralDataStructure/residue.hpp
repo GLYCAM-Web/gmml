@@ -56,10 +56,10 @@ public:
     //////////////////////////////////////////////////////////
     //                  OPERATOR OVERLOADING                //
     //////////////////////////////////////////////////////////
-    virtual bool operator== ( Residue& rhs)  { return (this->getIndex() == rhs.getIndex());}
-    virtual bool operator!= ( Residue& rhs)  { return (this->getIndex() != rhs.getIndex());}
-    virtual bool operator> ( Residue& rhs)  { return (this->getNumber() > rhs.getNumber());}
-    virtual bool operator< ( Residue& rhs)  { return (this->getNumber() < rhs.getNumber());}
+    virtual bool operator == (const Residue& rhs) const { return (this->getIndex() == rhs.getIndex());}
+    virtual bool operator != (const Residue& rhs) const { return (this->getIndex() != rhs.getIndex());}
+    virtual bool operator > (const Residue& rhs) const { return (this->getNumber() > rhs.getNumber());}
+    virtual bool operator < (const Residue& rhs) const { return (this->getNumber() < rhs.getNumber());}
 private:
     //////////////////////////////////////////////////////////
     //                    ATTRIBUTES                        //

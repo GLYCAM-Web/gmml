@@ -47,10 +47,10 @@ class ParsedResidue : public cds::Residue
         //////////////////////////////////////////////////////////
         //                  OPERATOR OVERLOADING                //
         //////////////////////////////////////////////////////////
-        bool operator== ( ParsedResidue& rhs)  { return (this->GetLink() == rhs.GetLink());}
-        bool operator!= ( ParsedResidue& rhs)  { return (this->GetLink() != rhs.GetLink());}
-        bool operator> ( ParsedResidue& rhs)  { return (this->GetLink() > rhs.GetLink());}
-        bool operator< ( ParsedResidue& rhs)  { return (this->GetLink() < rhs.GetLink());}
+        bool operator== (const cds::Residue& rhs) const { return (this->GetLink() == static_cast<const ParsedResidue*>(&rhs)->GetLink());}
+        bool operator!= (const cds::Residue& rhs) const { return (this->GetLink() != static_cast<const ParsedResidue*>(&rhs)->GetLink());}
+        bool operator>  (const cds::Residue& rhs) const { return (this->GetLink()  > static_cast<const ParsedResidue*>(&rhs)->GetLink());}
+        bool operator<  (const cds::Residue& rhs) const { return (this->GetLink()  < static_cast<const ParsedResidue*>(&rhs)->GetLink());}
 	private:
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
