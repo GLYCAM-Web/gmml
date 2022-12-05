@@ -92,18 +92,37 @@ namespace glygraph
 	// Implemented for sorting the vector of incoming edges by the source objects < operator. Uses a lambda function.
 	inline void sortInEdgesBySourceTObjectComparator()
 	{
-		std::sort(inEdges_m.begin(), inEdges_m.end(),
-				[](Edge<T>* e1, Edge<T>* e2)
-				{ // Lambda function for doing the sort.
-							return ( *(e1->getSourceNode()->getDeriviedClass()) > *(e2->getSourceNode()->getDeriviedClass()) );
-				});
+	    struct inEdgeComparer
+	    {
+	        inline bool operator()(const Edge<T>* a, const Edge<T>* b)
+	        {
+	            return ( *(a->getSourceNode()) > *(b->getSourceNode()) );
+	        }
+	    };
+		std::sort(inEdges_m.begin(), inEdges_m.end(), inEdgeComparer());
+//				[](Edge<T>* e1, Edge<T>* e2)
+//				{ // Lambda function for doing the sort.
+//							return ( *(e1->getSourceNode()) > *(e2->getSourceNode()) );
+//				});
 		return;
+	}
+	// Implemented for sorting the vector of edges by the source objects < operator. Uses a lambda function.
+	inline void sortOutEdgesBySourceTObjectComparator()
+	{    // Note outEdge type is std::vector<std::unique_ptr<Edge<T>>>.
+	    struct outEdgeComparer
+	    {
+	        inline bool operator()(const std::unique_ptr<Edge<T>>& a, const std::unique_ptr<Edge<T>>& b)
+	        {
+	            return ( *(a->getTargetNode()) > *(b->getTargetNode()) );
+	        }
+	    };
+	    std::sort(outEdges_m.begin(), outEdges_m.end(), outEdgeComparer());
+	    return;
 	}
 
     std::vector<T*> getChildren() const;
     std::vector<T*> getParents() const;
     T* getParent() const;
-
   private:
     /************************************************
      *  CONSTRUCTORS/DESTRUCTORS
