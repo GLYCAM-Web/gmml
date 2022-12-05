@@ -31,7 +31,7 @@ void ParsedResidue::AddLinkage(ParsedResidue* otherRes)
     {
         this->addParent(this->GetLinkage(), otherRes);
     }
-    std::cout << this->getName() << " with linkage " << this->GetLinkage() << " has parent " << otherRes->getName() << std::endl;
+    //std::cout << this->getName() << " with linkage " << this->GetLinkage() << " has parent " << otherRes->getName() << std::endl;
     return;
 }
 

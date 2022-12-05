@@ -19,7 +19,8 @@ std::string SequenceManipulator::ReorderSequence()
 {	// Just doing the default by ascending link number for now.
 	for (auto &residue : this->getResidues())
 	{
-		residue->sortInEdgesBySourceTObjectComparator();
+	    ParsedResidue* brian = static_cast<ParsedResidue*>(residue);
+	    brian->sortOutEdgesBySourceTObjectComparator();
 	}
 	return this->Print();
 }

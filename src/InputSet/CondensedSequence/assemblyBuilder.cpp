@@ -21,7 +21,7 @@ using MolecularModeling::Assembly;
 
 AssemblyBuilder::AssemblyBuilder(std::string inputSequence, std::string prepFilePath, Assembly *inputAssembly) : SequenceManipulator{inputSequence} 
 {
-	this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependency Oliver.
+	this->ReorderSequence(); // Order for setting index by connectivity and so sequence is ordered consistently.
 	this->SetIndexByConnectivity();
     codeUtils::ensureFileExists(prepFilePath);
 	PrepFileSpace::PrepFile prepFile(prepFilePath);
