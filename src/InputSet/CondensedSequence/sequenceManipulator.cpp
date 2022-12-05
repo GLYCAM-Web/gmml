@@ -64,7 +64,7 @@ void SequenceManipulator::SetIndexByConnectivity()
 	{
 		residue->setIndex(residueIndex);
 		++residueIndex;
-		for (auto &linkage : residue->getOutEdges())
+		for (auto &linkage : residue->getInEdges())
 		{
 			linkage->setIndex(linkIndex);
 			++linkIndex;
