@@ -8,7 +8,6 @@
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
-
 using prep::PrepAtom;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
@@ -18,7 +17,7 @@ PrepAtom::PrepAtom(const std::string& line)
 	std::stringstream ss(line);
 	this->setNumber(codeUtils::extractFromStream(ss, int()));
 	this->setName(codeUtils::extractFromStream(ss, std::string()));
-	this->SetType(codeUtils::extractFromStream(ss, std::string()));
+	this->setType(codeUtils::extractFromStream(ss, std::string()));
 	this->SetTopologicalType(this->ExtractAtomTopologicalType(ss));
 	this->SetBondIndex(codeUtils::extractFromStream(ss, int()));
 	this->SetAngleIndex(codeUtils::extractFromStream(ss, int()));
@@ -32,11 +31,6 @@ PrepAtom::PrepAtom(const std::string& line)
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
-std::string PrepAtom::GetType() const
-{
-	return type_;
-}
-
 prep::TopologicalType PrepAtom::GetTopologicalType() const
 {
 	return topological_type_;
@@ -113,13 +107,6 @@ prep::TopologicalType PrepAtom::GetTopologicalTypeFromString(std::string topolog
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
-
-
-void PrepAtom::SetType(const std::string type)
-{
-	type_ = type;
-}
-
 void PrepAtom::SetTopologicalType(TopologicalType topological_type)
 {
 	topological_type_ = topological_type;
@@ -218,7 +205,7 @@ void PrepAtom::Print(std::ostream &out) const
 {
 	out << std::setw(3) << this->getNumber()
         				<< std::setw(6) << this->getName()
-						<< std::setw(6) << this->GetType();
+						<< std::setw(6) << this->getType();
 	if(this->GetTopologicalType() == kTopTypeE)
 		out << std::setw(3) << "E";
 	else if(topological_type_ == kTopTypeS)
@@ -246,7 +233,7 @@ void PrepAtom::Print(std::ostream &out) const
 
 void PrepAtom::Write(std::ostream &stream) const
 {
-	stream << std::right << std::setw(2) << this->getNumber() << " " << std::left << std::setw(4) << this->getName() << " " << std::left << std::setw(3) << this->GetType() << " " << std::setw(1) << this->GetStringFormatOfTopologicalType() << " " << std::right << std::setw(2) << this->GetBondIndex() << " " << std::right << std::setw(2) << this->GetAngleIndex() << " " << std::right << std::setw(2) << this->GetDihedralIndex() << " ";
+	stream << std::right << std::setw(2) << this->getNumber() << " " << std::left << std::setw(4) << this->getName() << " " << std::left << std::setw(3) << this->getType() << " " << std::setw(1) << this->GetStringFormatOfTopologicalType() << " " << std::right << std::setw(2) << this->GetBondIndex() << " " << std::right << std::setw(2) << this->GetAngleIndex() << " " << std::right << std::setw(2) << this->GetDihedralIndex() << " ";
 	stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetBondLength() << " ";
 	stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetAngle() << " ";
 	stream << std::right << std::setw(8) << std::fixed << std::setprecision(3) << this->GetDihedral();

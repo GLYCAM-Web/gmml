@@ -40,7 +40,6 @@ public:
 	//                           ACCESSOR                   //
 	//////////////////////////////////////////////////////////
 	inline const int& GetVisits() const {return visitCount_;}
-	std::string GetType() const;
 	TopologicalType GetTopologicalType() const;
 	int GetBondIndex() const;
 	int GetAngleIndex() const;
@@ -51,7 +50,6 @@ public:
 	//////////////////////////////////////////////////////////
 	//                           MUTATOR                    //
 	//////////////////////////////////////////////////////////
-	void SetType(std::string type);
 	void SetTopologicalType(TopologicalType topological_type);
 	void SetBondIndex(int bond_index);
 	void SetAngleIndex(int angle_index);
