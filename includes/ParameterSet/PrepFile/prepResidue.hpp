@@ -3,7 +3,6 @@
 
 #include "includes/CentralDataStructure/residue.hpp"
 #include "includes/ParameterSet/PrepFile/prepAtom.hpp"
-
 #include <string>
 #include <map>
 #include <vector>

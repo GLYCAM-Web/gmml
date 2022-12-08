@@ -1,5 +1,4 @@
-#include "includes/common.hpp"
-#include "includes/utils.hpp"
+#include "includes/utils.hpp" // Trim
 #include "includes/ParameterSet/PrepFile/prepFile.hpp"
 #include "includes/ParameterSet/PrepFile/prepResidue.hpp"
 #include "includes/ParameterSet/PrepFile/prepAtom.hpp"

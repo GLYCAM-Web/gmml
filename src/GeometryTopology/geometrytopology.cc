@@ -1,7 +1,7 @@
 #include <eigen3/Eigen/Geometry>
 
-#include "../../includes/GeometryTopology/geometrytopology.hpp"
-#include "../../includes/utils.hpp"
+#include "includes/GeometryTopology/geometrytopology.hpp"
+#include "includes/utils.hpp"
 #include "includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/MolecularModeling/atomnode.hpp"
