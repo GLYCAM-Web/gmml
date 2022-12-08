@@ -138,7 +138,7 @@ unsigned int cds::CountOverlappingAtoms(std::vector<cds::Residue*>& residuesA, s
             {
                 std::vector<cds::Atom*> atomsA = residueA->getAtoms();
                 std::vector<cds::Atom*> atomsB = residueB->getAtoms();
-                overlappingAtoms != cds::CountOverlappingAtoms(atomsA, atomsB);
+                overlappingAtoms += cds::CountOverlappingAtoms(atomsA, atomsB);
             }
         }
     }
