@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <iomanip> //std::precision
 
 #include "includes/Abstract/absResidue.hpp"
 
