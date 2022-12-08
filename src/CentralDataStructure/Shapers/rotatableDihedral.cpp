@@ -1,5 +1,7 @@
 #include "includes/CentralDataStructure/Shapers/rotatableDihedral.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp" //FindConnectedAtoms
+#include "includes/CentralDataStructure/Shapers/cdsGeometryTopology.hpp"
+#include "includes/CentralDataStructure/Measurements/measurements.hpp"
 
 using cds::RotatableDihedral;
 
@@ -24,10 +26,10 @@ double RotatableDihedral::CalculateDihedralAngle(const std::string type) const
         {   // ToDO there will be an issue with C1-O5 linkages unless atom knows which residue it is in.
             //Coordinate* o5Coord = atom1_->GetResidue()->GetAtom("O5")->getCoordinate();
             Coordinate* o5Coord = cdsSelections::getNeighborNamed(atom1_, "O5")->getCoordinate();
-            return GeometryTopology::CalculateDihedralAngle(o5Coord, atom2_->getCoordinate(), atom3_->getCoordinate(), atom4_->getCoordinate());
+            return cds::CalculateDihedralAngle(o5Coord, atom2_->getCoordinate(), atom3_->getCoordinate(), atom4_->getCoordinate());
         }
     }
-    return GeometryTopology::CalculateDihedralAngle(atom1_->getCoordinate(), atom2_->getCoordinate(), atom3_->getCoordinate(), atom4_->getCoordinate());
+    return cds::CalculateDihedralAngle(atom1_->getCoordinate(), atom2_->getCoordinate(), atom3_->getCoordinate(), atom4_->getCoordinate());
 }
 
 std::vector<cds::Atom*> RotatableDihedral::GetAtoms() const
@@ -174,7 +176,7 @@ void RotatableDihedral::SetDihedralAngle(const double dihedral_angle)
 //    std::stringstream ss;
 //    ss << "Setting dihedral for " << atom1_->getId() << ":"  << atom2_->getId() << ":"  << atom3_->getId() << ":"  << atom4_->getId() <<  ": " << dihedral_angle << "\n";
 //    gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
-    GeometryTopology::SetDihedralAngle(a1, a2, a3, a4, dihedral_angle, this->GetCoordinatesThatMove());
+    cds::SetDihedralAngle(a1, a2, a3, a4, dihedral_angle, this->GetCoordinatesThatMove());
     return;
 }
 
@@ -484,12 +486,12 @@ std::unique_ptr<cds::Atom> RotatableDihedral::CreateHydrogenAtomForPsiAngle()
         gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
         throw std::runtime_error(ss.str());
     }
-    std::vector<Coordinate*> threeNeighborCoords;
+    std::vector<const Coordinate*> threeNeighborCoords;
     for (auto &neighbor : centralAtom->getNeighbors())
     {
         threeNeighborCoords.push_back(neighbor->getCoordinate());
     }
-    Coordinate newCoord = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(centralAtom->getCoordinate(), threeNeighborCoords);
+    Coordinate newCoord = cds::CreateMissingCoordinateForTetrahedralAtom(centralAtom->getCoordinate(), threeNeighborCoords);
     std::unique_ptr<cds::Atom> newAtom = std::make_unique<cds::Atom>("HHH", newCoord);
     centralAtom->addBond(newAtom.get());
     return newAtom;

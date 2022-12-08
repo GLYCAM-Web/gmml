@@ -1,13 +1,12 @@
 #include "includes/CentralDataStructure/Shapers/geometryTopologyInterface.hpp"
+#include "includes/CentralDataStructure/Shapers/cdsGeometryTopology.hpp"
 #include "includes/CentralDataStructure/Measurements/measurements.hpp"
-#include "includes/GeometryTopology/geometrytopology.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
 #include "includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
-using GeometryTopology::Coordinate;
 
-Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centralAtom, const double distance)
+cds::Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centralAtom, const double distance)
 {
     if(centralAtom->getNeighbors().size() != 3)
     {
@@ -17,27 +16,27 @@ Coordinate GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(cds::Atom
         gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
         throw std::runtime_error(ss.str());
     }
-    std::vector<Coordinate*> threeNeighborCoords;
+    std::vector<const Coordinate*> threeNeighborCoords;
     for (auto &neighbor : centralAtom->getNeighbors())
     {
         threeNeighborCoords.push_back(neighbor->getCoordinate());
     }
-    return GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(centralAtom->getCoordinate(), threeNeighborCoords, distance);
+    return cds::CreateMissingCoordinateForTetrahedralAtom(centralAtom->getCoordinate(), threeNeighborCoords, distance);
 }
 
-void GeometryTopology::FindAtomsToMoveAndSetAngle(cds::Atom* a, cds::Atom* b, cds::Atom* c, const double angle)
+void cds::FindAtomsToMoveAndSetAngle(cds::Atom* a, cds::Atom* b, cds::Atom* c, const double angle)
 {
     std::vector<cds::Atom*> atomsToMove;
     atomsToMove.push_back(b);
     cdsSelections::FindConnectedAtoms(atomsToMove, c);
     atomsToMove.erase(atomsToMove.begin()); // this is expensive
     std::vector<Coordinate*> coordsToMove = cds::getCoordinatesFromAtoms(atomsToMove);
-    GeometryTopology::SetAngle(a->getCoordinate(), b->getCoordinate(), c->getCoordinate(), angle, coordsToMove);
+    cds::SetAngle(a->getCoordinate(), b->getCoordinate(), c->getCoordinate(), angle, coordsToMove);
     return;
 }
 
 // parentAtom (e.g. O of OME), childAtom (e.g. C1 of Gal1-, S1 of SO3)
-void GeometryTopology::FindAtomsToMoveSetDistance(cds::Atom* parentAtom, cds::Atom* childAtom)
+void cds::FindAtomsToMoveSetDistance(cds::Atom* parentAtom, cds::Atom* childAtom)
 { // Figure out distance
 //    std::cout << "parent is " << parentAtom->getName() << " " << parentAtom->getCoordinate()->ToString() << "\n";
 //    std::cout << "child is " << childAtom->getName() << " " << childAtom->getCoordinate()->ToString() << "\n";
@@ -46,7 +45,7 @@ void GeometryTopology::FindAtomsToMoveSetDistance(cds::Atom* parentAtom, cds::At
     double distance = bondLengthByTypePairContainer.GetBondLengthForAtomTypes(parentAtom->getType(), childAtom->getType());
     std::cout << "distance to new atom sill be: " << distance << "\n";
     // Create an atom c that is will superimpose onto the a atom, bringing b atom with it.
-    Coordinate c = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(childAtom, distance);
+    Coordinate c = cds::CreateMissingCoordinateForTetrahedralAtom(childAtom, distance);
 //    std::cout << "New tetraAtom for child is: " << c.ToString() << "\n";
     Coordinate cToParent(parentAtom->getCoordinate()->GetX() - c.GetX(), parentAtom->getCoordinate()->GetY() - c.GetY(), parentAtom->getCoordinate()->GetZ() - c.GetZ());
 //    std::cout << "cToParent is " << cToParent.ToString() << "\n";

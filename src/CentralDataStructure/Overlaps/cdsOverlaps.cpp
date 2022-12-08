@@ -1,6 +1,6 @@
 #include "includes/CentralDataStructure/Overlaps/cdsOverlaps.hpp"
 #include "includes/CodeUtils/constants.hpp" // maxcutoff
-using GeometryTopology::Coordinate;
+using cds::Coordinate;
 // I meant to time which is faster
 bool cds::CheckIfOtherCoordinateIsWithinDistance(const Coordinate* a, const Coordinate* b, const double distance)
 {

@@ -3,8 +3,8 @@
 
 
 #include "includes/CentralDataStructure/atom.hpp"
+#include "includes/CentralDataStructure/coordinate.hpp"
 #include "includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
-#include "includes/GeometryTopology/geometrytopology.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/External_Libraries/PCG/pcg_random.h"
 #include "includes/CentralDataStructure/Overlaps/cdsOverlaps.hpp"
@@ -13,8 +13,6 @@
 
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleData;
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
-using GeometryTopology::Coordinate;
-
 // Seed with a real random value, if available
 static pcg_extras::seed_seq_from<std::random_device> seed_source;
 // Make a random number engine
@@ -92,7 +90,7 @@ private:
     double WiggleWithinRangesDistanceCheck(std::vector<cds::Atom*>& overlapAtomSet1, std::vector<cds::Atom*> &overlapAtomSet2, const int &angleIncrement, const double& lowerBound, const double& upperBound);
     double WiggleWithinRangesDistanceCheck(std::vector<cds::Residue*>& overlapResidueSet1, std::vector<cds::Residue*> &overlapResidueSet2, const int &angleIncrement, const double& lowerBound, const double& upperBound);
 
-    inline std::vector<Coordinate*>& GetCoordinatesThatMove() {return coordinatesThatMove_;}
+    inline std::vector<cds::Coordinate*>& GetCoordinatesThatMove() {return coordinatesThatMove_;}
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
@@ -104,7 +102,7 @@ private:
     // A vector of pointers to the atoms that are connected to atom2_ and atom3_, and will be rotated when that bond is rotated.
 //    std::vector<cds::Atom*> atoms_that_move_;
 //    std::vector<cds::Atom*> extra_atoms_that_move_;
-    std::vector<Coordinate*> coordinatesThatMove_;
+    std::vector<cds::Coordinate*> coordinatesThatMove_;
     bool isAtomsThatMoveReversed_;
     double previous_dihedral_angle_; // I often want to reset a dihedral angle after rotating it, so recording the previous angle makes this easy.
     DihedralAngleDataVector assigned_metadata_;

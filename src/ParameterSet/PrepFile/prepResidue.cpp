@@ -1,15 +1,13 @@
-#include <sstream>
-#include <fstream>
-#include <iostream>
-#include <iomanip>
-#include <ios>
-
 #include "includes/ParameterSet/PrepFile/prepResidue.hpp"
 #include "includes/ParameterSet/PrepFile/prepAtom.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/utils.hpp" //Trim
-
+#include <sstream>
+#include <fstream>
+#include <iostream>
+#include <iomanip>
+#include <ios>
 using prep::PrepResidue;
 
 //////////////////////////////////////////////////////////
@@ -392,9 +390,9 @@ void PrepResidue::Generate3dStructure()
 	if( (this->getAtoms().size() > 4) && (this->getAtoms().at(2)->getName() == "DUMM") )
 	{
 		// Set dummy atoms
-		this->getAtoms().at(0)->setCoordinate(GeometryTopology::Coordinate(0, 0, 0));
-		this->getAtoms().at(1)->setCoordinate(GeometryTopology::Coordinate(0.5, 0, 0));
-		this->getAtoms().at(2)->setCoordinate(GeometryTopology::Coordinate(-0.75, 0.35, 0));
+		this->getAtoms().at(0)->setCoordinate(cds::Coordinate(0, 0, 0));
+		this->getAtoms().at(1)->setCoordinate(cds::Coordinate(0.5, 0, 0));
+		this->getAtoms().at(2)->setCoordinate(cds::Coordinate(-0.75, 0.35, 0));
 		// Use dummies as start for creating the other atoms.
 		std::vector<cds::Atom*> atomsInResidue = this->getAtoms();
 		std::vector<cds::Atom*>::iterator it1 = atomsInResidue.begin();

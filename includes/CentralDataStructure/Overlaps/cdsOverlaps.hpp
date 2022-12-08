@@ -3,7 +3,7 @@
 
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/constants.hpp"
-#include "includes/GeometryTopology/coordinate.hpp"
+#include "includes/CentralDataStructure/coordinate.hpp"
 #include "includes/CentralDataStructure/atom.hpp"
 #include "includes/CentralDataStructure/residue.hpp"
 
@@ -13,7 +13,7 @@
 
 namespace cds
 {
-using GeometryTopology::Coordinate;
+using cds::Coordinate;
 using cds::Atom;
 // ToDo this should be in Coordinate.
 bool CheckIfOtherCoordinateIsWithinDistance(const Coordinate* a, const Coordinate* b, const double distance);

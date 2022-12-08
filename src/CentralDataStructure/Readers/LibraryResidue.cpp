@@ -60,7 +60,7 @@ LibraryResidue::LibraryResidue(std::stringstream& residueStream, const std::stri
                 std::stringstream ss(line);
                 double x, y, z;
                 ss >> x >> y >> z;
-                GeometryTopology::Coordinate crd(x, y, z);
+                cds::Coordinate crd(x, y, z);
                 atom->setCoordinate(crd);
             }
         }

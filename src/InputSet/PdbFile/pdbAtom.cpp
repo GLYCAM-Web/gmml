@@ -1,4 +1,4 @@
-#include "../../../includes/InputSet/PdbFile/pdbAtom.hpp"
+#include "includes/InputSet/PdbFile/pdbAtom.hpp"
 #include "includes/CodeUtils/constants.hpp" // gmml::iNotSet
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"
@@ -75,7 +75,7 @@ PdbAtom::PdbAtom(const std::string &line)
     }
     try
     {
-        this->setCoordinate(GeometryTopology::Coordinate(codeUtils::RemoveWhiteSpace(line.substr(30 + shift, 8)), codeUtils::RemoveWhiteSpace(line.substr(38 + shift, 8)), codeUtils::RemoveWhiteSpace(line.substr(46 + shift, 8))));
+        this->setCoordinate(cds::Coordinate(codeUtils::RemoveWhiteSpace(line.substr(30 + shift, 8)), codeUtils::RemoveWhiteSpace(line.substr(38 + shift, 8)), codeUtils::RemoveWhiteSpace(line.substr(46 + shift, 8))));
     }
     catch (...)
     {

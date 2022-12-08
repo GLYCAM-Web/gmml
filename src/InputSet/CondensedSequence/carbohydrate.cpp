@@ -3,13 +3,11 @@
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp" // To get glycam name for ParsedResidue
 #include "includes/Abstract/absResidue.hpp" // For the Residue::Type
-#include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/files.hpp"
 #include "includes/ParameterSet/PrepFile/prepFile.hpp"
 #include "includes/ParameterSet/PrepFile/prepResidue.hpp"
 #include "includes/ParameterSet/PrepFile/prepAtom.hpp"
-#include "includes/CodeUtils/logging.hpp"
 #include "includes/CentralDataStructure/residue.hpp"
 #include "includes/CentralDataStructure/molecule.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
@@ -310,7 +308,7 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
     std::stringstream logss;
     // Geometry
     logss << "Setting bond distance between parent " << parentAtom->getName() << " and child " << childAtom->getName() << ".\n";
-    GeometryTopology::FindAtomsToMoveSetDistance(parentAtom, childAtom);
+    cds::FindAtomsToMoveSetDistance(parentAtom, childAtom);
     //   Now bond the atoms. This could also set distance?, and angle? if passed to function?
     childAtom->addBond(parentAtom); // parentAtom also connected to childAtom. Fancy.
     logss << "Bonded " << parentResidue->getName() << "@" << parentAtom->getName() << " to " << childResidue->getName() << "@" << childAtomName << std::endl;
@@ -322,7 +320,7 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
         if ( (parentAtomNeighbor->getName().at(0) != 'H') && (parentAtomNeighbor != childAtom ) )
         {
             std::cout << "Setting angle between\nparentNeighbor " << parentAtomNeighbor->getName() << " " << parentAtomNeighbor->getCoordinate()->ToString() << "\nparent " << parentAtom->getName() << " " << parentAtom->getCoordinate()->ToString() << "\nand child " << childAtom->getName() << " " << childAtom->getCoordinate()->ToString() << "\nchild residue " << childResidue->getName() << " will move\n";
-            GeometryTopology::SetAngle(parentAtomNeighbor->getCoordinate(), parentAtom->getCoordinate(), childAtom->getCoordinate(), constants::DEFAULT_ANGLE, childResidue->getCoordinates());
+            cds::SetAngle(parentAtomNeighbor->getCoordinate(), parentAtom->getCoordinate(), childAtom->getCoordinate(), constants::DEFAULT_ANGLE, childResidue->getCoordinates());
             break;
         }
     }

@@ -1,5 +1,4 @@
 #include "includes/CentralDataStructure/residue.hpp"
-#include "includes/GeometryTopology/coordinate.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/constants.hpp" // sNotSet
 #include "includes/CodeUtils/templatedSelections.hpp"

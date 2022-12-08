@@ -4,7 +4,7 @@
 
 #include "includes/common.hpp" // ToDo find out what's necessary in here and move to dedicated file in CodeUtils
 #include "includes/ParameterSet/PrepFile/prepAtom.hpp"
-#include "includes/GeometryTopology/geometrytopology.hpp" //get_cartesian_point_from_internal_coords()
+#include "includes/CentralDataStructure/Measurements/measurements.hpp" //get_cartesian_point_from_internal_coords()
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
@@ -177,10 +177,10 @@ void PrepAtom::Determine3dCoordinate()
 		throw std::runtime_error(message);
 	}
 	this->setCoordinate(
-			GeometryTopology::get_cartesian_point_from_internal_coords(
-			foundAtoms.at(3)->getCoordinate(),
-			foundAtoms.at(2)->getCoordinate(),
-			foundAtoms.at(1)->getCoordinate(),
+			cds::get_cartesian_point_from_internal_coords(
+			*(foundAtoms.at(3)->getCoordinate()),
+			*(foundAtoms.at(2)->getCoordinate()),
+			*(foundAtoms.at(1)->getCoordinate()),
 			this->GetAngle(),
 			this->GetDihedral(),
 			this->GetBondLength()

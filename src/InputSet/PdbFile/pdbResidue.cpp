@@ -1,12 +1,12 @@
-#include <includes/InputSet/PdbFile/pdbAtom.hpp>
-#include <sstream>
-#include <string>
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
+#include <includes/InputSet/PdbFile/pdbAtom.hpp>
 #include "includes/InputSet/PdbFile/pdbResidueId.hpp" // residueId
-#include "includes/GeometryTopology/geometrytopology.hpp" // get_cartesian_point_from_internal_coords
+#include "includes/CentralDataStructure/Measurements/measurements.hpp" // get_cartesian_point_from_internal_coords
+#include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp" //RemoveWhiteSpace
-#include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
+#include <sstream>
+#include <string>
 
 using pdb::PdbResidue;
 //////////////////////////////////////////////////////////
@@ -112,7 +112,7 @@ void PdbResidue::modifyCTerminal(const std::string& type)
             const cds::Atom* atomCA = this->FindAtom("CA");
             const cds::Atom* atomC = this->FindAtom("C");
             const cds::Atom* atomO = this->FindAtom("O");
-            GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->getCoordinate(), atomC->getCoordinate(), atomO->getCoordinate(), 120.0, 180.0, 1.25);
+            cds::Coordinate oxtCoord = cds::get_cartesian_point_from_internal_coords(*(atomCA->getCoordinate()), *(atomC->getCoordinate()), *(atomO->getCoordinate()), 120.0, 180.0, 1.25);
             this->addAtom(std::make_unique<PdbAtom>("OXT", oxtCoord));
             gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + static_cast<const PdbAtom*>(atomO)->GetId());
         }

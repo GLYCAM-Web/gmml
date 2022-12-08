@@ -11,6 +11,7 @@ absAtom::absAtom(const Coordinate& coord)
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
+// ToDo why is there two? const ref is better?
 Coordinate* absAtom::getCoordinate()
 {
     if(coordinates_.empty())
@@ -55,7 +56,7 @@ void absAtom::addCoordinate(const Coordinate& newCoord)
 //////////////////////////////////////////////////////////
 double absAtom::calculateDistance(const absAtom* otherAtom) const
 {
-    return this->getCoordinate()->Distance(otherAtom->getCoordinate());
+    return this->getCoordinate()->Distance(*(otherAtom->getCoordinate()));
 }
 
 

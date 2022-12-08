@@ -1,14 +1,15 @@
 #ifndef INCLUDES_ABSTRACT_ATOM_HPP
 #define INCLUDES_ABSTRACT_ATOM_HPP
 
+#include "includes/CentralDataStructure/coordinate.hpp"
+#include "includes/CodeUtils/constants.hpp" // dNotSet
+
 #include <string>
 #include <iostream>
 #include <vector>
+#include <memory> // unique_ptr
 
-#include "includes/GeometryTopology/coordinate.hpp"
-#include "includes/CodeUtils/constants.hpp" // dNotSet
-
-using GeometryTopology::Coordinate;
+using cds::Coordinate;
 namespace Abstract
 {
 class absAtom

@@ -2,11 +2,14 @@
 #define INCLUDES_CENTRALDATASTRUCTURE_RESIDUE_HPP
 
 #include "includes/CentralDataStructure/atom.hpp"
+#include "includes/CentralDataStructure/coordinate.hpp"
 #include "includes/Abstract/absResidue.hpp"
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
 
 #include <vector>
 #include <memory> // unique_ptr
+
+using cds::Coordinate;
 
 namespace cds
 {

@@ -1,7 +1,7 @@
 #include "includes/InputSet/PdbFile/pdbChain.hpp"
 #include "includes/InputSet/PdbFile/pdbResidue.hpp"
-#include "includes/GeometryTopology/coordinate.hpp"
-#include "includes/GeometryTopology/geometrytopology.hpp" // get_cartesian_point_from_internal_coords
+#include "includes/CentralDataStructure/coordinate.hpp"
+#include "includes/CentralDataStructure/Measurements/measurements.hpp" // get_cartesian_point_from_internal_coords
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/biology.hpp" // proteinResidueNames
@@ -81,20 +81,20 @@ std::stringstream PdbChain::extractSingleResidueFromRecordSection(std::stringstr
 
 void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
 {
-    // This approach is bad, should be using templates. When parameter manager is good we can use that to remove the get_carestian stuff
-    using GeometryTopology::Coordinate;
+    // This approach is bad. When parameter manager is good we can use that to remove the get_carestian stuff
+    using cds::Coordinate;
     if (type == "NHCH3") // NME
     {
 //        int sequenceNumber = refResidue.GetSequenceNumber() + 1; // Single gaps will end up with the same ACE NME resid numbers. Otherwise good.
         const Coordinate* cCoordProtein = refResidue.FindAtom("C")->getCoordinate();
         const Coordinate* caCoordProtein = refResidue.FindAtom("CA")->getCoordinate();
         const Coordinate* oCoordProtein = refResidue.FindAtom("O")->getCoordinate();
-        Coordinate nCoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordProtein, caCoordProtein, cCoordProtein, 120.0, 180.0, 1.4);
-        Coordinate hCoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordProtein, caCoordProtein, &nCoordNME, 109.0, 180.0, 1.0);
-        Coordinate ch3CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(caCoordProtein, cCoordProtein, &nCoordNME, 125.0, 180.0, 1.48);
-        Coordinate hh31CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, 180.0, 1.09);
-        Coordinate hh32CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, 60.0, 1.09);
-        Coordinate hh33CoordNME = GeometryTopology::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, -60.0, 1.09);
+        Coordinate nCoordNME = cds::get_cartesian_point_from_internal_coords(*oCoordProtein, *caCoordProtein, *cCoordProtein, 120.0, 180.0, 1.4);
+        Coordinate hCoordNME = cds::get_cartesian_point_from_internal_coords(*oCoordProtein, *caCoordProtein, nCoordNME, 109.0, 180.0, 1.0);
+        Coordinate ch3CoordNME = cds::get_cartesian_point_from_internal_coords(*caCoordProtein, *cCoordProtein, nCoordNME, 125.0, 180.0, 1.48);
+        Coordinate hh31CoordNME = cds::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, 180.0, 1.09);
+        Coordinate hh32CoordNME = cds::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, 60.0, 1.09);
+        Coordinate hh33CoordNME = cds::get_cartesian_point_from_internal_coords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, -60.0, 1.09);
         cds::Residue* newNMEResidue = this->insertNewResidue(std::make_unique<PdbResidue>("NME", &refResidue), refResidue );
         newNMEResidue->addAtom(std::make_unique<PdbAtom>("N", nCoordNME));
         newNMEResidue->addAtom(std::make_unique<PdbAtom>("H", hCoordNME));
@@ -112,12 +112,12 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
         const Coordinate* caCoordProtein = refResidue.FindAtom("CA")->getCoordinate();
         const Coordinate* nCoordProtein = refResidue.FindAtom("N")->getCoordinate();
         // This is bad, should use templates loaded from lib/prep file instead.
-        Coordinate cCoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(cCoordProtein, caCoordProtein, nCoordProtein, 120.0, -130.0, 1.4);
-        Coordinate oCoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(caCoordProtein, nCoordProtein, &cCoordACE, 120.0, 0.0, 1.23);
-        Coordinate ch3CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(caCoordProtein, nCoordProtein, &cCoordACE, 125.0, 180.0, 1.48);
-        Coordinate hh31CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, 180.0, 1.09);
-        Coordinate hh32CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, 60.0, 1.09);
-        Coordinate hh33CoordACE = GeometryTopology::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, -60.0, 1.09);
+        Coordinate cCoordACE = cds::get_cartesian_point_from_internal_coords(*cCoordProtein, *caCoordProtein, *nCoordProtein, 120.0, -130.0, 1.4);
+        Coordinate oCoordACE = cds::get_cartesian_point_from_internal_coords(*caCoordProtein, *nCoordProtein, cCoordACE, 120.0, 0.0, 1.23);
+        Coordinate ch3CoordACE = cds::get_cartesian_point_from_internal_coords(*caCoordProtein, *nCoordProtein, cCoordACE, 125.0, 180.0, 1.48);
+        Coordinate hh31CoordACE = cds::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, 180.0, 1.09);
+        Coordinate hh32CoordACE = cds::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, 60.0, 1.09);
+        Coordinate hh33CoordACE = cds::get_cartesian_point_from_internal_coords(oCoordACE, cCoordACE, ch3CoordACE, 109.0, -60.0, 1.09);
         // Ok this next bit is convoluted, but I look up the position of the first atom in the protein residue and insert the new Atom before it, and get passed back the position of the newly created atom, so I can use that when creating the next one and so on.
         // With ACE we want to insert before the residue, so I'm finding the residue before here:
         auto refPosition = this->findPositionOfResidue(&refResidue);
@@ -160,7 +160,7 @@ bool PdbChain::ModifyTerminal(const std::string& type)
             const cds::Atom* atomCA = cTermResidue->FindAtom("CA");
             const cds::Atom* atomC = cTermResidue->FindAtom("C");
             const cds::Atom* atomO = cTermResidue->FindAtom("O");
-            GeometryTopology::Coordinate oxtCoord = GeometryTopology::get_cartesian_point_from_internal_coords(atomCA->getCoordinate(), atomC->getCoordinate(), atomO->getCoordinate(), 120.0, 180.0, 1.25);
+            cds::Coordinate oxtCoord = cds::get_cartesian_point_from_internal_coords(*(atomCA->getCoordinate()), *(atomC->getCoordinate()), *(atomO->getCoordinate()), 120.0, 180.0, 1.25);
             cTermResidue->addAtom(std::make_unique<PdbAtom>("OXT", oxtCoord));
             gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + static_cast<const PdbAtom*>(atomO)->GetId());
         }
