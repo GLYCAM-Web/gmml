@@ -24,7 +24,7 @@ int main ()
     std::string s17 = "DManpa[6S,2S]1-OME";
     //std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7};
    // std::vector<std::string> sequences {s17};
-    std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15};
+    std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17};
 //    std::string prepFilePath = "/programs/gems/gmml/dat/prep/GLYCAM_06j-1_GAGS.prep";
     std::string prepFilePath = "../dat/prep/GLYCAM_06j-1_GAGS.prep";
     int loopCounter = 0;
@@ -37,6 +37,10 @@ int main ()
             std::cout << "Sequence " << loopCounter << ": " << sequence << "\n";
             //MolecularModeling::Assembly ass(sequence, prepFilePath); // WARNING. Just a test. 3D structures are not correct.
             CondensedSequence::Carbohydrate theVanToMordor(sequence, prepFilePath);
+            if (theVanToMordor.GetStatusType() != "OK")
+            { // This is dumb, but I haven't quite finalized how to handle the error throwing in e.g. glycoprotein builder using the carb builder vs here.
+                throw std::runtime_error(theVanToMordor.GetStatusMessage());
+            }
             std::cout << "Structure created without throwing an exception for: " << sequence << "\n\n";
             for(auto &residue : theVanToMordor.getResidues())
             {
@@ -46,11 +50,13 @@ int main ()
             }
             std::cout << "*****\n\n\n";
             // Outputs for fun:
+
             theVanToMordor.setName("HiMyNameIs " + sequence);
             std::string fileName = "./sequenceAsPdbFile.pdb";
             std::ofstream outFileStream;
             try
             {
+                std::cout << "Writing: " << fileName << "\n";
                 outFileStream.open(fileName.c_str());
                 theVanToMordor.WritePdb(outFileStream);
                 outFileStream.close();
@@ -64,6 +70,8 @@ int main ()
             fileName = "./sequenceAsOffFile.off";
             try
             {
+
+                std::cout << "Writing: " << fileName << "\n";
                 std::ofstream outFileStream;
                 outFileStream.open(fileName.c_str());
                 cds::WriteMoleculeToOffFile(theVanToMordor.getResidues(), outFileStream, theVanToMordor.getName());
