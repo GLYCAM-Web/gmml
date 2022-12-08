@@ -9,7 +9,7 @@ using GeometryTopology::Coordinate;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-Coordinate::Coordinate() : x_(gmml::dNotSet), y_(gmml::dNotSet), z_(gmml::dNotSet) {}
+Coordinate::Coordinate() : x_(0.0), y_(0.0), z_(0.0) {}
 
 Coordinate::Coordinate(double x, double y, double z) : x_(x), y_(y), z_(z) {}
 Coordinate::Coordinate(const std::string x, const std::string y, const std::string z)
