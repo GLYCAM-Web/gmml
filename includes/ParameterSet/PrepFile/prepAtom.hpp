@@ -1,10 +1,10 @@
 #ifndef INCLUDES_PARAMETERSET_PREPFILE_PREPFILEATOM_HPP
 #define INCLUDES_PARAMETERSET_PREPFILE_PREPFILEATOM_HPP
 
+#include "includes/CodeUtils/constants.hpp"
+#include "includes/CentralDataStructure/atom.hpp"
 #include <string>
 #include <iostream>
-#include "includes/common.hpp"
-#include "includes/CentralDataStructure/atom.hpp"
 
 namespace prep
 { // repeated from common or utils as they should be here, not in gmml scope. Left over there as the old class needs them until I delete it.
@@ -74,9 +74,9 @@ private:
 	int bond_index_ = 0;;                            /*!< Bond index; fill by the 5th column of the residue section of the file */
 	int angle_index_ = 0;;                           /*!< Angle index; fill by the 6th column of the residue section of the file */
 	int dihedral_index_ = 0;                        /*!< Dihedral index; fill by the 7th column of the residue section of the file */
-	double bond_length_ = gmml::dNotSet;                        /*!< Bond length; fill by the 8th column of the residue section of the file */
-	double angle_ = gmml::dNotSet;                              /*!< Angle; fill by the 9th column of the residue section of the file */
-	double dihedral_ = gmml::dNotSet;                           /*!< Dihedral; fill by the 10th column of the residue section of the file */
+	double bond_length_ = constants::dNotSet;                        /*!< Bond length; fill by the 8th column of the residue section of the file */
+	double angle_ = constants::dNotSet;                              /*!< Angle; fill by the 9th column of the residue section of the file */
+	double dihedral_ = constants::dNotSet;                           /*!< Dihedral; fill by the 10th column of the residue section of the file */
 	int visitCount_ = 0;
 	/*!< Sample line of the atom section of a prep file: 4 H1   H1  M  3  2  1  1.000    90.0     180.0     0.0 */
 };
