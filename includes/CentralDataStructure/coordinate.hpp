@@ -17,8 +17,8 @@ public:
     Coordinate() {}
     Coordinate(const std::string x, const std::string y, const std::string z);
     Coordinate(double x, double y, double z);
-    Coordinate(const Coordinate& coordinate);
-    Coordinate(Coordinate* coordinate);
+    //Coordinate(const Coordinate& coordinate);
+    //Coordinate(Coordinate* coordinate);
     //////////////////////////////////////////////////////////
     //                           ACCESSOR                   //
     //////////////////////////////////////////////////////////
