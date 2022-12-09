@@ -16,9 +16,11 @@ cds::Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centra
         gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
         throw std::runtime_error(ss.str());
     }
-    std::vector<const Coordinate*> threeNeighborCoords;
-    for (auto &neighbor : centralAtom->getNeighbors())
+    std::vector<Coordinate*> threeNeighborCoords;
+    std::vector<Atom*> neighbors = centralAtom->getNeighbors();
+    for (auto &neighbor : neighbors )
     {
+//        std::cout << neighbor->getName() << ", " << neighbor->getCoordinate()->ToString() << "\n";
         threeNeighborCoords.push_back(neighbor->getCoordinate());
     }
     return cds::CreateMissingCoordinateForTetrahedralAtom(centralAtom->getCoordinate(), threeNeighborCoords, distance);
@@ -41,12 +43,12 @@ void cds::FindAtomsToMoveSetDistance(cds::Atom* parentAtom, cds::Atom* childAtom
 //    std::cout << "parent is " << parentAtom->getName() << " " << parentAtom->getCoordinate()->ToString() << "\n";
 //    std::cout << "child is " << childAtom->getName() << " " << childAtom->getCoordinate()->ToString() << "\n";
     gmml::MolecularMetadata::GLYCAM::BondLengthByTypePairContainer bondLengthByTypePairContainer;
-    std::cout << "Types for parent is " << parentAtom->getType() << " and child is " << childAtom->getType() << "\n";
+    //std::cout << "Types for parent is " << parentAtom->getType() << " and child is " << childAtom->getType() << "\n";
     double distance = bondLengthByTypePairContainer.GetBondLengthForAtomTypes(parentAtom->getType(), childAtom->getType());
-    std::cout << "distance to new atom sill be: " << distance << "\n";
+    //std::cout << "distance to new atom sill be: " << distance << "\n";
     // Create an atom c that is will superimpose onto the a atom, bringing b atom with it.
     Coordinate c = cds::CreateMissingCoordinateForTetrahedralAtom(childAtom, distance);
-//    std::cout << "New tetraAtom for child is: " << c.ToString() << "\n";
+    //std::cout << "New tetraAtom for child is: " << c.ToString() << "\n";
     Coordinate cToParent(parentAtom->getCoordinate()->GetX() - c.GetX(), parentAtom->getCoordinate()->GetY() - c.GetY(), parentAtom->getCoordinate()->GetZ() - c.GetZ());
 //    std::cout << "cToParent is " << cToParent.ToString() << "\n";
     // Figure out which atoms will move
