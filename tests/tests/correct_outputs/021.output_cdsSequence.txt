@@ -1,0 +1,3774 @@
+-----------------------------------------------------------------------------------------------------
+
+Sequence 1: DTalp[2S,3Me]a1-6DManpa1-6[DAllpb1-3][DNeup5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH
+Glycam names are: ROH, 4YB, UKB, MEX, QMB, 2EA, WGB, SO3, 6LB, 0SA, 0NB, 6MA, ZTA, MEX, SO3, 
+Found query residue: 0NB
+0NB will be read in 1 times.
+Found query residue: 0SA
+0SA will be read in 1 times.
+Found query residue: 2EA
+2EA will be read in 1 times.
+Found query residue: 4YB
+4YB will be read in 1 times.
+Found query residue: 6LB
+6LB will be read in 1 times.
+Found query residue: 6MA
+6MA will be read in 1 times.
+Found query residue: MEX
+MEX will be read in 2 times.
+Found query residue: QMB
+QMB will be read in 1 times.
+Found query residue: ROH
+ROH will be read in 1 times.
+Found query residue: SO3
+SO3 will be read in 2 times.
+Found query residue: UKB
+UKB will be read in 1 times.
+Found query residue: WGB
+WGB will be read in 1 times.
+Found query residue: ZTA
+ZTA will be read in 1 times.
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+
+
+
+On to setting 3d structure!
+
+Setting connection between 4YB and it's parent ROH, which has linkageLabel: 
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_127:4YB
+O1_248:4YB
+
+Finding Path between:C1_127 and O1_248
+Updated Path between:
+ C1_127 and O1_248
+C2_143
+C1_127
+O1_248
+HO1_247
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 4YB and ROH
+These are the assigned RotatableDihedrals:
+C2, C1, O1, HO1: -98.1161.
+Setting default shape
+Blocking access via O1, we will search outward from C1
+Have determined that the following atoms will move:
+O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between UKB and it's parent 4YB, which has linkageLabel: b1-
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -6.96309,    10.6793,   -2.06386
+parent O4   -7.35738,    11.5979,   -1.02186
+and child C1   -8.20032,     10.755,   -1.86479
+child residue UKB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_269:UKB
+C4_137:UKB
+
+Finding Path between:C1_269 and C4_137
+Updated Path between:
+ C1_269 and C4_137
+C2_284
+C1_269
+O4_153
+C4_137
+C5_130
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: UKB and 4YB
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: -16.7986.
+C1, O4, C4, C5: -87.624.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H3O, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between MEX and it's parent UKB, which has linkageLabel: b1-4
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -10.7693,    9.97655,   0.980758
+parent O6   -11.2035,    9.01464, -0.000421121
+and child CH3   -12.0464,    8.17171,  -0.843353
+child residue MEX will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+CH3_208:MEX
+C5_272:MEX
+
+Finding Path between:CH3_208 and C5_272
+Updated Path between:
+ CH3_208 and C5_272
+H3_211
+CH3_208
+O6_277
+C6_274
+C5_272
+O5_271
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: MEX and UKB
+These are the assigned RotatableDihedrals:
+H3, CH3, O6, C6: 83.0704.
+CH3, O6, C6, C5: -145.369.
+O6, C6, C5, O5: 62.18.
+Setting default shape
+Blocking access via O6, we will search outward from CH3
+Have determined that the following atoms will move:
+O6, CH3, H1, H2, H3, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, CH3, H1, H2, H3, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, CH3, H1, H2, H3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between QMB and it's parent UKB, which has linkageLabel: b1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -8.87976,    11.6351,    1.56539
+parent O4   -9.86975,    12.5813,    2.05693
+and child C1   -10.7127,    11.7384,    1.21399
+child residue QMB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_224:QMB
+C4_278:QMB
+
+Finding Path between:C1_224 and C4_278
+Updated Path between:
+ C1_224 and C4_278
+C2_238
+C1_224
+O4_288
+C4_278
+C5_272
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: QMB and UKB
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: -37.1683.
+C1, O4, C4, C5: 6.42849.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 2EA and it's parent QMB, which has linkageLabel: b1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -10.0915,    15.3284,    3.23822
+parent O4   -9.69926,    16.4842,    2.45177
+and child C1   -10.5422,    15.6413,    1.60884
+child residue 2EA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_102:2EA
+C4_233:2EA
+
+Finding Path between:C1_102 and C4_233
+Updated Path between:
+ C1_102 and C4_233
+C2_104
+C1_102
+O4_235
+C4_233
+C5_227
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 2EA and QMB
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: -78.7761.
+C1, O4, C4, C5: 119.344.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between WGB and it's parent 2EA, which has linkageLabel: a1-4
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   -9.54791,    17.2572,     1.7691
+parent O2   -10.0968,    18.1251,    0.76397
+and child C1   -10.9398,    17.2822, -0.0789614
+child residue WGB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_293:WGB
+C2_104:WGB
+
+Finding Path between:C1_293 and C2_104
+Updated Path between:
+ C1_293 and C2_104
+C2_308
+C1_293
+O2_122
+C2_104
+C1_102
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: WGB and 2EA
+These are the assigned RotatableDihedrals:
+C2, C1, O2, C2: -98.5162.
+C1, O2, C2, C1: -113.562.
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H2, O2, H2O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between SO3 and it's parent WGB, which has linkageLabel: b1-2
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -11.8598,    19.3633,   0.212982
+parent O3   -12.3393,    20.6505,  -0.263768
+and child S1   -13.2567,    19.7331,   -1.18118
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_253:SO3
+C3_306:SO3
+
+Finding Path between:S1_253 and C3_306
+Updated Path between:
+ S1_253 and C3_306
+O3_256
+S1_253
+O3_312
+C3_306
+C4_303
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and WGB
+These are the assigned RotatableDihedrals:
+O3, S1, O3, C3: -61.4243.
+S1, O3, C3, C4: -42.9898.
+Setting default shape
+Blocking access via O3, we will search outward from S1
+Have determined that the following atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 6LB and it's parent WGB, which has linkageLabel: b1-2
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -13.0721,    18.4217,   0.412927
+parent O4   -13.9064,    18.9425,    1.47569
+and child C1   -14.7494,    18.0995,   0.632758
+child residue 6LB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_158:6LB
+C4_303:6LB
+
+Finding Path between:C1_158 and C4_303
+Updated Path between:
+ C1_158 and C4_303
+C2_171
+C1_158
+O4_305
+C4_303
+C5_296
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 6LB and WGB
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: -8.27073.
+C1, O4, C4, C5: -81.9026.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0SA and it's parent 6LB, which has linkageLabel: b1-4
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -16.9837,    16.0763,    2.25197
+parent O6   -16.8476,    15.2971,    1.05231
+and child C2   -17.6616,     14.483,   0.238248
+child residue 0SA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C2_61:0SA
+C5_161:0SA
+
+Finding Path between:C2_61 and C5_161
+Updated Path between:
+ C2_61 and C5_161
+C1_62
+C2_61
+O6_178
+C6_175
+C5_161
+O5_160
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0SA and 6LB
+These are the assigned RotatableDihedrals:
+C1, C2, O6, C6: 73.5974.
+C2, O6, C6, C5: -154.181.
+O6, C6, C5, O5: 63.12.
+Setting default shape
+Blocking access via O6, we will search outward from C2
+Have determined that the following atoms will move:
+O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0NB and it's parent QMB, which has linkageLabel: b1-4
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -11.0181,    14.4125,    2.39297
+parent O3   -12.2197,    15.1091,    1.95277
+and child C1   -13.0626,    14.2662,    1.10983
+child residue 0NB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_35:0NB
+C3_236:0NB
+
+Finding Path between:C1_35 and C3_236
+Updated Path between:
+ C1_35 and C3_236
+C2_53
+C1_35
+O3_242
+C3_236
+C4_233
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0NB and QMB
+These are the assigned RotatableDihedrals:
+C2, C1, O3, C3: -59.1034.
+C1, O3, C3, C4: 177.512.
+Setting default shape
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 6MA and it's parent QMB, which has linkageLabel: b1-4
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -7.95701,    15.3722,    4.64904
+parent O6     -6.777,     14.627,    4.99985
+and child C1   -7.61993,    13.7841,    4.15692
+child residue 6MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_183:6MA
+C5_227:6MA
+
+Finding Path between:C1_183 and C5_227
+Updated Path between:
+ C1_183 and C5_227
+C2_185
+C1_183
+O6_232
+C6_229
+C5_227
+O5_226
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 6MA and QMB
+These are the assigned RotatableDihedrals:
+C2, C1, O6, C6: 127.454.
+C1, O6, C6, C5: -5.18669.
+O6, C6, C5, O5: 57.44.
+Setting default shape
+Blocking access via O6, we will search outward from C1
+Have determined that the following atoms will move:
+O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between ZTA and it's parent 6MA, which has linkageLabel: a1-6
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -8.02176,    20.1968,     6.4998
+parent O6   -6.99288,    20.4776,    5.52631
+and child C1   -7.83581,    19.6347,    4.68338
+child residue ZTA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_317:ZTA
+C5_197:ZTA
+
+Finding Path between:C1_317 and C5_197
+Updated Path between:
+ C1_317 and C5_197
+C2_319
+C1_317
+O6_203
+C6_200
+C5_197
+O5_199
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: ZTA and 6MA
+These are the assigned RotatableDihedrals:
+C2, C1, O6, C6: -122.885.
+C1, O6, C6, C5: 35.2263.
+O6, C6, C5, O5: 70.4888.
+Setting default shape
+Blocking access via O6, we will search outward from C1
+Have determined that the following atoms will move:
+O6, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between MEX and it's parent ZTA, which has linkageLabel: a1-6
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -9.32349,    20.7098,    8.81883
+parent O3   -9.86259,    19.6878,    9.67646
+and child CH3   -10.7055,    18.8448,    8.83353
+child residue MEX will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+CH3_216:MEX
+C3_321:MEX
+
+Finding Path between:CH3_216 and C3_321
+Updated Path between:
+ CH3_216 and C3_321
+H3_219
+CH3_216
+O3_335
+C3_321
+C4_323
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: MEX and ZTA
+These are the assigned RotatableDihedrals:
+H3, CH3, O3, C3: -24.3857.
+CH3, O3, C3, C4: 110.892.
+Setting default shape
+Blocking access via O3, we will search outward from CH3
+Have determined that the following atoms will move:
+O3, CH3, H1, H2, H3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, CH3, H1, H2, H3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between SO3 and it's parent ZTA, which has linkageLabel: a1-6
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   -7.77936,    20.6588,    8.80922
+parent O2   -7.26604,      20.78,    10.1491
+and child S1   -8.18345,    19.8626,    9.23174
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_261:SO3
+C2_319:SO3
+
+Finding Path between:S1_261 and C2_319
+Updated Path between:
+ S1_261 and C2_319
+O3_264
+S1_261
+O2_336
+C2_319
+C1_317
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and ZTA
+These are the assigned RotatableDihedrals:
+O3, S1, O2, C2: 76.8665.
+S1, O2, C2, C1: -177.386.
+Setting default shape
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Re-determining atoms that need to move for each linkage:
+Blocking access via O1, we will search outward from C1
+Have determined that the following atoms will move:
+O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, CH3, H1, H2, H3, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, CH3, H1, H2, H3, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, CH3, H1, H2, H3, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via O6, we will search outward from CH3
+Have determined that the following atoms will move:
+O6, CH3, H1, H2, H3, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, CH3, H1, H2, H3, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, CH3, H1, H2, H3, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H2, O2, H2O, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, O2, H2O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, O2, H2O, H1, 
+Blocking access via O3, we will search outward from S1
+Have determined that the following atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, S1, O1, O2, O3, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via O6, we will search outward from C2
+Have determined that the following atoms will move:
+O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via O6, we will search outward from C1
+Have determined that the following atoms will move:
+O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, 
+Blocking access via O6, we will search outward from C1
+Have determined that the following atoms will move:
+O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O3, we will search outward from CH3
+Have determined that the following atoms will move:
+O3, CH3, H1, H2, H3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, CH3, H1, H2, H3, 
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
+Final overlap resolution
+Overlaps resolved
+Number of residues is 15
+Structure created without throwing an exception for: DTalp[2S,3Me]a1-6DManpa1-6[DAllpb1-3][DNeup5Aca2-6DGalpb1-4DGlcp[3S]b1-2DAltpa1-4]DManpb1-4DGulp[6Me]b1-4DGlcpNAcb1-OH
+
+Residue:
+Name: ROH, index:1:
+  4   HO1    Ho  M   3   2   1     9.377   124.134   -168.39     0.445
+  5    O1    Oh  M   4   3   2      0.96   137.664    103.52    -0.639
+
+
+Residue:
+Name: 4YB, index:2:
+  4    C1    Cg  M   3   2   1    23.493    98.498   -136.36     0.287
+  5    H1    H2  E   4   3   2     1.091     71.45    -93.59         0
+  6    O5    Os  M   4   3   2     1.468   130.511    167.53    -0.433
+  7    C5    Cg  M   6   4   3     1.493   115.188    144.42     0.208
+  8    H5    H1  E   7   6   4     1.092   108.293     -60.8         0
+  9    C6    Cg  3   7   6   4      1.54    109.52    -179.1     0.289
+ 10   H62    H1  E   9   7   6     1.091   110.298       -62         0
+ 11   H61    H1  E   9   7   6      1.09   110.526    178.17         0
+ 12    O6    Oh  S   9   7   6     1.439   109.712     58.17    -0.689
+ 13   H6O    Ho  E  12   9   7     0.961   108.379     -54.8     0.424
+ 14    C4    Cg  M   7   6   4     1.542   108.679     57.57     0.302
+ 15    H4    H1  E  14   7   6     1.092   109.552     66.23         0
+ 16    C3    Cg  3  14   7   6     1.547   111.743    -55.34      0.18
+ 17    H3    H1  E  16  14   7     1.092   108.855    -63.61         0
+ 18    O3    Oh  S  16  14   7     1.462    108.35    179.31    -0.681
+ 19   H3O    Ho  E  18  16  14     0.964   110.728    170.98     0.423
+ 20    C2    Cg  B  16  14   7     1.555   110.847     55.82      0.48
+ 21    H2    H1  E  20  16  14     1.092   108.016     63.51         0
+ 22    N2    Ng  B  20  16  14     1.484   110.897    -176.4    -0.722
+ 23   H2N     H  E  22  20  16     1.006   117.592     78.54       0.3
+ 24   C2N     C  B  22  20  16     1.336   123.143   -111.93     0.648
+ 25   O2N     O  E  24  22  20     1.226   122.116      6.61    -0.576
+ 26   CME    Cg  3  24  22  20     1.542   116.434   -175.43     0.034
+ 27   H3M    Hc  E  26  24  22     1.092    110.63     37.74         0
+ 28   H2M    Hc  E  26  24  22     1.091   110.076    157.79         0
+ 29   H1M    Hc  E  26  24  22     1.091   109.335    -82.58         0
+ 30    O4    Os  M  14   7   6     1.444   108.611      -175    -0.474
+
+
+Residue:
+Name: UKB, index:3:
+  4    C1    Cg  M   3   2   1    23.393    98.693   -136.32     0.449
+  5    H1    H2  E   4   3   2     1.091    69.568    -95.43         0
+  6    O5    Os  M   4   3   2     1.465   133.014    166.49    -0.514
+  7    C5    Cg  M   6   4   3     1.499    115.03    146.87     0.303
+  8    H5    H1  E   7   6   4     1.092   107.891    -62.65         0
+  9    C6    Cg  3   7   6   4     1.542    109.43   -179.47      0.22
+ 10   H62    H1  E   9   7   6      1.09   110.533    -58.28         0
+ 11   H61    H1  E   9   7   6      1.09   110.096   -177.88         0
+ 12    O6    Os  E   9   7   6     1.441   110.162     62.18    -0.448
+ 13    C4    Cg  M   7   6   4     1.553   110.891     55.18     0.217
+ 14    H4    H1  E  13   7   6     1.091   108.867   -172.31         0
+ 15    C3    Cg  3  13   7   6     1.545   111.117    -51.77     0.253
+ 16    H3    H1  E  15  13   7     1.091   109.391    173.95         0
+ 17    O3    Oh  S  15  13   7     1.452   107.992    -68.85     -0.71
+ 18   H3O    Ho  E  17  15  13     0.968   107.267    175.38     0.442
+ 19    C2    Cg  B  15  13   7     1.547   111.988     52.75     0.308
+ 20    H2    H1  E  19  15  13     1.091   108.509     65.85         0
+ 21    O2    Oh  S  19  15  13     1.462   109.337   -176.76     -0.71
+ 22   H2O    Ho  E  21  19  15     0.965   108.091    178.76     0.426
+ 23    O4    Os  M  13   7   6     1.455   110.952     69.39    -0.469
+
+
+Residue:
+Name: MEX, index:4:
+  4   CH3    Cg  M   3   2   1     7.197   127.853   -163.43     0.233
+  5    H1    H1  E   4   3   2     1.085    46.873    132.02         0
+  6    H2    H1  E   4   3   2     1.085    68.995    -13.56         0
+  7    H3    H1  E   4   3   2     1.085   144.863      77.2         0
+
+
+Residue:
+Name: QMB, index:5:
+  4    C1    Cg  M   3   2   1    23.455    98.474   -136.31     0.314
+  5    H1    H2  E   4   3   2     1.091    71.744     -87.8         0
+  6    O5    Os  M   4   3   2      1.47     130.2    172.77    -0.393
+  7    C5    Cg  M   6   4   3     1.498   115.894    145.97     0.206
+  8    H5    H1  E   7   6   4     1.092   107.771    -66.97         0
+  9    C6    Cg  3   7   6   4     1.539   108.924    175.37     0.273
+ 10   H62    H1  E   9   7   6     1.091   110.262     -62.7         0
+ 11   H61    H1  E   9   7   6      1.09   110.558    177.52         0
+ 12    O6    Os  E   9   7   6     1.439    109.85     57.44    -0.455
+ 13    C4    Cg  M   7   6   4      1.55   110.843     51.87     0.349
+ 14    H4    H1  E  13   7   6     1.091   109.789     70.94         0
+ 15    O4    Os  E  13   7   6     1.452   108.352   -170.58    -0.497
+ 16    C3    Cg  M  13   7   6     1.553   110.419    -50.51     0.263
+ 17    H3    H1  E  16  13   7     1.092   108.588    -60.79         0
+ 18    C2    Cg  B  16  13   7     1.547   110.623     57.43     0.241
+ 19    H2    H1  E  18  16  13     1.091   110.076       180         0
+ 20    O2    Oh  S  18  16  13     1.459   110.769     59.28    -0.664
+ 21   H2O    Ho  E  20  18  16     0.964   107.524   -173.81     0.431
+ 22    O3    Os  M  16  13   7     1.457   111.995    -178.5    -0.456
+
+
+Residue:
+Name: 2EA, index:10:
+  4    C1    Cg  M   3   2   1    25.461     79.06   -133.51      0.48
+  5    H1    H2  E   4   3   2     1.091     14.86    114.51         0
+  6    C2    Cg  M   4   3   2     1.545     97.72    -26.56     0.179
+  7    H2    H1  E   6   4   3     1.092   109.966    -63.25         0
+  8    C3    Cg  3   6   4   3     1.541   114.896    172.06     0.328
+  9    H3    H1  E   8   6   4     1.091   110.106   -167.45         0
+ 10    C4    Cg  3   8   6   4     1.544   111.809    -45.05     0.261
+ 11    H4    H1  E  10   8   6     1.091   108.188    -68.68         0
+ 12    C5    Cg  3  10   8   6     1.541   113.133      51.5     0.374
+ 13    H5    H1  E  12  10   8     1.092   109.237      63.3         0
+ 14    C6    Cg  3  12  10   8     1.535   114.012   -174.39     0.259
+ 15   H62    H1  E  14  12  10      1.09   110.525    -56.55         0
+ 16   H61    H1  E  14  12  10     1.091   110.727     63.66         0
+ 17    O6    Oh  S  14  12  10     1.434   108.916   -175.95    -0.663
+ 18   H6O    Ho  E  17  14  12      0.96    109.47     59.69     0.406
+ 19    O5    Os  E  12  10   8     1.485   107.816    -54.81    -0.587
+ 20    O4    Oh  S  10   8   6     1.439   109.304    174.29    -0.721
+ 21   H4O    Ho  E  20  10   8      0.96   109.412    -61.37     0.415
+ 22    O3    Oh  S   8   6   4     1.442   106.866     75.38    -0.714
+ 23   H3O    Ho  E  22   8   6      0.96   109.461     58.71      0.42
+ 24    O2    Os  M   6   4   3     1.437   106.903      53.1    -0.437
+
+
+Residue:
+Name: WGB, index:11:
+  4    C1    Cg  M   3   2   1    23.508     98.38   -136.27     0.384
+  5    H1    H2  E   4   3   2     1.091    68.626    -93.36         0
+  6    O5    Os  M   4   3   2     1.466   129.972    169.02    -0.471
+  7    C5    Cg  M   6   4   3     1.495   115.297    142.28     0.225
+  8    H5    H1  E   7   6   4     1.092   108.301    -60.31         0
+  9    C6    Cg  3   7   6   4     1.541   109.304   -178.46     0.282
+ 10   H62    H1  E   9   7   6     1.091   110.212    -62.75         0
+ 11   H61    H1  E   9   7   6      1.09   110.609    177.45         0
+ 12    O6    Oh  S   9   7   6      1.44    109.81     57.27    -0.688
+ 13   H6O    Ho  E  12   9   7     0.962   108.265     -53.1     0.424
+ 14    C4    Cg  M   7   6   4     1.543   108.909     58.25     0.276
+ 15    H4    H1  E  14   7   6     1.092   109.352     66.92         0
+ 16    O4    Os  E  14   7   6     1.448   108.899   -174.36    -0.468
+ 17    C3    Cg  M  14   7   6     1.548   111.306    -54.04     0.284
+ 18    H3    H1  E  17  14   7     1.092   109.104     -67.3         0
+ 19    C2    Cg  B  17  14   7     1.545   112.113     53.55      0.31
+ 20    H2    H1  E  19  17  14     1.092   109.394     68.33         0
+ 21    O2    Oh  S  19  17  14     1.458   108.975   -172.91    -0.718
+ 22   H2O    Ho  E  21  19  17     0.966   108.053    175.61     0.437
+ 23    O3    Os  M  17  14   7     1.454   108.817    174.47     -0.44
+
+
+Residue:
+Name: SO3, index:14:
+  4    S1     S  M   3   2   1    10.884   119.491   -167.81     1.245
+  5    O1    O2  E   4   3   2     1.446    106.41   -102.07    -0.694
+  6    O2    O2  E   4   3   2     1.437   128.086    115.25    -0.694
+  7    O3    O2  E   4   3   2     1.446    70.631      7.86    -0.694
+
+
+Residue:
+Name: 6LB, index:12:
+  4    C1    Cg  M   3   2   1    23.468     98.38   -136.25     0.374
+  5    H1    H2  E   4   3   2     1.091    68.433    -93.22         0
+  6    O5    Os  M   4   3   2     1.469   130.208    170.01    -0.402
+  7    C5    Cg  M   6   4   3     1.495    116.01    144.53      0.14
+  8    H5    H1  E   7   6   4     1.092   108.013    -61.82         0
+  9    C4    Cg  3   7   6   4     1.545   110.103     55.47     0.203
+ 10    H4    H1  E   9   7   6     1.091   109.333   -173.92         0
+ 11    O4    Oh  S   9   7   6     1.449   109.628     67.34    -0.664
+ 12   H4O    Ho  E  11   9   7     0.967   107.158   -172.89     0.437
+ 13    C3    Cg  3   9   7   6     1.546   110.517    -53.62     0.259
+ 14    H3    H1  E  13   9   7     1.092   108.098    -64.81         0
+ 15    O3    Oh  S  13   9   7     1.455   109.126    178.29    -0.694
+ 16   H3O    Ho  E  15  13   9     0.967   107.449   -176.92     0.433
+ 17    C2    Cg  B  13   9   7     1.547   112.254     55.04     0.357
+ 18    H2    H1  E  17  13   9     1.092   109.716     67.43         0
+ 19    O2    Oh  S  17  13   9     1.459   108.705   -173.71    -0.726
+ 20   H2O    Ho  E  19  17  13     0.965   107.724    175.67     0.432
+ 21    C6    Cg  M   7   6   4     1.539   109.777   -179.32     0.319
+ 22   H62    H1  E  21   7   6     1.091   110.848    -57.06         0
+ 23   H61    H1  E  21   7   6      1.09   110.337    -177.3         0
+ 24    O6    Os  M  21   7   6     1.437   109.027     63.12    -0.468
+
+
+Residue:
+Name: 0SA, index:13:
+  4    C2    Cy  M   3   2   1    23.507    98.524   -136.13     0.237
+  5    C1     C  B   4   3   2     1.638   139.314    173.02     0.789
+  6   O1A    O2  E   5   4   3     1.261   116.232     59.36    -0.761
+  7   O1B    O2  E   5   4   3     1.255   119.143   -127.21    -0.761
+  8    C3    Cg  3   4   3   2      1.55   102.309     21.23     0.006
+  9   H3E    Hc  E   8   4   3     1.092   110.728    108.27         0
+ 10   H3A    Hc  E   8   4   3     1.094   110.177     -8.07         0
+ 11    C4    Cg  3   8   4   3     1.539   110.939    -128.8     0.332
+ 12    H4    H1  E  11   8   4     1.091   108.366    -70.79         0
+ 13    C5    Cg  3  11   8   4      1.56   113.169     49.81     0.308
+ 14    H5    H1  E  13  11   8     1.092   108.441     67.41         0
+ 15    C6    Cg  3  13  11   8     1.544   108.513    -50.35      0.22
+ 16    H6    H1  E  15  13  11      1.09   106.016    -61.45         0
+ 17    C7    Cg  3  15  13  11     1.543   118.917   -178.92     0.111
+ 18    H7    H1  E  17  15  13     1.091   107.799     66.42         0
+ 19    C8    Cg  3  17  15  13     1.556   112.192   -175.03     0.492
+ 20    H8    H1  E  19  17  15     1.091   109.991     62.63         0
+ 21    C9    Cg  3  19  17  15     1.552   112.385   -175.84     0.178
+ 22   H9S    H1  E  21  19  17      1.09   110.169    -56.42         0
+ 23   H9R    H1  E  21  19  17     1.091    109.92     62.24         0
+ 24    O9    Oh  S  21  19  17     1.449   111.722    -176.9    -0.689
+ 25   H9O    Ho  E  24  21  19     0.965   107.018     -49.3     0.408
+ 26    O8    Oh  S  19  17  15      1.46   109.072    -56.72    -0.739
+ 27   H8O    Ho  E  26  19  17     0.983   110.254     72.72     0.412
+ 28    O7    Oh  S  17  15  13      1.46   110.189    -50.14    -0.721
+ 29   H7O    Ho  E  28  17  15     0.977    109.95     68.18     0.435
+ 30    O6    Oy  E  15  13  11     1.441   107.983     55.53    -0.403
+ 31    N5    Ng  B  13  11   8     1.484   111.436   -172.57    -0.629
+ 32   H5N     H  E  31  13  11     1.007   117.476     40.91      0.28
+ 33   C5N     C  B  31  13  11     1.337    123.58   -145.57     0.632
+ 34   CME    Cg  3  33  31  13     1.541   116.316   -179.71    -0.003
+ 35   H3M    Hc  E  34  33  31     1.092   110.905    -29.98         0
+ 36   H2M    Hc  E  34  33  31     1.091   109.813      -150         0
+ 37   H1M    Hc  E  34  33  31     1.091   109.337     90.47         0
+ 38   O5N     O  E  33  31  13     1.228   122.141     -0.64    -0.593
+ 39    O4    Oh  S  11   8   4     1.451   108.218    172.28    -0.762
+ 40   H4O    Ho  E  39  11   8     0.959   109.266    178.83     0.415
+
+
+Residue:
+Name: 0NB, index:15:
+  4    C1    Cg  M   3   2   1    23.461    98.623    -136.3     0.422
+  5    H1    H2  E   4   3   2     1.092    69.195    -93.78         0
+  6    O5    Os  S   4   3   2      1.47   132.017     168.5    -0.507
+  7    C5    Cg  3   6   4   3       1.5    115.85    146.97     0.198
+  8    H5    H1  E   7   6   4     1.091   108.463    -62.31         0
+  9    C6    Cg  3   7   6   4     1.541   109.542    179.74     0.313
+ 10   H62    H1  E   9   7   6      1.09   110.338    -62.12         0
+ 11   H61    H1  E   9   7   6      1.09   110.689     177.7         0
+ 12    O6    Oh  S   9   7   6     1.438   109.178     57.79    -0.689
+ 13   H6O    Ho  E  12   9   7     0.962   107.694    -47.58     0.418
+ 14    C4    Cg  3   7   6   4     1.547   108.536     56.26     0.286
+ 15    H4    H1  E  14   7   6     1.091   108.641     63.49         0
+ 16    O4    Oh  S  14   7   6     1.447   110.674   -178.31    -0.707
+ 17   H4O    Ho  E  16  14   7     0.966   108.053     84.25      0.43
+ 18    C3    Cg  3  14   7   6     1.546   111.303    -56.16     0.234
+ 19    H3    H1  E  18  14   7     1.092   109.685    177.82         0
+ 20    O3    Oh  S  18  14   7     1.458   109.719    -63.09    -0.615
+ 21   H3O    Ho  E  20  18  14     0.967   107.516    169.04     0.389
+ 22    C2    Cg  B  18  14   7     1.544    109.92      57.5     0.301
+ 23    H2    H1  E  22  18  14     1.093   108.226     64.66         0
+ 24    O2    Oh  S  22  18  14     1.458   109.185   -178.16    -0.703
+ 25   H2O    Ho  E  24  22  18     0.966   108.382   -178.62     0.424
+
+
+Residue:
+Name: 6MA, index:6:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  M   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    O2    Oh  S   6   4   3     1.459   110.007     79.71    -0.717
+  9   H2O    Ho  E   8   6   4     0.965   108.621    167.29     0.446
+ 10    C3    Cg  M   6   4   3     1.545   110.571   -158.93     0.252
+ 11    H3    H1  E  10   6   4     1.092   108.528     64.93         0
+ 12    O3    Oh  S  10   6   4     1.461   109.595   -177.93    -0.696
+ 13   H3O    Ho  E  12  10   6     0.964   109.699    -74.81     0.431
+ 14    C4    Cg  M  10   6   4     1.549   111.609    -54.79     0.326
+ 15    H4    H1  E  14  10   6     1.091   109.865    -64.38         0
+ 16    O4    Oh  S  14  10   6     1.452   108.734    176.59    -0.733
+ 17   H4O    Ho  E  16  14  10     0.966   107.267     52.91     0.438
+ 18    C5    Cg  M  14  10   6     1.546   110.605     57.15     0.276
+ 19    H5    H1  E  18  14  10     1.092   108.214     65.71         0
+ 20    O5    Os  E  18  14  10     1.497   110.394    -52.31    -0.507
+ 21    C6    Cg  M  18  14  10     1.544   112.153   -174.59     0.266
+ 22   H62    H1  E  21  18  14      1.09   110.579    -46.84         0
+ 23   H61    H1  E  21  18  14     1.091   110.051     72.33         0
+ 24    O6    Os  M  21  18  14     1.444   110.952   -166.67     -0.46
+
+
+Residue:
+Name: ZTA, index:7:
+  4    C1    Cg  M   3   2   1     25.37    79.021   -133.25     0.456
+  5    H1    H2  E   4   3   2     1.091    17.604    103.37         0
+  6    C2    Cg  M   4   3   2     1.542    97.509    -29.95     0.245
+  7    H2    H1  E   6   4   3     1.091   110.129    -59.28         0
+  8    C3    Cg  3   6   4   3     1.545   112.024    178.31     0.085
+  9    H3    H1  E   8   6   4     1.091   106.708     69.61         0
+ 10    C4    Cg  3   8   6   4     1.543    114.91    -48.48     0.434
+ 11    H4    H1  E  10   8   6     1.091   109.633    172.69         0
+ 12    C5    Cg  3  10   8   6     1.544   109.739     52.34     0.157
+ 13    H5    H1  E  12  10   8     1.092   107.463     63.77         0
+ 14    C6    Cg  3  12  10   8     1.535   114.896   -176.35     0.304
+ 15   H62    H1  E  14  12  10      1.09   110.263    -52.86         0
+ 16   H61    H1  E  14  12  10     1.091   110.896     67.37         0
+ 17    O6    Oh  S  14  12  10     1.434   108.863   -172.31    -0.669
+ 18   H6O    Ho  E  17  14  12      0.96   109.462     59.57     0.401
+ 19    O5    Os  E  12  10   8     1.488   109.541    -53.52     -0.48
+ 20    O4    Oh  S  10   8   6     1.443   110.261    -67.82    -0.731
+ 21   H4O    Ho  E  20  10   8      0.96   109.459   -179.88     0.417
+ 22    O3    Os  E   8   6   4     1.439   110.774   -174.86    -0.439
+ 23    O2    Os  M   6   4   3      1.44   106.453     57.61    -0.382
+
+
+Residue:
+Name: MEX, index:8:
+  4   CH3    Cg  M   3   2   1     7.197   127.853   -163.43     0.233
+  5    H1    H1  E   4   3   2     1.085    46.873    132.02         0
+  6    H2    H1  E   4   3   2     1.085    68.995    -13.56         0
+  7    H3    H1  E   4   3   2     1.085   144.863      77.2         0
+
+
+Residue:
+Name: SO3, index:9:
+  4    S1     S  M   3   2   1    10.884   119.491   -167.81     1.245
+  5    O1    O2  E   4   3   2     1.446    106.41   -102.07    -0.694
+  6    O2    O2  E   4   3   2     1.437   128.086    115.25    -0.694
+  7    O3    O2  E   4   3   2     1.446    70.631      7.86    -0.694
+
+
+*****
+
+
+Writing: ./sequenceAsPdbFile.pdb
+Writing: ./sequenceAsOffFile.off
+Beep beep the van has arrived
+-----------------------------------------------------------------------------------------------------
+
+Sequence 2: DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+Glycam names are: ROH, 4YB, UYB, MEX, QMB, 2MA, WYB, SO3, 6LB, 0SA, 0YB, 6MA, ZMA, MEX, SO3, 
+Found query residue: 0SA
+0SA will be read in 1 times.
+Found query residue: 0YB
+0YB will be read in 1 times.
+Found query residue: 2MA
+2MA will be read in 1 times.
+Found query residue: 4YB
+4YB will be read in 1 times.
+Found query residue: 6LB
+6LB will be read in 1 times.
+Found query residue: 6MA
+6MA will be read in 1 times.
+Found query residue: MEX
+MEX will be read in 2 times.
+Found query residue: QMB
+QMB will be read in 1 times.
+Found query residue: ROH
+ROH will be read in 1 times.
+Found query residue: SO3
+SO3 will be read in 2 times.
+Found query residue: UYB
+UYB will be read in 1 times.
+Found query residue: WYB
+WYB will be read in 1 times.
+Found query residue: ZMA
+ZMA will be read in 1 times.
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+
+
+
+On to setting 3d structure!
+
+Setting connection between 4YB and it's parent ROH, which has linkageLabel: 
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_770:4YB
+O1_891:4YB
+
+Finding Path between:C1_770 and O1_891
+Updated Path between:
+ C1_770 and O1_891
+C2_786
+C1_770
+O1_891
+HO1_890
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 4YB and ROH
+These are the assigned RotatableDihedrals:
+C2, C1, O1, HO1: -98.1161.
+Setting default shape
+Blocking access via O1, we will search outward from C1
+Have determined that the following atoms will move:
+O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between UYB and it's parent 4YB, which has linkageLabel: b1-
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -6.96309,    10.6793,   -2.06386
+parent O4   -7.35738,    11.5979,   -1.02186
+and child C1   -8.20032,     10.755,   -1.86479
+child residue UYB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_912:UYB
+C4_780:UYB
+
+Finding Path between:C1_912 and C4_780
+Updated Path between:
+ C1_912 and C4_780
+C2_927
+C1_912
+O4_796
+C4_780
+C5_773
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: UYB and 4YB
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: -19.3169.
+C1, O4, C4, C5: -87.624.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between MEX and it's parent UYB, which has linkageLabel: b1-4
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -10.7963,    9.96993,   0.948178
+parent O6   -11.2757,    9.09544, -0.0892452
+and child CH3   -12.1186,    8.25251,  -0.932177
+child residue MEX will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+CH3_851:MEX
+C5_915:MEX
+
+Finding Path between:CH3_851 and C5_915
+Updated Path between:
+ CH3_851 and C5_915
+H3_854
+CH3_851
+O6_920
+C6_917
+C5_915
+O5_914
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: MEX and UYB
+These are the assigned RotatableDihedrals:
+H3, CH3, O6, C6: 97.7837.
+CH3, O6, C6, C5: -158.24.
+O6, C6, C5, O5: 58.17.
+Setting default shape
+Blocking access via O6, we will search outward from CH3
+Have determined that the following atoms will move:
+O6, CH3, H1, H2, H3, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, CH3, H1, H2, H3, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, CH3, H1, H2, H3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between QMB and it's parent UYB, which has linkageLabel: b1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -8.95721,    11.6573,    1.53268
+parent O4   -8.56713,    10.8969,    2.69664
+and child C1   -9.41006,     10.054,    1.85371
+child residue QMB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_867:QMB
+C4_921:QMB
+
+Finding Path between:C1_867 and C4_921
+Updated Path between:
+ C1_867 and C4_921
+C2_881
+C1_867
+O4_937
+C4_921
+C5_915
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: QMB and UYB
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: 72.2531.
+C1, O4, C4, C5: -14.9053.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 2MA and it's parent QMB, which has linkageLabel: b1-4
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -7.99367,    9.24829,    4.01501
+parent O3   -6.82587,    8.58928,    4.58492
+and child C1   -7.66881,    7.74635,    3.74199
+child residue 2MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_745:2MA
+C3_879:2MA
+
+Finding Path between:C1_745 and C3_879
+Updated Path between:
+ C1_745 and C3_879
+C2_747
+C1_745
+O3_885
+C3_879
+C4_876
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 2MA and QMB
+These are the assigned RotatableDihedrals:
+C2, C1, O3, C3: 120.749.
+C1, O3, C3, C4: 48.3195.
+Setting default shape
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between WYB and it's parent 2MA, which has linkageLabel: a1-3
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   -5.19553,    7.76919,    4.82224
+parent O2   -4.13107,    6.83163,    4.48078
+and child C1     -4.974,     5.9887,    3.63785
+child residue WYB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_942:WYB
+C2_747:WYB
+
+Finding Path between:C1_942 and C2_747
+Updated Path between:
+ C1_942 and C2_747
+C2_957
+C1_942
+O2_765
+C2_747
+C1_745
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: WYB and 2MA
+These are the assigned RotatableDihedrals:
+C2, C1, O2, C2: 139.384.
+C1, O2, C2, C1: -53.8216.
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between SO3 and it's parent WYB, which has linkageLabel: b1-2
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -2.74951,     5.7164,    3.14532
+parent O3   -1.37037,    5.52057,    2.70142
+and child S1   -2.28778,    4.60316,    1.78401
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_896:SO3
+C3_955:SO3
+
+Finding Path between:S1_896 and C3_955
+Updated Path between:
+ S1_896 and C3_955
+O3_899
+S1_896
+O3_967
+C3_955
+C4_952
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and WYB
+These are the assigned RotatableDihedrals:
+O3, S1, O3, C3: -174.296.
+S1, O3, C3, C4: 1.69236.
+Setting default shape
+Blocking access via O3, we will search outward from S1
+Have determined that the following atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 6LB and it's parent WYB, which has linkageLabel: b1-2
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -3.66779,    4.80299,    2.29935
+parent O4   -3.54394,     5.1865,    0.91273
+and child C1   -4.38687,    4.34357,   0.069799
+child residue 6LB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_801:6LB
+C4_952:6LB
+
+Finding Path between:C1_801 and C4_952
+Updated Path between:
+ C1_801 and C4_952
+C2_814
+C1_801
+O4_954
+C4_952
+C5_945
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 6LB and WYB
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: -136.566.
+C1, O4, C4, C5: -58.7739.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0SA and it's parent 6LB, which has linkageLabel: b1-4
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -6.39966,    2.93037,   -1.33265
+parent O6   -6.69318,    1.92812,  -0.345581
+and child C2   -7.50725,    1.11405,   -1.15965
+child residue 0SA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C2_672:0SA
+C5_804:0SA
+
+Finding Path between:C2_672 and C5_804
+Updated Path between:
+ C2_672 and C5_804
+C1_673
+C2_672
+O6_821
+C6_818
+C5_804
+O5_803
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0SA and 6LB
+These are the assigned RotatableDihedrals:
+C1, C2, O6, C6: -43.7499.
+C2, O6, C6, C5: -174.869.
+O6, C6, C5, O5: 63.12.
+Setting default shape
+Blocking access via O6, we will search outward from C2
+Have determined that the following atoms will move:
+O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0YB and it's parent QMB, which has linkageLabel: b1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -9.28781,    8.41323,    4.21422
+parent O4   -9.13155,    7.11404,    3.58495
+and child C1   -9.97448,    6.27111,    2.74202
+child residue 0YB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_713:0YB
+C4_876:0YB
+
+Finding Path between:C1_713 and C4_876
+Updated Path between:
+ C1_713 and C4_876
+C2_731
+C1_713
+O4_878
+C4_876
+C5_870
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0YB and QMB
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: 128.865.
+C1, O4, C4, C5: -15.4455.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 6MA and it's parent QMB, which has linkageLabel: b1-4
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -11.8275,    8.43002,    3.90118
+parent O6   -12.9189,    9.12358,    3.26981
+and child C1   -13.7618,    8.28064,    2.42688
+child residue 6MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_826:6MA
+C5_870:6MA
+
+Finding Path between:C1_826 and C5_870
+Updated Path between:
+ C1_826 and C5_870
+C2_828
+C1_826
+O6_875
+C6_872
+C5_870
+O5_869
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 6MA and QMB
+These are the assigned RotatableDihedrals:
+C2, C1, O6, C6: -63.6023.
+C1, O6, C6, C5: 125.166.
+O6, C6, C5, O5: 57.44.
+Setting default shape
+Blocking access via O6, we will search outward from C1
+Have determined that the following atoms will move:
+O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between ZMA and it's parent 6MA, which has linkageLabel: a1-6
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -13.1959,    4.00388,    6.19109
+parent O6   -13.3635,     3.4808,    4.85564
+and child C1   -14.2065,    2.63787,     4.0127
+child residue ZMA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_972:ZMA
+C5_840:ZMA
+
+Finding Path between:C1_972 and C5_840
+Updated Path between:
+ C1_972 and C5_840
+C2_974
+C1_972
+O6_846
+C6_843
+C5_840
+O5_842
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: ZMA and 6MA
+These are the assigned RotatableDihedrals:
+C2, C1, O6, C6: -155.243.
+C1, O6, C6, C5: -145.505.
+O6, C6, C5, O5: 70.4888.
+Setting default shape
+Blocking access via O6, we will search outward from C1
+Have determined that the following atoms will move:
+O6, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between MEX and it's parent ZMA, which has linkageLabel: a1-6
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -15.1764,    3.62366,    9.36347
+parent O3    -16.103,     4.3364,    10.2398
+and child CH3   -16.9459,    3.49347,    9.39686
+child residue MEX will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+CH3_859:MEX
+C3_976:MEX
+
+Finding Path between:CH3_859 and C3_976
+Updated Path between:
+ CH3_859 and C3_976
+H3_862
+CH3_859
+O3_990
+C3_976
+C4_978
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: MEX and ZMA
+These are the assigned RotatableDihedrals:
+H3, CH3, O3, C3: -94.0021.
+CH3, O3, C3, C4: -90.3809.
+Setting default shape
+Blocking access via O3, we will search outward from CH3
+Have determined that the following atoms will move:
+O3, CH3, H1, H2, H3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, CH3, H1, H2, H3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between SO3 and it's parent ZMA, which has linkageLabel: a1-6
+Parent atom is O2
+Setting angle between
+parentNeighbor C2    -15.839,    3.39244,    7.98705
+parent O2   -17.0965,    2.67324,    8.16034
+and child S1   -18.0139,    1.75584,    7.24293
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_904:SO3
+C2_974:SO3
+
+Finding Path between:S1_904 and C2_974
+Updated Path between:
+ S1_904 and C2_974
+O3_907
+S1_904
+O2_991
+C2_974
+C1_972
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and ZMA
+These are the assigned RotatableDihedrals:
+O3, S1, O2, C2: 36.6305.
+S1, O2, C2, C1: -35.2453.
+Setting default shape
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Re-determining atoms that need to move for each linkage:
+Blocking access via O1, we will search outward from C1
+Have determined that the following atoms will move:
+O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, CH3, H1, H2, H3, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, CH3, H1, H2, H3, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, CH3, H1, H2, H3, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via O6, we will search outward from CH3
+Have determined that the following atoms will move:
+O6, CH3, H1, H2, H3, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, CH3, H1, H2, H3, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, CH3, H1, H2, H3, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, 
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, S1, O1, O2, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via O3, we will search outward from S1
+Have determined that the following atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, S1, O1, O2, O3, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via O6, we will search outward from C2
+Have determined that the following atoms will move:
+O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via O6, we will search outward from C1
+Have determined that the following atoms will move:
+O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, 
+Blocking access via O6, we will search outward from C1
+Have determined that the following atoms will move:
+O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, CH3, H1, H2, H3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O3, we will search outward from CH3
+Have determined that the following atoms will move:
+O3, CH3, H1, H2, H3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, CH3, H1, H2, H3, 
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
+Final overlap resolution
+Overlaps resolved
+Number of residues is 15
+Structure created without throwing an exception for: DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+
+Residue:
+Name: ROH, index:1:
+  4   HO1    Ho  M   3   2   1     9.377   124.134   -168.39     0.445
+  5    O1    Oh  M   4   3   2      0.96   137.664    103.52    -0.639
+
+
+Residue:
+Name: 4YB, index:2:
+  4    C1    Cg  M   3   2   1    23.493    98.498   -136.36     0.287
+  5    H1    H2  E   4   3   2     1.091     71.45    -93.59         0
+  6    O5    Os  M   4   3   2     1.468   130.511    167.53    -0.433
+  7    C5    Cg  M   6   4   3     1.493   115.188    144.42     0.208
+  8    H5    H1  E   7   6   4     1.092   108.293     -60.8         0
+  9    C6    Cg  3   7   6   4      1.54    109.52    -179.1     0.289
+ 10   H62    H1  E   9   7   6     1.091   110.298       -62         0
+ 11   H61    H1  E   9   7   6      1.09   110.526    178.17         0
+ 12    O6    Oh  S   9   7   6     1.439   109.712     58.17    -0.689
+ 13   H6O    Ho  E  12   9   7     0.961   108.379     -54.8     0.424
+ 14    C4    Cg  M   7   6   4     1.542   108.679     57.57     0.302
+ 15    H4    H1  E  14   7   6     1.092   109.552     66.23         0
+ 16    C3    Cg  3  14   7   6     1.547   111.743    -55.34      0.18
+ 17    H3    H1  E  16  14   7     1.092   108.855    -63.61         0
+ 18    O3    Oh  S  16  14   7     1.462    108.35    179.31    -0.681
+ 19   H3O    Ho  E  18  16  14     0.964   110.728    170.98     0.423
+ 20    C2    Cg  B  16  14   7     1.555   110.847     55.82      0.48
+ 21    H2    H1  E  20  16  14     1.092   108.016     63.51         0
+ 22    N2    Ng  B  20  16  14     1.484   110.897    -176.4    -0.722
+ 23   H2N     H  E  22  20  16     1.006   117.592     78.54       0.3
+ 24   C2N     C  B  22  20  16     1.336   123.143   -111.93     0.648
+ 25   O2N     O  E  24  22  20     1.226   122.116      6.61    -0.576
+ 26   CME    Cg  3  24  22  20     1.542   116.434   -175.43     0.034
+ 27   H3M    Hc  E  26  24  22     1.092    110.63     37.74         0
+ 28   H2M    Hc  E  26  24  22     1.091   110.076    157.79         0
+ 29   H1M    Hc  E  26  24  22     1.091   109.335    -82.58         0
+ 30    O4    Os  M  14   7   6     1.444   108.611      -175    -0.474
+
+
+Residue:
+Name: UYB, index:3:
+  4    C1    Cg  M   3   2   1    23.493    98.498   -136.36     0.287
+  5    H1    H2  E   4   3   2     1.091     71.45    -93.59         0
+  6    O5    Os  M   4   3   2     1.468   130.511    167.53    -0.433
+  7    C5    Cg  M   6   4   3     1.493   115.188    144.42     0.208
+  8    H5    H1  E   7   6   4     1.092   108.293     -60.8         0
+  9    C6    Cg  3   7   6   4      1.54    109.52    -179.1      0.25
+ 10   H62    H1  E   9   7   6     1.091   110.298       -62         0
+ 11   H61    H1  E   9   7   6      1.09   110.526    178.17         0
+ 12    O6    Os  E   9   7   6     1.439   109.712     58.17    -0.459
+ 13    C4    Cg  M   7   6   4     1.542   108.679     57.57     0.302
+ 14    H4    H1  E  13   7   6     1.092   109.552     66.23         0
+ 15    C3    Cg  3  13   7   6     1.547   111.743    -55.34      0.18
+ 16    H3    H1  E  15  13   7     1.092   108.855    -63.61         0
+ 17    O3    Oh  S  15  13   7     1.462    108.35    179.31    -0.681
+ 18   H3O    Ho  E  17  15  13     0.964   110.728    170.98     0.423
+ 19    C2    Cg  B  15  13   7     1.555   110.847     55.82      0.48
+ 20    H2    H1  E  19  15  13     1.092   108.016     63.51         0
+ 21    N2    Ng  B  19  15  13     1.484   110.897    -176.4    -0.722
+ 22   H2N     H  E  21  19  15     1.006   117.592     78.54       0.3
+ 23   C2N     C  B  21  19  15     1.336   123.143   -111.93     0.648
+ 24   O2N     O  E  23  21  19     1.226   122.116      6.61    -0.576
+ 25   CME    Cg  3  23  21  19     1.542   116.434   -175.43     0.034
+ 26   H3M    Hc  E  25  23  21     1.092    110.63     37.74         0
+ 27   H2M    Hc  E  25  23  21     1.091   110.076    157.79         0
+ 28   H1M    Hc  E  25  23  21     1.091   109.335    -82.58         0
+ 29    O4    Os  M  13   7   6     1.444   108.611      -175    -0.474
+
+
+Residue:
+Name: MEX, index:4:
+  4   CH3    Cg  M   3   2   1     7.197   127.853   -163.43     0.233
+  5    H1    H1  E   4   3   2     1.085    46.873    132.02         0
+  6    H2    H1  E   4   3   2     1.085    68.995    -13.56         0
+  7    H3    H1  E   4   3   2     1.085   144.863      77.2         0
+
+
+Residue:
+Name: QMB, index:5:
+  4    C1    Cg  M   3   2   1    23.455    98.474   -136.31     0.314
+  5    H1    H2  E   4   3   2     1.091    71.744     -87.8         0
+  6    O5    Os  M   4   3   2      1.47     130.2    172.77    -0.393
+  7    C5    Cg  M   6   4   3     1.498   115.894    145.97     0.206
+  8    H5    H1  E   7   6   4     1.092   107.771    -66.97         0
+  9    C6    Cg  3   7   6   4     1.539   108.924    175.37     0.273
+ 10   H62    H1  E   9   7   6     1.091   110.262     -62.7         0
+ 11   H61    H1  E   9   7   6      1.09   110.558    177.52         0
+ 12    O6    Os  E   9   7   6     1.439    109.85     57.44    -0.455
+ 13    C4    Cg  M   7   6   4      1.55   110.843     51.87     0.349
+ 14    H4    H1  E  13   7   6     1.091   109.789     70.94         0
+ 15    O4    Os  E  13   7   6     1.452   108.352   -170.58    -0.497
+ 16    C3    Cg  M  13   7   6     1.553   110.419    -50.51     0.263
+ 17    H3    H1  E  16  13   7     1.092   108.588    -60.79         0
+ 18    C2    Cg  B  16  13   7     1.547   110.623     57.43     0.241
+ 19    H2    H1  E  18  16  13     1.091   110.076       180         0
+ 20    O2    Oh  S  18  16  13     1.459   110.769     59.28    -0.664
+ 21   H2O    Ho  E  20  18  16     0.964   107.524   -173.81     0.431
+ 22    O3    Os  M  16  13   7     1.457   111.995    -178.5    -0.456
+
+
+Residue:
+Name: 2MA, index:11:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  M   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    C3    Cg  3   6   4   3     1.545   110.571   -158.93     0.252
+  9    H3    H1  E   8   6   4     1.092   108.528     64.93         0
+ 10    C4    Cg  3   8   6   4     1.549   111.609    -54.79     0.326
+ 11    H4    H1  E  10   8   6     1.091   109.865    -64.38         0
+ 12    C5    Cg  3  10   8   6     1.546   110.605     57.15     0.276
+ 13    H5    H1  E  12  10   8     1.092   108.214     65.71         0
+ 14    C6    Cg  3  12  10   8     1.544   112.153   -174.59     0.266
+ 15   H62    H1  E  14  12  10      1.09   110.579    -46.84         0
+ 16   H61    H1  E  14  12  10     1.091   110.051     72.33         0
+ 17    O6    Oh  S  14  12  10     1.444   110.952   -166.67    -0.688
+ 18   H6O    Ho  E  17  14  12      0.96   109.923     72.72     0.422
+ 19    O5    Os  E  12  10   8     1.497   110.394    -52.31    -0.507
+ 20    O4    Oh  S  10   8   6     1.452   108.734    176.59    -0.733
+ 21   H4O    Ho  E  20  10   8     0.966   107.267     52.91     0.438
+ 22    O3    Oh  S   8   6   4     1.461   109.595   -177.93    -0.696
+ 23   H3O    Ho  E  22   8   6     0.964   109.699    -74.81     0.431
+ 24    O2    Os  M   6   4   3     1.459   110.007     79.71    -0.465
+
+
+Residue:
+Name: WYB, index:12:
+  4    C1    Cg  M   3   2   1    23.493    98.498   -136.36     0.287
+  5    H1    H2  E   4   3   2     1.091     71.45    -93.59         0
+  6    O5    Os  M   4   3   2     1.468   130.511    167.53    -0.433
+  7    C5    Cg  M   6   4   3     1.493   115.188    144.42     0.208
+  8    H5    H1  E   7   6   4     1.092   108.293     -60.8         0
+  9    C6    Cg  3   7   6   4      1.54    109.52    -179.1     0.289
+ 10   H62    H1  E   9   7   6     1.091   110.298       -62         0
+ 11   H61    H1  E   9   7   6      1.09   110.526    178.17         0
+ 12    O6    Oh  S   9   7   6     1.439   109.712     58.17    -0.689
+ 13   H6O    Ho  E  12   9   7     0.961   108.379     -54.8     0.424
+ 14    C4    Cg  M   7   6   4     1.542   108.679     57.57     0.302
+ 15    H4    H1  E  14   7   6     1.092   109.552     66.23         0
+ 16    O4    Os  E  14   7   6     1.444   108.611      -175    -0.474
+ 17    C3    Cg  M  14   7   6     1.547   111.743    -55.34      0.18
+ 18    H3    H1  E  17  14   7     1.092   108.855    -63.61         0
+ 19    C2    Cg  B  17  14   7     1.555   110.847     55.82      0.48
+ 20    H2    H1  E  19  17  14     1.092   108.016     63.51         0
+ 21    N2    Ng  B  19  17  14     1.484   110.897    -176.4    -0.722
+ 22   H2N     H  E  21  19  17     1.006   117.592     78.54       0.3
+ 23   C2N     C  B  21  19  17     1.336   123.143   -111.93     0.648
+ 24   O2N     O  E  23  21  19     1.226   122.116      6.61    -0.576
+ 25   CME    Cg  3  23  21  19     1.542   116.434   -175.43     0.034
+ 26   H3M    Hc  E  25  23  21     1.092    110.63     37.74         0
+ 27   H2M    Hc  E  25  23  21     1.091   110.076    157.79         0
+ 28   H1M    Hc  E  25  23  21     1.091   109.335    -82.58         0
+ 29    O3    Os  M  17  14   7     1.462    108.35    179.31    -0.421
+
+
+Residue:
+Name: SO3, index:15:
+  4    S1     S  M   3   2   1    10.884   119.491   -167.81     1.245
+  5    O1    O2  E   4   3   2     1.446    106.41   -102.07    -0.694
+  6    O2    O2  E   4   3   2     1.437   128.086    115.25    -0.694
+  7    O3    O2  E   4   3   2     1.446    70.631      7.86    -0.694
+
+
+Residue:
+Name: 6LB, index:13:
+  4    C1    Cg  M   3   2   1    23.468     98.38   -136.25     0.374
+  5    H1    H2  E   4   3   2     1.091    68.433    -93.22         0
+  6    O5    Os  M   4   3   2     1.469   130.208    170.01    -0.402
+  7    C5    Cg  M   6   4   3     1.495    116.01    144.53      0.14
+  8    H5    H1  E   7   6   4     1.092   108.013    -61.82         0
+  9    C4    Cg  3   7   6   4     1.545   110.103     55.47     0.203
+ 10    H4    H1  E   9   7   6     1.091   109.333   -173.92         0
+ 11    O4    Oh  S   9   7   6     1.449   109.628     67.34    -0.664
+ 12   H4O    Ho  E  11   9   7     0.967   107.158   -172.89     0.437
+ 13    C3    Cg  3   9   7   6     1.546   110.517    -53.62     0.259
+ 14    H3    H1  E  13   9   7     1.092   108.098    -64.81         0
+ 15    O3    Oh  S  13   9   7     1.455   109.126    178.29    -0.694
+ 16   H3O    Ho  E  15  13   9     0.967   107.449   -176.92     0.433
+ 17    C2    Cg  B  13   9   7     1.547   112.254     55.04     0.357
+ 18    H2    H1  E  17  13   9     1.092   109.716     67.43         0
+ 19    O2    Oh  S  17  13   9     1.459   108.705   -173.71    -0.726
+ 20   H2O    Ho  E  19  17  13     0.965   107.724    175.67     0.432
+ 21    C6    Cg  M   7   6   4     1.539   109.777   -179.32     0.319
+ 22   H62    H1  E  21   7   6     1.091   110.848    -57.06         0
+ 23   H61    H1  E  21   7   6      1.09   110.337    -177.3         0
+ 24    O6    Os  M  21   7   6     1.437   109.027     63.12    -0.468
+
+
+Residue:
+Name: 0SA, index:14:
+  4    C2    Cy  M   3   2   1    23.507    98.524   -136.13     0.237
+  5    C1     C  B   4   3   2     1.638   139.314    173.02     0.789
+  6   O1A    O2  E   5   4   3     1.261   116.232     59.36    -0.761
+  7   O1B    O2  E   5   4   3     1.255   119.143   -127.21    -0.761
+  8    C3    Cg  3   4   3   2      1.55   102.309     21.23     0.006
+  9   H3E    Hc  E   8   4   3     1.092   110.728    108.27         0
+ 10   H3A    Hc  E   8   4   3     1.094   110.177     -8.07         0
+ 11    C4    Cg  3   8   4   3     1.539   110.939    -128.8     0.332
+ 12    H4    H1  E  11   8   4     1.091   108.366    -70.79         0
+ 13    C5    Cg  3  11   8   4      1.56   113.169     49.81     0.308
+ 14    H5    H1  E  13  11   8     1.092   108.441     67.41         0
+ 15    C6    Cg  3  13  11   8     1.544   108.513    -50.35      0.22
+ 16    H6    H1  E  15  13  11      1.09   106.016    -61.45         0
+ 17    C7    Cg  3  15  13  11     1.543   118.917   -178.92     0.111
+ 18    H7    H1  E  17  15  13     1.091   107.799     66.42         0
+ 19    C8    Cg  3  17  15  13     1.556   112.192   -175.03     0.492
+ 20    H8    H1  E  19  17  15     1.091   109.991     62.63         0
+ 21    C9    Cg  3  19  17  15     1.552   112.385   -175.84     0.178
+ 22   H9S    H1  E  21  19  17      1.09   110.169    -56.42         0
+ 23   H9R    H1  E  21  19  17     1.091    109.92     62.24         0
+ 24    O9    Oh  S  21  19  17     1.449   111.722    -176.9    -0.689
+ 25   H9O    Ho  E  24  21  19     0.965   107.018     -49.3     0.408
+ 26    O8    Oh  S  19  17  15      1.46   109.072    -56.72    -0.739
+ 27   H8O    Ho  E  26  19  17     0.983   110.254     72.72     0.412
+ 28    O7    Oh  S  17  15  13      1.46   110.189    -50.14    -0.721
+ 29   H7O    Ho  E  28  17  15     0.977    109.95     68.18     0.435
+ 30    O6    Oy  E  15  13  11     1.441   107.983     55.53    -0.403
+ 31    N5    Ng  B  13  11   8     1.484   111.436   -172.57    -0.629
+ 32   H5N     H  E  31  13  11     1.007   117.476     40.91      0.28
+ 33   C5N     C  B  31  13  11     1.337    123.58   -145.57     0.632
+ 34   CME    Cg  3  33  31  13     1.541   116.316   -179.71    -0.003
+ 35   H3M    Hc  E  34  33  31     1.092   110.905    -29.98         0
+ 36   H2M    Hc  E  34  33  31     1.091   109.813      -150         0
+ 37   H1M    Hc  E  34  33  31     1.091   109.337     90.47         0
+ 38   O5N     O  E  33  31  13     1.228   122.141     -0.64    -0.593
+ 39    O4    Oh  S  11   8   4     1.451   108.218    172.28    -0.762
+ 40   H4O    Ho  E  39  11   8     0.959   109.266    178.83     0.415
+
+
+Residue:
+Name: 0YB, index:10:
+  4    C1    Cg  M   3   2   1    23.493    98.498   -136.36     0.287
+  5    H1    H2  E   4   3   2     1.091     71.45    -93.59         0
+  6    O5    Os  S   4   3   2     1.468   130.511    167.53    -0.433
+  7    C5    Cg  3   6   4   3     1.493   115.188    144.42     0.208
+  8    H5    H1  E   7   6   4     1.092   108.293     -60.8         0
+  9    C6    Cg  3   7   6   4      1.54    109.52    -179.1     0.289
+ 10   H62    H1  E   9   7   6     1.091   110.298       -62         0
+ 11   H61    H1  E   9   7   6      1.09   110.526    178.17         0
+ 12    O6    Oh  S   9   7   6     1.439   109.712     58.17    -0.689
+ 13   H6O    Ho  E  12   9   7     0.961   108.379     -54.8     0.424
+ 14    C4    Cg  3   7   6   4     1.542   108.679     57.57     0.302
+ 15    H4    H1  E  14   7   6     1.092   109.552     66.23         0
+ 16    O4    Oh  S  14   7   6     1.444   108.611      -175    -0.716
+ 17   H4O    Ho  E  16  14   7     0.967   106.789     174.2     0.436
+ 18    C3    Cg  3  14   7   6     1.547   111.743    -55.34      0.18
+ 19    H3    H1  E  18  14   7     1.092   108.855    -63.61         0
+ 20    O3    Oh  S  18  14   7     1.462    108.35    179.31    -0.681
+ 21   H3O    Ho  E  20  18  14     0.964   110.728    170.98     0.423
+ 22    C2    Cg  B  18  14   7     1.555   110.847     55.82      0.48
+ 23    H2    H1  E  22  18  14     1.092   108.016     63.51         0
+ 24    N2    Ng  B  22  18  14     1.484   110.897    -176.4    -0.722
+ 25   H2N     H  E  24  22  18     1.006   117.592     78.54       0.3
+ 26   C2N     C  B  24  22  18     1.336   123.143   -111.93     0.648
+ 27   O2N     O  E  26  24  22     1.226   122.116      6.61    -0.576
+ 28   CME    Cg  3  26  24  22     1.542   116.434   -175.43     0.034
+ 29   H3M    Hc  E  28  26  24     1.092    110.63     37.74         0
+ 30   H2M    Hc  E  28  26  24     1.091   110.076    157.79         0
+ 31   H1M    Hc  E  28  26  24     1.091   109.335    -82.58         0
+
+
+Residue:
+Name: 6MA, index:6:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  M   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    O2    Oh  S   6   4   3     1.459   110.007     79.71    -0.717
+  9   H2O    Ho  E   8   6   4     0.965   108.621    167.29     0.446
+ 10    C3    Cg  M   6   4   3     1.545   110.571   -158.93     0.252
+ 11    H3    H1  E  10   6   4     1.092   108.528     64.93         0
+ 12    O3    Oh  S  10   6   4     1.461   109.595   -177.93    -0.696
+ 13   H3O    Ho  E  12  10   6     0.964   109.699    -74.81     0.431
+ 14    C4    Cg  M  10   6   4     1.549   111.609    -54.79     0.326
+ 15    H4    H1  E  14  10   6     1.091   109.865    -64.38         0
+ 16    O4    Oh  S  14  10   6     1.452   108.734    176.59    -0.733
+ 17   H4O    Ho  E  16  14  10     0.966   107.267     52.91     0.438
+ 18    C5    Cg  M  14  10   6     1.546   110.605     57.15     0.276
+ 19    H5    H1  E  18  14  10     1.092   108.214     65.71         0
+ 20    O5    Os  E  18  14  10     1.497   110.394    -52.31    -0.507
+ 21    C6    Cg  M  18  14  10     1.544   112.153   -174.59     0.266
+ 22   H62    H1  E  21  18  14      1.09   110.579    -46.84         0
+ 23   H61    H1  E  21  18  14     1.091   110.051     72.33         0
+ 24    O6    Os  M  21  18  14     1.444   110.952   -166.67     -0.46
+
+
+Residue:
+Name: ZMA, index:7:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  M   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    C3    Cg  3   6   4   3     1.545   110.571   -158.93     0.213
+  9    H3    H1  E   8   6   4     1.092   108.528     64.93         0
+ 10    C4    Cg  3   8   6   4     1.549   111.609    -54.79     0.326
+ 11    H4    H1  E  10   8   6     1.091   109.865    -64.38         0
+ 12    C5    Cg  3  10   8   6     1.546   110.605     57.15     0.276
+ 13    H5    H1  E  12  10   8     1.092   108.214     65.71         0
+ 14    C6    Cg  3  12  10   8     1.544   112.153   -174.59     0.266
+ 15   H62    H1  E  14  12  10      1.09   110.579    -46.84         0
+ 16   H61    H1  E  14  12  10     1.091   110.051     72.33         0
+ 17    O6    Oh  S  14  12  10     1.444   110.952   -166.67    -0.688
+ 18   H6O    Ho  E  17  14  12      0.96   109.923     72.72     0.422
+ 19    O5    Os  E  12  10   8     1.497   110.394    -52.31    -0.507
+ 20    O4    Oh  S  10   8   6     1.452   108.734    176.59    -0.733
+ 21   H4O    Ho  E  20  10   8     0.966   107.267     52.91     0.438
+ 22    O3    Os  E   8   6   4     1.461   109.595   -177.93    -0.459
+ 23    O2    Os  M   6   4   3     1.459   110.007     79.71    -0.434
+
+
+Residue:
+Name: MEX, index:8:
+  4   CH3    Cg  M   3   2   1     7.197   127.853   -163.43     0.233
+  5    H1    H1  E   4   3   2     1.085    46.873    132.02         0
+  6    H2    H1  E   4   3   2     1.085    68.995    -13.56         0
+  7    H3    H1  E   4   3   2     1.085   144.863      77.2         0
+
+
+Residue:
+Name: SO3, index:9:
+  4    S1     S  M   3   2   1    10.884   119.491   -167.81     1.245
+  5    O1    O2  E   4   3   2     1.446    106.41   -102.07    -0.694
+  6    O2    O2  E   4   3   2     1.437   128.086    115.25    -0.694
+  7    O3    O2  E   4   3   2     1.446    70.631      7.86    -0.694
+
+
+*****
+
+
+Writing: ./sequenceAsPdbFile.pdb
+Writing: ./sequenceAsOffFile.off
+Beep beep the van has arrived
+-----------------------------------------------------------------------------------------------------
+
+Sequence 3: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
+Glycam names are: ROH, 4XB, 3LB, 3LB, 4ZB, 4ZB, 0YB, 
+Found query residue: 0YB
+0YB will be read in 1 times.
+Found query residue: 3LB
+3LB will be read in 2 times.
+Found query residue: 4XB
+4XB will be read in 1 times.
+Found query residue: 4ZB
+4ZB will be read in 2 times.
+Found query residue: ROH
+ROH will be read in 1 times.
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+
+
+
+On to setting 3d structure!
+
+Setting connection between 4XB and it's parent ROH, which has linkageLabel: 
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_1411:4XB
+O1_1479:4XB
+
+Finding Path between:C1_1411 and O1_1479
+Updated Path between:
+ C1_1411 and O1_1479
+C2_1423
+C1_1411
+O1_1479
+HO1_1478
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 4XB and ROH
+These are the assigned RotatableDihedrals:
+C2, C1, O1, HO1: -95.7873.
+Setting default shape
+Blocking access via O1, we will search outward from C1
+Have determined that the following atoms will move:
+O1, C1, C2, C3, C4, C5, O5, H5E, H5A, H4, O4, H3, O3, H3O, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 3LB and it's parent 4XB, which has linkageLabel: b1-
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -7.04221,    10.6606,   -2.15257
+parent O4   -7.47106,    11.5897,   -1.12952
+and child C1   -8.31399,    10.7468,   -1.97245
+child residue 3LB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_1361:3LB
+C4_1417:3LB
+
+Finding Path between:C1_1361 and C4_1417
+Updated Path between:
+ C1_1361 and C4_1417
+C2_1377
+C1_1361
+O4_1427
+C4_1417
+C5_1414
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 3LB and 4XB
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: -21.0588.
+C1, O4, C4, C5: -90.0462.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 3LB and it's parent 3LB, which has linkageLabel: b1-4
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -7.93023,    12.2835,    0.92461
+parent O3   -7.53592,    13.1896,    1.99255
+and child C1   -8.37885,    12.3467,    1.14962
+child residue 3LB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_1386:3LB
+C3_1375:3LB
+
+Finding Path between:C1_1386 and C3_1375
+Updated Path between:
+ C1_1386 and C3_1375
+C2_1402
+C1_1386
+O3_1381
+C3_1375
+C4_1371
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 3LB and 3LB
+These are the assigned RotatableDihedrals:
+C2, C1, O3, C3: -11.0697.
+C1, O3, C3, C4: -30.9256.
+Setting default shape
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4ZB and it's parent 3LB, which has linkageLabel: b1-3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -7.20121,    15.1447,    2.98115
+parent O3   -7.63349,    16.0271,    4.05428
+and child C1   -8.47642,    15.1841,    3.21135
+child residue 4ZB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_1432:4ZB
+C3_1400:4ZB
+
+Finding Path between:C1_1432 and C3_1400
+Updated Path between:
+ C1_1432 and C3_1400
+C2_1446
+C1_1432
+O3_1406
+C3_1400
+C4_1396
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 4ZB and 3LB
+These are the assigned RotatableDihedrals:
+C2, C1, O3, C3: -14.1824.
+C1, O3, C3, C4: 138.579.
+Setting default shape
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H3, O3, H3O, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4ZB and it's parent 4ZB, which has linkageLabel: b1-3
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -8.87044,    15.8645,    6.77836
+parent O4   -8.16363,    15.2267,    7.87074
+and child C1   -9.00656,    14.3838,    7.02781
+child residue 4ZB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_1455:4ZB
+C4_1440:4ZB
+
+Finding Path between:C1_1455 and C4_1440
+Updated Path between:
+ C1_1455 and C4_1440
+C2_1469
+C1_1455
+O4_1450
+C4_1440
+C5_1435
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 4ZB and 4ZB
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: 86.8803.
+C1, O4, C4, C5: -15.6722.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H3, O3, H3O, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0YB and it's parent 4ZB, which has linkageLabel: b1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -9.47533,    13.0757,    9.49238
+parent O4   -9.88534,    11.8324,    8.87137
+and child C1   -10.7283,    10.9895,    8.02843
+child residue 0YB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_1329:0YB
+C4_1463:0YB
+
+Finding Path between:C1_1329 and C4_1463
+Updated Path between:
+ C1_1329 and C4_1463
+C2_1347
+C1_1329
+O4_1473
+C4_1463
+C5_1458
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0YB and 4ZB
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: 110.333.
+C1, O4, C4, C5: -0.346523.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Re-determining atoms that need to move for each linkage:
+Blocking access via O1, we will search outward from C1
+Have determined that the following atoms will move:
+O1, C1, C2, C3, C4, C5, O5, H5E, H5A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, H2O, H1, H2, O2, H2O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, H2O, H1, H2, O2, H2O, H1, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, H2O, H1, H2, O2, H2O, H1, H2, O2, H2O, H1, 
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, H2O, H1, H2, O2, H2O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, H2O, H1, H2, O2, H2O, H1, 
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Final overlap resolution
+Overlaps resolved
+Number of residues is 7
+Structure created without throwing an exception for: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
+
+Residue:
+Name: ROH, index:1:
+  4   HO1    Ho  M   3   2   1     9.377   124.134   -168.39     0.445
+  5    O1    Oh  M   4   3   2      0.96   137.664    103.52    -0.639
+
+
+Residue:
+Name: 4XB, index:2:
+  4    C1    Cg  M   3   2   1    23.682    98.802    -135.6     0.248
+  5    H1    H2  E   4   3   2     1.091    72.415    -93.43         0
+  6    O5    Os  M   4   3   2     1.466   132.232    166.71    -0.447
+  7    C5    Cg  M   6   4   3     1.482   115.196     148.4     0.303
+  8   H5E    H1  E   7   6   4      1.09   109.061    178.41         0
+  9   H5A    H1  E   7   6   4     1.092   109.076    -63.64         0
+ 10    C4    Cg  M   7   6   4     1.541   109.795      57.6     0.286
+ 11    H4    H1  E  10   7   6     1.091   109.061     67.02         0
+ 12    C3    Cg  3  10   7   6     1.546   111.571    -54.26     0.228
+ 13    H3    H1  E  12  10   7     1.092    109.01    -67.31         0
+ 14    O3    Oh  S  12  10   7     1.458   108.945     174.5    -0.682
+ 15   H3O    Ho  E  14  12  10     0.967   108.169   -177.96     0.427
+ 16    C2    Cg  B  12  10   7     1.547    111.37        53     0.425
+ 17    H2    H1  E  16  12  10     1.092   109.571     69.62         0
+ 18    O2    Oh  S  16  12  10     1.452   108.733   -171.44    -0.699
+ 19   H2O    Ho  E  18  16  12     0.965   106.939    170.97     0.398
+ 20    O4    Os  M  10   7   6     1.447    108.47    -174.6    -0.487
+
+
+Residue:
+Name: 3LB, index:3:
+  4    C1    Cg  M   3   2   1    23.468     98.38   -136.25     0.374
+  5    H1    H2  E   4   3   2     1.091    68.433    -93.22         0
+  6    O5    Os  M   4   3   2     1.469   130.208    170.01    -0.402
+  7    C5    Cg  M   6   4   3     1.495    116.01    144.53      0.14
+  8    H5    H1  E   7   6   4     1.092   108.013    -61.82         0
+  9    C6    Cg  3   7   6   4     1.539   109.777   -179.32     0.319
+ 10   H62    H1  E   9   7   6     1.091   110.848    -57.06         0
+ 11   H61    H1  E   9   7   6      1.09   110.337    -177.3         0
+ 12    O6    Oh  S   9   7   6     1.437   109.027     63.12    -0.693
+ 13   H6O    Ho  E  12   9   7     0.961    107.83    -58.33     0.419
+ 14    C4    Cg  M   7   6   4     1.545   110.103     55.47     0.203
+ 15    H4    H1  E  14   7   6     1.091   109.333   -173.92         0
+ 16    O4    Oh  S  14   7   6     1.449   109.628     67.34    -0.664
+ 17   H4O    Ho  E  16  14   7     0.967   107.158   -172.89     0.437
+ 18    C3    Cg  M  14   7   6     1.546   110.517    -53.62     0.259
+ 19    H3    H1  E  18  14   7     1.092   108.098    -64.81         0
+ 20    C2    Cg  B  18  14   7     1.547   112.254     55.04     0.357
+ 21    H2    H1  E  20  18  14     1.092   109.716     67.43         0
+ 22    O2    Oh  S  20  18  14     1.459   108.705   -173.71    -0.726
+ 23   H2O    Ho  E  22  20  18     0.965   107.724    175.67     0.432
+ 24    O3    Os  M  18  14   7     1.455   109.126    178.29    -0.455
+
+
+Residue:
+Name: 3LB, index:4:
+  4    C1    Cg  M   3   2   1    23.468     98.38   -136.25     0.374
+  5    H1    H2  E   4   3   2     1.091    68.433    -93.22         0
+  6    O5    Os  M   4   3   2     1.469   130.208    170.01    -0.402
+  7    C5    Cg  M   6   4   3     1.495    116.01    144.53      0.14
+  8    H5    H1  E   7   6   4     1.092   108.013    -61.82         0
+  9    C6    Cg  3   7   6   4     1.539   109.777   -179.32     0.319
+ 10   H62    H1  E   9   7   6     1.091   110.848    -57.06         0
+ 11   H61    H1  E   9   7   6      1.09   110.337    -177.3         0
+ 12    O6    Oh  S   9   7   6     1.437   109.027     63.12    -0.693
+ 13   H6O    Ho  E  12   9   7     0.961    107.83    -58.33     0.419
+ 14    C4    Cg  M   7   6   4     1.545   110.103     55.47     0.203
+ 15    H4    H1  E  14   7   6     1.091   109.333   -173.92         0
+ 16    O4    Oh  S  14   7   6     1.449   109.628     67.34    -0.664
+ 17   H4O    Ho  E  16  14   7     0.967   107.158   -172.89     0.437
+ 18    C3    Cg  M  14   7   6     1.546   110.517    -53.62     0.259
+ 19    H3    H1  E  18  14   7     1.092   108.098    -64.81         0
+ 20    C2    Cg  B  18  14   7     1.547   112.254     55.04     0.357
+ 21    H2    H1  E  20  18  14     1.092   109.716     67.43         0
+ 22    O2    Oh  S  20  18  14     1.459   108.705   -173.71    -0.726
+ 23   H2O    Ho  E  22  20  18     0.965   107.724    175.67     0.432
+ 24    O3    Os  M  18  14   7     1.455   109.126    178.29    -0.455
+
+
+Residue:
+Name: 4ZB, index:5:
+  4    C1    Cg  M   3   2   1    23.413    98.374   -136.24     0.251
+  5    H1    H2  E   4   3   2     1.091    70.111    -94.11         0
+  6    O5    Os  M   4   3   2      1.46    133.49    168.28    -0.413
+  7    C5    Cg  M   6   4   3     1.502   116.304    144.38     0.075
+  8    H5    H1  E   7   6   4     1.092   106.868    -58.62         0
+  9    C6     C  B   7   6   4     1.584   116.788   -176.23     0.893
+ 10   O6B    O2  E   9   7   6     1.258   117.333   -166.06    -0.818
+ 11   O6A    O2  E   9   7   6     1.252   118.262     15.31    -0.818
+ 12    C4    Cg  M   7   6   4     1.542   108.303     57.48     0.267
+ 13    H4    H1  E  12   7   6     1.092   108.248     69.44         0
+ 14    C3    Cg  3  12   7   6     1.552    113.28    -51.87     0.266
+ 15    H3    H1  E  14  12   7     1.092    108.76    -69.98         0
+ 16    O3    Oh  S  14  12   7     1.459   107.412    172.72    -0.701
+ 17   H3O    Ho  E  16  14  12     0.966   105.666     48.32     0.403
+ 18    C2    Cg  B  14  12   7     1.551   112.291      50.4     0.411
+ 19    H2    H1  E  18  14  12     1.092     109.2     71.99         0
+ 20    O2    Oh  S  18  14  12     1.458   111.055   -168.01     -0.74
+ 21   H2O    Ho  E  20  18  14     0.962   106.072    172.93     0.422
+ 22    O4    Os  M  12   7   6     1.449   108.907   -172.84    -0.498
+
+
+Residue:
+Name: 4ZB, index:6:
+  4    C1    Cg  M   3   2   1    23.413    98.374   -136.24     0.251
+  5    H1    H2  E   4   3   2     1.091    70.111    -94.11         0
+  6    O5    Os  M   4   3   2      1.46    133.49    168.28    -0.413
+  7    C5    Cg  M   6   4   3     1.502   116.304    144.38     0.075
+  8    H5    H1  E   7   6   4     1.092   106.868    -58.62         0
+  9    C6     C  B   7   6   4     1.584   116.788   -176.23     0.893
+ 10   O6B    O2  E   9   7   6     1.258   117.333   -166.06    -0.818
+ 11   O6A    O2  E   9   7   6     1.252   118.262     15.31    -0.818
+ 12    C4    Cg  M   7   6   4     1.542   108.303     57.48     0.267
+ 13    H4    H1  E  12   7   6     1.092   108.248     69.44         0
+ 14    C3    Cg  3  12   7   6     1.552    113.28    -51.87     0.266
+ 15    H3    H1  E  14  12   7     1.092    108.76    -69.98         0
+ 16    O3    Oh  S  14  12   7     1.459   107.412    172.72    -0.701
+ 17   H3O    Ho  E  16  14  12     0.966   105.666     48.32     0.403
+ 18    C2    Cg  B  14  12   7     1.551   112.291      50.4     0.411
+ 19    H2    H1  E  18  14  12     1.092     109.2     71.99         0
+ 20    O2    Oh  S  18  14  12     1.458   111.055   -168.01     -0.74
+ 21   H2O    Ho  E  20  18  14     0.962   106.072    172.93     0.422
+ 22    O4    Os  M  12   7   6     1.449   108.907   -172.84    -0.498
+
+
+Residue:
+Name: 0YB, index:7:
+  4    C1    Cg  M   3   2   1    23.493    98.498   -136.36     0.287
+  5    H1    H2  E   4   3   2     1.091     71.45    -93.59         0
+  6    O5    Os  S   4   3   2     1.468   130.511    167.53    -0.433
+  7    C5    Cg  3   6   4   3     1.493   115.188    144.42     0.208
+  8    H5    H1  E   7   6   4     1.092   108.293     -60.8         0
+  9    C6    Cg  3   7   6   4      1.54    109.52    -179.1     0.289
+ 10   H62    H1  E   9   7   6     1.091   110.298       -62         0
+ 11   H61    H1  E   9   7   6      1.09   110.526    178.17         0
+ 12    O6    Oh  S   9   7   6     1.439   109.712     58.17    -0.689
+ 13   H6O    Ho  E  12   9   7     0.961   108.379     -54.8     0.424
+ 14    C4    Cg  3   7   6   4     1.542   108.679     57.57     0.302
+ 15    H4    H1  E  14   7   6     1.092   109.552     66.23         0
+ 16    O4    Oh  S  14   7   6     1.444   108.611      -175    -0.716
+ 17   H4O    Ho  E  16  14   7     0.967   106.789     174.2     0.436
+ 18    C3    Cg  3  14   7   6     1.547   111.743    -55.34      0.18
+ 19    H3    H1  E  18  14   7     1.092   108.855    -63.61         0
+ 20    O3    Oh  S  18  14   7     1.462    108.35    179.31    -0.681
+ 21   H3O    Ho  E  20  18  14     0.964   110.728    170.98     0.423
+ 22    C2    Cg  B  18  14   7     1.555   110.847     55.82      0.48
+ 23    H2    H1  E  22  18  14     1.092   108.016     63.51         0
+ 24    N2    Ng  B  22  18  14     1.484   110.897    -176.4    -0.722
+ 25   H2N     H  E  24  22  18     1.006   117.592     78.54       0.3
+ 26   C2N     C  B  24  22  18     1.336   123.143   -111.93     0.648
+ 27   O2N     O  E  26  24  22     1.226   122.116      6.61    -0.576
+ 28   CME    Cg  3  26  24  22     1.542   116.434   -175.43     0.034
+ 29   H3M    Hc  E  28  26  24     1.092    110.63     37.74         0
+ 30   H2M    Hc  E  28  26  24     1.091   110.076    157.79         0
+ 31   H1M    Hc  E  28  26  24     1.091   109.335    -82.58         0
+
+
+*****
+
+
+Writing: ./sequenceAsPdbFile.pdb
+Writing: ./sequenceAsOffFile.off
+Beep beep the van has arrived
+-----------------------------------------------------------------------------------------------------
+
+Sequence 4: dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
+Glycam names are: ROH, 4XB, 3LB, 3LB, 4ZB, YZB, SO3, 4YS, YuA2, SO3, QYA, SO3, SO3, 245, SO3, 
+Found query residue: 3LB
+3LB will be read in 2 times.
+Found query residue: 4XB
+4XB will be read in 1 times.
+Found query residue: 4ZB
+4ZB will be read in 1 times.
+Found query residue: QYA
+QYA will be read in 1 times.
+Found query residue: ROH
+ROH will be read in 1 times.
+Found query residue: SO3
+SO3 will be read in 5 times.
+Found query residue: YZB
+YZB will be read in 1 times.
+Found query residue: 245
+245 will be read in 1 times.
+Found query residue: 4YS
+4YS will be read in 1 times.
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Test level caught runtime error: Did not find prep entry for LIdopA(2SO)a1-4 with glycam residue code: YuA2
+-----------------------------------------------------------------------------------------------------
+
+Sequence 5: dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
+Glycam names are: ROH, UYS, SO3, 4uA3, 4YS, YuA, SO3, 4YS, 245, SO3, 
+Found query residue: ROH
+ROH will be read in 1 times.
+Found query residue: SO3
+SO3 will be read in 3 times.
+Found query residue: YuA
+YuA will be read in 1 times.
+Found query residue: 245
+245 will be read in 1 times.
+Found query residue: 4YS
+4YS will be read in 2 times.
+Found query residue: UYS
+UYS will be read in 1 times.
+Found query residue: 4uA3
+4uA3 will be read in 1 times.
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+
+
+
+On to setting 3d structure!
+
+Setting connection between UYS and it's parent ROH, which has linkageLabel: 
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_2279:UYS
+O1_2150:UYS
+
+Finding Path between:C1_2279 and O1_2150
+Updated Path between:
+ C1_2279 and O1_2150
+C2_2281
+C1_2279
+O1_2150
+HO1_2149
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: UYS and ROH
+These are the assigned RotatableDihedrals:
+C2, C1, O1, HO1: -86.6586.
+Setting default shape
+Blocking access via O1, we will search outward from C1
+Have determined that the following atoms will move:
+O1, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between SO3 and it's parent UYS, which has linkageLabel: a1-
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -1.68193,    9.38522,   -1.23324
+parent O6   -2.15405,     10.318,  -0.237133
+and child S1   -3.07146,    9.40055,   -1.15454
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_2155:SO3
+C5_2295:SO3
+
+Finding Path between:S1_2155 and C5_2295
+Updated Path between:
+ S1_2155 and C5_2295
+O3_2158
+S1_2155
+O6_2300
+C6_2297
+C5_2295
+O5_2301
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and UYS
+These are the assigned RotatableDihedrals:
+O3, S1, O6, C6: 0.685746.
+S1, O6, C6, C5: 36.5667.
+O6, C6, C5, O5: -66.5835.
+Setting default shape
+Blocking access via O6, we will search outward from S1
+Have determined that the following atoms will move:
+O6, S1, O1, O2, O3, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, S1, O1, O2, O3, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4uA3 and it's parent UYS, which has linkageLabel: a1-
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -2.75943,    10.7276,   -3.14476
+parent O4   -1.48534,    11.0977,   -3.72477
+and child C1   -2.29363,    10.2894,   -4.53306
+child residue 4uA3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_2307:4uA3
+C4_2293:4uA3
+
+Finding Path between:C1_2307 and C4_2293
+Updated Path between:
+ C1_2307 and C4_2293
+C2_2321
+C1_2307
+O4_2302
+C4_2293
+C5_2295
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 4uA3 and UYS
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: 48.2613.
+C1, O4, C4, C5: 85.269.
+Test level caught runtime error: No Metadata entries found for connection between 4uA3@C1 and UYS@O4
+Note that order should be reducing atom - anomeric atom
+
+-----------------------------------------------------------------------------------------------------
+
+Sequence 6: DGlcpa1-2DFrufb
+Glycam names are: 2CU, 0GA, 
+Found query residue: 0GA
+0GA will be read in 1 times.
+Found query residue: 2CU
+2CU will be read in 1 times.
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+
+
+
+On to setting 3d structure!
+
+Setting connection between 0GA and it's parent 2CU, which has linkageLabel: 
+Parent atom is O2
+Setting angle between
+parentNeighbor C2    8.60803,    18.2089,   -18.0157
+parent O2    8.42012,    16.7803,   -17.9966
+and child C1    7.57719,    15.9374,   -18.8396
+child residue 0GA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_2505:0GA
+C2_2532:0GA
+
+Finding Path between:C1_2505 and C2_2532
+Updated Path between:
+ C1_2505 and C2_2532
+C2_2507
+C1_2505
+O2_2531
+C2_2532
+C1_2549
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0GA and 2CU
+These are the assigned RotatableDihedrals:
+C2, C1, O2, C2: 92.7054.
+C1, O2, C2, C1: 85.4687.
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Re-determining atoms that need to move for each linkage:
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Final overlap resolution
+Overlaps resolved
+Number of residues is 2
+Structure created without throwing an exception for: DGlcpa1-2DFrufb
+
+Residue:
+Name: 2CU, index:1:
+  4    O2    Os  M   3   2   1    26.037     80.27   -135.47    -0.388
+  5    C2    Cg  B   4   3   2     1.441   132.894   -110.83     0.239
+  6    O5    Os  S   5   4   3     1.575   112.415    -152.3    -0.449
+  7    C5    Cg  3   6   5   4     1.577   112.749   -127.24      0.31
+  8    H5    H1  E   7   6   5     1.092   109.362   -121.32         0
+  9    C6    Cg  3   7   6   5     1.529   108.415    119.08     0.272
+ 10   H62    H1  E   9   7   6     1.091   110.618    -56.09         0
+ 11   H61    H1  E   9   7   6      1.09   110.315   -176.31         0
+ 12    O6    Oh  S   9   7   6     1.433   108.667     64.08    -0.652
+ 13   H6O    Ho  E  12   9   7      0.96   109.494     59.32     0.397
+ 14    C4    Cg  3   7   6   5     1.622   105.503      -1.9     0.293
+ 15    H4    H1  E  14   7   6     1.092    112.17    133.69         0
+ 16    O4    Oh  S  14   7   6     1.434   107.738   -106.47    -0.763
+ 17   H4O    Ho  E  16  14   7      0.96    109.48    -62.64     0.431
+ 18    C3    Cg  B  14   7   6     1.624   107.882      8.77     0.333
+ 19    H3    H1  E  18  14   7     1.091   112.343   -135.61         0
+ 20    O3    Oh  S  18  14   7     1.439   105.085    106.18    -0.691
+ 21   H3O    Ho  E  20  18  14      0.96   109.418   -177.11      0.41
+ 22    C1    Cg  3   5   4   3     1.537   107.629    -32.85     0.287
+ 23   H12    H1  E  22   5   4     1.091   110.638     53.98         0
+ 24   H11    H1  E  22   5   4     1.091   109.952    173.27         0
+ 25    O1    Oh  S  22   5   4     1.437   110.256    -67.03    -0.624
+ 26   H1O    Ho  E  25  22   5      0.96    109.49   -179.97     0.401
+
+
+Residue:
+Name: 0GA, index:2:
+  4    C1    Cg  M   3   2   1     22.45    99.052   -130.25     0.509
+  5    H1    H2  E   4   3   2      1.09    23.547     97.55         0
+  6    C2    Cg  3   4   3   2     1.556   111.527      7.33     0.246
+  7    H2    H1  E   6   4   3     1.091   107.607     76.46         0
+  8    C3    Cg  3   6   4   3     1.543   111.424   -164.87     0.286
+  9    H3    H1  E   8   6   4     1.092   109.239     69.49         0
+ 10    C4    Cg  3   8   6   4     1.547   112.114    -52.22     0.254
+ 11    H4    H1  E  10   8   6     1.092   109.454    -66.45         0
+ 12    C5    Cg  3  10   8   6     1.543   111.254      54.5     0.283
+ 13    H5    H1  E  12  10   8     1.092   108.261     65.38         0
+ 14    C6    Cg  3  12  10   8     1.546   112.538   -174.79     0.276
+ 15   H62    H1  E  14  12  10      1.09   110.682    -45.93         0
+ 16   H61    H1  E  14  12  10     1.091   110.014     73.31         0
+ 17    O6    Oh  S  14  12  10     1.444   110.823   -165.78    -0.682
+ 18   H6O    Ho  E  17  14  12      0.96   109.735     78.35     0.418
+ 19    O5    Os  E  12  10   8       1.5   109.539    -52.54    -0.574
+ 20    O4    Oh  S  10   8   6     1.451   108.956    174.69     -0.71
+ 21   H4O    Ho  E  20  10   8     0.968   107.227     50.66     0.436
+ 22    O3    Oh  S   8   6   4     1.452   108.531   -172.18    -0.699
+ 23   H3O    Ho  E  22   8   6     0.967   107.382    -43.08     0.427
+ 24    O2    Oh  S   6   4   3     1.465   111.499    -41.43    -0.713
+ 25   H2O    Ho  E  24   6   4     0.967    109.17    -40.31     0.437
+
+
+*****
+
+
+Writing: ./sequenceAsPdbFile.pdb
+Writing: ./sequenceAsOffFile.off
+Beep beep the van has arrived
+-----------------------------------------------------------------------------------------------------
+
+Sequence 7: DFrufb2-1DGlcpa
+Glycam names are: 1GA, 0CU, 
+Found query residue: 0CU
+0CU will be read in 1 times.
+Found query residue: 1GA
+1GA will be read in 1 times.
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+
+
+
+On to setting 3d structure!
+
+Setting connection between 0CU and it's parent 1GA, which has linkageLabel: 
+Parent atom is O1
+Setting angle between
+parentNeighbor C1  -0.289683,    15.0952,   -16.9233
+parent O1  -0.367278,    16.1176,    -15.941
+and child C2   -1.21021,    15.2747,   -16.7839
+child residue 0CU will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C2_2615:0CU
+C1_2642:0CU
+
+Finding Path between:C2_2615 and C1_2642
+Updated Path between:
+ C2_2615 and C1_2642
+C1_2632
+C2_2615
+O1_2641
+C1_2642
+C2_2644
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0CU and 1GA
+These are the assigned RotatableDihedrals:
+C1, C2, O1, C1: 172.218.
+C2, O1, C1, C2: 157.445.
+Setting default shape
+Blocking access via O1, we will search outward from C2
+Have determined that the following atoms will move:
+O1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, C1, H12, H11, O1, H1O, 
+Blocking access via C1, we will search outward from O1
+Have determined that the following atoms will move:
+C1, O1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, C1, H12, H11, O1, H1O, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Re-determining atoms that need to move for each linkage:
+Blocking access via O1, we will search outward from C2
+Have determined that the following atoms will move:
+O1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, C1, H12, H11, O1, H1O, 
+Blocking access via C1, we will search outward from O1
+Have determined that the following atoms will move:
+C1, O1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, C1, H12, H11, O1, H1O, 
+Final overlap resolution
+Overlaps resolved
+Number of residues is 2
+Structure created without throwing an exception for: DFrufb2-1DGlcpa
+
+Residue:
+Name: 1GA, index:1:
+  4    O1    Os  M   3   2   1    22.425    99.971    -133.8    -0.388
+  5    C1    Cg  B   4   3   2      1.42    89.221     75.63     0.509
+  6    H1    H2  E   5   4   3      1.09   108.849       9.3         0
+  7    C2    Cg  3   5   4   3     1.556   111.757   -112.07     0.246
+  8    H2    H1  E   7   5   4     1.091   107.607    172.19         0
+  9    C3    Cg  3   7   5   4     1.543   111.424    -69.14     0.286
+ 10    H3    H1  E   9   7   5     1.092   109.239     69.49         0
+ 11    C4    Cg  3   9   7   5     1.547   112.114    -52.22     0.254
+ 12    H4    H1  E  11   9   7     1.092   109.454    -66.45         0
+ 13    C5    Cg  3  11   9   7     1.543   111.254      54.5     0.283
+ 14    H5    H1  E  13  11   9     1.092   108.261     65.38         0
+ 15    C6    Cg  3  13  11   9     1.546   112.538   -174.79     0.276
+ 16   H62    H1  E  15  13  11      1.09   110.682    -45.93         0
+ 17   H61    H1  E  15  13  11     1.091   110.014     73.31         0
+ 18    O6    Oh  S  15  13  11     1.444   110.823   -165.78    -0.682
+ 19   H6O    Ho  E  18  15  13      0.96   109.735     78.35     0.418
+ 20    O5    Os  E  13  11   9       1.5   109.539    -52.54    -0.574
+ 21    O4    Oh  S  11   9   7     1.451   108.956    174.69     -0.71
+ 22   H4O    Ho  E  21  11   9     0.968   107.227     50.66     0.436
+ 23    O3    Oh  S   9   7   5     1.452   108.531   -172.18    -0.699
+ 24   H3O    Ho  E  23   9   7     0.967   107.382    -43.08     0.427
+ 25    O2    Oh  S   7   5   4     1.465   111.499      54.3    -0.713
+ 26   H2O    Ho  E  25   7   5     0.967    109.17    -40.31     0.437
+
+
+Residue:
+Name: 0CU, index:2:
+  4    C2    Cg  M   3   2   1    27.039    81.072   -137.59     0.239
+  5    O5    Os  S   4   3   2     1.575   147.962    122.92    -0.449
+  6    C5    Cg  3   5   4   3     1.577   112.749   -165.42      0.31
+  7    H5    H1  E   6   5   4     1.092   109.362   -121.32         0
+  8    C6    Cg  3   6   5   4     1.529   108.415    119.08     0.272
+  9   H62    H1  E   8   6   5     1.091   110.618    -56.09         0
+ 10   H61    H1  E   8   6   5      1.09   110.315   -176.31         0
+ 11    O6    Oh  S   8   6   5     1.433   108.667     64.08    -0.652
+ 12   H6O    Ho  E  11   8   6      0.96   109.494     59.32     0.397
+ 13    C4    Cg  3   6   5   4     1.622   105.503      -1.9     0.293
+ 14    H4    H1  E  13   6   5     1.092    112.17    133.69         0
+ 15    O4    Oh  S  13   6   5     1.434   107.738   -106.47    -0.763
+ 16   H4O    Ho  E  15  13   6      0.96    109.48    -62.64     0.431
+ 17    C3    Cg  B  13   6   5     1.624   107.882      8.77     0.333
+ 18    H3    H1  E  17  13   6     1.091   112.343   -135.61         0
+ 19    O3    Oh  S  17  13   6     1.439   105.085    106.18    -0.691
+ 20   H3O    Ho  E  19  17  13      0.96   109.418   -177.11      0.41
+ 21    C1    Cg  3   4   3   2     1.537      69.5   -144.67     0.287
+ 22   H12    H1  E  21   4   3     1.091   110.638     29.87         0
+ 23   H11    H1  E  21   4   3     1.091   109.952    149.16         0
+ 24    O1    Oh  S  21   4   3     1.437   110.256    -91.14    -0.624
+ 25   H1O    Ho  E  24  21   4      0.96    109.49   -179.97     0.401
+
+
+*****
+
+
+Writing: ./sequenceAsPdbFile.pdb
+Writing: ./sequenceAsOffFile.off
+Beep beep the van has arrived
+-----------------------------------------------------------------------------------------------------
+
+Sequence 8: DNeup5Ac&Label=residue-9;a2-6&Label=link-7;DGalp&Label=residue-8;b1-4&Label=link-6;DGlcpNAc&Label=residue-6;[3&Label=link-5;S&Label=residue-7;]b1-2&Label=link-4;DManp&Label=residue-5;a1-3&Label=link-3;[DGlcpNAc&Label=residue-10;b1-4&Label=link-8;][DManp&Label=residue-12;[2&Label=link-11;S&Label=residue-13;,3&Label=link-12;Me&Label=residue-14;]a1-6&Label=link-10;DManp&Label=residue-11;a1-6&Label=link-9;]DManp&Label=residue-4;b1-4&Label=link-2;DGlcpNAc&Label=residue-3;[6&Label=link-13;Me&Label=residue-15;]b1-4&Label=link-1;DGlcpNAc&Label=residue-2;b1-1&Label=link-0;-OH&Label=residue-1;
+Test level caught error: Error: SequenceParser can't handle labeled stuff yet: DNeup5Ac&Label=residue-9;a2-6&Label=link-7;DGalp&Label=residue-8;b1-4&Label=link-6;DGlcpNAc&Label=residue-6;[3&Label=link-5;S&Label=residue-7;]b1-2&Label=link-4;DManp&Label=residue-5;a1-3&Label=link-3;[DGlcpNAc&Label=residue-10;b1-4&Label=link-8;][DManp&Label=residue-12;[2&Label=link-11;S&Label=residue-13;,3&Label=link-12;Me&Label=residue-14;]a1-6&Label=link-10;DManp&Label=residue-11;a1-6&Label=link-9;]DManp&Label=residue-4;b1-4&Label=link-2;DGlcpNAc&Label=residue-3;[6&Label=link-13;Me&Label=residue-15;]b1-4&Label=link-1;DGlcpNAc&Label=residue-2;b1-1&Label=link-0;-OH&Label=residue-1;
+
+-----------------------------------------------------------------------------------------------------
+
+Sequence 9: 
+Test level caught error: Error: sequence is empty:>>><<<
+-----------------------------------------------------------------------------------------------------
+
+Sequence 10: There will be cake.
+Test level caught error: Error: the cake is a lie:>>>There will be cake.<<<
+-----------------------------------------------------------------------------------------------------
+
+Sequence 11: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH 
+Test level caught error: Error: sequence contains a space:>>>DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH <<<
+-----------------------------------------------------------------------------------------------------
+
+Sequence 12: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH
+Test level caught error: Error: the number of [ doesn't match the number of ]. Bad branch in :>>>DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH<<<
+-----------------------------------------------------------------------------------------------------
+
+Sequence 13: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH
+Test level caught error: Error: we can't parse this residue: "Boo"
+-----------------------------------------------------------------------------------------------------
+
+Sequence 14: dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4LIdopA(2SO)a1-4DGlcpNSa1-4DGlcpA[2S]b1-OH
+Glycam names are: ROH, YZB, SO3, 4YS, 4uA2, YuA2, SO3, QYA, SO3, SO3, 245, SO3, 
+Found query residue: QYA
+QYA will be read in 1 times.
+Found query residue: ROH
+ROH will be read in 1 times.
+Found query residue: SO3
+SO3 will be read in 5 times.
+Found query residue: YZB
+YZB will be read in 1 times.
+Found query residue: 245
+245 will be read in 1 times.
+Found query residue: 4YS
+4YS will be read in 1 times.
+Found query residue: 4uA2
+4uA2 will be read in 1 times.
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Test level caught runtime error: Did not find prep entry for LIdopA(2SO)a1-4 with glycam residue code: YuA2
+-----------------------------------------------------------------------------------------------------
+
+Sequence 15: DGlNAcb1-OH
+Glycam names are: ROH, Test level caught runtime error: Cannot create 3D structure as no GLYCAM residue code was found in the GMML metadata for residue: DGlNAcb
+-----------------------------------------------------------------------------------------------------
+
+Sequence 16: DManpa1-4DManpa1-4DManpa1-4DManpa1-4DManpa1-4DManp[6D]a1-4DManp[2S,6S]a1-4DManpa1-OME
+Glycam names are: OME, 4MA, RMA, SO3, SO3, 4MA, 4MA, 4MA, 4MA, 4MA, 0MA, 
+Found query residue: 0MA
+0MA will be read in 1 times.
+Found query residue: 4MA
+4MA will be read in 6 times.
+Found query residue: OME
+OME will be read in 1 times.
+Found query residue: RMA
+RMA will be read in 1 times.
+Found query residue: SO3
+SO3 will be read in 2 times.
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+
+
+
+On to setting 3d structure!
+
+Setting connection between 4MA and it's parent OME, which has linkageLabel: 
+Setting angle between
+parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
+parent O   -3.06332,    5.51392,   -3.09805
+and child C1   -3.90625,    4.67099,   -3.94098
+child residue 4MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3135:4MA
+O_3289:4MA
+
+Finding Path between:C1_3135 and O_3289
+Updated Path between:
+ C1_3135 and O_3289
+C2_3137
+C1_3135
+O_3289
+CH3_3286
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 4MA and OME
+These are the assigned RotatableDihedrals:
+C2, C1, O, CH3: -169.06.
+Setting default shape
+Blocking access via O, we will search outward from C1
+Have determined that the following atoms will move:
+O, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between RMA and it's parent 4MA, which has linkageLabel: a1-
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -3.76785,     6.5671,   -6.27195
+parent O4    -3.7319,    7.93441,   -6.75927
+and child C1   -4.57484,    7.09147,    -7.6022
+child residue RMA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3294:RMA
+C4_3145:RMA
+
+Finding Path between:C1_3294 and C4_3145
+Updated Path between:
+ C1_3294 and C4_3145
+C2_3296
+C1_3294
+O4_3155
+C4_3145
+C5_3147
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: RMA and 4MA
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: -93.8519.
+C1, O4, C4, C5: -80.7141.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between SO3 and it's parent RMA, which has linkageLabel: a1-4
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -6.12609,    7.49403,   -10.7827
+parent O6   -6.21196,    6.05869,   -10.9151
+and child S1   -7.12937,    5.14128,   -11.8325
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_3317:SO3
+C5_3302:SO3
+
+Finding Path between:S1_3317 and C5_3302
+Updated Path between:
+ S1_3317 and C5_3302
+O3_3320
+S1_3317
+O6_3307
+C6_3304
+C5_3302
+O5_3308
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and RMA
+These are the assigned RotatableDihedrals:
+O3, S1, O6, C6: 120.241.
+S1, O6, C6, C5: 155.993.
+O6, C6, C5, O5: 70.4888.
+Setting default shape
+Blocking access via O6, we will search outward from S1
+Have determined that the following atoms will move:
+O6, S1, O1, O2, O3, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, S1, O1, O2, O3, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between SO3 and it's parent RMA, which has linkageLabel: a1-4
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   -3.54585,    9.43661,   -7.80601
+parent O2   -2.87346,    10.2847,   -8.78441
+and child S1   -3.79087,    9.36732,   -9.70182
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_3325:SO3
+C2_3296:SO3
+
+Finding Path between:S1_3325 and C2_3296
+Updated Path between:
+ S1_3325 and C2_3296
+O3_3328
+S1_3325
+O2_3312
+C2_3296
+C1_3294
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and RMA
+These are the assigned RotatableDihedrals:
+O3, S1, O2, C2: -116.499.
+S1, O2, C2, C1: 54.3337.
+Setting default shape
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4MA and it's parent RMA, which has linkageLabel: a1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -5.75471,    9.39048,   -9.09749
+parent O4   -7.17591,    9.65821,    -8.9678
+and child C1   -8.01884,    8.81528,   -9.81073
+child residue 4MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3160:4MA
+C4_3300:4MA
+
+Finding Path between:C1_3160 and C4_3300
+Updated Path between:
+ C1_3160 and C4_3300
+C2_3162
+C1_3160
+O4_3309
+C4_3300
+C5_3302
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 4MA and RMA
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: -22.1928.
+C1, O4, C4, C5: -32.1109.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, Hd, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, Hd, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4MA and it's parent 4MA, which has linkageLabel: a1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -9.57029,    9.54874,   -11.4038
+parent O4   -10.0343,    8.36815,   -12.1103
+and child C1   -10.8773,    7.52521,   -12.9533
+child residue 4MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3185:4MA
+C4_3170:4MA
+
+Finding Path between:C1_3185 and C4_3170
+Updated Path between:
+ C1_3185 and C4_3170
+C2_3187
+C1_3185
+O4_3180
+C4_3170
+C5_3172
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 4MA and 4MA
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: 121.458.
+C1, O4, C4, C5: -116.146.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4MA and it's parent 4MA, which has linkageLabel: a1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -11.0467,    8.12406,   -15.3653
+parent O4   -10.2177,    8.29123,   -16.5455
+and child C1   -11.0606,     7.4483,   -17.3884
+child residue 4MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3210:4MA
+C4_3195:4MA
+
+Finding Path between:C1_3210 and C4_3195
+Updated Path between:
+ C1_3210 and C4_3195
+C2_3212
+C1_3210
+O4_3205
+C4_3195
+C5_3197
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 4MA and 4MA
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: -156.83.
+C1, O4, C4, C5: -128.469.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4MA and it's parent 4MA, which has linkageLabel: a1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -11.0953,    9.63575,   -19.5623
+parent O4    -11.445,    11.0203,   -19.8252
+and child C1   -12.2879,    10.1774,   -20.6681
+child residue 4MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3235:4MA
+C4_3220:4MA
+
+Finding Path between:C1_3235 and C4_3220
+Updated Path between:
+ C1_3235 and C4_3220
+C2_3237
+C1_3235
+O4_3230
+C4_3220
+C5_3222
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 4MA and 4MA
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: -75.426.
+C1, O4, C4, C5: -65.8631.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4MA and it's parent 4MA, which has linkageLabel: a1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -13.7277,    12.2272,   -22.0639
+parent O4   -15.1685,    12.0554,   -22.0102
+and child C1   -16.0114,    11.2124,   -22.8531
+child residue 4MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3260:4MA
+C4_3245:4MA
+
+Finding Path between:C1_3260 and C4_3245
+Updated Path between:
+ C1_3260 and C4_3245
+C2_3262
+C1_3260
+O4_3255
+C4_3245
+C5_3247
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 4MA and 4MA
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: -9.92724.
+C1, O4, C4, C5: -29.9118.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0MA and it's parent 4MA, which has linkageLabel: a1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -17.3452,    11.6972,   -24.6204
+parent O4   -17.4203,    10.5747,   -25.5383
+and child C1   -18.2632,     9.7318,   -26.3813
+child residue 0MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3109:0MA
+C4_3270:0MA
+
+Finding Path between:C1_3109 and C4_3270
+Updated Path between:
+ C1_3109 and C4_3270
+C2_3111
+C1_3109
+O4_3280
+C4_3270
+C5_3272
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0MA and 4MA
+These are the assigned RotatableDihedrals:
+C2, C1, O4, C4: 151.413.
+C1, O4, C4, C5: -134.542.
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Re-determining atoms that need to move for each linkage:
+Blocking access via O, we will search outward from C1
+Have determined that the following atoms will move:
+O, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, Hd, H1, H5, C6, H62, H61, O6, S1, O1, O2, O3, H1, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, Hd, H1, H5, C6, H62, H61, O6, S1, O1, O2, O3, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, Hd, H1, H5, C6, H62, H61, O6, S1, O1, O2, O3, H1, 
+Blocking access via O6, we will search outward from S1
+Have determined that the following atoms will move:
+O6, S1, O1, O2, O3, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, S1, O1, O2, O3, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, S1, O1, O2, O3, 
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, Hd, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, Hd, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Final overlap resolution
+Overlaps resolved
+Number of residues is 11
+Structure created without throwing an exception for: DManpa1-4DManpa1-4DManpa1-4DManpa1-4DManpa1-4DManp[6D]a1-4DManp[2S,6S]a1-4DManpa1-OME
+
+Residue:
+Name: OME, index:1:
+  4    H1    H1  M   3   2   1     7.197   127.853   -163.43         0
+  5   CH3    Cg  M   4   3   2     1.085    46.873    132.02     0.264
+  6    H2    H1  E   5   4   3     1.085     111.4    147.97         0
+  7    H3    H1  E   5   4   3     1.085     111.4     27.97         0
+  8     O    Os  M   5   4   3     1.399       107    -92.03    -0.458
+
+
+Residue:
+Name: 4MA, index:2:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  M   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    O2    Oh  S   6   4   3     1.459   110.007     79.71    -0.717
+  9   H2O    Ho  E   8   6   4     0.965   108.621    167.29     0.446
+ 10    C3    Cg  M   6   4   3     1.545   110.571   -158.93     0.252
+ 11    H3    H1  E  10   6   4     1.092   108.528     64.93         0
+ 12    O3    Oh  S  10   6   4     1.461   109.595   -177.93    -0.696
+ 13   H3O    Ho  E  12  10   6     0.964   109.699    -74.81     0.431
+ 14    C4    Cg  M  10   6   4     1.549   111.609    -54.79     0.326
+ 15    H4    H1  E  14  10   6     1.091   109.865    -64.38         0
+ 16    C5    Cg  3  14  10   6     1.546   110.605     57.15     0.276
+ 17    H5    H1  E  16  14  10     1.092   108.214     65.71         0
+ 18    C6    Cg  3  16  14  10     1.544   112.153   -174.59     0.266
+ 19   H62    H1  E  18  16  14      1.09   110.579    -46.84         0
+ 20   H61    H1  E  18  16  14     1.091   110.051     72.33         0
+ 21    O6    Oh  S  18  16  14     1.444   110.952   -166.67    -0.688
+ 22   H6O    Ho  E  21  18  16      0.96   109.923     72.72     0.422
+ 23    O5    Os  E  16  14  10     1.497   110.394    -52.31    -0.507
+ 24    O4    Os  M  14  10   6     1.452   108.734    176.59    -0.489
+
+
+Residue:
+Name: RMA, index:3:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  M   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    C3    Cg  3   6   4   3     1.545   110.571   -158.93     0.252
+  9    H3    H1  E   8   6   4     1.092   108.528     64.93         0
+ 10    C4    Cg  3   8   6   4     1.549   111.609    -54.79     0.326
+ 11    H4    H1  E  10   8   6     1.091   109.865    -64.38         0
+ 12    C5    Cg  3  10   8   6     1.546   110.605     57.15     0.276
+ 13    H5    H1  E  12  10   8     1.092   108.214     65.71         0
+ 14    C6    Cg  3  12  10   8     1.544   112.153   -174.59     0.266
+ 15   H62    H1  E  14  12  10      1.09   110.579    -46.84         0
+ 16   H61    H1  E  14  12  10     1.091   110.051     72.33         0
+ 17    O6    Os  E  14  12  10     1.444   110.952   -166.67    -0.429
+ 18    O5    Os  E  12  10   8     1.497   110.394    -52.31    -0.507
+ 19    O4    Os  E  10   8   6     1.452   108.734    176.59    -0.489
+ 20    O3    Oh  S   8   6   4     1.461   109.595   -177.93    -0.696
+ 21   H3O    Ho  E  20   8   6     0.964   109.699    -74.81     0.431
+ 22    O2    Os  M   6   4   3     1.459   110.007     79.71    -0.434
+
+
+Residue:
+Name: SO3, index:4:
+  4    S1     S  M   3   2   1    10.884   119.491   -167.81     1.245
+  5    O1    O2  E   4   3   2     1.446    106.41   -102.07    -0.694
+  6    O2    O2  E   4   3   2     1.437   128.086    115.25    -0.694
+  7    O3    O2  E   4   3   2     1.446    70.631      7.86    -0.694
+
+
+Residue:
+Name: SO3, index:12:
+  4    S1     S  M   3   2   1    10.884   119.491   -167.81     1.245
+  5    O1    O2  E   4   3   2     1.446    106.41   -102.07    -0.694
+  6    O2    O2  E   4   3   2     1.437   128.086    115.25    -0.694
+  7    O3    O2  E   4   3   2     1.446    70.631      7.86    -0.694
+
+
+Residue:
+Name: 4MA, index:5:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  M   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    O2    Oh  S   6   4   3     1.459   110.007     79.71    -0.717
+  9   H2O    Ho  E   8   6   4     0.965   108.621    167.29     0.446
+ 10    C3    Cg  M   6   4   3     1.545   110.571   -158.93     0.252
+ 11    H3    H1  E  10   6   4     1.092   108.528     64.93         0
+ 12    O3    Oh  S  10   6   4     1.461   109.595   -177.93    -0.696
+ 13   H3O    Ho  E  12  10   6     0.964   109.699    -74.81     0.431
+ 14    C4    Cg  M  10   6   4     1.549   111.609    -54.79     0.326
+ 15    H4    H1  E  14  10   6     1.091   109.865    -64.38         0
+ 16    C5    Cg  3  14  10   6     1.546   110.605     57.15     0.276
+ 17    H5    H1  E  16  14  10     1.092   108.214     65.71         0
+ 18    C6    Cg  3  16  14  10     1.544   112.153   -174.595.55112e-17
+ 19   H62    H1  E  18  16  14      1.09   110.579    -46.84         0
+ 20   H61    H1  E  18  16  14     1.091   110.051     72.33         0
+ 21    Hd    H1  S  18  16  14     1.444   110.952   -166.67         0
+ 23    O5    Os  E  16  14  10     1.497   110.394    -52.31    -0.507
+ 24    O4    Os  M  14  10   6     1.452   108.734    176.59    -0.489
+
+
+Residue:
+Name: 4MA, index:7:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  M   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    O2    Oh  S   6   4   3     1.459   110.007     79.71    -0.717
+  9   H2O    Ho  E   8   6   4     0.965   108.621    167.29     0.446
+ 10    C3    Cg  M   6   4   3     1.545   110.571   -158.93     0.252
+ 11    H3    H1  E  10   6   4     1.092   108.528     64.93         0
+ 12    O3    Oh  S  10   6   4     1.461   109.595   -177.93    -0.696
+ 13   H3O    Ho  E  12  10   6     0.964   109.699    -74.81     0.431
+ 14    C4    Cg  M  10   6   4     1.549   111.609    -54.79     0.326
+ 15    H4    H1  E  14  10   6     1.091   109.865    -64.38         0
+ 16    C5    Cg  3  14  10   6     1.546   110.605     57.15     0.276
+ 17    H5    H1  E  16  14  10     1.092   108.214     65.71         0
+ 18    C6    Cg  3  16  14  10     1.544   112.153   -174.59     0.266
+ 19   H62    H1  E  18  16  14      1.09   110.579    -46.84         0
+ 20   H61    H1  E  18  16  14     1.091   110.051     72.33         0
+ 21    O6    Oh  S  18  16  14     1.444   110.952   -166.67    -0.688
+ 22   H6O    Ho  E  21  18  16      0.96   109.923     72.72     0.422
+ 23    O5    Os  E  16  14  10     1.497   110.394    -52.31    -0.507
+ 24    O4    Os  M  14  10   6     1.452   108.734    176.59    -0.489
+
+
+Residue:
+Name: 4MA, index:8:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  M   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    O2    Oh  S   6   4   3     1.459   110.007     79.71    -0.717
+  9   H2O    Ho  E   8   6   4     0.965   108.621    167.29     0.446
+ 10    C3    Cg  M   6   4   3     1.545   110.571   -158.93     0.252
+ 11    H3    H1  E  10   6   4     1.092   108.528     64.93         0
+ 12    O3    Oh  S  10   6   4     1.461   109.595   -177.93    -0.696
+ 13   H3O    Ho  E  12  10   6     0.964   109.699    -74.81     0.431
+ 14    C4    Cg  M  10   6   4     1.549   111.609    -54.79     0.326
+ 15    H4    H1  E  14  10   6     1.091   109.865    -64.38         0
+ 16    C5    Cg  3  14  10   6     1.546   110.605     57.15     0.276
+ 17    H5    H1  E  16  14  10     1.092   108.214     65.71         0
+ 18    C6    Cg  3  16  14  10     1.544   112.153   -174.59     0.266
+ 19   H62    H1  E  18  16  14      1.09   110.579    -46.84         0
+ 20   H61    H1  E  18  16  14     1.091   110.051     72.33         0
+ 21    O6    Oh  S  18  16  14     1.444   110.952   -166.67    -0.688
+ 22   H6O    Ho  E  21  18  16      0.96   109.923     72.72     0.422
+ 23    O5    Os  E  16  14  10     1.497   110.394    -52.31    -0.507
+ 24    O4    Os  M  14  10   6     1.452   108.734    176.59    -0.489
+
+
+Residue:
+Name: 4MA, index:9:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  M   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    O2    Oh  S   6   4   3     1.459   110.007     79.71    -0.717
+  9   H2O    Ho  E   8   6   4     0.965   108.621    167.29     0.446
+ 10    C3    Cg  M   6   4   3     1.545   110.571   -158.93     0.252
+ 11    H3    H1  E  10   6   4     1.092   108.528     64.93         0
+ 12    O3    Oh  S  10   6   4     1.461   109.595   -177.93    -0.696
+ 13   H3O    Ho  E  12  10   6     0.964   109.699    -74.81     0.431
+ 14    C4    Cg  M  10   6   4     1.549   111.609    -54.79     0.326
+ 15    H4    H1  E  14  10   6     1.091   109.865    -64.38         0
+ 16    C5    Cg  3  14  10   6     1.546   110.605     57.15     0.276
+ 17    H5    H1  E  16  14  10     1.092   108.214     65.71         0
+ 18    C6    Cg  3  16  14  10     1.544   112.153   -174.59     0.266
+ 19   H62    H1  E  18  16  14      1.09   110.579    -46.84         0
+ 20   H61    H1  E  18  16  14     1.091   110.051     72.33         0
+ 21    O6    Oh  S  18  16  14     1.444   110.952   -166.67    -0.688
+ 22   H6O    Ho  E  21  18  16      0.96   109.923     72.72     0.422
+ 23    O5    Os  E  16  14  10     1.497   110.394    -52.31    -0.507
+ 24    O4    Os  M  14  10   6     1.452   108.734    176.59    -0.489
+
+
+Residue:
+Name: 4MA, index:10:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  M   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    O2    Oh  S   6   4   3     1.459   110.007     79.71    -0.717
+  9   H2O    Ho  E   8   6   4     0.965   108.621    167.29     0.446
+ 10    C3    Cg  M   6   4   3     1.545   110.571   -158.93     0.252
+ 11    H3    H1  E  10   6   4     1.092   108.528     64.93         0
+ 12    O3    Oh  S  10   6   4     1.461   109.595   -177.93    -0.696
+ 13   H3O    Ho  E  12  10   6     0.964   109.699    -74.81     0.431
+ 14    C4    Cg  M  10   6   4     1.549   111.609    -54.79     0.326
+ 15    H4    H1  E  14  10   6     1.091   109.865    -64.38         0
+ 16    C5    Cg  3  14  10   6     1.546   110.605     57.15     0.276
+ 17    H5    H1  E  16  14  10     1.092   108.214     65.71         0
+ 18    C6    Cg  3  16  14  10     1.544   112.153   -174.59     0.266
+ 19   H62    H1  E  18  16  14      1.09   110.579    -46.84         0
+ 20   H61    H1  E  18  16  14     1.091   110.051     72.33         0
+ 21    O6    Oh  S  18  16  14     1.444   110.952   -166.67    -0.688
+ 22   H6O    Ho  E  21  18  16      0.96   109.923     72.72     0.422
+ 23    O5    Os  E  16  14  10     1.497   110.394    -52.31    -0.507
+ 24    O4    Os  M  14  10   6     1.452   108.734    176.59    -0.489
+
+
+Residue:
+Name: 0MA, index:11:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  3   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    C3    Cg  3   6   4   3     1.545   110.571   -158.93     0.252
+  9    H3    H1  E   8   6   4     1.092   108.528     64.93         0
+ 10    C4    Cg  3   8   6   4     1.549   111.609    -54.79     0.326
+ 11    H4    H1  E  10   8   6     1.091   109.865    -64.38         0
+ 12    C5    Cg  3  10   8   6     1.546   110.605     57.15     0.276
+ 13    H5    H1  E  12  10   8     1.092   108.214     65.71         0
+ 14    C6    Cg  3  12  10   8     1.544   112.153   -174.59     0.266
+ 15   H62    H1  E  14  12  10      1.09   110.579    -46.84         0
+ 16   H61    H1  E  14  12  10     1.091   110.051     72.33         0
+ 17    O6    Oh  S  14  12  10     1.444   110.952   -166.67    -0.688
+ 18   H6O    Ho  E  17  14  12      0.96   109.923     72.72     0.422
+ 19    O5    Os  E  12  10   8     1.497   110.394    -52.31    -0.507
+ 20    O4    Oh  S  10   8   6     1.452   108.734    176.59    -0.733
+ 21   H4O    Ho  E  20  10   8     0.966   107.267     52.91     0.438
+ 22    O3    Oh  S   8   6   4     1.461   109.595   -177.93    -0.696
+ 23   H3O    Ho  E  22   8   6     0.964   109.699    -74.81     0.431
+ 24    O2    Oh  S   6   4   3     1.459   110.007     79.71    -0.717
+ 25   H2O    Ho  E  24   6   4     0.965   108.621    167.29     0.446
+
+
+*****
+
+
+Writing: ./sequenceAsPdbFile.pdb
+Writing: ./sequenceAsOffFile.off
+Beep beep the van has arrived
+-----------------------------------------------------------------------------------------------------
+
+Sequence 17: DManpa[6S,2S]1-OME
+Glycam names are: OME, XMA, SO3, SO3, 
+Found query residue: OME
+OME will be read in 1 times.
+Found query residue: SO3
+SO3 will be read in 2 times.
+Found query residue: XMA
+XMA will be read in 1 times.
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+Gonna erase this mofo: 
+Done 
+
+
+
+On to setting 3d structure!
+
+Setting connection between XMA and it's parent OME, which has linkageLabel: 
+Setting angle between
+parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
+parent O   -3.06332,    5.51392,   -3.09805
+and child C1   -3.90625,    4.67099,   -3.94098
+child residue XMA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3587:XMA
+O_3566:XMA
+
+Finding Path between:C1_3587 and O_3566
+Updated Path between:
+ C1_3587 and O_3566
+C2_3589
+C1_3587
+O_3566
+CH3_3563
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: XMA and OME
+These are the assigned RotatableDihedrals:
+C2, C1, O, CH3: -169.06.
+Setting default shape
+Blocking access via O, we will search outward from C1
+Have determined that the following atoms will move:
+O, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between SO3 and it's parent XMA, which has linkageLabel: a1-
+Parent atom is O2
+Setting angle between
+parentNeighbor C2      -2.54,    4.91069,    -4.7561
+parent O2   -2.38696,    3.90744,   -5.80432
+and child S1   -3.30437,    2.99003,   -6.72173
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_3571:SO3
+C2_3589:SO3
+
+Finding Path between:S1_3571 and C2_3589
+Updated Path between:
+ S1_3571 and C2_3589
+O3_3574
+S1_3571
+O2_3606
+C2_3589
+C1_3587
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and XMA
+These are the assigned RotatableDihedrals:
+O3, S1, O2, C2: -179.609.
+S1, O2, C2, C1: 27.5333.
+Setting default shape
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between SO3 and it's parent XMA, which has linkageLabel: a1-
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -6.32868,    6.46278,   -6.34626
+parent O6   -7.51942,    6.57795,   -5.53755
+and child S1   -8.43683,    5.66054,   -6.45496
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_3579:SO3
+C5_3595:SO3
+
+Finding Path between:S1_3579 and C5_3595
+Updated Path between:
+ S1_3579 and C5_3595
+O3_3582
+S1_3579
+O6_3600
+C6_3597
+C5_3595
+O5_3601
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and XMA
+These are the assigned RotatableDihedrals:
+O3, S1, O6, C6: 18.4703.
+S1, O6, C6, C5: -141.444.
+O6, C6, C5, O5: 70.4888.
+Setting default shape
+Blocking access via O6, we will search outward from S1
+Have determined that the following atoms will move:
+O6, S1, O1, O2, O3, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, S1, O1, O2, O3, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Re-determining atoms that need to move for each linkage:
+Blocking access via O, we will search outward from C1
+Have determined that the following atoms will move:
+O, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, S1, O1, O2, O3, H1, 
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
+Blocking access via O6, we will search outward from S1
+Have determined that the following atoms will move:
+O6, S1, O1, O2, O3, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, S1, O1, O2, O3, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, S1, O1, O2, O3, 
+Final overlap resolution
+Overlaps resolved
+Number of residues is 4
+Structure created without throwing an exception for: DManpa[6S,2S]1-OME
+
+Residue:
+Name: OME, index:1:
+  4    H1    H1  M   3   2   1     7.197   127.853   -163.43         0
+  5   CH3    Cg  M   4   3   2     1.085    46.873    132.02     0.264
+  6    H2    H1  E   5   4   3     1.085     111.4    147.97         0
+  7    H3    H1  E   5   4   3     1.085     111.4     27.97         0
+  8     O    Os  M   5   4   3     1.399       107    -92.03    -0.458
+
+
+Residue:
+Name: XMA, index:2:
+  4    C1    Cg  M   3   2   1    22.512    99.235   -130.21     0.433
+  5    H1    H2  E   4   3   2      1.09    29.174    102.07         0
+  6    C2    Cg  M   4   3   2     1.555   109.578      6.72     0.245
+  7    H2    H1  E   6   4   3     1.091   109.366    -38.64         0
+  8    C3    Cg  3   6   4   3     1.545   110.571   -158.93     0.252
+  9    H3    H1  E   8   6   4     1.092   108.528     64.93         0
+ 10    C4    Cg  3   8   6   4     1.549   111.609    -54.79     0.326
+ 11    H4    H1  E  10   8   6     1.091   109.865    -64.38         0
+ 12    C5    Cg  3  10   8   6     1.546   110.605     57.15     0.276
+ 13    H5    H1  E  12  10   8     1.092   108.214     65.71         0
+ 14    C6    Cg  3  12  10   8     1.544   112.153   -174.59     0.266
+ 15   H62    H1  E  14  12  10      1.09   110.579    -46.84         0
+ 16   H61    H1  E  14  12  10     1.091   110.051     72.33         0
+ 17    O6    Os  E  14  12  10     1.444   110.952   -166.67    -0.429
+ 18    O5    Os  E  12  10   8     1.497   110.394    -52.31    -0.507
+ 19    O4    Oh  S  10   8   6     1.452   108.734    176.59    -0.733
+ 20   H4O    Ho  E  19  10   8     0.966   107.267     52.91     0.438
+ 21    O3    Oh  S   8   6   4     1.461   109.595   -177.93    -0.696
+ 22   H3O    Ho  E  21   8   6     0.964   109.699    -74.81     0.431
+ 23    O2    Os  M   6   4   3     1.459   110.007     79.71    -0.434
+
+
+Residue:
+Name: SO3, index:4:
+  4    S1     S  M   3   2   1    10.884   119.491   -167.81     1.245
+  5    O1    O2  E   4   3   2     1.446    106.41   -102.07    -0.694
+  6    O2    O2  E   4   3   2     1.437   128.086    115.25    -0.694
+  7    O3    O2  E   4   3   2     1.446    70.631      7.86    -0.694
+
+
+Residue:
+Name: SO3, index:3:
+  4    S1     S  M   3   2   1    10.884   119.491   -167.81     1.245
+  5    O1    O2  E   4   3   2     1.446    106.41   -102.07    -0.694
+  6    O2    O2  E   4   3   2     1.437   128.086    115.25    -0.694
+  7    O3    O2  E   4   3   2     1.446    70.631      7.86    -0.694
+
+
+*****
+
+
+Writing: ./sequenceAsPdbFile.pdb
+Writing: ./sequenceAsOffFile.off
+Beep beep the van has arrived
+-----------------------------------------------------------------------------------------------------
+
