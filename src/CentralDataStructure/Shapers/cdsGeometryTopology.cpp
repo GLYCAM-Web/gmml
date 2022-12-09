@@ -1,6 +1,7 @@
 #include "includes/CentralDataStructure/Shapers/cdsGeometryTopology.hpp"
 #include "utils.hpp" // GenerateRotationMatrix
 
+// Memory fountain:
 double** cds::GenerateRotationMatrix(Coordinate* direction, Coordinate* parent, double angle)
 {
     double** rotation_matrix = new double*[3];
@@ -43,11 +44,11 @@ double** cds::GenerateRotationMatrix(Coordinate* direction, Coordinate* parent, 
 
 void cds::SetDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, const double dihedral_angle, std::vector<Coordinate*>& movingCoords )
 {
-    Coordinate b1 = a2;
+    Coordinate b1 = *a2;
     b1.operator -(*a1);
-    Coordinate b2 = a3;
+    Coordinate b2 = *a3;
     b2.operator -(*a2);
-    Coordinate b3 = a4;
+    Coordinate b3 = *a4;
     b3.operator -(*a3);
     Coordinate b4 = b2;
     b4.operator *(-1);
