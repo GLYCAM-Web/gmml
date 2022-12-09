@@ -134,7 +134,7 @@ void Coordinate::operator *(double multiplier)
 //////////////////////////////////////////////////////////
 void Coordinate::Print(std::ostream& out) const
 {
-    if(*this == (Coordinate(constants::dNotSet, constants::dNotSet, constants::dNotSet)))
+    if(this->GetX() == constants::dNotSet || this->GetY() == constants::dNotSet || this->GetZ() == constants::dNotSet )
         out << std::setw(10) << " " << ", " << std::setw(10) << " " << ", " << std::setw(10) << " ";
     else
         out << std::setw(10) << x_ << ", " << std::setw(10) << y_ << ", " << std::setw(10) << z_;
