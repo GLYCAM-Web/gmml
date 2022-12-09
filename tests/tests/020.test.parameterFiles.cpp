@@ -16,7 +16,10 @@ int main()
     std::vector<std::string> residuesToLoadFromPrep = {"0GA", "4YB", "4uA", "Cake", "4YA"};
     //std::vector<std::string> residuesToLoadFromPrep = {"0GA"};
     prep::PrepFile glycamPrepFileSelect(prepFilePath, residuesToLoadFromPrep);
-    // Need a central place for this:
+
+    // PREP residues
+    glycamPrepFileSelect.Write("./prepAsPrepFile.prep");
+    // PDB
     std::string fileName = "./prepAsPdbFile.pdb";
     std::ofstream outFileStream;
     try
