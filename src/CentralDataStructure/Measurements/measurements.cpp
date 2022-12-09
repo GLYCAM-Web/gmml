@@ -32,15 +32,6 @@ std::vector<Coordinate*> cds::getCoordinatesFromAtoms(std::vector<cds::Atom*> at
 
 double cds::CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, const bool returnRadians)
 {   // returns Degrees by default, must set bool returnRadians to true for radians.
-    a1->Print(std::cout);
-    std::cout << "\n";
-    a2->Print(std::cout);
-    std::cout << "\n";
-    a3->Print(std::cout);
-    std::cout << "\n";
-    a4->Print(std::cout);
-    std::cout << "\n";
-
     Coordinate b1 = *a2;
     b1.operator -(*a1);
     Coordinate b2 = *a3;
@@ -60,7 +51,6 @@ double cds::CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a
     b1xb2.CrossProduct(b2);
 
     double current_dihedral_angle = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
-
     if (returnRadians)
     {
         return current_dihedral_angle;
@@ -68,7 +58,7 @@ double cds::CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a
     return (current_dihedral_angle * (180 / constants::PI_RADIAN) ); // Convert to degrees
 }
 
-Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(const Coordinate *centralCoord, std::vector<const Coordinate*> threeNeighbors, const double distance)
+Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(const Coordinate *centralCoord, std::vector<Coordinate*> threeNeighbors, const double distance)
 {
     Eigen::Vector3d combinedVs;
     for(auto &neighbor : threeNeighbors)
