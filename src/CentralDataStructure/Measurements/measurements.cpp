@@ -60,19 +60,14 @@ double cds::CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a
 
 Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(const Coordinate *centralCoord, std::vector<Coordinate*> threeNeighbors, const double distance)
 {
-    Eigen::Vector3d combinedVs;
+    Coordinate combinedVs;
     for(auto &neighbor : threeNeighbors)
     {
-        Eigen::Vector3d temp(centralCoord->GetX() - neighbor->GetX(),
-                centralCoord->GetY() - neighbor->GetY(),
-                centralCoord->GetZ() - neighbor->GetZ());
+        Coordinate temp(centralCoord->GetX() - neighbor->GetX(), centralCoord->GetY() - neighbor->GetY(), centralCoord->GetZ() - neighbor->GetZ());
         combinedVs += temp;
     }
-    combinedVs.normalize();
-    Coordinate newCoord(centralCoord->GetX() + (combinedVs(0) * distance),
-            centralCoord->GetY() + (combinedVs(1) * distance),
-            centralCoord->GetZ() + (combinedVs(2))  * distance);
-    return newCoord;
+    combinedVs.Normalize();
+    return Coordinate(centralCoord->GetX() + (combinedVs.GetX() * distance), centralCoord->GetY() + (combinedVs.GetY() * distance), centralCoord->GetZ() + (combinedVs.GetZ() * distance) );
 }
 
 Coordinate cds::get_cartesian_point_from_internal_coords(const Coordinate& a, const Coordinate& b, const Coordinate& c, double angle_Degrees, double dihedral_Degrees, double distance_Angstrom)
