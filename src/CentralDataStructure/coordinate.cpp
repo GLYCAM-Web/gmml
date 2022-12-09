@@ -43,7 +43,7 @@ bool Coordinate::withinDistance(const Coordinate *coordinate, const double dista
     {
         if (this->GetY() - coordinate->GetY() < distance)
         {
-            if (this->Distance(*coordinate) < distance) // Need to test if also checking Z is faster.
+            if (this->Distance(coordinate) < distance) // Need to test if also checking Z is faster.
             {
                 return true;
             }
@@ -52,9 +52,9 @@ bool Coordinate::withinDistance(const Coordinate *coordinate, const double dista
     return false;
 }
 
-double Coordinate::Distance(const Coordinate &coordinate) const
+double Coordinate::Distance(const Coordinate *coordinate) const
 {
-    double dist = (x_ - coordinate.x_) * (x_ - coordinate.x_) + (y_ - coordinate.y_) * (y_ - coordinate.y_) + (z_ - coordinate.z_) * (z_ - coordinate.z_);
+    double dist = (x_ - coordinate->GetX()) * (x_ - coordinate->GetX()) + (y_ - coordinate->GetY()) * (y_ - coordinate->GetY()) + (z_ - coordinate->GetZ()) * (z_ - coordinate->GetZ());
     if(dist > 0.00000001) // can sometimes measure distance to self, in which case get sqrt(0), which should be fine but zero is funky and somtimes is actually slightly negative.
     {
         return sqrt(dist);

@@ -36,7 +36,7 @@ public:
     //////////////////////////////////////////////////////////
     void Translate(const double x, const double y, const double z);
     bool withinDistance(const Coordinate *coordinate, const double distance) const;
-    double Distance(const Coordinate &coordinate) const;
+    double Distance(const Coordinate *coordinate) const;
     double length() const;
     void Normalize();
     double DotProduct(Coordinate coordinate);
