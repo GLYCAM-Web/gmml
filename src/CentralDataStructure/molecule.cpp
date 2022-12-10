@@ -92,14 +92,12 @@ Residue* Molecule::getResidue(const std::string& queryName)
 
 void Molecule::deleteResidue(Residue* residue)
 {
-    std::cout << "Gonna erase this mofo: " << std::endl;
     auto i = this->findPositionOfResidue(residue); // auto makes my life easier
     if (i != residues_.end())
     {
         gmml::log(__LINE__,__FILE__,gmml::INF, "Residue " + residue->getName() + " has been erased. You're welcome.");
         i = residues_.erase(i);
     }
-    std::cout << "Done " << std::endl;
     return;
 }
 //////////////////////////////////////////////////////////

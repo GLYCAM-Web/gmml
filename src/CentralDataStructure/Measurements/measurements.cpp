@@ -60,12 +60,20 @@ double cds::CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a
 
 Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(const Coordinate *centralCoord, std::vector<Coordinate*> threeNeighbors, const double distance)
 {
-    Coordinate combinedVs;
+    Coordinate combinedVs(0.0, 0.0, 0.0);
+//    double xValue = 0.0;
+//    double yValue = 0.0;
+//    double zValue = 0.0;
     for(auto &neighbor : threeNeighbors)
     {
+
+//        xValue += centralCoord->GetX() - neighbor->GetX();
+//        yValue += centralCoord->GetY() - neighbor->GetY();
+//        zValue += centralCoord->GetZ() - neighbor->GetZ();
         Coordinate temp(centralCoord->GetX() - neighbor->GetX(), centralCoord->GetY() - neighbor->GetY(), centralCoord->GetZ() - neighbor->GetZ());
         combinedVs += temp;
     }
+//    Coordinate combinedVs(xValue, yValue, zValue);
     combinedVs.Normalize();
     return Coordinate(centralCoord->GetX() + (combinedVs.GetX() * distance), centralCoord->GetY() + (combinedVs.GetY() * distance), centralCoord->GetZ() + (combinedVs.GetZ() * distance) );
 }
