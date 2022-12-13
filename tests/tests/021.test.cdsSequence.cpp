@@ -52,7 +52,7 @@ int main ()
             // Outputs for fun:
 
             theVanToMordor.setName("HiMyNameIs " + sequence);
-            std::string fileName = "./sequenceAsPdbFile.pdb";
+            std::string fileName = "./021.sequenceAsPdbFile.pdb";
             std::ofstream outFileStream;
             try
             {
@@ -67,7 +67,7 @@ int main ()
                 throw std::runtime_error("Error when writing pdbFile class to file:\n" + fileName);
             }
             //OFF molecule
-            fileName = "./sequenceAsOffFile.off";
+            fileName = "./021.sequenceAsOffFile.off";
             try
             {
 
