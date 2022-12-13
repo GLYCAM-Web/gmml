@@ -3,13 +3,16 @@
 
 #include "includes/MolecularMetadata/atomicBonds.hpp"
 #include "includes/CodeUtils/threads.hpp"
-#include "includes/common.hpp" //dNotSet
+#include "includes/CodeUtils/constants.hpp" //dNotSet
 #include "includes/CodeUtils/numbers.hpp"
+#include "includes/CentralDataStructure/atom.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 #include <iomanip> // setprecision
 #include <vector>
 #include <thread>
 
+//ToDo drop the templates and switch to cds classes.
 namespace cds
 {
 // Helper struct for next function.
@@ -78,7 +81,7 @@ double getCharge(std::vector<atomT*> atoms)
 	double totalCharge = 0.0;
 	for(auto &atom : atoms)
 	{
-		if (atom->getCharge() != gmml::dNotSet)
+		if (atom->getCharge() != constants::dNotSet) // Better to throw/warn here?
 		{
 			totalCharge += atom->getCharge();
 		}
@@ -104,6 +107,7 @@ void EnsureIntegralCharge(std::vector<atomT*> atoms)
 	return;
 }
 
+void serializeAtomNumbers(std::vector<cds::Atom*> atoms);
 } // namespace
 
 

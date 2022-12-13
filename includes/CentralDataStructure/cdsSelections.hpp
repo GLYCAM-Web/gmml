@@ -5,6 +5,7 @@
 
 #include <vector>
 
+//ToDo drop the templates and switch to cds classes. ptr to cds::Residue or abs::Residue should be cool.
 namespace cds
 {
 template< class residueT>
