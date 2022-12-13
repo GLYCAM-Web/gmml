@@ -6,7 +6,7 @@ g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmm
 #./buildBySequence
 if [ -f buildBySequence.pdb ]; then
     if ! cmp buildBySequence.pdb tests/correct_outputs/buildBySequence.pdb > /dev/null 2>&1; then
-        printf "Test FAILED!\n"
+        printf "Test FAILED!\nbuildBySequence.pdb is different from tests/correct_outputs/buildBySequence.pdb\n"
         echo "Exit Code: 1"
         return 1
     else
@@ -16,7 +16,7 @@ if [ -f buildBySequence.pdb ]; then
         return 0
     fi
 else
-    printf "Test FAILED!\n"
+    printf "Test FAILED!\n buildBySequence.pdb does not exist.\n"
     echo "Exit Code: 1"
     return 1
 fi
