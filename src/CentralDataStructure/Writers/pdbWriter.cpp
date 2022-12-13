@@ -27,7 +27,7 @@ void cds::writeAtomToPdb(std::ostream& stream, const cds::Atom* atom, const std:
 {
     std::string residueAlternativeLocation = ""; // If we ever need this to be anything else, change this function.
     stream << std::left << std::setw(6) << recordName;
-    stream << std::right << std::setw(5) << atom->getIndex() << std::left << std::setw(1) << " ";
+    stream << std::right << std::setw(5) << atom->getNumber() << std::left << std::setw(1) << " ";
     stream << std::left << std::setw(4) << atom->getName();
     stream << std::left << std::setw(1) << residueAlternativeLocation;
     stream << std::right << std::setw(3) << residueName << std::left << std::setw(1) << " ";

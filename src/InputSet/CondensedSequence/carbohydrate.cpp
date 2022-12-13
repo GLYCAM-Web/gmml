@@ -11,6 +11,7 @@
 #include "includes/CentralDataStructure/residue.hpp"
 #include "includes/CentralDataStructure/molecule.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
+#include "includes/CentralDataStructure/cdsFunctions.hpp" // serializeAtomNumbers
 #include "includes/CentralDataStructure/Shapers/geometryTopologyInterface.hpp"
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include <sstream>
@@ -44,6 +45,8 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
                 }
             }
         }
+        // Have atom numbers go from 1 to number of atoms.
+        cds::serializeAtomNumbers(this->getAtoms());
         // Apply any deoxy
         for( auto &cdsResidue: this->getResidues() )
         {
@@ -64,22 +67,22 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
             }
         }
         // Set torsions now that everything is attached and the molecule is whole.
-//        for( auto &cdsResidue: this->getResidues() )
-//        {
-//            for( auto &parentNeighbor : cdsResidue->getParents()) //
-//            {
-//                std::cout << "Finding rotatable dihedrals and applying metadata." << std::endl;
-//                cds::ResidueLinkage& linkage = glycosidicLinkages_.emplace_back(cdsResidue, parentNeighbor);
-//                std::cout << "Setting default shape" << std::endl;
-//                linkage.SetDefaultShapeUsingMetadata();
-//            }
-//        }
-//        this->Generate3DStructureFiles("./", "defaultGeometry");
-//        // Wiggle to resolve overlaps:
-//        std::cout << "Resolving overlaps" << std::endl;
-//        std::vector<cds::Atom*> allAtomsInCarb = this->getAtoms();
-//        this->ResolveOverlaps();
-//        std::cout << "Overlaps resolved" << std::endl;
+        //        for( auto &cdsResidue: this->getResidues() )
+        //        {
+        //            for( auto &parentNeighbor : cdsResidue->getParents()) //
+        //            {
+        //                std::cout << "Finding rotatable dihedrals and applying metadata." << std::endl;
+        //                cds::ResidueLinkage& linkage = glycosidicLinkages_.emplace_back(cdsResidue, parentNeighbor);
+        //                std::cout << "Setting default shape" << std::endl;
+        //                linkage.SetDefaultShapeUsingMetadata();
+        //            }
+        //        }
+        //        this->Generate3DStructureFiles("./", "defaultGeometry");
+        //        // Wiggle to resolve overlaps:
+        //        std::cout << "Resolving overlaps" << std::endl;
+        //        std::vector<cds::Atom*> allAtomsInCarb = this->getAtoms();
+        //        this->ResolveOverlaps();
+        //        std::cout << "Overlaps resolved" << std::endl;
 
         // Ok if have done greedy then the atoms-to-move needs to be updated for every linkage:
         std::cout << "Re-determining atoms that need to move for each linkage:" << std::endl;
@@ -312,6 +315,9 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
     //   Now bond the atoms. This could also set distance?, and angle? if passed to function?
     childAtom->addBond(parentAtom); // parentAtom also connected to childAtom. Fancy.
     logss << "Bonded " << parentResidue->getName() << "@" << parentAtom->getName() << " to " << childResidue->getName() << "@" << childAtomName << std::endl;
+    //std::ofstream outfile("./bondsOnly.pdb");
+    //this->WritePdb(outfile);
+    //outfile.close();
     // Angle
     logss << "Setting angles.\n";
     gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());

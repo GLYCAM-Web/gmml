@@ -63,6 +63,7 @@ void SequenceManipulator::SetIndexByConnectivity()
 	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
 	{
 		residue->setIndex(residueIndex);
+        residue->setNumber(residueIndex); // ToDo temporary, switch to using number here. Keep index as a gmml internal thing, never shown to user.
 		++residueIndex;
 		for (auto &linkage : residue->getInEdges())
 		{

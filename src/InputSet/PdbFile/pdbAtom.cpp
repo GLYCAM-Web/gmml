@@ -24,6 +24,7 @@ PdbAtom::PdbAtom(const std::string &line)
     shift = codeUtils::GetSizeOfIntInString(line.substr(12));
     try
     {
+        //ToDo use abs:Atom number_ instead. So setNumber() and remove this serialNumber_ attribute.
         serialNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(6, 6 + shift)));
     }
     catch (...)

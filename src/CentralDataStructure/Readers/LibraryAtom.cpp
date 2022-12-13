@@ -14,6 +14,7 @@ LibraryAtom::LibraryAtom (const std::string& line)
     this->setName(name);
     this->setType(type);
     this->setCharge(charge);
+    this->setNumber(this->getAtomIndex()); // Lib files' index is gmml's number.
     return;
 }
 
