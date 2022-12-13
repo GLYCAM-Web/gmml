@@ -8,7 +8,7 @@
 
 cds::Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centralAtom, const double distance)
 {
-    if(centralAtom->getNeighbors().size() != 3)
+    if(centralAtom->getNeighbors().size() < 1)
     {
         std::stringstream ss;
         ss << "Error in CreateMissingCoordinateForTetrahedralAtom. centralAtom neighbors is " <<
