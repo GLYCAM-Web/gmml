@@ -330,7 +330,7 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
             break;
         }
     }
-    // Yo if you do this here, then the atoms that move in RotatableDihedral class won't include atoms that get added later. You need to trigger an update of that if you want to wiggle later.
+    // GREEDY Yo if you do this here, then the atoms that move in RotatableDihedral class won't include atoms that get added later. You need to trigger an update of that if you want to wiggle later.
     std::cout << "Finding rotatable dihedrals and applying metadata." << std::endl;
     cds::ResidueLinkage& linkage = glycosidicLinkages_.emplace_back(childResidue, parentResidue);
     std::cout << "Setting default shape" << std::endl;
