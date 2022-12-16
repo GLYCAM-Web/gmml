@@ -1,5 +1,6 @@
 #include "includes/CentralDataStructure/Shapers/cdsGeometryTopology.hpp"
-#include "utils.hpp" // GenerateRotationMatrix
+#include "includes/CentralDataStructure/Shapers/rotationMatrix.hpp"
+#include "includes/utils.hpp"  //gmml::DIST_EPSILON gmml::ConvertDegree2Radian
 
 // Memory fountain:
 double** cds::GenerateRotationMatrix(Coordinate* direction, Coordinate* parent, double angle)
@@ -39,6 +40,7 @@ double** cds::GenerateRotationMatrix(Coordinate* direction, Coordinate* parent, 
     rotation_matrix[2][1] = v * w * (1 - cos_rotation_angle) + u * sin_rotation_angle;
     rotation_matrix[2][2] = w2 + (u2 + v2) * cos_rotation_angle;
 
+
     return rotation_matrix;
 }
 
@@ -59,19 +61,21 @@ void cds::SetDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coord
     Coordinate b1xb2 = b1;
     b1xb2.CrossProduct(b2);
     double current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
-    double** dihedral_angle_matrix = cds::GenerateRotationMatrix(&b4, a2, current_dihedral - constants::degree2Radian(dihedral_angle));
-    for(auto &coord : movingCoords)
-    {
-        double x =dihedral_angle_matrix[0][0] * coord->GetX() + dihedral_angle_matrix[0][1] * coord->GetY() +
-                dihedral_angle_matrix[0][2] * coord->GetZ() + dihedral_angle_matrix[0][3];
-        double y = dihedral_angle_matrix[1][0] * coord->GetX() + dihedral_angle_matrix[1][1] * coord->GetY() +
-                dihedral_angle_matrix[1][2] * coord->GetZ() + dihedral_angle_matrix[1][3];
-        double z = dihedral_angle_matrix[2][0] * coord->GetX() + dihedral_angle_matrix[2][1] * coord->GetY() +
-                dihedral_angle_matrix[2][2] * coord->GetZ() + dihedral_angle_matrix[2][3];
-        coord->SetX(x);
-        coord->SetY(y);
-        coord->SetZ(z);
-    }
+    RotationMatrix rotationMatrix(&b4, a2, current_dihedral - constants::degree2Radian(dihedral_angle));
+    rotationMatrix.rotateCoordinates(movingCoords);
+//    double** dihedral_angle_matrix = cds::GenerateRotationMatrix(&b4, a2, current_dihedral - constants::degree2Radian(dihedral_angle));
+//    for(auto &coord : movingCoords)
+//    {
+//        double x =dihedral_angle_matrix[0][0] * coord->GetX() + dihedral_angle_matrix[0][1] * coord->GetY() +
+//                dihedral_angle_matrix[0][2] * coord->GetZ() + dihedral_angle_matrix[0][3];
+//        double y = dihedral_angle_matrix[1][0] * coord->GetX() + dihedral_angle_matrix[1][1] * coord->GetY() +
+//                dihedral_angle_matrix[1][2] * coord->GetZ() + dihedral_angle_matrix[1][3];
+//        double z = dihedral_angle_matrix[2][0] * coord->GetX() + dihedral_angle_matrix[2][1] * coord->GetY() +
+//                dihedral_angle_matrix[2][2] * coord->GetZ() + dihedral_angle_matrix[2][3];
+//        coord->SetX(x);
+//        coord->SetY(y);
+//        coord->SetZ(z);
+//    }
 }
 
 void cds::SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, const double angle, std::vector<Coordinate*> coordinatesToMove)

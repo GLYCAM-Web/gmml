@@ -11,6 +11,7 @@
 ./src/CentralDataStructure/Shapers/geometryTopologyInterface.cpp
 ./src/CentralDataStructure/Shapers/residueLinkage.cpp
 ./src/CentralDataStructure/Shapers/rotatableDihedral.cpp
+./src/CentralDataStructure/Shapers/rotationMatrix.cpp
 ./src/CentralDataStructure/Writers/pdbWriter.cpp
 ./src/CentralDataStructure/assembly.cpp
 ./src/CentralDataStructure/atom.cpp
