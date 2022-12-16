@@ -31,6 +31,7 @@ public:
     void SetX(const double x) {x_ = x;}
     void SetY(const double y) {y_ = y;}
     void SetZ(const double z) {z_ = z;}
+    void Set(const double x, const double y, const double z) {x_ = x; y_ = y; z_ = z;}
     //////////////////////////////////////////////////////////
     //                         FUNCTIONS                    //
     //////////////////////////////////////////////////////////
