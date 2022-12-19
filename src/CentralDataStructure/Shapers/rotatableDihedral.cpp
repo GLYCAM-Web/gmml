@@ -479,7 +479,7 @@ bool RotatableDihedral::IsThereHydrogenForPsiAngle()
 std::unique_ptr<cds::Atom> RotatableDihedral::CreateHydrogenAtomForPsiAngle()
 {
     std::vector<Coordinate*> neighborsCoords = cds::getCoordinatesFromAtoms(atom3_->getNeighbors());
-    Coordinate newCoord = cds::CreateMissingCoordinateForTetrahedralAtom(atom3_->getCoordinate(), neighborsCoords);
+    Coordinate newCoord = cds::CreateCoordinateForCenterAwayFromNeighbors(atom3_->getCoordinate(), neighborsCoords);
     std::unique_ptr<cds::Atom> newAtom = std::make_unique<cds::Atom>("HHH", newCoord);
     atom3_->addBond(newAtom.get());
     return newAtom;

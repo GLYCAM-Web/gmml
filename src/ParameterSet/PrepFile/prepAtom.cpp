@@ -164,7 +164,7 @@ void PrepAtom::Determine3dCoordinate()
 		throw std::runtime_error(message);
 	}
 	this->setCoordinate(
-			cds::get_cartesian_point_from_internal_coords(
+			cds::calculateCoordinateFromInternalCoords(
 			*(foundAtoms.at(3)->getCoordinate()),
 			*(foundAtoms.at(2)->getCoordinate()),
 			*(foundAtoms.at(1)->getCoordinate()),

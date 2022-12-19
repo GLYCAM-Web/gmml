@@ -15,7 +15,7 @@ std::vector<Coordinate*> cds::getCoordinatesFromAtoms(std::vector<cds::Atom*> at
     return coordinates;
 }
 
-cds::Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centralAtom, const double distance)
+cds::Coordinate cds::GuessMissingCoordinateForAtom(cds::Atom* centralAtom, const double distance)
 {
     if(centralAtom->getNeighbors().size() < 1)
     {
@@ -32,7 +32,7 @@ cds::Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centra
 //        std::cout << neighbor->getName() << ", " << neighbor->getCoordinate()->ToString() << "\n";
         threeNeighborCoords.push_back(neighbor->getCoordinate());
     }
-    return cds::CreateMissingCoordinateForTetrahedralAtom(centralAtom->getCoordinate(), threeNeighborCoords, distance);
+    return cds::CreateCoordinateForCenterAwayFromNeighbors(centralAtom->getCoordinate(), threeNeighborCoords, distance);
 }
 
 void cds::FindAtomsToMoveAndSetAngle(cds::Atom* a, cds::Atom* b, cds::Atom* c, const double angle)
@@ -56,7 +56,7 @@ void cds::FindAtomsToMoveSetDistance(cds::Atom* parentAtom, cds::Atom* childAtom
     double distance = bondLengthByTypePairContainer.GetBondLengthForAtomTypes(parentAtom->getType(), childAtom->getType());
     //std::cout << "distance to new atom sill be: " << distance << "\n";
     // Create an atom c that is will superimpose onto the a atom, bringing b atom with it.
-    Coordinate c = cds::CreateMissingCoordinateForTetrahedralAtom(childAtom, distance);
+    Coordinate c = cds::GuessMissingCoordinateForAtom(childAtom, distance);
     //std::cout << "New tetraAtom for child is: " << c.ToString() << "\n";
     Coordinate cToParent(parentAtom->getCoordinate()->GetX() - c.GetX(), parentAtom->getCoordinate()->GetY() - c.GetY(), parentAtom->getCoordinate()->GetZ() - c.GetZ());
 //    std::cout << "cToParent is " << cToParent.ToString() << "\n";

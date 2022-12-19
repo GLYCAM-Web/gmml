@@ -48,7 +48,7 @@ double cds::CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a
     return (current_dihedral_angle * (180 / constants::PI_RADIAN) ); // Convert to degrees
 }
 
-Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(const Coordinate *centralCoord, std::vector<Coordinate*> threeNeighbors, const double distance)
+Coordinate cds::CreateCoordinateForCenterAwayFromNeighbors(const Coordinate *centralCoord, std::vector<Coordinate*> threeNeighbors, const double distance)
 {
     Coordinate combinedVs(0.0, 0.0, 0.0);
 //    double xValue = 0.0;
@@ -68,7 +68,7 @@ Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(const Coordinate *cent
     return Coordinate(centralCoord->GetX() + (combinedVs.GetX() * distance), centralCoord->GetY() + (combinedVs.GetY() * distance), centralCoord->GetZ() + (combinedVs.GetZ() * distance) );
 }
 
-Coordinate cds::get_cartesian_point_from_internal_coords(const Coordinate& a, const Coordinate& b, const Coordinate& c, double angle_Degrees, double dihedral_Degrees, double distance_Angstrom)
+Coordinate cds::calculateCoordinateFromInternalCoords(const Coordinate& a, const Coordinate& b, const Coordinate& c, double angle_Degrees, double dihedral_Degrees, double distance_Angstrom)
 {
 //  std::cout << "Distance: " << distance_Angstrom << std::endl;
 //  std::cout << "Angle: " << angle_Degrees << std::endl;
@@ -79,8 +79,8 @@ Coordinate cds::get_cartesian_point_from_internal_coords(const Coordinate& a, co
     double x_p, y_p, z_p;
 
     // ToDo no. Overload the - operator properly in Coordinate.
-    Coordinate cb = cds::subtract_coordinates(b, c); // original
-    Coordinate ba = cds::subtract_coordinates(a, b); // original
+    Coordinate cb = cds::subtractCoordinates(b, c); // original
+    Coordinate ba = cds::subtractCoordinates(a, b); // original
 
     lmn_y = ba;
     lmn_y.CrossProduct(cb);
@@ -105,7 +105,7 @@ Coordinate cds::get_cartesian_point_from_internal_coords(const Coordinate& a, co
 }
 
 // This is only here until i SORT OUT THE STUOPID OVERLOADS IN COORDINATE CLASS
-Coordinate cds::subtract_coordinates(const Coordinate& minuaend, const Coordinate& subtrahend)
+Coordinate cds::subtractCoordinates(const Coordinate& minuaend, const Coordinate& subtrahend)
 {
     Coordinate new_coordinate( (minuaend.GetX()-subtrahend.GetX()), (minuaend.GetY()-subtrahend.GetY()), (minuaend.GetZ()-subtrahend.GetZ()) );
     return new_coordinate;

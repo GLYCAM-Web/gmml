@@ -112,7 +112,7 @@ void PdbResidue::modifyCTerminal(const std::string& type)
             const cds::Atom* atomCA = this->FindAtom("CA");
             const cds::Atom* atomC = this->FindAtom("C");
             const cds::Atom* atomO = this->FindAtom("O");
-            cds::Coordinate oxtCoord = cds::get_cartesian_point_from_internal_coords(*(atomCA->getCoordinate()), *(atomC->getCoordinate()), *(atomO->getCoordinate()), 120.0, 180.0, 1.25);
+            cds::Coordinate oxtCoord = cds::calculateCoordinateFromInternalCoords(*(atomCA->getCoordinate()), *(atomC->getCoordinate()), *(atomO->getCoordinate()), 120.0, 180.0, 1.25);
             this->addAtom(std::make_unique<PdbAtom>("OXT", oxtCoord));
             gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + static_cast<const PdbAtom*>(atomO)->GetId());
         }

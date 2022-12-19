@@ -15,7 +15,7 @@ using cds::Coordinate;
 namespace cds
 {
 std::vector<Coordinate*> getCoordinatesFromAtoms(std::vector<cds::Atom*> atoms);
-Coordinate CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centralAtom, const double distance = 1.0);
+Coordinate GuessMissingCoordinateForAtom(cds::Atom* centralAtom, const double distance = 1.0);
 void FindAtomsToMoveAndSetAngle(cds::Atom* a, cds::Atom* b, cds::Atom* c, const double angle);
 void FindAtomsToMoveSetDistance(cds::Atom* a, cds::Atom* b);
 } // namespace
