@@ -1,6 +1,7 @@
 #include "includes/CentralDataStructure/Shapers/rotatableDihedral.hpp"
+#include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp" // getCoordinatesFromAtoms
+#include "includes/CentralDataStructure/Shapers/shapers.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp" //FindConnectedAtoms
-#include "includes/CentralDataStructure/Shapers/cdsGeometryTopology.hpp"
 #include "includes/CentralDataStructure/Measurements/measurements.hpp"
 
 using cds::RotatableDihedral;
@@ -477,7 +478,8 @@ bool RotatableDihedral::IsThereHydrogenForPsiAngle()
 
 std::unique_ptr<cds::Atom> RotatableDihedral::CreateHydrogenAtomForPsiAngle()
 {
-    Coordinate newCoord = cds::CreateMissingCoordinateForTetrahedralAtom(atom3_->getCoordinate(), atom3_->getCoordinatesOfNeighbors());
+    std::vector<Coordinate*> neighborsCoords = cds::getCoordinatesFromAtoms(atom3_->getNeighbors());
+    Coordinate newCoord = cds::CreateMissingCoordinateForTetrahedralAtom(atom3_->getCoordinate(), neighborsCoords);
     std::unique_ptr<cds::Atom> newAtom = std::make_unique<cds::Atom>("HHH", newCoord);
     atom3_->addBond(newAtom.get());
     return newAtom;

@@ -12,10 +12,11 @@
 #include "includes/CentralDataStructure/molecule.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp" // serializeAtomNumbers
-#include "includes/CentralDataStructure/Shapers/geometryTopologyInterface.hpp"
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
+#include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"
 #include <sstream>
 #include <cctype> // isDigit
+
 //using Abstract::absResidue; // For Residue::Type
 using CondensedSequence::Carbohydrate;
 //////////////////////////////////////////////////////////

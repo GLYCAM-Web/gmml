@@ -20,16 +20,6 @@ Coordinate cds::calculateGeometricCenter(const std::vector<Coordinate*> coords)
     return Coordinate(x,y,z);
 }
 
-std::vector<Coordinate*> cds::getCoordinatesFromAtoms(std::vector<cds::Atom*> atoms)
-{
-    std::vector<Coordinate*> coordinates;
-    for(auto & atom : atoms)
-    {
-        coordinates.push_back(atom->getCoordinate());
-    }
-    return coordinates;
-}
-
 double cds::CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, const bool returnRadians)
 {   // returns Degrees by default, must set bool returnRadians to true for radians.
     Coordinate b1 = *a2;

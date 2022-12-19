@@ -1,10 +1,19 @@
-#include "includes/CentralDataStructure/Shapers/geometryTopologyInterface.hpp"
-#include "includes/CentralDataStructure/Shapers/cdsGeometryTopology.hpp"
+#include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"
+#include "includes/CentralDataStructure/Shapers/shapers.hpp"
 #include "includes/CentralDataStructure/Measurements/measurements.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
 #include "includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
+std::vector<Coordinate*> cds::getCoordinatesFromAtoms(std::vector<cds::Atom*> atoms)
+{
+    std::vector<Coordinate*> coordinates;
+    for(auto & atom : atoms)
+    {
+        coordinates.push_back(atom->getCoordinate());
+    }
+    return coordinates;
+}
 
 cds::Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centralAtom, const double distance)
 {

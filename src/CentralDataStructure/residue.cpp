@@ -4,7 +4,7 @@
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp"
 #include "includes/CentralDataStructure/Measurements/measurements.hpp"
-//#include "includes/CentralDataStructure/Shapers/geometryTopologyInterface.hpp"
+#include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"
 #include "includes/InputSet/PdbFile/pdbResidueId.hpp"
 
 using cds::Residue;

@@ -80,16 +80,6 @@ bool Atom::isWithinBondingDistance(const Atom* otherAtom) const
     return false;
 }
 
-std::vector<Coordinate*> Atom::getCoordinatesOfNeighbors()
-{
-    std::vector<Coordinate*> coords;
-    for (auto &neighbor : this->getNeighbors())
-    {
-        coords.push_back(neighbor->getCoordinate());
-    }
-    return coords;
-}
-
 //////////////////////////////////////////////////////////
 //                   OVERLOADED OPERATORS               //
 //////////////////////////////////////////////////////////
