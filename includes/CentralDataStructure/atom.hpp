@@ -38,6 +38,7 @@ public:
     std::string getElement() const;
     int getAtomicNumber() const;
     virtual std::string getId() const;
+    std::vector<Coordinate*> getCoordinatesOfNeighbors();
     //////////////////////////////////////////////////////////
     //                   OVERLOADED OPERATORS               //
     //////////////////////////////////////////////////////////

@@ -475,26 +475,11 @@ bool RotatableDihedral::IsThereHydrogenForPsiAngle()
     return false;
 }
 
-//ToDo this should use: cds::Coordinate cds::CreateMissingCoordinateForTetrahedralAtom(cds::Atom* centralAtom, const double distance)
 std::unique_ptr<cds::Atom> RotatableDihedral::CreateHydrogenAtomForPsiAngle()
 {
-    cds::Atom* centralAtom = atom3_;
-    if(centralAtom->getNeighbors().size() != 4)
-    {
-        std::stringstream ss;
-        ss << "Error in CreateHydrogenAtomForPsiAngle. centralAtom neighbors size = " <<
-                centralAtom->getNeighbors().size() << " for " << centralAtom->getId();
-        gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
-        throw std::runtime_error(ss.str());
-    }
-    std::vector<Coordinate*> threeNeighborCoords;
-    for (auto &neighbor : centralAtom->getNeighbors())
-    {
-        threeNeighborCoords.push_back(neighbor->getCoordinate());
-    }
-    Coordinate newCoord = cds::CreateMissingCoordinateForTetrahedralAtom(centralAtom->getCoordinate(), threeNeighborCoords);
+    Coordinate newCoord = cds::CreateMissingCoordinateForTetrahedralAtom(atom3_->getCoordinate(), atom3_->getCoordinatesOfNeighbors());
     std::unique_ptr<cds::Atom> newAtom = std::make_unique<cds::Atom>("HHH", newCoord);
-    centralAtom->addBond(newAtom.get());
+    atom3_->addBond(newAtom.get());
     return newAtom;
 }
 
