@@ -1,6 +1,6 @@
 #include "includes/CentralDataStructure/Shapers/cdsGeometryTopology.hpp"
 #include "includes/CentralDataStructure/Shapers/rotationMatrix.hpp"
-#include "includes/utils.hpp"  //gmml::DIST_EPSILON gmml::ConvertDegree2Radian
+#include "includes/CodeUtils/constants.hpp"
 
 void cds::SetDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, const double dihedral_angle, std::vector<Coordinate*>& movingCoords )
 {
@@ -30,8 +30,8 @@ void cds::SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, const double 
     b1.operator -(*a2);
     Coordinate b2 = *a3;
     b2.operator -(*a2);
-    current_angle = acos((b1.DotProduct(b2)) / (b1.length() * b2.length() + gmml::DIST_EPSILON));
-    double rotation_angle = gmml::ConvertDegree2Radian(angle) - current_angle;
+    current_angle = acos((b1.DotProduct(b2)) / (b1.length() * b2.length() + constants::DIST_EPSILON));
+    double rotation_angle = constants::degree2Radian(angle) - current_angle;
     Coordinate direction = b1;
     direction.CrossProduct(b2);
     direction.Normalize();

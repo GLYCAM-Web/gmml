@@ -17,5 +17,8 @@ const double dNotSet = 123456789.0;
 const int iNotSet = -123456;
 const std::string sNotSet = "?";
 inline double degree2Radian(double d) { return d / PI_DEGREE * PI_RADIAN;}
+const double DIST_EPSILON = 0.000001; // \todo determine where/if this is used, and if the following would be better.
+//const double Float_Machine_Epsilon = std::numeric_limits<float>::epsilon( );
+//const double Double_Machine_Epsilon = std::numeric_limits<double>::epsilon( );
 }// namespace
 #endif
