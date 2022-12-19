@@ -1,4 +1,4 @@
-#include "includes/CentralDataStructure/Readers/LibraryResidue.hpp"
+#include "includes/CentralDataStructure/Readers/Lib/LibraryResidue.hpp"
 
 using lib::LibraryResidue;
 

@@ -1,4 +1,5 @@
-#include "includes/CentralDataStructure/Readers/LibraryAtom.hpp"
+#include "includes/CentralDataStructure/Readers/Lib/LibraryAtom.hpp"
+
 #include "includes/CodeUtils/strings.hpp"
 using lib::LibraryAtom;
 

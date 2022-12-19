@@ -4,6 +4,8 @@
 ./includes/CentralDataStructure/Measurements
 ./includes/CentralDataStructure/Overlaps
 ./includes/CentralDataStructure/Readers
+./includes/CentralDataStructure/Readers/Lib
+./includes/CentralDataStructure/Readers/Pdb
 ./includes/CentralDataStructure/Selections
 ./includes/CentralDataStructure/Shapers
 ./includes/CentralDataStructure/Writers

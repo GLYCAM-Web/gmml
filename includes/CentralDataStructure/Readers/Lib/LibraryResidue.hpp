@@ -1,9 +1,9 @@
-#ifndef INCLUDES_CENTRALDATASTRUCTURE_READERS_LIBRARYRESIDUE_HPP_
-#define INCLUDES_CENTRALDATASTRUCTURE_READERS_LIBRARYRESIDUE_HPP_
+#ifndef INCLUDES_CENTRALDATASTRUCTURE_READERS_LIB_LIBRARYRESIDUE_HPP_
+#define INCLUDES_CENTRALDATASTRUCTURE_READERS_LIB_LIBRARYRESIDUE_HPP_
 
 #include "includes/CentralDataStructure/residue.hpp"
-#include "includes/CentralDataStructure/Readers/LibraryAtom.hpp"
 #include "includes/CodeUtils/constants.hpp"
+#include "includes/CentralDataStructure/Readers/Lib/LibraryAtom.hpp"
 #include <sstream>
 
 namespace lib
