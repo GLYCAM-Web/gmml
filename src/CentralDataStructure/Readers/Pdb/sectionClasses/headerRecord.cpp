@@ -1,9 +1,8 @@
-#include "includes/InputSet/PdbFile/SectionClasses/headerRecord.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/headerRecord.hpp"
 #include "includes/utils.hpp"
 #include "includes/CodeUtils/strings.hpp"
 
 using pdb::HeaderRecord;
-
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////

@@ -1,11 +1,9 @@
+#include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/titleRecord.hpp"
+#include "includes/utils.hpp"
 #include <iostream>
 #include <sstream>
 
-#include "includes/InputSet/PdbFile/SectionClasses/titleRecord.hpp"
-#include "includes/utils.hpp"
-
 using pdb::TitleRecord;
-
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////

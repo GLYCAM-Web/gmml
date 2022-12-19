@@ -1,9 +1,8 @@
-#include "includes/InputSet/PdbFile/SectionClasses/databaseReferenceRecord.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/databaseReferenceRecord.hpp"
 #include "includes/utils.hpp"
 #include "includes/common.hpp"
 
 using pdb::DatabaseReference;
-
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////

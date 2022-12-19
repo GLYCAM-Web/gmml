@@ -1,11 +1,10 @@
 #ifndef GMML_INCLUDES_INPUTSET_PDBFILE_PDBCHAIN_HPP
 #define GMML_INCLUDES_INPUTSET_PDBFILE_PDBCHAIN_HPP
-
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidue.hpp"
 #include "includes/CentralDataStructure/molecule.hpp"
-#include "includes/InputSet/PdbFile/pdbResidue.hpp"
-//#include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 #include <string>
 #include <iostream>
+
 //#include <functional>
 namespace pdb
 {

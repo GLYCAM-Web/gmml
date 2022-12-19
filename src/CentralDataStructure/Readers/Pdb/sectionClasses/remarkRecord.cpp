@@ -1,10 +1,9 @@
-#include "includes/InputSet/PdbFile/SectionClasses/remarkRecord.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/remarkRecord.hpp"
 #include "includes/utils.hpp"
 #include "includes/common.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
 using pdb::RemarkRecord;
-
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////

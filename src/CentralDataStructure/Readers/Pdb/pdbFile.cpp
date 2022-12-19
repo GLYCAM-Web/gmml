@@ -1,5 +1,5 @@
-#include "includes/InputSet/PdbFile/pdbFile.hpp"
-#include "includes/InputSet/PdbFile/pdbModel.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbModel.hpp"
 #include "includes/CodeUtils/files.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"

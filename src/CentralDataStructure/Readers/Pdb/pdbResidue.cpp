@@ -1,6 +1,6 @@
-#include "includes/InputSet/PdbFile/pdbResidue.hpp"
-#include <includes/InputSet/PdbFile/pdbAtom.hpp>
-#include "includes/InputSet/PdbFile/pdbResidueId.hpp" // residueId
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidue.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbAtom.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp" // residueId
 #include "includes/CentralDataStructure/Measurements/measurements.hpp" // get_cartesian_point_from_internal_coords
 #include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
 #include "includes/CodeUtils/logging.hpp"

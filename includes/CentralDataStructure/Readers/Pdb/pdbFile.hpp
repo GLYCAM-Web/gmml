@@ -8,17 +8,19 @@
 // ToDo make more direct queries here instead of giving out HeaderRecord etc.
 // ToDo ACE/NME between residues with same number but an insertion code.
 // ToDo expand tests to include amber input and multiple models.
-#include "includes/InputSet/PdbFile/SectionClasses/headerRecord.hpp"
-#include "includes/InputSet/PdbFile/SectionClasses/databaseReferenceRecord.hpp"
-#include "includes/InputSet/PdbFile/SectionClasses/titleRecord.hpp"
-#include "includes/InputSet/PdbFile/SectionClasses/authorRecord.hpp"
-#include "includes/InputSet/PdbFile/SectionClasses/journalRecord.hpp"
-#include "includes/InputSet/PdbFile/SectionClasses/remarkRecord.hpp"
 #include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 #include "includes/CentralDataStructure/ensemble.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/authorRecord.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/databaseReferenceRecord.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/headerRecord.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/journalRecord.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/remarkRecord.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/titleRecord.hpp"
 
 #include <string>
 #include <vector>
+
+
 //#include <fstream>      // std::ifstream
 
 namespace pdb

@@ -1,6 +1,6 @@
-#include "includes/InputSet/PdbFile/pdbModel.hpp"
-#include "includes/InputSet/PdbFile/pdbChain.hpp"
-#include "includes/InputSet/PdbFile/pdbResidue.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbModel.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbChain.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidue.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/templatedSelections.hpp"
@@ -8,6 +8,7 @@
 #include "includes/CentralDataStructure/cdsSelections.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp"
 #include <algorithm> // std::find
+
 using pdb::PdbModel;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //

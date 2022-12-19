@@ -1,4 +1,4 @@
-#include "includes/InputSet/PdbFile/pdbResidueId.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/common.hpp"
 

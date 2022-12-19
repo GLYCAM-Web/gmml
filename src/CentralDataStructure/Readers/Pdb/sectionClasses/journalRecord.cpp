@@ -1,8 +1,8 @@
+#include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/journalRecord.hpp"
+#include "includes/utils.hpp"
+
 #include <iostream>
 #include <sstream>
-
-#include "includes/InputSet/PdbFile/SectionClasses/journalRecord.hpp"
-#include "includes/utils.hpp"
 
 using pdb::JournalRecord;
 

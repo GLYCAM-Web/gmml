@@ -1,4 +1,4 @@
-#include "includes/InputSet/PdbFile/pdbAtom.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbAtom.hpp"
 #include "includes/CodeUtils/constants.hpp" // gmml::iNotSet
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"

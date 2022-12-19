@@ -1,5 +1,5 @@
-#include "includes/InputSet/PdbFile/pdbChain.hpp"
-#include "includes/InputSet/PdbFile/pdbResidue.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbChain.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidue.hpp"
 #include "includes/CentralDataStructure/coordinate.hpp"
 #include "includes/CentralDataStructure/Measurements/measurements.hpp" // get_cartesian_point_from_internal_coords
 #include "includes/CodeUtils/strings.hpp"

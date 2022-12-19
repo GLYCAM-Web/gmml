@@ -3,8 +3,9 @@
 
 #include <string>
 #include <vector>
+
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp" // residueId
 //#include "includes/utils.hpp" // gmml::Split
-#include "includes/InputSet/PdbFile/pdbResidueId.hpp" // residueId
 #include "includes/CodeUtils/logging.hpp"
 
 // These structs are all for interacting with the website via gems.

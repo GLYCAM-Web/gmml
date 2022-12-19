@@ -1,11 +1,10 @@
-#include <iomanip> // setw
-#include "includes/InputSet/PdbFile/SectionClasses/conectRecord.hpp"
-#include "includes/InputSet/PdbFile/pdbModel.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/conectRecord.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbModel.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include <iomanip> // setw
 
 using pdb::ConectRecord;
-
 //////////////////////////////////////////////////////////
 //                    CONSTRUCTOR                       //
 //////////////////////////////////////////////////////////

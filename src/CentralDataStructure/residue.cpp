@@ -1,11 +1,12 @@
 #include "includes/CentralDataStructure/residue.hpp"
+
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/constants.hpp" // sNotSet
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp"
 #include "includes/CentralDataStructure/Measurements/measurements.hpp"
 #include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"
-#include "includes/InputSet/PdbFile/pdbResidueId.hpp"
 
 using cds::Residue;
 using cds::Atom;
