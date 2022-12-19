@@ -20,6 +20,21 @@ Coordinate cds::calculateGeometricCenter(const std::vector<Coordinate*> coords)
     return Coordinate(x,y,z);
 }
 
+double cds::CalculateAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, const bool returnRadians)
+{   // returns Degrees by default, must set bool returnRadians to true for radians.
+    double current_angle = 0.0;
+    Coordinate b1 = *a1;
+    b1.operator -(*a2);
+    Coordinate b2 = *a3;
+    b2.operator -(*a2);
+    current_angle = acos((b1.DotProduct(b2)) / (b1.length() * b2.length() + constants::DIST_EPSILON));
+    if (returnRadians)
+    {
+        return current_angle;
+    }
+    return (current_angle * (180 / constants::PI_RADIAN) ); // Convert to degrees
+}
+
 double cds::CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, const bool returnRadians)
 {   // returns Degrees by default, must set bool returnRadians to true for radians.
     Coordinate b1 = *a2;

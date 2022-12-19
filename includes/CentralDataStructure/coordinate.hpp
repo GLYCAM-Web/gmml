@@ -49,12 +49,8 @@ public:
     void operator/(double divisor);
     void operator*(double multiplier);
     bool operator == (const Coordinate& rhs) const { return (this->GetX() == rhs.GetX() && this->GetY() == rhs.GetY() && this->GetZ() == rhs.GetZ());}
-    Coordinate& operator += (const Coordinate& rhs) { x_ += rhs.GetX();
-                                                            y_ += rhs.GetY();
-                                                            z_ += rhs.GetZ();
-                                                            return *this;
-    }
-
+    Coordinate& operator += (const Coordinate& rhs) { x_ += rhs.GetX(); y_ += rhs.GetY(); z_ += rhs.GetZ(); return *this;}
+    //Coordinate operator-(const Coordinate& rhs) const { return Coordinate(x_ - rhs.x_, y_ - rhs.y_, z_ - rhs.z_);}
     //////////////////////////////////////////////////////////
     //                     DISPLAY FUNCTIONS                //
     //////////////////////////////////////////////////////////
