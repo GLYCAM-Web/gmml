@@ -5,8 +5,8 @@
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
-#include "includes/CentralDataStructure/cdsSelections.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp"
+#include "includes/CentralDataStructure/Selections/residueSelections.hpp"
 #include <algorithm> // std::find
 
 using pdb::PdbModel;
