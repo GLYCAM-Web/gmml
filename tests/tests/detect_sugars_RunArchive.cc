@@ -76,6 +76,7 @@ int main(int argc, char* argv[]) {
   // If there are sugars in the assembly, build the assembly with protein and DNA/RNA and run through sugar detection
   if(oligos.size() > 0)
   {
+    assembly.RemoveAllNucleicAcidResidues();
     assembly.BuildStructureByDistance(4);
 
     // Find the Sugars.

@@ -15,7 +15,7 @@
 
 	cd tests/
   g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ \
-		tests/detect_sugars_RunArchive.cc -lgmml -pthread -o archiveRun_detect_sugars
+    tests/detect_sugars_RunArchive.cc -lgmml -pthread -o archiveRun_detect_sugars
 
 // Run the files from the PDB
 
