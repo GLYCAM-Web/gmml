@@ -1,6 +1,6 @@
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/databaseReferenceRecord.hpp"
-#include "includes/utils.hpp"
-#include "includes/common.hpp"
+#include "includes/CodeUtils/strings.hpp"
+#include <iomanip> //setw
 
 using pdb::DatabaseReference;
 //////////////////////////////////////////////////////////
@@ -9,7 +9,7 @@ using pdb::DatabaseReference;
 DatabaseReference::DatabaseReference(std::string &line)
 {
     std::string temp = line;
-    if (!gmml::Trim(temp).empty())
+    if (!codeUtils::Trim(temp).empty())
     {
         record_name_ = line.substr(0,6);
 
@@ -17,11 +17,11 @@ DatabaseReference::DatabaseReference(std::string &line)
 
         chain_id_ = line.substr(12,1);
 
-        seq_begin_ = gmml::ConvertString<int>(line.substr(14,4));
+        seq_begin_ = codeUtils::from_string<int>(line.substr(14,4));
 
         insert_begin_ = line.substr(18,1);
 
-        seq_end_ = gmml::ConvertString<int>(line.substr(20,4));
+        seq_end_ = codeUtils::from_string<int>(line.substr(20,4));
 
         insert_end_ = line.substr(24,1);
 
@@ -33,11 +33,11 @@ DatabaseReference::DatabaseReference(std::string &line)
 
             db_id_code_ = line.substr(42,12);
 
-            db_seq_begin_ = gmml::ConvertString<int>(line.substr(55,5));
+            db_seq_begin_ = codeUtils::from_string<int>(line.substr(55,5));
 
             db_ins_beg_ = line.substr(60,1);
 
-            db_seq_end_ = gmml::ConvertString<int>(line.substr(62,5));
+            db_seq_end_ = codeUtils::from_string<int>(line.substr(62,5));
 
             db_ins_end_ = line.substr(67,1);
         }
@@ -52,11 +52,11 @@ DatabaseReference::DatabaseReference(std::string &line)
 
                 db_id_code_ = line.substr(47,15);
 
-                db_seq_begin_ = gmml::ConvertString<int>(dbref2.substr(45,10));
+                db_seq_begin_ = codeUtils::from_string<int>(dbref2.substr(45,10));
 
                 db_ins_beg_ = ' ';
 
-                db_seq_end_ = gmml::ConvertString<int>(line.substr(57,10));
+                db_seq_end_ = codeUtils::from_string<int>(line.substr(57,10));
 
                 db_ins_end_ = ' ';
             }

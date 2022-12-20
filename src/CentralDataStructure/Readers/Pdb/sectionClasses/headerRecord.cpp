@@ -1,6 +1,6 @@
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/headerRecord.hpp"
-#include "includes/utils.hpp"
 #include "includes/CodeUtils/strings.hpp"
+#include <iomanip> //setw
 
 using pdb::HeaderRecord;
 //////////////////////////////////////////////////////////
@@ -25,7 +25,7 @@ HeaderRecord::HeaderRecord(std::stringstream& stream_block)
     std::string line;
     getline(stream_block, line);
     std::string temp = line;
-    while (!gmml::Trim(temp).empty())
+    while (!codeUtils::Trim(temp).empty())
     {
         //record_name_ = line.substr(0,6);
         //gmml::Trim(record_name_);

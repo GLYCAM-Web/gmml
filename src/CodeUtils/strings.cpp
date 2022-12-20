@@ -68,3 +68,20 @@ int codeUtils::GetSizeOfIntInString(const std::string str)
     }
     return size;
 }
+
+std::string& codeUtils::Trim(std::string& str)
+{
+    str.erase(str.find_last_not_of(" ") + 1);
+    str.erase(0, str.find_first_not_of(" "));
+    return str;
+}
+
+void codeUtils::removeMultipleSpaces(std::string& str)
+{
+    size_t pos = str.find("  ");
+    while (pos != std::string::npos)
+    {
+        str.erase(pos, 1);
+        pos = str.find("  ");
+    }
+}

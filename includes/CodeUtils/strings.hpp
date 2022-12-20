@@ -17,6 +17,16 @@ void RemoveSpaces(std::string& str);
 void RemoveQuotes(std::string& str);
 void ExpandLine(std::string &line, int length);
 int GetSizeOfIntInString(const std::string str);
+std::string& Trim(std::string& str);
+void removeMultipleSpaces(std::string& str);
+
+template <typename T>
+T from_string(const std::string& str) {
+    std::istringstream iss(str);
+    T value;
+    iss >> value;
+    return value;
+}
 
 template<typename Out>
 inline void split(const std::string &s, char delim, Out result)

@@ -1,11 +1,10 @@
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/authorRecord.hpp"
+#include "includes/CodeUtils/strings.hpp"
 #include <iostream>
-
+#include <iomanip> //setw
 #include <cmath> //ceil
-#include "includes/utils.hpp"
 
 using pdb::AuthorRecord;
-
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
@@ -24,11 +23,11 @@ AuthorRecord::AuthorRecord(std::stringstream& stream_block)
     std::stringstream ss;
     getline(stream_block, line);
     std::string temp = line;
-    while (!gmml::Trim(temp).empty())
+    while (!codeUtils::Trim(temp).empty())
     {
         if(!is_record_name_set){
             record_name_ = line.substr(0,6);
-            gmml::Trim(record_name_);
+            codeUtils::Trim(record_name_);
             is_record_name_set=true;
         }
         ss << line.substr(10,70);
@@ -50,8 +49,8 @@ void AuthorRecord::SetRecordName(const std::string record_name)
 void AuthorRecord::SetAuthor(const std::string author)
 {
     this->author_ = author;
-    gmml::Trim( this->author_ );
-    gmml::TrimSpaces( this->author_ );
+    codeUtils::Trim( this->author_ );
+    codeUtils::removeMultipleSpaces( this->author_ );
 }
 
 //////////////////////////////////////////////////////////

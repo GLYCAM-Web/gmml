@@ -1,7 +1,9 @@
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/titleRecord.hpp"
-#include "includes/utils.hpp"
+#include "includes/CodeUtils/strings.hpp" //Trim removeMultipleSpaces
 #include <iostream>
 #include <sstream>
+#include <iomanip> //setw
+#include <cmath> //ceil
 
 using pdb::TitleRecord;
 //////////////////////////////////////////////////////////
@@ -20,11 +22,11 @@ TitleRecord::TitleRecord(std::stringstream& stream_block)
     std::stringstream ss;
     getline(stream_block, line);
     std::string temp = line;
-    while (!gmml::Trim(temp).empty())
+    while (!codeUtils::Trim(temp).empty())
     {
         if(!is_name_set){
             name_ = line.substr(0,6);
-            gmml::Trim(name_);
+            codeUtils::Trim(name_);
             is_name_set=true;
         }
         ss << line.substr(10,70);
@@ -58,8 +60,8 @@ void TitleRecord::SetName(std::string record_name)
 void TitleRecord::SetTitle(const std::string title)
 {
     this->title_ = title;
-	gmml::Trim( this->title_ );
-	gmml::TrimSpaces( this->title_ );
+	codeUtils::Trim( this->title_ );
+	codeUtils::removeMultipleSpaces( this->title_ );
 }
 
 //////////////////////////////////////////////////////////

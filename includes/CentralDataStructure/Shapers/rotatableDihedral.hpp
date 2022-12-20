@@ -1,7 +1,6 @@
 #ifndef GMML_INCLUDES_CENTRAL_DATA_STRUCTURE_SHAPERS_ROTATABLE_DIHEDRAL_HPP
 #define GMML_INCLUDES_CENTRAL_DATA_STRUCTURE_SHAPERS_ROTATABLE_DIHEDRAL_HPP
 
-
 #include "includes/CentralDataStructure/atom.hpp"
 #include "includes/CentralDataStructure/coordinate.hpp"
 #include "includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
@@ -16,7 +15,7 @@ using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
 // Seed with a real random value, if available
 static pcg_extras::seed_seq_from<std::random_device> seed_source;
 // Make a random number engine
-static pcg32 rng(seed_source); // Eclipse complains about ambiguity, and yet it compiles...
+static pcg32 rng(seed_source); // Eclipse complains about ambiguity, and yet it compiles... // @suppress("Ambiguous problem")
 
 // This class stores the four atoms that define a dihedral angle, the atoms that move when it is rotated
 // and, if moved, the previous dihedral angle, which allows me to reset easily.

@@ -1,8 +1,9 @@
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/journalRecord.hpp"
-#include "includes/utils.hpp"
-
+#include "includes/CodeUtils/strings.hpp"
+#include <iomanip> //setw
 #include <iostream>
 #include <sstream>
+#include <cmath> // ceil
 
 using pdb::JournalRecord;
 
@@ -19,17 +20,17 @@ JournalRecord::JournalRecord(std::stringstream& stream_block)
     bool is_publisher_started = false;
     getline(stream_block, line);
     std::string temp = line;
-    while (!gmml::Trim(temp).empty())
+    while (!codeUtils::Trim(temp).empty())
     {
         if(!is_record_name_set)
         {
             record_name_ = line.substr(0,6);
-            gmml::Trim(record_name_);
+            codeUtils::Trim(record_name_);
             is_record_name_set=true;
         }
         text_.append(line.substr(12, 67));
         std::string subrecord = line.substr(12,4);
-        gmml::Trim(subrecord);
+        codeUtils::Trim(subrecord);
         if(subrecord == "AUTH")
         {
           std::size_t start_position = 19;
@@ -52,16 +53,16 @@ JournalRecord::JournalRecord(std::stringstream& stream_block)
           if(!is_title_started)
           {
             title_ = line.substr(19,59);
-            gmml::Trim(title_);
+            codeUtils::Trim(title_);
             is_title_started = true;
           }
           else
           {
             std::string titl = line.substr(19,59);
-            gmml::Trim(titl);
+            codeUtils::Trim(titl);
             title_.append(" ");
             title_.append(titl);
-            gmml::Trim(title_);
+            codeUtils::Trim(title_);
           }
         }
         else if(subrecord == "EDIT")
@@ -81,16 +82,16 @@ JournalRecord::JournalRecord(std::stringstream& stream_block)
           if(!is_reference_started)
           {
             reference_ = line.substr(19,59);
-            gmml::Trim(reference_);
+            codeUtils::Trim(reference_);
             is_reference_started = true;
           }
           else
           {
             std::string ref = line.substr(19,59);
-            gmml::Trim(ref);
+            codeUtils::Trim(ref);
             reference_.append(" ");
             reference_.append(ref);
-            gmml::Trim(reference_);
+            codeUtils::Trim(reference_);
           }
         }
         else if(subrecord == "PUBL")
@@ -98,13 +99,13 @@ JournalRecord::JournalRecord(std::stringstream& stream_block)
           if(!is_publisher_started)
           {
             publisher_ = line.substr(19,59);
-            gmml::Trim(publisher_);
+            codeUtils::Trim(publisher_);
             is_publisher_started = true;
           }
           else
           {
             std::string publ = line.substr(19,59);
-            gmml::Trim(publ);
+            codeUtils::Trim(publ);
             publisher_.append(" ");
             publisher_.append(publ);
           }
@@ -112,13 +113,13 @@ JournalRecord::JournalRecord(std::stringstream& stream_block)
         else if(subrecord == "REFN")
         {
           std::string refn = line.substr(35,29);
-          gmml::Trim(refn);
+          codeUtils::Trim(refn);
           reference_nums_.push_back(refn);
         }
         else if(subrecord == "PMID")
         {
             std::string new_pmid = line.substr(19,59);
-            gmml::Trim(new_pmid);
+            codeUtils::Trim(new_pmid);
             pmid_.append(new_pmid);
         }
         else if(subrecord == "DOI")
@@ -176,8 +177,8 @@ void JournalRecord::SetPMID(const std::string pmid)
 void JournalRecord::SetDOI(const std::string doi)
 {
     this->doi_ += doi;
-	gmml::Trim( this->doi_ );
-    gmml::TrimSpaces( this->doi_ );
+	codeUtils::Trim( this->doi_ );
+    codeUtils::removeMultipleSpaces( this->doi_ );
 	// I know this is weird to Trim spaces then add one space back, but it was/is necessary. DT
 	this->doi_ += " ";
 }
