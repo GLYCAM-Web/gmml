@@ -2,9 +2,8 @@
 #define GMML_INCLUDES_INPUTSET_PDBFILE_PDBMODEL_HPP
 
 #include "includes/CentralDataStructure/assembly.hpp"
-#include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/conectRecord.hpp"
-//#include "includes/InputSet/PdbFile/pdbChain.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
 #include <vector>
 #include <iostream>
 

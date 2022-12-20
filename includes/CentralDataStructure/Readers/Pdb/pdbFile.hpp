@@ -1,14 +1,9 @@
 #ifndef INCLUDES_INPUTSET_PDBFILE_PDBFILE_HPP
 #define INCLUDES_INPUTSET_PDBFILE_PDBFILE_HPP
-
-// ToDo split preprocessor into separate class that inherits from this one or is friends?.
-// ToDo Get rid of coordinate section and just have this class hold the records
-// ToDo Ownership Hierarchy of PdbFile->Models->Chains->Residues->AtomRecords? This would solve the TER problem when reading in a tleap generated file where there isn't a chain ID, but there is a TER card.
+// ToDo split preprocessor into separate function.
 // ToDo Warning about gaps being 1 residue.
 // ToDo make more direct queries here instead of giving out HeaderRecord etc.
 // ToDo ACE/NME between residues with same number but an insertion code.
-// ToDo expand tests to include amber input and multiple models.
-#include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 #include "includes/CentralDataStructure/ensemble.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/authorRecord.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/databaseReferenceRecord.hpp"
@@ -16,12 +11,10 @@
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/journalRecord.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/remarkRecord.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/titleRecord.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
 
 #include <string>
 #include <vector>
-
-
-//#include <fstream>      // std::ifstream
 
 namespace pdb
 {

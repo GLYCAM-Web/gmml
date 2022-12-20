@@ -50,5 +50,4 @@
 ./includes/ParameterSet/PrepFile
 ./includes/ParameterSet/PrepFileSpace
 ./includes/Resolver
-./includes/Resolver/NewPdbPreprocessor
 ./includes/Resolver/PdbPreprocessor
