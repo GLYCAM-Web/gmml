@@ -347,14 +347,8 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
           
           // IF the terminal is a protein, then add bool to ontology
           // Protein
-          if(oligo->root_->cycle_atoms_[0]->GetResidue()->CheckIfProtein())
-          {
-            gmml::AddTriple(mono_uri, Ontology::isProtein, "true", mono_stream);
-          }
-          else
-          {
-            gmml::AddTriple(mono_uri, Ontology::isProtein, "false", mono_stream);
-          }
+         
+         //TODO
 
         }
         else
