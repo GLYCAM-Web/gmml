@@ -1,10 +1,9 @@
-#ifndef INCLUDES_PARAMETERSET_PREPFILE_PREPFILE_HPP_
-#define INCLUDES_PARAMETERSET_PREPFILE_PREPFILE_HPP_
+#ifndef INCLUDES_CENTRALDATASTRUCTURE_READERS_PREP_PREPFILE_HPP_
+#define INCLUDES_CENTRALDATASTRUCTURE_READERS_PREP_PREPFILE_HPP_
 
 #include "includes/CentralDataStructure/molecule.hpp"
-#include "includes/ParameterSet/PrepFile/prepResidue.hpp"
-#include "includes/ParameterSet/PrepFile/prepAtom.hpp"
-
+#include "includes/CentralDataStructure/Readers/Prep/prepAtom.hpp"
+#include "includes/CentralDataStructure/Readers/Prep/prepResidue.hpp"
 #include <map>
 #include <string>
 #include <iostream>
@@ -55,4 +54,4 @@ private:
 	//////////////////////////////////////////////////////////
 };
 }
-#endif /* INCLUDES_PARAMETERSET_PREPFILE_PREPFILE_HPP_ */
+#endif /* INCLUDES_CENTRALDATASTRUCTURE_READERS_PREP_PREPFILE_HPP_ */

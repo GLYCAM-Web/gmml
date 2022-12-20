@@ -18,6 +18,9 @@
 ./src/CentralDataStructure/Readers/Pdb/sectionClasses/journalRecord.cpp
 ./src/CentralDataStructure/Readers/Pdb/sectionClasses/remarkRecord.cpp
 ./src/CentralDataStructure/Readers/Pdb/sectionClasses/titleRecord.cpp
+./src/CentralDataStructure/Readers/Prep/prepAtom.cpp
+./src/CentralDataStructure/Readers/Prep/prepFile.cpp
+./src/CentralDataStructure/Readers/Prep/prepResidue.cpp
 ./src/CentralDataStructure/Selections/atomSelections.cpp
 ./src/CentralDataStructure/Selections/shaperSelections.cpp
 ./src/CentralDataStructure/Shapers/atomToCoordianteInterface.cpp
@@ -236,9 +239,6 @@
 ./src/ParameterSet/ParameterFileSpace/parameterfiledihedral.cc
 ./src/ParameterSet/ParameterFileSpace/parameterfiledihedralterm.cc
 ./src/ParameterSet/ParameterFileSpace/parameterfileprocessingexception.cc
-./src/ParameterSet/PrepFile/prepAtom.cpp
-./src/ParameterSet/PrepFile/prepFile.cpp
-./src/ParameterSet/PrepFile/prepResidue.cpp
 ./src/ParameterSet/PrepFileSpace/prepfile.cc
 ./src/ParameterSet/PrepFileSpace/prepfileatom.cc
 ./src/ParameterSet/PrepFileSpace/prepfileprocessingexception.cc

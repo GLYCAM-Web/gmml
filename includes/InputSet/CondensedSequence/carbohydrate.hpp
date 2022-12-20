@@ -2,10 +2,11 @@
 #define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_HPP
 
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
-#include "includes/ParameterSet/PrepFile/prepFile.hpp"
 #include "includes/CentralDataStructure/Shapers/residueLinkage.hpp"
 #include "includes/Abstract/absBuilder.hpp"
+#include "includes/CentralDataStructure/Readers/Prep/prepFile.hpp"
 #include <vector>
+
 namespace CondensedSequence
 {
     class Carbohydrate : public SequenceManipulator, public Abstract::absBuilder

@@ -1,8 +1,8 @@
-#ifndef INCLUDES_PARAMETERSET_PREPFILE_PREPRESIDUE_HPP_
-#define INCLUDES_PARAMETERSET_PREPFILE_PREPRESIDUE_HPP_
+#ifndef INCLUDES_CENTRALDATASTRUCTURE_READERS_PREP_PREPRESIDUE_HPP_
+#define INCLUDES_CENTRALDATASTRUCTURE_READERS_PREP_PREPRESIDUE_HPP_
 
 #include "includes/CentralDataStructure/residue.hpp"
-#include "includes/ParameterSet/PrepFile/prepAtom.hpp"
+#include "includes/CentralDataStructure/Readers/Prep/prepAtom.hpp"
 #include <string>
 #include <map>
 #include <vector>
@@ -129,4 +129,4 @@ private:
 
 };
 } // namespace
-#endif // INCLUDES_PARAMETERSET_PREPFILE_PREPRESIDUE_HPP_
+#endif // INCLUDES_CENTRALDATASTRUCTURE_READERS_PREP_PREPRESIDUE_HPP_

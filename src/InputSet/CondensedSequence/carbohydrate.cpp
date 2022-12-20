@@ -5,15 +5,15 @@
 #include "includes/Abstract/absResidue.hpp" // For the Residue::Type
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/files.hpp"
-#include "includes/ParameterSet/PrepFile/prepFile.hpp"
-#include "includes/ParameterSet/PrepFile/prepResidue.hpp"
-#include "includes/ParameterSet/PrepFile/prepAtom.hpp"
 #include "includes/CentralDataStructure/residue.hpp"
 #include "includes/CentralDataStructure/molecule.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp" // serializeAtomNumbers
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"
+#include "includes/CentralDataStructure/Readers/Prep/prepAtom.hpp"
+#include "includes/CentralDataStructure/Readers/Prep/prepFile.hpp"
+#include "includes/CentralDataStructure/Readers/Prep/prepResidue.hpp"
 #include <sstream>
 #include <cctype> // isDigit
 

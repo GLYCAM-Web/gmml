@@ -1,5 +1,5 @@
-#include "includes/ParameterSet/PrepFile/prepResidue.hpp"
-#include "includes/ParameterSet/PrepFile/prepAtom.hpp"
+#include "includes/CentralDataStructure/Readers/Prep/prepResidue.hpp"
+#include "includes/CentralDataStructure/Readers/Prep/prepAtom.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/utils.hpp" //Trim
@@ -8,12 +8,11 @@
 #include <iostream>
 #include <iomanip>
 #include <ios>
-using prep::PrepResidue;
 
+using prep::PrepResidue;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-
 PrepResidue::PrepResidue(std::ifstream& in_file, std::string &line)
 {
     std::string name, dummy_atom_type;

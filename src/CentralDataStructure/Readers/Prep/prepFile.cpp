@@ -1,7 +1,7 @@
+#include "includes/CentralDataStructure/Readers/Prep/prepFile.hpp"
+#include "includes/CentralDataStructure/Readers/Prep/prepAtom.hpp"
+#include "includes/CentralDataStructure/Readers/Prep/prepResidue.hpp"
 #include "includes/utils.hpp" // Trim
-#include "includes/ParameterSet/PrepFile/prepFile.hpp"
-#include "includes/ParameterSet/PrepFile/prepResidue.hpp"
-#include "includes/ParameterSet/PrepFile/prepAtom.hpp"
 #include "includes/CodeUtils/files.hpp" // ensureFileExists
 #include "includes/CodeUtils/strings.hpp" // split
 #include <fstream>
@@ -9,6 +9,7 @@
 #include <iomanip>
 #include <ios>
 #include <algorithm> // count
+
 
 using prep::PrepFile;
 //////////////////////////////////////////////////////////

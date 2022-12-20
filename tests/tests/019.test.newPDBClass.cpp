@@ -1,7 +1,7 @@
 #include "includes/gmml.hpp"
-#include "includes/Resolver/NewPdbPreprocessor/pdbPreprocessorInputs.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp" // bondAtomsByDistance
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
 #include <string>
 
 int main(int argc, char* argv[])
