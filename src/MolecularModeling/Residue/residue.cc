@@ -519,6 +519,20 @@ bool Residue::CheckIfNucleicAcid()
   return false;
 }
 
+bool Residue::CheckIfSaccharide()
+{
+  int local_debug = -1;
+  if( std::find( gmml::SACCHARIDES, ( gmml::SACCHARIDES + gmml::SACCHARIDESSIZE ), this->GetName() ) != ( gmml::SACCHARIDES + gmml::SACCHARIDESSIZE ) )
+  {
+    if (local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__, gmml::INF, "Saccharide Found");
+    }
+    return true;
+  }
+  return false;
+}
+
 bool Residue::CheckIfWater() {
 	if( this->GetName().compare( "HOH" ) == 0 ) {
 		return true;

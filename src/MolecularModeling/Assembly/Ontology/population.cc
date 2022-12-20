@@ -344,6 +344,18 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
           gmml::AddTriple(oligo_uri, Ontology::hasTerminal, term_uri, oligo_sequence_stream);
           gmml::AddTriple(term_uri, Ontology::TYPE, Ontology::Terminal, oligo_sequence_stream);
           gmml::AddLiteral(term_uri, Ontology::id, oligo->oligosaccharide_terminal_, oligo_sequence_stream);
+          
+          // IF the terminal is a protein, then add bool to ontology
+          // Protein
+          if(oligo->root_->cycle_atoms_[0]->GetResidue()->CheckIfProtein())
+          {
+            gmml::AddTriple(mono_uri, Ontology::isProtein, "true", mono_stream);
+          }
+          else
+          {
+            gmml::AddTriple(mono_uri, Ontology::isProtein, "false", mono_stream);
+          }
+
         }
         else
         {
@@ -830,9 +842,12 @@ int Assembly::ExtractLinkageCarbonIndex(Glycan::Oligosaccharide* oligo, std::str
     return c_index;
 }
 
-void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::stringstream& oligo_stream, std::string oligo_uri, std::string id_prefix, Glycan::Monosaccharide* mono,
-                                      std::vector<std::string>& side_or_ring_atoms, std::string pdb_uri)
+void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream,
+  std::stringstream& oligo_stream, std::string oligo_uri, std::string id_prefix,
+  Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms, 
+  std::string pdb_uri)
 {
+  int local_debug = -1;
     std::stringstream object;
     std::string mono_resource = "";
     std::string mono_uri = "";
@@ -850,7 +865,13 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
     int Index = mono->IUPAC_index_; //change to IUPAC_index_
     gmml::AddLiteral(mono_uri, Ontology::hasIndex, std::to_string(Index), mono_stream);
     gmml::AddLiteral(mono_uri, Ontology::hasNameIndex, std::to_string(mono->oligosaccharide_index_), mono_stream);
-    if(checkIfNucleotide(mono))
+    
+    ////////////////////////////////////////////////////////////////////
+    // Write bool for is Nucleotide, Saccharide, etc. to the ontology //
+    ////////////////////////////////////////////////////////////////////
+
+    // if(checkIfNucleotide(mono))
+    if(mono->cycle_atoms_[0]->GetResidue()->CheckIfNucleicAcid())
     {
       gmml::AddTriple(mono_uri, Ontology::isNucleotide, "true", mono_stream);
     }
@@ -858,6 +879,17 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
     {
       gmml::AddTriple(mono_uri, Ontology::isNucleotide, "false", mono_stream);
     }
+
+    if(mono->cycle_atoms_[0]->GetResidue()->CheckIfSaccharide())
+    {
+      gmml::AddTriple(mono_uri, Ontology::isSaccharide, "true", mono_stream);
+    }
+    else
+    {
+      gmml::AddTriple(mono_uri, Ontology::isSaccharide, "false", mono_stream);
+    }
+
+    
     // gmml::AddLiteral(mono_uri, Ontology::hasSNFGName, mono->SNFG_name_, mono_stream);
     //    gmml::AddLiteral(mono_uri, Ontology::LABEL, mono_resource, mono_stream);
 
@@ -865,34 +897,36 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream, std::strin
     object.str(std::string());
     int ring_index = 1;
     std::stringstream ring_atom_stream;
-    if(ring_atoms.size() > 0)
-    {
-      for(AtomVector::iterator it = ring_atoms.begin(); it != ring_atoms.end(); it++)
-      {
-          Atom* ring_atom = (*it);
-          if (ring_atom != NULL)
-          {
-            ring_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, ring_atom->GetId());
-            ring_uri = CreateURI(ring_resource);
-            gmml::AddTriple(mono_uri, Ontology::hasRingAtom, ring_uri, mono_stream);
-            //None of this is used and it clutters the file (and takes of a lot of disk space)
-            //PopulateRingAtom(ring_atom_stream, id_prefix, ring_uri, ring_resource, ring_index, ring_atom, mono, side_or_ring_atoms);
-            ring_index++;
+    // if(ring_atoms.size() > 0)
+    // {
+    //   for(AtomVector::iterator it = ring_atoms.begin(); it != ring_atoms.end(); it++)
+    //   {
+    //       Atom* ring_atom = (*it);
+    //       if (ring_atom != NULL)
+    //       {
+    //         ring_resource = CreateURIResource(gmml::OntAtom, 0, id_prefix, ring_atom->GetId());
+    //         ring_uri = CreateURI(ring_resource);
+    //         gmml::AddTriple(mono_uri, Ontology::hasRingAtom, ring_uri, mono_stream);
+    //         //None of this is used and it clutters the file (and takes of a lot of disk space)
+    //         //PopulateRingAtom(ring_atom_stream, id_prefix, ring_uri, ring_resource, ring_index, ring_atom, mono, side_or_ring_atoms);
+    //         ring_index++;
 
-            if(it == ring_atoms.end() - 1)
-                object << ring_resource;
-            else
-                object << ring_resource << "-";
-          }
-      }
-    }
-    gmml::AddLiteral(mono_uri, Ontology::ring_atoms, object.str(), mono_stream);
+    //         if(it == ring_atoms.end() - 1)
+    //             object << ring_resource;
+    //         else
+    //             object << ring_resource << "-";
+    //       }
+    //   }
+    // }
+    // gmml::AddLiteral(mono_uri, Ontology::ring_atoms, object.str(), mono_stream);
 
-    object.str(std::string());
-    object << mono->anomeric_status_ << " " << CreateURIResource(gmml::OntAtom, 0, id_prefix, mono->cycle_atoms_.at(0)->GetId());
-    gmml::AddLiteral(mono_uri, Ontology::anomeric_status, object.str(), mono_stream);
+    // object.str(std::string());
+    // object << mono->anomeric_status_ << " " << CreateURIResource(gmml::OntAtom, 0, id_prefix, mono->cycle_atoms_.at(0)->GetId());
+    // gmml::AddLiteral(mono_uri, Ontology::anomeric_status, object.str(), mono_stream);
 
     gmml::AddLiteral(mono_uri, Ontology::stereochemistry_chemical_code, mono->sugar_name_.chemical_code_string_, mono_stream);
+
+
     if(mono->bfmp_ring_conformation_.compare("") != 0) {
       std::string bfmp = mono->bfmp_ring_conformation_;
       std::size_t index;
