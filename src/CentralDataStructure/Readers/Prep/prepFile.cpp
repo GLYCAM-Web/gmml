@@ -1,7 +1,6 @@
 #include "includes/CentralDataStructure/Readers/Prep/prepFile.hpp"
 #include "includes/CentralDataStructure/Readers/Prep/prepAtom.hpp"
 #include "includes/CentralDataStructure/Readers/Prep/prepResidue.hpp"
-#include "includes/utils.hpp" // Trim
 #include "includes/CodeUtils/files.hpp" // ensureFileExists
 #include "includes/CodeUtils/strings.hpp" // split
 #include <fstream>
@@ -115,7 +114,7 @@ void PrepFile::ReadAllResidues(std::ifstream &in_file)
 	getline(in_file, line);
 	getline(in_file, line); // first two lines are always blank apparently. smh.
 	getline(in_file, line); // This should be first line of residue entry.
-    while (gmml::Trim(line).find("STOP") == std::string::npos)           /// End of file
+    while (codeUtils::Trim(line).find("STOP") == std::string::npos)           /// End of file
     {
         this->addResidue(std::make_unique<PrepResidue>(in_file, line));
         getline(in_file, line); // This should be first line of next residue entry or STOP.
@@ -131,7 +130,7 @@ void PrepFile::ReadQueryResidues(std::ifstream &in_file, const std::vector<std::
 	getline(in_file, line);
 	getline(in_file, line); // first two lines are always blank apparently. smh.
 	getline(in_file, line); // This should be first line of residue entry.
-    while (gmml::Trim(line).find("STOP") == std::string::npos) // While not at end of file
+    while (codeUtils::Trim(line).find("STOP") == std::string::npos) // While not at end of file
     {
     	std::streampos firstResidueLinePosition = in_file.tellg(); // save correct position to start reading residue
     	// Need to move to line with residue name on it.
@@ -153,7 +152,7 @@ void PrepFile::ReadQueryResidues(std::ifstream &in_file, const std::vector<std::
     	}
     	else
     	{ // need to flush the lines until we find a residue we want.
-    		while(gmml::Trim(line).find("DONE") == std::string::npos)
+    		while(codeUtils::Trim(line).find("DONE") == std::string::npos)
     		{
     			getline(in_file, line);
     		}

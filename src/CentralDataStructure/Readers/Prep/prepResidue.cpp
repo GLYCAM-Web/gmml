@@ -1,8 +1,8 @@
 #include "includes/CentralDataStructure/Readers/Prep/prepResidue.hpp"
 #include "includes/CentralDataStructure/Readers/Prep/prepAtom.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/templatedSelections.hpp"
-#include "includes/utils.hpp" //Trim
 #include <sstream>
 #include <fstream>
 #include <iostream>
@@ -33,9 +33,9 @@ PrepResidue::PrepResidue(std::ifstream& in_file, std::string &line)
     this->SetDummyAtomType(dummy_atom_type);
     this->ExtractResidueDummyAtomPosition(ss);
     getline(in_file, line);             /// Read the next line
-    this->SetCharge(gmml::ConvertString<double>(line));
+    this->SetCharge(codeUtils::from_string<double>(line));
     /// Process atoms of the residue
-    while (getline(in_file, line) && !gmml::Trim(line).empty())
+    while (getline(in_file, line) && !codeUtils::Trim(line).empty())
     {
         this->addAtom(std::make_unique<PrepAtom>(line));
     }
@@ -45,7 +45,7 @@ PrepResidue::PrepResidue(std::ifstream& in_file, std::string &line)
     {
         /// Skip blank lines until to reach to a known section title
         getline(in_file, line);
-        while (gmml::Trim(line).empty())
+        while (codeUtils::Trim(line).empty())
         {
             getline(in_file, line);
         }
@@ -516,7 +516,7 @@ void PrepResidue::ExtractLoops(std::ifstream &in_file)
     std::string line;
     std::stringstream ss;
     getline(in_file, line);
-    while (!gmml::Trim(line).empty())                         /// Read file until blank line which determines the end of the section
+    while (!codeUtils::Trim(line).empty())                         /// Read file until blank line which determines the end of the section
     {
         ss.clear();
         ss.str(line);                                   /// Create a stream from the read line
@@ -535,7 +535,7 @@ void PrepResidue::ExtractImproperDihedral(std::ifstream &in_file)
     std::stringstream ss;
     std::vector<Dihedral> dihedrals;
     getline(in_file, line);
-    while (!gmml::Trim(line).empty())                         /// Read file until blank line which determines the end of the section
+    while (!codeUtils::Trim(line).empty())                         /// Read file until blank line which determines the end of the section
     {
         std::string atom_names[4];
         Dihedral dihedral;
