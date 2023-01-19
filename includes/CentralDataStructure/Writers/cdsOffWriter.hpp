@@ -7,18 +7,16 @@
 #include <fstream>
 #include <iomanip> //std::precision
 
-#include "includes/Abstract/absResidue.hpp"
-
 namespace cds
 {
 
-inline std::string getOffType(const Abstract::ResidueType queryType)
+inline std::string getOffType(const ResidueType queryType)
 {
-	if ( queryType == Abstract::ResidueType::Protein )
+	if ( queryType == ResidueType::Protein )
 	{
 		return "p";
 	}
-	if ( queryType == Abstract::ResidueType::Solvent )
+	if ( queryType == ResidueType::Solvent )
 	{
 		return "w";
 	}

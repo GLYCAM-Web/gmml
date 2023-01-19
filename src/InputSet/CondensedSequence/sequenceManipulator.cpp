@@ -102,7 +102,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 	std::vector<std::string> derivatives;
 	for (auto &neighbor : neighbors)
 	{
-		if (neighbor->GetType() == Abstract::ResidueType::Derivative)
+		if (neighbor->GetType() == cds::ResidueType::Derivative)
 		{
 			--numberOfNeighbors;
 			derivatives.push_back(neighbor->GetLinkageName(withLabels) + neighbor->GetName(withLabels));
@@ -132,7 +132,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 	size_t loopCount = 0;
 	for (auto &neighbor : neighbors)
 	{
-		if (neighbor->GetType() != Abstract::ResidueType::Derivative)
+		if (neighbor->GetType() != cds::ResidueType::Derivative)
 		{
 			++loopCount;
 			if (loopCount < numberOfNeighbors)
@@ -157,7 +157,7 @@ std::string SequenceManipulator::PrintGraphViz(GraphVizDotConfig &configs)
 	ss << "rankdir=LR nodesep=\"0.05\" ranksep=\"0.8\";\n";
 	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
 	{
-		if (residue->GetType() != Abstract::ResidueType::Derivative)
+		if (residue->GetType() != cds::ResidueType::Derivative)
 		{
 			ss << this->GetGraphVizLineForResidue(*residue, configs) << "\n";
 		}
@@ -180,7 +180,7 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
     std::stringstream ss;
     ss << residue.getIndex() << " [";
     // Aglycone
-    if (residue.GetType() == Abstract::ResidueType::Aglycone)
+    if (residue.GetType() == cds::ResidueType::Aglycone)
     {
         ss << "shape=box label=\"" << residue.GetMonosaccharideName() << "\"]";
         return ss.str();
@@ -204,7 +204,7 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
     std::string derivativeStr = "";
     for (auto &childLink : residue.GetChildren())
     {
-        if (childLink->GetType() == Abstract::ResidueType::Derivative)
+        if (childLink->GetType() == cds::ResidueType::Derivative)
         {
             derivativeStr += childLink->GetLinkageName() + childLink->GetName() + " ";
         }

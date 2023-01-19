@@ -1,7 +1,7 @@
 #ifndef INCLUDES_CENTRALDATASTRUCTURE_CDSSELECTIONS_HPP
 #define INCLUDES_CENTRALDATASTRUCTURE_CDSSELECTIONS_HPP
 
-#include "includes/Abstract/absResidue.hpp"
+#include "includes/CentralDataStructure/residue.hpp"
 
 #include <vector>
 
@@ -9,7 +9,7 @@
 namespace cds
 {
 template< class residueT>
-inline typename std::vector<residueT*> selectResiduesByType(std::vector<residueT*> inputResidues, Abstract::ResidueType queryType)
+inline typename std::vector<residueT*> selectResiduesByType(std::vector<residueT*> inputResidues, cds::ResidueType queryType)
 {
 	std::vector<residueT*> selectedResidues;
 	for(auto & residue : inputResidues)

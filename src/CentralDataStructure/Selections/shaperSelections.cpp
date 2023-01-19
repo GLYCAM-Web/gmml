@@ -21,7 +21,7 @@ std::vector<cds::Atom*> cdsSelections::FindCyclePoints(cds::Atom* atom, cds::Res
     std::vector<cds::Atom*> rotation_points;
     std::vector<cds::Atom*> atom_path;
     bool found = false;
-    if(residue->GetType() == Abstract::ResidueType::Protein)
+    if(residue->GetType() == cds::ResidueType::Protein)
     {
         cds::Atom *caAtom = residue->FindAtom("CA");
         // Find any cycle points. Note: starting from connection point to other residue
