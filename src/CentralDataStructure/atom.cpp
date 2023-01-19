@@ -11,8 +11,8 @@ using cds::Atom;
 //                       CONSTRUCTORS                   //
 //////////////////////////////////////////////////////////
 Atom::Atom(const std::string& name, const Coordinate& coord)
-: Abstract::absAtom(coord)
 {
+    this->addCoordinate(coord);
     this->setName(name);
 }
 
@@ -24,7 +24,49 @@ Atom::Atom(const std::string& name, const Coordinate& coord)
 //    this->setCharge(refAtom->getCharge());
 //    this->setNumber(refAtom->getNumber());
 //}
+//////////////////////////////////////////////////////////
+//                    ACCESSOR                          //
+//////////////////////////////////////////////////////////
+// ToDo why is there two? const ref is better?
+Coordinate* Atom::getCoordinate()
+{
+    if(coordinates_.empty())
+    {
+        return nullptr;
+    }
+    return coordinates_.front().get();
+}
 
+const Coordinate* Atom::getCoordinate() const
+{
+    if(coordinates_.empty())
+    {
+        return nullptr;
+    }
+    return coordinates_.front().get();
+}
+//////////////////////////////////////////////////////////
+//                    MUTATOR                           //
+//////////////////////////////////////////////////////////
+void Atom::setCoordinate(const Coordinate& newCoord)
+{ // Dealing with one coord, so want it to be the coord returned when someone calls getCoordiante.
+    if(coordinates_.empty())
+    {
+        this->addCoordinate(newCoord);
+    }
+    else
+    {
+        Coordinate* firstCoord = coordinates_.front().get();
+        *firstCoord = newCoord; // Should copy the x,y,z from newCoord.
+    }
+    return;
+}
+
+void Atom::addCoordinate(const Coordinate& newCoord)
+{
+    coordinates_.push_back(std::make_unique<Coordinate>(newCoord));
+    return;
+}
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
@@ -80,6 +122,10 @@ bool Atom::isWithinBondingDistance(const Atom* otherAtom) const
     return false;
 }
 
+double Atom::calculateDistance(const Atom* otherAtom) const
+{
+    return this->getCoordinate()->Distance(otherAtom->getCoordinate());
+}
 //////////////////////////////////////////////////////////
 //                   OVERLOADED OPERATORS               //
 //////////////////////////////////////////////////////////

@@ -109,6 +109,7 @@ PdbAtom::PdbAtom(const std::string &line)
     }
 }
 
+// ToDo Is this necessary? Won't the base class one be called?
 PdbAtom::PdbAtom(const std::string& name, const Coordinate& coord)
 : cds::Atom(name, coord) {}
 

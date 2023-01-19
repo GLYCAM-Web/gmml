@@ -1,4 +1,3 @@
-./src/Abstract/absAtom.cpp
 ./src/Abstract/absResidue.cpp
 ./src/CentralDataStructure/Measurements/measurements.cpp
 ./src/CentralDataStructure/Overlaps/cdsOverlaps.cpp

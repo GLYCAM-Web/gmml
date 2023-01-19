@@ -1,16 +1,18 @@
 #ifndef INCLUDES_CENTRALDATASTRUCTURE_CDSATOM_HPP
 #define INCLUDES_CENTRALDATASTRUCTURE_CDSATOM_HPP
 
+#include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
+#include "includes/CentralDataStructure/coordinate.hpp"
+#include "includes/CodeUtils/constants.hpp" // dNotSet
+
 #include <string>
 #include <iostream>
 #include <vector>
-
-#include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
-#include "includes/Abstract/absAtom.hpp"
+#include <memory> // unique_ptr
 
 namespace cds
 {
-class Atom : public Abstract::absAtom, public glygraph::Node<Atom>
+class Atom : public glygraph::Node<Atom>
 {
 public:
 	//////////////////////////////////////////////////////////
@@ -26,9 +28,19 @@ public:
     //////////////////////////////////////////////////////////
 	//                       ACCESSORS                      //
 	//////////////////////////////////////////////////////////
+    Coordinate* getCoordinate();
+    const Coordinate* getCoordinate() const;
+    inline double getCharge() const { return charge_;}
+    inline std::string getType() const {return atomType_;}
+    inline int getNumber() const {return number_;}
 	//////////////////////////////////////////////////////////
 	//                       MUTATOR                        //
 	//////////////////////////////////////////////////////////
+    inline void setCharge(const double c) {charge_ = c;}
+    inline void setType(const std::string s) {atomType_ = s;}
+    inline void setNumber(const int i) {number_ = i;}
+    void setCoordinate(const Coordinate& c);
+    void addCoordinate(const Coordinate& c);
 	//////////////////////////////////////////////////////////
 	//                       FUNCTIONS                      //
 	//////////////////////////////////////////////////////////
@@ -38,6 +50,7 @@ public:
     std::string getElement() const;
     int getAtomicNumber() const;
     virtual std::string getId() const;
+    double calculateDistance(const Atom* otherAtom) const;
     //////////////////////////////////////////////////////////
     //                   OVERLOADED OPERATORS               //
     //////////////////////////////////////////////////////////
@@ -51,7 +64,10 @@ private:
 	//////////////////////////////////////////////////////////
 	//                       ATTRIBUTES                     //
 	//////////////////////////////////////////////////////////
-
+    std::vector<std::unique_ptr<Coordinate>> coordinates_;     /*!< Position of the atom >*/
+    double charge_ = constants::dNotSet;
+    std::string atomType_ = " ";
+    int number_ = constants::iNotSet;
 };
 } // namespace
 #endif // CDSATOM_HPP

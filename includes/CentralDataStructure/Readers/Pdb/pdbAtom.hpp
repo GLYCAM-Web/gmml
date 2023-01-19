@@ -16,7 +16,7 @@ public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
-    PdbAtom(const std::string& name, const Coordinate& coord);
+    PdbAtom(const std::string& name, const cds::Coordinate& coord);
     PdbAtom(const std::string& line);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
