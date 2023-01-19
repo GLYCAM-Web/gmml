@@ -20,6 +20,7 @@
 ./src/CentralDataStructure/Readers/Pdb/sectionClasses/titleRecord.cpp
 ./src/CentralDataStructure/Readers/Prep/prepAtom.cpp
 ./src/CentralDataStructure/Readers/Prep/prepFile.cpp
+./src/CentralDataStructure/Readers/Prep/prepPermutator.cpp
 ./src/CentralDataStructure/Readers/Prep/prepResidue.cpp
 ./src/CentralDataStructure/Selections/atomSelections.cpp
 ./src/CentralDataStructure/Selections/shaperSelections.cpp

@@ -1,5 +1,6 @@
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include "includes/CentralDataStructure/Readers/Prep/prepFile.hpp"
+#include "includes/CentralDataStructure/Readers/Prep/prepPermutator.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include <fstream>
 
@@ -16,7 +17,6 @@ int main()
     std::vector<std::string> residuesToLoadFromPrep = {"0GA", "4YB", "4uA", "Cake", "4YA"};
     //std::vector<std::string> residuesToLoadFromPrep = {"0GA"};
     prep::PrepFile glycamPrepFileSelect(prepFilePath, residuesToLoadFromPrep);
-
     // PREP residues
     glycamPrepFileSelect.Write("./prepAsPrepFile.prep");
     // PDB
@@ -63,4 +63,12 @@ int main()
     	gmml::log(__LINE__,__FILE__,gmml::ERR, "Error when writing to file:\n" + fileName);
     	throw std::runtime_error("Error when writing to file:\n" + fileName);
     }
+    // Ok now permutator:
+    residuesToLoadFromPrep = {"0GA"};
+    prep::PrepFile glycamPreputator(prepFilePath, residuesToLoadFromPrep);
+    for(auto & residue : glycamPreputator.getResidues())
+    {
+        prep::generatePrepPermuations(static_cast<prep::PrepResidue*>(residue));
+    }
+
 }
