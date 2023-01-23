@@ -35,7 +35,7 @@ public:
     inline bool GetIfExtraAtoms() const {return isExtraAtoms_;}
     inline std::vector<cds::Atom*> GetExtraAtoms() {return extraAtomsThatMove_;}
     inline unsigned long long GetIndex() const {return index_;}
-    inline std::string GetName() const;
+    std::string GetName() const;
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////

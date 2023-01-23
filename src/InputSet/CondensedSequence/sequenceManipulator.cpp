@@ -1,19 +1,13 @@
-#include <sstream>
-#include <sys/stat.h> // for checking if file exists
-#include <fstream>  // writing outputDotFile
 #include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
 #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Graph.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/files.hpp" // doesFileExist
+#include <fstream>  // writing outputDotFile
+
 
 using CondensedSequence::SequenceManipulator;
 using CondensedSequence::ParsedResidue;
-
-bool file_exists(const char *filename)
-{
-    struct stat buffer;
-    return (stat (filename, &buffer) == 0);
-}
 
 std::string SequenceManipulator::ReorderSequence()
 {	// Just doing the default by ascending link number for now.
@@ -189,7 +183,7 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
     std::string label = "";
     std::string imageFile = configs.svg_directory_path_ + residue.GetMonosaccharideName() + ".svg";
     logss << "Searching for image: " << imageFile << "\n";
-    if(file_exists(imageFile.c_str()))
+    if(codeUtils::doesFileExist(imageFile))
     {
         logss << "FOUND IT\n";
         (residue.GetRingType() == "f") ? label = "f" : label = "";
