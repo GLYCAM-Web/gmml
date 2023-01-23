@@ -302,3 +302,48 @@ void cdsSelections::ClearAtomLabels(cds::Residue* residue)
     }
     return;
 }
+
+cds::ResidueLinkage* cdsSelections::selectLinkageWithIndex(std::vector<cds::ResidueLinkage> &inputLinkages, int indexQuery)
+{
+    for(auto &linkage : inputLinkages)
+    {
+        if (linkage.GetIndex() == indexQuery)
+        {
+            return &linkage;
+        }
+    }
+    // Error
+    std::stringstream ss;
+    ss << "Linkage numbered " << indexQuery << " not found in linkages for this carbohydrate\n";
+    gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+    throw std::runtime_error(ss.str());
+}
+
+// Gonna choke on cyclic glycans. Add a check for IsVisited when that is required.
+/* This is a straight copy from glycoprotein_builder. I need a high level class that deals with both cds::ResidueLinkages, ring shapes
+ * etc. That way I can create X shapes of a molecule. For now this will do to figure out some implementation details like file naming.
+ */
+std::vector<cds::ResidueLinkage> cdsSelections::SplitLinkagesIntoPermutants(std::vector<cds::ResidueLinkage> &inputLinkages)
+{
+    std::vector<cds::ResidueLinkage> sortedLinkages;
+    for(auto &linkage : inputLinkages)
+    {
+        if(linkage.CheckIfConformer())
+        {
+            sortedLinkages.push_back(linkage);
+        }
+        else // if not a conformer
+        {
+            std::vector<cds::RotatableDihedral> rotatableDihedrals = linkage.GetRotatableDihedralsWithMultipleRotamers(); // only want the rotatabe dihedrals within a linkage that have multiple rotamers. Some bonds won't.
+            for(auto &rotatableDihedral : rotatableDihedrals)
+            {
+                cds::ResidueLinkage splitLinkage = linkage; // Copy it to get correct info into class
+                std::vector<cds::RotatableDihedral> temp = {rotatableDihedral};
+                splitLinkage.SetRotatableDihedrals(temp);
+                sortedLinkages.push_back(splitLinkage);
+                //std::cout << "Split out " << splitLinkage.GetFromThisResidue1()->GetId() << "-" << splitLinkage.GetToThisResidue2()->GetId() << " rotamer with number of shapes: " << rotatableDihedral.GetNumberOfRotamers() << "\n";
+            }
+        }
+    }
+    return sortedLinkages;
+}
