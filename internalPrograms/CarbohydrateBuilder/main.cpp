@@ -4,7 +4,7 @@
 #include <sys/stat.h> // mkdir
 
 #include "includes/CodeUtils/strings.hpp"
-#include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
+#include "includes/CentralDataStructure/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
 int main(int argc, char** argv)
 {
@@ -34,10 +34,10 @@ int main(int argc, char** argv)
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
         try
         {
-            CondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
+            cdsCondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
             std::cout << carbBuilder.Print();
             std::string inputGlycanID = splitLine.at(0);
-            carbBuilder.GenerateSingle3DStructureSingleFile(outputFolderName, "PDB", inputGlycanID);
+            carbBuilder.GenerateSingle3DStructureDefaultFiles(outputFolderName, inputGlycanID);
         }
         catch (const std::string &exception)
         {
