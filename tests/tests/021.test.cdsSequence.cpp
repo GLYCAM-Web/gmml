@@ -1,4 +1,4 @@
-#include "includes/InputSet/CondensedSequence/carbohydrate.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include <iostream>
@@ -36,7 +36,7 @@ int main ()
             loopCounter++;
             std::cout << "Sequence " << loopCounter << ": " << sequence << "\n";
             //MolecularModeling::Assembly ass(sequence, prepFilePath); // WARNING. Just a test. 3D structures are not correct.
-            CondensedSequence::Carbohydrate theVanToMordor(sequence, prepFilePath);
+            cdsCondensedSequence::Carbohydrate theVanToMordor(sequence, prepFilePath);
             if (theVanToMordor.GetStatusType() != "OK")
             { // This is dumb, but I haven't quite finalized how to handle the error throwing in e.g. glycoprotein builder using the carb builder vs here.
                 throw std::runtime_error(theVanToMordor.GetStatusMessage());
