@@ -183,6 +183,36 @@ unsigned long int Carbohydrate::CountShapes(bool likelyShapesOnly)
     }
     return numberOfShapes;
 }
+
+cds::Residue* Carbohydrate::GetReducingResidue()
+{ // Kindly dumb, but centralized stupidity. Tagging during construction would be better. Ano-ano linkages won't work, but this is used by gp builder so ok.
+    if(this->GetResidueCount() > 1)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Assuming that reducing residue is " + this->getResidues().at(1)->getId());
+        return this->getResidues().at(1);
+    }
+    std::string message = "Reducing residue requested for Carbohydrate with name " + this->getName() + ", but it doesn't have more than 1 residue";
+    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+    throw std::runtime_error(message);
+}
+
+cds::Residue* Carbohydrate::GetAglycone()
+{ // Kindly dumb, but centralized stupidity. Tagging during construction would be better. Ano-ano linkages won't work, but this is used by gp builder so ok.
+    if(this->GetResidueCount() > 0)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Assuming that aglycone residue is " + this->getResidues().front()->getId());
+        return this->getResidues().front();
+    }
+    std::string message = "Aglycone residue requested for Carbohydrate with name " + this->getName() + ", but it doesn't have even 1 residue";
+    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+    throw std::runtime_error(message);
+}
+
+cds::Atom* Carbohydrate::GetAnomericAtom()
+{
+    return cdsSelections::guessAnomericAtom(this->GetReducingResidue());
+}
+
 //////////////////////////////////////////////////////////
 //                  PRIVATE FUNCTIONS                   //
 //////////////////////////////////////////////////////////
