@@ -1,4 +1,9 @@
 ./src/Abstract/absResidue.cpp
+./src/CentralDataStructure/CondensedSequence/carbohydrate.cpp
+./src/CentralDataStructure/CondensedSequence/parsedResidue.cpp
+./src/CentralDataStructure/CondensedSequence/sequenceManipulator.cpp
+./src/CentralDataStructure/CondensedSequence/sequenceParser.cpp
+./src/CentralDataStructure/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.cpp
 ./src/CentralDataStructure/Measurements/measurements.cpp
 ./src/CentralDataStructure/Overlaps/cdsOverlaps.cpp
 ./src/CentralDataStructure/Readers/Lib/LibraryAtom.cpp

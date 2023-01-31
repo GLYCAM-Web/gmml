@@ -1,13 +1,19 @@
-#include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
-#include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/parsedResidue.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Graph.hpp"
 #include "includes/CodeUtils/logging.hpp"
-#include "includes/CodeUtils/files.hpp" // doesFileExist
+#include <sstream>
+#include <sys/stat.h> // for checking if file exists
 #include <fstream>  // writing outputDotFile
 
+using cdsCondensedSequence::SequenceManipulator;
+using cdsCondensedSequence::ParsedResidue;
 
-using CondensedSequence::SequenceManipulator;
-using CondensedSequence::ParsedResidue;
+bool file_exists(const char *filename)
+{
+    struct stat buffer;
+    return (stat (filename, &buffer) == 0);
+}
 
 std::string SequenceManipulator::ReorderSequence()
 {	// Just doing the default by ascending link number for now.
@@ -96,7 +102,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 	std::vector<std::string> derivatives;
 	for (auto &neighbor : neighbors)
 	{
-		if (neighbor->GetType() == cds::ResidueType::Derivative)
+		if (neighbor->GetType() == Abstract::ResidueType::Derivative)
 		{
 			--numberOfNeighbors;
 			derivatives.push_back(neighbor->GetLinkageName(withLabels) + neighbor->GetName(withLabels));
@@ -126,7 +132,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
 	size_t loopCount = 0;
 	for (auto &neighbor : neighbors)
 	{
-		if (neighbor->GetType() != cds::ResidueType::Derivative)
+		if (neighbor->GetType() != Abstract::ResidueType::Derivative)
 		{
 			++loopCount;
 			if (loopCount < numberOfNeighbors)
@@ -151,7 +157,7 @@ std::string SequenceManipulator::PrintGraphViz(GraphVizDotConfig &configs)
 	ss << "rankdir=LR nodesep=\"0.05\" ranksep=\"0.8\";\n";
 	for (auto &residue : this->GetParsedResiduesOrderedByConnectivity())
 	{
-		if (residue->GetType() != cds::ResidueType::Derivative)
+		if (residue->GetType() != Abstract::ResidueType::Derivative)
 		{
 			ss << this->GetGraphVizLineForResidue(*residue, configs) << "\n";
 		}
@@ -174,7 +180,7 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
     std::stringstream ss;
     ss << residue.getIndex() << " [";
     // Aglycone
-    if (residue.GetType() == cds::ResidueType::Aglycone)
+    if (residue.GetType() == Abstract::ResidueType::Aglycone)
     {
         ss << "shape=box label=\"" << residue.GetMonosaccharideName() << "\"]";
         return ss.str();
@@ -183,7 +189,7 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
     std::string label = "";
     std::string imageFile = configs.svg_directory_path_ + residue.GetMonosaccharideName() + ".svg";
     logss << "Searching for image: " << imageFile << "\n";
-    if(codeUtils::doesFileExist(imageFile))
+    if(file_exists(imageFile.c_str()))
     {
         logss << "FOUND IT\n";
         (residue.GetRingType() == "f") ? label = "f" : label = "";
@@ -198,7 +204,7 @@ std::string SequenceManipulator::GetGraphVizLineForResidue(ParsedResidue &residu
     std::string derivativeStr = "";
     for (auto &childLink : residue.GetChildren())
     {
-        if (childLink->GetType() == cds::ResidueType::Derivative)
+        if (childLink->GetType() == Abstract::ResidueType::Derivative)
         {
             derivativeStr += childLink->GetLinkageName() + childLink->GetName() + " ";
         }
