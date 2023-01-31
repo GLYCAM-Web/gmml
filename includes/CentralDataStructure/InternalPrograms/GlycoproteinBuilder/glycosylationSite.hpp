@@ -1,8 +1,9 @@
-#ifndef GMML_INCLUDES_INTERNALPROGRAMS_GLYCOPROTEINBUILDER_GLYCOSYLATIONSITE_HPP
-#define GMML_INCLUDES_INTERNALPROGRAMS_GLYCOPROTEINBUILDER_GLYCOSYLATIONSITE_HPP
-#include <iomanip> // For setting precision and formating in std::cout 
-#include <algorithm> //  std::erase, std::remove
-#include "includes/gmml.hpp"
+#ifndef GMML_INCLUDES_CENTRALDATASTRUCTURE_INTERNALPROGRAMS_GLYCOPROTEINBUILDER_GLYCOSYLATIONSITE_HPP
+#define GMML_INCLUDES_CENTRALDATASTRUCTURE_INTERNALPROGRAMS_GLYCOPROTEINBUILDER_GLYCOSYLATIONSITE_HPP
+
+#include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
+#include "includes/CentralDataStructure/assembly.hpp"
+#include "includes/CentralDataStructure/Shapers/residueLinkage.hpp"
 
 enum OverlapType
 {
@@ -15,29 +16,42 @@ enum MoleculeType
     GLYCAN,
     ALL
 };
-using namespace MolecularModeling;
+using cds::Atom;
+using cds::Residue;
+using cds::ResidueLinkage;
+using cds::RotatableDihedral;
+//using cds::Assembly;
+using cdsCondensedSequence::Carbohydrate;
+
 class GlycosylationSite
 {
 public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
-    GlycosylationSite(Assembly* glycoprotein, std::string residueNumber, std::string glycanInputType, std::string glycanName, std::string prepFileLocation);
+//    GlycosylationSite(Assembly* glycoprotein, std::string residueNumber, std::string glycanInputType, std::string glycanName, std::string prepFileLocation);
+    GlycosylationSite(Residue* residue, std::vector<Residue*> otherProteinResidues, std::string glycanInputString, std::string prepFileLocation);
+   // ToDo: want this or with && and move the carb: GlycosylationSite(Residue* residue, std::vector<Residue*> otherProteinResidues, Carbohydrate carbohydrate);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
     inline double GetGlycanOverlap() 							{return glycan_overlap_;}
     inline double GetProteinOverlap() 							{return protein_overlap_;}
-    inline std::string GetResidueNumber() 						{return residue_number_;}
-    inline std::string GetResidueId()							{return this->GetResidue()->GetId();}
+    inline std::string GetResidueId()							{return this->GetResidue()->getId();}
     inline double GetOverlap()									{return (glycan_overlap_ + protein_overlap_);}
-//    ResidueLinkageVector GetFirstAnd1_6Linkages(); // This should be a selection in a separate place.
-//    ResidueLinkageVector GetFirstAnd2_XLinkages(); // This should be a selection in a separate place.
+//    std::vector<ResidueLinkage> GetFirstAnd1_6Linkages(); // This should be a selection in a separate place.
+//    std::vector<ResidueLinkage> GetFirstAnd2_XLinkages(); // This should be a selection in a separate place.
+    //////////////////////////////////////////////////////////
+    //                       MUTATOR                        //
+    //////////////////////////////////////////////////////////
+    inline void SetProteinAtoms(std::vector<Atom*> proteinAtoms) {proteinAtoms_ = proteinAtoms;}
+    void SetOtherGlycosites(std::vector<GlycosylationSite> &glycosites);
+    inline std::vector<Atom*> GetSelfGlycanBeads()                      {return self_glycan_beads_;}
+    inline void SetOtherGlycanBeads(std::vector<Atom*> *beads)          {other_glycan_beads_ = *beads;}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
-    void AddBeads(AtomVector proteinBeads);
-    void Remove(Assembly *glycoproteinAssembly);
+    void AddBeads(std::vector<Atom*> proteinBeads);
     double CalculateOverlaps(OverlapType overlapType = BEAD, MoleculeType moleculeType = ALL, bool recordOverlap = true, bool printOverlap = false);
     void UpdateAtomsThatMoveInLinkages();
 //    void StashCoordinates();
@@ -48,9 +62,7 @@ public:
     void SetRandomDihedralAnglesUsingMetadataForNthLinkage(int linkage_number);
     void SetDefaultDihedralAnglesUsingMetadata();
     void ResetDihedralAngles();
-    void SetOtherGlycosites(std::vector<GlycosylationSite> &glycosites);
-    inline AtomVector GetSelfGlycanBeads() 						{return self_glycan_beads_;}
-    inline void SetOtherGlycanBeads(AtomVector *beads)			{other_glycan_beads_ = *beads;}
+    void Rename_Protein_Residue_From_GLYCAM_To_Standard();
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
@@ -61,33 +73,31 @@ public:
     //////////////////////////////////////////////////////////
     inline bool operator==(const GlycosylationSite &rhs) const
     {
-        return rhs.residue_->GetId() == residue_->GetId();
+        return rhs.residue_->getId() == residue_->getId();
     }
     inline bool operator!=(const GlycosylationSite &rhs) const
     {
-        return residue_->GetId() == rhs.residue_->GetId();
+        return residue_->getId() == rhs.residue_->getId();
     }
     inline bool operator<(const GlycosylationSite &rhs) const
     {
-        return residue_->GetId() < rhs.residue_->GetId();
+        return residue_->getId() < rhs.residue_->getId();
     }
     inline bool operator>(const GlycosylationSite &rhs) const
     {
-        return residue_->GetId() > rhs.residue_->GetId();
+        return residue_->getId() > rhs.residue_->getId();
     }
 private:
     //////////////////////////////////////////////////////////
     //                  PRIVATE ACCESSOR                    //
     //////////////////////////////////////////////////////////
-    inline std::string GetGlycanName() 							{return glycan_name_;}
-    inline ResidueLinkageVector GetRotatableBonds() 			{return all_residue_linkages_;}
+    inline std::vector<cds::ResidueLinkage> GetRotatableBonds() 			{return all_residue_linkages_;}
     inline std::vector<GlycosylationSite*> GetOtherGlycosites() {return other_glycosites_;}
-    inline int GetInternalBondCount() 							{return internalBondCount_;}
-    inline AtomVector GetProteinBeads() 						{return protein_beads_;}
-    inline AtomVector GetOtherGlycanBeads() 					{return other_glycan_beads_;}
-    inline Assembly* GetAttachedGlycan()			 			{return &glycan_;}
+    inline unsigned long int GetInternalBondCount() 							{return internalBondCount_;}
+    inline std::vector<Atom*> GetProteinBeads() 						{return protein_beads_;}
+    inline std::vector<Atom*> GetOtherGlycanBeads() 					{return other_glycan_beads_;}
+    inline Carbohydrate* GetAttachedGlycan()			 			{return &glycan_;}
     inline  Residue* GetResidue() 								{return residue_;}
-    inline std::vector<Atom*> GetProteinAtoms() 				{return proteinAtoms_;}
     double GetWeightedOverlap(double glycan_weight, double protein_weight);
     //////////////////////////////////////////////////////////
     //                  PRIVATE FRIENDS                     //
@@ -96,57 +106,46 @@ private:
     //////////////////////////////////////////////////////////
     //                  PRIVATE MUTATOR                     //
     //////////////////////////////////////////////////////////
-    inline void SetProteinAtoms(std::vector<Atom*> atoms) 		{proteinAtoms_ = atoms;}
-    inline void SetGlycanName(std::string s) 					{glycan_name_ = s;}
-    inline void SetResidueNumber(std::string s) 				{residue_number_ = s;}
-    inline void SetResidue(Residue* r)							{residue_ = r;}
-    inline void SetGlycan(Assembly g)							{glycan_ = g;}
     inline void SetGlycanOverlap(double d)						{glycan_overlap_ = d;}
     inline void SetProteinOverlap(double d)						{protein_overlap_ = d;}
-    inline void SetSelfGlycanBeads(AtomVector *beads)			{self_glycan_beads_ = *beads;}
-    void Rename_Protein_Residue_From_GLYCAM_To_Standard();
+    inline void SetSelfGlycanBeads(std::vector<Atom*> *beads)			{self_glycan_beads_ = *beads;}
     inline void SetInternalBondCount(int i) {internalBondCount_ = i;}
     void SetOverlap(MoleculeType moleculeType, double overlap);
-    void SetProteinBeads(AtomVector *beads);
+    void SetProteinBeads(std::vector<Atom*> *beads);
     //////////////////////////////////////////////////////////
     //               INITIALIZATION FUNCTIONS               //
     //////////////////////////////////////////////////////////
-    void FindSetProteinResidue(std::string residueName, ResidueVector residues);
-    void DetermineOverlapProteinAtoms(Assembly* glycoprotein, Residue* attachmentResidue);
+    void FindSetProteinResidue(std::string residueName, std::vector<Residue*> residues);
     void BuildGlycan(std::string glycanInputType, std::string glycanName, std::string prepFileLocation);
-    void AttachGlycan(Assembly* glycoprotein);
+    void AttachGlycan();
     //////////////////////////////////////////////////////////
     //                  PRIVATE FUNCTIONS                   //
     //////////////////////////////////////////////////////////
     void Prepare_Glycans_For_Superimposition_To_Particular_Residue(std::string amino_acid_name);
     void Superimpose_Glycan_To_Glycosite(Residue *glycosite_residue);
     void Rename_Protein_Residue_To_GLYCAM_Nomenclature();
-    void RenumberGlycanToMatch(Assembly& glycoprotein);
-    void FigureOutResidueLinkagesInGlycan(Residue *from_this_residue1, Residue *to_this_residue2, ResidueLinkageVector *residue_linkages);
-    void RecursivelyGetAllNeighboringResidues(Atom* current_atom, ResidueVector* neighbors);
     Atom* GetConnectingProteinAtom(std::string residue_name);
-    void WiggleOneLinkage(Residue_linkage &linkage, OverlapType overlapType = BEAD, double tolerance = 0.1, int interval = 5);
+    void WiggleOneLinkage(ResidueLinkage &linkage, OverlapType overlapType = BEAD, double tolerance = 0.1, int interval = 5);
     double CalculateBeadOverlaps(MoleculeType moleculeType = ALL);
     //double Calculate_and_print_bead_overlaps();
     double CalculateAtomicOverlaps(MoleculeType moleculeType = ALL, bool print = false);
-    double CalculateBeadOverlaps(AtomVector &atomsA, AtomVector &atomsB);
+    double CalculateBeadOverlaps(std::vector<Atom*> &atomsA, std::vector<Atom*> &atomsB);
     bool NoNewInternalCloseContacts();
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
-    std::string glycan_name_;
-    std::string residue_number_; // Don't need to be saved.
+
     Residue* residue_;                                  /*!< A pointer back to the residue for this glycosite >*/
-    Assembly glycan_;
-    AtomVector superimposition_atoms_;  // Don't need to be saved.             /*!< The 3 atoms used for superimposition of glycan to sidechain >*/
-    double glycan_overlap_;
-    double protein_overlap_;
-    ResidueLinkageVector all_residue_linkages_;
-    AtomVector self_glycan_beads_;
-    AtomVector other_glycan_beads_;
-    AtomVector protein_beads_;
-    std::vector<Atom*> proteinAtoms_;
+    Carbohydrate glycan_;
+    double glycan_overlap_ = 0.0;
+    double protein_overlap_ = 0.0;
+    std::vector<cds::ResidueLinkage> all_residue_linkages_;
+    std::vector<Atom*> self_glycan_beads_;
+    std::vector<Atom*> other_glycan_beads_;
+    std::vector<Atom*> protein_beads_;
+    std::vector<Residue*> otherProteinResidues_;
     std::vector<GlycosylationSite*> other_glycosites_;
-    int internalBondCount_; // For checking for internal clashes within the glycan
+    std::vector<Atom*> proteinAtoms_;
+    unsigned long int internalBondCount_; // For checking for internal clashes within the glycan
 };
 #endif // GMML_INCLUDES_INTERNALPROGRAMS_GLYCOPROTEINBUILDER_GLYCOSYLATIONSITE_HPP

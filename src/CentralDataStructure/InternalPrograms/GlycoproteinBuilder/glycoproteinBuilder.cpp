@@ -1,16 +1,22 @@
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.hpp"
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
-#include "includes/MolecularModeling/beadResidues.hpp"
+#include "includes/CentralDataStructure/Overlaps/beadResidues.hpp"
 #include "includes/CodeUtils/metropolisCriterion.hpp"
 //#include "includes/InternalPrograms/functionsForGMML.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/files.hpp"
 #include "includes/CodeUtils/directories.hpp"
+#include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
+#include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
+#include "includes/CentralDataStructure/cdsFunctions.hpp" // bondAtomsByDistance
+#include "includes/CentralDataStructure/Selections/residueSelections.hpp" // selectResiduesByType
+
 //#include "includes/ParameterSet/OffFileSpace/offfile.hpp"
 
 // ToDo Check for negative overlap in case the funk gets funky.
 // ToDo The cout for accepting overlap changes doesn't match the values printed. Why? Is it making them high, not printing, accepting lower, then rejecting, etc?
-using MolecularModeling::Assembly;
+using cds::Assembly;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
@@ -105,14 +111,13 @@ void GlycoproteinBuilder::InitializeGlycoproteinBuilder(GlycoproteinBuilderInput
         this->SetPrepFileLocation(inputStruct.prepFileLocation_);
         this->SetIsDeterministic(inputStruct.isDeterministic_);
         this->ConvertInputStructEntries(inputStruct);
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Build protein structure by distance.");
-        glycoprotein_ = Assembly((this->GetWorkingDirectory() + inputStruct.substrateFileName_), gmml::InputFileType::PDB);
-        glycoprotein_.BuildStructureByDistance(4, 1.6); // 4 threads, 1.91 cutoff to allow C-S in Cys and Met to be bonded. Nope 1.91 did bad things.
+        pdb::PdbFile pdbFile(this->GetWorkingDirectory() + inputStruct.substrateFileName_);
+        for (auto &assembly : pdbFile.getAssemblies())
+        { // Per assembly as depending on input pdb file, like an NMR structure with lots of models, ensemble.getAtoms() would be very wrong.
+            cds::bondAtomsByDistance(assembly->getAtoms());
+        }
         gmml::log(__LINE__, __FILE__, gmml::INF, "Attaching Glycans To Glycosites.");
         this->CreateGlycosites(inputStruct.glycositesInputVector_);
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Adding beads");
-        this->Add_Beads(this->GetGlycoproteinAssembly(), this->GetGlycosites());
-        this->UpdateAtomsThatMoveInLinkages(); // Must update to include beads.
     }
     catch (const std::string &errorMessage)
     {
@@ -140,11 +145,21 @@ void GlycoproteinBuilder::ConvertInputStructEntries(GlycoproteinBuilderInputs in
 
 void GlycoproteinBuilder::WriteOutputFiles()
 {
-	gmml::WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved", false);
-	this->GetGlycoproteinAssembly().SerializeResidueNumbers();
-	gmml::WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved_Serialized", false);
-	this->GetGlycoproteinAssembly().SetName("GLYCOPROTEINBUILDER"); // For reading off file into tleap
-	gmml::WriteOffFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_All_Resolved", false);
+    // Pdb, original numbering.
+    std::string fileName = this->GetWorkingDirectory() + "GlycoProtein_All_Resolved.pdb";
+    std::ofstream outFileStream;
+    outFileStream.open(fileName.c_str());
+    cds::writeMoleculeToPdb(outFileStream, this->GetGlycoproteinAssembly().getResidues());
+    outFileStream.close();
+    // Off file, serializes.
+    fileName = this->GetWorkingDirectory() + "GlycoProtein_All_Resolved.off";
+	outFileStream.open(fileName.c_str());
+	cds::WriteMoleculeToOffFile(this->GetGlycoproteinAssembly().getResidues(), outFileStream, "GLYCOPROTEINBUILDER");
+	outFileStream.close();
+	// Pdb, serialized numbering.
+	fileName = this->GetWorkingDirectory() + "GlycoProtein_All_Resolved_Serialized.pdb";
+	outFileStream.open(fileName.c_str());
+	cds::writeMoleculeToPdb(outFileStream, this->GetGlycoproteinAssembly().getResidues());
 //    this->DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(this->GetGlycosites(), this->GetOverlapTolerance());
 //	std::stringstream logss;	
 //    logss << "Atomic overlap is " << this->CalculateOverlaps(ATOMIC) << "\n";
@@ -358,16 +373,33 @@ bool GlycoproteinBuilder::DumbRandomWalk(int maxCycles)
 
 void GlycoproteinBuilder::CreateGlycosites(std::vector<GlycositeInput> glycositesInputVector)
 {
-	std::stringstream logss;
-	//logss << "Creating glycosites!" << std::endl;
 	for (auto &glycositeInput : glycositesInputVector)
 	{
-	//	logss << "Emplacing back with " <<  glycositeInput.proteinResidueId_ << ", " << glycositeInput.glycanInputType_ << ", " << glycositeInput.glycanInput_ << std::endl; // @suppress("Field cannot be resolved") // @suppress("Invalid overload")
-		glycosites_.emplace_back(this->GetGlycoproteinAssemblyPtr(), glycositeInput.proteinResidueId_, glycositeInput.glycanInputType_, glycositeInput.glycanInput_, this->GetPrepFileLocation()); // @suppress("Field cannot be resolved") // @suppress("Invalid arguments")
+	    gmml::log(__LINE__, __FILE__, gmml::INF, "Creating glycosite on residue " + glycositeInput.proteinResidueId_ + " with glycan " + glycositeInput.glycanInput_ );
+	    Residue* glycositeResidue = this->SelectResidueFromInput(glycositeInput.proteinResidueId_);
+	    std::vector<Residue*> otherResidues = this->GetGlycoproteinAssembly().getResidues();
+	    otherResidues.erase(std::remove(otherResidues.begin(), otherResidues.end(), glycositeResidue), otherResidues.end());
+		glycosites_.emplace_back(glycositeResidue, otherResidues, glycositeInput.glycanInput_, this->GetPrepFileLocation());
 	}
     this->SetOtherGlycosites();
-    //gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Adding beads");
+    this->Add_Beads(this->GetGlycoproteinAssembly(), this->GetGlycosites());
+    this->UpdateAtomsThatMoveInLinkages(); // Must update to include beads.
     return;
+}
+
+Residue* GlycoproteinBuilder::SelectResidueFromInput(const std::string userSelection)
+{
+    for (auto &residue : this->GetGlycoproteinAssemblyPtr()->getResidues())
+    {
+        std::string formattedResidueNumber = "_" + userSelection + "_";
+        if( residue->getId().compare(3, formattedResidueNumber.size(), formattedResidueNumber) == 0)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "glycosite id: " + residue->getId() );
+            return residue;
+        }
+    }
+    return nullptr;
 }
 
 void GlycoproteinBuilder::SetOtherGlycosites()
@@ -510,9 +542,10 @@ void GlycoproteinBuilder::DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(
         if ( worst_site_overlap > tolerance)
         {
             continue_deleting = true;
-            worst_site->Remove(this->GetGlycoproteinAssemblyPtr());
-            logss << "Site " << worst_site->GetResidueNumber() << ": " << worst_site_overlap << " :" << "Removed\n";
-            glycosites.erase(std::remove(glycosites.begin(), glycosites.end(), *worst_site), glycosites.end()); // Note need #include <algorithm>
+            //worst_site->Remove(this->GetGlycoproteinAssemblyPtr());
+            worst_site->Rename_Protein_Residue_From_GLYCAM_To_Standard();
+            logss << "Site " << worst_site->GetResidueId() << ": " << worst_site_overlap << " :" << "Removed\n";
+            glycosites.erase(std::remove(glycosites.begin(), glycosites.end(), *worst_site), glycosites.end());
             this->SetOtherGlycosites(); // This needs to be updated after you delete each site, so the others no longer have a pointer to it. Great design Oliver well done you nailed it high five.
             this->Set_Other_Glycan_Beads(glycosites); // After "erasing", the actual atoms still exist and pointers to them are valid. Need to reset what beads are part of "other".
         }
@@ -555,37 +588,13 @@ void GlycoproteinBuilder::UpdateAtomsThatMoveInLinkages()
 //    }
 //}
 
-//ResidueLinkageVector GlycoproteinBuilder::SplitLinkagesIntoPermutants(ResidueLinkageVector inputLinkages)
-//{
-//    ResidueLinkageVector sortedLinkages;
-//    for(auto &linkage : inputLinkages)
-//    {
-//        if(linkage.CheckIfConformer())
-//        {
-//            sortedLinkages.push_back(linkage);
-//        }
-//        else // if not a conformer
-//        {
-//            std::vector<Rotatable_dihedral> rotatableDihedrals = linkage.GetRotatableDihedralsWithMultipleRotamers(); // only want the rotatabe dihedrals within a linkage that have multiple rotamers. Some bonds won't.
-//            for(auto &rotatableDihedral : rotatableDihedrals)
-//            {
-//                Residue_linkage splitLinkage = linkage; // Copy it to get correct info into class
-//                std::vector<Rotatable_dihedral> temp = {rotatableDihedral};
-//                splitLinkage.SetRotatableDihedrals(temp);
-//                sortedLinkages.push_back(splitLinkage);
-//            }
-//        }
-//    }
-//    return sortedLinkages;
-//}
-
-void GlycoproteinBuilder::Add_Beads(MolecularModeling::Assembly &glycoprotein, std::vector<GlycosylationSite> &glycosites)
-{	/*This function creates atoms with large radii called "beads" for the protein and glycans
-    / The beads are added directly in glycoprotein and put in the AtomNode connection network
-    / Within each glycosite an atomvector (vector of pointers to each bead) is added.
-    / Each glycosite will have atomvectors of protein beads, glycan beads, and other glycan beads.
-    / Other glycan beads are beads from glycans attached to other glycosites. */
-	AtomVector proteinBeads = beads::Add_Beads_To_Protein(glycoprotein);
+void GlycoproteinBuilder::Add_Beads(Assembly &glycoprotein, std::vector<GlycosylationSite> &glycosites)
+{	// This function creates atoms with large radii called "beads" for the protein and glycans
+    // The beads are added directly in glycoprotein and put in the AtomNode connection network
+    // Within each glycosite an atomvector (vector of pointers to each bead) is added.
+    // Each glycosite will have atomvectors of protein beads, glycan beads, and other glycan beads.
+    // Other glycan beads are beads from glycans attached to other glycosites.
+	std::vector<Atom*> proteinBeads = beads::Add_Beads_To_Protein(glycoprotein);
 	for (auto &glycosite : glycosites)
 	{ // Go through all glycosite glycans, add bead to each residue, attach it to one other atom in residue.
 		glycosite.AddBeads(proteinBeads);
@@ -598,12 +607,12 @@ void GlycoproteinBuilder::Set_Other_Glycan_Beads(std::vector<GlycosylationSite> 
 {
     for (auto &glycosite1 : glycosites)
     {
-    	AtomVector other_glycan_beads;
+    	std::vector<Atom*> other_glycan_beads;
         for (auto &glycosite2 : glycosites)
         {
             if(glycosite1 != glycosite2) // Check if same site
             {
-                AtomVector temp = glycosite2.GetSelfGlycanBeads();
+                std::vector<Atom*> temp = glycosite2.GetSelfGlycanBeads();
                 other_glycan_beads.insert(std::end(other_glycan_beads), std::begin(temp), std::end(temp));
                 //std::cout << "Adding beads of glycosite " << glycosite2->GetResidue()->GetId() << " to " << glycosite1->GetResidue()->GetId() << std::endl;
             }
