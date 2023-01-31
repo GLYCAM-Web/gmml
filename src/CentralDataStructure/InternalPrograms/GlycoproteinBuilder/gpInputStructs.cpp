@@ -3,6 +3,7 @@
 #include "includes/CodeUtils/files.hpp"
 #include "includes/CodeUtils/directories.hpp"
 #include "includes/CodeUtils/strings.hpp"
+#include <fstream>
 
 GlycoproteinBuilderInputs GPInputs::readGPInputFile(std::string workingDirectory, std::string inputFileName)
 {
