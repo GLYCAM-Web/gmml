@@ -2,8 +2,10 @@
 ./includes/Abstract
 ./includes/CentralDataStructure
 ./includes/CentralDataStructure/CondensedSequence
+./includes/CentralDataStructure/Editors
 ./includes/CentralDataStructure/InternalPrograms
 ./includes/CentralDataStructure/InternalPrograms/CarbohydrateBuilder
+./includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder
 ./includes/CentralDataStructure/Measurements
 ./includes/CentralDataStructure/Overlaps
 ./includes/CentralDataStructure/Readers
