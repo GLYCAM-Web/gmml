@@ -145,11 +145,11 @@ bool SequenceParser::ParseCondensedSequence(const std::string sequence)
         {
             ++i;
         }
-        this->addResidue(std::make_unique<ParsedResidue>(sequence.substr(i), Abstract::ResidueType::Sugar));
+        this->addResidue(std::make_unique<ParsedResidue>(sequence.substr(i), cds::ResidueType::Sugar));
     }
     else
     { // e.g. DGlcpa1-OH
-    	this->addResidue(std::make_unique<ParsedResidue>(sequence.substr(i), Abstract::ResidueType::Aglycone));
+    	this->addResidue(std::make_unique<ParsedResidue>(sequence.substr(i), cds::ResidueType::Aglycone));
     }
     ParsedResidue* terminal = static_cast<ParsedResidue*>(this->getResidues().back());
     this->RecurveParseAlt(i, sequence, terminal); 

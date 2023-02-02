@@ -22,7 +22,7 @@ using cdsCondensedSequence::Carbohydrate;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-// Note: SequenceManipulator constructor can throw. Hmm.
+// ToDo: SequenceManipulator constructor can throw. Hmm.
 Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) : SequenceManipulator{inputSequence}
 {
     try
@@ -35,12 +35,12 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
         for( auto &cdsResidue: this->getResidues() )
         {
             // Move atoms from prep file into parsedResidues.
-            if (cdsResidue->GetType() != Abstract::ResidueType::Deoxy)
+            if (cdsResidue->GetType() != cds::ResidueType::Deoxy)
             {
                 ParsedResidue* parsedResidue = static_cast<ParsedResidue*>(cdsResidue);
                 this->MoveAtomsFromPrepResidueToParsedResidue(glycamPrepFileSelect, parsedResidue);
                 // Deal with adjusting charges for derivatives
-                if (parsedResidue->GetType() == Abstract::ResidueType::Derivative)
+                if (parsedResidue->GetType() == cds::ResidueType::Derivative)
                 {
                     this->DerivativeChargeAdjustment(parsedResidue);
                 }
@@ -51,7 +51,7 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
         // Apply any deoxy
         for( auto &cdsResidue: this->getResidues() )
         {
-            if( cdsResidue->GetType() == Abstract::ResidueType::Deoxy)
+            if( cdsResidue->GetType() == cds::ResidueType::Deoxy)
             {
                 this->ApplyDeoxy(static_cast<ParsedResidue*>(cdsResidue));
             }
@@ -245,7 +245,7 @@ void Carbohydrate::EnsureIntegralCharge(double charge)
 
 void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residue* parentResidue)
 {
-    using Abstract::ResidueType;
+    using cds::ResidueType;
     using cds::Atom;
     std::string linkageLabel = static_cast<ParsedResidue*>(childResidue)->GetLinkageName();
     gmml::log(__LINE__,__FILE__,gmml::INF, "Here with child " + childResidue->getId() + " and parent: " + parentResidue->getId() + " and linkageLabel: " + linkageLabel);
@@ -401,7 +401,7 @@ std::vector<std::string> Carbohydrate::GetGlycamNamesOfResidues() const
     std::cout << "Glycam names are: ";
     for(auto &residue : this->getResidues())
     {
-        if (residue->GetType() != Abstract::ResidueType::Deoxy)
+        if (residue->GetType() != cds::ResidueType::Deoxy)
         {
             names.push_back(this->GetGlycamResidueName(static_cast<ParsedResidue*>(residue)));
             std::cout << names.back() << ", ";
@@ -413,13 +413,13 @@ std::vector<std::string> Carbohydrate::GetGlycamNamesOfResidues() const
 
 std::string Carbohydrate::GetGlycamResidueName(ParsedResidue *residue) const
 {
-    if (residue->GetType() == Abstract::ResidueType::Deoxy)
+    if (residue->GetType() == cds::ResidueType::Deoxy)
     {
         gmml::log(__LINE__, __FILE__, gmml::WAR, "Bad idea: We asked for Glycam Residue Name of a deoxy type residue (e.g. the 6D of Glc[6D]) with name: " + residue->GetResidueName());
         return "";
     }
     std::string linkages = "";
-    if (residue->GetType() == Abstract::ResidueType::Sugar)
+    if (residue->GetType() == cds::ResidueType::Sugar)
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "Checking for glycosidic linkages that connect to " + residue->GetResidueName());
         linkages = residue->GetChildLinkagesForGlycamResidueNaming();
