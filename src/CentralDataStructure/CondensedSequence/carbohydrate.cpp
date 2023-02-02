@@ -58,15 +58,16 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
         }
         std::cout << "\n\n\nOn to setting 3d structure!\n\n";
         // Set 3D structure
-        for( auto &cdsResidue: this->getResidues() )
-        {
-            for( auto &parentNeighbor : cdsResidue->getParents()) //
-            {
-                std::cout << "Setting connection between " << cdsResidue->getName() << " and it's parent " << parentNeighbor->getName() << ", which has linkageLabel: "
-                        << static_cast<ParsedResidue*>(parentNeighbor)->GetLinkageName() << "\n";
-                this->ConnectAndSetGeometry(cdsResidue, parentNeighbor);
-            }
-        }
+        this->DepthFirstSetConnectivityAndGeometry(this->GetTerminal()); // recurve start with terminal
+//        for( auto &cdsResidue: this->getResidues() )
+//        {
+//            for( auto &parentNeighbor : cdsResidue->getParents()) //
+//            {
+//                std::cout << "Setting connection between " << cdsResidue->getName() << " and it's parent " << parentNeighbor->getName() << ", which has linkageLabel: "
+//                        << static_cast<ParsedResidue*>(parentNeighbor)->GetLinkageName() << "\n";
+//                this->ConnectAndSetGeometry(cdsResidue, parentNeighbor);
+//            }
+//        }
         // Set torsions now that everything is attached and the molecule is whole.
         //        for( auto &cdsResidue: this->getResidues() )
         //        {
@@ -365,7 +366,7 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
 }
 
 // Gonna choke on cyclic glycans. Add a check for IsVisited when that is required.
-void Carbohydrate::FigureOutResidueLinkages(cds::Residue* from_this_residue1, cds::Residue* to_this_residue2)
+void Carbohydrate::DepthFirstSetConnectivityAndGeometry(cds::Residue* currentParent)
 {
     //MolecularModeling::ResidueVector neighbors = to_this_residue2->GetNode()->GetResidueNeighbors();
 
@@ -374,7 +375,7 @@ void Carbohydrate::FigureOutResidueLinkages(cds::Residue* from_this_residue1, cd
     // Should not be done this way, need a generic graph structure and then to centralize everything.
     //MolecularModeling::ResidueVector neighbors = selection::SortResidueNeighborsByAcendingConnectionAtomNumber(to_this_residue2->GetNode()->GetResidueNodeConnectingAtoms());
     // End addtional sorting code.
-    /* Breath first code */
+    // Breath first code
     // for(auto &neighbor : neighbors)
     // {
     //     if(neighbor->GetIndex() != from_this_residue1->GetIndex()) // If not the previous residue
@@ -382,18 +383,17 @@ void Carbohydrate::FigureOutResidueLinkages(cds::Residue* from_this_residue1, cd
     //         residue_linkages->emplace_back(neighbor, to_this_residue2);
     //     }
     // }
-    /* End Breath first code */
-    for(auto &neighbor : to_this_residue2->getChildren())
+    // End Breath first code
+    for(auto &child : currentParent->getChildren())
     {
-        if(neighbor->getIndex() != from_this_residue1->getIndex())
-        {
-            glycosidicLinkages_.emplace_back(neighbor, to_this_residue2); // Depth first. For Breath first remove this line, and comment out above.
-            this->FigureOutResidueLinkages(to_this_residue2, neighbor);
-        }
+        //glycosidicLinkages_.emplace_back(neighbor, to_this_residue2); // Depth first. For Breath first remove this line, and comment out above.
+        std::cout << "Setting connection between " << child->getName() << " and it's parent " << currentParent->getName() << ", which has linkageLabel: "
+         << static_cast<ParsedResidue*>(child)->GetLinkageName() << "\n";
+        this->ConnectAndSetGeometry(child, currentParent);
+        this->DepthFirstSetConnectivityAndGeometry(child);
     }
     return;
 }
-
 
 std::vector<std::string> Carbohydrate::GetGlycamNamesOfResidues() const
 {

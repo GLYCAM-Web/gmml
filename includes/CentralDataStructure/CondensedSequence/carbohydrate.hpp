@@ -51,7 +51,7 @@ namespace cdsCondensedSequence
         void ConnectAndSetGeometry(cds::Residue* parentResidue, cds::Residue* childResidue);
         std::vector<std::string> GetGlycamNamesOfResidues() const;
         std::string GetGlycamResidueName(ParsedResidue *residue) const;
-        void FigureOutResidueLinkages(cds::Residue* from_this_residue1, cds::Residue* to_this_residue2);
+        void DepthFirstSetConnectivityAndGeometry(cds::Residue* currentParent);
         //////////////////////////////////////////////////////////
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
