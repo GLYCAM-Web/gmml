@@ -1,6 +1,6 @@
 #ifndef INCLUDES_CENTRALDATASTRUCTURE_WRITERS_CDSOFFWRITER_HPP_
 #define INCLUDES_CENTRALDATASTRUCTURE_WRITERS_CDSOFFWRITER_HPP_
-
+#include "includes/CentralDataStructure/residue.hpp" // ToDo convert from templates to just use the cds classes.
 #include <vector>
 #include <string>
 #include <iostream>
@@ -10,13 +10,13 @@
 namespace cds
 {
 
-inline std::string getOffType(const ResidueType queryType)
+inline std::string getOffType(const cds::ResidueType queryType)
 {
-	if ( queryType == ResidueType::Protein )
+	if ( queryType == cds::ResidueType::Protein )
 	{
 		return "p";
 	}
-	if ( queryType == ResidueType::Solvent )
+	if ( queryType == cds::ResidueType::Solvent )
 	{
 		return "w";
 	}
