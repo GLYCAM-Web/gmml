@@ -8,7 +8,7 @@
 #include <string>
 
 #include "includes/Abstract/absBuilder.hpp"
-#include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/graphVizDotConfig.hpp"
 
 namespace CondensedSequence
 {
@@ -18,7 +18,7 @@ public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTORS                   //
     //////////////////////////////////////////////////////////
-    DrawGlycan(GraphVizDotConfig configs, std::string condensedSequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH");
+    DrawGlycan(cdsCondensedSequence::GraphVizDotConfig configs, std::string condensedSequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH");
     //////////////////////////////////////////////////////////
     //                       ACCESSORS                      //
     //////////////////////////////////////////////////////////
