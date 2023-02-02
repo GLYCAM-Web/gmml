@@ -30,7 +30,7 @@ WYB will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 4YB and it's parent ROH, which has linkageLabel: b1-
+Setting connection between 4YB and its parent ROH, the connection has linkageLabel: b1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_176:4YB
@@ -54,7 +54,7 @@ Have determined that the following atoms will move:
 O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between UYB and it's parent 4YB, which has linkageLabel: b1-4
+Setting connection between UYB and its parent 4YB, the connection has linkageLabel: b1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -3.57133,     13.735,   -3.33762
@@ -89,7 +89,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between MEX and it's parent UYB, which has linkageLabel: 6
+Setting connection between MEX and its parent UYB, the connection has linkageLabel: 6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -7.28208,    16.8435,   -4.13121
@@ -129,7 +129,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, CH3, H1, H2, H3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between QMB and it's parent UYB, which has linkageLabel: b1-4
+Setting connection between QMB and its parent UYB, the connection has linkageLabel: b1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -5.26593,    18.4266,   -4.14362
@@ -164,7 +164,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 6MA and it's parent QMB, which has linkageLabel: a1-6
+Setting connection between 6MA and its parent QMB, the connection has linkageLabel: a1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -5.21853,    21.5459,    -8.0043
@@ -204,7 +204,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SMA and it's parent 6MA, which has linkageLabel: a1-6
+Setting connection between SMA and its parent 6MA, the connection has linkageLabel: a1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -4.70377,    24.5879,   -11.5709
@@ -244,7 +244,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between MEX and it's parent SMA, which has linkageLabel: 6
+Setting connection between MEX and its parent SMA, the connection has linkageLabel: 6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -5.00388,    27.8684,   -14.9469
@@ -284,7 +284,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, CH3, H1, H2, H3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0SA and it's parent SMA, which has linkageLabel: a2-3
+Setting connection between 0SA and its parent SMA, the connection has linkageLabel: a2-3
 Parent atom is O3
 Setting angle between
 parentNeighbor C3    -1.9333,    25.4234,    -15.072
@@ -319,7 +319,7 @@ Have determined that the following atoms will move:
 C3, O3, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent SMA, which has linkageLabel: 2
+Setting connection between SO3 and its parent SMA, the connection has linkageLabel: 2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2   -2.71805,    24.1208,   -14.7992
@@ -354,7 +354,7 @@ Have determined that the following atoms will move:
 C2, O2, S1, O1, O2, O3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0YB and it's parent QMB, which has linkageLabel: b1-4
+Setting connection between 0YB and its parent QMB, the connection has linkageLabel: b1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -7.31611,    22.2894,   -6.74105
@@ -389,7 +389,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 2MA and it's parent QMB, which has linkageLabel: a1-3
+Setting connection between 2MA and its parent QMB, the connection has linkageLabel: a1-3
 Parent atom is O3
 Setting angle between
 parentNeighbor C3   -8.31246,    21.8897,   -5.61885
@@ -424,7 +424,7 @@ Have determined that the following atoms will move:
 C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between WYB and it's parent 2MA, which has linkageLabel: b1-2
+Setting connection between WYB and its parent 2MA, the connection has linkageLabel: b1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2    -11.802,      23.45,    -5.3699
@@ -459,7 +459,7 @@ Have determined that the following atoms will move:
 C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 6LB and it's parent WYB, which has linkageLabel: b1-4
+Setting connection between 6LB and its parent WYB, the connection has linkageLabel: b1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -14.4858,    26.5617,   -8.32569
@@ -494,7 +494,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0SA and it's parent 6LB, which has linkageLabel: a2-6
+Setting connection between 0SA and its parent 6LB, the connection has linkageLabel: a2-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -19.2997,    27.5322,   -8.76312
@@ -534,7 +534,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent WYB, which has linkageLabel: 3
+Setting connection between SO3 and its parent WYB, the connection has linkageLabel: 3
 Parent atom is O3
 Setting angle between
 parentNeighbor C3   -14.4691,    25.2216,   -9.09838
@@ -707,7 +707,7 @@ ZMA will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 4YB and it's parent ROH, which has linkageLabel: b1-
+Setting connection between 4YB and its parent ROH, the connection has linkageLabel: b1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_888:4YB
@@ -731,7 +731,7 @@ Have determined that the following atoms will move:
 O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between UYB and it's parent 4YB, which has linkageLabel: b1-4
+Setting connection between UYB and its parent 4YB, the connection has linkageLabel: b1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -3.57133,     13.735,   -3.33762
@@ -766,7 +766,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between MEX and it's parent UYB, which has linkageLabel: 6
+Setting connection between MEX and its parent UYB, the connection has linkageLabel: 6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -7.28208,    16.8435,   -4.13121
@@ -806,7 +806,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, CH3, H1, H2, H3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between QMB and it's parent UYB, which has linkageLabel: b1-4
+Setting connection between QMB and its parent UYB, the connection has linkageLabel: b1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -5.26593,    18.4266,   -4.14362
@@ -841,7 +841,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 6MA and it's parent QMB, which has linkageLabel: a1-6
+Setting connection between 6MA and its parent QMB, the connection has linkageLabel: a1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -5.21853,    21.5459,    -8.0043
@@ -881,7 +881,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between ZMA and it's parent 6MA, which has linkageLabel: a1-6
+Setting connection between ZMA and its parent 6MA, the connection has linkageLabel: a1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -4.70377,    24.5879,   -11.5709
@@ -921,7 +921,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between MEX and it's parent ZMA, which has linkageLabel: 3
+Setting connection between MEX and its parent ZMA, the connection has linkageLabel: 3
 Parent atom is O3
 Setting angle between
 parentNeighbor C3    -1.9333,    25.4234,    -15.072
@@ -956,7 +956,7 @@ Have determined that the following atoms will move:
 C3, O3, CH3, H1, H2, H3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent ZMA, which has linkageLabel: 2
+Setting connection between SO3 and its parent ZMA, the connection has linkageLabel: 2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2   -2.71805,    24.1208,   -14.7992
@@ -991,7 +991,7 @@ Have determined that the following atoms will move:
 C2, O2, S1, O1, O2, O3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0YB and it's parent QMB, which has linkageLabel: b1-4
+Setting connection between 0YB and its parent QMB, the connection has linkageLabel: b1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -7.31611,    22.2894,   -6.74105
@@ -1026,7 +1026,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 2MA and it's parent QMB, which has linkageLabel: a1-3
+Setting connection between 2MA and its parent QMB, the connection has linkageLabel: a1-3
 Parent atom is O3
 Setting angle between
 parentNeighbor C3   -8.31246,    21.8897,   -5.61885
@@ -1061,7 +1061,7 @@ Have determined that the following atoms will move:
 C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between WYB and it's parent 2MA, which has linkageLabel: b1-2
+Setting connection between WYB and its parent 2MA, the connection has linkageLabel: b1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2    -11.802,      23.45,    -5.3699
@@ -1096,7 +1096,7 @@ Have determined that the following atoms will move:
 C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 6LB and it's parent WYB, which has linkageLabel: b1-4
+Setting connection between 6LB and its parent WYB, the connection has linkageLabel: b1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -14.4858,    26.5617,   -8.32569
@@ -1131,7 +1131,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0SA and it's parent 6LB, which has linkageLabel: a2-6
+Setting connection between 0SA and its parent 6LB, the connection has linkageLabel: a2-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -19.2997,    27.5322,   -8.76312
@@ -1171,7 +1171,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent WYB, which has linkageLabel: 3
+Setting connection between SO3 and its parent WYB, the connection has linkageLabel: 3
 Parent atom is O3
 Setting angle between
 parentNeighbor C3   -14.4691,    25.2216,   -9.09838

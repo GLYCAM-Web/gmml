@@ -63,7 +63,7 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 //        {
 //            for( auto &parentNeighbor : cdsResidue->getParents()) //
 //            {
-//                std::cout << "Setting connection between " << cdsResidue->getName() << " and it's parent " << parentNeighbor->getName() << ", which has linkageLabel: "
+//                std::cout << "Setting connection between " << cdsResidue->getName() << " and its parent " << parentNeighbor->getName() << ", the connection has linkageLabel: "
 //                        << static_cast<ParsedResidue*>(parentNeighbor)->GetLinkageName() << "\n";
 //                this->ConnectAndSetGeometry(cdsResidue, parentNeighbor);
 //            }
@@ -387,7 +387,7 @@ void Carbohydrate::DepthFirstSetConnectivityAndGeometry(cds::Residue* currentPar
     for(auto &child : currentParent->getChildren())
     {
         //glycosidicLinkages_.emplace_back(neighbor, to_this_residue2); // Depth first. For Breath first remove this line, and comment out above.
-        std::cout << "Setting connection between " << child->getName() << " and it's parent " << currentParent->getName() << ", which has linkageLabel: "
+        std::cout << "Setting connection between " << child->getName() << " and its parent " << currentParent->getName() << ", the connection has linkageLabel: "
          << static_cast<ParsedResidue*>(child)->GetLinkageName() << "\n";
         this->ConnectAndSetGeometry(child, currentParent);
         this->DepthFirstSetConnectivityAndGeometry(child);
