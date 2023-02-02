@@ -58,11 +58,6 @@
 ./src/Glycan/monosaccharide.cc
 ./src/Glycan/oligosaccharide.cc
 ./src/Glycan/ontologyGmmlInterface.cpp
-./src/InputSet/CondensedSequence/assemblyBuilder.cpp
-./src/InputSet/CondensedSequence/carbohydrate.cpp
-./src/InputSet/CondensedSequence/parsedResidue.cpp
-./src/InputSet/CondensedSequence/sequenceManipulator.cpp
-./src/InputSet/CondensedSequence/sequenceParser.cpp
 ./src/InputSet/CondensedSequenceSpace/condensedsequence.cc
 ./src/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.cc
 ./src/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.cc
@@ -169,11 +164,7 @@
 ./src/InputSet/TopologyFileSpace/topologyfileprocessingexception.cc
 ./src/InputSet/TopologyFileSpace/topologyresidue.cc
 ./src/InputSet/Utilities/response.cc
-./src/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.cpp
 ./src/InternalPrograms/DrawGlycan/drawGlycan.cpp
-./src/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.cpp
-./src/InternalPrograms/GlycoproteinBuilder/glycosylationSite.cpp
-./src/InternalPrograms/GlycoproteinBuilder/gpInputStructs.cpp
 ./src/InternalPrograms/Sequence/sequence.cpp
 ./src/InternalPrograms/functionsForGMML.cpp
 ./src/InternalPrograms/glycosylationSiteFinder.cpp

@@ -19,7 +19,6 @@
 ./includes/GeometryTopology/ResidueLinkages
 ./includes/Glycan
 ./includes/InputSet
-./includes/InputSet/CondensedSequence
 ./includes/InputSet/CondensedSequenceSpace
 ./includes/InputSet/CoordinateFileSpace
 ./includes/InputSet/PdbFileSpace
@@ -27,9 +26,7 @@
 ./includes/InputSet/TopologyFileSpace
 ./includes/InputSet/Utilities
 ./includes/InternalPrograms
-./includes/InternalPrograms/CarbohydrateBuilder
 ./includes/InternalPrograms/DrawGlycan
-./includes/InternalPrograms/GlycoproteinBuilder
 ./includes/InternalPrograms/Sequence
 ./includes/MolecularMetadata
 ./includes/MolecularMetadata/AMBER
