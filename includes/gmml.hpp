@@ -173,7 +173,6 @@
 #include "Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp"
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp"
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp"
-#include "InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
 typedef std::vector<MolecularModeling::ResidueNode*> ResidueNodeVector;
 
