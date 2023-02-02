@@ -22,6 +22,6 @@ do
     fi      
 done
 printf "Test passed.\n"
-rm libFileReader
+rm libFileReader 022.output.txt
 echo "Exit Code: 0"
 return 0
