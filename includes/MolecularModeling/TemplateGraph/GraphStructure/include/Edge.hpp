@@ -36,8 +36,11 @@ namespace glygraph
 
     T* getTargetNode();
     T* getSourceNode();
-    const T* getTargetNode() const;
-    const T* getSourceNode() const;
+
+    inline const T& getTargetNode() const { return *targetNode_m;}
+    inline const T& getSourceNode() const { return *sourceNode_m;}
+//    const T* getTargetNode() const;
+//    const T* getSourceNode() const;
 
     /************************************************
      *  GETTER/SETTER
@@ -170,17 +173,17 @@ namespace glygraph
 	  return this->sourceNode_m;
   }
 
-  template<class T>
-  inline const T* Edge<T>::getTargetNode() const
-  {
-    return this->targetNode_m;
-  }
-
-  template<class T>
-  inline const T* Edge<T>::getSourceNode() const
-  {
-    return this->sourceNode_m;
-  }
+//  template<class T>
+//  inline const T* Edge<T>::getTargetNode() const
+//  {
+//    return this->targetNode_m;
+//  }
+//
+//  template<class T>
+//  inline const T* Edge<T>::getSourceNode() const
+//  {
+//    return this->sourceNode_m;
+//  }
 
 } // namespace temp_graph
 #endif // end TEMPLATEGRAPH_GRAPHSTRUCTURE_INCLUDE_EDGE_HPP

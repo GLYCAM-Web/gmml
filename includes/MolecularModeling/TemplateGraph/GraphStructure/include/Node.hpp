@@ -26,7 +26,7 @@ namespace glygraph
    // Node(const Node<T> &rhs);
 
     // copy constructor
-    Node(const T &rhs);
+    Node(const Node<T> &rhs);
 
     // move constructor
     Node(Node<T> &&rhs);
@@ -183,7 +183,7 @@ namespace glygraph
 
   // Copy constructor
   template<class T>
-  inline Node<T>::Node(const T &rhs)
+  inline Node<T>::Node(const Node<T> &rhs)
       : GenericGraphObject(rhs.getName(), rhs.getLabels(), rhs.getConnectivityTypeIdentifier())
   {
     // std::cout << "\n\tGiven object ptr: " << rhs.objectPtr << "\n\n";
@@ -191,7 +191,7 @@ namespace glygraph
     for (Edge<T> const *currInEdge : rhs.inEdges_m)
       {
     	//ToDo Check if the "new" is best. Shouldn't Edge class copy constructor not handle some of this?
-        std::unique_ptr<Edge<T>> tempIn(new Edge<T>(*currInEdge));
+        std::unique_ptr<Edge<T>> tempIn(std::make_unique<Edge<T>>(*currInEdge));
 
         tempIn.get()->setTargetNode(this->getDeriviedClass());
 
@@ -200,12 +200,12 @@ namespace glygraph
       }
     for (std::unique_ptr<Edge<T>> const &currOutEdge : rhs.outEdges_m)
       {
-        std::unique_ptr<Edge<T>> tempOut(new Edge<T>(*currOutEdge.get()));
+        std::unique_ptr<Edge<T>> tempOut(std::make_unique<Edge<T>>(*currOutEdge.get()));
 
         tempOut.get()->setSourceNode(this->getDeriviedClass());
 
         tempOut.get()->getTargetNode()->inEdges_m.push_back(tempOut.get());
-        this->outEdges_m.push_back(std::move(tempOut));
+        this->outEdges_m.push_back(std::move(tempOut)); // Could emplace back onto the vector when first constructing "tempOut", no need for a move.
       }
   }
 
