@@ -15,6 +15,41 @@ Atom::Atom(const std::string& name, const Coordinate& coord)
 {
     this->setName(name);
 }
+// Move Ctor
+Atom::Atom(Atom&& other) noexcept : glygraph::Node<cds::Atom>(other)
+{
+    coordinates_ = std::move(other.coordinates_);
+    charge_ = std::move(other.charge_);
+    atomType_ = std::move(other.atomType_);
+    number_ = std::move(other.number_);
+}
+// Copy Ctor
+Atom::Atom(const Atom& other) : glygraph::Node<cds::Atom>(other)
+, charge_(other.charge_), atomType_(other.atomType_), number_(other.number_)
+{
+    for (auto& coord : other.coordinates_)
+    {
+        coordinates_.push_back( std::make_unique<Coordinate>((*coord.get())) );
+    }
+
+}
+// Move and Copy assignment operator
+Atom& Atom::operator=(Atom other)
+{
+    glygraph::Node<cds::Atom>::operator=(other); //ToDo fuck.
+    swap(*this, other);
+    return *this;
+}
+
+friend void swap(Atom& lhs, Atom& rhs)
+{
+    using std::swap;
+    swap(lhs.coordinates_, rhs.coordinates_);
+    swap(lhs.charge_, rhs.charge_);
+    swap(lhs.atomType_, rhs.atomType_);
+    swap(lhs.number_, rhs.number_);
+    std::cout << "Swapped absAtom" << std::endl;
+}
 
 // This copy constructor causes const issues in Edge<T>
 //Atom::Atom(Atom* refAtom) : Abstract::absAtom(refAtom->getCoordinate()), Node(*refAtom)
