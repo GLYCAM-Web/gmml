@@ -14,7 +14,6 @@
 #include "includes/MolecularModeling/atom.hpp"
 #include "includes/MolecularModeling/atomnode.hpp"
 #include "includes/MolecularModeling/molecule.hpp"
-#include "includes/InputSet/CondensedSequence/assemblyBuilder.hpp"
 #include "includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
 #include "includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
@@ -233,18 +232,6 @@ Assembly::Assembly(std::vector<MolecularModeling::Residue*> residueVector)
   residues_ = residueVector;
 }
 
-Assembly::Assembly(std::string inputSequence, std::string prepFilePath)
-{
-    this->SetName("CONDENSEDSEQUENCE"); // Necessary for off file to load into tleap
-    description_ = "";
-    model_index_ = 0;
-    sequence_number_ = 1;
-    source_file_ = prepFilePath;
-    assemblies_ = AssemblyVector();
-    id_ = "1";
-    CondensedSequence::AssemblyBuilder assBuilder(inputSequence, prepFilePath, this);
-    return;
-}
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
