@@ -1,11 +1,11 @@
-#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_MANIPULATOR_HPP
-#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_MANIPULATOR_HPP
+#ifndef GMML_INCLUDES_CENTRALDATASTRUCTURE_CONDENSEDSEQUENCE_SEQUENCEMANIPULATOR_HPP
+#define GMML_INCLUDES_CENTRALDATASTRUCTURE_CONDENSEDSEQUENCE_SEQUENCEMANIPULATOR_HPP
 
-#include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
-#include "includes/InputSet/CondensedSequence/sequenceParser.hpp"
-#include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/parsedResidue.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/sequenceParser.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/graphVizDotConfig.hpp"
 
-namespace CondensedSequence
+namespace cdsCondensedSequence
 {
     class SequenceManipulator : public SequenceParser
     {

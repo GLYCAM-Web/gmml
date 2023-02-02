@@ -1,11 +1,11 @@
-#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_PARSER_HPP
-#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_SEQUENCE_PARSER_HPP
+#ifndef GMML_INCLUDES_CENTRALDATASTRUCTURE_CONDENSEDSEQUENCE_SEQUENCEPARSER_HPP
+#define GMML_INCLUDES_CENTRALDATASTRUCTURE_CONDENSEDSEQUENCE_SEQUENCEPARSER_HPP
 
-#include "includes/InputSet/CondensedSequence/parsedResidue.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/parsedResidue.hpp"
 #include "includes/CentralDataStructure/molecule.hpp"
 #include "includes/CentralDataStructure/atom.hpp"
 #include <string>
-namespace CondensedSequence
+namespace cdsCondensedSequence
 {
     class SequenceParser : public cds::Molecule
     {

@@ -6,6 +6,7 @@
 #include "includes/CentralDataStructure/cdsFunctions.hpp"
 #include "includes/CentralDataStructure/Measurements/measurements.hpp"
 #include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"
+#include "includes/CodeUtils/biology.hpp"
 
 using cds::Residue;
 using cds::Atom;
@@ -188,6 +189,17 @@ const Coordinate* Residue::calculateGeometricCenter()
 {
     geometricCenter_ = cds::calculateGeometricCenter(this->getCoordinates());
     return &geometricCenter_;
+}
+
+cds::ResidueType Residue::determineType(const std::string &residueName)
+{
+    if ( std::find(biology::proteinResidueNames.begin(), biology::proteinResidueNames.end(), residueName)  != biology::proteinResidueNames.end() )
+    {
+        this->SetType(ResidueType::Protein);
+        return ResidueType::Protein;
+    }
+    // ToDo we want to figure out solvent, aglycone etc here too?.
+    return ResidueType::Undefined;
 }
 //////////////////////////////////////////////////////////
 //                    DISPLAY                           //

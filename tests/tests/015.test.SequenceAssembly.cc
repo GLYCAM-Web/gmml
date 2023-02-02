@@ -1,5 +1,5 @@
 #include <iostream>
-#include "includes/InputSet/CondensedSequence/assemblyBuilder.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
 #include "includes/MolecularModeling/assembly.hpp"
 
 int main ()
@@ -30,9 +30,17 @@ int main ()
         try
         {   // WARNING, this is just a test, the generated 3D structures are not correct. Look in 013.buildOligosaccharideLibrary for how to build 3D structures.
             loopCounter++;
-        	std::cout << "Sequence " << loopCounter << ": " << sequence << "\n";
-            MolecularModeling::Assembly ass(sequence, prepFilePath); // WARNING. Just a test. 3D structures are not correct.
-            std::cout << "Assembly created without throwing an exception for: " << sequence << "\n\n";
+            std::cout << "Sequence " << loopCounter << ": " << sequence << "\n";
+            cdsCondensedSequence::Carbohydrate carbie(sequence, prepFilePath); // WARNING. Just a test. 3D structures are not correct.
+            if (carbie.IsStatusOk())
+            {
+                std::cerr << "Carbohydrate created without throwing an exception for: " << sequence << "\n\n";
+            }
+            else
+            {
+                std::cerr << "Error thrown by the carbohydrateBuilder in gmml during construction was: " << carbie.GetStatusMessage() << std::endl;
+            }
+
         }
         catch (const std::string &exception)
         {
@@ -41,6 +49,10 @@ int main ()
         catch (const std::runtime_error &error)
         {
             std::cerr << "Test level caught runtime error: " << error.what() << std::endl;
+        }
+        catch(...)
+        {
+            std::cerr << "Test level caught unexpected error. Sorry I don't know more, I'm as confused as you are mate.\n";
         }
         std::cout << "-----------------------------------------------------------------------------------------------------\n\n";
 	}

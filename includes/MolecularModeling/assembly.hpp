@@ -176,7 +176,6 @@ public:
     //An assembly created by residues of another assembly
     Assembly(std::vector<MolecularModeling::Residue*> residueVector);
 
-    Assembly(std::string inputSequence, std::string prepFilePath);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////

@@ -1,13 +1,13 @@
-#ifndef GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_HPP
-#define GMML_INCLUDES_INPUTSET_CONDENSEDSEQUENCE_CARBOHYDRATE_HPP
+#ifndef GMML_INCLUDES_CENTRALDATASTRUCTURE_CONDENSEDSEQUENCE_CARBOHYDRATE_HPP
+#define GMML_INCLUDES_CENTRALDATASTRUCTURE_CONDENSEDSEQUENCE_CARBOHYDRATE_HPP
 
-#include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/CentralDataStructure/Shapers/residueLinkage.hpp"
 #include "includes/Abstract/absBuilder.hpp"
 #include "includes/CentralDataStructure/Readers/Prep/prepFile.hpp"
 #include <vector>
 
-namespace CondensedSequence
+namespace cdsCondensedSequence
 {
     class Carbohydrate : public SequenceManipulator, public Abstract::absBuilder
     {
@@ -15,26 +15,31 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
-    	Carbohydrate(std::string inputSequence, std::string prepFilePath);
+    	Carbohydrate(std::string inputSequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH", std::string prepFilePath = "../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep");
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        //////////////////////////////////////////////////////////
+    	inline std::string GetInputSequenceString() const {return inputSequenceString_;}
+        inline std::vector<cds::ResidueLinkage>& GetGlycosidicLinkages() {return glycosidicLinkages_;}
+    	//////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
     	void Generate3DStructureFiles(std::string fileOutputDirectory = "unspecified", std::string outputFileNaming = "structure");
+    	void ResolveOverlaps();
+        void SetDefaultShapeUsingMetadata();
+        inline unsigned long int GetResidueCount() const {return this->getResidues().size();}
+        unsigned long int CountShapes(bool likelyShapesOnly = false);
+        std::string GetNumberOfShapes(bool likelyShapesOnly = false); // This one is for gems. ToDo try to deprecate and use CountShapes.
     private:
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-//        inline std::map<std::string, PrepFileSpace::PrepFileResidue*>* GetPrepResidueMap() {return &prepResidueMap_;}
-//        //////////////////////////////////////////////////////////
-//        //                       MUTATOR                        //
-//        //////////////////////////////////////////////////////////
-//        inline void SetPrepResidueMap(std::map<std::string, PrepFileSpace::PrepFileResidue*> prepMap) { prepResidueMap_ = prepMap;}
+        //////////////////////////////////////////////////////////
+        //                       MUTATOR                        //
+        //////////////////////////////////////////////////////////
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
@@ -46,9 +51,7 @@ namespace CondensedSequence
         void ConnectAndSetGeometry(cds::Residue* parentResidue, cds::Residue* childResidue);
         std::vector<std::string> GetGlycamNamesOfResidues() const;
         std::string GetGlycamResidueName(ParsedResidue *residue) const;
-        void FigureOutResidueLinkages(cds::Residue* from_this_residue1, cds::Residue* to_this_residue2);
-        void SetDefaultShapeUsingMetadata();
-        void ResolveOverlaps();
+        void DepthFirstSetConnectivityAndGeometry(cds::Residue* currentParent);
         //////////////////////////////////////////////////////////
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////

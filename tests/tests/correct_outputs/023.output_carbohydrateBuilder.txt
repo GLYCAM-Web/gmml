@@ -52,7 +52,7 @@ OME will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 6MB and it's parent OME, which has linkageLabel: 
+Setting connection between 6MB and its parent OME, the connection has linkageLabel: b1-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -81,7 +81,7 @@ Have determined that the following atoms will move:
 O, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 3GB and it's parent 6MB, which has linkageLabel: b1-
+Setting connection between 3GB and its parent 6MB, the connection has linkageLabel: b1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -4.39915,    10.1172,   -4.22934
@@ -121,7 +121,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 7SA and it's parent 3GB, which has linkageLabel: b1-6
+Setting connection between 7SA and its parent 3GB, the connection has linkageLabel: a2-3
 Parent atom is O3
 Setting angle between
 parentNeighbor C3   -8.46487,    11.3271,   -6.67569
@@ -156,7 +156,7 @@ Have determined that the following atoms will move:
 C3, O3, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, C1, O1A, O1B, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 8SA and it's parent 7SA, which has linkageLabel: a2-3
+Setting connection between 8SA and its parent 7SA, the connection has linkageLabel: a2-7
 Parent atom is O7
 Setting angle between
 parentNeighbor C7   -10.4006,    15.4319,   -8.31594
@@ -213,7 +213,7 @@ Have determined that the following atoms will move:
 C7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 9SA and it's parent 8SA, which has linkageLabel: a2-7
+Setting connection between 9SA and its parent 8SA, the connection has linkageLabel: a2-8
 Parent atom is O8
 Setting angle between
 parentNeighbor C8   -5.59616,    17.6392,   -7.79822
@@ -269,7 +269,7 @@ Have determined that the following atoms will move:
 C8, C9, H9S, H9R, O9, H9O, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0SA and it's parent 9SA, which has linkageLabel: a2-8
+Setting connection between 0SA and its parent 9SA, the connection has linkageLabel: a2-9
 Parent atom is O9
 Setting angle between
 parentNeighbor C9   -6.72085,    19.8285,   -2.78094
@@ -400,7 +400,7 @@ Found query residue: 2CU
 
 On to setting 3d structure!
 
-Setting connection between 0GA and it's parent 2CU, which has linkageLabel: 
+Setting connection between 0GA and its parent 2CU, the connection has linkageLabel: a1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2    8.60803,    18.2089,   -18.0157
@@ -459,7 +459,7 @@ Found query residue: 1GA
 
 On to setting 3d structure!
 
-Setting connection between 0CU and it's parent 1GA, which has linkageLabel: 
+Setting connection between 0CU and its parent 1GA, the connection has linkageLabel: b2-1
 Parent atom is O1
 Setting angle between
 parentNeighbor C1  -0.289683,    15.0952,   -16.9233
@@ -525,7 +525,7 @@ ROH will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 6GB and it's parent ROH, which has linkageLabel: 
+Setting connection between 6GB and its parent ROH, the connection has linkageLabel: b1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_1291:6GB
@@ -549,7 +549,7 @@ Have determined that the following atoms will move:
 O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0hA and it's parent 6GB, which has linkageLabel: b1-
+Setting connection between 0hA and its parent 6GB, the connection has linkageLabel: a1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -2.67771,    14.0423,  -0.934532
@@ -621,7 +621,7 @@ ROH will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 6LB and it's parent ROH, which has linkageLabel: 
+Setting connection between 6LB and its parent ROH, the connection has linkageLabel: b1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_1408:6LB
@@ -645,7 +645,7 @@ Have determined that the following atoms will move:
 O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0hA and it's parent 6LB, which has linkageLabel: b1-
+Setting connection between 0hA and its parent 6LB, the connection has linkageLabel: a1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -2.73776,    14.0287,  -0.807414
@@ -729,7 +729,7 @@ ROH will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 8SA and it's parent ROH, which has linkageLabel: 
+Setting connection between 8SA and its parent ROH, the connection has linkageLabel: a2-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C2_1694:8SA
@@ -753,7 +753,7 @@ Have determined that the following atoms will move:
 O1, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, H9O, O8, C1, O1A, O1B, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 8SA and it's parent 8SA, which has linkageLabel: a2-
+Setting connection between 8SA and its parent 8SA, the connection has linkageLabel: a2-8
 Parent atom is O8
 Setting angle between
 parentNeighbor C8   -4.89398,    13.7587,  -0.223988
@@ -809,7 +809,7 @@ Have determined that the following atoms will move:
 C8, C9, H9S, H9R, O9, H9O, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 8SA and it's parent 8SA, which has linkageLabel: a2-8
+Setting connection between 8SA and its parent 8SA, the connection has linkageLabel: a2-8
 Parent atom is O8
 Setting angle between
 parentNeighbor C8   -4.87199,    15.7224,   -4.06991
@@ -865,7 +865,7 @@ Have determined that the following atoms will move:
 C8, C9, H9S, H9R, O9, H9O, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0SA and it's parent 8SA, which has linkageLabel: a2-8
+Setting connection between 0SA and its parent 8SA, the connection has linkageLabel: a2-8
 Parent atom is O8
 Setting angle between
 parentNeighbor C8   -1.77595,    18.6694,   -3.45577
@@ -999,7 +999,7 @@ YZB will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between YZB and it's parent OME, which has linkageLabel: 
+Setting connection between YZB and its parent OME, the connection has linkageLabel: b1-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -1028,42 +1028,7 @@ Have determined that the following atoms will move:
 O, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H3, O3, H3O, H2, O2, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent YZB, which has linkageLabel: b1-
-Parent atom is O2
-Setting angle between
-parentNeighbor C2   -1.72384,    6.71555,   -4.95774
-parent O2  -0.647712,    5.75422,   -4.74905
-and child S1  -0.067303,    7.22973,    -4.8535
-child residue SO3 will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-S1_2022:SO3
-C2_2091:SO3
-
-Finding Path between:S1_2022 and C2_2091
-Updated Path between:
- S1_2022 and C2_2091
-O3_2025
-S1_2022
-O2_2093
-C2_2091
-C1_2076
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: SO3 and YZB
-These are the assigned RotatableDihedrals:
-O3, S1, O2, C2: -163.934.
-S1, O2, C2, C1: -111.196.
-Setting default shape
-Blocking access via O2, we will search outward from S1
-Have determined that the following atoms will move:
-O2, S1, O1, O2, O3, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, S1, O1, O2, O3, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between UVB and it's parent YZB, which has linkageLabel: b1-
+Setting connection between UVB and its parent YZB, the connection has linkageLabel: b1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -2.24414,    9.22077,   -5.26363
@@ -1098,7 +1063,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent UVB, which has linkageLabel: b1-4
+Setting connection between SO3 and its parent UVB, the connection has linkageLabel: 6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -2.82753,    9.77343,   -10.1313
@@ -1138,7 +1103,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, S1, O1, O2, O3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent UVB, which has linkageLabel: b1-4
+Setting connection between SO3 and its parent UVB, the connection has linkageLabel: 4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -2.37058,    12.1881,   -9.38297
@@ -1173,16 +1138,45 @@ Have determined that the following atoms will move:
 C4, O4, S1, O1, O2, O3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Re-determining atoms that need to move for each linkage:
-Blocking access via O, we will search outward from C1
-Have determined that the following atoms will move:
-O, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, S1, O1, O2, O3, H4, O4, S1, O1, O2, O3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, O2, S1, O1, O2, O3, H1, 
+Setting connection between SO3 and its parent YZB, the connection has linkageLabel: 2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   -1.72384,    6.71555,   -4.95774
+parent O2  -0.647712,    5.75422,   -4.74905
+and child S1  -0.067303,    7.22973,    -4.8535
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_2022:SO3
+C2_2091:SO3
+
+Finding Path between:S1_2022 and C2_2091
+Updated Path between:
+ S1_2022 and C2_2091
+O3_2025
+S1_2022
+O2_2093
+C2_2091
+C1_2076
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and YZB
+These are the assigned RotatableDihedrals:
+O3, S1, O2, C2: -163.934.
+S1, O2, C2, C1: -111.196.
+Setting default shape
 Blocking access via O2, we will search outward from S1
 Have determined that the following atoms will move:
 O2, S1, O1, O2, O3, 
 Blocking access via C2, we will search outward from O2
 Have determined that the following atoms will move:
 C2, O2, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Re-determining atoms that need to move for each linkage:
+Blocking access via O, we will search outward from C1
+Have determined that the following atoms will move:
+O, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, S1, O1, O2, O3, H4, O4, S1, O1, O2, O3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, O2, S1, O1, O2, O3, H1, 
 Blocking access via O4, we will search outward from C1
 Have determined that the following atoms will move:
 O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, S1, O1, O2, O3, H4, O4, S1, O1, O2, O3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
@@ -1204,6 +1198,12 @@ O4, S1, O1, O2, O3,
 Blocking access via C4, we will search outward from O4
 Have determined that the following atoms will move:
 C4, O4, S1, O1, O2, O3, 
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
 Final overlap resolution
 Overlaps resolved
 Number of residues is 6
@@ -1227,7 +1227,7 @@ ROH will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 6LB and it's parent ROH, which has linkageLabel: 
+Setting connection between 6LB and its parent ROH, the connection has linkageLabel: b1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_2259:6LB
@@ -1251,7 +1251,7 @@ Have determined that the following atoms will move:
 O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 6GB and it's parent 6LB, which has linkageLabel: b1-
+Setting connection between 6GB and its parent 6LB, the connection has linkageLabel: b1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -2.73776,    14.0287,  -0.807414
@@ -1291,7 +1291,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 8SA and it's parent 6GB, which has linkageLabel: b1-6
+Setting connection between 8SA and its parent 6GB, the connection has linkageLabel: a2-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -1.32424,    15.1085,    3.77332
@@ -1331,7 +1331,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, H9O, O8, C1, O1A, O1B, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 8SA and it's parent 8SA, which has linkageLabel: a2-6
+Setting connection between 8SA and its parent 8SA, the connection has linkageLabel: a2-8
 Parent atom is O8
 Setting angle between
 parentNeighbor C8    2.03192,    11.7573,    2.73889
@@ -1387,7 +1387,7 @@ Have determined that the following atoms will move:
 C8, C9, H9S, H9R, O9, H9O, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 8SA and it's parent 8SA, which has linkageLabel: a2-8
+Setting connection between 8SA and its parent 8SA, the connection has linkageLabel: a2-8
 Parent atom is O8
 Setting angle between
 parentNeighbor C8    1.65862,    8.64435,    5.70834
@@ -1443,7 +1443,7 @@ Have determined that the following atoms will move:
 C8, C9, H9S, H9R, O9, H9O, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0SA and it's parent 8SA, which has linkageLabel: a2-8
+Setting connection between 0SA and its parent 8SA, the connection has linkageLabel: a2-8
 Parent atom is O8
 Setting angle between
 parentNeighbor C8    5.54756,      8.837,    7.57562
@@ -1585,7 +1585,7 @@ OME will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 1CU and it's parent OME, which has linkageLabel: 
+Setting connection between 1CU and its parent OME, the connection has linkageLabel: b2-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -1614,7 +1614,7 @@ Have determined that the following atoms will move:
 O, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, C1, H12, H11, O1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0fA and it's parent 1CU, which has linkageLabel: b2-
+Setting connection between 0fA and its parent 1CU, the connection has linkageLabel: a1-1
 Parent atom is O1
 Setting angle between
 parentNeighbor C1   -1.76941,    6.37288,   -4.90421
@@ -1700,7 +1700,7 @@ YLA will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between YLA and it's parent OME, which has linkageLabel: 
+Setting connection between YLA and its parent OME, the connection has linkageLabel: a1-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -1729,7 +1729,7 @@ Have determined that the following atoms will move:
 O, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between XMA and it's parent YLA, which has linkageLabel: a1-
+Setting connection between XMA and its parent YLA, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4    -2.7412,    1.76572,   -4.30317
@@ -1764,42 +1764,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent XMA, which has linkageLabel: a1-4
-Parent atom is O2
-Setting angle between
-parentNeighbor C2  -0.849007,   -1.50904,   -3.76846
-parent O2   -1.43308,   -2.83848,    -3.9104
-and child S1  -0.852673,   -1.36296,   -4.01486
-child residue SO3 will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-S1_2889:SO3
-C2_2899:SO3
-
-Finding Path between:S1_2889 and C2_2899
-Updated Path between:
- S1_2889 and C2_2899
-O3_2892
-S1_2889
-O2_2916
-C2_2899
-C1_2897
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: SO3 and XMA
-These are the assigned RotatableDihedrals:
-O3, S1, O2, C2: 85.1888.
-S1, O2, C2, C1: 54.0323.
-Setting default shape
-Blocking access via O2, we will search outward from S1
-Have determined that the following atoms will move:
-O2, S1, O1, O2, O3, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, S1, O1, O2, O3, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 0GB and it's parent XMA, which has linkageLabel: a1-4
+Setting connection between 0GB and its parent XMA, the connection has linkageLabel: b1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -1.10937,  -0.583445,   -8.05416
@@ -1839,7 +1804,42 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between XMB and it's parent YLA, which has linkageLabel: a1-
+Setting connection between SO3 and its parent XMA, the connection has linkageLabel: 2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2  -0.849007,   -1.50904,   -3.76846
+parent O2   -1.43308,   -2.83848,    -3.9104
+and child S1  -0.852673,   -1.36296,   -4.01486
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_2889:SO3
+C2_2899:SO3
+
+Finding Path between:S1_2889 and C2_2899
+Updated Path between:
+ S1_2889 and C2_2899
+O3_2892
+S1_2889
+O2_2916
+C2_2899
+C1_2897
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and XMA
+These are the assigned RotatableDihedrals:
+O3, S1, O2, C2: 85.1888.
+S1, O2, C2, C1: 54.0323.
+Setting default shape
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between XMB and its parent YLA, the connection has linkageLabel: b1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2   -1.31353,    3.86898,   -4.06392
@@ -1874,7 +1874,7 @@ Have determined that the following atoms will move:
 C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between MEX and it's parent XMB, which has linkageLabel: b1-2
+Setting connection between MEX and its parent XMB, the connection has linkageLabel: 6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6    3.00948,    4.43729,   -1.69349
@@ -1914,7 +1914,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, CH3, H1, H2, H3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between XMB and it's parent XMB, which has linkageLabel: b1-2
+Setting connection between XMB and its parent XMB, the connection has linkageLabel: b1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2    1.43827,    6.18058,   -5.35575
@@ -1949,7 +1949,7 @@ Have determined that the following atoms will move:
 C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 6LB and it's parent XMB, which has linkageLabel: b1-2
+Setting connection between 6LB and its parent XMB, the connection has linkageLabel: b1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6    1.34378,    9.43281,   -9.10769
@@ -1989,7 +1989,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between ACX and it's parent 6LB, which has linkageLabel: b1-6
+Setting connection between ACX and its parent 6LB, the connection has linkageLabel: 6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6    4.08284,    7.67936,    -12.812
@@ -2029,7 +2029,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1A, O1A, C2A, H1A, H2A, H3A, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between XMB and it's parent XMB, which has linkageLabel: b1-2
+Setting connection between XMB and its parent XMB, the connection has linkageLabel: b1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2   0.324281,    9.82273,   -4.89717
@@ -2064,7 +2064,7 @@ Have determined that the following atoms will move:
 C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between ACX and it's parent XMB, which has linkageLabel: b1-2
+Setting connection between ACX and its parent XMB, the connection has linkageLabel: 6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6  -0.722781,    12.3251,  -0.737247
@@ -2104,7 +2104,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1A, O1A, C2A, H1A, H2A, H3A, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0MB and it's parent XMB, which has linkageLabel: b1-2
+Setting connection between 0MB and its parent XMB, the connection has linkageLabel: b1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2    3.00114,     11.709,   -2.89889
@@ -2149,12 +2149,6 @@ O4, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, H3O, H4, O4, H4O, H5
 Blocking access via C4, we will search outward from O4
 Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H1, 
-Blocking access via O2, we will search outward from S1
-Have determined that the following atoms will move:
-O2, S1, O1, O2, O3, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, S1, O1, O2, O3, 
 Blocking access via O6, we will search outward from C1
 Have determined that the following atoms will move:
 O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
@@ -2164,6 +2158,12 @@ C6, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, 
 Blocking access via C5, we will search outward from C6
 Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
 Blocking access via O2, we will search outward from C1
 Have determined that the following atoms will move:
 O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, CH3, H1, H2, H3, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1A, O1A, C2A, H1A, H2A, H3A, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1A, O1A, C2A, H1A, H2A, H3A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H1, H1, H1, 
@@ -2257,7 +2257,7 @@ YLA will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between YLA and it's parent OME, which has linkageLabel: 
+Setting connection between YLA and its parent OME, the connection has linkageLabel: a1-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -2286,7 +2286,7 @@ Have determined that the following atoms will move:
 O, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between XMA and it's parent YLA, which has linkageLabel: a1-
+Setting connection between XMA and its parent YLA, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4    -2.7412,    1.76572,   -4.30317
@@ -2321,42 +2321,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent XMA, which has linkageLabel: a1-4
-Parent atom is O2
-Setting angle between
-parentNeighbor C2  -0.849007,   -1.50904,   -3.76846
-parent O2   -1.43308,   -2.83848,    -3.9104
-and child S1  -0.852673,   -1.36296,   -4.01486
-child residue SO3 will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-S1_3383:SO3
-C2_3393:SO3
-
-Finding Path between:S1_3383 and C2_3393
-Updated Path between:
- S1_3383 and C2_3393
-O3_3386
-S1_3383
-O2_3410
-C2_3393
-C1_3391
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: SO3 and XMA
-These are the assigned RotatableDihedrals:
-O3, S1, O2, C2: 85.1888.
-S1, O2, C2, C1: 54.0323.
-Setting default shape
-Blocking access via O2, we will search outward from S1
-Have determined that the following atoms will move:
-O2, S1, O1, O2, O3, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, S1, O1, O2, O3, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 0GB and it's parent XMA, which has linkageLabel: a1-4
+Setting connection between 0GB and its parent XMA, the connection has linkageLabel: b1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -1.10937,  -0.583445,   -8.05416
@@ -2396,7 +2361,42 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between XMB and it's parent YLA, which has linkageLabel: a1-
+Setting connection between SO3 and its parent XMA, the connection has linkageLabel: 2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2  -0.849007,   -1.50904,   -3.76846
+parent O2   -1.43308,   -2.83848,    -3.9104
+and child S1  -0.852673,   -1.36296,   -4.01486
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_3383:SO3
+C2_3393:SO3
+
+Finding Path between:S1_3383 and C2_3393
+Updated Path between:
+ S1_3383 and C2_3393
+O3_3386
+S1_3383
+O2_3410
+C2_3393
+C1_3391
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and XMA
+These are the assigned RotatableDihedrals:
+O3, S1, O2, C2: 85.1888.
+S1, O2, C2, C1: 54.0323.
+Setting default shape
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between XMB and its parent YLA, the connection has linkageLabel: b1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2   -1.31353,    3.86898,   -4.06392
@@ -2431,7 +2431,7 @@ Have determined that the following atoms will move:
 C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between MEX and it's parent XMB, which has linkageLabel: b1-2
+Setting connection between MEX and its parent XMB, the connection has linkageLabel: 6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6    3.00948,    4.43729,   -1.69349
@@ -2471,7 +2471,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, CH3, H1, H2, H3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between XMB and it's parent XMB, which has linkageLabel: b1-2
+Setting connection between XMB and its parent XMB, the connection has linkageLabel: b1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2    1.43827,    6.18058,   -5.35575
@@ -2506,117 +2506,7 @@ Have determined that the following atoms will move:
 C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between XMB and it's parent XMB, which has linkageLabel: b1-2
-Parent atom is O2
-Setting angle between
-parentNeighbor C2   0.324281,    9.82273,   -4.89717
-parent O2    1.57026,    10.5616,   -4.72296
-and child C1    2.01145,    11.8344,   -5.28576
-child residue XMB will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1_3463:XMB
-C2_3456:XMB
-
-Finding Path between:C1_3463 and C2_3456
-Updated Path between:
- C1_3463 and C2_3456
-C2_3480
-C1_3463
-O2_3458
-C2_3456
-C1_3439
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: XMB and XMB
-These are the assigned RotatableDihedrals:
-C2, C1, O2, C2: -119.627.
-C1, O2, C2, C1: 120.701.
-Setting default shape
-Blocking access via O2, we will search outward from C1
-Have determined that the following atoms will move:
-O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H1, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H1, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between ACX and it's parent XMB, which has linkageLabel: b1-2
-Parent atom is O6
-Setting angle between
-parentNeighbor C6  -0.722781,    12.3251,  -0.737247
-parent O6    -1.8889,     11.627,   -1.21005
-and child C1A   -1.81174,    12.9367,   -1.38072
-child residue ACX will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1A_3356:ACX
-C5_3466:ACX
-
-Finding Path between:C1A_3356 and C5_3466
-Updated Path between:
- C1A_3356 and C5_3466
-C2A_3358
-C1A_3356
-O6_3471
-C6_3468
-C5_3466
-O5_3465
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: ACX and XMB
-These are the assigned RotatableDihedrals:
-C2A, C1A, O6, C6: -158.872.
-C1A, O6, C6, C5: -131.782.
-O6, C6, C5, O5: 57.44.
-Setting default shape
-Blocking access via O6, we will search outward from C1A
-Have determined that the following atoms will move:
-O6, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C6, we will search outward from O6
-Have determined that the following atoms will move:
-C6, O6, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C5, we will search outward from C6
-Have determined that the following atoms will move:
-C5, C6, H62, H61, O6, C1A, O1A, C2A, H1A, H2A, H3A, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 0MB and it's parent XMB, which has linkageLabel: b1-2
-Parent atom is O2
-Setting angle between
-parentNeighbor C2    3.00114,     11.709,   -2.89889
-parent O2    2.89286,    13.0878,   -3.36338
-and child C1    3.33404,    14.3607,   -3.92618
-child residue 0MB will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1_3330:0MB
-C2_3480:0MB
-
-Finding Path between:C1_3330 and C2_3480
-Updated Path between:
- C1_3330 and C2_3480
-C2_3348
-C1_3330
-O2_3482
-C2_3480
-C1_3463
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: 0MB and XMB
-These are the assigned RotatableDihedrals:
-C2, C1, O2, C2: 22.078.
-C1, O2, C2, C1: -140.503.
-Setting default shape
-Blocking access via O2, we will search outward from C1
-Have determined that the following atoms will move:
-O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 0LB and it's parent XMB, which has linkageLabel: b1-2
+Setting connection between 0LB and its parent XMB, the connection has linkageLabel: b1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6    1.34378,    9.43281,   -9.10769
@@ -2656,6 +2546,116 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
+Setting connection between XMB and its parent XMB, the connection has linkageLabel: b1-2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   0.324281,    9.82273,   -4.89717
+parent O2    1.57026,    10.5616,   -4.72296
+and child C1    2.01145,    11.8344,   -5.28576
+child residue XMB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3463:XMB
+C2_3456:XMB
+
+Finding Path between:C1_3463 and C2_3456
+Updated Path between:
+ C1_3463 and C2_3456
+C2_3480
+C1_3463
+O2_3458
+C2_3456
+C1_3439
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: XMB and XMB
+These are the assigned RotatableDihedrals:
+C2, C1, O2, C2: -119.627.
+C1, O2, C2, C1: 120.701.
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between ACX and its parent XMB, the connection has linkageLabel: 6
+Parent atom is O6
+Setting angle between
+parentNeighbor C6  -0.722781,    12.3251,  -0.737247
+parent O6    -1.8889,     11.627,   -1.21005
+and child C1A   -1.81174,    12.9367,   -1.38072
+child residue ACX will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1A_3356:ACX
+C5_3466:ACX
+
+Finding Path between:C1A_3356 and C5_3466
+Updated Path between:
+ C1A_3356 and C5_3466
+C2A_3358
+C1A_3356
+O6_3471
+C6_3468
+C5_3466
+O5_3465
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: ACX and XMB
+These are the assigned RotatableDihedrals:
+C2A, C1A, O6, C6: -158.872.
+C1A, O6, C6, C5: -131.782.
+O6, C6, C5, O5: 57.44.
+Setting default shape
+Blocking access via O6, we will search outward from C1A
+Have determined that the following atoms will move:
+O6, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1A, O1A, C2A, H1A, H2A, H3A, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0MB and its parent XMB, the connection has linkageLabel: b1-2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2    3.00114,     11.709,   -2.89889
+parent O2    2.89286,    13.0878,   -3.36338
+and child C1    3.33404,    14.3607,   -3.92618
+child residue 0MB will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3330:0MB
+C2_3480:0MB
+
+Finding Path between:C1_3330 and C2_3480
+Updated Path between:
+ C1_3330 and C2_3480
+C2_3348
+C1_3330
+O2_3482
+C2_3480
+C1_3463
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0MB and XMB
+These are the assigned RotatableDihedrals:
+C2, C1, O2, C2: 22.078.
+C1, O2, C2, C1: -140.503.
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
 Re-determining atoms that need to move for each linkage:
 Blocking access via O, we will search outward from C1
 Have determined that the following atoms will move:
@@ -2666,12 +2666,6 @@ O4, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, H3O, H4, O4, H4O, H5
 Blocking access via C4, we will search outward from O4
 Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, S1, O1, O2, O3, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H1, 
-Blocking access via O2, we will search outward from S1
-Have determined that the following atoms will move:
-O2, S1, O1, O2, O3, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, S1, O1, O2, O3, 
 Blocking access via O6, we will search outward from C1
 Have determined that the following atoms will move:
 O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
@@ -2681,6 +2675,12 @@ C6, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, 
 Blocking access via C5, we will search outward from C6
 Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via O2, we will search outward from S1
+Have determined that the following atoms will move:
+O2, S1, O1, O2, O3, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, S1, O1, O2, O3, 
 Blocking access via O2, we will search outward from C1
 Have determined that the following atoms will move:
 O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, CH3, H1, H2, H3, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1A, O1A, C2A, H1A, H2A, H3A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H1, H1, H1, 
@@ -2702,6 +2702,15 @@ O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6
 Blocking access via C2, we will search outward from O2
 Have determined that the following atoms will move:
 C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1A, O1A, C2A, H1A, H2A, H3A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H1, H1, 
+Blocking access via O6, we will search outward from C1
+Have determined that the following atoms will move:
+O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Blocking access via O2, we will search outward from C1
 Have determined that the following atoms will move:
 O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1A, O1A, C2A, H1A, H2A, H3A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H1, 
@@ -2723,15 +2732,6 @@ O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O,
 Blocking access via C2, we will search outward from O2
 Have determined that the following atoms will move:
 C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
-Blocking access via O6, we will search outward from C1
-Have determined that the following atoms will move:
-O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
-Blocking access via C6, we will search outward from O6
-Have determined that the following atoms will move:
-C6, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
-Blocking access via C5, we will search outward from C6
-Have determined that the following atoms will move:
-C5, C6, H62, H61, O6, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Final overlap resolution
 Overlaps resolved
 Number of residues is 12
@@ -2770,7 +2770,7 @@ VMB will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 4YB and it's parent ROH, which has linkageLabel: 
+Setting connection between 4YB and its parent ROH, the connection has linkageLabel: b1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_3966:4YB
@@ -2794,7 +2794,7 @@ Have determined that the following atoms will move:
 O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 4YB and it's parent 4YB, which has linkageLabel: b1-
+Setting connection between 4YB and its parent 4YB, the connection has linkageLabel: b1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -3.57133,     13.735,   -3.33762
@@ -2829,7 +2829,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between VMB and it's parent 4YB, which has linkageLabel: b1-4
+Setting connection between VMB and its parent 4YB, the connection has linkageLabel: b1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -5.26593,    18.4266,   -4.14362
@@ -2864,112 +2864,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 2MA and it's parent VMB, which has linkageLabel: b1-4
-Parent atom is O3
-Setting angle between
-parentNeighbor C3   -8.31246,    21.8897,   -5.61885
-parent O3   -9.27196,    22.9496,   -5.33805
-and child C1   -9.16551,    22.2921,    -6.6373
-child residue 2MA will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1_3866:2MA
-C3_4071:2MA
-
-Finding Path between:C1_3866 and C3_4071
-Updated Path between:
- C1_3866 and C3_4071
-C2_3868
-C1_3866
-O3_4077
-C3_4071
-C4_4067
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: 2MA and VMB
-These are the assigned RotatableDihedrals:
-C2, C1, O3, C3: -54.1041.
-C1, O3, C3, C4: 61.6114.
-Setting default shape
-Blocking access via O3, we will search outward from C1
-Have determined that the following atoms will move:
-O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following atoms will move:
-C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 2MA and it's parent 2MA, which has linkageLabel: a1-3
-Parent atom is O2
-Setting angle between
-parentNeighbor C2    -11.802,      23.45,    -5.3699
-parent O2   -12.9363,     23.083,   -6.21093
-and child C1   -12.8299,    22.4256,   -7.51018
-child residue 2MA will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1_3891:2MA
-C2_3868:2MA
-
-Finding Path between:C1_3891 and C2_3868
-Updated Path between:
- C1_3891 and C2_3868
-C2_3893
-C1_3891
-O2_3886
-C2_3868
-C1_3866
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: 2MA and 2MA
-These are the assigned RotatableDihedrals:
-C2, C1, O2, C2: -14.4228.
-C1, O2, C2, C1: -29.5837.
-Setting default shape
-Blocking access via O2, we will search outward from C1
-Have determined that the following atoms will move:
-O2, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 0MA and it's parent 2MA, which has linkageLabel: a1-2
-Parent atom is O2
-Setting angle between
-parentNeighbor C2   -14.4346,    23.9978,   -8.10074
-parent O2   -14.9927,    25.2954,   -8.46575
-and child C1   -14.8863,     24.638,     -9.765
-child residue 0MA will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1_3788:0MA
-C2_3893:0MA
-
-Finding Path between:C1_3788 and C2_3893
-Updated Path between:
- C1_3788 and C2_3893
-C2_3790
-C1_3788
-O2_3911
-C2_3893
-C1_3891
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: 0MA and 2MA
-These are the assigned RotatableDihedrals:
-C2, C1, O2, C2: -79.8009.
-C1, O2, C2, C1: 133.66.
-Setting default shape
-Blocking access via O2, we will search outward from C1
-Have determined that the following atoms will move:
-O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between VMA and it's parent VMB, which has linkageLabel: b1-4
+Setting connection between VMA and its parent VMB, the connection has linkageLabel: a1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -5.21853,    21.5459,    -8.0043
@@ -3009,77 +2904,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 2MA and it's parent VMA, which has linkageLabel: a1-6
-Parent atom is O3
-Setting angle between
-parentNeighbor C3    -2.9794,    25.4896,   -8.15979
-parent O3   -2.02196,    26.5211,   -7.76737
-and child C1   -1.91551,    25.8636,   -9.06662
-child residue 2MA will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1_3916:2MA
-C3_4040:2MA
-
-Finding Path between:C1_3916 and C3_4040
-Updated Path between:
- C1_3916 and C3_4040
-C2_3918
-C1_3916
-O3_4053
-C3_4040
-C4_4042
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: 2MA and VMA
-These are the assigned RotatableDihedrals:
-C2, C1, O3, C3: -155.698.
-C1, O3, C3, C4: -40.722.
-Setting default shape
-Blocking access via O3, we will search outward from C1
-Have determined that the following atoms will move:
-O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following atoms will move:
-C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 0MA and it's parent 2MA, which has linkageLabel: a1-3
-Parent atom is O2
-Setting angle between
-parentNeighbor C2    -1.7346,     28.503,   -6.14193
-parent O2   -2.59587,    29.5419,   -5.58728
-and child C1   -2.48942,    28.8844,   -6.88653
-child residue 0MA will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1_3814:0MA
-C2_3918:0MA
-
-Finding Path between:C1_3814 and C2_3918
-Updated Path between:
- C1_3814 and C2_3918
-C2_3816
-C1_3814
-O2_3936
-C2_3918
-C1_3916
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: 0MA and 2MA
-These are the assigned RotatableDihedrals:
-C2, C1, O2, C2: -52.5467.
-C1, O2, C2, C1: -55.5548.
-Setting default shape
-Blocking access via O2, we will search outward from C1
-Have determined that the following atoms will move:
-O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 2MA and it's parent VMA, which has linkageLabel: a1-6
+Setting connection between 2MA and its parent VMA, the connection has linkageLabel: a1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -4.70377,    24.5879,   -11.5709
@@ -3119,7 +2944,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0MA and it's parent 2MA, which has linkageLabel: a1-6
+Setting connection between 0MA and its parent 2MA, the connection has linkageLabel: a1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2   -2.71805,    24.1208,   -14.7992
@@ -3154,6 +2979,181 @@ Have determined that the following atoms will move:
 C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
+Setting connection between 2MA and its parent VMA, the connection has linkageLabel: a1-3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3    -2.9794,    25.4896,   -8.15979
+parent O3   -2.02196,    26.5211,   -7.76737
+and child C1   -1.91551,    25.8636,   -9.06662
+child residue 2MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3916:2MA
+C3_4040:2MA
+
+Finding Path between:C1_3916 and C3_4040
+Updated Path between:
+ C1_3916 and C3_4040
+C2_3918
+C1_3916
+O3_4053
+C3_4040
+C4_4042
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 2MA and VMA
+These are the assigned RotatableDihedrals:
+C2, C1, O3, C3: -155.698.
+C1, O3, C3, C4: -40.722.
+Setting default shape
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0MA and its parent 2MA, the connection has linkageLabel: a1-2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2    -1.7346,     28.503,   -6.14193
+parent O2   -2.59587,    29.5419,   -5.58728
+and child C1   -2.48942,    28.8844,   -6.88653
+child residue 0MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3814:0MA
+C2_3918:0MA
+
+Finding Path between:C1_3814 and C2_3918
+Updated Path between:
+ C1_3814 and C2_3918
+C2_3816
+C1_3814
+O2_3936
+C2_3918
+C1_3916
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0MA and 2MA
+These are the assigned RotatableDihedrals:
+C2, C1, O2, C2: -52.5467.
+C1, O2, C2, C1: -55.5548.
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 2MA and its parent VMB, the connection has linkageLabel: a1-3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -8.31246,    21.8897,   -5.61885
+parent O3   -9.27196,    22.9496,   -5.33805
+and child C1   -9.16551,    22.2921,    -6.6373
+child residue 2MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3866:2MA
+C3_4071:2MA
+
+Finding Path between:C1_3866 and C3_4071
+Updated Path between:
+ C1_3866 and C3_4071
+C2_3868
+C1_3866
+O3_4077
+C3_4071
+C4_4067
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 2MA and VMB
+These are the assigned RotatableDihedrals:
+C2, C1, O3, C3: -54.1041.
+C1, O3, C3, C4: 61.6114.
+Setting default shape
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 2MA and its parent 2MA, the connection has linkageLabel: a1-2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2    -11.802,      23.45,    -5.3699
+parent O2   -12.9363,     23.083,   -6.21093
+and child C1   -12.8299,    22.4256,   -7.51018
+child residue 2MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3891:2MA
+C2_3868:2MA
+
+Finding Path between:C1_3891 and C2_3868
+Updated Path between:
+ C1_3891 and C2_3868
+C2_3893
+C1_3891
+O2_3886
+C2_3868
+C1_3866
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 2MA and 2MA
+These are the assigned RotatableDihedrals:
+C2, C1, O2, C2: -14.4228.
+C1, O2, C2, C1: -29.5837.
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0MA and its parent 2MA, the connection has linkageLabel: a1-2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   -14.4346,    23.9978,   -8.10074
+parent O2   -14.9927,    25.2954,   -8.46575
+and child C1   -14.8863,     24.638,     -9.765
+child residue 0MA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_3788:0MA
+C2_3893:0MA
+
+Finding Path between:C1_3788 and C2_3893
+Updated Path between:
+ C1_3788 and C2_3893
+C2_3790
+C1_3788
+O2_3911
+C2_3893
+C1_3891
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0MA and 2MA
+These are the assigned RotatableDihedrals:
+C2, C1, O2, C2: -79.8009.
+C1, O2, C2, C1: 133.66.
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
 Re-determining atoms that need to move for each linkage:
 Blocking access via O1, we will search outward from C1
 Have determined that the following atoms will move:
@@ -3170,24 +3170,6 @@ O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2
 Blocking access via C4, we will search outward from O4
 Have determined that the following atoms will move:
 C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, 
-Blocking access via O3, we will search outward from C1
-Have determined that the following atoms will move:
-O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following atoms will move:
-C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via O2, we will search outward from C1
-Have determined that the following atoms will move:
-O2, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via O2, we will search outward from C1
-Have determined that the following atoms will move:
-O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Blocking access via O6, we will search outward from C1
 Have determined that the following atoms will move:
 O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, 
@@ -3197,6 +3179,21 @@ C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, O5, C5, C4, C3, C2, H2,
 Blocking access via C5, we will search outward from C6
 Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H1, 
+Blocking access via O6, we will search outward from C1
+Have determined that the following atoms will move:
+O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Blocking access via O3, we will search outward from C1
 Have determined that the following atoms will move:
 O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
@@ -3209,15 +3206,18 @@ O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, 
 Blocking access via C2, we will search outward from O2
 Have determined that the following atoms will move:
 C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via O6, we will search outward from C1
+Blocking access via O3, we will search outward from C1
 Have determined that the following atoms will move:
-O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via C6, we will search outward from O6
+O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C3, we will search outward from O3
 Have determined that the following atoms will move:
-C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via C5, we will search outward from C6
+C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O2, we will search outward from C1
 Have determined that the following atoms will move:
-C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+O2, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Blocking access via O2, we will search outward from C1
 Have determined that the following atoms will move:
 O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
@@ -3269,7 +3269,7 @@ ROH will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 6MA and it's parent ROH, which has linkageLabel: 
+Setting connection between 6MA and its parent ROH, the connection has linkageLabel: a1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_4435:6MA
@@ -3293,7 +3293,7 @@ Have determined that the following atoms will move:
 O1, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0CA and it's parent 6MA, which has linkageLabel: a1-
+Setting connection between 0CA and its parent 6MA, the connection has linkageLabel: a2-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6    -5.9895,    5.59899,   -3.72239
@@ -3365,7 +3365,7 @@ ROH will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 6MA and it's parent ROH, which has linkageLabel: 
+Setting connection between 6MA and its parent ROH, the connection has linkageLabel: a1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_4554:6MA
@@ -3389,7 +3389,7 @@ Have determined that the following atoms will move:
 O1, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0CB and it's parent 6MA, which has linkageLabel: a1-
+Setting connection between 0CB and its parent 6MA, the connection has linkageLabel: b2-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6    -5.9895,    5.59899,   -3.72239
@@ -3463,7 +3463,7 @@ ROH will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 2MA and it's parent ROH, which has linkageLabel: 
+Setting connection between 2MA and its parent ROH, the connection has linkageLabel: a1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_4653:2MA
@@ -3487,7 +3487,7 @@ Have determined that the following atoms will move:
 O1, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, Hd, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 3GB and it's parent 2MA, which has linkageLabel: a1-
+Setting connection between 3GB and its parent 2MA, the connection has linkageLabel: b1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2   -4.69515,    9.66138,   -4.77756
@@ -3522,7 +3522,7 @@ Have determined that the following atoms will move:
 C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, Hd, H3, O3, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between MEX and it's parent 3GB, which has linkageLabel: b1-2
+Setting connection between MEX and its parent 3GB, the connection has linkageLabel: 3
 Parent atom is O3
 Setting angle between
 parentNeighbor C3   -1.92383,    11.4911,   -8.39722
@@ -3603,7 +3603,7 @@ TBT will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 0LB and it's parent TBT, which has linkageLabel: 
+Setting connection between 0LB and its parent TBT, the connection has linkageLabel: b1-
 Setting angle between
 parentNeighbor C1   -2.00184,    10.0721,   -1.44413
 parent O1  -0.954418,    10.8933,   -1.93046
@@ -3653,7 +3653,7 @@ Found query residue: 045
 
 On to setting 3d structure!
 
-Setting connection between 045 and it's parent OME, which has linkageLabel: 
+Setting connection between 045 and its parent OME, the connection has linkageLabel: a1-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -3703,7 +3703,7 @@ Found query residue: 045
 
 On to setting 3d structure!
 
-Setting connection between 045 and it's parent OME, which has linkageLabel: 
+Setting connection between 045 and its parent OME, the connection has linkageLabel: A-
 Error thrown by the carbohydrateBuilder in gmml during construction was: Could not convert the first linkage number to an integer: -
 
 *********************
@@ -3721,7 +3721,7 @@ Found query residue: 045
 
 On to setting 3d structure!
 
-Setting connection between 4LB and it's parent ROH, which has linkageLabel: 
+Setting connection between 4LB and its parent ROH, the connection has linkageLabel: b1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_5017:4LB
@@ -3745,7 +3745,7 @@ Have determined that the following atoms will move:
 O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, O2, H2O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 045 and it's parent 4LB, which has linkageLabel: b1-
+Setting connection between 045 and its parent 4LB, the connection has linkageLabel: A-4
 Error thrown by the carbohydrateBuilder in gmml during construction was: The deduced linkageLabel is too small:
 A-4.
 We require anomer, start atom number, a dash, and connecting atom number. Example:
@@ -3782,7 +3782,7 @@ ROH will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between BSA and it's parent ROH, which has linkageLabel: 
+Setting connection between BSA and its parent ROH, the connection has linkageLabel: a2-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C2_5369:BSA
@@ -3806,356 +3806,12 @@ Have determined that the following atoms will move:
 O1, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, O8, O7, C1, O1A, O1B, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between ACX and it's parent BSA, which has linkageLabel: a2-
-Parent atom is O7
-Setting angle between
-parentNeighbor C7   -3.34472,    13.7484,  -0.368312
-parent O7   -2.69379,     13.346,   0.875043
-and child C1A   -2.61663,    14.6557,   0.704375
-child residue ACX will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1A_5299:ACX
-C6_5390:ACX
-
-Finding Path between:C1A_5299 and C6_5390
-Updated Path between:
- C1A_5299 and C6_5390
-C2A_5301
-C1A_5299
-O7_5402
-C7_5393
-C6_5390
-O6_5392
-
-Found atoms:
-C9_5397
-C8_5395
-C7_5393
-O7_5402
-Creating rotatable dihedrals between: ACX and BSA
-These are the assigned branched RotatableDihedrals:
-C9, C8, C7, O7: 60.0039.
-Creating rotatable dihedrals between: ACX and BSA
-These are the assigned RotatableDihedrals:
-C2A, C1A, O7, C7: 54.727.
-C1A, O7, C7, C6: 131.802.
-O7, C7, C6, O6: 74.6499.
-C9, C8, C7, O7: 60.0039.
-Setting default shape
-Blocking access via O7, we will search outward from C1A
-Have determined that the following atoms will move:
-O7, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C7, we will search outward from O7
-Have determined that the following atoms will move:
-C7, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C6, we will search outward from C7
-Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, O8, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C7, we will search outward from C8
-Have determined that the following atoms will move:
-C7, C8, H8, C9, H9S, H9R, O9, O8, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between HSA and it's parent BSA, which has linkageLabel: a2-
-Parent atom is O8
-Setting angle between
-parentNeighbor C8   -4.86874,    14.0536,  -0.441616
-parent O8   -5.61252,    12.8051,  -0.301661
-and child C2   -4.93138,    13.9909,  -0.645086
-child residue HSA will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C2_5522:HSA
-C6_5390:HSA
-
-Finding Path between:C2_5522 and C6_5390
-Updated Path between:
- C2_5522 and C6_5390
-C1_5523
-C2_5522
-O8_5401
-C8_5395
-C7_5393
-C6_5390
-O6_5392
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: HSA and BSA
-These are the assigned RotatableDihedrals:
-C1, C2, O8, C8: -124.013.
-C2, O8, C8, C7: -100.667.
-O8, C8, C7, C6: 63.2761.
-C8, C7, C6, O6: -64.89.
-Setting default shape
-Blocking access via O8, we will search outward from C2
-Have determined that the following atoms will move:
-O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, O7, C1, O1A, O1B, 
-Blocking access via C8, we will search outward from O8
-Have determined that the following atoms will move:
-C8, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, O7, C1, O1A, O1B, 
-Blocking access via C7, we will search outward from C8
-Have determined that the following atoms will move:
-C7, C8, H8, C9, H9S, H9R, O9, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, O7, C1, O1A, O1B, 
-Blocking access via C6, we will search outward from C7
-Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, O7, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 0SA and it's parent HSA, which has linkageLabel: a2-8
-Parent atom is O7
-Setting angle between
-parentNeighbor C7   -5.85178,    16.8592,   -3.65898
-parent O7   -7.24093,    16.4842,    -3.9066
-and child C2   -6.55978,    17.6701,   -4.25002
-child residue 0SA will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C2_5217:0SA
-C6_5543:0SA
-
-Finding Path between:C2_5217 and C6_5543
-Updated Path between:
- C2_5217 and C6_5543
-C1_5218
-C2_5217
-O7_5556
-C7_5546
-C6_5543
-O6_5545
-
-Found atoms:
-O9_5553
-C9_5550
-C8_5548
-C7_5546
-O7_5556
-Creating rotatable dihedrals between: 0SA and HSA
-These are the assigned branched RotatableDihedrals:
-O9, C9, C8, C7: -176.9.
-C9, C8, C7, O7: 60.0039.
-Creating rotatable dihedrals between: 0SA and HSA
-These are the assigned RotatableDihedrals:
-C1, C2, O7, C7: 177.637.
-C2, O7, C7, C6: 103.015.
-O7, C7, C6, O6: 74.6499.
-O9, C9, C8, C7: -176.9.
-C9, C8, C7, O7: 60.0039.
-Setting default shape
-Blocking access via O7, we will search outward from C2
-Have determined that the following atoms will move:
-O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
-Blocking access via C7, we will search outward from O7
-Have determined that the following atoms will move:
-C7, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
-Blocking access via C6, we will search outward from C7
-Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
-Blocking access via C8, we will search outward from C9
-Have determined that the following atoms will move:
-C8, C9, H9S, H9R, O9, H9O, 
-Blocking access via C7, we will search outward from C8
-Have determined that the following atoms will move:
-C7, C8, H8, C9, H9S, H9R, O9, H9O, O8, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between BSA and it's parent HSA, which has linkageLabel: a2-8
-Parent atom is O8
-Setting angle between
-parentNeighbor C8   -4.52848,    16.3368,   -4.28916
-parent O8   -3.50236,    17.3682,   -4.16734
-and child C2   -2.82121,     18.554,   -4.51076
-child residue BSA will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C2_5407:BSA
-C6_5543:BSA
-
-Finding Path between:C2_5407 and C6_5543
-Updated Path between:
- C2_5407 and C6_5543
-C1_5408
-C2_5407
-O8_5555
-C8_5548
-C7_5546
-C6_5543
-O6_5545
-
-Found atoms:
-O9_5553
-C9_5550
-C8_5548
-O8_5555
-Creating rotatable dihedrals between: BSA and HSA
-These are the assigned branched RotatableDihedrals:
-O9, C9, C8, O8: 59.9689.
-Creating rotatable dihedrals between: BSA and HSA
-These are the assigned RotatableDihedrals:
-C1, C2, O8, C8: 22.7915.
-C2, O8, C8, C7: -79.3242.
-O8, C8, C7, C6: -56.7239.
-C8, C7, C6, O6: -79.89.
-O9, C9, C8, O8: 59.9689.
-Setting default shape
-Blocking access via O8, we will search outward from C2
-Have determined that the following atoms will move:
-O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, O8, O7, C1, O1A, O1B, 
-Blocking access via C8, we will search outward from O8
-Have determined that the following atoms will move:
-C8, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, O8, O7, C1, O1A, O1B, 
-Blocking access via C7, we will search outward from C8
-Have determined that the following atoms will move:
-C7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, O8, O7, C1, O1A, O1B, 
-Blocking access via C6, we will search outward from C7
-Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, O8, O7, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
-Blocking access via C8, we will search outward from C9
-Have determined that the following atoms will move:
-C8, C9, H9S, H9R, O9, H9O, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between ACX and it's parent BSA, which has linkageLabel: a2-8
+Setting connection between FSA and its parent BSA, the connection has linkageLabel: a2-9
 Parent atom is O9
 Setting angle between
-parentNeighbor C9  -0.808345,    19.1466,   -2.34011
-parent O9   -1.49524,    19.3325,   -1.07789
-and child C1A   -1.41808,    20.6422,   -1.24856
-child residue ACX will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1A_5309:ACX
-C6_5428:ACX
-
-Finding Path between:C1A_5309 and C6_5428
-Updated Path between:
- C1A_5309 and C6_5428
-C2A_5311
-C1A_5309
-O9_5438
-C9_5435
-C8_5433
-C7_5431
-C6_5428
-O6_5430
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: ACX and BSA
-These are the assigned RotatableDihedrals:
-C2A, C1A, O9, C9: 113.054.
-C1A, O9, C9, C8: -105.793.
-O9, C9, C8, C7: -176.9.
-C9, C8, C7, C6: -175.84.
-C8, C7, C6, O6: -50.2401.
-Setting default shape
-Blocking access via O9, we will search outward from C1A
-Have determined that the following atoms will move:
-O9, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C9, we will search outward from O9
-Have determined that the following atoms will move:
-C9, O9, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C8, we will search outward from C9
-Have determined that the following atoms will move:
-C8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C7, we will search outward from C8
-Have determined that the following atoms will move:
-C7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, 
-Blocking access via C6, we will search outward from C7
-Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, O7, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between ACX and it's parent BSA, which has linkageLabel: a2-8
-Parent atom is O7
-Setting angle between
-parentNeighbor C7   -1.04075,    18.3908,   -4.79853
-parent O7  -0.169372,    17.2605,    -4.4907
-and child C1A -0.0922136,    18.5702,   -4.66137
-child residue ACX will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1A_5319:ACX
-C6_5428:ACX
-
-Finding Path between:C1A_5319 and C6_5428
-Updated Path between:
- C1A_5319 and C6_5428
-C2A_5321
-C1A_5319
-O7_5440
-C7_5431
-C6_5428
-O6_5430
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: ACX and BSA
-These are the assigned RotatableDihedrals:
-C2A, C1A, O7, C7: 4.38719.
-C1A, O7, C7, C6: 136.643.
-O7, C7, C6, O6: 64.89.
-Setting default shape
-Blocking access via O7, we will search outward from C1A
-Have determined that the following atoms will move:
-O7, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C7, we will search outward from O7
-Have determined that the following atoms will move:
-C7, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C6, we will search outward from C7
-Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 0SA and it's parent BSA, which has linkageLabel: a2-8
-Parent atom is O8
-Setting angle between
-parentNeighbor C8   -1.77066,    19.0168,   -3.57524
-parent O8   -2.44652,      20.24,   -3.99771
-and child C2   -1.76538,    21.4259,   -4.34113
-child residue 0SA will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C2_5258:0SA
-C6_5428:0SA
-
-Finding Path between:C2_5258 and C6_5428
-Updated Path between:
- C2_5258 and C6_5428
-C1_5259
-C2_5258
-O8_5439
-C8_5433
-C7_5431
-C6_5428
-O6_5430
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: 0SA and BSA
-These are the assigned RotatableDihedrals:
-C1, C2, O8, C8: 163.076.
-C2, O8, C8, C7: -70.7507.
-O8, C8, C7, C6: -60.88.
-C8, C7, C6, O6: -64.89.
-Setting default shape
-Blocking access via O8, we will search outward from C2
-Have determined that the following atoms will move:
-O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
-Blocking access via C8, we will search outward from O8
-Have determined that the following atoms will move:
-C8, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
-Blocking access via C7, we will search outward from C8
-Have determined that the following atoms will move:
-C7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
-Blocking access via C6, we will search outward from C7
-Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between FSA and it's parent BSA, which has linkageLabel: a2-
-Parent atom is O9
-Setting angle between
-parentNeighbor C9   -5.68764,    12.7177, -0.0255017
-parent O9   -7.11605,    12.9386,  -0.127579
-and child C2   -6.43491,    14.1245,  -0.471005
+parentNeighbor C9   -5.37859,    14.7399,   0.876529
+parent O9   -6.81631,    14.6852,    1.04847
+and child C2   -6.13517,     15.871,   0.705049
 child residue FSA will move
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
@@ -4177,11 +3833,11 @@ O6_5392
 These are the assigned branched RotatableDihedrals:
 Creating rotatable dihedrals between: FSA and BSA
 These are the assigned RotatableDihedrals:
-C1, C2, O9, C9: 161.525.
-C2, O9, C9, C8: -0.219828.
+C1, C2, O9, C9: 152.93.
+C2, O9, C9, C8: -121.451.
 O9, C9, C8, C7: -176.9.
-C9, C8, C7, C6: 70.78.
-C8, C7, C6, O6: -61.8.
+C9, C8, C7, C6: -175.84.
+C8, C7, C6, O6: -50.2401.
 Setting default shape
 Blocking access via O9, we will search outward from C2
 Have determined that the following atoms will move:
@@ -4194,13 +3850,13 @@ Have determined that the following atoms will move:
 C8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, O8, C1, O1A, O1B, 
 Blocking access via C7, we will search outward from C8
 Have determined that the following atoms will move:
-C7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, O8, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, 
+C7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, O8, C1, O1A, O1B, O8, 
 Blocking access via C6, we will search outward from C7
 Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, O8, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, O8, C1, O1A, O1B, O8, O7, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between ACX and it's parent FSA, which has linkageLabel: a2-9
+Setting connection between ACX and its parent FSA, the connection has linkageLabel: 9
 Parent atom is O9
 Setting angle between
 parentNeighbor C9   -6.40418,     12.826,    6.51864
@@ -4250,12 +3906,12 @@ Have determined that the following atoms will move:
 C6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between BSA and it's parent FSA, which has linkageLabel: a2-9
+Setting connection between BSA and its parent FSA, the connection has linkageLabel: a2-8
 Parent atom is O8
 Setting angle between
 parentNeighbor C8   -6.97128,    13.7814,    5.43065
-parent O8   -8.40025,    14.0249,    5.60485
-and child C2    -7.7191,    15.2108,    5.26142
+parent O8   -8.40024,    14.0249,    5.60485
+and child C2    -7.7191,    15.2108,    5.26143
 child residue BSA will move
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
@@ -4295,7 +3951,7 @@ Have determined that the following atoms will move:
 C6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, O8, O7, C1, O1A, O1B, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between ACX and it's parent BSA, which has linkageLabel: a2-8
+Setting connection between ACX and its parent BSA, the connection has linkageLabel: 9
 Parent atom is O9
 Setting angle between
 parentNeighbor C9   -11.8265,    16.1031,     5.0891
@@ -4345,7 +4001,7 @@ Have determined that the following atoms will move:
 C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, O7, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between ACX and it's parent BSA, which has linkageLabel: a2-8
+Setting connection between ACX and its parent BSA, the connection has linkageLabel: 8
 Parent atom is O8
 Setting angle between
 parentNeighbor C8   -10.6925,    15.7198,    6.08165
@@ -4390,12 +4046,12 @@ Have determined that the following atoms will move:
 C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between ACX and it's parent BSA, which has linkageLabel: a2-8
+Setting connection between ACX and its parent BSA, the connection has linkageLabel: 7
 Parent atom is O7
 Setting angle between
 parentNeighbor C7   -11.1023,    14.5474,      7.019
 parent O7   -11.6542,    13.4218,    6.27067
-and child C1A   -11.5771,    14.7315,        6.1
+and child C1A   -11.5771,    14.7315,    6.10001
 child residue ACX will move
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
@@ -4430,10 +4086,231 @@ Have determined that the following atoms will move:
 C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Re-determining atoms that need to move for each linkage:
-Blocking access via O1, we will search outward from C2
+Setting connection between HSA and its parent BSA, the connection has linkageLabel: a2-8
+Parent atom is O8
+Setting angle between
+parentNeighbor C8   -4.88709,    13.9539,  -0.372043
+parent O8   -5.27872,    14.6042,   -1.61916
+and child C2   -4.59757,    15.7901,   -1.96259
+child residue HSA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C2_5522:HSA
+C6_5390:HSA
+
+Finding Path between:C2_5522 and C6_5390
+Updated Path between:
+ C2_5522 and C6_5390
+C1_5523
+C2_5522
+O8_5401
+C8_5395
+C7_5393
+C6_5390
+O6_5392
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: HSA and BSA
+These are the assigned RotatableDihedrals:
+C1, C2, O8, C8: -148.622.
+C2, O8, C8, C7: -52.2981.
+O8, C8, C7, C6: -60.88.
+C8, C7, C6, O6: -60.
+Setting default shape
+Blocking access via O8, we will search outward from C2
 Have determined that the following atoms will move:
-O1, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, 
+O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, O7, C1, O1A, O1B, 
+Blocking access via C8, we will search outward from O8
+Have determined that the following atoms will move:
+C8, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, O7, C1, O1A, O1B, 
+Blocking access via C7, we will search outward from C8
+Have determined that the following atoms will move:
+C7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, O7, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from C7
+Have determined that the following atoms will move:
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, O7, C1, O1A, O1B, O7, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between BSA and its parent HSA, the connection has linkageLabel: a2-8
+Parent atom is O8
+Setting angle between
+parentNeighbor C8   -4.87199,    15.7224,   -4.06991
+parent O8   -3.50173,    16.1601,   -3.82016
+and child C2   -2.82058,     17.346,   -4.16359
+child residue BSA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C2_5407:BSA
+C6_5543:BSA
+
+Finding Path between:C2_5407 and C6_5543
+Updated Path between:
+ C2_5407 and C6_5543
+C1_5408
+C2_5407
+O8_5555
+C8_5548
+C7_5546
+C6_5543
+O6_5545
+
+Found atoms:
+O9_5553
+C9_5550
+C8_5548
+O8_5555
+Creating rotatable dihedrals between: BSA and HSA
+These are the assigned branched RotatableDihedrals:
+O9, C9, C8, O8: 63.0689.
+Creating rotatable dihedrals between: BSA and HSA
+These are the assigned RotatableDihedrals:
+C1, C2, O8, C8: -0.66397.
+C2, O8, C8, C7: -49.0913.
+O8, C8, C7, C6: -56.72.
+C8, C7, C6, O6: -50.2401.
+O9, C9, C8, O8: 63.0689.
+Setting default shape
+Blocking access via O8, we will search outward from C2
+Have determined that the following atoms will move:
+O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, O8, O7, C1, O1A, O1B, 
+Blocking access via C8, we will search outward from O8
+Have determined that the following atoms will move:
+C8, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, O8, O7, C1, O1A, O1B, 
+Blocking access via C7, we will search outward from C8
+Have determined that the following atoms will move:
+C7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, O8, O7, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from C7
+Have determined that the following atoms will move:
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, O8, O7, C1, O1A, O1B, O7, 
+Blocking access via C8, we will search outward from C9
+Have determined that the following atoms will move:
+C8, C9, H9S, H9R, O9, H9O, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between ACX and its parent BSA, the connection has linkageLabel: 9
+Parent atom is O9
+Setting angle between
+parentNeighbor C9   -0.80835,    19.1466,    -2.3401
+parent O9   -1.49525,    19.3326,   -1.07787
+and child C1A   -1.41809,    20.6422,   -1.24854
+child residue ACX will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1A_5309:ACX
+C6_5428:ACX
+
+Finding Path between:C1A_5309 and C6_5428
+Updated Path between:
+ C1A_5309 and C6_5428
+C2A_5311
+C1A_5309
+O9_5438
+C9_5435
+C8_5433
+C7_5431
+C6_5428
+O6_5430
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: ACX and BSA
+These are the assigned RotatableDihedrals:
+C2A, C1A, O9, C9: 113.054.
+C1A, O9, C9, C8: -105.793.
+O9, C9, C8, C7: -176.9.
+C9, C8, C7, C6: -175.84.
+C8, C7, C6, O6: -50.2401.
+Setting default shape
+Blocking access via O9, we will search outward from C1A
+Have determined that the following atoms will move:
+O9, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C9, we will search outward from O9
+Have determined that the following atoms will move:
+C9, O9, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C8, we will search outward from C9
+Have determined that the following atoms will move:
+C8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C7, we will search outward from C8
+Have determined that the following atoms will move:
+C7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, 
+Blocking access via C6, we will search outward from C7
+Have determined that the following atoms will move:
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, O7, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0SA and its parent BSA, the connection has linkageLabel: a2-8
+Parent atom is O8
+Setting angle between
+parentNeighbor C8   -1.78051,    18.9033,   -3.52917
+parent O8   -2.54026,    20.1022,   -3.87119
+and child C2   -1.85911,     21.288,   -4.21462
+child residue 0SA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C2_5258:0SA
+C6_5428:0SA
+
+Finding Path between:C2_5258 and C6_5428
+Updated Path between:
+ C2_5258 and C6_5428
+C1_5259
+C2_5258
+O8_5439
+C8_5433
+C7_5431
+C6_5428
+O6_5430
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0SA and BSA
+These are the assigned RotatableDihedrals:
+C1, C2, O8, C8: 159.767.
+C2, O8, C8, C7: -67.535.
+O8, C8, C7, C6: -60.88.
+C8, C7, C6, O6: -60.
+Setting default shape
+Blocking access via O8, we will search outward from C2
+Have determined that the following atoms will move:
+O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C8, we will search outward from O8
+Have determined that the following atoms will move:
+C8, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C7, we will search outward from C8
+Have determined that the following atoms will move:
+C7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from C7
+Have determined that the following atoms will move:
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between ACX and its parent BSA, the connection has linkageLabel: 7
+Parent atom is O7
+Setting angle between
+parentNeighbor C7   -1.04076,    18.3908,   -4.79852
+parent O7  -0.163073,    17.2636,   -4.49717
+and child C1A -0.0859141,    18.5733,   -4.66784
+child residue ACX will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1A_5319:ACX
+C6_5428:ACX
+
+Finding Path between:C1A_5319 and C6_5428
+Updated Path between:
+ C1A_5319 and C6_5428
+C2A_5321
+C1A_5319
+O7_5440
+C7_5431
+C6_5428
+O6_5430
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: ACX and BSA
+These are the assigned RotatableDihedrals:
+C2A, C1A, O7, C7: 3.97053.
+C1A, O7, C7, C6: 136.189.
+O7, C7, C6, O6: 65.29.
+Setting default shape
 Blocking access via O7, we will search outward from C1A
 Have determined that the following atoms will move:
 O7, C1A, O1A, C2A, H1A, H2A, H3A, 
@@ -4442,22 +4319,49 @@ Have determined that the following atoms will move:
 C7, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
 Blocking access via C6, we will search outward from C7
 Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C7, we will search outward from C8
-Have determined that the following atoms will move:
-C7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, 
-Blocking access via O8, we will search outward from C2
-Have determined that the following atoms will move:
-O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, 
-Blocking access via C8, we will search outward from O8
-Have determined that the following atoms will move:
-C8, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, 
-Blocking access via C7, we will search outward from C8
-Have determined that the following atoms will move:
-C7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, 
-Blocking access via C6, we will search outward from C7
-Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0SA and its parent HSA, the connection has linkageLabel: a2-7
+Parent atom is O7
+Setting angle between
+parentNeighbor C7   -5.85178,    16.8592,   -3.65897
+parent O7   -7.15587,    16.2293,   -3.84389
+and child C2   -6.47473,    17.4151,   -4.18732
+child residue 0SA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C2_5217:0SA
+C6_5543:0SA
+
+Finding Path between:C2_5217 and C6_5543
+Updated Path between:
+ C2_5217 and C6_5543
+C1_5218
+C2_5217
+O7_5556
+C7_5546
+C6_5543
+O6_5545
+
+Found atoms:
+O9_5553
+C9_5550
+C8_5548
+C7_5546
+O7_5556
+Creating rotatable dihedrals between: 0SA and HSA
+These are the assigned branched RotatableDihedrals:
+O9, C9, C8, C7: -174.169.
+C9, C8, C7, O7: -53.3761.
+Creating rotatable dihedrals between: 0SA and HSA
+These are the assigned RotatableDihedrals:
+C1, C2, O7, C7: -178.033.
+C2, O7, C7, C6: 110.069.
+O7, C7, C6, O6: 63.09.
+O9, C9, C8, C7: -174.169.
+C9, C8, C7, O7: -53.3761.
+Setting default shape
 Blocking access via O7, we will search outward from C2
 Have determined that the following atoms will move:
 O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
@@ -4473,36 +4377,37 @@ C8, C9, H9S, H9R, O9, H9O,
 Blocking access via C7, we will search outward from C8
 Have determined that the following atoms will move:
 C7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, 
-Blocking access via O8, we will search outward from C2
-Have determined that the following atoms will move:
-O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, 
-Blocking access via C8, we will search outward from O8
-Have determined that the following atoms will move:
-C8, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, 
-Blocking access via C7, we will search outward from C8
-Have determined that the following atoms will move:
-C7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, 
-Blocking access via C6, we will search outward from C7
-Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
-Blocking access via C8, we will search outward from C9
-Have determined that the following atoms will move:
-C8, C9, H9S, H9R, O9, H9O, 
-Blocking access via O9, we will search outward from C1A
-Have determined that the following atoms will move:
-O9, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C9, we will search outward from O9
-Have determined that the following atoms will move:
-C9, O9, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C8, we will search outward from C9
-Have determined that the following atoms will move:
-C8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via C7, we will search outward from C8
-Have determined that the following atoms will move:
-C7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
-Blocking access via C6, we will search outward from C7
-Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between ACX and its parent BSA, the connection has linkageLabel: 7
+Parent atom is O7
+Setting angle between
+parentNeighbor C7   -3.34472,    13.7484,  -0.368312
+parent O7   -2.91594,    13.1858,   0.908846
+and child C1A   -2.83878,    14.4954,   0.738178
+child residue ACX will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1A_5299:ACX
+C6_5390:ACX
+
+Finding Path between:C1A_5299 and C6_5390
+Updated Path between:
+ C1A_5299 and C6_5390
+C2A_5301
+C1A_5299
+O7_5402
+C7_5393
+C6_5390
+O6_5392
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: ACX and BSA
+These are the assigned RotatableDihedrals:
+C2A, C1A, O7, C7: 63.2515.
+C1A, O7, C7, C6: 139.379.
+O7, C7, C6, O6: 63.09.
+Setting default shape
 Blocking access via O7, we will search outward from C1A
 Have determined that the following atoms will move:
 O7, C1A, O1A, C2A, H1A, H2A, H3A, 
@@ -4511,19 +4416,13 @@ Have determined that the following atoms will move:
 C7, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
 Blocking access via C6, we will search outward from C7
 Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
-Blocking access via O8, we will search outward from C2
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Re-determining atoms that need to move for each linkage:
+Blocking access via O1, we will search outward from C2
 Have determined that the following atoms will move:
-O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
-Blocking access via C8, we will search outward from O8
-Have determined that the following atoms will move:
-C8, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
-Blocking access via C7, we will search outward from C8
-Have determined that the following atoms will move:
-C7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
-Blocking access via C6, we will search outward from C7
-Have determined that the following atoms will move:
-C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+O1, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, 
 Blocking access via O9, we will search outward from C2
 Have determined that the following atoms will move:
 O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, 
@@ -4602,6 +4501,93 @@ C7, O7, C1A, O1A, C2A, H1A, H2A, H3A,
 Blocking access via C6, we will search outward from C7
 Have determined that the following atoms will move:
 C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via O8, we will search outward from C2
+Have determined that the following atoms will move:
+O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, 
+Blocking access via C8, we will search outward from O8
+Have determined that the following atoms will move:
+C8, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, 
+Blocking access via C7, we will search outward from C8
+Have determined that the following atoms will move:
+C7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from C7
+Have determined that the following atoms will move:
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via O8, we will search outward from C2
+Have determined that the following atoms will move:
+O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, 
+Blocking access via C8, we will search outward from O8
+Have determined that the following atoms will move:
+C8, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, 
+Blocking access via C7, we will search outward from C8
+Have determined that the following atoms will move:
+C7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from C7
+Have determined that the following atoms will move:
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C8, we will search outward from C9
+Have determined that the following atoms will move:
+C8, C9, H9S, H9R, O9, H9O, 
+Blocking access via O9, we will search outward from C1A
+Have determined that the following atoms will move:
+O9, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C9, we will search outward from O9
+Have determined that the following atoms will move:
+C9, O9, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C8, we will search outward from C9
+Have determined that the following atoms will move:
+C8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C7, we will search outward from C8
+Have determined that the following atoms will move:
+C7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from C7
+Have determined that the following atoms will move:
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via O8, we will search outward from C2
+Have determined that the following atoms will move:
+O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C8, we will search outward from O8
+Have determined that the following atoms will move:
+C8, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C7, we will search outward from C8
+Have determined that the following atoms will move:
+C7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from C7
+Have determined that the following atoms will move:
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via O7, we will search outward from C1A
+Have determined that the following atoms will move:
+O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C7, we will search outward from O7
+Have determined that the following atoms will move:
+C7, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C6, we will search outward from C7
+Have determined that the following atoms will move:
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via O7, we will search outward from C2
+Have determined that the following atoms will move:
+O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C7, we will search outward from O7
+Have determined that the following atoms will move:
+C7, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from C7
+Have determined that the following atoms will move:
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C8, we will search outward from C9
+Have determined that the following atoms will move:
+C8, C9, H9S, H9R, O9, H9O, 
+Blocking access via C7, we will search outward from C8
+Have determined that the following atoms will move:
+C7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, 
+Blocking access via O7, we will search outward from C1A
+Have determined that the following atoms will move:
+O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C7, we will search outward from O7
+Have determined that the following atoms will move:
+C7, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C6, we will search outward from C7
+Have determined that the following atoms will move:
+C6, C7, H7, C8, H8, C9, H9S, H9R, O9, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, O7, H7O, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C1A, O1A, C2A, H1A, H2A, H3A, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, C1, O1A, O1B, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, C1A, O1A, C2A, H1A, H2A, H3A, O8, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, C1, O1A, O1B, O7, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, C1, O1A, O1B, O7, C1A, O1A, C2A, H1A, H2A, H3A, 
 Final overlap resolution
 Overlaps resolved
 Number of residues is 15
@@ -4633,7 +4619,7 @@ WYS will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 6YS and it's parent ROH, which has linkageLabel: 
+Setting connection between 6YS and its parent ROH, the connection has linkageLabel: a1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_6059:6YS
@@ -4657,7 +4643,7 @@ Have determined that the following atoms will move:
 O1, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 3YS and it's parent 6YS, which has linkageLabel: a1-
+Setting connection between 3YS and its parent 6YS, the connection has linkageLabel: a1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   0.270889,    9.66725,    -3.4357
@@ -4697,7 +4683,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 4YS and it's parent 3YS, which has linkageLabel: a1-6
+Setting connection between 4YS and its parent 3YS, the connection has linkageLabel: a1-3
 Parent atom is O3
 Setting angle between
 parentNeighbor C3    3.82278,    12.5546,   -3.22727
@@ -4732,7 +4718,7 @@ Have determined that the following atoms will move:
 C3, O3, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between WYS and it's parent 4YS, which has linkageLabel: a1-3
+Setting connection between WYS and its parent 4YS, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4    3.71286,    16.3685,  -0.335398
@@ -4767,42 +4753,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent WYS, which has linkageLabel: a1-4
-Parent atom is O3
-Setting angle between
-parentNeighbor C3    2.35895,    17.5026,    4.01457
-parent O3    2.53407,    18.0796,    5.34092
-and child S1    3.11448,    19.5551,    5.23646
-child residue SO3 will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-S1_5939:SO3
-C3_6153:SO3
-
-Finding Path between:S1_5939 and C3_6153
-Updated Path between:
- S1_5939 and C3_6153
-O3_5942
-S1_5939
-O3_6166
-C3_6153
-C4_6155
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: SO3 and WYS
-These are the assigned RotatableDihedrals:
-O3, S1, O3, C3: -79.2871.
-S1, O3, C3, C4: -92.1353.
-Setting default shape
-Blocking access via O3, we will search outward from S1
-Have determined that the following atoms will move:
-O3, S1, O1, O2, O3, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following atoms will move:
-C3, O3, S1, O1, O2, O3, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between UYS and it's parent WYS, which has linkageLabel: a1-4
+Setting connection between UYS and its parent WYS, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4    0.91534,    17.8003,    3.54826
@@ -4837,7 +4788,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent UYS, which has linkageLabel: a1-4
+Setting connection between SO3 and its parent UYS, the connection has linkageLabel: 6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -3.94287,     19.006,    3.04407
@@ -4877,7 +4828,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, S1, O1, O2, O3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between QYS and it's parent UYS, which has linkageLabel: a1-4
+Setting connection between QYS and its parent UYS, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4    -3.8037,    17.5668,    5.17157
@@ -4912,7 +4863,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H4, O4, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent QYS, which has linkageLabel: a1-4
+Setting connection between SO3 and its parent QYS, the connection has linkageLabel: 6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -7.56313,    19.9362,    2.81307
@@ -4952,42 +4903,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, S1, O1, O2, O3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent QYS, which has linkageLabel: a1-4
-Parent atom is O3
-Setting angle between
-parentNeighbor C3   -8.15908,    16.2309,    4.03703
-parent O3   -9.41781,    15.5271,     4.2447
-and child S1    -8.8374,    17.0026,    4.14024
-child residue SO3 will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-S1_5963:SO3
-C3_6098:SO3
-
-Finding Path between:S1_5963 and C3_6098
-Updated Path between:
- S1_5963 and C3_6098
-O3_5966
-S1_5963
-O3_6110
-C3_6098
-C4_6100
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: SO3 and QYS
-These are the assigned RotatableDihedrals:
-O3, S1, O3, C3: 0.34939.
-S1, O3, C3, C4: -26.9127.
-Setting default shape
-Blocking access via O3, we will search outward from S1
-Have determined that the following atoms will move:
-O3, S1, O1, O2, O3, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following atoms will move:
-C3, O3, S1, O1, O2, O3, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 0YS and it's parent QYS, which has linkageLabel: a1-4
+Setting connection between 0YS and its parent QYS, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -8.47626,    17.6051,     3.4039
@@ -5022,6 +4938,76 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
+Setting connection between SO3 and its parent QYS, the connection has linkageLabel: 3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -8.15908,    16.2309,    4.03703
+parent O3   -9.41781,    15.5271,     4.2447
+and child S1    -8.8374,    17.0026,    4.14024
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_5963:SO3
+C3_6098:SO3
+
+Finding Path between:S1_5963 and C3_6098
+Updated Path between:
+ S1_5963 and C3_6098
+O3_5966
+S1_5963
+O3_6110
+C3_6098
+C4_6100
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and QYS
+These are the assigned RotatableDihedrals:
+O3, S1, O3, C3: 0.34939.
+S1, O3, C3, C4: -26.9127.
+Setting default shape
+Blocking access via O3, we will search outward from S1
+Have determined that the following atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between SO3 and its parent WYS, the connection has linkageLabel: 3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3    2.35895,    17.5026,    4.01457
+parent O3    2.53407,    18.0796,    5.34092
+and child S1    3.11448,    19.5551,    5.23646
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_5939:SO3
+C3_6153:SO3
+
+Finding Path between:S1_5939 and C3_6153
+Updated Path between:
+ S1_5939 and C3_6153
+O3_5942
+S1_5939
+O3_6166
+C3_6153
+C4_6155
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and WYS
+These are the assigned RotatableDihedrals:
+O3, S1, O3, C3: -79.2871.
+S1, O3, C3, C4: -92.1353.
+Setting default shape
+Blocking access via O3, we will search outward from S1
+Have determined that the following atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
 Re-determining atoms that need to move for each linkage:
 Blocking access via O1, we will search outward from C1
 Have determined that the following atoms will move:
@@ -5047,12 +5033,6 @@ O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, S1, O1, O2, 
 Blocking access via C4, we will search outward from O4
 Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, S1, O1, O2, O3, H4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, S1, O1, O2, O3, H4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, S1, O1, O2, O3, H1, H5, C6, H62, H61, O6, S1, O1, O2, O3, H1, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via O3, we will search outward from S1
-Have determined that the following atoms will move:
-O3, S1, O1, O2, O3, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following atoms will move:
-C3, O3, S1, O1, O2, O3, 
 Blocking access via O4, we will search outward from C1
 Have determined that the following atoms will move:
 O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, S1, O1, O2, O3, H4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, S1, O1, O2, O3, H1, H5, C6, H62, H61, O6, S1, O1, O2, O3, H1, 
@@ -5083,18 +5063,24 @@ C6, O6, S1, O1, O2, O3,
 Blocking access via C5, we will search outward from C6
 Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, S1, O1, O2, O3, 
-Blocking access via O3, we will search outward from S1
-Have determined that the following atoms will move:
-O3, S1, O1, O2, O3, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following atoms will move:
-C3, O3, S1, O1, O2, O3, 
 Blocking access via O4, we will search outward from C1
 Have determined that the following atoms will move:
 O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Blocking access via C4, we will search outward from O4
 Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O3, we will search outward from S1
+Have determined that the following atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, S1, O1, O2, O3, 
+Blocking access via O3, we will search outward from S1
+Have determined that the following atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, S1, O1, O2, O3, 
 Final overlap resolution
 Overlaps resolved
 Number of residues is 12
@@ -5126,7 +5112,7 @@ WYS will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 6YS and it's parent ROH, which has linkageLabel: 
+Setting connection between 6YS and its parent ROH, the connection has linkageLabel: a1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_6554:6YS
@@ -5150,7 +5136,7 @@ Have determined that the following atoms will move:
 O1, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 3YS and it's parent 6YS, which has linkageLabel: a1-
+Setting connection between 3YS and its parent 6YS, the connection has linkageLabel: a1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   0.270889,    9.66725,    -3.4357
@@ -5190,7 +5176,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 4YS and it's parent 3YS, which has linkageLabel: a1-6
+Setting connection between 4YS and its parent 3YS, the connection has linkageLabel: a1-3
 Parent atom is O3
 Setting angle between
 parentNeighbor C3    3.82278,    12.5546,   -3.22727
@@ -5225,7 +5211,7 @@ Have determined that the following atoms will move:
 C3, O3, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between WYS and it's parent 4YS, which has linkageLabel: a1-3
+Setting connection between WYS and its parent 4YS, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4    3.71286,    16.3685,  -0.335398
@@ -5260,42 +5246,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent WYS, which has linkageLabel: a1-4
-Parent atom is O3
-Setting angle between
-parentNeighbor C3    2.35895,    17.5026,    4.01457
-parent O3    2.53407,    18.0796,    5.34092
-and child S1    3.11448,    19.5551,    5.23646
-child residue SO3 will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-S1_6434:SO3
-C3_6648:SO3
-
-Finding Path between:S1_6434 and C3_6648
-Updated Path between:
- S1_6434 and C3_6648
-O3_6437
-S1_6434
-O3_6661
-C3_6648
-C4_6650
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: SO3 and WYS
-These are the assigned RotatableDihedrals:
-O3, S1, O3, C3: -79.2871.
-S1, O3, C3, C4: -92.1353.
-Setting default shape
-Blocking access via O3, we will search outward from S1
-Have determined that the following atoms will move:
-O3, S1, O1, O2, O3, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following atoms will move:
-C3, O3, S1, O1, O2, O3, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between UYS and it's parent WYS, which has linkageLabel: a1-4
+Setting connection between UYS and its parent WYS, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4    0.91534,    17.8003,    3.54826
@@ -5330,7 +5281,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent UYS, which has linkageLabel: a1-4
+Setting connection between SO3 and its parent UYS, the connection has linkageLabel: 6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -3.94287,     19.006,    3.04407
@@ -5370,7 +5321,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, S1, O1, O2, O3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between QYS and it's parent UYS, which has linkageLabel: a1-4
+Setting connection between QYS and its parent UYS, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4    -3.8037,    17.5668,    5.17157
@@ -5405,7 +5356,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H4, O4, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent QYS, which has linkageLabel: a1-4
+Setting connection between SO3 and its parent QYS, the connection has linkageLabel: 6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -7.56313,    19.9362,    2.81307
@@ -5445,42 +5396,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, S1, O1, O2, O3, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between SO3 and it's parent QYS, which has linkageLabel: a1-4
-Parent atom is O3
-Setting angle between
-parentNeighbor C3   -8.15908,    16.2309,    4.03703
-parent O3   -9.41781,    15.5271,     4.2447
-and child S1    -8.8374,    17.0026,    4.14024
-child residue SO3 will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-S1_6458:SO3
-C3_6593:SO3
-
-Finding Path between:S1_6458 and C3_6593
-Updated Path between:
- S1_6458 and C3_6593
-O3_6461
-S1_6458
-O3_6605
-C3_6593
-C4_6595
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: SO3 and QYS
-These are the assigned RotatableDihedrals:
-O3, S1, O3, C3: 0.34939.
-S1, O3, C3, C4: -26.9127.
-Setting default shape
-Blocking access via O3, we will search outward from S1
-Have determined that the following atoms will move:
-O3, S1, O1, O2, O3, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following atoms will move:
-C3, O3, S1, O1, O2, O3, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 0YS and it's parent QYS, which has linkageLabel: a1-4
+Setting connection between 0YS and its parent QYS, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -8.47626,    17.6051,     3.4039
@@ -5515,6 +5431,76 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
+Setting connection between SO3 and its parent QYS, the connection has linkageLabel: 3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -8.15908,    16.2309,    4.03703
+parent O3   -9.41781,    15.5271,     4.2447
+and child S1    -8.8374,    17.0026,    4.14024
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_6458:SO3
+C3_6593:SO3
+
+Finding Path between:S1_6458 and C3_6593
+Updated Path between:
+ S1_6458 and C3_6593
+O3_6461
+S1_6458
+O3_6605
+C3_6593
+C4_6595
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and QYS
+These are the assigned RotatableDihedrals:
+O3, S1, O3, C3: 0.34939.
+S1, O3, C3, C4: -26.9127.
+Setting default shape
+Blocking access via O3, we will search outward from S1
+Have determined that the following atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between SO3 and its parent WYS, the connection has linkageLabel: 3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3    2.35895,    17.5026,    4.01457
+parent O3    2.53407,    18.0796,    5.34092
+and child S1    3.11448,    19.5551,    5.23646
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+S1_6434:SO3
+C3_6648:SO3
+
+Finding Path between:S1_6434 and C3_6648
+Updated Path between:
+ S1_6434 and C3_6648
+O3_6437
+S1_6434
+O3_6661
+C3_6648
+C4_6650
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: SO3 and WYS
+These are the assigned RotatableDihedrals:
+O3, S1, O3, C3: -79.2871.
+S1, O3, C3, C4: -92.1353.
+Setting default shape
+Blocking access via O3, we will search outward from S1
+Have determined that the following atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
 Re-determining atoms that need to move for each linkage:
 Blocking access via O1, we will search outward from C1
 Have determined that the following atoms will move:
@@ -5540,12 +5526,6 @@ O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, S1, O1, O2, 
 Blocking access via C4, we will search outward from O4
 Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, S1, O1, O2, O3, H4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, S1, O1, O2, O3, H4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, S1, O1, O2, O3, H1, H5, C6, H62, H61, O6, S1, O1, O2, O3, H1, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via O3, we will search outward from S1
-Have determined that the following atoms will move:
-O3, S1, O1, O2, O3, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following atoms will move:
-C3, O3, S1, O1, O2, O3, 
 Blocking access via O4, we will search outward from C1
 Have determined that the following atoms will move:
 O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, S1, O1, O2, O3, H4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, S1, O1, O2, O3, H1, H5, C6, H62, H61, O6, S1, O1, O2, O3, H1, 
@@ -5576,18 +5556,24 @@ C6, O6, S1, O1, O2, O3,
 Blocking access via C5, we will search outward from C6
 Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, S1, O1, O2, O3, 
-Blocking access via O3, we will search outward from S1
-Have determined that the following atoms will move:
-O3, S1, O1, O2, O3, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following atoms will move:
-C3, O3, S1, O1, O2, O3, 
 Blocking access via O4, we will search outward from C1
 Have determined that the following atoms will move:
 O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Blocking access via C4, we will search outward from O4
 Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, N2, H2N, S1, O1S, O2S, O3S, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O3, we will search outward from S1
+Have determined that the following atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, S1, O1, O2, O3, 
+Blocking access via O3, we will search outward from S1
+Have determined that the following atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, S1, O1, O2, O3, 
 Final overlap resolution
 Overlaps resolved
 Number of residues is 12
@@ -5613,7 +5599,7 @@ XMA will be read in 2 times.
 
 On to setting 3d structure!
 
-Setting connection between XMA and it's parent ROH, which has linkageLabel: 
+Setting connection between XMA and its parent ROH, the connection has linkageLabel: a1-
 Finding rotatable dihedrals and applying metadata.
 cycle point atoms are:
 C1_7182:XMA
@@ -5637,42 +5623,7 @@ Have determined that the following atoms will move:
 O1, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0fA and it's parent XMA, which has linkageLabel: a1-
-Parent atom is O2
-Setting angle between
-parentNeighbor C2   -4.69515,    9.66138,   -4.77756
-parent O2   -4.02004,    9.24401,   -6.00178
-and child C1     -3.917,    10.7001,   -5.97622
-child residue 0fA will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1_6951:0fA
-C2_7184:0fA
-
-Finding Path between:C1_6951 and C2_7184
-Updated Path between:
- C1_6951 and C2_7184
-C2_6968
-C1_6951
-O2_7201
-C2_7184
-C1_7182
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: 0fA and XMA
-These are the assigned RotatableDihedrals:
-C2, C1, O2, C2: -63.2798.
-C1, O2, C2, C1: -124.457.
-Setting default shape
-Blocking access via O2, we will search outward from C1
-Have determined that the following atoms will move:
-O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 4GA and it's parent XMA, which has linkageLabel: a1-
+Setting connection between 4GA and its parent XMA, the connection has linkageLabel: a1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6    -5.9895,    5.59899,   -3.72239
@@ -5712,7 +5663,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between XMA and it's parent 4GA, which has linkageLabel: a1-6
+Setting connection between XMA and its parent 4GA, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4    -6.9361,    2.28475,   -7.02638
@@ -5747,42 +5698,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0fA and it's parent XMA, which has linkageLabel: a1-4
-Parent atom is O2
-Setting angle between
-parentNeighbor C2   -8.57244,   0.873576,   -10.1466
-parent O2    -8.4242,  -0.528474,    -10.522
-and child C1   -8.32117,   0.927662,   -10.4964
-child residue 0fA will move
-Finding rotatable dihedrals and applying metadata.
-cycle point atoms are:
-C1_6976:0fA
-C2_7208:0fA
-
-Finding Path between:C1_6976 and C2_7208
-Updated Path between:
- C1_6976 and C2_7208
-C2_6993
-C1_6976
-O2_7225
-C2_7208
-C1_7206
-
-These are the assigned branched RotatableDihedrals:
-Creating rotatable dihedrals between: 0fA and XMA
-These are the assigned RotatableDihedrals:
-C2, C1, O2, C2: -58.1685.
-C1, O2, C2, C1: -126.478.
-Setting default shape
-Blocking access via O2, we will search outward from C1
-Have determined that the following atoms will move:
-O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
-Wiggling what we have
-Atomic overlaps resolved with parent
-Setting connection between 4GA and it's parent XMA, which has linkageLabel: a1-4
+Setting connection between 4GA and its parent XMA, the connection has linkageLabel: a1-6
 Parent atom is O6
 Setting angle between
 parentNeighbor C6   -11.4634,  0.0459149,   -6.94516
@@ -5822,7 +5738,7 @@ Have determined that the following atoms will move:
 C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 2GA and it's parent 4GA, which has linkageLabel: a1-6
+Setting connection between 2GA and its parent 4GA, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -14.4931,   -3.63939,   -7.13457
@@ -5857,7 +5773,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 4GA and it's parent 2GA, which has linkageLabel: a1-4
+Setting connection between 4GA and its parent 2GA, the connection has linkageLabel: a1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2   -17.1645,   -5.86823,   -8.66956
@@ -5892,7 +5808,7 @@ Have determined that the following atoms will move:
 C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 4GA and it's parent 4GA, which has linkageLabel: a1-2
+Setting connection between 4GA and its parent 4GA, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -16.7906,   -9.90023,   -11.5281
@@ -5927,7 +5843,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 4GA and it's parent 4GA, which has linkageLabel: a1-4
+Setting connection between 4GA and its parent 4GA, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -19.5298,   -12.4763,   -14.8149
@@ -5962,7 +5878,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 4GA and it's parent 4GA, which has linkageLabel: a1-4
+Setting connection between 4GA and its parent 4GA, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -24.2753,   -13.7259,   -15.7429
@@ -5997,7 +5913,7 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0GA and it's parent 4GA, which has linkageLabel: a1-4
+Setting connection between 0GA and its parent 4GA, the connection has linkageLabel: a1-4
 Parent atom is O4
 Setting angle between
 parentNeighbor C4   -28.5307,   -14.7658,   -13.3447
@@ -6032,16 +5948,80 @@ Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Re-determining atoms that need to move for each linkage:
-Blocking access via O1, we will search outward from C1
-Have determined that the following atoms will move:
-O1, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H1, H5, C6, H62, H61, O6, H6O, H1, H1, 
+Setting connection between 0fA and its parent XMA, the connection has linkageLabel: a1-2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   -8.57244,   0.873576,   -10.1466
+parent O2    -8.4242,  -0.528474,    -10.522
+and child C1   -8.32117,   0.927662,   -10.4964
+child residue 0fA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_6976:0fA
+C2_7208:0fA
+
+Finding Path between:C1_6976 and C2_7208
+Updated Path between:
+ C1_6976 and C2_7208
+C2_6993
+C1_6976
+O2_7225
+C2_7208
+C1_7206
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0fA and XMA
+These are the assigned RotatableDihedrals:
+C2, C1, O2, C2: -58.1685.
+C1, O2, C2, C1: -126.478.
+Setting default shape
 Blocking access via O2, we will search outward from C1
 Have determined that the following atoms will move:
 O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Blocking access via C2, we will search outward from O2
 Have determined that the following atoms will move:
 C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0fA and its parent XMA, the connection has linkageLabel: a1-2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   -4.69515,    9.66138,   -4.77756
+parent O2   -4.02004,    9.24401,   -6.00178
+and child C1     -3.917,    10.7001,   -5.97622
+child residue 0fA will move
+Finding rotatable dihedrals and applying metadata.
+cycle point atoms are:
+C1_6951:0fA
+C2_7184:0fA
+
+Finding Path between:C1_6951 and C2_7184
+Updated Path between:
+ C1_6951 and C2_7184
+C2_6968
+C1_6951
+O2_7201
+C2_7184
+C1_7182
+
+These are the assigned branched RotatableDihedrals:
+Creating rotatable dihedrals between: 0fA and XMA
+These are the assigned RotatableDihedrals:
+C2, C1, O2, C2: -63.2798.
+C1, O2, C2, C1: -124.457.
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Re-determining atoms that need to move for each linkage:
+Blocking access via O1, we will search outward from C1
+Have determined that the following atoms will move:
+O1, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H1, H5, C6, H62, H61, O6, H6O, H1, H1, 
 Blocking access via O6, we will search outward from C1
 Have determined that the following atoms will move:
 O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H1, H5, C6, H62, H61, O6, H6O, H1, 
@@ -6057,12 +6037,6 @@ O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H6
 Blocking access via C4, we will search outward from O4
 Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H1, 
-Blocking access via O2, we will search outward from C1
-Have determined that the following atoms will move:
-O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following atoms will move:
-C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Blocking access via O6, we will search outward from C1
 Have determined that the following atoms will move:
 O6, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H5, C6, H62, H61, O6, H6O, H1, 
@@ -6108,6 +6082,18 @@ O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, 
 Blocking access via C4, we will search outward from O4
 Have determined that the following atoms will move:
 C4, O4, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Final overlap resolution
 Overlaps resolved
 Number of residues is 13
@@ -6151,7 +6137,7 @@ OME will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 5AD and it's parent OME, which has linkageLabel: 
+Setting connection between 5AD and its parent OME, the connection has linkageLabel: a1-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -6180,7 +6166,7 @@ Have determined that the following atoms will move:
 O, C1, O4, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, C5, H52, H51, O5, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 3AD and it's parent 5AD, which has linkageLabel: a1-
+Setting connection between 3AD and its parent 5AD, the connection has linkageLabel: a1-5
 Parent atom is O5
 Setting angle between
 parentNeighbor C5    1.40183,    7.22385,   -1.37272
@@ -6220,7 +6206,7 @@ Have determined that the following atoms will move:
 C4, C5, H52, H51, O5, C1, O4, C4, C3, C2, H2, O2, H2O, H3, O3, H4, C5, H52, H51, O5, H5O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 2AD and it's parent 3AD, which has linkageLabel: a1-5
+Setting connection between 2AD and its parent 3AD, the connection has linkageLabel: a1-3
 Parent atom is O3
 Setting angle between
 parentNeighbor C3    2.84699,    10.7722,   -4.42555
@@ -6255,7 +6241,7 @@ Have determined that the following atoms will move:
 C3, O3, C1, O4, C4, C3, C2, H2, O2, H3, O3, H3O, H4, C5, H52, H51, O5, H5O, H1, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 0AU and it's parent 2AD, which has linkageLabel: a1-3
+Setting connection between 0AU and its parent 2AD, the connection has linkageLabel: b1-2
 Parent atom is O2
 Setting angle between
 parentNeighbor C2    1.89994,    13.1362,   -7.40586
@@ -6338,7 +6324,7 @@ Found query residue: 8KO
 
 On to setting 3d structure!
 
-Setting connection between 7Ko and it's parent OME, which has linkageLabel: 
+Setting connection between 7Ko and its parent OME, the connection has linkageLabel: b2-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -6367,7 +6353,7 @@ Have determined that the following atoms will move:
 O, C2, C3, C4, C5, C6, O6, H6, C7, H7, C8, H81, H82, O8, H8O, O7, H5, O5, H5O, H4, O4, H4O, H3E, H3A, C1, O1B, O1A, 
 Wiggling what we have
 Atomic overlaps resolved with parent
-Setting connection between 9Kn and it's parent 7Ko, which has linkageLabel: b2-
+Setting connection between 9Kn and its parent 7Ko, the connection has linkageLabel: b2-7
 Parent atom is O7
 Setting angle between
 parentNeighbor C7   -5.54841,    5.48694,   -2.54911
@@ -6420,7 +6406,7 @@ Found query residue: 0KO
 
 On to setting 3d structure!
 
-Setting connection between 0KO and it's parent OME, which has linkageLabel: 
+Setting connection between 0KO and its parent OME, the connection has linkageLabel: a2-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -6470,7 +6456,7 @@ Found query residue: 0Ko
 
 On to setting 3d structure!
 
-Setting connection between 0Ko and it's parent OME, which has linkageLabel: 
+Setting connection between 0Ko and its parent OME, the connection has linkageLabel: b2-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -6520,7 +6506,7 @@ Found query residue: 0KN
 
 On to setting 3d structure!
 
-Setting connection between 0KN and it's parent OME, which has linkageLabel: 
+Setting connection between 0KN and its parent OME, the connection has linkageLabel: a2-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -6570,7 +6556,7 @@ Found query residue: 0Kn
 
 On to setting 3d structure!
 
-Setting connection between 0Kn and it's parent OME, which has linkageLabel: 
+Setting connection between 0Kn and its parent OME, the connection has linkageLabel: b2-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -6620,7 +6606,7 @@ OME will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 0SA and it's parent OME, which has linkageLabel: 
+Setting connection between 0SA and its parent OME, the connection has linkageLabel: a2-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805
@@ -6670,7 +6656,7 @@ OME will be read in 1 times.
 
 On to setting 3d structure!
 
-Setting connection between 0SB and it's parent OME, which has linkageLabel: 
+Setting connection between 0SB and its parent OME, the connection has linkageLabel: b2-
 Setting angle between
 parentNeighbor CH3    -3.7796,    5.77353,    -1.9247
 parent O   -3.06332,    5.51392,   -3.09805

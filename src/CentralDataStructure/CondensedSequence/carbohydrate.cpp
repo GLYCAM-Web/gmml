@@ -1,4 +1,4 @@
-#include "includes/InputSet/CondensedSequence/carbohydrate.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeAglyconeInfo.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp" // To get glycam name for ParsedResidue
@@ -18,11 +18,11 @@
 #include <cctype> // isDigit
 
 //using Abstract::absResidue; // For Residue::Type
-using CondensedSequence::Carbohydrate;
+using cdsCondensedSequence::Carbohydrate;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-// Note: SequenceManipulator constructor can throw. Hmm.
+// ToDo: SequenceManipulator constructor can throw. Hmm.
 Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) : SequenceManipulator{inputSequence}
 {
     try
@@ -35,12 +35,12 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
         for( auto &cdsResidue: this->getResidues() )
         {
             // Move atoms from prep file into parsedResidues.
-            if (cdsResidue->GetType() != Abstract::ResidueType::Deoxy)
+            if (cdsResidue->GetType() != cds::ResidueType::Deoxy)
             {
                 ParsedResidue* parsedResidue = static_cast<ParsedResidue*>(cdsResidue);
                 this->MoveAtomsFromPrepResidueToParsedResidue(glycamPrepFileSelect, parsedResidue);
                 // Deal with adjusting charges for derivatives
-                if (parsedResidue->GetType() == Abstract::ResidueType::Derivative)
+                if (parsedResidue->GetType() == cds::ResidueType::Derivative)
                 {
                     this->DerivativeChargeAdjustment(parsedResidue);
                 }
@@ -51,22 +51,23 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
         // Apply any deoxy
         for( auto &cdsResidue: this->getResidues() )
         {
-            if( cdsResidue->GetType() == Abstract::ResidueType::Deoxy)
+            if( cdsResidue->GetType() == cds::ResidueType::Deoxy)
             {
                 this->ApplyDeoxy(static_cast<ParsedResidue*>(cdsResidue));
             }
         }
         std::cout << "\n\n\nOn to setting 3d structure!\n\n";
         // Set 3D structure
-        for( auto &cdsResidue: this->getResidues() )
-        {
-            for( auto &parentNeighbor : cdsResidue->getParents()) //
-            {
-                std::cout << "Setting connection between " << cdsResidue->getName() << " and it's parent " << parentNeighbor->getName() << ", which has linkageLabel: "
-                        << static_cast<ParsedResidue*>(parentNeighbor)->GetLinkageName() << "\n";
-                this->ConnectAndSetGeometry(cdsResidue, parentNeighbor);
-            }
-        }
+        this->DepthFirstSetConnectivityAndGeometry(this->GetTerminal()); // recurve start with terminal
+//        for( auto &cdsResidue: this->getResidues() )
+//        {
+//            for( auto &parentNeighbor : cdsResidue->getParents()) //
+//            {
+//                std::cout << "Setting connection between " << cdsResidue->getName() << " and its parent " << parentNeighbor->getName() << ", the connection has linkageLabel: "
+//                        << static_cast<ParsedResidue*>(parentNeighbor)->GetLinkageName() << "\n";
+//                this->ConnectAndSetGeometry(cdsResidue, parentNeighbor);
+//            }
+//        }
         // Set torsions now that everything is attached and the molecule is whole.
         //        for( auto &cdsResidue: this->getResidues() )
         //        {
@@ -94,7 +95,7 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
         std::cout << "Final overlap resolution" << std::endl;
         this->ResolveOverlaps();
         std::cout << "Overlaps resolved" << std::endl;
-        std::cout << "Number of residues is " << this->getResidues().size() << "\n";
+        std::cout << "Number of residues is " << this->GetResidueCount() << "\n";
     }
     catch(const std::string &exceptionMessage)
     {
@@ -165,6 +166,24 @@ void Carbohydrate::Generate3DStructureFiles(std::string fileOutputDirectory, std
     }
 }
 
+std::string Carbohydrate::GetNumberOfShapes(bool likelyShapesOnly)
+{
+    if ( this->CountShapes(likelyShapesOnly) > 4294967296 )
+    {
+        return ">2^32";
+    }
+    return std::to_string(this->CountShapes(likelyShapesOnly));
+}
+
+unsigned long int Carbohydrate::CountShapes(bool likelyShapesOnly)
+{
+    unsigned long long int numberOfShapes = 1;
+    for(auto &linkage : this->GetGlycosidicLinkages())
+    {
+        numberOfShapes = (numberOfShapes * linkage.GetNumberOfShapes(likelyShapesOnly));
+    }
+    return numberOfShapes;
+}
 //////////////////////////////////////////////////////////
 //                  PRIVATE FUNCTIONS                   //
 //////////////////////////////////////////////////////////
@@ -227,7 +246,7 @@ void Carbohydrate::EnsureIntegralCharge(double charge)
 
 void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residue* parentResidue)
 {
-    using Abstract::ResidueType;
+    using cds::ResidueType;
     using cds::Atom;
     std::string linkageLabel = static_cast<ParsedResidue*>(childResidue)->GetLinkageName();
     gmml::log(__LINE__,__FILE__,gmml::INF, "Here with child " + childResidue->getId() + " and parent: " + parentResidue->getId() + " and linkageLabel: " + linkageLabel);
@@ -347,7 +366,7 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
 }
 
 // Gonna choke on cyclic glycans. Add a check for IsVisited when that is required.
-void Carbohydrate::FigureOutResidueLinkages(cds::Residue* from_this_residue1, cds::Residue* to_this_residue2)
+void Carbohydrate::DepthFirstSetConnectivityAndGeometry(cds::Residue* currentParent)
 {
     //MolecularModeling::ResidueVector neighbors = to_this_residue2->GetNode()->GetResidueNeighbors();
 
@@ -356,7 +375,7 @@ void Carbohydrate::FigureOutResidueLinkages(cds::Residue* from_this_residue1, cd
     // Should not be done this way, need a generic graph structure and then to centralize everything.
     //MolecularModeling::ResidueVector neighbors = selection::SortResidueNeighborsByAcendingConnectionAtomNumber(to_this_residue2->GetNode()->GetResidueNodeConnectingAtoms());
     // End addtional sorting code.
-    /* Breath first code */
+    // Breath first code
     // for(auto &neighbor : neighbors)
     // {
     //     if(neighbor->GetIndex() != from_this_residue1->GetIndex()) // If not the previous residue
@@ -364,18 +383,17 @@ void Carbohydrate::FigureOutResidueLinkages(cds::Residue* from_this_residue1, cd
     //         residue_linkages->emplace_back(neighbor, to_this_residue2);
     //     }
     // }
-    /* End Breath first code */
-    for(auto &neighbor : to_this_residue2->getChildren())
+    // End Breath first code
+    for(auto &child : currentParent->getChildren())
     {
-        if(neighbor->getIndex() != from_this_residue1->getIndex())
-        {
-            glycosidicLinkages_.emplace_back(neighbor, to_this_residue2); // Depth first. For Breath first remove this line, and comment out above.
-            this->FigureOutResidueLinkages(to_this_residue2, neighbor);
-        }
+        //glycosidicLinkages_.emplace_back(neighbor, to_this_residue2); // Depth first. For Breath first remove this line, and comment out above.
+        std::cout << "Setting connection between " << child->getName() << " and its parent " << currentParent->getName() << ", the connection has linkageLabel: "
+         << static_cast<ParsedResidue*>(child)->GetLinkageName() << "\n";
+        this->ConnectAndSetGeometry(child, currentParent);
+        this->DepthFirstSetConnectivityAndGeometry(child);
     }
     return;
 }
-
 
 std::vector<std::string> Carbohydrate::GetGlycamNamesOfResidues() const
 {
@@ -383,7 +401,7 @@ std::vector<std::string> Carbohydrate::GetGlycamNamesOfResidues() const
     std::cout << "Glycam names are: ";
     for(auto &residue : this->getResidues())
     {
-        if (residue->GetType() != Abstract::ResidueType::Deoxy)
+        if (residue->GetType() != cds::ResidueType::Deoxy)
         {
             names.push_back(this->GetGlycamResidueName(static_cast<ParsedResidue*>(residue)));
             std::cout << names.back() << ", ";
@@ -393,16 +411,15 @@ std::vector<std::string> Carbohydrate::GetGlycamNamesOfResidues() const
     return names;
 }
 
-
 std::string Carbohydrate::GetGlycamResidueName(ParsedResidue *residue) const
 {
-    if (residue->GetType() == Abstract::ResidueType::Deoxy)
+    if (residue->GetType() == cds::ResidueType::Deoxy)
     {
-        gmml::log(__LINE__, __FILE__, gmml::WAR, "Bad idea: We asked for Glycam Residue Name of a deoxy type residuw with name: " + residue->GetResidueName());
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "Bad idea: We asked for Glycam Residue Name of a deoxy type residue (e.g. the 6D of Glc[6D]) with name: " + residue->GetResidueName());
         return "";
     }
     std::string linkages = "";
-    if (residue->GetType() == Abstract::ResidueType::Sugar)
+    if (residue->GetType() == cds::ResidueType::Sugar)
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "Checking for glycosidic linkages that connect to " + residue->GetResidueName());
         linkages = residue->GetChildLinkagesForGlycamResidueNaming();
@@ -431,4 +448,3 @@ void Carbohydrate::ResolveOverlaps()
     }
     return;
 }
-

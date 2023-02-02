@@ -1,11 +1,13 @@
-#ifndef GMML_INPUTSET_CONDENSED_SEQUENCE_PARSED_RESIDUE_HPP
-#define GMML_INPUTSET_CONDENSED_SEQUENCE_PARSED_RESIDUE_HPP
+#ifndef GMML_CENTRALDATASTRUCTURE_CONDENSEDSEQUENCE_PARSEDRESIDUE_HPP
+#define GMML_CENTRALDATASTRUCTURE_CONDENSEDSEQUENCE_PARSEDRESIDUE_HPP
 
 #include "includes/CentralDataStructure/residue.hpp"
 #include "includes/CentralDataStructure/atom.hpp"
 #include <string>
-namespace CondensedSequence
+
+namespace cdsCondensedSequence
 {
+using cds::ResidueType;
 //	class ParsedResidue : public Abstract::absResidue , public glygraph::Node<ParsedResidue>
 class ParsedResidue : public cds::Residue
 	{
@@ -13,8 +15,8 @@ class ParsedResidue : public cds::Residue
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
-        ParsedResidue(std::string residueString, Abstract::ResidueType specifiedType = Abstract::ResidueType::Undefined);
-        ParsedResidue(std::string residueString, ParsedResidue* neighbor, Abstract::ResidueType specifiedType = Abstract::ResidueType::Undefined);
+        ParsedResidue(std::string residueString, ResidueType specifiedType = ResidueType::Undefined);
+        ParsedResidue(std::string residueString, ParsedResidue* neighbor, ResidueType specifiedType = ResidueType::Undefined);
         ~ParsedResidue() {}// std::cout << "ParsedResidue dtor for " << this->getName() << ", ";}
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
@@ -58,7 +60,7 @@ class ParsedResidue : public cds::Residue
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        void ParseResidueStringIntoComponents(std::string residueString, Abstract::ResidueType specifiedType = Abstract::ResidueType::Undefined);
+        void ParseResidueStringIntoComponents(std::string residueString, ResidueType specifiedType = ResidueType::Undefined);
         void ExciseRingShapeFromModifier();
         //////////////////////////////////////////////////////////
         //                       MUTATORS                       //
