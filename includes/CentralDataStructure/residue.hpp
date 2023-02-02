@@ -75,7 +75,7 @@ private:
     std::string name_ = "   ";
     Coordinate geometricCenter_;
     ResidueType type_ = Undefined;  // enum Type. See enum above.
-    unsigned int number_ = constants::iNotSet;
+    unsigned int number_ = 1; //constants::iNotSet; ToDo: For prep residues a default 1 value is good. Is there a reason not to?
 };
 } // namespace
 #endif // INCLUDES_CENTRALDATASTRUCTURE_RESIDUE_HPP
