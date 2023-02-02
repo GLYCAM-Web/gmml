@@ -1,5 +1,4 @@
 #include "includes/CentralDataStructure/residue.hpp"
-
 #include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/constants.hpp" // sNotSet
@@ -19,6 +18,28 @@ Residue::Residue(const std::string& residueName, const Residue *referenceResidue
     this->setNumber(referenceResidue->getNumber() + 1);
     this->determineType(residueName);
 }
+// Move Ctor.
+Residue::Residue(Residue&& other) noexcept : Residue()
+{
+    swap(*this, other);
+}
+
+// Copy Ctor. Using copy-swap idiom. Call the base class copy ctor.
+Residue::Residue(const Residue& other) //: glygraph::Node<cds::Residue>(other)
+: number_(other.number_), name_(other.name_), geometricCenter_(other.geometricCenter_)
+{
+    for (auto& atom : other.getAtoms())
+    {
+        atoms_.push_back(std::make_unique<Atom>(*atom));
+    }
+    std::cout << "cds::Residue Copy ctor complete" << std::endl;
+}
+
+Residue& Residue::operator=(Residue other) {
+   // Swap the contents of the current object with the contents of the other object
+   swap(*this, other);
+   return *this;
+ }
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
@@ -181,3 +202,4 @@ void Residue::Print(std::ostream& out) const
     }
     std::cout << "\n";
 }
+

@@ -8,6 +8,7 @@
 
 #include <vector>
 #include <memory> // unique_ptr
+#include <algorithm> //swap
 
 using cds::Coordinate;
 
@@ -21,7 +22,10 @@ public:
     //////////////////////////////////////////////////////////
     Residue() {} //{std::cout << "Residue default ctor\n";}
     Residue(const std::string& residueName, const Residue *referenceResidue);
-    virtual ~Residue() {} //std::cout << "cdsResidue Dtor for " << this->getName() << "\n";}
+    Residue(Residue&& other) noexcept;     // Move Ctor
+    Residue(const Residue& other);         // Copy Ctor
+    Residue& operator=(Residue other);     // Move & Copy assignment operator.
+    virtual ~Residue() {}                  // Dtor, virtual so that derived classes dtors will get triggered if possible.
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
@@ -63,7 +67,21 @@ public:
     virtual bool operator != (const Residue& rhs) const { return (this->getIndex() != rhs.getIndex());}
     virtual bool operator > (const Residue& rhs) const { return (this->getNumber() > rhs.getNumber());}
     virtual bool operator < (const Residue& rhs) const { return (this->getNumber() < rhs.getNumber());}
+    //////////////////////////////////////////////////////////
+    //               Copy-Swap                    //
+    //////////////////////////////////////////////////////////
+    friend void swap(Residue& lhs, Residue& rhs)
+    {
+        std::cout << "Swapping" << std::endl;
+        using std::swap;
+        swap(lhs.atoms_, rhs.atoms_);
+        swap(lhs.number_, rhs.number_);
+        swap(lhs.name_, rhs.name_);
+        swap(lhs.geometricCenter_, rhs.geometricCenter_);
+        std::cout << "Swapped" << std::endl;
+    }
 private:
+
     //////////////////////////////////////////////////////////
     //                    ATTRIBUTES                        //
     //////////////////////////////////////////////////////////
