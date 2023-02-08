@@ -319,6 +319,7 @@ void Coordinate::RotateTorsionalAll(CoordinateVector coordinate_set, double tors
 Coordinate* Coordinate::ConvertInternalCoordinate2CartesianCoordinate(
             CoordinateVector coordinate_list, double distance, double angle, double torsion)
 {
+    //std::stringstream logss;
         if(coordinate_list.size() == 0)
         {
             Coordinate* coordinate = new Coordinate();
@@ -339,101 +340,94 @@ Coordinate* Coordinate::ConvertInternalCoordinate2CartesianCoordinate(
         else
         {
 //! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented. 
-// std::cout << "Internal to Cartesian.  distance, angle and torsion are:  " << distance << " " << angle << " " << torsion << std::endl;
+            //logss << "Internal to Cartesian.  distance, angle and torsion are:  " << distance << " " << angle << " " << torsion << "\n";
             if (torsion < 0.0 ) torsion += 360.0 ;
             torsion = gmml::PI_DEGREE - torsion;
-// std::cout << "      torsion is now:  " << torsion << std::endl;
-
+//logss << "      torsion is now:  " << torsion << "\n";
             Coordinate great_grandparent_vector = Coordinate(coordinate_list.at(0)->GetX(), coordinate_list.at(0)->GetY(), coordinate_list.at(0)->GetZ());
             Coordinate grandparent_vector = Coordinate(coordinate_list.at(1)->GetX(), coordinate_list.at(1)->GetY(), coordinate_list.at(1)->GetZ());
             Coordinate parent_vector = Coordinate(coordinate_list.at(2)->GetX(), coordinate_list.at(2)->GetY(), coordinate_list.at(2)->GetZ());
-
-// std::cout << "   The three coords are:  " << std::endl;
-// std::cout << "      Parent:  " << std::endl;
-// std::cout << "         X  :  " << parent_vector.GetX() << std::endl;
-// std::cout << "         Y  :  " << parent_vector.GetY() << std::endl;
-// std::cout << "         Z  :  " << parent_vector.GetZ() << std::endl;
-// std::cout << "      G Parent:  " << std::endl;
-// std::cout << "         X  :  " << grandparent_vector.GetX() << std::endl;
-// std::cout << "         Y  :  " << grandparent_vector.GetY() << std::endl;
-// std::cout << "         Z  :  " << grandparent_vector.GetZ() << std::endl;
-// std::cout << "      G G Parent:  " << std::endl;
-// std::cout << "         X  :  " << great_grandparent_vector.GetX() << std::endl;
-// std::cout << "         Y  :  " << great_grandparent_vector.GetY() << std::endl;
-// std::cout << "         Z  :  " << great_grandparent_vector.GetZ() << std::endl;
-
-
+//logss << "   The three coords are:  " << "\n";
+//logss << "      Parent:  " << "\n";
+//logss << "         X  :  " << parent_vector.GetX() << "\n";
+//logss << "         Y  :  " << parent_vector.GetY() << "\n";
+//logss << "         Z  :  " << parent_vector.GetZ() << "\n";
+//logss << "      G Parent:  " << "\n";
+//logss << "         X  :  " << grandparent_vector.GetX() << "\n";
+//logss << "         Y  :  " << grandparent_vector.GetY() << "\n";
+//logss << "         Z  :  " << grandparent_vector.GetZ() << "\n";
+//logss << "      G G Parent:  " << "\n";
+//logss << "         X  :  " << great_grandparent_vector.GetX() << "\n";
+//logss << "         Y  :  " << great_grandparent_vector.GetY() << "\n";
+//logss << "         Z  :  " << great_grandparent_vector.GetZ() << "\n";
             Coordinate v1 = Coordinate(great_grandparent_vector);
             Coordinate v2 = Coordinate(grandparent_vector);
-// std::cout << "   v1 and v2 start as:  " << std::endl;
-// std::cout << "      v1:  " << std::endl;
-// std::cout << "         X  :  " << v1.GetX() << std::endl;
-// std::cout << "         Y  :  " << v1.GetY() << std::endl;
-// std::cout << "         Z  :  " << v1.GetZ() << std::endl;
-// std::cout << "      v2:  " << std::endl;
-// std::cout << "         X  :  " << v2.GetX() << std::endl;
-// std::cout << "         Y  :  " << v2.GetY() << std::endl;
-// std::cout << "         Z  :  " << v2.GetZ() << std::endl;
-
+//logss << "   v1 and v2 start as:  " << "\n";
+//logss << "      v1:  " << "\n";
+//logss << "         X  :  " << v1.GetX() << "\n";
+//logss << "         Y  :  " << v1.GetY() << "\n";
+//logss << "         Z  :  " << v1.GetZ() << "\n";
+//logss << "      v2:  " << "\n";
+//logss << "         X  :  " << v2.GetX() << "\n";
+//logss << "         Y  :  " << v2.GetY() << "\n";
+//logss << "         Z  :  " << v2.GetZ() << "\n";
             v1.operator-(grandparent_vector);
             v2.operator-(parent_vector);
-// std::cout << "   v1 and v2 after subtraction:  " << std::endl;
-// std::cout << "      v1:  " << std::endl;
-// std::cout << "         X  :  " << v1.GetX() << std::endl;
-// std::cout << "         Y  :  " << v1.GetY() << std::endl;
-// std::cout << "         Z  :  " << v1.GetZ() << std::endl;
-// std::cout << "      v2:  " << std::endl;
-// std::cout << "         X  :  " << v2.GetX() << std::endl;
-// std::cout << "         Y  :  " << v2.GetY() << std::endl;
-// std::cout << "         Z  :  " << v2.GetZ() << std::endl;
+//logss << "   v1 and v2 after subtraction:  " << "\n";
+//logss << "      v1:  " << "\n";
+//logss << "         X  :  " << v1.GetX() << "\n";
+//logss << "         Y  :  " << v1.GetY() << "\n";
+//logss << "         Z  :  " << v1.GetZ() << "\n";
+//logss << "      v2:  " << "\n";
+//logss << "         X  :  " << v2.GetX() << "\n";
+//logss << "         Y  :  " << v2.GetY() << "\n";
+//logss << "         Z  :  " << v2.GetZ() << "\n";
 
             v1.Normalize();
             v2.Normalize();
-// std::cout << "   v1 and v2 after normalization:  " << std::endl;
-// std::cout << "      v1:  " << std::endl;
-// std::cout << "         X  :  " << v1.GetX() << std::endl;
-// std::cout << "         Y  :  " << v1.GetY() << std::endl;
-// std::cout << "         Z  :  " << v1.GetZ() << std::endl;
-// std::cout << "      v2:  " << std::endl;
-// std::cout << "         X  :  " << v2.GetX() << std::endl;
-// std::cout << "         Y  :  " << v2.GetY() << std::endl;
-// std::cout << "         Z  :  " << v2.GetZ() << std::endl;
-
+//logss << "   v1 and v2 after normalization:  " << "\n";
+//logss << "      v1:  " << "\n";
+//logss << "         X  :  " << v1.GetX() << "\n";
+//logss << "         Y  :  " << v1.GetY() << "\n";
+//logss << "         Z  :  " << v1.GetZ() << "\n";
+//logss << "      v2:  " << "\n";
+//logss << "         X  :  " << v2.GetX() << "\n";
+//logss << "         Y  :  " << v2.GetY() << "\n";
+//logss << "         Z  :  " << v2.GetZ() << "\n";
             double localEpsilon = std::numeric_limits<double>::epsilon( );
             if(   ( fabs(v1.GetX() - v2.GetX()) < localEpsilon ) &&
                   ( fabs(v1.GetY() - v2.GetY()) < localEpsilon ) &&
                   ( fabs(v1.GetZ() - v2.GetZ()) < localEpsilon )  )
             {
-//! \todo Add these cout statements to the debugging mechanism once the DebugLevel class (or whatever) is implemented. 
-// std::cout << "   localEpsilon is  :  " << localEpsilon << std::endl;
-// std::cout << "      v1 - v2 :  " << std::endl;
-// std::cout << "         v1.GetX() - v2.GetX()  :  " << v1.GetX() - v2.GetX() << std::endl;
-// std::cout << "         v1.GetY() - v2.GetY()  :  " << v1.GetY() - v2.GetY() << std::endl;
-// std::cout << "         v1.GetZ() - v2.GetZ()  :  " << v1.GetZ() - v2.GetZ() << std::endl;
-// std::cout << "     fabs ( v1 - v2 ) :  " << std::endl;
-// std::cout << "         fabs v1.GetX() - v2.GetX()  :  " << fabs ( v1.GetX() - v2.GetX() ) << std::endl;
-// std::cout << "         fabs v1.GetY() - v2.GetY()  :  " << fabs ( v1.GetY() - v2.GetY() ) << std::endl;
-// std::cout << "         fabs v1.GetZ() - v2.GetZ()  :  " << fabs ( v1.GetZ() - v2.GetZ() ) << std::endl;
+//logss << "   localEpsilon is  :  " << localEpsilon << "\n";
+//logss << "      v1 - v2 :  " << "\n";
+//logss << "         v1.GetX() - v2.GetX()  :  " << v1.GetX() - v2.GetX() << "\n";
+//logss << "         v1.GetY() - v2.GetY()  :  " << v1.GetY() - v2.GetY() << "\n";
+//logss << "         v1.GetZ() - v2.GetZ()  :  " << v1.GetZ() - v2.GetZ() << "\n";
+//logss << "     fabs ( v1 - v2 ) :  " << "\n";
+//logss << "         fabs v1.GetX() - v2.GetX()  :  " << fabs ( v1.GetX() - v2.GetX() ) << "\n";
+//logss << "         fabs v1.GetY() - v2.GetY()  :  " << fabs ( v1.GetY() - v2.GetY() ) << "\n";
+//logss << "         fabs v1.GetZ() - v2.GetZ()  :  " << fabs ( v1.GetZ() - v2.GetZ() ) << "\n";
             
             //! \todo  Add these cout statmentes and associated error messaging to the errors/logging functions when created
             //  These cout statements are actual error messages for any users who use input with these issues.
-//                std::cout << "You are trying to set a dihedral based on three colinear atoms." << std::endl;
-//                std::cout << "   This is an undefined situation, so I am going to bail now. " << std::endl;
-//                std::cout << "   You probably need to reset how your internal coordinates are defined." << std::endl;
-//                std::cout << "   Here are the Cartesian coordinates of the three atoms: " << std::endl;
-//                std::cout << "      Parent:  " << std::endl;
-//                std::cout << "         X  :  " << parent_vector.GetX() << std::endl;
-//                std::cout << "         Y  :  " << parent_vector.GetY() << std::endl;
-//                std::cout << "         Z  :  " << parent_vector.GetZ() << std::endl;
-//                std::cout << "      G Parent:  " << std::endl;
-//                std::cout << "         X  :  " << grandparent_vector.GetX() << std::endl;
-//                std::cout << "         Y  :  " << grandparent_vector.GetY() << std::endl;
-//                std::cout << "         Z  :  " << grandparent_vector.GetZ() << std::endl;
-//                std::cout << "      G G Parent:  " << std::endl;
-//                std::cout << "         X  :  " << great_grandparent_vector.GetX() << std::endl;
-//                std::cout << "         Y  :  " << great_grandparent_vector.GetY() << std::endl;
-//                std::cout << "         Z  :  " << great_grandparent_vector.GetZ() << std::endl;
-//                std::cout << "    Exiting. " << std::endl;
+//                std::cout << "You are trying to set a dihedral based on three colinear atoms." << "\n";
+//                std::cout << "   This is an undefined situation, so I am going to bail now. " << "\n";
+//                std::cout << "   You probably need to reset how your internal coordinates are defined." << "\n";
+//                std::cout << "   Here are the Cartesian coordinates of the three atoms: " << "\n";
+//                std::cout << "      Parent:  " << "\n";
+//                std::cout << "         X  :  " << parent_vector.GetX() << "\n";
+//                std::cout << "         Y  :  " << parent_vector.GetY() << "\n";
+//                std::cout << "         Z  :  " << parent_vector.GetZ() << "\n";
+//                std::cout << "      G Parent:  " << "\n";
+//                std::cout << "         X  :  " << grandparent_vector.GetX() << "\n";
+//                std::cout << "         Y  :  " << grandparent_vector.GetY() << "\n";
+//                std::cout << "         Z  :  " << grandparent_vector.GetZ() << "\n";
+//                std::cout << "      G G Parent:  " << "\n";
+//                std::cout << "         X  :  " << great_grandparent_vector.GetX() << "\n";
+//                std::cout << "         Y  :  " << great_grandparent_vector.GetY() << "\n";
+//                std::cout << "         Z  :  " << great_grandparent_vector.GetZ() << "\n";
+//                std::cout << "    Exiting. " << "\n";
                 int localErrorCode = 1; // massive confusion or cannot execute order
                 exit(localErrorCode);
             }
@@ -467,18 +461,15 @@ Coordinate* Coordinate::ConvertInternalCoordinate2CartesianCoordinate(
             double vVz = distance * cos(gmml::ConvertDegree2Radian(angle));
             Coordinate v = Coordinate(vVx,vVy,vVz);
 //! \todo Add these to the debugging mechanism once the DebugLevel class (or whatever) is implemented. 
-// std::cout << "vVx is " << vVx << std::endl;
-// std::cout << "vVy is " << vVy << std::endl;
-// std::cout << "vVz is " << vVz << std::endl;
-
+//logss << "vVx is " << vVx << "\n";
+//logss << "vVy is " << vVy << "\n";
+//logss << "vVz is " << vVz << "\n";
             double coordx = matrix[0][0] * v.GetX() + matrix[0][1] * v.GetY() + matrix[0][2] * v.GetZ() + matrix[0][3];
             double coordy = matrix[1][0] * v.GetX() + matrix[1][1] * v.GetY() + matrix[1][2] * v.GetZ() + matrix[1][3];
             double coordz = matrix[2][0] * v.GetX() + matrix[2][1] * v.GetY() + matrix[2][2] * v.GetZ() + matrix[2][3];
             Coordinate* coordinate = new Coordinate(coordx,coordy,coordz);
-// std::cout << "coordx is " << coordx << std::endl;
-// std::cout << "coordy is " << coordy << std::endl;
-// std::cout << "coordz is " << coordz << std::endl;
-
+            //logss << "Coords: " << coordx << "  " << coordy << "  " << coordz;
+            //gmml::log(__LINE__,__FILE__,gmml::INF,logss.str());
             return coordinate;
         }
 }

@@ -1,5 +1,9 @@
 #include <iostream>
-#include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
+#include <vector>
+#include <string>
+//#include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
+#include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
+#include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
 
 int main ()
 {	
@@ -17,16 +21,16 @@ int main ()
     std::string s12 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH";
     std::string s13 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH";
     std::string s14 = "dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4LIdopA(2SO)a1-4DGlcpNSa1-4DGlcpA[2S]b1-OH";
-    //std::vector<std::string> sequences {s4, s5};
     std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7};
     //std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14};
     int count = 0;
     for (auto &sequence : sequences)
     {
-    	CondensedSequence::SequenceManipulator manipulator(sequence);
+//    	CondensedSequence::SequenceManipulator manipulator(sequence);
         CondensedSequence::GraphVizDotConfig config;
         config.file_name_ = std::to_string(count) + ".dot";
-    	std::cout << manipulator.PrintGraphViz(config) << std::endl;
+        CondensedSequence::DrawGlycan(config, sequence);
+//    	std::cout << manipulator.PrintGraphViz(config) << std::endl;
         count++;
 	}
 	return 0;

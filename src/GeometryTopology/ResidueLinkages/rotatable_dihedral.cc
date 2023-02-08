@@ -2,9 +2,10 @@
 #include "includes/GeometryTopology/ResidueLinkages/rotatable_dihedral.hpp"
 #include "includes/MolecularModeling/atomnode.hpp" // For UpdateAtomsIfPsi
 #include "includes/utils.hpp"
-#include "includes/External_Libraries/PCG/pcg_random.hpp"
+#include "includes/External_Libraries/PCG/pcg_random.h"
 #include "includes/GeometryTopology/geometrytopology.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/MolecularModeling/overlaps.hpp"
 
 // Seed with a real random value, if available
 static pcg_extras::seed_seq_from<std::random_device> seed_source;
@@ -85,7 +86,7 @@ double Rotatable_dihedral::GetPreviousDihedralAngle()
     return previous_dihedral_angle_;
 }
 
-DihedralAngleDataVector Rotatable_dihedral::GetMetadata()
+DihedralAngleDataVector& Rotatable_dihedral::GetMetadata()
 {
     return assigned_metadata_;
 }
@@ -109,7 +110,7 @@ int Rotatable_dihedral::GetNumberOfRotamers(bool likelyShapesOnly)
 {
     if (this->GetMetadata().empty())
     {
-        std::cerr << "Error in Rotatable_dihedral::GetNumberOfRotamers; no metadata has been set.\n";
+        gmml::log(__LINE__,__FILE__,gmml::ERR, "Error in Rotatable_dihedral::GetNumberOfRotamers; no metadata has been set.\n");
         return 0;
     }
     else
@@ -131,8 +132,11 @@ std::vector<double> Rotatable_dihedral::GetAllPossibleAngleValues(int interval)
     std::vector<double> allPossibleAngleValues;
     if (assigned_metadata_.empty())
     {
-        std::cerr << "Error in Rotatable_dihedral::GetAllPossibleAngleValues; no metadata has been set for:\n"
-        << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
+        std::stringstream ss;
+        ss << "Error in Rotatable_dihedral::GetAllPossibleAngleValues; no metadata has been set for:\n"
+                << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
+        gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+        throw std::runtime_error(ss.str());
     }
     else
     {
@@ -193,7 +197,7 @@ void Rotatable_dihedral::AddExtraAtomsThatMove(AtomVector extraAtoms)
 }
 
 // Only this function uses radians. Everything else, in and out, should be degrees.
-void Rotatable_dihedral::SetDihedralAngle(double dihedral_angle)
+void Rotatable_dihedral::SetDihedralAngle(const double dihedral_angle)
 {
     if(!this->wasEverRotated_)
     {
@@ -231,7 +235,9 @@ void Rotatable_dihedral::SetDihedralAngle(double dihedral_angle)
 
     // Yo you should add something here that checks if atoms_that_move_ is set. Yeah you.
 
-   // std::cout << "Setting dihedral for " << atom1_->GetId() << ":"  << atom2_->GetId() << ":"  << atom3_->GetId() << ":"  << atom4_->GetId() <<  ": " << dihedral_angle << "\n";
+    std::stringstream ss;
+    ss << "Setting dihedral for " << atom1_->GetId() << ":"  << atom2_->GetId() << ":"  << atom3_->GetId() << ":"  << atom4_->GetId() <<  ": " << dihedral_angle << "\n";
+    gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
     for(AtomVector::iterator it = atoms_that_move_.begin(); it != atoms_that_move_.end(); it++)
     {
         Atom *atom = *it;
@@ -281,18 +287,12 @@ void Rotatable_dihedral::SetDihedralAngleToPrevious()
 double Rotatable_dihedral::RandomizeDihedralAngle()
 {
     return Rotatable_dihedral::RandomizeDihedralAngleWithinRange(0.0, 360.0);
-    //return (rand() % 360) + 1 - 180; // Can get same one everytime for testing
 }
 
 double Rotatable_dihedral::RandomizeDihedralAngleWithinRange(double min, double max)
 {
-//    std::random_device rd1; // obtain a random number from hardware
-//    std::mt19937 eng1(rd1()); // seed the generator
     std::uniform_real_distribution<> angle_distribution(min, max); // define the range
-
-//    double random_angle = angle_distribution(eng1);
     double random_angle = angle_distribution(rng);
-   // std::cout << "Random angle is: " << random_angle << "\n";
     /*******************************************/
     /*               IMPORTANT                 */
     /*******************************************/
@@ -303,19 +303,11 @@ double Rotatable_dihedral::RandomizeDihedralAngleWithinRange(double min, double 
     /*               IMPORTANT                 */
     /*******************************************/
     return random_angle;
-    //return rand() % (max + 1 - min) + min; // Can get same one everytime for testing
 }
 
 // OG for the CB, I need this class to know which metadata index it's currently set to. So this won't work for that.
 double Rotatable_dihedral::RandomizeDihedralAngleWithinRanges(std::vector<std::pair<double,double>> ranges)
 {
-    // For usage, can do ranges.emplace_back(min, max);
-    // Pass in a vector of pairs of ranges.
-    // First select one of those ranges.
-    // Then create an angle within the selected range.
-    // Rando stuff from slack overflow:
-//    std::random_device rd; // obtain a random number from hardware
-//    std::mt19937 eng(rd()); // seed the generator
     std::uniform_int_distribution<> distr(0, (ranges.size() - 1)); // define the range
     // Select one of the ranges
     int range_selection = distr(rng);
@@ -347,12 +339,17 @@ void Rotatable_dihedral::SetRandomAngleEntryUsingMetadata(bool useRanges)
 {
     if (assigned_metadata_.empty())
     {
-        std::cerr << "Error in Rotatable_dihedral::SetRandomAngleEntryUsingMetadata; no metadata has been set for:.\n"
-                  << atom1_->GetId() << atom2_->GetId() << atom3_->GetId() << atom4_->GetId();
+        std::stringstream ss;
+        ss << "Error in Rotatable_dihedral::SetRandomAngleEntryUsingMetadata; no metadata has been set for:.\n"
+                << atom1_->GetId() << atom2_->GetId() << atom3_->GetId() << atom4_->GetId();
+        gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+        throw std::runtime_error(ss.str());
     }
-    else if(assigned_metadata_.size() == 1)
-    {
-        const auto& entry = assigned_metadata_.at(0);
+    else
+    {   // first randomly pick one of the meta data entries. If there is only one entry, it will randomly always be it.
+        std::uniform_int_distribution<> distr(0, (assigned_metadata_.size() - 1)); // define the range
+        DihedralAngleData& entry = assigned_metadata_.at(distr(rng));
+        this->SetCurrentMetaData(entry);
         if (useRanges)
         {
             double lower = (entry.default_angle_value_ - entry.lower_deviation_) ;
@@ -360,56 +357,87 @@ void Rotatable_dihedral::SetRandomAngleEntryUsingMetadata(bool useRanges)
             this->RandomizeDihedralAngleWithinRange(lower, upper);
         }
         else
-        {
-            this->SetDihedralAngle(entry.default_angle_value_);
-        }
-    } // I need different behaviour here than previously. If use_ranges is false, just take the first of multiple rotamers, don't randomize.
-    else if(assigned_metadata_.size() >= 2) // Some dihedral angles have multiple rotamers, thus mulitple ranges to select from. e.g -60, 60, 180
-    {
-        // OG update for carb builder (CB). This class needs to know what metadata entry it's currently set to.
-        if (useRanges)
-        {
-            // first randomly pick one of the meta data entries
-            std::uniform_int_distribution<> distr(0, (assigned_metadata_.size() - 1)); // define the range
-            const auto& randomEntry = assigned_metadata_.at(distr(rng));
-            double lower = (randomEntry.default_angle_value_ - randomEntry.lower_deviation_) ;
-            double upper = (randomEntry.default_angle_value_ + randomEntry.upper_deviation_) ;
-            this->RandomizeDihedralAngleWithinRange(lower, upper);
-        }
-        else
-        { // Just set it to the first entries default value
-            const auto& entry = assigned_metadata_.at(0);
+        { // Just set it to the entries default value
             this->RandomizeDihedralAngleWithinRange(entry.default_angle_value_, entry.default_angle_value_);
         }
     }
     return;
+//    else if(assigned_metadata_.size() == 1)
+//    {
+//        DihedralAngleData& entry = assigned_metadata_.at(0);
+//        this->SetCurrentMetaData(entry);
+//        if (useRanges)
+//        {
+//            double lower = (entry.default_angle_value_ - entry.lower_deviation_) ;
+//            double upper = (entry.default_angle_value_ + entry.upper_deviation_) ;
+//            this->RandomizeDihedralAngleWithinRange(lower, upper);
+//        }
+//        else
+//        {
+//            this->SetDihedralAngle(entry.default_angle_value_);
+//        }
+//    } // I need different behaviour here than previously. If use_ranges is false, just take the first of multiple rotamers, don't randomize.
+//    else if(assigned_metadata_.size() >= 2) // Some dihedral angles have multiple rotamers, thus mulitple ranges to select from. e.g -60, 60, 180
+//    {
+//        // OG update for carb builder (CB). This class needs to know what metadata entry it's currently set to.
+//        if (useRanges)
+//        {
+//            // first randomly pick one of the meta data entries
+//            std::uniform_int_distribution<> distr(0, (assigned_metadata_.size() - 1)); // define the range
+//            DihedralAngleData& randomEntry = assigned_metadata_.at(distr(rng));
+//            double lower = (randomEntry.default_angle_value_ - randomEntry.lower_deviation_) ;
+//            double upper = (randomEntry.default_angle_value_ + randomEntry.upper_deviation_) ;
+//            this->RandomizeDihedralAngleWithinRange(lower, upper);
+//            this->SetCurrentMetaData(randomEntry);
+//        }
+//        else
+//        { // Just set it to the first entries default value
+//            DihedralAngleData& entry = assigned_metadata_.at(0);
+//            this->RandomizeDihedralAngleWithinRange(entry.default_angle_value_, entry.default_angle_value_);
+//            this->SetCurrentMetaData(entry);
+//        }
+//    }
+//    return;
 }
 
 void Rotatable_dihedral::SetSpecificAngleEntryUsingMetadata(bool useRanges, int angleEntryNumber)
 {
     if (assigned_metadata_.empty())
     {
-        std::cerr << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; no metadata has been set for:\n"
-        << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
+        std::stringstream ss;
+        ss << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; no metadata has been set for:\n"
+                << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
+        gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+        throw std::runtime_error(ss.str());
     }
     else if (assigned_metadata_.size() <= angleEntryNumber)
     {
-         std::cerr << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; angleEntryNumber of " << angleEntryNumber << " is too large as metadata.size() is " << assigned_metadata_.size() << ".\n";
+        std::stringstream ss;
+        ss << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; angleEntryNumber of " << angleEntryNumber << " is too large as metadata.size() is " << assigned_metadata_.size() << ".\n";
+        gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+        throw std::runtime_error(ss.str());
     }
     else
     {
-        const auto& entry = assigned_metadata_.at(angleEntryNumber);
+        DihedralAngleData& entry = assigned_metadata_.at(angleEntryNumber);
+        this->SetCurrentMetaData(entry);
         if (useRanges)
         {
             double lower = (entry.default_angle_value_ - entry.lower_deviation_) ;
             double upper = (entry.default_angle_value_ + entry.upper_deviation_) ;
             this->RandomizeDihedralAngleWithinRange(lower, upper);
+            std::stringstream ss;
+            ss << entry.dihedral_angle_name_ << " was set to " <<  entry.default_angle_value_ << "+/-" << entry.lower_deviation_ << ". Atoms: "
+                    << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
+            gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
         }
         else
         {
             this->SetDihedralAngle(entry.default_angle_value_);
-            // std::cout << entry.dihedral_angle_name_ << " was set to " <<  entry.default_angle_value_ << ". Atoms: "
-            // << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
+            std::stringstream ss;
+            ss << entry.dihedral_angle_name_ << " was set to " <<  entry.default_angle_value_ << ". Atoms: "
+                    << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
+            gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
         }
     }
     return;
@@ -419,24 +447,24 @@ bool Rotatable_dihedral::SetSpecificShape(std::string dihedralName, std::string 
 {
     if (assigned_metadata_.empty())
     {
-        std::cerr << "Error in Rotatable_dihedral::SetSpecificAngleUsingMetadata; no metadata has been set.\n";
+        gmml::log(__LINE__,__FILE__,gmml::ERR, "No metadata set");
     }
     else
     {
-       //std::cout << "Made it here with " << dihedralName << " and " << selectedRotamer << std::endl;
-        gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_entries = this->GetMetadata();
-        if (dihedralName == metadata_entries.at(0).dihedral_angle_name_)
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Made it here with " + dihedralName + " and " + selectedRotamer);
+        if (dihedralName == this->GetMetadata().at(0).dihedral_angle_name_)
         {
-            for(auto &metadata : metadata_entries)
+            for(auto &metadata : this->GetMetadata())
             {
-                // std::cout << dihedralName << ": " << selectedRotamer 
-                // << " vs metadata " << metadata.dihedral_angle_name_ << ": " << metadata.rotamer_name_
-                // << std::endl;
+                std::stringstream ss;
+                ss << dihedralName << ": " <<  selectedRotamer <<  " vs metadata " <<  metadata.dihedral_angle_name_ << ": " << metadata.rotamer_name_;
+                gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
                 if (metadata.rotamer_name_ == selectedRotamer)
                 {
                     this->SetDihedralAngle(metadata.default_angle_value_);
-                    // std::cout << "Setting " << dihedralName << " to " << metadata.default_angle_value_ << " for "
-                    // << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
+                    this->SetCurrentMetaData(metadata);
+                    ss << "Bingo! Setting " << dihedralName << " to " << metadata.default_angle_value_ << " for " << atom1_->GetId() << " " << atom2_->GetId() << " " << atom3_->GetId() << " " << atom4_->GetId() << "\n";
+                    gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
                     return true;
                 }
             }
@@ -444,6 +472,66 @@ bool Rotatable_dihedral::SetSpecificShape(std::string dihedralName, std::string 
     }
     return false;
 }
+
+void Rotatable_dihedral::WiggleUsingAllRotamers(MolecularModeling::AtomVector& overlapAtomSet1, MolecularModeling::AtomVector &overlapAtomSet2, const int &angleIncrement)
+{
+    double bestDihedral = this->CalculateDihedralAngle();
+    double lowestOverlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);;
+    for(auto &metadata : this->GetMetadata())
+    {
+        double lowerBound = (metadata.default_angle_value_ - metadata.lower_deviation_);
+        double upperBound = (metadata.default_angle_value_ + metadata.upper_deviation_);
+        double newOverlap = this->WiggleWithinRanges(overlapAtomSet1, overlapAtomSet2, angleIncrement, lowerBound, upperBound);
+        if (lowestOverlap >= (newOverlap + 0.01))
+        {
+            lowestOverlap = newOverlap;
+            bestDihedral = this->CalculateDihedralAngle();
+            this->SetCurrentMetaData(metadata);
+        }
+        else
+        {
+            this->SetDihedralAngle(bestDihedral);
+        }
+    }
+}
+
+void Rotatable_dihedral::WiggleWithinCurrentRotamer(MolecularModeling::AtomVector& overlapAtomSet1, MolecularModeling::AtomVector &overlapAtomSet2, const int &angleIncrement)
+{
+    double lowerBound = (this->GetCurrentMetaData()->default_angle_value_ - this->GetCurrentMetaData()->lower_deviation_);
+    double upperBound = (this->GetCurrentMetaData()->default_angle_value_ + this->GetCurrentMetaData()->upper_deviation_);
+    // Set to lowest deviation, work through to highest. Set best value and return it for reference.
+    this->WiggleWithinRanges(overlapAtomSet1, overlapAtomSet2, angleIncrement, lowerBound, upperBound);
+}
+
+double Rotatable_dihedral::WiggleWithinRanges(MolecularModeling::AtomVector& overlapAtomSet1, MolecularModeling::AtomVector &overlapAtomSet2, const int &angleIncrement, const double& lowerBound, const double& upperBound)
+{
+    this->SetDihedralAngle(lowerBound);
+    double currentDihedral = lowerBound;
+    double bestDihedral = lowerBound;
+    double currentOverlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
+    double lowestOverlap = currentOverlap;
+//    std::cout << "Starting wiggle with overlap : " << currentOverlap << " . Current Angle: " << currentDihedral << " lowerBound: " << lowerBound << " upperBound: " << upperBound << "\n";
+    while(currentDihedral < upperBound)
+    {
+        currentDihedral += angleIncrement; // increment
+        this->SetDihedralAngle(currentDihedral);
+        currentOverlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
+        if (lowestOverlap >= (currentOverlap + 0.01)) // rounding errors
+        {
+            lowestOverlap = currentOverlap;
+            bestDihedral = currentDihedral;
+        }
+        // Prefer angles closer to default if overlap is the same.
+        else if ( (lowestOverlap == currentOverlap) && (std::abs(this->GetCurrentMetaData()->default_angle_value_ - bestDihedral)
+                > std::abs(this->GetCurrentMetaData()->default_angle_value_ - currentDihedral)) )
+        {
+            bestDihedral = currentDihedral;
+        }
+    }
+    this->SetDihedralAngle(bestDihedral);
+    return lowestOverlap;
+}
+
 //////////////////////////////////////////////////////////
 //                  PRIVATE FUNCTIONS                   //
 //////////////////////////////////////////////////////////
@@ -452,6 +540,7 @@ void Rotatable_dihedral::Initialize(AtomVector atoms, bool reverseAtomsThatMove)
     this->SetWasEverRotated(false);
     this->SetAtoms(atoms);
     this->SetIsAtomsThatMoveReversed(reverseAtomsThatMove);
+    currentMetadata_ = nullptr;
     // this->DetermineAtomsThatMove(); // Will be done the first time SetDihedralAngle is called.
     return;
 }
@@ -516,8 +605,11 @@ Atom* Rotatable_dihedral::CreateHydrogenAtomForPsi(Atom *centralAtom)
 {
     if(centralAtom->GetNode()->GetNodeNeighbors().size() != 3)
     {
-        std::cerr << "Error in Rotatable_dihedral::CreateHydrogenAtomForPsi. centralAtom neighbors = " <<
-                  centralAtom->GetNode()->GetNodeNeighbors().size() << " for " << centralAtom->GetId() << std::endl;
+        std::stringstream ss;
+        ss << "Error in Rotatable_dihedral::CreateHydrogenAtomForPsi. centralAtom neighbors = " <<
+                  centralAtom->GetNode()->GetNodeNeighbors().size() << " for " << centralAtom->GetId();
+        gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+        throw std::runtime_error(ss.str());
     }
     GeometryTopology::CoordinateVector threeNeighborCoords;
     for (auto &neighbor : centralAtom->GetNode()->GetNodeNeighbors())
@@ -551,6 +643,7 @@ std::string Rotatable_dihedral::Print()
 {
    std::stringstream logss;
    logss << atom1_->GetName() << ", " << atom2_->GetName() << ", " << atom3_->GetName() << ", " << atom4_->GetName() << ": " << this->CalculateDihedralAngle()  << ".\n";
+//   std::cout << logss.str();
    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
    return logss.str();
 }

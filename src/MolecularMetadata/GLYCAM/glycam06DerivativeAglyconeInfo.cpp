@@ -21,6 +21,6 @@ Glycam06DerivativeAglyconeConnectionAtomLookup::Glycam06DerivativeAglyconeConnec
         // Derivatives
         { "SO3" , "S1"  } ,
         { "MEX" , "CH3" } ,
-        { "ACX" , "C2A" } ,
+        { "ACX" , "C1A" } ,
     }; 
 }

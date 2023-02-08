@@ -20,25 +20,28 @@ export GEMSHOME=<Your Path To Gems > # eg: export GEMSHOME=/home/oliver/Programs
 Some commands defined in the Makefile are:
 * $ make
 * $ make all
-* $ make bin/gp_builder
-* $ make build/<file_name>.o
 * $ make clean
 
-    So you can type "make" to compile the program.
+    So you can just type "make" to compile the program.
     
 #### Comand line (skip the Makefile):
-g++ -std=c++17 -I $GEMSHOME/gmml/includes/ -I includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ src/*.cpp -lgmml -o gp_builder
+g++ -std=c++17 -I $GEMSHOME/gmml/includes/ -I includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ src/*.cpp -lgmml -o bin/gpBuilder
+
+### Testing
+Once compiled, you can run:
+bash runTests.sh
+If it says "Test passed.", everything is ready to go.
 
 ### Setup
 Edit or create an input.txt file and place in a folder called tests/. See tests/simple/input.txt for an example.
 
 You must provide:
 
-    a protein 3D structure
+    A protein 3D structure
 
-    glycan 3D structure(s) or sequences in glycam condensed nomenclature (just like the carb builder here: glycam.org/cb)
+    A Glycan 3D structure(s) or sequences in GLYCAM condensed nomenclature (just like the carb builder here: glycam.org/cb)
 
-    input.txt, which contains:
+    An input.txt, which contains:
 
         protein file name
 
@@ -48,6 +51,7 @@ You must provide:
     
         example here: https://github.com/gitoliver/GlycoProteinBuilder/blob/stable/tests/tough/input.txt
 
+## Extra information you can likely ignore
 ### Bead based overlap calculation
 In order to speed up the overlap calculation, certain atoms in the glycan and protein are replaced with large spheres that encompass the neighbouring atoms. The overlap calculation only looks at the beads, and as there are much fewer of them, it will be faster. The downside is that it is not as accurate and may be unncessarily optimizing. However, as the beads will encompass all atoms in the protein/glycan, if the bead overlap reaches zero, the per atom overlap will be zero.
 Here is a figure showing the atoms being replaced by beads:
@@ -56,6 +60,4 @@ Here is a figure showing the atoms being replaced by beads:
 ## Algorithm
 This is regularly being tweaked. Right now it's a combination of random movements and "wiggling" (grid searching within the known ranges of the glycosidic bonds).
 
-### Known problems
-It's perfect. Except when you mess up the inputs, then it segfaults, but that's on you. It's also slow (minutes to hours) and doesn't adjust any part of the protein except the Asn when trying to get the glycan to fit. 
 

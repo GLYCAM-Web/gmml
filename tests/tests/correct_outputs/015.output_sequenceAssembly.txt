@@ -16,8 +16,7 @@ Assembly created without throwing an exception for: DGlcpNAcb1-4DGlcpAb1-4DGlcpA
 -----------------------------------------------------------------------------------------------------
 
 Sequence 4: dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
-Test level caught error: Could not find prep entry for LIdopA(2SO) Glycam: YuA2
-
+Test level caught runtime error: Could not find prep entry for LIdopA(2SO). GLYCAM code used to search is: YuA2
 -----------------------------------------------------------------------------------------------------
 
 Sequence 5: dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
@@ -41,27 +40,19 @@ Test level caught error: Error: We can't handle labeled stuff yet: DNeup5Ac&Labe
 -----------------------------------------------------------------------------------------------------
 
 Sequence 9: 
-Test level caught error: Error: sequence is empty:
->>><<<
-
+Test level caught error: Error: sequence is empty:>>><<<
 -----------------------------------------------------------------------------------------------------
 
 Sequence 10: There will be cake.
-Test level caught error: Error: the cake is a lie:
->>>There will be cake.<<<
-
+Test level caught error: Error: the cake is a lie:>>>There will be cake.<<<
 -----------------------------------------------------------------------------------------------------
 
 Sequence 11: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH 
-Test level caught error: Error: sequence contains a space:
->>>DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH <<<
-
+Test level caught error: Error: sequence contains a space:>>>DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH <<<
 -----------------------------------------------------------------------------------------------------
 
 Sequence 12: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH
-Test level caught error: Error: the number of [ doesn't match the number of ]. Bad branch in :
->>>DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH<<<
-
+Test level caught error: Error: the number of [ doesn't match the number of ]. Bad branch in :>>>DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH<<<
 -----------------------------------------------------------------------------------------------------
 
 Sequence 13: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH
@@ -69,7 +60,10 @@ Test level caught error: Error: we can't parse this residue: "Boo"
 -----------------------------------------------------------------------------------------------------
 
 Sequence 14: dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4LIdopA(2SO)a1-4DGlcpNSa1-4DGlcpA[2S]b1-OH
-Test level caught error: Could not find prep entry for LIdopA(2SO) Glycam: YuA2
+Test level caught runtime error: Could not find prep entry for LIdopA(2SO). GLYCAM code used to search is: YuA2
+-----------------------------------------------------------------------------------------------------
 
+Sequence 15: DGlNAcb1-OH
+Test level caught runtime error: Cannot create 3D structure as no GLYCAM residue code was found in the GMML metadata for residue: DGlNAcb
 -----------------------------------------------------------------------------------------------------
 

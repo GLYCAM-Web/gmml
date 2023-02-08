@@ -1,21 +1,18 @@
-#ifndef RESIDUE_LINKAGE_H
-#define RESIDUE_LINKAGE_H
+#ifndef GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_RESIDUE_LINKAGE_HPP
+#define GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_RESIDUE_LINKAGE_HPP
 /*
  * This class figures out the rotatable bonds between two residues
  * Starts/ends at the CA atoms in proteins. Looks for cycles (as they aren't rotatable).
  * Stores each rotatable bond as a rotatable_dihedral object.
  */
 //#include "gmml.hpp"
-#include "../../MolecularModeling/atom.hpp"
-#include "../../MolecularModeling/residue.hpp"
-#include "../../MolecularModeling/Selections/selections.hpp"
-#include "rotatable_dihedral.hpp"
-
-
+#include "includes/MolecularModeling/atom.hpp"
+#include "includes/MolecularModeling/residue.hpp"
+#include "includes/MolecularModeling/Selections/selections.hpp"
+#include "includes/GeometryTopology/ResidueLinkages/rotatable_dihedral.hpp"
 
 using MolecularModeling::Residue;
 using MolecularModeling::ResidueVector;
-
 
 class Residue_linkage;
 typedef std::vector<Residue_linkage> ResidueLinkageVector;
@@ -64,7 +61,8 @@ public:
     void SetRandomDihedralAngles();
     void DetermineAtomsThatMove();
     // Simple meaning you only check each rotatable_dihedral in series, not every combination.
-    void SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance = 0.01, int angleIncrement = 5);
+    void SimpleWiggle(AtomVector& overlapAtomSet1, AtomVector& overlapAtomSet2, const int angleIncrement = 5);
+    void SimpleWiggleCurrentRotamers(AtomVector& overlapAtomSet1, AtomVector& overlapAtomSet2, const int angleIncrement = 5);
     void SetIndex(unsigned long long index);
     void SetName(std::string name);
     //////////////////////////////////////////////////////////
@@ -103,4 +101,4 @@ private:
     unsigned long long index_;
     std::string name_; //e.g. "DGalpb1-6DGlcpNAc"
 };
-#endif // RESIDUE_LINKAGE_H
+#endif // GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_RESIDUE_LINKAGE_HPP

@@ -4,7 +4,7 @@
 
 using CondensedSequence::ParsedResidue;
 
-ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType) 
+ParsedResidue::ParsedResidue(std::string residueString, ParsedResidue::Type specifiedType)
 : Node(residueString), fullResidueString_ (residueString)
 {
     this->ParseResidueStringIntoComponents(residueString, specifiedType);
@@ -219,7 +219,8 @@ std::string ParsedResidue::Print()
                 << this->GetResidueModifier() << "_"
                 << this->GetRingShape() << "_"
 				<< this->GetConfiguration() << "_"
-				<< this->GetLinkage() << ".\n";
+				<< this->GetLinkage() << ". Type: "
+                << this->GetType() << ".\n";
     return ss.str();
 }
 

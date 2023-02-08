@@ -59,9 +59,9 @@ public:
 	//copy assignment
 	inline Labels& operator =(const Labels &rhs)
 	{
-		this->name_m = rhs.name_m;
-		this->labels_m = rhs.labels_m;
-		return *this;
+		//this->name_m = rhs.name_m;
+		//this->labels_m = rhs.labels_m;
+		return *this = Labels(rhs);
 	}
 	//move assignment
 	Labels& operator =(Labels &&rhs)

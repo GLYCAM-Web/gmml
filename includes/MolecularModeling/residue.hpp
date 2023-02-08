@@ -8,13 +8,12 @@
 #include <vector>
 #include "residueproperties.hpp"
 #include "../GeometryTopology/coordinate.hpp"
-#include "../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
-#include "../../includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
-#include "./TemplateGraph/GraphStructure/include/Node.hpp" // TemplateGraph
-#include "./Abstract/Residue.hpp"
-
+#include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
+#include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp" // TemplateGraph
+#include "includes/Abstract/residue.hpp"
 
 namespace MolecularModeling
 {
@@ -208,6 +207,7 @@ namespace MolecularModeling
             void SetId(std::string id);
             void SetChainID(std::string chain);
             void SetResidueNumber(std::string number);
+            void SetResidueNumber(unsigned int number);
             void SetIndex(unsigned long long index);
             /*! \fn                                                                                          //Added by ayush on 11/20/17 for residuenode in assembly
               * A mutator function in order to set the node of the current object

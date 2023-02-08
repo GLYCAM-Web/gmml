@@ -8,23 +8,103 @@ using CondensedSequence::ParsedResidue;
 
 SequenceParser::SequenceParser (std::string inputSequence)
 {
-    std::stringstream logss;
+    if (inputSequence.find('<') != std::string::npos)
+    {
+        gmml::log(__LINE__,__FILE__, gmml::INF, "Found repeating unit in input\n");
+        inputSequence = this->parseRepeatingUnits(inputSequence);
+    }
 	if (inputSequence.find(';') != std::string::npos)
 	{
-		logss << "Found labels in input\n";
+	    gmml::log(__LINE__,__FILE__,gmml::INF, "Found labels in input\n");
 		this->ParseLabelledInput(inputSequence);
 	}
 	else
 	{
-		logss << "Parsing unlabelled input sequence:\n" << inputSequence << "\n";
+	    gmml::log(__LINE__,__FILE__,gmml::INF, "Parsing unlabelled input sequence:\n" + inputSequence + "\n");
         if (this->CheckSequenceSanity(inputSequence))
         {
-            logss << "Sequence is sane\n";
+            gmml::log(__LINE__,__FILE__,gmml::INF, "Sequence passed initial sanity checks for things like special characters or incorrect branching.\n");
             this->ParseCondensedSequence(inputSequence);
         }
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+	gmml::log(__LINE__,__FILE__,gmml::INF, "SequenceParser constructor complete");
     return;
+}
+
+// Examples: DGlcpa1-[4DGlcpa1-]<4>OH becomes DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-OH
+// DGlcpa1-[4DGlcpa1-]<9>2DManpa1-[4DGalpNAca1-]<4>OH // Multiple repeats
+// DGlcpa1-[4DGlcpa1-3DManpa1-]<9>OH // Disacc repeats
+// DGlcpa1-[4DGlcpa1-3[DAllpb1-2]DManpa1-]<9>OH // Branched repeats, unavailable on legacy
+std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
+{
+    size_t repeatCharacterEndLocation = inputSequence.find_last_of('>');
+    if (repeatCharacterEndLocation < 21)
+        throw std::runtime_error("Not enough information before '>' in input. Did you forget the head residue? : " + inputSequence);
+    size_t repeatCharacterStartLocation = inputSequence.find_last_of('<');
+    if(repeatCharacterStartLocation == std::string::npos)
+        throw std::runtime_error("No '<' found in sequence with '>' : " + inputSequence);
+    // Get the number of repeats:
+    int numberRepeats = 0;
+    try
+    {
+        size_t numberStart = repeatCharacterStartLocation + 1;
+        std::string stringNumber = inputSequence.substr(numberStart, (repeatCharacterEndLocation - numberStart) );
+        numberRepeats = std::stoi(stringNumber);
+    }
+    catch (...)
+    {
+        throw std::runtime_error("Number of repeating units not specified correctly in repeating sequence: " + inputSequence);
+    }
+    size_t i = repeatCharacterStartLocation;
+    // Ensure next char is the ] of the repeating unit
+    if (inputSequence[--i] != ']')
+        throw std::runtime_error("Missing or incorrect usage of ']' in repeating sequence: " + inputSequence);
+    // Ok now go find the position of the start of the repeating unit, considering branches
+    size_t repeatEnd = i;
+    size_t repeatStart = this->seekRepeatStart(inputSequence, i);
+   // std::cout << "Repeat starts at position " << repeatStart << " and ends here: " << repeatEnd << std::endl;
+  //  std::cout << "Number of repeats: " << numberRepeats << "\n";
+    std::string before = inputSequence.substr(0, repeatStart);
+    std::string repeat = inputSequence.substr(repeatStart + 1, (repeatEnd - repeatStart - 1) );
+    std::string after = inputSequence.substr(repeatCharacterEndLocation + 1);
+    std::string newInputString;
+    newInputString += before;
+    for (int j = 1; j <= numberRepeats; ++j)
+    {
+        newInputString += repeat;
+    }
+    newInputString += after;
+    // Check if there are more repeating units and deal with them recursively:
+    if(before.find('>') != std::string::npos)
+    {
+        newInputString = this->parseRepeatingUnits(newInputString);
+    }
+    return newInputString;
+}
+
+// There may be branches which also use [], so need to check for those and find the [ that starts the repeat
+size_t SequenceParser::seekRepeatStart(const std::string &inputSequence, size_t i)
+{
+    int branches = 0;
+    --i; // skip the initial ]
+    while (i > 0)
+    {
+        //std::cout << inputSequence[i];
+        if(inputSequence[i] == ']')
+        {
+            ++branches;
+        }
+        if(inputSequence[i] == '[')
+        {
+            if (branches == 0)
+                return i;
+            else
+                --branches;
+        }
+        --i;
+    }
+    std::cout << "\n";
+    throw std::runtime_error("Did not find corresponding '[' in repeat unit of repeating sequence: " + inputSequence);
 }
 
 
@@ -66,9 +146,9 @@ void SequenceParser::ParseLabelledInput(std::string inString)
 
 bool SequenceParser::ParseCondensedSequence(const std::string sequence)
 {
-    // Reading from the end of the string.
+    // Reading from the rightmost end of the string.
 	size_t i = (sequence.find_last_of('-') + 1);
-    if ( isdigit(sequence[i]) )
+    if ( isdigit(sequence[i]) ) // Indicates ano-ano and not e.g. Sugar-OME or -ROH etc
     { // e.g. DGlcpa1-2DFrufb or 
         ++i; // ano-ano
         if (sequence[i] == ']') // e.g. DGlcpa1-2[LFucpa1-1]DFrufb
@@ -200,15 +280,15 @@ bool SequenceParser::CheckSequenceSanity(std::string sequence)
 {
     if ( sequence.empty() )
     {
-        throw "Error: sequence is empty:\n>>>" + sequence + "<<<\n" ;
+        throw "Error: sequence is empty:>>>" + sequence + "<<<" ;
     }
     if ( sequence.find("cake") != std::string::npos )
     {
-        throw "Error: the cake is a lie:\n>>>" + sequence + "<<<\n" ;
+        throw "Error: the cake is a lie:>>>" + sequence + "<<<" ;
     }
     if ( sequence.find(" ") != std::string::npos )
     {
-        throw "Error: sequence contains a space:\n>>>" + sequence + "<<<\n" ;
+        throw "Error: sequence contains a space:>>>" + sequence + "<<<" ;
     }
     std::vector<char> badChars = {'\'', '_', '+', '"', '`'};
     for (auto &badChar : badChars)
@@ -216,14 +296,14 @@ bool SequenceParser::CheckSequenceSanity(std::string sequence)
         if (sequence.find(badChar) != std::string::npos)
         {
             std::string s(1, badChar); // convert to string     
-            throw "Error: sequence cannot contain this:\'" + s + "\':\n>>>" + sequence + "<<<\n" ; 
+            throw "Error: sequence cannot contain this:\'" + s + "\':>>>" + sequence + "<<<" ;
         }
     }
     size_t a = std::count(sequence.begin(), sequence.end(), '[');
     size_t b = std::count(sequence.begin(), sequence.end(), ']');
     if (a != b)
     {
-        throw "Error: the number of [ doesn't match the number of ]. Bad branch in :\n>>>" + sequence + "<<<\n" ;
+        throw "Error: the number of [ doesn't match the number of ]. Bad branch in :>>>" + sequence + "<<<" ;
     }
     return true;
 }
