@@ -26,8 +26,8 @@ jobs:
         python-version: '3.9'
     
     - name: Export Variables
-      run: 
-        GEMSHOME=$(dirname $(pwd))
+      run: |
+        GEMSHOME=$(dirname $(pwd)) \
         export GEMSHOME
 
     - name: BuildScript
