@@ -6,6 +6,7 @@ on: [push]
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.), eventually wanna make cmake stuff more normal but w/e ignore this 4 now
   #BUILD_TYPE: Release
+  shell: bash
 
 jobs:
   boogerTest:
@@ -13,8 +14,6 @@ jobs:
     # You can convert this to a matrix build if you need cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ubuntu-22.04
-    
-    shell: bash
     
     #may need to specify cmake version idk
     
