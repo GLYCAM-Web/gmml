@@ -1,0 +1,44 @@
+name: CMake
+
+on: [pull_request]
+    
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.), eventually wanna make cmake stuff more normal but w/e ignore this 4 now
+  #BUILD_TYPE: Release
+
+jobs:
+  boogerTest:
+    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
+    # You can convert this to a matrix build if you need cross-platform coverage.
+    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+    runs-on: ubuntu-22.04
+    
+    shell: bash
+    
+    #may need to specify cmake version idk
+    
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+    
+    - name: Export Variables
+      run: 
+        GEMSHOME=$(dirname $(pwd))
+        export GEMSHOME
+
+    - name: BuildScript
+      #We wanna make sure we can wrap just in case, lazy but w/e this is just getting us something.
+      #takes around 7 mins for nowrap
+      run: ./make.sh -j 2 -c 
+
+    #ignored for now, but we eventually wanna run our tests n whatnot but right now the tests wont work outside container. 
+    #- name: Test
+      #working-directory: ${{github.workspace}}/build
+      # Execute tests defined by the CMake configuration.
+      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+      #run: ctest -C ${{env.BUILD_TYPE}}
