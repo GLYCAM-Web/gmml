@@ -6,10 +6,8 @@
  * Stores each rotatable bond as a RotatableDihedral object.
  */
 #include "includes/CentralDataStructure/residue.hpp"
-#include "includes/MolecularModeling/Selections/selections.hpp"
 #include "includes/CentralDataStructure/Shapers/rotatableDihedral.hpp"
 #include "includes/CodeUtils/logging.hpp"
-
 #include <vector>
 
 namespace cds

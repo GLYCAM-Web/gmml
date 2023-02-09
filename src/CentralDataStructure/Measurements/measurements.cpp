@@ -126,4 +126,20 @@ Coordinate cds::subtractCoordinates(const Coordinate& minuaend, const Coordinate
     return new_coordinate;
 }
 
-
+double cds::CalculateMaxDistanceBetweenCoordinates(std::vector<Coordinate*> coords)
+{
+    double maxDistance = 0.0;
+    for(std::vector<Coordinate*>::iterator it1 = coords.begin(); it1 != coords.end(); ++it1)
+    {
+        Coordinate* coord1 = (*it1);
+        for(std::vector<Coordinate*>::iterator it2 = it1; it2 != coords.end(); ++it2)
+        {
+            Coordinate* coord2 = (*it2);
+            if (coord1->Distance(coord2) > maxDistance)
+            {
+                maxDistance = coord1->Distance(coord2);
+            }
+        }
+    }
+    return maxDistance;
+}

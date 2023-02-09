@@ -88,10 +88,10 @@ const Coordinate* Residue::getGeometricCenter()
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
-void Residue::addAtom(std::unique_ptr<Atom> myAtom)
+Atom* Residue::addAtom(std::unique_ptr<Atom> myAtom)
 {
     atoms_.push_back(std::move(myAtom));
-    return;
+    return atoms_.back().get();
 }
 
 //void Residue::addAtom(Atom* myAtom)

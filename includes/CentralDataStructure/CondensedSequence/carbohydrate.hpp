@@ -21,6 +21,7 @@ namespace cdsCondensedSequence
         //////////////////////////////////////////////////////////
     	inline std::string GetInputSequenceString() const {return inputSequenceString_;}
         inline std::vector<cds::ResidueLinkage>& GetGlycosidicLinkages() {return glycosidicLinkages_;}
+        inline unsigned long int GetResidueCount() const {return this->getResidues().size();}
     	//////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
@@ -30,9 +31,11 @@ namespace cdsCondensedSequence
     	void Generate3DStructureFiles(std::string fileOutputDirectory = "unspecified", std::string outputFileNaming = "structure");
     	void ResolveOverlaps();
         void SetDefaultShapeUsingMetadata();
-        inline unsigned long int GetResidueCount() const {return this->getResidues().size();}
         unsigned long int CountShapes(bool likelyShapesOnly = false);
         std::string GetNumberOfShapes(bool likelyShapesOnly = false); // This one is for gems. ToDo try to deprecate and use CountShapes.
+        cds::Residue* GetReducingResidue();
+        cds::Residue* GetAglycone();
+        cds::Atom* GetAnomericAtom();
     private:
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //

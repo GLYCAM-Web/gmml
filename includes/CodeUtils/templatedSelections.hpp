@@ -80,6 +80,20 @@ T* findElementWithNumber(const std::vector<T*>& inputVector, const int& queryNum
 	return nullptr;
 }
 
+template <class T>
+std::vector<T*> findElementsNotInVector(const std::vector<T*>& inputVector, const std::vector<T*>& excludeElements)
+{
+    std::vector<T*> elementsInInputVectorButNotInQueryElements(inputVector.size());
+    for (auto & element : inputVector)
+    { // if element is not in the exclude list
+        if (std::find(excludeElements.begin(), excludeElements.end(), element) == excludeElements.end())
+        {
+            elementsInInputVectorButNotInQueryElements.push_back(element);
+        }
+    }
+    return elementsInInputVectorButNotInQueryElements;
+}
+
 } // namespace
 
 #endif /* INCLUDES_CODEUTILS_TEMPLATEDSELECTIONS_HPP_ */

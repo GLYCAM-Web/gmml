@@ -19,7 +19,7 @@ public:
 	//                       CONSTRUCTORS                   //
 	//////////////////////////////////////////////////////////
 	Atom() {}//std::cout << "Atom default ctor with name_index: " << this->getName() << "_ " << this->getIndex() << "\n";}
-	Atom(const std::string& name, const Coordinate& coord);
+	Atom(const std::string name, const Coordinate& coord);
 	Atom(Atom&& other) noexcept;            // Move Ctor
 	Atom(const Atom& other);                // Copy Ctor
 	Atom& operator=(Atom other);            // Move and Copy assignment operator

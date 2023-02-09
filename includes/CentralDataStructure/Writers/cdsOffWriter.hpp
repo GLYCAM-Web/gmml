@@ -1,6 +1,8 @@
 #ifndef INCLUDES_CENTRALDATASTRUCTURE_WRITERS_CDSOFFWRITER_HPP_
 #define INCLUDES_CENTRALDATASTRUCTURE_WRITERS_CDSOFFWRITER_HPP_
 #include "includes/CentralDataStructure/residue.hpp" // ToDo convert from templates to just use the cds classes.
+#include "includes/Abstract/absResidue.hpp"
+#include "includes/CentralDataStructure/cdsFunctions.hpp"
 #include <vector>
 #include <string>
 #include <iostream>
@@ -9,7 +11,6 @@
 
 namespace cds
 {
-
 inline std::string getOffType(const cds::ResidueType queryType)
 {
 	if ( queryType == cds::ResidueType::Protein )
@@ -143,24 +144,6 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	return;
 }
 
-template <typename residueT>
-void SerializeResidueAndAtomNumbers(std::vector<residueT*> residues)
-{
-    unsigned int newAtomNumber = 1;
-    unsigned int newResidueNumber = 1;
-    for(auto &residue : residues)
-    {
-        residue->setNumber(newResidueNumber);
-        ++newResidueNumber;
-        for(auto &atom : residue->getAtoms())
-        {
-            atom->setNumber(newAtomNumber);
-            ++newAtomNumber;
-        }
-    }
-    return;
-}
-
 // ToDo shouldn't this have a .lib suffix?
 template <typename residueT>
 void WriteResiduesToOffFile(std::vector<residueT*> residues, std::ostream& stream)
@@ -172,7 +155,7 @@ void WriteResiduesToOffFile(std::vector<residueT*> residues, std::ostream& strea
 	}
 	for(auto &residue : residues)
 	{
-        cds::SerializeResidueAndAtomNumbers(std::vector<residueT*>{residue});
+        cds::serializeResidueAndAtomNumbers(std::vector<residueT*>{residue});
 		cds::WriteOffFileUnit(std::vector<residueT*>{residue}, stream, residue->getName());
 	}
 	return;
@@ -184,7 +167,7 @@ void WriteMoleculeToOffFile(std::vector<residueT*> residues, std::ostream& strea
 { // For writing residues together as a molecule
 	stream << "!!index array str" << std::endl;
 	stream << " \"" << unitName << "\"" << std::endl;
-    cds::SerializeResidueAndAtomNumbers(residues);
+    cds::serializeResidueAndAtomNumbers(residues);
 	cds::WriteOffFileUnit(residues, stream, unitName);
 	return;
 }

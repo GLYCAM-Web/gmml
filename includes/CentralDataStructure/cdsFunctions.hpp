@@ -6,6 +6,7 @@
 #include "includes/CodeUtils/constants.hpp" //dNotSet
 #include "includes/CodeUtils/numbers.hpp"
 #include "includes/CentralDataStructure/atom.hpp"
+#include "includes/CentralDataStructure/residue.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
 #include <iomanip> // setprecision
@@ -41,6 +42,7 @@ void operator() (RandomAccessIterator current, RandomAccessIterator end)
 template <typename atomT>
 void bondAtomsByDistance(std::vector<atomT*> atoms)
 {
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Setting atom connectivity by distance.");
 	// Threading here by breaking up data into blocks.
 	typename std::vector<atomT*>::iterator first = atoms.begin();
 	typename std::vector<atomT*>::iterator last = atoms.end();
@@ -107,6 +109,7 @@ void EnsureIntegralCharge(std::vector<atomT*> atoms)
 	return;
 }
 
+void serializeResidueAndAtomNumbers(std::vector<cds::Residue*> residues);
 void serializeAtomNumbers(std::vector<cds::Atom*> atoms);
 } // namespace
 
