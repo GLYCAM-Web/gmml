@@ -40,6 +40,27 @@ jobs:
             done
         fi
     
+    #Done for installing eigen 3 lib also smdh
+    - name: Cache eigen3
+      uses: actions/cache@v3
+      id: cache-eigen
+      with:
+         path: "~/eigen"
+         key: libeigen3-dev
+    - name: Install eigen
+      env:
+        CACHE_HIT: ${{steps.cache-eigen.outputs.cache-hit}}
+      run: |
+        if [[ "$CACHE_HIT" == 'true' ]]; then
+            sudo cp --force --recursive ~/eigen/* /
+        else
+            sudo apt-get update && sudo apt-get install -yq libeigen3-dev
+            mkdir -p ~/eigen
+            for dep in libeigen3-dev; do
+                dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/eigen/
+            done
+        fi
+         
     #make sure we are setting up our python right
     - name: Set up Python 3.9
       uses: actions/setup-python@v4
