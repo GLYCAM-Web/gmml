@@ -77,14 +77,10 @@ jobs:
       #takes around 7 mins for nowrap
       run: |
         ./make.sh -j 2 -c 
-        ls -lah
-        echo $(pwd)
 
     - name: Run tests that are possible to run on bare metal
-      run: |
-        echo $(pwd)
-        ls -lah
-        bash ./compile_run_tests.sh -j 2 -d bare_metal
+      run: |    
+        bash ./compile_run_tests.bash -j 2 -d bare_metal
       working-directory: tests
       
     
