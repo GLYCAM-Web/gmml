@@ -1,6 +1,6 @@
 name: CMake
 
-on: workflow_dispatch
+on: [push]
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.), eventually wanna make cmake stuff more normal but w/e ignore this 4 now
@@ -78,7 +78,6 @@ jobs:
       run: ./make.sh -j 2 -c 
 
     - name: Run tests that are possible to run on bare metal
-      working-directory:
       run: |
         cd tests
         ./compile_run_tests.sh -j 2 -d bare_metal
