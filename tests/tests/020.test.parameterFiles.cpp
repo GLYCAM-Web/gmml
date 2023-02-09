@@ -34,13 +34,12 @@ int main()
         throw std::runtime_error("Error when writing pdbFile class to file:\n" + fileName);
     }
     // OFF molecule
-    glycamPrepFileSelect.setName("MOLECULE");
     fileName = "./prepAsOffFile.off";
     try
     {
     	std::ofstream outFileStream;
     	outFileStream.open(fileName.c_str());
-    	cds::WriteMoleculeToOffFile(glycamPrepFileSelect.getResidues(), outFileStream, glycamPrepFileSelect.getName());
+    	cds::WriteResiduesToOffFile(glycamPrepFileSelect.getResidues(), outFileStream);
     	outFileStream.close();
     }
     catch(...)
