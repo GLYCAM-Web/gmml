@@ -123,11 +123,11 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue *glycosite_resid
     std::vector<Coordinate*> targetCoords;
    // superimposition_atoms_ points to three atoms that were added to the glycan. Based on their names e.g. CG, ND2, we will superimpose them onto
    // the correspoinding "target" atoms in the protein residue (glycosite_residue).
-    for (auto &superimposition_atom : this->GetAttachedGlycan()->GetAglycone())
+    for (auto &superimposition_atom : this->GetAttachedGlycan()->GetAglycone()->getAtoms())
     {
         for(auto &protein_atom : glycosite_residue->getAtoms())
         {
-            if (protein_atom->getName() == superimposition_atom->GetName())
+            if (protein_atom->getName() == superimposition_atom->getName())
             {
                 targetCoords.push_back(protein_atom->getCoordinate());
             }
