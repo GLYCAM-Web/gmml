@@ -41,16 +41,6 @@ Atom& Atom::operator=(Atom other)
     return *this;
 }
 
-friend void swap(Atom& lhs, Atom& rhs)
-{
-    using std::swap;
-    swap(lhs.coordinates_, rhs.coordinates_);
-    swap(lhs.charge_, rhs.charge_);
-    swap(lhs.atomType_, rhs.atomType_);
-    swap(lhs.number_, rhs.number_);
-    std::cout << "Swapped absAtom" << std::endl;
-}
-
 // This copy constructor causes const issues in Edge<T>
 //Atom::Atom(Atom* refAtom) : Abstract::absAtom(refAtom->getCoordinate()), Node(*refAtom)
 //{

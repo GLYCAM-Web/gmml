@@ -34,14 +34,10 @@ namespace glygraph
 
     virtual ~Edge();
 
-    T* getTargetNode();
-    T* getSourceNode();
-
-    inline const T& getTargetNode() const { return *targetNode_m;}
-    inline const T& getSourceNode() const { return *sourceNode_m;}
-//    const T* getTargetNode() const;
-//    const T* getSourceNode() const;
-
+    inline T* getTargetNode() const {return targetNode_m;}
+    inline T* getSourceNode() const {return sourceNode_m;}
+//    inline const T& getTargetNode() const { return *targetNode_m;}
+//    inline const T& getSourceNode() const { return *sourceNode_m;}
     /************************************************
      *  GETTER/SETTER
      ***********************************************/
@@ -49,8 +45,7 @@ namespace glygraph
     // 			source and sink are good and alive.
     void setSourceNode(T *source_t);
     void setTargetNode(T *target_t);
-
-  private:
+private:
     /************************************************
      *  ATTRIBUTES
      ***********************************************/
@@ -159,18 +154,6 @@ namespace glygraph
   inline void Edge<T>::setTargetNode(T *target_t)
   {
     this->targetNode_m = target_t;
-  }
-
-  template<class T>
-  inline T* Edge<T>::getTargetNode()
-  {
-	  return this->targetNode_m;
-  }
-
-  template<class T>
-  inline T* Edge<T>::getSourceNode()
-  {
-	  return this->sourceNode_m;
   }
 
 //  template<class T>
