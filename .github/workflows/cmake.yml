@@ -31,7 +31,7 @@ jobs:
         CACHE_HIT: ${{steps.cache-boost.outputs.cache-hit}}
       run: |
         if [[ "$CACHE_HIT" == 'true' ]]; then
-            sudo cp --force --recursive ~/boost/* /
+            sudo cp -v --force --recursive ~/boost/* /
         else
             sudo apt-get update && sudo apt-get install -yq libboost-all-dev
             mkdir -p ~/boost
@@ -52,7 +52,7 @@ jobs:
         CACHE_HIT: ${{steps.cache-eigen.outputs.cache-hit}}
       run: |
         if [[ "$CACHE_HIT" == 'true' ]]; then
-            sudo cp --force --recursive ~/eigen/* /
+            sudo cp -v --force --recursive ~/eigen/* /
         else
             sudo apt-get update && sudo apt-get install -yq libeigen3-dev
             mkdir -p ~/eigen
