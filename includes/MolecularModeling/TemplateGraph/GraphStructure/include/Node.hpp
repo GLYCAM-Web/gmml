@@ -12,7 +12,7 @@
 namespace glygraph
 {
   template<class T>
-  class Node : public GenericGraphObject, public std::enable_shared_from_this<Node<T>>
+  class Node : public GenericGraphObject
   {
   public:
     /************************************************
