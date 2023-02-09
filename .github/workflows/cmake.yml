@@ -2,11 +2,14 @@ name: CMake
 
 on: [push]
     
-
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.), eventually wanna make cmake stuff more normal but w/e ignore this 4 now
   #BUILD_TYPE: Release
   shell: bash
+  
+  run: |
+    GEMSHOME=$(dirname $(pwd)) \
+    export GEMSHOME
 
 jobs:
   boogerTest:
@@ -25,19 +28,10 @@ jobs:
       with:
         python-version: '3.9'
 
-#Apparently this doesnt carry over to the next "action" i dunno dude 
-#    - name: Export Variables
-#      run: |
-#        GEMSHOME=$(dirname $(pwd)) \
-#        export GEMSHOME
-
     - name: BuildScript
       #We wanna make sure we can wrap just in case, lazy but w/e this is just getting us something.
       #takes around 7 mins for nowrap
-      run: |
-        GEMSHOME=$(dirname $(pwd)) \
-        export GEMSHOME \
-        ./make.sh -j 2 -c 
+      run: ./make.sh -j 2 -c 
 
     #ignored for now, but we eventually wanna run our tests n whatnot but right now the tests wont work outside container. 
     #- name: Test
