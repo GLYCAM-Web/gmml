@@ -27,12 +27,12 @@ jobs:
 #turns out u cant set normal env vars. Kind of annoying but w/e
 #https://stackoverflow.com/questions/57968497/how-do-i-set-an-env-var-with-a-bash-expression-in-github-actions
     - name: Set up GEMSHOME gross
-    - run: echo "GEMSHOME=$(dirname $(pwd))" >> $GITHUB_ENV
+      run: echo "GEMSHOME=$(dirname $(pwd))" >> $GITHUB_ENV
 
     - name: BuildScript
       #We wanna make sure we can wrap just in case, lazy but w/e this is just getting us something.
       #takes around 7 mins for nowrap
-    - run: ./make.sh -j 2 -c 
+      run: ./make.sh -j 2 -c 
 
     #ignored for now, but we eventually wanna run our tests n whatnot but right now the tests wont work outside container. 
     #- name: Test
