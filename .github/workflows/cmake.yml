@@ -1,7 +1,9 @@
 name: CMake
 
-on: [push]
-    
+on:
+  pull_request_review:
+    types: [submitted]
+
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.), eventually wanna make cmake stuff more normal but w/e ignore this 4 now
   #BUILD_TYPE: Release
@@ -78,8 +80,10 @@ jobs:
       run: ./make.sh -j 2 -c 
 
     - name: Run tests that are possible to run on bare metal
-      working-directory: ./tests
-      run: ./compile_run_tests.sh -j 2 -d bare_metal
+      working-directory:
+      run: |
+        cd tests
+        ./compile_run_tests.sh -j 2 -d bare_metal
     
     #ignored for now, but we eventually wanna run our tests n whatnot but right now the tests wont work outside container. 
     #- name: Test
