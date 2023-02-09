@@ -17,7 +17,16 @@ public:
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
     Assembly() : number_(0) {}
+    Assembly(Assembly&& other) noexcept;            // Move Ctor
+    Assembly(const Assembly& other);                // Copy Ctor
+    Assembly& operator=(Assembly other);            // Move and Copy assignment operator
     virtual ~Assembly() = default;
+    friend void swap(Assembly& lhs, Assembly& rhs) // ToDo figure out how to put this in cpp file once everything is working. Yo just define it without the friend keyword you bozo.
+    {
+        using std::swap;
+        swap(lhs.molecules_, rhs.molecules_);
+        swap(lhs.number_, rhs.number_);
+    }
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////

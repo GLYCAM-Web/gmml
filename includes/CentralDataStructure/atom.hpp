@@ -32,7 +32,8 @@ public:
 	    swap(lhs.atomType_, rhs.atomType_);
 	    swap(lhs.number_, rhs.number_);
 	    std::cout << "Swapped absAtom" << std::endl;
-	}    //////////////////////////////////////////////////////////
+	}
+    //////////////////////////////////////////////////////////
 	//                       ACCESSORS                      //
 	//////////////////////////////////////////////////////////
     Coordinate* getCoordinate();

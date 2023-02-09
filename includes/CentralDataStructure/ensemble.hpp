@@ -15,7 +15,16 @@ public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
+    Ensemble() {}
+    Ensemble(Ensemble&& other) noexcept;            // Move Ctor
+    Ensemble(const Ensemble& other);                // Copy Ctor
+    Ensemble& operator=(Ensemble other);            // Move and Copy assignment operator
     virtual ~Ensemble() = default;
+    friend void swap(Ensemble& lhs, Ensemble& rhs) // ToDo figure out how to put this in cpp file once everything is working. Yo just define it without the friend keyword you bozo.
+        {
+            using std::swap;
+            swap(lhs.assemblies_, rhs.assemblies_);
+        }
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////

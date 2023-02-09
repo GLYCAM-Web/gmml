@@ -6,6 +6,29 @@ using cds::Molecule;
 using cds::Residue;
 using cds::Atom;
 //////////////////////////////////////////////////////////
+//                       CONSTRUCTORS                   //
+//////////////////////////////////////////////////////////
+// Move Ctor
+Ensemble::Ensemble(Ensemble&& other) noexcept : glygraph::Node<cds::Ensemble>(other)
+{
+    assemblies_ = std::move(other.assemblies_);
+}
+// Copy Ctor
+Ensemble::Ensemble(const Ensemble& other) : glygraph::Node<cds::Ensemble>(other)
+{
+    for (auto& assembly : other.assemblies_)
+    {
+        assemblies_.push_back(std::make_unique<Assembly>((*assembly.get())) );
+    }
+}
+// Move and Copy assignment operator
+Ensemble& Ensemble::operator=(Ensemble other)
+{
+    glygraph::Node<cds::Ensemble>::operator=(other); //ToDo ok?.
+    swap(*this, other);
+    return *this;
+}
+//////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
 std::vector<Atom*> Ensemble::getAtoms() const

@@ -16,7 +16,16 @@ public:
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
     Molecule() : number_(0) {}//std::cout << "Molecule default ctor\n";}
+    Molecule(Molecule&& other) noexcept;            // Move Ctor
+    Molecule(const Molecule& other);                // Copy Ctor
+    Molecule& operator=(Molecule other);            // Move and Copy assignment operator
     virtual ~Molecule() {}//std::cout << "Molecule default dtor for " << this->getName() << "\n";}
+    friend void swap(Molecule& lhs, Molecule& rhs) // ToDo figure out how to put this in cpp file once everything is working.
+    {
+        using std::swap;
+        swap(lhs.residues_, rhs.residues_);
+        swap(lhs.number_, rhs.number_);
+    }
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////

@@ -8,6 +8,31 @@ using cds::Molecule;
 using cds::Residue;
 using cds::Atom;
 //////////////////////////////////////////////////////////
+//                       CONSTRUCTORS                   //
+//////////////////////////////////////////////////////////
+// Move Ctor
+Molecule::Molecule(Molecule&& other) noexcept : glygraph::Node<cds::Molecule>(other)
+{
+    residues_ = std::move(other.residues_);
+    number_ = std::move(other.number_);
+}
+// Copy Ctor
+Molecule::Molecule(const Molecule& other) : glygraph::Node<cds::Molecule>(other),
+number_(other.number_)
+{
+    for (auto& residue : other.residues_)
+    {
+        residues_.push_back(std::make_unique<Residue>((*residue.get())) );
+    }
+}
+// Move and Copy assignment operator
+Molecule& Molecule::operator=(Molecule other)
+{
+    glygraph::Node<cds::Molecule>::operator=(other); //ToDo ok?
+    swap(*this, other);
+    return *this;
+}
+//////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
 std::vector<Residue*> Molecule::getResidues() const

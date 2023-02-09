@@ -9,7 +9,31 @@ using cds::Assembly;
 using cds::Molecule;
 using cds::Residue;
 using cds::Atom;
-
+//////////////////////////////////////////////////////////
+//                       CONSTRUCTORS                   //
+//////////////////////////////////////////////////////////
+// Move Ctor
+Assembly::Assembly(Assembly&& other) noexcept : glygraph::Node<cds::Assembly>(other)
+{
+    molecules_ = std::move(other.molecules_);
+    number_ = std::move(other.number_);
+}
+// Copy Ctor
+Assembly::Assembly(const Assembly& other) : glygraph::Node<cds::Assembly>(other),
+number_(other.number_)
+{
+    for (auto& molecule : other.molecules_)
+    {
+        molecules_.push_back(std::make_unique<Molecule>((*molecule.get())) );
+    }
+}
+// Move and Copy assignment operator
+Assembly& Assembly::operator=(Assembly other)
+{
+    glygraph::Node<cds::Assembly>::operator=(other); //ToDo fuck.
+    swap(*this, other);
+    return *this;
+}
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
