@@ -4,7 +4,7 @@
 ##########               Cool variables             ############
 ################################################################
 #Tests that dont work on baremetal. Need to make this a list but lol
-TEST_SKIP=./016.test.DrawGlycan.sh
+TEST_SKIP_LIST=("./016.test.DrawGlycan.sh" "./017.test.GlycoproteinBuilder.sh" "./013.test.buildOligoaccharideLibrary.sh")
 SKIP_TIME=0
 
 GMML_TEST_JOBS=4
@@ -82,13 +82,14 @@ while getopts "j:hd:" option; do
         d)
             dIn="${OPTARG}"
             if [ "${dIn}" == "bare_metal" ]; then
-                for ((SKIP_INDEX = 0; SKIP_INDEX < ${#GMML_TEST_FILE_LIST[@]}; SKIP_INDEX++)); do
-                    if [ "${GMML_TEST_FILE_LIST["${SKIP_INDEX}"]}" == "${TEST_SKIP}" ]; then
-                        unset GMML_TEST_FILE_LIST["${SKIP_INDEX}"]
-                        GMML_TEST_FILE_LIST=("${GMML_TEST_FILE_LIST[@]}")
-                        SKIP_TIME=1
-                        break
-                    fi
+                for TEST_SKIP in "${TEST_SKIP_LIST[@]}"; do
+                    for ((SKIP_INDEX = ${#GMML_TEST_FILE_LIST[@]}; SKIP_INDEX >= 0; SKIP_INDEX--)); do
+                        if [ "${GMML_TEST_FILE_LIST["${SKIP_INDEX}"]}" == "${TEST_SKIP}" ]; then
+                            unset GMML_TEST_FILE_LIST["${SKIP_INDEX}"]
+                            GMML_TEST_FILE_LIST=("${GMML_TEST_FILE_LIST[@]}")
+                            SKIP_TIME=1
+                        fi
+                    done
                 done
             else
                 printHelp
@@ -250,7 +251,7 @@ esac
 if [ "${SKIP_TIME}" == 1 ]; then
     echo -e "${INFO_STYLE}
 ######## WARNING YOU SKIPPED TESTS ########
-Tests Skipped:\t${TEST_SKIP}
+Tests Skipped:\t${TEST_SKIP_LIST[*]}
 ######################################"
 fi
 

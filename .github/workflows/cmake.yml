@@ -36,8 +36,9 @@ jobs:
             sudo apt-get update && sudo apt-get install -yq libboost-all-dev
             mkdir -p ~/boost
             for dep in libboost-all-dev; do
-                dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/boost/
+                dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp -r --parents --target-directory ~/boost/
             done
+            ls -lah ~/boost/
         fi
     
     #Done for installing eigen 3 lib also smdh
@@ -76,11 +77,11 @@ jobs:
       #We wanna make sure we can wrap just in case, lazy but w/e this is just getting us something.
       #takes around 7 mins for nowrap
       run: |
-        ./make.sh -j 2 -c 
+        ./make.sh -j 3 -c 
 
     - name: Run tests that are possible to run on bare metal
       run: |    
-        bash ./compile_run_tests.bash -j 2 -d bare_metal
+        bash ./compile_run_tests.bash -j 3 -d bare_metal
       working-directory: tests
       
     
