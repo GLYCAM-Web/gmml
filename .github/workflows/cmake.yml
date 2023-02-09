@@ -15,10 +15,32 @@ jobs:
     runs-on: ubuntu-22.04
     
     #may need to specify cmake version idk
-    
     steps:
     - uses: actions/checkout@v3
 
+    #install and cache boost cause for some reason github doesnt include it in their images lmao
+    #peep this https://raymii.org/s/articles/Github_Actions_cpp_boost_cmake_speedup.html
+    - name: Cache boost
+      uses: actions/cache@v3
+      id: cache-boost
+      with:
+         path: "~/boost"
+         key: libboost1.71-dev
+    - name: Install boost
+      env:
+        CACHE_HIT: ${{steps.cache-boost.outputs.cache-hit}}
+      run: |
+        if [[ "$CACHE_HIT" == 'true' ]]; then
+            sudo cp --force --recursive ~/boost/* /
+        else
+            sudo apt-get update && sudo apt-get install -yq libboost1.71-dev
+            mkdir -p ~/boost
+            for dep in libboost1.71-dev; do
+                dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/boost/
+            done
+        fi
+    
+    #make sure we are setting up our python right
     - name: Set up Python 3.9
       uses: actions/setup-python@v4
       with:
