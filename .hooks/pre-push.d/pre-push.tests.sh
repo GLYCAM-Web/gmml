@@ -11,6 +11,9 @@ RED_BOLD='\033[0;31m\033[1m'
 #instead of a wannabe bool type flag
 BRANCH_IS_BEHIND=""
 
+#How many commits a feature branch can be missing from the gmml-test branch
+MAX_FEATURE_BEHIND_TEST=15
+
 check_gemshome()
 {
     if [ -z "${GEMSHOME}" ]; then
@@ -40,6 +43,20 @@ check_dir_exists()
     if [ ! -d "$1" ]; then
         echo ""
         echo "Your $1 directory does not exist."
+    fi
+}
+
+#this isnt coded for babies, follow our git patterns and we are good, BORK ON MERGE????
+ensure_feature_close()
+{
+    CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    echo -e "\nEnsuring feature branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} in repo ${YELLOW_BOLD}GMML${RESET_STYLE} is missing less than ...."
+
+    if [ "$(git rev-list --left-only --count origin/gmml-test..."${CURRENT_BRANCH}")" -gt "${MAX_FEATURE_BEHIND_TEST}" ]; then
+        echo -e "${RED_BOLD}ERROR:${RESET_STYLE} MISSING TOO MANY COMMITS FROM GMML-TEST, INCORPERATE CURRENT GMML-TEST CODE INTO YOUR FEATURE BRANCH THEN TRY AGAIN.\nABORTING\n"
+        exit 1
+    else
+        echo -e "${GREEN_BOLD}passed...${RESET_STYLE} Feature branch is not too far from gmml-test, proceding\n"
     fi
 }
 
@@ -142,6 +159,18 @@ TEST_SKIP=0
 #### Allow skipping tests ####
 branch=$(git rev-parse --abbrev-ref HEAD)
 if [[ "${branch}" != "gmml-dev" ]] && [[ "${branch}" != "gmml-test" ]] && [[ "${branch}" != "stable" ]]; then
+
+    if [[ "${branch}" != hotfix* ]]; then
+        echo -e "Ensuring feature branch is not too far from gmml-test\n"
+        ensure_feature_close
+        
+        
+        exit 1
+        
+    else
+        echo -e "You are applying making a hotfix for one of our main branches EXCEPT gmml-test,\nif this is not the case ABORT AND BUG PRESTON\n"
+    fi
+
     echo -e "Branch is ${branch}\nSkipping tests is allowed.\nDo you want to skip them?\ns=skip\na=abort\nEnter anything to run tests.\n"
     read -p "Enter response: " response </dev/tty
     if [[ "${response}" == [sS] ]]; then
