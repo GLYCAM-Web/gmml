@@ -10,7 +10,7 @@ using cds::Atom;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTORS                   //
 //////////////////////////////////////////////////////////
-Atom::Atom(const std::string& name, const Coordinate& coord)
+Atom::Atom(const std::string name, const Coordinate& coord)
 : Abstract::absAtom(coord)
 {
     this->setName(name);
