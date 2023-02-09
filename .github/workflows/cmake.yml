@@ -1,8 +1,6 @@
 name: CMake
 
-on:
-  pull_request_review:
-    types: [submitted]
+on: workflow_dispatch
 
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.), eventually wanna make cmake stuff more normal but w/e ignore this 4 now
