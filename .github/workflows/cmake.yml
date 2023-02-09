@@ -75,11 +75,15 @@ jobs:
     - name: BuildScript
       #We wanna make sure we can wrap just in case, lazy but w/e this is just getting us something.
       #takes around 7 mins for nowrap
-      run: ./make.sh -j 2 -c 
+      run: |
+        ./make.sh -j 2 -c 
+        ls -lah
+        echo $(pwd)
 
     - name: Run tests that are possible to run on bare metal
       run: |
         echo $(pwd)
+        ls -lah
         bash ./compile_run_tests.sh -j 2 -d bare_metal
       working-directory: tests
       
