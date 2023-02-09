@@ -1983,9 +1983,9 @@ CONECT  323  322  324  326
 CONECT  324  323  325  330                                                      
 CONECT  325  324                                                                
 CONECT  326  323  327                                                           
-CONECT  327  326                                                                
-CONECT  328                                                                     
-CONECT  329                                                                     
+CONECT  327  326  328                                                           
+CONECT  328  327  329                                                           
+CONECT  329  328                                                                
 CONECT  330  324  331                                                           
 CONECT  331  330  332  334                                                      
 CONECT  332  331  333  341                                                      
@@ -2132,9 +2132,9 @@ CONECT  472  471  473  475
 CONECT  473  472  474  479                                                      
 CONECT  474  473                                                                
 CONECT  475  472  476                                                           
-CONECT  476  475                                                                
-CONECT  477                                                                     
-CONECT  478                                                                     
+CONECT  476  475  477                                                           
+CONECT  477  476  478                                                           
+CONECT  478  477                                                                
 CONECT  479  473  480                                                           
 CONECT  480  479  481  483                                                      
 CONECT  481  480  482  487                                                      
@@ -2914,8 +2914,8 @@ CONECT 1254 1247 1255
 CONECT 1255 1254 1256 1258                                                      
 CONECT 1256 1255 1257 1260                                                      
 CONECT 1257 1256                                                                
-CONECT 1258 1255                                                                
-CONECT 1259                                                                     
+CONECT 1258 1255 1259                                                           
+CONECT 1259 1258                                                                
 CONECT 1260 1256 1261                                                           
 CONECT 1261 1260 1262 1264                                                      
 CONECT 1262 1261 1263 1267                                                      
