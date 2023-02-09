@@ -108,7 +108,7 @@ std::vector<Atom*> cdsSelections::FindHeavyAtoms(std::vector<Atom*> queryAtoms)
 
 unsigned long int cdsSelections::CountAtomsWithinBondingDistance(const Atom* queryAtom, std::vector<Atom*> otherAtoms)
 {
-    unsigned long int count;
+    unsigned long int count = 0;
     for (auto &otherAtom : otherAtoms)
     {
         if (queryAtom->isWithinBondingDistance(otherAtom))
