@@ -95,6 +95,7 @@ private:
     inline std::vector<GlycosylationSite*> GetOtherGlycosites() {return other_glycosites_;}
     inline unsigned long int GetInternalBondCount() 							{return internalBondCount_;}
     inline std::vector<Atom*> GetProteinBeads() 						{return protein_beads_;}
+    inline std::vector<Atom*> GetProteinAtoms()                         {return proteinAtoms_;}
     inline std::vector<Atom*> GetOtherGlycanBeads() 					{return other_glycan_beads_;}
     inline Carbohydrate* GetAttachedGlycan()			 			{return &glycan_;}
     inline  Residue* GetResidue() 								{return residue_;}
