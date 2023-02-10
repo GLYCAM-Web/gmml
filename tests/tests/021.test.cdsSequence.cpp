@@ -74,7 +74,7 @@ int main ()
                 std::cout << "Writing: " << fileName << "\n";
                 std::ofstream outFileStream;
                 outFileStream.open(fileName.c_str());
-                cds::WriteMoleculeToOffFile(theVanToMordor.getResidues(), outFileStream, theVanToMordor.getName());
+                theVanToMordor.WriteOff(outFileStream);
                 outFileStream.close();
             }
             catch(...)

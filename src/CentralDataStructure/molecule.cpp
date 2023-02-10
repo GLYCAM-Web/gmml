@@ -144,5 +144,5 @@ void Molecule::WritePdb(std::ostream& stream) const
 
 void Molecule::WriteOff(std::ostream& stream) const
 {
-    cds::WriteMoleculeToOffFile(this->getResidues(), stream, this->getName());
+    cds::WriteMoleculeToOffFile(this, stream, this->getName());
 }

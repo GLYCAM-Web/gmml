@@ -38,7 +38,7 @@ int main()
     {
     	std::ofstream outFileStream;
     	outFileStream.open(fileName.c_str());
-    	cds::WriteMoleculeToOffFile(libFile.getResidues(), outFileStream, libFile.getName());
+    	libFile.WriteOff(outFileStream);
     	outFileStream.close();
     }
     catch(...)

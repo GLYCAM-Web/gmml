@@ -1,8 +1,8 @@
 #ifndef INCLUDES_CENTRALDATASTRUCTURE_WRITERS_CDSOFFWRITER_HPP_
 #define INCLUDES_CENTRALDATASTRUCTURE_WRITERS_CDSOFFWRITER_HPP_
 #include "includes/CentralDataStructure/residue.hpp" // ToDo convert from templates to just use the cds classes.
-#include "includes/Abstract/absResidue.hpp"
-#include "includes/CentralDataStructure/cdsFunctions.hpp"
+//#include "includes/Abstract/absResidue.hpp"
+#include "includes/CentralDataStructure/cdsFunctions.hpp" // serializeNumbers
 #include <vector>
 #include <string>
 #include <iostream>
@@ -155,21 +155,33 @@ void WriteResiduesToOffFile(std::vector<residueT*> residues, std::ostream& strea
 	}
 	for(auto &residue : residues)
 	{
-        cds::serializeResidueAndAtomNumbers(std::vector<residueT*>{residue});
+        cds::serializeNumbers(std::vector<residueT*>{residue});
+        cds::serializeNumbers(residue->getAtoms());
 		cds::WriteOffFileUnit(std::vector<residueT*>{residue}, stream, residue->getName());
 	}
 	return;
 }
 
-//ToDo We need another one that writes multiple molecules as a single unit off file for e.g. gp builder.
-template <typename residueT>
-void WriteMoleculeToOffFile(std::vector<residueT*> residues, std::ostream& stream, const std::string unitName)
+template <typename moleculeT>
+void WriteMoleculeToOffFile(moleculeT* molecule, std::ostream& stream, const std::string unitName)
 { // For writing residues together as a molecule
 	stream << "!!index array str" << std::endl;
 	stream << " \"" << unitName << "\"" << std::endl;
-    cds::serializeResidueAndAtomNumbers(residues);
-	cds::WriteOffFileUnit(residues, stream, unitName);
+    cds::serializeNumbers(molecule->getAtoms());
+    cds::serializeNumbers(molecule->getResidues());
+	cds::WriteOffFileUnit(molecule->getResidues(), stream, unitName);
 	return;
+}
+
+template <typename assemblyT>
+void WriteAssemblyToOffFile(assemblyT* assembly, std::ostream& stream, const std::string unitName)
+{
+    stream << "!!index array str" << std::endl;
+    stream << " \"" << unitName << "\"" << std::endl;
+    cds::serializeNumbers(assembly->getAtoms());
+    cds::serializeNumbers(assembly->getResidues());
+    cds::WriteOffFileUnit(assembly->getResidues(), stream, unitName);
+    return;
 }
 
 } // namespace

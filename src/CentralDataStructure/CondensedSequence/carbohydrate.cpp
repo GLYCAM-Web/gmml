@@ -47,7 +47,7 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
             }
         }
         // Have atom numbers go from 1 to number of atoms.
-        cds::serializeAtomNumbers(this->getAtoms());
+        cds::serializeNumbers(this->getAtoms());
         // Apply any deoxy
         for( auto &cdsResidue: this->getResidues() )
         {
@@ -146,7 +146,7 @@ void Carbohydrate::Generate3DStructureFiles(std::string fileOutputDirectory, std
         // Off file
         completeFileName = PathAndFileName + ".off";
         outFileStream.open(completeFileName.c_str());
-        cds::WriteMoleculeToOffFile(this->getResidues(), outFileStream, this->getName());
+        this->WriteOff(outFileStream);
         outFileStream.close();
     }
     catch(const std::string &exceptionMessage)

@@ -154,7 +154,7 @@ void GlycoproteinBuilder::WriteOutputFiles()
     // Off file, serializes.
     fileName = this->GetWorkingDirectory() + "GlycoProtein_All_Resolved.off";
 	outFileStream.open(fileName.c_str());
-	cds::WriteMoleculeToOffFile(this->GetGlycoproteinAssembly().getResidues(), outFileStream, "GLYCOPROTEINBUILDER");
+	cds::WriteAssemblyToOffFile(&(this->GetGlycoproteinAssembly()), outFileStream, "GLYCOPROTEINBUILDER");
 	outFileStream.close();
 	// Pdb, serialized numbering.
 	fileName = this->GetWorkingDirectory() + "GlycoProtein_All_Resolved_Serialized.pdb";
