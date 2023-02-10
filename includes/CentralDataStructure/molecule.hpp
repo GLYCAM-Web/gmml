@@ -24,7 +24,7 @@ public:
     {
         using std::swap;
         swap(lhs.residues_, rhs.residues_);
-        swap(lhs.number_, rhs.number_);
+        swap(lhs.number_, rhs.number_); // @suppress("Invalid arguments")
     }
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
