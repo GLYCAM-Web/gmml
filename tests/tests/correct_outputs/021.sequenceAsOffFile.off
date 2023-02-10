@@ -1,6 +1,6 @@
 !!index array str
- "HiMyNameIs DManpa[6S,2S]1-OME"
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
+ "HiMyNameIs:DManpa[6S,2S]1-OME"
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
  "H1" "H1" 0 1 131072 1 1 0.000000
  "CH3" "Cg" 0 1 131072 2 6 0.264000
  "H2" "H1" 0 1 131072 3 1 0.000000
@@ -34,7 +34,7 @@
  "O1" "O2" 0 4 131072 2 8 -0.694000
  "O2" "O2" 0 4 131072 3 8 -0.694000
  "O3" "O2" 0 4 131072 4 8 -0.694000
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
  "H1" "H1" 0 -1 0.0
  "CH3" "Cg" 0 -1 0.0
  "H2" "H1" 0 -1 0.0
@@ -68,18 +68,18 @@
  "O1" "O2" 0 -1 0.0
  "O2" "O2" 0 -1 0.0
  "O3" "O2" 0 -1 0.0
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.boundbox array dbl
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.boundbox array dbl
  -1.000000
  0.0
  0.0
  0.0
  0.0
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.childsequence single int
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.childsequence single int
  5
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.connect array int
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.connect array int
  1
  33
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.connectivity table  int atom1x  int atom2x  int flags
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.connectivity table  int atom1x  int atom2x  int flags
  1 2 1
  2 3 1
  2 4 1
@@ -113,7 +113,7 @@
  30 32 1
  30 33 1
  30 19 1
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
  "U" 0 "R" 1
  "R" 1 "A" 1
  "R" 1 "A" 2
@@ -151,9 +151,9 @@
  "R" 4 "A" 31
  "R" 4 "A" 32
  "R" 4 "A" 33
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.name single str
- "HiMyNameIs DManpa[6S,2S]1-OME"
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.positions table  dbl x  dbl y  dbl z
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.name single str
+ "HiMyNameIs:DManpa[6S,2S]1-OME"
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.positions table  dbl x  dbl y  dbl z
  -3.534201 6.785731 -1.620619
  -3.779597 5.773534 -1.924697
  -4.842697 5.662961 -2.111293
@@ -187,23 +187,23 @@
  -9.550650 6.155776 -6.601772
  -9.615903 5.670835 -4.216909
  -9.899618 3.882349 -5.844536
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
  6 0 0 0 0 0
  5 30 26 0 0 0
  25 0 0 0 0 0
  19 0 0 0 0 0
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
  "OME" 1 6 1 "?" 0
  "XMA" 2 21 6 "?" 0
  "SO3" 3 5 26 "?" 0
  "SO3" 4 5 30 "?" 0
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.solventcap array dbl
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.solventcap array dbl
  -1.000000
  0.0
  0.0
  0.0
  0.0
-!entry.HiMyNameIs DManpa[6S,2S]1-OME.unit.velocities table  dbl x  dbl y  dbl z
+!entry.HiMyNameIs:DManpa[6S,2S]1-OME.unit.velocities table  dbl x  dbl y  dbl z
  0.0 0.0 0.0
  0.0 0.0 0.0
  0.0 0.0 0.0

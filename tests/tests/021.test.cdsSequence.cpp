@@ -51,7 +51,7 @@ int main ()
             std::cout << "*****\n\n\n";
             // Outputs for fun:
 
-            theVanToMordor.setName("HiMyNameIs " + sequence);
+            theVanToMordor.setName("HiMyNameIs:" + sequence);
             std::string fileName = "./021.sequenceAsPdbFile.pdb";
             std::ofstream outFileStream;
             try
