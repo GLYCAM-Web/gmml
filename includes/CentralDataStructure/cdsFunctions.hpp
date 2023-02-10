@@ -109,8 +109,16 @@ void EnsureIntegralCharge(std::vector<atomT*> atoms)
 	return;
 }
 
-void serializeResidueAndAtomNumbers(std::vector<cds::Residue*> residues);
-void serializeAtomNumbers(std::vector<cds::Atom*> atoms);
+template <typename T>
+void serializeNumbers(std::vector<T*> elements)
+{
+    unsigned int i = 0;
+    for(auto &element : elements)
+    {
+        element->setNumber(++i);
+    }
+    return;
+}
 } // namespace
 
 
