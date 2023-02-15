@@ -112,18 +112,24 @@ void GlycoproteinBuilder::InitializeGlycoproteinBuilder(GlycoproteinBuilderInput
         this->SetIsDeterministic(inputStruct.isDeterministic_);
         this->ConvertInputStructEntries(inputStruct);
         pdb::PdbFile pdbFile(this->GetWorkingDirectory() + inputStruct.substrateFileName_);
-        for (auto &assembly : pdbFile.getAssemblies())
-        { // Per assembly as depending on input pdb file, like an NMR structure with lots of models, ensemble.getAtoms() would be very wrong.
-            cds::bondAtomsByDistance(assembly->getAtoms());
-        }
+//        for (auto &assembly : pdbFile.getAssemblies())
+//        { // Per assembly as depending on input pdb file, like an NMR structure with lots of models, ensemble.getAtoms() would be very wrong.
+//            cds::bondAtomsByDistance(assembly->getAtoms());
+//        }
+        // Dumb but need to get it working again before I fix this. What should I do when there are lots of models?
+        // Don't copy or you lose the ability to cast to pdbResidue.. :(
+        glycoprotein_ = std::move(*(pdbFile.getAssemblies().front()));
+        cds::bondAtomsByDistance(glycoprotein_.getAtoms());
         gmml::log(__LINE__, __FILE__, gmml::INF, "Attaching Glycans To Glycosites.");
         this->CreateGlycosites(inputStruct.glycositesInputVector_);
     }
     catch (const std::string &errorMessage)
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
-        //std::exit(EXIT_FAILURE); // Can't do this when GEMS starts to use this class. Working on the issue on another feature branch.
+        throw std::runtime_error(errorMessage);
     }
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Initialization of Glycoprotein builder complete!");
+    return;
 }
 
 void GlycoproteinBuilder::ConvertInputStructEntries(GlycoproteinBuilderInputs inputStruct)
