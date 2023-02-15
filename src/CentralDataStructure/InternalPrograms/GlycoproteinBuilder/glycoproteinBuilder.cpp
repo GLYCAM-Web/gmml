@@ -6,9 +6,11 @@
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/files.hpp"
 #include "includes/CodeUtils/directories.hpp"
+#include "includes/CodeUtils/strings.hpp" // split
 #include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidue.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp" // bondAtomsByDistance
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp" // selectResiduesByType
 
@@ -383,6 +385,10 @@ void GlycoproteinBuilder::CreateGlycosites(std::vector<GlycositeInput> glycosite
 	{
 	    gmml::log(__LINE__, __FILE__, gmml::INF, "Creating glycosite on residue " + glycositeInput.proteinResidueId_ + " with glycan " + glycositeInput.glycanInput_ );
 	    Residue* glycositeResidue = this->SelectResidueFromInput(glycositeInput.proteinResidueId_);
+	    if (glycositeResidue == nullptr)
+	    {
+	        throw std::runtime_error("Did not find a residue with id matching " + glycositeInput.proteinResidueId_);
+	    }
 	    std::vector<Residue*> otherResidues = this->GetGlycoproteinAssembly().getResidues();
 	    otherResidues.erase(std::remove(otherResidues.begin(), otherResidues.end(), glycositeResidue), otherResidues.end());
 		glycosites_.emplace_back(glycositeResidue, otherResidues, glycositeInput.glycanInput_, this->GetPrepFileLocation());
@@ -395,13 +401,31 @@ void GlycoproteinBuilder::CreateGlycosites(std::vector<GlycositeInput> glycosite
 }
 
 Residue* GlycoproteinBuilder::SelectResidueFromInput(const std::string userSelection)
-{
+{ // Chain_residueNumber_insertionCode* *optional.
+    std::vector<std::string> splitUserSelection = codeUtils::split(userSelection, '_');
+    if(splitUserSelection.size() < 2)
+    {
+        throw std::runtime_error("userSelection (" + userSelection + ") for residue to glycosylate is incorrect format.\nMust be chain_residueNumber_insertionCode.\nInsertionCode is optional. Chain can be ? if no chain numbers are in input.\nExamples: ?_24_? or ?_24 will use the first residue it encounters numbered 24. A_24_B is A chain, residue 24, insertion code B");
+    }
+    std::string userSelectedChain = "";
+    if(splitUserSelection.at(0) != "?")
+    {
+        userSelectedChain = splitUserSelection.at(0);
+    }
+    std::string userSelectedResidue = splitUserSelection.at(1);
+    if(splitUserSelection.size() == 3)
+    {
+        userSelectedResidue += splitUserSelection.at(2); // So will be 24A or just 24.
+    }
+    gmml::log(__LINE__, __FILE__, gmml::INF, "We working with " + userSelectedChain + "_" + userSelectedResidue);
     for (auto &residue : this->GetGlycoproteinAssemblyPtr()->getResidues())
     {
-        std::string formattedResidueNumber = "_" + userSelection + "_";
-        if( residue->getId().compare(3, formattedResidueNumber.size(), formattedResidueNumber) == 0)
+        pdb::PdbResidue* pdbResidue = static_cast<pdb::PdbResidue*>(residue);
+        //std::cout << pdbResidue->getChainId() << "_";
+        std::cout << pdbResidue->getNumberAndInsertionCode() << "\n";
+        if ( (pdbResidue->getChainId() == userSelectedChain) && (pdbResidue->getNumberAndInsertionCode() == userSelectedResidue) )
         {
-            gmml::log(__LINE__, __FILE__, gmml::INF, "glycosite id: " + residue->getId() );
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Id of selected glycosite: " + pdbResidue->printId());
             return residue;
         }
     }
