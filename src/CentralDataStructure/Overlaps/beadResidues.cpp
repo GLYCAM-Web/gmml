@@ -17,7 +17,7 @@ std::vector<Atom*> beads::Add_Beads_To_Protein(Assembly &assembly)
 		{
 			if (atom->getName().compare("CA")==0) // Main chain (mfat) CA atoms
 			{
-				//std::cout << "Adding bead to protein " << residue->GetId() << std::endl;
+				std::cout << "Adding CA bead to protein " << residue->getId() << std::endl;
 				residue->addAtom(std::make_unique<Atom>("mfat", *(atom->getCoordinate())));
 				protein_beads.push_back(residue->getAtoms().back());
 			}
@@ -31,6 +31,7 @@ std::vector<Atom*> beads::Add_Beads_To_Protein(Assembly &assembly)
 					( (atom->getName().compare("CD")==0) && residue->getName().compare("GLU")==0 )
 			)
 			{ // sfats should move when a chi1, chi2 is moved, so make sure they are connected to something for the SetDihedral function to move them.
+                std::cout << "Adding sidechain bead to protein " << residue->getId() << std::endl;
 				residue->addAtom(std::make_unique<Atom>("sfat", *(atom->getCoordinate())));
                 protein_beads.push_back(residue->getAtoms().back());
 			}

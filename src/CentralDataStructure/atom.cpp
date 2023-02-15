@@ -31,13 +31,14 @@ Atom::Atom(const Atom& other) : glygraph::Node<cds::Atom>(other)
     {
         coordinates_.push_back( std::make_unique<Coordinate>((*coord.get())) );
     }
-
+    std::cout << "Atom ctor triggered\n";
 }
 // Move and Copy assignment operator
 Atom& Atom::operator=(Atom other)
 {
     glygraph::Node<cds::Atom>::operator=(other); //ToDo fuck.
     swap(*this, other);
+    std::cout << "MoveOrCopy operator triggered\n";
     return *this;
 }
 

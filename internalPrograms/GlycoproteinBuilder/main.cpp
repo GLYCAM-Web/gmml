@@ -25,9 +25,14 @@ int main(int argc, char* argv[])
     std::cout << "Input file is " << inputFile << "\n";
     GlycoproteinBuilderInputs inputStruct = GPInputs::readGPInputFile(workingDirectory, inputFile);
     GlycoproteinBuilder glycoproteinBuilder(inputStruct);
-    glycoproteinBuilder.ResolveOverlaps(); // Default randomize value is true, and output isn't deterministic.
-    glycoproteinBuilder.WriteOutputFiles();
-    if (!glycoproteinBuilder.IsStatusOk())
+    if(glycoproteinBuilder.IsStatusOk())
+    {    // Poor pattern, need to throw up to and catch in gems.
+        std::cout << "Resolving overlaps" << std::endl;
+        glycoproteinBuilder.ResolveOverlaps(); // Default randomize value is true, and output isn't deterministic.
+        std::cout << "Writing output files" << std::endl;
+        glycoproteinBuilder.WriteOutputFiles();
+    }
+    if (!glycoproteinBuilder.IsStatusOk()) // Status might be changed by ResolveOverlaps or WriteOuputfiles.
     {
         std::cerr << glycoproteinBuilder.GetStatusMessage() << std::endl;
     }
