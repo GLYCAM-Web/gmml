@@ -44,7 +44,7 @@ public:
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
-    inline void SetProteinAtoms(std::vector<Atom*> proteinAtoms) {proteinAtoms_ = proteinAtoms;}
+   // inline void SetProteinAtoms(std::vector<Atom*> proteinAtoms) {proteinAtoms_ = proteinAtoms;}
     void SetOtherGlycosites(std::vector<GlycosylationSite> &glycosites);
     inline std::vector<Atom*> GetSelfGlycanBeads()                      {return self_glycan_beads_;}
     inline void SetOtherGlycanBeads(std::vector<Atom*> *beads)          {other_glycan_beads_ = *beads;}
@@ -95,10 +95,11 @@ private:
     inline std::vector<GlycosylationSite*> GetOtherGlycosites() {return other_glycosites_;}
     inline unsigned long int GetInternalBondCount() 							{return internalBondCount_;}
     inline std::vector<Atom*> GetProteinBeads() 						{return protein_beads_;}
-    inline std::vector<Atom*> GetProteinAtoms()                         {return proteinAtoms_;}
+    inline std::vector<Residue*> GetOtherProteinResidues()                  {return otherProteinResidues_;}
     inline std::vector<Atom*> GetOtherGlycanBeads() 					{return other_glycan_beads_;}
     inline Carbohydrate* GetAttachedGlycan()			 			{return &glycan_;}
     inline  Residue* GetResidue() 								{return residue_;}
+    std::vector<Atom*> GetProteinAtoms();
     double GetWeightedOverlap(double glycan_weight, double protein_weight);
     //////////////////////////////////////////////////////////
     //                  PRIVATE FRIENDS                     //
@@ -112,7 +113,7 @@ private:
     inline void SetSelfGlycanBeads(std::vector<Atom*> *beads)			{self_glycan_beads_ = *beads;}
     inline void SetInternalBondCount(int i) {internalBondCount_ = i;}
     void SetOverlap(MoleculeType moleculeType, double overlap);
-    void SetProteinBeads(std::vector<Atom*> *beads);
+    void SetProteinBeads(std::vector<Atom*> beads);
     //////////////////////////////////////////////////////////
     //               INITIALIZATION FUNCTIONS               //
     //////////////////////////////////////////////////////////
@@ -146,7 +147,7 @@ private:
     std::vector<Atom*> protein_beads_;
     std::vector<Residue*> otherProteinResidues_;
     std::vector<GlycosylationSite*> other_glycosites_;
-    std::vector<Atom*> proteinAtoms_;
+  //  std::vector<Atom*> proteinAtoms_;
     unsigned long int internalBondCount_; // For checking for internal clashes within the glycan
 };
 #endif // GMML_INCLUDES_INTERNALPROGRAMS_GLYCOPROTEINBUILDER_GLYCOSYLATIONSITE_HPP

@@ -29,12 +29,19 @@ GlycosylationSite::GlycosylationSite(Residue* residue, std::vector<Residue*> oth
 //////////////////////////////////////////////////////////
 void GlycosylationSite::AddBeads(std::vector<Atom*> proteinBeads)
 {		// Add bead to each residue, attach it to one other atom in residue.
-		Atom *cb_atom = this->GetResidue()->FindAtom("CB");
-		double glycanLength = (cds::CalculateMaxDistanceBetweenCoordinates(cdsSelections::getCoordinates(this->GetAttachedGlycan()->getAtoms())) + 5); // added 5 to account for CB-C1(glycan) distance
-		std::vector<Atom*> close_protein_beads = cdsSelections::FindAtomsWithinDistance(cb_atom, proteinBeads, glycanLength );
-		this->SetProteinBeads(&close_protein_beads);
-		std::vector<Atom*> self_glycan_beads = beads::Add_Beads_To_Glycan(this->GetAttachedGlycan()->getResidues());
-		this->SetSelfGlycanBeads(&self_glycan_beads);
+    Atom *cb_atom = this->GetResidue()->FindAtom("CB");
+    if (cb_atom == nullptr)
+    {
+        throw "No CB atom in attachment residue. What da hell?";
+    }
+    double glycanLength = (cds::CalculateMaxDistanceBetweenCoordinates(cdsSelections::getCoordinates(this->GetAttachedGlycan()->getAtoms())) + 5); // added 5 to account for CB-C1(glycan) distance
+    std::cout << "She's a smidge over: " << glycanLength << std::endl;
+    this->SetProteinBeads(cdsSelections::FindAtomsWithinDistance(cb_atom, proteinBeads, glycanLength ));
+    std::vector<Atom*> self_glycan_beads = beads::Add_Beads_To_Glycan(this->GetAttachedGlycan()->getResidues());
+    std::cout << "I gots the self beads: " << self_glycan_beads.size() << std::endl;
+    this->SetSelfGlycanBeads(&self_glycan_beads);
+    std::cout << "Peace" << std::endl;
+    return;
 }
 
 double GlycosylationSite::GetWeightedOverlap(double glycan_weight, double protein_weight)
@@ -42,6 +49,19 @@ double GlycosylationSite::GetWeightedOverlap(double glycan_weight, double protei
     return ( (glycan_overlap_ * glycan_weight) + (protein_overlap_ * protein_weight) );
 }
 
+// Just to reproduce old code. Switch to distance based by residue and remove this crap later.
+std::vector<Atom*> GlycosylationSite::GetProteinAtoms()
+{
+    std::vector<Atom*> foundAtoms;
+    for (auto & residue : this->GetOtherProteinResidues())
+    {
+        for (auto &atom : residue->getAtoms())
+        {
+            foundAtoms.push_back(atom);
+        }
+    }
+    return foundAtoms;
+}
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
@@ -67,30 +87,29 @@ void GlycosylationSite::Prepare_Glycans_For_Superimposition_To_Particular_Residu
     // Want: residue.FindAtomByTag("anomeric-carbon"); The below is risky as it uses atoms names, i.e. would break for Sialic acid.
     // ToDo Ok so I reckon the below is just assuming alpha or beta depending on the concext. Need to fix a lot, but need to reproduce functionality after refactor first.
 //    Atom* anomericAtom = cdsSelections::guessAnomericAtom(reducing_Residue);
-//   This won't work as sometimes want alpha, sometimes beta. CreateCoordinateForCenterAwayFromNeighbors
+//   This won't work as sometimes want alpha, sometimes beta. i.e. a CreateCoordinateForCenterAwayFromNeighbors function
+    // This needs to be abstracted so it works for C2 reducing residues:
     Coordinate *coordC5 = reducing_Residue->FindAtom("C5")->getCoordinate();
     Coordinate *coordO5 = reducing_Residue->FindAtom("O5")->getCoordinate();
     Coordinate *coordC1 = reducing_Residue->FindAtom("C1")->getCoordinate();
+    Atom* anomericAtom = reducing_Residue->FindAtom("C1"); // For adding bond.
     // Delete aglycon atoms from glycan.
     Residue * aglycon = this->GetAttachedGlycan()->GetAglycone();
-    std::vector<Atom*> aglycon_Atoms = aglycon->getAtoms();
-    for(std::vector<Atom*>::iterator it = aglycon_Atoms.begin(); it != aglycon_Atoms.end(); ++it)
+    for (auto &atom : aglycon->getAtoms())
     {
-       Atom* atom = *it;
-       aglycon->deleteAtom(atom); // Note only removes from residue. Atoms still exist and can be found through AtomNodes. They aren't written out in a PDB file though.
+       aglycon->deleteAtom(atom);
     }
     // Ok so going to set it so that the new "superimposition residue" is the old aglycon residue
     // This avoids having to delete the algycon residue object from assembly and adding the super residue to assembly.
     Residue* superimposition_residue = aglycon; // "renaming" so the below reads better.
     superimposition_residue->setName("SUP");
-    //superimposition_residue->setId("SUP_?_1_?_?_1");
     // I put both the regular name and the O/N-linked glycam name here, as I'm not sure when it will be renamed.
     if ( (amino_acid_name == "ASN") || (amino_acid_name == "NLN") )
     {
         Atom *atomND2 = superimposition_residue->addAtom(std::make_unique<Atom>("ND2", (cds::calculateCoordinateFromInternalCoords(*coordC5, *coordO5, *coordC1, 109.3, 180, 1.53))));
         Atom *atomCG = superimposition_residue->addAtom(std::make_unique<Atom>("CG", (cds::calculateCoordinateFromInternalCoords(*coordO5, *coordC1, *atomND2->getCoordinate(), 109.3, 261, 1.325))));
         Atom *atomOD1 = superimposition_residue->addAtom(std::make_unique<Atom>("OD1", (cds::calculateCoordinateFromInternalCoords(*coordC1, *atomND2->getCoordinate(), *atomCG->getCoordinate(), 126, 0, 1.22))));
-//        superimposition_atoms_ = superimposition_residue->getAtoms();
+        anomericAtom->addBond(atomND2); // This is so findAnomericAtom works later, needs a foreign residue neighbor.
     }
     else if ( (amino_acid_name.compare("THR")==0) || (amino_acid_name.compare("SER")==0) || (amino_acid_name.compare("OLT")==0) || (amino_acid_name.compare("OLS")==0) )
     {
@@ -101,12 +120,14 @@ void GlycosylationSite::Prepare_Glycans_For_Superimposition_To_Particular_Residu
         {
             atomOG1->setName("OG1"); // It's OG in Ser.
         }
+        anomericAtom->addBond(atomOG1); // This is so findAnomericAtom works later, needs a foreign residue neighbor.
     }
     else if ( (amino_acid_name.compare("TYR")==0) || (amino_acid_name.compare("OLY")==0) )
     {
         Atom *atomOH = superimposition_residue->addAtom(std::make_unique<Atom>("OH", (cds::calculateCoordinateFromInternalCoords(*coordC5, *coordO5, *coordC1, 112, 68, 1.46))));
         Atom *atomCZ = superimposition_residue->addAtom(std::make_unique<Atom>("CZ", (cds::calculateCoordinateFromInternalCoords(*coordO5, *coordC1, *atomOH->getCoordinate(), 117, 60, 1.35))));
         Atom *atomCE1 = superimposition_residue->addAtom(std::make_unique<Atom>("CE1", (cds::calculateCoordinateFromInternalCoords(*coordC1, *atomOH->getCoordinate(), *atomCZ->getCoordinate(), 120, 180, 1.37))));
+        anomericAtom->addBond(atomOH); // This is so findAnomericAtom works later, needs a foreign residue neighbor.
     }
     else
     {
@@ -125,21 +146,38 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue *glycosite_resid
    // the correspoinding "target" atoms in the protein residue (glycosite_residue).
     for (auto &superimposition_atom : this->GetAttachedGlycan()->GetAglycone()->getAtoms())
     {
+        std::cout << "Superimposition aglycone atom is named " << superimposition_atom->getName() << "\n";
         for(auto &protein_atom : glycosite_residue->getAtoms())
         {
             if (protein_atom->getName() == superimposition_atom->getName())
             {
+                std::cout << "Adding " << protein_atom->getName() << " to superimposition atoms\n";
                 targetCoords.push_back(protein_atom->getCoordinate());
             }
         }
     }
-    std::vector<Coordinate*> glycanCoords = cdsSelections::getCoordinates(this->GetAttachedGlycan()->getAtoms());
+    std::cout << "\n\n\n";
     std::vector<Coordinate*> aglyconeCoords = cdsSelections::getCoordinates(this->GetAttachedGlycan()->GetAglycone()->getAtoms());
+    std::cout << "\n\n\n";
+    std::vector<Coordinate*> glycanCoords = cdsSelections::getCoordinates(this->GetAttachedGlycan()->getAtoms());
+    std::cout << "\n\n\n";
+    std::cout << "Number of moving coords: " << glycanCoords.size() << "vs" << this->GetAttachedGlycan()->getAtoms().size() << "\n";
+    std::cout << "Number of aglycone coords: " << aglyconeCoords.size() << " vs " << this->GetAttachedGlycan()->GetAglycone()->getAtoms().size() << "\n";
+    std::cout << "Number of target coords: " << targetCoords.size() << "\n";
+    for(auto &coord : aglyconeCoords)
+    {
+        std::cout << coord->ToString() << "\n";
+    }
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Superimposing via the aglycone.");
     cds::Superimpose(aglyconeCoords, targetCoords, glycanCoords);
     //Connect the glycan and protein atoms to each other.
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Connecting the aglycone to the protein");
     Atom *protein_connection_atom = this->GetConnectingProteinAtom(glycosite_residue->getName());
     protein_connection_atom->addBond(this->GetAttachedGlycan()->GetAnomericAtom());
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Deleting the aglycone");
     this->GetAttachedGlycan()->deleteResidue(this->GetAttachedGlycan()->GetAglycone());
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Completed superimposition to " + glycosite_residue->getId());
+    return;
 }
 
 void GlycosylationSite::Rename_Protein_Residue_To_GLYCAM_Nomenclature()
@@ -181,6 +219,7 @@ double GlycosylationSite::CalculateOverlaps(OverlapType overlapType, MoleculeTyp
         }
         else if (overlapType == BEAD)
         {
+            std::cout << "Nah here" << std::endl;
             overlap = this->CalculateBeadOverlaps(moleculeType);
         }
         if (recordOverlap)
@@ -247,7 +286,11 @@ double GlycosylationSite::CalculateBeadOverlaps(MoleculeType moleculeType)
 double GlycosylationSite::CalculateBeadOverlaps(std::vector<Atom*> &atomsA, std::vector<Atom*> &atomsB)
 {
     double radius = 3.0; //Using same radius for all beads.
-    double distance = 0.0, overlap = 0.0, current_overlap = 0.0;
+    double overlap = 0.0, current_overlap = 0.0;
+    if (atomsA.empty() || atomsB.empty() )
+    {
+        throw std::runtime_error("Something very wrong in CalculateBeadOverlaps");
+    }
     for(std::vector<Atom*>::iterator it1 = atomsA.begin(); it1 != atomsA.end(); ++it1)
     {
         Atom *atomA = *it1;
@@ -303,12 +346,12 @@ void GlycosylationSite::SetOverlap(MoleculeType moleculeType, double overlap)
 }
 
 // Should just pass a vec of beads that doesn't have the residue in them. The erase is expensive.
-void GlycosylationSite::SetProteinBeads(std::vector<Atom*> *beads)
+void GlycosylationSite::SetProteinBeads(std::vector<Atom*> beads)
 {
     //Remove beads from attachment point residue. Don't want to count overlaps between glycan and residue it is attached to.
     std::vector<std::string> beadAtomNames = {"mfat", "sfat"};
     std::vector<Atom*> myProteinBeadAtoms = codeUtils::getElementsWithNames(this->GetProteinAtoms(), beadAtomNames);
-    protein_beads_ = codeUtils::findElementsNotInVector(*beads, myProteinBeadAtoms);
+    protein_beads_ = codeUtils::findElementsNotInVector(beads, myProteinBeadAtoms);
 }
 
 void GlycosylationSite::SetDefaultDihedralAnglesUsingMetadata()
@@ -337,7 +380,7 @@ void GlycosylationSite::SetRandomDihedralAnglesUsingMetadata()
     return;
 }
 
-void GlycosylationSite::SetRandomDihedralAnglesUsingMetadataForNthLinkage(int linkage_number)
+void GlycosylationSite::SetRandomDihedralAnglesUsingMetadataForNthLinkage(long unsigned int linkage_number)
 {
     if(linkage_number < all_residue_linkages_.size())
     {
