@@ -71,7 +71,7 @@ Atom* cdsSelections::selectNeighborNotInAtomVector(const Atom* atomWithNeighbors
 
 std::vector<Coordinate*> cdsSelections::getCoordinates(std::vector<Atom*> queryAtoms)
 {
-    std::vector<Coordinate*> coords(queryAtoms.size());
+    std::vector<Coordinate*> coords;
     for(auto & atom : queryAtoms)
     {
         coords.push_back(atom->getCoordinate());
