@@ -59,7 +59,7 @@ public:
     void Wiggle(OverlapType overlapType = BEAD, bool firstLinkageOnly = false, double tolerance = 0.1, int interval = 5);
     //std::vector<GlycosylationSite> GetXClosestSitesWithinOverlapDistanceY(std::vector<GlycosylationSite> &glycosites, int maxNumberOfSitesToConsider);
     void SetRandomDihedralAnglesUsingMetadata();
-    void SetRandomDihedralAnglesUsingMetadataForNthLinkage(int linkage_number);
+    void SetRandomDihedralAnglesUsingMetadataForNthLinkage(long unsigned int linkage_number);
     void SetDefaultDihedralAnglesUsingMetadata();
     void ResetDihedralAngles();
     void Rename_Protein_Residue_From_GLYCAM_To_Standard();
