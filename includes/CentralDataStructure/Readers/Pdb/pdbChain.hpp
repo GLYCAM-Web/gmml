@@ -22,7 +22,7 @@ public:
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-    const std::string& GetChainId() const;
+//    const std::string& GetChainId() const;
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ private:
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     //std::vector<PdbResidue> pdbResidues_;
-    std::string chainId_;
+    //std::string chainId_;
 };
 }
 #endif // GMML_INCLUDES_INPUTSET_PDBFILE_PDBCHAIN_HPP

@@ -10,7 +10,7 @@ using pdb::PdbChain;
 ////////////////////////////////////////////////////////////
 ////                       CONSTRUCTOR                    //
 ////////////////////////////////////////////////////////////
-PdbChain::PdbChain(std::stringstream &stream_block, const std::string& chainId) : chainId_(chainId)
+PdbChain::PdbChain(std::stringstream &stream_block, const std::string& chainId) : cds::Molecule(chainId)
 {
     gmml::log(__LINE__,__FILE__,gmml::INF, "Constructing PdbChain from stream_block >>>>>>>>>:\n" + stream_block.str() + "\n<<<<<<<<<<<<<< end stream_block");
     std::string line;

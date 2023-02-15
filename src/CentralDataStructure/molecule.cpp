@@ -10,6 +10,7 @@ using cds::Atom;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTORS                   //
 //////////////////////////////////////////////////////////
+Molecule::Molecule(const std::string chainID) : number_(0), chainId_(chainID) {}
 // Move Ctor
 Molecule::Molecule(Molecule&& other) noexcept : glygraph::Node<cds::Molecule>(other)
 {

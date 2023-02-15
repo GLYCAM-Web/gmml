@@ -16,6 +16,7 @@ public:
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
     Molecule() : number_(0) {}//std::cout << "Molecule default ctor\n";}
+    Molecule(const std::string chainId);
     Molecule(Molecule&& other) noexcept;            // Move Ctor
     Molecule(const Molecule& other);                // Copy Ctor
     Molecule& operator=(Molecule other);            // Move and Copy assignment operator
@@ -32,10 +33,12 @@ public:
     inline const int& getNumber() {return number_;}
     std::vector<Atom*> getAtoms() const;
     std::vector<Residue*> getResidues() const;
+    inline std::string GetChainId() const {return chainId_;}
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////
     inline void setNumber(const int i) {number_ = i;}
+    inline void setChain(const std::string s) {chainId_ = s;}
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
@@ -61,6 +64,7 @@ private:
     //////////////////////////////////////////////////////////
     std::vector<std::unique_ptr<Residue>> residues_;
     int number_;
+    std::string chainId_ = "?";
 };
 } // namespace
 #endif // INCLUDES_CENTRALDATASTRUCTURE_MOLECULE_HPP
