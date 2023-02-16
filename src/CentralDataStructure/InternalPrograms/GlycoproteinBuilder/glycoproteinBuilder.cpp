@@ -401,15 +401,20 @@ void GlycoproteinBuilder::CreateGlycosites(std::vector<GlycositeInput> glycosite
 	for (auto &glycositeInput : glycositesInputVector)
 	{
 	    gmml::log(__LINE__, __FILE__, gmml::INF, "Creating glycosite on residue " + glycositeInput.proteinResidueId_ + " with glycan " + glycositeInput.glycanInput_ );
+	    std::cout << "Checking for residue" << std::endl;
 	    Residue* glycositeResidue = this->SelectResidueFromInput(glycositeInput.proteinResidueId_);
 	    if (glycositeResidue == nullptr)
 	    {
+	        std::cout << "Did not find ersidue" << std::endl;
 	        throw std::runtime_error("Did not find a residue with id matching " + glycositeInput.proteinResidueId_);
 	    }
 	    std::vector<Residue*> otherResidues = this->GetGlycoproteinAssembly().getResidues();
 	    otherResidues.erase(std::remove(otherResidues.begin(), otherResidues.end(), glycositeResidue), otherResidues.end());
 		glycosites_.emplace_back(glycositeResidue, otherResidues, glycositeInput.glycanInput_, this->GetPrepFileLocation());
+	    std::cout << "Done with glycan" << std::endl;
+		gmml::log(__LINE__, __FILE__, gmml::INF, "Completed creating glycosite on residue " + glycositeInput.proteinResidueId_ + " with glycan " + glycositeInput.glycanInput_);
 	}
+    std::cout << "Done attaching all glycans" << std::endl;
     this->SetOtherGlycosites();
     gmml::log(__LINE__, __FILE__, gmml::INF, "Adding beads");
     this->Add_Beads(this->GetGlycoproteinAssembly(), this->GetGlycosites());
@@ -538,14 +543,11 @@ std::vector<GlycosylationSite*> GlycoproteinBuilder::DetermineSitesWithOverlap(d
 {
     std::vector<GlycosylationSite*> sites_to_return;
     double overlap = 0.0;
-    std::cout << "Ok so here" << std::endl;
     for (std::vector<GlycosylationSite>::iterator current_glycosite = glycosites_.begin(); current_glycosite != glycosites_.end(); ++current_glycosite)
     {
-        std::cout << "Ok so here" << std::endl;
         overlap = current_glycosite->CalculateOverlaps(overlapType);
         if ( overlap > tolerance)
         {
-            std::cout << "Ok so here" << std::endl;
             sites_to_return.push_back(&(*current_glycosite));
         }
     }
@@ -567,8 +569,7 @@ std::vector<GlycosylationSite*> GlycoproteinBuilder::GetSitesWithOverlap(double 
             sites_to_return.push_back(&(*current_glycosite));
         }
     }
-	//
-   	//gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+	//gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
     return sites_to_return;
 }
 
@@ -645,6 +646,7 @@ void GlycoproteinBuilder::Add_Beads(Assembly &glycoprotein, std::vector<Glycosyl
     // Each glycosite will have atomvectors of protein beads, glycan beads, and other glycan beads.
     // Other glycan beads are beads from glycans attached to other glycosites.
 	std::vector<Atom*> proteinBeads = beads::Add_Beads_To_Protein(glycoprotein);
+
 	for (auto &glycosite : glycosites)
 	{ // Go through all glycosite glycans, add bead to each residue, attach it to one other atom in residue.
 		glycosite.AddBeads(proteinBeads);
@@ -664,10 +666,10 @@ void GlycoproteinBuilder::Set_Other_Glycan_Beads(std::vector<GlycosylationSite> 
             {
                 std::vector<Atom*> temp = glycosite2.GetSelfGlycanBeads();
                 other_glycan_beads.insert(std::end(other_glycan_beads), std::begin(temp), std::end(temp));
-                //std::cout << "Adding beads of glycosite " << glycosite2->GetResidue()->GetId() << " to " << glycosite1->GetResidue()->GetId() << std::endl;
+                std::cout << "Adding beads of glycosite " << glycosite2.GetResidueId() << " to " << glycosite1.GetResidueId() << std::endl;
             }
         }
-        glycosite1.SetOtherGlycanBeads(&other_glycan_beads);
+        glycosite1.SetOtherGlycanBeads(other_glycan_beads);
     }
     return;
 }

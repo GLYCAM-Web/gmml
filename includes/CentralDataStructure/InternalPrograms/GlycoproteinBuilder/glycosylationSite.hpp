@@ -47,7 +47,7 @@ public:
    // inline void SetProteinAtoms(std::vector<Atom*> proteinAtoms) {proteinAtoms_ = proteinAtoms;}
     void SetOtherGlycosites(std::vector<GlycosylationSite> &glycosites);
     inline std::vector<Atom*> GetSelfGlycanBeads()                      {return self_glycan_beads_;}
-    inline void SetOtherGlycanBeads(std::vector<Atom*> *beads)          {other_glycan_beads_ = *beads;}
+    inline void SetOtherGlycanBeads(std::vector<Atom*> beads)          {other_glycan_beads_ = beads;}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
@@ -77,7 +77,7 @@ public:
     }
     inline bool operator!=(const GlycosylationSite &rhs) const
     {
-        return residue_->getId() == rhs.residue_->getId();
+        return residue_->getId() != rhs.residue_->getId();
     }
     inline bool operator<(const GlycosylationSite &rhs) const
     {

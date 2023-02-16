@@ -16,6 +16,7 @@ using prep::PrepFile;
 //////////////////////////////////////////////////////////
 PrepFile::PrepFile(const std::string& prep_file)
 {
+    this->setName("prepFile");
 	std::cout << "Constructor entered" << std::endl;
 	codeUtils::ensureFileExists(prep_file);
 	std::ifstream in_file(prep_file.c_str());
@@ -32,6 +33,7 @@ PrepFile::PrepFile(const std::string& prep_file)
 
 PrepFile::PrepFile(const std::string& prep_file, const std::vector<std::string> queryNames)
 {
+    this->setName("prepFile");
 	codeUtils::ensureFileExists(prep_file);
 	std::ifstream in_file(prep_file.c_str());
 	if(in_file.is_open())
