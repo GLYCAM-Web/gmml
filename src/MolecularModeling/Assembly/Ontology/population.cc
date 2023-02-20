@@ -89,7 +89,7 @@ void Assembly::PopulateOntology(std::ofstream& main_stream, OligosaccharideVecto
   std::string pdb_uri = CreateURI(pdb_resource);
 
   // //    pdb_stream << Ontology::ENTITY_COMMENT << pdb_resource << std::endl;
-  // gmml::AddTriple(pdb_uri, Ontology::TYPE, Ontology::PDB, pdb_stream);
+  gmml::AddTriple(pdb_uri, Ontology::TYPE, Ontology::PDB, pdb_stream);
   // gmml::AddLiteral(pdb_uri, Ontology::id, pdb_resource, pdb_stream);
   // //    gmml::AddLiteral(pdb_uri, Ontology::LABEL, pdb_resource, pdb_stream);
   // //    gmml::AddLiteral(pdb_uri, Ontology::input_file_path, source_file_, pdb_stream);
