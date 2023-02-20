@@ -159,7 +159,7 @@ void Assembly::PopulateOntology(std::ofstream& main_stream, OligosaccharideVecto
   // gmml::log(__LINE__, __FILE__,  gmml::INF, "PDB Stream");
   // gmml::log(__LINE__, __FILE__,  gmml::INF, pdb_stream.str());
 
-  main_stream << pdb_stream.str() << note_stream.str() << oligo_stream.str() << oligo_sequence_stream.str() << mono_stream.str() << linkage_stream.str() /* << residue_stream.str()*/ << std::endl;
+  main_stream << pdb_stream.str() << note_stream.str() << oligo_stream.str() << oligo_sequence_stream.str() << mono_stream.str() << linkage_stream.str()  << /* residue_stream.str() << */ std::endl;
 
 
 
@@ -369,18 +369,21 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
           gmml::AddLiteral(parent_res_uri, Ontology::hasNameIndex, std::to_string(thisMono->oligosaccharide_index_), oligo_sequence_stream);
           for(std::vector<std::pair<Glycan::GlycosidicLinkage*, Glycan::Monosaccharide*> >::iterator it = thisMono->mono_neighbors_.begin(); it!=thisMono->mono_neighbors_.end(); it++)
           {
-            Glycan::Monosaccharide* thisMonoNeighbor = (*it).second;
-            MonoNeighborNum = thisMonoNeighbor->IUPAC_index_;//change to IUPAC_index_
-            std::string neighborResID = std::to_string(MonoNeighborNum);
-            std::string monoSNFG = thisMonoNeighbor->SNFG_name_;
-            std::string monoShortName = thisMonoNeighbor->sugar_name_.monosaccharide_short_name_;
-            child_res_resource = CreateURIResource(gmml::OntSequenceResidue, root_oligo_id, id_prefix, neighborResID);
-            child_res_uri = CreateURI(child_res_resource);
-            std::stringstream connectionInfo;
-            connectionInfo << "gmmo:is" << (*it).first->linkage_type_ << "ConnectedTo";
-            gmml::AddTriple(parent_res_uri, connectionInfo.str(), child_res_uri, oligo_sequence_stream);
-            PopulateLinkage(linkage_stream, oligo_uri, parent_res_uri, child_res_uri, linkNum, (*it).first, thisMono, thisMonoNeighbor);
-
+            Glycan::GlycosidicLinkage* thisLink = (*it).first;
+            if(thisLink->non_reducing_mono_ == thisMono)
+            {
+              Glycan::Monosaccharide* thisMonoNeighbor = (*it).second;
+              MonoNeighborNum = thisMonoNeighbor->IUPAC_index_;//change to IUPAC_index_
+              std::string neighborResID = std::to_string(MonoNeighborNum);
+              std::string monoSNFG = thisMonoNeighbor->SNFG_name_;
+              std::string monoShortName = thisMonoNeighbor->sugar_name_.monosaccharide_short_name_;
+              child_res_resource = CreateURIResource(gmml::OntSequenceResidue, root_oligo_id, id_prefix, neighborResID);
+              child_res_uri = CreateURI(child_res_resource);
+              std::stringstream connectionInfo;
+              connectionInfo << "gmmo:is" << (*it).first->linkage_type_ << "ConnectedTo";
+              gmml::AddTriple(parent_res_uri, connectionInfo.str(), child_res_uri, oligo_sequence_stream);
+              PopulateLinkage(linkage_stream, oligo_uri, parent_res_uri, child_res_uri, linkNum, (*it).first, thisMono, thisMonoNeighbor);
+            }
           }
 
           PopulateMonosaccharide(mono_stream, oligo_stream, oligo_uri, id_prefix, thisMono, side_or_ring_atoms, pdb_uri);
