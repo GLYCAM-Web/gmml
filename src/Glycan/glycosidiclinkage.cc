@@ -21,7 +21,7 @@ using Glycan::GlycosidicLinkage;
 //////////////////////////////////////////////////////////
 GlycosidicLinkage::GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide* targetMono, std::string source_carbon_ID, std::string target_carbon_ID)
 {
-  int local_debug = -1;
+  int local_debug = 1;
   std::stringstream ss;//for gmml logs
   if(local_debug > 0)
   {

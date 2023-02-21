@@ -1149,6 +1149,7 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
         CalculateOligosaccharideBFactor(oligo, oligo->mono_nodes_);
         BuildOligosaccharideTreeStructure(key, values, oligo, visited_monos, monos_table, monos_table_linkages, visited_linkages);
         oligo->terminal_ = terminal_residue_name;
+        oligo->SetGlycosylationBools();
         oligosaccharides.push_back(oligo);
         if(local_debug > 0)
         {
@@ -3733,6 +3734,7 @@ std::string Glycan::Oligosaccharide::CheckTerminals(MolecularModeling::Atom* tar
   }
 }
 
+
 void Glycan::Oligosaccharide::CheckLinkageNote(Glycan::Monosaccharide* mono1, Glycan::Monosaccharide* mono2, std::string linkage, std::vector<std::string>& checked_linkages)
 {
     if(find(checked_linkages.begin(), checked_linkages.end(), linkage) == checked_linkages.end())///If this linkage hasn't been checked before by calling the function on other side of the linkage
@@ -3857,4 +3859,26 @@ void Glycan::Oligosaccharide::CalculateOligosaccharideBFactor(Glycan::Oligosacch
 void Glycan::Oligosaccharide::AddNote(Glycan::Note *note)
 {
     oligo_notes_.push_back(note);
+}
+
+void Glycan::Oligosaccharide::SetGlycosylationBools()
+{
+  if(this->root_->anomeric_carbon_pointer_ == NULL)
+  {
+    return;
+  }
+  // Check anomeric neighbors for different res name. If not, check non ring neighbor neighbors
+  AtomVector anomeric_C_neighbors =  this->root_->anomeric_carbon_pointer_->GetNode()->GetNodeNeighbors();
+  anomeric_C_Residue = this->root_->anomeric_carbon_pointer_->GetResidue()->GetName();
+  for (AtomVector::iterator it = anomeric_C_neighbors.begin(); it != anomeric_C_neighbors.end(); it++)
+  {
+    Atom* neighbor = (*it);
+    if(neighbor->GetResidue()->GetName() != anomeric_C_Residue)
+    {
+      this->is_glycosylated_ = true;
+      this->glycosylation_residue_ = neighbor->GetResidue();
+      return;
+    }
+  }
+
 }

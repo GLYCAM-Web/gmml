@@ -88,6 +88,7 @@ namespace Glycan
     std::string CheckROHTerminal(MolecularModeling::Atom* target, std::vector<MolecularModeling::Atom*> & terminal_atoms);
     std::string CheckTBTTerminal(MolecularModeling::Atom* target, std::vector<MolecularModeling::Atom*> & terminal_atoms);
     void AddNote(Glycan::Note *note);
+    void SetGlycosylationBools();
   };
 }
 

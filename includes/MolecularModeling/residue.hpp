@@ -249,6 +249,7 @@ namespace MolecularModeling
             bool CheckIfProtein();
             bool CheckIfNucleicAcid();
             bool CheckIfWater();
+            bool CheckIfSaccharide();
             //GeometryTopology::Coordinate GetRingCenter(); disabled by OG. GetIsRing returns true for all atoms even when IsRing wasn't set.
             GeometryTopology::Coordinate GetGeometricCenter();
             Atom* GetAtom(std::string query_name);
