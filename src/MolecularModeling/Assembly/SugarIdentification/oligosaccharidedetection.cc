@@ -322,7 +322,7 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
 std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology, bool individualOntologies, std::string CCD_Path)
 {
   std::stringstream logss;
-  int local_debug = -1;
+  int local_debug = 1;
   gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap( amino_lib_files );
   if(local_debug > 0)
   {
@@ -577,7 +577,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
   if(local_debug > 0)
   {
-    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+    // gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
     logss.str( std::string() ); logss.clear();  // Must do both of these to clear the stream;
   }
   //Checking if any sugar named residue is not detected
@@ -623,10 +623,19 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   /*for (unsigned int i = 0; i < ordered_monos.size(); i++){
       std::cout << "This mono cycle str: " << ordered_monos[i]->cycle_atoms_str_ << std::endl;
   }*/
+  if(local_debug > 0)
+  {
+    std::stringstream ss;
+    ss << "createOligosaccharides Size:" << std::to_string(testOligos.size()) << "\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+    ss.str("");
+  }
   testOligos = ExtractOligosaccharides( ordered_monos, dataset_residue_names, number_of_covalent_links, number_of_probable_non_covalent_complexes );
   if(local_debug > 0)
   {
-    logss << std::to_string(testOligos.size()) << "\n";
+    std::stringstream ss;
+    ss << "ExtractOligosaccharides Size:" << std::to_string(testOligos.size()) << "\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
   }
   // testOligo.createOligosaccharideGraphs(ordered_monos);
 
@@ -725,7 +734,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
   if(local_debug > 0)
   {
-    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+    // gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
   }
   return testOligos;
 }
@@ -3906,6 +3915,7 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
 
 std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vector<Glycan::Monosaccharide*> detected_monos)
 {
+  int local_debug = 1;
   // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
   std::vector<Glycan::Oligosaccharide*> detected_oligos;
   for(std::vector<Glycan::Monosaccharide*>::iterator it = detected_monos.begin(); it != detected_monos.end(); it++)
@@ -3967,12 +3977,18 @@ std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vect
     }
     if((this_mono->is_root_) && (!this_mono->is_visited_))
     {
-      // gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the root");
+      if(local_debug > 0)
+      {
+        std::stringstream ss;
+        ss << "This mono is the root: " << this_mono->cycle_atoms_[0]->GetResidue()->GetId();
+        gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+      }
       Glycan::Oligosaccharide* this_Oligo = new Glycan::Oligosaccharide(this);
       // gmml::log(__LINE__, __FILE__, gmml::INF, this_mono->sugar_name_.monosaccharide_short_name_);
       this_Oligo->traverseGraph(this_mono, this_Oligo);
       this_Oligo->reindexRGroups(this_Oligo);
       this_Oligo->indexMonosaccharides();
+      this_Oligo->SetGlycosylationBools();
       detected_oligos.push_back(this_Oligo);
       std::string iupac = "Oligo IUPAC Name: " + this_Oligo->IUPAC_name_;
       // gmml::log(__LINE__, __FILE__, gmml::INF, iupac);

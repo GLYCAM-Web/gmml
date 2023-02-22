@@ -37,6 +37,18 @@ namespace Glycan
     int on_IUPAC_index_;
     MolecularModeling::Assembly* assembly_;
     std::vector<Note*> oligo_notes_;
+    bool is_attached_to_protein_ = false;
+    std::string glycosylation_residue_;
+    std::string glycosylation_type_;
+    std::string glycosylation_pair_;
+    bool is_N_Glycan_ = false;
+    bool is_O_Glycan_ = false;
+    bool is_C_Glycan_ = false;
+    bool is_S_Glycan_ = false;
+    bool is_chemically_modified_ = false;
+    // see https://doi.org/10.1093/glycob/cwab039 SI for details about the PDB lists
+    bool in_PDB_basic_list_ = false;
+    bool in_PDB_modified_list_ = false;
     Oligosaccharide();
     Oligosaccharide(MolecularModeling::Assembly* assembly);
     Oligosaccharide(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names, MolecularModeling::Assembly* assembly);
