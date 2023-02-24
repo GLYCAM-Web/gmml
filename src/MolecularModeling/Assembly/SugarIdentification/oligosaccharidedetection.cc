@@ -2193,11 +2193,11 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
         MolecularModeling::Atom* t_neighbor = (*it);
         if(cycle_atoms_str.find(t_neighbor->GetId()) == std::string::npos)
         {
-            if(t_neighbor->GetName().at(0) != NxO)
-                pattern << t_neighbor->GetName().at(0);
-            else if(t_neighbor->GetName().at(0) == NxO && N_or_O != NULL)
-                pattern << t_neighbor->GetName().at(0);
-            else if(t_neighbor->GetName().at(0) == NxO && N_or_O == NULL)
+            if(t_neighbor->GetElementSymbol().at(0) != NxO)
+                pattern << t_neighbor->GetElementSymbol().at(0);
+            else if(t_neighbor->GetElementSymbol().at(0) == NxO && N_or_O != NULL)
+                pattern << t_neighbor->GetElementSymbol().at(0);
+            else if(t_neighbor->GetElementSymbol().at(0) == NxO && N_or_O == NULL)
                 N_or_O = t_neighbor;
         }
     }
@@ -2209,11 +2209,11 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
         for(MolecularModeling::AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
         {
             MolecularModeling::Atom* n_neighbor = (*it);
-            if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'C')
-                pattern << n_neighbor->GetName().at(0);
-            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'C' && C != NULL)
-                pattern << n_neighbor->GetName().at(0);
-            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'C' && C == NULL)
+            if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetElementSymbol().at(0) != 'C')
+                pattern << n_neighbor->GetElementSymbol().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetElementSymbol().at(0) == 'C' && C != NULL)
+                pattern << n_neighbor->GetElementSymbol().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetElementSymbol().at(0) == 'C' && C == NULL)
                 C = n_neighbor;
         }
         if(C != NULL)
@@ -2226,15 +2226,15 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
             for(MolecularModeling::AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* c_neighbor = (*it);
-                if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 && c_neighbor->GetName().at(0) != 'C' && c_neighbor->GetName().at(0) != 'O')
-                    pattern << c_neighbor->GetName().at(0);
-                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'C' && CC != NULL)
-                    pattern << c_neighbor->GetName().at(0);
-                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'O' && CO != NULL)
-                    pattern << c_neighbor->GetName().at(0);
-                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'O' && CO == NULL)
+                if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 && c_neighbor->GetElementSymbol().at(0) != 'C' && c_neighbor->GetElementSymbol().at(0) != 'O')
+                    pattern << c_neighbor->GetElementSymbol().at(0);
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetElementSymbol().at(0) == 'C' && CC != NULL)
+                    pattern << c_neighbor->GetElementSymbol().at(0);
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetElementSymbol().at(0) == 'O' && CO != NULL)
+                    pattern << c_neighbor->GetElementSymbol().at(0);
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetElementSymbol().at(0) == 'O' && CO == NULL)
                     CO = c_neighbor;
-                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'C' && CC == NULL)
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetElementSymbol().at(0) == 'C' && CC == NULL)
                     CC = c_neighbor;
             }
             if(CO != NULL)
@@ -2246,7 +2246,7 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
                 {
                     MolecularModeling::Atom* co_neighbor = (*it);
                     if(co_neighbor->GetId().compare(C->GetId()) != 0)
-                        pattern << co_neighbor->GetName().at(0);
+                        pattern << co_neighbor->GetElementSymbol().at(0);
                 }
             }
             if(CC != NULL)
@@ -2258,11 +2258,11 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
                 for(MolecularModeling::AtomVector::iterator it = cc_neighbors.begin(); it != cc_neighbors.end(); it++)
                 {
                     MolecularModeling::Atom* cc_neighbor = (*it);
-                    if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetName().at(0) != 'O')
-                        pattern << cc_neighbor->GetName().at(0);
-                    else if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetName().at(0) == 'O' && O != NULL)
-                        pattern << cc_neighbor->GetName().at(0);
-                    else if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetName().at(0) == 'O' && O == NULL)
+                    if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetElementSymbol().at(0) != 'O')
+                        pattern << cc_neighbor->GetElementSymbol().at(0);
+                    else if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetElementSymbol().at(0) == 'O' && O != NULL)
+                        pattern << cc_neighbor->GetElementSymbol().at(0);
+                    else if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetElementSymbol().at(0) == 'O' && O == NULL)
                         O = cc_neighbor;
                 }
                 if(O != NULL)
@@ -2274,7 +2274,7 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
                     {
                         MolecularModeling::Atom* o_neighbor = (*it);
                         if(o_neighbor->GetId().compare(CC->GetId()) != 0)
-                            pattern << o_neighbor->GetName().at(0);
+                            pattern << o_neighbor->GetElementSymbol().at(0);
                     }
                 }
             }
