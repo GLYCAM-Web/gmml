@@ -1251,7 +1251,7 @@ std::vector<Glycan::Oligosaccharide*> Glycan::Oligosaccharide::createOligosaccha
 void Glycan::Oligosaccharide::indexMonosaccharides()
 {
   std::stringstream testLog;
-  int local_debug = 1;
+  int local_debug = -1;
 
   //Generate Name Index (IUPAC naming order)
   for(std::vector<Glycan::Monosaccharide*>::iterator mono = this->mono_nodes_.begin(); mono != this->mono_nodes_.end(); mono++)

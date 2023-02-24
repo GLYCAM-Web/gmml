@@ -378,68 +378,98 @@ GlycosidicLinkage::GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide*
   /*TODO Add Functionality for ring Nitrogen
       This is not a priority but it's a wishlist item from Rob
   */
-  for(std::vector<MolecularModeling::Atom*>::iterator it = non_reducing_mono_->cycle_atoms_.begin(); it != non_reducing_mono_->cycle_atoms_.end(); it++)
+  int testingInt = 0;
+  if(non_reducing_mono_ != NULL)
   {
-    MolecularModeling::Atom* thisCycleAtom = (*it);
-    if(thisCycleAtom->GetElementSymbol() == "O")
-    {//Then it's the ring Oxygen
-      linkageAtoms.push_back(thisCycleAtom);
-      setRingO = true;
-    }
-  }
-  if(setRingO != true)//should this break/exit?
-  {//Could not ID ring O
-    //TODO Update once GLOBAL_DEBUG is in place
-    if(local_debug > 0)
-    {//Print Error
-      ss.str("");
-      ss << "Unable to find the ring O of the non-reducing monosaccharide: ";
-      ss << non_reducing_mono_->residue_name_ << ".";
-      gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-      ss.str("");
-    }
-  }
-
-  //Add Anomeric Carbon
-  if(non_reducing_mono_carbon_ != NULL)
-  {
-    linkageAtoms.push_back(non_reducing_mono_carbon_);
-    setAnomericC = true;
-  }
-  else//should this break/exit?
-  {//could not ID anomeric C
-    if(local_debug > 0)
-    {//Print Error
-      ss.str("");
-      ss << "Unable to find the anomeric C of the non-reducing monosaccharide: ";
-      ss << non_reducing_mono_->residue_name_ << ".";
-      gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-      ss.str("");
-    }
-  }
-
-  //Add Glycosidic Oxygen
-  /*TODO Add functionality for any element.
-      Other than Oxygen, this would typically
-      be C, N, or S, but can also be Se
-      (See 2-Carb-33.4. Selenoglycosides at
-       https://iupac.qmul.ac.uk/2carb/33.html#334),
-      and I'm sure others.
-      Halides can exist here, but as they can only form 1 bond,
-      they will be aglycones and not glycosidic linkage atoms
-  */
-  std::vector<MolecularModeling::Atom*> anomericNeighbors = non_reducing_mono_carbon_->GetNode()->GetNodeNeighbors();
-  for(std::vector<MolecularModeling::Atom*>::iterator it = anomericNeighbors.begin(); it != anomericNeighbors.end(); it++)
-  {
-    MolecularModeling::Atom* thisAnomericNeighbor = (*it);
-    if(reducing_mono_!= NULL)
+    for(std::vector<MolecularModeling::Atom*>::iterator it = non_reducing_mono_->cycle_atoms_.begin(); it != non_reducing_mono_->cycle_atoms_.end(); it++)
     {
-      //Below should work; SetIsCycle is called on all atoms in the monosaccharide's ring
-      if((reducing_mono_carbon_->GetResidue() ==
-           thisAnomericNeighbor->GetResidue()) &&
-        (thisAnomericNeighbor->GetIsCycle() == false))
+      testingInt++;
+      // if(local_debug > 0)
+      // {
+      //   ss.str("");
+      //   ss << "Cycle Atom: " << testingInt;
+      //   gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+      //   ss.str("");
+      //   ss << "Atom: " << (*it)->GetElementSymbol();
+      // }
+      MolecularModeling::Atom* thisCycleAtom = (*it);
+      if(thisCycleAtom->GetElementSymbol() == "O")
+      {//Then it's the ring Oxygen
+        linkageAtoms.push_back(thisCycleAtom);
+        setRingO = true;
+      }
+    }
+    if(setRingO != true)//should this break/exit?
+    {//Could not ID ring O
+      //TODO Update once GLOBAL_DEBUG is in place
+      if(local_debug > 0)
+      {//Print Error
+        ss.str("");
+        ss << "Unable to find the ring O of the non-reducing monosaccharide: ";
+        ss << non_reducing_mono_->residue_name_ << ".";
+        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+        ss.str("");
+      }
+    }
+
+    //Add Anomeric Carbon
+    if(non_reducing_mono_carbon_ != NULL)
+    {
+      linkageAtoms.push_back(non_reducing_mono_carbon_);
+      setAnomericC = true;
+    }
+    else//should this break/exit?
+    {//could not ID anomeric C
+      if(local_debug > 0)
+      {//Print Error
+        ss.str("");
+        ss << "Unable to find the anomeric C of the non-reducing monosaccharide: ";
+        ss << non_reducing_mono_->residue_name_ << ".";
+        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+        ss.str("");
+      }
+    }
+
+    //Add Glycosidic Oxygen
+    /*TODO Add functionality for any element.
+        Other than Oxygen, this would typically
+        be C, N, or S, but can also be Se
+        (See 2-Carb-33.4. Selenoglycosides at
+        https://iupac.qmul.ac.uk/2carb/33.html#334),
+        and I'm sure others.
+        Halides can exist here, but as they can only form 1 bond,
+        they will be aglycones and not glycosidic linkage atoms
+    */
+    std::vector<MolecularModeling::Atom*> anomericNeighbors = non_reducing_mono_carbon_->GetNode()->GetNodeNeighbors();
+    for(std::vector<MolecularModeling::Atom*>::iterator it = anomericNeighbors.begin(); it != anomericNeighbors.end(); it++)
+    {
+      MolecularModeling::Atom* thisAnomericNeighbor = (*it);
+      if(reducing_mono_!= NULL)
       {
-        if(thisAnomericNeighbor->GetElementSymbol() == "O")
+        //Below should work; SetIsCycle is called on all atoms in the monosaccharide's ring
+        if((reducing_mono_carbon_->GetResidue() ==
+            thisAnomericNeighbor->GetResidue()) &&
+          (thisAnomericNeighbor->GetIsCycle() == false))
+        {
+          if(thisAnomericNeighbor->GetElementSymbol() == "O")
+          {//Then this is the glycosidic oxygen
+            linkageAtoms.push_back(thisAnomericNeighbor);
+            glycosidic_oxygen_ = thisAnomericNeighbor;
+            setGlycosidicO = true;
+          }
+          else if (local_debug > 0)
+          {//Print Warning for now
+            ss.str("");
+            ss << "Glycosidic Oxygen not present. The atom present is " << thisAnomericNeighbor->GetElementSymbol() << ".";
+            gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+            ss.str("");
+          }
+        }
+      }
+      else if (non_reducing_mono_2_ != NULL)
+      { //The oxygen can belong to either sugar
+        if((thisAnomericNeighbor->GetElementSymbol() == "O") &&
+          (thisAnomericNeighbor->GetIsCycle() == false))
         {//Then this is the glycosidic oxygen
           linkageAtoms.push_back(thisAnomericNeighbor);
           glycosidic_oxygen_ = thisAnomericNeighbor;
@@ -453,571 +483,554 @@ GlycosidicLinkage::GlycosidicLinkage(Monosaccharide* sourceMono, Monosaccharide*
           ss.str("");
         }
       }
-    }
-    else if (non_reducing_mono_2_ != NULL)
-    { //The oxygen can belong to either sugar
-      if((thisAnomericNeighbor->GetElementSymbol() == "O") &&
-         (thisAnomericNeighbor->GetIsCycle() == false))
-      {//Then this is the glycosidic oxygen
-        linkageAtoms.push_back(thisAnomericNeighbor);
-        glycosidic_oxygen_ = thisAnomericNeighbor;
-        setGlycosidicO = true;
-      }
-      else if (local_debug > 0)
-      {//Print Warning for now
-        ss.str("");
-        ss << "Glycosidic Oxygen not present. The atom present is " << thisAnomericNeighbor->GetElementSymbol() << ".";
-        gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-        ss.str("");
-      }
-    }
-    else
-    {
-      gmml::log(__LINE__, __FILE__, gmml::ERR, "Cannot identify both sugars for the linkage, something went horribly wrong!");
-    }
-  }
-  if(setGlycosidicO != true)//should this break/exit?
-  {//Could not ID Glycosidic O
-    //TODO Update once GLOBAL_DEBUG is in place
-    if(local_debug > 0)
-    {//Print Error
-      ss.str("");
-      ss << "Unable to find the glycosidic O of the reducing monosaccharide: ";
-      ss << reducing_mono_->residue_name_ << ".";
-      gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-      ss.str("");
-    }
-  }
-
-  //Add Cx
-  if(!anomeric_anomeric_linkage_ && reducing_mono_carbon_ != NULL)
-  {
-    linkageAtoms.push_back(reducing_mono_carbon_);
-    setCx = true;
-  }
-  else if(anomeric_anomeric_linkage_ && non_reducing_mono_2_carbon_ != NULL)
-  {
-    linkageAtoms.push_back(non_reducing_mono_2_carbon_);
-    setCx = true;
-  }
-  else//should this break/exit?
-  {//Could not ID Cx
-    //TODO Update once GLOBAL_DEBUG is in place
-    if(local_debug > 0)
-    {//Print Error
-      ss.str("");
-      ss << "Unable to find Cx of ";
-      if(!anomeric_anomeric_linkage_)
-      {
-        ss << "the reducing monosaccharide: ";
-        ss << reducing_mono_->residue_name_ << ".";
-      }
       else
-      {//anomeric-anomeric
-        ss << "non-reducing monosaccharide 2: ";
-        ss << non_reducing_mono_2_->residue_name_ << ".";
-      }
-      gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-      ss.str("");
-    }
-  }
-
-  //Get Cx-1 and Cx-2 if applicable
-  if(!anomeric_anomeric_linkage_)
-  {//Get atoms for calculations and calculate
-
-    /*TODO Write smarter logic
-        For determining Cx-1, not all files or molecules have
-        ring atoms that are numbered correctly, so this would
-        ideally use ring atom position information that needs
-        to be added to the monosacharide class
-    */
-    int x = std::atoi(&reducing_mono_carbon_->GetId()[1]);
-    std::vector<MolecularModeling::Atom*> CxNeighbors = reducing_mono_carbon_->GetNode()->GetNodeNeighbors();
-    for(std::vector<MolecularModeling::Atom*>::iterator it = CxNeighbors.begin(); it != CxNeighbors.end(); it++)
-    {
-      MolecularModeling::Atom* thisCxNeighbor = (*it);
-      int thisNeighborNum = std::atoi(&thisCxNeighbor->GetId()[1]);
-      if((thisNeighborNum = (x - 1)) && (thisCxNeighbor->GetElementSymbol() == "C"))
-      {//This is Cx-1
-        //Add Cx-1
-        linkageAtoms.push_back(thisCxNeighbor);
-        setCx1 = true;
-
-        /*TODO Update logic for omega
-            All glycosidic linkages with more than 1 bridge node
-              IE 1-6, where O6 and C6 are bridge nodes connecting
-                the anomeric carbon with C5
-            should have omega angles
-        */
-        if((linkage_type_ == "1-6") ||
-           (inverse_linkage_type_ == "1-6")||
-           (linkage_type_ == "2-6") ||
-           (inverse_linkage_type_ == "2-6"))
-        {//Get Cx-2
-          std::vector<MolecularModeling::Atom*> CxMinusOneNeighbors = thisCxNeighbor->GetNode()->GetNodeNeighbors();
-          for(std::vector<MolecularModeling::Atom*>::iterator it2 = CxMinusOneNeighbors.begin(); it2 != CxMinusOneNeighbors.end(); it2++)
-          {
-            MolecularModeling::Atom* thisCxMinusOneNeighbor = (*it2);
-            int thisCxMinusOneNeighborNum = std::atoi(&thisCxMinusOneNeighbor->GetId()[1]);
-            if((thisCxMinusOneNeighborNum = (x - 2)) && (thisCxMinusOneNeighbor->GetElementSymbol() == "C"))
-            {//This is Cx-2
-              //Add Cx-2
-              linkageAtoms.push_back(thisCxMinusOneNeighbor);
-              setCx2 = true;
-            }
-          }
-        }
+      {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Cannot identify both sugars for the linkage, something went horribly wrong!");
       }
     }
-    if(setCx1 != true)//should this break/exit?
-    {//Could not ID Cx-1
+    if(setGlycosidicO != true)//should this break/exit?
+    {//Could not ID Glycosidic O
       //TODO Update once GLOBAL_DEBUG is in place
       if(local_debug > 0)
       {//Print Error
         ss.str("");
-        ss << "Unable to find Cx-1 of the reducing monosaccharide: ";
+        ss << "Unable to find the glycosidic O of the reducing monosaccharide: ";
         ss << reducing_mono_->residue_name_ << ".";
         gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
         ss.str("");
       }
     }
-    if(setCx2 !=true)//should this break/exit?
-    {//Could not ID Cx-2
-      //TODO Update logic for omega
-      if((linkage_type_ == "1-6") ||
-         (inverse_linkage_type_ == "1-6")||
-         (linkage_type_ == "2-6") ||
-         (inverse_linkage_type_ == "2-6"))
+
+    //Add Cx
+    if(!anomeric_anomeric_linkage_ && reducing_mono_carbon_ != NULL)
+    {
+      linkageAtoms.push_back(reducing_mono_carbon_);
+      setCx = true;
+    }
+    else if(anomeric_anomeric_linkage_ && non_reducing_mono_2_carbon_ != NULL)
+    {
+      linkageAtoms.push_back(non_reducing_mono_2_carbon_);
+      setCx = true;
+    }
+    else//should this break/exit?
+    {//Could not ID Cx
+      //TODO Update once GLOBAL_DEBUG is in place
+      if(local_debug > 0)
+      {//Print Error
+        ss.str("");
+        ss << "Unable to find Cx of ";
+        if(!anomeric_anomeric_linkage_)
+        {
+          ss << "the reducing monosaccharide: ";
+          ss << reducing_mono_->residue_name_ << ".";
+        }
+        else
+        {//anomeric-anomeric
+          ss << "non-reducing monosaccharide 2: ";
+          ss << non_reducing_mono_2_->residue_name_ << ".";
+        }
+        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+        ss.str("");
+      }
+    }
+
+    //Get Cx-1 and Cx-2 if applicable
+    if(!anomeric_anomeric_linkage_)
+    {//Get atoms for calculations and calculate
+
+      /*TODO Write smarter logic
+          For determining Cx-1, not all files or molecules have
+          ring atoms that are numbered correctly, so this would
+          ideally use ring atom position information that needs
+          to be added to the monosacharide class
+      */
+      int x = std::atoi(&reducing_mono_carbon_->GetId()[1]);
+      std::vector<MolecularModeling::Atom*> CxNeighbors = reducing_mono_carbon_->GetNode()->GetNodeNeighbors();
+      for(std::vector<MolecularModeling::Atom*>::iterator it = CxNeighbors.begin(); it != CxNeighbors.end(); it++)
       {
+        MolecularModeling::Atom* thisCxNeighbor = (*it);
+        int thisNeighborNum = std::atoi(&thisCxNeighbor->GetId()[1]);
+        if((thisNeighborNum = (x - 1)) && (thisCxNeighbor->GetElementSymbol() == "C"))
+        {//This is Cx-1
+          //Add Cx-1
+          linkageAtoms.push_back(thisCxNeighbor);
+          setCx1 = true;
+
+          /*TODO Update logic for omega
+              All glycosidic linkages with more than 1 bridge node
+                IE 1-6, where O6 and C6 are bridge nodes connecting
+                  the anomeric carbon with C5
+              should have omega angles
+          */
+          if((linkage_type_ == "1-6") ||
+            (inverse_linkage_type_ == "1-6")||
+            (linkage_type_ == "2-6") ||
+            (inverse_linkage_type_ == "2-6"))
+          {//Get Cx-2
+            std::vector<MolecularModeling::Atom*> CxMinusOneNeighbors = thisCxNeighbor->GetNode()->GetNodeNeighbors();
+            for(std::vector<MolecularModeling::Atom*>::iterator it2 = CxMinusOneNeighbors.begin(); it2 != CxMinusOneNeighbors.end(); it2++)
+            {
+              MolecularModeling::Atom* thisCxMinusOneNeighbor = (*it2);
+              int thisCxMinusOneNeighborNum = std::atoi(&thisCxMinusOneNeighbor->GetId()[1]);
+              if((thisCxMinusOneNeighborNum = (x - 2)) && (thisCxMinusOneNeighbor->GetElementSymbol() == "C"))
+              {//This is Cx-2
+                //Add Cx-2
+                linkageAtoms.push_back(thisCxMinusOneNeighbor);
+                setCx2 = true;
+              }
+            }
+          }
+        }
+      }
+      if(setCx1 != true)//should this break/exit?
+      {//Could not ID Cx-1
         //TODO Update once GLOBAL_DEBUG is in place
         if(local_debug > 0)
         {//Print Error
           ss.str("");
-          ss << "Unable to find Cx-2 of the reducing monosaccharide: ";
+          ss << "Unable to find Cx-1 of the reducing monosaccharide: ";
           ss << reducing_mono_->residue_name_ << ".";
           gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
           ss.str("");
         }
       }
-    }
-  }
-  else
-  {//Anomeric-anomeric linkage uses different atoms
-    /*Using angle definitions provided by Dr. Al French.
-      The Ring O of non_reducing_mono_2_ is used instead of Cx-1
-    */
-    for(std::vector<MolecularModeling::Atom*>::iterator it = non_reducing_mono_2_->cycle_atoms_.begin(); it != non_reducing_mono_2_->cycle_atoms_.end(); it++)
-    {
-      MolecularModeling::Atom* thisAtom = (*it);
-      if(thisAtom->GetElementSymbol() == "O")
-      {//Then this is the ring oxygen
-        //Add Cx-1 (I know this is poor naming)
-        linkageAtoms.push_back(thisAtom);
-        setCx1 = true;
+      if(setCx2 !=true)//should this break/exit?
+      {//Could not ID Cx-2
+        //TODO Update logic for omega
+        if((linkage_type_ == "1-6") ||
+          (inverse_linkage_type_ == "1-6")||
+          (linkage_type_ == "2-6") ||
+          (inverse_linkage_type_ == "2-6"))
+        {
+          //TODO Update once GLOBAL_DEBUG is in place
+          if(local_debug > 0)
+          {//Print Error
+            ss.str("");
+            ss << "Unable to find Cx-2 of the reducing monosaccharide: ";
+            ss << reducing_mono_->residue_name_ << ".";
+            gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+            ss.str("");
+          }
+        }
       }
     }
-    phi_angle_ = CalculatePhiAngle(linkageAtoms);
-    //This is going to calculate phi' even though its using the Psi function
-    //because we changed what atoms are being fed into it (ring O instead of Cx-1)
-    phi_prime_angle_ = CalculatePsiAngle(linkageAtoms);
-  }
-
-  //Calculate Torsion Angles
-  if(setRingO && setAnomericC && setGlycosidicO && setCx && setCx1)
-  {
-    phi_angle_ = CalculatePhiAngle(linkageAtoms);
-
-    if(!anomeric_anomeric_linkage_)
-    {
-      psi_angle_ = CalculatePsiAngle(linkageAtoms);
-    }
     else
-    {//anomeric-anomeric
+    {//Anomeric-anomeric linkage uses different atoms
+      /*Using angle definitions provided by Dr. Al French.
+        The Ring O of non_reducing_mono_2_ is used instead of Cx-1
+      */
+      for(std::vector<MolecularModeling::Atom*>::iterator it = non_reducing_mono_2_->cycle_atoms_.begin(); it != non_reducing_mono_2_->cycle_atoms_.end(); it++)
+      {
+        MolecularModeling::Atom* thisAtom = (*it);
+        if(thisAtom->GetElementSymbol() == "O")
+        {//Then this is the ring oxygen
+          //Add Cx-1 (I know this is poor naming)
+          linkageAtoms.push_back(thisAtom);
+          setCx1 = true;
+        }
+      }
+      phi_angle_ = CalculatePhiAngle(linkageAtoms);
+      //This is going to calculate phi' even though its using the Psi function
+      //because we changed what atoms are being fed into it (ring O instead of Cx-1)
       phi_prime_angle_ = CalculatePsiAngle(linkageAtoms);
     }
 
-    //TODO Update logic for omega
-    if(((linkage_type_ == "1-6") ||
-       (inverse_linkage_type_ == "1-6")||
-       (linkage_type_ == "2-6") ||
-       (inverse_linkage_type_ == "2-6")))
+    //Calculate Torsion Angles
+    if(setRingO && setAnomericC && setGlycosidicO && setCx && setCx1)
     {
-      if(setCx2)
+      phi_angle_ = CalculatePhiAngle(linkageAtoms);
+
+      if(!anomeric_anomeric_linkage_)
       {
-        omega_angle_ = CalculateOmegaAngle(linkageAtoms);
+        psi_angle_ = CalculatePsiAngle(linkageAtoms);
       }
       else
+      {//anomeric-anomeric
+        phi_prime_angle_ = CalculatePsiAngle(linkageAtoms);
+      }
+
+      //TODO Update logic for omega
+      if(((linkage_type_ == "1-6") ||
+        (inverse_linkage_type_ == "1-6")||
+        (linkage_type_ == "2-6") ||
+        (inverse_linkage_type_ == "2-6")))
       {
-        //TODO Update once GLOBAL_DEBUG is in place
-        if(local_debug > 0)
-        {//Print Error
-          ss.str("");
-          ss << "Unable to calculate the omega angle. Missing Cx-2 of: ";
-          ss << reducing_mono_->residue_name_ << ".";
-          gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-          ss.str("");
+        if(setCx2)
+        {
+          omega_angle_ = CalculateOmegaAngle(linkageAtoms);
+        }
+        else
+        {
+          //TODO Update once GLOBAL_DEBUG is in place
+          if(local_debug > 0)
+          {//Print Error
+            ss.str("");
+            ss << "Unable to calculate the omega angle. Missing Cx-2 of: ";
+            ss << reducing_mono_->residue_name_ << ".";
+            gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+            ss.str("");
+          }
         }
       }
     }
-  }
-  else
-  {//Problem setting linkage atoms
-    //TODO Update once GLOBAL_DEBUG is in place
-    if(local_debug > 0)
-    {//Print Error
-      ss.str("");
-      ss << "Unable to calculate the glycosidic torsion angles. ";
-      ss << "Atoms needed for calculations could not be identified.";
-      gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-      ss.str("");
-    }
-  }
-
-
-  /*Checking to see if angles are negative/weird
-  Needed for CHI Energy Functions
-  For now they are expected not to be negative
-  (unless they are the default of -9999, which
-  means something went wrong),
-  but if that changes this logic needs to be updated.
-  This will also add 360 to any value where
-  -360 <= angle < 0,
-  and output an error if angle < -360 or angle > 360
-  */
-  if(phi_angle_ != -9999)
-  {
-    if((0 <= phi_angle_) && (phi_angle_ < 360))
-    {//normal
-      if(local_debug > 0)
-      {
-        ss.str("");//clear stringstream just in case
-        ss << "Phi angle of " << phi_angle_ << " falls into expected range (0-360 degrees)";
-        gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-        ss.str("");//clean up stringstream
-      }
-    }
-    else if((-360 <= phi_angle_) && (phi_angle_ < 0))
-    {//add 360 degrees
-      phi_angle_ = phi_angle_ + 360;
-    }
-
-    else if(phi_angle_ < -360)
-    {//Warning
-      if(local_debug > 0)
-      {
-        ss.str("");//clear stringstream just in case
-        ss << "Phi angle of " << phi_angle_ << " is less than -360 degrees";
-        gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-        ss.str("");//clean up stringstream
-      }
-    }
-    else if(phi_angle_ > 360)
-    {//Warning
-      if(local_debug > 0)
-      {
-        ss.str("");//clear stringstream just in case
-        ss << "Phi angle of " << phi_angle_ << " is greater than 360 degrees";
-        gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-        ss.str("");//clean up stringstream
-      }
-    }
-  }
-  else if(local_debug > 0)
-  {//Print error
-    ss.str("");//clear stringstream just in case
-    ss << "Phi angle was not calculated properly";
-    gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-    ss.str("");//clean up stringstream
-  }
-
-  if(psi_angle_ != -9999)
-  {
-    if((0 <= psi_angle_) && (psi_angle_ < 360))
-    {//normal
-      if(local_debug > 0)
-      {
-        ss.str("");//clear stringstream just in case
-        ss << "Psi angle of " << psi_angle_ << " falls into expected range (0-360 degrees)";
-        gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-        ss.str("");//clean up stringstream
-      }
-    }
-    else if((-360 <= psi_angle_) && (psi_angle_ < 0))
-    {//add 360 degrees
-      psi_angle_ = psi_angle_ + 360;
-    }
-
-    else if(psi_angle_ < -360)
-    {//Warning
-      if(local_debug > 0)
-      {
-        ss.str("");//clear stringstream just in case
-        ss << "Psi angle of " << psi_angle_ << " is less than -360 degrees";
-        gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-        ss.str("");//clean up stringstream
-      }
-    }
-    else if(psi_angle_ > 360)
-    {//Warning
-      if(local_debug > 0)
-      {
-        ss.str("");//clear stringstream just in case
-        ss << "Psi angle of " << psi_angle_ << " is greater than 360 degrees";
-        gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-        ss.str("");//clean up stringstream
-      }
-    }
-  }
-  else if(local_debug > 0)
-  {//Print error
-    ss.str("");//clear stringstream just in case
-    ss << "Psi angle was not calculated properly";
-    gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-    ss.str("");//clean up stringstream
-  }
-
-  if(omega_angle_ != -9999)
-  {
-    if((0 <= omega_angle_) && (omega_angle_ < 360))
-    {//normal
-      if(local_debug > 0)
-      {
-        ss.str("");//clear stringstream just in case
-        ss << "Omega angle of " << omega_angle_ << " falls into expected range (0-360 degrees)";
-        gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-        ss.str("");//clean up stringstream
-      }
-    }
-    else if((-360 <= omega_angle_) && (omega_angle_ < 0))
-    {//add 360 degrees
-      omega_angle_ = omega_angle_ + 360;
-    }
-
-    else if(omega_angle_ < -360)
-    {//Warning
-      if(local_debug > 0)
-      {
-        ss.str("");//clear stringstream just in case
-        ss << "Omega angle of " << omega_angle_ << " is less than -360 degrees";
-        gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-        ss.str("");//clean up stringstream
-      }
-    }
-    else if(omega_angle_ > 360)
-    {//Warning
-      if(local_debug > 0)
-      {
-        ss.str("");//clear stringstream just in case
-        ss << "Omega angle of " << omega_angle_ << " is greater than 360 degrees";
-        gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-        ss.str("");//clean up stringstream
-      }
-    }
-  }
-  else if((local_debug > 0))
-  {//Print error
-    ss.str("");//clear stringstream just in case
-    ss << "Omega angle was not calculated properly";
-    gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-    ss.str("");//clean up stringstream
-  }
-
-
-  /* TODO Add Aglycone Torsions
-  Add code to determine the glycosidic linkage and torsion angles between
-  the sugar and aglycone, especially if it is a protein sidechain.
-
-  For now, we don't consider this a glycosidic linkage at all, as the
-  constructor takes monosaccharide objects
-
-  Also, determine the correct definitions (atom selection) of these angles for
-  N-linked, O-linked, etc.  It will likely change by amino acid.
-  */
-
-  //Get the orientation of the hydroxy involved in the linkage
-  hydroxyl_configuration_ = determineLinkageConfiguration();
-  if(hydroxyl_configuration_ == "Unknown")
-  {
-    if(local_debug > 0)
-    {//Print error
-      ss.str("");//clear stringstream just in case
-      ss << "Linkage hydroxyl configuration unknown.";
-      gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-      ss.str("");//clean up stringstream
-    }
-  }
-  else if((hydroxyl_configuration_ != "axial") && (hydroxyl_configuration_ != "equatorial"))
-  {
-    if(local_debug > 0)
-    {//Print error
-      ss.str("");//clear stringstream just in case
-      ss << "Something went horribly wrong determining the linkage hydroxyl configuration.";
-      gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
-      ss.str("");//clean up stringstream
-    }
-  }
-
-  /////////////////////////////
-  // CHI Energy Calculations //
-  /////////////////////////////
-  /*CHI Energy function caveats
-    •Developed for rings in 1C4 or 4C1 chair conformations
-        As I don't fully understand/trust the BFMP code, and I'm
-      curious about how ring shape affects CHI Energy, I will be
-      runnning CHI Energy functions regardless of ring shape.
-        When Cremer-Pople ring puckering is added to GMML, this may
-      change to only calculate on chair forms (defined by either BFMP
-      or Cremer-Pople) depending on the results I get for non-ring
-      CHI Energies and what Rob thinks.
-
-    •Developed for a subset of possible linkage types
-      These are checked in the CHI Energy functions, so this is more
-    of an FYI.
-  */
-
-  if(local_debug > 0)
-  {//check ring conformation and write logs
-    if(((non_reducing_mono_->bfmp_ring_conformation_.find("1C4")
-          != std::string::npos) ||
-        (non_reducing_mono_->bfmp_ring_conformation_.find("4C1")
-          != std::string::npos)) &&
-       ((reducing_mono_->bfmp_ring_conformation_.find("1C4")
-          != std::string::npos) ||
-        (reducing_mono_->bfmp_ring_conformation_.find("4C1")
-          != std::string::npos)))
-    {//Both are in chair form
-      ss.str("");//clear stringstream just in case
-      ss << "Both monosaccharide rings are in chair form.";
-      gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-      ss.str("");//clean up stringstream
-    }
     else
-    {//Print warning
+    {//Problem setting linkage atoms
+      //TODO Update once GLOBAL_DEBUG is in place
+      if(local_debug > 0)
+      {//Print Error
+        ss.str("");
+        ss << "Unable to calculate the glycosidic torsion angles. ";
+        ss << "Atoms needed for calculations could not be identified.";
+        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+        ss.str("");
+      }
+    }
+  
+
+    /*Checking to see if angles are negative/weird
+    Needed for CHI Energy Functions
+    For now they are expected not to be negative
+    (unless they are the default of -9999, which
+    means something went wrong),
+    but if that changes this logic needs to be updated.
+    This will also add 360 to any value where
+    -360 <= angle < 0,
+    and output an error if angle < -360 or angle > 360
+    */
+    if(phi_angle_ != -9999)
+    {
+      if((0 <= phi_angle_) && (phi_angle_ < 360))
+      {//normal
+        if(local_debug > 0)
+        {
+          ss.str("");//clear stringstream just in case
+          ss << "Phi angle of " << phi_angle_ << " falls into expected range (0-360 degrees)";
+          gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+          ss.str("");//clean up stringstream
+        }
+      }
+      else if((-360 <= phi_angle_) && (phi_angle_ < 0))
+      {//add 360 degrees
+        phi_angle_ = phi_angle_ + 360;
+      }
+
+      else if(phi_angle_ < -360)
+      {//Warning
+        if(local_debug > 0)
+        {
+          ss.str("");//clear stringstream just in case
+          ss << "Phi angle of " << phi_angle_ << " is less than -360 degrees";
+          gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+          ss.str("");//clean up stringstream
+        }
+      }
+      else if(phi_angle_ > 360)
+      {//Warning
+        if(local_debug > 0)
+        {
+          ss.str("");//clear stringstream just in case
+          ss << "Phi angle of " << phi_angle_ << " is greater than 360 degrees";
+          gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+          ss.str("");//clean up stringstream
+        }
+      }
+    }
+    else if(local_debug > 0)
+    {//Print error
       ss.str("");//clear stringstream just in case
-      ss << "CHI Energy function not developed for non chair rings.";
-      gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+      ss << "Phi angle was not calculated properly";
+      gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
       ss.str("");//clean up stringstream
     }
-  }
 
-  if((!anomeric_anomeric_linkage_) &&
-     (non_reducing_mono_->sugar_name_.ring_type_ == "P") &&
-     (reducing_mono_->sugar_name_.ring_type_ == "P"))
-  {
-    if((phi_angle_ >= 0) && (phi_angle_ < 360))
+    if(psi_angle_ != -9999)
     {
-      phi_CHI_Energy_ = CalculatePhiChiEnergy();
+      if((0 <= psi_angle_) && (psi_angle_ < 360))
+      {//normal
+        if(local_debug > 0)
+        {
+          ss.str("");//clear stringstream just in case
+          ss << "Psi angle of " << psi_angle_ << " falls into expected range (0-360 degrees)";
+          gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+          ss.str("");//clean up stringstream
+        }
+      }
+      else if((-360 <= psi_angle_) && (psi_angle_ < 0))
+      {//add 360 degrees
+        psi_angle_ = psi_angle_ + 360;
+      }
+
+      else if(psi_angle_ < -360)
+      {//Warning
+        if(local_debug > 0)
+        {
+          ss.str("");//clear stringstream just in case
+          ss << "Psi angle of " << psi_angle_ << " is less than -360 degrees";
+          gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+          ss.str("");//clean up stringstream
+        }
+      }
+      else if(psi_angle_ > 360)
+      {//Warning
+        if(local_debug > 0)
+        {
+          ss.str("");//clear stringstream just in case
+          ss << "Psi angle of " << psi_angle_ << " is greater than 360 degrees";
+          gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+          ss.str("");//clean up stringstream
+        }
+      }
     }
     else if(local_debug > 0)
-    {//Warning
-      ss.str("");
-      ss << "phi_angle_ value of " << phi_angle_ << ".  ";
-      ss << "Something went wrong";
-      gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-      ss.str("");
+    {//Print error
+      ss.str("");//clear stringstream just in case
+      ss << "Psi angle was not calculated properly";
+      gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+      ss.str("");//clean up stringstream
     }
 
-    if((psi_angle_ >= 0) && (psi_angle_ < 360))
+    if(omega_angle_ != -9999)
     {
-      psi_CHI_Energy_   = CalculatePsiChiEnergy();
+      if((0 <= omega_angle_) && (omega_angle_ < 360))
+      {//normal
+        if(local_debug > 0)
+        {
+          ss.str("");//clear stringstream just in case
+          ss << "Omega angle of " << omega_angle_ << " falls into expected range (0-360 degrees)";
+          gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+          ss.str("");//clean up stringstream
+        }
+      }
+      else if((-360 <= omega_angle_) && (omega_angle_ < 0))
+      {//add 360 degrees
+        omega_angle_ = omega_angle_ + 360;
+      }
+
+      else if(omega_angle_ < -360)
+      {//Warning
+        if(local_debug > 0)
+        {
+          ss.str("");//clear stringstream just in case
+          ss << "Omega angle of " << omega_angle_ << " is less than -360 degrees";
+          gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+          ss.str("");//clean up stringstream
+        }
+      }
+      else if(omega_angle_ > 360)
+      {//Warning
+        if(local_debug > 0)
+        {
+          ss.str("");//clear stringstream just in case
+          ss << "Omega angle of " << omega_angle_ << " is greater than 360 degrees";
+          gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+          ss.str("");//clean up stringstream
+        }
+      }
     }
-    else if(local_debug > 0)
-    {//Warning
-      ss.str("");
-      ss << "psi_angle_ value of " << psi_angle_ << ".  ";
-      ss << "Something went wrong";
-      gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-      ss.str("");
+    else if((local_debug > 0))
+    {//Print error
+      ss.str("");//clear stringstream just in case
+      ss << "Omega angle was not calculated properly";
+      gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+      ss.str("");//clean up stringstream
     }
 
-    //TODO Update logic for omega
-    if(((linkage_type_ == "1-6") ||
-       (inverse_linkage_type_ == "1-6")||
-       (linkage_type_ == "2-6") ||
-       (inverse_linkage_type_ == "2-6")))
+
+    /* TODO Add Aglycone Torsions
+    Add code to determine the glycosidic linkage and torsion angles between
+    the sugar and aglycone, especially if it is a protein sidechain.
+
+    For now, we don't consider this a glycosidic linkage at all, as the
+    constructor takes monosaccharide objects
+
+    Also, determine the correct definitions (atom selection) of these angles for
+    N-linked, O-linked, etc.  It will likely change by amino acid.
+    */
+
+    //Get the orientation of the hydroxy involved in the linkage
+    hydroxyl_configuration_ = determineLinkageConfiguration();
+    if(hydroxyl_configuration_ == "Unknown")
     {
-      if((omega_angle_ >= 0) && (omega_angle_ < 360))
+      if(local_debug > 0)
+      {//Print error
+        ss.str("");//clear stringstream just in case
+        ss << "Linkage hydroxyl configuration unknown.";
+        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+        ss.str("");//clean up stringstream
+      }
+    }
+    else if((hydroxyl_configuration_ != "axial") && (hydroxyl_configuration_ != "equatorial"))
+    {
+      if(local_debug > 0)
+      {//Print error
+        ss.str("");//clear stringstream just in case
+        ss << "Something went horribly wrong determining the linkage hydroxyl configuration.";
+        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+        ss.str("");//clean up stringstream
+      }
+    }
+
+    /////////////////////////////
+    // CHI Energy Calculations //
+    /////////////////////////////
+    /*CHI Energy function caveats
+      •Developed for rings in 1C4 or 4C1 chair conformations
+          As I don't fully understand/trust the BFMP code, and I'm
+        curious about how ring shape affects CHI Energy, I will be
+        runnning CHI Energy functions regardless of ring shape.
+          When Cremer-Pople ring puckering is added to GMML, this may
+        change to only calculate on chair forms (defined by either BFMP
+        or Cremer-Pople) depending on the results I get for non-ring
+        CHI Energies and what Rob thinks.
+
+      •Developed for a subset of possible linkage types
+        These are checked in the CHI Energy functions, so this is more
+      of an FYI.
+    */
+
+    if(local_debug > 0)
+    {//check ring conformation and write logs
+      if(((non_reducing_mono_->bfmp_ring_conformation_.find("1C4")
+            != std::string::npos) ||
+          (non_reducing_mono_->bfmp_ring_conformation_.find("4C1")
+            != std::string::npos)) &&
+        ((reducing_mono_->bfmp_ring_conformation_.find("1C4")
+            != std::string::npos) ||
+          (reducing_mono_->bfmp_ring_conformation_.find("4C1")
+            != std::string::npos)))
+      {//Both are in chair form
+        ss.str("");//clear stringstream just in case
+        ss << "Both monosaccharide rings are in chair form.";
+        gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+        ss.str("");//clean up stringstream
+      }
+      else
+      {//Print warning
+        ss.str("");//clear stringstream just in case
+        ss << "CHI Energy function not developed for non chair rings.";
+        gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+        ss.str("");//clean up stringstream
+      }
+    }
+
+    if((!anomeric_anomeric_linkage_) &&
+      (non_reducing_mono_->sugar_name_.ring_type_ == "P") &&
+      (reducing_mono_->sugar_name_.ring_type_ == "P"))
+    {
+      if((phi_angle_ >= 0) && (phi_angle_ < 360))
       {
-        omega_CHI_Energy_ = CalculateOmegaChiEnergy();
+        phi_CHI_Energy_ = CalculatePhiChiEnergy();
       }
       else if(local_debug > 0)
       {//Warning
         ss.str("");
-        ss << "omega_angle_ value of " << omega_angle_ << ".  ";
+        ss << "phi_angle_ value of " << phi_angle_ << ".  ";
         ss << "Something went wrong";
         gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
         ss.str("");
       }
-    }
-  }
-  else if(local_debug > 0)
-  {//Print warning
-    ss.str("");//clear stringstream just in case
-    ss << "CHI Energy function not developed for ";
-    ss << "this linkage.";
-    gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-    ss.str("");//clean up stringstream
-  }
 
-  if(local_debug > 0)
-  {//Print info
-    ss.str("");//clear stringstream just in case
-    ss << "CHI Energies: Phi = " << phi_CHI_Energy_ << ", ";
-    ss << "Psi = " << psi_CHI_Energy_ << ", ";
-    ss << "Omega = " << omega_CHI_Energy_ << ". ";
-    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-    ss.str("");//clean up stringstream
-    ss << "CHI Energy functions: Phi = " << phi_CHI_function_ << ", ";
-    ss << "Psi = " << psi_CHI_function_ << ", ";
-    ss << "Omega = " << omega_CHI_function_ << ". ";
-    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-    ss.str("");//clean up stringstream
-  }
-  if((phi_CHI_Energy_ == -1)||(psi_CHI_Energy_ == -1)||
-     ((omega_CHI_Energy_ == -1) && (omega_angle_ != -9999)))
-  {
-    if(local_debug > 0)
-    {//Print Warnings
-      if(phi_CHI_Energy_ == -1)
-      {//Print Warning
-        ss << "Something went wrong calculating Phi CHI Energy.";
-        gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-        ss.str("");//clean up stringstream
+      if((psi_angle_ >= 0) && (psi_angle_ < 360))
+      {
+        psi_CHI_Energy_   = CalculatePsiChiEnergy();
       }
-      if(psi_CHI_Energy_ == -1)
-      {//Print Warning
-        ss << "Something went wrong calculating Psi CHI Energy.";
+      else if(local_debug > 0)
+      {//Warning
+        ss.str("");
+        ss << "psi_angle_ value of " << psi_angle_ << ".  ";
+        ss << "Something went wrong";
         gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-        ss.str("");//clean up stringstream
+        ss.str("");
       }
-      if((omega_CHI_Energy_ == -1) && (omega_angle_ != -9999))
-      {//Print Warning
-        ss << "Something went wrong calculating Omega CHI Energy.";
-        gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
-        ss.str("");//clean up stringstream
+
+      //TODO Update logic for omega
+      if(((linkage_type_ == "1-6") ||
+        (inverse_linkage_type_ == "1-6")||
+        (linkage_type_ == "2-6") ||
+        (inverse_linkage_type_ == "2-6")))
+      {
+        if((omega_angle_ >= 0) && (omega_angle_ < 360))
+        {
+          omega_CHI_Energy_ = CalculateOmegaChiEnergy();
+        }
+        else if(local_debug > 0)
+        {//Warning
+          ss.str("");
+          ss << "omega_angle_ value of " << omega_angle_ << ".  ";
+          ss << "Something went wrong";
+          gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+          ss.str("");
+        }
       }
-      //one of them is wrong so total is invalid
-      //Print error
-      ss << "Something went wrong calculating the total CHI Energy.";
-      gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+    }
+    else if(local_debug > 0)
+    {//Print warning
+      ss.str("");//clear stringstream just in case
+      ss << "CHI Energy function not developed for ";
+      ss << "this linkage.";
+      gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
       ss.str("");//clean up stringstream
     }
-  }
-  else
-  {
-    total_CHI_Energy_ = phi_CHI_Energy_ + psi_CHI_Energy_;
-    if((omega_angle_ != -9999))
-    {
-      total_CHI_Energy_ = total_CHI_Energy_ + omega_CHI_Energy_;
-    }
+
     if(local_debug > 0)
     {//Print info
-    ss.str("");//clear stringstream just in case
-    ss << "Total CHI Energy for " << linkage_name_;
-    ss << " is: " <<total_CHI_Energy_;
-    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
-    ss.str("");//clean up stringstream
+      ss.str("");//clear stringstream just in case
+      ss << "CHI Energies: Phi = " << phi_CHI_Energy_ << ", ";
+      ss << "Psi = " << psi_CHI_Energy_ << ", ";
+      ss << "Omega = " << omega_CHI_Energy_ << ". ";
+      gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+      ss.str("");//clean up stringstream
+      ss << "CHI Energy functions: Phi = " << phi_CHI_function_ << ", ";
+      ss << "Psi = " << psi_CHI_function_ << ", ";
+      ss << "Omega = " << omega_CHI_function_ << ". ";
+      gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+      ss.str("");//clean up stringstream
+    }
+    if((phi_CHI_Energy_ == -1)||(psi_CHI_Energy_ == -1)||
+      ((omega_CHI_Energy_ == -1) && (omega_angle_ != -9999)))
+    {
+      if(local_debug > 0)
+      {//Print Warnings
+        if(phi_CHI_Energy_ == -1)
+        {//Print Warning
+          ss << "Something went wrong calculating Phi CHI Energy.";
+          gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+          ss.str("");//clean up stringstream
+        }
+        if(psi_CHI_Energy_ == -1)
+        {//Print Warning
+          ss << "Something went wrong calculating Psi CHI Energy.";
+          gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+          ss.str("");//clean up stringstream
+        }
+        if((omega_CHI_Energy_ == -1) && (omega_angle_ != -9999))
+        {//Print Warning
+          ss << "Something went wrong calculating Omega CHI Energy.";
+          gmml::log(__LINE__, __FILE__, gmml::WAR, ss.str());
+          ss.str("");//clean up stringstream
+        }
+        //one of them is wrong so total is invalid
+        //Print error
+        ss << "Something went wrong calculating the total CHI Energy.";
+        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+        ss.str("");//clean up stringstream
+      }
+    }
+    else
+    {
+      total_CHI_Energy_ = phi_CHI_Energy_ + psi_CHI_Energy_;
+      if((omega_angle_ != -9999))
+      {
+        total_CHI_Energy_ = total_CHI_Energy_ + omega_CHI_Energy_;
+      }
+      if(local_debug > 0)
+      {//Print info
+      ss.str("");//clear stringstream just in case
+      ss << "Total CHI Energy for " << linkage_name_;
+      ss << " is: " <<total_CHI_Energy_;
+      gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+      ss.str("");//clean up stringstream
+      }
     }
   }
 }

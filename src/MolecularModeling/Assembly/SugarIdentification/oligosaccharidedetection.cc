@@ -351,6 +351,15 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 
   ///FILTERING OUT FUSED CYCLES. aka Cycles that are sharing an edge
   RemoveFusedCycles( cycles );
+  if(local_debug > 0)
+  {
+    logss << "\n" << "Cycles after discarding fused rings" << "\n";
+    for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
+    {
+      std::string cycle_atoms_str = ( *it ).first;
+      logss << cycle_atoms_str << "\n";
+    }
+  }
 
   ///FILTERING OUT OXYGENLESS CYCLES
   FilterAllCarbonCycles( cycles );
@@ -577,7 +586,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
   if(local_debug > 0)
   {
-    // gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
     logss.str( std::string() ); logss.clear();  // Must do both of these to clear the stream;
   }
   //Checking if any sugar named residue is not detected
@@ -612,6 +621,8 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   if(local_debug > 0)
   {
     logss << "\n" << "Oligosaccharides:" << "\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF,"About to run createOligosaccharideGraphs");
+    
   }
   int number_of_covalent_links = 0;
   int number_of_probable_non_covalent_complexes = 0;
@@ -1042,6 +1053,11 @@ void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
 
 void Assembly::RemoveFusedCycles(CycleMap &cycles)
 {
+    int local_debug = 1;
+    if(local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__,  gmml::INF, "In RemoveFusedCycles function");
+    }
     std::map<std::string, bool> to_be_deleted_cycles = std::map<std::string, bool>();
     for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
     {
@@ -1072,6 +1088,11 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
                     mutual_edge_reverse << a2->GetId() << "-" << a1->GetId();
                     if(cycle_j_str.find(mutual_edge.str()) != std::string::npos || cycle_j_str.find(mutual_edge_reverse.str()) != std::string::npos)///mutual edge found
                     {
+                        if(local_debug > 0)
+                        {
+                            gmml::log(__LINE__, __FILE__,  gmml::INF, "Mutual edge found between " + cycle_i_str + " and " + cycle_j_str);
+                            gmml::log(__LINE__, __FILE__,  gmml::INF, "Mutual edge: " + mutual_edge.str());
+                        }
                         to_be_deleted_cycles[cycle_i_str] = true;
                         to_be_deleted_cycles[cycle_j_str] = true;
                         break;
@@ -1086,7 +1107,9 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
         std::string cycle_str = (*it).first;
         MolecularModeling::AtomVector cycle_atoms = (*it).second;
         if(to_be_deleted_cycles.find(cycle_str) == to_be_deleted_cycles.end())
+        {
             fused_filtered_cycles[cycle_str] = cycle_atoms;
+        }
     }
     cycles.clear();
     cycles = fused_filtered_cycles;
