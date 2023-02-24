@@ -1042,6 +1042,10 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream,
         }
       }
     }
+    else
+    {
+      gmml::AddTriple(mono_uri, "gmmo:anomericProperlyAssigned", "false", mono_stream);
+    }
 
 
 
