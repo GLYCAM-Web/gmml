@@ -322,7 +322,7 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
 std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology, bool individualOntologies, std::string CCD_Path)
 {
   std::stringstream logss;
-  int local_debug = 1;
+  int local_debug = -1;
   gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap( amino_lib_files );
   if(local_debug > 0)
   {
@@ -622,7 +622,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   {
     logss << "\n" << "Oligosaccharides:" << "\n";
     gmml::log(__LINE__, __FILE__, gmml::INF,"About to run createOligosaccharideGraphs");
-    
+
   }
   int number_of_covalent_links = 0;
   int number_of_probable_non_covalent_complexes = 0;
@@ -986,10 +986,12 @@ Assembly::CycleMap Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
               atom2 = cycle_atoms[it1+1];
             }
             doubleBond = guessIfC_CDoubleBond(atom1, atom2);
-            if(doubleBond == true)
+            if((doubleBond == true)&&(local_debug > 0))
             {
-                std::cout << "Is double bond: " << atom1->GetResidue()->GetName() << "-" << atom1->GetName() << " and " << atom2->GetResidue()->GetName() << "-" << atom2->GetName() << std::endl;
+                std::stringstream debugStr;
+                debugStr << "Double bond between: " << atom1->GetResidue()->GetName() << "-" << atom1->GetName() << " and " << atom2->GetResidue()->GetName() << "-" << atom2->GetName() << std::endl;
                 all_single_bonds = false;
+                gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
                 break;
             }
         }
@@ -1053,7 +1055,7 @@ void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
 
 void Assembly::RemoveFusedCycles(CycleMap &cycles)
 {
-    int local_debug = 1;
+    int local_debug = -1;
     if(local_debug > 0)
     {
       gmml::log(__LINE__, __FILE__,  gmml::INF, "In RemoveFusedCycles function");
@@ -3938,7 +3940,7 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
 
 std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vector<Glycan::Monosaccharide*> detected_monos)
 {
-  int local_debug = 1;
+  int local_debug = -1;
   // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
   std::vector<Glycan::Oligosaccharide*> detected_oligos;
   for(std::vector<Glycan::Monosaccharide*>::iterator it = detected_monos.begin(); it != detected_monos.end(); it++)

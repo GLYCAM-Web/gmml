@@ -17,7 +17,7 @@ using Glycan::Oligosaccharide;
 //////////////////////////////////////////////////////////
 Oligosaccharide::Oligosaccharide(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names, MolecularModeling::Assembly* assembly)
 {
-  int local_debug = 1;
+  int local_debug = -1;
   int number_of_covalent_links = 0;
   int number_of_probable_non_covalent_complexes = 0;
   assembly_ = assembly;
@@ -767,7 +767,7 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
                                                             int& number_of_covalent_links,
                                                             int& number_of_probable_non_covalent_complexes)
 {
-  int local_debug = 1;
+  int local_debug = -1;
   if(local_debug > 0)
   {
     gmml::log(__LINE__, __FILE__,  gmml::INF, "Creating Oligo Graphs");
@@ -1311,7 +1311,7 @@ void Glycan::Oligosaccharide::indexMonosaccharides()
 
 void Glycan::Oligosaccharide::indexMono(Glycan::Monosaccharide* thisMono, int thisIndex, std::vector<Glycan::Monosaccharide*> &branchedMonos)
 {//Index in the order they appear in the OligoIUPACname so Query can check indexes for subgraph matching correctly
-  int local_debug = 1;
+  int local_debug = -1;
   std::stringstream testLog;
   if(!thisMono->is_indexed_)
   {
@@ -1756,7 +1756,7 @@ void Glycan::Oligosaccharide::indexMono(Glycan::Monosaccharide* thisMono, int th
 
 void Glycan::Oligosaccharide::indexBranches(std::vector<Glycan::Monosaccharide*> branchedMonos)
 {
-  int local_debug = 1;
+  int local_debug = -1;
   if(local_debug > 0)
   {
     std::stringstream debugSS;
@@ -1776,7 +1776,7 @@ void Glycan::Oligosaccharide::indexBranches(std::vector<Glycan::Monosaccharide*>
 }
 std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::IUPACindexMono(Glycan::Monosaccharide* thisMono, int thisIndex, std::vector<Glycan::Monosaccharide*> &branchedMonos)
 {
-  int local_debug = 1;
+  int local_debug = -1;
   std::stringstream testLog;
   if(local_debug > 0)
   {

@@ -192,7 +192,7 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
                                        int& link_id, OligosaccharideVector oligos, std::vector<std::string>& side_or_ring_atoms, std::vector<int>& visited_oligos,
                                        std::map<std::string, std::string>& mono_to_short_name_map, std::map<std::string, std::string>& oligo_to_res_uri_map, int& root_oligo_id)
 {
-  int local_debug = 1;
+  int local_debug = -1;
 
   std::string oligo_resource = "";
   std::string oligo_uri = "";
@@ -989,7 +989,62 @@ void Assembly::PopulateMonosaccharide(std::stringstream& mono_stream,
       gmml::AddTriple(mono_uri, Ontology::isSaccharide, "false", mono_stream);
     }
 
-    
+
+    // Quick patch to make it easier to clean the data; we get lots of false positives still
+    if(mono->anomeric_carbon_pointer_ != NULL)
+    {
+      MolecularModeling::AtomVector neighbors =      mono->anomeric_carbon_pointer_->GetNode()->GetNodeNeighbors();
+      for(MolecularModeling::AtomVector::iterator it = neighbors.begin(); it != neighbors.end(); it++)
+      {
+        MolecularModeling::Atom* neighbor = (*it);
+        if((neighbor->GetIsRing()) && (neighbor->GetElementSymbol().compare("C") != 0))
+        {
+          if(local_debug > 0)
+          {
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Found non-carbon ring atom: " + neighbor->GetElementSymbol());
+          }
+          if(neighbor->GetElementSymbol().compare("O") == 0)
+          {
+            gmml::AddTriple(mono_uri, "gmmo:hasRingO", "true", mono_stream);
+          }
+          else
+          {
+            gmml::AddTriple(mono_uri, "gmmo:hasRingO", "false", mono_stream);
+          }
+          if(neighbor->GetElementSymbol().compare("N") == 0)
+          {
+            gmml::AddTriple(mono_uri, "gmmo:hasRingN", "true", mono_stream);
+          }
+          else
+          {
+            gmml::AddTriple(mono_uri, "gmmo:hasRingN", "false", mono_stream);
+          }
+        }
+        else if(!(neighbor->GetIsRing()))
+        {
+          if(local_debug > 0)
+          {
+            gmml::log(__LINE__, __FILE__,  gmml::INF, "Found non-ring atom: " + neighbor->GetElementSymbol());
+          }
+          if(neighbor->GetElementSymbol().compare("O") == 0)
+          {
+            gmml::AddTriple(mono_uri, "gmmo:hasNonRingO", "true", mono_stream);
+          }
+          else if(neighbor->GetElementSymbol().compare("N") == 0)
+          {
+            gmml::AddTriple(mono_uri, "gmmo:hasNonRingN", "true", mono_stream);
+          }
+          else
+          {
+            gmml::AddLiteral(mono_uri, "gmmo:anomericNeighborElement", neighbor->GetElementSymbol(), mono_stream);
+          }
+          
+        }
+      }
+    }
+
+
+
     // gmml::AddLiteral(mono_uri, Ontology::hasSNFGName, mono->SNFG_name_, mono_stream);
     //    gmml::AddLiteral(mono_uri, Ontology::LABEL, mono_resource, mono_stream);
 
