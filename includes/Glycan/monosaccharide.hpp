@@ -44,8 +44,13 @@ namespace Glycan
       bool is_root_;
       bool is_counted_;
       bool is_indexed_;
-      int oligosaccharide_index_ = -17; //using -17 because it'll be easy to find
+
+      //These both have bugs in branching logic and end up not being set
+      //using -17 because it'll be easy to find
+      int oligosaccharide_index_ = -17;
       int IUPAC_index_ = -17;
+
+
       int oligo_branch_index_;
       Glycan::Oligosaccharide* oligo_parent_ = NULL;
       std::string residue_name_;
