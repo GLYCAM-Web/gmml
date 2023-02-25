@@ -1057,7 +1057,7 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
         debugStr << "On neighbor: " << t_neighbor->GetName();
         gmml::log(__LINE__, __FILE__, gmml::INF, debugStr.str());
       }
-      if(t_neighbor->GetElementSymbol().at(0) == 'N' && cycle_atoms_str_.find(t_neighbor->GetId()) == std::string::npos)///check formulas with nitrogen
+      if(t_neighbor->GetName().at(0) == 'N' && cycle_atoms_str_.find(t_neighbor->GetId()) == std::string::npos)///check formulas with nitrogen
       {
         if((value = this_assembly->CheckxC_N(target, cycle_atoms_str_/*, pattern_atoms*/)).compare("") != 0)///xCH-N
           break;
@@ -1072,7 +1072,7 @@ void Glycan::Monosaccharide::ExtractDerivatives(MolecularModeling::Assembly* thi
         if((value = this_assembly->CheckxC_NxO_C(target, cycle_atoms_str_, 'N', pattern_atoms)).compare("") != 0)///xC-N-CH3
           break;
       }
-      if(t_neighbor->GetElementSymbol().at(0) == 'O' && cycle_atoms_str_.find(t_neighbor->GetId()) == std::string::npos)///check formulas with oxygen
+      if(t_neighbor->GetName().at(0) == 'O' && cycle_atoms_str_.find(t_neighbor->GetId()) == std::string::npos)///check formulas with oxygen
       {
         if((value = this_assembly->CheckxC_NxO_CO_C(target, cycle_atoms_str_, 'O', pattern_atoms)).compare("") != 0)///xC-O-C=OCH3
           break;
