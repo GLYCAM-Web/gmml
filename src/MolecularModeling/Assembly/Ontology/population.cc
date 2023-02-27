@@ -492,12 +492,15 @@ void Assembly::PopulateOligosaccharide(std::stringstream& pdb_stream, std::strin
         tempIndex++;
       }
 
-      MolecularModeling::Assembly subAssembly(residueVector);
-      subAssembly.SetModelIndex(0);
-      PdbFileSpace::PdbFile* thisPDB = subAssembly.BuildPdbFileStructureFromAssembly();
-      std::ostringstream PDBstringstream;
-      thisPDB->WriteToStringstream(PDBstringstream);
-      gmml::AddLiteral(oligo_uri, "gmmo:PDBfile", PDBstringstream.str(), oligo_stream);
+
+      ///temporarily removing to make archive run faster as I don't need coordinates for figures
+      //2-26-23
+      // MolecularModeling::Assembly subAssembly(residueVector);
+      // subAssembly.SetModelIndex(0);
+      // PdbFileSpace::PdbFile* thisPDB = subAssembly.BuildPdbFileStructureFromAssembly();
+      // std::ostringstream PDBstringstream;
+      // thisPDB->WriteToStringstream(PDBstringstream);
+      // gmml::AddLiteral(oligo_uri, "gmmo:PDBfile", PDBstringstream.str(), oligo_stream);
 
 
 
