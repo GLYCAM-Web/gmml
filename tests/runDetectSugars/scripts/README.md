@@ -21,9 +21,9 @@
 
 	cd runDetectSugars/scripts/
 
-	nohup ./controlCPU.sh /programs/repos/PDB/all 2 &
+	nohup ./controlCPU.sh /programs/repos/PDB/all 4 &
 
-// 2 CPUs used because the detect_sugars_runArchive.cc file uses 20 CPUS to build the structure
+// 4 'CPUs' used because the detect_sugars_runArchive.cc file uses 4 CPUs to build the structure
 // and they don't build the structure the entire time (using 1 core for everything else)
 
 // If you want to run a subset of PDBs, make a list of PDB IDs in a file called UpdatedPDBs.txt

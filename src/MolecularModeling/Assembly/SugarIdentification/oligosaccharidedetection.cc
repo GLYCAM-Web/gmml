@@ -5443,7 +5443,7 @@ void Assembly::GetAuthorNaming(std::vector< std::string > amino_lib_files, Glyca
     }
 
     // Build by Distance
-    CCDassembly.BuildStructureByDistance(10);
+    CCDassembly.BuildStructureByDistance(1);
     // Find the Sugars.
     std::vector<Glycan::Oligosaccharide*> authorOligos = CCDassembly.ExtractSugars(amino_lib_files, false, false, false, CCD_Path);
     //The vector is really just a monosaccharide
