@@ -17,9 +17,14 @@ using Glycan::Oligosaccharide;
 //////////////////////////////////////////////////////////
 Oligosaccharide::Oligosaccharide(std::vector<Glycan::Monosaccharide*> monos, gmml::ResidueNameMap dataset_residue_names, MolecularModeling::Assembly* assembly)
 {
+  int local_debug = -1;
   int number_of_covalent_links = 0;
   int number_of_probable_non_covalent_complexes = 0;
   assembly_ = assembly;
+  if(local_debug > 0)
+  {
+    gmml::log(__LINE__, __FILE__, gmml::INF, "About to create oligosaccharide graphs");
+  }
   createOligosaccharideGraphs(monos, dataset_residue_names, number_of_covalent_links, number_of_probable_non_covalent_complexes);
   // createOligosaccharides(monos);
 }
@@ -1155,6 +1160,12 @@ void Glycan::Oligosaccharide::createOligosaccharideGraphs(std::vector<Glycan::Mo
           gmml::log(__LINE__, __FILE__,  gmml::INF, terminal_residue_name);
         }
       }
+      else
+      {
+        std::stringstream ss;
+        ss << "Mono " << key->mono_id_ << " is not a root!";
+        gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+      }
     }
   }
   // gmml::log(__LINE__, __FILE__,  gmml::INF, " End for loop ..." );
@@ -1767,6 +1778,12 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::IUPACindexMono(Gly
 {
   int local_debug = -1;
   std::stringstream testLog;
+  if(local_debug > 0)
+  {
+    testLog << "Starting IUPAC index on mono: " << thisMono->cycle_atoms_[0]->GetResidue()->GetId();
+    gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+    testLog.str(std::string());//clear stringstream
+  }
   if(!thisMono->is_indexed_)
   {
     thisMono->IUPAC_index_ = thisIndex;
@@ -1777,7 +1794,7 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::IUPACindexMono(Gly
     if(local_debug > 0)
     {
       testLog << "Mono: " << thisMono->cycle_atoms_[0]->GetResidue()->GetId();
-      testLog << ", Index: " << thisIndex;
+      testLog << ", IUPAC Index: " << thisIndex;
       gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
       testLog.str(std::string());//clear stringstream
     }
@@ -2203,18 +2220,40 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::IUPACindexMono(Gly
       }
     }
   }
+  else
+  {
+    if(local_debug > 0)
+    {
+      testLog << "This monosaccharide is already indexed";
+      gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+      testLog.str(std::string());//clear stringstream
+    }
+  }
   return branchedMonos;
 }
 
 void Glycan::Oligosaccharide::IUPACindexBranches(std::vector<Glycan::Monosaccharide*> branchedMonos)
 {
+  int local_debug = 1;
+
   for(std::vector<Glycan::Monosaccharide*>::iterator mono = branchedMonos.begin(); mono != branchedMonos.end(); mono++ )
   {
+    if(local_debug > 0)
+    {
+      std::stringstream testLog;
+      testLog << "IUPACindexBranches on branch: " << (*mono)->cycle_atoms_[0]->GetResidue()->GetId();
+      gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
+    }
     Glycan::Monosaccharide* thisMono = *mono;
     std::vector<Glycan::Monosaccharide*> subBranchedMonos;
     subBranchedMonos = IUPACindexMono(thisMono, this->on_IUPAC_index_, subBranchedMonos);
     if(subBranchedMonos.size() > 0)
     {
+      if(local_debug > 0)
+      {
+        std::stringstream testLog;
+        testLog << "IUPACindexBranches Branch: " << (*mono)->cycle_atoms_[0]->GetResidue()->GetId() << " has " << subBranchedMonos.size() << " subbranches";
+      }
       IUPACindexBranches(subBranchedMonos);
     }
   }
@@ -3733,6 +3772,7 @@ std::string Glycan::Oligosaccharide::CheckTerminals(MolecularModeling::Atom* tar
   }
 }
 
+
 void Glycan::Oligosaccharide::CheckLinkageNote(Glycan::Monosaccharide* mono1, Glycan::Monosaccharide* mono2, std::string linkage, std::vector<std::string>& checked_linkages)
 {
     if(find(checked_linkages.begin(), checked_linkages.end(), linkage) == checked_linkages.end())///If this linkage hasn't been checked before by calling the function on other side of the linkage
@@ -3857,4 +3897,112 @@ void Glycan::Oligosaccharide::CalculateOligosaccharideBFactor(Glycan::Oligosacch
 void Glycan::Oligosaccharide::AddNote(Glycan::Note *note)
 {
     oligo_notes_.push_back(note);
+}
+
+void Glycan::Oligosaccharide::SetGlycosylationBools()
+{
+  int local_debug = -1;
+  if(local_debug > 0)
+  {
+    gmml::log(__LINE__, __FILE__,  gmml::INF, "Setting glycosylation bools");
+  }
+  if(this->root_->anomeric_carbon_pointer_ == NULL)
+  {
+    if(local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__,  gmml::INF, "No anomeric carbon pointer");
+    }
+    return;
+  }
+  // Check anomeric neighbor's neighbors for different res name. If not, check non ring neighbor neighbors
+  AtomVector anomeric_C_neighbors =  this->root_->anomeric_carbon_pointer_->GetNode()->GetNodeNeighbors();
+  std::string anomeric_C_Residue = this->root_->anomeric_carbon_pointer_->GetResidue()->GetName();
+  AtomVector glycosidic_O_neighbors;
+  Atom* glycosidic_O;
+  for (AtomVector::iterator it = anomeric_C_neighbors.begin(); it != anomeric_C_neighbors.end(); it++)
+  {
+    Atom* neighbor = (*it);
+    if(local_debug > 0)
+    {
+      if(neighbor->GetIsRing())
+      {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Neighbor of anomeric C, " + neighbor->GetElementSymbol() + ", is in ring");
+      }
+      else
+      {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Neighbor of anomeric C, " + neighbor->GetElementSymbol() + ", is not in ring");
+      }
+
+    }
+    if(!neighbor->GetIsRing())
+    {
+      glycosidic_O = neighbor;
+      glycosidic_O_neighbors = glycosidic_O->GetNode()->GetNodeNeighbors();
+    }
+  }
+  for (AtomVector::iterator it = glycosidic_O_neighbors.begin(); it != glycosidic_O_neighbors.end(); it++)
+  {
+    Atom* glycosidic_O_neighbor = (*it);
+    if(glycosidic_O_neighbor->GetResidue()->GetName() != anomeric_C_Residue)
+    {
+      this->is_attached_to_protein_ = true;
+      std::string residue_name = glycosidic_O_neighbor->GetResidue()->GetName();this->glycosylation_residue_ = residue_name;
+      this->glycosylation_pair_ = anomeric_C_Residue + "-" + residue_name;
+      if(local_debug > 0)
+      {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, "Glycosylation is " + glycosylation_pair_);
+      }
+      std::vector<std::string> NGlycosylationResidues = {"ASN", "GLN", "ARG"};
+      std::vector<std::string> OGlycosylationResidues = {"SER", "THR", "TYR", "HYP", "LYP"};
+      std::vector<std::string> SGlycosylationResidues = {"CYS"};
+      std::vector<std::string> CGlycosylationResidues = {"TRP"};
+      if(find(NGlycosylationResidues.begin(), NGlycosylationResidues.end(), residue_name) != NGlycosylationResidues.end())
+      {
+        this->is_N_Glycan_ = true;
+        this->glycosylation_type_ = "N";
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__,  gmml::INF, "N-Glycan");
+        }
+      }
+      else if(find(OGlycosylationResidues.begin(), OGlycosylationResidues.end(), residue_name) != OGlycosylationResidues.end())
+      {
+        this->is_O_Glycan_ = true;
+        this->glycosylation_type_ = "O";
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__,  gmml::INF, "O-Glycan");
+        }
+      }
+      else if(find(SGlycosylationResidues.begin(), SGlycosylationResidues.end(), residue_name) != SGlycosylationResidues.end())
+      {
+        this->is_S_Glycan_ = true;
+        this->glycosylation_type_ = "S";
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__,  gmml::INF, "S-Glycan");
+        }
+      }
+      else if(find(CGlycosylationResidues.begin(), CGlycosylationResidues.end(), residue_name) != CGlycosylationResidues.end())
+      {
+        this->is_C_Glycan_ = true;
+        this->glycosylation_type_ = "C";
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__,  gmml::INF, "C-Glycan");
+        }
+      }
+      else
+      {
+        this->glycosylation_type_ = "NULL";
+        if(local_debug > 0)
+        {
+          gmml::log(__LINE__, __FILE__,  gmml::WAR, "Unknown glycosylation type");
+        }
+      }
+    }
+    
+  }
+      return;
+
 }

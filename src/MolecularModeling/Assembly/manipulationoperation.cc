@@ -130,7 +130,7 @@ void Assembly::RemoveAllHydrogenAtoms()
 void Assembly::RemoveAllProteinResidues()
 {
   ResidueVector allProteinResidues = this->GetAllProteinResiduesOfAssembly();
-  for(ResidueVector it = allProteinResidues.begin(); it != allProteinResidues.end(); it++)
+  for(ResidueVector::iterator it = allProteinResidues.begin(); it != allProteinResidues.end(); it++)
   {
     MolecularModeling::Residue* thisResidue = (*it);
     this->RemoveResidue(thisResidue);
@@ -140,7 +140,7 @@ void Assembly::RemoveAllProteinResidues()
 void Assembly::RemoveAllNucleicAcidResidues()
 {
   ResidueVector allNucleicAcidResidues = this->GetAllNucleicAcidResiduesOfAssembly();
-  for(ResidueVector it = allNucleicAcidResidues.begin(); it != allNucleicAcidResidues.end(); it++)
+  for(ResidueVector::iterator it = allNucleicAcidResidues.begin(); it != allNucleicAcidResidues.end(); it++)
   {
     MolecularModeling::Residue* thisResidue = (*it);
     this->RemoveResidue(thisResidue);

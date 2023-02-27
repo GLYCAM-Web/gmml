@@ -7954,7 +7954,7 @@ void PdbFile::PrintOntology(std::stringstream& ont_stream)
   std::string uriStr = uri.str();
   std::transform(uriStr.begin(), uriStr.end(), uriStr.begin(), ::tolower);
 
-  gmml::AddLiteral( uriStr, Ontology::TYPE, Ontology::PDB, ont_stream );
+  gmml::AddTriple( uriStr, Ontology::TYPE, Ontology::PDB, ont_stream );
 
   //Return PDB_ID
   if(header_ != NULL)

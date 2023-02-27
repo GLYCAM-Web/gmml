@@ -67,16 +67,18 @@ int main(int argc, char* argv[]) {
   // Create a copy of the assembly to check for sugars without protein or DNA/RNA to speed up building
   // by distance.  
   
-  MolecularModeling::Assembly assembly2(assembly);
+  MolecularModeling::Assembly assembly2(pdb_file, gmml::PDB);
   assembly2.RemoveAllProteinResidues();
   assembly2.RemoveAllNucleicAcidResidues();
-  assembly2.BuildStructureByDistance(4);
-  std::vector< Glycan::Oligosaccharide* > oligos = assembly2.ExtractSugars(aminolibs, false, false, false, CCDHOME);
+  assembly2.RemoveAllHydrogenAtoms();
+  assembly2.BuildStructureByDistance(3);
+  std::vector< Glycan::Oligosaccharide* > oligos = assembly2.ExtractSugars(aminolibs, false, false, false);
 
   // If there are sugars in the assembly, build the assembly with protein and DNA/RNA and run through sugar detection
   if(oligos.size() > 0)
   {
-    assembly.BuildStructureByDistance(4);
+    // assembly.RemoveAllNucleicAcidResidues();
+    assembly.BuildStructureByDistance(3);
 
     // Find the Sugars.
     bool glyprobity_report = false;

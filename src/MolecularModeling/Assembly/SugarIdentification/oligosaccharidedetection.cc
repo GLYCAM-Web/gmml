@@ -351,6 +351,15 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
 
   ///FILTERING OUT FUSED CYCLES. aka Cycles that are sharing an edge
   RemoveFusedCycles( cycles );
+  if(local_debug > 0)
+  {
+    logss << "\n" << "Cycles after discarding fused rings" << "\n";
+    for( CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++ )
+    {
+      std::string cycle_atoms_str = ( *it ).first;
+      logss << cycle_atoms_str << "\n";
+    }
+  }
 
   ///FILTERING OUT OXYGENLESS CYCLES
   FilterAllCarbonCycles( cycles );
@@ -612,6 +621,8 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   if(local_debug > 0)
   {
     logss << "\n" << "Oligosaccharides:" << "\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF,"About to run createOligosaccharideGraphs");
+
   }
   int number_of_covalent_links = 0;
   int number_of_probable_non_covalent_complexes = 0;
@@ -623,10 +634,19 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   /*for (unsigned int i = 0; i < ordered_monos.size(); i++){
       std::cout << "This mono cycle str: " << ordered_monos[i]->cycle_atoms_str_ << std::endl;
   }*/
+  if(local_debug > 0)
+  {
+    std::stringstream ss;
+    ss << "createOligosaccharides Size:" << std::to_string(testOligos.size()) << "\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+    ss.str("");
+  }
   testOligos = ExtractOligosaccharides( ordered_monos, dataset_residue_names, number_of_covalent_links, number_of_probable_non_covalent_complexes );
   if(local_debug > 0)
   {
-    logss << std::to_string(testOligos.size()) << "\n";
+    std::stringstream ss;
+    ss << "ExtractOligosaccharides Size:" << std::to_string(testOligos.size()) << "\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
   }
   // testOligo.createOligosaccharideGraphs(ordered_monos);
 
@@ -725,7 +745,7 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   }
   if(local_debug > 0)
   {
-    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+    // gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
   }
   return testOligos;
 }
@@ -966,10 +986,12 @@ Assembly::CycleMap Assembly::FilterCyclesWithDoubleBonds(CycleMap &cycles)
               atom2 = cycle_atoms[it1+1];
             }
             doubleBond = guessIfC_CDoubleBond(atom1, atom2);
-            if(doubleBond == true)
+            if((doubleBond == true)&&(local_debug > 0))
             {
-                std::cout << "Is double bond: " << atom1->GetResidue()->GetName() << "-" << atom1->GetName() << " and " << atom2->GetResidue()->GetName() << "-" << atom2->GetName() << std::endl;
+                std::stringstream debugStr;
+                debugStr << "Double bond between: " << atom1->GetResidue()->GetName() << "-" << atom1->GetName() << " and " << atom2->GetResidue()->GetName() << "-" << atom2->GetName() << std::endl;
                 all_single_bonds = false;
+                gmml::log(__LINE__, __FILE__,  gmml::INF, debugStr.str());
                 break;
             }
         }
@@ -1033,6 +1055,11 @@ void Assembly::FilterAllCarbonCycles(CycleMap &cycles)
 
 void Assembly::RemoveFusedCycles(CycleMap &cycles)
 {
+    int local_debug = -1;
+    if(local_debug > 0)
+    {
+      gmml::log(__LINE__, __FILE__,  gmml::INF, "In RemoveFusedCycles function");
+    }
     std::map<std::string, bool> to_be_deleted_cycles = std::map<std::string, bool>();
     for(CycleMap::iterator it = cycles.begin(); it != cycles.end(); it++)
     {
@@ -1063,6 +1090,11 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
                     mutual_edge_reverse << a2->GetId() << "-" << a1->GetId();
                     if(cycle_j_str.find(mutual_edge.str()) != std::string::npos || cycle_j_str.find(mutual_edge_reverse.str()) != std::string::npos)///mutual edge found
                     {
+                        if(local_debug > 0)
+                        {
+                            gmml::log(__LINE__, __FILE__,  gmml::INF, "Mutual edge found between " + cycle_i_str + " and " + cycle_j_str);
+                            gmml::log(__LINE__, __FILE__,  gmml::INF, "Mutual edge: " + mutual_edge.str());
+                        }
                         to_be_deleted_cycles[cycle_i_str] = true;
                         to_be_deleted_cycles[cycle_j_str] = true;
                         break;
@@ -1077,7 +1109,9 @@ void Assembly::RemoveFusedCycles(CycleMap &cycles)
         std::string cycle_str = (*it).first;
         MolecularModeling::AtomVector cycle_atoms = (*it).second;
         if(to_be_deleted_cycles.find(cycle_str) == to_be_deleted_cycles.end())
+        {
             fused_filtered_cycles[cycle_str] = cycle_atoms;
+        }
     }
     cycles.clear();
     cycles = fused_filtered_cycles;
@@ -2159,11 +2193,11 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
         MolecularModeling::Atom* t_neighbor = (*it);
         if(cycle_atoms_str.find(t_neighbor->GetId()) == std::string::npos)
         {
-            if(t_neighbor->GetName().at(0) != NxO)
-                pattern << t_neighbor->GetName().at(0);
-            else if(t_neighbor->GetName().at(0) == NxO && N_or_O != NULL)
-                pattern << t_neighbor->GetName().at(0);
-            else if(t_neighbor->GetName().at(0) == NxO && N_or_O == NULL)
+            if(t_neighbor->GetElementSymbol().at(0) != NxO)
+                pattern << t_neighbor->GetElementSymbol().at(0);
+            else if(t_neighbor->GetElementSymbol().at(0) == NxO && N_or_O != NULL)
+                pattern << t_neighbor->GetElementSymbol().at(0);
+            else if(t_neighbor->GetElementSymbol().at(0) == NxO && N_or_O == NULL)
                 N_or_O = t_neighbor;
         }
     }
@@ -2175,11 +2209,11 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
         for(MolecularModeling::AtomVector::iterator it = n_neighbors.begin(); it != n_neighbors.end(); it++)
         {
             MolecularModeling::Atom* n_neighbor = (*it);
-            if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) != 'C')
-                pattern << n_neighbor->GetName().at(0);
-            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'C' && C != NULL)
-                pattern << n_neighbor->GetName().at(0);
-            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetName().at(0) == 'C' && C == NULL)
+            if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetElementSymbol().at(0) != 'C')
+                pattern << n_neighbor->GetElementSymbol().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetElementSymbol().at(0) == 'C' && C != NULL)
+                pattern << n_neighbor->GetElementSymbol().at(0);
+            else if(n_neighbor->GetId().compare(target->GetId()) != 0 && n_neighbor->GetElementSymbol().at(0) == 'C' && C == NULL)
                 C = n_neighbor;
         }
         if(C != NULL)
@@ -2192,15 +2226,15 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
             for(MolecularModeling::AtomVector::iterator it = c_neighbors.begin(); it != c_neighbors.end(); it++)
             {
                 MolecularModeling::Atom* c_neighbor = (*it);
-                if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 && c_neighbor->GetName().at(0) != 'C' && c_neighbor->GetName().at(0) != 'O')
-                    pattern << c_neighbor->GetName().at(0);
-                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'C' && CC != NULL)
-                    pattern << c_neighbor->GetName().at(0);
-                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'O' && CO != NULL)
-                    pattern << c_neighbor->GetName().at(0);
-                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'O' && CO == NULL)
+                if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 && c_neighbor->GetElementSymbol().at(0) != 'C' && c_neighbor->GetElementSymbol().at(0) != 'O')
+                    pattern << c_neighbor->GetElementSymbol().at(0);
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetElementSymbol().at(0) == 'C' && CC != NULL)
+                    pattern << c_neighbor->GetElementSymbol().at(0);
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetElementSymbol().at(0) == 'O' && CO != NULL)
+                    pattern << c_neighbor->GetElementSymbol().at(0);
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetElementSymbol().at(0) == 'O' && CO == NULL)
                     CO = c_neighbor;
-                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetName().at(0) == 'C' && CC == NULL)
+                else if(c_neighbor->GetId().compare(N_or_O->GetId()) != 0 &&  c_neighbor->GetElementSymbol().at(0) == 'C' && CC == NULL)
                     CC = c_neighbor;
             }
             if(CO != NULL)
@@ -2212,7 +2246,7 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
                 {
                     MolecularModeling::Atom* co_neighbor = (*it);
                     if(co_neighbor->GetId().compare(C->GetId()) != 0)
-                        pattern << co_neighbor->GetName().at(0);
+                        pattern << co_neighbor->GetElementSymbol().at(0);
                 }
             }
             if(CC != NULL)
@@ -2224,11 +2258,11 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
                 for(MolecularModeling::AtomVector::iterator it = cc_neighbors.begin(); it != cc_neighbors.end(); it++)
                 {
                     MolecularModeling::Atom* cc_neighbor = (*it);
-                    if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetName().at(0) != 'O')
-                        pattern << cc_neighbor->GetName().at(0);
-                    else if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetName().at(0) == 'O' && O != NULL)
-                        pattern << cc_neighbor->GetName().at(0);
-                    else if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetName().at(0) == 'O' && O == NULL)
+                    if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetElementSymbol().at(0) != 'O')
+                        pattern << cc_neighbor->GetElementSymbol().at(0);
+                    else if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetElementSymbol().at(0) == 'O' && O != NULL)
+                        pattern << cc_neighbor->GetElementSymbol().at(0);
+                    else if(cc_neighbor->GetId().compare(C->GetId()) != 0 && cc_neighbor->GetElementSymbol().at(0) == 'O' && O == NULL)
                         O = cc_neighbor;
                 }
                 if(O != NULL)
@@ -2240,7 +2274,7 @@ std::string Assembly::CheckxC_NxO_CO_CO(MolecularModeling::Atom *target, std::st
                     {
                         MolecularModeling::Atom* o_neighbor = (*it);
                         if(o_neighbor->GetId().compare(CC->GetId()) != 0)
-                            pattern << o_neighbor->GetName().at(0);
+                            pattern << o_neighbor->GetElementSymbol().at(0);
                     }
                 }
             }
@@ -3906,6 +3940,7 @@ void Assembly::createOligosaccharideGraphs(std::vector<Glycan::Monosaccharide*> 
 
 std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vector<Glycan::Monosaccharide*> detected_monos)
 {
+  int local_debug = -1;
   // gmml::log(__LINE__, __FILE__,  gmml::INF, " ");
   std::vector<Glycan::Oligosaccharide*> detected_oligos;
   for(std::vector<Glycan::Monosaccharide*>::iterator it = detected_monos.begin(); it != detected_monos.end(); it++)
@@ -3967,12 +4002,18 @@ std::vector<Glycan::Oligosaccharide*> Assembly::createOligosaccharides(std::vect
     }
     if((this_mono->is_root_) && (!this_mono->is_visited_))
     {
-      // gmml::log(__LINE__, __FILE__,  gmml::INF, "This mono is the root");
+      if(local_debug > 0)
+      {
+        std::stringstream ss;
+        ss << "This mono is the root: " << this_mono->cycle_atoms_[0]->GetResidue()->GetId();
+        gmml::log(__LINE__, __FILE__,  gmml::INF, ss.str());
+      }
       Glycan::Oligosaccharide* this_Oligo = new Glycan::Oligosaccharide(this);
       // gmml::log(__LINE__, __FILE__, gmml::INF, this_mono->sugar_name_.monosaccharide_short_name_);
       this_Oligo->traverseGraph(this_mono, this_Oligo);
       this_Oligo->reindexRGroups(this_Oligo);
       this_Oligo->indexMonosaccharides();
+      this_Oligo->SetGlycosylationBools();
       detected_oligos.push_back(this_Oligo);
       std::string iupac = "Oligo IUPAC Name: " + this_Oligo->IUPAC_name_;
       // gmml::log(__LINE__, __FILE__, gmml::INF, iupac);
@@ -5443,7 +5484,7 @@ void Assembly::GetAuthorNaming(std::vector< std::string > amino_lib_files, Glyca
     }
 
     // Build by Distance
-    CCDassembly.BuildStructureByDistance(1);
+    CCDassembly.BuildStructureByDistance(2);
     // Find the Sugars.
     std::vector<Glycan::Oligosaccharide*> authorOligos = CCDassembly.ExtractSugars(amino_lib_files, false, false, false, CCD_Path);
     //The vector is really just a monosaccharide
