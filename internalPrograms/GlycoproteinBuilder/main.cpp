@@ -4,26 +4,16 @@
 
 int main(int argc, char* argv[])
 {
-    std::string workingDirectory = codeUtils::Find_Program_workingDirectory(); // Default behaviour.
-    std::string inputFile = "input.txt";
-    if (argc == 1 || argc > 3)
+    if (argc != 2)
     {
-        std::cout << "Usage: " << argv[0] << " [inputFile] " << " [relative working directory]\n";
-        std::cout << "The arguments in [] are optional. Assumptions are made if none are provided.\n";
-        std::cout << "Exmpl: " << argv[0] << " input.txt " << " tests/simple\n";
+        std::cout << "Usage: " << argv[0] << " inputFile\n";
+        std::cout << "Exmpl: " << argv[0] << " input.txt\n";
+        std::exit(1);
     }
-    if (argc == 2)
-    {
-        inputFile = argv [1];
-    }
-    if (argc == 3)
-    {
-        inputFile = argv [1];
-        workingDirectory = argv[2];
-    }
-    std::cout << "Working directory is " << workingDirectory << "\n";
+    std::string inputFile = argv[1];
     std::cout << "Input file is " << inputFile << "\n";
-    GlycoproteinBuilderInputs inputStruct = GPInputs::readGPInputFile(workingDirectory, inputFile);
+    glycoprotein::GlycoproteinBuilderInputs inputStruct = glycoprotein::readGPInputFile(inputFile);
+    std::cout << "Reading input file complete, on to construction\n" << std::flush;
     GlycoproteinBuilder glycoproteinBuilder(inputStruct);
     if(glycoproteinBuilder.IsStatusOk())
     {    // Poor pattern, need to throw up to and catch in gems.
