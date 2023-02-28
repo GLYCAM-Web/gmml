@@ -18,8 +18,10 @@ public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
+    ResidueLinkage() {};
     ResidueLinkage(cds::Residue *nonReducingResidue1, cds::Residue *reducingResidue2, bool reverseAtomsThatMove = true);
     ResidueLinkage(cds::Residue *nonReducingResidue1, cds::Residue *reducingResidue2, std::vector<cds::Atom*> alsoMovingAtoms, bool reverseAtomsThatMove = true);
+    //~ResidueLinkage() {std::cout << "Linkage dtor for " << this->GetFromThisResidue1()->getId() << " -Link- "  << this->GetToThisResidue2()->getId() << "\n";}
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
