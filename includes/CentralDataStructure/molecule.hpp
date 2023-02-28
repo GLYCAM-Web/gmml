@@ -20,7 +20,7 @@ public:
     Molecule(Molecule&& other) noexcept;            // Move Ctor
     Molecule(const Molecule& other);                // Copy Ctor
     Molecule& operator=(Molecule other);            // Move and Copy assignment operator
-    virtual ~Molecule() {std::cout << "Molecule default dtor for " << this->getName() << "\n";}
+    virtual ~Molecule() {}//std::cout << "Molecule default dtor for " << this->getName() << "\n";}
     friend void swap(Molecule& lhs, Molecule& rhs) // ToDo figure out how to put this in cpp file once everything is working.
     {
         using std::swap;

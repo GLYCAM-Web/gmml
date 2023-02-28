@@ -26,7 +26,7 @@ public:
     Residue(Residue&& other) noexcept;     // Move Ctor
     Residue(const Residue& other);         // Copy Ctor
     Residue& operator=(Residue other);     // Move & Copy assignment operator.
-    virtual ~Residue() {std::cout << "Residue dtor for " << this->getName() << std::endl;}                  // Dtor, virtual so that derived classes dtors will get triggered if possible.
+    virtual ~Residue() {}//std::cout << "Residue dtor for " << this->getName() << std::endl;}// Dtor, virtual so that derived classes dtors will get triggered if possible.
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
