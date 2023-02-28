@@ -59,6 +59,11 @@ public:
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
     std::string Print() const;
+    //////////////////////////////////////////////////////////
+    //                  OPERATOR OVERLOADING                //
+    //////////////////////////////////////////////////////////
+    bool operator == (const ResidueLinkage& rhs) const { return (this->GetIndex() == rhs.GetIndex());}
+    bool operator != (const ResidueLinkage& rhs) const { return (this->GetIndex() != rhs.GetIndex());}
 private:
     //////////////////////////////////////////////////////////
     //                    PRIVATE FUNCTIONS                 //
