@@ -544,6 +544,10 @@ void ResidueLinkage::SetConnectionAtoms(cds::Residue* residue1, cds::Residue* re
     std::vector<cds::Atom*> connecting_atoms;
     bool found = false;
     cdsSelections::FindAtomsConnectingResidues(residue1->getAtoms().at(0), residue1, residue2, &connecting_atoms, &found);
+    if (connecting_atoms.size() < 2)
+    {
+        throw std::runtime_error("Two residues passed into ResidueLinkage that have no connection atoms.");
+    }
     from_this_connection_atom1_ = connecting_atoms.at(0);
     to_this_connection_atom2_ = connecting_atoms.at(1);
 }
