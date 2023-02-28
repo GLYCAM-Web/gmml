@@ -63,7 +63,7 @@ Coordinate* Atom::getCoordinate()
     return coordinates_.front().get();
 }
 
-const Coordinate* Atom::getCoordinate() const
+Coordinate* Atom::getCoordinate() const
 {
     if(coordinates_.empty())
     {

@@ -37,7 +37,7 @@ public:
 	//                       ACCESSORS                      //
 	//////////////////////////////////////////////////////////
     Coordinate* getCoordinate();
-    const Coordinate* getCoordinate() const;
+    Coordinate* getCoordinate() const;
     inline double getCharge() const { return charge_;}
     inline std::string getType() const {return atomType_;}
     inline int getNumber() const {return number_;}
