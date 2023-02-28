@@ -16,6 +16,7 @@
 #include "includes/CentralDataStructure/Readers/Prep/prepResidue.hpp"
 #include <sstream>
 #include <cctype> // isDigit
+#include <algorithm> //  std::erase, std::remove
 
 //using Abstract::absResidue; // For Residue::Type
 using cdsCondensedSequence::Carbohydrate;
@@ -121,6 +122,21 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
     return;
 }
 //////////////////////////////////////////////////////////
+//                       MUTATOR                        //
+//////////////////////////////////////////////////////////
+void Carbohydrate::deleteResidue(cds::Residue* byeBye)
+{   // ToDo Have to do this because ResidueLInkages are not Edges!!! Oliver just make them Edges already.
+    cds::Molecule::deleteResidue(byeBye);
+    std::cout << "Wow so cool you're a stupid" << std::endl;
+    for(cds::ResidueLinkage & linkage : glycosidicLinkages_)
+    {
+        if(linkage.GetFromThisResidue1() == byeBye || linkage.GetToThisResidue2() == byeBye)
+        {
+            this->deleteLinkage(&linkage);
+        }
+    }
+}
+//////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 //std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string outputFileNaming = "structure"
@@ -214,7 +230,13 @@ cds::Atom* Carbohydrate::GetAnomericAtom()
 {
     return cdsSelections::guessAnomericAtom(this->GetReducingResidue());
 }
-
+//////////////////////////////////////////////////////////
+//                  PRIVATE MUTATOR                     //
+//////////////////////////////////////////////////////////
+void Carbohydrate::deleteLinkage(cds::ResidueLinkage* linkage)
+{
+    glycosidicLinkages_.erase(std::remove(glycosidicLinkages_.begin(), glycosidicLinkages_.end(), *linkage), glycosidicLinkages_.end());
+}
 //////////////////////////////////////////////////////////
 //                  PRIVATE FUNCTIONS                   //
 //////////////////////////////////////////////////////////
