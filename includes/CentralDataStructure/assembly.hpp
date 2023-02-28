@@ -44,8 +44,8 @@ public:
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
-    void addMolecule(const Molecule& molecule);
-    void addMolecule(std::unique_ptr<Molecule> myMolecule);
+    //Molecule* addMolecule(const Molecule& molecule);
+    Molecule* addMolecule(std::unique_ptr<Molecule> myMolecule);
     const Atom* findAtom(const int& serialNumber) const;
     //////////////////////////////////////////////////////////
     //                    DISPLAY                           //
