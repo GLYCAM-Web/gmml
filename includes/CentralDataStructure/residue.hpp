@@ -79,9 +79,10 @@ public:
         std::cout << "Swapping" << std::endl;
         using std::swap;
         swap(lhs.atoms_, rhs.atoms_);
-        swap(lhs.number_, rhs.number_);
         swap(lhs.name_, rhs.name_);
         swap(lhs.geometricCenter_, rhs.geometricCenter_);
+        swap(lhs.type_, rhs.type_);
+        swap(lhs.number_, rhs.number_);
         std::cout << "Swapped" << std::endl;
     }
 private:

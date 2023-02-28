@@ -26,8 +26,8 @@ Residue::Residue(Residue&& other) noexcept : Residue()
 }
 
 // Copy Ctor. Using copy-swap idiom. Call the base class copy ctor.
-Residue::Residue(const Residue& other) //: glygraph::Node<cds::Residue>(other)
-: number_(other.number_), name_(other.name_), geometricCenter_(other.geometricCenter_)
+Residue::Residue(const Residue& other) : glygraph::Node<cds::Residue>(other)
+, name_(other.name_), geometricCenter_(other.geometricCenter_), type_(other.type_), number_(other.number_)
 {
     for (auto& atom : other.getAtoms())
     {
