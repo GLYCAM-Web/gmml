@@ -127,9 +127,29 @@ double cds::CalculateAtomicOverlapsBetweenNonBondedAtoms(std::vector<cds::Atom*>
     return (totalOverlap / constants::CARBON_SURFACE_AREA); //Normalise to area of a buried carbon
 }
 
-unsigned int cds::CountOverlappingAtoms(std::vector<cds::Residue*>& residuesA, std::vector<cds::Residue*>& residuesB)
+unsigned int cds::CountOverlappingResidues(const std::vector<cds::Residue*>& residuesA, const std::vector<cds::Residue*>& residuesB)
 {
-    unsigned int overlappingAtoms = 1;
+    unsigned int overlapCount = 1;
+    //std::cout << "Number of A : B residues is " << residuesA.size() << " : " << residuesB.size() << std::endl << std::flush;
+    for(auto &residueA : residuesA)
+    {
+        const Coordinate* residueA_Center = residueA->calculateGeometricCenter();
+        for(auto &residueB : residuesB)
+        {
+            if (cds::CheckIfOtherCoordinateIsWithinDistance(residueA_Center, residueB->calculateGeometricCenter(), constants::residueDistanceOverlapCutoff))
+            {
+                ++overlapCount;
+            }
+        }
+        //std::cout << "PingPing" << std::endl << std::flush;
+    }
+    //std::cout << "DingDing" << std::endl << std::flush;
+    return overlapCount;
+}
+
+unsigned int cds::CountOverlappingAtoms(const std::vector<cds::Residue*>& residuesA, const std::vector<cds::Residue*>& residuesB)
+{
+    unsigned int overlapCount = 1;
     for(auto &residueA : residuesA)
     {
         for(auto &residueB : residuesB)
@@ -138,25 +158,25 @@ unsigned int cds::CountOverlappingAtoms(std::vector<cds::Residue*>& residuesA, s
             {
                 std::vector<cds::Atom*> atomsA = residueA->getAtoms();
                 std::vector<cds::Atom*> atomsB = residueB->getAtoms();
-                overlappingAtoms += cds::CountOverlappingAtoms(atomsA, atomsB);
+                overlapCount += cds::CountOverlappingAtoms(atomsA, atomsB);
             }
         }
     }
-    return overlappingAtoms;
+    return overlapCount;
 }
 
-unsigned int cds::CountOverlappingAtoms(std::vector<cds::Atom*>& atomsA, std::vector<cds::Atom*>& atomsB)
+unsigned int cds::CountOverlappingAtoms(const std::vector<cds::Atom*>& atomsA, const std::vector<cds::Atom*>& atomsB)
 {
-    unsigned int overlappingAtoms = 1;
+    unsigned int overlapCount = 1;
     for(auto &atomA : atomsA)
     {
         for(auto &atomB : atomsB)
         {
             if (cds::CheckIfOtherCoordinateIsWithinDistance(atomA->getCoordinate(), atomB->getCoordinate(), constants::maxCutOff))
             {
-                ++overlappingAtoms;
+                ++overlapCount;
             }
         }
     }
-    return overlappingAtoms;
+    return overlapCount;
 }
