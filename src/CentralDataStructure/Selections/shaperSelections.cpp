@@ -158,14 +158,21 @@ bool cdsSelections::FindPathBetweenTwoAtoms(cds::Atom* current_atom, cds::Residu
 void cdsSelections::FindAtomsConnectingResidues(cds::Atom *current_atom, const cds::Residue *currentResidue, const cds::Residue *otherResidue, std::vector<cds::Atom*>* connecting_atoms, bool *found_neighbor)
 {
     current_atom->setLabels("VisitedByFindAtomsConnectingResidues");
+    //std::cout << "Checking neighbors of " << current_atom->getName() << " in " << currentResidue->getId() << "\n";
     for(auto & neighbor : current_atom->getNeighbors())
     {
+//        std::cout << "    " << neighbor->getName() << "_" << neighbor->getIndex() << ", is it in " << otherResidue->getId() << ":\n";
+//        for (auto & otherResidueAtom : otherResidue->getAtoms())
+//        {
+//            std::cout << ", " << otherResidueAtom->getName() << "_" << otherResidueAtom->getIndex();
+//        }
+//        std::cout << "\n";
         if(otherResidue->contains(neighbor))
         {
             *found_neighbor = true;
             connecting_atoms->push_back(current_atom);
             connecting_atoms->push_back(neighbor);
-          //  std::cout << "Found the connection point: " << current_atom->GetId() << " - " << neighbor->GetId() << "\n";
+        //    std::cout << "Found the connection point: " << current_atom->getId() << " - " << neighbor->getId() << "\n";
         }
         // If haven't visited this atom already AND don't move onto other residues
         else if ((neighbor->getLabel() != "VisitedByFindAtomsConnectingResidues") && (currentResidue->contains(neighbor) ) )
