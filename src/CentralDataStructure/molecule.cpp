@@ -61,9 +61,11 @@ std::vector<Atom*> Molecule::getAtoms() const
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
-void Molecule::addResidue(std::unique_ptr<Residue> myResidue)
+Residue* Molecule::addResidue(std::unique_ptr<Residue> myResidue)
 { // This is good: myResidue contains a vector of unique_ptr, so you don't want to copy that.
     residues_.push_back(std::move(myResidue));
+    return residues_.back().get();
+
 }
 
 void Molecule::setResidues(std::vector<std::unique_ptr<Residue>> myResidues)
