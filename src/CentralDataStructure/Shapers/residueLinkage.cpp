@@ -277,6 +277,7 @@ void ResidueLinkage::InitializeClass(cds::Residue* from_this_residue1, cds::Resi
 {
     //set local debug flag
     int local_debug = -1;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Maybe Finding connection between " + from_this_residue1->getId() + " :: " + to_this_residue2->getId());
     this->SetResidues(from_this_residue1, to_this_residue2);
     this->SetIfReversedAtomsThatMove(reverseAtomsThatMove);
     this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
