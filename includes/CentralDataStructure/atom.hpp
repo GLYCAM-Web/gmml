@@ -23,7 +23,7 @@ public:
 	Atom(Atom&& other) noexcept;            // Move Ctor
 	Atom(const Atom& other);                // Copy Ctor
 	Atom& operator=(Atom other);            // Move and Copy assignment operator
-	virtual ~Atom() {std::cout << "cds::Atom default dtor for " << this->getName() << "_" << this->getIndex() << "\n";}
+	virtual ~Atom() {}//std::cout << "cds::Atom default dtor for " << this->getName() << "_" << this->getIndex() << "\n";}
 	friend void swap(Atom& lhs, Atom& rhs) // ToDo figure out how to put this in cpp file once everything is working.
 	{
 	    using std::swap;
@@ -37,7 +37,7 @@ public:
 	//                       ACCESSORS                      //
 	//////////////////////////////////////////////////////////
     Coordinate* getCoordinate();
-    const Coordinate* getCoordinate() const;
+    Coordinate* getCoordinate() const;
     inline double getCharge() const { return charge_;}
     inline std::string getType() const {return atomType_;}
     inline int getNumber() const {return number_;}

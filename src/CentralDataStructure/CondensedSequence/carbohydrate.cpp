@@ -16,6 +16,7 @@
 #include "includes/CentralDataStructure/Readers/Prep/prepResidue.hpp"
 #include <sstream>
 #include <cctype> // isDigit
+#include <algorithm> //  std::erase, std::remove
 
 //using Abstract::absResidue; // For Residue::Type
 using cdsCondensedSequence::Carbohydrate;
@@ -121,6 +122,21 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
     return;
 }
 //////////////////////////////////////////////////////////
+//                       MUTATOR                        //
+//////////////////////////////////////////////////////////
+void Carbohydrate::deleteResidue(cds::Residue* byeBye)
+{   // ToDo Have to do this because ResidueLInkages are not Edges!!! Oliver just make them Edges already.
+    cds::Molecule::deleteResidue(byeBye);
+    std::cout << "Wow so cool you're a stupid" << std::endl;
+    for(cds::ResidueLinkage & linkage : glycosidicLinkages_)
+    {
+        if(linkage.GetFromThisResidue1() == byeBye || linkage.GetToThisResidue2() == byeBye)
+        {
+            this->deleteLinkage(&linkage);
+        }
+    }
+}
+//////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 //std::string fileOutputDirectory = "unspecified", std::string fileType = "PDB", std::string outputFileNaming = "structure"
@@ -188,9 +204,17 @@ unsigned long int Carbohydrate::CountShapes(bool likelyShapesOnly)
 
 cds::Residue* Carbohydrate::GetReducingResidue()
 { // Kindly dumb, but centralized stupidity. Tagging during construction would be better. Ano-ano linkages won't work, but this is used by gp builder so ok.
+    for(auto residue : this->getResidues())
+    { // Return the first sugar residue that isn't an Aglycone
+        if (residue->GetType() != ResidueType::Aglycone && residue->GetType() == ResidueType::Sugar)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Assuming that reducing residue is " + residue->getId());
+            return residue;
+        }
+    }
     if(this->GetResidueCount() > 1)
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Assuming that reducing residue is " + this->getResidues().at(1)->getId());
+        gmml::log(__LINE__, __FILE__, gmml::INF, "No ResidueType's assigned, so assuming that reducing residue is " + this->getResidues().at(1)->getId());
         return this->getResidues().at(1);
     }
     std::string message = "Reducing residue requested for Carbohydrate with name " + this->getName() + ", but it doesn't have more than 1 residue";
@@ -200,9 +224,17 @@ cds::Residue* Carbohydrate::GetReducingResidue()
 
 cds::Residue* Carbohydrate::GetAglycone()
 { // Kindly dumb, but centralized stupidity. Tagging during construction would be better. Ano-ano linkages won't work, but this is used by gp builder so ok.
+    for(auto residue : this->getResidues())
+    {
+        if (residue->GetType() == ResidueType::Aglycone)
+        {
+            return residue;
+        }
+    }
     if(this->GetResidueCount() > 0)
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Assuming that aglycone residue is " + this->getResidues().front()->getId());
+
+        gmml::log(__LINE__, __FILE__, gmml::INF, "A ResidueType::Aglycone residue was not present, so assuming that aglycone residue is " + this->getResidues().front()->getId());
         return this->getResidues().front();
     }
     std::string message = "Aglycone residue requested for Carbohydrate with name " + this->getName() + ", but it doesn't have even 1 residue";
@@ -214,7 +246,13 @@ cds::Atom* Carbohydrate::GetAnomericAtom()
 {
     return cdsSelections::guessAnomericAtom(this->GetReducingResidue());
 }
-
+//////////////////////////////////////////////////////////
+//                  PRIVATE MUTATOR                     //
+//////////////////////////////////////////////////////////
+void Carbohydrate::deleteLinkage(cds::ResidueLinkage* linkage)
+{
+    glycosidicLinkages_.erase(std::remove(glycosidicLinkages_.begin(), glycosidicLinkages_.end(), *linkage), glycosidicLinkages_.end());
+}
 //////////////////////////////////////////////////////////
 //                  PRIVATE FUNCTIONS                   //
 //////////////////////////////////////////////////////////

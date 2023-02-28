@@ -26,7 +26,7 @@ public:
     Residue(Residue&& other) noexcept;     // Move Ctor
     Residue(const Residue& other);         // Copy Ctor
     Residue& operator=(Residue other);     // Move & Copy assignment operator.
-    virtual ~Residue() {std::cout << "Residue dtor for " << this->getName() << std::endl;}                  // Dtor, virtual so that derived classes dtors will get triggered if possible.
+    virtual ~Residue() {}//std::cout << "Residue dtor for " << this->getName() << std::endl;}// Dtor, virtual so that derived classes dtors will get triggered if possible.
     //////////////////////////////////////////////////////////
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
@@ -79,9 +79,10 @@ public:
         std::cout << "Swapping" << std::endl;
         using std::swap;
         swap(lhs.atoms_, rhs.atoms_);
-        swap(lhs.number_, rhs.number_);
         swap(lhs.name_, rhs.name_);
         swap(lhs.geometricCenter_, rhs.geometricCenter_);
+        swap(lhs.type_, rhs.type_);
+        swap(lhs.number_, rhs.number_);
         std::cout << "Swapped" << std::endl;
     }
 private:

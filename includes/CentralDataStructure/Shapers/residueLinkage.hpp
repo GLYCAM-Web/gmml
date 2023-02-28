@@ -18,8 +18,10 @@ public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
+    ResidueLinkage() {};
     ResidueLinkage(cds::Residue *nonReducingResidue1, cds::Residue *reducingResidue2, bool reverseAtomsThatMove = true);
     ResidueLinkage(cds::Residue *nonReducingResidue1, cds::Residue *reducingResidue2, std::vector<cds::Atom*> alsoMovingAtoms, bool reverseAtomsThatMove = true);
+    //~ResidueLinkage() {std::cout << "Linkage dtor for " << this->GetFromThisResidue1()->getId() << " -Link- "  << this->GetToThisResidue2()->getId() << "\n";}
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -57,6 +59,11 @@ public:
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
     std::string Print() const;
+    //////////////////////////////////////////////////////////
+    //                  OPERATOR OVERLOADING                //
+    //////////////////////////////////////////////////////////
+    bool operator == (const ResidueLinkage& rhs) const { return (this->GetIndex() == rhs.GetIndex());}
+    bool operator != (const ResidueLinkage& rhs) const { return (this->GetIndex() != rhs.GetIndex());}
 private:
     //////////////////////////////////////////////////////////
     //                    PRIVATE FUNCTIONS                 //
@@ -85,16 +92,16 @@ private:
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
-    cds::Residue* from_this_residue1_;
-    cds::Residue* to_this_residue2_;
-    cds::Atom* from_this_connection_atom1_;
-    cds::Atom* to_this_connection_atom2_;
+    cds::Residue* from_this_residue1_ = nullptr;
+    cds::Residue* to_this_residue2_ = nullptr;
+    cds::Atom* from_this_connection_atom1_ = nullptr;
+    cds::Atom* to_this_connection_atom2_ = nullptr;
     std::vector<RotatableDihedral> rotatableDihedrals_;
-    bool reverseAtomsThatMove_;
+    bool reverseAtomsThatMove_ = true;
     std::vector<cds::Atom*> extraAtomsThatMove_;
     bool isExtraAtoms_ = true;
-    unsigned long long index_;
-    std::string name_; //e.g. "DGalpb1-6DGlcpNAc"
+    unsigned long long index_ = 0;
+    std::string name_ = ""; //e.g. "DGalpb1-6DGlcpNAc". It being empty works with GetName();
 
 };
 } //namespace

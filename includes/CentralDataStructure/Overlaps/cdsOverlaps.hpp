@@ -21,8 +21,9 @@ bool CheckIfOtherCoordinateIsWithinDistanceA(const Coordinate* a, const Coordina
 double CalculateAtomicOverlaps(Atom* atomA, Atom* atomB, double radiusA = 0.0, double radiusB = 0.0);
 double CalculateAtomicOverlaps(std::vector<Atom*> atomsA, std::vector<Atom*> atomsB, bool print = false);
 double CalculateAtomicOverlapsBetweenNonBondedAtoms(std::vector<Atom*>& atomsA, std::vector<Atom*>& atomsB);
-unsigned int CountOverlappingAtoms(std::vector<Atom*>& atomsA, std::vector<Atom*>& atomsB);
-unsigned int CountOverlappingAtoms(std::vector<cds::Residue*>& atomsA, std::vector<cds::Residue*>& atomsB);
+unsigned int CountOverlappingResidues(const std::vector<cds::Residue*>& residuesA, const std::vector<cds::Residue*>& residuesB);
+unsigned int CountOverlappingAtoms(const std::vector<Atom*>& atomsA, const std::vector<Atom*>& atomsB);
+unsigned int CountOverlappingAtoms(const std::vector<cds::Residue*>& residuesA, const std::vector<cds::Residue*>& residuesB);
 
 } // namespace
 #endif

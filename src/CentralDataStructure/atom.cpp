@@ -63,7 +63,7 @@ Coordinate* Atom::getCoordinate()
     return coordinates_.front().get();
 }
 
-const Coordinate* Atom::getCoordinate() const
+Coordinate* Atom::getCoordinate() const
 {
     if(coordinates_.empty())
     {
@@ -98,7 +98,7 @@ void Atom::addCoordinate(const Coordinate& newCoord)
 //////////////////////////////////////////////////////////
 void Atom::addBond(Atom *otherAtom)
 {
-    this->addNeighbor("bondByDistance", otherAtom);
+    this->addNeighbor("atomicBond", otherAtom);
     return;
 }
 

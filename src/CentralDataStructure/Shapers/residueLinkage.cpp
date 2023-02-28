@@ -277,6 +277,7 @@ void ResidueLinkage::InitializeClass(cds::Residue* from_this_residue1, cds::Resi
 {
     //set local debug flag
     int local_debug = -1;
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Maybe Finding connection between " + from_this_residue1->getId() + " :: " + to_this_residue2->getId());
     this->SetResidues(from_this_residue1, to_this_residue2);
     this->SetIfReversedAtomsThatMove(reverseAtomsThatMove);
     this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
@@ -352,12 +353,12 @@ std::vector<RotatableDihedral> ResidueLinkage::FindRotatableDihedralsConnectingR
     // Now that have a list of rotation points. Split into pairs and find rotatable bonds between them
     bool found = false;
     std::vector<cds::Atom*> connecting_atoms = {from_this_connection_atom1, to_this_connection_atom2};
-     std::cout << "cycle point atoms are:\n";
-     for(auto & atom : from_this_residue1_cycle_points)
-     {
-         std::cout << atom->getId() << ":" << this->GetFromThisResidue1()->getName() << "\n";
-     }
-     std::cout << "\n";
+//     std::cout << "cycle point atoms are:\n";
+//     for(auto & atom : from_this_residue1_cycle_points)
+//     {
+//         std::cout << atom->getId() << "\n";
+//     }
+//     std::cout << "\n";
     std::vector<RotatableDihedral> rotatableDihedralsInBranches;
     for(long unsigned int i = 0; i < from_this_residue1_cycle_points.size(); i = i+2)
     {
@@ -366,7 +367,7 @@ std::vector<RotatableDihedral> ResidueLinkage::FindRotatableDihedralsConnectingR
 
         found = false;
         connecting_atoms.clear();
-        std::cout << "Finding Path between:" << cycle_point1->getId() << " and " << cycle_point2->getId() << "\n";
+     //   std::cout << "Finding Path between:" << cycle_point1->getId() << " and " << cycle_point2->getId() << "\n";
         cdsSelections::FindPathBetweenTwoAtoms(cycle_point1, this->GetFromThisResidue1(), cycle_point2, this->GetToThisResidue2(), &connecting_atoms, &found);
         cdsSelections::ClearAtomLabels(this->GetFromThisResidue1()); //ToDo change to free function or memeber function that clears labels.
         cdsSelections::ClearAtomLabels(this->GetToThisResidue2());
@@ -379,10 +380,10 @@ std::vector<RotatableDihedral> ResidueLinkage::FindRotatableDihedralsConnectingR
         connecting_atoms.insert(connecting_atoms.begin(), neighbor1);
         connecting_atoms.push_back(neighbor2);
 
-         std::cout << "Updated Path between:\n " << cycle_point1->getId() << " and " << cycle_point2->getId() << "\n";
-         for (const auto& atom : connecting_atoms)
-             std::cout << atom->getId() << "\n";
-         std::cout << "\n";
+        // std::cout << "Updated Path between:\n " << cycle_point1->getId() << " and " << cycle_point2->getId() << "\n";
+//         for (const auto& atom : connecting_atoms)
+//             std::cout << atom->getId() << "\n";
+//         std::cout << "\n";
         cdsSelections::ClearAtomLabels(this->GetFromThisResidue1()); //ToDo change to free function or member function that clears labels.
         cdsSelections::ClearAtomLabels(this->GetToThisResidue2());
         // This mess was made to address the branching in 2-7 and 2-8 linkages.
@@ -409,9 +410,9 @@ std::vector<RotatableDihedral> ResidueLinkage::FindRotatableDihedralsConnectingR
                                 cds::Atom* neighbor = cdsSelections::FindCyclePointNeighbor(foundPath, branch.GetRoot(), this->GetToThisResidue2());
                                 //foundPath.insert(foundPath.begin(), neighbor);
                                 foundPath.push_back(neighbor);
-                                 std::cout << "Found atoms:\n";
-                                 for (auto &atom: foundPath)
-                                     std::cout << atom->getId() << "\n";
+                               //  std::cout << "Found atoms:\n";
+                           //      for (auto &atom: foundPath)
+                             //        std::cout << atom->getId() << "\n";
                                 std::vector<RotatableDihedral> temp = this->SplitAtomVectorIntoRotatableDihedrals(foundPath);
                                 rotatableDihedralsInBranches.insert( rotatableDihedralsInBranches.end(), temp.begin(), temp.end() );
                             }
@@ -420,16 +421,16 @@ std::vector<RotatableDihedral> ResidueLinkage::FindRotatableDihedralsConnectingR
                 }
             }
         } // End dealing with branching linkages
-         std::cout << "These are the assigned branched RotatableDihedrals:\n";
-         for (auto &dihedral : rotatableDihedralsInBranches)
-             std::cout << dihedral.Print();
+//         std::cout << "These are the assigned branched RotatableDihedrals:\n";
+//         for (auto &dihedral : rotatableDihedralsInBranches)
+//             std::cout << dihedral.Print();
     }
     std::vector<RotatableDihedral> RotatableDihedrals = this->SplitAtomVectorIntoRotatableDihedrals(connecting_atoms);
     // Add any linkage branches (in 2-7 and 2-8) to the rest.
     RotatableDihedrals.insert( RotatableDihedrals.end(), rotatableDihedralsInBranches.begin(), rotatableDihedralsInBranches.end() );
-     std::cout << "These are the assigned RotatableDihedrals:\n";
-     for (auto &dihedral : RotatableDihedrals)
-         std::cout << dihedral.Print();
+//     std::cout << "These are the assigned RotatableDihedrals:\n";
+//     for (auto &dihedral : RotatableDihedrals)
+//         std::cout << dihedral.Print();
     return RotatableDihedrals;
 }
 
@@ -543,6 +544,10 @@ void ResidueLinkage::SetConnectionAtoms(cds::Residue* residue1, cds::Residue* re
     std::vector<cds::Atom*> connecting_atoms;
     bool found = false;
     cdsSelections::FindAtomsConnectingResidues(residue1->getAtoms().at(0), residue1, residue2, &connecting_atoms, &found);
+    if (connecting_atoms.size() < 2)
+    {
+        throw std::runtime_error("Two residues passed into ResidueLinkage that have no connection atoms.");
+    }
     from_this_connection_atom1_ = connecting_atoms.at(0);
     to_this_connection_atom2_ = connecting_atoms.at(1);
 }

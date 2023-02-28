@@ -47,7 +47,7 @@ Atom* cdsSelections::guessAnomericAtom(cds::Residue* queryResidue)
     {
         Atom *potentialAnomer = codeUtils::findElementWithName(queryResidue->getAtoms(), suspectName);
         if(cdsSelections::selectNeighborNotInAtomVector(potentialAnomer, queryResidue->getAtoms()) != nullptr)
-        {
+        { // If atom has a foreign neighbor.
             return potentialAnomer;
         }
     }

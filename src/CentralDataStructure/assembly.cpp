@@ -75,9 +75,10 @@ std::vector<Atom*> Assembly::getAtoms() const
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
-void Assembly::addMolecule(std::unique_ptr<Molecule> myMolecule)
+Molecule* Assembly::addMolecule(std::unique_ptr<Molecule> myMolecule)
 {
     molecules_.push_back(std::move(myMolecule));
+    return molecules_.back().get();
 }
 
 const Atom* Assembly::findAtom(const int& serialNumber) const
