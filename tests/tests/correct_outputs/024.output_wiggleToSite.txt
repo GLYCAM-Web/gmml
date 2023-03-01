@@ -1,0 +1,12 @@
+Input file is tests/inputs/024.input.txt
+About to read tests/inputs/024.input.txt
+Reading input file complete
+substrateFile_ : s.pdb
+carbohydrateFile_ : c.pdb
+superimpositionTargetResidue_ : 2
+carbohydrateSuperimpositionResidue_ : 14
+wigglingTargetResidue_ : 3
+carbohydrateWigglingResidue_ : 8
+persistCycles_ : 5
+isDeterministic_ : 1
+Program got to end ok

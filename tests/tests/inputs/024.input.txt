@@ -1,0 +1,15 @@
+Substrate:s.pdb
+
+Carbohydrate:c.pdb
+
+SuperimpositionTargetResidue:2
+
+CarbohydrateSuperimpositionResidue:14
+
+WiggleTargetResidue:3
+
+CarbohydrateWigglingResidue:8
+
+persistCycles:5
+
+isDeterministic:true

@@ -8,6 +8,8 @@
 ./src/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.cpp
 ./src/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycosylationSite.cpp
 ./src/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/gpInputStructs.cpp
+./src/CentralDataStructure/InternalPrograms/WiggleToSite/inputs.cpp
+./src/CentralDataStructure/InternalPrograms/WiggleToSite/wiggleToSite.cpp
 ./src/CentralDataStructure/Measurements/measurements.cpp
 ./src/CentralDataStructure/Overlaps/beadResidues.cpp
 ./src/CentralDataStructure/Overlaps/cdsOverlaps.cpp

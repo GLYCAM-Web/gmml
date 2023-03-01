@@ -6,6 +6,7 @@
 ./includes/CentralDataStructure/InternalPrograms
 ./includes/CentralDataStructure/InternalPrograms/CarbohydrateBuilder
 ./includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder
+./includes/CentralDataStructure/InternalPrograms/WiggleToSite
 ./includes/CentralDataStructure/Measurements
 ./includes/CentralDataStructure/Overlaps
 ./includes/CentralDataStructure/Readers
