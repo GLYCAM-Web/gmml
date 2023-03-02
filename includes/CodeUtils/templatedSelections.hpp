@@ -94,6 +94,29 @@ std::vector<T> findElementsNotInVector(const std::vector<T>& inputVector, const 
     return elementsInInputVectorButNotInQueryElements;
 }
 
+template <class T>
+void findPathBetweenElementsInGraph(const T current, const T target, std::vector<T>& visited, std::vector<T>& path, bool &targetFound)
+{
+    if(current == target)
+    {
+        targetFound = true;
+        path.push_back(current);
+        return;
+    }
+    visited.push_back(current);
+    for(auto & neighbor : current->getNeighbors())
+    {
+        if( (std::find(visited.begin(), visited.end(), neighbor) == visited.end()) && (!targetFound) )
+        {
+            findPathBetweenElementsInGraph(neighbor, target, visited, path, targetFound);
+        }
+    }
+    if(targetFound)
+    {
+        path.push_back(current);
+    }
+}
+
 } // namespace
 
 #endif /* INCLUDES_CODEUTILS_TEMPLATEDSELECTIONS_HPP_ */
