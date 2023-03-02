@@ -1,5 +1,5 @@
-#ifndef INCLUDES_INPUTSET_PDBFILE_PDBFILE_HPP
-#define INCLUDES_INPUTSET_PDBFILE_PDBFILE_HPP
+#ifndef INCLUDES_CENTRALDATASTRUCTURE_READERS__PDB_PDBFILE_HPP
+#define INCLUDES_CENTRALDATASTRUCTURE_READERS__PDB_PDBFILE_HPP
 // ToDo split preprocessor into separate function.
 // ToDo Warning about gaps being 1 residue.
 // ToDo make more direct queries here instead of giving out HeaderRecord etc.
@@ -73,4 +73,4 @@ private:
     std::vector<DatabaseReference> databaseReferences_;
 };
 }
-#endif /* INCLUDES_INPUTSET_PDBFILE_PDBFILE_HPP */
+#endif /* INCLUDES_CENTRALDATASTRUCTURE_READERS__PDB_PDBFILE_HPP */
