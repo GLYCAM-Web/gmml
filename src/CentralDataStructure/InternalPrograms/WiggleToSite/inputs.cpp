@@ -28,7 +28,7 @@ WiggleToSiteInputs::WiggleToSiteInputs(std::string inputFileName)
         }
         if(codeUtils::startsWith(strInput, "Carbohydrate:"))
         {
-            carbohydrateFile_ = codeUtils::split(strInput, ':').at(1);
+            carbohydrateSequence_ = codeUtils::split(strInput, ':').at(1);
         }
         if(codeUtils::startsWith(strInput, "SuperimpositionTargetResidue:"))
         {
@@ -65,7 +65,7 @@ std::string WiggleToSiteInputs::Print()
 {
     std::stringstream ss;
     ss << "substrateFile_ : " << substrateFile_ << "\n";
-    ss << "carbohydrateFile_ : " << carbohydrateFile_ << "\n";
+    ss << "carbohydrateFile_ : " << carbohydrateSequence_ << "\n";
     ss << "superimpositionTargetResidue_ : " << superimpositionTargetResidue_ << "\n";
     ss << "carbohydrateSuperimpositionResidue_ : " << carbohydrateSuperimpositionResidue_ << "\n";
     ss << "wigglingTargetResidue_ : " << wigglingTargetResidue_ << "\n";

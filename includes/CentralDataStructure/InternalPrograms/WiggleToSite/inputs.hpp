@@ -10,7 +10,7 @@ struct WiggleToSiteInputs
     //ctor
     WiggleToSiteInputs(std::string inputFileName);
     //Members
-	std::string carbohydrateFile_ = "";
+	std::string carbohydrateSequence_ = "";
 	int carbohydrateSuperimpositionResidue_ = 0;
 	int carbohydrateWigglingResidue_ = 0;
 	std::string substrateFile_ = "";
