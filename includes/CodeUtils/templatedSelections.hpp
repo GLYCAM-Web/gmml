@@ -81,10 +81,10 @@ T* findElementWithNumber(const std::vector<T*>& inputVector, const int& queryNum
 }
 
 template <class T>
-std::vector<T*> findElementsNotInVector(const std::vector<T*>& inputVector, const std::vector<T*>& excludeElements)
+std::vector<T> findElementsNotInVector(const std::vector<T>& inputVector, const std::vector<T>& excludeElements)
 {
-    std::vector<T*> elementsInInputVectorButNotInQueryElements(inputVector.size());
-    for (auto & element : inputVector)
+    std::vector<T> elementsInInputVectorButNotInQueryElements;
+    for (auto element : inputVector)
     { // if element is not in the exclude list
         if (std::find(excludeElements.begin(), excludeElements.end(), element) == excludeElements.end())
         {
