@@ -50,7 +50,6 @@ void gmmlPrograms::wiggleToSite(const std::vector<Coordinate*> avoidOverlappingW
     std::vector<cds::Residue*> visitedResidues;
     codeUtils::findPathBetweenElementsInGraph(superimposeMe, wiggleMe, visitedResidues, residuesInPath, targetFound);
     std::vector<cds::ResidueLinkage> wiggleLinkages;
-    std::cout << "Residues in path are: ";
     cds::Residue* previousResidue = nullptr; // wanna skip the first iteration
     for(auto & residue : residuesInPath)
     {
@@ -58,15 +57,48 @@ void gmmlPrograms::wiggleToSite(const std::vector<Coordinate*> avoidOverlappingW
         {
             wiggleLinkages.emplace_back(cds::ResidueLinkage(previousResidue, residue));
         }
-        std::cout << residue->getId() << ", ";
+        //std::cout << residue->getId() << ", ";
         previousResidue = residue;
     }
+
+    std::cout << "Linkages I behold:\n" << std::endl;
     for(auto & linkage : wiggleLinkages)
     {
-        int cycle = 1;
-            bool stop = false;
+        std::cout << linkage.GetName() << ": " << linkage.GetNumberOfShapes() << std::endl;
     }
-    std::cout << std::endl;
+    int cycle = 0;
+    bool stop = false;
+    int persistCycles = 500;
+    unsigned int totalStructureCounter = 0;
+    double bestDistance = wiggleMeCoordinates.front()->Distance(wiggleTargetCoordinates.front()); //ToDo average all of them instead of just front();
+    while ( (cycle < persistCycles) && (stop == false) )
+    {
+        ++cycle;
+        std::stringstream ss;
+        ss << "Cycle " << cycle << "/" << persistCycles << "\n";
+        gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
+        //std::random_shuffle(wiggleLinkages.begin(), wiggleLinkages.end());
+        for(auto & linkage : wiggleLinkages)
+        {
+            linkage.SetRandomShapeUsingMetadata(true);
+            double newDistance = wiggleMeCoordinates.front()->Distance( wiggleTargetCoordinates.front() );
+            std::stringstream cycleCount;
+            cycleCount << std::setfill('0') << std::setw(6) << ++totalStructureCounter;
+//            if (bestDistance < newDistance)
+//            {
+//                linkage.SetShapeToPrevious();
+//            }
+//            else
+//            {
+//                bestDistance = newDistance;
+//                cycle = 0; // reset when it improves
+//                carbohydrate->Generate3DStructureFiles("./", "best" + cycleCount.str());
+//            }
+            carbohydrate->Generate3DStructureFiles("./", "all" + cycleCount.str());
+        }
+    }
+//    }
+
     std::cout << "ALL DONE HON\n";
 }
 
