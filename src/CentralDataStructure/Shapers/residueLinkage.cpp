@@ -476,9 +476,17 @@ gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector ResidueLinkage::FindMet
     // }
     if (matching_entries.empty())
     {
+        matching_entries = DihedralAngleMetadata.GetEntriesForLinkage(this->GetToThisConnectionAtom2()->getName(),
+                this->GetToThisResidue2()->getName(),
+                this->GetFromThisConnectionAtom1()->getName(),
+                this->GetFromThisResidue1()->getName() );
+        std::reverse(matching_entries.begin(), matching_entries.end()); // I think this will work...
+    }
+    if (matching_entries.empty())
+    {
         std::stringstream ss;
         ss << "No Metadata entries found for connection between " << this->GetFromThisResidue1()->getName() << "@" << this->GetFromThisConnectionAtom1()->getName() << " and " << this->GetToThisResidue2()->getName() << "@" << GetToThisConnectionAtom2()->getName() << "\n";
-        ss << "Note that order should be reducing atom - anomeric atom\n";
+        ss << "Note that order should be reducing atom - anomeric atom, but I've tried reversing the order and it didn't fix the issue.\n";
         gmml::log(__LINE__,__FILE__,gmml::ERR,ss.str());
         throw std::runtime_error(ss.str());
     }
