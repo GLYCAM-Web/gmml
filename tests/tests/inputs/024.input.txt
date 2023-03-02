@@ -1,14 +1,14 @@
-Substrate:s.pdb
+Substrate:tests/inputs/024.substrate.pdb
 
-Carbohydrate:c.pdb
+Carbohydrate:DGalpb1-4DGlcpNAcb1-3DGalpb1-4DGlcpNAcb1-3DGalpb1-4DGlcpNAcb1-2DManpa1-6[DNeup5Aca2-6DGalpb1-4DGlcpNAcb1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
 
 SuperimpositionTargetResidue:2
 
 CarbohydrateSuperimpositionResidue:14
 
-WiggleTargetResidue:3
+WiggleTargetResidue:4
 
-CarbohydrateWigglingResidue:8
+CarbohydrateWigglingResidue:11
 
 persistCycles:5
 

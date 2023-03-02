@@ -1,12 +1,388 @@
 Input file is tests/inputs/024.input.txt
 About to read tests/inputs/024.input.txt
 Reading input file complete
-substrateFile_ : s.pdb
-carbohydrateFile_ : c.pdb
+substrateFile_ : tests/inputs/024.substrate.pdb
+carbohydrateFile_ : DGalpb1-4DGlcpNAcb1-3DGalpb1-4DGlcpNAcb1-3DGalpb1-4DGlcpNAcb1-2DManpa1-6[DNeup5Aca2-6DGalpb1-4DGlcpNAcb1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
 superimpositionTargetResidue_ : 2
 carbohydrateSuperimpositionResidue_ : 14
-wigglingTargetResidue_ : 3
-carbohydrateWigglingResidue_ : 8
+wigglingTargetResidue_ : 4
+carbohydrateWigglingResidue_ : 11
 persistCycles_ : 5
 isDeterministic_ : 1
-Program got to end ok
+Glycam names are: ROH, 4YB, 4YB, VMB, 2MA, 4YB, 6LB, 0SA, 2MA, 4YB, 3LB, 4YB, 3LB, 4YB, 0LB, 
+Found query residue: 0LB
+0LB will be read in 1 times.
+Found query residue: 0SA
+0SA will be read in 1 times.
+Found query residue: 2MA
+2MA will be read in 2 times.
+Found query residue: 3LB
+3LB will be read in 2 times.
+Found query residue: 4YB
+4YB will be read in 6 times.
+Found query residue: 6LB
+6LB will be read in 1 times.
+Found query residue: ROH
+ROH will be read in 1 times.
+Found query residue: VMB
+VMB will be read in 1 times.
+PrepResidue dtor for ROH, PrepResidue dtor for 4YB, PrepResidue dtor for 4YB, PrepResidue dtor for VMB, PrepResidue dtor for 2MA, PrepResidue dtor for 4YB, PrepResidue dtor for 6LB, PrepResidue dtor for 0SA, PrepResidue dtor for 2MA, PrepResidue dtor for 4YB, PrepResidue dtor for 3LB, PrepResidue dtor for 4YB, PrepResidue dtor for 3LB, PrepResidue dtor for 4YB, PrepResidue dtor for 0LB, 
+
+
+On to setting 3d structure!
+
+Setting connection between 4YB and its parent ROH, the connection has linkageLabel: b1-
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 4YB and ROH
+Setting default shape
+Blocking access via O1, we will search outward from C1
+Have determined that the following atoms will move:
+O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4YB and its parent 4YB, the connection has linkageLabel: b1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -3.57133,     13.735,   -3.33762
+parent O4   -2.80485,    14.8442,   -3.85481
+and child C1   -2.38659,    16.1408,   -4.37955
+child residue 4YB will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 4YB and 4YB
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between VMB and its parent 4YB, the connection has linkageLabel: b1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -5.26593,    18.4266,   -4.14362
+parent O4   -6.05425,    19.5073,   -3.59979
+and child C1   -5.61307,    20.7802,   -4.16259
+child residue VMB will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: VMB and 4YB
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 2MA and its parent VMB, the connection has linkageLabel: a1-6
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -5.21853,    21.5459,    -8.0043
+parent O6   -4.34205,    20.4321,   -8.25324
+and child C1    -4.2356,    19.7747,   -9.55249
+child residue 2MA will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 2MA and VMB
+Setting default shape
+Blocking access via O6, we will search outward from C1
+Have determined that the following atoms will move:
+O6, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4YB and its parent 2MA, the connection has linkageLabel: b1-2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   -2.38254,    24.0933,    -7.8751
+parent O2   -1.10644,    23.9525,   -8.56822
+and child C1  -0.688183,    25.2491,   -9.09297
+child residue 4YB will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 4YB and 2MA
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 3LB and its parent 4YB, the connection has linkageLabel: b1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4    2.21331,    24.1384,   -5.75416
+parent O4    3.00764,     23.654,    -4.6498
+and child C1    3.42055,     24.973,   -5.12019
+child residue 3LB will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 3LB and 4YB
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4YB and its parent 3LB, the connection has linkageLabel: b1-3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3     5.9406,    25.5126,   -2.88039
+parent O3    6.92443,    25.1853,   -1.85964
+and child C1    7.34269,    26.4819,   -2.38438
+child residue 4YB will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 4YB and 3LB
+Setting default shape
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 3LB and its parent 4YB, the connection has linkageLabel: b1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4    7.05728,    28.2729,    1.21008
+parent O4    6.50657,    29.0464,    2.29803
+and child C1    6.91948,    30.3654,    1.82764
+child residue 3LB will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 3LB and 4YB
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4YB and its parent 3LB, the connection has linkageLabel: b1-3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3    8.09154,    32.1846,    3.97936
+parent O3    7.78465,    33.0266,    5.12557
+and child C1    8.20291,    34.3233,    4.60082
+child residue 4YB will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 4YB and 3LB
+Setting default shape
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0LB and its parent 4YB, the connection has linkageLabel: b1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4     7.9005,    37.2402,    4.02711
+parent O4     7.4375,    38.4103,    3.31883
+and child C1    7.85042,    39.7293,    2.84844
+child residue 0LB will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 0LB and 4YB
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 2MA and its parent VMB, the connection has linkageLabel: a1-3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -8.31246,    21.8897,   -5.61885
+parent O3   -9.27196,    22.9496,   -5.33805
+and child C1   -9.16551,    22.2921,    -6.6373
+child residue 2MA will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 2MA and VMB
+Setting default shape
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4YB and its parent 2MA, the connection has linkageLabel: b1-2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2    -11.802,      23.45,    -5.3699
+parent O2   -12.9363,     23.083,   -6.21093
+and child C1   -12.5181,    24.3797,   -6.73567
+child residue 4YB will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 4YB and 2MA
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 6LB and its parent 4YB, the connection has linkageLabel: b1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -14.4858,    26.5617,   -8.32569
+parent O4   -14.4065,    27.6422,   -9.28035
+and child C1   -13.9936,    28.9612,   -9.75074
+child residue 6LB will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 6LB and 4YB
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0SA and its parent 6LB, the connection has linkageLabel: a2-6
+Parent atom is O6
+Setting angle between
+parentNeighbor C6   -19.2997,    27.5322,   -8.76312
+parent O6   -19.1133,     26.543,    -7.7376
+and child C2   -18.4322,    27.7288,   -8.08103
+child residue 0SA will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 0SA and 6LB
+Setting default shape
+Blocking access via O6, we will search outward from C2
+Have determined that the following atoms will move:
+O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Re-determining atoms that need to move for each linkage:
+Blocking access via O1, we will search outward from C1
+Have determined that the following atoms will move:
+O1, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, 
+Blocking access via O6, we will search outward from C1
+Have determined that the following atoms will move:
+O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, 
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, 
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via O3, we will search outward from C1
+Have determined that the following atoms will move:
+O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following atoms will move:
+C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O2, we will search outward from C1
+Have determined that the following atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via O6, we will search outward from C2
+Have determined that the following atoms will move:
+O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following atoms will move:
+C6, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following atoms will move:
+C5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Final overlap resolution
+Overlaps resolved
+Number of residues is 15
+Parsing inputfile
+Finished reading and ready to rock captain
+Residues in path are: 0LB_11_?_?, Creating rotatable dihedrals between: 0LB and 4YB
+4YB_10_?_?, Creating rotatable dihedrals between: 4YB and 3LB
+3LB_9_?_?, Creating rotatable dihedrals between: 3LB and 4YB
+4YB_8_?_?, Creating rotatable dihedrals between: 4YB and 3LB
+3LB_7_?_?, Creating rotatable dihedrals between: 3LB and 4YB
+4YB_6_?_?, Creating rotatable dihedrals between: 4YB and 2MA
+2MA_5_?_?, Creating rotatable dihedrals between: 2MA and VMB
+VMB_4_?_?, Creating rotatable dihedrals between: VMB and 2MA
+2MA_12_?_?, Creating rotatable dihedrals between: 2MA and 4YB
+4YB_13_?_?, Creating rotatable dihedrals between: 4YB and 6LB
+6LB_14_?_?, 
+ALL DONE HON
+ParsedResidue dtor for ROH, ParsedResidue dtor for 4YB, ParsedResidue dtor for 4YB, ParsedResidue dtor for VMB, ParsedResidue dtor for 2MA, ParsedResidue dtor for 4YB, ParsedResidue dtor for 6LB, ParsedResidue dtor for 0SA, ParsedResidue dtor for 2MA, ParsedResidue dtor for 4YB, ParsedResidue dtor for 3LB, ParsedResidue dtor for 4YB, ParsedResidue dtor for 3LB, ParsedResidue dtor for 4YB, ParsedResidue dtor for 0LB, Program got to end ok
