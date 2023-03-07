@@ -2460,6 +2460,7 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
       if(thisMono->anomeric_carbon_pointer_ != NULL)
       {
         terminal = thisMono->GetFormula(thisMono->anomeric_carbon_pointer_);
+        chemicially_modified_terminal_ = true;
         //add terminal as derivative to this mono at anomeric carbon
         for(std::vector<std::string>::iterator it = thisMono->chemical_code_->right_down_.begin(); it != thisMono->chemical_code_->right_down_.end(); it++)
         {
@@ -3343,6 +3344,7 @@ void Glycan::Oligosaccharide::reindexRGroups(Glycan::Oligosaccharide* this_Oligo
     Glycan::Monosaccharide* thisMono = *rit;
     if(thisMono->on_R_ > 0)//There is an R group
     {
+      is_chemically_modified_ = true;
       std::string logstatement = thisMono->sugar_name_.monosaccharide_short_name_ + std::to_string(thisMono->on_R_);
       // gmml::log(__LINE__, __FILE__,  gmml::INF, logstatement);
       for(int i = 0; i < thisMono->on_R_; i++)

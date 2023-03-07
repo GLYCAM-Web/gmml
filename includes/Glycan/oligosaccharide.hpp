@@ -46,6 +46,7 @@ namespace Glycan
     bool is_C_Glycan_ = false;
     bool is_S_Glycan_ = false;
     bool is_chemically_modified_ = false;
+    bool chemicially_modified_terminal_ = false;
     // see https://doi.org/10.1093/glycob/cwab039 SI for details about the PDB lists
     bool in_PDB_basic_list_ = false;
     bool in_PDB_modified_list_ = false;
