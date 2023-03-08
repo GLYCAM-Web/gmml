@@ -26,27 +26,20 @@ inline double get_random_acceptance_probability()
 
 inline bool accept_via_metropolis_criterion(double change_in_overlap)
 {
-    bool return_value;
     if (change_in_overlap < 0)
     {
-        return_value = true;
+        std::cout << "ACCEPTED as better: " << change_in_overlap << "\n";
+        return true;
     }
-    else
+    double r = get_random_acceptance_probability();
+    double p = exp(-change_in_overlap);
+    if (p > r)
     {
-        double r = get_random_acceptance_probability();
-        double p = exp(-change_in_overlap / 10);
-        if (p > r)
-        {
-           // std::cout << "ACCEPTED: " << change_in_overlap << " p: " << p << " r: " << r << "\n";
-            return_value = true;
-        }
-        else
-        {
-            return_value = false;
-        }
-      //  std::cout << "p:" << p << ", r:" << r << ", accept = " << return_value << "\n";
+        std::cout << "ACCEPTED: " << change_in_overlap << " p: " << p << " r: " << r << "\n";
+        return true;
     }
-    return return_value;
+    std::cout << "REJECTED: " << change_in_overlap << " p: " << p << " r: " << r << "\n";
+    return false;
 }
 } // namespace monte_carlo
 #endif // GMML_INCLUDES_INTERNALPROGRAMS_METROPOLISCRITERION_HPP
