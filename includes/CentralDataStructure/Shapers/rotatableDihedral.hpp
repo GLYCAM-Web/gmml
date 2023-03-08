@@ -51,7 +51,6 @@ public:
     bool SetSpecificShape(std::string dihedralName, std::string selectedRotamer);
     void WiggleWithinCurrentRotamer(std::vector<cds::Atom*> &overlapAtomSet1, std::vector<cds::Atom*> &overlapAtomSet2, const int &angleIncrement);
     void WiggleWithinCurrentRotamer(std::vector<cds::Residue*>& overlapResidueSet1, std::vector<cds::Residue*> &overlapResidueSet2, const int &angleIncrement);
-
     void WiggleUsingAllRotamers(std::vector<cds::Atom*>& overlapAtomSet1, std::vector<cds::Atom*> &overlapAtomSet2, const int &angleIncrement);
     bool IsThereHydrogenForPsiAngle(); // ToDo which of these functions are only public for ResidueLinkage? How about friend function huh?
     std::unique_ptr<cds::Atom> CreateHydrogenAtomForPsiAngle();
@@ -102,11 +101,11 @@ private:
 //    std::vector<cds::Atom*> atoms_that_move_;
 //    std::vector<cds::Atom*> extra_atoms_that_move_;
     std::vector<cds::Coordinate*> coordinatesThatMove_;
-    bool isAtomsThatMoveReversed_;
+    bool isAtomsThatMoveReversed_ = true;
     double previous_dihedral_angle_; // I often want to reset a dihedral angle after rotating it, so recording the previous angle makes this easy.
     DihedralAngleDataVector assigned_metadata_;
     const DihedralAngleData* currentMetadata_;
-    bool wasEverRotated_; // Need this, as it might add a H atom for psi
+    bool wasEverRotated_ = false; // Need this, as it might add a H atom for psi
 };
 
 
