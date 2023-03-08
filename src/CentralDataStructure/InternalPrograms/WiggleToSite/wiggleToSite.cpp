@@ -3,108 +3,127 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
 #include "includes/CentralDataStructure/Editors/superimposition.hpp"
 #include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"
-//#include "includes/CentralDataStructure/Selections/shaperSelections.hpp"
-
+#include "includes/CodeUtils/metropolisCriterion.hpp"
 #include "includes/CodeUtils/templatedSelections.hpp"
+#include "includes/CentralDataStructure/Measurements/measurements.hpp" // calculateGeometricCenter
 
-void gmmlPrograms::wiggleToSite(WiggleToSiteInputs inputStruct)
+//Prototype: Working and producing useful data in 1.5 days. Included fixing some things in the CDS.
+using gmmlPrograms::WiggleToSite;
+//////////////////////////////////////////////////////////
+//                       CONSTRUCTOR                    //
+//////////////////////////////////////////////////////////
+WiggleToSite::WiggleToSite(WiggleToSiteInputs inputStruct) : substrate_(inputStruct.substrateFile_), carbohydrate_(inputStruct.carbohydrateSequence_)
 {
-    cdsCondensedSequence::Carbohydrate carbohydrate(inputStruct.carbohydrateSequence_);
-    pdb::PdbFile substrate(inputStruct.substrateFile_);
-    cds::Residue* superimpositionTarget = codeUtils::findElementWithNumber(substrate.getResidues(), inputStruct.superimpositionTargetResidue_);
-    cds::Residue* superimposeMe = codeUtils::findElementWithNumber(carbohydrate.getResidues(), inputStruct.carbohydrateSuperimpositionResidue_);
-
-
-    cds::Residue* wigglingTarget = codeUtils::findElementWithNumber(substrate.getResidues(), inputStruct.wigglingTargetResidue_);
-    cds::Residue* wiggleMe = codeUtils::findElementWithNumber(carbohydrate.getResidues(), inputStruct.carbohydrateWigglingResidue_);
-
-    std::vector<Atom*> substrateWithoutSuperimpositionAtoms = codeUtils::findElementsNotInVector(substrate.getAtoms(), superimpositionTarget->getAtoms());
+    std::vector<Coordinate*> carbohydrateCoordinates = cds::getCoordinatesFromAtoms(this->getCarbohydrate().getAtoms());
+    const Residue* superimpositionTarget = codeUtils::findElementWithNumber(this->getSubstrate().getResidues(), inputStruct.superimpositionTargetResidue_);
+    Residue* superimposeMe = codeUtils::findElementWithNumber(this->getCarbohydrate().getResidues(), inputStruct.carbohydrateSuperimpositionResidue_);
+    this->superimpose(carbohydrateCoordinates, superimpositionTarget, superimposeMe);
+    this->getCarbohydrate().Generate3DStructureFiles("./", "superimposed");
+    Residue* wigglingTarget = codeUtils::findElementWithNumber(this->getSubstrate().getResidues(), inputStruct.wigglingTargetResidue_);
+    Residue* wiggleMe = codeUtils::findElementWithNumber(this->getCarbohydrate().getResidues(), inputStruct.carbohydrateWigglingResidue_);
+    this->determineWiggleLinkages(superimposeMe, wiggleMe);
+    std::vector<Atom*> substrateWithoutSuperimpositionAtoms = codeUtils::findElementsNotInVector(this->getSubstrate().getAtoms(), superimpositionTarget->getAtoms());
     std::vector<Atom*> substrateAtomsToAvoidOverlappingWith = codeUtils::findElementsNotInVector(substrateWithoutSuperimpositionAtoms, wigglingTarget->getAtoms());
     std::vector<cds::Coordinate*> coordsToAvoids = cds::getCoordinatesFromAtoms(substrateAtomsToAvoidOverlappingWith);
     // call below function.
     std::cout << "Finished reading and ready to rock captain" << std::endl;
-    gmmlPrograms::wiggleToSite(coordsToAvoids, &carbohydrate, wigglingTarget, wiggleMe, superimpositionTarget, superimposeMe);
-    carbohydrate.Generate3DStructureFiles("./", "bob");
+    wiggleMeCoordinates_ = {wiggleMe->FindAtom("C1")->getCoordinate(), wiggleMe->FindAtom("C3")->getCoordinate(), wiggleMe->FindAtom("C5")->getCoordinate()};
+    wiggleTargetCoordinates_ = {wigglingTarget->FindAtom("C1")->getCoordinate(), wigglingTarget->FindAtom("C3")->getCoordinate(), wigglingTarget->FindAtom("C5")->getCoordinate()};
+    if (wiggleMeCoordinates_.size() < 3 || wiggleTargetCoordinates_.size() < 3)
+    {
+        throw std::runtime_error("Did not find the cooordinates of the atoms required for wiggling\n");
+    }
+    int structureCount = this->minimizeDistance(inputStruct.persistCycles_, !inputStruct.isDeterministic_);
+    this->minimizeDistance(inputStruct.persistCycles_, false, structureCount);
+
+    this->getCarbohydrate().Generate3DStructureFiles("./", "finished");
 }
 
-void gmmlPrograms::wiggleToSite(const std::vector<Coordinate*> avoidOverlappingWithMe, cdsCondensedSequence::Carbohydrate* carbohydrate, const cds::Residue* wiggleTarget, cds::Residue* wiggleMe, const cds::Residue* superimpositionTarget, cds::Residue* superimposeMe)
+int WiggleToSite::minimizeDistance(int persistCycles, bool useMonteCarlo, int structureCount)
 {
-    // Superimposition
-    //std::cout << carbohydrate->getAtoms().front()->getCoordinate()->ToString() << std::endl;
-    std::vector<Coordinate*> carbohydrateCoordinates = cds::getCoordinatesFromAtoms(carbohydrate->getAtoms());
-        // Limiting the selection to just these atoms as sometimes hydrogens or an oxygen is missing from xtal. That's ok.
-    std::vector<Coordinate*> superimposeMeCoordinates = {superimposeMe->FindAtom("C1")->getCoordinate(), superimposeMe->FindAtom("C3")->getCoordinate(), superimposeMe->FindAtom("C5")->getCoordinate()};
-    std::vector<Coordinate*> superTargetCoordinates = {superimpositionTarget->FindAtom("C1")->getCoordinate(), superimpositionTarget->FindAtom("C3")->getCoordinate(), superimpositionTarget->FindAtom("C5")->getCoordinate()};
-    cds::Superimpose(superimposeMeCoordinates, superTargetCoordinates, carbohydrateCoordinates); // alsoMoving is all the carbohydrateCoordinates
-    // Wiggling to target/site
-    std::vector<Coordinate*> wiggleMeCoordinates = {wiggleMe->FindAtom("C1")->getCoordinate(), wiggleMe->FindAtom("C3")->getCoordinate(), wiggleMe->FindAtom("C5")->getCoordinate()};
-    std::vector<Coordinate*> wiggleTargetCoordinates = {wiggleTarget->FindAtom("C1")->getCoordinate(), wiggleTarget->FindAtom("C3")->getCoordinate(), wiggleTarget->FindAtom("C5")->getCoordinate()};
-//    for(auto & coord : wiggleMeCoordinates)
-//    {
-//        std::cout << coord->ToString() << std::endl;
-//    }
-
-    // Explore from wiggleMe to superimposeMe, get all linkages inbetween
-    std::vector<cds::Residue*> residuesInPath;
-    bool targetFound = false;
-    std::vector<cds::Residue*> visitedResidues;
-    codeUtils::findPathBetweenElementsInGraph(superimposeMe, wiggleMe, visitedResidues, residuesInPath, targetFound);
-    std::vector<cds::ResidueLinkage> wiggleLinkages;
-    cds::Residue* previousResidue = nullptr; // wanna skip the first iteration
-    for(auto & residue : residuesInPath)
-    {
-        if (previousResidue != nullptr)
-        {
-            wiggleLinkages.emplace_back(cds::ResidueLinkage(previousResidue, residue));
-        }
-        //std::cout << residue->getId() << ", ";
-        previousResidue = residue;
-    }
-
-    std::cout << "Linkages I behold:\n" << std::endl;
-    for(auto & linkage : wiggleLinkages)
-    {
-        std::cout << linkage.GetName() << ": " << linkage.GetNumberOfShapes() << std::endl;
-    }
+    std::cout << "Starting to wiggle!" << std::endl;
     int cycle = 0;
-    bool stop = false;
-    int persistCycles = 500;
-    unsigned int totalStructureCounter = 0;
-    double bestDistance = wiggleMeCoordinates.front()->Distance(wiggleTargetCoordinates.front()); //ToDo average all of them instead of just front();
-    while ( (cycle < persistCycles) && (stop == false) )
+    double bestDistance = this->calculateDistance();
+    while ( (cycle < persistCycles) )
     {
         ++cycle;
         std::stringstream ss;
         ss << "Cycle " << cycle << "/" << persistCycles << "\n";
         gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
-        //std::random_shuffle(wiggleLinkages.begin(), wiggleLinkages.end());
-        for(auto & linkage : wiggleLinkages)
+        this->randomizeLinkageOrder();
+        for(auto & linkage : this->getWiggleLinkages())
         {
             linkage.SetRandomShapeUsingMetadata(true);
-            double newDistance = wiggleMeCoordinates.front()->Distance( wiggleTargetCoordinates.front() );
-            std::stringstream cycleCount;
-            cycleCount << std::setfill('0') << std::setw(6) << ++totalStructureCounter;
-//            if (bestDistance < newDistance)
-//            {
-//                linkage.SetShapeToPrevious();
-//            }
-//            else
-//            {
-//                bestDistance = newDistance;
-//                cycle = 0; // reset when it improves
-//                carbohydrate->Generate3DStructureFiles("./", "best" + cycleCount.str());
-//            }
-            carbohydrate->Generate3DStructureFiles("./", "all" + cycleCount.str());
+            double newDistance = this->calculateDistance();
+//            std::stringstream fileName;
+//            fileName << std::setfill('0') << std::setw(6) << ++totalStructureCounter;
+            if ( newDistance < bestDistance || (useMonteCarlo && monte_carlo::accept_via_metropolis_criterion(newDistance - bestDistance)) )
+            {
+                bestDistance = newDistance;
+                cycle = 0; // reset when it improves
+                std::cout << "Improved distance: " << bestDistance << "\n";
+                std::stringstream fileName;
+                fileName << std::setfill('0') << std::setw(6) << ++structureCount << "_" << bestDistance;
+                this->getCarbohydrate().Generate3DStructureFiles("./", "best" + fileName.str());
+            }
+            else
+            {
+                linkage.SetShapeToPrevious();
+            }
+            //carbohydrate->Generate3DStructureFiles("./", "all" + fileName.str());
+        }
+        if (structureCount > 10000)
+        {
+            return structureCount;
         }
     }
-//    }
-
     std::cout << "ALL DONE HON\n";
+    return structureCount;
 }
 
+//////////////////////////////////////////////////////////
+//                  PRIVATE FUNCTIONS                   //
+//////////////////////////////////////////////////////////
+void WiggleToSite::superimpose(std::vector<Coordinate*>& carbohydrateCoordinates, const Residue* superimpositionTarget, Residue* superimposeMe)
+{
+    // Limiting the selection to just these atoms as sometimes hydrogens or an oxygen is missing from xtal. That's ok.
+    std::vector<Coordinate*> superimposeMeCoordinates = {superimposeMe->FindAtom("C1")->getCoordinate(), superimposeMe->FindAtom("C3")->getCoordinate(), superimposeMe->FindAtom("C5")->getCoordinate()};
+    std::vector<Coordinate*> superTargetCoordinates = {superimpositionTarget->FindAtom("C1")->getCoordinate(), superimpositionTarget->FindAtom("C3")->getCoordinate(), superimpositionTarget->FindAtom("C5")->getCoordinate()};
+    cds::Superimpose(superimposeMeCoordinates, superTargetCoordinates, carbohydrateCoordinates); // "alsoMoving" are the carbohydrate Coordinates
+    return;
+}
 
+std::vector<cds::ResidueLinkage>& WiggleToSite::determineWiggleLinkages(Residue* startResidue, Residue* endResidue)
+{
+       std::vector<Residue*> residuesInPath;
+       bool targetFound = false;
+       std::vector<Residue*> visitedResidues;
+       codeUtils::findPathBetweenElementsInGraph(startResidue, endResidue, visitedResidues, residuesInPath, targetFound);
+       Residue* previousResidue = nullptr; // wanna skip the first iteration
+       for(auto & residue : residuesInPath)
+       {
+           if (previousResidue != nullptr)
+           {
+               wiggleLinkages_.emplace_back(cds::ResidueLinkage(previousResidue, residue));
+           }
+           previousResidue = residue;
+       }
+       std::cout << "Linkages I behold:\n" << std::endl;
+       for(auto & linkage : this->getWiggleLinkages())
+       {
+           std::cout << linkage.GetName() << ": " << linkage.GetNumberOfShapes() << std::endl;
+       }
+       return this->getWiggleLinkages();
+}
 
-
-
-
+double WiggleToSite::calculateDistance()
+{
+    return wiggleTargetCoordinates_.at(0)->Distance(wiggleMeCoordinates_.at(0));
+//    double totalDistance = 0.0;
+//    totalDistance += wiggleTargetCoordinates_.at(0)->Distance(wiggleMeCoordinates_.at(0));
+//    totalDistance += wiggleTargetCoordinates_.at(1)->Distance(wiggleMeCoordinates_.at(1));
+//    totalDistance += wiggleTargetCoordinates_.at(2)->Distance(wiggleMeCoordinates_.at(2));
+//    return totalDistance;
+//    //return cds::calculateGeometricCenter(wiggleTargetCoordinates_).Distance(&cds::calculateGeometricCenter(wiggleMeCoordinates_));
+}
 

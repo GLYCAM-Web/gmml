@@ -16,7 +16,8 @@ int main(int argc, char* argv[])
     gmmlPrograms::WiggleToSiteInputs inputStruct(inputFile);
     std::cout << "Reading input file complete\n" << std::flush;
     std::cout << inputStruct.Print();
-    gmmlPrograms::wiggleToSite(inputStruct);
+    gmmlPrograms::WiggleToSite wiggler(inputStruct);
+
 //    GlycoproteinBuilder glycoproteinBuilder(inputStruct);
 //    if(glycoproteinBuilder.IsStatusOk())
 //    {    // Poor pattern, need to throw up to and catch in gems.
