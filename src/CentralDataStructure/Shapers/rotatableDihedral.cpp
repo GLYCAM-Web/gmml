@@ -129,7 +129,7 @@ void RotatableDihedral::DetermineAtomsThatMove()
         atoms_that_move.push_back(atom2_);
         cdsSelections::FindConnectedAtoms(atoms_that_move, atom3_);
     }
-    std::cout << "Have determined that the following atoms will move:\n";
+    std::cout << "Have determined that the following " << this->GetName() << " angle atoms will move:\n";
     for (auto & atom : atoms_that_move)
     {
         std::cout << atom->getName() << ", ";
@@ -161,6 +161,7 @@ void RotatableDihedral::SetDihedralAngle(const double dihedral_angle)
     {
         this->SetWasEverRotated(true);
         this->DetermineAtomsThatMove();
+        //std::cout << "Rotatabledihedral: " << this->getIndex() << " was never rotated\n";
     }
     Coordinate* a1 = atom1_->getCoordinate();
     Coordinate* a2 = atom2_->getCoordinate();
@@ -487,7 +488,6 @@ std::unique_ptr<cds::Atom> RotatableDihedral::CreateHydrogenAtomForPsiAngle()
 
 void RotatableDihedral::Initialize(std::vector<cds::Atom*> atoms, bool reverseAtomsThatMove)
 {
-    this->SetWasEverRotated(false);
     this->SetAtoms(atoms);
     this->SetIsAtomsThatMoveReversed(reverseAtomsThatMove);
     currentMetadata_ = nullptr;

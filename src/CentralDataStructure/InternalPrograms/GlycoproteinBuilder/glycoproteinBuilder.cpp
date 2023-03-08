@@ -12,9 +12,6 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbResidue.hpp"
 #include "includes/CentralDataStructure/cdsFunctions.hpp" // bondAtomsByDistance
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp" // selectResiduesByType
-
-//#include "includes/ParameterSet/OffFileSpace/offfile.hpp"
-
 // ToDo Check for negative overlap in case the funk gets funky.
 // ToDo The cout for accepting overlap changes doesn't match the values printed. Why? Is it making them high, not printing, accepting lower, then rejecting, etc?
 using cds::Assembly;
