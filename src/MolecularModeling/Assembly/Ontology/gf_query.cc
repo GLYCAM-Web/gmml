@@ -7,7 +7,8 @@
 //For an example query with some explaination, see the bottom of this file.  For sparql query information, see https://www.w3.org/TR/rdf-sparql-query/ (It is not the greatest documentation but it helps)
 
 std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
-{   //This function runs a basic query, looking only for ?pdb (PDB_ID), ?oligo (Oligosaccharides are assigned numbers when they are found, ie oligo_1), and ?oligo_sequence (Condensed sequence).
+{   
+  //This function runs a basic query, looking only for ?pdb (PDB_ID), ?oligo (Oligosaccharides are assigned numbers when they are found, ie oligo_1), and ?oligo_sequence (Condensed sequence).
     //These three variables together are unique for each result.  This function also takes in all of the possible
     //filter variables to return filtered results when updating via ajax
     //This function will also call a function to create a graph from the search string for searching across branches.
@@ -422,9 +423,9 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
     {
       query << " ?R" << i + 1;
     }
+    query <<  "(group_concat(distinct ?rGroup;separator=\"\\n\") as ?rGroups)\n";
   }
   query << "\n"
-           "(group_concat(distinct ?rGroup;separator=\"\\n\") as ?rGroups)\n"
            "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments)\n"
            "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings)\n"
            "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n\n";
