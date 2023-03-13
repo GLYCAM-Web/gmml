@@ -200,6 +200,9 @@ Building DArafb1-2DArafa1-3DArafa1-5DArafa1-OME
 *********************
 Building DKDNpa2-8DKDOpa2-9DKDNpb2-7DKDOpb2-OME
 *********************
+Error thrown by the carbohydrateBuilder in gmml during construction was: No Metadata entries found for connection between C2_3993_9Kn_A_3_?_?_? and O7_3987_7Ko_A_2_?_?_?
+Note that order should be reducing atom - anomeric atom
+
 
 *********************
 Building DKDOpa2-OME
@@ -262,7 +265,7 @@ Building DNeupNAcb2-OME
 00041.pdb not created.
 00042.pdb not created.
 00043.pdb succesfully created.
-00044.pdb succesfully created.
+00044.pdb not created.
 00045.pdb succesfully created.
 00046.pdb not created.
 00047.pdb succesfully created.
