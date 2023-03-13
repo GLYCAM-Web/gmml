@@ -21,18 +21,13 @@ if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 7.0)
     message(FATAL_ERROR "Check gcc version is at least 7.0")
 endif()
 
-#Basically we always hit here UNLESS we pass the DEBUG_NO_WRAP=True. This allows us to produce
-#a makefile and other assoicaited files that have zero reference to swig, this helps for
-#debugging purposes
-if (NOT  ${DEBUG_NO_WRAP})
-    #Get swig package
-    find_package(SWIG 4.0 COMPONENTS python REQUIRED)
-    #Get python lib package
-    find_package(Python3 3.9 COMPONENTS Interpreter Development EXACT REQUIRED)
-endif()
+#Get swig package
+find_package(SWIG 4.0 COMPONENTS python REQUIRED)
+#Get python lib package
+find_package(Python3 3.9 COMPONENTS Interpreter Development EXACT REQUIRED)
 
 #Show user what compiler they using
-message("################## TOOLS CMAKE IS USING ###################")
+message("################## TOOLS CMAKE IS USING ###################\n")
 message(STATUS "CMake Version:\t${CMAKE_VERSION}")
 message("")
 #https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER_ID.html
@@ -43,27 +38,25 @@ message("")
 message(STATUS "C Compiler Used:\t${CMAKE_C_COMPILER_ID}")
 message(STATUS "C Compiler Version:\t${CMAKE_C_COMPILER_VERSION}")
 message(STATUS "C Compiler Path:\t${CMAKE_C_COMPILER}")
-#Since we dont check for these packages if are are doing the total
-#wrap skip thing, we also want to skip over places that try to reference
-#packages we are not sure we have
-if (NOT ${DEBUG_NO_WRAP})
-    message("")
-    message(STATUS "Swig Executable:\t${SWIG_EXECUTABLE}")
-    message(STATUS "Swig Version:\t${SWIG_VERSION}")
-    message(STATUS "Swig Library Dir:\t${SWIG_DIR}")
-    message("")
-    message(STATUS "Python Interpreter:\t${Python3_EXECUTABLE}")
-    message(STATUS "Python Version:\t${Python3_VERSION}")
-    message(STATUS "Python Include Dir:\t${Python3_INCLUDE_DIRS}")
-    message(STATUS "Python Library Dir:\t${Python3_LIBRARY_DIRS}")
-    #actually let us use swig tool
-    include(${SWIG_USE_FILE})
-endif()
+message("")
+message(STATUS "Swig Executable:\t${SWIG_EXECUTABLE}")
+message(STATUS "Swig Version:\t${SWIG_VERSION}")
+message(STATUS "Swig Library Dir:\t${SWIG_DIR}")
+message("")
+message(STATUS "Python Interpreter:\t${Python3_EXECUTABLE}")
+message(STATUS "Python Version:\t${Python3_VERSION}")
+message(STATUS "Python Include Dir:\t${Python3_INCLUDE_DIRS}")
+message(STATUS "Python Library Dir:\t${Python3_LIBRARY_DIRS}")
 message("###########################################################\n")
+#actually let us use swig
+include(${SWIG_USE_FILE})
+
 ################## END GETTING TOOLING TOGETHER ###################
 
 
+
 ################## BEGIN SETTING BASE COMPILE FLAGS ###################
+
 #export compile commands for sourcetrail, etc.
 #it is just a json of how commands interact, most tools use this
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
@@ -88,6 +81,7 @@ set(CMAKE_CXX_FLAGS -pthread)
 set(CMAKE_CXX_FLAGS_DEBUG "-O0 -g")
 set(CMAKE_CXX_FLAGS_RELEASE "-O2 -DNDEBUG")
 set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O0 -DNDEBUG")
+
 ################## END SETTING BASE COMPILE FLAGS ###################
 
 #since we want to output .so we need to add lib
@@ -98,6 +92,7 @@ set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "-O0 -DNDEBUG")
 # $find ./src/ -name \*.cc -o -name \*.cpp
 
 ################## BEGIN READING THE FILE LISTS ###################
+
 #Now if we want to add any fresh files to our system run teh included
 #fileListUpdate.sh script
 file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/cFileList.txt CFILES)
@@ -106,6 +101,7 @@ STRING(REGEX REPLACE "\\./" "${CMAKE_SOURCE_DIR}/" CFILES ${CFILES})
 STRING(REGEX REPLACE ";" "\\\\;" CFILES "${CFILES}")
 STRING(REGEX REPLACE "\n" ";" CFILES "${CFILES}")
 STRING(REGEX REPLACE "[\n;]$" "" CFILES "${CFILES}")
+
 
 #same as the -I flag for gcc.
 file(READ ${CMAKE_SOURCE_DIR}/cmakeFileLists/hDirectoryList.txt HDIRECTORIES)
@@ -124,7 +120,9 @@ STRING(REGEX REPLACE "\\./" "${CMAKE_SOURCE_DIR}/" EXHDIRECTORIES "${EXHDIRECTOR
 STRING(REGEX REPLACE ";" "\\\\;" EXHDIRECTORIES "${EXHDIRECTORIES}")
 STRING(REGEX REPLACE "\n" ";" EXHDIRECTORIES "${EXHDIRECTORIES}")
 STRING(REGEX REPLACE "[\n;]$" "" EXHDIRECTORIES "${EXHDIRECTORIES}")
+
 ################## END READING THE FILE LISTS ###################
+
 
 
 ################## BEGIN SETTING UP GMML TARGET ###################
@@ -152,30 +150,26 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 target_compile_options(${PROJECT_NAME} PUBLIC "-fPIC" -Wall -W)
 ################## END SETTING UP GMML TARGET ###################
 
-#we only skip here if we are trying to gen a makefile that has 0 wrap
-#acapabilities. This is needed to help linting, etc. run because we dont generate
-#a compile commands that includes the wrapping commands. Also if we dont even
-#have the swig stuff included in our cmake list file none of these commands
-#will work.
-if (NOT ${DEBUG_NO_WRAP})
-    ################## BEGIN SETTING UP GMML_WRAPPED TARGET ###################
-    #have cpp property set on for file gmml.i
-    #This property is associated with the gmml.i file itself
-    set_property(SOURCE gmml.i PROPERTY CPLUSPLUS ON)
-    #add a swig library with name ${PROJECT_NAME}_wrapped, wrapping the code
-    #in python, using our gmml.i as our source file for swig
-    swig_add_library(${PROJECT_NAME}_wrapped LANGUAGE python SOURCES gmml.i)
-    #makes sure the actual module produced by swig for wrapping is good, cmake 3.14
-    #forward renames the module to whatever the target name is i.e. gmml_wrapped
-    set_target_properties(${PROJECT_NAME}_wrapped PROPERTIES OUTPUT_NAME gmml)
-    #add the python headers so we can actually use them and wrap gmml in python
-    target_include_directories(${PROJECT_NAME}_wrapped PUBLIC ${Python3_INCLUDE_DIRS})
 
-    #Now we link the swig library to our gmml libary and our python library
-    #so it can actually be useful
-    swig_link_libraries(${PROJECT_NAME}_wrapped ${PROJECT_NAME} ${Python3_LIBRARIES})
-    ################## END SETTING UP GMML_WRAPPED TARGET ###################
-endif()
+
+################## BEGIN SETTING UP GMML_WRAPPED TARGET ###################
+#have cpp property set on for file gmml.i
+#This property is associated with the gmml.i file itself
+set_property(SOURCE gmml.i PROPERTY CPLUSPLUS ON)
+#add a swig library with name ${PROJECT_NAME}_wrapped, wrapping the code
+#in python, using our gmml.i as our source file for swig
+swig_add_library(${PROJECT_NAME}_wrapped LANGUAGE python SOURCES gmml.i)
+#makes sure the actual module produced by swig for wrapping is good, cmake 3.14
+#forward renames the module to whatever the target name is i.e. gmml_wrapped
+set_target_properties(${PROJECT_NAME}_wrapped PROPERTIES OUTPUT_NAME gmml)
+#add the python headers so we can actually use them and wrap gmml in python
+target_include_directories(${PROJECT_NAME}_wrapped PUBLIC ${Python3_INCLUDE_DIRS})
+
+#Now we link the swig library to our gmml libary and our python library
+#so it can actually be useful
+swig_link_libraries(${PROJECT_NAME}_wrapped ${PROJECT_NAME} ${Python3_LIBRARIES})
+################## END SETTING UP GMML_WRAPPED TARGET ###################
+
 
 #links a library out of our group of objects. Recall, done in this manner
 #to easily allow for the preservation of *.o files which is utilized
@@ -183,6 +177,7 @@ endif()
 #add_library(${PROJECT_NAME} SHARED $<TARGET_OBJECTS:${PROJECT_OBJ}>)
 
 ################## BEING COPYING BUILT FILES TO NEEDED DIRS ###################
+
 #NOTE THAT THIS WILL NOT RUN IF WE DO NOT REHIT OUR TARGET, i.e. ALL BUILD IS EXACT SAME
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_SOURCE_DIR}/lib/)
@@ -191,20 +186,20 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 	COMMAND ${CMAKE_COMMAND} -E copy
 	$<TARGET_FILE:${PROJECT_NAME}> ${CMAKE_SOURCE_DIR}/lib/)
+
 ################## END COPYING BUILT FILES TO NEEDED DIRS ###################
 
 
+
 ################## BEGIN ALL BUILT FILES INCLUDED IN `make clean` ###################
-#to properly remove swig data. As with other swig stuff we skip this when we 
-#dont wanna wrap.
-if (NOT ${DEBUG_NO_WRAP})
-    set_property(TARGET ${PROJECT_NAME}_wrapped PROPERTY 
-        ADDITIONAL_MAKE_CLEAN_FILES)
-endif()
+#to properly remove swig data
+set_property(TARGET ${PROJECT_NAME}_wrapped PROPERTY 
+    ADDITIONAL_MAKE_CLEAN_FILES)
 
 #To allow make clean to remove the new lib dir
 set_property(DIRECTORY PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
 	"../lib")
+	
 ################## END ALL BUILT FILES INCLUDED IN `make clean` ###################
 
 #TO REMOVE, but kinda good reference
