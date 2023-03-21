@@ -25,7 +25,7 @@ std::string SequenceManipulator::ReorderSequence()
 	return this->Print();
 }
 
-std::vector<ParsedResidue*> SequenceManipulator::GetParsedResiduesOrderedByConnectivity()
+std::vector<ParsedResidue*> SequenceManipulator::GetParsedResiduesOrderedByConnectivity() const
 {
     std::vector<ParsedResidue*> rawResidues;
     // Go via Graph so order decided by connectivity, depth first traversal:

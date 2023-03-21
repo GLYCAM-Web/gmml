@@ -28,7 +28,7 @@ namespace cdsCondensedSequence
         void LabelSequence();
         void SetIndexByConnectivity();
         std::string Print(const bool withLabels = false);
-        std::vector<ParsedResidue*> GetParsedResiduesOrderedByConnectivity();
+        std::vector<ParsedResidue*> GetParsedResiduesOrderedByConnectivity() const;
         std::string PrintGraphViz(GraphVizDotConfig &configs);
     private:
         //////////////////////////////////////////////////////////
