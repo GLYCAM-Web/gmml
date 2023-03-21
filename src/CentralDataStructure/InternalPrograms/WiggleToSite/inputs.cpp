@@ -32,15 +32,23 @@ WiggleToSiteInputs::WiggleToSiteInputs(std::string inputFileName)
         }
         if(codeUtils::startsWith(strInput, "SuperimpositionTargetResidue:"))
         {
-            superimpositionTargetResidue_ = std::stoi(codeUtils::split(strInput, ':').at(1));
+            std::string inputPortion = codeUtils::split(strInput, ':').at(1);
+            superimpositionTargetResidue_ = pdb::ResidueId(codeUtils::split(inputPortion, '_'));
+            std::cout << "superimpositionTargetResidue_ in input file is: " << superimpositionTargetResidue_ << std::endl;
+        }
+        if(codeUtils::startsWith(strInput, "WiggleTargetResidue:"))
+        {
+            std::string inputPortion = codeUtils::split(strInput, ':').at(1);
+            wigglingTargetResidue_ = pdb::ResidueId(codeUtils::split(inputPortion, '_'));
+            std::cout << "wigglingTargetResidue_ in input file is: " << wigglingTargetResidue_ << std::endl;
+        }
+        if(codeUtils::startsWith(strInput, "TargetModelNumber:"))
+        {
+            substrateModelNumber_ = std::stoi(codeUtils::split(strInput, ':').at(1));
         }
         if(codeUtils::startsWith(strInput, "CarbohydrateSuperimpositionResidue:"))
         {
             carbohydrateSuperimpositionResidue_ = std::stoi(codeUtils::split(strInput, ':').at(1));
-        }
-        if(codeUtils::startsWith(strInput, "WiggleTargetResidue:"))
-        {
-            wigglingTargetResidue_ = std::stoi(codeUtils::split(strInput, ':').at(1));
         }
         if(codeUtils::startsWith(strInput, "CarbohydrateWigglingResidue:"))
         {

@@ -1,6 +1,6 @@
 #ifndef GMML_INCLUDES_CENTRALDATASTRUCTURE_INTERNALPROGRAMS_WIGGLETOSITE_INPUTS_HPP
 #define GMML_INCLUDES_CENTRALDATASTRUCTURE_INTERNALPROGRAMS_WIGGLETOSITE_INPUTS_HPP
-
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp"
 #include <string>
 
 namespace gmmlPrograms
@@ -14,8 +14,9 @@ struct WiggleToSiteInputs
 	int carbohydrateSuperimpositionResidue_ = 0;
 	int carbohydrateWigglingResidue_ = 0;
 	std::string substrateFile_ = "";
-	int superimpositionTargetResidue_ = 0;
-	int wigglingTargetResidue_ = 0;
+	pdb::ResidueId superimpositionTargetResidue_;
+	pdb::ResidueId wigglingTargetResidue_;
+	int substrateModelNumber_ = 1;
 	int persistCycles_ = 5;
 	bool isDeterministic_ = false;
 	std::string Print();
