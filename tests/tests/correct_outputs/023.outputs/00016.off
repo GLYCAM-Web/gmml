@@ -1,6 +1,6 @@
 !!index array str
- "INVALID NODE"
-!entry.INVALID NODE.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
+ "condensedSequence"
+!entry.condensedSequence.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
  "H1" "H1" 0 1 131072 1 1 0.00
  "CH3" "Cg" 0 1 131072 2 6 0.26
  "H2" "H1" 0 1 131072 3 1 0.00
@@ -48,7 +48,7 @@
  "H2" "H1" 0 3 131072 19 1 0.00
  "O2" "Oh" 0 3 131072 20 8 -0.80
  "H2O" "Ho" 0 3 131072 21 1 0.45
-!entry.INVALID NODE.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
+!entry.condensedSequence.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
  "H1" "H1" 0 -1 0.0
  "CH3" "Cg" 0 -1 0.0
  "H2" "H1" 0 -1 0.0
@@ -96,18 +96,18 @@
  "H2" "H1" 0 -1 0.0
  "O2" "Oh" 0 -1 0.0
  "H2O" "Ho" 0 -1 0.0
-!entry.INVALID NODE.unit.boundbox array dbl
+!entry.condensedSequence.unit.boundbox array dbl
  -1.000000
  0.0
  0.0
  0.0
  0.0
-!entry.INVALID NODE.unit.childsequence single int
+!entry.condensedSequence.unit.childsequence single int
  4
-!entry.INVALID NODE.unit.connect array int
+!entry.condensedSequence.unit.connect array int
  1
  47
-!entry.INVALID NODE.unit.connectivity table  int atom1x  int atom2x  int flags
+!entry.condensedSequence.unit.connectivity table  int atom1x  int atom2x  int flags
  1 2 1
  2 3 1
  2 4 1
@@ -156,7 +156,7 @@
  44 46 1
  44 27 1
  46 47 1
-!entry.INVALID NODE.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
+!entry.condensedSequence.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
  "U" 0 "R" 1
  "R" 1 "A" 1
  "R" 1 "A" 2
@@ -207,71 +207,71 @@
  "R" 3 "A" 45
  "R" 3 "A" 46
  "R" 3 "A" 47
-!entry.INVALID NODE.unit.name single str
- "INVALID NODE"
-!entry.INVALID NODE.unit.positions table  dbl x  dbl y  dbl z
+!entry.condensedSequence.unit.name single str
+ "condensedSequence"
+!entry.condensedSequence.unit.positions table  dbl x  dbl y  dbl z
  -3.534201 6.785731 -1.620619
  -3.779597 5.773534 -1.924697
  -4.842697 5.662961 -2.111293
  -3.506273 5.053355 -1.160589
  -3.063320 5.513924 -3.098048
- -2.531349 6.765809 -3.628508
- -1.527486 7.476769 -2.644933
- -1.873174 8.998189 -2.415344
- -1.020919 9.612158 -2.713953
- -2.164863 9.208300 -0.929204
- -2.962398 8.542405 -0.596334
- -2.471572 10.238027 -0.745645
- -0.971909 8.933516 -0.184326
- -0.270571 9.521392 -0.474373
- -3.161278 9.296663 -3.354805
- -3.937915 9.852119 -2.824930
- -2.715084 10.074704 -4.473696
- -2.371305 10.915251 -4.162411
- -3.689486 7.877787 -3.942312
- -3.925707 7.931491 -5.006077
- -4.896606 7.595906 -3.211473
- -5.240155 6.740749 -3.480324
- -1.769413 6.372875 -4.904214
- -2.438679 5.891953 -5.619112
- -1.351882 7.262800 -5.377483
- -0.692929 5.476250 -4.584508
- 0.392685 5.660573 -5.543189
- 0.613483 6.679821 -5.226198
- -0.054199 5.694616 -6.945302
- -0.242515 4.377353 -7.626756
- -1.086503 3.876578 -7.150111
- -0.643719 4.651524 -9.078592
- 0.122857 5.211897 -9.615829
- -1.565881 5.232355 -9.128919
- -0.816666 3.723330 -9.623243
- 0.996531 3.456749 -7.447401
- 0.745069 2.457115 -7.804865
- 2.110809 3.949600 -8.237203
- 2.869976 3.384974 -8.042218
- 1.425204 3.367329 -5.961586
- 0.618750 2.898799 -5.395554
- 2.601196 2.502537 -5.849900
- 2.664270 2.181236 -4.942149
- 1.685331 4.788373 -5.399923
- 2.472358 5.263885 -5.987084
- 2.162988 4.731338 -4.018271
- 3.104333 4.538207 -4.027786
-!entry.INVALID NODE.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
+ -2.457836 6.661607 -3.767236
+ -1.388234 7.401494 -2.878899
+ -1.624530 8.959194 -2.810588
+ -0.738493 9.476520 -3.184455
+ -1.871319 9.346796 -1.352267
+ -2.705634 8.777796 -0.939425
+ -2.103240 10.409183 -1.277115
+ -0.685218 9.070267 -0.597162
+ 0.048674 9.573202 -0.957799
+ -2.907825 9.245094 -3.760482
+ -3.633926 9.907021 -3.283939
+ -2.432066 9.865959 -4.962371
+ -2.025507 10.708789 -4.748018
+ -3.543384 7.812084 -4.184654
+ -3.796675 7.768246 -5.244938
+ -4.752035 7.695165 -3.412505
+ -5.158510 6.842361 -3.583101
+ -1.750259 6.082218 -5.002554
+ -2.465012 5.575746 -5.652857
+ -1.282499 6.885034 -5.574365
+ -0.731330 5.151679 -4.601491
+ 0.428472 5.026681 -5.479463
+ 0.774489 6.046043 -5.308371
+ 0.081660 4.884551 -6.902946
+ -0.252382 3.508702 -7.383030
+ -1.188900 3.211679 -6.908697
+ -0.515996 3.586735 -8.889144
+ 0.356627 3.942129 -9.439148
+ -1.338764 4.268412 -9.109713
+ -0.787003 2.611817 -9.294346
+ 0.825598 2.474560 -6.954749
+ 0.454741 1.471659 -7.171394
+ 2.047802 2.675419 -7.712495
+ 2.702772 2.055494 -7.366281
+ 1.141036 2.579037 -5.441810
+ 0.240563 2.323489 -4.881342
+ 2.169197 1.596472 -5.094324
+ 2.126829 1.426265 -4.145399
+ 1.568715 4.026643 -5.089634
+ 2.452371 4.288058 -5.673668
+ 1.943870 4.138790 -3.680007
+ 2.845784 3.823261 -3.577472
+!entry.condensedSequence.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
  6 0 0 0 0 0
  5 27 0 0 0 0
  26 0 0 0 0 0
-!entry.INVALID NODE.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
+!entry.condensedSequence.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
  "OME" 1 6 1 "?" 0
  "1CU" 2 22 6 "?" 0
  "0fA" 3 22 27 "?" 0
-!entry.INVALID NODE.unit.solventcap array dbl
+!entry.condensedSequence.unit.solventcap array dbl
  -1.000000
  0.0
  0.0
  0.0
  0.0
-!entry.INVALID NODE.unit.velocities table  dbl x  dbl y  dbl z
+!entry.condensedSequence.unit.velocities table  dbl x  dbl y  dbl z
  0.0 0.0 0.0
  0.0 0.0 0.0
  0.0 0.0 0.0

@@ -1,6 +1,6 @@
 !!index array str
- "INVALID NODE"
-!entry.INVALID NODE.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
+ "condensedSequence"
+!entry.condensedSequence.unit.atoms table  str name  str type  int typex  int resx  int flags  int seq  int elmnt  dbl chg
  "O1" "Os" 0 1 131072 1 8 -0.39
  "C1" "Cg" 0 1 131072 2 6 0.51
  "H1" "H2" 0 1 131072 3 1 0.00
@@ -46,7 +46,7 @@
  "H11" "H1" 0 2 131072 20 1 0.00
  "O1" "Oh" 0 2 131072 21 8 -0.62
  "H1O" "Ho" 0 2 131072 22 1 0.40
-!entry.INVALID NODE.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
+!entry.condensedSequence.unit.atomspertinfo table  str pname  str ptype  int ptypex  int pelmnt  dbl pchg
  "O1" "Os" 0 -1 0.0
  "C1" "Cg" 0 -1 0.0
  "H1" "H2" 0 -1 0.0
@@ -92,18 +92,18 @@
  "H11" "H1" 0 -1 0.0
  "O1" "Oh" 0 -1 0.0
  "H1O" "Ho" 0 -1 0.0
-!entry.INVALID NODE.unit.boundbox array dbl
+!entry.condensedSequence.unit.boundbox array dbl
  -1.000000
  0.0
  0.0
  0.0
  0.0
-!entry.INVALID NODE.unit.childsequence single int
+!entry.condensedSequence.unit.childsequence single int
  3
-!entry.INVALID NODE.unit.connect array int
+!entry.condensedSequence.unit.connect array int
  1
  45
-!entry.INVALID NODE.unit.connectivity table  int atom1x  int atom2x  int flags
+!entry.condensedSequence.unit.connectivity table  int atom1x  int atom2x  int flags
  1 2 1
  2 3 1
  2 4 1
@@ -150,7 +150,7 @@
  41 43 1
  41 44 1
  44 45 1
-!entry.INVALID NODE.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
+!entry.condensedSequence.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
  "U" 0 "R" 1
  "R" 1 "A" 1
  "R" 1 "A" 2
@@ -198,9 +198,9 @@
  "R" 2 "A" 43
  "R" 2 "A" 44
  "R" 2 "A" 45
-!entry.INVALID NODE.unit.name single str
- "INVALID NODE"
-!entry.INVALID NODE.unit.positions table  dbl x  dbl y  dbl z
+!entry.condensedSequence.unit.name single str
+ "condensedSequence"
+!entry.condensedSequence.unit.positions table  dbl x  dbl y  dbl z
  -0.367278 16.117646 -15.941000
  -0.289683 15.095186 -16.923320
  -0.454998 14.131238 -16.442097
@@ -224,41 +224,41 @@
  3.153818 15.837365 -18.731067
  2.195460 15.007815 -16.689605
  1.997347 15.564547 -15.924170
- -0.952010 15.572893 -14.719144
- -0.160991 14.333397 -14.154729
- -1.097091 13.103289 -13.842510
- -1.005119 12.836947 -12.787490
- -0.654222 11.926307 -14.712235
- -0.664027 12.203279 -15.767447
- -1.322512 11.077241 -14.568793
- 0.674274 11.548297 -14.330535
- 0.683011 11.301222 -13.402916
- -2.600943 13.604783 -14.185753
- -3.154848 12.872210 -14.776506
- -3.286123 13.813440 -12.943438
- -3.349802 12.981167 -12.469236
- -2.489779 15.050816 -14.916509
- -3.216389 15.767409 -14.530746
- -2.780754 14.793564 -16.302105
- -2.687563 15.606547 -16.804075
- -0.873188 16.712204 -13.690491
- -1.349147 17.614054 -14.078318
- -1.391101 16.423435 -12.774708
- 0.497923 16.999379 -13.370247
- 0.534325 17.711381 -12.727342
-!entry.INVALID NODE.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
+ -0.931513 15.745686 -14.646826
+ -0.098687 14.632670 -13.906407
+ -0.992746 13.434201 -13.405147
+ -0.890209 13.334105 -12.322589
+ -0.512323 12.154044 -14.089421
+ -0.533093 12.267299 -15.174328
+ -1.151701 11.315163 -13.814513
+ 0.828663 11.881944 -13.663736
+ 0.847159 11.778837 -12.709468
+ -2.513043 13.828389 -13.810359
+ -3.043192 12.996976 -14.279569
+ -3.202750 14.200535 -12.609456
+ -3.237869 13.448180 -12.014202
+ -2.451346 15.149714 -14.752521
+ -3.200804 15.892378 -14.474950
+ -2.735867 14.675912 -16.081160
+ -2.670655 15.405964 -16.701136
+ -0.889018 17.029792 -13.803242
+ -1.395413 17.846337 -14.320058
+ -1.395509 16.866480 -12.850836
+ 0.472283 17.406894 -13.539382
+ 0.485990 18.208973 -13.012048
+!entry.condensedSequence.unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x
  24 0 0 0 0 0
  1 0 0 0 0 0
-!entry.INVALID NODE.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
+!entry.condensedSequence.unit.residues table  str name  int seq  int childseq  int startatomx  str restype  int imagingx
  "1GA" 1 24 1 "?" 0
  "0CU" 2 23 24 "?" 0
-!entry.INVALID NODE.unit.solventcap array dbl
+!entry.condensedSequence.unit.solventcap array dbl
  -1.000000
  0.0
  0.0
  0.0
  0.0
-!entry.INVALID NODE.unit.velocities table  dbl x  dbl y  dbl z
+!entry.condensedSequence.unit.velocities table  dbl x  dbl y  dbl z
  0.0 0.0 0.0
  0.0 0.0 0.0
  0.0 0.0 0.0
