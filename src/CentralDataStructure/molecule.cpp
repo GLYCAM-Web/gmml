@@ -58,6 +58,12 @@ std::vector<Atom*> Molecule::getAtoms() const
     }
     return atoms;
 }
+
+std::vector<Coordinate*> Molecule::getCoordinates() const
+{
+    return cds::getCoordinatesFromAtoms(this->getAtoms());
+}
+
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////

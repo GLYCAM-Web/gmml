@@ -31,6 +31,7 @@ public:
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
     inline const int& getNumber() {return number_;}
+    std::vector<Coordinate*> getCoordinates() const;
     std::vector<Atom*> getAtoms() const;
     std::vector<Residue*> getResidues() const;
     inline std::string GetChainId() const {return chainId_;}
