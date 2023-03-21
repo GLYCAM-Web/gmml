@@ -1,15 +1,18 @@
-Substrate:tests/inputs/024.substrate.pdb
+Substrate:tests/inputs/024.substrateWithProtein.pdb
 
 Carbohydrate:DGalpb1-4DGlcpNAcb1-3DGalpb1-4DGlcpNAcb1-3DGalpb1-4DGlcpNAcb1-2DManpa1-6[DNeup5Aca2-6DGalpb1-4DGlcpNAcb1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
 
-SuperimpositionTargetResidue:9
+#Name_Number_insertionCode_chainID
+SuperimpositionTargetResidue:?_9_?_F
 
-CarbohydrateSuperimpositionResidue:14
+WiggleTargetResidue:?_1_?_F
 
-WiggleTargetResidue:1
+TargetModelNumber:1
+
+CarbohydrateSuperimpositionResidue:7
 
 CarbohydrateWigglingResidue:15
 
-persistCycles:250
+persistCycles:25
 
-isDeterministic:false
+isDeterministic:true
