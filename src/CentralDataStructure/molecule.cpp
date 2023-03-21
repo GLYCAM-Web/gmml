@@ -3,6 +3,7 @@
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
+#include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"
 
 using cds::Molecule;
 using cds::Residue;
@@ -62,6 +63,26 @@ std::vector<Atom*> Molecule::getAtoms() const
 std::vector<Coordinate*> Molecule::getCoordinates() const
 {
     return cds::getCoordinatesFromAtoms(this->getAtoms());
+}
+
+//////////////////////////////////////////////////////////
+//                    MUTATORS                          //
+//////////////////////////////////////////////////////////
+void Molecule::swapResiduePosition(Residue* queryResidue, int newPosition)
+{
+    int oldPosition = 0;
+    for(auto & residue : residues_)
+    {
+        if (residue.get() == queryResidue)
+        {
+            if (oldPosition != newPosition)
+            {
+                std::swap(residues_[oldPosition],residues_[newPosition]);
+            }
+            break;
+        }
+        oldPosition++;
+    }
 }
 
 //////////////////////////////////////////////////////////

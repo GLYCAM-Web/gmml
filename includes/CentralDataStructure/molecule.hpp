@@ -40,6 +40,7 @@ public:
     //////////////////////////////////////////////////////////
     inline void setNumber(const int i) {number_ = i;}
     inline void setChain(const std::string s) {chainId_ = s;}
+    void swapResiduePosition(Residue* queryResidue, int newPosition);
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //
     //////////////////////////////////////////////////////////
