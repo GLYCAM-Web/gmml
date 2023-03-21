@@ -22,7 +22,14 @@ std::string SequenceManipulator::ReorderSequence()
 	    ParsedResidue* brian = static_cast<ParsedResidue*>(residue);
 	    brian->sortOutEdgesBySourceTObjectComparator();
 	}
+	glygraph::Graph<cds::Residue> sequenceGraph(this->GetTerminal());
+	int position = 0;
+	for(auto &node : sequenceGraph.getNodes())
+	{
+	    this->swapResiduePosition(node->getDeriviedClass(), position++);
+	}
 	return this->Print();
+
 }
 
 std::vector<ParsedResidue*> SequenceManipulator::GetParsedResiduesOrderedByConnectivity() const
@@ -36,6 +43,7 @@ std::vector<ParsedResidue*> SequenceManipulator::GetParsedResiduesOrderedByConne
     }
     return rawResidues;
 }
+
 
 void SequenceManipulator::LabelSequence()
 {
