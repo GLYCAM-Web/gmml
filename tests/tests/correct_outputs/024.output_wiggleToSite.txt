@@ -4,25 +4,25 @@ Inputs:
 ?
 9
 ?
-?
-superimpositionTargetResidue_ in input file is: ?_9_?_?
+F
+superimpositionTargetResidue_ in input file is: ?_9_?_F
 Inputs:
 ?
 1
 ?
-?
-wigglingTargetResidue_ in input file is: ?_1_?_?
+F
+wigglingTargetResidue_ in input file is: ?_1_?_F
 Reading input file complete
-substrateFile_ : tests/inputs/024.substrate.pdb
+substrateFile_ : tests/inputs/024.substrateWithProtein.pdb
 carbohydrateFile_ : DGalpb1-4DGlcpNAcb1-3DGalpb1-4DGlcpNAcb1-3DGalpb1-4DGlcpNAcb1-2DManpa1-6[DNeup5Aca2-6DGalpb1-4DGlcpNAcb1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
-superimpositionTargetResidue_ : ?_9_?_?
+superimpositionTargetResidue_ : ?_9_?_F
 carbohydrateSuperimpositionResidue_ : 7
-wigglingTargetResidue_ : ?_1_?_?
+wigglingTargetResidue_ : ?_1_?_F
 carbohydrateWigglingResidue_ : 15
 persistCycles_ : 25
 isDeterministic_ : 1
 Parsing inputfile
-Glycam names are: ROH, 4YB, 4YB, VMB, 2MA, 4YB, 6LB, 0SA, 2MA, 4YB, 3LB, 4YB, 3LB, 4YB, 0LB, 
+Glycam names are: ROH, 4YB, 4YB, VMB, 2MA, 4YB, 3LB, 4YB, 3LB, 4YB, 0LB, 2MA, 4YB, 6LB, 0SA, 
 Found query residue: 0LB
 0LB will be read in 1 times.
 Found query residue: 0SA
@@ -39,7 +39,7 @@ Found query residue: ROH
 ROH will be read in 1 times.
 Found query residue: VMB
 VMB will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 4YB, PrepResidue dtor for 4YB, PrepResidue dtor for VMB, PrepResidue dtor for 2MA, PrepResidue dtor for 4YB, PrepResidue dtor for 6LB, PrepResidue dtor for 0SA, PrepResidue dtor for 2MA, PrepResidue dtor for 4YB, PrepResidue dtor for 3LB, PrepResidue dtor for 4YB, PrepResidue dtor for 3LB, PrepResidue dtor for 4YB, PrepResidue dtor for 0LB, 
+PrepResidue dtor for ROH, PrepResidue dtor for 4YB, PrepResidue dtor for 4YB, PrepResidue dtor for VMB, PrepResidue dtor for 2MA, PrepResidue dtor for 4YB, PrepResidue dtor for 3LB, PrepResidue dtor for 4YB, PrepResidue dtor for 3LB, PrepResidue dtor for 4YB, PrepResidue dtor for 0LB, PrepResidue dtor for 2MA, PrepResidue dtor for 4YB, PrepResidue dtor for 6LB, PrepResidue dtor for 0SA, 
 
 
 On to setting 3d structure!
@@ -384,98 +384,1067 @@ C5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N
 Final overlap resolution
 Overlaps resolved
 Number of residues is 15
-0:0
-0:0
+1:1
+currentId vs queryId: PRO_9_?_A vs ?_9_?_F
+currentId vs queryId: GLY_10_?_A vs ?_9_?_F
+currentId vs queryId: ALA_11_?_A vs ?_9_?_F
+currentId vs queryId: THR_12_?_A vs ?_9_?_F
+currentId vs queryId: LEU_13_?_A vs ?_9_?_F
+currentId vs queryId: CYS_14_?_A vs ?_9_?_F
+currentId vs queryId: LEU_15_?_A vs ?_9_?_F
+currentId vs queryId: GLY_16_?_A vs ?_9_?_F
+currentId vs queryId: HIS_17_?_A vs ?_9_?_F
+currentId vs queryId: HIS_18_?_A vs ?_9_?_F
+currentId vs queryId: ALA_19_?_A vs ?_9_?_F
+currentId vs queryId: VAL_20_?_A vs ?_9_?_F
+currentId vs queryId: PRO_21_?_A vs ?_9_?_F
+currentId vs queryId: ASN_22_?_A vs ?_9_?_F
+currentId vs queryId: GLY_23_?_A vs ?_9_?_F
+currentId vs queryId: THR_24_?_A vs ?_9_?_F
+currentId vs queryId: ILE_25_?_A vs ?_9_?_F
+currentId vs queryId: VAL_26_?_A vs ?_9_?_F
+currentId vs queryId: LYS_27_?_A vs ?_9_?_F
+currentId vs queryId: THR_28_?_A vs ?_9_?_F
+currentId vs queryId: ILE_29_?_A vs ?_9_?_F
+currentId vs queryId: THR_30_?_A vs ?_9_?_F
+currentId vs queryId: ASN_31_?_A vs ?_9_?_F
+currentId vs queryId: ASP_32_?_A vs ?_9_?_F
+currentId vs queryId: GLN_33_?_A vs ?_9_?_F
+currentId vs queryId: ILE_34_?_A vs ?_9_?_F
+currentId vs queryId: GLU_35_?_A vs ?_9_?_F
+currentId vs queryId: VAL_36_?_A vs ?_9_?_F
+currentId vs queryId: THR_37_?_A vs ?_9_?_F
+currentId vs queryId: ASN_38_?_A vs ?_9_?_F
+currentId vs queryId: ALA_39_?_A vs ?_9_?_F
+currentId vs queryId: THR_40_?_A vs ?_9_?_F
+currentId vs queryId: GLU_41_?_A vs ?_9_?_F
+currentId vs queryId: LEU_42_?_A vs ?_9_?_F
+currentId vs queryId: VAL_43_?_A vs ?_9_?_F
+currentId vs queryId: GLN_44_?_A vs ?_9_?_F
+currentId vs queryId: SER_45_?_A vs ?_9_?_F
+currentId vs queryId: SER_46_?_A vs ?_9_?_F
+currentId vs queryId: SER_47_?_A vs ?_9_?_F
+currentId vs queryId: THR_48_?_A vs ?_9_?_F
+currentId vs queryId: GLY_49_?_A vs ?_9_?_F
+currentId vs queryId: GLU_50_?_A vs ?_9_?_F
+currentId vs queryId: ILE_51_?_A vs ?_9_?_F
+currentId vs queryId: CYS_52_?_A vs ?_9_?_F
+currentId vs queryId: ASP_53_?_A vs ?_9_?_F
+currentId vs queryId: SER_54_?_A vs ?_9_?_F
+currentId vs queryId: PRO_55_?_A vs ?_9_?_F
+currentId vs queryId: HIS_56_?_A vs ?_9_?_F
+currentId vs queryId: GLN_57_?_A vs ?_9_?_F
+currentId vs queryId: ILE_58_?_A vs ?_9_?_F
+currentId vs queryId: LEU_59_?_A vs ?_9_?_F
+currentId vs queryId: ASP_60_?_A vs ?_9_?_F
+currentId vs queryId: GLY_61_?_A vs ?_9_?_F
+currentId vs queryId: GLU_62_?_A vs ?_9_?_F
+currentId vs queryId: ASN_63_?_A vs ?_9_?_F
+currentId vs queryId: CYS_64_?_A vs ?_9_?_F
+currentId vs queryId: THR_65_?_A vs ?_9_?_F
+currentId vs queryId: LEU_66_?_A vs ?_9_?_F
+currentId vs queryId: ILE_67_?_A vs ?_9_?_F
+currentId vs queryId: ASP_68_?_A vs ?_9_?_F
+currentId vs queryId: ALA_69_?_A vs ?_9_?_F
+currentId vs queryId: LEU_70_?_A vs ?_9_?_F
+currentId vs queryId: LEU_71_?_A vs ?_9_?_F
+currentId vs queryId: GLY_72_?_A vs ?_9_?_F
+currentId vs queryId: ASP_73_?_A vs ?_9_?_F
+currentId vs queryId: PRO_74_?_A vs ?_9_?_F
+currentId vs queryId: GLN_75_?_A vs ?_9_?_F
+currentId vs queryId: CYS_76_?_A vs ?_9_?_F
+currentId vs queryId: ASP_77_?_A vs ?_9_?_F
+currentId vs queryId: GLY_78_?_A vs ?_9_?_F
+currentId vs queryId: PHE_79_?_A vs ?_9_?_F
+currentId vs queryId: GLN_80_?_A vs ?_9_?_F
+currentId vs queryId: ASN_81_?_A vs ?_9_?_F
+currentId vs queryId: LYS_82_?_A vs ?_9_?_F
+currentId vs queryId: LYS_83_?_A vs ?_9_?_F
+currentId vs queryId: TRP_84_?_A vs ?_9_?_F
+currentId vs queryId: ASP_85_?_A vs ?_9_?_F
+currentId vs queryId: LEU_86_?_A vs ?_9_?_F
+currentId vs queryId: PHE_87_?_A vs ?_9_?_F
+currentId vs queryId: VAL_88_?_A vs ?_9_?_F
+currentId vs queryId: GLU_89_?_A vs ?_9_?_F
+currentId vs queryId: ARG_90_?_A vs ?_9_?_F
+currentId vs queryId: SER_91_?_A vs ?_9_?_F
+currentId vs queryId: LYS_92_?_A vs ?_9_?_F
+currentId vs queryId: ALA_93_?_A vs ?_9_?_F
+currentId vs queryId: TYR_94_?_A vs ?_9_?_F
+currentId vs queryId: SER_95_?_A vs ?_9_?_F
+currentId vs queryId: ASN_96_?_A vs ?_9_?_F
+currentId vs queryId: CYS_97_?_A vs ?_9_?_F
+currentId vs queryId: TYR_98_?_A vs ?_9_?_F
+currentId vs queryId: PRO_99_?_A vs ?_9_?_F
+currentId vs queryId: TYR_100_?_A vs ?_9_?_F
+currentId vs queryId: ASP_101_?_A vs ?_9_?_F
+currentId vs queryId: VAL_102_?_A vs ?_9_?_F
+currentId vs queryId: PRO_103_?_A vs ?_9_?_F
+currentId vs queryId: ASP_104_?_A vs ?_9_?_F
+currentId vs queryId: TYR_105_?_A vs ?_9_?_F
+currentId vs queryId: ALA_106_?_A vs ?_9_?_F
+currentId vs queryId: SER_107_?_A vs ?_9_?_F
+currentId vs queryId: LEU_108_?_A vs ?_9_?_F
+currentId vs queryId: ARG_109_?_A vs ?_9_?_F
+currentId vs queryId: SER_110_?_A vs ?_9_?_F
+currentId vs queryId: LEU_111_?_A vs ?_9_?_F
+currentId vs queryId: VAL_112_?_A vs ?_9_?_F
+currentId vs queryId: ALA_113_?_A vs ?_9_?_F
+currentId vs queryId: SER_114_?_A vs ?_9_?_F
+currentId vs queryId: SER_115_?_A vs ?_9_?_F
+currentId vs queryId: GLY_116_?_A vs ?_9_?_F
+currentId vs queryId: THR_117_?_A vs ?_9_?_F
+currentId vs queryId: LEU_118_?_A vs ?_9_?_F
+currentId vs queryId: GLU_119_?_A vs ?_9_?_F
+currentId vs queryId: PHE_120_?_A vs ?_9_?_F
+currentId vs queryId: ASN_121_?_A vs ?_9_?_F
+currentId vs queryId: ASN_122_?_A vs ?_9_?_F
+currentId vs queryId: GLU_123_?_A vs ?_9_?_F
+currentId vs queryId: SER_124_?_A vs ?_9_?_F
+currentId vs queryId: PHE_125_?_A vs ?_9_?_F
+currentId vs queryId: ASN_126_?_A vs ?_9_?_F
+currentId vs queryId: TRP_127_?_A vs ?_9_?_F
+currentId vs queryId: THR_128_?_A vs ?_9_?_F
+currentId vs queryId: GLY_129_?_A vs ?_9_?_F
+currentId vs queryId: VAL_130_?_A vs ?_9_?_F
+currentId vs queryId: THR_131_?_A vs ?_9_?_F
+currentId vs queryId: GLN_132_?_A vs ?_9_?_F
+currentId vs queryId: ASN_133_?_A vs ?_9_?_F
+currentId vs queryId: GLY_134_?_A vs ?_9_?_F
+currentId vs queryId: THR_135_?_A vs ?_9_?_F
+currentId vs queryId: SER_136_?_A vs ?_9_?_F
+currentId vs queryId: SER_137_?_A vs ?_9_?_F
+currentId vs queryId: ALA_138_?_A vs ?_9_?_F
+currentId vs queryId: CYS_139_?_A vs ?_9_?_F
+currentId vs queryId: ILE_140_?_A vs ?_9_?_F
+currentId vs queryId: ARG_141_?_A vs ?_9_?_F
+currentId vs queryId: ARG_142_?_A vs ?_9_?_F
+currentId vs queryId: SER_143_?_A vs ?_9_?_F
+currentId vs queryId: ASN_144_?_A vs ?_9_?_F
+currentId vs queryId: ASN_145_?_A vs ?_9_?_F
+currentId vs queryId: SER_146_?_A vs ?_9_?_F
+currentId vs queryId: PHE_147_?_A vs ?_9_?_F
+currentId vs queryId: PHE_148_?_A vs ?_9_?_F
+currentId vs queryId: SER_149_?_A vs ?_9_?_F
+currentId vs queryId: ARG_150_?_A vs ?_9_?_F
+currentId vs queryId: LEU_151_?_A vs ?_9_?_F
+currentId vs queryId: ASN_152_?_A vs ?_9_?_F
+currentId vs queryId: TRP_153_?_A vs ?_9_?_F
+currentId vs queryId: LEU_154_?_A vs ?_9_?_F
+currentId vs queryId: THR_155_?_A vs ?_9_?_F
+currentId vs queryId: HIS_156_?_A vs ?_9_?_F
+currentId vs queryId: LEU_157_?_A vs ?_9_?_F
+currentId vs queryId: LYS_158_?_A vs ?_9_?_F
+currentId vs queryId: PHE_159_?_A vs ?_9_?_F
+currentId vs queryId: LYS_160_?_A vs ?_9_?_F
+currentId vs queryId: TYR_161_?_A vs ?_9_?_F
+currentId vs queryId: PRO_162_?_A vs ?_9_?_F
+currentId vs queryId: ALA_163_?_A vs ?_9_?_F
+currentId vs queryId: LEU_164_?_A vs ?_9_?_F
+currentId vs queryId: ASN_165_?_A vs ?_9_?_F
+currentId vs queryId: VAL_166_?_A vs ?_9_?_F
+currentId vs queryId: THR_167_?_A vs ?_9_?_F
+currentId vs queryId: MET_168_?_A vs ?_9_?_F
+currentId vs queryId: PRO_169_?_A vs ?_9_?_F
+currentId vs queryId: ASN_170_?_A vs ?_9_?_F
+currentId vs queryId: ASN_171_?_A vs ?_9_?_F
+currentId vs queryId: GLU_172_?_A vs ?_9_?_F
+currentId vs queryId: LYS_173_?_A vs ?_9_?_F
+currentId vs queryId: PHE_174_?_A vs ?_9_?_F
+currentId vs queryId: ASP_175_?_A vs ?_9_?_F
+currentId vs queryId: LYS_176_?_A vs ?_9_?_F
+currentId vs queryId: LEU_177_?_A vs ?_9_?_F
+currentId vs queryId: TYR_178_?_A vs ?_9_?_F
+currentId vs queryId: ILE_179_?_A vs ?_9_?_F
+currentId vs queryId: TRP_180_?_A vs ?_9_?_F
+currentId vs queryId: GLY_181_?_A vs ?_9_?_F
+currentId vs queryId: VAL_182_?_A vs ?_9_?_F
+currentId vs queryId: HIS_183_?_A vs ?_9_?_F
+currentId vs queryId: HIS_184_?_A vs ?_9_?_F
+currentId vs queryId: PRO_185_?_A vs ?_9_?_F
+currentId vs queryId: GLY_186_?_A vs ?_9_?_F
+currentId vs queryId: THR_187_?_A vs ?_9_?_F
+currentId vs queryId: ASP_188_?_A vs ?_9_?_F
+currentId vs queryId: ASN_189_?_A vs ?_9_?_F
+currentId vs queryId: ASP_190_?_A vs ?_9_?_F
+currentId vs queryId: GLN_191_?_A vs ?_9_?_F
+currentId vs queryId: ILE_192_?_A vs ?_9_?_F
+currentId vs queryId: PHE_193_?_A vs ?_9_?_F
+currentId vs queryId: LEU_194_?_A vs ?_9_?_F
+currentId vs queryId: TYR_195_?_A vs ?_9_?_F
+currentId vs queryId: ALA_196_?_A vs ?_9_?_F
+currentId vs queryId: GLN_197_?_A vs ?_9_?_F
+currentId vs queryId: ALA_198_?_A vs ?_9_?_F
+currentId vs queryId: SER_199_?_A vs ?_9_?_F
+currentId vs queryId: GLY_200_?_A vs ?_9_?_F
+currentId vs queryId: ARG_201_?_A vs ?_9_?_F
+currentId vs queryId: ILE_202_?_A vs ?_9_?_F
+currentId vs queryId: THR_203_?_A vs ?_9_?_F
+currentId vs queryId: VAL_204_?_A vs ?_9_?_F
+currentId vs queryId: SER_205_?_A vs ?_9_?_F
+currentId vs queryId: THR_206_?_A vs ?_9_?_F
+currentId vs queryId: LYS_207_?_A vs ?_9_?_F
+currentId vs queryId: ARG_208_?_A vs ?_9_?_F
+currentId vs queryId: SER_209_?_A vs ?_9_?_F
+currentId vs queryId: GLN_210_?_A vs ?_9_?_F
+currentId vs queryId: GLN_211_?_A vs ?_9_?_F
+currentId vs queryId: THR_212_?_A vs ?_9_?_F
+currentId vs queryId: VAL_213_?_A vs ?_9_?_F
+currentId vs queryId: ILE_214_?_A vs ?_9_?_F
+currentId vs queryId: PRO_215_?_A vs ?_9_?_F
+currentId vs queryId: ASN_216_?_A vs ?_9_?_F
+currentId vs queryId: ILE_217_?_A vs ?_9_?_F
+currentId vs queryId: GLY_218_?_A vs ?_9_?_F
+currentId vs queryId: SER_219_?_A vs ?_9_?_F
+currentId vs queryId: ARG_220_?_A vs ?_9_?_F
+currentId vs queryId: PRO_221_?_A vs ?_9_?_F
+currentId vs queryId: ARG_222_?_A vs ?_9_?_F
+currentId vs queryId: VAL_223_?_A vs ?_9_?_F
+currentId vs queryId: ARG_224_?_A vs ?_9_?_F
+currentId vs queryId: ASN_225_?_A vs ?_9_?_F
+currentId vs queryId: ILE_226_?_A vs ?_9_?_F
+currentId vs queryId: PRO_227_?_A vs ?_9_?_F
+currentId vs queryId: SER_228_?_A vs ?_9_?_F
+currentId vs queryId: ARG_229_?_A vs ?_9_?_F
+currentId vs queryId: ILE_230_?_A vs ?_9_?_F
+currentId vs queryId: SER_231_?_A vs ?_9_?_F
+currentId vs queryId: ILE_232_?_A vs ?_9_?_F
+currentId vs queryId: TYR_233_?_A vs ?_9_?_F
+currentId vs queryId: TRP_234_?_A vs ?_9_?_F
+currentId vs queryId: THR_235_?_A vs ?_9_?_F
+currentId vs queryId: ILE_236_?_A vs ?_9_?_F
+currentId vs queryId: VAL_237_?_A vs ?_9_?_F
+currentId vs queryId: LYS_238_?_A vs ?_9_?_F
+currentId vs queryId: PRO_239_?_A vs ?_9_?_F
+currentId vs queryId: GLY_240_?_A vs ?_9_?_F
+currentId vs queryId: ASP_241_?_A vs ?_9_?_F
+currentId vs queryId: ILE_242_?_A vs ?_9_?_F
+currentId vs queryId: LEU_243_?_A vs ?_9_?_F
+currentId vs queryId: LEU_244_?_A vs ?_9_?_F
+currentId vs queryId: ILE_245_?_A vs ?_9_?_F
+currentId vs queryId: ASN_246_?_A vs ?_9_?_F
+currentId vs queryId: SER_247_?_A vs ?_9_?_F
+currentId vs queryId: THR_248_?_A vs ?_9_?_F
+currentId vs queryId: GLY_249_?_A vs ?_9_?_F
+currentId vs queryId: ASN_250_?_A vs ?_9_?_F
+currentId vs queryId: LEU_251_?_A vs ?_9_?_F
+currentId vs queryId: ILE_252_?_A vs ?_9_?_F
+currentId vs queryId: ALA_253_?_A vs ?_9_?_F
+currentId vs queryId: PRO_254_?_A vs ?_9_?_F
+currentId vs queryId: ARG_255_?_A vs ?_9_?_F
+currentId vs queryId: GLY_256_?_A vs ?_9_?_F
+currentId vs queryId: TYR_257_?_A vs ?_9_?_F
+currentId vs queryId: PHE_258_?_A vs ?_9_?_F
+currentId vs queryId: LYS_259_?_A vs ?_9_?_F
+currentId vs queryId: ILE_260_?_A vs ?_9_?_F
+currentId vs queryId: ARG_261_?_A vs ?_9_?_F
+currentId vs queryId: SER_262_?_A vs ?_9_?_F
+currentId vs queryId: GLY_263_?_A vs ?_9_?_F
+currentId vs queryId: LYS_264_?_A vs ?_9_?_F
+currentId vs queryId: SER_265_?_A vs ?_9_?_F
+currentId vs queryId: SER_266_?_A vs ?_9_?_F
+currentId vs queryId: ILE_267_?_A vs ?_9_?_F
+currentId vs queryId: MET_268_?_A vs ?_9_?_F
+currentId vs queryId: ARG_269_?_A vs ?_9_?_F
+currentId vs queryId: SER_270_?_A vs ?_9_?_F
+currentId vs queryId: ASP_271_?_A vs ?_9_?_F
+currentId vs queryId: ALA_272_?_A vs ?_9_?_F
+currentId vs queryId: PRO_273_?_A vs ?_9_?_F
+currentId vs queryId: ILE_274_?_A vs ?_9_?_F
+currentId vs queryId: GLY_275_?_A vs ?_9_?_F
+currentId vs queryId: LYS_276_?_A vs ?_9_?_F
+currentId vs queryId: CYS_277_?_A vs ?_9_?_F
+currentId vs queryId: ASN_278_?_A vs ?_9_?_F
+currentId vs queryId: SER_279_?_A vs ?_9_?_F
+currentId vs queryId: GLU_280_?_A vs ?_9_?_F
+currentId vs queryId: CYS_281_?_A vs ?_9_?_F
+currentId vs queryId: ILE_282_?_A vs ?_9_?_F
+currentId vs queryId: THR_283_?_A vs ?_9_?_F
+currentId vs queryId: PRO_284_?_A vs ?_9_?_F
+currentId vs queryId: ASN_285_?_A vs ?_9_?_F
+currentId vs queryId: GLY_286_?_A vs ?_9_?_F
+currentId vs queryId: SER_287_?_A vs ?_9_?_F
+currentId vs queryId: ILE_288_?_A vs ?_9_?_F
+currentId vs queryId: PRO_289_?_A vs ?_9_?_F
+currentId vs queryId: ASN_290_?_A vs ?_9_?_F
+currentId vs queryId: ASP_291_?_A vs ?_9_?_F
+currentId vs queryId: LYS_292_?_A vs ?_9_?_F
+currentId vs queryId: PRO_293_?_A vs ?_9_?_F
+currentId vs queryId: PHE_294_?_A vs ?_9_?_F
+currentId vs queryId: GLN_295_?_A vs ?_9_?_F
+currentId vs queryId: ASN_296_?_A vs ?_9_?_F
+currentId vs queryId: VAL_297_?_A vs ?_9_?_F
+currentId vs queryId: ASN_298_?_A vs ?_9_?_F
+currentId vs queryId: ARG_299_?_A vs ?_9_?_F
+currentId vs queryId: ILE_300_?_A vs ?_9_?_F
+currentId vs queryId: THR_301_?_A vs ?_9_?_F
+currentId vs queryId: TYR_302_?_A vs ?_9_?_F
+currentId vs queryId: GLY_303_?_A vs ?_9_?_F
+currentId vs queryId: ALA_304_?_A vs ?_9_?_F
+currentId vs queryId: CYS_305_?_A vs ?_9_?_F
+currentId vs queryId: PRO_306_?_A vs ?_9_?_F
+currentId vs queryId: ARG_307_?_A vs ?_9_?_F
+currentId vs queryId: TYR_308_?_A vs ?_9_?_F
+currentId vs queryId: VAL_309_?_A vs ?_9_?_F
+currentId vs queryId: LYS_310_?_A vs ?_9_?_F
+currentId vs queryId: GLN_311_?_A vs ?_9_?_F
+currentId vs queryId: ASN_312_?_A vs ?_9_?_F
+currentId vs queryId: THR_313_?_A vs ?_9_?_F
+currentId vs queryId: LEU_314_?_A vs ?_9_?_F
+currentId vs queryId: LYS_315_?_A vs ?_9_?_F
+currentId vs queryId: LEU_316_?_A vs ?_9_?_F
+currentId vs queryId: ALA_317_?_A vs ?_9_?_F
+currentId vs queryId: THR_318_?_A vs ?_9_?_F
+currentId vs queryId: GLY_319_?_A vs ?_9_?_F
+currentId vs queryId: MET_320_?_A vs ?_9_?_F
+currentId vs queryId: ARG_321_?_A vs ?_9_?_F
+currentId vs queryId: ASN_322_?_A vs ?_9_?_F
+currentId vs queryId: VAL_323_?_A vs ?_9_?_F
+currentId vs queryId: PRO_324_?_A vs ?_9_?_F
+currentId vs queryId: GLU_325_?_A vs ?_9_?_F
+currentId vs queryId: GLY_1_?_B vs ?_9_?_F
+currentId vs queryId: ILE_2_?_B vs ?_9_?_F
+currentId vs queryId: PHE_3_?_B vs ?_9_?_F
+currentId vs queryId: GLY_4_?_B vs ?_9_?_F
+currentId vs queryId: ALA_5_?_B vs ?_9_?_F
+currentId vs queryId: ILE_6_?_B vs ?_9_?_F
+currentId vs queryId: ALA_7_?_B vs ?_9_?_F
+currentId vs queryId: GLY_8_?_B vs ?_9_?_F
+currentId vs queryId: PHE_9_?_B vs ?_9_?_F
+currentId vs queryId: ILE_10_?_B vs ?_9_?_F
+currentId vs queryId: GLU_11_?_B vs ?_9_?_F
+currentId vs queryId: ASN_12_?_B vs ?_9_?_F
+currentId vs queryId: GLY_13_?_B vs ?_9_?_F
+currentId vs queryId: TRP_14_?_B vs ?_9_?_F
+currentId vs queryId: GLU_15_?_B vs ?_9_?_F
+currentId vs queryId: GLY_16_?_B vs ?_9_?_F
+currentId vs queryId: MET_17_?_B vs ?_9_?_F
+currentId vs queryId: VAL_18_?_B vs ?_9_?_F
+currentId vs queryId: ASP_19_?_B vs ?_9_?_F
+currentId vs queryId: GLY_20_?_B vs ?_9_?_F
+currentId vs queryId: TRP_21_?_B vs ?_9_?_F
+currentId vs queryId: TYR_22_?_B vs ?_9_?_F
+currentId vs queryId: GLY_23_?_B vs ?_9_?_F
+currentId vs queryId: PHE_24_?_B vs ?_9_?_F
+currentId vs queryId: ARG_25_?_B vs ?_9_?_F
+currentId vs queryId: HIS_26_?_B vs ?_9_?_F
+currentId vs queryId: GLN_27_?_B vs ?_9_?_F
+currentId vs queryId: ASN_28_?_B vs ?_9_?_F
+currentId vs queryId: SER_29_?_B vs ?_9_?_F
+currentId vs queryId: GLU_30_?_B vs ?_9_?_F
+currentId vs queryId: GLY_31_?_B vs ?_9_?_F
+currentId vs queryId: ILE_32_?_B vs ?_9_?_F
+currentId vs queryId: GLY_33_?_B vs ?_9_?_F
+currentId vs queryId: GLN_34_?_B vs ?_9_?_F
+currentId vs queryId: ALA_35_?_B vs ?_9_?_F
+currentId vs queryId: ALA_36_?_B vs ?_9_?_F
+currentId vs queryId: ASP_37_?_B vs ?_9_?_F
+currentId vs queryId: LEU_38_?_B vs ?_9_?_F
+currentId vs queryId: LYS_39_?_B vs ?_9_?_F
+currentId vs queryId: SER_40_?_B vs ?_9_?_F
+currentId vs queryId: THR_41_?_B vs ?_9_?_F
+currentId vs queryId: GLN_42_?_B vs ?_9_?_F
+currentId vs queryId: ALA_43_?_B vs ?_9_?_F
+currentId vs queryId: ALA_44_?_B vs ?_9_?_F
+currentId vs queryId: ILE_45_?_B vs ?_9_?_F
+currentId vs queryId: ASP_46_?_B vs ?_9_?_F
+currentId vs queryId: GLN_47_?_B vs ?_9_?_F
+currentId vs queryId: ILE_48_?_B vs ?_9_?_F
+currentId vs queryId: ASN_49_?_B vs ?_9_?_F
+currentId vs queryId: GLY_50_?_B vs ?_9_?_F
+currentId vs queryId: LYS_51_?_B vs ?_9_?_F
+currentId vs queryId: LEU_52_?_B vs ?_9_?_F
+currentId vs queryId: ASN_53_?_B vs ?_9_?_F
+currentId vs queryId: ARG_54_?_B vs ?_9_?_F
+currentId vs queryId: LEU_55_?_B vs ?_9_?_F
+currentId vs queryId: ILE_56_?_B vs ?_9_?_F
+currentId vs queryId: GLY_57_?_B vs ?_9_?_F
+currentId vs queryId: LYS_58_?_B vs ?_9_?_F
+currentId vs queryId: THR_59_?_B vs ?_9_?_F
+currentId vs queryId: ASN_60_?_B vs ?_9_?_F
+currentId vs queryId: GLU_61_?_B vs ?_9_?_F
+currentId vs queryId: LYS_62_?_B vs ?_9_?_F
+currentId vs queryId: PHE_63_?_B vs ?_9_?_F
+currentId vs queryId: HIS_64_?_B vs ?_9_?_F
+currentId vs queryId: GLN_65_?_B vs ?_9_?_F
+currentId vs queryId: ILE_66_?_B vs ?_9_?_F
+currentId vs queryId: GLU_67_?_B vs ?_9_?_F
+currentId vs queryId: LYS_68_?_B vs ?_9_?_F
+currentId vs queryId: GLU_69_?_B vs ?_9_?_F
+currentId vs queryId: PHE_70_?_B vs ?_9_?_F
+currentId vs queryId: SER_71_?_B vs ?_9_?_F
+currentId vs queryId: GLU_72_?_B vs ?_9_?_F
+currentId vs queryId: VAL_73_?_B vs ?_9_?_F
+currentId vs queryId: GLU_74_?_B vs ?_9_?_F
+currentId vs queryId: GLY_75_?_B vs ?_9_?_F
+currentId vs queryId: ARG_76_?_B vs ?_9_?_F
+currentId vs queryId: ILE_77_?_B vs ?_9_?_F
+currentId vs queryId: GLN_78_?_B vs ?_9_?_F
+currentId vs queryId: ASP_79_?_B vs ?_9_?_F
+currentId vs queryId: LEU_80_?_B vs ?_9_?_F
+currentId vs queryId: GLU_81_?_B vs ?_9_?_F
+currentId vs queryId: LYS_82_?_B vs ?_9_?_F
+currentId vs queryId: TYR_83_?_B vs ?_9_?_F
+currentId vs queryId: VAL_84_?_B vs ?_9_?_F
+currentId vs queryId: GLU_85_?_B vs ?_9_?_F
+currentId vs queryId: ASP_86_?_B vs ?_9_?_F
+currentId vs queryId: THR_87_?_B vs ?_9_?_F
+currentId vs queryId: LYS_88_?_B vs ?_9_?_F
+currentId vs queryId: ILE_89_?_B vs ?_9_?_F
+currentId vs queryId: ASP_90_?_B vs ?_9_?_F
+currentId vs queryId: LEU_91_?_B vs ?_9_?_F
+currentId vs queryId: TRP_92_?_B vs ?_9_?_F
+currentId vs queryId: SER_93_?_B vs ?_9_?_F
+currentId vs queryId: TYR_94_?_B vs ?_9_?_F
+currentId vs queryId: ASN_95_?_B vs ?_9_?_F
+currentId vs queryId: ALA_96_?_B vs ?_9_?_F
+currentId vs queryId: GLU_97_?_B vs ?_9_?_F
+currentId vs queryId: LEU_98_?_B vs ?_9_?_F
+currentId vs queryId: LEU_99_?_B vs ?_9_?_F
+currentId vs queryId: VAL_100_?_B vs ?_9_?_F
+currentId vs queryId: ALA_101_?_B vs ?_9_?_F
+currentId vs queryId: LEU_102_?_B vs ?_9_?_F
+currentId vs queryId: GLU_103_?_B vs ?_9_?_F
+currentId vs queryId: ASN_104_?_B vs ?_9_?_F
+currentId vs queryId: GLN_105_?_B vs ?_9_?_F
+currentId vs queryId: HIS_106_?_B vs ?_9_?_F
+currentId vs queryId: THR_107_?_B vs ?_9_?_F
+currentId vs queryId: ILE_108_?_B vs ?_9_?_F
+currentId vs queryId: ASP_109_?_B vs ?_9_?_F
+currentId vs queryId: LEU_110_?_B vs ?_9_?_F
+currentId vs queryId: THR_111_?_B vs ?_9_?_F
+currentId vs queryId: ASP_112_?_B vs ?_9_?_F
+currentId vs queryId: SER_113_?_B vs ?_9_?_F
+currentId vs queryId: GLU_114_?_B vs ?_9_?_F
+currentId vs queryId: MET_115_?_B vs ?_9_?_F
+currentId vs queryId: ASN_116_?_B vs ?_9_?_F
+currentId vs queryId: LYS_117_?_B vs ?_9_?_F
+currentId vs queryId: LEU_118_?_B vs ?_9_?_F
+currentId vs queryId: PHE_119_?_B vs ?_9_?_F
+currentId vs queryId: GLU_120_?_B vs ?_9_?_F
+currentId vs queryId: LYS_121_?_B vs ?_9_?_F
+currentId vs queryId: THR_122_?_B vs ?_9_?_F
+currentId vs queryId: LYS_123_?_B vs ?_9_?_F
+currentId vs queryId: LYS_124_?_B vs ?_9_?_F
+currentId vs queryId: GLN_125_?_B vs ?_9_?_F
+currentId vs queryId: LEU_126_?_B vs ?_9_?_F
+currentId vs queryId: ARG_127_?_B vs ?_9_?_F
+currentId vs queryId: GLU_128_?_B vs ?_9_?_F
+currentId vs queryId: ASN_129_?_B vs ?_9_?_F
+currentId vs queryId: ALA_130_?_B vs ?_9_?_F
+currentId vs queryId: GLU_131_?_B vs ?_9_?_F
+currentId vs queryId: ASP_132_?_B vs ?_9_?_F
+currentId vs queryId: MET_133_?_B vs ?_9_?_F
+currentId vs queryId: GLY_134_?_B vs ?_9_?_F
+currentId vs queryId: ASN_135_?_B vs ?_9_?_F
+currentId vs queryId: GLY_136_?_B vs ?_9_?_F
+currentId vs queryId: CYS_137_?_B vs ?_9_?_F
+currentId vs queryId: PHE_138_?_B vs ?_9_?_F
+currentId vs queryId: LYS_139_?_B vs ?_9_?_F
+currentId vs queryId: ILE_140_?_B vs ?_9_?_F
+currentId vs queryId: TYR_141_?_B vs ?_9_?_F
+currentId vs queryId: HIS_142_?_B vs ?_9_?_F
+currentId vs queryId: LYS_143_?_B vs ?_9_?_F
+currentId vs queryId: CYS_144_?_B vs ?_9_?_F
+currentId vs queryId: ASP_145_?_B vs ?_9_?_F
+currentId vs queryId: ASN_146_?_B vs ?_9_?_F
+currentId vs queryId: ALA_147_?_B vs ?_9_?_F
+currentId vs queryId: CYS_148_?_B vs ?_9_?_F
+currentId vs queryId: ILE_149_?_B vs ?_9_?_F
+currentId vs queryId: GLY_150_?_B vs ?_9_?_F
+currentId vs queryId: SER_151_?_B vs ?_9_?_F
+currentId vs queryId: ILE_152_?_B vs ?_9_?_F
+currentId vs queryId: ARG_153_?_B vs ?_9_?_F
+currentId vs queryId: ASN_154_?_B vs ?_9_?_F
+currentId vs queryId: GLY_155_?_B vs ?_9_?_F
+currentId vs queryId: THR_156_?_B vs ?_9_?_F
+currentId vs queryId: TYR_157_?_B vs ?_9_?_F
+currentId vs queryId: ASP_158_?_B vs ?_9_?_F
+currentId vs queryId: HIS_159_?_B vs ?_9_?_F
+currentId vs queryId: ASP_160_?_B vs ?_9_?_F
+currentId vs queryId: VAL_161_?_B vs ?_9_?_F
+currentId vs queryId: TYR_162_?_B vs ?_9_?_F
+currentId vs queryId: ARG_163_?_B vs ?_9_?_F
+currentId vs queryId: ASP_164_?_B vs ?_9_?_F
+currentId vs queryId: GLU_165_?_B vs ?_9_?_F
+currentId vs queryId: ALA_166_?_B vs ?_9_?_F
+currentId vs queryId: LEU_167_?_B vs ?_9_?_F
+currentId vs queryId: ASN_168_?_B vs ?_9_?_F
+currentId vs queryId: ASN_169_?_B vs ?_9_?_F
+currentId vs queryId: ARG_170_?_B vs ?_9_?_F
+currentId vs queryId: PHE_171_?_B vs ?_9_?_F
+currentId vs queryId: GLN_172_?_B vs ?_9_?_F
+currentId vs queryId: ILE_173_?_B vs ?_9_?_F
+currentId vs queryId: NAG_1_?_F vs ?_9_?_F
+currentId vs queryId: GAL_2_?_F vs ?_9_?_F
+currentId vs queryId: NAG_3_?_F vs ?_9_?_F
+currentId vs queryId: GAL_4_?_F vs ?_9_?_F
+currentId vs queryId: SIA_5_?_F vs ?_9_?_F
+currentId vs queryId: NAG_6_?_F vs ?_9_?_F
+currentId vs queryId: GAL_7_?_F vs ?_9_?_F
+currentId vs queryId: NAG_8_?_F vs ?_9_?_F
+currentId vs queryId: GAL_9_?_F vs ?_9_?_F
+1:1
+currentId vs queryId: PRO_9_?_A vs ?_1_?_F
+currentId vs queryId: GLY_10_?_A vs ?_1_?_F
+currentId vs queryId: ALA_11_?_A vs ?_1_?_F
+currentId vs queryId: THR_12_?_A vs ?_1_?_F
+currentId vs queryId: LEU_13_?_A vs ?_1_?_F
+currentId vs queryId: CYS_14_?_A vs ?_1_?_F
+currentId vs queryId: LEU_15_?_A vs ?_1_?_F
+currentId vs queryId: GLY_16_?_A vs ?_1_?_F
+currentId vs queryId: HIS_17_?_A vs ?_1_?_F
+currentId vs queryId: HIS_18_?_A vs ?_1_?_F
+currentId vs queryId: ALA_19_?_A vs ?_1_?_F
+currentId vs queryId: VAL_20_?_A vs ?_1_?_F
+currentId vs queryId: PRO_21_?_A vs ?_1_?_F
+currentId vs queryId: ASN_22_?_A vs ?_1_?_F
+currentId vs queryId: GLY_23_?_A vs ?_1_?_F
+currentId vs queryId: THR_24_?_A vs ?_1_?_F
+currentId vs queryId: ILE_25_?_A vs ?_1_?_F
+currentId vs queryId: VAL_26_?_A vs ?_1_?_F
+currentId vs queryId: LYS_27_?_A vs ?_1_?_F
+currentId vs queryId: THR_28_?_A vs ?_1_?_F
+currentId vs queryId: ILE_29_?_A vs ?_1_?_F
+currentId vs queryId: THR_30_?_A vs ?_1_?_F
+currentId vs queryId: ASN_31_?_A vs ?_1_?_F
+currentId vs queryId: ASP_32_?_A vs ?_1_?_F
+currentId vs queryId: GLN_33_?_A vs ?_1_?_F
+currentId vs queryId: ILE_34_?_A vs ?_1_?_F
+currentId vs queryId: GLU_35_?_A vs ?_1_?_F
+currentId vs queryId: VAL_36_?_A vs ?_1_?_F
+currentId vs queryId: THR_37_?_A vs ?_1_?_F
+currentId vs queryId: ASN_38_?_A vs ?_1_?_F
+currentId vs queryId: ALA_39_?_A vs ?_1_?_F
+currentId vs queryId: THR_40_?_A vs ?_1_?_F
+currentId vs queryId: GLU_41_?_A vs ?_1_?_F
+currentId vs queryId: LEU_42_?_A vs ?_1_?_F
+currentId vs queryId: VAL_43_?_A vs ?_1_?_F
+currentId vs queryId: GLN_44_?_A vs ?_1_?_F
+currentId vs queryId: SER_45_?_A vs ?_1_?_F
+currentId vs queryId: SER_46_?_A vs ?_1_?_F
+currentId vs queryId: SER_47_?_A vs ?_1_?_F
+currentId vs queryId: THR_48_?_A vs ?_1_?_F
+currentId vs queryId: GLY_49_?_A vs ?_1_?_F
+currentId vs queryId: GLU_50_?_A vs ?_1_?_F
+currentId vs queryId: ILE_51_?_A vs ?_1_?_F
+currentId vs queryId: CYS_52_?_A vs ?_1_?_F
+currentId vs queryId: ASP_53_?_A vs ?_1_?_F
+currentId vs queryId: SER_54_?_A vs ?_1_?_F
+currentId vs queryId: PRO_55_?_A vs ?_1_?_F
+currentId vs queryId: HIS_56_?_A vs ?_1_?_F
+currentId vs queryId: GLN_57_?_A vs ?_1_?_F
+currentId vs queryId: ILE_58_?_A vs ?_1_?_F
+currentId vs queryId: LEU_59_?_A vs ?_1_?_F
+currentId vs queryId: ASP_60_?_A vs ?_1_?_F
+currentId vs queryId: GLY_61_?_A vs ?_1_?_F
+currentId vs queryId: GLU_62_?_A vs ?_1_?_F
+currentId vs queryId: ASN_63_?_A vs ?_1_?_F
+currentId vs queryId: CYS_64_?_A vs ?_1_?_F
+currentId vs queryId: THR_65_?_A vs ?_1_?_F
+currentId vs queryId: LEU_66_?_A vs ?_1_?_F
+currentId vs queryId: ILE_67_?_A vs ?_1_?_F
+currentId vs queryId: ASP_68_?_A vs ?_1_?_F
+currentId vs queryId: ALA_69_?_A vs ?_1_?_F
+currentId vs queryId: LEU_70_?_A vs ?_1_?_F
+currentId vs queryId: LEU_71_?_A vs ?_1_?_F
+currentId vs queryId: GLY_72_?_A vs ?_1_?_F
+currentId vs queryId: ASP_73_?_A vs ?_1_?_F
+currentId vs queryId: PRO_74_?_A vs ?_1_?_F
+currentId vs queryId: GLN_75_?_A vs ?_1_?_F
+currentId vs queryId: CYS_76_?_A vs ?_1_?_F
+currentId vs queryId: ASP_77_?_A vs ?_1_?_F
+currentId vs queryId: GLY_78_?_A vs ?_1_?_F
+currentId vs queryId: PHE_79_?_A vs ?_1_?_F
+currentId vs queryId: GLN_80_?_A vs ?_1_?_F
+currentId vs queryId: ASN_81_?_A vs ?_1_?_F
+currentId vs queryId: LYS_82_?_A vs ?_1_?_F
+currentId vs queryId: LYS_83_?_A vs ?_1_?_F
+currentId vs queryId: TRP_84_?_A vs ?_1_?_F
+currentId vs queryId: ASP_85_?_A vs ?_1_?_F
+currentId vs queryId: LEU_86_?_A vs ?_1_?_F
+currentId vs queryId: PHE_87_?_A vs ?_1_?_F
+currentId vs queryId: VAL_88_?_A vs ?_1_?_F
+currentId vs queryId: GLU_89_?_A vs ?_1_?_F
+currentId vs queryId: ARG_90_?_A vs ?_1_?_F
+currentId vs queryId: SER_91_?_A vs ?_1_?_F
+currentId vs queryId: LYS_92_?_A vs ?_1_?_F
+currentId vs queryId: ALA_93_?_A vs ?_1_?_F
+currentId vs queryId: TYR_94_?_A vs ?_1_?_F
+currentId vs queryId: SER_95_?_A vs ?_1_?_F
+currentId vs queryId: ASN_96_?_A vs ?_1_?_F
+currentId vs queryId: CYS_97_?_A vs ?_1_?_F
+currentId vs queryId: TYR_98_?_A vs ?_1_?_F
+currentId vs queryId: PRO_99_?_A vs ?_1_?_F
+currentId vs queryId: TYR_100_?_A vs ?_1_?_F
+currentId vs queryId: ASP_101_?_A vs ?_1_?_F
+currentId vs queryId: VAL_102_?_A vs ?_1_?_F
+currentId vs queryId: PRO_103_?_A vs ?_1_?_F
+currentId vs queryId: ASP_104_?_A vs ?_1_?_F
+currentId vs queryId: TYR_105_?_A vs ?_1_?_F
+currentId vs queryId: ALA_106_?_A vs ?_1_?_F
+currentId vs queryId: SER_107_?_A vs ?_1_?_F
+currentId vs queryId: LEU_108_?_A vs ?_1_?_F
+currentId vs queryId: ARG_109_?_A vs ?_1_?_F
+currentId vs queryId: SER_110_?_A vs ?_1_?_F
+currentId vs queryId: LEU_111_?_A vs ?_1_?_F
+currentId vs queryId: VAL_112_?_A vs ?_1_?_F
+currentId vs queryId: ALA_113_?_A vs ?_1_?_F
+currentId vs queryId: SER_114_?_A vs ?_1_?_F
+currentId vs queryId: SER_115_?_A vs ?_1_?_F
+currentId vs queryId: GLY_116_?_A vs ?_1_?_F
+currentId vs queryId: THR_117_?_A vs ?_1_?_F
+currentId vs queryId: LEU_118_?_A vs ?_1_?_F
+currentId vs queryId: GLU_119_?_A vs ?_1_?_F
+currentId vs queryId: PHE_120_?_A vs ?_1_?_F
+currentId vs queryId: ASN_121_?_A vs ?_1_?_F
+currentId vs queryId: ASN_122_?_A vs ?_1_?_F
+currentId vs queryId: GLU_123_?_A vs ?_1_?_F
+currentId vs queryId: SER_124_?_A vs ?_1_?_F
+currentId vs queryId: PHE_125_?_A vs ?_1_?_F
+currentId vs queryId: ASN_126_?_A vs ?_1_?_F
+currentId vs queryId: TRP_127_?_A vs ?_1_?_F
+currentId vs queryId: THR_128_?_A vs ?_1_?_F
+currentId vs queryId: GLY_129_?_A vs ?_1_?_F
+currentId vs queryId: VAL_130_?_A vs ?_1_?_F
+currentId vs queryId: THR_131_?_A vs ?_1_?_F
+currentId vs queryId: GLN_132_?_A vs ?_1_?_F
+currentId vs queryId: ASN_133_?_A vs ?_1_?_F
+currentId vs queryId: GLY_134_?_A vs ?_1_?_F
+currentId vs queryId: THR_135_?_A vs ?_1_?_F
+currentId vs queryId: SER_136_?_A vs ?_1_?_F
+currentId vs queryId: SER_137_?_A vs ?_1_?_F
+currentId vs queryId: ALA_138_?_A vs ?_1_?_F
+currentId vs queryId: CYS_139_?_A vs ?_1_?_F
+currentId vs queryId: ILE_140_?_A vs ?_1_?_F
+currentId vs queryId: ARG_141_?_A vs ?_1_?_F
+currentId vs queryId: ARG_142_?_A vs ?_1_?_F
+currentId vs queryId: SER_143_?_A vs ?_1_?_F
+currentId vs queryId: ASN_144_?_A vs ?_1_?_F
+currentId vs queryId: ASN_145_?_A vs ?_1_?_F
+currentId vs queryId: SER_146_?_A vs ?_1_?_F
+currentId vs queryId: PHE_147_?_A vs ?_1_?_F
+currentId vs queryId: PHE_148_?_A vs ?_1_?_F
+currentId vs queryId: SER_149_?_A vs ?_1_?_F
+currentId vs queryId: ARG_150_?_A vs ?_1_?_F
+currentId vs queryId: LEU_151_?_A vs ?_1_?_F
+currentId vs queryId: ASN_152_?_A vs ?_1_?_F
+currentId vs queryId: TRP_153_?_A vs ?_1_?_F
+currentId vs queryId: LEU_154_?_A vs ?_1_?_F
+currentId vs queryId: THR_155_?_A vs ?_1_?_F
+currentId vs queryId: HIS_156_?_A vs ?_1_?_F
+currentId vs queryId: LEU_157_?_A vs ?_1_?_F
+currentId vs queryId: LYS_158_?_A vs ?_1_?_F
+currentId vs queryId: PHE_159_?_A vs ?_1_?_F
+currentId vs queryId: LYS_160_?_A vs ?_1_?_F
+currentId vs queryId: TYR_161_?_A vs ?_1_?_F
+currentId vs queryId: PRO_162_?_A vs ?_1_?_F
+currentId vs queryId: ALA_163_?_A vs ?_1_?_F
+currentId vs queryId: LEU_164_?_A vs ?_1_?_F
+currentId vs queryId: ASN_165_?_A vs ?_1_?_F
+currentId vs queryId: VAL_166_?_A vs ?_1_?_F
+currentId vs queryId: THR_167_?_A vs ?_1_?_F
+currentId vs queryId: MET_168_?_A vs ?_1_?_F
+currentId vs queryId: PRO_169_?_A vs ?_1_?_F
+currentId vs queryId: ASN_170_?_A vs ?_1_?_F
+currentId vs queryId: ASN_171_?_A vs ?_1_?_F
+currentId vs queryId: GLU_172_?_A vs ?_1_?_F
+currentId vs queryId: LYS_173_?_A vs ?_1_?_F
+currentId vs queryId: PHE_174_?_A vs ?_1_?_F
+currentId vs queryId: ASP_175_?_A vs ?_1_?_F
+currentId vs queryId: LYS_176_?_A vs ?_1_?_F
+currentId vs queryId: LEU_177_?_A vs ?_1_?_F
+currentId vs queryId: TYR_178_?_A vs ?_1_?_F
+currentId vs queryId: ILE_179_?_A vs ?_1_?_F
+currentId vs queryId: TRP_180_?_A vs ?_1_?_F
+currentId vs queryId: GLY_181_?_A vs ?_1_?_F
+currentId vs queryId: VAL_182_?_A vs ?_1_?_F
+currentId vs queryId: HIS_183_?_A vs ?_1_?_F
+currentId vs queryId: HIS_184_?_A vs ?_1_?_F
+currentId vs queryId: PRO_185_?_A vs ?_1_?_F
+currentId vs queryId: GLY_186_?_A vs ?_1_?_F
+currentId vs queryId: THR_187_?_A vs ?_1_?_F
+currentId vs queryId: ASP_188_?_A vs ?_1_?_F
+currentId vs queryId: ASN_189_?_A vs ?_1_?_F
+currentId vs queryId: ASP_190_?_A vs ?_1_?_F
+currentId vs queryId: GLN_191_?_A vs ?_1_?_F
+currentId vs queryId: ILE_192_?_A vs ?_1_?_F
+currentId vs queryId: PHE_193_?_A vs ?_1_?_F
+currentId vs queryId: LEU_194_?_A vs ?_1_?_F
+currentId vs queryId: TYR_195_?_A vs ?_1_?_F
+currentId vs queryId: ALA_196_?_A vs ?_1_?_F
+currentId vs queryId: GLN_197_?_A vs ?_1_?_F
+currentId vs queryId: ALA_198_?_A vs ?_1_?_F
+currentId vs queryId: SER_199_?_A vs ?_1_?_F
+currentId vs queryId: GLY_200_?_A vs ?_1_?_F
+currentId vs queryId: ARG_201_?_A vs ?_1_?_F
+currentId vs queryId: ILE_202_?_A vs ?_1_?_F
+currentId vs queryId: THR_203_?_A vs ?_1_?_F
+currentId vs queryId: VAL_204_?_A vs ?_1_?_F
+currentId vs queryId: SER_205_?_A vs ?_1_?_F
+currentId vs queryId: THR_206_?_A vs ?_1_?_F
+currentId vs queryId: LYS_207_?_A vs ?_1_?_F
+currentId vs queryId: ARG_208_?_A vs ?_1_?_F
+currentId vs queryId: SER_209_?_A vs ?_1_?_F
+currentId vs queryId: GLN_210_?_A vs ?_1_?_F
+currentId vs queryId: GLN_211_?_A vs ?_1_?_F
+currentId vs queryId: THR_212_?_A vs ?_1_?_F
+currentId vs queryId: VAL_213_?_A vs ?_1_?_F
+currentId vs queryId: ILE_214_?_A vs ?_1_?_F
+currentId vs queryId: PRO_215_?_A vs ?_1_?_F
+currentId vs queryId: ASN_216_?_A vs ?_1_?_F
+currentId vs queryId: ILE_217_?_A vs ?_1_?_F
+currentId vs queryId: GLY_218_?_A vs ?_1_?_F
+currentId vs queryId: SER_219_?_A vs ?_1_?_F
+currentId vs queryId: ARG_220_?_A vs ?_1_?_F
+currentId vs queryId: PRO_221_?_A vs ?_1_?_F
+currentId vs queryId: ARG_222_?_A vs ?_1_?_F
+currentId vs queryId: VAL_223_?_A vs ?_1_?_F
+currentId vs queryId: ARG_224_?_A vs ?_1_?_F
+currentId vs queryId: ASN_225_?_A vs ?_1_?_F
+currentId vs queryId: ILE_226_?_A vs ?_1_?_F
+currentId vs queryId: PRO_227_?_A vs ?_1_?_F
+currentId vs queryId: SER_228_?_A vs ?_1_?_F
+currentId vs queryId: ARG_229_?_A vs ?_1_?_F
+currentId vs queryId: ILE_230_?_A vs ?_1_?_F
+currentId vs queryId: SER_231_?_A vs ?_1_?_F
+currentId vs queryId: ILE_232_?_A vs ?_1_?_F
+currentId vs queryId: TYR_233_?_A vs ?_1_?_F
+currentId vs queryId: TRP_234_?_A vs ?_1_?_F
+currentId vs queryId: THR_235_?_A vs ?_1_?_F
+currentId vs queryId: ILE_236_?_A vs ?_1_?_F
+currentId vs queryId: VAL_237_?_A vs ?_1_?_F
+currentId vs queryId: LYS_238_?_A vs ?_1_?_F
+currentId vs queryId: PRO_239_?_A vs ?_1_?_F
+currentId vs queryId: GLY_240_?_A vs ?_1_?_F
+currentId vs queryId: ASP_241_?_A vs ?_1_?_F
+currentId vs queryId: ILE_242_?_A vs ?_1_?_F
+currentId vs queryId: LEU_243_?_A vs ?_1_?_F
+currentId vs queryId: LEU_244_?_A vs ?_1_?_F
+currentId vs queryId: ILE_245_?_A vs ?_1_?_F
+currentId vs queryId: ASN_246_?_A vs ?_1_?_F
+currentId vs queryId: SER_247_?_A vs ?_1_?_F
+currentId vs queryId: THR_248_?_A vs ?_1_?_F
+currentId vs queryId: GLY_249_?_A vs ?_1_?_F
+currentId vs queryId: ASN_250_?_A vs ?_1_?_F
+currentId vs queryId: LEU_251_?_A vs ?_1_?_F
+currentId vs queryId: ILE_252_?_A vs ?_1_?_F
+currentId vs queryId: ALA_253_?_A vs ?_1_?_F
+currentId vs queryId: PRO_254_?_A vs ?_1_?_F
+currentId vs queryId: ARG_255_?_A vs ?_1_?_F
+currentId vs queryId: GLY_256_?_A vs ?_1_?_F
+currentId vs queryId: TYR_257_?_A vs ?_1_?_F
+currentId vs queryId: PHE_258_?_A vs ?_1_?_F
+currentId vs queryId: LYS_259_?_A vs ?_1_?_F
+currentId vs queryId: ILE_260_?_A vs ?_1_?_F
+currentId vs queryId: ARG_261_?_A vs ?_1_?_F
+currentId vs queryId: SER_262_?_A vs ?_1_?_F
+currentId vs queryId: GLY_263_?_A vs ?_1_?_F
+currentId vs queryId: LYS_264_?_A vs ?_1_?_F
+currentId vs queryId: SER_265_?_A vs ?_1_?_F
+currentId vs queryId: SER_266_?_A vs ?_1_?_F
+currentId vs queryId: ILE_267_?_A vs ?_1_?_F
+currentId vs queryId: MET_268_?_A vs ?_1_?_F
+currentId vs queryId: ARG_269_?_A vs ?_1_?_F
+currentId vs queryId: SER_270_?_A vs ?_1_?_F
+currentId vs queryId: ASP_271_?_A vs ?_1_?_F
+currentId vs queryId: ALA_272_?_A vs ?_1_?_F
+currentId vs queryId: PRO_273_?_A vs ?_1_?_F
+currentId vs queryId: ILE_274_?_A vs ?_1_?_F
+currentId vs queryId: GLY_275_?_A vs ?_1_?_F
+currentId vs queryId: LYS_276_?_A vs ?_1_?_F
+currentId vs queryId: CYS_277_?_A vs ?_1_?_F
+currentId vs queryId: ASN_278_?_A vs ?_1_?_F
+currentId vs queryId: SER_279_?_A vs ?_1_?_F
+currentId vs queryId: GLU_280_?_A vs ?_1_?_F
+currentId vs queryId: CYS_281_?_A vs ?_1_?_F
+currentId vs queryId: ILE_282_?_A vs ?_1_?_F
+currentId vs queryId: THR_283_?_A vs ?_1_?_F
+currentId vs queryId: PRO_284_?_A vs ?_1_?_F
+currentId vs queryId: ASN_285_?_A vs ?_1_?_F
+currentId vs queryId: GLY_286_?_A vs ?_1_?_F
+currentId vs queryId: SER_287_?_A vs ?_1_?_F
+currentId vs queryId: ILE_288_?_A vs ?_1_?_F
+currentId vs queryId: PRO_289_?_A vs ?_1_?_F
+currentId vs queryId: ASN_290_?_A vs ?_1_?_F
+currentId vs queryId: ASP_291_?_A vs ?_1_?_F
+currentId vs queryId: LYS_292_?_A vs ?_1_?_F
+currentId vs queryId: PRO_293_?_A vs ?_1_?_F
+currentId vs queryId: PHE_294_?_A vs ?_1_?_F
+currentId vs queryId: GLN_295_?_A vs ?_1_?_F
+currentId vs queryId: ASN_296_?_A vs ?_1_?_F
+currentId vs queryId: VAL_297_?_A vs ?_1_?_F
+currentId vs queryId: ASN_298_?_A vs ?_1_?_F
+currentId vs queryId: ARG_299_?_A vs ?_1_?_F
+currentId vs queryId: ILE_300_?_A vs ?_1_?_F
+currentId vs queryId: THR_301_?_A vs ?_1_?_F
+currentId vs queryId: TYR_302_?_A vs ?_1_?_F
+currentId vs queryId: GLY_303_?_A vs ?_1_?_F
+currentId vs queryId: ALA_304_?_A vs ?_1_?_F
+currentId vs queryId: CYS_305_?_A vs ?_1_?_F
+currentId vs queryId: PRO_306_?_A vs ?_1_?_F
+currentId vs queryId: ARG_307_?_A vs ?_1_?_F
+currentId vs queryId: TYR_308_?_A vs ?_1_?_F
+currentId vs queryId: VAL_309_?_A vs ?_1_?_F
+currentId vs queryId: LYS_310_?_A vs ?_1_?_F
+currentId vs queryId: GLN_311_?_A vs ?_1_?_F
+currentId vs queryId: ASN_312_?_A vs ?_1_?_F
+currentId vs queryId: THR_313_?_A vs ?_1_?_F
+currentId vs queryId: LEU_314_?_A vs ?_1_?_F
+currentId vs queryId: LYS_315_?_A vs ?_1_?_F
+currentId vs queryId: LEU_316_?_A vs ?_1_?_F
+currentId vs queryId: ALA_317_?_A vs ?_1_?_F
+currentId vs queryId: THR_318_?_A vs ?_1_?_F
+currentId vs queryId: GLY_319_?_A vs ?_1_?_F
+currentId vs queryId: MET_320_?_A vs ?_1_?_F
+currentId vs queryId: ARG_321_?_A vs ?_1_?_F
+currentId vs queryId: ASN_322_?_A vs ?_1_?_F
+currentId vs queryId: VAL_323_?_A vs ?_1_?_F
+currentId vs queryId: PRO_324_?_A vs ?_1_?_F
+currentId vs queryId: GLU_325_?_A vs ?_1_?_F
+currentId vs queryId: GLY_1_?_B vs ?_1_?_F
+currentId vs queryId: ILE_2_?_B vs ?_1_?_F
+currentId vs queryId: PHE_3_?_B vs ?_1_?_F
+currentId vs queryId: GLY_4_?_B vs ?_1_?_F
+currentId vs queryId: ALA_5_?_B vs ?_1_?_F
+currentId vs queryId: ILE_6_?_B vs ?_1_?_F
+currentId vs queryId: ALA_7_?_B vs ?_1_?_F
+currentId vs queryId: GLY_8_?_B vs ?_1_?_F
+currentId vs queryId: PHE_9_?_B vs ?_1_?_F
+currentId vs queryId: ILE_10_?_B vs ?_1_?_F
+currentId vs queryId: GLU_11_?_B vs ?_1_?_F
+currentId vs queryId: ASN_12_?_B vs ?_1_?_F
+currentId vs queryId: GLY_13_?_B vs ?_1_?_F
+currentId vs queryId: TRP_14_?_B vs ?_1_?_F
+currentId vs queryId: GLU_15_?_B vs ?_1_?_F
+currentId vs queryId: GLY_16_?_B vs ?_1_?_F
+currentId vs queryId: MET_17_?_B vs ?_1_?_F
+currentId vs queryId: VAL_18_?_B vs ?_1_?_F
+currentId vs queryId: ASP_19_?_B vs ?_1_?_F
+currentId vs queryId: GLY_20_?_B vs ?_1_?_F
+currentId vs queryId: TRP_21_?_B vs ?_1_?_F
+currentId vs queryId: TYR_22_?_B vs ?_1_?_F
+currentId vs queryId: GLY_23_?_B vs ?_1_?_F
+currentId vs queryId: PHE_24_?_B vs ?_1_?_F
+currentId vs queryId: ARG_25_?_B vs ?_1_?_F
+currentId vs queryId: HIS_26_?_B vs ?_1_?_F
+currentId vs queryId: GLN_27_?_B vs ?_1_?_F
+currentId vs queryId: ASN_28_?_B vs ?_1_?_F
+currentId vs queryId: SER_29_?_B vs ?_1_?_F
+currentId vs queryId: GLU_30_?_B vs ?_1_?_F
+currentId vs queryId: GLY_31_?_B vs ?_1_?_F
+currentId vs queryId: ILE_32_?_B vs ?_1_?_F
+currentId vs queryId: GLY_33_?_B vs ?_1_?_F
+currentId vs queryId: GLN_34_?_B vs ?_1_?_F
+currentId vs queryId: ALA_35_?_B vs ?_1_?_F
+currentId vs queryId: ALA_36_?_B vs ?_1_?_F
+currentId vs queryId: ASP_37_?_B vs ?_1_?_F
+currentId vs queryId: LEU_38_?_B vs ?_1_?_F
+currentId vs queryId: LYS_39_?_B vs ?_1_?_F
+currentId vs queryId: SER_40_?_B vs ?_1_?_F
+currentId vs queryId: THR_41_?_B vs ?_1_?_F
+currentId vs queryId: GLN_42_?_B vs ?_1_?_F
+currentId vs queryId: ALA_43_?_B vs ?_1_?_F
+currentId vs queryId: ALA_44_?_B vs ?_1_?_F
+currentId vs queryId: ILE_45_?_B vs ?_1_?_F
+currentId vs queryId: ASP_46_?_B vs ?_1_?_F
+currentId vs queryId: GLN_47_?_B vs ?_1_?_F
+currentId vs queryId: ILE_48_?_B vs ?_1_?_F
+currentId vs queryId: ASN_49_?_B vs ?_1_?_F
+currentId vs queryId: GLY_50_?_B vs ?_1_?_F
+currentId vs queryId: LYS_51_?_B vs ?_1_?_F
+currentId vs queryId: LEU_52_?_B vs ?_1_?_F
+currentId vs queryId: ASN_53_?_B vs ?_1_?_F
+currentId vs queryId: ARG_54_?_B vs ?_1_?_F
+currentId vs queryId: LEU_55_?_B vs ?_1_?_F
+currentId vs queryId: ILE_56_?_B vs ?_1_?_F
+currentId vs queryId: GLY_57_?_B vs ?_1_?_F
+currentId vs queryId: LYS_58_?_B vs ?_1_?_F
+currentId vs queryId: THR_59_?_B vs ?_1_?_F
+currentId vs queryId: ASN_60_?_B vs ?_1_?_F
+currentId vs queryId: GLU_61_?_B vs ?_1_?_F
+currentId vs queryId: LYS_62_?_B vs ?_1_?_F
+currentId vs queryId: PHE_63_?_B vs ?_1_?_F
+currentId vs queryId: HIS_64_?_B vs ?_1_?_F
+currentId vs queryId: GLN_65_?_B vs ?_1_?_F
+currentId vs queryId: ILE_66_?_B vs ?_1_?_F
+currentId vs queryId: GLU_67_?_B vs ?_1_?_F
+currentId vs queryId: LYS_68_?_B vs ?_1_?_F
+currentId vs queryId: GLU_69_?_B vs ?_1_?_F
+currentId vs queryId: PHE_70_?_B vs ?_1_?_F
+currentId vs queryId: SER_71_?_B vs ?_1_?_F
+currentId vs queryId: GLU_72_?_B vs ?_1_?_F
+currentId vs queryId: VAL_73_?_B vs ?_1_?_F
+currentId vs queryId: GLU_74_?_B vs ?_1_?_F
+currentId vs queryId: GLY_75_?_B vs ?_1_?_F
+currentId vs queryId: ARG_76_?_B vs ?_1_?_F
+currentId vs queryId: ILE_77_?_B vs ?_1_?_F
+currentId vs queryId: GLN_78_?_B vs ?_1_?_F
+currentId vs queryId: ASP_79_?_B vs ?_1_?_F
+currentId vs queryId: LEU_80_?_B vs ?_1_?_F
+currentId vs queryId: GLU_81_?_B vs ?_1_?_F
+currentId vs queryId: LYS_82_?_B vs ?_1_?_F
+currentId vs queryId: TYR_83_?_B vs ?_1_?_F
+currentId vs queryId: VAL_84_?_B vs ?_1_?_F
+currentId vs queryId: GLU_85_?_B vs ?_1_?_F
+currentId vs queryId: ASP_86_?_B vs ?_1_?_F
+currentId vs queryId: THR_87_?_B vs ?_1_?_F
+currentId vs queryId: LYS_88_?_B vs ?_1_?_F
+currentId vs queryId: ILE_89_?_B vs ?_1_?_F
+currentId vs queryId: ASP_90_?_B vs ?_1_?_F
+currentId vs queryId: LEU_91_?_B vs ?_1_?_F
+currentId vs queryId: TRP_92_?_B vs ?_1_?_F
+currentId vs queryId: SER_93_?_B vs ?_1_?_F
+currentId vs queryId: TYR_94_?_B vs ?_1_?_F
+currentId vs queryId: ASN_95_?_B vs ?_1_?_F
+currentId vs queryId: ALA_96_?_B vs ?_1_?_F
+currentId vs queryId: GLU_97_?_B vs ?_1_?_F
+currentId vs queryId: LEU_98_?_B vs ?_1_?_F
+currentId vs queryId: LEU_99_?_B vs ?_1_?_F
+currentId vs queryId: VAL_100_?_B vs ?_1_?_F
+currentId vs queryId: ALA_101_?_B vs ?_1_?_F
+currentId vs queryId: LEU_102_?_B vs ?_1_?_F
+currentId vs queryId: GLU_103_?_B vs ?_1_?_F
+currentId vs queryId: ASN_104_?_B vs ?_1_?_F
+currentId vs queryId: GLN_105_?_B vs ?_1_?_F
+currentId vs queryId: HIS_106_?_B vs ?_1_?_F
+currentId vs queryId: THR_107_?_B vs ?_1_?_F
+currentId vs queryId: ILE_108_?_B vs ?_1_?_F
+currentId vs queryId: ASP_109_?_B vs ?_1_?_F
+currentId vs queryId: LEU_110_?_B vs ?_1_?_F
+currentId vs queryId: THR_111_?_B vs ?_1_?_F
+currentId vs queryId: ASP_112_?_B vs ?_1_?_F
+currentId vs queryId: SER_113_?_B vs ?_1_?_F
+currentId vs queryId: GLU_114_?_B vs ?_1_?_F
+currentId vs queryId: MET_115_?_B vs ?_1_?_F
+currentId vs queryId: ASN_116_?_B vs ?_1_?_F
+currentId vs queryId: LYS_117_?_B vs ?_1_?_F
+currentId vs queryId: LEU_118_?_B vs ?_1_?_F
+currentId vs queryId: PHE_119_?_B vs ?_1_?_F
+currentId vs queryId: GLU_120_?_B vs ?_1_?_F
+currentId vs queryId: LYS_121_?_B vs ?_1_?_F
+currentId vs queryId: THR_122_?_B vs ?_1_?_F
+currentId vs queryId: LYS_123_?_B vs ?_1_?_F
+currentId vs queryId: LYS_124_?_B vs ?_1_?_F
+currentId vs queryId: GLN_125_?_B vs ?_1_?_F
+currentId vs queryId: LEU_126_?_B vs ?_1_?_F
+currentId vs queryId: ARG_127_?_B vs ?_1_?_F
+currentId vs queryId: GLU_128_?_B vs ?_1_?_F
+currentId vs queryId: ASN_129_?_B vs ?_1_?_F
+currentId vs queryId: ALA_130_?_B vs ?_1_?_F
+currentId vs queryId: GLU_131_?_B vs ?_1_?_F
+currentId vs queryId: ASP_132_?_B vs ?_1_?_F
+currentId vs queryId: MET_133_?_B vs ?_1_?_F
+currentId vs queryId: GLY_134_?_B vs ?_1_?_F
+currentId vs queryId: ASN_135_?_B vs ?_1_?_F
+currentId vs queryId: GLY_136_?_B vs ?_1_?_F
+currentId vs queryId: CYS_137_?_B vs ?_1_?_F
+currentId vs queryId: PHE_138_?_B vs ?_1_?_F
+currentId vs queryId: LYS_139_?_B vs ?_1_?_F
+currentId vs queryId: ILE_140_?_B vs ?_1_?_F
+currentId vs queryId: TYR_141_?_B vs ?_1_?_F
+currentId vs queryId: HIS_142_?_B vs ?_1_?_F
+currentId vs queryId: LYS_143_?_B vs ?_1_?_F
+currentId vs queryId: CYS_144_?_B vs ?_1_?_F
+currentId vs queryId: ASP_145_?_B vs ?_1_?_F
+currentId vs queryId: ASN_146_?_B vs ?_1_?_F
+currentId vs queryId: ALA_147_?_B vs ?_1_?_F
+currentId vs queryId: CYS_148_?_B vs ?_1_?_F
+currentId vs queryId: ILE_149_?_B vs ?_1_?_F
+currentId vs queryId: GLY_150_?_B vs ?_1_?_F
+currentId vs queryId: SER_151_?_B vs ?_1_?_F
+currentId vs queryId: ILE_152_?_B vs ?_1_?_F
+currentId vs queryId: ARG_153_?_B vs ?_1_?_F
+currentId vs queryId: ASN_154_?_B vs ?_1_?_F
+currentId vs queryId: GLY_155_?_B vs ?_1_?_F
+currentId vs queryId: THR_156_?_B vs ?_1_?_F
+currentId vs queryId: TYR_157_?_B vs ?_1_?_F
+currentId vs queryId: ASP_158_?_B vs ?_1_?_F
+currentId vs queryId: HIS_159_?_B vs ?_1_?_F
+currentId vs queryId: ASP_160_?_B vs ?_1_?_F
+currentId vs queryId: VAL_161_?_B vs ?_1_?_F
+currentId vs queryId: TYR_162_?_B vs ?_1_?_F
+currentId vs queryId: ARG_163_?_B vs ?_1_?_F
+currentId vs queryId: ASP_164_?_B vs ?_1_?_F
+currentId vs queryId: GLU_165_?_B vs ?_1_?_F
+currentId vs queryId: ALA_166_?_B vs ?_1_?_F
+currentId vs queryId: LEU_167_?_B vs ?_1_?_F
+currentId vs queryId: ASN_168_?_B vs ?_1_?_F
+currentId vs queryId: ASN_169_?_B vs ?_1_?_F
+currentId vs queryId: ARG_170_?_B vs ?_1_?_F
+currentId vs queryId: PHE_171_?_B vs ?_1_?_F
+currentId vs queryId: GLN_172_?_B vs ?_1_?_F
+currentId vs queryId: ILE_173_?_B vs ?_1_?_F
+currentId vs queryId: NAG_1_?_F vs ?_1_?_F
 Super target is GAL_9_?_?
-Residue to wiggle is 0LB_15_?_?Gonna find path between 6LB and 0LB
-0LB_15, 4YB_14, Creating rotatable dihedrals between: 0LB and 4YB
-3LB_13, Creating rotatable dihedrals between: 4YB and 3LB
-4YB_12, Creating rotatable dihedrals between: 3LB and 4YB
-3LB_11, Creating rotatable dihedrals between: 4YB and 3LB
-4YB_10, Creating rotatable dihedrals between: 3LB and 4YB
-2MA_9, Creating rotatable dihedrals between: 4YB and 2MA
+Residue to wiggle is 0SA_15_?_?Gonna find path between 3LB and 0SA
+0SA_15, 6LB_14, Creating rotatable dihedrals between: 0SA and 6LB
+4YB_13, Creating rotatable dihedrals between: 6LB and 4YB
+2MA_12, Creating rotatable dihedrals between: 4YB and 2MA
 VMB_4, Creating rotatable dihedrals between: 2MA and VMB
 2MA_5, Creating rotatable dihedrals between: VMB and 2MA
 4YB_6, Creating rotatable dihedrals between: 2MA and 4YB
-6LB_7, Creating rotatable dihedrals between: 4YB and 6LB
+3LB_7, Creating rotatable dihedrals between: 4YB and 3LB
 
 Linkages I behold:
 
-DGalpb1-4DGlcNAcpb: 1
-DGlcNAcpb1-3DGalpb: 1
-DGalpb1-4DGlcNAcpb: 1
-DGlcNAcpb1-3DGalpb: 1
+DNeu5Acpa2-6DGalpb: 6
 DGalpb1-4DGlcNAcpb: 1
 DGlcNAcpb1-2DManpa: 1
-DManpa1-6DManpb: 3
-DManpb3-1DManpa: 1
+DManpa1-3DManpb: 1
+DManpb6-1DManpa: 3
 DManpa2-1DGlcNAcpb: 1
 DGlcNAcpb4-1DGalpb: 1
 Finished reading and ready to rock captain
 Starting to wiggle!
-Blocking access via O4, we will search outward from C1
+Blocking access via C6, we will search outward from C5
 Have determined that the following Phi angle atoms will move:
-O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, 
-Blocking access via C4, we will search outward from O4
+C6, C5, O5, C1, C2, C3, C4, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, 
+Blocking access via O6, we will search outward from C6
 Have determined that the following Psi angle atoms will move:
-C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, 
-Blocking access via O3, we will search outward from C1
-Have determined that the following Phi angle atoms will move:
-O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following Psi angle atoms will move:
-C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
-Blocking access via O3, we will search outward from C3
-Have determined that the following Phi angle atoms will move:
-O3, C3, C4, C5, O5, C1, C2, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H3, 
-Blocking access via C1, we will search outward from O3
-Have determined that the following Psi angle atoms will move:
-C1, O3, C3, C4, C5, O5, C1, C2, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H3, 
-Blocking access via O2, we will search outward from C2
-Have determined that the following Phi angle atoms will move:
-O2, C2, C1, O5, C5, C4, C3, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, O3, C3, C4, C5, O5, C1, C2, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H3, H2, 
-Blocking access via C1, we will search outward from O2
-Have determined that the following Psi angle atoms will move:
-C1, O2, C2, C1, O5, C5, C4, C3, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, O3, C3, C4, C5, O5, C1, C2, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H3, H2, 
-Blocking access via O4, we will search outward from C1
-Have determined that the following Phi angle atoms will move:
-O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
-Blocking access via C4, we will search outward from O4
-Have determined that the following Psi angle atoms will move:
-C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
-Blocking access via O2, we will search outward from C1
-Have determined that the following Phi angle atoms will move:
-O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
-Blocking access via C2, we will search outward from O2
-Have determined that the following Psi angle atoms will move:
-C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
-Blocking access via O4, we will search outward from C1
-Have determined that the following Phi angle atoms will move:
-O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, 
-Blocking access via C4, we will search outward from O4
-Have determined that the following Psi angle atoms will move:
-C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, 
-Blocking access via O3, we will search outward from C1
-Have determined that the following Phi angle atoms will move:
-O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
-Blocking access via C3, we will search outward from O3
-Have determined that the following Psi angle atoms will move:
-C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
-Blocking access via O6, we will search outward from C1
-Have determined that the following Phi angle atoms will move:
-O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via C6, we will search outward from O6
-Have determined that the following Psi angle atoms will move:
-C6, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
-Blocking access via C5, we will search outward from C6
+O6, C6, C5, O5, C1, C2, C3, C4, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, H62, H61, 
+Blocking access via C1, we will search outward from O6
 Have determined that the following Omg angle atoms will move:
-C5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+C1, O6, C6, C5, O5, C1, C2, C3, C4, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, H62, H61, 
+Blocking access via O3, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following Psi angle atoms will move:
+C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following Psi angle atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, 
 Blocking access via O4, we will search outward from C4
 Have determined that the following Phi angle atoms will move:
-O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O2, C2, C1, O5, C5, C4, C3, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, O3, C3, C4, C5, O5, C1, C2, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H3, H2, H5, C6, H62, H61, O6, H6O, H4, 
+O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O2, C2, C1, O5, C5, C4, C3, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, O6, C6, C5, O5, C1, C2, C3, C4, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, H62, H61, H2, H5, C6, H62, H61, O6, H6O, H4, 
 Blocking access via C1, we will search outward from O4
 Have determined that the following Psi angle atoms will move:
-C1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O2, C2, C1, O5, C5, C4, C3, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, O3, C3, C4, C5, O5, C1, C2, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H4, O4, H4O, H3, H2, H5, C6, H62, H61, O6, H6O, H4, 
+C1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O2, C2, C1, O5, C5, C4, C3, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, O6, C6, C5, O5, C1, C2, C3, C4, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, H62, H61, H2, H5, C6, H62, H61, O6, H6O, H4, 
+Blocking access via O6, we will search outward from C2
+Have determined that the following Phi angle atoms will move:
+O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C6, we will search outward from O6
+Have determined that the following Psi angle atoms will move:
+C6, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via C5, we will search outward from C6
+Have determined that the following Omg angle atoms will move:
+C5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, 
+Blocking access via O2, we will search outward from C2
+Have determined that the following Phi angle atoms will move:
+O2, C2, C1, O5, C5, C4, C3, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, O6, C6, C5, O5, C1, C2, C3, C4, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, H62, H61, H2, 
+Blocking access via C1, we will search outward from O2
+Have determined that the following Psi angle atoms will move:
+C1, O2, C2, C1, O5, C5, C4, C3, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, O6, C6, C5, O5, C1, C2, C3, C4, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, H3, O3, H3O, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O4, C4, C5, O5, C1, C2, C3, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, O1, HO1, H5, C6, H62, H61, O6, H6O, H4, H5, C6, H62, H61, O6, H6O, H4, H5, H62, H61, H2, 
+Blocking access via O2, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following Psi angle atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, C2, O6, C6, C5, C4, C3, H3E, H3A, H4, O4, H4O, H5, N5, H5N, C5N, CME, H3M, H2M, H1M, O5N, H6, C7, H7, C8, H8, C9, H9S, H9R, O9, H9O, O8, H8O, O7, H7O, C1, O1A, O1B, H4, O4, H4O, H3, O3, H3O, H2, O2, H2O, H1, H3, O3, H3O, H2, N2, H2N, C2N, O2N, CME, H3M, H2M, H1M, H1, 
 ALL DONE HON
 Starting to wiggle!
 ALL DONE HON
