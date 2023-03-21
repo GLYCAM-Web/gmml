@@ -28,22 +28,31 @@ private:
     cdsCondensedSequence::Carbohydrate& getCarbohydrate() {return carbohydrate_;}
     std::vector<cds::ResidueLinkage>& getWiggleLinkages() {return wiggleLinkages_;}
     pdb::PdbFile& getSubstrate() {return substrate_;}
+    std::vector<Coordinate*> getCoordsToAvoid() {return coordsToAvoids_;}
+    unsigned int getCurrentOverlapCount() {return currentOverlapCount_;}
+    double getCurrentDistance() {return currentDistance_;}
     //////////////////////////////////////////////////////////
     //                  PRIVATE FUNCTIONS                   //
     //////////////////////////////////////////////////////////
+    void setCurrentOverlapCount(unsigned int i) {currentOverlapCount_ = i;}
+    void setCurrentDistance(double d) {currentDistance_ = d;}
     void superimpose(std::vector<Coordinate*>& carbohydrateCoordinates, const Residue* superimpositionTarget, Residue* superimposeMe);
     std::vector<cds::ResidueLinkage>& determineWiggleLinkages(Residue* startResidue, Residue* endResidue);
     void randomizeLinkageOrder() {std::random_shuffle(wiggleLinkages_.begin(), wiggleLinkages_.end());}
     double calculateDistance();
+    bool acceptOverlaps();
+    bool acceptDistance(bool useMonteCarlo = true);
     //////////////////////////////////////////////////////////
     //                 PRIVATE MEMBERS                      //
     //////////////////////////////////////////////////////////
     pdb::PdbFile substrate_;
     cdsCondensedSequence::Carbohydrate carbohydrate_;
     std::vector<cds::ResidueLinkage> wiggleLinkages_;
-    const std::vector<Coordinate*> atomsToAvoid_;
+    std::vector<Coordinate*> coordsToAvoids_;
     std::vector<Coordinate*> wiggleMeCoordinates_;
     std::vector<Coordinate*> wiggleTargetCoordinates_;
+    unsigned int currentOverlapCount_;
+    double currentDistance_;
 };
 }
 #endif /* INCLUDES_CENTRALDATASTRUCTURE_INTERNALPROGRAMS_WIGGLETOSITE_WIGGLETOSITE_HPP_ */
