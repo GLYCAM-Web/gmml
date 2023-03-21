@@ -77,7 +77,6 @@ const std::string PdbResidue::GetParmName() const // If terminal, need to look u
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
-
 //////////////////////////////////////////////////////////
 //                    FUNCTIONS                         //
 //////////////////////////////////////////////////////////
@@ -140,7 +139,7 @@ void PdbResidue::Write(std::ostream& stream) const
 {
     for(auto &atom : this->getAtoms())
     {
-        static_cast<const PdbAtom*>(atom)->Write(stream);
+        static_cast<const PdbAtom*>(atom)->Write(stream, this->getName(), this->getNumber(), this->getChainId(), this->getInsertionCode());
     }
     if(this->HasTerCard())
     {
