@@ -17,19 +17,6 @@ int main(int argc, char* argv[])
     std::cout << "Reading input file complete\n" << std::flush;
     std::cout << inputStruct.Print();
     gmmlPrograms::WiggleToSite wiggler(inputStruct);
-
-//    GlycoproteinBuilder glycoproteinBuilder(inputStruct);
-//    if(glycoproteinBuilder.IsStatusOk())
-//    {    // Poor pattern, need to throw up to and catch in gems.
-//        std::cout << "Resolving overlaps" << std::endl;
-//        glycoproteinBuilder.ResolveOverlaps(); // Default randomize value is true, and output isn't deterministic.
-//        std::cout << "Writing output files" << std::endl;
-//        glycoproteinBuilder.WriteOutputFiles();
-//    }
-//    if (!glycoproteinBuilder.IsStatusOk()) // Status might be changed by ResolveOverlaps or WriteOuputfiles.
-//    {
-//        std::cerr << glycoproteinBuilder.GetStatusMessage() << std::endl;
-//    }
     std::cout << "Program got to end ok" << std::endl;
     return 0;
 }
