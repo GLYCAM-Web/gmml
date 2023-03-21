@@ -16,7 +16,7 @@ public:
     //////////////////////////////////////////////////////////
     //                    CONSTRUCTOR                       //
     //////////////////////////////////////////////////////////
-    Assembly() : number_(0) {}
+    Assembly() {}
     Assembly(Assembly&& other) noexcept;            // Move Ctor
     Assembly(const Assembly& other);                // Copy Ctor
     Assembly& operator=(Assembly other);            // Move and Copy assignment operator
@@ -55,7 +55,7 @@ private:
     //                    ATTRIBUTES                        //
     //////////////////////////////////////////////////////////
     std::vector<std::unique_ptr<Molecule>> molecules_;
-    int number_;
+    int number_ = 0;
 };
 } // namespace
 #endif // ASSEMBLY_HPP
