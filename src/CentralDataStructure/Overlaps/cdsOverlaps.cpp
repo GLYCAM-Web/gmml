@@ -180,3 +180,19 @@ unsigned int cds::CountOverlappingAtoms(const std::vector<cds::Atom*>& atomsA, c
     }
     return overlapCount;
 }
+
+unsigned int cds::CountOverlappingCoordinates(const std::vector<cds::Coordinate*>& coordsA, const std::vector<cds::Coordinate*>& coordsB)
+{
+    unsigned int overlapCount = 1;
+    for(auto &coordA : coordsA)
+    {
+        for(auto &coordB : coordsB)
+        {
+            if (cds::CheckIfOtherCoordinateIsWithinDistance(coordA, coordB, constants::maxCutOff))
+            {
+                ++overlapCount;
+            }
+        }
+    }
+    return overlapCount;
+}

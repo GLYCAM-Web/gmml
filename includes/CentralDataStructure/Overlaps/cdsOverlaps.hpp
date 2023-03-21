@@ -24,6 +24,6 @@ double CalculateAtomicOverlapsBetweenNonBondedAtoms(std::vector<Atom*>& atomsA, 
 unsigned int CountOverlappingResidues(const std::vector<cds::Residue*>& residuesA, const std::vector<cds::Residue*>& residuesB);
 unsigned int CountOverlappingAtoms(const std::vector<Atom*>& atomsA, const std::vector<Atom*>& atomsB);
 unsigned int CountOverlappingAtoms(const std::vector<cds::Residue*>& residuesA, const std::vector<cds::Residue*>& residuesB);
-
+unsigned int CountOverlappingCoordinates(const std::vector<cds::Coordinate*>& coordsA, const std::vector<cds::Coordinate*>& coordsB);
 } // namespace
 #endif
