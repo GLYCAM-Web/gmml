@@ -22,6 +22,7 @@
 ./src/CentralDataStructure/Readers/Pdb/pdbModel.cpp
 ./src/CentralDataStructure/Readers/Pdb/pdbResidue.cpp
 ./src/CentralDataStructure/Readers/Pdb/pdbResidueId.cpp
+./src/CentralDataStructure/Readers/Pdb/pdbSelections.cpp
 ./src/CentralDataStructure/Readers/Pdb/sectionClasses/authorRecord.cpp
 ./src/CentralDataStructure/Readers/Pdb/sectionClasses/conectRecord.cpp
 ./src/CentralDataStructure/Readers/Pdb/sectionClasses/databaseReferenceRecord.cpp
