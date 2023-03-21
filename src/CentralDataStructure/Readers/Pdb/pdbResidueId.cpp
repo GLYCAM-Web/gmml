@@ -17,7 +17,36 @@ ResidueId::ResidueId(const std::string &line)
     insertionCode_ = codeUtils::RemoveWhiteSpace(line.substr(26 + shift + secondShift, 1));
 }
 
-ResidueId::ResidueId(const std::string &name, const std::string &number, const std::string &insertionCode, const std::string &chainId) : residueName_(name), sequenceNumber_(number), insertionCode_(insertionCode), chainId_(chainId) {}
+ResidueId::ResidueId(const std::string name, const std::string number, const std::string insertionCode, const std::string chainId) : residueName_(name), sequenceNumber_(number), insertionCode_(insertionCode), chainId_(chainId) {}
+
+ResidueId::ResidueId(std::vector<std::string> inputVector)
+{
+    std::cout << "Inputs:\n";
+    for(auto & input : inputVector)
+    {
+        std::cout << input << std::endl;
+    }
+    if (inputVector.size() < 4)
+    {
+        throw std::runtime_error("ResidueId cannot be constructed from inputs");
+    }
+    if (inputVector.at(0) != "?")
+    {
+        residueName_ = inputVector.at(0);
+    }
+    if (inputVector.at(1) != "?")
+    {
+        sequenceNumber_ = inputVector.at(1);
+    }
+    if (inputVector.at(2) != "?")
+    {
+        insertionCode_ = inputVector.at(2);
+    }
+    if (inputVector.at(3) != "?")
+    {
+        chainId_ = inputVector.at(3);
+    }
+}
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
@@ -30,7 +59,7 @@ const std::string ResidueId::getNumberAndInsertionCode() const
 //////////////////////////////////////////////////////////
 std::string ResidueId::print() const
 {
-    std::string formattedId;
+    std::string formattedId = "";
     if (this->getName().empty())
     {
         formattedId += gmml::sNotSet;
