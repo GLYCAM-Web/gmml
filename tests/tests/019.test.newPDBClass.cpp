@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
     	cds::bondAtomsByDistance(assembly->getAtoms());
     }
     std::cout << "Finished bonding atoms by distance\n";
-    	pdbFile.Write("./outputPdbFile.pdb");
+    pdbFile.Write("./outputPdbFile.pdb");
     // Just showing what's in the ppInfo and how to access it
     std::cout << "Unrecognized atoms:\n";
     for(auto &unrecognized : ppInfo.unrecognizedAtoms_)

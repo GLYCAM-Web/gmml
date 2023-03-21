@@ -1,5 +1,20 @@
 Parsing inputfile
-Preprocesssing has begun
+Preprocessing
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Finished bonding atoms by distance
 Unrecognized atoms:
 o7 | PRO | B | 58
 o7 | PRO | B | 159
@@ -76,11 +91,12 @@ SIA | J | 407
 NAG | J | 408
 GAL | J | 409
 Gaps in amino acid chain:
-B | 36  | 38  | NHCH3 | COCH3
-G | 98  | 101  | NHCH3 | COCH3
-G | 104  | 106  | NHCH3 | COCH3
-H | 104  | 106  | NHCH3 | COCH3
-I | 102  | 104  | NHCH3 | COCH3
+A | 68 | 71 | NHCH3 | COCH3
+B | 36 | 38 | NHCH3 | COCH3
+G | 98 | 101 | NHCH3 | COCH3
+G | 104 | 106 | NHCH3 | COCH3
+H | 104 | 106 | NHCH3 | COCH3
+I | 102 | 104 | NHCH3 | COCH3
 Histidine Protonation:
 HIE | A | 26
 HIE | A | 129
@@ -124,13 +140,13 @@ HIE | J | 151
 HIE | J | 271
 Disulphide bonds:
 Chain terminations:
-A | 25  | NH3+ | 301  | CO2-
-B | 25  | NH3+ | 299  | CO2-
-C | 25  | NH3+ | 299  | CO2-
-D | 26  | NH3+ | 299  | CO2-
-E | 25  | NH3+ | 301  | CO2-
-F | 25  | NH3+ | 298  | CO2-
-G | 25  | NH3+ | 298  | CO2-
-H | 25  | NH3+ | 298  | CO2-
-I | 25  | NH3+ | 299  | CO2-
-J | 24  | NH3+ | 300  | CO2-
+A | 25 | NH3+ | 301 | CO2-
+B | 25 | NH3+ | 299 | CO2-
+C | 25 | NH3+ | 299 | CO2-
+D | 26 | NH3+ | 299 | CO2-
+E | 25 | NH3+ | 301 | CO2-
+F | 25 | NH3+ | 298 | CO2-
+G | 25 | NH3+ | 298 | CO2-
+H | 25 | NH3+ | 298 | CO2-
+I | 25 | NH3+ | 299 | CO2-
+J | 24 | NH3+ | 300 | CO2-

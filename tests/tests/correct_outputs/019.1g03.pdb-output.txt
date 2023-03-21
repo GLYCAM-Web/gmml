@@ -1,5 +1,286 @@
 Parsing inputfile
-Preprocesssing has begun
+Preprocessing
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Finished bonding atoms by distance
 Unrecognized atoms:
 Missing heavy atoms:
 Unrecognized residues:
@@ -107,23 +388,23 @@ HID | A | 71
 HID | A | 72
 Disulphide bonds:
 Chain terminations:
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
-A | 1  | NH3+ | 134  | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-

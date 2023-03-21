@@ -1,0 +1,129 @@
+Parsing inputfile
+Preprocessing
+Bonding atoms by distance for assembly
+Launching thread 0
+Launching thread 1
+Launching thread 2
+Launching thread 3
+Launching thread 4
+Launching thread 5
+Launching thread 6
+Launching thread 7
+Launching thread 8
+Launching thread 9
+Launching thread 10
+Waiting on threads to finish
+Threads finish
+Finished bonding atoms by distance
+Unrecognized atoms:
+Missing heavy atoms:
+Unrecognized residues:
+Gaps in amino acid chain:
+ | 309 | 310 | NHCH3 | COCH3
+Histidine Protonation:
+HIE |  | 23
+HIE |  | 40
+HIE |  | 43
+HIE |  | 120
+HIE |  | 181
+HIE |  | 219
+HIE |  | 493
+HIE |  | 599
+HIE |  | 629
+HIE |  | 1022
+HIE |  | 1032
+HIE |  | 1038
+HIE |  | 1057
+HIE |  | 1062
+HIE |  | 1075
+HIE |  | 1143
+HIE |  | 1160
+HIE |  | 1163
+HIE |  | 1240
+HIE |  | 1301
+HIE |  | 1339
+HIE |  | 1613
+HIE |  | 1719
+HIE |  | 1749
+HIE |  | 2142
+HIE |  | 2152
+HIE |  | 2158
+HIE |  | 2177
+HIE |  | 2182
+HIE |  | 2195
+HIE |  | 2263
+HIE |  | 2280
+HIE |  | 2283
+HIE |  | 2360
+HIE |  | 2421
+HIE |  | 2459
+HIE |  | 2733
+HIE |  | 2839
+HIE |  | 2869
+HIE |  | 3262
+HIE |  | 3272
+HIE |  | 3278
+HIE |  | 3297
+HIE |  | 3302
+HIE |  | 3315
+HIE |  | 3376
+HIE |  | 3537
+HIE |  | 3570
+HIE |  | 3581
+HIE |  | 3583
+HIE |  | 3607
+HIE |  | 3687
+HIE |  | 3715
+HIE |  | 3716
+HIE |  | 3720
+HIE |  | 3743
+HIE |  | 3759
+HIE |  | 3835
+HIE |  | 3847
+HIE |  | 3877
+HIE |  | 3882
+Disulphide bonds:
+ | CYX | 105 | 2.03059 |  | CYX | 140
+ | CYX | 265 | 2.015 |  | CYX | 275
+ | CYX | 310 | 2.03748 |  | CYX | 335
+ | CYX | 353 | 2.04364 |  | CYX | 406
+ | CYX | 365 | 1.35845 |  | CYX | 499
+ | CYX | 454 | 2.06573 |  | CYX | 462
+ | CYX | 512 | 2.0257 |  | CYX | 564
+ | CYX | 591 | 2.02423 |  | CYX | 623
+ | CYX | 636 | 2.03857 |  | CYX | 645
+ | CYX | 712 | 2.02709 |  | CYX | 734
+ | CYX | 717 | 2.03302 |  | CYX | 723
+ | CYX | 1006 | 2.02796 |  | CYX | 1017
+ | CYX | 1056 | 2.03537 |  | CYX | 1100
+ | CYX | 1225 | 2.01783 |  | CYX | 1260
+ | CYX | 1385 | 2.00637 |  | CYX | 1395
+ | CYX | 1430 | 2.02393 |  | CYX | 1455
+ | CYX | 1473 | 2.04137 |  | CYX | 1526
+ | CYX | 1485 | 2.03278 |  | CYX | 1619
+ | CYX | 1632 | 2.02297 |  | CYX | 1684
+ | CYX | 1711 | 2.01863 |  | CYX | 1743
+ | CYX | 1756 | 2.02968 |  | CYX | 1765
+ | CYX | 1832 | 2.03275 |  | CYX | 1854
+ | CYX | 1837 | 2.02285 |  | CYX | 1843
+ | CYX | 2126 | 2.02306 |  | CYX | 2137
+ | CYX | 2176 | 2.0224 |  | CYX | 2220
+ | CYX | 2345 | 2.01883 |  | CYX | 2380
+ | CYX | 2505 | 2.02803 |  | CYX | 2515
+ | CYX | 2550 | 2.01639 |  | CYX | 2575
+ | CYX | 2593 | 2.03851 |  | CYX | 2646
+ | CYX | 2605 | 2.02836 |  | CYX | 2739
+ | CYX | 2752 | 2.03107 |  | CYX | 2804
+ | CYX | 2831 | 2.0194 |  | CYX | 2863
+ | CYX | 2876 | 2.02962 |  | CYX | 2885
+ | CYX | 2957 | 2.03231 |  | CYX | 2963
+ | CYX | 3246 | 2.01312 |  | CYX | 3257
+ | CYX | 3296 | 2.03049 |  | CYX | 3340
+ | CYX | 3475 | 2.05877 |  | CYX | 3483
+ | CYX | 3686 | 2.03931 |  | CYX | 3703
+ | CYX | 3872 | 2.02314 |  | CYX | 3884
+Chain terminations:
+ | 1 | NH3+ | 1120 | CO2-
+ | 1121 | NH3+ | 2240 | CO2-
+ | 2241 | NH3+ | 3360 | CO2-
+ | 3361 | NH3+ | 3957 | CO2-
