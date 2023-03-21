@@ -24,13 +24,12 @@ PdbAtom::PdbAtom(const std::string &line)
     shift = codeUtils::GetSizeOfIntInString(line.substr(12));
     try
     {
-        //ToDo use abs:Atom number_ instead. So setNumber() and remove this serialNumber_ attribute.
-        serialNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(6, 6 + shift)));
+        this->setNumber( std::stoi(codeUtils::RemoveWhiteSpace(line.substr(6, 6 + shift))) );
     }
     catch (...)
     {
-        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to serialNumber from: " + line.substr(6, 6 + shift));
-        serialNumber_ = constants::iNotSet;
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Error converting to atom's serial number from: " + line.substr(6, 6 + shift));
+        this->setNumber(constants::iNotSet);
     }
     std::string atomName = codeUtils::RemoveWhiteSpace(line.substr(12 + shift, 4));
     if (atomName.empty())
@@ -89,6 +88,8 @@ PdbAtom::PdbAtom(const std::string &line)
     catch (...)
     {
         gmml::log(__LINE__, __FILE__, gmml::WAR, "Problem converting to occupancy from: " + line.substr(54 + shift, 6));
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "Problematic line is:" + line);
+        occupancy_ = 1.0;
     }
     try
     {
@@ -97,6 +98,8 @@ PdbAtom::PdbAtom(const std::string &line)
     catch (...)
     {
         gmml::log(__LINE__, __FILE__, gmml::WAR, "Problem converting to temperatureFactor_ from: " + line.substr(60 + shift, 6));
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "Problematic line is:" + line);
+        temperatureFactor_ = 0.0;
     }
     // Worried about case where shift is 2 and these don't exist, so line length is 80. More Ifs: Ugh.
     if (shift <= 2)
@@ -111,7 +114,12 @@ PdbAtom::PdbAtom(const std::string &line)
 
 // ToDo Is this necessary? Won't the base class one be called?
 PdbAtom::PdbAtom(const std::string& name, const Coordinate& coord)
-: cds::Atom(name, coord) {}
+: cds::Atom(name, coord)
+{
+    this->SetRecordName("ATOM");
+    this->SetTempretureFactor(0.0);
+    this->SetOccupancy(1.0);
+}
 
 /////////////////////////////////////////////////////////
 //                       MUTATOR                        //
@@ -119,10 +127,6 @@ PdbAtom::PdbAtom(const std::string& name, const Coordinate& coord)
 void PdbAtom::SetRecordName(const std::string s)
 {
     recordName_ = s;
-}
-void PdbAtom::SetSerialNumber(const int atom_serial_number)
-{
-    serialNumber_ = atom_serial_number;
 }
 void PdbAtom::SetAlternateLocation(const std::string atom_alternate_location)
 {
@@ -182,13 +186,13 @@ std::string PdbAtom::GetId(const std::string &residueId) const
 void PdbAtom::Print(std::ostream &out) const
 {
     out << "Serial Number: ";
-    if(serialNumber_ == constants::iNotSet)
+    if(this->getNumber() == constants::iNotSet)
     {
         out << " ";
     }
     else
     {
-        out << serialNumber_;
+        out << this->getNumber();
     }
     out << ", Atom Name: " << this->getName()
             << ", Alternate Location: " << alternateLocation_
@@ -227,7 +231,7 @@ void PdbAtom::Print(std::ostream &out) const
     out << ", Element: " << element_
             << ", Charge: " << charge_ << std::endl;
 }
-void PdbAtom::Write(std::ostream& stream) const // ToDo this can perhaps be moved to a free function, so that cds::Atom type atoms can be written out into a PDB format.
+void PdbAtom::Write(std::ostream& stream, const std::string residueName, const unsigned int residueNumber, const std::string chainId, const std::string insertionCode) const
 {
-    cds::writeAtomToPdb(stream, this, this->GetRecordName(), this->GetResidueName(), this->GetResidueSequenceNumber(), this->GetChainId(), this->GetInsertionCode(), this->GetOccupancy(), this->GetTemperatureFactor());
+    cds::writeAtomToPdb(stream, this, this->GetRecordName(), residueName, residueNumber, chainId, insertionCode, this->GetOccupancy(), this->GetTemperatureFactor());
 }

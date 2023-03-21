@@ -22,11 +22,10 @@ public:
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
     inline const std::string& GetRecordName() const {return recordName_;}
-    inline const int& getNumber() const {return serialNumber_;}
-    inline const std::string& GetResidueName() const {return residueName_;}
-    inline const std::string& GetChainId() const {return chainId_;}
-    inline const int& GetResidueSequenceNumber() const {return residueSequenceNumber_;}
-    inline const std::string& GetInsertionCode() const {return insertionCode_;}
+    //inline const std::string& GetResidueName() const {return residueName_;}
+    //inline const std::string& GetChainId() const {return chainId_;}
+    //inline const int& GetResidueSequenceNumber() const {return residueSequenceNumber_;}
+    //inline const std::string& GetInsertionCode() const {return insertionCode_;}
     inline const std::string& GetAlternateLocation() const {return alternateLocation_;}
     inline const double& GetOccupancy() const {return occupancy_;}
     inline const double& GetTemperatureFactor() const {return temperatureFactor_;}
@@ -44,14 +43,13 @@ public:
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////
     void Print(std::ostream& out = std::cerr) const;
-    void Write(std::ostream& stream) const;
+    void Write(std::ostream& stream, const std::string residueName, const unsigned int residueNumber, const std::string chainId, const std::string insertionCode) const;
 private:
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
     void SetModelNumber(const int i);
     void SetRecordName(const std::string s);
-    void SetSerialNumber(const int atom_serial_number);
     void SetAlternateLocation(const std::string atom_alternate_location);
     void SetChainId(const std::string atom_chain_id);
     void SetResidueSequenceNumber(const int atom_residue_sequence_number);
@@ -66,7 +64,6 @@ private:
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
     std::string recordName_;                      // Can be HETATM or ATOM
-    int serialNumber_ = constants::iNotSet;                            // Atom serial number in a model card of a pdb file
     std::string alternateLocation_ = "";               // Atom residue name in a single atom record in a model card of a pdb file
     std::string residueName_ = "";                     // Residue name that the atom is assigned to
     std::string chainId_ = "";                         // Chain id that the atom belongs to

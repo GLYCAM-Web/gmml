@@ -14,6 +14,7 @@ Atom::Atom(const std::string name, const Coordinate& coord)
 {
     this->addCoordinate(coord);
     this->setName(name);
+    this->setNumber(1); // Seems like a fine default?
 }
 // Move Ctor
 Atom::Atom(Atom&& other) noexcept : glygraph::Node<cds::Atom>(other)
