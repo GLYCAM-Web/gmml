@@ -63,10 +63,10 @@ private:
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
-    std::string residueName_;
-    std::string sequenceNumber_;
-    std::string insertionCode_;
-    std::string chainId_;
+    std::string residueName_ = "";
+    std::string sequenceNumber_ = "";
+    std::string insertionCode_ = "";
+    std::string chainId_ = "";
 };
 }
 #endif
