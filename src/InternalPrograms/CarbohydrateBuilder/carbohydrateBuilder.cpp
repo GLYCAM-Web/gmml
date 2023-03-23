@@ -14,8 +14,10 @@ carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::str
 	try
 	{
 		assembly_ = MolecularModeling::Assembly(condensedSequence, prepFilePath);
-		gmml::log(__LINE__,__FILE__,gmml::INF, "Assembly constructor complete. Initializing the rest of the class\n");
+		gmml::log(__LINE__,__FILE__,gmml::INF, "carbohydrateBuilder: Assembly constructor complete. Initializing the rest of the class\n");
 	    this->InitializeClass(condensedSequence);
+	    gmml::log(__LINE__,__FILE__,gmml::INF, "carbohydrateBuilder: initialization complete.\n");
+
 	}	// Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
 	catch(const std::string &exceptionMessage)
 	{
@@ -132,10 +134,14 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(CondensedSequence::SingleR
             std::string standardDihedralName = this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName);
             currentLinkage->SetSpecificShape(standardDihedralName, rotamerInfo.selectedRotamer);
         }
-        std::string fileName = "structure";
+        gmml::log(__LINE__,__FILE__, gmml::INF, "Finished setting shapes. On to resolving overlaps.");
         this->ResolveOverlaps();
+        gmml::log(__LINE__,__FILE__, gmml::INF, "Finished resolving overlaps. On to writing out files.");
+        std::string fileName = "structure";
         this->Write3DStructureFile(fileOutputDirectory, "PDB", fileName);
         this->Write3DStructureFile(fileOutputDirectory, "OFFFILE", fileName);
+        gmml::log(__LINE__,__FILE__, gmml::INF, "GenerateSpecific3DStructure() is complete.");
+
     }   // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
     catch(const std::string &exceptionMessage)
     {
