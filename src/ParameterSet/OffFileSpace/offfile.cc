@@ -34,8 +34,11 @@ using OffFileSpace::OffFile;
     void OffFileSpace::OffFile::Write(std::string file_name, int CoordinateIndex, MolecularModeling::Assembly* assembly)
     {
 
-            std::ofstream out_file;
-            out_file.open(file_name.c_str());
+            std::ofstream out_file(file_name.c_str());
+            if(!out_file)
+            {
+                throw std::runtime_error("Could not open off file for writing");
+            }
             MolecularModeling::ResidueVector residues = assembly->GetResidues();
             unit_name_=assembly->GetName();
             out_file << "!!index array str" << std::endl;
@@ -55,7 +58,7 @@ using OffFileSpace::OffFile;
             WriteResiduesSection(out_file,residues);
             WriteSolventCapSection(out_file);
             WriteVelocitiesSection(out_file,this->off_file_residues_);
-              out_file.close();
+            out_file.close();
 
     }
 

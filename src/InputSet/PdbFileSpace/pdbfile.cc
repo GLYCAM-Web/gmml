@@ -4989,10 +4989,17 @@ void PdbFile::Write(const std::string& pdb_file)
 {
     try
     {
-        std::ofstream out_file;
-        out_file.open(pdb_file.c_str());
-        this->ResolveCards(out_file);
-        out_file.close();
+        std::ofstream out_file(pdb_file.c_str());
+        if (out_file)
+        {
+            this->ResolveCards(out_file);
+            out_file.close();
+        }
+        else
+        {
+            throw std::runtime_error("Could not open file\n");
+        }
+
     }
     catch(...)
     {
@@ -5005,10 +5012,16 @@ void PdbFile::WriteWithTheGivenModelNumber(const std::string& pdb_file, int mode
 {
     try
     {
-        std::ofstream out_file;
-        out_file.open(pdb_file.c_str());
-        this->ResolveCardsWithTheGivenModelNumber(out_file, model_number);
-        out_file.close();
+        std::ofstream out_file(pdb_file.c_str());
+        if (out_file)
+        {
+            this->ResolveCardsWithTheGivenModelNumber(out_file, model_number);
+            out_file.close();
+        }
+        else
+        {
+            throw std::runtime_error("Could not open file\n");
+        }
     }
     catch(...)
     {
