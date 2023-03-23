@@ -391,7 +391,9 @@ void carbohydrateBuilder::InitializeClass(std::string inputSequenceString)
         When you instantiate a condensedSequence it generates a 3D structure, and sets default torsions using Residue_Linkage. That class is decoupled 
         from this class as it needs to be replaced, but for now I'm using both and Residue_Linkages are created in that class, so when they
         are created again via this class, their index numbers are "too high" as they are static variables.
-        */ 
+        */
+    this->SetDefaultShapeUsingMetadata();
+    this->ResolveOverlaps();
     return;
 }
 
