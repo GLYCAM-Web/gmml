@@ -28,8 +28,7 @@ public:
 	//                       Constructor                    //
 	//////////////////////////////////////////////////////////
 	PrepResidue(std::ifstream& in_file, std::string& line);
-	~PrepResidue() {std::cout << "PrepResidue dtor for " << this->getName() << ", ";
-	}
+	~PrepResidue() {}//std::cout << "PrepResidue dtor for " << this->getName() << ", ";}
 	//////////////////////////////////////////////////////////
 	//                       ACCESSOR                       //
 	//////////////////////////////////////////////////////////
