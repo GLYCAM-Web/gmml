@@ -22,11 +22,26 @@ int main(int argc, char* argv[])
     	std::cout << "Bonding atoms by distance for assembly\n";
     	cds::bondAtomsByDistance(assembly->getAtoms());
     	// OFF molecule
-    	std::ofstream outFileStream;
-    	outFileStream.open("outputOffFile.off");
-    	std::string outFileName = "Assembly";
-    	cds::WriteMoleculeToOffFile(assembly, outFileStream, outFileName.c_str());
-    	outFileStream.close();
+    	try
+    	{
+    	    std::ofstream outFileStream;
+    	    outFileStream.open("outputOffFile.off");
+    	    std::string outFileName = "Assembly";
+    	    cds::WriteMoleculeToOffFile(assembly, outFileStream, outFileName.c_str());
+    	    outFileStream.close();
+    	}
+    	catch(std::runtime_error& error)
+    	{
+    	    std::stringstream ss;
+    	    ss << "Runtime error thrown when writing to offfile:\n" <<  error.what() << "\n";
+    	    std::cout << ss.str();
+    	    gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
+    	}
+    	catch(...)
+    	{
+    	    std::cout << "Unknown error when writing to offfile.\n";
+    	    gmml::log(__LINE__,__FILE__,gmml::ERR, "Unknown error when writing to offfile.\n");
+    	}
     }
     std::cout << "Finished bonding atoms by distance\n";
     pdbFile.Write("./outputPdbFile.pdb");
