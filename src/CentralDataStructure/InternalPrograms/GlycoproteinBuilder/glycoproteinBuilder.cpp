@@ -298,16 +298,17 @@ void GlycoproteinBuilder::CreateGlycosites(std::vector<glycoprotein::GlycositeIn
 	    {
 	        throw std::runtime_error(carb->GetStatusMessage());
 	    }
-	    Residue* glycositeResidue = this->SelectResidueFromInput(glycositeInput.proteinResidueId_);
-	    if (glycositeResidue == nullptr)
-	    {
-	        std::cout << "Did not find ersidue" << std::endl;
-	        throw std::runtime_error("Did not find a residue with id matching " + glycositeInput.proteinResidueId_);
-	    }
+        Residue* glycositeResidue = this->SelectResidueFromInput(glycositeInput.proteinResidueId_);
+        if (glycositeResidue == nullptr)
+        {
+            std::cout << "Did not find glycosite residue" << std::endl;
+            throw std::runtime_error("Did not find a residue with id matching " + glycositeInput.proteinResidueId_);
+        }
 	    std::vector<Residue*> otherResidues = proteinResidues;
 	    otherResidues.erase(std::remove(otherResidues.begin(), otherResidues.end(), glycositeResidue), otherResidues.end());
 	    gmml::log(__LINE__, __FILE__, gmml::INF, "About to emplace_back to glycosites with: " + glycositeInput.proteinResidueId_ + " and glycan " + glycositeInput.glycanInput_);
-		glycosites_.emplace_back(glycositeResidue, carb, otherResidues);
+        unsigned int highestResidueNumber = cdsSelections::findHighestResidueNumber(this->getGlycoprotein()->getResidues());
+		glycosites_.emplace_back(glycositeResidue, carb, otherResidues, highestResidueNumber);
 	    std::cout << "Done with glycan" << std::endl;
 		gmml::log(__LINE__, __FILE__, gmml::INF, "Completed creating glycosite on residue " + glycositeInput.proteinResidueId_ + " with glycan " + glycositeInput.glycanInput_);
 	}

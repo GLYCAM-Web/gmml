@@ -30,7 +30,7 @@ public:
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
 //    GlycosylationSite(Assembly* glycoprotein, std::string residueNumber, std::string glycanInputType, std::string glycanName, std::string prepFileLocation);
-    GlycosylationSite(Residue* residue, Carbohydrate* carbohydrate, std::vector<Residue*> otherProteinResidues);
+    GlycosylationSite(Residue* residue, Carbohydrate* carbohydrate, std::vector<Residue*> otherProteinResidues, unsigned int glycanStartResidueNumber);
    // ToDo: want this or with && and move the carb: GlycosylationSite(Residue* residue, std::vector<Residue*> otherProteinResidues, Carbohydrate carbohydrate);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
@@ -110,10 +110,11 @@ private:
     //////////////////////////////////////////////////////////
     //void FindSetProteinResidue(std::string residueName, std::vector<Residue*> residues);
     //void BuildGlycan(std::string glycanInputType, std::string glycanName, std::string prepFileLocation);
-    void AttachGlycan();
+    void AttachGlycan(unsigned int glycanResidueStartNumber);
     //////////////////////////////////////////////////////////
     //                  PRIVATE FUNCTIONS                   //
     //////////////////////////////////////////////////////////
+    void RenumberGlycanToMatch(unsigned int startNumber);
     void Prepare_Glycans_For_Superimposition_To_Particular_Residue(std::string amino_acid_name);
     void Superimpose_Glycan_To_Glycosite(Residue *glycosite_residue);
     void Rename_Protein_Residue_To_GLYCAM_Nomenclature();

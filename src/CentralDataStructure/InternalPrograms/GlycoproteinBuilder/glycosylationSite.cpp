@@ -20,10 +20,10 @@
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-GlycosylationSite::GlycosylationSite(Residue* residue, Carbohydrate* carbohydrate, std::vector<Residue*> otherProteinResidues) : residue_(residue),  glycan_(carbohydrate), otherProteinResidues_(otherProteinResidues)
+GlycosylationSite::GlycosylationSite(Residue* residue, Carbohydrate* carbohydrate, std::vector<Residue*> otherProteinResidues, unsigned int glycanStartResidueNumber) : residue_(residue),  glycan_(carbohydrate), otherProteinResidues_(otherProteinResidues)
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Attaching glycan!");
-    this->AttachGlycan();
+    this->AttachGlycan(glycanStartResidueNumber);
     cdsSelections::ClearAtomLabels(carbohydrate->GetReducingResidue()); //jfc
     cdsSelections::ClearAtomLabels(this->GetResidue());
 //    cdsSelections::ClearAtomLabels(carbohydrate->GetAglycone()); //jfc
@@ -44,7 +44,7 @@ GlycosylationSite::GlycosylationSite(Residue* residue, Carbohydrate* carbohydrat
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void GlycosylationSite::AttachGlycan()
+void GlycosylationSite::AttachGlycan(unsigned int glycanResidueStartNumber)
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Start of AttachGlycan. Residue ID is: " + this->GetResidue()->getId());
 	this->Prepare_Glycans_For_Superimposition_To_Particular_Residue(this->GetResidue()->getName());
@@ -54,7 +54,17 @@ void GlycosylationSite::AttachGlycan()
 	this->Rename_Protein_Residue_To_GLYCAM_Nomenclature();
     gmml::log(__LINE__, __FILE__, gmml::INF, "Setting internal bond count to check if more form later");
 	//this->SetInternalBondCount(cdsSelections::CountInternalHeavyAtomBonds(this->GetAttachedGlycan()->getAtoms()));
+    this->RenumberGlycanToMatch(glycanResidueStartNumber);
     gmml::log(__LINE__, __FILE__, gmml::INF, "Attach glycan done");
+}
+
+void GlycosylationSite::RenumberGlycanToMatch(unsigned int startNumber)
+{
+    for (auto &glycanResidue : this->GetGlycan()->getResidues())
+    {
+        glycanResidue->setNumber(++startNumber);
+    }
+    return;
 }
 // This function prepares the glycan molecule in the glycan_ assembly for superimpostion onto an amino acid in the protein
 // It does this by "growing" the atoms of the amino acid side chain (e.g. Asn, Thr or Ser) out from the glycan reducing terminal
