@@ -1,5 +1,6 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbModel.hpp"
+#include "includes/CentralDataStructure/cdsFunctions/parameters.hpp"
 #include "includes/CodeUtils/files.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
@@ -165,6 +166,7 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Preprocesssing has begun");
     pdb::PreprocessorInformation ppInfo;
+    cdsParameters::ParameterManager parmManager; // ToDo pass this into preProcessMissingUnrecognized
     for(auto &cdsAssembly: this->getAssemblies()) // Now we do all, but maybe user can select at some point.
     {
         PdbModel* model = static_cast<PdbModel*>(cdsAssembly);
@@ -173,7 +175,7 @@ pdb::PreprocessorInformation PdbFile::PreProcess(PreprocessorOptions inputOption
         model->preProcessChainTerminals(ppInfo, inputOptions);
         model->preProcessGapsUsingDistance(ppInfo, inputOptions);
         model->preProcessMissingUnrecognized(ppInfo);
-        // ToDo What about setting charges doofus?
+        parmManager.setAtomCharges(model->getResidues());
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, "Preprocessing completed");
     return ppInfo;
@@ -185,15 +187,8 @@ void PdbFile::Write(const std::string outName) const
     try
     {
         outFileStream.open(outName.c_str());
-    }
-    catch(...)
-    {
-        gmml::log(__LINE__,__FILE__,gmml::ERR, "Output file could not be created:\n" + outName);
-        throw std::runtime_error("Output file could not be created:\n" + outName);
-    }
-    try
-    {
         this->Write(outFileStream);
+        outFileStream.close();
     }
     catch(...)
     {

@@ -43,6 +43,7 @@
 ./src/CentralDataStructure/Writers/pdbWriter.cpp
 ./src/CentralDataStructure/assembly.cpp
 ./src/CentralDataStructure/atom.cpp
+./src/CentralDataStructure/cdsFunctions/parameters.cpp
 ./src/CentralDataStructure/coordinate.cpp
 ./src/CentralDataStructure/ensemble.cpp
 ./src/CentralDataStructure/molecule.cpp

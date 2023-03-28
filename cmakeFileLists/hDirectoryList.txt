@@ -17,6 +17,7 @@
 ./includes/CentralDataStructure/Selections
 ./includes/CentralDataStructure/Shapers
 ./includes/CentralDataStructure/Writers
+./includes/CentralDataStructure/cdsFunctions
 ./includes/CodeUtils
 ./includes/GeometryTopology
 ./includes/GeometryTopology/ResidueLinkages
