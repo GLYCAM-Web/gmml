@@ -2,6 +2,7 @@
 #include "includes/CentralDataStructure/cdsFunctions.hpp" // bondAtomsByDistance
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
+#include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include <string>
 
 int main(int argc, char* argv[])
@@ -20,9 +21,16 @@ int main(int argc, char* argv[])
     {
     	std::cout << "Bonding atoms by distance for assembly\n";
     	cds::bondAtomsByDistance(assembly->getAtoms());
+    	// OFF molecule
+    	std::ofstream outFileStream;
+    	outFileStream.open("outputOffFile.off");
+    	std::string outFileName = "Assembly";
+    	cds::WriteMoleculeToOffFile(assembly, outFileStream, outFileName.c_str());
+    	outFileStream.close();
     }
     std::cout << "Finished bonding atoms by distance\n";
     pdbFile.Write("./outputPdbFile.pdb");
+
     // Just showing what's in the ppInfo and how to access it
     std::cout << "Unrecognized atoms:\n";
     for(auto &unrecognized : ppInfo.unrecognizedAtoms_)
