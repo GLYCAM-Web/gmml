@@ -1,5 +1,6 @@
 Parsing inputfile
 Preprocessing
+Constructor entered
 Bonding atoms by distance for assembly
 Launching thread 0
 Launching thread 1
@@ -14,6 +15,8 @@ Launching thread 9
 Launching thread 10
 Waiting on threads to finish
 Threads finish
+Runtime error thrown when writing to offfile:
+Did not find this Element in the list of atomic Elements: o
 Finished bonding atoms by distance
 Unrecognized atoms:
 o7 | PRO | B | 58

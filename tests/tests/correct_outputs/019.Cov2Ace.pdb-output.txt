@@ -1,5 +1,6 @@
 Parsing inputfile
 Preprocessing
+Constructor entered
 Bonding atoms by distance for assembly
 Launching thread 0
 Launching thread 1
