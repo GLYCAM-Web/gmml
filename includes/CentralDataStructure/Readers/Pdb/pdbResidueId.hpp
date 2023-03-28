@@ -23,6 +23,7 @@ public:
     inline std::string getNumber() const {return sequenceNumber_;}
     inline std::string getInsertionCode() const {return insertionCode_;}
     inline std::string getChainId() const {return chainId_;}
+    inline std::string getAlternativeLocation() const {return alternativeLocation_;}
     //////////////////////////////////////////////////////////
     //                       MUTATORS                       //
     //////////////////////////////////////////////////////////
@@ -30,6 +31,7 @@ public:
     inline void setNumber(const std::string s) {sequenceNumber_ = s;}
     inline void setInsertionCode(const std::string s) {insertionCode_ = s;}
     inline void setChainId(const std::string s) {chainId_ = s;}
+    inline void setAlternativeLocation(const std::string s) {alternativeLocation_ = s;}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
@@ -68,6 +70,7 @@ private:
     std::string sequenceNumber_ = "";
     std::string insertionCode_ = "";
     std::string chainId_ = "";
+    std::string alternativeLocation_ = "";
 };
 }
 #endif

@@ -19,13 +19,18 @@ PdbResidue::PdbResidue(std::stringstream &singleResidueSecion, std::string first
     this->setNumber(std::stoi(resId.getNumber()));
     this->setInsertionCode(resId.getInsertionCode());
     this->setChainId(resId.getChainId());
+    std::string firstLineAlternativeLocationIndicator = resId.getAlternativeLocation(); // Normally empty
     std::string line;
     while(getline(singleResidueSecion, line))
     {
         std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
         if ( (recordName == "ATOM") || (recordName == "HETATM") )
         {
-            this->addAtom(std::make_unique<PdbAtom>(line));
+            ResidueId id(line); //Check alternativeLocation and ignore any that aren't the same as the first one.
+            if( firstLineAlternativeLocationIndicator.empty() || id.getAlternativeLocation() == firstLineAlternativeLocationIndicator )
+            {
+                this->addAtom(std::make_unique<PdbAtom>(line));
+            }
         }
     }
     this->SetType( this->determineType( this->getName() ) );

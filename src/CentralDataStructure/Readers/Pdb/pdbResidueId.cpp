@@ -8,7 +8,8 @@ using pdb::ResidueId;
 //////////////////////////////////////////////////////////
 ResidueId::ResidueId(const std::string &line)
 {
-    int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
+    int shift = codeUtils::GetSizeOfIntInString(line.substr(12)); // atom number can overrun, shifting everything to the right.
+    alternativeLocation_ = codeUtils::RemoveWhiteSpace(line.substr(16 + shift, 1));  // I created this to use it only when reading, so I can discard the additional entries.
     residueName_ = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
     chainId_ = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
     int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));
@@ -46,6 +47,7 @@ ResidueId::ResidueId(std::vector<std::string> inputVector)
     {
         chainId_ = inputVector.at(3);
     }
+    // Just leave alternativeLocation as empty.
 }
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
