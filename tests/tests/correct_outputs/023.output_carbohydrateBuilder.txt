@@ -4256,6 +4256,320 @@ O, C2, C3, C4, C5, C6, O6, H6, C7, H7, O7, H7O, C8, H8, O8, H8O, C9, H9S, H9R, O
 Final overlap resolution
 Overlaps resolved
 Number of residues is 2
+
+*********************
+Building DSorp[3S]a2-4DGalpA[3D]b1-2LIdopAa1-3DXylpa1-2DManp[4A,3A]a1-3DGalpb1-4[DArapa1-2]LFucpa1-3DGalpNAca1-OH
+*********************
+Glycam names are: ROH, 3VA, YfA, 3LB, TMA, ACX, ACX, 3XA, 2uA, 4OB, 3BA, SO3, 0AA, 
+Found query residue: 0AA
+0AA will be read in 1 times.
+Found query residue: 2uA
+2uA will be read in 1 times.
+Found query residue: 3BA
+3BA will be read in 1 times.
+Found query residue: 3LB
+3LB will be read in 1 times.
+Found query residue: 3VA
+3VA will be read in 1 times.
+Found query residue: 3XA
+3XA will be read in 1 times.
+Found query residue: 4OB
+4OB will be read in 1 times.
+Found query residue: ACX
+ACX will be read in 2 times.
+Found query residue: ROH
+ROH will be read in 1 times.
+Found query residue: SO3
+SO3 will be read in 1 times.
+Found query residue: TMA
+TMA will be read in 1 times.
+Found query residue: YfA
+YfA will be read in 1 times.
+PrepResidue dtor for ROH, PrepResidue dtor for 3VA, PrepResidue dtor for YfA, PrepResidue dtor for 3LB, PrepResidue dtor for TMA, PrepResidue dtor for ACX, PrepResidue dtor for ACX, PrepResidue dtor for 3XA, PrepResidue dtor for 2uA, PrepResidue dtor for 4OB, PrepResidue dtor for 3BA, PrepResidue dtor for SO3, PrepResidue dtor for 0AA, 
+
+
+On to setting 3d structure!
+
+Setting connection between 3VA and its parent ROH, the connection has linkageLabel: a1-
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 3VA and ROH
+Setting default shape
+Blocking access via O1, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O1, C1, O5, C5, C4, C3, C2, H2, N2, H2N, C2N, CME, H3M, H2M, H1M, O2N, H3, O3, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between YfA and its parent 3VA, the connection has linkageLabel: a1-3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -2.97294,    11.1735,   -4.94882
+parent O3   -3.11931,    12.1868,   -5.99243
+and child C1   -3.01628,     13.643,   -5.96687
+child residue YfA will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: YfA and 3VA
+Setting default shape
+Blocking access via O3, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H3, O3, H3O, H2, O2, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following Psi angle atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, H3, O3, H3O, H2, O2, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 3LB and its parent YfA, the connection has linkageLabel: b1-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -2.80808,    11.4567,   -9.80016
+parent O4   -3.93827,    11.1624,   -10.6629
+and child C1   -3.52535,    12.4814,   -11.1333
+child residue 3LB will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 3LB and YfA
+Setting default shape
+Blocking access via O4, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following Psi angle atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between TMA and its parent 3LB, the connection has linkageLabel: a1-3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -4.32143,    10.2244,    -14.426
+parent O3   -5.42867,    10.0252,   -15.3487
+and child C1   -5.32222,    9.36779,    -16.648
+child residue TMA will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: TMA and 3LB
+Setting default shape
+Blocking access via O3, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following Psi angle atoms will move:
+C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, H3, O3, H4, O4, H5, C6, H62, H61, O6, H6O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between ACX and its parent TMA, the connection has linkageLabel: 4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -7.80889,    6.89244,   -15.2317
+parent O4   -9.03155,    6.65892,   -14.4841
+and child C1A   -8.95439,     7.9686,   -14.6548
+child residue ACX will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: ACX and TMA
+Setting default shape
+Blocking access via O4, we will search outward from C1A
+Have determined that the following Phi angle atoms will move:
+O4, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following Psi angle atoms will move:
+C4, O4, C1A, O1A, C2A, H1A, H2A, H3A, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between ACX and its parent TMA, the connection has linkageLabel: 3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -8.02346,    8.10632,   -16.1697
+parent O3   -9.10176,     7.8439,     -17.12
+and child C1A    -9.0246,    9.15357,   -17.2906
+child residue ACX will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: ACX and TMA
+Setting default shape
+Blocking access via O3, we will search outward from C1A
+Have determined that the following Phi angle atoms will move:
+O3, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following Psi angle atoms will move:
+C3, O3, C1A, O1A, C2A, H1A, H2A, H3A, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 3XA and its parent TMA, the connection has linkageLabel: a1-2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   -6.73236,    8.46706,   -16.9378
+parent O2   -6.39715,    7.39483,   -17.8688
+and child C1   -5.43151,    8.48277,   -17.9933
+child residue 3XA will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 3XA and TMA
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H4, O4, H4O, H5E, H5A, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following Psi angle atoms will move:
+C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H4, O4, H4O, H5E, H5A, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 2uA and its parent 3XA, the connection has linkageLabel: a1-3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -4.48117,    6.44623,   -20.4302
+parent O3   -4.22297,    5.51906,   -21.5161
+and child C1   -4.12203,    6.95923,   -21.7337
+child residue 2uA will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 2uA and 3XA
+Setting default shape
+Blocking access via O3, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following Psi angle atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 4OB and its parent 2uA, the connection has linkageLabel: b1-2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   -3.23839,    3.26402,   -22.3192
+parent O2   -4.49523,    2.87964,   -22.9754
+and child C1   -4.05172,    4.18403,   -23.4586
+child residue 4OB will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 4OB and 2uA
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H3, Hd, H2, O2, H2O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following Psi angle atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H3, Hd, H2, O2, H2O, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 3BA and its parent 4OB, the connection has linkageLabel: a2-4
+Parent atom is O4
+Setting angle between
+parentNeighbor C4   -5.46708,    4.62464,    -26.852
+parent O4   -6.48853,    5.50699,   -26.3222
+and child C2   -6.53067,     4.6302,   -27.4889
+child residue 3BA will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 3BA and 4OB
+Setting default shape
+Blocking access via O4, we will search outward from C2
+Have determined that the following Phi angle atoms will move:
+O4, C2, O6, C6, C5, C4, C3, H3, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following Psi angle atoms will move:
+C4, O4, C2, O6, C6, C5, C4, C3, H3, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between SO3 and its parent 3BA, the connection has linkageLabel: 3
+Parent atom is O3
+Setting angle between
+parentNeighbor C3   -8.17396,    7.30204,   -26.5274
+parent O3   -7.49605,    8.19487,   -25.5983
+and child S1   -6.91564,    9.67038,   -25.7028
+child residue SO3 will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: SO3 and 3BA
+Setting default shape
+Blocking access via O3, we will search outward from S1
+Have determined that the following Phi angle atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following Psi angle atoms will move:
+C3, O3, S1, O1, O2, O3, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Setting connection between 0AA and its parent YfA, the connection has linkageLabel: a1-2
+Parent atom is O2
+Setting angle between
+parentNeighbor C2   -4.19715,     12.911,   -8.25253
+parent O2   -4.42527,    14.2596,   -7.73315
+and child C1   -3.38592,    13.3717,   -8.24596
+child residue 0AA will move
+Finding rotatable dihedrals and applying metadata.
+Creating rotatable dihedrals between: 0AA and YfA
+Setting default shape
+Blocking access via O2, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5E, H5A, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following Psi angle atoms will move:
+C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5E, H5A, H1, 
+Wiggling what we have
+Atomic overlaps resolved with parent
+Re-determining atoms that need to move for each linkage:
+Blocking access via O1, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O1, C1, O5, C5, C4, C3, C2, H2, N2, H2N, C2N, CME, H3M, H2M, H1M, O2N, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, H1, H4, O4, H4O, H5E, H5A, H1, H3, O3, C1A, O1A, C2A, H1A, H2A, H3A, H4, O4, C1A, O1A, C2A, H1A, H2A, H3A, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5E, H5A, H1, H1, H4, O4, H4O, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O3, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, H1, H4, O4, H4O, H5E, H5A, H1, H3, O3, C1A, O1A, C2A, H1A, H2A, H3A, H4, O4, C1A, O1A, C2A, H1A, H2A, H3A, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5E, H5A, H1, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following Psi angle atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, H61, H62, H63, H4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, H1, H4, O4, H4O, H5E, H5A, H1, H3, O3, C1A, O1A, C2A, H1A, H2A, H3A, H4, O4, C1A, O1A, C2A, H1A, H2A, H3A, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, H3, O3, H3O, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5E, H5A, H1, H1, 
+Blocking access via O4, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, H1, H4, O4, H4O, H5E, H5A, H1, H3, O3, C1A, O1A, C2A, H1A, H2A, H3A, H4, O4, C1A, O1A, C2A, H1A, H2A, H3A, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following Psi angle atoms will move:
+C4, O4, C1, C2, C3, C4, C5, O5, H5, C6, H62, H61, O6, H6O, H4, O4, H4O, H3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, H1, H4, O4, H4O, H5E, H5A, H1, H3, O3, C1A, O1A, C2A, H1A, H2A, H3A, H4, O4, C1A, O1A, C2A, H1A, H2A, H3A, H5, C6, H62, H61, O6, H6O, H1, H2, O2, H2O, H1, 
+Blocking access via O3, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, H1, H4, O4, H4O, H5E, H5A, H1, H3, O3, C1A, O1A, C2A, H1A, H2A, H3A, H4, O4, C1A, O1A, C2A, H1A, H2A, H3A, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following Psi angle atoms will move:
+C3, O3, C1, O5, C5, C4, C3, C2, H2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, H1, H4, O4, H4O, H5E, H5A, H1, H3, O3, C1A, O1A, C2A, H1A, H2A, H3A, H4, O4, C1A, O1A, C2A, H1A, H2A, H3A, H5, C6, H62, H61, O6, H6O, H1, 
+Blocking access via O4, we will search outward from C1A
+Have determined that the following Phi angle atoms will move:
+O4, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following Psi angle atoms will move:
+C4, O4, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via O3, we will search outward from C1A
+Have determined that the following Phi angle atoms will move:
+O3, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following Psi angle atoms will move:
+C3, O3, C1A, O1A, C2A, H1A, H2A, H3A, 
+Blocking access via O2, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, H1, H4, O4, H4O, H5E, H5A, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following Psi angle atoms will move:
+C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, H1, H4, O4, H4O, H5E, H5A, H1, 
+Blocking access via O3, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, H1, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following Psi angle atoms will move:
+C3, O3, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, H4O, H3, O3, H3O, H2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, H1, 
+Blocking access via O2, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following Psi angle atoms will move:
+C2, O2, C1, C2, C3, C4, C5, O5, H5, C6, O6B, O6A, H4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, H3, Hd, H2, O2, H2O, H1, 
+Blocking access via O4, we will search outward from C2
+Have determined that the following Phi angle atoms will move:
+O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, 
+Blocking access via C4, we will search outward from O4
+Have determined that the following Psi angle atoms will move:
+C4, O4, C2, O6, C6, C5, C4, C3, H3, O3, S1, O1, O2, O3, H4, O4, H4O, H5, O5, H5O, H6E, H6A, C1, H12, H11, O1, H1O, 
+Blocking access via O3, we will search outward from S1
+Have determined that the following Phi angle atoms will move:
+O3, S1, O1, O2, O3, 
+Blocking access via C3, we will search outward from O3
+Have determined that the following Psi angle atoms will move:
+C3, O3, S1, O1, O2, O3, 
+Blocking access via O2, we will search outward from C1
+Have determined that the following Phi angle atoms will move:
+O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5E, H5A, H1, 
+Blocking access via C2, we will search outward from O2
+Have determined that the following Psi angle atoms will move:
+C2, O2, C1, O5, C5, C4, C3, C2, H2, O2, H2O, H3, O3, H3O, H4, O4, H4O, H5E, H5A, H1, 
+Final overlap resolution
+Overlaps resolved
+Number of residues is 13
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
@@ -4300,3 +4614,4 @@ Number of residues is 2
 00048.pdb succesfully created.
 00049.pdb succesfully created.
 00050.pdb succesfully created.
+00051.pdb succesfully created.
