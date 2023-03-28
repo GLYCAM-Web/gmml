@@ -27,7 +27,7 @@ Found query residue: WYB
 WYB will be read in 1 times.
 Found query residue: ZMA
 ZMA will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 4YB, PrepResidue dtor for UYB, PrepResidue dtor for MEX, PrepResidue dtor for QMB, PrepResidue dtor for 6MA, PrepResidue dtor for ZMA, PrepResidue dtor for MEX, PrepResidue dtor for SO3, PrepResidue dtor for 0YB, PrepResidue dtor for 2MA, PrepResidue dtor for WYB, PrepResidue dtor for 6LB, PrepResidue dtor for SO3, Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DNeu5Aca2-6 with glycam residue code: 0Sa
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DNeu5Aca2-6 with glycam residue code: 0Sa
 
 *********************
 Building DNeup5Aca2-9DNeup5Aca2-8DNeup5Aca2-7DNeup5Aca2-3DGlcpb1-6DManpb1-OME
@@ -47,7 +47,7 @@ Found query residue: 9SA
 9SA will be read in 1 times.
 Found query residue: OME
 OME will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for 6MB, PrepResidue dtor for 3GB, PrepResidue dtor for 7SA, PrepResidue dtor for 8SA, PrepResidue dtor for 9SA, PrepResidue dtor for 0SA, 
+
 
 
 On to setting 3d structure!
@@ -264,7 +264,7 @@ Found query residue: 0GA
 0GA will be read in 1 times.
 Found query residue: 2CU
 2CU will be read in 1 times.
-PrepResidue dtor for 2CU, PrepResidue dtor for 0GA, 
+
 
 
 On to setting 3d structure!
@@ -306,7 +306,7 @@ Found query residue: 0CU
 0CU will be read in 1 times.
 Found query residue: 1GA
 1GA will be read in 1 times.
-PrepResidue dtor for 1GA, PrepResidue dtor for 0CU, 
+
 
 
 On to setting 3d structure!
@@ -355,7 +355,7 @@ Found query residue: 6GB
 6GB will be read in 1 times.
 Found query residue: ROH
 ROH will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 6GB, PrepResidue dtor for 0hA, 
+
 
 
 On to setting 3d structure!
@@ -417,7 +417,7 @@ Found query residue: 6LB
 6LB will be read in 1 times.
 Found query residue: ROH
 ROH will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 6LB, PrepResidue dtor for 0hA, 
+
 
 
 On to setting 3d structure!
@@ -479,7 +479,7 @@ Found query residue: 4LB
 4LB will be read in 1 times.
 Found query residue: ROH
 ROH will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 0SA, PrepResidue dtor for 4LB, Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LIdopa1- with glycam residue code: 3iA
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LIdopa1- with glycam residue code: 3iA
 
 *********************
 Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
@@ -491,7 +491,7 @@ Found query residue: 8SA
 8SA will be read in 3 times.
 Found query residue: ROH
 ROH will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 8SA, PrepResidue dtor for 8SA, PrepResidue dtor for 8SA, PrepResidue dtor for 0SA, 
+
 
 
 On to setting 3d structure!
@@ -648,7 +648,7 @@ Building DGlcpA1-OH
 Glycam names are: ROH, 0G, 
 Found query residue: ROH
 ROH will be read in 1 times.
-PrepResidue dtor for ROH, Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpA1- with glycam residue code: 0G
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpA1- with glycam residue code: 0G
 
 *********************
 Building DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
@@ -662,7 +662,7 @@ Found query residue: UVB
 UVB will be read in 1 times.
 Found query residue: YZB
 YZB will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for YZB, PrepResidue dtor for UVB, PrepResidue dtor for SO3, PrepResidue dtor for SO3, PrepResidue dtor for SO3, 
+
 
 
 On to setting 3d structure!
@@ -805,7 +805,7 @@ Found query residue: 8SA
 8SA will be read in 3 times.
 Found query residue: ROH
 ROH will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 6LB, PrepResidue dtor for 6GB, PrepResidue dtor for 8SA, PrepResidue dtor for 8SA, PrepResidue dtor for 8SA, PrepResidue dtor for 0SA, 
+
 
 
 On to setting 3d structure!
@@ -1026,7 +1026,7 @@ Found query residue: 1CU
 1CU will be read in 1 times.
 Found query residue: OME
 OME will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for 1CU, PrepResidue dtor for 0fA, 
+
 
 
 On to setting 3d structure!
@@ -1107,7 +1107,7 @@ Found query residue: XMB
 XMB will be read in 3 times.
 Found query residue: YLA
 YLA will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for YLA, PrepResidue dtor for XMA, PrepResidue dtor for 0GB, PrepResidue dtor for SO3, PrepResidue dtor for XMB, PrepResidue dtor for MEX, PrepResidue dtor for XMB, PrepResidue dtor for 6LB, PrepResidue dtor for ACX, PrepResidue dtor for XMB, PrepResidue dtor for ACX, PrepResidue dtor for 0MB, 
+
 
 
 On to setting 3d structure!
@@ -1452,7 +1452,7 @@ Found query residue: XMB
 XMB will be read in 3 times.
 Found query residue: YLA
 YLA will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for YLA, PrepResidue dtor for XMA, PrepResidue dtor for 0GB, PrepResidue dtor for SO3, PrepResidue dtor for XMB, PrepResidue dtor for MEX, PrepResidue dtor for XMB, PrepResidue dtor for 0LB, PrepResidue dtor for XMB, PrepResidue dtor for ACX, PrepResidue dtor for 0MB, 
+
 
 
 On to setting 3d structure!
@@ -1772,7 +1772,7 @@ Found query residue: VMA
 VMA will be read in 1 times.
 Found query residue: VMB
 VMB will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 4YB, PrepResidue dtor for 4YB, PrepResidue dtor for VMB, PrepResidue dtor for VMA, PrepResidue dtor for 2MA, PrepResidue dtor for 0MA, PrepResidue dtor for 2MA, PrepResidue dtor for 0MA, PrepResidue dtor for 2MA, PrepResidue dtor for 2MA, PrepResidue dtor for 0MA, 
+
 
 
 On to setting 3d structure!
@@ -2082,7 +2082,7 @@ Found query residue: 6MA
 6MA will be read in 1 times.
 Found query residue: ROH
 ROH will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 6MA, PrepResidue dtor for 0CA, 
+
 
 
 On to setting 3d structure!
@@ -2144,7 +2144,7 @@ Found query residue: 6MA
 6MA will be read in 1 times.
 Found query residue: ROH
 ROH will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 6MA, PrepResidue dtor for 0CB, 
+
 
 
 On to setting 3d structure!
@@ -2208,7 +2208,7 @@ Found query residue: MEX
 MEX will be read in 1 times.
 Found query residue: ROH
 ROH will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 2MA, PrepResidue dtor for 3GB, PrepResidue dtor for MEX, 
+
 
 
 On to setting 3d structure!
@@ -2299,7 +2299,7 @@ Found query residue: 0LB
 0LB will be read in 1 times.
 Found query residue: TBT
 TBT will be read in 1 times.
-PrepResidue dtor for TBT, PrepResidue dtor for 0LB, 
+
 
 
 On to setting 3d structure!
@@ -2334,7 +2334,7 @@ Found query residue: OME
 OME will be read in 1 times.
 Found query residue: 045
 045 will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for 045, 
+
 
 
 On to setting 3d structure!
@@ -2369,7 +2369,7 @@ Found query residue: OME
 OME will be read in 1 times.
 Found query residue: 045
 045 will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for 045, 
+
 
 
 On to setting 3d structure!
@@ -2387,7 +2387,7 @@ Found query residue: ROH
 ROH will be read in 1 times.
 Found query residue: 045
 045 will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 4LB, PrepResidue dtor for 045, 
+
 
 
 On to setting 3d structure!
@@ -2415,7 +2415,7 @@ Found query residue: 0MA
 0MA will be read in 1 times.
 Found query residue: ROH
 ROH will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 0MA, Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpNAcb1- with glycam residue code: 9YB
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpNAcb1- with glycam residue code: 9YB
 
 *********************
 Building DNeup5Ac[7A,8A,9A]a2-8DNeup5Ac[9A]a2-9[DNeup5Aca2-8DNeup5Ac[7A,9A]a2-8[DNeup5Aca2-7]DNeup5Aca2-8]DNeup5Ac[7A]a2-OH
@@ -2433,7 +2433,7 @@ Found query residue: HSA
 HSA will be read in 1 times.
 Found query residue: ROH
 ROH will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for BSA, PrepResidue dtor for FSA, PrepResidue dtor for ACX, PrepResidue dtor for BSA, PrepResidue dtor for ACX, PrepResidue dtor for ACX, PrepResidue dtor for ACX, PrepResidue dtor for HSA, PrepResidue dtor for BSA, PrepResidue dtor for ACX, PrepResidue dtor for 0SA, PrepResidue dtor for ACX, PrepResidue dtor for 0SA, PrepResidue dtor for ACX, 
+
 
 
 On to setting 3d structure!
@@ -2965,7 +2965,7 @@ Found query residue: UYS
 UYS will be read in 1 times.
 Found query residue: WYS
 WYS will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 6YS, PrepResidue dtor for 3YS, PrepResidue dtor for 4YS, PrepResidue dtor for WYS, PrepResidue dtor for UYS, PrepResidue dtor for SO3, PrepResidue dtor for QYS, PrepResidue dtor for SO3, PrepResidue dtor for 0YS, PrepResidue dtor for SO3, PrepResidue dtor for SO3, 
+
 
 
 On to setting 3d structure!
@@ -3267,7 +3267,7 @@ Found query residue: UYS
 UYS will be read in 1 times.
 Found query residue: WYS
 WYS will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 6YS, PrepResidue dtor for 3YS, PrepResidue dtor for 4YS, PrepResidue dtor for WYS, PrepResidue dtor for UYS, PrepResidue dtor for SO3, PrepResidue dtor for QYS, PrepResidue dtor for SO3, PrepResidue dtor for 0YS, PrepResidue dtor for SO3, PrepResidue dtor for SO3, 
+
 
 
 On to setting 3d structure!
@@ -3563,7 +3563,7 @@ Found query residue: ROH
 ROH will be read in 1 times.
 Found query residue: XMA
 XMA will be read in 2 times.
-PrepResidue dtor for ROH, PrepResidue dtor for XMA, PrepResidue dtor for 4GA, PrepResidue dtor for XMA, PrepResidue dtor for 4GA, PrepResidue dtor for 2GA, PrepResidue dtor for 4GA, PrepResidue dtor for 4GA, PrepResidue dtor for 4GA, PrepResidue dtor for 4GA, PrepResidue dtor for 0GA, PrepResidue dtor for 0fA, PrepResidue dtor for 0fA, 
+
 
 
 On to setting 3d structure!
@@ -3895,7 +3895,7 @@ Found query residue: 5AD
 5AD will be read in 1 times.
 Found query residue: OME
 OME will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for 5AD, PrepResidue dtor for 3AD, PrepResidue dtor for 2AD, PrepResidue dtor for 0AU, 
+
 
 
 On to setting 3d structure!
@@ -4014,7 +4014,7 @@ Found query residue: 0KN
 0KN will be read in 1 times.
 Found query residue: 8KO
 8KO will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for 7Ko, PrepResidue dtor for 9Kn, PrepResidue dtor for 8KO, PrepResidue dtor for 0KN, 
+
 
 
 On to setting 3d structure!
@@ -4055,7 +4055,7 @@ Found query residue: OME
 OME will be read in 1 times.
 Found query residue: 0KO
 0KO will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for 0KO, 
+
 
 
 On to setting 3d structure!
@@ -4090,7 +4090,7 @@ Found query residue: OME
 OME will be read in 1 times.
 Found query residue: 0Ko
 0Ko will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for 0Ko, 
+
 
 
 On to setting 3d structure!
@@ -4125,7 +4125,7 @@ Found query residue: OME
 OME will be read in 1 times.
 Found query residue: 0KN
 0KN will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for 0KN, 
+
 
 
 On to setting 3d structure!
@@ -4160,7 +4160,7 @@ Found query residue: OME
 OME will be read in 1 times.
 Found query residue: 0Kn
 0Kn will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for 0Kn, 
+
 
 
 On to setting 3d structure!
@@ -4195,7 +4195,7 @@ Found query residue: 0SA
 0SA will be read in 1 times.
 Found query residue: OME
 OME will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for 0SA, 
+
 
 
 On to setting 3d structure!
@@ -4230,7 +4230,7 @@ Found query residue: 0SB
 0SB will be read in 1 times.
 Found query residue: OME
 OME will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for 0SB, 
+
 
 
 On to setting 3d structure!
@@ -4285,7 +4285,7 @@ Found query residue: TMA
 TMA will be read in 1 times.
 Found query residue: YfA
 YfA will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 3VA, PrepResidue dtor for YfA, PrepResidue dtor for 3LB, PrepResidue dtor for TMA, PrepResidue dtor for ACX, PrepResidue dtor for ACX, PrepResidue dtor for 3XA, PrepResidue dtor for 2uA, PrepResidue dtor for 4OB, PrepResidue dtor for 3BA, PrepResidue dtor for SO3, PrepResidue dtor for 0AA, 
+
 
 
 On to setting 3d structure!

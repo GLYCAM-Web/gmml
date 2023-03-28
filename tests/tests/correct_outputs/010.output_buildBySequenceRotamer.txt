@@ -25,7 +25,7 @@ Found query residue: UYB
 UYB will be read in 1 times.
 Found query residue: WYB
 WYB will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 4YB, PrepResidue dtor for UYB, PrepResidue dtor for MEX, PrepResidue dtor for QMB, PrepResidue dtor for 6MA, PrepResidue dtor for SMA, PrepResidue dtor for MEX, PrepResidue dtor for 0SA, PrepResidue dtor for SO3, PrepResidue dtor for 0YB, PrepResidue dtor for 2MA, PrepResidue dtor for WYB, PrepResidue dtor for 6LB, PrepResidue dtor for 0SA, PrepResidue dtor for SO3, 
+
 
 
 On to setting 3d structure!
@@ -439,7 +439,7 @@ Found query residue: WYB
 WYB will be read in 1 times.
 Found query residue: ZMA
 ZMA will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 4YB, PrepResidue dtor for UYB, PrepResidue dtor for MEX, PrepResidue dtor for QMB, PrepResidue dtor for 6MA, PrepResidue dtor for ZMA, PrepResidue dtor for MEX, PrepResidue dtor for SO3, PrepResidue dtor for 0YB, PrepResidue dtor for 2MA, PrepResidue dtor for WYB, PrepResidue dtor for 6LB, PrepResidue dtor for 0SA, PrepResidue dtor for SO3, 
+
 
 
 On to setting 3d structure!

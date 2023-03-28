@@ -28,7 +28,7 @@ Found query residue: WGB
 WGB will be read in 1 times.
 Found query residue: ZTA
 ZTA will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 4YB, PrepResidue dtor for UKB, PrepResidue dtor for MEX, PrepResidue dtor for QMB, PrepResidue dtor for 6MA, PrepResidue dtor for ZTA, PrepResidue dtor for MEX, PrepResidue dtor for SO3, PrepResidue dtor for 2EA, PrepResidue dtor for WGB, PrepResidue dtor for 6LB, PrepResidue dtor for 0SA, PrepResidue dtor for SO3, PrepResidue dtor for 0NB, 
+
 
 
 On to setting 3d structure!
@@ -729,7 +729,7 @@ Found query residue: WYB
 WYB will be read in 1 times.
 Found query residue: ZMA
 ZMA will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 4YB, PrepResidue dtor for UYB, PrepResidue dtor for MEX, PrepResidue dtor for QMB, PrepResidue dtor for 6MA, PrepResidue dtor for ZMA, PrepResidue dtor for MEX, PrepResidue dtor for SO3, PrepResidue dtor for 0YB, PrepResidue dtor for 2MA, PrepResidue dtor for WYB, PrepResidue dtor for 6LB, PrepResidue dtor for 0SA, PrepResidue dtor for SO3, 
+
 
 
 On to setting 3d structure!
@@ -1432,7 +1432,7 @@ Found query residue: 4ZB
 4ZB will be read in 2 times.
 Found query residue: ROH
 ROH will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 4XB, PrepResidue dtor for 3LB, PrepResidue dtor for 3LB, PrepResidue dtor for 4ZB, PrepResidue dtor for 4ZB, PrepResidue dtor for 0YB, 
+
 
 
 On to setting 3d structure!
@@ -1758,7 +1758,7 @@ Found query residue: 245
 245 will be read in 1 times.
 Found query residue: 4YS
 4YS will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for 4XB, PrepResidue dtor for 3LB, PrepResidue dtor for 3LB, PrepResidue dtor for 4ZB, PrepResidue dtor for YZB, PrepResidue dtor for 4YS, PrepResidue dtor for QYA, PrepResidue dtor for SO3, PrepResidue dtor for SO3, PrepResidue dtor for SO3, PrepResidue dtor for SO3, PrepResidue dtor for SO3, PrepResidue dtor for 245, Test level caught runtime error: Did not find prep entry for LIdopA(2SO)a1-4 with glycam residue code: YuA2
+Test level caught runtime error: Did not find prep entry for LIdopA(2SO)a1-4 with glycam residue code: YuA2
 -----------------------------------------------------------------------------------------------------
 
 Sequence 5: dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
@@ -1777,7 +1777,7 @@ Found query residue: UYS
 UYS will be read in 1 times.
 Found query residue: 4uA3
 4uA3 will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for UYS, PrepResidue dtor for SO3, PrepResidue dtor for 4uA3, PrepResidue dtor for 4YS, PrepResidue dtor for YuA, PrepResidue dtor for 4YS, PrepResidue dtor for 245, PrepResidue dtor for SO3, PrepResidue dtor for SO3, 
+
 
 
 On to setting 3d structure!
@@ -1832,7 +1832,7 @@ Found query residue: 0GA
 0GA will be read in 1 times.
 Found query residue: 2CU
 2CU will be read in 1 times.
-PrepResidue dtor for 2CU, PrepResidue dtor for 0GA, 
+
 
 
 On to setting 3d structure!
@@ -1934,7 +1934,7 @@ Found query residue: 0CU
 0CU will be read in 1 times.
 Found query residue: 1GA
 1GA will be read in 1 times.
-PrepResidue dtor for 1GA, PrepResidue dtor for 0CU, 
+
 
 
 On to setting 3d structure!
@@ -2071,7 +2071,7 @@ Found query residue: 4YS
 4YS will be read in 1 times.
 Found query residue: 4uA2
 4uA2 will be read in 1 times.
-PrepResidue dtor for ROH, PrepResidue dtor for YZB, PrepResidue dtor for 4YS, PrepResidue dtor for 4uA2, PrepResidue dtor for QYA, PrepResidue dtor for SO3, PrepResidue dtor for SO3, PrepResidue dtor for SO3, PrepResidue dtor for SO3, PrepResidue dtor for SO3, PrepResidue dtor for 245, Test level caught runtime error: Did not find prep entry for LIdopA(2SO)a1-4 with glycam residue code: YuA2
+Test level caught runtime error: Did not find prep entry for LIdopA(2SO)a1-4 with glycam residue code: YuA2
 -----------------------------------------------------------------------------------------------------
 
 Sequence 15: DGlNAcb1-OH
@@ -2090,7 +2090,7 @@ Found query residue: RMA
 RMA will be read in 1 times.
 Found query residue: SO3
 SO3 will be read in 2 times.
-PrepResidue dtor for OME, PrepResidue dtor for 4MA, PrepResidue dtor for RMA, PrepResidue dtor for SO3, PrepResidue dtor for 4MA, PrepResidue dtor for 4MA, PrepResidue dtor for 4MA, PrepResidue dtor for 4MA, PrepResidue dtor for 4MA, PrepResidue dtor for 0MA, PrepResidue dtor for SO3, 
+
 
 
 On to setting 3d structure!
@@ -2579,7 +2579,7 @@ Found query residue: SO3
 SO3 will be read in 2 times.
 Found query residue: XMA
 XMA will be read in 1 times.
-PrepResidue dtor for OME, PrepResidue dtor for XMA, PrepResidue dtor for SO3, PrepResidue dtor for SO3, 
+
 
 
 On to setting 3d structure!
