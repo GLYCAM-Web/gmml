@@ -140,7 +140,7 @@ inline int findElementAtomicNumber(const std::string queryElement)
 	}
 	else
 	{
-	    std::string message = "Did not find this element in the list: " + queryElement;
+	    std::string message = "Did not find this Element in the list of atomic Elements: " + queryElement;
 	    gmml::log(__LINE__,__FILE__,gmml::ERR, message);
 	    throw std::runtime_error(message);
 	}
