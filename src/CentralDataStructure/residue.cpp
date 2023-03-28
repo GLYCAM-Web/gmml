@@ -55,6 +55,19 @@ std::vector<Atom*> Residue::getAtoms() const
     return atoms;
 }
 
+const std::string Residue::GetParmName() const // If terminal, need to look up e.g. NPRO or CPRO instead of PRO.
+{
+    if (this->containsLabel("NTerminal"))
+    {
+        return "N" + this->getName();
+    }
+    else if (this->containsLabel("CTerminal"))
+    {
+        return "C" + this->getName();
+    }
+    return this->getName();
+}
+
 std::vector<std::string> Residue::getAtomNames() const
 {
     std::vector<std::string> foundAtomNames;

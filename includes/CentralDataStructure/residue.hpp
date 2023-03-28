@@ -31,6 +31,7 @@ public:
     //                    ACCESSOR                          //
     //////////////////////////////////////////////////////////
     inline virtual const std::string& getName() const {return name_;}
+    const std::string GetParmName() const;
     std::vector<Atom*> getAtoms() const;
     std::vector<std::string> getAtomNames() const;
     std::string getId(std::string moleculeNumber = constants::sNotSet) const;

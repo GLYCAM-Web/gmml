@@ -62,18 +62,7 @@ const std::string PdbResidue::getNumberAndInsertionCode() const
     return std::to_string(this->getNumber()) + this->getInsertionCode();
 }
 
-const std::string PdbResidue::GetParmName() const // If terminal, need to look up e.g. NPRO or CPRO instead of PRO.
-{
-    if (this->containsLabel("NTerminal"))
-    {
-        return "N" + this->getName();
-    }
-    else if (this->containsLabel("CTerminal"))
-    {
-        return "C" + this->getName();
-    }
-    return this->getName();
-}
+
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////

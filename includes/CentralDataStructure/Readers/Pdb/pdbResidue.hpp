@@ -29,7 +29,6 @@ public:
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
-    const std::string GetParmName() const;
     inline void AddTerCard() {hasTerCard_ = true;}
     inline void RemoveTerCard() {hasTerCard_ = false;}
     inline void setInsertionCode(const std::string& s) {insertionCode_ = s;}
