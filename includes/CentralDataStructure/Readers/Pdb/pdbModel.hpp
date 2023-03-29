@@ -3,6 +3,7 @@
 #include "includes/CentralDataStructure/assembly.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/conectRecord.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
+#include "includes/CentralDataStructure/cdsFunctions/parameters.hpp"
 #include <vector>
 #include <iostream>
 namespace pdb
@@ -29,7 +30,7 @@ public:
     void preProcessHisResidues(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
     void preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
     void preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);
-    void preProcessMissingUnrecognized(pdb::PreprocessorInformation &ppInfo);
+    void preProcessMissingUnrecognized(pdb::PreprocessorInformation &ppInfo, const cdsParameters::ParameterManager& parmManager);
     void bondAtomsByDistance();
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //

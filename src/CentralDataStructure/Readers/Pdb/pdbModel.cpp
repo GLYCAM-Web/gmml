@@ -7,6 +7,8 @@
 #include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
 #include "includes/CentralDataStructure/cdsFunctions.hpp"
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp"
+#include "includes/CentralDataStructure/Selections/atomSelections.hpp"
+
 #include <algorithm> // std::find
 
 using pdb::PdbModel;
@@ -241,22 +243,22 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo,
     return;
 }
 
-void PdbModel::preProcessMissingUnrecognized(pdb::PreprocessorInformation &ppInfo)
+void PdbModel::preProcessMissingUnrecognized(pdb::PreprocessorInformation &ppInfo, const cdsParameters::ParameterManager& parmManager)
 {
-    parameters::Manager parmManager;
     for(auto &cdsResidue : this->getResidues())
     {
         PdbResidue* residue = static_cast<PdbResidue*>(cdsResidue);
-        std::vector<std::string> parmAtomNames = parmManager.GetAtomNamesForResidue(residue->GetParmName());
-        std::vector<std::string> parmHeavyAtomNames = parmManager.GetHeavyAtomNamesForResidue(residue->GetParmName());
+        cds::Residue* parameterResidue = parmManager.getParameterResidue(residue->GetParmName());
         // Unrecognized residue->
-        if (parmAtomNames.empty())
+        if (parameterResidue == nullptr)
         {
             gmml::log(__LINE__, __FILE__, gmml::INF, "ParmManager did not recognize residue: " + residue->GetParmName());
             ppInfo.unrecognizedResidues_.emplace_back(residue->getId());
         }
         else // Recognized residue->
         {
+            std::vector<std::string> parmHeavyAtomNames = cdsSelections::FindNamesOfAtoms(cdsSelections::FindHeavyAtoms(parameterResidue->getAtoms()));
+            std::vector<std::string> parmAtomNames = parameterResidue->getAtomNames();
             std::vector<std::string> pdbAtomNames = residue->getAtomNames();
             for (auto &parmHeavyAtomName : parmHeavyAtomNames) // What heavy atoms are missing from the pdb residue?
             {
