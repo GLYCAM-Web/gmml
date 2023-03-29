@@ -35,6 +35,14 @@ int main ()
         {
             std::cerr << exception << std::endl;
 	    }
+        catch (const std::runtime_error &error)
+        {
+            std::cerr << "Test level caught runtime error: " << error.what() << std::endl;
+        }
+        catch(...)
+        {
+            std::cerr << "Test level caught unexpected error. Sorry I don't know more, I'm as confused as you are mate.\n";
+        }
         std::cout << "-----------------------------------------------------------------------------------------------------\n\n";
     }
 	return 0;
