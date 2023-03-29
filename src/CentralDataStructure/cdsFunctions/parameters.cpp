@@ -48,19 +48,19 @@ void ParameterManager::setAtomCharges(std::vector<cds::Residue*> queryResidues)
     }
 }
 
-
 bool ParameterManager::setAtomCharges(cds::Residue* queryResidue)
 {
     bool allAtomsPresent = true;
-    if (auto search = parameterResidueMap_.find(queryResidue->GetParmName()); search == parameterResidueMap_.end())
+    cds::Residue* parameterResidue = this->getParameterResidue(queryResidue->GetParmName());
+    if (parameterResidue == nullptr)
     {
         gmml::log(__LINE__,__FILE__,gmml::WAR, "Did not find parameters and so cannot set charges for residue named: " + queryResidue->GetParmName());
         return false;
     }
-    std::vector<cds::Atom*> refAtoms = parameterResidueMap_[queryResidue->GetParmName()]->getAtoms();
+    std::vector<cds::Atom*> parameterAtoms = parameterResidue->getAtoms();
     for(auto & queryAtom : queryResidue->getAtoms())
     {
-        if(!cdsParameters::setChargeForAtom(queryAtom, refAtoms))
+        if(!cdsParameters::setChargeForAtom(queryAtom, parameterAtoms))
         {
             allAtomsPresent = false;
         }
@@ -68,6 +68,15 @@ bool ParameterManager::setAtomCharges(cds::Residue* queryResidue)
     return allAtomsPresent;
 }
 
+cds::Residue* ParameterManager::getParameterResidue(const std::string name) const
+{
+    if (auto search = parameterResidueMap_.find(name); search != parameterResidueMap_.end())
+    {
+        return search->second;
+    }
+    gmml::log(__LINE__,__FILE__,gmml::WAR, "Did not find parameters for residue named: " + name);
+    return nullptr;
+}
 
 bool cdsParameters::setChargeForAtom(cds::Atom* queryAtom, std::vector<cds::Atom*> referenceAtoms)
 {
