@@ -95,6 +95,7 @@ unsigned long int cdsSelections::CountInternalHeavyAtomBonds(std::vector<Atom*> 
 std::vector<Atom*> cdsSelections::FindHeavyAtoms(std::vector<Atom*> queryAtoms)
 {
     std::vector<Atom*> foundAtoms;
+    foundAtoms.reserve(queryAtoms.size());
     std::vector<std::string> heavyList = {"C", "O", "N", "S", "P"};
     for (auto &atom : queryAtoms)
     {
@@ -105,6 +106,18 @@ std::vector<Atom*> cdsSelections::FindHeavyAtoms(std::vector<Atom*> queryAtoms)
     }
     return foundAtoms;
 }
+
+std::vector<std::string> cdsSelections::FindNamesOfAtoms(std::vector<Atom*> queryAtoms)
+{
+    std::vector<std::string> foundNames;
+    foundNames.reserve(queryAtoms.size());
+    for (auto &atom : queryAtoms)
+    {
+        foundNames.push_back(atom->getName());
+    }
+    return foundNames;
+}
+
 
 unsigned long int cdsSelections::CountAtomsWithinBondingDistance(const Atom* queryAtom, std::vector<Atom*> otherAtoms)
 {

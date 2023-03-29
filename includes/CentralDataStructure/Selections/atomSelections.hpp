@@ -22,6 +22,7 @@ Atom* guessAnomericAtom(Residue* queryResidue);
 std::vector<Coordinate*> getCoordinates(std::vector<Atom*> queryAtoms);
 unsigned long int CountInternalHeavyAtomBonds(std::vector<Atom*> queryAtoms);
 std::vector<Atom*> FindHeavyAtoms(std::vector<Atom*> queryAtoms);
+std::vector<std::string> FindNamesOfAtoms(std::vector<Atom*> queryAtoms);
 unsigned long int CountAtomsWithinBondingDistance(const Atom* queryAtom, std::vector<Atom*> otherAtoms);
 std::vector<Atom*> FindAtomsWithinDistance(const Atom* queryAtom, std::vector<Atom*> otherAtoms, double distance = 1.0);
 } // namespace
