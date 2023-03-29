@@ -7,7 +7,6 @@
 #include "includes/GeometryTopology/geometrytopology.hpp"
 #include <fstream>      // std::ifstream
 #include <algorithm>    // std::find
-
 using pdb::PdbFile;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //

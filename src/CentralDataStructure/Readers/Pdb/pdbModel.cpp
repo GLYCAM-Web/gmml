@@ -14,7 +14,6 @@ using pdb::PdbModel;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 PdbModel::PdbModel() {}
-
 PdbModel::PdbModel(std::stringstream &stream_block)
 {
     int currentModelNumber = 1;
@@ -23,7 +22,6 @@ PdbModel::PdbModel(std::stringstream &stream_block)
     while(getline(stream_block, line))
     {
         std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
-        // MODEL cards
         if(recordName == "MODEL")
         {
             try
@@ -37,26 +35,19 @@ PdbModel::PdbModel(std::stringstream &stream_block)
             }
             this->setNumber(currentModelNumber);
         }
-        // ATOM
         else if ( (recordName == "ATOM") || (recordName == "HETATM") )
-        {
-            // Gimme everything with the same chain, can be everything with no chain.
+        {   // Gimme everything with the same chain, can be everything with no chain.
             // Function that will read from stringstream until chain ID changes or TER or just not ATOM/HETATM
             std::stringstream singleChainSection = this->extractSingleChainFromRecordSection(stream_block, line, this->extractChainId(line));
-            //this->addMolecule(PdbChain(singleChainSection, this->extractChainId(line)));
-//            gmml::log(__LINE__,__FILE__,gmml::INF, "I'm about to die now?");
             this->addMolecule(std::make_unique<PdbChain>(singleChainSection, this->extractChainId(line)));
         }
     }
     gmml::log(__LINE__,__FILE__,gmml::INF, "PdbModel Constructor Complete Captain");
-    //this->bondAtomsByDistance(); // Just testing this functionality. It's just a test bro.
     return;
 }
-
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-
 std::string PdbModel::extractChainId(const std::string &line)
 {   // serialNumber can overrun into position 12 in input.
     int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
@@ -105,14 +96,9 @@ void PdbModel::ChangeResidueName(const std::string& selector, const std::string&
     gmml::log(__LINE__, __FILE__, gmml::WAR, "Could not find residue to rename with this selector " + selector);
     return;
 }
-
 //////////////////////////////////////////////////////////
 //                      FUNCTIONS                       //
 //////////////////////////////////////////////////////////
-//void CoordinateSection::SerializeAtomRecordSerialNumbers()
-//{
-//
-//}
 void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Start CYS preprocessing for this Model\n");
@@ -123,7 +109,6 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation &ppInfo)
     }
     for (std::vector<cds::Residue*>::iterator it1 = cysResidues.begin(); it1 != cysResidues.end(); ++it1)
     { // I want to go through the list and compare from current item to end. Thus it2 = std::next it1
-
         PdbResidue* cysRes1 = static_cast<PdbResidue*>(*it1);
         const cds::Atom* sgAtom1 = cysRes1->FindAtom("SG");
         for (std::vector<cds::Residue*>::iterator it2 = std::next(it1, 1); it2 != cysResidues.end(); ++it2)
@@ -227,7 +212,6 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo,
     for(auto &cdsMolecule : this->getMolecules())
     {
         PdbChain* chain = static_cast<PdbChain*>(cdsMolecule);
-//        std::vector<pdb::PdbResidue*> proteinResidues = cds::selectResiduesByType(chain->getResidues(), Abstract::absResidue::Type::Protein);
     	std::vector<cds::Residue*> proteinResidues = cdsSelections::selectResiduesByType(chain->getResidues(), cds::ResidueType::Protein);
         for(std::vector<cds::Residue*>::iterator it1 = proteinResidues.begin(); it1 != proteinResidues.end(); ++it1)
         {
@@ -302,7 +286,7 @@ void PdbModel::bondAtomsByDistance()
 }
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
-////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
 void PdbModel::Print(std::ostream &out) const
 {
     for (auto &residue : this->getResidues())

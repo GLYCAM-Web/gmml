@@ -12,10 +12,8 @@
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/remarkRecord.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/titleRecord.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
-
 #include <string>
 #include <vector>
-
 namespace pdb
 {
 const int iPdbLineLength = 80;
@@ -32,7 +30,7 @@ public:
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
     inline std::string GetInputFilePath() const {return inFilePath_;}
-    // These should be private and whatever info they give out should be directly queryable here.
+    // ToDo These should be private and whatever info they give out should be directly queryable here.
     inline const HeaderRecord& GetHeaderRecord() const {return headerRecord_;}
     inline const TitleRecord& GetTitleRecord() const {return titleRecord_;}
     inline const AuthorRecord& GetAuthorRecord() const {return authorRecord_;}
@@ -54,13 +52,13 @@ private:
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-    void ParseInFileStream(std::ifstream& pdbFileStream);
-    std::stringstream ExtractHeterogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, const std::vector<std::string> recordNames);
-    std::stringstream ExtractHomogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, std::string previousName);
     inline const std::vector<DatabaseReference>& GetDatabaseReferences() const {return databaseReferences_;}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
+    void ParseInFileStream(std::ifstream& pdbFileStream);
+    std::stringstream ExtractHeterogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, const std::vector<std::string> recordNames);
+    std::stringstream ExtractHomogenousRecordSection(std::ifstream &pdbFileStream, std::string &line, std::string previousName);
     //////////////////////////////////////////////////////////
     //                        ATTRIBUTES                    //
     //////////////////////////////////////////////////////////
