@@ -2,6 +2,7 @@
 #define GMML_INCLUDES_CENTRALDATASTRUCTURE_INTERNALPROGRAMS_GLYCOPROTEINBUILDER_GLYCOPROTEINBUILDER_HPP
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycosylationSite.hpp"
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
 #include "includes/Abstract/absBuilder.hpp"
 #include <string>
 //#include <dirent.h>
@@ -14,7 +15,7 @@ public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
-    GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs inputStruct);
+    GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs inputStruct, pdb::PreprocessorOptions preprocessingOptions = pdb::PreprocessorOptions());
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////

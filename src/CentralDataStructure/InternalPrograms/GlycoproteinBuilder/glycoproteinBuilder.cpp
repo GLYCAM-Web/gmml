@@ -18,7 +18,7 @@ using cds::Assembly;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-GlycoproteinBuilder::GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs inputStruct)
+GlycoproteinBuilder::GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs inputStruct, pdb::PreprocessorOptions preprocessingOptions)
 {
     try
     {
@@ -27,6 +27,8 @@ GlycoproteinBuilder::GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs
         this->SetPersistCycles(inputStruct.persistCycles_);
         this->SetOverlapTolerance(inputStruct.overlapTolerance_);
         pdb::PdbFile pdbFile(inputStruct.substrateFileName_);
+        //pdb::PreprocessorOptions defaultOptions;
+        pdbFile.PreProcess(preprocessingOptions);
         glycoprotein_ = std::move(*(pdbFile.getAssemblies().front()));
         cds::bondAtomsByDistance(glycoprotein_.getAtoms());
         gmml::log(__LINE__, __FILE__, gmml::INF, "Attaching Glycans To Glycosites.");
