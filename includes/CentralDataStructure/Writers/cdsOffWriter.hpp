@@ -36,7 +36,7 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 		for(auto &atom : residue->getAtoms())
 		{
 			stream << " \"" << atom->getName() << "\" " << "\"" << atom->getType() << "\" " << "0" << " " << residue->getNumber() << " " << FLAG << " "
-					<< atomNumberInResidue << " " << atom->getAtomicNumber() << " " << std::fixed << atom->getCharge() << std::endl;
+					<< atomNumberInResidue << " " << atom->getAtomicNumber() << " " << std::fixed << std::setprecision(6) << atom->getCharge() << std::endl;
 			atomNumberInResidue++;
 		}
 	}
