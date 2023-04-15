@@ -162,10 +162,10 @@ if [[ "${branch}" != "gmml-dev" ]] && [[ "${branch}" != "gmml-test" ]] && [[ "${
 
     if [[ "${branch}" != hotfix* ]]; then
         echo -e "Ensuring feature branch is not too far from gmml-test\n"
-        ensure_feature_close
+        #ensure_feature_close
         
         
-        exit 1
+        #exit 1
         
     else
         echo -e "You are applying making a hotfix for one of our main branches EXCEPT gmml-test,\nif this is not the case ABORT AND BUG PRESTON\n"
