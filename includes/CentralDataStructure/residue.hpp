@@ -3,6 +3,7 @@
 
 #include "includes/CentralDataStructure/atom.hpp"
 #include "includes/CentralDataStructure/coordinate.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp" // getId
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp"
 #include "includes/CodeUtils/constants.hpp" // iNotSet
 
@@ -39,6 +40,7 @@ public:
     const Coordinate* getGeometricCenter();
     inline ResidueType GetType() const {return type_;}
     inline unsigned int getNumber() const {return number_;}
+    virtual pdb::ResidueId getId() const;
     //////////////////////////////////////////////////////////
     //                    MUTATOR                           //
     //////////////////////////////////////////////////////////

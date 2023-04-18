@@ -98,6 +98,12 @@ const Coordinate* Residue::getGeometricCenter()
     }
     return &geometricCenter_;
 }
+
+pdb::ResidueId Residue::getId() const
+{
+    pdb::ResidueId temp(this->getName(), std::to_string(this->getNumber()), constants::sNotSet, constants::sNotSet);
+    return temp;
+}
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
