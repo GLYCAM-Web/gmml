@@ -45,6 +45,7 @@ inline bool bondAtomsIfClose(atomT* atom1, atomT* atom2)
         //std::stringstream ss;
         //std::cout << "Bonded " << atom1->getName() << "_" << atom1->getIndex() << " to " << atom2->getName() << "_" << atom2->getIndex() << "\n";
         //gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
+    	return true;
     }
     return false;
 }

@@ -29,7 +29,7 @@ void operator() (RandomAccessIterator current, RandomAccessIterator end)
 		for(typename std::vector<atomT*>::iterator it2 = std::next(current); it2 != end; ++it2)
 		{
 			atomT* atom2 = *it2;
-			atomicBonds::bondAtomsIfClose(atom1, atom2);
+			static_cast<void>(atomicBonds::bondAtomsIfClose(atom1, atom2)); // i'm ignoring the returned bool.
 		}
 		++current;
 	}
