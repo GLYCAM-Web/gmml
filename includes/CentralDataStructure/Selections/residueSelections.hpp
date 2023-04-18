@@ -25,6 +25,8 @@ std::vector<Residue*> selectResiduesByType(std::vector<Residue*> inputResidues, 
 //}
 //cds::Molecule* findMoleculeOfResidue(std::vector<cds::Molecule*> molecules, Residue* queryResidue);
 unsigned int findHighestResidueNumber(std::vector<Residue*> residues);
+Residue* FindNeighborResidueConnectedViaSpecificAtom(Residue* queryResidue, const std::string queryAtomName);
+
 } // namespace
 
 #endif // CDS SELECTIONS
