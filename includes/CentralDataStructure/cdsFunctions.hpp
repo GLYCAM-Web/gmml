@@ -119,6 +119,11 @@ void serializeNumbers(std::vector<T*> elements)
     }
     return;
 }
+
+void bondAtomsByDistanceSerial(std::vector<cds::Atom*> atoms);
+void bondAtomsAndResiduesByDistance(cds::Residue* residueA, cds::Residue* residueB);
+void bondAtomsAndResiduesByDistance(std::vector<cds::Residue*> residues);
+
 } // namespace
 
 
