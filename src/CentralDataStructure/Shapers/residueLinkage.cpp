@@ -42,7 +42,7 @@ std::vector<RotatableDihedral> ResidueLinkage::GetRotatableDihedrals() const
     if (rotatableDihedrals_.empty())
     {
         std::stringstream ss;
-        ss << "Error: RotatableDihedrals in this linkage is empty: " << from_this_residue1_->getId() << "-" << to_this_residue2_->getId() << std::endl;
+        ss << "Error: RotatableDihedrals in this linkage is empty: " << from_this_residue1_->getStringId() << "-" << to_this_residue2_->getStringId() << std::endl;
         gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
         throw std::runtime_error(ss.str());
     }
@@ -262,8 +262,8 @@ std::string ResidueLinkage::Print() const
 {
     std::stringstream ss;
     ss << "ResidueLinkage Index: " << this->GetIndex() << ", Name: " << this->GetName() << ", NumberOfShapes: " << this->GetNumberOfShapes()
-              << ", ids: " << this->GetFromThisResidue1()->getId() << "@" << this->GetFromThisConnectionAtom1()->getName()
-              << " -- " << this->GetToThisResidue2()->getId() << "@" << this->GetToThisConnectionAtom2()->getName() << "\n";
+              << ", ids: " << this->GetFromThisResidue1()->getStringId() << "@" << this->GetFromThisConnectionAtom1()->getName()
+              << " -- " << this->GetToThisResidue2()->getStringId() << "@" << this->GetToThisConnectionAtom2()->getName() << "\n";
     gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
     for(auto & rotatableDihedral : this->GetRotatableDihedrals() )
     {
@@ -277,14 +277,14 @@ void ResidueLinkage::InitializeClass(cds::Residue* from_this_residue1, cds::Resi
 {
     //set local debug flag
     int local_debug = -1;
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Maybe Finding connection between " + from_this_residue1->getId() + " :: " + to_this_residue2->getId());
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Maybe Finding connection between " + from_this_residue1->getStringId() + " :: " + to_this_residue2->getStringId());
     this->SetResidues(from_this_residue1, to_this_residue2);
     this->SetIfReversedAtomsThatMove(reverseAtomsThatMove);
     this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
     if(local_debug > 0)
     {
         // std::cout << "Maybe Finding connection between " << from_this_residue1->getId() << " :: " << to_this_residue2->getId() << std::endl;
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Maybe Finding connection between " + from_this_residue1->getId() + " :: " + to_this_residue2->getId());
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Maybe Finding connection between " + from_this_residue1->getStringId() + " :: " + to_this_residue2->getStringId());
     }
     if(this->CheckIfViableLinkage())
     {
@@ -292,14 +292,14 @@ void ResidueLinkage::InitializeClass(cds::Residue* from_this_residue1, cds::Resi
 //        std::cout << "Connection atoms are from: " << from_this_connection_atom1_->getId() << " to " << to_this_connection_atom2_->getId() << std::endl;
         if(local_debug > 0)
         {
-            gmml::log(__LINE__, __FILE__, gmml::INF, "Finding connection between " + from_this_residue1->getId() + " :: " + to_this_residue2->getId());
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Finding connection between " + from_this_residue1->getStringId() + " :: " + to_this_residue2->getStringId());
             gmml::log(__LINE__, __FILE__, gmml::INF, "Connection atoms are from: " + from_this_connection_atom1_->getId() + " to " + to_this_connection_atom2_->getId());
         }
         rotatableDihedrals_ = this->FindRotatableDihedralsConnectingResidues(from_this_connection_atom1_, to_this_connection_atom2_);
 //        std::cout << "Finding metadata for " << from_this_residue1->getId() << " :: " << to_this_residue2->getId() << std::endl;
         if(local_debug > 0)
         {
-            gmml::log(__LINE__, __FILE__, gmml::INF, "Finding metadata for " + from_this_residue1->getId() + " :: " + to_this_residue2->getId());
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Finding metadata for " + from_this_residue1->getStringId() + " :: " + to_this_residue2->getStringId());
         }
         gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata = this->FindMetadata();
       //  std::cout << "Metadata found:\n";

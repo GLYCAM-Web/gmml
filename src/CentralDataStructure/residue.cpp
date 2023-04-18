@@ -78,7 +78,7 @@ std::vector<std::string> Residue::getAtomNames() const
     return foundAtomNames;
 }
 
-std::string Residue::getId(std::string moleculeNumber) const
+std::string Residue::getStringId(std::string moleculeNumber) const
 {
     const std::string insertionCode = constants::sNotSet;
     pdb::ResidueId temp(this->getName(), std::to_string(this->getNumber()), insertionCode, moleculeNumber);

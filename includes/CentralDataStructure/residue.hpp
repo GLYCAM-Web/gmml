@@ -34,7 +34,7 @@ public:
     const std::string GetParmName() const;
     std::vector<Atom*> getAtoms() const;
     std::vector<std::string> getAtomNames() const;
-    std::string getId(std::string moleculeNumber = constants::sNotSet) const;
+    std::string getStringId(std::string moleculeNumber = constants::sNotSet) const;
     std::vector<Coordinate*> getCoordinates() const;
     const Coordinate* getGeometricCenter();
     inline ResidueType GetType() const {return type_;}

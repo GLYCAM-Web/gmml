@@ -207,13 +207,13 @@ cds::Residue* Carbohydrate::GetReducingResidue()
     { // Return the first sugar residue that isn't an Aglycone
         if (residue->GetType() != ResidueType::Aglycone && residue->GetType() == ResidueType::Sugar)
         {
-            gmml::log(__LINE__, __FILE__, gmml::INF, "Assuming that reducing residue is " + residue->getId());
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Assuming that reducing residue is " + residue->getStringId());
             return residue;
         }
     }
     if(this->GetResidueCount() > 1)
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "No ResidueType's assigned, so assuming that reducing residue is " + this->getResidues().at(1)->getId());
+        gmml::log(__LINE__, __FILE__, gmml::INF, "No ResidueType's assigned, so assuming that reducing residue is " + this->getResidues().at(1)->getStringId());
         return this->getResidues().at(1);
     }
     std::string message = "Reducing residue requested for Carbohydrate with name " + this->getName() + ", but it doesn't have more than 1 residue";
@@ -233,7 +233,7 @@ cds::Residue* Carbohydrate::GetAglycone()
     if(this->GetResidueCount() > 0)
     {
 
-        gmml::log(__LINE__, __FILE__, gmml::INF, "A ResidueType::Aglycone residue was not present, so assuming that aglycone residue is " + this->getResidues().front()->getId());
+        gmml::log(__LINE__, __FILE__, gmml::INF, "A ResidueType::Aglycone residue was not present, so assuming that aglycone residue is " + this->getResidues().front()->getStringId());
         return this->getResidues().front();
     }
     std::string message = "Aglycone residue requested for Carbohydrate with name " + this->getName() + ", but it doesn't have even 1 residue";
@@ -317,7 +317,7 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
     using cds::ResidueType;
     using cds::Atom;
     std::string linkageLabel = static_cast<ParsedResidue*>(childResidue)->GetLinkageName();
-    gmml::log(__LINE__,__FILE__,gmml::INF, "Here with child " + childResidue->getId() + " and parent: " + parentResidue->getId() + " and linkageLabel: " + linkageLabel);
+    gmml::log(__LINE__,__FILE__,gmml::INF, "Here with child " + childResidue->getStringId() + " and parent: " + parentResidue->getStringId() + " and linkageLabel: " + linkageLabel);
     // This is using the new Node<Residue> functionality and the old AtomNode
     // Now go figure out how which Atoms to bond to each other in the residues.
     // Rule: Can't ever have a child aglycone or a parent derivative.
@@ -359,7 +359,7 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
     }
     if (parentAtom == nullptr)
     {
-        std::string message = "Did not find connection atom in residue: " + parentResidue->getId();
+        std::string message = "Did not find connection atom in residue: " + parentResidue->getStringId();
         gmml::log(__LINE__, __FILE__, gmml::ERR, message);
         throw std::runtime_error(message);
     }
@@ -391,7 +391,7 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
     Atom* childAtom = childResidue->FindAtom(childAtomName);
     if (childAtom == nullptr)
     {
-        std::string message = "Did not find child atom named " + childAtomName + " in child residue: " + childResidue->getId();
+        std::string message = "Did not find child atom named " + childAtomName + " in child residue: " + childResidue->getStringId();
         gmml::log(__LINE__, __FILE__, gmml::ERR, message);
         throw std::runtime_error(message);
     }

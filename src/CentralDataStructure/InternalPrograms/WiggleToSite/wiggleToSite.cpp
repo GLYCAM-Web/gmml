@@ -26,10 +26,10 @@ WiggleToSite::WiggleToSite(WiggleToSiteInputs inputStruct) : substrate_(inputStr
         ss << "Selection for superimposition target: " << inputStruct.superimpositionTargetResidue_ << "\nOr selection for wiggling target: " << inputStruct.wigglingTargetResidue_ << " was not found\n";
         throw std::runtime_error(ss.str());
     }
-    std::cout << "Super target is " << superimpositionTarget->getId() << std::endl;
+    std::cout << "Super target is " << superimpositionTarget->getStringId() << std::endl;
     Residue* superimposeMe = codeUtils::findElementWithNumber(this->getCarbohydrate().getResidues(), inputStruct.carbohydrateSuperimpositionResidue_);
     Residue* wiggleMe = codeUtils::findElementWithNumber(this->getCarbohydrate().getResidues(), inputStruct.carbohydrateWigglingResidue_);
-    std::cout << "Residue to wiggle is " << wiggleMe->getId();
+    std::cout << "Residue to wiggle is " << wiggleMe->getStringId();
     this->superimpose(carbohydrateCoordinates, superimpositionTarget, superimposeMe);
     this->getCarbohydrate().Generate3DStructureFiles("./", "superimposed");
     this->determineWiggleLinkages(superimposeMe, wiggleMe);

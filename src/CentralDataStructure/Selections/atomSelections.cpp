@@ -51,7 +51,7 @@ Atom* cdsSelections::guessAnomericAtom(cds::Residue* queryResidue)
             return potentialAnomer;
         }
     }
-    std::string message = "Did not find a C1 or C2 with a foreign neighbor in residue: " + queryResidue->getId() + ", thus no anomeric atom was found.";
+    std::string message = "Did not find a C1 or C2 with a foreign neighbor in residue: " + queryResidue->getStringId() + ", thus no anomeric atom was found.";
     gmml::log(__LINE__, __FILE__, gmml::ERR, message);
     throw std::runtime_error(message);
     return nullptr;

@@ -37,7 +37,7 @@ public:
     //////////////////////////////////////////////////////////
 //    inline double GetGlycanOverlap() 							{return glycan_overlap_;}
 //    inline double GetProteinOverlap() 							{return protein_overlap_;}
-    inline std::string GetResidueId()							{return this->GetResidue()->getId();}
+    inline std::string GetResidueId()							{return this->GetResidue()->getStringId();}
 //    inline double GetOverlap()									{return (glycan_overlap_ + protein_overlap_);}
 //    std::vector<ResidueLinkage> GetFirstAnd1_6Linkages(); // This should be a selection in a separate place.
 //    std::vector<ResidueLinkage> GetFirstAnd2_XLinkages(); // This should be a selection in a separate place.
@@ -68,19 +68,19 @@ public:
     //////////////////////////////////////////////////////////
     inline bool operator==(const GlycosylationSite &rhs) const
     {
-        return rhs.residue_->getId() == residue_->getId();
+        return rhs.residue_->getStringId() == residue_->getStringId();
     }
     inline bool operator!=(const GlycosylationSite &rhs) const
     {
-        return residue_->getId() != rhs.residue_->getId();
+        return residue_->getStringId() != rhs.residue_->getStringId();
     }
     inline bool operator<(const GlycosylationSite &rhs) const
     {
-        return residue_->getId() < rhs.residue_->getId();
+        return residue_->getStringId() < rhs.residue_->getStringId();
     }
     inline bool operator>(const GlycosylationSite &rhs) const
     {
-        return residue_->getId() > rhs.residue_->getId();
+        return residue_->getStringId() > rhs.residue_->getStringId();
     }
 private:
     //////////////////////////////////////////////////////////
