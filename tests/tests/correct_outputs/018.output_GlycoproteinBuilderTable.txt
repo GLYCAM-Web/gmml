@@ -1,6 +1,7 @@
+Parsing inputfile
 Chain: A
 ResidueNumber: 25
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: _S_HM
 Tags:
 oLink
@@ -8,7 +9,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 37
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VR_T_GP
 Tags:
 oLink
@@ -16,7 +17,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 43
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AI_T_QI
 Tags:
 oLink
@@ -24,7 +25,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 48
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EA_Y_LN
 Tags:
 oLink
@@ -32,28 +33,28 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 50
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YL_N_PR
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 55
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: MG_N_NI
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 56
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GN_N_IP
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 59
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IP_S_ED
 Tags:
 oLink
@@ -61,7 +62,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 63
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DL_Y_GY
 Tags:
 oLink
@@ -69,7 +70,7 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 65
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_Y_SN
 Tags:
 oLink
@@ -77,7 +78,7 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 66
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GY_S_NS
 Tags:
 oLink
@@ -85,14 +86,14 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 67
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YS_N_SI
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 68
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SN_S_IN
 Tags:
 oLink
@@ -100,14 +101,14 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 70
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SI_N_TA
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 71
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IN_T_AF
 Tags:
 oLink
@@ -115,7 +116,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 74
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AF_S_KA
 Tags:
 oLink
@@ -123,7 +124,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 77
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KA_S_DT
 Tags:
 oLink
@@ -131,7 +132,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 79
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SD_T_PN
 Tags:
 oLink
@@ -139,14 +140,14 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 81
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TP_N_KD
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 84
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KD_T_LP
 Tags:
 oLink
@@ -154,7 +155,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 88
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PC_Y_SV
 Tags:
 oLink
@@ -162,7 +163,7 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 89
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CY_S_VA
 Tags:
 oLink
@@ -170,14 +171,14 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 99
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LL_N_ED
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 103
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DM_T_CD
 Tags:
 oLink
@@ -185,7 +186,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 106
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CD_T_IL
 Tags:
 oLink
@@ -193,14 +194,14 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 110
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LM_W_EA
 Tags:
 cLink
 
 Chain: A
 ResidueNumber: 114
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AV_S_VK
 Tags:
 oLink
@@ -208,7 +209,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 117
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_T_EV
 Tags:
 oLink
@@ -216,7 +217,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 123
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GI_S_SL
 Tags:
 oLink
@@ -224,7 +225,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 124
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IS_S_LV
 Tags:
 oLink
@@ -232,14 +233,14 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 127
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LV_N_LH
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 134
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_IY
 Tags:
 oLink
@@ -247,7 +248,7 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 136
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YI_Y_GS
 Tags:
 oLink
@@ -255,7 +256,7 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 138
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_SS
 Tags:
 oLink
@@ -263,7 +264,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 139
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GS_S_SG
 Tags:
 oLink
@@ -271,7 +272,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 140
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_S_GC
 Tags:
 oLink
@@ -279,7 +280,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 148
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QG_T_TY
 Tags:
 oLink
@@ -287,7 +288,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 149
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GT_T_YH
 Tags:
 oLink
@@ -295,7 +296,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 150
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TT_Y_HM
 Tags:
 oLink
@@ -303,7 +304,7 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 168
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VA_S_ST
 Tags:
 oLink
@@ -311,7 +312,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 169
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AS_S_TA
 Tags:
 oLink
@@ -319,7 +320,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 170
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_T_AT
 Tags:
 oLink
@@ -327,7 +328,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 172
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TA_T_YP
 Tags:
 oLink
@@ -335,7 +336,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 173
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_Y_PD
 Tags:
 oLink
@@ -343,21 +344,21 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 182
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IK_N_MK
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 187
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PG_N_QG
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 204
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_PV
 Tags:
 oLink
@@ -365,14 +366,14 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 209
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EV_W_CP
 Tags:
 cLink
 
 Chain: A
 ResidueNumber: 214
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DP_S_KN
 Tags:
 oLink
@@ -380,21 +381,21 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 216
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SK_N_EN
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 218
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NE_N_TR
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 219
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EN_T_RY
 Tags:
 oLink
@@ -402,7 +403,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 221
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TR_Y_YG
 Tags:
 oLink
@@ -410,7 +411,7 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 222
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: RY_Y_GS
 Tags:
 oLink
@@ -418,7 +419,7 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 224
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_FT
 Tags:
 oLink
@@ -426,7 +427,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 226
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SF_T_GG
 Tags:
 oLink
@@ -434,7 +435,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 230
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GA_T_TP
 Tags:
 oLink
@@ -442,7 +443,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 231
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_T_PP
 Tags:
 oLink
@@ -450,7 +451,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 238
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QF_T_NS
 Tags:
 oLink
@@ -458,14 +459,14 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 239
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FT_N_SV
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 240
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_S_VT
 Tags:
 oLink
@@ -473,7 +474,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 242
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SV_T_TV
 Tags:
 oLink
@@ -481,7 +482,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 243
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VT_T_VL
 Tags:
 oLink
@@ -489,14 +490,14 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 249
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DE_N_GV
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 263
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FL_S_CA
 Tags:
 oLink
@@ -504,7 +505,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 272
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VH_T_NY
 Tags:
 oLink
@@ -512,7 +513,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 273
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: HT_N_YS
 Tags:
 nLink
@@ -520,7 +521,7 @@ nLinkLikely
 
 Chain: A
 ResidueNumber: 274
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_Y_SE
 Tags:
 oLink
@@ -528,7 +529,7 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 275
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NY_S_ET
 Tags:
 oLink
@@ -536,7 +537,7 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 277
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SE_T_QV
 Tags:
 oLink
@@ -544,14 +545,14 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 280
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QV_W_RG
 Tags:
 cLink
 
 Chain: A
 ResidueNumber: 286
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PR_Y_FN
 Tags:
 oLink
@@ -559,7 +560,7 @@ oLinkTyr
 
 Chain: A
 ResidueNumber: 288
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YF_N_VT
 Tags:
 nLink
@@ -567,7 +568,7 @@ nLinkLikely
 
 Chain: A
 ResidueNumber: 290
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NV_T_LR
 Tags:
 oLink
@@ -575,14 +576,14 @@ oLinkLikely
 
 Chain: A
 ResidueNumber: 298
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_N_PY
 Tags:
 nLink
 
 Chain: A
 ResidueNumber: 300
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NP_Y_P
 Tags:
 oLink
@@ -590,7 +591,7 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 25
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: _S_HM
 Tags:
 oLink
@@ -598,7 +599,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 43
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AI_T_QI
 Tags:
 oLink
@@ -606,7 +607,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 48
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EA_Y_LN
 Tags:
 oLink
@@ -614,28 +615,28 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 50
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YL_N_PR
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 55
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: MG_N_NI
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 56
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GN_N_IP
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 59
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IP_S_ED
 Tags:
 oLink
@@ -643,7 +644,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 63
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DL_Y_GY
 Tags:
 oLink
@@ -651,7 +652,7 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 65
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_Y_SN
 Tags:
 oLink
@@ -659,7 +660,7 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 66
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GY_S_NS
 Tags:
 oLink
@@ -667,14 +668,14 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 67
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YS_N_SI
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 68
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SN_S_IN
 Tags:
 oLink
@@ -682,14 +683,14 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 70
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SI_N_TA
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 71
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IN_T_AF
 Tags:
 oLink
@@ -697,7 +698,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 74
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AF_S_KA
 Tags:
 oLink
@@ -705,7 +706,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 77
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KA_S_DT
 Tags:
 oLink
@@ -713,7 +714,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 79
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SD_T_PN
 Tags:
 oLink
@@ -721,14 +722,14 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 81
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TP_N_KD
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 84
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KD_T_LP
 Tags:
 oLink
@@ -736,7 +737,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 88
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PC_Y_SV
 Tags:
 oLink
@@ -744,7 +745,7 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 89
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CY_S_VA
 Tags:
 oLink
@@ -752,14 +753,14 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 99
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LL_N_ED
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 103
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DM_T_CD
 Tags:
 oLink
@@ -767,7 +768,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 106
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CD_T_IL
 Tags:
 oLink
@@ -775,14 +776,14 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 110
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LM_W_EA
 Tags:
 cLink
 
 Chain: B
 ResidueNumber: 114
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AV_S_VK
 Tags:
 oLink
@@ -790,7 +791,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 117
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_T_EV
 Tags:
 oLink
@@ -798,7 +799,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 123
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GI_S_SL
 Tags:
 oLink
@@ -806,7 +807,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 124
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IS_S_LV
 Tags:
 oLink
@@ -814,14 +815,14 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 127
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LV_N_LH
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 134
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_IY
 Tags:
 oLink
@@ -829,7 +830,7 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 136
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YI_Y_GS
 Tags:
 oLink
@@ -837,7 +838,7 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 138
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_SS
 Tags:
 oLink
@@ -845,7 +846,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 139
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GS_S_SG
 Tags:
 oLink
@@ -853,7 +854,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 140
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_S_GC
 Tags:
 oLink
@@ -861,7 +862,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 148
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QG_T_TY
 Tags:
 oLink
@@ -869,7 +870,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 149
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GT_T_YH
 Tags:
 oLink
@@ -877,7 +878,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 150
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TT_Y_HM
 Tags:
 oLink
@@ -885,7 +886,7 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 168
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VA_S_ST
 Tags:
 oLink
@@ -893,7 +894,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 169
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AS_S_TA
 Tags:
 oLink
@@ -901,7 +902,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 170
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_T_AT
 Tags:
 oLink
@@ -909,7 +910,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 172
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TA_T_YP
 Tags:
 oLink
@@ -917,7 +918,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 173
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_Y_PD
 Tags:
 oLink
@@ -925,21 +926,21 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 182
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IK_N_MK
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 187
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PG_N_QG
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 204
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_PV
 Tags:
 oLink
@@ -947,14 +948,14 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 209
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EV_W_CP
 Tags:
 cLink
 
 Chain: B
 ResidueNumber: 214
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DP_S_KN
 Tags:
 oLink
@@ -962,21 +963,21 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 216
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SK_N_EN
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 218
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NE_N_TR
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 219
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EN_T_RY
 Tags:
 oLink
@@ -984,7 +985,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 221
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TR_Y_YG
 Tags:
 oLink
@@ -992,7 +993,7 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 222
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: RY_Y_GS
 Tags:
 oLink
@@ -1000,7 +1001,7 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 224
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_FT
 Tags:
 oLink
@@ -1008,7 +1009,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 226
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SF_T_GG
 Tags:
 oLink
@@ -1016,7 +1017,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 230
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GA_T_TP
 Tags:
 oLink
@@ -1024,7 +1025,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 231
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_T_PP
 Tags:
 oLink
@@ -1032,7 +1033,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 238
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QF_T_NS
 Tags:
 oLink
@@ -1040,14 +1041,14 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 239
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FT_N_SV
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 240
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_S_VT
 Tags:
 oLink
@@ -1055,7 +1056,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 242
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SV_T_TV
 Tags:
 oLink
@@ -1063,7 +1064,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 243
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VT_T_VL
 Tags:
 oLink
@@ -1071,14 +1072,14 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 249
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DE_N_GV
 Tags:
 nLink
 
 Chain: B
 ResidueNumber: 263
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FL_S_CA
 Tags:
 oLink
@@ -1086,7 +1087,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 272
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VH_T_NY
 Tags:
 oLink
@@ -1094,7 +1095,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 273
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: HT_N_YS
 Tags:
 nLink
@@ -1102,7 +1103,7 @@ nLinkLikely
 
 Chain: B
 ResidueNumber: 274
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_Y_SE
 Tags:
 oLink
@@ -1110,7 +1111,7 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 275
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NY_S_ET
 Tags:
 oLink
@@ -1118,7 +1119,7 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 277
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SE_T_QV
 Tags:
 oLink
@@ -1126,14 +1127,14 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 280
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QV_W_RG
 Tags:
 cLink
 
 Chain: B
 ResidueNumber: 286
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PR_Y_FN
 Tags:
 oLink
@@ -1141,7 +1142,7 @@ oLinkTyr
 
 Chain: B
 ResidueNumber: 288
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YF_N_VT
 Tags:
 nLink
@@ -1149,7 +1150,7 @@ nLinkLikely
 
 Chain: B
 ResidueNumber: 290
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NV_T_LR
 Tags:
 oLink
@@ -1157,14 +1158,14 @@ oLinkLikely
 
 Chain: B
 ResidueNumber: 298
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_N_P
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 25
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: _S_HM
 Tags:
 oLink
@@ -1172,7 +1173,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 37
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VR_T_GP
 Tags:
 oLink
@@ -1180,7 +1181,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 43
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AI_T_QI
 Tags:
 oLink
@@ -1188,7 +1189,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 48
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EA_Y_LN
 Tags:
 oLink
@@ -1196,28 +1197,28 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 50
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YL_N_PR
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 55
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: MG_N_NI
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 56
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GN_N_IP
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 59
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IP_S_ED
 Tags:
 oLink
@@ -1225,7 +1226,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 63
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DL_Y_GY
 Tags:
 oLink
@@ -1233,7 +1234,7 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 65
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_Y_SN
 Tags:
 oLink
@@ -1241,7 +1242,7 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 66
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GY_S_NS
 Tags:
 oLink
@@ -1249,14 +1250,14 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 67
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YS_N_SI
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 68
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SN_S_IN
 Tags:
 oLink
@@ -1264,14 +1265,14 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 70
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SI_N_TA
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 71
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IN_T_AF
 Tags:
 oLink
@@ -1279,7 +1280,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 74
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AF_S_KA
 Tags:
 oLink
@@ -1287,7 +1288,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 77
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KA_S_DT
 Tags:
 oLink
@@ -1295,7 +1296,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 79
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SD_T_PN
 Tags:
 oLink
@@ -1303,14 +1304,14 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 81
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TP_N_KD
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 84
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KD_T_LP
 Tags:
 oLink
@@ -1318,7 +1319,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 88
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PC_Y_SV
 Tags:
 oLink
@@ -1326,7 +1327,7 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 89
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CY_S_VA
 Tags:
 oLink
@@ -1334,14 +1335,14 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 99
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LL_N_ED
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 103
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DM_T_CD
 Tags:
 oLink
@@ -1349,7 +1350,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 106
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CD_T_IL
 Tags:
 oLink
@@ -1357,14 +1358,14 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 110
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LM_W_EA
 Tags:
 cLink
 
 Chain: C
 ResidueNumber: 114
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AV_S_VK
 Tags:
 oLink
@@ -1372,7 +1373,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 117
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_T_EV
 Tags:
 oLink
@@ -1380,7 +1381,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 123
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GI_S_SL
 Tags:
 oLink
@@ -1388,7 +1389,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 124
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IS_S_LV
 Tags:
 oLink
@@ -1396,14 +1397,14 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 127
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LV_N_LH
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 134
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_IY
 Tags:
 oLink
@@ -1411,7 +1412,7 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 136
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YI_Y_GS
 Tags:
 oLink
@@ -1419,7 +1420,7 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 138
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_SS
 Tags:
 oLink
@@ -1427,7 +1428,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 139
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GS_S_SG
 Tags:
 oLink
@@ -1435,7 +1436,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 140
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_S_GC
 Tags:
 oLink
@@ -1443,7 +1444,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 148
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QG_T_TY
 Tags:
 oLink
@@ -1451,7 +1452,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 149
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GT_T_YH
 Tags:
 oLink
@@ -1459,7 +1460,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 150
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TT_Y_HM
 Tags:
 oLink
@@ -1467,7 +1468,7 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 168
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VA_S_ST
 Tags:
 oLink
@@ -1475,7 +1476,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 169
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AS_S_TA
 Tags:
 oLink
@@ -1483,7 +1484,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 170
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_T_AT
 Tags:
 oLink
@@ -1491,7 +1492,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 172
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TA_T_YP
 Tags:
 oLink
@@ -1499,7 +1500,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 173
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_Y_PD
 Tags:
 oLink
@@ -1507,21 +1508,21 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 182
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IK_N_MK
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 187
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PG_N_QG
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 204
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_PV
 Tags:
 oLink
@@ -1529,14 +1530,14 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 209
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EV_W_CP
 Tags:
 cLink
 
 Chain: C
 ResidueNumber: 214
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DP_S_KN
 Tags:
 oLink
@@ -1544,21 +1545,21 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 216
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SK_N_EN
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 218
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NE_N_TR
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 219
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EN_T_RY
 Tags:
 oLink
@@ -1566,7 +1567,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 221
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TR_Y_YG
 Tags:
 oLink
@@ -1574,7 +1575,7 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 222
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: RY_Y_GS
 Tags:
 oLink
@@ -1582,7 +1583,7 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 224
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_FT
 Tags:
 oLink
@@ -1590,7 +1591,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 226
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SF_T_GG
 Tags:
 oLink
@@ -1598,7 +1599,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 230
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GA_T_TP
 Tags:
 oLink
@@ -1606,7 +1607,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 231
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_T_PP
 Tags:
 oLink
@@ -1614,7 +1615,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 238
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QF_T_NS
 Tags:
 oLink
@@ -1622,14 +1623,14 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 239
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FT_N_SV
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 240
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_S_VT
 Tags:
 oLink
@@ -1637,7 +1638,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 242
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SV_T_TV
 Tags:
 oLink
@@ -1645,7 +1646,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 243
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VT_T_VL
 Tags:
 oLink
@@ -1653,14 +1654,14 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 249
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DE_N_GV
 Tags:
 nLink
 
 Chain: C
 ResidueNumber: 263
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FL_S_CA
 Tags:
 oLink
@@ -1668,7 +1669,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 272
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VH_T_NY
 Tags:
 oLink
@@ -1676,7 +1677,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 273
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: HT_N_YS
 Tags:
 nLink
@@ -1684,7 +1685,7 @@ nLinkLikely
 
 Chain: C
 ResidueNumber: 274
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_Y_SE
 Tags:
 oLink
@@ -1692,7 +1693,7 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 275
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NY_S_ET
 Tags:
 oLink
@@ -1700,7 +1701,7 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 277
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SE_T_QV
 Tags:
 oLink
@@ -1708,14 +1709,14 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 280
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QV_W_RG
 Tags:
 cLink
 
 Chain: C
 ResidueNumber: 286
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PR_Y_FN
 Tags:
 oLink
@@ -1723,7 +1724,7 @@ oLinkTyr
 
 Chain: C
 ResidueNumber: 288
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YF_N_VT
 Tags:
 nLink
@@ -1731,7 +1732,7 @@ nLinkLikely
 
 Chain: C
 ResidueNumber: 290
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NV_T_LR
 Tags:
 oLink
@@ -1739,14 +1740,14 @@ oLinkLikely
 
 Chain: C
 ResidueNumber: 298
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_N_P
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 37
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VR_T_GP
 Tags:
 oLink
@@ -1754,7 +1755,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 43
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AI_T_QI
 Tags:
 oLink
@@ -1762,7 +1763,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 48
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EA_Y_LN
 Tags:
 oLink
@@ -1770,28 +1771,28 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 50
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YL_N_PR
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 55
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: MG_N_NI
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 56
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GN_N_IP
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 59
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IP_S_ED
 Tags:
 oLink
@@ -1799,7 +1800,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 63
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DL_Y_GY
 Tags:
 oLink
@@ -1807,7 +1808,7 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 65
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_Y_SN
 Tags:
 oLink
@@ -1815,7 +1816,7 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 66
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GY_S_NS
 Tags:
 oLink
@@ -1823,14 +1824,14 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 67
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YS_N_SI
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 68
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SN_S_IN
 Tags:
 oLink
@@ -1838,14 +1839,14 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 70
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SI_N_TA
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 71
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IN_T_AF
 Tags:
 oLink
@@ -1853,7 +1854,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 74
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AF_S_KA
 Tags:
 oLink
@@ -1861,7 +1862,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 77
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KA_S_DT
 Tags:
 oLink
@@ -1869,7 +1870,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 79
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SD_T_PN
 Tags:
 oLink
@@ -1877,14 +1878,14 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 81
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TP_N_KD
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 84
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KD_T_LP
 Tags:
 oLink
@@ -1892,7 +1893,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 88
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PC_Y_SV
 Tags:
 oLink
@@ -1900,7 +1901,7 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 89
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CY_S_VA
 Tags:
 oLink
@@ -1908,14 +1909,14 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 99
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LL_N_ED
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 103
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DM_T_CD
 Tags:
 oLink
@@ -1923,7 +1924,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 106
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CD_T_IL
 Tags:
 oLink
@@ -1931,14 +1932,14 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 110
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LM_W_EA
 Tags:
 cLink
 
 Chain: D
 ResidueNumber: 114
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AV_S_VK
 Tags:
 oLink
@@ -1946,7 +1947,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 117
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_T_EV
 Tags:
 oLink
@@ -1954,7 +1955,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 123
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GI_S_SL
 Tags:
 oLink
@@ -1962,7 +1963,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 124
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IS_S_LV
 Tags:
 oLink
@@ -1970,14 +1971,14 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 127
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LV_N_LH
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 134
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_IY
 Tags:
 oLink
@@ -1985,7 +1986,7 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 136
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YI_Y_GS
 Tags:
 oLink
@@ -1993,7 +1994,7 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 138
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_SS
 Tags:
 oLink
@@ -2001,7 +2002,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 139
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GS_S_SG
 Tags:
 oLink
@@ -2009,7 +2010,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 140
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_S_GC
 Tags:
 oLink
@@ -2017,7 +2018,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 148
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QG_T_TY
 Tags:
 oLink
@@ -2025,7 +2026,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 149
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GT_T_YH
 Tags:
 oLink
@@ -2033,7 +2034,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 150
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TT_Y_HM
 Tags:
 oLink
@@ -2041,7 +2042,7 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 168
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VA_S_ST
 Tags:
 oLink
@@ -2049,7 +2050,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 169
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AS_S_TA
 Tags:
 oLink
@@ -2057,7 +2058,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 170
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_T_AT
 Tags:
 oLink
@@ -2065,7 +2066,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 172
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TA_T_YP
 Tags:
 oLink
@@ -2073,7 +2074,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 173
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_Y_PD
 Tags:
 oLink
@@ -2081,21 +2082,21 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 182
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IK_N_MK
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 187
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PG_N_QG
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 204
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_PV
 Tags:
 oLink
@@ -2103,14 +2104,14 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 209
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EV_W_CP
 Tags:
 cLink
 
 Chain: D
 ResidueNumber: 214
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DP_S_KN
 Tags:
 oLink
@@ -2118,21 +2119,21 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 216
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SK_N_EN
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 218
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NE_N_TR
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 219
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EN_T_RY
 Tags:
 oLink
@@ -2140,7 +2141,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 221
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TR_Y_YG
 Tags:
 oLink
@@ -2148,7 +2149,7 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 222
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: RY_Y_GS
 Tags:
 oLink
@@ -2156,7 +2157,7 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 224
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_FT
 Tags:
 oLink
@@ -2164,7 +2165,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 226
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SF_T_GG
 Tags:
 oLink
@@ -2172,7 +2173,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 230
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GA_T_TP
 Tags:
 oLink
@@ -2180,7 +2181,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 231
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_T_PP
 Tags:
 oLink
@@ -2188,7 +2189,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 238
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QF_T_NS
 Tags:
 oLink
@@ -2196,14 +2197,14 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 239
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FT_N_SV
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 240
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_S_VT
 Tags:
 oLink
@@ -2211,7 +2212,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 242
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SV_T_TV
 Tags:
 oLink
@@ -2219,7 +2220,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 243
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VT_T_VL
 Tags:
 oLink
@@ -2227,14 +2228,14 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 249
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DE_N_GV
 Tags:
 nLink
 
 Chain: D
 ResidueNumber: 263
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FL_S_CA
 Tags:
 oLink
@@ -2242,7 +2243,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 272
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VH_T_NY
 Tags:
 oLink
@@ -2250,7 +2251,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 273
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: HT_N_YS
 Tags:
 nLink
@@ -2258,7 +2259,7 @@ nLinkLikely
 
 Chain: D
 ResidueNumber: 274
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_Y_SE
 Tags:
 oLink
@@ -2266,7 +2267,7 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 275
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NY_S_ET
 Tags:
 oLink
@@ -2274,7 +2275,7 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 277
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SE_T_QV
 Tags:
 oLink
@@ -2282,14 +2283,14 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 280
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QV_W_RG
 Tags:
 cLink
 
 Chain: D
 ResidueNumber: 286
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PR_Y_FN
 Tags:
 oLink
@@ -2297,7 +2298,7 @@ oLinkTyr
 
 Chain: D
 ResidueNumber: 288
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YF_N_VT
 Tags:
 nLink
@@ -2305,7 +2306,7 @@ nLinkLikely
 
 Chain: D
 ResidueNumber: 290
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NV_T_LR
 Tags:
 oLink
@@ -2313,14 +2314,14 @@ oLinkLikely
 
 Chain: D
 ResidueNumber: 298
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_N_P
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 25
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: _S_HM
 Tags:
 oLink
@@ -2328,7 +2329,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 37
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VR_T_GP
 Tags:
 oLink
@@ -2336,7 +2337,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 43
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AI_T_QI
 Tags:
 oLink
@@ -2344,7 +2345,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 48
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EA_Y_LN
 Tags:
 oLink
@@ -2352,28 +2353,28 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 50
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YL_N_PR
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 55
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: MG_N_NI
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 56
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GN_N_IP
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 59
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IP_S_ED
 Tags:
 oLink
@@ -2381,7 +2382,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 63
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DL_Y_GY
 Tags:
 oLink
@@ -2389,7 +2390,7 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 65
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_Y_SN
 Tags:
 oLink
@@ -2397,7 +2398,7 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 66
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GY_S_NS
 Tags:
 oLink
@@ -2405,14 +2406,14 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 67
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YS_N_SI
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 68
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SN_S_IN
 Tags:
 oLink
@@ -2420,14 +2421,14 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 70
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SI_N_TA
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 71
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IN_T_AF
 Tags:
 oLink
@@ -2435,7 +2436,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 74
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AF_S_KA
 Tags:
 oLink
@@ -2443,7 +2444,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 77
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KA_S_DT
 Tags:
 oLink
@@ -2451,7 +2452,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 79
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SD_T_PN
 Tags:
 oLink
@@ -2459,14 +2460,14 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 81
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TP_N_KD
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 84
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KD_T_LP
 Tags:
 oLink
@@ -2474,7 +2475,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 88
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PC_Y_SV
 Tags:
 oLink
@@ -2482,7 +2483,7 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 89
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CY_S_VA
 Tags:
 oLink
@@ -2490,14 +2491,14 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 99
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LL_N_ED
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 103
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DM_T_CD
 Tags:
 oLink
@@ -2505,7 +2506,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 106
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CD_T_IL
 Tags:
 oLink
@@ -2513,14 +2514,14 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 110
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LM_W_EA
 Tags:
 cLink
 
 Chain: E
 ResidueNumber: 114
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AV_S_VK
 Tags:
 oLink
@@ -2528,7 +2529,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 117
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_T_EV
 Tags:
 oLink
@@ -2536,7 +2537,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 123
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GI_S_SL
 Tags:
 oLink
@@ -2544,7 +2545,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 124
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IS_S_LV
 Tags:
 oLink
@@ -2552,14 +2553,14 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 127
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LV_N_LH
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 134
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_IY
 Tags:
 oLink
@@ -2567,7 +2568,7 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 136
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YI_Y_GS
 Tags:
 oLink
@@ -2575,7 +2576,7 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 138
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_SS
 Tags:
 oLink
@@ -2583,7 +2584,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 139
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GS_S_SG
 Tags:
 oLink
@@ -2591,7 +2592,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 140
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_S_GC
 Tags:
 oLink
@@ -2599,7 +2600,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 148
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QG_T_TY
 Tags:
 oLink
@@ -2607,7 +2608,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 149
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GT_T_YH
 Tags:
 oLink
@@ -2615,7 +2616,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 150
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TT_Y_HM
 Tags:
 oLink
@@ -2623,7 +2624,7 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 168
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VA_S_ST
 Tags:
 oLink
@@ -2631,7 +2632,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 169
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AS_S_TA
 Tags:
 oLink
@@ -2639,7 +2640,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 170
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_T_AT
 Tags:
 oLink
@@ -2647,7 +2648,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 172
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TA_T_YP
 Tags:
 oLink
@@ -2655,7 +2656,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 173
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_Y_PD
 Tags:
 oLink
@@ -2663,21 +2664,21 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 182
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IK_N_MK
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 187
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PG_N_QG
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 204
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_PV
 Tags:
 oLink
@@ -2685,14 +2686,14 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 209
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EV_W_CP
 Tags:
 cLink
 
 Chain: E
 ResidueNumber: 214
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DP_S_KN
 Tags:
 oLink
@@ -2700,21 +2701,21 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 216
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SK_N_EN
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 218
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NE_N_TR
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 219
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EN_T_RY
 Tags:
 oLink
@@ -2722,7 +2723,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 221
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TR_Y_YG
 Tags:
 oLink
@@ -2730,7 +2731,7 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 222
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: RY_Y_GS
 Tags:
 oLink
@@ -2738,7 +2739,7 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 224
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_FT
 Tags:
 oLink
@@ -2746,7 +2747,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 226
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SF_T_GG
 Tags:
 oLink
@@ -2754,7 +2755,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 230
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GA_T_TP
 Tags:
 oLink
@@ -2762,7 +2763,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 231
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_T_PP
 Tags:
 oLink
@@ -2770,7 +2771,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 238
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QF_T_NS
 Tags:
 oLink
@@ -2778,14 +2779,14 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 239
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FT_N_SV
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 240
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_S_VT
 Tags:
 oLink
@@ -2793,7 +2794,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 242
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SV_T_TV
 Tags:
 oLink
@@ -2801,7 +2802,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 243
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VT_T_VL
 Tags:
 oLink
@@ -2809,14 +2810,14 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 249
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DE_N_GV
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 263
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FL_S_CA
 Tags:
 oLink
@@ -2824,7 +2825,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 272
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VH_T_NY
 Tags:
 oLink
@@ -2832,7 +2833,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 273
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: HT_N_YS
 Tags:
 nLink
@@ -2840,7 +2841,7 @@ nLinkLikely
 
 Chain: E
 ResidueNumber: 274
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_Y_SE
 Tags:
 oLink
@@ -2848,7 +2849,7 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 275
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NY_S_ET
 Tags:
 oLink
@@ -2856,7 +2857,7 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 277
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SE_T_QV
 Tags:
 oLink
@@ -2864,14 +2865,14 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 280
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QV_W_RG
 Tags:
 cLink
 
 Chain: E
 ResidueNumber: 286
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PR_Y_FN
 Tags:
 oLink
@@ -2879,7 +2880,7 @@ oLinkTyr
 
 Chain: E
 ResidueNumber: 288
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YF_N_VT
 Tags:
 nLink
@@ -2887,7 +2888,7 @@ nLinkLikely
 
 Chain: E
 ResidueNumber: 290
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NV_T_LR
 Tags:
 oLink
@@ -2895,14 +2896,14 @@ oLinkLikely
 
 Chain: E
 ResidueNumber: 298
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_N_PY
 Tags:
 nLink
 
 Chain: E
 ResidueNumber: 300
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NP_Y_P
 Tags:
 oLink
@@ -2910,7 +2911,7 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 25
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: _S_HM
 Tags:
 oLink
@@ -2918,7 +2919,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 37
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VR_T_GP
 Tags:
 oLink
@@ -2926,7 +2927,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 43
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AI_T_QI
 Tags:
 oLink
@@ -2934,7 +2935,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 48
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EA_Y_LN
 Tags:
 oLink
@@ -2942,28 +2943,28 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 50
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YL_N_PR
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 55
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: MG_N_NI
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 56
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GN_N_IP
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 59
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IP_S_ED
 Tags:
 oLink
@@ -2971,7 +2972,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 63
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DL_Y_GY
 Tags:
 oLink
@@ -2979,7 +2980,7 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 65
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_Y_SN
 Tags:
 oLink
@@ -2987,7 +2988,7 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 66
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GY_S_NS
 Tags:
 oLink
@@ -2995,14 +2996,14 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 67
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YS_N_SI
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 68
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SN_S_IN
 Tags:
 oLink
@@ -3010,14 +3011,14 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 70
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SI_N_TA
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 71
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IN_T_AF
 Tags:
 oLink
@@ -3025,7 +3026,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 74
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AF_S_KA
 Tags:
 oLink
@@ -3033,7 +3034,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 77
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KA_S_DT
 Tags:
 oLink
@@ -3041,7 +3042,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 79
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SD_T_PN
 Tags:
 oLink
@@ -3049,14 +3050,14 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 81
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TP_N_KD
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 84
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KD_T_LP
 Tags:
 oLink
@@ -3064,7 +3065,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 88
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PC_Y_SV
 Tags:
 oLink
@@ -3072,7 +3073,7 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 89
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CY_S_VA
 Tags:
 oLink
@@ -3080,14 +3081,14 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 99
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LL_N_ED
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 103
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DM_T_CD
 Tags:
 oLink
@@ -3095,7 +3096,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 106
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CD_T_IL
 Tags:
 oLink
@@ -3103,14 +3104,14 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 110
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LM_W_EA
 Tags:
 cLink
 
 Chain: F
 ResidueNumber: 114
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AV_S_VK
 Tags:
 oLink
@@ -3118,7 +3119,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 117
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_T_EV
 Tags:
 oLink
@@ -3126,7 +3127,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 123
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GI_S_SL
 Tags:
 oLink
@@ -3134,7 +3135,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 124
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IS_S_LV
 Tags:
 oLink
@@ -3142,14 +3143,14 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 127
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LV_N_LH
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 134
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_IY
 Tags:
 oLink
@@ -3157,7 +3158,7 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 136
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YI_Y_GS
 Tags:
 oLink
@@ -3165,7 +3166,7 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 138
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_SS
 Tags:
 oLink
@@ -3173,7 +3174,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 139
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GS_S_SG
 Tags:
 oLink
@@ -3181,7 +3182,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 140
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_S_GC
 Tags:
 oLink
@@ -3189,7 +3190,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 148
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QG_T_TY
 Tags:
 oLink
@@ -3197,7 +3198,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 149
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GT_T_YH
 Tags:
 oLink
@@ -3205,7 +3206,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 150
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TT_Y_HM
 Tags:
 oLink
@@ -3213,7 +3214,7 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 168
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VA_S_ST
 Tags:
 oLink
@@ -3221,7 +3222,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 169
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AS_S_TA
 Tags:
 oLink
@@ -3229,7 +3230,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 170
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_T_AT
 Tags:
 oLink
@@ -3237,7 +3238,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 172
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TA_T_YP
 Tags:
 oLink
@@ -3245,7 +3246,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 173
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_Y_PD
 Tags:
 oLink
@@ -3253,21 +3254,21 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 182
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IK_N_MK
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 187
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PG_N_QG
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 204
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_PV
 Tags:
 oLink
@@ -3275,14 +3276,14 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 209
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EV_W_CP
 Tags:
 cLink
 
 Chain: F
 ResidueNumber: 214
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DP_S_KN
 Tags:
 oLink
@@ -3290,21 +3291,21 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 216
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SK_N_EN
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 218
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NE_N_TR
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 219
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EN_T_RY
 Tags:
 oLink
@@ -3312,7 +3313,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 221
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TR_Y_YG
 Tags:
 oLink
@@ -3320,7 +3321,7 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 222
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: RY_Y_GS
 Tags:
 oLink
@@ -3328,7 +3329,7 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 224
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_FT
 Tags:
 oLink
@@ -3336,7 +3337,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 226
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SF_T_GG
 Tags:
 oLink
@@ -3344,7 +3345,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 230
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GA_T_TP
 Tags:
 oLink
@@ -3352,7 +3353,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 231
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_T_PP
 Tags:
 oLink
@@ -3360,7 +3361,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 238
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QF_T_NS
 Tags:
 oLink
@@ -3368,14 +3369,14 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 239
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FT_N_SV
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 240
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_S_VT
 Tags:
 oLink
@@ -3383,7 +3384,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 242
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SV_T_TV
 Tags:
 oLink
@@ -3391,7 +3392,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 243
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VT_T_VL
 Tags:
 oLink
@@ -3399,14 +3400,14 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 249
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DE_N_GV
 Tags:
 nLink
 
 Chain: F
 ResidueNumber: 263
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FL_S_CA
 Tags:
 oLink
@@ -3414,7 +3415,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 272
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VH_T_NY
 Tags:
 oLink
@@ -3422,7 +3423,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 273
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: HT_N_YS
 Tags:
 nLink
@@ -3430,7 +3431,7 @@ nLinkLikely
 
 Chain: F
 ResidueNumber: 274
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_Y_SE
 Tags:
 oLink
@@ -3438,7 +3439,7 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 275
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NY_S_ET
 Tags:
 oLink
@@ -3446,7 +3447,7 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 277
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SE_T_QV
 Tags:
 oLink
@@ -3454,14 +3455,14 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 280
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QV_W_RG
 Tags:
 cLink
 
 Chain: F
 ResidueNumber: 286
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PR_Y_FN
 Tags:
 oLink
@@ -3469,7 +3470,7 @@ oLinkTyr
 
 Chain: F
 ResidueNumber: 288
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YF_N_VT
 Tags:
 nLink
@@ -3477,7 +3478,7 @@ nLinkLikely
 
 Chain: F
 ResidueNumber: 290
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NV_T_LR
 Tags:
 oLink
@@ -3485,14 +3486,14 @@ oLinkLikely
 
 Chain: F
 ResidueNumber: 298
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_N_
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 25
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: _S_HM
 Tags:
 oLink
@@ -3500,7 +3501,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 37
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VR_T_GP
 Tags:
 oLink
@@ -3508,7 +3509,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 43
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AI_T_QI
 Tags:
 oLink
@@ -3516,7 +3517,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 48
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EA_Y_LN
 Tags:
 oLink
@@ -3524,28 +3525,28 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 50
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YL_N_PR
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 55
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: MG_N_NI
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 56
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GN_N_IP
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 59
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IP_S_ED
 Tags:
 oLink
@@ -3553,7 +3554,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 63
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DL_Y_GY
 Tags:
 oLink
@@ -3561,7 +3562,7 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 65
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_Y_SN
 Tags:
 oLink
@@ -3569,7 +3570,7 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 66
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GY_S_NS
 Tags:
 oLink
@@ -3577,14 +3578,14 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 67
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YS_N_SI
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 68
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SN_S_IN
 Tags:
 oLink
@@ -3592,14 +3593,14 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 70
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SI_N_TA
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 71
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IN_T_AF
 Tags:
 oLink
@@ -3607,7 +3608,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 74
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AF_S_KA
 Tags:
 oLink
@@ -3615,7 +3616,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 77
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KA_S_DT
 Tags:
 oLink
@@ -3623,7 +3624,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 79
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SD_T_PN
 Tags:
 oLink
@@ -3631,14 +3632,14 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 81
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TP_N_KD
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 84
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KD_T_LP
 Tags:
 oLink
@@ -3646,7 +3647,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 88
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PC_Y_SV
 Tags:
 oLink
@@ -3654,7 +3655,7 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 89
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CY_S_VA
 Tags:
 oLink
@@ -3662,7 +3663,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 103
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DM_T_C
 Tags:
 oLink
@@ -3670,7 +3671,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 106
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: _T_IL
 Tags:
 oLink
@@ -3678,14 +3679,14 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 110
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LM_W_EA
 Tags:
 cLink
 
 Chain: G
 ResidueNumber: 114
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AV_S_VK
 Tags:
 oLink
@@ -3693,7 +3694,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 117
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_T_EV
 Tags:
 oLink
@@ -3701,7 +3702,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 123
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GI_S_SL
 Tags:
 oLink
@@ -3709,7 +3710,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 124
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IS_S_LV
 Tags:
 oLink
@@ -3717,14 +3718,14 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 127
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LV_N_LH
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 134
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_IY
 Tags:
 oLink
@@ -3732,7 +3733,7 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 136
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YI_Y_GS
 Tags:
 oLink
@@ -3740,7 +3741,7 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 138
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_SS
 Tags:
 oLink
@@ -3748,7 +3749,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 139
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GS_S_SG
 Tags:
 oLink
@@ -3756,7 +3757,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 140
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_S_GC
 Tags:
 oLink
@@ -3764,7 +3765,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 148
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QG_T_TY
 Tags:
 oLink
@@ -3772,7 +3773,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 149
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GT_T_YH
 Tags:
 oLink
@@ -3780,7 +3781,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 150
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TT_Y_HM
 Tags:
 oLink
@@ -3788,7 +3789,7 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 168
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VA_S_ST
 Tags:
 oLink
@@ -3796,7 +3797,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 169
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AS_S_TA
 Tags:
 oLink
@@ -3804,7 +3805,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 170
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_T_AT
 Tags:
 oLink
@@ -3812,7 +3813,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 172
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TA_T_YP
 Tags:
 oLink
@@ -3820,7 +3821,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 173
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_Y_PD
 Tags:
 oLink
@@ -3828,21 +3829,21 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 182
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IK_N_MK
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 187
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PG_N_QG
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 204
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_PV
 Tags:
 oLink
@@ -3850,14 +3851,14 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 209
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EV_W_CP
 Tags:
 cLink
 
 Chain: G
 ResidueNumber: 214
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DP_S_KN
 Tags:
 oLink
@@ -3865,21 +3866,21 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 216
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SK_N_EN
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 218
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NE_N_TR
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 219
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EN_T_RY
 Tags:
 oLink
@@ -3887,7 +3888,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 221
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TR_Y_YG
 Tags:
 oLink
@@ -3895,7 +3896,7 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 222
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: RY_Y_GS
 Tags:
 oLink
@@ -3903,7 +3904,7 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 224
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_FT
 Tags:
 oLink
@@ -3911,7 +3912,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 226
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SF_T_GG
 Tags:
 oLink
@@ -3919,7 +3920,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 230
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GA_T_TP
 Tags:
 oLink
@@ -3927,7 +3928,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 231
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_T_PP
 Tags:
 oLink
@@ -3935,7 +3936,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 238
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QF_T_NS
 Tags:
 oLink
@@ -3943,14 +3944,14 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 239
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FT_N_SV
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 240
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_S_VT
 Tags:
 oLink
@@ -3958,7 +3959,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 242
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SV_T_TV
 Tags:
 oLink
@@ -3966,7 +3967,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 243
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VT_T_VL
 Tags:
 oLink
@@ -3974,14 +3975,14 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 249
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DE_N_GV
 Tags:
 nLink
 
 Chain: G
 ResidueNumber: 263
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FL_S_CA
 Tags:
 oLink
@@ -3989,7 +3990,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 272
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VH_T_NY
 Tags:
 oLink
@@ -3997,7 +3998,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 273
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: HT_N_YS
 Tags:
 nLink
@@ -4005,7 +4006,7 @@ nLinkLikely
 
 Chain: G
 ResidueNumber: 274
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_Y_SE
 Tags:
 oLink
@@ -4013,7 +4014,7 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 275
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NY_S_ET
 Tags:
 oLink
@@ -4021,7 +4022,7 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 277
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SE_T_QV
 Tags:
 oLink
@@ -4029,14 +4030,14 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 280
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QV_W_RG
 Tags:
 cLink
 
 Chain: G
 ResidueNumber: 286
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PR_Y_FN
 Tags:
 oLink
@@ -4044,7 +4045,7 @@ oLinkTyr
 
 Chain: G
 ResidueNumber: 288
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YF_N_VT
 Tags:
 nLink
@@ -4052,7 +4053,7 @@ nLinkLikely
 
 Chain: G
 ResidueNumber: 290
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NV_T_LR
 Tags:
 oLink
@@ -4060,14 +4061,14 @@ oLinkLikely
 
 Chain: G
 ResidueNumber: 298
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_N_
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 25
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: _S_HM
 Tags:
 oLink
@@ -4075,7 +4076,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 37
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VR_T_GP
 Tags:
 oLink
@@ -4083,7 +4084,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 43
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AI_T_QI
 Tags:
 oLink
@@ -4091,7 +4092,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 48
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EA_Y_LN
 Tags:
 oLink
@@ -4099,28 +4100,28 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 50
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YL_N_PR
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 55
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: MG_N_NI
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 56
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GN_N_IP
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 59
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IP_S_ED
 Tags:
 oLink
@@ -4128,7 +4129,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 63
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DL_Y_GY
 Tags:
 oLink
@@ -4136,7 +4137,7 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 65
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_Y_SN
 Tags:
 oLink
@@ -4144,7 +4145,7 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 66
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GY_S_NS
 Tags:
 oLink
@@ -4152,14 +4153,14 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 67
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YS_N_SI
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 68
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SN_S_IN
 Tags:
 oLink
@@ -4167,14 +4168,14 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 70
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SI_N_TA
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 71
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IN_T_AF
 Tags:
 oLink
@@ -4182,7 +4183,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 74
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AF_S_KA
 Tags:
 oLink
@@ -4190,7 +4191,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 77
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KA_S_DT
 Tags:
 oLink
@@ -4198,7 +4199,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 79
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SD_T_PN
 Tags:
 oLink
@@ -4206,14 +4207,14 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 81
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TP_N_KD
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 84
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KD_T_LP
 Tags:
 oLink
@@ -4221,7 +4222,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 88
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PC_Y_SV
 Tags:
 oLink
@@ -4229,7 +4230,7 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 89
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CY_S_VA
 Tags:
 oLink
@@ -4237,14 +4238,14 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 99
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LL_N_ED
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 103
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DM_T_C
 Tags:
 oLink
@@ -4252,7 +4253,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 106
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: _T_IL
 Tags:
 oLink
@@ -4260,14 +4261,14 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 110
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LM_W_EA
 Tags:
 cLink
 
 Chain: H
 ResidueNumber: 114
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AV_S_VK
 Tags:
 oLink
@@ -4275,7 +4276,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 117
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_T_EV
 Tags:
 oLink
@@ -4283,7 +4284,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 123
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GI_S_SL
 Tags:
 oLink
@@ -4291,7 +4292,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 124
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IS_S_LV
 Tags:
 oLink
@@ -4299,14 +4300,14 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 127
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LV_N_LH
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 134
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_IY
 Tags:
 oLink
@@ -4314,7 +4315,7 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 136
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YI_Y_GS
 Tags:
 oLink
@@ -4322,7 +4323,7 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 138
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_SS
 Tags:
 oLink
@@ -4330,7 +4331,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 139
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GS_S_SG
 Tags:
 oLink
@@ -4338,7 +4339,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 140
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_S_GC
 Tags:
 oLink
@@ -4346,7 +4347,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 148
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QG_T_TY
 Tags:
 oLink
@@ -4354,7 +4355,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 149
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GT_T_YH
 Tags:
 oLink
@@ -4362,7 +4363,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 150
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TT_Y_HM
 Tags:
 oLink
@@ -4370,7 +4371,7 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 168
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VA_S_ST
 Tags:
 oLink
@@ -4378,7 +4379,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 169
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AS_S_TA
 Tags:
 oLink
@@ -4386,7 +4387,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 170
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_T_AT
 Tags:
 oLink
@@ -4394,7 +4395,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 172
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TA_T_YP
 Tags:
 oLink
@@ -4402,7 +4403,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 173
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_Y_PD
 Tags:
 oLink
@@ -4410,21 +4411,21 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 182
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IK_N_MK
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 187
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PG_N_QG
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 204
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_PV
 Tags:
 oLink
@@ -4432,14 +4433,14 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 209
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EV_W_CP
 Tags:
 cLink
 
 Chain: H
 ResidueNumber: 214
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DP_S_KN
 Tags:
 oLink
@@ -4447,21 +4448,21 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 216
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SK_N_EN
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 218
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NE_N_TR
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 219
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EN_T_RY
 Tags:
 oLink
@@ -4469,7 +4470,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 221
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TR_Y_YG
 Tags:
 oLink
@@ -4477,7 +4478,7 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 222
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: RY_Y_GS
 Tags:
 oLink
@@ -4485,7 +4486,7 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 224
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_FT
 Tags:
 oLink
@@ -4493,7 +4494,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 226
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SF_T_GG
 Tags:
 oLink
@@ -4501,7 +4502,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 230
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GA_T_TP
 Tags:
 oLink
@@ -4509,7 +4510,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 231
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_T_PP
 Tags:
 oLink
@@ -4517,7 +4518,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 238
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QF_T_NS
 Tags:
 oLink
@@ -4525,14 +4526,14 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 239
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FT_N_SV
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 240
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_S_VT
 Tags:
 oLink
@@ -4540,7 +4541,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 242
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SV_T_TV
 Tags:
 oLink
@@ -4548,7 +4549,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 243
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VT_T_VL
 Tags:
 oLink
@@ -4556,14 +4557,14 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 249
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DE_N_GV
 Tags:
 nLink
 
 Chain: H
 ResidueNumber: 263
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FL_S_CA
 Tags:
 oLink
@@ -4571,7 +4572,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 272
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VH_T_NY
 Tags:
 oLink
@@ -4579,7 +4580,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 273
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: HT_N_YS
 Tags:
 nLink
@@ -4587,7 +4588,7 @@ nLinkLikely
 
 Chain: H
 ResidueNumber: 274
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_Y_SE
 Tags:
 oLink
@@ -4595,7 +4596,7 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 275
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NY_S_ET
 Tags:
 oLink
@@ -4603,7 +4604,7 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 277
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SE_T_QV
 Tags:
 oLink
@@ -4611,14 +4612,14 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 280
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QV_W_RG
 Tags:
 cLink
 
 Chain: H
 ResidueNumber: 286
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PR_Y_FN
 Tags:
 oLink
@@ -4626,7 +4627,7 @@ oLinkTyr
 
 Chain: H
 ResidueNumber: 288
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YF_N_VT
 Tags:
 nLink
@@ -4634,7 +4635,7 @@ nLinkLikely
 
 Chain: H
 ResidueNumber: 290
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NV_T_LR
 Tags:
 oLink
@@ -4642,14 +4643,14 @@ oLinkLikely
 
 Chain: H
 ResidueNumber: 298
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_N_
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 25
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: _S_HM
 Tags:
 oLink
@@ -4657,7 +4658,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 37
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VR_T_GP
 Tags:
 oLink
@@ -4665,7 +4666,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 43
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AI_T_QI
 Tags:
 oLink
@@ -4673,7 +4674,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 48
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EA_Y_LN
 Tags:
 oLink
@@ -4681,28 +4682,28 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 50
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YL_N_PR
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 55
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: MG_N_NI
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 56
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GN_N_IP
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 59
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IP_S_ED
 Tags:
 oLink
@@ -4710,7 +4711,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 63
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DL_Y_GY
 Tags:
 oLink
@@ -4718,7 +4719,7 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 65
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_Y_SN
 Tags:
 oLink
@@ -4726,7 +4727,7 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 66
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GY_S_NS
 Tags:
 oLink
@@ -4734,14 +4735,14 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 67
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YS_N_SI
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 68
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SN_S_IN
 Tags:
 oLink
@@ -4749,14 +4750,14 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 70
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SI_N_TA
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 71
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IN_T_AF
 Tags:
 oLink
@@ -4764,7 +4765,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 74
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AF_S_KA
 Tags:
 oLink
@@ -4772,7 +4773,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 77
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KA_S_DT
 Tags:
 oLink
@@ -4780,7 +4781,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 79
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SD_T_PN
 Tags:
 oLink
@@ -4788,14 +4789,14 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 81
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TP_N_KD
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 84
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KD_T_LP
 Tags:
 oLink
@@ -4803,7 +4804,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 88
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PC_Y_SV
 Tags:
 oLink
@@ -4811,7 +4812,7 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 89
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CY_S_VA
 Tags:
 oLink
@@ -4819,14 +4820,14 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 99
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LL_N_ED
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 106
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CD_T_IL
 Tags:
 oLink
@@ -4834,14 +4835,14 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 110
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LM_W_EA
 Tags:
 cLink
 
 Chain: I
 ResidueNumber: 114
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AV_S_VK
 Tags:
 oLink
@@ -4849,7 +4850,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 117
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_T_EV
 Tags:
 oLink
@@ -4857,7 +4858,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 123
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GI_S_SL
 Tags:
 oLink
@@ -4865,7 +4866,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 124
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IS_S_LV
 Tags:
 oLink
@@ -4873,14 +4874,14 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 127
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LV_N_LH
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 134
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_IY
 Tags:
 oLink
@@ -4888,7 +4889,7 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 136
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YI_Y_GS
 Tags:
 oLink
@@ -4896,7 +4897,7 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 138
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_SS
 Tags:
 oLink
@@ -4904,7 +4905,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 139
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GS_S_SG
 Tags:
 oLink
@@ -4912,7 +4913,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 140
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_S_GC
 Tags:
 oLink
@@ -4920,7 +4921,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 148
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QG_T_TY
 Tags:
 oLink
@@ -4928,7 +4929,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 149
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GT_T_YH
 Tags:
 oLink
@@ -4936,7 +4937,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 150
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TT_Y_HM
 Tags:
 oLink
@@ -4944,7 +4945,7 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 168
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VA_S_ST
 Tags:
 oLink
@@ -4952,7 +4953,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 169
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AS_S_TA
 Tags:
 oLink
@@ -4960,7 +4961,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 170
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_T_AT
 Tags:
 oLink
@@ -4968,7 +4969,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 172
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TA_T_YP
 Tags:
 oLink
@@ -4976,7 +4977,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 173
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_Y_PD
 Tags:
 oLink
@@ -4984,21 +4985,21 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 182
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IK_N_MK
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 187
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PG_N_QG
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 204
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_PV
 Tags:
 oLink
@@ -5006,14 +5007,14 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 209
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EV_W_CP
 Tags:
 cLink
 
 Chain: I
 ResidueNumber: 214
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DP_S_KN
 Tags:
 oLink
@@ -5021,21 +5022,21 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 216
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SK_N_EN
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 218
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NE_N_TR
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 219
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EN_T_RY
 Tags:
 oLink
@@ -5043,7 +5044,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 221
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TR_Y_YG
 Tags:
 oLink
@@ -5051,7 +5052,7 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 222
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: RY_Y_GS
 Tags:
 oLink
@@ -5059,7 +5060,7 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 224
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_FT
 Tags:
 oLink
@@ -5067,7 +5068,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 226
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SF_T_GG
 Tags:
 oLink
@@ -5075,7 +5076,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 230
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GA_T_TP
 Tags:
 oLink
@@ -5083,7 +5084,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 231
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_T_PP
 Tags:
 oLink
@@ -5091,7 +5092,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 238
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QF_T_NS
 Tags:
 oLink
@@ -5099,14 +5100,14 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 239
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FT_N_SV
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 240
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_S_VT
 Tags:
 oLink
@@ -5114,7 +5115,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 242
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SV_T_TV
 Tags:
 oLink
@@ -5122,7 +5123,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 243
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VT_T_VL
 Tags:
 oLink
@@ -5130,14 +5131,14 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 249
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DE_N_GV
 Tags:
 nLink
 
 Chain: I
 ResidueNumber: 263
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FL_S_CA
 Tags:
 oLink
@@ -5145,7 +5146,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 272
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VH_T_NY
 Tags:
 oLink
@@ -5153,7 +5154,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 273
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: HT_N_YS
 Tags:
 nLink
@@ -5161,7 +5162,7 @@ nLinkLikely
 
 Chain: I
 ResidueNumber: 274
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_Y_SE
 Tags:
 oLink
@@ -5169,7 +5170,7 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 275
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NY_S_ET
 Tags:
 oLink
@@ -5177,7 +5178,7 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 277
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SE_T_QV
 Tags:
 oLink
@@ -5185,14 +5186,14 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 280
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QV_W_RG
 Tags:
 cLink
 
 Chain: I
 ResidueNumber: 286
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PR_Y_FN
 Tags:
 oLink
@@ -5200,7 +5201,7 @@ oLinkTyr
 
 Chain: I
 ResidueNumber: 288
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YF_N_VT
 Tags:
 nLink
@@ -5208,7 +5209,7 @@ nLinkLikely
 
 Chain: I
 ResidueNumber: 290
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NV_T_LR
 Tags:
 oLink
@@ -5216,14 +5217,14 @@ oLinkLikely
 
 Chain: I
 ResidueNumber: 298
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_N_P
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 25
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: G_S_HM
 Tags:
 oLink
@@ -5231,7 +5232,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 37
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VR_T_GP
 Tags:
 oLink
@@ -5239,7 +5240,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 43
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AI_T_QI
 Tags:
 oLink
@@ -5247,7 +5248,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 48
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EA_Y_LN
 Tags:
 oLink
@@ -5255,28 +5256,28 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 50
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YL_N_PR
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 55
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: MG_N_NI
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 56
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GN_N_IP
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 59
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IP_S_ED
 Tags:
 oLink
@@ -5284,7 +5285,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 63
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DL_Y_GY
 Tags:
 oLink
@@ -5292,7 +5293,7 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 65
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_Y_SN
 Tags:
 oLink
@@ -5300,7 +5301,7 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 66
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GY_S_NS
 Tags:
 oLink
@@ -5308,14 +5309,14 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 67
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YS_N_SI
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 68
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SN_S_IN
 Tags:
 oLink
@@ -5323,14 +5324,14 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 70
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SI_N_TA
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 71
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IN_T_AF
 Tags:
 oLink
@@ -5338,7 +5339,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 74
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AF_S_KA
 Tags:
 oLink
@@ -5346,7 +5347,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 77
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KA_S_DT
 Tags:
 oLink
@@ -5354,7 +5355,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 79
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SD_T_PN
 Tags:
 oLink
@@ -5362,14 +5363,14 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 81
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TP_N_KD
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 84
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: KD_T_LP
 Tags:
 oLink
@@ -5377,7 +5378,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 88
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PC_Y_SV
 Tags:
 oLink
@@ -5385,7 +5386,7 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 89
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CY_S_VA
 Tags:
 oLink
@@ -5393,14 +5394,14 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 99
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LL_N_ED
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 103
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DM_T_CD
 Tags:
 oLink
@@ -5408,7 +5409,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 106
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: CD_T_IL
 Tags:
 oLink
@@ -5416,14 +5417,14 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 110
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LM_W_EA
 Tags:
 cLink
 
 Chain: J
 ResidueNumber: 114
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AV_S_VK
 Tags:
 oLink
@@ -5431,7 +5432,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 117
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_T_EV
 Tags:
 oLink
@@ -5439,7 +5440,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 123
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GI_S_SL
 Tags:
 oLink
@@ -5447,7 +5448,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 124
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IS_S_LV
 Tags:
 oLink
@@ -5455,14 +5456,14 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 127
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: LV_N_LH
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 134
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_IY
 Tags:
 oLink
@@ -5470,7 +5471,7 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 136
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YI_Y_GS
 Tags:
 oLink
@@ -5478,7 +5479,7 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 138
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_SS
 Tags:
 oLink
@@ -5486,7 +5487,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 139
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GS_S_SG
 Tags:
 oLink
@@ -5494,7 +5495,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 140
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_S_GC
 Tags:
 oLink
@@ -5502,7 +5503,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 148
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QG_T_TY
 Tags:
 oLink
@@ -5510,7 +5511,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 149
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GT_T_YH
 Tags:
 oLink
@@ -5518,7 +5519,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 150
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TT_Y_HM
 Tags:
 oLink
@@ -5526,7 +5527,7 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 168
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VA_S_ST
 Tags:
 oLink
@@ -5534,7 +5535,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 169
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AS_S_TA
 Tags:
 oLink
@@ -5542,7 +5543,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 170
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SS_T_AT
 Tags:
 oLink
@@ -5550,7 +5551,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 172
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TA_T_YP
 Tags:
 oLink
@@ -5558,7 +5559,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 173
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_Y_PD
 Tags:
 oLink
@@ -5566,21 +5567,21 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 182
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: IK_N_MK
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 187
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PG_N_QG
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 204
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GK_Y_PV
 Tags:
 oLink
@@ -5588,14 +5589,14 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 209
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EV_W_CP
 Tags:
 cLink
 
 Chain: J
 ResidueNumber: 214
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DP_S_KN
 Tags:
 oLink
@@ -5603,21 +5604,21 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 216
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SK_N_EN
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 218
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NE_N_TR
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 219
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: EN_T_RY
 Tags:
 oLink
@@ -5625,7 +5626,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 221
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TR_Y_YG
 Tags:
 oLink
@@ -5633,7 +5634,7 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 222
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: RY_Y_GS
 Tags:
 oLink
@@ -5641,7 +5642,7 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 224
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YG_S_FT
 Tags:
 oLink
@@ -5649,7 +5650,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 226
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SF_T_GG
 Tags:
 oLink
@@ -5657,7 +5658,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 230
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: GA_T_TP
 Tags:
 oLink
@@ -5665,7 +5666,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 231
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: AT_T_PP
 Tags:
 oLink
@@ -5673,7 +5674,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 238
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QF_T_NS
 Tags:
 oLink
@@ -5681,14 +5682,14 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 239
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FT_N_SV
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 240
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_S_VT
 Tags:
 oLink
@@ -5696,7 +5697,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 242
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SV_T_TV
 Tags:
 oLink
@@ -5704,7 +5705,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 243
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VT_T_VL
 Tags:
 oLink
@@ -5712,14 +5713,14 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 249
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: DE_N_GV
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 263
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: FL_S_CA
 Tags:
 oLink
@@ -5727,7 +5728,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 272
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VH_T_NY
 Tags:
 oLink
@@ -5735,7 +5736,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 273
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: HT_N_YS
 Tags:
 nLink
@@ -5743,7 +5744,7 @@ nLinkLikely
 
 Chain: J
 ResidueNumber: 274
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: TN_Y_SE
 Tags:
 oLink
@@ -5751,7 +5752,7 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 275
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NY_S_ET
 Tags:
 oLink
@@ -5759,7 +5760,7 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 277
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: SE_T_QV
 Tags:
 oLink
@@ -5767,14 +5768,14 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 280
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: QV_W_RG
 Tags:
 cLink
 
 Chain: J
 ResidueNumber: 286
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: PR_Y_FN
 Tags:
 oLink
@@ -5782,7 +5783,7 @@ oLinkTyr
 
 Chain: J
 ResidueNumber: 288
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: YF_N_VT
 Tags:
 nLink
@@ -5790,7 +5791,7 @@ nLinkLikely
 
 Chain: J
 ResidueNumber: 290
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NV_T_LR
 Tags:
 oLink
@@ -5798,14 +5799,14 @@ oLinkLikely
 
 Chain: J
 ResidueNumber: 298
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: VK_N_PY
 Tags:
 nLink
 
 Chain: J
 ResidueNumber: 300
-InsertionCode: ?
+InsertionCode: 
 SequenceContext: NP_Y_
 Tags:
 oLink

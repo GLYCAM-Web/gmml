@@ -1,7 +1,7 @@
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/MolecularMetadata/glycoprotein.hpp"
-#include "includes/MolecularModeling/Selections/selections.hpp"
+#include "includes/CentralDataStructure/Selections/residueSelections.hpp"
 
 std::string glycoproteinMetadata::LookupCodeForAminoAcidName(const std::string queryName)
 {
@@ -78,36 +78,36 @@ std::vector<std::string> glycoproteinMetadata::GetTagsForSequence(const std::str
     return foundTags;
 }
 
-std::string glycoproteinMetadata::GetSequenceContextAndDetermineTags(MolecularModeling::Residue* residue, std::vector<std::string> &tags)
+std::string glycoproteinMetadata::GetSequenceContextAndDetermineTags(cds::Residue* residue, std::vector<std::string> &tags)
 {
     // Tags based on residue name only:
-    std::string conjugationResidueCode = glycoproteinMetadata::LookupCodeForAminoAcidName(residue->GetName());
+    std::string conjugationResidueCode = glycoproteinMetadata::LookupCodeForAminoAcidName(residue->getName());
     std::vector<std::string> nameBasedTags = glycoproteinMetadata::GetTagsForSequence(conjugationResidueCode);
     tags.insert(tags.end(), nameBasedTags.begin(), nameBasedTags.end());
     // Now look for context around residue via atom connectivity.
     std::string precedingContext = "";
-    MolecularModeling::Residue* firstPrecedingNeighbor = selection::FindNeighborResidueConnectedViaSpecificAtom(residue, "N");
-    MolecularModeling::Residue* secondPrecedingNeighbor = nullptr;
+    cds::Residue* firstPrecedingNeighbor = cdsSelections::FindNeighborResidueConnectedViaSpecificAtom(residue, "N");
+    cds::Residue* secondPrecedingNeighbor = nullptr;
     if (firstPrecedingNeighbor)
     {
-        precedingContext = glycoproteinMetadata::LookupCodeForAminoAcidName(firstPrecedingNeighbor->GetName());
-        secondPrecedingNeighbor = selection::FindNeighborResidueConnectedViaSpecificAtom(firstPrecedingNeighbor, "N");
+        precedingContext = glycoproteinMetadata::LookupCodeForAminoAcidName(firstPrecedingNeighbor->getName());
+        secondPrecedingNeighbor = cdsSelections::FindNeighborResidueConnectedViaSpecificAtom(firstPrecedingNeighbor, "N");
         if (secondPrecedingNeighbor)
         {
-            precedingContext = glycoproteinMetadata::LookupCodeForAminoAcidName(secondPrecedingNeighbor->GetName()) + precedingContext;
+            precedingContext = glycoproteinMetadata::LookupCodeForAminoAcidName(secondPrecedingNeighbor->getName()) + precedingContext;
         }
     }
     std::string followingContext = "";
-    MolecularModeling::Residue* firstFollowingNeighbor = selection::FindNeighborResidueConnectedViaSpecificAtom(residue, "C");
-    MolecularModeling::Residue* secondFollowingNeighbor = nullptr;
+    cds::Residue* firstFollowingNeighbor = cdsSelections::FindNeighborResidueConnectedViaSpecificAtom(residue, "C");
+    cds::Residue* secondFollowingNeighbor = nullptr;
     if (firstFollowingNeighbor)
     {
-        std::string midResCode = glycoproteinMetadata::LookupCodeForAminoAcidName(firstFollowingNeighbor->GetName());
+        std::string midResCode = glycoproteinMetadata::LookupCodeForAminoAcidName(firstFollowingNeighbor->getName());
         followingContext = midResCode;
-        secondFollowingNeighbor = selection::FindNeighborResidueConnectedViaSpecificAtom(firstFollowingNeighbor, "C");
+        secondFollowingNeighbor = cdsSelections::FindNeighborResidueConnectedViaSpecificAtom(firstFollowingNeighbor, "C");
         if (secondFollowingNeighbor)
         {
-            std::string lastResCode = glycoproteinMetadata::LookupCodeForAminoAcidName(secondFollowingNeighbor->GetName());
+            std::string lastResCode = glycoproteinMetadata::LookupCodeForAminoAcidName(secondFollowingNeighbor->getName());
             followingContext += lastResCode;
             std::vector<std::string> contextTags = glycoproteinMetadata::GetTagsForSequence(conjugationResidueCode, midResCode, lastResCode);
             tags.insert(tags.end(), contextTags.begin(), contextTags.end());

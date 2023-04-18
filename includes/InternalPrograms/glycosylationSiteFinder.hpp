@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-#include "includes/MolecularModeling/assembly.hpp"
+#include "includes/CentralDataStructure/residue.hpp"
 
 // Structs
 struct GlycosylationSiteInfo
@@ -31,7 +31,7 @@ namespace glycoproteinBuilder
 class GlycosylationSiteFinder
 {
 public:
-    GlycosylationSiteFinder(MolecularModeling::Assembly &ass);
+    GlycosylationSiteFinder(std::vector<cds::Residue*> residues);
     inline std::vector<GlycosylationSiteInfo> GetTable() {return table_;}
     std::string PrintTable();
 private:

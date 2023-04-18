@@ -4,19 +4,18 @@
 
 using glycoproteinBuilder::GlycosylationSiteFinder;
 
-GlycosylationSiteFinder::GlycosylationSiteFinder(MolecularModeling::Assembly &ass)
+GlycosylationSiteFinder::GlycosylationSiteFinder(std::vector<cds::Residue*> residues)
 {
-    ass.BuildStructureByDistance(10); // number of threads to use.
-    ass.GenerateResidueNodesInAssembly();
-    for (auto &residue : ass.GetResidues())
+    for (auto &residue : residues)
     {
-    	std::string linkType = glycoproteinMetadata::LookupLinkTypeForAminoAcidName(residue->GetName());
+    	std::string linkType = glycoproteinMetadata::LookupLinkTypeForAminoAcidName(residue->getName());
     	if (!linkType.empty())
     	{
         	//std::cout << "Checking: " << residue->GetId() << "(" << residue->GetIndex() << ") with linkType: " << linkType << std::endl;
     		std::vector<std::string> tags = {linkType};
         	std::string context = glycoproteinMetadata::GetSequenceContextAndDetermineTags(residue, tags);
-        	table_.emplace_back(residue->GetChainID(), residue->GetNumber(), residue->GetInsertionCode(), context, tags );
+        	pdb::ResidueId residueId = residue->getId();
+        	table_.emplace_back(residueId.getChainId(), residueId.getNumber(), residueId.getInsertionCode(), context, tags );
     	}
     }
 }
