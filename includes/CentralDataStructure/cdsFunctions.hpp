@@ -47,17 +47,17 @@ void bondAtomsByDistance(std::vector<atomT*> atoms)
 	typename std::vector<atomT*>::iterator first = atoms.begin();
 	typename std::vector<atomT*>::iterator last = atoms.end();
 	// Work out details of data and from that the number of threads to use
-	unsigned long const length = std::distance(first, last);
-	unsigned long const num_threads = codeUtils::calculateNumberOfThreads(length);
+	unsigned long const vectorLength = std::distance(first, last);
+	unsigned long const num_threads = codeUtils::calculateNumberOfThreads(vectorLength);
 	if (num_threads == 0) // if length is 0 (or 1?)
 	{
 		return;
 	}
-	unsigned long const block_size = length / num_threads;
+	unsigned long const block_size = vectorLength / num_threads;
 	// Break data up into blocks of data and launch threads
 	std::vector<std::thread> threads(num_threads - 1);
 	typename std::vector<atomT*>::iterator block_start = first;
-	for(unsigned long i = 0; i < (num_threads-1); ++i)
+	for(unsigned long i = 0; i < (num_threads - 1); ++i)
 	{
 		std::cout << "Launching thread " << i << "\n";
 		typename std::vector<atomT*>::iterator block_end = block_start;
