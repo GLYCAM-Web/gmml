@@ -133,10 +133,10 @@ void WriteOffFileUnit(std::vector<residueT*> residues, std::ostream& stream, con
 	stream << " " << "0.0" << std::endl;
 	//WriteVelocitiesSection
 	stream << "!entry." << unitName << ".unit.velocities table  dbl x  dbl y  dbl z" << std::endl;
-	// ToDo loop through based on atom vector size, as compiler complains about unused atom variable.
 	for(auto &residue : residues)
 	{
-		for (auto &atom : residue->getAtoms())
+		std::vector<cds::Atom*> atoms = residue->getAtoms();
+		for (std::vector<cds::Atom*>::iterator i = atoms.begin(); i != atoms.end(); ++i)
 		{ // Maybe later we'll want to deal with atom velocities...
 			stream << " " << "0.0" << " " << "0.0" << " " << "0.0" << std::endl;
 		}
