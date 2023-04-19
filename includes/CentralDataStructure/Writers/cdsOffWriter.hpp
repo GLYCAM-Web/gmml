@@ -2,12 +2,12 @@
 #define INCLUDES_CENTRALDATASTRUCTURE_WRITERS_CDSOFFWRITER_HPP_
 #include "includes/CentralDataStructure/residue.hpp" // ToDo convert from templates to just use the cds classes.
 //#include "includes/Abstract/absResidue.hpp"
-#include "includes/CentralDataStructure/cdsFunctions.hpp" // serializeNumbers
 #include <vector>
 #include <string>
 #include <iostream>
 #include <fstream>
 #include <iomanip> //std::precision
+#include "../cdsFunctions/cdsFunctions.hpp" // serializeNumbers
 
 namespace cds
 {

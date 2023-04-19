@@ -1,9 +1,9 @@
 #include "includes/gmml.hpp"
-#include "includes/CentralDataStructure/cdsFunctions.hpp" // bondAtomsByDistance
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include <string>
+#include "../../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // bondAtomsByDistance
 
 int main(int argc, char* argv[])
 {

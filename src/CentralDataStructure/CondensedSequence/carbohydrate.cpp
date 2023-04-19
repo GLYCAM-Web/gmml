@@ -8,7 +8,6 @@
 #include "includes/CentralDataStructure/residue.hpp"
 #include "includes/CentralDataStructure/molecule.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
-#include "includes/CentralDataStructure/cdsFunctions.hpp" // serializeAtomNumbers
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"
 #include "includes/CentralDataStructure/Readers/Prep/prepAtom.hpp"
@@ -17,6 +16,7 @@
 #include <sstream>
 #include <cctype> // isDigit
 #include <algorithm> //  std::erase, std::remove
+#include "../../../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // serializeAtomNumbers
 
 //using Abstract::absResidue; // For Residue::Type
 using cdsCondensedSequence::Carbohydrate;

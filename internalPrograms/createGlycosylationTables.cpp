@@ -1,9 +1,10 @@
 #include "includes/InternalPrograms/glycosylationSiteFinder.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
-#include "includes/CentralDataStructure/cdsFunctions.hpp" // bondAtomsByDistance
 #include <iostream>
 #include <string>
 #include <vector>
+
+#include "../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // bondAtomsByDistance
 int main(int argc, char* argv[])
 {
     if (argc != 2)

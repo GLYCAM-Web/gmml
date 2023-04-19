@@ -1,9 +1,10 @@
 #include "includes/CentralDataStructure/assembly.hpp"
+
+#include "../../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/numbers.hpp"
 #include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/MolecularMetadata/atomicBonds.hpp" // bondIfClose
-#include "includes/CentralDataStructure/cdsFunctions.hpp"
 
 using cds::Assembly;
 using cds::Molecule;

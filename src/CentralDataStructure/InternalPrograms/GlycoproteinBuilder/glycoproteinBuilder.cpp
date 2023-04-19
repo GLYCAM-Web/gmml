@@ -1,4 +1,6 @@
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.hpp"
+
+#include "../../../../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // bondAtomsByDistance
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
 //#include "includes/CentralDataStructure/Overlaps/beadResidues.hpp"
 #include "includes/CodeUtils/metropolisCriterion.hpp"
@@ -10,7 +12,6 @@
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbResidue.hpp"
-#include "includes/CentralDataStructure/cdsFunctions.hpp" // bondAtomsByDistance
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp" // selectResiduesByType
 // ToDo Check for negative overlap in case the funk gets funky.
 // ToDo The cout for accepting overlap changes doesn't match the values printed. Why? Is it making them high, not printing, accepting lower, then rejecting, etc?
