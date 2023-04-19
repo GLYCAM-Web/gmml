@@ -1,6 +1,7 @@
 #include "includes/Abstract/absResidue.hpp"
+
+#include "../../includes/CentralDataStructure/Selections/templatedSelections.hpp"
 #include "includes/CodeUtils/biology.hpp"
-#include "includes/CodeUtils/templatedSelections.hpp"
 
 using Abstract::absResidue;
 

@@ -1,6 +1,7 @@
 #include "includes/CentralDataStructure/molecule.hpp"
+
+#include "../../includes/CentralDataStructure/Selections/templatedSelections.hpp"
 #include "includes/CodeUtils/logging.hpp"
-#include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
 #include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"

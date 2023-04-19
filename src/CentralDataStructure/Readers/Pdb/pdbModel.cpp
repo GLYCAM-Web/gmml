@@ -3,13 +3,13 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbResidue.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
-#include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
 
 #include <algorithm> // std::find
 #include "../../../../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp"
+#include "../../../../includes/CentralDataStructure/Selections/templatedSelections.hpp"
 
 using pdb::PdbModel;
 //////////////////////////////////////////////////////////

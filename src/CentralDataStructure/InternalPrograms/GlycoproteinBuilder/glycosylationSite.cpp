@@ -5,7 +5,6 @@
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp" //cdsSelections
 #include "includes/CentralDataStructure/Editors/superimposition.hpp"
 //#include "includes/CentralDataStructure/Overlaps/beadResidues.hpp"
-#include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CentralDataStructure/Selections/shaperSelections.hpp" // For the ClearAtomLabels sillyness.
 #include <bits/std_abs.h>
@@ -16,6 +15,8 @@
 #include <utility>
 #include <vector>
 #include <iomanip> // For setting precision and formating in std::cout
+
+#include "../../../../includes/CentralDataStructure/Selections/templatedSelections.hpp"
 //#include <algorithm> //  std::erase, std::remove
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //

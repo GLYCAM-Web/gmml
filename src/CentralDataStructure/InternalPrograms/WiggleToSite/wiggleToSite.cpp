@@ -1,11 +1,12 @@
 #include "includes/CentralDataStructure/InternalPrograms/WiggleToSite/wiggleToSite.hpp"
 #include "includes/CentralDataStructure/InternalPrograms/WiggleToSite/wiggleToSite.hpp"
+
+#include "../../../../includes/CentralDataStructure/Selections/templatedSelections.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbSelections.hpp" //select
 #include "includes/CentralDataStructure/Editors/superimposition.hpp"
 #include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"
 #include "includes/CodeUtils/metropolisCriterion.hpp"
-#include "includes/CodeUtils/templatedSelections.hpp"
 #include "includes/CentralDataStructure/Measurements/measurements.hpp" // calculateGeometricCenter
 
 //Prototype: Working and producing useful data in 1.5 days. Included fixing some things in the CDS.

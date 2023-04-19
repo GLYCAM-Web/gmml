@@ -4,10 +4,10 @@
 #include "includes/CentralDataStructure/coordinate.hpp"
 #include "includes/CentralDataStructure/atom.hpp"
 #include "includes/CentralDataStructure/residue.hpp"
-#include "includes/CodeUtils/templatedSelections.hpp"
 #include <vector>
 #include <string>
 #include <algorithm> //find
+#include "templatedSelections.hpp"
 
 using cds::Atom;
 using cds::Residue;

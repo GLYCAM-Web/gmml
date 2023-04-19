@@ -1,5 +1,6 @@
 #include "includes/CentralDataStructure/Overlaps/beadResidues.hpp"
-#include "includes/CodeUtils/templatedSelections.hpp"
+
+#include "../../../includes/CentralDataStructure/Selections/templatedSelections.hpp"
 #include "includes/CodeUtils/biology.hpp"
 
 std::vector<Atom*> beads::Add_Beads_To_Protein(Assembly &assembly)

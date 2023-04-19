@@ -2,12 +2,12 @@
 #include "includes/CentralDataStructure/Readers/Prep/prepAtom.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
-#include "includes/CodeUtils/templatedSelections.hpp"
 #include <sstream>
 #include <fstream>
 #include <iostream>
 #include <iomanip>
 #include <ios>
+#include "../../../../includes/CentralDataStructure/Selections/templatedSelections.hpp"
 
 using prep::PrepResidue;
 //////////////////////////////////////////////////////////

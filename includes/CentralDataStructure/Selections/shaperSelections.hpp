@@ -4,10 +4,10 @@
 #include "includes/CentralDataStructure/atom.hpp"
 #include "includes/CentralDataStructure/residue.hpp"
 #include "includes/CentralDataStructure/Shapers/residueLinkage.hpp"
-#include "includes/CodeUtils/templatedSelections.hpp"
 #include <vector>
 #include <string>
 #include <algorithm> //find
+#include "templatedSelections.hpp"
 
 namespace cdsSelections
 {
