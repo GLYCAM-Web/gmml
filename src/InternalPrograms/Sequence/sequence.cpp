@@ -1,9 +1,9 @@
 #include "includes/InternalPrograms/Sequence/sequence.hpp"
-#include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
 using CondensedSequence::Sequence;
-using CondensedSequence::SequenceManipulator;
+using cdsCondensedSequence::SequenceManipulator;
 
 
 Sequence::Sequence(std::string condensedSequence)

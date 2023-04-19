@@ -6,14 +6,14 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+
+#include "includes/Abstract/absResidue.hpp"
 #include "residueproperties.hpp"
 #include "../GeometryTopology/coordinate.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
-#include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
 #include "includes/MolecularModeling/TemplateGraph/GraphStructure/include/Node.hpp" // TemplateGraph
-#include "includes/Abstract/residue.hpp"
 
 namespace MolecularModeling
 {
@@ -23,7 +23,7 @@ namespace MolecularModeling
     //class PrepFileResidue; //This is not in the MolecularModeling namespace
     class Residue; // Forward declare for the vector typedef
     typedef std::vector<MolecularModeling::Residue*> ResidueVector;
-    class Residue : public ResidueProperties, public Abstract::Residue, public glygraph::Node<Residue>
+    class Residue : public ResidueProperties, public Abstract::absResidue, public glygraph::Node<Residue>
     {
         public:
             //////////////////////////////////////////////////////////
@@ -41,8 +41,8 @@ namespace MolecularModeling
             Residue();
             Residue(Assembly* assembly, std::string name);
             Residue(PrepFileSpace::PrepFileResidue *prep_residue);
-            Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type);
-            // Residue(Residue* residue);
+            Residue(PrepFileSpace::PrepFileResidue *prep_residue, Abstract::ResidueType type);
+//            Residue(const Residue* residue); // Copy ctor for Template Edge.
             // Residue(Residue& residue);
 
             //////////////////////////////////////////////////////////
@@ -66,6 +66,7 @@ namespace MolecularModeling
               * @return number split from id_ attribute of the current object of this class
               */
             std::string GetNumber();
+            std::string GetInsertionCode();
             /*! \fn
               * An accessor function in order to access to the atoms
               * @return atoms_ attribute of the current object of this class
@@ -86,17 +87,17 @@ namespace MolecularModeling
               * An accessor function in order to access to the chemical type
               * @return chemical_residue_ attribute of the current object of this class
               */
-            std::string GetChemicalType();
+            std::string GetChemicalType() const;
             /*! \fn
               * An accessor function in order to access to the description
               * @return description_ attribute of the current object of this class
               */
-            std::string GetDescription();
+            std::string GetDescription() const;
             /*! \fn
               * An accessor function in order to access to the id
               * @return id_ attribute of the current object of this class
               */
-            std::string GetId();
+            std::string GetId() const;
             /*! \fn                                                                              //Added by ayush on 11/20/17 for residuenodes in assembly
               * An accessor function in order to access to the node
               * @return residuenode_ attribute of the current object of this class
@@ -229,6 +230,11 @@ namespace MolecularModeling
 
 
             void SetIsSugar(bool is_sugar);
+
+            void AddChargesTypesToAtoms(LibraryFileSpace::LibraryFileResidue &libResidue);
+            void AddChargesTypesToAtoms(PrepFileSpace::PrepFileResidue &prepResidue);
+            std::string GetTerminalCode();
+
 /** @}*/
             //////////////////////////////////////////////////////////
             //                       FUNCTIONS                      //
@@ -280,9 +286,7 @@ namespace MolecularModeling
             bool operator!= (const Residue &otherResidue);
 
         private:
-
             unsigned long long generateIndex();
-
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
@@ -294,7 +298,7 @@ namespace MolecularModeling
             std::string chemical_type_;         /*!< A descriptor in order to describe chemical type of the residue >*/
             std::string description_;           /*!< A short description of the residue >*/
             std::string id_;                    /*!< An identifier for a residue that is generated based on the type of the given file from which the structure has to be built >*/
-            unsigned long long index_;         /*!< A unqiue index for each residue in an assembly >*/
+            unsigned long long index_;         /*!< A unique index for each residue in an assembly >*/
 
 	    //Added by Yao 06/13/2018
 	    bool is_sugar_derivative_ = false;

@@ -9,16 +9,27 @@ namespace GeometryTopology
 
 Coordinate get_cartesian_point_from_internal_coords(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c, double theta_Degrees, double phi_Degrees, double distance_Angstrom);
 
-Coordinate get_cartesian_point_from_internal_coords(Coordinate a, Coordinate b, Coordinate c, double theta_Degrees, double phi_Degrees, double distance_Angstrom);
+Coordinate get_cartesian_point_from_internal_coords(const Coordinate* a, const Coordinate* b, const Coordinate* c, double theta_Degrees, double phi_Degrees, double distance_Angstrom);
 
-Coordinate subtract_coordinates(Coordinate minuaend, Coordinate subtrahend);
+Coordinate get_cartesian_point_from_internal_coords(const Coordinate& a, const Coordinate& b, const Coordinate& c, double theta_Degrees, double phi_Degrees, double distance_Angstrom);
 
-double calculateDistanceFromPointToLineBetweenTwoPoints(Coordinate queryPoint, Coordinate linePointA, Coordinate linePointB);
+Coordinate subtract_coordinates(const Coordinate& minuaend, const Coordinate& subtrahend);
 
-Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors);
+double calculateDistanceFromPointToLineBetweenTwoPoints(const Coordinate& queryPoint, const Coordinate& linePointA, const Coordinate& linePointB);
+
+Coordinate CreateMissingCoordinateForTetrahedralAtom(MolecularModeling::Atom *atom, const double distance = 1.0);
+
+Coordinate CreateMissingCoordinateForTetrahedralAtom(Coordinate *centralCoord, CoordinateVector threeNeighbors, const double distance = 1.0);
 
 double CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, bool returnRadians = false);
 
+void SetDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, Coordinate* a4, const double dihedral_angle, std::vector<Coordinate*>& movingCoords);
+
+void SetAngle(MolecularModeling::Atom *a, MolecularModeling::Atom *b, MolecularModeling::Atom *c, const double angle);
+
+void SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, const double angle, std::vector<Coordinate*> coordinatesToMove);
+
+void SetDistance(MolecularModeling::Atom *a, MolecularModeling::Atom *b);
 
 }
 

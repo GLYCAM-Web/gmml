@@ -6,7 +6,7 @@ g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmm
 ./addSolventNeutralize > 012.output_addSolventNeutralize.txt
 if [ -f 012.addSolventNeutralize.pdb ] ; then
     if ! cmp 012.addSolventNeutralize.pdb tests/correct_outputs/012.addSolventNeutralize.pdb > /dev/null 2>&1; then
-        printf "Test FAILED! PDB file different\n"
+        printf "Test FAILED! 012.addSolventNeutralize.pdb different from tests/correct_outputs/012.addSolventNeutralize.pdb\n"
         echo "Exit Code: 1"
         return 1
     #elif ! cmp structure.off tests/correct_outputs/010.buildBySequenceRotamer.off > /dev/null 2>&1; then
@@ -23,7 +23,7 @@ if [ -f 012.addSolventNeutralize.pdb ] ; then
         return 0
     fi
 else
-    printf "Test FAILED!\n"
+    printf "Test FAILED!\n 012.addSolventNeutralize.pdb was not created.\n"
     echo "Exit Code: 1"
     return 1
 fi

@@ -7,11 +7,9 @@
 #include "includes/common.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
-#include "includes/MolecularModeling/residue.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
 using PrepFileSpace::PrepFileResidue;
-using MolecularModeling::Residue;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
@@ -464,13 +462,18 @@ PrepFileSpace::SectionType PrepFileResidue::GetSectionTypeFromString(std::string
 }
 PrepFileSpace::PrepFileAtom* PrepFileResidue::GetPrepAtomByAtomName(std::string atom_name)
 {
+    //gmml::log(__LINE__, __FILE__, gmml::INF, "Searching for prep atom with name: " + atom_name);
     for(PrepFileSpace::PrepFileAtomVector::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         PrepFileSpace::PrepFileAtom* atom = (*it);
-        if(atom->GetName().compare(atom_name) == 0)
+        if(atom->GetName() == atom_name)
             return atom;
+        //gmml::log(__LINE__, __FILE__, gmml::INF, "It ain't: " + atom->GetName());
     }
-    return NULL;
+    std::string errorMessage = "Didn't find a prep file atom for  " + atom_name + " in " + this->GetName();
+    gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
+    throw std::runtime_error(errorMessage);
+    return nullptr; // this never happens...
 }
 
 PrepFileSpace::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
@@ -593,6 +596,29 @@ PrepFileSpace::PrepFileAtomVector PrepFileResidue::GetAtomsParentVector()
 //        gmml::log(__LINE__,__FILE__,gmml::INF,parent->GetName());
 //    }
     return parents;
+}
+
+std::vector<std::string> PrepFileResidue::GetAtomNames()
+{
+    std::vector<std::string> foundAtoms;
+    for (auto &prepAtom : this->GetAtoms())
+    {
+        foundAtoms.push_back(prepAtom->GetName());
+    }
+    return foundAtoms;
+}
+
+std::vector<std::string> PrepFileResidue::GetHeavyAtomNames()
+{
+    std::vector<std::string> foundAtoms;
+    for (auto &prepAtom : this->GetAtoms())
+    {
+        if(prepAtom->GetName().at(0) != 'H' && prepAtom->GetName() != "DUMM")
+        {
+            foundAtoms.push_back(prepAtom->GetName());
+        }
+    }
+    return foundAtoms;
 }
 
 //////////////////////////////////////////////////////////

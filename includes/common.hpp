@@ -44,6 +44,7 @@ namespace gmml
 
     const double dNotSet = 123456789.0;
     const int iNotSet = -123456;
+    const std::string sNotSet = "?";
     const int iPdbLineLength = 80;
     const double dSulfurCutoff = 2.5;
     const double PI_RADIAN = 4.0*atan(1.0);
@@ -96,6 +97,23 @@ namespace gmml
         {-43.0, 44.0, -62.0, -178.0, 62.0}
     };
 
+    const std::vector<std::string> proteinResidueNames = { "ALA", "ASP", "ASN", "ARG", "GLY",
+            "GLU", "GLN", "PRO", "HIS", "HIP","CYS",
+            "VAL", "LEU", "THR", "SER", "LYS",
+            "MET", "MSE", "TYR", "TRP", "PHE", "SEC",
+            "ILE", "CYX", "HID", "HIE", "NLN",
+            "OLY", "OLS", "OLT", "NALA", "NASP",
+"NASN", "NARG", "NGLY", "NGLU", "NGLN",
+"NPRO", "NHIS", "NCYS", "NVAL", "NLEU",
+"NTHR", "NSER", "NLYS", "NMET", "NTYR",
+"NTRP", "NPHE", "NSEC", "NILE", "NCYX",
+"NHID", "NHIE", "CNALA", "CNASP",
+            "CASN", "CARG", "CGLY", "CGLU", "CGLN",
+            "CPRO", "CHIS", "CCYS", "CVAL", "CLEU",
+            "CTHR", "CSER", "CLYS", "CMET", "CTYR",
+            "CTRP", "CPHE", "CSEC", "CILE", "CCYX",
+            "CHID", "CHIE"};
+    // ToDo change everything to use the vector version above
     const std::string PROTEINS[] = {  "ALA", "ASP", "ASN", "ARG", "GLY",
                                       "GLU", "GLN", "PRO", "HIS", "HIP","CYS",
                                       "VAL", "LEU", "THR", "SER", "LYS",

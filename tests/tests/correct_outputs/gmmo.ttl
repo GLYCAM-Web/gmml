@@ -742,14 +742,14 @@ gmmo:4mbz_mono1 gmmo:hasOligoParent """gmmo:4mbz_oligo1""".
 gmmo:4mbz_mono1 gmmo:hasIndex """1""".
 gmmo:4mbz_mono1 gmmo:hasNameIndex """1""".
 gmmo:4mbz_mono1 gmmo:isNucleotide false.
-gmmo:4mbz_mono1 gmmo:hasRingAtom gmmo:4mbz_C2_20881_SIA_A_406_n_n_1.
-gmmo:4mbz_mono1 gmmo:hasRingAtom gmmo:4mbz_C3_20882_SIA_A_406_n_n_1.
-gmmo:4mbz_mono1 gmmo:hasRingAtom gmmo:4mbz_C4_20883_SIA_A_406_n_n_1.
-gmmo:4mbz_mono1 gmmo:hasRingAtom gmmo:4mbz_C5_20884_SIA_A_406_n_n_1.
-gmmo:4mbz_mono1 gmmo:hasRingAtom gmmo:4mbz_C6_20885_SIA_A_406_n_n_1.
-gmmo:4mbz_mono1 gmmo:hasRingAtom gmmo:4mbz_O6_20895_SIA_A_406_n_n_1.
-gmmo:4mbz_mono1 gmmo:ringAtoms """4mbz_C2_20881_SIA_A_406_n_n_1-4mbz_C3_20882_SIA_A_406_n_n_1-4mbz_C4_20883_SIA_A_406_n_n_1-4mbz_C5_20884_SIA_A_406_n_n_1-4mbz_C6_20885_SIA_A_406_n_n_1-4mbz_O6_20895_SIA_A_406_n_n_1""".
-gmmo:4mbz_mono1 gmmo:anomericStatus """ 4mbz_C2_20881_SIA_A_406_n_n_1""".
+gmmo:4mbz_mono1 gmmo:hasRingAtom gmmo:4mbz_C2_20887_SIA_A_406_n_n_1.
+gmmo:4mbz_mono1 gmmo:hasRingAtom gmmo:4mbz_C3_20888_SIA_A_406_n_n_1.
+gmmo:4mbz_mono1 gmmo:hasRingAtom gmmo:4mbz_C4_20889_SIA_A_406_n_n_1.
+gmmo:4mbz_mono1 gmmo:hasRingAtom gmmo:4mbz_C5_20890_SIA_A_406_n_n_1.
+gmmo:4mbz_mono1 gmmo:hasRingAtom gmmo:4mbz_C6_20891_SIA_A_406_n_n_1.
+gmmo:4mbz_mono1 gmmo:hasRingAtom gmmo:4mbz_O6_20901_SIA_A_406_n_n_1.
+gmmo:4mbz_mono1 gmmo:ringAtoms """4mbz_C2_20887_SIA_A_406_n_n_1-4mbz_C3_20888_SIA_A_406_n_n_1-4mbz_C4_20889_SIA_A_406_n_n_1-4mbz_C5_20890_SIA_A_406_n_n_1-4mbz_C6_20891_SIA_A_406_n_n_1-4mbz_O6_20901_SIA_A_406_n_n_1""".
+gmmo:4mbz_mono1 gmmo:anomericStatus """ 4mbz_C2_20887_SIA_A_406_n_n_1""".
 gmmo:4mbz_mono1 gmmo:stereochemistryChemicalCode """_3^4NAc2dP_a_+1R_+2R_+3^-1A""".
 gmmo:4mbz_mono1 gmmo:BFMPRingConformation """	1C4		5d2(0.59)""".
 gmmo:4mbz_mono1 gmmo:hasSNFGName """Neu5Ac""".
@@ -765,6 +765,70 @@ gmmo:4mbz_mono1_sn gmmo:monosaccharideShortName """DNeup5Aca""".
 gmmo:4mbz_mono1_sn gmmo:isomer """D""".
 gmmo:4mbz_mono1_sn gmmo:configuration """alpha""".
 gmmo:4mbz_mono1_sn gmmo:ringType """P""".
+gmmo:4mbz_C2_20887_SIA_A_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_20887_SIA_A_406_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C2_20887_SIA_A_406_n_n_1 gmmo:identifier """4mbz_C2_20887_SIA_A_406_n_n_1""".
+gmmo:4mbz_C2_20887_SIA_A_406_n_n_1 gmmo:coordinate """58.857, 24.788, 109.756""".
+gmmo:4mbz_C2_20887_SIA_A_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C1_20886_SIA_A_406_n_n_1.
+gmmo:4mbz_C2_20887_SIA_A_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_20914_GAL_A_407_n_n_1.
+gmmo:4mbz_C1_20886_SIA_A_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C1_20886_SIA_A_406_n_n_1 gmmo:identifier """4mbz_C1_20886_SIA_A_406_n_n_1""".
+gmmo:4mbz_C1_20886_SIA_A_406_n_n_1 gmmo:coordinate """58.581, 23.482, 110.477""".
+gmmo:4mbz_C1_20886_SIA_A_406_n_n_1 gmmo:derivative """xC-(O,O)""".
+gmmo:4mbz_C1_20886_SIA_A_406_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C1_20886_SIA_A_406_n_n_1 gmmo:sideIndex """-1""".
+gmmo:4mbz_O3_20914_GAL_A_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O3_20914_GAL_A_407_n_n_1 gmmo:identifier """4mbz_O3_20914_GAL_A_407_n_n_1""".
+gmmo:4mbz_O3_20914_GAL_A_407_n_n_1 gmmo:coordinate """60.065, 25.411, 110.254""".
+gmmo:4mbz_O3_20914_GAL_A_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O3_20914_GAL_A_407_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C3_20888_SIA_A_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_20888_SIA_A_406_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C3_20888_SIA_A_406_n_n_1 gmmo:identifier """4mbz_C3_20888_SIA_A_406_n_n_1""".
+gmmo:4mbz_C3_20888_SIA_A_406_n_n_1 gmmo:coordinate """59.224, 24.576, 108.287""".
+gmmo:4mbz_C4_20889_SIA_A_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_20889_SIA_A_406_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C4_20889_SIA_A_406_n_n_1 gmmo:identifier """4mbz_C4_20889_SIA_A_406_n_n_1""".
+gmmo:4mbz_C4_20889_SIA_A_406_n_n_1 gmmo:coordinate """57.992, 24.101, 107.512""".
+gmmo:4mbz_C4_20889_SIA_A_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_20900_SIA_A_406_n_n_1.
+gmmo:4mbz_O4_20900_SIA_A_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_20900_SIA_A_406_n_n_1 gmmo:identifier """4mbz_O4_20900_SIA_A_406_n_n_1""".
+gmmo:4mbz_O4_20900_SIA_A_406_n_n_1 gmmo:coordinate """58.368, 23.889, 106.151""".
+gmmo:4mbz_O4_20900_SIA_A_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O4_20900_SIA_A_406_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C5_20890_SIA_A_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_20890_SIA_A_406_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C5_20890_SIA_A_406_n_n_1 gmmo:identifier """4mbz_C5_20890_SIA_A_406_n_n_1""".
+gmmo:4mbz_C5_20890_SIA_A_406_n_n_1 gmmo:coordinate """56.807, 25.072, 107.635""".
+gmmo:4mbz_C5_20890_SIA_A_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_N5_20897_SIA_A_406_n_n_1.
+gmmo:4mbz_N5_20897_SIA_A_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_N5_20897_SIA_A_406_n_n_1 gmmo:identifier """4mbz_N5_20897_SIA_A_406_n_n_1""".
+gmmo:4mbz_N5_20897_SIA_A_406_n_n_1 gmmo:coordinate """55.665, 24.455, 106.974""".
+gmmo:4mbz_N5_20897_SIA_A_406_n_n_1 gmmo:derivative """xC-N-C=OCH3""".
+gmmo:4mbz_N5_20897_SIA_A_406_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_N5_20897_SIA_A_406_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C6_20891_SIA_A_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C6_20891_SIA_A_406_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C6_20891_SIA_A_406_n_n_1 gmmo:identifier """4mbz_C6_20891_SIA_A_406_n_n_1""".
+gmmo:4mbz_C6_20891_SIA_A_406_n_n_1 gmmo:coordinate """56.525, 25.361, 109.115""".
+gmmo:4mbz_C6_20891_SIA_A_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C7_20892_SIA_A_406_n_n_1.
+gmmo:4mbz_C6_20891_SIA_A_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C8_20893_SIA_A_406_n_n_1.
+gmmo:4mbz_C6_20891_SIA_A_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C9_20894_SIA_A_406_n_n_1.
+gmmo:4mbz_C7_20892_SIA_A_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C7_20892_SIA_A_406_n_n_1 gmmo:identifier """4mbz_C7_20892_SIA_A_406_n_n_1""".
+gmmo:4mbz_C7_20892_SIA_A_406_n_n_1 gmmo:coordinate """55.448, 26.43, 109.34""".
+gmmo:4mbz_C7_20892_SIA_A_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C7_20892_SIA_A_406_n_n_1 gmmo:sideIndex """+1""".
+gmmo:4mbz_C8_20893_SIA_A_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C8_20893_SIA_A_406_n_n_1 gmmo:identifier """4mbz_C8_20893_SIA_A_406_n_n_1""".
+gmmo:4mbz_C8_20893_SIA_A_406_n_n_1 gmmo:coordinate """55.094, 26.531, 110.827""".
+gmmo:4mbz_C8_20893_SIA_A_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C8_20893_SIA_A_406_n_n_1 gmmo:sideIndex """+2""".
+gmmo:4mbz_C9_20894_SIA_A_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C9_20894_SIA_A_406_n_n_1 gmmo:identifier """4mbz_C9_20894_SIA_A_406_n_n_1""".
+gmmo:4mbz_C9_20894_SIA_A_406_n_n_1 gmmo:coordinate """53.83, 27.35, 111.059""".
+gmmo:4mbz_C9_20894_SIA_A_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C9_20894_SIA_A_406_n_n_1 gmmo:sideIndex """+3""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono2.
 gmmo:4mbz_mono2 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono2 gmmo:identifier """GAL_A_407_?_?_1""".
@@ -772,14 +836,14 @@ gmmo:4mbz_mono2 gmmo:hasOligoParent """gmmo:4mbz_oligo1""".
 gmmo:4mbz_mono2 gmmo:hasIndex """0""".
 gmmo:4mbz_mono2 gmmo:hasNameIndex """0""".
 gmmo:4mbz_mono2 gmmo:isNucleotide false.
-gmmo:4mbz_mono2 gmmo:hasRingAtom gmmo:4mbz_C1_20900_GAL_A_407_n_n_1.
-gmmo:4mbz_mono2 gmmo:hasRingAtom gmmo:4mbz_C2_20901_GAL_A_407_n_n_1.
-gmmo:4mbz_mono2 gmmo:hasRingAtom gmmo:4mbz_C3_20902_GAL_A_407_n_n_1.
-gmmo:4mbz_mono2 gmmo:hasRingAtom gmmo:4mbz_C4_20903_GAL_A_407_n_n_1.
-gmmo:4mbz_mono2 gmmo:hasRingAtom gmmo:4mbz_C5_20904_GAL_A_407_n_n_1.
-gmmo:4mbz_mono2 gmmo:hasRingAtom gmmo:4mbz_O5_20910_GAL_A_407_n_n_1.
-gmmo:4mbz_mono2 gmmo:ringAtoms """4mbz_C1_20900_GAL_A_407_n_n_1-4mbz_C2_20901_GAL_A_407_n_n_1-4mbz_C3_20902_GAL_A_407_n_n_1-4mbz_C4_20903_GAL_A_407_n_n_1-4mbz_C5_20904_GAL_A_407_n_n_1-4mbz_O5_20910_GAL_A_407_n_n_1""".
-gmmo:4mbz_mono2 gmmo:anomericStatus """ 4mbz_C1_20900_GAL_A_407_n_n_1""".
+gmmo:4mbz_mono2 gmmo:hasRingAtom gmmo:4mbz_C1_20906_GAL_A_407_n_n_1.
+gmmo:4mbz_mono2 gmmo:hasRingAtom gmmo:4mbz_C2_20907_GAL_A_407_n_n_1.
+gmmo:4mbz_mono2 gmmo:hasRingAtom gmmo:4mbz_C3_20908_GAL_A_407_n_n_1.
+gmmo:4mbz_mono2 gmmo:hasRingAtom gmmo:4mbz_C4_20909_GAL_A_407_n_n_1.
+gmmo:4mbz_mono2 gmmo:hasRingAtom gmmo:4mbz_C5_20910_GAL_A_407_n_n_1.
+gmmo:4mbz_mono2 gmmo:hasRingAtom gmmo:4mbz_O5_20916_GAL_A_407_n_n_1.
+gmmo:4mbz_mono2 gmmo:ringAtoms """4mbz_C1_20906_GAL_A_407_n_n_1-4mbz_C2_20907_GAL_A_407_n_n_1-4mbz_C3_20908_GAL_A_407_n_n_1-4mbz_C4_20909_GAL_A_407_n_n_1-4mbz_C5_20910_GAL_A_407_n_n_1-4mbz_O5_20916_GAL_A_407_n_n_1""".
+gmmo:4mbz_mono2 gmmo:anomericStatus """ 4mbz_C1_20906_GAL_A_407_n_n_1""".
 gmmo:4mbz_mono2 gmmo:stereochemistryChemicalCode """_2^3^4P^a^+1""".
 gmmo:4mbz_mono2 gmmo:BFMPRingConformation """	4C1		2d5(1.45)""".
 gmmo:4mbz_mono2 gmmo:hasSNFGName """Gal""".
@@ -795,6 +859,53 @@ gmmo:4mbz_mono2_sn gmmo:monosaccharideShortName """DGalpb""".
 gmmo:4mbz_mono2_sn gmmo:isomer """D""".
 gmmo:4mbz_mono2_sn gmmo:configuration """beta""".
 gmmo:4mbz_mono2_sn gmmo:ringType """P""".
+gmmo:4mbz_C1_20906_GAL_A_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C1_20906_GAL_A_407_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C1_20906_GAL_A_407_n_n_1 gmmo:identifier """4mbz_C1_20906_GAL_A_407_n_n_1""".
+gmmo:4mbz_C1_20906_GAL_A_407_n_n_1 gmmo:coordinate """60.641, 27.585, 113.281""".
+gmmo:4mbz_C1_20906_GAL_A_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O1_20912_GAL_A_407_n_n_1.
+gmmo:4mbz_O1_20912_GAL_A_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O1_20912_GAL_A_407_n_n_1 gmmo:identifier """4mbz_O1_20912_GAL_A_407_n_n_1""".
+gmmo:4mbz_O1_20912_GAL_A_407_n_n_1 gmmo:coordinate """61.513, 28.681, 113.382""".
+gmmo:4mbz_O1_20912_GAL_A_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O1_20912_GAL_A_407_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C2_20907_GAL_A_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_20907_GAL_A_407_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C2_20907_GAL_A_407_n_n_1 gmmo:identifier """4mbz_C2_20907_GAL_A_407_n_n_1""".
+gmmo:4mbz_C2_20907_GAL_A_407_n_n_1 gmmo:coordinate """60.629, 27.161, 111.814""".
+gmmo:4mbz_C2_20907_GAL_A_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O2_20913_GAL_A_407_n_n_1.
+gmmo:4mbz_O2_20913_GAL_A_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O2_20913_GAL_A_407_n_n_1 gmmo:identifier """4mbz_O2_20913_GAL_A_407_n_n_1""".
+gmmo:4mbz_O2_20913_GAL_A_407_n_n_1 gmmo:coordinate """59.968, 28.146, 111.06""".
+gmmo:4mbz_O2_20913_GAL_A_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O2_20913_GAL_A_407_n_n_1 gmmo:sideIndex """2""".
+gmmo:4mbz_C3_20908_GAL_A_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_20908_GAL_A_407_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C3_20908_GAL_A_407_n_n_1 gmmo:identifier """4mbz_C3_20908_GAL_A_407_n_n_1""".
+gmmo:4mbz_C3_20908_GAL_A_407_n_n_1 gmmo:coordinate """59.951, 25.808, 111.619""".
+gmmo:4mbz_C3_20908_GAL_A_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_20914_GAL_A_407_n_n_1.
+gmmo:4mbz_O3_20914_GAL_A_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O3_20914_GAL_A_407_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C4_20909_GAL_A_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_20909_GAL_A_407_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C4_20909_GAL_A_407_n_n_1 gmmo:identifier """4mbz_C4_20909_GAL_A_407_n_n_1""".
+gmmo:4mbz_C4_20909_GAL_A_407_n_n_1 gmmo:coordinate """60.548, 24.772, 112.585""".
+gmmo:4mbz_C4_20909_GAL_A_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_20915_GAL_A_407_n_n_1.
+gmmo:4mbz_O4_20915_GAL_A_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_20915_GAL_A_407_n_n_1 gmmo:identifier """4mbz_O4_20915_GAL_A_407_n_n_1""".
+gmmo:4mbz_O4_20915_GAL_A_407_n_n_1 gmmo:coordinate """61.873, 24.446, 112.188""".
+gmmo:4mbz_O4_20915_GAL_A_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O4_20915_GAL_A_407_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C5_20910_GAL_A_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_20910_GAL_A_407_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C5_20910_GAL_A_407_n_n_1 gmmo:identifier """4mbz_C5_20910_GAL_A_407_n_n_1""".
+gmmo:4mbz_C5_20910_GAL_A_407_n_n_1 gmmo:coordinate """60.47, 25.292, 114.036""".
+gmmo:4mbz_C5_20910_GAL_A_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C6_20911_GAL_A_407_n_n_1.
+gmmo:4mbz_C6_20911_GAL_A_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C6_20911_GAL_A_407_n_n_1 gmmo:identifier """4mbz_C6_20911_GAL_A_407_n_n_1""".
+gmmo:4mbz_C6_20911_GAL_A_407_n_n_1 gmmo:coordinate """61.132, 24.383, 115.08""".
+gmmo:4mbz_C6_20911_GAL_A_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C6_20911_GAL_A_407_n_n_1 gmmo:sideIndex """+1""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono3.
 gmmo:4mbz_mono3 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono3 gmmo:identifier """SIA_B_409_?_?_1""".
@@ -802,14 +913,14 @@ gmmo:4mbz_mono3 gmmo:hasOligoParent """gmmo:4mbz_oligo2""".
 gmmo:4mbz_mono3 gmmo:hasIndex """1""".
 gmmo:4mbz_mono3 gmmo:hasNameIndex """1""".
 gmmo:4mbz_mono3 gmmo:isNucleotide false.
-gmmo:4mbz_mono3 gmmo:hasRingAtom gmmo:4mbz_C2_20939_SIA_B_409_n_n_1.
-gmmo:4mbz_mono3 gmmo:hasRingAtom gmmo:4mbz_C3_20940_SIA_B_409_n_n_1.
-gmmo:4mbz_mono3 gmmo:hasRingAtom gmmo:4mbz_C4_20941_SIA_B_409_n_n_1.
-gmmo:4mbz_mono3 gmmo:hasRingAtom gmmo:4mbz_C5_20942_SIA_B_409_n_n_1.
-gmmo:4mbz_mono3 gmmo:hasRingAtom gmmo:4mbz_C6_20943_SIA_B_409_n_n_1.
-gmmo:4mbz_mono3 gmmo:hasRingAtom gmmo:4mbz_O6_20953_SIA_B_409_n_n_1.
-gmmo:4mbz_mono3 gmmo:ringAtoms """4mbz_C2_20939_SIA_B_409_n_n_1-4mbz_C3_20940_SIA_B_409_n_n_1-4mbz_C4_20941_SIA_B_409_n_n_1-4mbz_C5_20942_SIA_B_409_n_n_1-4mbz_C6_20943_SIA_B_409_n_n_1-4mbz_O6_20953_SIA_B_409_n_n_1""".
-gmmo:4mbz_mono3 gmmo:anomericStatus """ 4mbz_C2_20939_SIA_B_409_n_n_1""".
+gmmo:4mbz_mono3 gmmo:hasRingAtom gmmo:4mbz_C2_20945_SIA_B_409_n_n_1.
+gmmo:4mbz_mono3 gmmo:hasRingAtom gmmo:4mbz_C3_20946_SIA_B_409_n_n_1.
+gmmo:4mbz_mono3 gmmo:hasRingAtom gmmo:4mbz_C4_20947_SIA_B_409_n_n_1.
+gmmo:4mbz_mono3 gmmo:hasRingAtom gmmo:4mbz_C5_20948_SIA_B_409_n_n_1.
+gmmo:4mbz_mono3 gmmo:hasRingAtom gmmo:4mbz_C6_20949_SIA_B_409_n_n_1.
+gmmo:4mbz_mono3 gmmo:hasRingAtom gmmo:4mbz_O6_20959_SIA_B_409_n_n_1.
+gmmo:4mbz_mono3 gmmo:ringAtoms """4mbz_C2_20945_SIA_B_409_n_n_1-4mbz_C3_20946_SIA_B_409_n_n_1-4mbz_C4_20947_SIA_B_409_n_n_1-4mbz_C5_20948_SIA_B_409_n_n_1-4mbz_C6_20949_SIA_B_409_n_n_1-4mbz_O6_20959_SIA_B_409_n_n_1""".
+gmmo:4mbz_mono3 gmmo:anomericStatus """ 4mbz_C2_20945_SIA_B_409_n_n_1""".
 gmmo:4mbz_mono3 gmmo:stereochemistryChemicalCode """_3^4NAc2dP_a_+1R_+2R_+3^-1A""".
 gmmo:4mbz_mono3 gmmo:BFMPRingConformation """	1C4		1d4(0.81)""".
 gmmo:4mbz_mono3 gmmo:hasSNFGName """Neu5Ac""".
@@ -825,6 +936,70 @@ gmmo:4mbz_mono3_sn gmmo:monosaccharideShortName """DNeup5Aca""".
 gmmo:4mbz_mono3_sn gmmo:isomer """D""".
 gmmo:4mbz_mono3_sn gmmo:configuration """alpha""".
 gmmo:4mbz_mono3_sn gmmo:ringType """P""".
+gmmo:4mbz_C2_20945_SIA_B_409_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_20945_SIA_B_409_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C2_20945_SIA_B_409_n_n_1 gmmo:identifier """4mbz_C2_20945_SIA_B_409_n_n_1""".
+gmmo:4mbz_C2_20945_SIA_B_409_n_n_1 gmmo:coordinate """79.829, 7.687, 98.725""".
+gmmo:4mbz_C2_20945_SIA_B_409_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C1_20944_SIA_B_409_n_n_1.
+gmmo:4mbz_C2_20945_SIA_B_409_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_20972_GAL_B_410_n_n_1.
+gmmo:4mbz_C1_20944_SIA_B_409_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C1_20944_SIA_B_409_n_n_1 gmmo:identifier """4mbz_C1_20944_SIA_B_409_n_n_1""".
+gmmo:4mbz_C1_20944_SIA_B_409_n_n_1 gmmo:coordinate """78.855, 7.786, 99.898""".
+gmmo:4mbz_C1_20944_SIA_B_409_n_n_1 gmmo:derivative """xC-(O,O)""".
+gmmo:4mbz_C1_20944_SIA_B_409_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C1_20944_SIA_B_409_n_n_1 gmmo:sideIndex """-1""".
+gmmo:4mbz_O3_20972_GAL_B_410_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O3_20972_GAL_B_410_n_n_1 gmmo:identifier """4mbz_O3_20972_GAL_B_410_n_n_1""".
+gmmo:4mbz_O3_20972_GAL_B_410_n_n_1 gmmo:coordinate """81.119, 7.139, 99.123""".
+gmmo:4mbz_O3_20972_GAL_B_410_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O3_20972_GAL_B_410_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C3_20946_SIA_B_409_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_20946_SIA_B_409_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C3_20946_SIA_B_409_n_n_1 gmmo:identifier """4mbz_C3_20946_SIA_B_409_n_n_1""".
+gmmo:4mbz_C3_20946_SIA_B_409_n_n_1 gmmo:coordinate """79.364, 6.617, 97.738""".
+gmmo:4mbz_C4_20947_SIA_B_409_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_20947_SIA_B_409_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C4_20947_SIA_B_409_n_n_1 gmmo:identifier """4mbz_C4_20947_SIA_B_409_n_n_1""".
+gmmo:4mbz_C4_20947_SIA_B_409_n_n_1 gmmo:coordinate """78.169, 7.105, 96.919""".
+gmmo:4mbz_C4_20947_SIA_B_409_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_20958_SIA_B_409_n_n_1.
+gmmo:4mbz_O4_20958_SIA_B_409_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_20958_SIA_B_409_n_n_1 gmmo:identifier """4mbz_O4_20958_SIA_B_409_n_n_1""".
+gmmo:4mbz_O4_20958_SIA_B_409_n_n_1 gmmo:coordinate """77.94, 6.133, 95.902""".
+gmmo:4mbz_O4_20958_SIA_B_409_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O4_20958_SIA_B_409_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C5_20948_SIA_B_409_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_20948_SIA_B_409_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C5_20948_SIA_B_409_n_n_1 gmmo:identifier """4mbz_C5_20948_SIA_B_409_n_n_1""".
+gmmo:4mbz_C5_20948_SIA_B_409_n_n_1 gmmo:coordinate """78.432, 8.456, 96.255""".
+gmmo:4mbz_C5_20948_SIA_B_409_n_n_1 gmmo:hasSideAtom gmmo:4mbz_N5_20955_SIA_B_409_n_n_1.
+gmmo:4mbz_N5_20955_SIA_B_409_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_N5_20955_SIA_B_409_n_n_1 gmmo:identifier """4mbz_N5_20955_SIA_B_409_n_n_1""".
+gmmo:4mbz_N5_20955_SIA_B_409_n_n_1 gmmo:coordinate """77.216, 8.957, 95.617""".
+gmmo:4mbz_N5_20955_SIA_B_409_n_n_1 gmmo:derivative """xC-N-C=OCH3""".
+gmmo:4mbz_N5_20955_SIA_B_409_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_N5_20955_SIA_B_409_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C6_20949_SIA_B_409_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C6_20949_SIA_B_409_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C6_20949_SIA_B_409_n_n_1 gmmo:identifier """4mbz_C6_20949_SIA_B_409_n_n_1""".
+gmmo:4mbz_C6_20949_SIA_B_409_n_n_1 gmmo:coordinate """78.968, 9.486, 97.243""".
+gmmo:4mbz_C6_20949_SIA_B_409_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C7_20950_SIA_B_409_n_n_1.
+gmmo:4mbz_C6_20949_SIA_B_409_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C8_20951_SIA_B_409_n_n_1.
+gmmo:4mbz_C6_20949_SIA_B_409_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C9_20952_SIA_B_409_n_n_1.
+gmmo:4mbz_C7_20950_SIA_B_409_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C7_20950_SIA_B_409_n_n_1 gmmo:identifier """4mbz_C7_20950_SIA_B_409_n_n_1""".
+gmmo:4mbz_C7_20950_SIA_B_409_n_n_1 gmmo:coordinate """79.336, 10.76, 96.459""".
+gmmo:4mbz_C7_20950_SIA_B_409_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C7_20950_SIA_B_409_n_n_1 gmmo:sideIndex """+1""".
+gmmo:4mbz_C8_20951_SIA_B_409_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C8_20951_SIA_B_409_n_n_1 gmmo:identifier """4mbz_C8_20951_SIA_B_409_n_n_1""".
+gmmo:4mbz_C8_20951_SIA_B_409_n_n_1 gmmo:coordinate """78.939, 12.085, 97.14""".
+gmmo:4mbz_C8_20951_SIA_B_409_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C8_20951_SIA_B_409_n_n_1 gmmo:sideIndex """+2""".
+gmmo:4mbz_C9_20952_SIA_B_409_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C9_20952_SIA_B_409_n_n_1 gmmo:identifier """4mbz_C9_20952_SIA_B_409_n_n_1""".
+gmmo:4mbz_C9_20952_SIA_B_409_n_n_1 gmmo:coordinate """77.426, 12.342, 97.053""".
+gmmo:4mbz_C9_20952_SIA_B_409_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C9_20952_SIA_B_409_n_n_1 gmmo:sideIndex """+3""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono4.
 gmmo:4mbz_mono4 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono4 gmmo:identifier """GAL_B_410_?_?_1""".
@@ -832,14 +1007,14 @@ gmmo:4mbz_mono4 gmmo:hasOligoParent """gmmo:4mbz_oligo2""".
 gmmo:4mbz_mono4 gmmo:hasIndex """0""".
 gmmo:4mbz_mono4 gmmo:hasNameIndex """0""".
 gmmo:4mbz_mono4 gmmo:isNucleotide false.
-gmmo:4mbz_mono4 gmmo:hasRingAtom gmmo:4mbz_C1_20958_GAL_B_410_n_n_1.
-gmmo:4mbz_mono4 gmmo:hasRingAtom gmmo:4mbz_C2_20959_GAL_B_410_n_n_1.
-gmmo:4mbz_mono4 gmmo:hasRingAtom gmmo:4mbz_C3_20960_GAL_B_410_n_n_1.
-gmmo:4mbz_mono4 gmmo:hasRingAtom gmmo:4mbz_C4_20961_GAL_B_410_n_n_1.
-gmmo:4mbz_mono4 gmmo:hasRingAtom gmmo:4mbz_C5_20962_GAL_B_410_n_n_1.
-gmmo:4mbz_mono4 gmmo:hasRingAtom gmmo:4mbz_O5_20968_GAL_B_410_n_n_1.
-gmmo:4mbz_mono4 gmmo:ringAtoms """4mbz_C1_20958_GAL_B_410_n_n_1-4mbz_C2_20959_GAL_B_410_n_n_1-4mbz_C3_20960_GAL_B_410_n_n_1-4mbz_C4_20961_GAL_B_410_n_n_1-4mbz_C5_20962_GAL_B_410_n_n_1-4mbz_O5_20968_GAL_B_410_n_n_1""".
-gmmo:4mbz_mono4 gmmo:anomericStatus """ 4mbz_C1_20958_GAL_B_410_n_n_1""".
+gmmo:4mbz_mono4 gmmo:hasRingAtom gmmo:4mbz_C1_20964_GAL_B_410_n_n_1.
+gmmo:4mbz_mono4 gmmo:hasRingAtom gmmo:4mbz_C2_20965_GAL_B_410_n_n_1.
+gmmo:4mbz_mono4 gmmo:hasRingAtom gmmo:4mbz_C3_20966_GAL_B_410_n_n_1.
+gmmo:4mbz_mono4 gmmo:hasRingAtom gmmo:4mbz_C4_20967_GAL_B_410_n_n_1.
+gmmo:4mbz_mono4 gmmo:hasRingAtom gmmo:4mbz_C5_20968_GAL_B_410_n_n_1.
+gmmo:4mbz_mono4 gmmo:hasRingAtom gmmo:4mbz_O5_20974_GAL_B_410_n_n_1.
+gmmo:4mbz_mono4 gmmo:ringAtoms """4mbz_C1_20964_GAL_B_410_n_n_1-4mbz_C2_20965_GAL_B_410_n_n_1-4mbz_C3_20966_GAL_B_410_n_n_1-4mbz_C4_20967_GAL_B_410_n_n_1-4mbz_C5_20968_GAL_B_410_n_n_1-4mbz_O5_20974_GAL_B_410_n_n_1""".
+gmmo:4mbz_mono4 gmmo:anomericStatus """ 4mbz_C1_20964_GAL_B_410_n_n_1""".
 gmmo:4mbz_mono4 gmmo:stereochemistryChemicalCode """_2^3^4P^a^+1""".
 gmmo:4mbz_mono4 gmmo:BFMPRingConformation """	4C1		6d3(2.32)""".
 gmmo:4mbz_mono4 gmmo:hasSNFGName """Gal""".
@@ -855,6 +1030,53 @@ gmmo:4mbz_mono4_sn gmmo:monosaccharideShortName """DGalpb""".
 gmmo:4mbz_mono4_sn gmmo:isomer """D""".
 gmmo:4mbz_mono4_sn gmmo:configuration """beta""".
 gmmo:4mbz_mono4_sn gmmo:ringType """P""".
+gmmo:4mbz_C1_20964_GAL_B_410_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C1_20964_GAL_B_410_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C1_20964_GAL_B_410_n_n_1 gmmo:identifier """4mbz_C1_20964_GAL_B_410_n_n_1""".
+gmmo:4mbz_C1_20964_GAL_B_410_n_n_1 gmmo:coordinate """83.991, 8.562, 101.087""".
+gmmo:4mbz_C1_20964_GAL_B_410_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O1_20970_GAL_B_410_n_n_1.
+gmmo:4mbz_O1_20970_GAL_B_410_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O1_20970_GAL_B_410_n_n_1 gmmo:identifier """4mbz_O1_20970_GAL_B_410_n_n_1""".
+gmmo:4mbz_O1_20970_GAL_B_410_n_n_1 gmmo:coordinate """85.325, 8.109, 101.056""".
+gmmo:4mbz_O1_20970_GAL_B_410_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O1_20970_GAL_B_410_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C2_20965_GAL_B_410_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_20965_GAL_B_410_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C2_20965_GAL_B_410_n_n_1 gmmo:identifier """4mbz_C2_20965_GAL_B_410_n_n_1""".
+gmmo:4mbz_C2_20965_GAL_B_410_n_n_1 gmmo:coordinate """83.246, 7.778, 100.003""".
+gmmo:4mbz_C2_20965_GAL_B_410_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O2_20971_GAL_B_410_n_n_1.
+gmmo:4mbz_O2_20971_GAL_B_410_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O2_20971_GAL_B_410_n_n_1 gmmo:identifier """4mbz_O2_20971_GAL_B_410_n_n_1""".
+gmmo:4mbz_O2_20971_GAL_B_410_n_n_1 gmmo:coordinate """83.571, 8.256, 98.717""".
+gmmo:4mbz_O2_20971_GAL_B_410_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O2_20971_GAL_B_410_n_n_1 gmmo:sideIndex """2""".
+gmmo:4mbz_C3_20966_GAL_B_410_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_20966_GAL_B_410_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C3_20966_GAL_B_410_n_n_1 gmmo:identifier """4mbz_C3_20966_GAL_B_410_n_n_1""".
+gmmo:4mbz_C3_20966_GAL_B_410_n_n_1 gmmo:coordinate """81.743, 7.867, 100.185""".
+gmmo:4mbz_C3_20966_GAL_B_410_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_20972_GAL_B_410_n_n_1.
+gmmo:4mbz_O3_20972_GAL_B_410_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O3_20972_GAL_B_410_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C4_20967_GAL_B_410_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_20967_GAL_B_410_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C4_20967_GAL_B_410_n_n_1 gmmo:identifier """4mbz_C4_20967_GAL_B_410_n_n_1""".
+gmmo:4mbz_C4_20967_GAL_B_410_n_n_1 gmmo:coordinate """81.397, 7.379, 101.601""".
+gmmo:4mbz_C4_20967_GAL_B_410_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_20973_GAL_B_410_n_n_1.
+gmmo:4mbz_O4_20973_GAL_B_410_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_20973_GAL_B_410_n_n_1 gmmo:identifier """4mbz_O4_20973_GAL_B_410_n_n_1""".
+gmmo:4mbz_O4_20973_GAL_B_410_n_n_1 gmmo:coordinate """81.724, 6.015, 101.761""".
+gmmo:4mbz_O4_20973_GAL_B_410_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O4_20973_GAL_B_410_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C5_20968_GAL_B_410_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_20968_GAL_B_410_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C5_20968_GAL_B_410_n_n_1 gmmo:identifier """4mbz_C5_20968_GAL_B_410_n_n_1""".
+gmmo:4mbz_C5_20968_GAL_B_410_n_n_1 gmmo:coordinate """82.103, 8.23, 102.673""".
+gmmo:4mbz_C5_20968_GAL_B_410_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C6_20969_GAL_B_410_n_n_1.
+gmmo:4mbz_C6_20969_GAL_B_410_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C6_20969_GAL_B_410_n_n_1 gmmo:identifier """4mbz_C6_20969_GAL_B_410_n_n_1""".
+gmmo:4mbz_C6_20969_GAL_B_410_n_n_1 gmmo:coordinate """81.957, 7.622, 104.081""".
+gmmo:4mbz_C6_20969_GAL_B_410_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C6_20969_GAL_B_410_n_n_1 gmmo:sideIndex """+1""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono5.
 gmmo:4mbz_mono5 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono5 gmmo:identifier """SIA_D_406_?_?_1""".
@@ -862,14 +1084,14 @@ gmmo:4mbz_mono5 gmmo:hasOligoParent """gmmo:4mbz_oligo3""".
 gmmo:4mbz_mono5 gmmo:hasIndex """1""".
 gmmo:4mbz_mono5 gmmo:hasNameIndex """1""".
 gmmo:4mbz_mono5 gmmo:isNucleotide false.
-gmmo:4mbz_mono5 gmmo:hasRingAtom gmmo:4mbz_C2_20999_SIA_D_406_n_n_1.
-gmmo:4mbz_mono5 gmmo:hasRingAtom gmmo:4mbz_C3_21000_SIA_D_406_n_n_1.
-gmmo:4mbz_mono5 gmmo:hasRingAtom gmmo:4mbz_C4_21001_SIA_D_406_n_n_1.
-gmmo:4mbz_mono5 gmmo:hasRingAtom gmmo:4mbz_C5_21002_SIA_D_406_n_n_1.
-gmmo:4mbz_mono5 gmmo:hasRingAtom gmmo:4mbz_C6_21003_SIA_D_406_n_n_1.
-gmmo:4mbz_mono5 gmmo:hasRingAtom gmmo:4mbz_O6_21013_SIA_D_406_n_n_1.
-gmmo:4mbz_mono5 gmmo:ringAtoms """4mbz_C2_20999_SIA_D_406_n_n_1-4mbz_C3_21000_SIA_D_406_n_n_1-4mbz_C4_21001_SIA_D_406_n_n_1-4mbz_C5_21002_SIA_D_406_n_n_1-4mbz_C6_21003_SIA_D_406_n_n_1-4mbz_O6_21013_SIA_D_406_n_n_1""".
-gmmo:4mbz_mono5 gmmo:anomericStatus """ 4mbz_C2_20999_SIA_D_406_n_n_1""".
+gmmo:4mbz_mono5 gmmo:hasRingAtom gmmo:4mbz_C2_21005_SIA_D_406_n_n_1.
+gmmo:4mbz_mono5 gmmo:hasRingAtom gmmo:4mbz_C3_21006_SIA_D_406_n_n_1.
+gmmo:4mbz_mono5 gmmo:hasRingAtom gmmo:4mbz_C4_21007_SIA_D_406_n_n_1.
+gmmo:4mbz_mono5 gmmo:hasRingAtom gmmo:4mbz_C5_21008_SIA_D_406_n_n_1.
+gmmo:4mbz_mono5 gmmo:hasRingAtom gmmo:4mbz_C6_21009_SIA_D_406_n_n_1.
+gmmo:4mbz_mono5 gmmo:hasRingAtom gmmo:4mbz_O6_21019_SIA_D_406_n_n_1.
+gmmo:4mbz_mono5 gmmo:ringAtoms """4mbz_C2_21005_SIA_D_406_n_n_1-4mbz_C3_21006_SIA_D_406_n_n_1-4mbz_C4_21007_SIA_D_406_n_n_1-4mbz_C5_21008_SIA_D_406_n_n_1-4mbz_C6_21009_SIA_D_406_n_n_1-4mbz_O6_21019_SIA_D_406_n_n_1""".
+gmmo:4mbz_mono5 gmmo:anomericStatus """ 4mbz_C2_21005_SIA_D_406_n_n_1""".
 gmmo:4mbz_mono5 gmmo:stereochemistryChemicalCode """_3^4NAc2dP_a_+1R_+2R_+3^-1A""".
 gmmo:4mbz_mono5 gmmo:BFMPRingConformation """	1C4		1d4(1.21)""".
 gmmo:4mbz_mono5 gmmo:hasSNFGName """Neu5Ac""".
@@ -885,6 +1107,70 @@ gmmo:4mbz_mono5_sn gmmo:monosaccharideShortName """DNeup5Aca""".
 gmmo:4mbz_mono5_sn gmmo:isomer """D""".
 gmmo:4mbz_mono5_sn gmmo:configuration """alpha""".
 gmmo:4mbz_mono5_sn gmmo:ringType """P""".
+gmmo:4mbz_C2_21005_SIA_D_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_21005_SIA_D_406_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C2_21005_SIA_D_406_n_n_1 gmmo:identifier """4mbz_C2_21005_SIA_D_406_n_n_1""".
+gmmo:4mbz_C2_21005_SIA_D_406_n_n_1 gmmo:coordinate """45.743, -20.073, 116.706""".
+gmmo:4mbz_C2_21005_SIA_D_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C1_21004_SIA_D_406_n_n_1.
+gmmo:4mbz_C2_21005_SIA_D_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_21032_GAL_D_407_n_n_1.
+gmmo:4mbz_C1_21004_SIA_D_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C1_21004_SIA_D_406_n_n_1 gmmo:identifier """4mbz_C1_21004_SIA_D_406_n_n_1""".
+gmmo:4mbz_C1_21004_SIA_D_406_n_n_1 gmmo:coordinate """47.1, -19.353, 116.601""".
+gmmo:4mbz_C1_21004_SIA_D_406_n_n_1 gmmo:derivative """xC-(O,O)""".
+gmmo:4mbz_C1_21004_SIA_D_406_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C1_21004_SIA_D_406_n_n_1 gmmo:sideIndex """-1""".
+gmmo:4mbz_O3_21032_GAL_D_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O3_21032_GAL_D_407_n_n_1 gmmo:identifier """4mbz_O3_21032_GAL_D_407_n_n_1""".
+gmmo:4mbz_O3_21032_GAL_D_407_n_n_1 gmmo:coordinate """45.219, -20.143, 118.063""".
+gmmo:4mbz_O3_21032_GAL_D_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O3_21032_GAL_D_407_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C3_21006_SIA_D_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_21006_SIA_D_406_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C3_21006_SIA_D_406_n_n_1 gmmo:identifier """4mbz_C3_21006_SIA_D_406_n_n_1""".
+gmmo:4mbz_C3_21006_SIA_D_406_n_n_1 gmmo:coordinate """44.636, -19.293, 115.99""".
+gmmo:4mbz_C4_21007_SIA_D_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_21007_SIA_D_406_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C4_21007_SIA_D_406_n_n_1 gmmo:identifier """4mbz_C4_21007_SIA_D_406_n_n_1""".
+gmmo:4mbz_C4_21007_SIA_D_406_n_n_1 gmmo:coordinate """44.788, -19.39, 114.471""".
+gmmo:4mbz_C4_21007_SIA_D_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_21018_SIA_D_406_n_n_1.
+gmmo:4mbz_O4_21018_SIA_D_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_21018_SIA_D_406_n_n_1 gmmo:identifier """4mbz_O4_21018_SIA_D_406_n_n_1""".
+gmmo:4mbz_O4_21018_SIA_D_406_n_n_1 gmmo:coordinate """43.639, -18.781, 113.883""".
+gmmo:4mbz_O4_21018_SIA_D_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O4_21018_SIA_D_406_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C5_21008_SIA_D_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_21008_SIA_D_406_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C5_21008_SIA_D_406_n_n_1 gmmo:identifier """4mbz_C5_21008_SIA_D_406_n_n_1""".
+gmmo:4mbz_C5_21008_SIA_D_406_n_n_1 gmmo:coordinate """44.946, -20.829, 113.964""".
+gmmo:4mbz_C5_21008_SIA_D_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_N5_21015_SIA_D_406_n_n_1.
+gmmo:4mbz_N5_21015_SIA_D_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_N5_21015_SIA_D_406_n_n_1 gmmo:identifier """4mbz_N5_21015_SIA_D_406_n_n_1""".
+gmmo:4mbz_N5_21015_SIA_D_406_n_n_1 gmmo:coordinate """45.308, -20.824, 112.548""".
+gmmo:4mbz_N5_21015_SIA_D_406_n_n_1 gmmo:derivative """xC-N-C=OCH3""".
+gmmo:4mbz_N5_21015_SIA_D_406_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_N5_21015_SIA_D_406_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C6_21009_SIA_D_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C6_21009_SIA_D_406_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C6_21009_SIA_D_406_n_n_1 gmmo:identifier """4mbz_C6_21009_SIA_D_406_n_n_1""".
+gmmo:4mbz_C6_21009_SIA_D_406_n_n_1 gmmo:coordinate """45.972, -21.618, 114.798""".
+gmmo:4mbz_C6_21009_SIA_D_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C7_21010_SIA_D_406_n_n_1.
+gmmo:4mbz_C6_21009_SIA_D_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C8_21011_SIA_D_406_n_n_1.
+gmmo:4mbz_C6_21009_SIA_D_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C9_21012_SIA_D_406_n_n_1.
+gmmo:4mbz_C7_21010_SIA_D_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C7_21010_SIA_D_406_n_n_1 gmmo:identifier """4mbz_C7_21010_SIA_D_406_n_n_1""".
+gmmo:4mbz_C7_21010_SIA_D_406_n_n_1 gmmo:coordinate """46.01, -23.111, 114.443""".
+gmmo:4mbz_C7_21010_SIA_D_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C7_21010_SIA_D_406_n_n_1 gmmo:sideIndex """+1""".
+gmmo:4mbz_C8_21011_SIA_D_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C8_21011_SIA_D_406_n_n_1 gmmo:identifier """4mbz_C8_21011_SIA_D_406_n_n_1""".
+gmmo:4mbz_C8_21011_SIA_D_406_n_n_1 gmmo:coordinate """47.257, -23.841, 114.964""".
+gmmo:4mbz_C8_21011_SIA_D_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C8_21011_SIA_D_406_n_n_1 gmmo:sideIndex """+2""".
+gmmo:4mbz_C9_21012_SIA_D_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C9_21012_SIA_D_406_n_n_1 gmmo:identifier """4mbz_C9_21012_SIA_D_406_n_n_1""".
+gmmo:4mbz_C9_21012_SIA_D_406_n_n_1 gmmo:coordinate """47.647, -24.946, 113.993""".
+gmmo:4mbz_C9_21012_SIA_D_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C9_21012_SIA_D_406_n_n_1 gmmo:sideIndex """+3""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono6.
 gmmo:4mbz_mono6 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono6 gmmo:identifier """GAL_D_407_?_?_1""".
@@ -892,14 +1178,14 @@ gmmo:4mbz_mono6 gmmo:hasOligoParent """gmmo:4mbz_oligo3""".
 gmmo:4mbz_mono6 gmmo:hasIndex """0""".
 gmmo:4mbz_mono6 gmmo:hasNameIndex """0""".
 gmmo:4mbz_mono6 gmmo:isNucleotide false.
-gmmo:4mbz_mono6 gmmo:hasRingAtom gmmo:4mbz_C1_21018_GAL_D_407_n_n_1.
-gmmo:4mbz_mono6 gmmo:hasRingAtom gmmo:4mbz_C2_21019_GAL_D_407_n_n_1.
-gmmo:4mbz_mono6 gmmo:hasRingAtom gmmo:4mbz_C3_21020_GAL_D_407_n_n_1.
-gmmo:4mbz_mono6 gmmo:hasRingAtom gmmo:4mbz_C4_21021_GAL_D_407_n_n_1.
-gmmo:4mbz_mono6 gmmo:hasRingAtom gmmo:4mbz_C5_21022_GAL_D_407_n_n_1.
-gmmo:4mbz_mono6 gmmo:hasRingAtom gmmo:4mbz_O5_21028_GAL_D_407_n_n_1.
-gmmo:4mbz_mono6 gmmo:ringAtoms """4mbz_C1_21018_GAL_D_407_n_n_1-4mbz_C2_21019_GAL_D_407_n_n_1-4mbz_C3_21020_GAL_D_407_n_n_1-4mbz_C4_21021_GAL_D_407_n_n_1-4mbz_C5_21022_GAL_D_407_n_n_1-4mbz_O5_21028_GAL_D_407_n_n_1""".
-gmmo:4mbz_mono6 gmmo:anomericStatus """ 4mbz_C1_21018_GAL_D_407_n_n_1""".
+gmmo:4mbz_mono6 gmmo:hasRingAtom gmmo:4mbz_C1_21024_GAL_D_407_n_n_1.
+gmmo:4mbz_mono6 gmmo:hasRingAtom gmmo:4mbz_C2_21025_GAL_D_407_n_n_1.
+gmmo:4mbz_mono6 gmmo:hasRingAtom gmmo:4mbz_C3_21026_GAL_D_407_n_n_1.
+gmmo:4mbz_mono6 gmmo:hasRingAtom gmmo:4mbz_C4_21027_GAL_D_407_n_n_1.
+gmmo:4mbz_mono6 gmmo:hasRingAtom gmmo:4mbz_C5_21028_GAL_D_407_n_n_1.
+gmmo:4mbz_mono6 gmmo:hasRingAtom gmmo:4mbz_O5_21034_GAL_D_407_n_n_1.
+gmmo:4mbz_mono6 gmmo:ringAtoms """4mbz_C1_21024_GAL_D_407_n_n_1-4mbz_C2_21025_GAL_D_407_n_n_1-4mbz_C3_21026_GAL_D_407_n_n_1-4mbz_C4_21027_GAL_D_407_n_n_1-4mbz_C5_21028_GAL_D_407_n_n_1-4mbz_O5_21034_GAL_D_407_n_n_1""".
+gmmo:4mbz_mono6 gmmo:anomericStatus """ 4mbz_C1_21024_GAL_D_407_n_n_1""".
 gmmo:4mbz_mono6 gmmo:stereochemistryChemicalCode """_2^3^4P^a^+1""".
 gmmo:4mbz_mono6 gmmo:BFMPRingConformation """	4C1		2d5(0.92)""".
 gmmo:4mbz_mono6 gmmo:hasSNFGName """Gal""".
@@ -915,6 +1201,53 @@ gmmo:4mbz_mono6_sn gmmo:monosaccharideShortName """DGalpb""".
 gmmo:4mbz_mono6_sn gmmo:isomer """D""".
 gmmo:4mbz_mono6_sn gmmo:configuration """beta""".
 gmmo:4mbz_mono6_sn gmmo:ringType """P""".
+gmmo:4mbz_C1_21024_GAL_D_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C1_21024_GAL_D_407_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C1_21024_GAL_D_407_n_n_1 gmmo:identifier """4mbz_C1_21024_GAL_D_407_n_n_1""".
+gmmo:4mbz_C1_21024_GAL_D_407_n_n_1 gmmo:coordinate """46.072, -22.353, 120.998""".
+gmmo:4mbz_C1_21024_GAL_D_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O1_21030_GAL_D_407_n_n_1.
+gmmo:4mbz_O1_21030_GAL_D_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O1_21030_GAL_D_407_n_n_1 gmmo:identifier """4mbz_O1_21030_GAL_D_407_n_n_1""".
+gmmo:4mbz_O1_21030_GAL_D_407_n_n_1 gmmo:coordinate """45.208, -22.868, 121.986""".
+gmmo:4mbz_O1_21030_GAL_D_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O1_21030_GAL_D_407_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C2_21025_GAL_D_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_21025_GAL_D_407_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C2_21025_GAL_D_407_n_n_1 gmmo:identifier """4mbz_C2_21025_GAL_D_407_n_n_1""".
+gmmo:4mbz_C2_21025_GAL_D_407_n_n_1 gmmo:coordinate """45.221, -21.689, 119.907""".
+gmmo:4mbz_C2_21025_GAL_D_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O2_21031_GAL_D_407_n_n_1.
+gmmo:4mbz_O2_21031_GAL_D_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O2_21031_GAL_D_407_n_n_1 gmmo:identifier """4mbz_O2_21031_GAL_D_407_n_n_1""".
+gmmo:4mbz_O2_21031_GAL_D_407_n_n_1 gmmo:coordinate """44.526, -22.662, 119.156""".
+gmmo:4mbz_O2_21031_GAL_D_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O2_21031_GAL_D_407_n_n_1 gmmo:sideIndex """2""".
+gmmo:4mbz_C3_21026_GAL_D_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_21026_GAL_D_407_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C3_21026_GAL_D_407_n_n_1 gmmo:identifier """4mbz_C3_21026_GAL_D_407_n_n_1""".
+gmmo:4mbz_C3_21026_GAL_D_407_n_n_1 gmmo:coordinate """46.073, -20.853, 118.958""".
+gmmo:4mbz_C3_21026_GAL_D_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_21032_GAL_D_407_n_n_1.
+gmmo:4mbz_O3_21032_GAL_D_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O3_21032_GAL_D_407_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C4_21027_GAL_D_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_21027_GAL_D_407_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C4_21027_GAL_D_407_n_n_1 gmmo:identifier """4mbz_C4_21027_GAL_D_407_n_n_1""".
+gmmo:4mbz_C4_21027_GAL_D_407_n_n_1 gmmo:coordinate """47.008, -19.925, 119.746""".
+gmmo:4mbz_C4_21027_GAL_D_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_21033_GAL_D_407_n_n_1.
+gmmo:4mbz_O4_21033_GAL_D_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_21033_GAL_D_407_n_n_1 gmmo:identifier """4mbz_O4_21033_GAL_D_407_n_n_1""".
+gmmo:4mbz_O4_21033_GAL_D_407_n_n_1 gmmo:coordinate """46.246, -18.923, 120.385""".
+gmmo:4mbz_O4_21033_GAL_D_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O4_21033_GAL_D_407_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C5_21028_GAL_D_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_21028_GAL_D_407_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C5_21028_GAL_D_407_n_n_1 gmmo:identifier """4mbz_C5_21028_GAL_D_407_n_n_1""".
+gmmo:4mbz_C5_21028_GAL_D_407_n_n_1 gmmo:coordinate """47.84, -20.731, 120.756""".
+gmmo:4mbz_C5_21028_GAL_D_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C6_21029_GAL_D_407_n_n_1.
+gmmo:4mbz_C6_21029_GAL_D_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C6_21029_GAL_D_407_n_n_1 gmmo:identifier """4mbz_C6_21029_GAL_D_407_n_n_1""".
+gmmo:4mbz_C6_21029_GAL_D_407_n_n_1 gmmo:coordinate """48.77, -19.858, 121.606""".
+gmmo:4mbz_C6_21029_GAL_D_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C6_21029_GAL_D_407_n_n_1 gmmo:sideIndex """+1""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono7.
 gmmo:4mbz_mono7 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono7 gmmo:identifier """SIA_E_407_?_?_1""".
@@ -922,14 +1255,14 @@ gmmo:4mbz_mono7 gmmo:hasOligoParent """gmmo:4mbz_oligo4""".
 gmmo:4mbz_mono7 gmmo:hasIndex """1""".
 gmmo:4mbz_mono7 gmmo:hasNameIndex """1""".
 gmmo:4mbz_mono7 gmmo:isNucleotide false.
-gmmo:4mbz_mono7 gmmo:hasRingAtom gmmo:4mbz_C2_21049_SIA_E_407_n_n_1.
-gmmo:4mbz_mono7 gmmo:hasRingAtom gmmo:4mbz_C3_21050_SIA_E_407_n_n_1.
-gmmo:4mbz_mono7 gmmo:hasRingAtom gmmo:4mbz_C4_21051_SIA_E_407_n_n_1.
-gmmo:4mbz_mono7 gmmo:hasRingAtom gmmo:4mbz_C5_21052_SIA_E_407_n_n_1.
-gmmo:4mbz_mono7 gmmo:hasRingAtom gmmo:4mbz_C6_21053_SIA_E_407_n_n_1.
-gmmo:4mbz_mono7 gmmo:hasRingAtom gmmo:4mbz_O6_21063_SIA_E_407_n_n_1.
-gmmo:4mbz_mono7 gmmo:ringAtoms """4mbz_C2_21049_SIA_E_407_n_n_1-4mbz_C3_21050_SIA_E_407_n_n_1-4mbz_C4_21051_SIA_E_407_n_n_1-4mbz_C5_21052_SIA_E_407_n_n_1-4mbz_C6_21053_SIA_E_407_n_n_1-4mbz_O6_21063_SIA_E_407_n_n_1""".
-gmmo:4mbz_mono7 gmmo:anomericStatus """ 4mbz_C2_21049_SIA_E_407_n_n_1""".
+gmmo:4mbz_mono7 gmmo:hasRingAtom gmmo:4mbz_C2_21055_SIA_E_407_n_n_1.
+gmmo:4mbz_mono7 gmmo:hasRingAtom gmmo:4mbz_C3_21056_SIA_E_407_n_n_1.
+gmmo:4mbz_mono7 gmmo:hasRingAtom gmmo:4mbz_C4_21057_SIA_E_407_n_n_1.
+gmmo:4mbz_mono7 gmmo:hasRingAtom gmmo:4mbz_C5_21058_SIA_E_407_n_n_1.
+gmmo:4mbz_mono7 gmmo:hasRingAtom gmmo:4mbz_C6_21059_SIA_E_407_n_n_1.
+gmmo:4mbz_mono7 gmmo:hasRingAtom gmmo:4mbz_O6_21069_SIA_E_407_n_n_1.
+gmmo:4mbz_mono7 gmmo:ringAtoms """4mbz_C2_21055_SIA_E_407_n_n_1-4mbz_C3_21056_SIA_E_407_n_n_1-4mbz_C4_21057_SIA_E_407_n_n_1-4mbz_C5_21058_SIA_E_407_n_n_1-4mbz_C6_21059_SIA_E_407_n_n_1-4mbz_O6_21069_SIA_E_407_n_n_1""".
+gmmo:4mbz_mono7 gmmo:anomericStatus """ 4mbz_C2_21055_SIA_E_407_n_n_1""".
 gmmo:4mbz_mono7 gmmo:stereochemistryChemicalCode """_3^4NAc2dP_a_+1R_+2R_+3^-1A""".
 gmmo:4mbz_mono7 gmmo:BFMPRingConformation """	1C4		3d6(1.31)""".
 gmmo:4mbz_mono7 gmmo:hasSNFGName """Neu5Ac""".
@@ -945,6 +1278,70 @@ gmmo:4mbz_mono7_sn gmmo:monosaccharideShortName """DNeup5Aca""".
 gmmo:4mbz_mono7_sn gmmo:isomer """D""".
 gmmo:4mbz_mono7_sn gmmo:configuration """alpha""".
 gmmo:4mbz_mono7_sn gmmo:ringType """P""".
+gmmo:4mbz_C2_21055_SIA_E_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_21055_SIA_E_407_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C2_21055_SIA_E_407_n_n_1 gmmo:identifier """4mbz_C2_21055_SIA_E_407_n_n_1""".
+gmmo:4mbz_C2_21055_SIA_E_407_n_n_1 gmmo:coordinate """37.821, 7.774, 120.79""".
+gmmo:4mbz_C2_21055_SIA_E_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C1_21054_SIA_E_407_n_n_1.
+gmmo:4mbz_C2_21055_SIA_E_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_21082_GAL_E_408_n_n_1.
+gmmo:4mbz_C1_21054_SIA_E_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C1_21054_SIA_E_407_n_n_1 gmmo:identifier """4mbz_C1_21054_SIA_E_407_n_n_1""".
+gmmo:4mbz_C1_21054_SIA_E_407_n_n_1 gmmo:coordinate """38.979, 6.768, 120.819""".
+gmmo:4mbz_C1_21054_SIA_E_407_n_n_1 gmmo:derivative """xC-(O,O)""".
+gmmo:4mbz_C1_21054_SIA_E_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C1_21054_SIA_E_407_n_n_1 gmmo:sideIndex """-1""".
+gmmo:4mbz_O3_21082_GAL_E_408_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O3_21082_GAL_E_408_n_n_1 gmmo:identifier """4mbz_O3_21082_GAL_E_408_n_n_1""".
+gmmo:4mbz_O3_21082_GAL_E_408_n_n_1 gmmo:coordinate """37.845, 8.739, 121.888""".
+gmmo:4mbz_O3_21082_GAL_E_408_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O3_21082_GAL_E_408_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C3_21056_SIA_E_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_21056_SIA_E_407_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C3_21056_SIA_E_407_n_n_1 gmmo:identifier """4mbz_C3_21056_SIA_E_407_n_n_1""".
+gmmo:4mbz_C3_21056_SIA_E_407_n_n_1 gmmo:coordinate """37.849, 8.604, 119.498""".
+gmmo:4mbz_C4_21057_SIA_E_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_21057_SIA_E_407_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C4_21057_SIA_E_407_n_n_1 gmmo:identifier """4mbz_C4_21057_SIA_E_407_n_n_1""".
+gmmo:4mbz_C4_21057_SIA_E_407_n_n_1 gmmo:coordinate """37.37, 7.798, 118.281""".
+gmmo:4mbz_C4_21057_SIA_E_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_21068_SIA_E_407_n_n_1.
+gmmo:4mbz_O4_21068_SIA_E_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_21068_SIA_E_407_n_n_1 gmmo:identifier """4mbz_O4_21068_SIA_E_407_n_n_1""".
+gmmo:4mbz_O4_21068_SIA_E_407_n_n_1 gmmo:coordinate """37.188, 8.712, 117.193""".
+gmmo:4mbz_O4_21068_SIA_E_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O4_21068_SIA_E_407_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C5_21058_SIA_E_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_21058_SIA_E_407_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C5_21058_SIA_E_407_n_n_1 gmmo:identifier """4mbz_C5_21058_SIA_E_407_n_n_1""".
+gmmo:4mbz_C5_21058_SIA_E_407_n_n_1 gmmo:coordinate """36.065, 7.017, 118.521""".
+gmmo:4mbz_C5_21058_SIA_E_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_N5_21065_SIA_E_407_n_n_1.
+gmmo:4mbz_N5_21065_SIA_E_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_N5_21065_SIA_E_407_n_n_1 gmmo:identifier """4mbz_N5_21065_SIA_E_407_n_n_1""".
+gmmo:4mbz_N5_21065_SIA_E_407_n_n_1 gmmo:coordinate """35.84, 6.094, 117.405""".
+gmmo:4mbz_N5_21065_SIA_E_407_n_n_1 gmmo:derivative """xC-N-C=OCH3""".
+gmmo:4mbz_N5_21065_SIA_E_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_N5_21065_SIA_E_407_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C6_21059_SIA_E_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C6_21059_SIA_E_407_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C6_21059_SIA_E_407_n_n_1 gmmo:identifier """4mbz_C6_21059_SIA_E_407_n_n_1""".
+gmmo:4mbz_C6_21059_SIA_E_407_n_n_1 gmmo:coordinate """36.091, 6.29, 119.871""".
+gmmo:4mbz_C6_21059_SIA_E_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C7_21060_SIA_E_407_n_n_1.
+gmmo:4mbz_C6_21059_SIA_E_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C8_21061_SIA_E_407_n_n_1.
+gmmo:4mbz_C6_21059_SIA_E_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C9_21062_SIA_E_407_n_n_1.
+gmmo:4mbz_C7_21060_SIA_E_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C7_21060_SIA_E_407_n_n_1 gmmo:identifier """4mbz_C7_21060_SIA_E_407_n_n_1""".
+gmmo:4mbz_C7_21060_SIA_E_407_n_n_1 gmmo:coordinate """34.752, 5.634, 120.246""".
+gmmo:4mbz_C7_21060_SIA_E_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C7_21060_SIA_E_407_n_n_1 gmmo:sideIndex """+1""".
+gmmo:4mbz_C8_21061_SIA_E_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C8_21061_SIA_E_407_n_n_1 gmmo:identifier """4mbz_C8_21061_SIA_E_407_n_n_1""".
+gmmo:4mbz_C8_21061_SIA_E_407_n_n_1 gmmo:coordinate """34.926, 4.656, 121.415""".
+gmmo:4mbz_C8_21061_SIA_E_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C8_21061_SIA_E_407_n_n_1 gmmo:sideIndex """+2""".
+gmmo:4mbz_C9_21062_SIA_E_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C9_21062_SIA_E_407_n_n_1 gmmo:identifier """4mbz_C9_21062_SIA_E_407_n_n_1""".
+gmmo:4mbz_C9_21062_SIA_E_407_n_n_1 gmmo:coordinate """33.71, 3.747, 121.581""".
+gmmo:4mbz_C9_21062_SIA_E_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C9_21062_SIA_E_407_n_n_1 gmmo:sideIndex """+3""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono8.
 gmmo:4mbz_mono8 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono8 gmmo:identifier """GAL_E_408_?_?_1""".
@@ -952,14 +1349,14 @@ gmmo:4mbz_mono8 gmmo:hasOligoParent """gmmo:4mbz_oligo4""".
 gmmo:4mbz_mono8 gmmo:hasIndex """0""".
 gmmo:4mbz_mono8 gmmo:hasNameIndex """0""".
 gmmo:4mbz_mono8 gmmo:isNucleotide false.
-gmmo:4mbz_mono8 gmmo:hasRingAtom gmmo:4mbz_C1_21068_GAL_E_408_n_n_1.
-gmmo:4mbz_mono8 gmmo:hasRingAtom gmmo:4mbz_C2_21069_GAL_E_408_n_n_1.
-gmmo:4mbz_mono8 gmmo:hasRingAtom gmmo:4mbz_C3_21070_GAL_E_408_n_n_1.
-gmmo:4mbz_mono8 gmmo:hasRingAtom gmmo:4mbz_C4_21071_GAL_E_408_n_n_1.
-gmmo:4mbz_mono8 gmmo:hasRingAtom gmmo:4mbz_C5_21072_GAL_E_408_n_n_1.
-gmmo:4mbz_mono8 gmmo:hasRingAtom gmmo:4mbz_O5_21078_GAL_E_408_n_n_1.
-gmmo:4mbz_mono8 gmmo:ringAtoms """4mbz_C1_21068_GAL_E_408_n_n_1-4mbz_C2_21069_GAL_E_408_n_n_1-4mbz_C3_21070_GAL_E_408_n_n_1-4mbz_C4_21071_GAL_E_408_n_n_1-4mbz_C5_21072_GAL_E_408_n_n_1-4mbz_O5_21078_GAL_E_408_n_n_1""".
-gmmo:4mbz_mono8 gmmo:anomericStatus """ 4mbz_C1_21068_GAL_E_408_n_n_1""".
+gmmo:4mbz_mono8 gmmo:hasRingAtom gmmo:4mbz_C1_21074_GAL_E_408_n_n_1.
+gmmo:4mbz_mono8 gmmo:hasRingAtom gmmo:4mbz_C2_21075_GAL_E_408_n_n_1.
+gmmo:4mbz_mono8 gmmo:hasRingAtom gmmo:4mbz_C3_21076_GAL_E_408_n_n_1.
+gmmo:4mbz_mono8 gmmo:hasRingAtom gmmo:4mbz_C4_21077_GAL_E_408_n_n_1.
+gmmo:4mbz_mono8 gmmo:hasRingAtom gmmo:4mbz_C5_21078_GAL_E_408_n_n_1.
+gmmo:4mbz_mono8 gmmo:hasRingAtom gmmo:4mbz_O5_21084_GAL_E_408_n_n_1.
+gmmo:4mbz_mono8 gmmo:ringAtoms """4mbz_C1_21074_GAL_E_408_n_n_1-4mbz_C2_21075_GAL_E_408_n_n_1-4mbz_C3_21076_GAL_E_408_n_n_1-4mbz_C4_21077_GAL_E_408_n_n_1-4mbz_C5_21078_GAL_E_408_n_n_1-4mbz_O5_21084_GAL_E_408_n_n_1""".
+gmmo:4mbz_mono8 gmmo:anomericStatus """ 4mbz_C1_21074_GAL_E_408_n_n_1""".
 gmmo:4mbz_mono8 gmmo:stereochemistryChemicalCode """_2^3^4P^a^+1""".
 gmmo:4mbz_mono8 gmmo:BFMPRingConformation """	4C1		2d5(0.41)""".
 gmmo:4mbz_mono8 gmmo:hasSNFGName """Gal""".
@@ -975,6 +1372,53 @@ gmmo:4mbz_mono8_sn gmmo:monosaccharideShortName """DGalpb""".
 gmmo:4mbz_mono8_sn gmmo:isomer """D""".
 gmmo:4mbz_mono8_sn gmmo:configuration """beta""".
 gmmo:4mbz_mono8_sn gmmo:ringType """P""".
+gmmo:4mbz_C1_21074_GAL_E_408_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C1_21074_GAL_E_408_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C1_21074_GAL_E_408_n_n_1 gmmo:identifier """4mbz_C1_21074_GAL_E_408_n_n_1""".
+gmmo:4mbz_C1_21074_GAL_E_408_n_n_1 gmmo:coordinate """37.169, 8.579, 125.613""".
+gmmo:4mbz_C1_21074_GAL_E_408_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O1_21080_GAL_E_408_n_n_1.
+gmmo:4mbz_O1_21080_GAL_E_408_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O1_21080_GAL_E_408_n_n_1 gmmo:identifier """4mbz_O1_21080_GAL_E_408_n_n_1""".
+gmmo:4mbz_O1_21080_GAL_E_408_n_n_1 gmmo:coordinate """36.626, 9.548, 126.487""".
+gmmo:4mbz_O1_21080_GAL_E_408_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O1_21080_GAL_E_408_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C2_21075_GAL_E_408_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_21075_GAL_E_408_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C2_21075_GAL_E_408_n_n_1 gmmo:identifier """4mbz_C2_21075_GAL_E_408_n_n_1""".
+gmmo:4mbz_C2_21075_GAL_E_408_n_n_1 gmmo:coordinate """37.09, 9.081, 124.158""".
+gmmo:4mbz_C2_21075_GAL_E_408_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O2_21081_GAL_E_408_n_n_1.
+gmmo:4mbz_O2_21081_GAL_E_408_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O2_21081_GAL_E_408_n_n_1 gmmo:identifier """4mbz_O2_21081_GAL_E_408_n_n_1""".
+gmmo:4mbz_O2_21081_GAL_E_408_n_n_1 gmmo:coordinate """35.754, 9.226, 123.709""".
+gmmo:4mbz_O2_21081_GAL_E_408_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O2_21081_GAL_E_408_n_n_1 gmmo:sideIndex """2""".
+gmmo:4mbz_C3_21076_GAL_E_408_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_21076_GAL_E_408_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C3_21076_GAL_E_408_n_n_1 gmmo:identifier """4mbz_C3_21076_GAL_E_408_n_n_1""".
+gmmo:4mbz_C3_21076_GAL_E_408_n_n_1 gmmo:coordinate """37.863, 8.172, 123.201""".
+gmmo:4mbz_C3_21076_GAL_E_408_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_21082_GAL_E_408_n_n_1.
+gmmo:4mbz_O3_21082_GAL_E_408_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O3_21082_GAL_E_408_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C4_21077_GAL_E_408_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_21077_GAL_E_408_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C4_21077_GAL_E_408_n_n_1 gmmo:identifier """4mbz_C4_21077_GAL_E_408_n_n_1""".
+gmmo:4mbz_C4_21077_GAL_E_408_n_n_1 gmmo:coordinate """39.289, 7.948, 123.735""".
+gmmo:4mbz_C4_21077_GAL_E_408_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_21083_GAL_E_408_n_n_1.
+gmmo:4mbz_O4_21083_GAL_E_408_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_21083_GAL_E_408_n_n_1 gmmo:identifier """4mbz_O4_21083_GAL_E_408_n_n_1""".
+gmmo:4mbz_O4_21083_GAL_E_408_n_n_1 gmmo:coordinate """40.057, 9.13, 123.578""".
+gmmo:4mbz_O4_21083_GAL_E_408_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O4_21083_GAL_E_408_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C5_21078_GAL_E_408_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_21078_GAL_E_408_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C5_21078_GAL_E_408_n_n_1 gmmo:identifier """4mbz_C5_21078_GAL_E_408_n_n_1""".
+gmmo:4mbz_C5_21078_GAL_E_408_n_n_1 gmmo:coordinate """39.272, 7.457, 125.197""".
+gmmo:4mbz_C5_21078_GAL_E_408_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C6_21079_GAL_E_408_n_n_1.
+gmmo:4mbz_C6_21079_GAL_E_408_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C6_21079_GAL_E_408_n_n_1 gmmo:identifier """4mbz_C6_21079_GAL_E_408_n_n_1""".
+gmmo:4mbz_C6_21079_GAL_E_408_n_n_1 gmmo:coordinate """40.676, 7.304, 125.799""".
+gmmo:4mbz_C6_21079_GAL_E_408_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C6_21079_GAL_E_408_n_n_1 gmmo:sideIndex """+1""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono9.
 gmmo:4mbz_mono9 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono9 gmmo:identifier """SIA_H_405_?_?_1""".
@@ -982,14 +1426,14 @@ gmmo:4mbz_mono9 gmmo:hasOligoParent """gmmo:4mbz_oligo5""".
 gmmo:4mbz_mono9 gmmo:hasIndex """1""".
 gmmo:4mbz_mono9 gmmo:hasNameIndex """1""".
 gmmo:4mbz_mono9 gmmo:isNucleotide false.
-gmmo:4mbz_mono9 gmmo:hasRingAtom gmmo:4mbz_C2_21115_SIA_H_405_n_n_1.
-gmmo:4mbz_mono9 gmmo:hasRingAtom gmmo:4mbz_C3_21116_SIA_H_405_n_n_1.
-gmmo:4mbz_mono9 gmmo:hasRingAtom gmmo:4mbz_C4_21117_SIA_H_405_n_n_1.
-gmmo:4mbz_mono9 gmmo:hasRingAtom gmmo:4mbz_C5_21118_SIA_H_405_n_n_1.
-gmmo:4mbz_mono9 gmmo:hasRingAtom gmmo:4mbz_C6_21119_SIA_H_405_n_n_1.
-gmmo:4mbz_mono9 gmmo:hasRingAtom gmmo:4mbz_O6_21129_SIA_H_405_n_n_1.
-gmmo:4mbz_mono9 gmmo:ringAtoms """4mbz_C2_21115_SIA_H_405_n_n_1-4mbz_C3_21116_SIA_H_405_n_n_1-4mbz_C4_21117_SIA_H_405_n_n_1-4mbz_C5_21118_SIA_H_405_n_n_1-4mbz_C6_21119_SIA_H_405_n_n_1-4mbz_O6_21129_SIA_H_405_n_n_1""".
-gmmo:4mbz_mono9 gmmo:anomericStatus """ 4mbz_C2_21115_SIA_H_405_n_n_1""".
+gmmo:4mbz_mono9 gmmo:hasRingAtom gmmo:4mbz_C2_21121_SIA_H_405_n_n_1.
+gmmo:4mbz_mono9 gmmo:hasRingAtom gmmo:4mbz_C3_21122_SIA_H_405_n_n_1.
+gmmo:4mbz_mono9 gmmo:hasRingAtom gmmo:4mbz_C4_21123_SIA_H_405_n_n_1.
+gmmo:4mbz_mono9 gmmo:hasRingAtom gmmo:4mbz_C5_21124_SIA_H_405_n_n_1.
+gmmo:4mbz_mono9 gmmo:hasRingAtom gmmo:4mbz_C6_21125_SIA_H_405_n_n_1.
+gmmo:4mbz_mono9 gmmo:hasRingAtom gmmo:4mbz_O6_21135_SIA_H_405_n_n_1.
+gmmo:4mbz_mono9 gmmo:ringAtoms """4mbz_C2_21121_SIA_H_405_n_n_1-4mbz_C3_21122_SIA_H_405_n_n_1-4mbz_C4_21123_SIA_H_405_n_n_1-4mbz_C5_21124_SIA_H_405_n_n_1-4mbz_C6_21125_SIA_H_405_n_n_1-4mbz_O6_21135_SIA_H_405_n_n_1""".
+gmmo:4mbz_mono9 gmmo:anomericStatus """ 4mbz_C2_21121_SIA_H_405_n_n_1""".
 gmmo:4mbz_mono9 gmmo:stereochemistryChemicalCode """_3^4NAc2dP_a_+1R_+2R_+3^-1A""".
 gmmo:4mbz_mono9 gmmo:BFMPRingConformation """	1C4		3d6(0.04)""".
 gmmo:4mbz_mono9 gmmo:hasSNFGName """Neu5Ac""".
@@ -1005,6 +1449,70 @@ gmmo:4mbz_mono9_sn gmmo:monosaccharideShortName """DNeup5Aca""".
 gmmo:4mbz_mono9_sn gmmo:isomer """D""".
 gmmo:4mbz_mono9_sn gmmo:configuration """alpha""".
 gmmo:4mbz_mono9_sn gmmo:ringType """P""".
+gmmo:4mbz_C2_21121_SIA_H_405_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_21121_SIA_H_405_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C2_21121_SIA_H_405_n_n_1 gmmo:identifier """4mbz_C2_21121_SIA_H_405_n_n_1""".
+gmmo:4mbz_C2_21121_SIA_H_405_n_n_1 gmmo:coordinate """-2.239, -23.311, 9.851""".
+gmmo:4mbz_C2_21121_SIA_H_405_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C1_21120_SIA_H_405_n_n_1.
+gmmo:4mbz_C2_21121_SIA_H_405_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_21148_GAL_H_406_n_n_1.
+gmmo:4mbz_C1_21120_SIA_H_405_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C1_21120_SIA_H_405_n_n_1 gmmo:identifier """4mbz_C1_21120_SIA_H_405_n_n_1""".
+gmmo:4mbz_C1_21120_SIA_H_405_n_n_1 gmmo:coordinate """-2.552, -21.882, 9.426""".
+gmmo:4mbz_C1_21120_SIA_H_405_n_n_1 gmmo:derivative """xC-(O,O)""".
+gmmo:4mbz_C1_21120_SIA_H_405_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C1_21120_SIA_H_405_n_n_1 gmmo:sideIndex """-1""".
+gmmo:4mbz_O3_21148_GAL_H_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O3_21148_GAL_H_406_n_n_1 gmmo:identifier """4mbz_O3_21148_GAL_H_406_n_n_1""".
+gmmo:4mbz_O3_21148_GAL_H_406_n_n_1 gmmo:coordinate """-2.217, -24.256, 8.742""".
+gmmo:4mbz_O3_21148_GAL_H_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O3_21148_GAL_H_406_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C3_21122_SIA_H_405_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_21122_SIA_H_405_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C3_21122_SIA_H_405_n_n_1 gmmo:identifier """4mbz_C3_21122_SIA_H_405_n_n_1""".
+gmmo:4mbz_C3_21122_SIA_H_405_n_n_1 gmmo:coordinate """-0.81, -23.421, 10.406""".
+gmmo:4mbz_C4_21123_SIA_H_405_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_21123_SIA_H_405_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C4_21123_SIA_H_405_n_n_1 gmmo:identifier """4mbz_C4_21123_SIA_H_405_n_n_1""".
+gmmo:4mbz_C4_21123_SIA_H_405_n_n_1 gmmo:coordinate """-0.661, -22.656, 11.729""".
+gmmo:4mbz_C4_21123_SIA_H_405_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_21134_SIA_H_405_n_n_1.
+gmmo:4mbz_O4_21134_SIA_H_405_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_21134_SIA_H_405_n_n_1 gmmo:identifier """4mbz_O4_21134_SIA_H_405_n_n_1""".
+gmmo:4mbz_O4_21134_SIA_H_405_n_n_1 gmmo:coordinate """0.653, -22.84, 12.258""".
+gmmo:4mbz_O4_21134_SIA_H_405_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O4_21134_SIA_H_405_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C5_21124_SIA_H_405_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_21124_SIA_H_405_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C5_21124_SIA_H_405_n_n_1 gmmo:identifier """4mbz_C5_21124_SIA_H_405_n_n_1""".
+gmmo:4mbz_C5_21124_SIA_H_405_n_n_1 gmmo:coordinate """-1.722, -23.067, 12.751""".
+gmmo:4mbz_C5_21124_SIA_H_405_n_n_1 gmmo:hasSideAtom gmmo:4mbz_N5_21131_SIA_H_405_n_n_1.
+gmmo:4mbz_N5_21131_SIA_H_405_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_N5_21131_SIA_H_405_n_n_1 gmmo:identifier """4mbz_N5_21131_SIA_H_405_n_n_1""".
+gmmo:4mbz_N5_21131_SIA_H_405_n_n_1 gmmo:coordinate """-1.613, -22.186, 13.907""".
+gmmo:4mbz_N5_21131_SIA_H_405_n_n_1 gmmo:derivative """xC-N-C=OCH3""".
+gmmo:4mbz_N5_21131_SIA_H_405_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_N5_21131_SIA_H_405_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C6_21125_SIA_H_405_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C6_21125_SIA_H_405_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C6_21125_SIA_H_405_n_n_1 gmmo:identifier """4mbz_C6_21125_SIA_H_405_n_n_1""".
+gmmo:4mbz_C6_21125_SIA_H_405_n_n_1 gmmo:coordinate """-3.108, -22.974, 12.096""".
+gmmo:4mbz_C6_21125_SIA_H_405_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C7_21126_SIA_H_405_n_n_1.
+gmmo:4mbz_C6_21125_SIA_H_405_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C8_21127_SIA_H_405_n_n_1.
+gmmo:4mbz_C6_21125_SIA_H_405_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C9_21128_SIA_H_405_n_n_1.
+gmmo:4mbz_C7_21126_SIA_H_405_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C7_21126_SIA_H_405_n_n_1 gmmo:identifier """4mbz_C7_21126_SIA_H_405_n_n_1""".
+gmmo:4mbz_C7_21126_SIA_H_405_n_n_1 gmmo:coordinate """-4.26, -23.453, 12.968""".
+gmmo:4mbz_C7_21126_SIA_H_405_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C7_21126_SIA_H_405_n_n_1 gmmo:sideIndex """+1""".
+gmmo:4mbz_C8_21127_SIA_H_405_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C8_21127_SIA_H_405_n_n_1 gmmo:identifier """4mbz_C8_21127_SIA_H_405_n_n_1""".
+gmmo:4mbz_C8_21127_SIA_H_405_n_n_1 gmmo:coordinate """-5.578, -23.279, 12.22""".
+gmmo:4mbz_C8_21127_SIA_H_405_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C8_21127_SIA_H_405_n_n_1 gmmo:sideIndex """+2""".
+gmmo:4mbz_C9_21128_SIA_H_405_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C9_21128_SIA_H_405_n_n_1 gmmo:identifier """4mbz_C9_21128_SIA_H_405_n_n_1""".
+gmmo:4mbz_C9_21128_SIA_H_405_n_n_1 gmmo:coordinate """-6.725, -24.016, 12.902""".
+gmmo:4mbz_C9_21128_SIA_H_405_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C9_21128_SIA_H_405_n_n_1 gmmo:sideIndex """+3""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono10.
 gmmo:4mbz_mono10 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono10 gmmo:identifier """GAL_H_406_?_?_1""".
@@ -1012,14 +1520,14 @@ gmmo:4mbz_mono10 gmmo:hasOligoParent """gmmo:4mbz_oligo5""".
 gmmo:4mbz_mono10 gmmo:hasIndex """0""".
 gmmo:4mbz_mono10 gmmo:hasNameIndex """0""".
 gmmo:4mbz_mono10 gmmo:isNucleotide false.
-gmmo:4mbz_mono10 gmmo:hasRingAtom gmmo:4mbz_C1_21134_GAL_H_406_n_n_1.
-gmmo:4mbz_mono10 gmmo:hasRingAtom gmmo:4mbz_C2_21135_GAL_H_406_n_n_1.
-gmmo:4mbz_mono10 gmmo:hasRingAtom gmmo:4mbz_C3_21136_GAL_H_406_n_n_1.
-gmmo:4mbz_mono10 gmmo:hasRingAtom gmmo:4mbz_C4_21137_GAL_H_406_n_n_1.
-gmmo:4mbz_mono10 gmmo:hasRingAtom gmmo:4mbz_C5_21138_GAL_H_406_n_n_1.
-gmmo:4mbz_mono10 gmmo:hasRingAtom gmmo:4mbz_O5_21144_GAL_H_406_n_n_1.
-gmmo:4mbz_mono10 gmmo:ringAtoms """4mbz_C1_21134_GAL_H_406_n_n_1-4mbz_C2_21135_GAL_H_406_n_n_1-4mbz_C3_21136_GAL_H_406_n_n_1-4mbz_C4_21137_GAL_H_406_n_n_1-4mbz_C5_21138_GAL_H_406_n_n_1-4mbz_O5_21144_GAL_H_406_n_n_1""".
-gmmo:4mbz_mono10 gmmo:anomericStatus """ 4mbz_C1_21134_GAL_H_406_n_n_1""".
+gmmo:4mbz_mono10 gmmo:hasRingAtom gmmo:4mbz_C1_21140_GAL_H_406_n_n_1.
+gmmo:4mbz_mono10 gmmo:hasRingAtom gmmo:4mbz_C2_21141_GAL_H_406_n_n_1.
+gmmo:4mbz_mono10 gmmo:hasRingAtom gmmo:4mbz_C3_21142_GAL_H_406_n_n_1.
+gmmo:4mbz_mono10 gmmo:hasRingAtom gmmo:4mbz_C4_21143_GAL_H_406_n_n_1.
+gmmo:4mbz_mono10 gmmo:hasRingAtom gmmo:4mbz_C5_21144_GAL_H_406_n_n_1.
+gmmo:4mbz_mono10 gmmo:hasRingAtom gmmo:4mbz_O5_21150_GAL_H_406_n_n_1.
+gmmo:4mbz_mono10 gmmo:ringAtoms """4mbz_C1_21140_GAL_H_406_n_n_1-4mbz_C2_21141_GAL_H_406_n_n_1-4mbz_C3_21142_GAL_H_406_n_n_1-4mbz_C4_21143_GAL_H_406_n_n_1-4mbz_C5_21144_GAL_H_406_n_n_1-4mbz_O5_21150_GAL_H_406_n_n_1""".
+gmmo:4mbz_mono10 gmmo:anomericStatus """ 4mbz_C1_21140_GAL_H_406_n_n_1""".
 gmmo:4mbz_mono10 gmmo:stereochemistryChemicalCode """_2^3^4P^a^+1""".
 gmmo:4mbz_mono10 gmmo:BFMPRingConformation """	4C1		6d3(0.32)""".
 gmmo:4mbz_mono10 gmmo:hasSNFGName """Gal""".
@@ -1035,6 +1543,53 @@ gmmo:4mbz_mono10_sn gmmo:monosaccharideShortName """DGalpb""".
 gmmo:4mbz_mono10_sn gmmo:isomer """D""".
 gmmo:4mbz_mono10_sn gmmo:configuration """beta""".
 gmmo:4mbz_mono10_sn gmmo:ringType """P""".
+gmmo:4mbz_C1_21140_GAL_H_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C1_21140_GAL_H_406_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C1_21140_GAL_H_406_n_n_1 gmmo:identifier """4mbz_C1_21140_GAL_H_406_n_n_1""".
+gmmo:4mbz_C1_21140_GAL_H_406_n_n_1 gmmo:coordinate """-4.962, -26.109, 6.914""".
+gmmo:4mbz_C1_21140_GAL_H_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O1_21146_GAL_H_406_n_n_1.
+gmmo:4mbz_O1_21146_GAL_H_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O1_21146_GAL_H_406_n_n_1 gmmo:identifier """4mbz_O1_21146_GAL_H_406_n_n_1""".
+gmmo:4mbz_O1_21146_GAL_H_406_n_n_1 gmmo:coordinate """-5.086, -27.457, 6.52""".
+gmmo:4mbz_O1_21146_GAL_H_406_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O1_21146_GAL_H_406_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C2_21141_GAL_H_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_21141_GAL_H_406_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C2_21141_GAL_H_406_n_n_1 gmmo:identifier """4mbz_C2_21141_GAL_H_406_n_n_1""".
+gmmo:4mbz_C2_21141_GAL_H_406_n_n_1 gmmo:coordinate """-3.693, -25.907, 7.755""".
+gmmo:4mbz_C2_21141_GAL_H_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O2_21147_GAL_H_406_n_n_1.
+gmmo:4mbz_O2_21147_GAL_H_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O2_21147_GAL_H_406_n_n_1 gmmo:identifier """4mbz_O2_21147_GAL_H_406_n_n_1""".
+gmmo:4mbz_O2_21147_GAL_H_406_n_n_1 gmmo:coordinate """-3.713, -26.708, 8.914""".
+gmmo:4mbz_O2_21147_GAL_H_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O2_21147_GAL_H_406_n_n_1 gmmo:sideIndex """2""".
+gmmo:4mbz_C3_21142_GAL_H_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_21142_GAL_H_406_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C3_21142_GAL_H_406_n_n_1 gmmo:identifier """4mbz_C3_21142_GAL_H_406_n_n_1""".
+gmmo:4mbz_C3_21142_GAL_H_406_n_n_1 gmmo:coordinate """-3.487, -24.432, 8.119""".
+gmmo:4mbz_C3_21142_GAL_H_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_21148_GAL_H_406_n_n_1.
+gmmo:4mbz_O3_21148_GAL_H_406_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O3_21148_GAL_H_406_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C4_21143_GAL_H_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_21143_GAL_H_406_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C4_21143_GAL_H_406_n_n_1 gmmo:identifier """4mbz_C4_21143_GAL_H_406_n_n_1""".
+gmmo:4mbz_C4_21143_GAL_H_406_n_n_1 gmmo:coordinate """-3.633, -23.555, 6.869""".
+gmmo:4mbz_C4_21143_GAL_H_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_21149_GAL_H_406_n_n_1.
+gmmo:4mbz_O4_21149_GAL_H_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_21149_GAL_H_406_n_n_1 gmmo:identifier """4mbz_O4_21149_GAL_H_406_n_n_1""".
+gmmo:4mbz_O4_21149_GAL_H_406_n_n_1 gmmo:coordinate """-2.508, -23.71, 6.036""".
+gmmo:4mbz_O4_21149_GAL_H_406_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O4_21149_GAL_H_406_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C5_21144_GAL_H_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_21144_GAL_H_406_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C5_21144_GAL_H_406_n_n_1 gmmo:identifier """4mbz_C5_21144_GAL_H_406_n_n_1""".
+gmmo:4mbz_C5_21144_GAL_H_406_n_n_1 gmmo:coordinate """-4.91, -23.907, 6.095""".
+gmmo:4mbz_C5_21144_GAL_H_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C6_21145_GAL_H_406_n_n_1.
+gmmo:4mbz_C6_21145_GAL_H_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C6_21145_GAL_H_406_n_n_1 gmmo:identifier """4mbz_C6_21145_GAL_H_406_n_n_1""".
+gmmo:4mbz_C6_21145_GAL_H_406_n_n_1 gmmo:coordinate """-5.068, -23.064, 4.832""".
+gmmo:4mbz_C6_21145_GAL_H_406_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C6_21145_GAL_H_406_n_n_1 gmmo:sideIndex """+1""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono11.
 gmmo:4mbz_mono11 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono11 gmmo:identifier """SIA_I_406_?_?_1""".
@@ -1042,14 +1597,14 @@ gmmo:4mbz_mono11 gmmo:hasOligoParent """gmmo:4mbz_oligo6""".
 gmmo:4mbz_mono11 gmmo:hasIndex """1""".
 gmmo:4mbz_mono11 gmmo:hasNameIndex """1""".
 gmmo:4mbz_mono11 gmmo:isNucleotide false.
-gmmo:4mbz_mono11 gmmo:hasRingAtom gmmo:4mbz_C2_21161_SIA_I_406_n_n_1.
-gmmo:4mbz_mono11 gmmo:hasRingAtom gmmo:4mbz_C3_21162_SIA_I_406_n_n_1.
-gmmo:4mbz_mono11 gmmo:hasRingAtom gmmo:4mbz_C4_21163_SIA_I_406_n_n_1.
-gmmo:4mbz_mono11 gmmo:hasRingAtom gmmo:4mbz_C5_21164_SIA_I_406_n_n_1.
-gmmo:4mbz_mono11 gmmo:hasRingAtom gmmo:4mbz_C6_21165_SIA_I_406_n_n_1.
-gmmo:4mbz_mono11 gmmo:hasRingAtom gmmo:4mbz_O6_21175_SIA_I_406_n_n_1.
-gmmo:4mbz_mono11 gmmo:ringAtoms """4mbz_C2_21161_SIA_I_406_n_n_1-4mbz_C3_21162_SIA_I_406_n_n_1-4mbz_C4_21163_SIA_I_406_n_n_1-4mbz_C5_21164_SIA_I_406_n_n_1-4mbz_C6_21165_SIA_I_406_n_n_1-4mbz_O6_21175_SIA_I_406_n_n_1""".
-gmmo:4mbz_mono11 gmmo:anomericStatus """ 4mbz_C2_21161_SIA_I_406_n_n_1""".
+gmmo:4mbz_mono11 gmmo:hasRingAtom gmmo:4mbz_C2_21167_SIA_I_406_n_n_1.
+gmmo:4mbz_mono11 gmmo:hasRingAtom gmmo:4mbz_C3_21168_SIA_I_406_n_n_1.
+gmmo:4mbz_mono11 gmmo:hasRingAtom gmmo:4mbz_C4_21169_SIA_I_406_n_n_1.
+gmmo:4mbz_mono11 gmmo:hasRingAtom gmmo:4mbz_C5_21170_SIA_I_406_n_n_1.
+gmmo:4mbz_mono11 gmmo:hasRingAtom gmmo:4mbz_C6_21171_SIA_I_406_n_n_1.
+gmmo:4mbz_mono11 gmmo:hasRingAtom gmmo:4mbz_O6_21181_SIA_I_406_n_n_1.
+gmmo:4mbz_mono11 gmmo:ringAtoms """4mbz_C2_21167_SIA_I_406_n_n_1-4mbz_C3_21168_SIA_I_406_n_n_1-4mbz_C4_21169_SIA_I_406_n_n_1-4mbz_C5_21170_SIA_I_406_n_n_1-4mbz_C6_21171_SIA_I_406_n_n_1-4mbz_O6_21181_SIA_I_406_n_n_1""".
+gmmo:4mbz_mono11 gmmo:anomericStatus """ 4mbz_C2_21167_SIA_I_406_n_n_1""".
 gmmo:4mbz_mono11 gmmo:stereochemistryChemicalCode """_3^4NAc2dP_a_+1R_+2R_+3^-1A""".
 gmmo:4mbz_mono11 gmmo:BFMPRingConformation """	1C4		3d6(0.64)""".
 gmmo:4mbz_mono11 gmmo:hasSNFGName """Neu5Ac""".
@@ -1065,6 +1620,70 @@ gmmo:4mbz_mono11_sn gmmo:monosaccharideShortName """DNeup5Aca""".
 gmmo:4mbz_mono11_sn gmmo:isomer """D""".
 gmmo:4mbz_mono11_sn gmmo:configuration """alpha""".
 gmmo:4mbz_mono11_sn gmmo:ringType """P""".
+gmmo:4mbz_C2_21167_SIA_I_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_21167_SIA_I_406_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C2_21167_SIA_I_406_n_n_1 gmmo:identifier """4mbz_C2_21167_SIA_I_406_n_n_1""".
+gmmo:4mbz_C2_21167_SIA_I_406_n_n_1 gmmo:coordinate """23.103, -15.925, -2.954""".
+gmmo:4mbz_C2_21167_SIA_I_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C1_21166_SIA_I_406_n_n_1.
+gmmo:4mbz_C2_21167_SIA_I_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_21194_GAL_I_407_n_n_1.
+gmmo:4mbz_C1_21166_SIA_I_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C1_21166_SIA_I_406_n_n_1 gmmo:identifier """4mbz_C1_21166_SIA_I_406_n_n_1""".
+gmmo:4mbz_C1_21166_SIA_I_406_n_n_1 gmmo:coordinate """21.635, -15.543, -2.79""".
+gmmo:4mbz_C1_21166_SIA_I_406_n_n_1 gmmo:derivative """xC-(O,O)""".
+gmmo:4mbz_C1_21166_SIA_I_406_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C1_21166_SIA_I_406_n_n_1 gmmo:sideIndex """-1""".
+gmmo:4mbz_O3_21194_GAL_I_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O3_21194_GAL_I_407_n_n_1 gmmo:identifier """4mbz_O3_21194_GAL_I_407_n_n_1""".
+gmmo:4mbz_O3_21194_GAL_I_407_n_n_1 gmmo:coordinate """23.588, -15.743, -4.318""".
+gmmo:4mbz_O3_21194_GAL_I_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O3_21194_GAL_I_407_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C3_21168_SIA_I_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_21168_SIA_I_406_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C3_21168_SIA_I_406_n_n_1 gmmo:identifier """4mbz_C3_21168_SIA_I_406_n_n_1""".
+gmmo:4mbz_C3_21168_SIA_I_406_n_n_1 gmmo:coordinate """23.996, -15.003, -2.106""".
+gmmo:4mbz_C4_21169_SIA_I_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_21169_SIA_I_406_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C4_21169_SIA_I_406_n_n_1 gmmo:identifier """4mbz_C4_21169_SIA_I_406_n_n_1""".
+gmmo:4mbz_C4_21169_SIA_I_406_n_n_1 gmmo:coordinate """23.819, -15.269, -0.601""".
+gmmo:4mbz_C4_21169_SIA_I_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_21180_SIA_I_406_n_n_1.
+gmmo:4mbz_O4_21180_SIA_I_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_21180_SIA_I_406_n_n_1 gmmo:identifier """4mbz_O4_21180_SIA_I_406_n_n_1""".
+gmmo:4mbz_O4_21180_SIA_I_406_n_n_1 gmmo:coordinate """24.733, -14.46, 0.143""".
+gmmo:4mbz_O4_21180_SIA_I_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O4_21180_SIA_I_406_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C5_21170_SIA_I_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_21170_SIA_I_406_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C5_21170_SIA_I_406_n_n_1 gmmo:identifier """4mbz_C5_21170_SIA_I_406_n_n_1""".
+gmmo:4mbz_C5_21170_SIA_I_406_n_n_1 gmmo:coordinate """23.996, -16.749, -0.242""".
+gmmo:4mbz_C5_21170_SIA_I_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_N5_21177_SIA_I_406_n_n_1.
+gmmo:4mbz_N5_21177_SIA_I_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_N5_21177_SIA_I_406_n_n_1 gmmo:identifier """4mbz_N5_21177_SIA_I_406_n_n_1""".
+gmmo:4mbz_N5_21177_SIA_I_406_n_n_1 gmmo:coordinate """23.629, -16.929, 1.158""".
+gmmo:4mbz_N5_21177_SIA_I_406_n_n_1 gmmo:derivative """xC-N-C=OCH3""".
+gmmo:4mbz_N5_21177_SIA_I_406_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_N5_21177_SIA_I_406_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C6_21171_SIA_I_406_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C6_21171_SIA_I_406_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C6_21171_SIA_I_406_n_n_1 gmmo:identifier """4mbz_C6_21171_SIA_I_406_n_n_1""".
+gmmo:4mbz_C6_21171_SIA_I_406_n_n_1 gmmo:coordinate """23.12, -17.617, -1.166""".
+gmmo:4mbz_C6_21171_SIA_I_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C7_21172_SIA_I_406_n_n_1.
+gmmo:4mbz_C6_21171_SIA_I_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C8_21173_SIA_I_406_n_n_1.
+gmmo:4mbz_C6_21171_SIA_I_406_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C9_21174_SIA_I_406_n_n_1.
+gmmo:4mbz_C7_21172_SIA_I_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C7_21172_SIA_I_406_n_n_1 gmmo:identifier """4mbz_C7_21172_SIA_I_406_n_n_1""".
+gmmo:4mbz_C7_21172_SIA_I_406_n_n_1 gmmo:coordinate """23.277, -19.132, -0.974""".
+gmmo:4mbz_C7_21172_SIA_I_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C7_21172_SIA_I_406_n_n_1 gmmo:sideIndex """+1""".
+gmmo:4mbz_C8_21173_SIA_I_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C8_21173_SIA_I_406_n_n_1 gmmo:identifier """4mbz_C8_21173_SIA_I_406_n_n_1""".
+gmmo:4mbz_C8_21173_SIA_I_406_n_n_1 gmmo:coordinate """22.258, -19.885, -1.836""".
+gmmo:4mbz_C8_21173_SIA_I_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C8_21173_SIA_I_406_n_n_1 gmmo:sideIndex """+2""".
+gmmo:4mbz_C9_21174_SIA_I_406_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C9_21174_SIA_I_406_n_n_1 gmmo:identifier """4mbz_C9_21174_SIA_I_406_n_n_1""".
+gmmo:4mbz_C9_21174_SIA_I_406_n_n_1 gmmo:coordinate """22.491, -21.4, -1.858""".
+gmmo:4mbz_C9_21174_SIA_I_406_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C9_21174_SIA_I_406_n_n_1 gmmo:sideIndex """+3""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono12.
 gmmo:4mbz_mono12 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono12 gmmo:identifier """GAL_I_407_?_?_1""".
@@ -1072,14 +1691,14 @@ gmmo:4mbz_mono12 gmmo:hasOligoParent """gmmo:4mbz_oligo6""".
 gmmo:4mbz_mono12 gmmo:hasIndex """0""".
 gmmo:4mbz_mono12 gmmo:hasNameIndex """0""".
 gmmo:4mbz_mono12 gmmo:isNucleotide false.
-gmmo:4mbz_mono12 gmmo:hasRingAtom gmmo:4mbz_C1_21180_GAL_I_407_n_n_1.
-gmmo:4mbz_mono12 gmmo:hasRingAtom gmmo:4mbz_C2_21181_GAL_I_407_n_n_1.
-gmmo:4mbz_mono12 gmmo:hasRingAtom gmmo:4mbz_C3_21182_GAL_I_407_n_n_1.
-gmmo:4mbz_mono12 gmmo:hasRingAtom gmmo:4mbz_C4_21183_GAL_I_407_n_n_1.
-gmmo:4mbz_mono12 gmmo:hasRingAtom gmmo:4mbz_C5_21184_GAL_I_407_n_n_1.
-gmmo:4mbz_mono12 gmmo:hasRingAtom gmmo:4mbz_O5_21190_GAL_I_407_n_n_1.
-gmmo:4mbz_mono12 gmmo:ringAtoms """4mbz_C1_21180_GAL_I_407_n_n_1-4mbz_C2_21181_GAL_I_407_n_n_1-4mbz_C3_21182_GAL_I_407_n_n_1-4mbz_C4_21183_GAL_I_407_n_n_1-4mbz_C5_21184_GAL_I_407_n_n_1-4mbz_O5_21190_GAL_I_407_n_n_1""".
-gmmo:4mbz_mono12 gmmo:anomericStatus """ 4mbz_C1_21180_GAL_I_407_n_n_1""".
+gmmo:4mbz_mono12 gmmo:hasRingAtom gmmo:4mbz_C1_21186_GAL_I_407_n_n_1.
+gmmo:4mbz_mono12 gmmo:hasRingAtom gmmo:4mbz_C2_21187_GAL_I_407_n_n_1.
+gmmo:4mbz_mono12 gmmo:hasRingAtom gmmo:4mbz_C3_21188_GAL_I_407_n_n_1.
+gmmo:4mbz_mono12 gmmo:hasRingAtom gmmo:4mbz_C4_21189_GAL_I_407_n_n_1.
+gmmo:4mbz_mono12 gmmo:hasRingAtom gmmo:4mbz_C5_21190_GAL_I_407_n_n_1.
+gmmo:4mbz_mono12 gmmo:hasRingAtom gmmo:4mbz_O5_21196_GAL_I_407_n_n_1.
+gmmo:4mbz_mono12 gmmo:ringAtoms """4mbz_C1_21186_GAL_I_407_n_n_1-4mbz_C2_21187_GAL_I_407_n_n_1-4mbz_C3_21188_GAL_I_407_n_n_1-4mbz_C4_21189_GAL_I_407_n_n_1-4mbz_C5_21190_GAL_I_407_n_n_1-4mbz_O5_21196_GAL_I_407_n_n_1""".
+gmmo:4mbz_mono12 gmmo:anomericStatus """ 4mbz_C1_21186_GAL_I_407_n_n_1""".
 gmmo:4mbz_mono12 gmmo:stereochemistryChemicalCode """_2^3^4P^a^+1""".
 gmmo:4mbz_mono12 gmmo:BFMPRingConformation """	4C1		2d5(0.69)""".
 gmmo:4mbz_mono12 gmmo:hasSNFGName """Gal""".
@@ -1095,6 +1714,53 @@ gmmo:4mbz_mono12_sn gmmo:monosaccharideShortName """DGalpb""".
 gmmo:4mbz_mono12_sn gmmo:isomer """D""".
 gmmo:4mbz_mono12_sn gmmo:configuration """beta""".
 gmmo:4mbz_mono12_sn gmmo:ringType """P""".
+gmmo:4mbz_C1_21186_GAL_I_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C1_21186_GAL_I_407_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C1_21186_GAL_I_407_n_n_1 gmmo:identifier """4mbz_C1_21186_GAL_I_407_n_n_1""".
+gmmo:4mbz_C1_21186_GAL_I_407_n_n_1 gmmo:coordinate """23.188, -18.027, -7.304""".
+gmmo:4mbz_C1_21186_GAL_I_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O1_21192_GAL_I_407_n_n_1.
+gmmo:4mbz_O1_21192_GAL_I_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O1_21192_GAL_I_407_n_n_1 gmmo:identifier """4mbz_O1_21192_GAL_I_407_n_n_1""".
+gmmo:4mbz_O1_21192_GAL_I_407_n_n_1 gmmo:coordinate """24.065, -18.419, -8.343""".
+gmmo:4mbz_O1_21192_GAL_I_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O1_21192_GAL_I_407_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C2_21187_GAL_I_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_21187_GAL_I_407_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C2_21187_GAL_I_407_n_n_1 gmmo:identifier """4mbz_C2_21187_GAL_I_407_n_n_1""".
+gmmo:4mbz_C2_21187_GAL_I_407_n_n_1 gmmo:coordinate """23.909, -17.108, -6.303""".
+gmmo:4mbz_C2_21187_GAL_I_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O2_21193_GAL_I_407_n_n_1.
+gmmo:4mbz_O2_21193_GAL_I_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O2_21193_GAL_I_407_n_n_1 gmmo:identifier """4mbz_O2_21193_GAL_I_407_n_n_1""".
+gmmo:4mbz_O2_21193_GAL_I_407_n_n_1 gmmo:coordinate """24.997, -17.752, -5.675""".
+gmmo:4mbz_O2_21193_GAL_I_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O2_21193_GAL_I_407_n_n_1 gmmo:sideIndex """2""".
+gmmo:4mbz_C3_21188_GAL_I_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_21188_GAL_I_407_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C3_21188_GAL_I_407_n_n_1 gmmo:identifier """4mbz_C3_21188_GAL_I_407_n_n_1""".
+gmmo:4mbz_C3_21188_GAL_I_407_n_n_1 gmmo:coordinate """22.927, -16.596, -5.249""".
+gmmo:4mbz_C3_21188_GAL_I_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_21194_GAL_I_407_n_n_1.
+gmmo:4mbz_O3_21194_GAL_I_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O3_21194_GAL_I_407_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C4_21189_GAL_I_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_21189_GAL_I_407_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C4_21189_GAL_I_407_n_n_1 gmmo:identifier """4mbz_C4_21189_GAL_I_407_n_n_1""".
+gmmo:4mbz_C4_21189_GAL_I_407_n_n_1 gmmo:coordinate """21.737, -15.904, -5.929""".
+gmmo:4mbz_C4_21189_GAL_I_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_21195_GAL_I_407_n_n_1.
+gmmo:4mbz_O4_21195_GAL_I_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_21195_GAL_I_407_n_n_1 gmmo:identifier """4mbz_O4_21195_GAL_I_407_n_n_1""".
+gmmo:4mbz_O4_21195_GAL_I_407_n_n_1 gmmo:coordinate """22.15, -14.657, -6.458""".
+gmmo:4mbz_O4_21195_GAL_I_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O4_21195_GAL_I_407_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C5_21190_GAL_I_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_21190_GAL_I_407_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C5_21190_GAL_I_407_n_n_1 gmmo:identifier """4mbz_C5_21190_GAL_I_407_n_n_1""".
+gmmo:4mbz_C5_21190_GAL_I_407_n_n_1 gmmo:coordinate """21.114, -16.83, -6.994""".
+gmmo:4mbz_C5_21190_GAL_I_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C6_21191_GAL_I_407_n_n_1.
+gmmo:4mbz_C6_21191_GAL_I_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C6_21191_GAL_I_407_n_n_1 gmmo:identifier """4mbz_C6_21191_GAL_I_407_n_n_1""".
+gmmo:4mbz_C6_21191_GAL_I_407_n_n_1 gmmo:coordinate """20.025, -16.15, -7.822""".
+gmmo:4mbz_C6_21191_GAL_I_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C6_21191_GAL_I_407_n_n_1 gmmo:sideIndex """+1""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono13.
 gmmo:4mbz_mono13 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono13 gmmo:identifier """SIA_J_407_?_?_1""".
@@ -1102,14 +1768,14 @@ gmmo:4mbz_mono13 gmmo:hasOligoParent """gmmo:4mbz_oligo7""".
 gmmo:4mbz_mono13 gmmo:hasIndex """2""".
 gmmo:4mbz_mono13 gmmo:hasNameIndex """2""".
 gmmo:4mbz_mono13 gmmo:isNucleotide false.
-gmmo:4mbz_mono13 gmmo:hasRingAtom gmmo:4mbz_C2_21211_SIA_J_407_n_n_1.
-gmmo:4mbz_mono13 gmmo:hasRingAtom gmmo:4mbz_C3_21212_SIA_J_407_n_n_1.
-gmmo:4mbz_mono13 gmmo:hasRingAtom gmmo:4mbz_C4_21213_SIA_J_407_n_n_1.
-gmmo:4mbz_mono13 gmmo:hasRingAtom gmmo:4mbz_C5_21214_SIA_J_407_n_n_1.
-gmmo:4mbz_mono13 gmmo:hasRingAtom gmmo:4mbz_C6_21215_SIA_J_407_n_n_1.
-gmmo:4mbz_mono13 gmmo:hasRingAtom gmmo:4mbz_O6_21225_SIA_J_407_n_n_1.
-gmmo:4mbz_mono13 gmmo:ringAtoms """4mbz_C2_21211_SIA_J_407_n_n_1-4mbz_C3_21212_SIA_J_407_n_n_1-4mbz_C4_21213_SIA_J_407_n_n_1-4mbz_C5_21214_SIA_J_407_n_n_1-4mbz_C6_21215_SIA_J_407_n_n_1-4mbz_O6_21225_SIA_J_407_n_n_1""".
-gmmo:4mbz_mono13 gmmo:anomericStatus """ 4mbz_C2_21211_SIA_J_407_n_n_1""".
+gmmo:4mbz_mono13 gmmo:hasRingAtom gmmo:4mbz_C2_21217_SIA_J_407_n_n_1.
+gmmo:4mbz_mono13 gmmo:hasRingAtom gmmo:4mbz_C3_21218_SIA_J_407_n_n_1.
+gmmo:4mbz_mono13 gmmo:hasRingAtom gmmo:4mbz_C4_21219_SIA_J_407_n_n_1.
+gmmo:4mbz_mono13 gmmo:hasRingAtom gmmo:4mbz_C5_21220_SIA_J_407_n_n_1.
+gmmo:4mbz_mono13 gmmo:hasRingAtom gmmo:4mbz_C6_21221_SIA_J_407_n_n_1.
+gmmo:4mbz_mono13 gmmo:hasRingAtom gmmo:4mbz_O6_21231_SIA_J_407_n_n_1.
+gmmo:4mbz_mono13 gmmo:ringAtoms """4mbz_C2_21217_SIA_J_407_n_n_1-4mbz_C3_21218_SIA_J_407_n_n_1-4mbz_C4_21219_SIA_J_407_n_n_1-4mbz_C5_21220_SIA_J_407_n_n_1-4mbz_C6_21221_SIA_J_407_n_n_1-4mbz_O6_21231_SIA_J_407_n_n_1""".
+gmmo:4mbz_mono13 gmmo:anomericStatus """ 4mbz_C2_21217_SIA_J_407_n_n_1""".
 gmmo:4mbz_mono13 gmmo:stereochemistryChemicalCode """_3^4NAc2dP_a_+1R_+2R_+3^-1A""".
 gmmo:4mbz_mono13 gmmo:BFMPRingConformation """	1C4		3d6(0.55)""".
 gmmo:4mbz_mono13 gmmo:hasSNFGName """Neu5Ac""".
@@ -1125,6 +1791,70 @@ gmmo:4mbz_mono13_sn gmmo:monosaccharideShortName """DNeup5Aca""".
 gmmo:4mbz_mono13_sn gmmo:isomer """D""".
 gmmo:4mbz_mono13_sn gmmo:configuration """alpha""".
 gmmo:4mbz_mono13_sn gmmo:ringType """P""".
+gmmo:4mbz_C2_21217_SIA_J_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_21217_SIA_J_407_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C2_21217_SIA_J_407_n_n_1 gmmo:identifier """4mbz_C2_21217_SIA_J_407_n_n_1""".
+gmmo:4mbz_C2_21217_SIA_J_407_n_n_1 gmmo:coordinate """24.658, 13.399, -3.963""".
+gmmo:4mbz_C2_21217_SIA_J_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C1_21216_SIA_J_407_n_n_1.
+gmmo:4mbz_C2_21217_SIA_J_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_21258_GAL_J_409_n_n_1.
+gmmo:4mbz_C1_21216_SIA_J_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C1_21216_SIA_J_407_n_n_1 gmmo:identifier """4mbz_C1_21216_SIA_J_407_n_n_1""".
+gmmo:4mbz_C1_21216_SIA_J_407_n_n_1 gmmo:coordinate """23.774, 12.164, -4.103""".
+gmmo:4mbz_C1_21216_SIA_J_407_n_n_1 gmmo:derivative """xC-(O,O)""".
+gmmo:4mbz_C1_21216_SIA_J_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C1_21216_SIA_J_407_n_n_1 gmmo:sideIndex """-1""".
+gmmo:4mbz_O3_21258_GAL_J_409_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O3_21258_GAL_J_409_n_n_1 gmmo:identifier """4mbz_O3_21258_GAL_J_409_n_n_1""".
+gmmo:4mbz_O3_21258_GAL_J_409_n_n_1 gmmo:coordinate """24.266, 14.469, -4.868""".
+gmmo:4mbz_O3_21258_GAL_J_409_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O3_21258_GAL_J_409_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C3_21218_SIA_J_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_21218_SIA_J_407_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C3_21218_SIA_J_407_n_n_1 gmmo:identifier """4mbz_C3_21218_SIA_J_407_n_n_1""".
+gmmo:4mbz_C3_21218_SIA_J_407_n_n_1 gmmo:coordinate """24.462, 14.055, -2.588""".
+gmmo:4mbz_C4_21219_SIA_J_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_21219_SIA_J_407_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C4_21219_SIA_J_407_n_n_1 gmmo:identifier """4mbz_C4_21219_SIA_J_407_n_n_1""".
+gmmo:4mbz_C4_21219_SIA_J_407_n_n_1 gmmo:coordinate """25.095, 13.21, -1.467""".
+gmmo:4mbz_C4_21219_SIA_J_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_21230_SIA_J_407_n_n_1.
+gmmo:4mbz_O4_21230_SIA_J_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_21230_SIA_J_407_n_n_1 gmmo:identifier """4mbz_O4_21230_SIA_J_407_n_n_1""".
+gmmo:4mbz_O4_21230_SIA_J_407_n_n_1 gmmo:coordinate """25.078, 13.967, -0.251""".
+gmmo:4mbz_O4_21230_SIA_J_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O4_21230_SIA_J_407_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C5_21220_SIA_J_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_21220_SIA_J_407_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C5_21220_SIA_J_407_n_n_1 gmmo:identifier """4mbz_C5_21220_SIA_J_407_n_n_1""".
+gmmo:4mbz_C5_21220_SIA_J_407_n_n_1 gmmo:coordinate """26.527, 12.745, -1.777""".
+gmmo:4mbz_C5_21220_SIA_J_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_N5_21227_SIA_J_407_n_n_1.
+gmmo:4mbz_N5_21227_SIA_J_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_N5_21227_SIA_J_407_n_n_1 gmmo:identifier """4mbz_N5_21227_SIA_J_407_n_n_1""".
+gmmo:4mbz_N5_21227_SIA_J_407_n_n_1 gmmo:coordinate """26.903, 11.777, -0.759""".
+gmmo:4mbz_N5_21227_SIA_J_407_n_n_1 gmmo:derivative """xC-N-C=OCH3""".
+gmmo:4mbz_N5_21227_SIA_J_407_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_N5_21227_SIA_J_407_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C6_21221_SIA_J_407_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C6_21221_SIA_J_407_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C6_21221_SIA_J_407_n_n_1 gmmo:identifier """4mbz_C6_21221_SIA_J_407_n_n_1""".
+gmmo:4mbz_C6_21221_SIA_J_407_n_n_1 gmmo:coordinate """26.626, 12.171, -3.199""".
+gmmo:4mbz_C6_21221_SIA_J_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C7_21222_SIA_J_407_n_n_1.
+gmmo:4mbz_C6_21221_SIA_J_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C8_21223_SIA_J_407_n_n_1.
+gmmo:4mbz_C6_21221_SIA_J_407_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C9_21224_SIA_J_407_n_n_1.
+gmmo:4mbz_C7_21222_SIA_J_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C7_21222_SIA_J_407_n_n_1 gmmo:identifier """4mbz_C7_21222_SIA_J_407_n_n_1""".
+gmmo:4mbz_C7_21222_SIA_J_407_n_n_1 gmmo:coordinate """28.031, 11.772, -3.674""".
+gmmo:4mbz_C7_21222_SIA_J_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C7_21222_SIA_J_407_n_n_1 gmmo:sideIndex """+1""".
+gmmo:4mbz_C8_21223_SIA_J_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C8_21223_SIA_J_407_n_n_1 gmmo:identifier """4mbz_C8_21223_SIA_J_407_n_n_1""".
+gmmo:4mbz_C8_21223_SIA_J_407_n_n_1 gmmo:coordinate """27.925, 11.135, -5.069""".
+gmmo:4mbz_C8_21223_SIA_J_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C8_21223_SIA_J_407_n_n_1 gmmo:sideIndex """+2""".
+gmmo:4mbz_C9_21224_SIA_J_407_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C9_21224_SIA_J_407_n_n_1 gmmo:identifier """4mbz_C9_21224_SIA_J_407_n_n_1""".
+gmmo:4mbz_C9_21224_SIA_J_407_n_n_1 gmmo:coordinate """29.269, 10.939, -5.776""".
+gmmo:4mbz_C9_21224_SIA_J_407_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_C9_21224_SIA_J_407_n_n_1 gmmo:sideIndex """+3""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono15.
 gmmo:4mbz_mono15 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono15 gmmo:identifier """GAL_J_409_?_?_1""".
@@ -1132,14 +1862,14 @@ gmmo:4mbz_mono15 gmmo:hasOligoParent """gmmo:4mbz_oligo7""".
 gmmo:4mbz_mono15 gmmo:hasIndex """1""".
 gmmo:4mbz_mono15 gmmo:hasNameIndex """1""".
 gmmo:4mbz_mono15 gmmo:isNucleotide false.
-gmmo:4mbz_mono15 gmmo:hasRingAtom gmmo:4mbz_C1_21245_GAL_J_409_n_n_1.
-gmmo:4mbz_mono15 gmmo:hasRingAtom gmmo:4mbz_C2_21246_GAL_J_409_n_n_1.
-gmmo:4mbz_mono15 gmmo:hasRingAtom gmmo:4mbz_C3_21247_GAL_J_409_n_n_1.
-gmmo:4mbz_mono15 gmmo:hasRingAtom gmmo:4mbz_C4_21248_GAL_J_409_n_n_1.
-gmmo:4mbz_mono15 gmmo:hasRingAtom gmmo:4mbz_C5_21249_GAL_J_409_n_n_1.
-gmmo:4mbz_mono15 gmmo:hasRingAtom gmmo:4mbz_O5_21254_GAL_J_409_n_n_1.
-gmmo:4mbz_mono15 gmmo:ringAtoms """4mbz_C1_21245_GAL_J_409_n_n_1-4mbz_C2_21246_GAL_J_409_n_n_1-4mbz_C3_21247_GAL_J_409_n_n_1-4mbz_C4_21248_GAL_J_409_n_n_1-4mbz_C5_21249_GAL_J_409_n_n_1-4mbz_O5_21254_GAL_J_409_n_n_1""".
-gmmo:4mbz_mono15 gmmo:anomericStatus """ 4mbz_C1_21245_GAL_J_409_n_n_1""".
+gmmo:4mbz_mono15 gmmo:hasRingAtom gmmo:4mbz_C1_21251_GAL_J_409_n_n_1.
+gmmo:4mbz_mono15 gmmo:hasRingAtom gmmo:4mbz_C2_21252_GAL_J_409_n_n_1.
+gmmo:4mbz_mono15 gmmo:hasRingAtom gmmo:4mbz_C3_21253_GAL_J_409_n_n_1.
+gmmo:4mbz_mono15 gmmo:hasRingAtom gmmo:4mbz_C4_21254_GAL_J_409_n_n_1.
+gmmo:4mbz_mono15 gmmo:hasRingAtom gmmo:4mbz_C5_21255_GAL_J_409_n_n_1.
+gmmo:4mbz_mono15 gmmo:hasRingAtom gmmo:4mbz_O5_21260_GAL_J_409_n_n_1.
+gmmo:4mbz_mono15 gmmo:ringAtoms """4mbz_C1_21251_GAL_J_409_n_n_1-4mbz_C2_21252_GAL_J_409_n_n_1-4mbz_C3_21253_GAL_J_409_n_n_1-4mbz_C4_21254_GAL_J_409_n_n_1-4mbz_C5_21255_GAL_J_409_n_n_1-4mbz_O5_21260_GAL_J_409_n_n_1""".
+gmmo:4mbz_mono15 gmmo:anomericStatus """ 4mbz_C1_21251_GAL_J_409_n_n_1""".
 gmmo:4mbz_mono15 gmmo:stereochemistryChemicalCode """_2^3^4P^a^+1""".
 gmmo:4mbz_mono15 gmmo:BFMPRingConformation """	4C1		2d5(2.24)""".
 gmmo:4mbz_mono15 gmmo:hasSNFGName """Gal""".
@@ -1155,6 +1885,53 @@ gmmo:4mbz_mono15_sn gmmo:monosaccharideShortName """DGalpb""".
 gmmo:4mbz_mono15_sn gmmo:isomer """D""".
 gmmo:4mbz_mono15_sn gmmo:configuration """beta""".
 gmmo:4mbz_mono15_sn gmmo:ringType """P""".
+gmmo:4mbz_C1_21251_GAL_J_409_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C1_21251_GAL_J_409_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C1_21251_GAL_J_409_n_n_1 gmmo:identifier """4mbz_C1_21251_GAL_J_409_n_n_1""".
+gmmo:4mbz_C1_21251_GAL_J_409_n_n_1 gmmo:coordinate """24.935, 15.128, -8.536""".
+gmmo:4mbz_C1_21251_GAL_J_409_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_21247_NAG_J_408_n_n_1.
+gmmo:4mbz_O4_21247_NAG_J_408_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_21247_NAG_J_408_n_n_1 gmmo:identifier """4mbz_O4_21247_NAG_J_408_n_n_1""".
+gmmo:4mbz_O4_21247_NAG_J_408_n_n_1 gmmo:coordinate """25.354, 16.388, -9.107""".
+gmmo:4mbz_O4_21247_NAG_J_408_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O4_21247_NAG_J_408_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C2_21252_GAL_J_409_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_21252_GAL_J_409_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C2_21252_GAL_J_409_n_n_1 gmmo:identifier """4mbz_C2_21252_GAL_J_409_n_n_1""".
+gmmo:4mbz_C2_21252_GAL_J_409_n_n_1 gmmo:coordinate """24.97, 15.31, -7.007""".
+gmmo:4mbz_C2_21252_GAL_J_409_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O2_21257_GAL_J_409_n_n_1.
+gmmo:4mbz_O2_21257_GAL_J_409_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O2_21257_GAL_J_409_n_n_1 gmmo:identifier """4mbz_O2_21257_GAL_J_409_n_n_1""".
+gmmo:4mbz_O2_21257_GAL_J_409_n_n_1 gmmo:coordinate """26.287, 15.537, -6.565""".
+gmmo:4mbz_O2_21257_GAL_J_409_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O2_21257_GAL_J_409_n_n_1 gmmo:sideIndex """2""".
+gmmo:4mbz_C3_21253_GAL_J_409_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_21253_GAL_J_409_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C3_21253_GAL_J_409_n_n_1 gmmo:identifier """4mbz_C3_21253_GAL_J_409_n_n_1""".
+gmmo:4mbz_C3_21253_GAL_J_409_n_n_1 gmmo:coordinate """24.408, 14.113, -6.245""".
+gmmo:4mbz_C3_21253_GAL_J_409_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_21258_GAL_J_409_n_n_1.
+gmmo:4mbz_O3_21258_GAL_J_409_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O3_21258_GAL_J_409_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C4_21254_GAL_J_409_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_21254_GAL_J_409_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C4_21254_GAL_J_409_n_n_1 gmmo:identifier """4mbz_C4_21254_GAL_J_409_n_n_1""".
+gmmo:4mbz_C4_21254_GAL_J_409_n_n_1 gmmo:coordinate """23.092, 13.642, -6.882""".
+gmmo:4mbz_C4_21254_GAL_J_409_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_21259_GAL_J_409_n_n_1.
+gmmo:4mbz_O4_21259_GAL_J_409_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O4_21259_GAL_J_409_n_n_1 gmmo:identifier """4mbz_O4_21259_GAL_J_409_n_n_1""".
+gmmo:4mbz_O4_21259_GAL_J_409_n_n_1 gmmo:coordinate """22.073, 14.588, -6.636""".
+gmmo:4mbz_O4_21259_GAL_J_409_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O4_21259_GAL_J_409_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C5_21255_GAL_J_409_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_21255_GAL_J_409_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C5_21255_GAL_J_409_n_n_1 gmmo:identifier """4mbz_C5_21255_GAL_J_409_n_n_1""".
+gmmo:4mbz_C5_21255_GAL_J_409_n_n_1 gmmo:coordinate """23.252, 13.453, -8.399""".
+gmmo:4mbz_C5_21255_GAL_J_409_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C6_21256_GAL_J_409_n_n_1.
+gmmo:4mbz_C6_21256_GAL_J_409_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C6_21256_GAL_J_409_n_n_1 gmmo:identifier """4mbz_C6_21256_GAL_J_409_n_n_1""".
+gmmo:4mbz_C6_21256_GAL_J_409_n_n_1 gmmo:coordinate """21.958, 12.986, -9.066""".
+gmmo:4mbz_C6_21256_GAL_J_409_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C6_21256_GAL_J_409_n_n_1 gmmo:sideIndex """+1""".
 gmmo:4mbz gmmo:hasMono gmmo:4mbz_mono14.
 gmmo:4mbz_mono14 rdf:type gmmo:Monosaccharide.
 gmmo:4mbz_mono14 gmmo:identifier """NAG_J_408_?_?_1""".
@@ -1162,14 +1939,14 @@ gmmo:4mbz_mono14 gmmo:hasOligoParent """gmmo:4mbz_oligo7""".
 gmmo:4mbz_mono14 gmmo:hasIndex """0""".
 gmmo:4mbz_mono14 gmmo:hasNameIndex """0""".
 gmmo:4mbz_mono14 gmmo:isNucleotide false.
-gmmo:4mbz_mono14 gmmo:hasRingAtom gmmo:4mbz_C1_21230_NAG_J_408_n_n_1.
-gmmo:4mbz_mono14 gmmo:hasRingAtom gmmo:4mbz_C2_21231_NAG_J_408_n_n_1.
-gmmo:4mbz_mono14 gmmo:hasRingAtom gmmo:4mbz_C3_21232_NAG_J_408_n_n_1.
-gmmo:4mbz_mono14 gmmo:hasRingAtom gmmo:4mbz_C4_21233_NAG_J_408_n_n_1.
-gmmo:4mbz_mono14 gmmo:hasRingAtom gmmo:4mbz_C5_21234_NAG_J_408_n_n_1.
-gmmo:4mbz_mono14 gmmo:hasRingAtom gmmo:4mbz_O5_21242_NAG_J_408_n_n_1.
-gmmo:4mbz_mono14 gmmo:ringAtoms """4mbz_C1_21230_NAG_J_408_n_n_1-4mbz_C2_21231_NAG_J_408_n_n_1-4mbz_C3_21232_NAG_J_408_n_n_1-4mbz_C4_21233_NAG_J_408_n_n_1-4mbz_C5_21234_NAG_J_408_n_n_1-4mbz_O5_21242_NAG_J_408_n_n_1""".
-gmmo:4mbz_mono14 gmmo:anomericStatus """ 4mbz_C1_21230_NAG_J_408_n_n_1""".
+gmmo:4mbz_mono14 gmmo:hasRingAtom gmmo:4mbz_C1_21236_NAG_J_408_n_n_1.
+gmmo:4mbz_mono14 gmmo:hasRingAtom gmmo:4mbz_C2_21237_NAG_J_408_n_n_1.
+gmmo:4mbz_mono14 gmmo:hasRingAtom gmmo:4mbz_C3_21238_NAG_J_408_n_n_1.
+gmmo:4mbz_mono14 gmmo:hasRingAtom gmmo:4mbz_C4_21239_NAG_J_408_n_n_1.
+gmmo:4mbz_mono14 gmmo:hasRingAtom gmmo:4mbz_C5_21240_NAG_J_408_n_n_1.
+gmmo:4mbz_mono14 gmmo:hasRingAtom gmmo:4mbz_O5_21248_NAG_J_408_n_n_1.
+gmmo:4mbz_mono14 gmmo:ringAtoms """4mbz_C1_21236_NAG_J_408_n_n_1-4mbz_C2_21237_NAG_J_408_n_n_1-4mbz_C3_21238_NAG_J_408_n_n_1-4mbz_C4_21239_NAG_J_408_n_n_1-4mbz_C5_21240_NAG_J_408_n_n_1-4mbz_O5_21248_NAG_J_408_n_n_1""".
+gmmo:4mbz_mono14 gmmo:anomericStatus """ 4mbz_C1_21236_NAG_J_408_n_n_1""".
 gmmo:4mbz_mono14 gmmo:stereochemistryChemicalCode """_2NAc_4^3P^a^+1""".
 gmmo:4mbz_mono14 gmmo:BFMPRingConformation """	-		6d3(1.65)""".
 gmmo:4mbz_mono14 gmmo:hasSNFGName """GlcNAc""".
@@ -1185,6 +1962,54 @@ gmmo:4mbz_mono14_sn gmmo:monosaccharideShortName """DGlcpNAcb""".
 gmmo:4mbz_mono14_sn gmmo:isomer """D""".
 gmmo:4mbz_mono14_sn gmmo:configuration """beta""".
 gmmo:4mbz_mono14_sn gmmo:ringType """P""".
+gmmo:4mbz_C1_21236_NAG_J_408_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C1_21236_NAG_J_408_n_n_1 gmmo:ringIndex """1""".
+gmmo:4mbz_C1_21236_NAG_J_408_n_n_1 gmmo:identifier """4mbz_C1_21236_NAG_J_408_n_n_1""".
+gmmo:4mbz_C1_21236_NAG_J_408_n_n_1 gmmo:coordinate """26.014, 18.062, -12.803""".
+gmmo:4mbz_C1_21236_NAG_J_408_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O1_21245_NAG_J_408_n_n_1.
+gmmo:4mbz_O1_21245_NAG_J_408_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O1_21245_NAG_J_408_n_n_1 gmmo:identifier """4mbz_O1_21245_NAG_J_408_n_n_1""".
+gmmo:4mbz_O1_21245_NAG_J_408_n_n_1 gmmo:coordinate """26.185, 18.358, -14.171""".
+gmmo:4mbz_O1_21245_NAG_J_408_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O1_21245_NAG_J_408_n_n_1 gmmo:sideIndex """1""".
+gmmo:4mbz_C2_21237_NAG_J_408_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C2_21237_NAG_J_408_n_n_1 gmmo:ringIndex """2""".
+gmmo:4mbz_C2_21237_NAG_J_408_n_n_1 gmmo:identifier """4mbz_C2_21237_NAG_J_408_n_n_1""".
+gmmo:4mbz_C2_21237_NAG_J_408_n_n_1 gmmo:coordinate """24.529, 17.882, -12.471""".
+gmmo:4mbz_C2_21237_NAG_J_408_n_n_1 gmmo:hasSideAtom gmmo:4mbz_N2_21244_NAG_J_408_n_n_1.
+gmmo:4mbz_N2_21244_NAG_J_408_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_N2_21244_NAG_J_408_n_n_1 gmmo:identifier """4mbz_N2_21244_NAG_J_408_n_n_1""".
+gmmo:4mbz_N2_21244_NAG_J_408_n_n_1 gmmo:coordinate """23.812, 19.122, -12.751""".
+gmmo:4mbz_N2_21244_NAG_J_408_n_n_1 gmmo:derivative """xC-N-C=OCH3""".
+gmmo:4mbz_N2_21244_NAG_J_408_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_N2_21244_NAG_J_408_n_n_1 gmmo:sideIndex """2""".
+gmmo:4mbz_C3_21238_NAG_J_408_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C3_21238_NAG_J_408_n_n_1 gmmo:ringIndex """3""".
+gmmo:4mbz_C3_21238_NAG_J_408_n_n_1 gmmo:identifier """4mbz_C3_21238_NAG_J_408_n_n_1""".
+gmmo:4mbz_C3_21238_NAG_J_408_n_n_1 gmmo:coordinate """24.337, 17.441, -11.01""".
+gmmo:4mbz_C3_21238_NAG_J_408_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O3_21246_NAG_J_408_n_n_1.
+gmmo:4mbz_O3_21246_NAG_J_408_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_O3_21246_NAG_J_408_n_n_1 gmmo:identifier """4mbz_O3_21246_NAG_J_408_n_n_1""".
+gmmo:4mbz_O3_21246_NAG_J_408_n_n_1 gmmo:coordinate """23.031, 16.935, -10.838""".
+gmmo:4mbz_O3_21246_NAG_J_408_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_O3_21246_NAG_J_408_n_n_1 gmmo:sideIndex """3""".
+gmmo:4mbz_C4_21239_NAG_J_408_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C4_21239_NAG_J_408_n_n_1 gmmo:ringIndex """4""".
+gmmo:4mbz_C4_21239_NAG_J_408_n_n_1 gmmo:identifier """4mbz_C4_21239_NAG_J_408_n_n_1""".
+gmmo:4mbz_C4_21239_NAG_J_408_n_n_1 gmmo:coordinate """25.375, 16.411, -10.523""".
+gmmo:4mbz_C4_21239_NAG_J_408_n_n_1 gmmo:hasSideAtom gmmo:4mbz_O4_21247_NAG_J_408_n_n_1.
+gmmo:4mbz_O4_21247_NAG_J_408_n_n_1 gmmo:orientation """Down""".
+gmmo:4mbz_O4_21247_NAG_J_408_n_n_1 gmmo:sideIndex """4""".
+gmmo:4mbz_C5_21240_NAG_J_408_n_n_1 rdf:type gmmo:RingAtom.
+gmmo:4mbz_C5_21240_NAG_J_408_n_n_1 gmmo:ringIndex """5""".
+gmmo:4mbz_C5_21240_NAG_J_408_n_n_1 gmmo:identifier """4mbz_C5_21240_NAG_J_408_n_n_1""".
+gmmo:4mbz_C5_21240_NAG_J_408_n_n_1 gmmo:coordinate """26.783, 16.782, -11.023""".
+gmmo:4mbz_C5_21240_NAG_J_408_n_n_1 gmmo:hasSideAtom gmmo:4mbz_C6_21241_NAG_J_408_n_n_1.
+gmmo:4mbz_C6_21241_NAG_J_408_n_n_1 rdf:type gmmo:SideAtom.
+gmmo:4mbz_C6_21241_NAG_J_408_n_n_1 gmmo:identifier """4mbz_C6_21241_NAG_J_408_n_n_1""".
+gmmo:4mbz_C6_21241_NAG_J_408_n_n_1 gmmo:coordinate """27.923, 15.857, -10.573""".
+gmmo:4mbz_C6_21241_NAG_J_408_n_n_1 gmmo:orientation """Up""".
+gmmo:4mbz_C6_21241_NAG_J_408_n_n_1 gmmo:sideIndex """+1""".
 gmmo:4mbz_oligo1 gmmo:hasGlycosidicLinkage gmmo:4mbz_oligo1_link_0.
 gmmo:4mbz_oligo1_link_0 rdf:type gmmo:Linkage.
 gmmo:4mbz_oligo1_link_0 gmmo:hasParent gmmo:4mbz_oligo1_res0.

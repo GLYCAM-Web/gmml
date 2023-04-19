@@ -222,6 +222,5 @@ std::pair<double,double> Assembly::guessBondLengthByAtomType(MolecularModeling::
     // gmml::log(__LINE__, __FILE__,  gmml::INF, "Using default binding cutoff of 1.65");
     return std::make_pair(gmml::minCutOff, gmml::maxCutOff);
   }
-  
 
 }

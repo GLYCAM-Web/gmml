@@ -7,11 +7,12 @@
 
 #include <memory>
 #include <unordered_set>
+#include <mutex> // lock
 
 namespace glygraph
 {
   template<class T>
-  class Node : public GenericGraphObject, public std::enable_shared_from_this<Node<T>>
+  class Node : public GenericGraphObject
   {
   public:
     /************************************************
@@ -20,6 +21,9 @@ namespace glygraph
     Node();
     Node(std::string name_t);
     Node(std::string name_t, std::string label_t);
+
+    // copy constructor
+   // Node(const Node<T> &rhs);
 
     // copy constructor
     Node(const Node<T> &rhs);
@@ -41,15 +45,17 @@ namespace glygraph
 
     inline T *getDeriviedClass()
     {
-      auto derived = static_cast<T *>(this);
+      auto derived = static_cast<T*>(this);
       return derived;
     }
 
-    std::vector<Node<T> *> getNeighbors();
+    std::vector<T*> getNeighbors() const;
+//    std::vector<const T*> getNeighbors() const;
 
-    std::vector<Edge<T> *> getEdges() const;
-    std::vector<Edge<T> *> getOutEdges() const;
-    std::vector<Edge<T> *> getInEdges() const;
+
+    std::vector<Edge<T>*> getEdges() const;
+    std::vector<Edge<T>*> getOutEdges() const;
+    std::vector<Edge<T>*> getInEdges() const;
 
     /************************************************
      *  MUTATORS
@@ -60,16 +66,16 @@ namespace glygraph
      * 			my understanding and what I am pretty sure our use will be every single edge is
      * 			guaranteed to have both a source and sink node.
      */
-    void addNeighbor(std::string edgeName_t, Node<T> *const &newNeighbor_t);
+    void addNeighbor(std::string edgeName_t, T* const &newNeighbor_t);
 
-    void addChild(std::string edgeName_t, Node<T> *const &childNode_t);
+    void addChild(std::string edgeName_t, T* const &childNode_t);
 
-    void addParent(std::string edgeName_t, Node<T> *const &parentNode_t);
+    void addParent(std::string edgeName_t, T* const &parentNode_t);
     /* NOTE: We MUST remove the edge from out "child" node BEFORE deleting the edge by deleting the
      * 			unique_ptr that owns it. This is handled in edge's destructor, all we have to worry
      * 			about is deleting the unique ptr that owns our edge.
      */
-    void removeEdgeBetween(Node<T> *const &otherNode_t);
+    void removeEdgeBetween(T* const &otherNode_t);
 
     void removeInEdge(Edge<T> *edgeToRemove_t);
     void removeOutEdge(Edge<T> *edgeToRemove_t);
@@ -77,8 +83,8 @@ namespace glygraph
     /************************************************
      *  FUNCTIONS
      ***********************************************/
-    bool     isNeighbor(Node<T> *const &otherNode_t);
-    Edge<T> *getConnectingEdge(Node<T> *const &otherNode_t);
+    bool     isNeighbor(T* const &otherNode_t);
+    Edge<T> *getConnectingEdge(T* const &otherNode_t);
 
 	/************************************************
 	 *  LAMBDAS
@@ -86,18 +92,44 @@ namespace glygraph
 	// Implemented for sorting the vector of incoming edges by the source objects < operator. Uses a lambda function.
 	inline void sortInEdgesBySourceTObjectComparator()
 	{
-		std::sort(inEdges_m.begin(), inEdges_m.end(),
-				[](Edge<T> *e1, Edge<T> *e2)
-				{ // Lambda function for doing the sort.
-							return ( *(e1->getSourceNode()->getDeriviedClass()) > *(e2->getSourceNode()->getDeriviedClass()) );
-				});
+	    struct inEdgeComparer
+	    {
+	        inline bool operator()(const Edge<T>* a, const Edge<T>* b)
+	        {
+	            return ( *(a->getSourceNode()) > *(b->getSourceNode()) );
+	        }
+	    };
+		std::sort(inEdges_m.begin(), inEdges_m.end(), inEdgeComparer());
+//				[](Edge<T>* e1, Edge<T>* e2)
+//				{ // Lambda function for doing the sort.
+//							return ( *(e1->getSourceNode()) > *(e2->getSourceNode()) );
+//				});
 		return;
 	}
+	// Implemented for sorting the vector of edges by the source objects < operator. Uses a lambda function.
+	inline void sortOutEdgesBySourceTObjectComparator()
+	{    // Note outEdge type is std::vector<std::unique_ptr<Edge<T>>>.
+	    struct outEdgeComparer
+	    {
+	        inline bool operator()(const std::unique_ptr<Edge<T>>& a, const std::unique_ptr<Edge<T>>& b)
+	        {
+	            return ( *(a->getTargetNode()) > *(b->getTargetNode()) );
+	        }
+	    };
+	    std::sort(outEdges_m.begin(), outEdges_m.end(), outEdgeComparer());
+	    return;
+	}
 
-    std::vector<Node<T> *> getChildren();
-    std::vector<Node<T> *> getParents();
-
+    std::vector<T*> getChildren() const;
+    std::vector<T*> getParents() const;
+    T* getParent() const;
   private:
+    /************************************************
+     *  CONSTRUCTORS/DESTRUCTORS
+     ***********************************************/
+// ToDo: Make all of these private and have T be friend. // Safeguards mistake like class prepAtom : public Node<pdbAtom>;
+    //    Node (): GenericGraphObject("INVALID NODE") {};
+//    friend T;
     /************************************************
      *  ATTRIBUTES
      ***********************************************/
@@ -109,17 +141,14 @@ namespace glygraph
      ***********************************************/
     void edgeConnectionUpdate();
 
-    bool isChildOf(Node<T> *const &possibleParent_t);
-    bool isParentOf(Node<T> *const &possibleChild_t);
+    bool isChildOf(T* const &possibleParent_t);
+    bool isParentOf(T* const &possibleChild_t);
 
     friend class Edge<T>;
   };
 
   template<class T>
-  inline Node<T>::Node() : GenericGraphObject("INVALID NODE")
-  {
-    //badBehavior(__LINE__, __func__, "We called the default node constructor");
-  }
+  inline Node<T>::Node() : GenericGraphObject("INVALID NODE") {};
 
   template<class T>
   inline Node<T>::Node(std::string name_t) : GenericGraphObject(name_t)
@@ -161,21 +190,22 @@ namespace glygraph
     // lazyInfo(__LINE__, __func__, "Calling copy constructor");
     for (Edge<T> const *currInEdge : rhs.inEdges_m)
       {
-        std::unique_ptr<Edge<T>> tempIn(new Edge<T>(*currInEdge));
+    	//ToDo Check if the "new" is best. Shouldn't Edge class copy constructor not handle some of this?
+        std::unique_ptr<Edge<T>> tempIn(std::make_unique<Edge<T>>(*currInEdge));
 
-        tempIn.get()->setTargetNode(this);
+        tempIn.get()->setTargetNode(this->getDeriviedClass());
 
         this->inEdges_m.push_back(tempIn.get());
         tempIn.get()->getSourceNode()->outEdges_m.push_back(std::move(tempIn));
       }
     for (std::unique_ptr<Edge<T>> const &currOutEdge : rhs.outEdges_m)
       {
-        std::unique_ptr<Edge<T>> tempOut(new Edge<T>(*currOutEdge.get()));
+        std::unique_ptr<Edge<T>> tempOut(std::make_unique<Edge<T>>(*currOutEdge.get()));
 
-        tempOut.get()->setSourceNode(this);
+        tempOut.get()->setSourceNode(this->getDeriviedClass());
 
         tempOut.get()->getTargetNode()->inEdges_m.push_back(tempOut.get());
-        this->outEdges_m.push_back(std::move(tempOut));
+        this->outEdges_m.push_back(std::move(tempOut)); // Could emplace back onto the vector when first constructing "tempOut", no need for a move.
       }
   }
 
@@ -213,14 +243,23 @@ namespace glygraph
   }
 
   template<class T>
-  inline std::vector<Node<T> *> Node<T>::getNeighbors()
+  inline std::vector<T*> Node<T>::getNeighbors() const
   {
-    std::vector<Node<T> *> childrenVec = this->getChildren();
-    std::vector<Node<T> *> parentsVec  = this->getParents();
+    std::vector<T* > childrenVec = this->getChildren();
+    std::vector<T* > parentsVec  = this->getParents();
     parentsVec.insert(parentsVec.end(), childrenVec.begin(), childrenVec.end());
 
     return parentsVec;
   }
+
+//  template<class T>
+//  inline std::vector<const T* > Node<T>::getNeighbors() const
+//  {
+//	  std::vector<const T*> childrenVec = this->getChildren();
+//	  std::vector<const T*> parentsVec  = this->getParents();
+//	  parentsVec.insert(parentsVec.end(), childrenVec.begin(), childrenVec.end());
+//	  return parentsVec;
+//  }
 
   template<class T>
   inline std::vector<Edge<T> *> Node<T>::getEdges() const
@@ -249,13 +288,16 @@ namespace glygraph
   }
 
   template<class T>
-  inline void Node<T>::addNeighbor(std::string edgeName_t, Node<T> *const &newNeighbor_t)
+  inline void Node<T>::addNeighbor(std::string edgeName_t, T* const &newNeighbor_t)
   {
+	std::mutex mtx;
+  	std::lock_guard guard(mtx);//RAII, the mutex will be unlocked upon guard destruction. Exception safe.
     this->addChild(edgeName_t, newNeighbor_t);
+    return;
   }
 
   template<class T>
-  inline void Node<T>::addChild(std::string edgeName_t, Node<T> *const &childNode_t)
+  inline void Node<T>::addChild(std::string edgeName_t, T *const &childNode_t)
   {
     if (this->isNeighbor(childNode_t))
       {
@@ -267,7 +309,7 @@ namespace glygraph
       }
     else
       {
-        std::unique_ptr<Edge<T>> tempEdge(new Edge<T>(edgeName_t, this, childNode_t));
+        std::unique_ptr<Edge<T>> tempEdge(new Edge<T>(edgeName_t, this->getDeriviedClass(), childNode_t));
 
         childNode_t->inEdges_m.push_back(tempEdge.get());
 
@@ -276,13 +318,13 @@ namespace glygraph
   }
 
   template<class T>
-  inline void Node<T>::addParent(std::string edgeName_t, Node<T> *const &parentNode_t)
+  inline void Node<T>::addParent(std::string edgeName_t, T* const &parentNode_t)
   {
-    parentNode_t->addChild(edgeName_t, this);
+    parentNode_t->addChild(edgeName_t, this->getDeriviedClass());
   }
 
   template<class T>
-  inline void Node<T>::removeEdgeBetween(Node<T> *const &otherNode_t)
+  inline void Node<T>::removeEdgeBetween(T* const &otherNode_t)
   {
     if (this->isNeighbor(otherNode_t))
       {
@@ -293,7 +335,7 @@ namespace glygraph
           }
         else if (this->isParentOf(otherNode_t))
           {
-            otherNode_t->removeEdgeBetween(this);
+            otherNode_t->removeEdgeBetween(this->getDeriviedClass());
           }
         else
           {
@@ -309,13 +351,13 @@ namespace glygraph
   }
 
   template<class T>
-  inline bool Node<T>::isNeighbor(Node<T> *const &otherNode_t)
+  inline bool Node<T>::isNeighbor(T* const &otherNode_t)
   {
     return this->isChildOf(otherNode_t) || this->isParentOf(otherNode_t);
   }
 
   template<class T>
-  bool Node<T>::isChildOf(Node<T> *const &possibleParent_t)
+  bool Node<T>::isChildOf(T* const &possibleParent_t)
   {
     for (Edge<T> *currInEdge : this->inEdges_m)
       {
@@ -328,7 +370,7 @@ namespace glygraph
   }
 
   template<class T>
-  inline bool Node<T>::isParentOf(Node<T> *const &possibleChild_t)
+  inline bool Node<T>::isParentOf(T* const &possibleChild_t)
   {
     for (std::unique_ptr<Edge<T>> const &currOutEdge : this->outEdges_m)
       {
@@ -341,9 +383,9 @@ namespace glygraph
   }
 
   template<class T>
-  inline std::vector<Node<T> *> Node<T>::getChildren()
+  inline std::vector<T*> Node<T>::getChildren() const
   {
-    std::vector<Node<T> *> childrenVecToReturn;
+    std::vector<T* > childrenVecToReturn;
     for (std::unique_ptr<Edge<T>> const &currOutEdge : this->outEdges_m)
       {
         childrenVecToReturn.push_back(currOutEdge.get()->getTargetNode());
@@ -354,6 +396,17 @@ namespace glygraph
     return childrenVecToReturn;
   }
 
+//  template<class T>
+//  inline std::vector<const T*> Node<T>::getChildren() const
+//  {
+//	  std::vector<const T*> childrenVecToReturn;
+//	  for (std::unique_ptr<Edge<T>> const &currOutEdge : this->outEdges_m)
+//	  {
+//		  childrenVecToReturn.push_back(currOutEdge.get()->getTargetNode());
+//	  }
+//	  return childrenVecToReturn;
+//  }
+
   template<class T>
   inline void Node<T>::edgeConnectionUpdate()
   {
@@ -361,23 +414,33 @@ namespace glygraph
     //	not updated said edges with their new vertex appropriately
     for (Edge<T> *currInEdge : this->inEdges_m)
       {
-        currInEdge->setTargetNode(this);
+        currInEdge->setTargetNode(this->getDeriviedClass());
       }
     for (std::unique_ptr<Edge<T>> &currOutEdge : this->outEdges_m)
       {
-        currOutEdge.get()->setSourceNode(this);
+        currOutEdge.get()->setSourceNode(this->getDeriviedClass());
       }
   }
 
   template<class T>
-  inline std::vector<Node<T> *> Node<T>::getParents()
+  inline std::vector<T*> Node<T>::getParents() const
   {
-    std::vector<Node<T> *> parentsVecToReturn;
-    for (Edge<T> *currInEdge : this->inEdges_m)
+	  std::vector<T*> parentsVecToReturn;
+	  for (Edge<T> *currInEdge : this->inEdges_m)
+	  {
+		  parentsVecToReturn.push_back(currInEdge->getSourceNode());
+	  }
+	  return parentsVecToReturn;
+  }
+
+  template<class T>
+  inline T* Node<T>::getParent() const
+  {
+      if (this->inEdges_m.size() > 0)
       {
-        parentsVecToReturn.push_back(currInEdge->getSourceNode());
+          return this->inEdges_m.front()->getSourceNode();
       }
-    return parentsVecToReturn;
+      return nullptr;
   }
 
   template<class T>
@@ -406,7 +469,7 @@ namespace glygraph
   }
 
   template<class T>
-  inline Edge<T> *glygraph::Node<T>::getConnectingEdge(Node<T> *const &otherNode_t)
+  inline Edge<T> *glygraph::Node<T>::getConnectingEdge(T* const &otherNode_t)
   {
     if (this->isNeighbor(otherNode_t))
       {

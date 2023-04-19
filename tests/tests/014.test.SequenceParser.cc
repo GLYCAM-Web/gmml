@@ -1,6 +1,6 @@
 #include <iostream>
-#include "includes/InputSet/CondensedSequence/sequenceParser.hpp"
-#include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/sequenceParser.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/sequenceManipulator.hpp"
 
 int main ()
 {	
@@ -25,7 +25,7 @@ int main ()
         try
         {
             std::cout << "Parsing: " << sequence << std::endl;
-        	CondensedSequence::SequenceManipulator man(sequence);
+        	cdsCondensedSequence::SequenceManipulator man(sequence);
         	std::cout << man.ReorderSequence() << std::endl;
             bool withLabels = true;
             std::cout << man.Print(withLabels) << std::endl;
@@ -35,6 +35,14 @@ int main ()
         {
             std::cerr << exception << std::endl;
 	    }
+        catch (const std::runtime_error &error)
+        {
+            std::cerr << "Test level caught runtime error: " << error.what() << std::endl;
+        }
+        catch(...)
+        {
+            std::cerr << "Test level caught unexpected error. Sorry I don't know more, I'm as confused as you are mate.\n";
+        }
         std::cout << "-----------------------------------------------------------------------------------------------------\n\n";
     }
 	return 0;

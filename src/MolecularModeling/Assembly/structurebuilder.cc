@@ -65,6 +65,7 @@
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/MolecularMetadata/atomicBonds.hpp"
 
 #include <unistd.h>
 #include <errno.h>
@@ -328,7 +329,7 @@ void* BuildStructureByDistanceByOptimizedThread(void* args)
         gmml::log(__LINE__,__FILE__, gmml::INF, log.str());
       }
       //change cutoff based on atom elements
-      std::pair<double,double> minAndMaxCutoffs = arg->a->guessBondLengthByAtomType(atom, neighbor_atom);
+      std::pair<double,double> minAndMaxCutoffs = atomicBonds::getBondLengthByAtomType(atom->GetElementSymbol(), neighbor_atom->GetElementSymbol());
       cutoff = minAndMaxCutoffs.second; //Temporary comment out, is causing issues for me.Yao
       minCutoff = minAndMaxCutoffs.first;
       if(local_debug > 0)

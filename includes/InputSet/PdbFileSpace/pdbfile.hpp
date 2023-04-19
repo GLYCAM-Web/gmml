@@ -689,22 +689,6 @@ namespace PdbFileSpace
               */
             void SetSequenceNumberMapping(PdbSequenceNumberMapping sequence_number_mapping);
             /*! \fn
-              * A function in order to delete a residue from the current object
-              * @param residue A residue of the current object of this class
-              */
-            void DeleteResidue(PdbResidue* residue);
-            /*! \fn
-              * A function in order to delete a list of residue from the current object
-              * @param residues List of residues of the current object of this class
-              */
-            void DeleteResidues(PdbResidueVector residues);
-            /*! \fn
-              * A function in order to delete a residue from the current object
-              * @param residue A residue of the current object of this class
-              * @param model_number Selected model number from the multiple models that are in a pdb file
-              */
-            void DeleteResidueWithTheGivenModelNumber(PdbResidue* residue, int model_number = 1);
-            /*! \fn
               * A function in order to delete a list of residues from the current object
               * @param residues List of residues of the current object of this class
               * @param model_number Selected model number from the multiple models that are in a pdb file
@@ -749,7 +733,7 @@ namespace PdbFileSpace
               * A function in order to insert a residue before the given residue in a chain
               * @param residue A residue of the current object of this class
               */
-            void InsertResidueBefore(PdbAtomSection* residue);
+//            void InsertResidueBefore(PdbAtomSection* residue);
             /*! \fn
               * A function in order to insert a residue before the given residue in a chain
               * @param residue A residue of the current object of this class
@@ -760,7 +744,7 @@ namespace PdbFileSpace
               * A function in order to insert a residue after the given residue in a chain
               * @param residue A residue of the current object of this class
               */
-            void InsertResidueAfter(PdbAtomSection* residue);
+//            void InsertResidueAfter(PdbAtomSection* residue);
             /*! \fn
               * A function in order to insert a residue after the given residue in a chain
               * @param residue A residue of the current object of this class

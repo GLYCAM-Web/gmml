@@ -1269,15 +1269,15 @@ ATOM   1263 O    THR A 218      29.085  -4.549  -5.004                       O
 ATOM   1264 CB   THR A 218      32.060  -3.393  -5.808                       C  
 ATOM   1265 OG1  THR A 218      32.678  -2.425  -6.663                       O  
 ATOM   1266 CG2  THR A 218      31.867  -4.703  -6.572                       C  
-ATOM   1267 N   AGLU A 219      30.296  -3.917  -3.211                       N  
-ATOM   1268 CA  AGLU A 219      29.617  -4.822  -2.297                       C  
-ATOM   1269 C   AGLU A 219      28.116  -4.523  -2.242                       C  
-ATOM   1270 O   AGLU A 219      27.294  -5.436  -2.296                       O  
-ATOM   1271 CB  AGLU A 219      30.246  -4.726  -0.905                       C  
-ATOM   1272 CG  AGLU A 219      29.813  -5.807   0.064                       C  
-ATOM   1273 CD  AGLU A 219      30.571  -5.733   1.374                       C  
-ATOM   1274 OE1 AGLU A 219      31.151  -4.665   1.665                       O  
-ATOM   1275 OE2 AGLU A 219      30.594  -6.738   2.111                       O  
+ATOM   1267 N    GLU A 219      30.296  -3.917  -3.211                       N  
+ATOM   1268 CA   GLU A 219      29.617  -4.822  -2.297                       C  
+ATOM   1269 C    GLU A 219      28.116  -4.523  -2.242                       C  
+ATOM   1270 O    GLU A 219      27.294  -5.436  -2.296                       O  
+ATOM   1271 CB   GLU A 219      30.246  -4.726  -0.905                       C  
+ATOM   1272 CG   GLU A 219      29.813  -5.807   0.064                       C  
+ATOM   1273 CD   GLU A 219      30.571  -5.733   1.374                       C  
+ATOM   1274 OE1  GLU A 219      31.151  -4.665   1.665                       O  
+ATOM   1275 OE2  GLU A 219      30.594  -6.738   2.111                       O  
 ATOM   1276 N    TYR A 220      27.768  -3.241  -2.153                       N  
 ATOM   1277 CA   TYR A 220      26.367  -2.812  -2.172                       C  
 ATOM   1278 C    TYR A 220      25.712  -3.132  -3.515                       C  
@@ -1984,9 +1984,9 @@ CONECT  323  322  324  326
 CONECT  324  323  325  330                                                      
 CONECT  325  324                                                                
 CONECT  326  323  327                                                           
-CONECT  327  326                                                                
-CONECT  328                                                                     
-CONECT  329                                                                     
+CONECT  327  326  328                                                           
+CONECT  328  327  329                                                           
+CONECT  329  328                                                                
 CONECT  330  324  331                                                           
 CONECT  331  330  332  334                                                      
 CONECT  332  331  333  341                                                      
@@ -2133,9 +2133,9 @@ CONECT  472  471  473  475
 CONECT  473  472  474  479                                                      
 CONECT  474  473                                                                
 CONECT  475  472  476                                                           
-CONECT  476  475                                                                
-CONECT  477                                                                     
-CONECT  478                                                                     
+CONECT  476  475  477                                                           
+CONECT  477  476  478                                                           
+CONECT  478  477                                                                
 CONECT  479  473  480                                                           
 CONECT  480  479  481  483                                                      
 CONECT  481  480  482  487                                                      
@@ -2915,8 +2915,8 @@ CONECT 1254 1247 1255
 CONECT 1255 1254 1256 1258                                                      
 CONECT 1256 1255 1257 1260                                                      
 CONECT 1257 1256                                                                
-CONECT 1258 1255                                                                
-CONECT 1259                                                                     
+CONECT 1258 1255 1259                                                           
+CONECT 1259 1258                                                                
 CONECT 1260 1256 1261                                                           
 CONECT 1261 1260 1262 1264                                                      
 CONECT 1262 1261 1263 1267                                                      

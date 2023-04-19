@@ -21,15 +21,31 @@ if (NOT CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL 7.0)
     message(FATAL_ERROR "Check gcc version is at least 7.0")
 endif()
 
-#Get swig package
-find_package(SWIG 4.0 COMPONENTS python REQUIRED)
-#Get python lib package
-find_package(Python3 3.9 COMPONENTS Interpreter Development EXACT REQUIRED)
+#Dumb workaround because if we dont set this variable then cmake will try to 
+#treat the variable as a string. Idk man this is dumb, but keep in mind we are
+#checking if the variable is defined, not the contents hence the lack of
+#dollar sign and curly braces
+if (NOT DEFINED DEBUG_NO_WRAP)
+        set(DEBUG_NO_WRAP false)
+endif()
 
+#Basically we always hit here UNLESS we pass the DEBUG_NO_WRAP=True. This allows us to produce
+#a makefile and other assoicaited files that have zero reference to swig, this helps for
+#debugging purposes
+if (NOT ${DEBUG_NO_WRAP})
+    #Get swig package
+    find_package(SWIG 4.0 COMPONENTS python REQUIRED)
+    #Get python lib package
+    find_package(Python3 3.9 COMPONENTS Interpreter Development EXACT REQUIRED)
+endif()
+find_package(Eigen3 REQUIRED)
+
+#include_directories(SYSTEM ${EIGEN3_INCLUDE_DIRS})
 #Show user what compiler they using
 message("################## TOOLS CMAKE IS USING ###################\n")
 message(STATUS "CMake Version:\t${CMAKE_VERSION}")
 message("")
+message(STATUS "Eigen Lib Path:\t${EIGEN3_INCLUDE_DIRS}\n")
 #https://cmake.org/cmake/help/latest/variable/CMAKE_LANG_COMPILER_ID.html
 message(STATUS "C++ Compiler Used:\t${CMAKE_CXX_COMPILER_ID}")
 message(STATUS "C++ Compiler Ver:\t${CMAKE_CXX_COMPILER_VERSION}")
@@ -131,6 +147,9 @@ STRING(REGEX REPLACE "[\n;]$" "" EXHDIRECTORIES "${EXHDIRECTORIES}")
 add_library(${PROJECT_NAME} SHARED
 	${CFILES})
 
+#Add eigen lib
+target_include_directories(${PROJECT_NAME} PUBLIC ${EIGEN3_INCLUDE_DIRS})
+	
 #Add the headers to our specific gmml target
 target_include_directories(${PROJECT_NAME} PUBLIC
 	"${CMAKE_SOURCE_DIR}" "${HDIRECTORIES}")

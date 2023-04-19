@@ -176,7 +176,6 @@ public:
     //An assembly created by residues of another assembly
     Assembly(std::vector<MolecularModeling::Residue*> residueVector);
 
-    Assembly(std::string inputSequence, std::string prepFilePath);
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
@@ -312,7 +311,7 @@ public:
               * This line repeats the same thing above, but in a different way
               * @param PrepFileSpace::PrepFileResidue* and a Residue::Type that is defaulted to type "Undefined"
               */
-    Residue& CreateResidue(PrepFileSpace::PrepFileResidue*, Residue::Type residueType = Residue::Type::Undefined);
+    Residue& CreateResidue(PrepFileSpace::PrepFileResidue*, Abstract::ResidueType residueType = Abstract::ResidueType::Undefined);
     /*! \fn
               * A mutator function in order to set the name of the current object
               * Set the name_ attribute of the current assembly
@@ -1534,6 +1533,7 @@ public:
     double CalculatePhiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string glycosidic_atom_id);
     bool guessIfC_CDoubleBond(MolecularModeling::Atom* carbon1, MolecularModeling::Atom* carbon2);
     std::pair<double,double> guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2);
+//    std::pair<double,double> guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2);
     void GetAuthorNaming(std::vector< std::string > amino_lib_files, Glycan::Monosaccharide* mono, std::string CCD_Path);
     bool checkIfNucleotide(Glycan::Monosaccharide* mono);
 
@@ -2008,6 +2008,8 @@ public:
               */
     void CreateOffFileFromAssembly(std::string file_name, int CoordinateIndex);
     void SerializeResidueNumbers();
+    void SetChargesAndAtomTypes();
+    void EnsureIntegralCharge();
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////

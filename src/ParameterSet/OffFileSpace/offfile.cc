@@ -8,6 +8,7 @@
 #include "../../../includes/ParameterSet/OffFileSpace/offfile.hpp"
 #include "../../../includes/ParameterSet/OffFileSpace/offfileresidue.hpp"
 #include "../../../includes/ParameterSet/OffFileSpace/offfileatom.hpp"
+#include "includes/MolecularMetadata/elementattributes.hpp"
 
 using OffFileSpace::OffFile;
 
@@ -86,25 +87,12 @@ using OffFileSpace::OffFile;
                     BoundingAtomIndex++;
                     MolecularModeling::Atom* residue_atom = *it;
                     OffFileAtom* off_file_atom= new OffFileAtom();
-
                     //setting values from residue atom to off file atom
                     off_file_atom->SetName(residue_atom->GetName());
                     off_file_atom->SetType(residue_atom->MolecularDynamicAtom::GetAtomType());
                     off_file_atom->SetResidueIndex(ResidueIndex);
                     off_file_atom->SetAtomIndex(AtomIndex);
-
-                    int AtomicNumber=0;
-                    std::string atom_element_symbol= residue_atom->GetElementSymbol();
-                   int size_of_lookup_map = sizeof(gmml::ElementAtributes::Elements) / sizeof(gmml::ElementAtributes::Elements[0]);
-                       for (int i = 0; i < size_of_lookup_map; i++){
-                                  gmml::ElementAtributes::ElementAttributeInfo entry = gmml::ElementAtributes::Elements[i];
-                                  if (atom_element_symbol.compare(entry.elment_type_) == 0){
-                                      AtomicNumber = entry.atomic_number_;
-                                  }
-                              }
-
-
-                    off_file_atom->SetAtomicNumber(AtomicNumber);
+                    off_file_atom->SetAtomicNumber(MolecularMetadata::findElementAtomicNumber(residue_atom->GetElementSymbol()));
                     off_file_atom->SetCoordinate(residue_atom->GetCoordinates().at(CoordinateIndex));
                     off_file_atom->SetAtomCharge(residue_atom->GetCharge());
                     this->atom_index_map_[residue_atom->GetIndex()]=AtomIndex;

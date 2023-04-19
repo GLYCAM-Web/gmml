@@ -45,6 +45,10 @@ const LibraryFile::ResidueMap& LibraryFile::GetResidues() const
 {
     return residues_;
 }
+LibraryFile::ResidueMap& LibraryFile::GetResidues()
+{
+    return residues_;
+}
 std::vector<std::string> LibraryFile::GetAllResidueNames()
 {
     std::vector<std::string> residue_names;
@@ -538,7 +542,7 @@ LibraryFileSpace::LibraryFileAtom* LibraryFile::ProcessAtom(std::string &line)
 LibraryFileSpace::LibraryFileResidue* LibraryFile::GetLibraryResidueByResidueName(std::string residue_name)
 {
     ResidueMap residue_map = this->GetResidues();
-    for(ResidueMap::iterator it = residue_map.begin(); it != residue_map.end(); it++)
+    for(ResidueMap::iterator it = residue_map.begin(); it != residue_map.end(); it++) // No
     {
         std::string name = (*it).first;
         LibraryFileSpace::LibraryFileResidue* residue = (*it).second;
@@ -547,6 +551,12 @@ LibraryFileSpace::LibraryFileResidue* LibraryFile::GetLibraryResidueByResidueNam
     }
     return NULL;
 }
+
+//std::map<std::string, LibraryFileSpace::LibraryFileResidue*> LibraryFile::GetResidues()
+//{
+//    return residues_;
+//}
+
 void LibraryFile::Write(const std::string& library_file)
 {
     std::ofstream out_file;

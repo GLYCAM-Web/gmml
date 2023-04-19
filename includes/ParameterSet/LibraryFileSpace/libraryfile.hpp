@@ -57,6 +57,8 @@ namespace LibraryFileSpace
               * An accessor function in order to access to all residue names of the current object
               * @return residue_names residue names of the current object of this class
               */
+            ResidueMap& GetResidues();
+
             std::vector<std::string> GetAllResidueNames();
 
             //*****************************************************
@@ -122,6 +124,7 @@ namespace LibraryFileSpace
                * @{
                */
             LibraryFileResidue* GetLibraryResidueByResidueName(std::string residue_name);
+            //std::map<std::string, LibraryFileSpace::LibraryFileResidue*> GetResidueMap();
             /*! \fn
               * A function to write back a library file into an output file
               * @param library_file Library output file name
