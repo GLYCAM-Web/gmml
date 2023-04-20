@@ -1,6 +1,7 @@
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.hpp"
 
 #include "../../../../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // bondAtomsByDistance
+#include "../../../../includes/CentralDataStructure/Writers/offWriter.hpp"
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
 //#include "includes/CentralDataStructure/Overlaps/beadResidues.hpp"
 #include "includes/CodeUtils/metropolisCriterion.hpp"
@@ -9,7 +10,6 @@
 #include "includes/CodeUtils/files.hpp"
 #include "includes/CodeUtils/strings.hpp" // split
 #include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
-#include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbResidue.hpp"
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp" // selectResiduesByType

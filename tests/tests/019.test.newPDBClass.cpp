@@ -1,9 +1,9 @@
 #include "includes/gmml.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
-#include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include <string>
 #include "../../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // bondAtomsByDistance
+#include "../../includes/CentralDataStructure/Writers/offWriter.hpp"
 
 int main(int argc, char* argv[])
 {
@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
     	    std::ofstream outFileStream;
     	    outFileStream.open("outputOffFile.off");
     	    std::string outFileName = "Assembly";
-    	    cds::WriteMoleculeToOffFile(assembly, outFileStream, outFileName.c_str());
+    	    cds::WriteAssemblyToOffFile(assembly, outFileStream, outFileName.c_str());
     	    outFileStream.close();
     	}
     	catch(std::runtime_error& error)

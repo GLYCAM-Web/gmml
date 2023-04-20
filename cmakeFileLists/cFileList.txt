@@ -41,6 +41,7 @@
 ./src/CentralDataStructure/Shapers/rotatableDihedral.cpp
 ./src/CentralDataStructure/Shapers/rotationMatrix.cpp
 ./src/CentralDataStructure/Shapers/shapers.cpp
+./src/CentralDataStructure/Writers/offWriter.cpp
 ./src/CentralDataStructure/Writers/pdbWriter.cpp
 ./src/CentralDataStructure/assembly.cpp
 ./src/CentralDataStructure/atom.cpp

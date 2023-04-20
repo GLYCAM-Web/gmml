@@ -56,7 +56,7 @@ public:
     //                    DISPLAY                           //
     //////////////////////////////////////////////////////////
     void WritePdb(std::ostream& stream) const;
-    void WriteOff(std::ostream& stream) const;
+    void WriteOff(std::ostream& stream);
 private:
     //////////////////////////////////////////////////////////
     //                    FUNCTIONS                         //

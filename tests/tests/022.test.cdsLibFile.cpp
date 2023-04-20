@@ -1,8 +1,9 @@
-#include "includes/CentralDataStructure/Writers/cdsOffWriter.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CentralDataStructure/Readers/Lib/LibraryFile.hpp"
 
 #include <fstream>
+
+#include "../../includes/CentralDataStructure/Writers/offWriter.hpp"
 
 int main()
 {
