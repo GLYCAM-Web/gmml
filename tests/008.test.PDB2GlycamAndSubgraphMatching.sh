@@ -1,7 +1,13 @@
 #!/bin/bash
 
-printf "Testing 008.convertPdbToGlycam.cpp and molecule subgraph matching... "
-g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ $GEMSHOME/gmml/internalPrograms/convertPdbToGlycam.cpp -lgmml -pthread -o convertPdbToGlycam
+GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
+
+if [ "$(git config --get remote.origin.url)" != "https://github.com/GLYCAM-Web/gmml.git" ]; then
+            exit 1
+fi
+
+printf "Testing 008.pdb2glycam.cc and molecule subgraph matching... "
+g++ -std=c++17 -I "${GMML_ROOT_DIR}" -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ "${GMML_ROOT_DIR}"/internalPrograms/convertPdbToGlycam.cpp -lgmml -pthread -o convertPdbToGlycam
 ./convertPdbToGlycam tests/inputs/008.convertPdbToGlycam_4YG0.pdb convertPdbToGlycam_output
 if [ -f convertPdbToGlycam_output.pdb ]; then
     if ! cmp convertPdbToGlycam_output.pdb tests/correct_outputs/008.convertPdbToGlycam_4YG0_output.pdb > /dev/null 2>&1; then
