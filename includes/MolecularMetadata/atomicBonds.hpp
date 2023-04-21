@@ -3,6 +3,7 @@
 
 #include <utility>
 #include <map>
+#include <string>
 
 namespace atomicBonds
 {
