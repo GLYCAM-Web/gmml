@@ -1,5 +1,6 @@
 // This is a C++ version of the GEMS test, detect_sugars.
 // By: Davis Templeton
+#include <filesystem>
 #include <cstdlib>
 #include <iostream>
 #include <vector>
@@ -19,10 +20,9 @@ const std::string USAGE = "\n"
 "So, alternately:\n\n"
 "    detect_sugars PDB_file.pdb > output_file_name\n";
 
-int main(int argc, char* argv[]) {
-    // First get the GEMSHOME environment variable
-    char* gemshome_env_var = std::getenv("GEMSHOME");
-    std::string GEMSHOME(gemshome_env_var);
+int main(int argc, char *argv[])
+{
+  const std::string GEMSHOME = std::filesystem::current_path().parent_path().parent_path();
 
     // Check if the environment variable exists.
     if(GEMSHOME == "") {

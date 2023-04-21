@@ -1,7 +1,13 @@
 #!/bin/bash
 
+GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
+
+if [ "$(git config --get remote.origin.url)" != "https://github.com/GLYCAM-Web/gmml.git" ]; then
+            exit 1
+fi
+
 printf "Testing 000.buildBySequence.cc... "
-g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/000.buildBySequence.cc -lgmml -pthread -o buildBySequence
+g++ -std=c++17 -I "${GMML_ROOT_DIR}"/ -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ tests/000.buildBySequence.cc -lgmml -pthread -o buildBySequence
 ./buildBySequence > /dev/null 2>&1
 #./buildBySequence
 if [ -f buildBySequence.pdb ]; then

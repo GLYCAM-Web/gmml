@@ -87,7 +87,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 #system for the pthreads package then chucks it in. It kinda works
 #but setting the flag is easier, it just passes the -pthred flag
 #to gcc, nice and easy. You can add more custom flags here
-set(CMAKE_CXX_FLAGS -pthread)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pthread")
 
 #in order to have 2 seperate values to keep track of.
 #done in order to move our *.o files to a directory that will keep
