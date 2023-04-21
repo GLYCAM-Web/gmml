@@ -2,7 +2,7 @@
 
 GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
 
-if [ "$(git config --get remote.origin.url)" != "https://github.com/GLYCAM-Web/gmml.git" ]; then
+if [ "$(git config --get remote.origin.url)" != "https://github.com/GLYCAM-Web/gmml" ]; then
             exit 1
 fi
 
