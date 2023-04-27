@@ -212,11 +212,14 @@ void GlycoproteinBuilder::RandomDescent(OverlapType overlapType, int persistCycl
 	}
 	//logss << "Initial torsions and overlaps:\n";
 	//this->PrintDihedralAnglesAndOverlapOfGlycosites();
+	// Make a random number engine for std::shuffle;
+	pcg_extras::seed_seq_from<std::random_device> metropolis_seed_source;
+	pcg32 rng_engine(metropolis_seed_source);
 	while ( (cycle < persistCycles) && (stop == false) )
 	{
 		logss << "Cycle " << cycle << "/" << persistCycles << "\n";
 		++cycle;
-		std::random_shuffle (sites_with_overlaps.begin(), sites_with_overlaps.end());
+		std::shuffle(sites_with_overlaps.begin(), sites_with_overlaps.end(), rng_engine);
 		for(auto &current_glycosite : sites_with_overlaps)
 		{
 			// logss << "Checking " << current_glycosite->GetResidue()->GetId() << "\n";
