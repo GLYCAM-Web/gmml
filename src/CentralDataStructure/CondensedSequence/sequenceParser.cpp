@@ -1,4 +1,4 @@
-#include "includes/InputSet/CondensedSequence/sequenceParser.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/sequenceParser.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include <algorithm> // Reverse function.
 #include <sstream>
