@@ -4984,45 +4984,49 @@ void PdbFile::WriteToStringstream(std::ostringstream& pdbstream)
 {
   this->ResolveCards(pdbstream);
 }
+
 void PdbFile::Write(const std::string& pdb_file)
 {
-    std::ofstream out_file;
     try
     {
-        out_file.open(pdb_file.c_str());
+        std::ofstream out_file(pdb_file.c_str());
+        if (out_file)
+        {
+            this->ResolveCards(out_file);
+            out_file.close();
+        }
+        else
+        {
+            throw std::runtime_error("Could not open file\n");
+        }
+
     }
     catch(...)
     {
-        throw PdbFileProcessingException(__LINE__,"File could not be created");
-    }
-    try
-    {
-        this->ResolveCards(out_file);
-    }
-    catch(...)
-    {
-        out_file.close();            /// Close the parameter files
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Error when creating this file: " + pdb_file);
+        throw std::runtime_error("Error when creating this file: " + pdb_file );
     }
 }
 
 void PdbFile::WriteWithTheGivenModelNumber(const std::string& pdb_file, int model_number)
 {
-    std::ofstream out_file;
     try
     {
-        out_file.open(pdb_file.c_str());
+        std::ofstream out_file(pdb_file.c_str());
+        if (out_file)
+        {
+            this->ResolveCardsWithTheGivenModelNumber(out_file, model_number);
+            out_file.close();
+        }
+        else
+        {
+            throw std::runtime_error("Could not open file\n");
+        }
     }
     catch(...)
     {
-        throw PdbFileProcessingException(__LINE__,"File could not be created");
-    }
-    try
-    {
-        this->ResolveCardsWithTheGivenModelNumber(out_file, model_number);
-    }
-    catch(...)
-    {
-        out_file.close();            /// Close the parameter files
+        gmml::log(__LINE__, __FILE__,  gmml::ERR, "Error when creating this file: " + pdb_file);
+        throw std::runtime_error("Error when creating this file: " + pdb_file );
     }
 }
 

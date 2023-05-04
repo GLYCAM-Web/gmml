@@ -1,7 +1,7 @@
-#include <string>
-#include <algorithm> // Reverse function.
 #include "includes/InputSet/CondensedSequence/sequenceParser.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include <algorithm> // Reverse function.
+#include <sstream>
 
 using CondensedSequence::SequenceParser;
 using CondensedSequence::ParsedResidue;

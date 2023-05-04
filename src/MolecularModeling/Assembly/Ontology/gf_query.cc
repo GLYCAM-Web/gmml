@@ -299,9 +299,9 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
     {
       query << " ?R" << i + 1;
     }
+    query <<  "(group_concat(distinct ?rGroup;separator=\"\\n\") as ?rGroups)\n";
   }
   query << "\n"
-           "(group_concat(distinct ?rGroup;separator=\"\\n\") as ?rGroups)\n"
            "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments)\n"
            "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings)\n"
            "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n\n";
