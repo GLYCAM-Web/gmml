@@ -430,10 +430,11 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
   {
     logss << "\n" << "Detailed information of sorted cycles after discarding fused or oxygenless rings: " << "\n";
   }
-  int mono_id_ = 0;
-  for (std::vector<Glycan::Monosaccharide*>::iterator it = ordered_monos.begin(); it != ordered_monos.end(); it++)
+  int mono_id = 0;
+  for (std::vector<Glycan::Monosaccharide*>::iterator it = ordered_monos.begin(); it != ordered_monos.end(); it++, mono_id++)
   {
     Glycan::Monosaccharide* mono = *it;
+    mono->mono_id_ = mono_id;
     if(local_debug > 0)
     {
       logss << "Ring atoms: " << mono->cycle_atoms_str_ << "\n";
@@ -580,9 +581,6 @@ std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< st
       logss << "SNFG Name: " << mono->SNFG_name_ << "\n";
       logss << "-------------------------------------------------------------------------------------------------------------------------------------------\n";
     }
-    mono_id_++;
-    mono->mono_id_ = mono_id_;
-    *it = mono;
   }
   if(local_debug > 0)
   {
@@ -3089,10 +3087,16 @@ void Assembly::AddUnknownDerivativeRuleInfo(std::string key, std::string pattern
 void Assembly::AddDerivativeRuleInfo(std::string key, std::string pattern, Glycan::Monosaccharide *mono, std::string long_name_pattern, std::string cond_name_pattern, std::stringstream &head,
                                      bool minus_one, std::stringstream &in_bracket)
 {
-  int local_debug = -1;
+    int local_debug = -1;
     std::stringstream ss;
     ss << pattern;
-    // std::cout << key << ": " << pattern << "\n";
+    if(local_debug > 0)
+    {
+        std::stringstream logSS;
+        logSS << "key: " << key << " pattern: " << pattern;
+        gmml::log(__LINE__, __FILE__, gmml::INF, logSS.str());
+    }
+    
     if(mono->sugar_name_.monosaccharide_stereochemistry_name_.compare("") != 0)
     {
         if(!minus_one)

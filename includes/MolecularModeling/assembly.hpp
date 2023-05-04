@@ -1110,7 +1110,7 @@ public:
             * @param oligo_to_res_uri_map The map containing URIs of monosaccharides (of current oligo)
             * @param root_oligo_id The id of the main oligosaccharide's core mono.
             */
-    void PopulateOligosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::stringstream& oligo_sequence_stream, std::stringstream& mono_stream, std::stringstream& linkage_stream, std::string pdb_uri,
+    void PopulateOligosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::stringstream& oligo_sequence_stream, std::stringstream& residue_stream,std::stringstream& mono_stream, std::stringstream& linkage_stream, std::string pdb_uri,
                                  std::string id_prefix, int& link_id, OligosaccharideVector oligos, std::vector<std::string>& side_or_ring_atoms,
                                  std::vector<int>& visited_oligos, std::map<std::string, std::string>& mono_to_short_name_map, std::map<std::string, std::string>& oligo_to_res_uri_map, int& root_oligo_id);
     /*! \fn
@@ -1125,7 +1125,7 @@ public:
             * @param thisMonoNeighbor
             * each oligosaccharide has a core of monosaccharide. The collection of linked oligosaccharides forms the main oligosaccharide structure.
             */
-    void PopulateLinkage(std::stringstream& linkage_stream, std::string oligo_uri, std::string parent_res_uri, std::string child_res_uri, int& linkNum, Glycan::GlycosidicLinkage* thisLinkage, Glycan::Monosaccharide* thisMono, Glycan::Monosaccharide* thisMonoNeighbor);
+    void PopulateLinkage(std::stringstream& linkage_stream, std::stringstream& oligo_stream, std::string oligo_uri, std::string parent_mono_uri, std::string child_mono_uri, int& linkNum, Glycan::GlycosidicLinkage* thisLinkage, Glycan::Monosaccharide* thisMono, Glycan::Monosaccharide* thisMonoNeighbor);
     /*! \fn
             * A function in order to populate the Linkage class of the ontology
             * @param oligo_sequence_stream The output stream of SequenceLinkage triples to be added to the main output stream
@@ -1148,7 +1148,7 @@ public:
             * @param oligo_uri The URI for the Oligosaccharide instance to be used in the ontology. e.g http://gmmo.uga.edu/#3H32_oligo1
             * @param res_uri The URI for the current monosaccharide to be checked for derivatives
             */
-    void CheckDerivativesAndPopulate(std::stringstream& oligo_sequence_stream, std::string mono_short_name, std::string oligo_uri, std::string res_uri, std::string monoSNFG, Glycan::Monosaccharide* mono);
+    void CheckDerivativesAndPopulate(std::stringstream& oligo_sequence_stream,std::stringstream& residue_stream,  std::string oligo_uri, std::string res_uri, Glycan::Monosaccharide* mono);
 
     /*! \fn
             * A function in order to check if the monosaccharide has derivates
@@ -1177,8 +1177,8 @@ public:
             * @param mono An Assembly Monosaccharide object to be used for populating the Monosaccharide triples
             * @param side_or_ring_atoms The list of side atoms and ring atoms of a monosaccharide
             */
-    void PopulateMonosaccharide(std::stringstream& pdb_stream, std::stringstream& oligo_stream, std::string oligo_uri, std::string id_prefix,
-                                Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms, std::string pdb_uri);
+    void PopulateMonosaccharide(std::stringstream& mono_stream, std::stringstream& oligo_stream,  std::stringstream& pdb_stream,std::string oligo_uri, std::string id_prefix,
+                                Glycan::Monosaccharide* mono, std::vector<std::string>& side_or_ring_atoms, std::string pdb_uri, int numR);
     /*! \fn
             * A function in order to populate the RingAtom class of the ontology
             * @param ring_atom_stream The output stream of RingAtom triples to be added to the main output stream
@@ -1243,6 +1243,7 @@ public:
             * @param pdb_stream The output stream of PDB triples to be added to the main output stream
             */
     void CreateTitle(std::string pdb_resource, std::stringstream& pdb_stream);
+    void CreateSubtitle(std::string pdb_resource, std::stringstream& pdb_stream);
     // /*! \fn
     // * A function in order to create a turtle formatted triple (subject predicate object) and appending it to the output file stream
     // * @param s The subject part of the triple
@@ -1423,6 +1424,7 @@ public:
 
     std::string ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type);
 
+    void ConvertGraphToQuery(std::stringstream &queryStream, GraphDS::Graph queryGraph);
     GraphDS::Graph CreateQueryStringGraph(std::string queryString);
     void ConnectNodes(int start, int end, std::vector<parsedString> &parsedVector, GraphDS::Graph& graph);
 

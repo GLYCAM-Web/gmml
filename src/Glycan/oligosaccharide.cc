@@ -1489,7 +1489,7 @@ void Glycan::Oligosaccharide::indexMono(Glycan::Monosaccharide* thisMono, int th
         testLog << "This mono has " << thisMono->mono_neighbors_.size() << " neighbors";
         gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
         testLog.str(std::string());//clear stringstream
-        for(int i = 0; i < thisMono->mono_neighbors_.size(); i++)
+        for(unsigned int i = 0; i < thisMono->mono_neighbors_.size(); i++)
         {
           testLog << thisMono->mono_neighbors_[i].second->cycle_atoms_[0]->GetResidue()->GetId() << " indexed bool is " << thisMono->mono_neighbors_[i].second->is_indexed_;
           gmml::log(__LINE__, __FILE__, gmml::INF, testLog.str());
@@ -2460,7 +2460,7 @@ void Glycan::Oligosaccharide::traverseGraph(Glycan::Monosaccharide* thisMono, Gl
       if(thisMono->anomeric_carbon_pointer_ != NULL)
       {
         terminal = thisMono->GetFormula(thisMono->anomeric_carbon_pointer_);
-        chemicially_modified_terminal_ = true;
+        chemically_modified_terminal_ = true;
         //add terminal as derivative to this mono at anomeric carbon
         for(std::vector<std::string>::iterator it = thisMono->chemical_code_->right_down_.begin(); it != thisMono->chemical_code_->right_down_.end(); it++)
         {
