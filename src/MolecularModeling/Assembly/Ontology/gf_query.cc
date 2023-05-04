@@ -157,6 +157,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
                 queryGraph.Print(logSS);
                 gmml::log(__LINE__, __FILE__, gmml::INF, logSS.str());
             }
+            ConvertGraphToQuery(query, queryGraph);
         }
         else
         {
@@ -176,11 +177,6 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     {
         query << "?oligo\t" << Ontology::isAttachedToProtein << "\ttrue.\n";
     }
-    //////////////
-    //XXXXXXXXXX//  Below is the code that I am
-    //XXXXXXXXXX//  replacing / moving above this
-    //XXXXXXXXXX//  comment block
-    //////////////
 
     if (isGlycomimetic == 1)
     {
@@ -241,7 +237,6 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
         query << "FILTER NOT EXISTS { ?commentNote :NoteType \"comment\".}\n";
     }
 
-    query << Ontology::END_WHERE_CLAUSE << "\n";
 
     //If we need to filter data instead of cleaning it
 
@@ -281,27 +276,28 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
 }
 
 std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo, std::string url, std::string output_file_type)
-{ // This function runs a full query on a single result, which is unique given the pdb_id, oligo_sequence, and oligo (which is the oligosaccharide number in the PDB in case it has identical sugars found)
-  int local_debug = -1;
-  if(local_debug > 0)
-  {
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Running MoreQuery()");
-  }
-  //This is silly, group concat all r's and bind/trim their iri's to know which is which
-  int numRgroups = std::count(oligo_sequence.begin(), oligo_sequence.end(), '<');
-  std::stringstream query;
-  query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
-  query << " DISTINCT ?residue_links" /*?glycosidic_linkage*/ "?title ?resolution ?Mean_B_Factor "
-           "?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI ?pdb_coordinates ?ProteinID";
-  if(numRgroups > 0)
-  {
-    for(int i = 0; i < numRgroups; i++)
+{ 
+    // This function runs a full query on a single result, which is unique given the pdb_id, oligo_sequence, and oligo 
+    int local_debug = -1;
+    if(local_debug > 0)
     {
-      query << " ?R" << i + 1;
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Running MoreQuery()");
     }
-    query <<  "(group_concat(distinct ?rGroup;separator=\"\\n\") as ?rGroups)\n";
-  }
-  query << "\n"
+    //This is silly, group concat all r's and bind/trim their iri's to know which is which
+    int numRgroups = std::count(oligo_sequence.begin(), oligo_sequence.end(), '<');
+    std::stringstream query;
+    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
+    query << " DISTINCT ?residue_links" /*?glycosidic_linkage*/ "?title ?resolution ?Mean_B_Factor "
+            "?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI ?pdb_coordinates ?ProteinID";
+    if(numRgroups > 0)
+    {
+        for(int i = 0; i < numRgroups; i++)
+        {
+        query << " ?R" << i + 1;
+        }
+        query <<  "(group_concat(distinct ?rGroup;separator=\"\\n\") as ?rGroups)\n";
+    }
+    query << "\n"
            "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments)\n"
            "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings)\n"
            "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n\n";
@@ -708,7 +704,7 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
         //if the node isnt in the terminal list
         if (std::find(std::begin(terminalNodeList), std::end(terminalNodeList), current_node->GetNodeId()) == std::end(terminalNodeList))
         {
-            // current_node->GetNodeType();
+            // current_node->GetNodeId();
             // this gets the mono shortName (full)
             // which then eventually and ideally needs to be checked
             // to see if it has all of the parts
@@ -716,27 +712,31 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
 
             // for now just query by the full name
             monoStream << "?mono" << current_node->GetNodeType() << "\n";
+            monoStream << "\t" << Ontology::mono_short_name << "\t?monoName" << current_node->GetNodeType() << ";\n";
+            oligoStream << "\t" << Ontology::hasMono << "\t?mono" << current_node->GetNodeType() << ";\n";
 
             for (GraphDS::Graph::EdgeVector::iterator it1 = queryEdges.begin(); it1 != queryEdges.end(); it1++)
             {
                 GraphDS::Edge *current_edge = (*it1);
                 GraphDS::Node *destinationNode = current_edge->GetDestinationNode();
-                if (current_edge->GetSourceNode() == current_node)
+                if ((current_edge->GetSourceNode() == current_node) &&
+                    (std::find(std::begin(terminalNodeList), std::end(terminalNodeList), destinationNode->GetNodeId()) == std::end(terminalNodeList)))
                 {
                     // Name link variables by the node #s they connect
-                    linkStream << "?link" << current_node->GetNodeType() << "-" << destinationNode->GetNodeType() <<"\n";
+                    linkStream << "?link" << current_node->GetNodeType() << "to" << destinationNode->GetNodeType() <<"\n";
 
                     // Add nodes to the query
                     linkStream << "\t" << Ontology::hasParentMono << "\t?mono" << current_node->GetNodeType() << ";\n";
                     linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType() << ";\n";
 
                     // Filter by the linkage type
-                    linkStream << "\t" << Ontology::linkageType << "\t?linkType;";
+                    linkStream << "\t" << Ontology::linkageType << "\t?link" << current_node->GetNodeType() << "to";
+                    linkStream << destinationNode->GetNodeType() << "Type;\n";
 
                     // All objects end with their type and a period
                     linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n";
                     
-                    linkStream << "VALUES ?linkType { ";
+                    linkStream << "VALUES ?link" << current_node->GetNodeType() << "to" << destinationNode->GetNodeType() << "Type { ";
 
                     if (current_edge->GetEdgeLabels()[0] == "1-0")
                     {    
@@ -760,21 +760,23 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
                     {
                         linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
                     }
-                    linkStream << "}\n";
+                    linkStream << "}\n\n";
                 }
-                else if ((it1 == queryEdges.begin()) && (current_edge->GetSourceNode() == NULL) && (current_edge->GetDestinationNode() != NULL))
+                else if ((it1 == queryEdges.begin()) && (current_edge->GetSourceNode() == NULL) && 
+                         (current_edge->GetDestinationNode() != NULL) && 
+                         (std::find(std::begin(terminalNodeList), std::end(terminalNodeList), destinationNode->GetNodeId()) == std::end(terminalNodeList)))
                 { // Graph that starts with an edge
                     // Name link variables by the node #s they connect
-                    linkStream << "?linkX\n";
-
+                    linkStream << "?linkXto" << destinationNode->GetNodeType() <<"\n";
+                    
                     // Add nodes to the query
                     linkStream << "\t" << Ontology::hasParentMono << "\t?monoX;\n";
                     linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType() << ";\n";
 
                     // Filter by the linkage type
-                    linkStream << "\t" << Ontology::linkageType << "\t?linkType;";
+                    linkStream << "\t" << Ontology::linkageType << "\t?linkXType;";
                     // All objects end with their type and a period
-                    linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n";
+                    linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n\n";
 
                     if (current_edge->GetEdgeLabels()[0] != "*")
                     {
@@ -804,18 +806,21 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
                     {
                         linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
                     }
-                    linkStream << "}\n";
+                    linkStream << "}\n\n";
                 }
             }
-            monoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Monosaccharide << ".\n";
+            monoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Monosaccharide << ".\n\n";
+            
+            // This should split mono name and look at each part
+            monoStream << "FILTER REGEX(?monoName" << current_node->GetNodeType() << ", \"" << current_node->GetNodeId() << "\")\n\n";
         }
         else //if the node is in the terminal list
         {
-            oligoStream << Ontology::hasTerminal << "\t?terminal;";
+            oligoStream << "\t" << Ontology::hasTerminal << "\t?terminal;";
             //TODO handle terminals better
         }   
     }
-    oligoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Oligosaccharide << ".\n";
+    oligoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Oligosaccharide << ".\n\n";
 
     
 
