@@ -28,6 +28,10 @@ int main(int argc, char** argv)
     std::string line;
     while (std::getline(infile, line))
     {
+        if(line.empty())
+        {
+            continue;
+        }
         std::vector<std::string> splitLine = codeUtils::split(line, delimiter);
         std::string inputSequence = splitLine.at(1);
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
