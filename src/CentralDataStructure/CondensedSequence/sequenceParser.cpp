@@ -43,12 +43,8 @@ SequenceParser::SequenceParser (std::string inputSequence)
 // DGlcpa1-[4DGlcpa1-3DManpa1-]<3>4DGalpa1-OH // Tails that aren't OH
 std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
 {
-    unsigned int repeatCharacterEndLocation = inputSequence.find_last_of('>');
-    if (repeatCharacterEndLocation < 12)
-    {
-        throw std::runtime_error("Not enough information before '>' in input. Did you forget the head residue? : " + inputSequence);
-    }
-    unsigned int repeatCharacterStartLocation = inputSequence.find_last_of('<');
+    unsigned int repeatCharacterEndLocation = inputSequence.find_first_of('>');
+    unsigned int repeatCharacterStartLocation = inputSequence.find_first_of('<');
     if(repeatCharacterStartLocation == std::string::npos)
     {
         throw std::runtime_error("No '<' found in sequence with repeating syntax symbol '>' : " + inputSequence);
@@ -88,7 +84,7 @@ std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
     }
     newInputString += after;
     // Check if there are more repeating units and deal with them recursively:
-    if(before.find('>') != std::string::npos)
+    if(after.find('>') != std::string::npos)
     {
         gmml::log(__LINE__,__FILE__,gmml::INF, "Sequence with some repeats processed: " + newInputString);
         std::cout << "Sequence with some repeats processed: " << newInputString << "\n";
