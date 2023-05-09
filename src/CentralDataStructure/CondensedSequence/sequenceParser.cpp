@@ -42,7 +42,9 @@ std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
         throw std::runtime_error("Not enough information before '>' in input. Did you forget the head residue? : " + inputSequence);
     size_t repeatCharacterStartLocation = inputSequence.find_last_of('<');
     if(repeatCharacterStartLocation == std::string::npos)
-        throw std::runtime_error("No '<' found in sequence with '>' : " + inputSequence);
+    {
+        throw std::runtime_error("No '<' found in sequence with repeating syntax symbol '>' : " + inputSequence);
+    }
     // Get the number of repeats:
     int numberRepeats = 0;
     try
@@ -51,9 +53,9 @@ std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
         std::string stringNumber = inputSequence.substr(numberStart, (repeatCharacterEndLocation - numberStart) );
         numberRepeats = std::stoi(stringNumber);
     }
-    catch (...)
+    catch (...) // stoi throws this
     {
-        throw std::runtime_error("Number of repeating units not specified correctly in repeating sequence: " + inputSequence);
+        throw std::runtime_error("Number of repeating units not specified correctly in repeating unit: " + inputSequence);
     }
     size_t i = repeatCharacterStartLocation;
     // Ensure next char is the ] of the repeating unit
