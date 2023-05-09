@@ -3548,9 +3548,9 @@ Overlaps resolved
 Number of residues is 12
 
 *********************
-Building DGlcpa1-[4DGlcpa1-]<4>2DGlcpa1-[4DGlcpa1-6[LFucpa1-2]DManpa1-]<2>OH
+Building DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4[4DGlcpa1-6[LFucpa1-2]DManpa1-]<2>OH
 *********************
-Sequence with some repeats processed: DGlcpa1-[4DGlcpa1-]<4>2DGlcpa1-4DGlcpa1-6[LFucpa1-2]DManpa1-4DGlcpa1-6[LFucpa1-2]DManpa1-OH
+Sequence with some repeats processed: DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4DGlcpa1-6[LFucpa1-2]DManpa1-4DGlcpa1-6[LFucpa1-2]DManpa1-OH
 Sequence with all repeats processed: DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-2DGlcpa1-4DGlcpa1-6[LFucpa1-2]DManpa1-4DGlcpa1-6[LFucpa1-2]DManpa1-OH
 Glycam names are: ROH, XMA, 4GA, XMA, 4GA, 2GA, 4GA, 4GA, 4GA, 4GA, 0GA, 0fA, 0fA, 
 Found query residue: 0GA
@@ -3879,9 +3879,9 @@ Building DGlcpa1-4DGlcpa1-6DManpa1-<15>OH
 Error thrown by the carbohydrateBuilder in gmml during construction was: Missing or incorrect usage of ']' in repeating sequence: DGlcpa1-4DGlcpa1-6DManpa1-<15>OH
 
 *********************
-Building DGlcpa1-4DGlcpa1-[4DGlcpa1-]<>OH
+Building DGlcpa1-4DGlcpa1-4[4DGlcpa1-]<>OH
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: Number of repeating units not specified correctly in repeating unit: DGlcpa1-4DGlcpa1-[4DGlcpa1-]<>OH
+Error thrown by the carbohydrateBuilder in gmml during construction was: Number of repeating units not specified correctly in repeating unit: DGlcpa1-4DGlcpa1-4[4DGlcpa1-]<>OH
 
 *********************
 Building DArafb1-2DArafa1-3DArafa1-5DArafa1-OME
@@ -4574,11 +4574,11 @@ Overlaps resolved
 Number of residues is 13
 
 *********************
-Building DGlcpa1-[4DGlcpa1-]<4>2DGlcpa1-[4DGlcpa1-6DGlcpa1-[4DGlcpa1-]<3>4DManpa1-]<2>OH
+Building DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4[4DGlcpa1-6DGlcpa1-4[4DGlcpa1-]<3>4DManpa1-]<2>OH
 *********************
-Sequence with some repeats processed: DGlcpa1-[4DGlcpa1-]<4>2DGlcpa1-4DGlcpa1-6DGlcpa1-[4DGlcpa1-]<3>4DManpa1-4DGlcpa1-6DGlcpa1-[4DGlcpa1-]<3>4DManpa1-OH
-Sequence with some repeats processed: DGlcpa1-[4DGlcpa1-]<4>2DGlcpa1-4DGlcpa1-6DGlcpa1-[4DGlcpa1-]<3>4DManpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-OH
-Sequence with some repeats processed: DGlcpa1-[4DGlcpa1-]<4>2DGlcpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-OH
+Sequence with some repeats processed: DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4DGlcpa1-6DGlcpa1-4[4DGlcpa1-]<3>4DManpa1-4DGlcpa1-6DGlcpa1-4[4DGlcpa1-]<3>4DManpa1-OH
+Sequence with some repeats processed: DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4DGlcpa1-6DGlcpa1-4[4DGlcpa1-]<3>4DManpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-OH
+Sequence with some repeats processed: DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-OH
 Sequence with all repeats processed: DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-2DGlcpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-OH
 Glycam names are: ROH, 4MA, 4GA, 4GA, 4GA, 6GA, 4GA, 4MA, 4GA, 4GA, 4GA, 6GA, 4GA, 2GA, 4GA, 4GA, 4GA, 4GA, 0GA, 
 Found query residue: 0GA

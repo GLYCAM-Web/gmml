@@ -37,7 +37,7 @@ namespace cdsCondensedSequence
         bool CheckSequenceSanity(std::string sequence);
         void ParseLabelledInput(std::string inString);
         std::string parseRepeatingUnits(const std::string inputSequence);
-        size_t seekRepeatStart(const std::string &inputSequence, size_t startPosition);
+        unsigned int seekRepeatStart(const std::string &inputSequence, unsigned int startPosition);
         bool ParseCondensedSequence(std::string inString);
         void RecurveParseAlt(size_t &currentIndex, std::string sequence, ParsedResidue* parent);
         ParsedResidue* SaveResidue(const size_t windowStart, const size_t windowEnd, const std::string sequence, ParsedResidue* parent);

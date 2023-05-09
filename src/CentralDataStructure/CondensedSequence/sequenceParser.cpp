@@ -31,16 +31,24 @@ SequenceParser::SequenceParser (std::string inputSequence)
     return;
 }
 
-// Examples: DGlcpa1-[4DGlcpa1-]<4>OH becomes DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-OH
-// DGlcpa1-[4DGlcpa1-]<9>2DManpa1-[4DGalpNAca1-]<4>OH // Multiple repeats
-// DGlcpa1-[4DGlcpa1-3DManpa1-]<9>OH // Disacc repeats
-// DGlcpa1-[4DGlcpa1-3[DAllpb1-2]DManpa1-]<9>OH // Branched repeats, unavailable on legacy
+// Note Rob waved the wand and changed the format as of 2023-05-08. Changes below reflect that. Tails didn't change, Heads yes and have become optional.
+// Examples:
+// DGlcpa1-2[4DGlcpa1-]<4>OH becomes DGlcpa1-2DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-OH
+// [4DGlcpa1-]<4>OH becomes DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-OH
+// DGlcpa1-3[4DGlcpa1-]<9>2DManpa1-[4DGalpNAca1-]<4>OH // Multiple repeats
+// DGlcpa1-2[4DGlcpa1-3DManpa1-]<9>OH // Disacc repeats
+// DGlcpa1-2[4DGlcpa1-3[DAllpb1-2]DManpa1-]<9>OH // Branched repeats, unavailable on legacy
+// Repeats within repeats?
+// DGlcpa1-4[4[DGalpa1-3]DGlcpa1-3[DAllpb1-2]DManpa1-]<3>OH Repeats with branches on the leftmost Residue?
+// DGlcpa1-[4DGlcpa1-3DManpa1-]<3>4DGalpa1-OH // Tails that aren't OH
 std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
 {
-    size_t repeatCharacterEndLocation = inputSequence.find_last_of('>');
-    if (repeatCharacterEndLocation < 21)
+    unsigned int repeatCharacterEndLocation = inputSequence.find_last_of('>');
+    if (repeatCharacterEndLocation < 12)
+    {
         throw std::runtime_error("Not enough information before '>' in input. Did you forget the head residue? : " + inputSequence);
-    size_t repeatCharacterStartLocation = inputSequence.find_last_of('<');
+    }
+    unsigned int repeatCharacterStartLocation = inputSequence.find_last_of('<');
     if(repeatCharacterStartLocation == std::string::npos)
     {
         throw std::runtime_error("No '<' found in sequence with repeating syntax symbol '>' : " + inputSequence);
@@ -49,7 +57,7 @@ std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
     int numberRepeats = 0;
     try
     {
-        size_t numberStart = repeatCharacterStartLocation + 1;
+        unsigned int numberStart = repeatCharacterStartLocation + 1;
         std::string stringNumber = inputSequence.substr(numberStart, (repeatCharacterEndLocation - numberStart) );
         numberRepeats = std::stoi(stringNumber);
     }
@@ -57,20 +65,23 @@ std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
     {
         throw std::runtime_error("Number of repeating units not specified correctly in repeating unit: " + inputSequence);
     }
-    size_t i = repeatCharacterStartLocation;
+    unsigned int i = repeatCharacterStartLocation;
     // Ensure next char is the ] of the repeating unit
     if (inputSequence[--i] != ']')
         throw std::runtime_error("Missing or incorrect usage of ']' in repeating sequence: " + inputSequence);
     // Ok now go find the position of the start of the repeating unit, considering branches
-    size_t repeatEnd = i;
-    size_t repeatStart = this->seekRepeatStart(inputSequence, i);
+    unsigned int repeatEnd = i;
+    unsigned int repeatStart = this->seekRepeatStart(inputSequence, i);
    // std::cout << "Repeat starts at position " << repeatStart << " and ends here: " << repeatEnd << std::endl;
   //  std::cout << "Number of repeats: " << numberRepeats << "\n";
     std::string before = inputSequence.substr(0, repeatStart);
+    std::string firstRepeat = inputSequence.substr(repeatStart + 2, (repeatEnd - repeatStart - 2) ); // firstRepeat does not have the e.g. 4 in 4DGlcpa1-
     std::string repeat = inputSequence.substr(repeatStart + 1, (repeatEnd - repeatStart - 1) );
     std::string after = inputSequence.substr(repeatCharacterEndLocation + 1);
     std::string newInputString;
     newInputString += before;
+    newInputString += firstRepeat;
+    numberRepeats--; // firstRepeat added already.
     for (int j = 1; j <= numberRepeats; ++j)
     {
         newInputString += repeat;
@@ -79,18 +90,26 @@ std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
     // Check if there are more repeating units and deal with them recursively:
     if(before.find('>') != std::string::npos)
     {
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Sequence with some repeats processed: " + newInputString);
+        std::cout << "Sequence with some repeats processed: " << newInputString << "\n";
         newInputString = this->parseRepeatingUnits(newInputString);
+    }
+    else
+    {
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Sequence with all repeats processed: " + newInputString);
+        std::cout << "Sequence with all repeats processed: " << newInputString << "\n";
     }
     return newInputString;
 }
 
 // There may be branches which also use [], so need to check for those and find the [ that starts the repeat
-size_t SequenceParser::seekRepeatStart(const std::string &inputSequence, size_t i)
+unsigned int SequenceParser::seekRepeatStart(const std::string &inputSequence, unsigned int i)
 {
     int branches = 0;
-    --i; // skip the initial ]
+
     while (i > 0)
     {
+        --i; // skip the initial ]
         //std::cout << inputSequence[i];
         if(inputSequence[i] == ']')
         {
@@ -103,7 +122,6 @@ size_t SequenceParser::seekRepeatStart(const std::string &inputSequence, size_t 
             else
                 --branches;
         }
-        --i;
     }
     std::cout << "\n";
     throw std::runtime_error("Did not find corresponding '[' in repeat unit of repeating sequence: " + inputSequence);
