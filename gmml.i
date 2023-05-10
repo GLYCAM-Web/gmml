@@ -40,7 +40,7 @@
 #include "includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "includes/InputSet/CondensedSequenceSpace/sequencestring.hpp"
 
-#include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/graphVizDotConfig.hpp"
 #include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
 
 #include "includes/InternalPrograms/Sequence/sequence.hpp"
@@ -180,7 +180,7 @@
 #include "includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 
 #include "includes/Abstract/absBuilder.hpp"
-#include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
 
 %}
 
@@ -220,7 +220,7 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 %include "includes/InputSet/CondensedSequenceSpace/sequencestring.hpp"
 
-%include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
+%include "includes/CentralDataStructure/CondensedSequence/graphVizDotConfig.hpp"
 %include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
 
 %include "includes/InternalPrograms/Sequence/sequence.hpp"
@@ -359,7 +359,7 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 
 %include "includes/Abstract/absBuilder.hpp"
-%include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
+%include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
 
 
 %template(string_vector) std::vector<std::string>;
