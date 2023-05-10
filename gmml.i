@@ -180,7 +180,7 @@
 #include "includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 
 #include "includes/Abstract/absBuilder.hpp"
-#include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
+#include "includes/CentralDataStructure/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
 %}
 
@@ -359,7 +359,7 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 
 %include "includes/Abstract/absBuilder.hpp"
-%include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
+%include "includes/CentralDataStructure/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
 
 %template(string_vector) std::vector<std::string>;
@@ -724,13 +724,13 @@ std::ostream & get_cout() { return std::cout; }
 
 ///Carbohydrate Builder///
 //typedef std::vector<DihedralOptions> DihedralOptionsVector;
-%template(dihedral_options_vector) std::vector<CondensedSequence::DihedralOptions>;
+%template(dihedral_options_vector) std::vector<cdsCondensedSequence::DihedralOptions>;
 
 //typedef std::vector<LinkageOptions> LinkageOptionsVector;
-%template(linkage_options_vector) std::vector<CondensedSequence::LinkageOptions>;
+%template(linkage_options_vector) std::vector<cdsCondensedSequence::LinkageOptions>;
 
 //typedef std::vector<SingleRotamerInfo> SingleRotamerInfoVector;
-%template(single_rotamer_info_vector) std::vector<CondensedSequence::SingleRotamerInfo>;
+%template(single_rotamer_info_vector) std::vector<cdsCondensedSequence::SingleRotamerInfo>;
 
 //typedef std::vector<MolecularModeling::Residue*> ResidueVector;
 %template(residue_vector) std::vector<MolecularModeling::Residue* >;
