@@ -28,7 +28,7 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 {
     try
     {
-        this->setName("condensedSequence");
+        this->setName("CONDENSEDSEQUENCE");
         // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
         this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependency Oliver. Update: Fixed. Todo: Confirm/Test the fix Oliver. Just delete this line and test you toolbag.
         this->SetIndexByConnectivity(); // For reporting residue index numbers to the user
