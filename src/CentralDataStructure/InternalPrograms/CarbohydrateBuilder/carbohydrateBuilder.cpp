@@ -171,7 +171,7 @@ void carbohydrateBuilder::generateLinkagePermutationsRecursively(std::vector<cds
         if (rotamerCount <= maxRotamers)
         {
             linkage->SetSpecificShapeUsingMetadata(shapeNumber);
-            std::cout << linkage->GetFromThisResidue1()->getStringId() << "-" << linkage->GetToThisResidue2()->getStringId() << ": " << (shapeNumber + 1) << " of " << linkage->GetNumberOfShapes() <<  "\n";
+//            std::cout << linkage->GetFromThisResidue1()->getStringId() << "-" << linkage->GetToThisResidue2()->getStringId() << ": " << (shapeNumber + 1) << " of " << linkage->GetNumberOfShapes() <<  "\n";
             if(std::next(linkage) != end)
             {
                 this->generateLinkagePermutationsRecursively(std::next(linkage), end, maxRotamers, rotamerCount);

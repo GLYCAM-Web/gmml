@@ -58,7 +58,7 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
                 this->ApplyDeoxy(static_cast<ParsedResidue*>(cdsResidue));
             }
         }
-        std::cout << "\n\n\nOn to setting 3d structure!\n\n";
+//        std::cout << "\n\n\nOn to setting 3d structure!\n\n";
         // Set 3D structure
         this->DepthFirstSetConnectivityAndGeometry(this->GetTerminal()); // recurve start with terminal
 //        for( auto &cdsResidue: this->getResidues() )
@@ -89,15 +89,15 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
         //        std::cout << "Overlaps resolved" << std::endl;
 
         // Ok if have done greedy then the atoms-to-move needs to be updated for every linkage:
-        std::cout << "Re-determining atoms that need to move for each linkage:" << std::endl;
+//        std::cout << "Re-determining atoms that need to move for each linkage:" << std::endl;
         for (auto &linkage : glycosidicLinkages_)
         {
             linkage.DetermineAtomsThatMove();
         }
-        std::cout << "Final overlap resolution" << std::endl;
+//        std::cout << "Final overlap resolution" << std::endl;
         this->ResolveOverlaps();
-        std::cout << "Overlaps resolved" << std::endl;
-        std::cout << "Number of residues is " << this->GetResidueCount() << "\n";
+//        std::cout << "Overlaps resolved" << std::endl;
+//        std::cout << "Number of residues is " << this->GetResidueCount() << "\n";
     }
     catch(const std::string &exceptionMessage)
     {
@@ -349,7 +349,7 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
             throw std::runtime_error(message);
         }
         parentAtom = cdsSelections::getNonCarbonHeavyAtomNumbered(parentResidue->getAtoms(), linkageLabel.substr(linkPosition));
-        std::cout << "Parent atom is " << parentAtom->getName() << std::endl;
+        //std::cout << "Parent atom is " << parentAtom->getName() << std::endl;
     }
     else
     {
@@ -413,23 +413,23 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
     {
         if ( (parentAtomNeighbor->getName().at(0) != 'H') && (parentAtomNeighbor != childAtom ) )
         {
-            std::cout << "Setting angle between\nparentNeighbor " << parentAtomNeighbor->getName() << " " << parentAtomNeighbor->getCoordinate()->ToString() << "\nparent " << parentAtom->getName() << " " << parentAtom->getCoordinate()->ToString() << "\nand child " << childAtom->getName() << " " << childAtom->getCoordinate()->ToString() << "\nchild residue " << childResidue->getName() << " will move\n";
+            //std::cout << "Setting angle between\nparentNeighbor " << parentAtomNeighbor->getName() << " " << parentAtomNeighbor->getCoordinate()->ToString() << "\nparent " << parentAtom->getName() << " " << parentAtom->getCoordinate()->ToString() << "\nand child " << childAtom->getName() << " " << childAtom->getCoordinate()->ToString() << "\nchild residue " << childResidue->getName() << " will move\n";
             cds::SetAngle(parentAtomNeighbor->getCoordinate(), parentAtom->getCoordinate(), childAtom->getCoordinate(), constants::DEFAULT_ANGLE, childResidue->getCoordinates());
             break;
         }
     }
     // GREEDY Yo if you do this here, then the atoms that move in RotatableDihedral class won't include atoms that get added later. You need to trigger an update of that if you want to wiggle later.
-    std::cout << "Finding rotatable dihedrals and applying metadata." << std::endl;
+    //std::cout << "Finding rotatable dihedrals and applying metadata." << std::endl;
     cds::ResidueLinkage& linkage = glycosidicLinkages_.emplace_back(childResidue, parentResidue);
-    std::cout << "Setting default shape" << std::endl;
+    //std::cout << "Setting default shape" << std::endl;
     linkage.SetDefaultShapeUsingMetadata();
-    std::cout << "Wiggling what we have" << std::endl;
+    //std::cout << "Wiggling what we have" << std::endl;
     //    std::vector<cds::Atom*> allAtomsInCarb = this->getAtoms();
     //    linkage.SimpleWiggleCurrentRotamers(allAtomsInCarb, allAtomsInCarb, 5);
     std::vector<cds::Atom*> childAtoms = childResidue->getAtoms(); // keeps them alive in memory
     std::vector<cds::Atom*> parentAtoms = parentResidue->getAtoms(); // keeps them alive in memory
     linkage.SimpleWiggleCurrentRotamers(childAtoms, parentAtoms, 5);
-    std::cout << "Atomic overlaps resolved with parent" << std::endl;
+    //std::cout << "Atomic overlaps resolved with parent" << std::endl;
     return;
 }
 
@@ -455,8 +455,8 @@ void Carbohydrate::DepthFirstSetConnectivityAndGeometry(cds::Residue* currentPar
     for(auto &child : currentParent->getChildren())
     {
         //glycosidicLinkages_.emplace_back(neighbor, to_this_residue2); // Depth first. For Breath first remove this line, and comment out above.
-        std::cout << "Setting connection between " << child->getName() << " and its parent " << currentParent->getName() << ", the connection has linkageLabel: "
-         << static_cast<ParsedResidue*>(child)->GetLinkageName() << "\n";
+//        std::cout << "Setting connection between " << child->getName() << " and its parent " << currentParent->getName() << ", the connection has linkageLabel: "
+//         << static_cast<ParsedResidue*>(child)->GetLinkageName() << "\n";
         this->ConnectAndSetGeometry(child, currentParent);
         this->DepthFirstSetConnectivityAndGeometry(child);
     }
@@ -466,16 +466,16 @@ void Carbohydrate::DepthFirstSetConnectivityAndGeometry(cds::Residue* currentPar
 std::vector<std::string> Carbohydrate::GetGlycamNamesOfResidues() const
 {
     std::vector<std::string> names(this->getResidues().size()); // set size of vec for speed.
-    std::cout << "Glycam names are: ";
+//    std::cout << "Glycam names are: ";
     for(auto &residue : this->getResidues())
     {
         if (residue->GetType() != cds::ResidueType::Deoxy)
         {
             names.push_back(this->GetGlycamResidueName(static_cast<ParsedResidue*>(residue)));
-            std::cout << names.back() << ", ";
+//            std::cout << names.back() << ", ";
         }
     }
-    std::cout << "\n";
+//    std::cout << "\n";
     return names;
 }
 

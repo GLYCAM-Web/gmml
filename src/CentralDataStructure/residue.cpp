@@ -34,7 +34,7 @@ Residue::Residue(const Residue& other) : glygraph::Node<cds::Residue>(other)
     {
         atoms_.push_back(std::make_unique<Atom>(*atom));
     }
-    std::cout << "cds::Residue Copy ctor complete" << std::endl;
+    //std::cout << "cds::Residue Copy ctor complete" << std::endl;
 }
 
 Residue& Residue::operator=(Residue other) {
@@ -232,6 +232,6 @@ void Residue::Print(std::ostream& out) const
         atom->Print(out);
         out << "\n";
     }
-    std::cout << "\n";
+    out << "\n";
 }
 

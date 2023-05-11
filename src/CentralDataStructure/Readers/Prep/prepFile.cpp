@@ -9,7 +9,6 @@
 #include <ios>
 #include <algorithm> // count
 
-
 using prep::PrepFile;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
@@ -17,7 +16,7 @@ using prep::PrepFile;
 PrepFile::PrepFile(const std::string& prep_file)
 {
     this->setName("prepFile");
-	std::cout << "Constructor entered" << std::endl;
+//	std::cout << "Constructor entered" << std::endl;
 	codeUtils::ensureFileExists(prep_file);
 	std::ifstream in_file(prep_file.c_str());
 	if(in_file.is_open())
@@ -142,9 +141,9 @@ void PrepFile::ReadQueryResidues(std::ifstream &in_file, const std::vector<std::
     	//std::cout << "Current residue name is: " << residueNameLine.front() << std::endl;
     	if (std::find(queryNames.begin(), queryNames.end(), residueNameLine.front()) != queryNames.end() )
     	{
-    		std::cout << "Found query residue: " << residueNameLine.front() << "\n";
+//    		std::cout << "Found query residue: " << residueNameLine.front() << "\n";
     		int numberOfTimesToReadInResidue = std::count(queryNames.begin(), queryNames.end(), residueNameLine.front());
-    		std::cout << residueNameLine.front() << " will be read in " << numberOfTimesToReadInResidue << " times.\n";
+//    		std::cout << residueNameLine.front() << " will be read in " << numberOfTimesToReadInResidue << " times.\n";
     		while(numberOfTimesToReadInResidue > 0)
     		{
     		    in_file.seekg(firstResidueLinePosition);  //go back here so the residue constructor works

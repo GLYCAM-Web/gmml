@@ -47,7 +47,7 @@ double cds::CalculateAtomicOverlaps(cds::Atom* atomA, cds::Atom* atomB, double r
         if (atomB->getName().at(0) == 'P') radiusB = 1.80;
         if (atomB->getName().at(0) == 'H') radiusB = 1.09;
     }
-    //std::cout << "Distance: " << distance << " radiusA: " << radiusA << " radiusB: " << radiusB << std::endl;
+//    std::cout << "Distance: " << distance << " radiusA: " << radiusA << " radiusB: " << radiusB << std::endl;
     double overlap = 0.0;
     if (radiusA + radiusB > distance) // Close enough to overlap
     {
@@ -69,10 +69,10 @@ double cds::CalculateAtomicOverlaps(cds::Atom* atomA, cds::Atom* atomB, double r
     }
     if ( (overlap < 0.0) || (radiusA == -0.1) || (radiusB == -0.1) )
     { // Either the user didn't specify the radius or the element isn't one of the above
-        std::cout << "Neggie: " << overlap << " d: " << distance << ", A: " << atomA->getName() << ", rA: " << radiusA << ", B: " << atomB->getName() << ", rB: " << radiusB << std::endl;
+//        std::cout << "Neggie: " << overlap << " d: " << distance << ", A: " << atomA->getName() << ", rA: " << radiusA << ", B: " << atomB->getName() << ", rB: " << radiusB << std::endl;
         return 0.0; // negative overlap isn't a thing.
     }
-    //std::cout << "Non-normalized Overlap=" << totalOverlap << std::endl;
+//    std::cout << "Non-normalized Overlap=" << totalOverlap << std::endl;
     return overlap;
 }
 
@@ -90,7 +90,7 @@ double cds::CalculateAtomicOverlaps(std::vector<cds::Atom*> atomsA, std::vector<
                 totalOverlap += currentOverlap;
                 if (print)
                 {
-                    std::cout << atomA->getId() << "::" << atomB->getId() << ": " << (currentOverlap / constants::CARBON_SURFACE_AREA) << "\n";
+//                    std::cout << atomA->getId() << "::" << atomB->getId() << ": " << (currentOverlap / constants::CARBON_SURFACE_AREA) << "\n";
                 }
             }
         }
@@ -130,7 +130,7 @@ double cds::CalculateAtomicOverlapsBetweenNonBondedAtoms(std::vector<cds::Atom*>
 unsigned int cds::CountOverlappingResidues(const std::vector<cds::Residue*>& residuesA, const std::vector<cds::Residue*>& residuesB)
 {
     unsigned int overlapCount = 1;
-    //std::cout << "Number of A : B residues is " << residuesA.size() << " : " << residuesB.size() << std::endl << std::flush;
+//    std::cout << "Number of A : B residues is " << residuesA.size() << " : " << residuesB.size() << std::endl << std::flush;
     for(auto &residueA : residuesA)
     {
         const Coordinate* residueA_Center = residueA->calculateGeometricCenter();
@@ -141,9 +141,9 @@ unsigned int cds::CountOverlappingResidues(const std::vector<cds::Residue*>& res
                 ++overlapCount;
             }
         }
-        //std::cout << "PingPing" << std::endl << std::flush;
+//        std::cout << "PingPing" << std::endl << std::flush;
     }
-    //std::cout << "DingDing" << std::endl << std::flush;
+//    std::cout << "DingDing" << std::endl << std::flush;
     return overlapCount;
 }
 

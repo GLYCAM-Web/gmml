@@ -9,7 +9,7 @@ using glycoprotein::GlycoproteinBuilderInputs;
 
 GlycoproteinBuilderInputs glycoprotein::readGPInputFile(std::string inputFileName)
 {
-    std::cout << "About to read " << inputFileName << std::endl << std::flush;
+//    std::cout << "About to read " << inputFileName << std::endl << std::flush;
     std::ifstream infile (inputFileName);
     if (!infile)
     {
@@ -63,7 +63,7 @@ GlycoproteinBuilderInputs glycoprotein::readGPInputFile(std::string inputFileNam
             }
         }
     }
-    std::cout << "Reading input file complete, just making a quick check\n" << std::flush;
+//    std::cout << "Reading input file complete, just making a quick check\n" << std::flush;
     if(gpInputs.glycositesInputVector_.empty())
     {
         throw std::runtime_error("Error reading from gpInput file, no glycosites requested. Perhaps your formatting is incorrect.\n");

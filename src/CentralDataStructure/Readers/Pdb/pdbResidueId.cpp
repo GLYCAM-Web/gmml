@@ -22,11 +22,11 @@ ResidueId::ResidueId(const std::string name, const std::string number, const std
 
 ResidueId::ResidueId(std::vector<std::string> inputVector)
 {
-    std::cout << "Inputs:\n";
-    for(auto & input : inputVector)
-    {
-        std::cout << input << std::endl;
-    }
+//    std::cout << "Inputs:\n";
+//    for(auto & input : inputVector)
+//    {
+//        std::cout << input << std::endl;
+//    }
     if (inputVector.size() < 4)
     {
         throw std::runtime_error("ResidueId cannot be constructed from inputs");

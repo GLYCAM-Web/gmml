@@ -87,13 +87,13 @@ std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
     if(after.find('>') != std::string::npos)
     {
         gmml::log(__LINE__,__FILE__,gmml::INF, "Sequence with some repeats processed: " + newInputString);
-        std::cout << "Sequence with some repeats processed: " << newInputString << "\n";
+//        std::cout << "Sequence with some repeats processed: " << newInputString << "\n";
         newInputString = this->parseRepeatingUnits(newInputString);
     }
     else
     {
         gmml::log(__LINE__,__FILE__,gmml::INF, "Sequence with all repeats processed: " + newInputString);
-        std::cout << "Sequence with all repeats processed: " << newInputString << "\n";
+//        std::cout << "Sequence with all repeats processed: " << newInputString << "\n";
     }
     return newInputString;
 }
@@ -119,7 +119,7 @@ unsigned int SequenceParser::seekRepeatStart(const std::string &inputSequence, u
                 --branches;
         }
     }
-    std::cout << "\n";
+//    std::cout << "\n";
     throw std::runtime_error("Did not find corresponding '[' in repeat unit of repeating sequence: " + inputSequence);
 }
 

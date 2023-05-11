@@ -21,7 +21,7 @@ double gmml::CalculateAtomicOverlaps(std::vector<Atom*> atomsA, std::vector<Atom
                 totalOverlap += currentOverlap;
                 if (print)
                 {
-                	std::cout << atomA->GetId() << "::" << atomB->GetId() << ": " << (currentOverlap / gmml::CARBON_SURFACE_AREA) << "\n";
+//                	std::cout << atomA->GetId() << "::" << atomB->GetId() << ": " << (currentOverlap / gmml::CARBON_SURFACE_AREA) << "\n";
                 }
             }
         }
@@ -103,7 +103,7 @@ double gmml::CalculateAtomicOverlaps(MolecularModeling::Atom *atomA, MolecularMo
     }
     if ( (overlap < 0.0) || (radiusA == -0.1) || (radiusB == -0.1) )
     { // Either the user didn't specify the radius or the element isn't one of the above
-    	std::cout << "Neggie: " << overlap << " d: " << distance << ", A: " << atomA->GetName() << ", rA: " << radiusA << ", B: " << atomB->GetName() << ", rB: " << radiusB << std::endl;
+//    	std::cout << "Neggie: " << overlap << " d: " << distance << ", A: " << atomA->GetName() << ", rA: " << radiusA << ", B: " << atomB->GetName() << ", rB: " << radiusB << std::endl;
     	return 0.0; // negative overlap isn't a thing.
     }
     //std::cout << "Non-normalized Overlap=" << totalOverlap << std::endl;

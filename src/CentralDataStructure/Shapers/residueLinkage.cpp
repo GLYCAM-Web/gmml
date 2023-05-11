@@ -449,7 +449,7 @@ std::vector<RotatableDihedral> ResidueLinkage::SplitAtomVectorIntoRotatableDihed
     }
     else
     {
-        std::cout << "Creating rotatable dihedrals between: " << this->GetFromThisResidue1()->getName() << " and " << this->GetToThisResidue2()->getName() << "\n";
+//        std::cout << "Creating rotatable dihedrals between: " << this->GetFromThisResidue1()->getName() << " and " << this->GetToThisResidue2()->getName() << "\n";
         for(typename std::vector<cds::Atom*>::iterator it1 = atoms.begin(); it1 != (atoms.end()-3); ++it1)
         {
             cds::Atom* atom1 = *it1;

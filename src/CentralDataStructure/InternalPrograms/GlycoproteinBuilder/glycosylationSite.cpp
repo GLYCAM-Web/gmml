@@ -14,7 +14,7 @@
 #include <string>
 #include <utility>
 #include <vector>
-#include <iomanip> // For setting precision and formating in std::cout
+#include <iomanip> // For setting precision and formating in output
 
 #include "../../../../includes/CentralDataStructure/Selections/templatedSelections.hpp"
 //#include <algorithm> //  std::erase, std::remove
@@ -31,11 +31,11 @@ GlycosylationSite::GlycosylationSite(Residue* residue, Carbohydrate* carbohydrat
     residueGlycanLinkage_ = ResidueLinkage(carbohydrate->GetReducingResidue(), this->GetResidue()); // Attach glycan has to happen first as design is funky here, Residue linkage should be an Edge of Residue.
 //    Bro yuou need to create hte Protein-Glycan linkage to manupulate later. Where does it belong? Why isnt it an edge already you doofuc. What type woudl the edge be and ResidueLinkage needs to inherit from Edge and you know it. Ok calm donw either keep it here or insert it into the front of carb linkage. It should be addBond though.
     this->SetInternalBondCount(cdsSelections::CountInternalHeavyAtomBonds(this->GetGlycan()->getAtoms()));
-    std::cout << "Done attach glycan" << std::endl;
-    for(auto & linkage : carbohydrate->GetGlycosidicLinkages())
-    {
-        std::cout << linkage.GetName() << std::endl;
-    }
+//    std::cout << "Done attach glycan" << std::endl;
+//    for(auto & linkage : carbohydrate->GetGlycosidicLinkages())
+//    {
+//        std::cout << linkage.GetName() << std::endl;
+//    }
 //    for(auto & residue: this->GetOtherProteinResidues())
 //    {
 //        std::cout << residue->getId() << std::endl << std::flush;
@@ -73,7 +73,6 @@ void GlycosylationSite::RenumberGlycanToMatch(unsigned int startNumber)
 void GlycosylationSite::Prepare_Glycans_For_Superimposition_To_Particular_Residue(std::string amino_acid_name)
 {
     //Dear future self, the order that you add the atoms to the residue matters for superimposition ie N, CA, CB , not CB, CA, N.
-    std::cout << "This is ma throw?" << std::endl << std::flush;
     gmml::log(__LINE__,__FILE__,gmml::INF, "WEhat?");
     Residue* reducing_Residue = this->GetGlycan()->GetReducingResidue();
     gmml::log(__LINE__,__FILE__,gmml::INF, "WEhat?");
@@ -82,7 +81,6 @@ void GlycosylationSite::Prepare_Glycans_For_Superimposition_To_Particular_Residu
 //    Atom* anomericAtom = cdsSelections::guessAnomericAtom(reducing_Residue);
 //   This won't work as sometimes want alpha, sometimes beta. i.e. a CreateCoordinateForCenterAwayFromNeighbors function
     // This needs to be abstracted so it works for C2 reducing residues:
-    std::cout << "This is da throw?" << std::endl << std::flush;
     Coordinate *coordC5 = reducing_Residue->FindAtom("C5")->getCoordinate();
     Coordinate *coordO5 = reducing_Residue->FindAtom("O5")->getCoordinate();
     Coordinate *coordC1 = reducing_Residue->FindAtom("C1")->getCoordinate();
@@ -140,12 +138,12 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue *glycosite_resid
    // the correspoinding "target" atoms in the protein residue (glycosite_residue).
     for (auto &superimposition_atom : this->GetGlycan()->GetAglycone()->getAtoms())
     {
-        std::cout << "Superimposition aglycone atom is named " << superimposition_atom->getName() << "\n";
+//        std::cout << "Superimposition aglycone atom is named " << superimposition_atom->getName() << "\n";
         for(auto &protein_atom : glycosite_residue->getAtoms())
         {
             if (protein_atom->getName() == superimposition_atom->getName())
             {
-                std::cout << "Adding " << protein_atom->getName() << " to superimposition atoms\n";
+//                std::cout << "Adding " << protein_atom->getName() << " to superimposition atoms\n";
                 targetCoords.push_back(protein_atom->getCoordinate());
             }
         }
@@ -241,7 +239,7 @@ void GlycosylationSite::Wiggle(bool firstLinkageOnly, int interval)
     this->WiggleOneLinkage(this->GetProteinGlycanLinkage(), interval);
     if (!firstLinkageOnly)
     {
-        std::cout << "Moving to second linkage\n" << std::flush;
+//        std::cout << "Moving to second linkage\n" << std::flush;
         for(auto &linkage : this->GetGlycan()->GetGlycosidicLinkages())
         {
             this->WiggleOneLinkage(linkage, interval);
@@ -437,7 +435,7 @@ void GlycosylationSite::WiggleOneLinkage(ResidueLinkage &linkage, int interval)
                 		best_dihedral_angle = current_dihedral;
 //                		std::stringstream ss;
 //                		ss << "betterOverlap_" << lowest_overlap << "_";
-                		std::cout << "Wiggler: site " << this->GetResidue()->getNumber() << " has overlap: " << lowest_overlap << "\n";
+//                		std::cout << "Wiggler: site " << this->GetResidue()->getNumber() << " has overlap: " << lowest_overlap << "\n";
                 		//gmml::WritePDBFile(*(this->GetResidue()->GetAssembly()), "", "best_");
             //    		std::cout << "Best angle is now " << best_dihedral_angle << "\n";
                 	}

@@ -10,7 +10,7 @@ using gmmlPrograms::WiggleToSiteInputs;
 
 WiggleToSiteInputs::WiggleToSiteInputs(std::string inputFileName)
 {
-    std::cout << "About to read " << inputFileName << std::endl << std::flush;
+//    std::cout << "About to read " << inputFileName << std::endl << std::flush;
     std::ifstream infile (inputFileName);
     if (!infile)
     {
@@ -34,13 +34,13 @@ WiggleToSiteInputs::WiggleToSiteInputs(std::string inputFileName)
         {
             std::string inputPortion = codeUtils::split(strInput, ':').at(1);
             superimpositionTargetResidue_ = pdb::ResidueId(codeUtils::split(inputPortion, '_'));
-            std::cout << "superimpositionTargetResidue_ in input file is: " << superimpositionTargetResidue_ << std::endl;
+//            std::cout << "superimpositionTargetResidue_ in input file is: " << superimpositionTargetResidue_ << std::endl;
         }
         if(codeUtils::startsWith(strInput, "WiggleTargetResidue:"))
         {
             std::string inputPortion = codeUtils::split(strInput, ':').at(1);
             wigglingTargetResidue_ = pdb::ResidueId(codeUtils::split(inputPortion, '_'));
-            std::cout << "wigglingTargetResidue_ in input file is: " << wigglingTargetResidue_ << std::endl;
+//            std::cout << "wigglingTargetResidue_ in input file is: " << wigglingTargetResidue_ << std::endl;
         }
         if(codeUtils::startsWith(strInput, "TargetModelNumber:"))
         {

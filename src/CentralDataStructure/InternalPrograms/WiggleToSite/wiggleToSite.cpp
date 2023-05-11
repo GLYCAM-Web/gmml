@@ -27,10 +27,10 @@ WiggleToSite::WiggleToSite(WiggleToSiteInputs inputStruct) : substrate_(inputStr
         ss << "Selection for superimposition target: " << inputStruct.superimpositionTargetResidue_ << "\nOr selection for wiggling target: " << inputStruct.wigglingTargetResidue_ << " was not found\n";
         throw std::runtime_error(ss.str());
     }
-    std::cout << "Super target is " << superimpositionTarget->getStringId() << std::endl;
+//    std::cout << "Super target is " << superimpositionTarget->getStringId() << std::endl;
     Residue* superimposeMe = codeUtils::findElementWithNumber(this->getCarbohydrate().getResidues(), inputStruct.carbohydrateSuperimpositionResidue_);
     Residue* wiggleMe = codeUtils::findElementWithNumber(this->getCarbohydrate().getResidues(), inputStruct.carbohydrateWigglingResidue_);
-    std::cout << "Residue to wiggle is " << wiggleMe->getStringId();
+//    std::cout << "Residue to wiggle is " << wiggleMe->getStringId();
     this->superimpose(carbohydrateCoordinates, superimpositionTarget, superimposeMe);
     this->getCarbohydrate().Generate3DStructureFiles("./", "superimposed");
     this->determineWiggleLinkages(superimposeMe, wiggleMe);
@@ -39,7 +39,7 @@ WiggleToSite::WiggleToSite(WiggleToSiteInputs inputStruct) : substrate_(inputStr
     this->coordsToAvoids_ = cds::getCoordinatesFromAtoms(substrateAtomsToAvoidOverlappingWith);
     this->setCurrentOverlapCount(cds::CountOverlappingCoordinates(this->getCoordsToAvoid(), this->getCarbohydrate().getCoordinates()));
     // call below function.
-    std::cout << "Finished reading and ready to rock captain" << std::endl;
+//    std::cout << "Finished reading and ready to rock captain" << std::endl;
     this->wiggleMeCoordinates_ = {wiggleMe->FindAtom("C1")->getCoordinate(), wiggleMe->FindAtom("C3")->getCoordinate(), wiggleMe->FindAtom("C5")->getCoordinate()};
     this->wiggleTargetCoordinates_ = {wigglingTarget->FindAtom("C1")->getCoordinate(), wigglingTarget->FindAtom("C3")->getCoordinate(), wigglingTarget->FindAtom("C5")->getCoordinate()};
     if (wiggleMeCoordinates_.size() < 3 || wiggleTargetCoordinates_.size() < 3)
@@ -54,7 +54,7 @@ WiggleToSite::WiggleToSite(WiggleToSiteInputs inputStruct) : substrate_(inputStr
 
 int WiggleToSite::minimizeDistance(int persistCycles, bool useMonteCarlo, int structureCount)
 {
-    std::cout << "Starting to wiggle!" << std::endl;
+//    std::cout << "Starting to wiggle!" << std::endl;
     int cycle = 0;
     while ( (cycle < persistCycles) )
     {
@@ -84,7 +84,7 @@ int WiggleToSite::minimizeDistance(int persistCycles, bool useMonteCarlo, int st
             return structureCount;
         }
     }
-    std::cout << "ALL DONE HON\n";
+//    std::cout << "ALL DONE HON\n";
     return structureCount;
 }
 

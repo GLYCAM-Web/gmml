@@ -78,12 +78,9 @@ void GlycoproteinBuilder::WriteOutputFiles()
 
 void GlycoproteinBuilder::ResolveOverlaps()
 {
-    std::cout << "In here" << std::endl;
 	bool randomize = !this->GetIsDeterministic();
-    std::cout << "In here" << std::endl;
 	if (randomize)
 	{ // First try a very fast/cheap approach
-	    std::cout << "Trying to be dumb" << std::endl;
 		if (this->DumbRandomWalk()) // returns true if it fully resolves overlaps.
 		{
 			return;
@@ -92,19 +89,19 @@ void GlycoproteinBuilder::ResolveOverlaps()
 	bool useMonteCarlo = true;
 	bool wiggleFirstLinkageOnly = true; // Only happens when passed to Wiggle function.
 	std::stringstream logss;
-    std::cout << "Need to wiggle" << std::endl;
+//    std::cout << "Need to wiggle" << std::endl;
 	this->Wiggle(RESIDUE, this->GetPersistCycles(), wiggleFirstLinkageOnly);
 	logss << "1. Post WiggleFirst Overlaps ResidueResolution: " << this->CalculateOverlaps(RESIDUE) << ". AtomicResolution: " << this->CalculateOverlaps(ATOMIC) << std::endl;
-	std::cout << logss.str();
+//	std::cout << logss.str();
 	if (randomize)
 	{
 		this->RandomDescent(RESIDUE, this->GetPersistCycles(), useMonteCarlo);
 		logss << "2. Post Monte Carlo Overlaps ResidueResolution: " << this->CalculateOverlaps(RESIDUE) << ". AtomicResolution: " << this->CalculateOverlaps(ATOMIC) << std::endl;
-	    std::cout << logss.str();
+//	    std::cout << logss.str();
 	}
 	this->Wiggle(RESIDUE, this->GetPersistCycles());
 	logss << "3. Post Wiggle Overlaps ResidueResolution: " << this->CalculateOverlaps(RESIDUE) << ". AtomicResolution: " << this->CalculateOverlaps(ATOMIC) << std::endl;
-    std::cout << logss.str();
+//    std::cout << logss.str();
 //	this->Wiggle(BEAD, this->GetPersistCycles(), wiggleFirstLinkageOnly);
 //	logss << "4. Post WiggleFirst Overlaps Bead: " << this->CalculateOverlaps(BEAD) << ". Atomic: " << this->CalculateOverlaps(ATOMIC) << std::endl;
 //	if (randomize)
@@ -114,19 +111,19 @@ void GlycoproteinBuilder::ResolveOverlaps()
 //	}
 //	this->Wiggle(BEAD, this->GetPersistCycles());
 //	logss << "6. Post Wiggle Overlaps Bead: " << this->CalculateOverlaps(BEAD) << ". Atomic: " << this->CalculateOverlaps(ATOMIC) << std::endl;
-    std::cout << logss.str();
-    std::cout << logss.str();
+//    std::cout << logss.str();
+//    std::cout << logss.str();
 	this->Wiggle(ATOMIC, this->GetPersistCycles(), wiggleFirstLinkageOnly);
 	logss << "7. Post WiggleFirst Overlaps Atomic: " << this->CalculateOverlaps(ATOMIC) << std::endl;
-    std::cout << logss.str();
+//    std::cout << logss.str();
 	if (randomize)
 	{
 		this->RandomDescent(ATOMIC, this->GetPersistCycles(), useMonteCarlo);
 		logss << "8. Post Monte Carlo Overlaps Atomic: " << this->CalculateOverlaps(ATOMIC) << std::endl;
 	}
-    std::cout << logss.str();
+//    std::cout << logss.str();
 	this->Wiggle(ATOMIC, this->GetPersistCycles());
-    std::cout << logss.str();
+//    std::cout << logss.str();
 	logss << "9. Post Wiggle Overlaps Atomic: " << this->CalculateOverlaps(ATOMIC) << std::endl;
 	int interval = 1; // Default interval when wiggle is 5 degrees.
 	this->Wiggle(ATOMIC, this->GetPersistCycles(), wiggleFirstLinkageOnly, interval);
@@ -221,7 +218,7 @@ void GlycoproteinBuilder::Wiggle(Resolution resolutionLevel, int persistCycles, 
 	if (resolutionLevel == ATOMIC)
 		logss << "GPwiggle with Resolution level ATOMIC ";
 	logss << persistCycles << " persistCycles, " << interval << " interval\n";
-	std::cout << logss.str();
+//	std::cout << logss.str();
     std::vector<GlycosylationSite*> sites_with_overlaps = this->DetermineSitesWithOverlap(resolutionLevel, ALL);
     int cycle = 1;
     bool stop = false;
@@ -235,7 +232,7 @@ void GlycoproteinBuilder::Wiggle(Resolution resolutionLevel, int persistCycles, 
     {
         ++cycle;
         logss << "Cycle " << cycle << "/" << persistCycles << "\n";
-        std::cout << logss.str();
+//        std::cout << logss.str();
         std::random_shuffle (sites_with_overlaps.begin(), sites_with_overlaps.end());
         for(auto &glycosite : sites_with_overlaps)
         {
@@ -267,14 +264,14 @@ bool GlycoproteinBuilder::DumbRandomWalk(int maxCycles)
 {
 	std::stringstream logss;
 	logss << "Starting DumbRandomWalk\n";
-    std::cout << logss.str();
+//    std::cout << logss.str();
     int cycle = 1;
     std::vector<GlycosylationSite*> sites_with_overlaps = DetermineSitesWithOverlap();
     while (cycle < maxCycles)
     {
         ++cycle;
         logss << "Cycle " << cycle << " of " << maxCycles << std::endl;
-        std::cout << logss.str();
+//        std::cout << logss.str();
         for(auto &currentGlycosite : sites_with_overlaps)
         {
         	currentGlycosite->SetRandomDihedralAnglesUsingMetadata();
@@ -286,7 +283,7 @@ bool GlycoproteinBuilder::DumbRandomWalk(int maxCycles)
             logss << "DumbRandomWalk resolved the overlaps. Stopping\n";
             return true;
         }
-        std::cout << logss.str();
+//        std::cout << logss.str();
     }
 	logss << "DumbRandomWalk did not resolve the overlaps\n";
     gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
@@ -307,7 +304,7 @@ void GlycoproteinBuilder::CreateGlycosites(std::vector<glycoprotein::GlycositeIn
         Residue* glycositeResidue = this->SelectResidueFromInput(glycositeInput.proteinResidueId_);
         if (glycositeResidue == nullptr)
         {
-            std::cout << "Did not find glycosite residue" << std::endl;
+//            std::cout << "Did not find glycosite residue" << std::endl;
             throw std::runtime_error("Did not find a residue with id matching " + glycositeInput.proteinResidueId_);
         }
 	    std::vector<Residue*> otherResidues = proteinResidues;
@@ -315,10 +312,10 @@ void GlycoproteinBuilder::CreateGlycosites(std::vector<glycoprotein::GlycositeIn
 	    gmml::log(__LINE__, __FILE__, gmml::INF, "About to emplace_back to glycosites with: " + glycositeInput.proteinResidueId_ + " and glycan " + glycositeInput.glycanInput_);
         unsigned int highestResidueNumber = cdsSelections::findHighestResidueNumber(this->getGlycoprotein()->getResidues());
 		glycosites_.emplace_back(glycositeResidue, carb, otherResidues, highestResidueNumber);
-	    std::cout << "Done with glycan" << std::endl;
+//	    std::cout << "Done with glycan" << std::endl;
 		gmml::log(__LINE__, __FILE__, gmml::INF, "Completed creating glycosite on residue " + glycositeInput.proteinResidueId_ + " with glycan " + glycositeInput.glycanInput_);
 	}
-    std::cout << "Done attaching all glycans" << std::endl;
+//    std::cout << "Done attaching all glycans" << std::endl;
     this->SetOtherGlycosites();
     return;
 }
@@ -345,7 +342,7 @@ Residue* GlycoproteinBuilder::SelectResidueFromInput(const std::string userSelec
     {
         pdb::PdbResidue* pdbResidue = static_cast<pdb::PdbResidue*>(residue);
         //std::cout << pdbResidue->getChainId() << "_";
-        std::cout << pdbResidue->getNumberAndInsertionCode() << "\n";
+//        std::cout << pdbResidue->getNumberAndInsertionCode() << "\n";
         if ( (pdbResidue->getChainId() == userSelectedChain) && (pdbResidue->getNumberAndInsertionCode() == userSelectedResidue) )
         {
             gmml::log(__LINE__, __FILE__, gmml::INF, "Id of selected glycosite: " + pdbResidue->printId());

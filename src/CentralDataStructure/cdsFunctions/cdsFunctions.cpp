@@ -40,7 +40,7 @@ void cds::bondAtomsByDistance(std::vector<cds::Atom*> atoms)
     typename std::vector<cds::Atom*>::iterator block_start = first;
     for(unsigned long i = 0; i < (num_threads - 1); ++i)
     {
-        std::cout << "Launching thread " << i << "\n";
+        //std::cout << "Launching thread " << i << "\n";
         typename std::vector<cds::Atom*>::iterator block_end = block_start;
         std::advance(block_end, block_size);
         threads[i] = std::thread(cds::bondAtomsByDistanceThread(), block_start, block_end);
@@ -49,12 +49,12 @@ void cds::bondAtomsByDistance(std::vector<cds::Atom*> atoms)
     // Complete any remaining after division into blocks
     cds::bondAtomsByDistanceThread()(block_start, last);
     // Wait for all threads to finish before returning.
-    std::cout << "Waiting on threads to finish\n";
+    //std::cout << "Waiting on threads to finish\n";
     for(auto& entry: threads)
     {
         entry.join();
     }
-    std::cout << "Threads finish\n";
+    //std::cout << "Threads finish\n";
     return;
 }
 

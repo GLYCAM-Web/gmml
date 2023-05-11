@@ -30,7 +30,7 @@ PdbFile::PdbFile(const std::string &pdbFilePath) : inFilePath_(pdbFilePath)
 }
 void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream)
 {
-    std::cout << "Parsing inputfile\n";
+//    std::cout << "Parsing inputfile\n";
     for (std::string line; std::getline(pdbFileStream, line); )
     {
         //std::cout << "Parsing the line: " << line << "\n";
@@ -103,7 +103,7 @@ std::stringstream PdbFile::ExtractHeterogenousRecordSection(std::ifstream &pdbFi
         recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
     }
     pdbFileStream.seekg(previousLinePosition); // Go back to previous line position. E.g. was reading HEADER and found TITLE.
-    //std::cout << "Returning this hetero section:\n" << heteroRecordSection.str() << "\nThe End of Hetero Section.\n";
+//    std::cout << "Returning this hetero section:\n" << heteroRecordSection.str() << "\nThe End of Hetero Section.\n";
     return recordSection;
 }
 

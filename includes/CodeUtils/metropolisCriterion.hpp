@@ -28,17 +28,17 @@ inline bool accept_via_metropolis_criterion(double change_in_overlap)
 {
     if (change_in_overlap < 0)
     {
-        std::cout << "ACCEPTED as better: " << change_in_overlap << "\n";
+        //std::cout << "ACCEPTED as better: " << change_in_overlap << "\n";
         return true;
     }
     double r = get_random_acceptance_probability();
     double p = exp(-change_in_overlap);
     if (p > r)
     {
-        std::cout << "ACCEPTED: " << change_in_overlap << " p: " << p << " r: " << r << "\n";
+        //std::cout << "ACCEPTED: " << change_in_overlap << " p: " << p << " r: " << r << "\n";
         return true;
     }
-    std::cout << "REJECTED: " << change_in_overlap << " p: " << p << " r: " << r << "\n";
+    //std::cout << "REJECTED: " << change_in_overlap << " p: " << p << " r: " << r << "\n";
     return false;
 }
 } // namespace monte_carlo

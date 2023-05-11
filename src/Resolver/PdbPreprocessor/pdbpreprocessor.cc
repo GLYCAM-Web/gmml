@@ -1189,7 +1189,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(PdbPrep
     for(PdbPreprocessor::PdbPreprocessorMissingResidueVector::iterator it1 = gaps.begin(); it1 != gaps.end(); it1++)
     {
         PdbPreprocessorMissingResidue* gap = (*it1);
-        std::cout << "First splitting cards for this gap now: ";
+//        std::cout << "First splitting cards for this gap now: ";
         gap->Print();
         this->GetPdbFile().SplitAtomCardOfModelCardWithTheGivenModelNumber(gap->GetResidueChainId(), gap->GetResidueAfterGap(), model_number);
         gap->Print();
@@ -1198,7 +1198,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(PdbPrep
     for(PdbPreprocessor::PdbPreprocessorMissingResidueVector::iterator it1 = gaps.begin(); it1 != gaps.end(); it1++)
     {
         PdbPreprocessorMissingResidue* gap = (*it1);
-        std::cout << "Doing this gap now: ";
+//        std::cout << "Doing this gap now: ";
         gap->Print();
 //        // Zwitterionic in n terminal
 //        if(gap->GetStringFormatOfSelectedNTermination().find("+") != std::string::npos || gap->GetStringFormatOfSelectedNTermination().find("-") != std::string::npos)
@@ -1312,7 +1312,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(PdbPrep
             pdb_atom_card->SetOrderedAtomCards(atom_vector);
             gap->Print();
             this->GetPdbFile().InsertResidueBeforeWithTheGivenModelNumber(pdb_atom_card, model_number);
-            std::cout << "Nterm now:\n";
+//            std::cout << "Nterm now:\n";
             gap->Print();
         }
         // Add c terminal residue at the end of the chain
@@ -1352,7 +1352,7 @@ void PdbPreprocessor::UpdateGapsInAminoAcidChainsWithTheGivenModelNumber(PdbPrep
 //                }
 //                it1--;
 //            }
-            std::cout << "Cterm now:\n";
+//            std::cout << "Cterm now:\n";
             gap->Print();
 
         }
