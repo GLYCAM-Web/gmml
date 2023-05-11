@@ -2,16 +2,17 @@
 #include "includes/CentralDataStructure/Selections/shaperSelections.hpp" // cdsSelections
 #include "includes/CodeUtils/logging.hpp"
 
+using cdsCondensedSequence::carbohydrateBuilder;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-
-using cdsCondensedSequence::carbohydrateBuilder;
-
-//ToDo just change usage in gems to call Generate3DStructureFiles directly
+carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath) : carbohydrate_(condensedSequence, prepFilePath) {}
+//////////////////////////////////////////////////////////
+//                       FUNCTIONS                      //
+//////////////////////////////////////////////////////////
 void carbohydrateBuilder::GenerateSingle3DStructureDefaultFiles(std::string fileOutputDirectory, std::string outputFileNaming)
 {
-    this->Generate3DStructureFiles(fileOutputDirectory, outputFileNaming);
+    this->carbohydrate_.Generate3DStructureFiles(fileOutputDirectory, outputFileNaming);
 }
 
 void carbohydrateBuilder::GenerateSpecific3DStructure(cdsCondensedSequence::SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
@@ -33,13 +34,13 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(cdsCondensedSequence::Sing
                          << " being set to " << rotamerInfo.selectedRotamer << std::endl;
             gmml::log(__LINE__,__FILE__, gmml::INF, ss.str());
             int currentLinkageIndex = std::stoi(rotamerInfo.linkageIndex);
-            cds::ResidueLinkage *currentLinkage = cdsSelections::selectLinkageWithIndex(this->GetGlycosidicLinkages(), currentLinkageIndex);
+            cds::ResidueLinkage *currentLinkage = cdsSelections::selectLinkageWithIndex(this->carbohydrate_.GetGlycosidicLinkages(), currentLinkageIndex);
             std::string standardDihedralName = this->convertIncomingRotamerNamesToStandard(rotamerInfo.dihedralName);
             currentLinkage->SetSpecificShape(standardDihedralName, rotamerInfo.selectedRotamer);
         }
         std::string fileName = "structure";
-        this->ResolveOverlaps();
-        this->Generate3DStructureFiles(fileOutputDirectory, fileName);
+        this->carbohydrate_.ResolveOverlaps();
+        this->carbohydrate_.Generate3DStructureFiles(fileOutputDirectory, fileName);
     }   // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
     catch(const std::string &exceptionMessage)
     {
@@ -58,6 +59,12 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(cdsCondensedSequence::Sing
     }
     return;
 }
+
+std::string carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
+{
+    return this->carbohydrate_.GetNumberOfShapes(likelyShapesOnly);
+}
+
 
 //std::string carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
 //{
@@ -94,7 +101,7 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(cdsCondensedSequence::Sing
 // Commenting out for as not being used, and will be confusing later. The front-end calls a differnt function that will build a single, specific rotamer.
  void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
  {
-     std::vector<cds::ResidueLinkage> linkagesOrderedForPermutation = cdsSelections::SplitLinkagesIntoPermutants(this->GetGlycosidicLinkages());
+     std::vector<cds::ResidueLinkage> linkagesOrderedForPermutation = cdsSelections::SplitLinkagesIntoPermutants(this->carbohydrate_.GetGlycosidicLinkages());
      this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
  }
 
@@ -103,7 +110,7 @@ cdsCondensedSequence::LinkageOptionsVector carbohydrateBuilder::GenerateUserOpti
     cdsCondensedSequence::LinkageOptionsVector userOptionsForSequence;
     try
     {
-        for (auto &linkage : this->GetGlycosidicLinkages())
+        for (auto &linkage : this->carbohydrate_.GetGlycosidicLinkages())
         {
             // std::cout << "linko nameo: " << linkage.GetName() << std::endl;
             cdsCondensedSequence::DihedralOptionsVector possibleRotamers, likelyRotamers;
@@ -154,8 +161,6 @@ cdsCondensedSequence::LinkageOptionsVector carbohydrateBuilder::GenerateUserOpti
 //////////////////////////////////////////////////////////
 //                   PRIVATE FUNCTIONS                  //
 //////////////////////////////////////////////////////////
-
-
 // Adapted from resolve_overlaps.
 // Goes deep and then as it falls out of the iteration it's setting and writing the shapes. 
 void carbohydrateBuilder::generateLinkagePermutationsRecursively(std::vector<cds::ResidueLinkage>::iterator linkage, std::vector<cds::ResidueLinkage>::iterator end, int maxRotamers, int rotamerCount)
@@ -176,25 +181,12 @@ void carbohydrateBuilder::generateLinkagePermutationsRecursively(std::vector<cds
             //Check for issues? Resolve
             //Figure out name of file: http://128.192.9.183/eln/gwscratch/2020/01/10/succinct-rotamer-set-labeling-for-sequences/
             //Write PDB file
-            this->Generate3DStructureFiles(".", std::to_string(rotamerCount));
+            this->carbohydrate_.Generate3DStructureFiles(".", std::to_string(rotamerCount));
            // }
         }
     }
     return;
 }
-
-
-// I think this is handled elsewhere now.
-//// Just a placeholder until we have a map for linkage ids so the user won't see these underlying ones.
-//void carbohydrateBuilder::resetLinkageIDsToStartFromZero(std::vector<cds::ResidueLinkage*> &inputLinkages)
-//{
-//    unsigned long long newIndex = 0;
-//    for(auto &linkage : inputLinkages)
-//    {
-//        linkage.setIndex(newIndex);
-//        ++newIndex;
-//    }
-//}
 
 // In too much of a rush to do this properly, so I'll make it private and 
 // so dumb that you'll have to write a proper one. Yes you!
