@@ -34,12 +34,6 @@
 #include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
 
-#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
-#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-#include "includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
-#include "includes/InputSet/CondensedSequenceSpace/sequencestring.hpp"
-
 #include "includes/CentralDataStructure/CondensedSequence/graphVizDotConfig.hpp"
 #include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
 
@@ -213,12 +207,6 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
 %include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 %include "includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
-
-%include "includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
-%include "includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-%include "includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-%include "includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
-%include "includes/InputSet/CondensedSequenceSpace/sequencestring.hpp"
 
 %include "includes/CentralDataStructure/CondensedSequence/graphVizDotConfig.hpp"
 %include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
@@ -663,25 +651,6 @@ std::ostream & get_cout() { return std::cout; }
 
 //typedef std::vector<PdbqtFileSpace::PdbqtBranchCard*> BranchCardVector;
 %template(pdbqt_branch_card_vector) std::vector<PdbqtFileSpace::PdbqtBranchCard*>;
-
-///Condensed Sequence///
-//typedef std::vector<CondensedSequenceSpace::CondensedSequenceResidue*> CondensedSequenceResidueVector;
-%template(condensedsequence_residue_vector) std::vector<CondensedSequenceSpace::CondensedSequenceResidue*>;
-
-//typedef std::vector<gmml::CondensedSequenceTokenType> CondensedSequenceTokenTypeVector;
-%template(condensedsequence_token_type_vector) std::vector<gmml::CondensedSequenceTokenType>;
-
-//typedef std::vector<CondensedSequenceSpace::CondensedSequenceResidue*> CondensedSequenceResidueTree;
-//%template(condensedsequence_residue_tree) std::vector<CondensedSequenceSpace::CondensedSequenceResidue*>;
-
-//typedef std::vector<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*> CondensedSequenceGlycam06ResidueTree;
-%template(condensedsequence_glycam06_residue_tree) std::vector<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*>;
-
-//typedef std::pair<std::string, CondensedSequenceSpace::RotamersAndGlycosidicAnglesInfo*> RotamerNameInfoPair;
-%template(rotamer_name_info_pair) std::pair<std::string, CondensedSequenceSpace::RotamersAndGlycosidicAnglesInfo*>;
-
-//typedef std::vector<RotamerNameInfoPair> CondensedSequenceRatomersAndGlycosidicAnglesInfo;
-%template(rotamer_angle_info_vector) std::vector<std::pair<std::string, CondensedSequenceSpace::RotamersAndGlycosidicAnglesInfo*> >;
 
 //std::pair<std::string, double>
 %template(string_double_pair) std::pair<std::string, double>;
