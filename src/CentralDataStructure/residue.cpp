@@ -180,7 +180,7 @@ std::vector<const Atom*> Residue::getAtomsConnectedToOtherResidues() const
         { // check if neighbor is not one of the atoms in this residue.
             if(std::find(residueAtoms.begin(), residueAtoms.end(), neighbor) == residueAtoms.end())
             {
-                foundAtoms.push_back(neighbor);
+                foundAtoms.push_back(atom);
             }
         }
     }
