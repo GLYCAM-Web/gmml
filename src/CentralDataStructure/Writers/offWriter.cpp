@@ -93,11 +93,17 @@ void cds::WriteOffFileUnit(std::vector<cds::Residue*> residues, std::ostream& st
             stream << std::setprecision(6) << std::fixed << " " << atom->getCoordinate()->GetX() << " " << atom->getCoordinate()->GetY() << " " << atom->getCoordinate()->GetZ() << std::endl;
         }
     }
-    //WriteResidueConnectSection
+    //WriteResidueConnectSection // Every residue needs a head/tail regardless of reality. tleap uses this info.
     stream << "!entry." << unitName << ".unit.residueconnect table  int c1x  int c2x  int c3x  int c4x  int c5x  int c6x" << std::endl;
     for(auto &residue : residues)
     {
         auto atomsConnectedToOtherResidues = residue->getAtomsConnectedToOtherResidues();
+        // Deal with residues that don't have a tail/head in reality:
+        if (atomsConnectedToOtherResidues.size() == 1)
+        { // Repeating the same atom changes the tree structure in the parm7 file. Not sure anything uses that. Old gmml code repeats so doing that.
+            // For reducing terminal old code puts a 1 2 0 0 0 0. So not repeat. Changing to 2 2 0 0 0 0 causes first atom not to be M (main). Might be an issue let's see.
+            atomsConnectedToOtherResidues.push_back(atomsConnectedToOtherResidues.front());
+        }
         for(auto &atom : atomsConnectedToOtherResidues)
         {
             stream << " " << atom->getNumber();
