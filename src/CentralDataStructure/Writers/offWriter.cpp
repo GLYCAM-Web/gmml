@@ -59,8 +59,15 @@ void cds::WriteOffFileUnit(std::vector<cds::Residue*> residues, std::ostream& st
         for(auto &atom : residue->getAtoms())
         {
             for(auto &neighbor : atom->getChildren())
-            {
-                stream << " " << atom->getNumber() << " " << neighbor->getNumber() << " " << 1 << std::endl;
+            {   // According to docs: (the *second* atom is the one with the larger index). So ordering
+                if (atom->getNumber() > neighbor->getNumber())
+                {
+                    stream << " " << atom->getNumber() << " " << neighbor->getNumber() << " " << 1 << std::endl;
+                }
+                else
+                {
+                    stream << " " << neighbor->getNumber() << " " << atom->getNumber() << " " << 1 << std::endl;
+                }
             }
         }
     }
