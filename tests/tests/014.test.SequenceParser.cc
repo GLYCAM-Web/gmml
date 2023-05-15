@@ -27,6 +27,7 @@ int main ()
             std::cout << "Parsing: " << sequence << std::endl;
         	cdsCondensedSequence::SequenceManipulator man(sequence);
         	std::cout << man.ReorderSequence() << std::endl;
+            man.LabelSequence();
             bool withLabels = true;
             std::cout << man.Print(withLabels) << std::endl;
             std::cout << "Parsed and labelled with no exceptions thrown.\n\n";

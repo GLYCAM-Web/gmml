@@ -21,10 +21,10 @@ int main()
     //std::string condensed_sequence = "DGlcpNAca1-NLN";
     //std::string condensed_sequence = "DNeup5Aca2-7[DNeup5Aca2-8]DNeup5Aca2-OH";
     cdsCondensedSequence::carbohydrateBuilder carbBuilder(condensed_sequence, prep);
-    carbBuilder.Print();
+    carbBuilder.GetCarbohydrate().Print();
     std::string fileOutputDirectory = "unspecified"; // If it's "unspecified" or you don't pass a directory string it will write to the current working directory. 
     bool likelyShapesOnly = true; // You can just pass "true" to the function. Not sure I like this. Two functions probably more readable.
-    std::cout << "Number of residues for this sequence is " << carbBuilder.GetResidueCount() << "\n";
+    std::cout << "Number of residues for this sequence is " << carbBuilder.GetCarbohydrate().GetResidueCount() << "\n";
     std::cout << "Number of likely shapes for this sequence is " << carbBuilder.GetNumberOfShapes(likelyShapesOnly) << "\n";
     // Default is to calculate all possible.
     std::cout << "Number of possible shapes for this sequence is " << carbBuilder.GetNumberOfShapes() << "\n";

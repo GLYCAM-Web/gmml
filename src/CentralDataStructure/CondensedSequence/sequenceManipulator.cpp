@@ -82,12 +82,12 @@ void SequenceManipulator::SetIndexByConnectivity()
 	return;
 }
 
-std::string SequenceManipulator::Print(const bool withLabels)
+std::string SequenceManipulator::Print(const bool withLabels) const
 {
-	if (withLabels)
-	{
-		this->LabelSequence();
-	}
+//	if (withLabels)
+//	{
+//		this->LabelSequence();
+//	}
 	std::vector<std::string> output;
 	int branchStackSize = 0;
 	this->RecurvePrint(this->GetTerminal(), branchStackSize, output, withLabels);
@@ -101,7 +101,7 @@ std::string SequenceManipulator::Print(const bool withLabels)
 	return ss.str();
 }
 
-void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels)
+void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels) const
 {
 	auto neighbors = currentResidue->GetChildren();
 	size_t numberOfNeighbors = neighbors.size();

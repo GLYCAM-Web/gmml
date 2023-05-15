@@ -27,14 +27,14 @@ namespace cdsCondensedSequence
         std::string ReorderSequence();
         void LabelSequence();
         void SetIndexByConnectivity();
-        std::string Print(const bool withLabels = false);
+        std::string Print(const bool withLabels = false) const;
         std::vector<ParsedResidue*> GetParsedResiduesOrderedByConnectivity() const;
         std::string PrintGraphViz(GraphVizDotConfig &configs);
     private:
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        void RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels);
+        void RecurvePrint(ParsedResidue* currentResidue, int& branchStackSize, std::vector<std::string>& output, const bool withLabels) const;
         std::string GetGraphVizLineForResidue(ParsedResidue &residue, GraphVizDotConfig &configs);
     };
 }

@@ -182,7 +182,7 @@ void Carbohydrate::Generate3DStructureFiles(std::string fileOutputDirectory, std
     }
 }
 
-std::string Carbohydrate::GetNumberOfShapes(bool likelyShapesOnly)
+std::string Carbohydrate::GetNumberOfShapes(bool likelyShapesOnly) const
 {
     if ( this->CountShapes(likelyShapesOnly) > 4294967296 )
     {
@@ -191,10 +191,10 @@ std::string Carbohydrate::GetNumberOfShapes(bool likelyShapesOnly)
     return std::to_string(this->CountShapes(likelyShapesOnly));
 }
 
-unsigned long int Carbohydrate::CountShapes(bool likelyShapesOnly)
+unsigned long int Carbohydrate::CountShapes(bool likelyShapesOnly) const
 {
     unsigned long long int numberOfShapes = 1;
-    for(auto &linkage : this->GetGlycosidicLinkages())
+    for(auto &linkage : glycosidicLinkages_)
     {
         numberOfShapes = (numberOfShapes * linkage.GetNumberOfShapes(likelyShapesOnly));
     }

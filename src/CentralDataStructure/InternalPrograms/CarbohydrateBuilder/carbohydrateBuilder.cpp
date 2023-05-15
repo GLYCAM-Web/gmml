@@ -60,7 +60,7 @@ void carbohydrateBuilder::GenerateSpecific3DStructure(cdsCondensedSequence::Sing
     return;
 }
 
-std::string carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly)
+std::string carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly) const
 {
     return this->carbohydrate_.GetNumberOfShapes(likelyShapesOnly);
 }

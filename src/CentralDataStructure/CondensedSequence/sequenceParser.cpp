@@ -124,7 +124,7 @@ unsigned int SequenceParser::seekRepeatStart(const std::string &inputSequence, u
 }
 
 
-std::string SequenceParser::Print()
+std::string SequenceParser::Print() const
 {
     std::string output = "";
     for (auto &residue : this->getResidues())

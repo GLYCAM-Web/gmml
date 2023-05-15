@@ -55,8 +55,8 @@ public:
     //////////////////////////////////////////////////////////
     //                       ACCESSORS                      //
     //////////////////////////////////////////////////////////
-    cdsCondensedSequence::Carbohydrate GetCarbohydrate() {return carbohydrate_;}
-    std::string GetNumberOfShapes(bool likelyShapesOnly = false);
+    const cdsCondensedSequence::Carbohydrate& GetCarbohydrate() const {return carbohydrate_;}
+    std::string GetNumberOfShapes(bool likelyShapesOnly = false) const;
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
