@@ -5,7 +5,7 @@ pdb::PdbResidue* pdb::residueSelector(const PdbFile& pdbFile, const pdb::Residue
 {
     for(auto & model : pdbFile.getAssemblies())
     {
-        std::cout << model->getNumber() << ":" << modelNumber << std::endl;
+        //std::cout << model->getNumber() << ":" << modelNumber << std::endl;
         if(model->getNumber() == modelNumber)
         {
             return pdb::residueSelector(model->getResidues(), residueId);
@@ -18,7 +18,7 @@ pdb::PdbResidue* pdb::residueSelector(std::vector<cds::Residue*> residues, const
     for(auto & residue : residues)
     {
         PdbResidue* pdbResidue = static_cast<PdbResidue*>(residue);
-        std::cout << "currentId vs queryId: " << pdbResidue->getId() << " vs " << queryId << std::endl;
+        //std::cout << "currentId vs queryId: " << pdbResidue->getId() << " vs " << queryId << std::endl;
         if (queryId.getName().empty() || queryId.getName() == pdbResidue->getId().getName() )
         {
             if (queryId.getNumber().empty() || queryId.getNumber() == pdbResidue->getId().getNumber() )
