@@ -1,4 +1,3 @@
-Parsing inputfile
 Chain: A
 ResidueNumber: 25
 InsertionCode: 
