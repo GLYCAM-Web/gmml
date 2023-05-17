@@ -6,7 +6,7 @@ superimpositionTargetResidue_ : ?_9_?_F
 carbohydrateSuperimpositionResidue_ : 7
 wigglingTargetResidue_ : ?_1_?_F
 carbohydrateWigglingResidue_ : 15
-persistCycles_ : 5
+persistCycles_ : 2
 isDeterministic_ : 1
 Gonna find path between 3LB and 0SA
 0SA_15, 6LB_14, 4YB_13, 2MA_12, VMB_4, 2MA_5, 4YB_6, 3LB_7, 

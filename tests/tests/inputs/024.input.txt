@@ -13,6 +13,6 @@ CarbohydrateSuperimpositionResidue:7
 
 CarbohydrateWigglingResidue:15
 
-persistCycles:5
+persistCycles:2
 
 isDeterministic:true
