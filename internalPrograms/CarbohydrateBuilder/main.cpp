@@ -35,9 +35,9 @@ int main(int argc, char** argv)
         std::vector<std::string> splitLine = codeUtils::split(line, delimiter);
         std::string inputSequence = splitLine.at(1);
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
-        try // ToDo Ok fix this: CondensedSequence::carbohydrateBuilder the sequenceManipulator constructor can throw.
+        try
         {
-            cdsCondensedSequence::Carbohydrate carbBuilder(inputSequence, prepFile);
+            cdsCondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
             if (carbBuilder.IsStatusOk())
             {
                 //carbBuilder.Print();
@@ -45,7 +45,7 @@ int main(int argc, char** argv)
                 //carbBuilder.GenerateSingle3DStructureDefaultFiles(outputFolderName, inputGlycanID);
                 //CondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
 
-                carbBuilder.Generate3DStructureFiles(outputFolderName, inputGlycanID);
+                carbBuilder.GenerateSingle3DStructureDefaultFiles(outputFolderName, inputGlycanID);
                 if (!carbBuilder.IsStatusOk()) // This is bad. Fix me once gems can catch what the carbBuilder throws.
                 {
                     std::cerr << "Error thrown by the carbohydrateBuilder in gmml during 3D structure generation was: " << carbBuilder.GetStatusMessage() << std::endl;
