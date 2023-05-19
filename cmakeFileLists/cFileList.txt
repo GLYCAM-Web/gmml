@@ -177,7 +177,6 @@
 ./src/InputSet/Utilities/response.cc
 ./src/InternalPrograms/DrawGlycan/drawGlycan.cpp
 ./src/InternalPrograms/Sequence/sequence.cpp
-./src/InternalPrograms/functionsForGMML.cpp
 ./src/InternalPrograms/glycosylationSiteFinder.cpp
 ./src/MolecularMetadata/GLYCAM/amberatomtypeinfo.cpp
 ./src/MolecularMetadata/GLYCAM/amberelements.cpp
