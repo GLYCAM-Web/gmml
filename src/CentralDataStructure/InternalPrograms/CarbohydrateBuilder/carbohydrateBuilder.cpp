@@ -110,6 +110,7 @@ cdsCondensedSequence::LinkageOptionsVector carbohydrateBuilder::GenerateUserOpti
     cdsCondensedSequence::LinkageOptionsVector userOptionsForSequence;
     try
     {
+        carbohydrate_.SetIndexByConnectivity();
         for (auto &linkage : this->carbohydrate_.GetGlycosidicLinkages())
         {
             // std::cout << "linko nameo: " << linkage.GetName() << std::endl;
