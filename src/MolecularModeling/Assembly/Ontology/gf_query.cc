@@ -278,17 +278,30 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
 std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo, std::string url, std::string output_file_type)
 { 
     // This function runs a full query on a single result, which is unique given the pdb_id, oligo_sequence, and oligo 
-    int local_debug = -1;
+    int local_debug = 1;
     if(local_debug > 0)
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "Running MoreQuery()");
     }
-    //This is silly, group concat all r's and bind/trim their iri's to know which is which
+
+    //This is silly, group concats all r's and bind/trim their iri's to know which is which
     int numRgroups = std::count(oligo_sequence.begin(), oligo_sequence.end(), '<');
     std::stringstream query;
-    query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
-    query << " DISTINCT ?residue_links" /*?glycosidic_linkage*/ "?title ?resolution ?Mean_B_Factor "
-            "?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI ?pdb_coordinates ?ProteinID";
+    query << Ontology::PREFIX << Ontology::SELECT_DISTINCT << "\n";
+    query << "\t" << "?oligo" << "\n";
+    query << "\t" << "?residue_links" << "\n";
+    query << "\t" << "?title" << "\n";
+    query << "\t" << "?resolution" << "\n";
+    query << "\t" << "?Mean_B_Factor" << "\n";
+    query << "\t" << "?oligo_mean_B_Factor" << "\n";
+    query << "\t" << "?authors" << "\n";
+    query << "\t" << "?journal" << "\n";
+    query << "\t" << "?PMID" << "\n";
+    query << "\t" << "?DOI" << "\n";
+    query << "\t" << "?pdb_coordinates" << "\n";
+    query << "\t" << "?ProteinID" << "\n";
+
+
     if(numRgroups > 0)
     {
         for(int i = 0; i < numRgroups; i++)
@@ -297,17 +310,19 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
         }
         query <<  "(group_concat(distinct ?rGroup;separator=\"\\n\") as ?rGroups)\n";
     }
-    query << "\n"
-           "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments)\n"
-           "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings)\n"
-           "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n\n";
+    query << "\t" << "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments)\n";
+    query << "\t" << "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings)\n";
+    query << "\t" << "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n\n";
 
   query << Ontology::WHERE_CLAUSE;
-  query << "?pdb_file     :identifier    \"" << pdb_id << "\";\n";
-  query << "              :hasOligo      ?oligo.\n";
-  query << "FILTER regex(?oligo, \"" << oligo << "$\")\n";
-  gmml::FindReplaceString(oligo_sequence, "-OH", "-ROH");
-  query << "?oligo        :oligoIUPACname     \"" << oligo_sequence << "\".\n";
+  query << "?pdb_file" << "\n\t" << Ontology::id << "\t\"" << pdb_id << "\";\n";
+
+  query << "\t" << Ontology::hasOligo << "\t?oligo.\n";
+  query << "VALUES ?oligo { " << Ontology::ONT_PREFIX << oligo << " }\n";
+
+//   gmml::FindReplaceString(oligo_sequence, "-OH", "-ROH");
+//   query << "?oligo        :oligoIUPACname     \"" << oligo_sequence << "\".\n";
+
   query << "?pdb_file     :hasTitle               ?title;\n";
   query << "              :hasAuthors             ?authors.\n";
   query << "OPTIONAL {";
@@ -325,7 +340,7 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
   query << "OPTIONAL {";
   query << "?oligo        :oligoResidueLinks      ?residue_links.}\n";
   query << "OPTIONAL {";
-  query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.}\n";
+  query << "?oligo        :hasBFactor           ?oligo_mean_B_Factor.}\n";
   query << "?oligo        :PDBfile           ?pdb_coordinates.\n";
   if(numRgroups > 0)
   {//There are chemical modifications that need to be returned to the user
@@ -353,8 +368,10 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
   query << "?commentNote    :description   ?comment.}\n";
   //add info for coordinates here
   query << Ontology::END_WHERE_CLAUSE << "\n";
-
-  gmml::log(__LINE__, __FILE__, gmml::INF, query.str());
+    if(local_debug > 0)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::INF, query.str());
+    }
   // std::cout << "\n" << query.str() << "\n";
   return FormulateCURLGF(output_file_type, query.str(), url);
 

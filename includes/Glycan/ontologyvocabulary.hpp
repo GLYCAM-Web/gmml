@@ -163,7 +163,8 @@ namespace Ontology
         "PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\n"
         "PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>\n";
 
-    const std::string SELECT_CLAUSE =           "SELECT";
+    const std::string SELECT_CLAUSE =           "SELECT"; 
+    const std::string SELECT_DISTINCT =           "SELECT DISTINCT";
     const std::string WHERE_CLAUSE =            "WHERE \n{\n";
     const std::string END_WHERE_CLAUSE =        "}\n";
     const std::string CSV_OUTPUT_FORMAT =       " \'Accept: text/csv\' ";
