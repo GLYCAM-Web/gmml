@@ -12,13 +12,12 @@
 #include "includes/CentralDataStructure/Readers/Prep/prepAtom.hpp"
 #include "includes/CentralDataStructure/Readers/Prep/prepFile.hpp"
 #include "includes/CentralDataStructure/Readers/Prep/prepResidue.hpp"
+#include "includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // serializeAtomNumbers
+#include "includes/CentralDataStructure/Writers/offWriter.hpp"
 #include <sstream>
 #include <cctype> // isDigit
 #include <algorithm> //  std::erase, std::remove
-#include "../../../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // serializeAtomNumbers
-#include "../../../includes/CentralDataStructure/Writers/offWriter.hpp"
 
-//using Abstract::absResidue; // For Residue::Type
 using cdsCondensedSequence::Carbohydrate;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //

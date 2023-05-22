@@ -54,10 +54,10 @@ void SequenceManipulator::LabelSequence()
 		ss << residue->GetName() << "&Label=residue-" << residue->getIndex() << ";";
 		residue->addLabel(ss.str());
 		ss.str( std::string() ); ss.clear();  // Must do both of these to clear the stream
-		for (auto &linkage : residue->getOutEdges())
+		for (auto &edge : residue->getOutEdges())
 		{
-			ss << linkage->getLabel() << "&Label=link-" << linkage->getIndex() << ";";
-			linkage->addLabel(ss.str());
+			ss << edge->getLabel() << "&Label=link-" << edge->getIndex() << ";";
+			edge->addLabel(ss.str());
 			ss.str( std::string() ); ss.clear(); // Must do both of these to clear the stream
 		}
 	}
@@ -73,9 +73,9 @@ void SequenceManipulator::SetIndexByConnectivity()
 		residue->setIndex(residueIndex);
         residue->setNumber(residueIndex); // ToDo temporary, switch to using number here. Keep index as a gmml internal thing, never shown to user.
 		++residueIndex;
-		for (auto &linkage : residue->getInEdges())
+		for (auto &edge : residue->getInEdges())
 		{
-			linkage->setIndex(linkIndex);
+			edge->setIndex(linkIndex);
 			++linkIndex;
 		}
 	}

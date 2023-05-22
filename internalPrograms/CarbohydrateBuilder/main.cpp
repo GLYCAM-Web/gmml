@@ -44,7 +44,6 @@ int main(int argc, char** argv)
                 std::string inputGlycanID = splitLine.at(0);
                 //carbBuilder.GenerateSingle3DStructureDefaultFiles(outputFolderName, inputGlycanID);
                 //CondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
-
                 carbBuilder.GenerateSingle3DStructureDefaultFiles(outputFolderName, inputGlycanID);
                 if (!carbBuilder.IsStatusOk()) // This is bad. Fix me once gems can catch what the carbBuilder throws.
                 {
