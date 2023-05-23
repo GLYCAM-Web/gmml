@@ -1,4 +1,5 @@
-#include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
+#include "../../../includes/CentralDataStructure/InternalPrograms/DrawGlycan/drawGlycan.hpp"
+
 #include "includes/CentralDataStructure/CondensedSequence/sequenceManipulator.hpp"
 
 using CondensedSequence::DrawGlycan;

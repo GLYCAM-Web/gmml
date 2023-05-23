@@ -1,4 +1,5 @@
-#include "includes/InternalPrograms/glycosylationSiteFinder.hpp"
+#include "../../../includes/CentralDataStructure/InternalPrograms/glycosylationSiteFinder.hpp"
+
 #include "includes/MolecularModeling/residue.hpp"
 #include "includes/MolecularMetadata/glycoprotein.hpp"
 

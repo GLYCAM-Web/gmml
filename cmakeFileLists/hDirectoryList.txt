@@ -5,7 +5,9 @@
 ./includes/CentralDataStructure/Editors
 ./includes/CentralDataStructure/InternalPrograms
 ./includes/CentralDataStructure/InternalPrograms/CarbohydrateBuilder
+./includes/CentralDataStructure/InternalPrograms/DrawGlycan
 ./includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder
+./includes/CentralDataStructure/InternalPrograms/Sequence
 ./includes/CentralDataStructure/InternalPrograms/WiggleToSite
 ./includes/CentralDataStructure/Measurements
 ./includes/CentralDataStructure/Overlaps
@@ -29,9 +31,6 @@
 ./includes/InputSet/PdbqtFileSpace
 ./includes/InputSet/TopologyFileSpace
 ./includes/InputSet/Utilities
-./includes/InternalPrograms
-./includes/InternalPrograms/DrawGlycan
-./includes/InternalPrograms/Sequence
 ./includes/MolecularMetadata
 ./includes/MolecularMetadata/AMBER
 ./includes/MolecularMetadata/GLYCAM

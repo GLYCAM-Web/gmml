@@ -5,11 +5,14 @@
 ./src/CentralDataStructure/CondensedSequence/sequenceParser.cpp
 ./src/CentralDataStructure/Editors/superimposition.cpp
 ./src/CentralDataStructure/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.cpp
+./src/CentralDataStructure/InternalPrograms/DrawGlycan/drawGlycan.cpp
 ./src/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.cpp
 ./src/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycosylationSite.cpp
 ./src/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/gpInputStructs.cpp
+./src/CentralDataStructure/InternalPrograms/Sequence/sequence.cpp
 ./src/CentralDataStructure/InternalPrograms/WiggleToSite/inputs.cpp
 ./src/CentralDataStructure/InternalPrograms/WiggleToSite/wiggleToSite.cpp
+./src/CentralDataStructure/InternalPrograms/glycosylationSiteFinder.cpp
 ./src/CentralDataStructure/Measurements/measurements.cpp
 ./src/CentralDataStructure/Overlaps/beadResidues.cpp
 ./src/CentralDataStructure/Overlaps/cdsOverlaps.cpp
@@ -175,9 +178,6 @@
 ./src/InputSet/TopologyFileSpace/topologyfileprocessingexception.cc
 ./src/InputSet/TopologyFileSpace/topologyresidue.cc
 ./src/InputSet/Utilities/response.cc
-./src/InternalPrograms/DrawGlycan/drawGlycan.cpp
-./src/InternalPrograms/Sequence/sequence.cpp
-./src/InternalPrograms/glycosylationSiteFinder.cpp
 ./src/MolecularMetadata/GLYCAM/amberatomtypeinfo.cpp
 ./src/MolecularMetadata/GLYCAM/amberelements.cpp
 ./src/MolecularMetadata/GLYCAM/bondlengthbytypepair.cpp
