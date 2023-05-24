@@ -35,9 +35,11 @@
 #include "includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
 
 #include "includes/CentralDataStructure/CondensedSequence/graphVizDotConfig.hpp"
-#include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
-
-#include "includes/InternalPrograms/Sequence/sequence.hpp"
+#include "includes/CentralDataStructure/InternalPrograms/DrawGlycan/drawGlycan.hpp"
+#include "includes/CentralDataStructure/InternalPrograms/Sequence/sequence.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp"
 
 #include "includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
 #include "includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
@@ -182,6 +184,11 @@
 std::ostream & get_cout() { return std::cout; }
 %}
 
+///Naming conflicts///
+%rename(cds_PdbFile) pdb::PdbFile;
+%rename(cds_iPdbLineLength) pdb::iPdbLineLength;
+//%rename(B_foo) B::foo;
+
 %include "includes/gmml.hpp"
 %include "includes/common.hpp"
 %include "includes/utils.hpp"
@@ -209,9 +216,12 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
 
 %include "includes/CentralDataStructure/CondensedSequence/graphVizDotConfig.hpp"
-%include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
+%include "includes/CentralDataStructure/InternalPrograms/DrawGlycan/drawGlycan.hpp"
+%include "includes/CentralDataStructure/InternalPrograms/Sequence/sequence.hpp"
+%include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
+%include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
+%include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp"
 
-%include "includes/InternalPrograms/Sequence/sequence.hpp"
 
 %include "includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
 %include "includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
@@ -703,5 +713,15 @@ std::ostream & get_cout() { return std::cout; }
 
 //typedef std::vector<MolecularModeling::Residue*> ResidueVector;
 %template(residue_vector) std::vector<MolecularModeling::Residue* >;
+
+///MD Prep///
+%template (AtomInfoVector) std::vector<pdb::AtomInfo>;
+%template (GapInAminoAcidChainVector) std::vector<pdb::GapInAminoAcidChain>;
+%template (ResidueIdVector) std::vector<pdb::ResidueId>;
+%template (ChainTerminalVector) std::vector<pdb::ChainTerminal>;
+%template (DisulphideBondVector) std::vector<pdb::DisulphideBond>;
+%template (hisSelectionPairVector) std::vector<std::pair<std::string,std::string>>;
+//%template (Vector) std::vector<>;
+
 
 //constexpr operator size_t() { return 0; }

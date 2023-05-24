@@ -36,10 +36,10 @@ struct PreprocessorOptions // This is inputs into the preprocessor function. Def
     std::vector<std::pair<std::string,std::string>> hisSelections_; // e.g. pair: residue id like this <"HIS_20_?_A_1", "HID">
 };
 
-//struct ResidueId
+//struct pdb::ResidueId
 //{
 //    //Constructor
-//    ResidueId(std::string inputId)
+//    pdb::ResidueId(std::string inputId)
 //    {
 //        std::vector<std::string> tokens = gmml::Split(inputId, "_");
 //        if (tokens.size() == 4)
@@ -68,16 +68,18 @@ struct PreprocessorOptions // This is inputs into the preprocessor function. Def
 struct DisulphideBond // The original spelling is phabulous.
 {
     //Constructor
-    DisulphideBond(const ResidueId& res1Id, const ResidueId& res2Id, const double& distance) : residue1_(res1Id), residue2_(res2Id), distance_(distance) {}
+    DisulphideBond() {} // SWIG needs this
+    DisulphideBond(const pdb::ResidueId& res1Id, const pdb::ResidueId& res2Id, const double& distance) : residue1_(res1Id), residue2_(res2Id), distance_(distance) {}
     //Members
-    ResidueId residue1_;
-    ResidueId residue2_;
-    double distance_;
+    pdb::ResidueId residue1_;
+    pdb::ResidueId residue2_;
+    double distance_ = constants::dNotSet;
 };
 
 struct GapInAminoAcidChain
 {
     //Constructor
+    GapInAminoAcidChain() {} // SWIG needs this
     GapInAminoAcidChain(const std::string& chain, const std::string& resBefore, const std::string& resAfter, const std::string& cTerm, const std::string& nterm) : chainId_(chain), residueBeforeGap_(resBefore), residueAfterGap_(resAfter), terminationBeforeGap_(cTerm), terminationAfterGap_(nterm) {}
     //Members
     std::string chainId_;
@@ -123,16 +125,18 @@ struct GapInAminoAcidChain
 struct AtomInfo
 {
     // Constructor
-    AtomInfo(const std::string& atomName, const ResidueId& residue) : name_(atomName), residue_(residue) {}
+    AtomInfo () {} // required for SWIG? Really SWIG?
+    AtomInfo(const std::string& atomName, const pdb::ResidueId& residue) : name_(atomName), residue_(residue) {}
     // Members
     std::string name_;
-    ResidueId residue_;
+    pdb::ResidueId residue_;
 };
 
 
 struct ChainTerminal
 {
     // Constructor
+    ChainTerminal() {} // SWIG needs this
     ChainTerminal(const std::string& chainId, const std::string& startIndex, const std::string& endIndex, const std::string& nTerm, const std::string& cTerm) : chainId_(chainId), startIndex_(startIndex), endIndex_(endIndex), nTermination_(nTerm), cTermination_(cTerm) {}
     // Members
     std::string chainId_;
@@ -146,10 +150,10 @@ struct PreprocessorInformation
 {
     std::vector<AtomInfo> unrecognizedAtoms_;
     std::vector<AtomInfo> missingHeavyAtoms_;
-    std::vector<ResidueId> unrecognizedResidues_;
+    std::vector<pdb::ResidueId> unrecognizedResidues_;
     std::vector<GapInAminoAcidChain> missingResidues_;
     std::vector<ChainTerminal> chainTerminals_;
-    std::vector<ResidueId> hisResidues_;
+    std::vector<pdb::ResidueId> hisResidues_;
     std::vector<DisulphideBond> cysBondResidues_;
 };
 

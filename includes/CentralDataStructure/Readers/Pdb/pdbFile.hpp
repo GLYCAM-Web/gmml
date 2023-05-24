@@ -31,11 +31,11 @@ public:
     //////////////////////////////////////////////////////////
     inline std::string GetInputFilePath() const {return inFilePath_;}
     // ToDo These should be private and whatever info they give out should be directly queryable here.
-    inline const HeaderRecord& GetHeaderRecord() const {return headerRecord_;}
-    inline const TitleRecord& GetTitleRecord() const {return titleRecord_;}
-    inline const AuthorRecord& GetAuthorRecord() const {return authorRecord_;}
-    inline const JournalRecord& GetJournalRecord() const {return journalRecord_;}
-    inline const RemarkRecord& GetRemarkRecord() const {return remarkRecord_;}
+    inline const pdb::HeaderRecord& GetHeaderRecord() const {return headerRecord_;}
+    inline const pdb::TitleRecord& GetTitleRecord() const {return titleRecord_;}
+    inline const pdb::AuthorRecord& GetAuthorRecord() const {return authorRecord_;}
+    inline const pdb::JournalRecord& GetJournalRecord() const {return journalRecord_;}
+    inline const pdb::RemarkRecord& GetRemarkRecord() const {return remarkRecord_;}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
@@ -52,7 +52,7 @@ private:
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-    inline const std::vector<DatabaseReference>& GetDatabaseReferences() const {return databaseReferences_;}
+    inline const std::vector<pdb::DatabaseReference>& GetDatabaseReferences() const {return databaseReferences_;}
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
@@ -63,12 +63,12 @@ private:
     //                        ATTRIBUTES                    //
     //////////////////////////////////////////////////////////
     std::string inFilePath_;
-    HeaderRecord headerRecord_;
-    TitleRecord titleRecord_;
-    AuthorRecord authorRecord_;
-    JournalRecord journalRecord_;
-    RemarkRecord remarkRecord_;
-    std::vector<DatabaseReference> databaseReferences_;
+    pdb::HeaderRecord headerRecord_; // SWIG wants the pdb::
+    pdb::TitleRecord titleRecord_;
+    pdb::AuthorRecord authorRecord_;
+    pdb::JournalRecord journalRecord_;
+    pdb::RemarkRecord remarkRecord_;
+    std::vector<pdb::DatabaseReference> databaseReferences_;
 };
 }
 #endif /* INCLUDES_CENTRALDATASTRUCTURE_READERS__PDB_PDBFILE_HPP */
