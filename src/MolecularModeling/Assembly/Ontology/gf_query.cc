@@ -208,35 +208,70 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     }
     if (isError == 1)
     {
-        query << "?something\t" << Ontology::hasNote << " / " << Ontology::note_type << "\t\"error\".\n";
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?errorNote.\n";
+        query << "?errorNote\t" << Ontology::note_type << "\t\"error\";\n";
+        query << Ontology::note_description << "\t?error.\n";
     }
-    else if (isError == 0)
+    else if (isError == -1)
     {
         query << "OPTIONAL {";
-        query << "?something\t" << Ontology::hasNote << "\t?errorNote.}\n";
-        query << "FILTER NOT EXISTS { ?errorNote :NoteType \"error\".}\n";
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?errorNote.\n";
+        query << "FILTER NOT EXISTS { ?errorNote " << Ontology::note_type << " \"error\".}\n}\n";
     }
     if (isWarning == 1)
     {
-        query << "?something\t" << Ontology::hasNote << " / " << Ontology::note_type << "\t\"warning\".\n";
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?warningNote.\n";
+        query << "?warningNote\t" << Ontology::note_type << "\t\"warning\";\n";
+        query << Ontology::note_description << "\t?warning.\n";
     }
-    else if (isWarning == 0)
+    else if (isWarning == -1)
     {
         query << "OPTIONAL {";
-        query << "?something\t" << Ontology::hasNote << "\t?warningNote.}\n";
-        query << "FILTER NOT EXISTS { ?warningNote :NoteType \"warning\".}\n";
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?warningNote.\n";
+        query << "FILTER NOT EXISTS { ?warningNote " << Ontology::note_type << " \"warning\".}\n}\n";
     }
     if (isComment == 1)
     {
-        query << "?something\t" << Ontology::hasNote << " / " << Ontology::note_type << "\t\"comment\".\n";
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )\t";
+        query << " ?commentNote.\n";
+        query << "?commentNote\t" << Ontology::note_type << "\t\"comment\";\n";
+        query << Ontology::note_description << "\t?comment.\n";
     }
-    else if (isComment == 0)
+    else if (isComment == -1)
     {
         query << "OPTIONAL {";
-        query << "?something       :hasNote       ?commentNote.}\n";
-        query << "FILTER NOT EXISTS { ?commentNote :NoteType \"comment\".}\n";
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?commentNote.\n";
+        query << "FILTER NOT EXISTS { ?commentNote " << Ontology::note_type << " \"comment\".}\n}\n";
     }
-
 
     //If we need to filter data instead of cleaning it
 
@@ -260,12 +295,16 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     }
     if (count != "TRUE")
     {
-        query << "ORDER BY  ?" << sortBy << "\n";
+        if(sortBy != "undefined")
+        {
+            query << "ORDER BY  ?" << sortBy << "\n";
+        }
         if (resultsPerPage != -1)
         {
             query << "LIMIT  " << resultsPerPage << "\n";
         }
         query << "OFFSET " << resultsPerPage * (page - 1) << "\n";
+        
     }
     if (local_debug > 0)
     {
@@ -314,66 +353,85 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
     query << "\t" << "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings)\n";
     query << "\t" << "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n\n";
 
-  query << Ontology::WHERE_CLAUSE;
-  query << "?pdb_file" << "\n\t" << Ontology::id << "\t\"" << pdb_id << "\";\n";
+    query << Ontology::WHERE_CLAUSE;
+    query << "?pdb_file"
+          << "\n\t" << Ontology::id << "\t\"" << pdb_id << "\";\n";
 
-  query << "\t" << Ontology::hasOligo << "\t?oligo.\n";
-  query << "VALUES ?oligo { " << Ontology::ONT_PREFIX << oligo << " }\n";
+    query << "\t" << Ontology::hasOligo << "\t?oligo.\n";
+    query << "VALUES ?oligo { " << Ontology::ONT_PREFIX << oligo << " }\n";
 
-//   gmml::FindReplaceString(oligo_sequence, "-OH", "-ROH");
-//   query << "?oligo        :oligoIUPACname     \"" << oligo_sequence << "\".\n";
+    //   gmml::FindReplaceString(oligo_sequence, "-OH", "-ROH");
+    //   query << "?oligo        :oligoIUPACname     \"" << oligo_sequence << "\".\n";
 
-  query << "?pdb_file     :hasTitle               ?title;\n";
-  query << "              :hasAuthors             ?authors.\n";
-  query << "OPTIONAL {";
-  query << "?pdb_file     :hasJournal             ?journal.}\n";
-  query << "OPTIONAL {";
-  query << "?pdb_file     :hasProteinID           ?ProteinID.}\n";
-  query << "OPTIONAL {";
-  query << "?pdb_file     :hasDOI                 ?DOI.}\n";
-  query << "OPTIONAL {";
-  query << "?pdb_file     :hasPMID                ?PMID.}\n";
-  query << "OPTIONAL {";
-  query << "?pdb_file     :hasResolution          ?resolution.}\n";
-  query << "OPTIONAL {";
-  query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.}\n";
-  query << "OPTIONAL {";
-  query << "?oligo        :oligoResidueLinks      ?residue_links.}\n";
-  query << "OPTIONAL {";
-  query << "?oligo        :hasBFactor           ?oligo_mean_B_Factor.}\n";
-  query << "?oligo        :PDBfile           ?pdb_coordinates.\n";
-  if(numRgroups > 0)
-  {//There are chemical modifications that need to be returned to the user
-    for(int i = 0; i < numRgroups; i++)
-    {
-      query << "?oligo      :hasR" << i + 1 << "     ?Rgroup" << i + 1 << ".\n";
-      query << "?Rgroup" << i + 1 << "   :hasFormula      ?R" << i + 1 << ".\n";
+    query << "?pdb_file     :hasTitle               ?title;\n";
+    query << "              :hasAuthors             ?authors.\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasJournal             ?journal.}\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasProteinID           ?ProteinID.}\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasDOI                 ?DOI.}\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasPMID                ?PMID.}\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasResolution          ?resolution.}\n";
+    query << "OPTIONAL {";
+    query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.}\n";
+    query << "OPTIONAL {";
+    query << "?oligo        :oligoResidueLinks      ?residue_links.}\n";
+    query << "OPTIONAL {";
+    query << "?oligo        :hasBFactor           ?oligo_mean_B_Factor.}\n";
+    query << "?oligo        :PDBfile           ?pdb_coordinates.\n";
+    if (numRgroups > 0)
+    { // There are chemical modifications that need to be returned to the user
+        for (int i = 0; i < numRgroups; i++)
+        {
+        query << "?oligo      :hasR" << i + 1 << "     ?Rgroup" << i + 1 << ".\n";
+        query << "?Rgroup" << i + 1 << "   :hasFormula      ?R" << i + 1 << ".\n";
+        }
     }
-  }
-  query << "?oligo        :hasMono            ?mono.\n";
-  // query << "OPTIONAL {";
-  // query << "?linkage      :hasParent 	            ?oligo;\n";
-  // query << "              :glycosidicLinkage      ?glycosidic_linkage.}\n";
-  query << "OPTIONAL {";
-  query << "?mono       :hasNote       ?errorNote.\n";
-  query << "?errorNote	    :NoteType      \"error\".\n";
-  query << "?errorNote      :description   ?error.}\n";
-  query << "OPTIONAL {";
-  query << "?mono       :hasNote       ?warningNote.\n";
-  query << "?warningNote    :NoteType      \"warning\".\n";
-  query << "?warningNote    :description   ?warning.}\n";
-  query << "OPTIONAL {";
-  query << "?mono       :hasNote       ?commentNote.\n";
-  query << "?commentNote    :NoteType      \"comment\".\n";
-  query << "?commentNote    :description   ?comment.}\n";
-  //add info for coordinates here
-  query << Ontology::END_WHERE_CLAUSE << "\n";
+    query << "?oligo        :hasMono            ?mono.\n";
+    // query << "OPTIONAL {";
+    // query << "?linkage      :hasParent 	            ?oligo;\n";
+    // query << "              :glycosidicLinkage      ?glycosidic_linkage.}\n";
+    query << "OPTIONAL {";
+    // query << "?pdb_file\n\t";
+    query << "?oligo\n\t";
+    query << "( "  << Ontology::hasNote << " | ";
+    // query << Ontology::hasOligo << " | ";
+    query << Ontology::hasMono << " )*\t";
+    query << " ?errorNote.\n";
+    query << "?errorNote\n\t" << Ontology::note_type << "\t\"error\";\n\t";
+    query << Ontology::note_description << "\t?error.\n}\n";
+    query << "OPTIONAL {";
+    // query << "?pdb_file\n\t";
+    query << "?oligo\n\t";
+    query << "( "  << Ontology::hasNote << " | ";
+    // query << Ontology::hasOligo << " | ";
+    query << Ontology::hasMono << " )*\t";
+    query << " ?warningNote.\n";
+    query << "?warningNote\n\t" << Ontology::note_type << "\t\"warning\";\n\t";
+    query << Ontology::note_description << "\t?warning.\n}\n";
+    query << "OPTIONAL {";
+    // query << "?pdb_file\n\t";
+    query << "?oligo\n\t";
+    query << "( "  << Ontology::hasNote << " | ";
+    // query << Ontology::hasOligo << " | ";
+    query << Ontology::hasMono << " )*\t";
+    query << " ?commentNote.\n";
+    query << "?commentNote\n\t" << Ontology::note_type << "\t\"comment\";\n\t";
+    query << Ontology::note_description << "\t?comment.\n}\n";
+
+
+
+    //add info for coordinates here
+    query << Ontology::END_WHERE_CLAUSE << "\n";
     if(local_debug > 0)
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, query.str());
     }
-  // std::cout << "\n" << query.str() << "\n";
-  return FormulateCURLGF(output_file_type, query.str(), url);
+    // std::cout << "\n" << query.str() << "\n";
+    return FormulateCURLGF(output_file_type, query.str(), url);
 
 }
 
@@ -492,7 +550,7 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
   }
   if((oligo_b_factor_max != -1) | (oligo_b_factor_min != -1))
   {
-    query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.\n";
+    query << "?oligo\n\t" << Ontology::hasBFactor << "\t?oligo_mean_B_Factor.\n";
   }
   if(oligo_b_factor_max != -1)
   {
@@ -502,24 +560,72 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
   {
     query << "FILTER (" << oligo_b_factor_min << " < ?oligo_mean_B_Factor)\n";
   }
-  if(isError == 1)
-  {
-    query << "?pdb_file       :hasNote       ?errorNote.\n";
-    query << "?errorNote	    :NoteType      \"error\".\n";
-    query << "?errorNote      :description   ?error.\n";
-  }
-  if(isWarning == 1)
-  {
-    query << "?pdb_file       :hasNote       ?warningNote.\n";
-    query << "?warningNote    :NoteType      \"warning\".\n";
-    query << "?warningNote    :description   ?warning.\n";
-  }
-  if(isComment == 1)
-  {
-    query << "?pdb_file       :hasNote       ?commentNote.\n";
-    query << "?commentNote    :NoteType      \"comment\".\n";
-    query << "?commentNote    :description   ?comment.\n";
-  }
+  if (isError == 1)
+    {
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?errorNote.\n";
+        query << "?errorNote\t" << Ontology::note_type << "\t\"error\";\n";
+        query << Ontology::note_description << "\t?error.\n";
+    }
+    else if (isError == -1)
+    {
+        query << "OPTIONAL {";
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?errorNote.\n";
+        query << "FILTER NOT EXISTS { ?errorNote " << Ontology::note_type << " \"error\".}\n}\n";
+    }
+    if (isWarning == 1)
+    {
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?warningNote.\n";
+        query << "?warningNote\t" << Ontology::note_type << "\t\"warning\";\n";
+        query << Ontology::note_description << "\t?warning.\n";
+    }
+    else if (isWarning == -1)
+    {
+        query << "OPTIONAL {";
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?warningNote.\n";
+        query << "FILTER NOT EXISTS { ?warningNote " << Ontology::note_type << " \"warning\".}\n}\n";
+    }
+    if (isComment == 1)
+    {
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )\t";
+        query << " ?commentNote.\n";
+        query << "?commentNote\t" << Ontology::note_type << "\t\"comment\";\n";
+        query << Ontology::note_description << "\t?comment.\n";
+    }
+    else if (isComment == -1)
+    {
+        query << "OPTIONAL {";
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?commentNote.\n";
+        query << "FILTER NOT EXISTS { ?commentNote " << Ontology::note_type << " \"comment\".}\n}\n";
+    }
 
   query << Ontology::END_WHERE_CLAUSE << "\n";
   query << "ORDER BY  ?" << sortBy << "\n";
@@ -534,173 +640,273 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
 }
 
 std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
-{ //This is a complete (and therefore slow) query that is a combination of moreQuery() and QueryOntology().  It filters the database by user input, and returns a CSV with all of the data for download.
-  int local_debug = -1;
-  if(local_debug > 0)
-  {
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Running ontologyDownload()");
-  }
+{ 
+    //This is a complete (and therefore slow) query that is a combination of moreQuery() and QueryOntology().  It filters the database by user input, and returns a CSV with all of the data for download.
+    int local_debug = -1;
+    if(local_debug > 0)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Running ontologyDownload()");
+    }
 
-  std::stringstream query;
-  std::stringstream search;
-  search << searchType;
+    std::stringstream query;
+    std::stringstream search;
+    search << searchType;
 
-  query << Ontology::PREFIX << Ontology::SELECT_CLAUSE;
-  query << " DISTINCT ?pdb ?oligo_sequence ?residue_links ?title ?resolution ?Mean_B_Factor "
-           "?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI "
-           "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments) "
-           "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings) "
-           "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n";
-  query << Ontology::WHERE_CLAUSE;
-  query << "?pdb_file     :identifier             ?pdb.\n";
-  query << "?pdb_file     :hasTitle               ?title;\n";
-  query << "              :hasAuthors             ?authors.\n";
-  query << "OPTIONAL {";
-  query << "?pdb_file     :hasJournal             ?journal.}\n";
-  query << "OPTIONAL {";
-  query << "?pdb_file     :hasDOI                 ?DOI.}\n";
-  query << "OPTIONAL {";
-  query << "?pdb_file     :hasPMID                ?PMID.}\n";
-  if(search.str()=="PDB")
-  {
-    query << "VALUES ?pdb { \"" << searchTerm << "\" }\n";
-  }
-  query << "OPTIONAL {";
-  query << "?pdb_file     :hasResolution          ?resolution.\n";
-  if(resolution_max != -1)
-  {
-    query << "FILTER (" << resolution_max << " > ?resolution)\n";
-  }
-  if(resolution_min != -1)
-  {
-    query << "FILTER (" << resolution_min << " < ?resolution)\n";
-  }
-  query << "}\n";
-  query << "OPTIONAL {";
-  query << "?pdb_file     :hasBFactor             ?Mean_B_Factor.\n";
-  if(b_factor_max != -1)
-  {
-    query << "FILTER (" << b_factor_max << " > ?Mean_B_Factor)\n";
-  }
-  if(b_factor_min != -1)
-  {
-    query << "FILTER (" << b_factor_min << " < ?Mean_B_Factor)\n";
-  }
-  query << "}\n";
-  query << "?pdb_file     :hasOligo               ?oligo.\n";
-  query << "?oligo        :oligoIUPACname              ?oligo_sequence.\n";
-  if(search.str()=="Oligo_REGEX")
-  {
-    gmml::FindReplaceString(searchTerm, "[", "\\\\[");
-    gmml::FindReplaceString(searchTerm, "]", "\\\\]");
-    gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
-    query << "FILTER regex(?oligo_sequence, \"" << searchTerm << "\")\n";
-  }
-  if(search.str()=="Condensed_Sequence")
-  {
-    gmml::FindReplaceString(searchTerm, "[", "\\\\[");
-    gmml::FindReplaceString(searchTerm, "]", "\\\\]");
-    gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
-    query << "VALUES ?oligo_sequence { \"" << searchTerm << "\" }\n";
-  }
-  query << "OPTIONAL {";
-  query << "?oligo        :oligoResidueLinks      ?residue_links.}\n";
-  query << "OPTIONAL {";
-  query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.\n";
-  if(oligo_b_factor_max != -1)
-  {
-    query << "FILTER (" << oligo_b_factor_max << " > ?oligo_mean_B_Factor)\n";
-  }
-  if(oligo_b_factor_min != -1)
-  {
-    query << "FILTER (" << oligo_b_factor_min << " < ?oligo_mean_B_Factor)\n";
-  }
-  query << "}\n";
-  if(isLigand == 1)
-  {
-    query << "FILTER (!regex(?oligo_sequence, \"-ASN$\"))\n";
-    query << "FILTER (!regex(?oligo_sequence, \"-THR$\"))\n";
-    query << "FILTER (!regex(?oligo_sequence, \"-SER$\"))\n";
-    query << "FILTER (!regex(?oligo_sequence, \"-LYZ$\"))\n";
-    query << "FILTER (!regex(?oligo_sequence, \"-HYP$\"))\n";
-    query << "FILTER (!regex(?oligo_sequence, \"-TYR$\"))\n";
-    query << "FILTER (!regex(?oligo_sequence, \"-CYS$\"))\n";
-    query << "FILTER (!regex(?oligo_sequence, \"-TRP$\"))\n";
-    query << "FILTER (!regex(?oligo_sequence, \"-LYS$\"))\n";
-    query << "FILTER (!regex(?oligo_sequence, \"-HIS$\"))\n";
-  }
-  else if(isLigand == 0)
-  {
-    query << "FILTER (!regex(?oligo_sequence, \"-ROH$\"))\n";
-    query << "FILTER (!regex(?oligo_sequence, \"-OME$\"))\n";
-    query << "?oligo    :oligoSequenceName     ?sequenceName.\n";
-    query << "FILTER (!regex(?sequenceName, \"-Unknown$\"))\n";
-  }
-   // if(isNucleotide == 1)
-   // {
-   //   query << "?mono         :isNucleotide  \"true\"\n";
-   // }
-   // else if(isNucleotide == 0)
-   // {
-   //   query << "?mono         :isNucleotide  \"false\"\n";
-   // }
-  if(isGlycomimetic == 1)
-  {
-    query << "FILTER regex(?oligo_sequence, \"<R\")\n";
-  }
-  else if(isGlycomimetic == 0)
-  {
-    query << "FILTER (!regex(?oligo_sequence, \"<R\"))\n";
-  }
+    query << Ontology::PREFIX;
+    query << Ontology::SELECT_CLAUSE << " DISTINCT\n";
+    query << "\t?pdb\n";
+    query << "\t?title\n";
+    query << "\t?DOI\n";
+    query << "\t?resolution\n";
+    query << "\t?Mean_B_Factor\n";
+    query << "\t(STRAFTER(str(?oligo), \"#\") as ?oligo)\n";
+    query << "\t?oligo_sequence \n";
+    query << "\t?residue_links\n";
+    query << "\t?oligo_mean_B_Factor\n";
+    query << "(group_concat(distinct ?comment;separator=\"\\n\") as ?comments)\n";
+    query << "(group_concat(distinct ?warning;separator=\"\\n\") as ?warnings)\n";
+    query << "(group_concat(distinct ?error;separator=\"\\n\") as ?errors)\n\n";
+    query << Ontology::WHERE_CLAUSE;
 
-  if(aglycon.length() > 0)
-  {
-    query << "FILTER regex(?oligo_sequence, \"" << aglycon << "$\")\n";
-  }
-  if(isError != 1)
-  {
-    query << "OPTIONAL {";
-  }
-  query << "?pdb_file       :hasNote       ?errorNote.\n";
-  query << "?errorNote	    :NoteType      \"error\".\n";
-  query << "?errorNote      :description   ?error.\n";
-  if(isError != 1)
-  {
-    query << "}\n";
-  }
-  if(isWarning != 1)
-  {
-    query << "OPTIONAL {";
-  }
-  query << "?pdb_file       :hasNote       ?warningNote.\n";
-  query << "?warningNote    :NoteType      \"warning\".\n";
-  query << "?warningNote    :description   ?warning.\n";
-  if(isWarning != 1)
-  {
-    query << "}\n";
-  }
-  if(isComment != 1)
-  {
-    query << "OPTIONAL {";
-  }
-  query << "?pdb_file       :hasNote       ?commentNote.\n";
-  query << "?commentNote    :NoteType      \"comment\".\n";
-  query << "?commentNote    :description   ?comment.\n";
-  if(isComment != 1)
-  {
-    query << "}\n";
-  }
+    query << "?pdb_file\n";
+    query << "\t" << Ontology::id               << "\t?pdb;\n";
+    query << "\t" << Ontology::hasOligo         << "\t?oligo;\n";
+    query << "\t" << Ontology::hasResolution    << "\t?resolution;\n";
+    query << "\t" << Ontology::hasBFactor       << "\t?Mean_B_Factor;\n";
+    query << "\t" << Ontology::hasTitle         << "\t?title;\n";
+    query << "\t" << Ontology::hasDOI           << "\t?DOI;\n";
+    query << "\t" << Ontology::TYPE << "\t" << Ontology::PDB << ".\n";
 
-  query << Ontology::END_WHERE_CLAUSE << "\n";
-  query << "ORDER BY  ?" << sortBy << "\n";
+  
+    if(search.str()=="PDB")
+    {
+        query << "VALUES ?pdb { \"" << searchTerm << "\" }\n";
+    }
+    if(resolution_max != -1)
+    {
+        query << "FILTER (" << resolution_max << " > ?resolution)\n";
+    }
+    if(resolution_min != -1)
+    {
+        query << "FILTER (" << resolution_min << " < ?resolution)\n";
+    }
+    if(b_factor_max != -1)
+    {
+        query << "FILTER (" << b_factor_max << " > ?Mean_B_Factor)\n";
+    }
+    if(b_factor_min != -1)
+    {
+        query << "FILTER (" << b_factor_min << " < ?Mean_B_Factor)\n";
+    }
+    query << "?oligo\n";
+    query << "\t" << Ontology::oligo_IUPAC_name;
+    query << "\t?oligo_sequence.\n";
 
-  if(local_debug > 0)
-  {
-    gmml::log(__LINE__, __FILE__,  gmml::INF, query.str());
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Done running ontologyDownload()");
-  }
 
-  return FormulateCURLGF(output_file_type, query.str(), url);
+    if(search.str()=="Condensed_Sequence")
+    {
+        gmml::FindReplaceString(searchTerm, "[", "\\\\[");
+        gmml::FindReplaceString(searchTerm, "]", "\\\\]");
+        gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
+        query << "VALUES ?oligo_sequence { \"" << searchTerm << "\" }\n";
+    }
+    else if(search.str()=="Oligo_REGEX")
+    {
+        gmml::FindReplaceString(searchTerm, "-OH", "-ROH");
+        gmml::FindReplaceString(searchTerm, ".*", "*");
+        while (searchTerm.find("**") != std::string::npos)
+        {
+            // gmml::FindReplaceString(searchTerm, "**", "*");
+            searchTerm.replace(searchTerm.find("**"), 2, "*");
+        }
+        if (local_debug > 0)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, searchTerm);
+        }
+        while (searchTerm.find("1-*") != std::string::npos)
+        {
+            if (local_debug > 0)
+            {
+                gmml::log(__LINE__, __FILE__, gmml::INF, "Found 1-* still");
+            }
+            searchTerm.replace(searchTerm.find("1-*"), 3, "1-0");
+        }
+        while (searchTerm.find("2-*") != std::string::npos)
+        {
+            if (local_debug > 0)
+            {
+                gmml::log(__LINE__, __FILE__, gmml::INF, "Found 2-* still");
+            }
+            searchTerm.replace(searchTerm.find("2-*"), 3, "2-0");
+        }
+        while (searchTerm.find("[*") != std::string::npos)
+        {
+            searchTerm.replace(searchTerm.find("[*"), 2, "[");
+        }
+        if (local_debug > 0)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, searchTerm);
+        }
+        if (searchTerm != "*")
+        {
+            while (searchTerm[0] == '*')
+            {
+                // Subgraph match will always find other nodes at the beginning
+                searchTerm = searchTerm.substr(1); // char 1 to end (removes first char [0])
+            }
+            while (searchTerm[searchTerm.size() - 1] == '*')
+            {
+                // Subgraph match will always find other nodes at the end
+                searchTerm = searchTerm.substr(0, searchTerm.size() - 1); // start at the beginning, get 1 less than the # of chars there (remove the last char)
+            }
+            GraphDS::Graph queryGraph = CreateQueryStringGraph(searchTerm);
+            if (local_debug > 0)
+            {
+                std::stringstream logSS;
+                queryGraph.Print(logSS);
+                gmml::log(__LINE__, __FILE__, gmml::INF, logSS.str());
+            }
+            ConvertGraphToQuery(query, queryGraph);
+        }
+        else
+        {
+            // TODO: make query return everything
+            // Does it already with no additional code? Looks like it!
+        }
+    }
+  
+//   query << "OPTIONAL {";
+//   query << "?oligo        :oligoResidueLinks      ?residue_links.}\n";
+//   query << "OPTIONAL {";
+//   query << "?oligo        :oligoBFactor           ?oligo_mean_B_Factor.\n";
+//   if(oligo_b_factor_max != -1)
+//   {
+//     query << "FILTER (" << oligo_b_factor_max << " > ?oligo_mean_B_Factor)\n";
+//   }
+//   if(oligo_b_factor_min != -1)
+//   {
+//     query << "FILTER (" << oligo_b_factor_min << " < ?oligo_mean_B_Factor)\n";
+//   }
+//   query << "}\n";
+
+    query << "?oligo\n\t";
+    query << Ontology::hasBFactor << "\t?oligo_mean_B_Factor;\n\t";
+    query << Ontology::oligo_residue_linkages << "\t?residue_links;\n\t";
+
+    if(isLigand == 1)
+    {
+        query << Ontology::isAttachedToProtein << "\t\"false\";\n\t";
+    }
+    else if(isLigand == 0)
+    {
+        query << Ontology::isAttachedToProtein << "\t\"true\";\n\t";
+    }
+
+    query << Ontology::TYPE << "\t" << Ontology::Oligosaccharide << ".\n\n";
+    
+
+    // Filters
+
+    if(isGlycomimetic == 1)
+    {
+        query << "FILTER regex(?oligo_sequence, \"<R\")\n";
+    }
+    else if(isGlycomimetic == 0)
+    {
+        query << "FILTER (!regex(?oligo_sequence, \"<R\"))\n";
+    }
+
+    if(aglycon.length() > 0)
+    {
+        query << "FILTER regex(?oligo_sequence, \"" << aglycon << "$\")\n";
+    }
+
+    if(oligo_b_factor_max != -1)
+    {
+        query << "FILTER (" << oligo_b_factor_max << " > ?oligo_mean_B_Factor)\n";
+    }
+    if(oligo_b_factor_min != -1)
+    {
+        query << "FILTER (" << oligo_b_factor_min << " < ?oligo_mean_B_Factor)\n";
+    }
+
+    if (isError == 1)
+    {
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?errorNote.\n";
+        query << "?errorNote\t" << Ontology::note_type << "\t\"error\";\n";
+        query << Ontology::note_description << "\t?error.\n";
+    }
+    else if (isError == -1)
+    {
+        query << "OPTIONAL {";
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?errorNote.\n";
+        query << "FILTER NOT EXISTS { ?errorNote " << Ontology::note_type << " \"error\".}\n}\n";
+    }
+    if (isWarning == 1)
+    {
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?warningNote.\n";
+        query << "?warningNote\t" << Ontology::note_type << "\t\"warning\";\n";
+        query << Ontology::note_description << "\t?warning.\n";
+    }
+    else if (isWarning == -1)
+    {
+        query << "OPTIONAL {";
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?warningNote.\n";
+        query << "FILTER NOT EXISTS { ?warningNote " << Ontology::note_type << " \"warning\".}\n}\n";
+    }
+    if (isComment == 1)
+    {
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )\t";
+        query << " ?commentNote.\n";
+        query << "?commentNote\t" << Ontology::note_type << "\t\"comment\";\n";
+        query << Ontology::note_description << "\t?comment.\n";
+    }
+    else if (isComment == -1)
+    {
+        query << "OPTIONAL {";
+        // query << "?pdb_file\t";
+        query << "?oligo\t";
+        query << "( "  << Ontology::hasNote << " | ";
+        // query << Ontology::hasOligo << " | ";
+        query << Ontology::hasMono << " )*\t";
+        query << " ?commentNote.\n";
+        query << "FILTER NOT EXISTS { ?commentNote " << Ontology::note_type << " \"comment\".}\n}\n";
+    }
+
+    query << Ontology::END_WHERE_CLAUSE << "\n";
+    query << "ORDER BY  ?" << sortBy << "\n";
+
+    if(local_debug > 0)
+    {
+        gmml::log(__LINE__, __FILE__,  gmml::INF, query.str());
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Done running ontologyDownload()");
+    }
+
+    return FormulateCURLGF(output_file_type, query.str(), url);
 }
 
 void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &queryStream, GraphDS::Graph queryGraph)
