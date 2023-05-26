@@ -7,19 +7,17 @@ g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmm
 fileList=("prepAsPrepFile.prep" "prepAsPdbFile.pdb" "prepAsOffFile.off" "prepAsLibFile.lib")
 for file in ${fileList[@]}; 
 do
-  	if [ -f $file ]; then
-  	    if ! cmp $file tests/correct_outputs/020.$file  > /dev/null 2>&1; then
-  	        printf "Test FAILED!\n $file is different from tests/correct_outputs/020.$file\n"
-            echo "Exit Code: 1"
-            return 1
-        else
-            rm $file    
-        fi
-    else
-        printf "Test FAILED!\n $file does not exist\n"
+  	if [ ! -f $file ]; then
+  	    printf "Test FAILED!\n $file does not exist\n"
         echo "Exit Code: 1"
         return 1
-    fi      
+    fi
+  	if ! cmp -s $file tests/correct_outputs/020.$file;  then
+  	    printf "Test FAILED!\n $file is different from tests/correct_outputs/020.$file\n"
+        echo "Exit Code: 1"
+        return 1
+    fi
+    rm $file          
 done
 printf "Test passed.\n"
 rm loadParameters
