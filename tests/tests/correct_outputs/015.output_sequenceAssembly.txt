@@ -16,11 +16,11 @@ Carbohydrate created without throwing an exception for: DGlcpNAcb1-4DGlcpAb1-4DG
 -----------------------------------------------------------------------------------------------------
 
 Sequence 4: dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4DGlcpNSa1-4DGlcpA[2S]b1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LIdopA(2SO)a1-4 with glycam residue code: YuA2
+Test level caught runtime error: Did not find prep entry for LIdopA(2SO)a1-4 with glycam residue code: YuA2
 -----------------------------------------------------------------------------------------------------
 
 Sequence 5: dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
-Error thrown by the carbohydrateBuilder in gmml during construction was: No Metadata entries found for connection between 4uA3@C1 and UYS@O4
+Test level caught runtime error: No Metadata entries found for connection between 4uA3@C1 and UYS@O4
 Note that order should be reducing atom - anomeric atom, but I've tried reversing the order and it didn't fix the issue.
 
 -----------------------------------------------------------------------------------------------------
@@ -61,10 +61,10 @@ Test level caught error: Error: we can't parse this residue: "Boo"
 -----------------------------------------------------------------------------------------------------
 
 Sequence 14: dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4LIdopA(2SO)a1-4DGlcpNSa1-4DGlcpA[2S]b1-OH
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LIdopA(2SO)a1-4 with glycam residue code: YuA2
+Test level caught runtime error: Did not find prep entry for LIdopA(2SO)a1-4 with glycam residue code: YuA2
 -----------------------------------------------------------------------------------------------------
 
 Sequence 15: DGlNAcb1-OH
-Error thrown by the carbohydrateBuilder in gmml during construction was: Cannot create 3D structure as no GLYCAM residue code was found in the GMML metadata for residue: DGlNAcb
+Test level caught runtime error: Cannot create 3D structure as no GLYCAM residue code was found in the GMML metadata for residue: DGlNAcb
 -----------------------------------------------------------------------------------------------------
 

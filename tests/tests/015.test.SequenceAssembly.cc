@@ -28,19 +28,11 @@ int main ()
     for (auto &sequence : sequences)
     {	
         try
-        {   // WARNING, this is just a test, the generated 3D structures are not correct. Look in 013.buildOligosaccharideLibrary for how to build 3D structures.
+        {
             loopCounter++;
             std::cout << "Sequence " << loopCounter << ": " << sequence << "\n";
-            cdsCondensedSequence::Carbohydrate carbie(sequence, prepFilePath); // WARNING. Just a test. 3D structures are not correct.
-            if (carbie.IsStatusOk())
-            {
-                std::cerr << "Carbohydrate created without throwing an exception for: " << sequence << "\n\n";
-            }
-            else
-            {
-                std::cerr << "Error thrown by the carbohydrateBuilder in gmml during construction was: " << carbie.GetStatusMessage() << std::endl;
-            }
-
+            cdsCondensedSequence::Carbohydrate carbie(sequence, prepFilePath);
+            std::cout << "Carbohydrate created without throwing an exception for: " << sequence << "\n\n";
         }
         catch (const std::string &exception)
         {

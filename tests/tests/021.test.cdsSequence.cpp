@@ -36,12 +36,7 @@ int main ()
         {
             loopCounter++;
             std::cout << "Sequence " << loopCounter << ": " << sequence << "\n";
-            //MolecularModeling::Assembly ass(sequence, prepFilePath); // WARNING. Just a test. 3D structures are not correct.
             cdsCondensedSequence::Carbohydrate theVanToMordor(sequence, prepFilePath);
-            if (theVanToMordor.GetStatusType() != "OK")
-            { // This is dumb, but I haven't quite finalized how to handle the error throwing in e.g. glycoprotein builder using the carb builder vs here.
-                throw std::runtime_error(theVanToMordor.GetStatusMessage());
-            }
             std::cout << "Structure created without throwing an exception for: " << sequence << "\n\n";
             for(auto &residue : theVanToMordor.getResidues())
             {
