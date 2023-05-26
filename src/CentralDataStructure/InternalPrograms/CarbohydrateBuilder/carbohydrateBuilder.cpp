@@ -6,13 +6,51 @@ using cdsCondensedSequence::carbohydrateBuilder;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath) : carbohydrate_(condensedSequence, prepFilePath) {}
+carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath) try : carbohydrate_(condensedSequence, prepFilePath) {}
+// If a ctor throws, even if you catch it the standard guarantees another throw. So this is just to make a message.
+catch(const std::string &exceptionMessage)
+{
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught this exception message: " + exceptionMessage);
+    this->SetStatus("ERROR", exceptionMessage); // this is real dumb.
+    throw std::runtime_error(exceptionMessage);
+}
+catch (const std::runtime_error &error)
+{
+    gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught a runtime error:");
+    gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+    this->SetStatus("ERROR", error.what());
+    throw error;
+}
+catch (...)
+{
+    std::string message = "carbohydrateBuilder class caught a throw that was not anticipated. Please report how you got to this to glycam@gmail.com.";
+    gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+    this->SetStatus("ERROR", message);
+    throw std::runtime_error(message);
+}
+
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 void carbohydrateBuilder::GenerateSingle3DStructureDefaultFiles(std::string fileOutputDirectory, std::string outputFileNaming)
 {
-    this->carbohydrate_.Generate3DStructureFiles(fileOutputDirectory, outputFileNaming);
+    try
+    {
+        this->carbohydrate_.Generate3DStructureFiles(fileOutputDirectory, outputFileNaming);
+    }
+    catch(const std::string &exceptionMessage)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught this exception message: " + exceptionMessage);
+        this->SetStatus("ERROR", exceptionMessage);
+        return;
+    }
+    catch (const std::runtime_error &error)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught a runtime error:");
+        gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+        this->SetStatus("ERROR", error.what());
+        return;
+    }
 }
 
 void carbohydrateBuilder::GenerateSpecific3DStructure(cdsCondensedSequence::SingleRotamerInfoVector conformerInfo, std::string fileOutputDirectory)
@@ -101,8 +139,26 @@ std::string carbohydrateBuilder::GetNumberOfShapes(bool likelyShapesOnly) const
 // Commenting out for as not being used, and will be confusing later. The front-end calls a differnt function that will build a single, specific rotamer.
  void carbohydrateBuilder::GenerateUpToNRotamers(int maxRotamers)
  {
-     std::vector<cds::ResidueLinkage> linkagesOrderedForPermutation = cdsSelections::SplitLinkagesIntoPermutants(this->carbohydrate_.GetGlycosidicLinkages());
-     this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
+     try
+     {
+         std::vector<cds::ResidueLinkage> linkagesOrderedForPermutation = cdsSelections::SplitLinkagesIntoPermutants(this->carbohydrate_.GetGlycosidicLinkages());
+         this->generateLinkagePermutationsRecursively(linkagesOrderedForPermutation.begin(), linkagesOrderedForPermutation.end(), maxRotamers);
+     }   // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad pattern.
+     catch(const std::string &exceptionMessage)
+     {
+         gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught this exception message: " + exceptionMessage);
+         this->SetStatus("ERROR", exceptionMessage);
+     }
+     catch (const std::runtime_error &error)
+     {
+         gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+         this->SetStatus("ERROR", error.what());
+     }
+     catch (...)
+     {
+         gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught a throw that was not anticipated. Curious. Death cometh?");
+         this->SetStatus("ERROR", "carbohydrateBuilder caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.");
+     }
  }
 
 cdsCondensedSequence::LinkageOptionsVector carbohydrateBuilder::GenerateUserOptionsDataStruct()

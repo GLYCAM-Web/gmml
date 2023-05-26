@@ -297,10 +297,6 @@ void GlycoproteinBuilder::CreateGlycosites(std::vector<glycoprotein::GlycositeIn
 	{
 	    gmml::log(__LINE__, __FILE__, gmml::INF, "Creating glycosite on residue " + glycositeInput.proteinResidueId_ + " with glycan " + glycositeInput.glycanInput_ );
 	    Carbohydrate* carb = static_cast<Carbohydrate*>(glycoprotein_.addMolecule(std::make_unique<Carbohydrate>(glycositeInput.glycanInput_, prepFileLocation)));
-	    if (!carb->IsStatusOk()) // status checking needs to die. Still haven't figured out catching it in gems/Python smh.
-	    {
-	        throw std::runtime_error(carb->GetStatusMessage());
-	    }
         Residue* glycositeResidue = this->SelectResidueFromInput(glycositeInput.proteinResidueId_);
         if (glycositeResidue == nullptr)
         {

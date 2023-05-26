@@ -3,13 +3,12 @@
 
 #include "includes/CentralDataStructure/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/CentralDataStructure/Shapers/residueLinkage.hpp"
-#include "includes/Abstract/absBuilder.hpp"
 #include "includes/CentralDataStructure/Readers/Prep/prepFile.hpp"
 #include <vector>
 
 namespace cdsCondensedSequence
 {
-    class Carbohydrate : public SequenceManipulator, public Abstract::absBuilder
+    class Carbohydrate : public SequenceManipulator
     {
     public:
         //////////////////////////////////////////////////////////

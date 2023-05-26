@@ -2,6 +2,7 @@
 #define GMML_INCLUDES_CENTRALDATASTRUCTURE_INTERNALPROGRAMS_CARBOHYDRATEBUILDER_CARBOHYDRATEBUILDER_HPP
 
 // This is becoming an interface to the carbohydrate class in gmml for Gems.
+#include "includes/Abstract/absBuilder.hpp"
 #include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
 #include <string>
 #include <vector>
