@@ -639,6 +639,10 @@ void Assembly::PopulateNotes(std::stringstream& pdb_stream, std::stringstream& n
         {
             note_uri = CreateURI(note_resource);
         }
+        else
+        {
+            note_uri = note_resource;
+        }
         
         // gmml::AddTriple(pdb_uri, Ontology::hasNote, note_uri, pdb_stream);
 

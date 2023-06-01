@@ -32,13 +32,17 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     // for # results and # pages
     if (count == "TRUE")
     { 
-        query << "\t( COUNT( DISTINCT *) as ?count) \n";
-        query << Ontology::WHERE_CLAUSE << Ontology::SELECT_CLAUSE;
+        query << "\t( COUNT( DISTINCT ?oligo) as ?count) \n";
+        // query << Ontology::WHERE_CLAUSE << Ontology::SELECT_CLAUSE;
     }
-    query << " DISTINCT\n";
-    query << "\t?pdb\n";
-    query << "\t?oligo_sequence \n";
-    query << "\t(STRAFTER(str(?oligo), \"#\") as ?oligo)\n";
+    else
+    {
+        query << " DISTINCT\n";
+        query << "\t?pdb\n";
+        query << "\t?oligo_sequence \n";
+        query << "\t(STRAFTER(str(?oligo), \"#\") as ?oligo)\n";
+    }
+    
 
     if (isComment == 1)
     {
@@ -217,7 +221,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
         query << "?errorNote\t" << Ontology::note_type << "\t\"error\";\n";
         query << Ontology::note_description << "\t?error.\n";
     }
-    else if (isError == -1)
+    else if (isError == 0)
     {
         query << "OPTIONAL {";
         // query << "?pdb_file\t";
@@ -239,7 +243,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
         query << "?warningNote\t" << Ontology::note_type << "\t\"warning\";\n";
         query << Ontology::note_description << "\t?warning.\n";
     }
-    else if (isWarning == -1)
+    else if (isWarning == 0)
     {
         query << "OPTIONAL {";
         // query << "?pdb_file\t";
@@ -261,7 +265,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
         query << "?commentNote\t" << Ontology::note_type << "\t\"comment\";\n";
         query << Ontology::note_description << "\t?comment.\n";
     }
-    else if (isComment == -1)
+    else if (isComment == 0)
     {
         query << "OPTIONAL {";
         // query << "?pdb_file\t";
@@ -287,12 +291,17 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     // query << "?oligo :hasTerminal ?terminal.\n";
     // query << "?terminal :identifier ?terminal_name.\n";
     // query << "FILTER regex(?terminal_name, \".*Unknown\")\n}\n";
+    // if(searchTerm == "*")
+    // {
+        //for now need something to filter out false positives
+        query << "?oligo\t" << Ontology::hasMono << " / " << Ontology::isSaccharide << " true.\n";
+    // }
 
     query << Ontology::END_WHERE_CLAUSE << "\n";
-    if (count == "TRUE")
-    {
-        query << Ontology::END_WHERE_CLAUSE << "\n";
-    }
+    // if (count == "TRUE")
+    // {
+    //     query << Ontology::END_WHERE_CLAUSE << "\n";
+    // }
     if (count != "TRUE")
     {
         if(sortBy != "undefined")
@@ -571,7 +580,7 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
         query << "?errorNote\t" << Ontology::note_type << "\t\"error\";\n";
         query << Ontology::note_description << "\t?error.\n";
     }
-    else if (isError == -1)
+    else if (isError == 0)
     {
         query << "OPTIONAL {";
         // query << "?pdb_file\t";
@@ -593,7 +602,7 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
         query << "?warningNote\t" << Ontology::note_type << "\t\"warning\";\n";
         query << Ontology::note_description << "\t?warning.\n";
     }
-    else if (isWarning == -1)
+    else if (isWarning == 0)
     {
         query << "OPTIONAL {";
         // query << "?pdb_file\t";
@@ -615,7 +624,7 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
         query << "?commentNote\t" << Ontology::note_type << "\t\"comment\";\n";
         query << Ontology::note_description << "\t?comment.\n";
     }
-    else if (isComment == -1)
+    else if (isComment == 0)
     {
         query << "OPTIONAL {";
         // query << "?pdb_file\t";
@@ -841,7 +850,7 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
         query << "?errorNote\t" << Ontology::note_type << "\t\"error\";\n";
         query << Ontology::note_description << "\t?error.\n";
     }
-    else if (isError == -1)
+    else if (isError == 0)
     {
         query << "OPTIONAL {";
         // query << "?pdb_file\t";
@@ -863,7 +872,7 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
         query << "?warningNote\t" << Ontology::note_type << "\t\"warning\";\n";
         query << Ontology::note_description << "\t?warning.\n";
     }
-    else if (isWarning == -1)
+    else if (isWarning == 0)
     {
         query << "OPTIONAL {";
         // query << "?pdb_file\t";
@@ -885,7 +894,7 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
         query << "?commentNote\t" << Ontology::note_type << "\t\"comment\";\n";
         query << Ontology::note_description << "\t?comment.\n";
     }
-    else if (isComment == -1)
+    else if (isComment == 0)
     {
         query << "OPTIONAL {";
         // query << "?pdb_file\t";
@@ -897,6 +906,7 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
         query << "FILTER NOT EXISTS { ?commentNote " << Ontology::note_type << " \"comment\".}\n}\n";
     }
 
+    
     query << Ontology::END_WHERE_CLAUSE << "\n";
     query << "ORDER BY  ?" << sortBy << "\n";
 
@@ -918,7 +928,7 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
     // TODO: Make this handle all possible terminal nodes better.  I had to add THR for C-Linked, 
     // there are other residues that need to be added as well, especially for modified terminals.
 
-    std::stringstream oligoStream, monoStream, linkStream;
+    std::stringstream oligoStream, monoStream, linkStream, filterStream;
     oligoStream << "?oligo\n";
 
     for (GraphDS::Graph::NodeVector::iterator it = queryNodes.begin(); it != queryNodes.end(); it++)
@@ -936,6 +946,7 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
             // for now just query by the full name
             monoStream << "?mono" << current_node->GetNodeType() << "\n";
             monoStream << "\t" << Ontology::mono_short_name << "\t?monoName" << current_node->GetNodeType() << ";\n";
+            monoStream << "\t" << Ontology::isSaccharide << "\ttrue;\n";
             oligoStream << "\t" << Ontology::hasMono << "\t?mono" << current_node->GetNodeType() << ";\n";
 
             for (GraphDS::Graph::EdgeVector::iterator it1 = queryEdges.begin(); it1 != queryEdges.end(); it1++)
@@ -1034,12 +1045,41 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
             }
             monoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Monosaccharide << ".\n\n";
             
-            // This should split mono name and look at each part
-            monoStream << "FILTER REGEX(?monoName" << current_node->GetNodeType() << ", \"" << current_node->GetNodeId() << "\")\n\n";
+            // TODO This should split mono name and look at each part
+
+            // If the monoName is one that could commonly have NAc, but doesn't, add a filter
+            // The list from the SNFG documentation is
+            // GlcNAc, ManNAc, GalNAc, GulNAc, AltNAc, AllNAc, TalNAc, IdoNAc, FucNAc, QuiNAc, RhaNAc
+            // Similarly, if the monoName is one that could commonly have N or A, but doesn't, add a filter
+            // The list from the SNFG documentation is
+            // GlcN, ManN, GalN, GulN, AltN, AllN, TalN, IdoN
+            // GlcA, ManA, GalA, GulA, AltA, AllA, TalA, IdoA
+
+            std::vector<std::string> monosCommonlyModified = {"Glc", "Man", "Gal", "Gul", "Alt", "All", "Tal", "Ido", "Fuc", "Qui", "Rha"};
+            for (auto mono : monosCommonlyModified)
+            {
+                if (current_node->GetNodeId().find(mono) != std::string::npos)
+                {
+                    // If the last character is "a" or "b", we can just filter using the mono name
+                    if ((current_node->GetNodeId().back() == 'a') || (current_node->GetNodeId().back() == 'b'))
+                    {
+                        filterStream << "VALUES ?monoName" << current_node->GetNodeType() << " { \"" << current_node->GetNodeId() << "\" } ";
+                    }
+                    else
+                    {
+                        // Otherwise, we need to make sure it doesn't return NAc or N/A versions
+                        filterStream << "VALUES ?monoName" << current_node->GetNodeType() << " { \"";
+                        filterStream << current_node->GetNodeId() << "a\" \"" << current_node->GetNodeId() << "b\" }\n";
+                    }
+                }
+            }
+            
+            // monoStream << "FILTER REGEX(?monoName" << current_node->GetNodeType() << ", \"" << current_node->GetNodeId() << "\")\n\n";
         }
         else //if the node is in the terminal list
         {
-            oligoStream << "\t" << Ontology::hasTerminal << "\t?terminal;";
+            oligoStream << "\t" << Ontology::hasTerminal << "\t?terminal;\n";
+            filterStream << "?terminal bif:contains \"" << current_node->GetNodeId() << "\".\n\n";
             //TODO handle terminals better
         }   
     }
@@ -1047,7 +1087,7 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
 
     
 
-    queryStream << oligoStream.str() << monoStream.str() << linkStream.str();
+    queryStream << oligoStream.str() << monoStream.str() << linkStream.str() << filterStream.str();
     
     if (local_debug > 0)
     {
