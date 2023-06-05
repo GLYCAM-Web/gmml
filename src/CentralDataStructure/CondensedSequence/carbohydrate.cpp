@@ -96,11 +96,9 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
         gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
         linkage.DetermineAtomsThatMove();
     }
-    //        std::cout << "Final overlap resolution" << std::endl;
+    gmml::log(__LINE__,__FILE__,gmml::INF, "Final overlap resolution starting.");
     this->ResolveOverlaps();
-    //        std::cout << "Overlaps resolved" << std::endl;
-    //        std::cout << "Number of residues is " << this->GetResidueCount() << "\n";
-
+    gmml::log(__LINE__,__FILE__,gmml::INF, "Final overlap resolution finished. Returning from carbohydrate ctor");
     //	Ensure integralCharge can be a free function that accepts atom vector right?
     //	this->EnsureIntegralCharge(inputAssembly->GetTotalCharge());
     return;
