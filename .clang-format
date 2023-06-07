@@ -1,0 +1,53 @@
+---
+BasedOnStyle: LLVM
+AlignArrayOfStructures: Right
+AlignConsecutiveAssignments:
+  Enabled: true
+  AcrossComments: true
+  AlignCompound: true
+AlignConsecutiveBitFields:
+  Enabled: true
+  AcrossComments: true
+  AlignCompound: true
+  PadOperators: true
+AlignConsecutiveMacros:
+  Enabled: true
+  AcrossComments: true
+  AlignCompound: true
+  PadOperators: true
+AlignEscapedNewlines: Left
+AllowShortFunctionsOnASingleLine: None
+AllowShortLambdasOnASingleLine: None
+BraceWrapping:
+  AfterCaseLabel: true
+  AfterClass: true
+  AfterControlStatement: Always
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: true
+  BeforeCatch: true
+  BeforeElse: true
+  BeforeLambdaBody: true
+  IndentBraces: true
+BreakBeforeBraces: GNU
+ColumnLimit: 120
+#Wanna change to regroup, but includes are still wonky so 
+#ends up borking stuff
+IncludeBlocks: Regroup
+IndentCaseBlocks: true
+IndentCaseLabels: true
+InsertBraces: true
+MaxEmptyLinesToKeep: 2
+NamespaceIndentation: All
+QualifierAlignment: Left
+SeparateDefinitionBlocks: Always
+#We will want to eventually sort our includes so things arent as buggy, this will let us catch wonkyness
+SortIncludes: Never
+#SortJavaStaticImport: After
+SpaceAfterTemplateKeyword: false
+SpaceBeforeCpp11BracedList: true
+SpaceBeforeParensOptions:
+  AfterOverloadedOperator: true
+Standard: c++17
+
