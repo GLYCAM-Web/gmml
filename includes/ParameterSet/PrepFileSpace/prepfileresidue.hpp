@@ -337,6 +337,8 @@ namespace PrepFileSpace
             BondedAtomIndexMap GetBondingsOfResidue();
             PrepFileAtom* GetPrepAtomByAtomName(std::string atom_name);
             PrepFileAtomVector GetAtomsParentVector();
+            std::vector<std::string> GetAtomNames();
+            std::vector<std::string> GetHeavyAtomNames();
 /**@}*/
             //////////////////////////////////////////////////////////
             //                           MUTATOR                    //

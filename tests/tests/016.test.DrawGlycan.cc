@@ -2,8 +2,9 @@
 #include <vector>
 #include <string>
 //#include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
-#include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
-#include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
+
+#include "../../includes/CentralDataStructure/InternalPrograms/DrawGlycan/drawGlycan.hpp"
+//#include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
 
 int main ()
 {	
@@ -27,7 +28,7 @@ int main ()
     for (auto &sequence : sequences)
     {
 //    	CondensedSequence::SequenceManipulator manipulator(sequence);
-        CondensedSequence::GraphVizDotConfig config;
+        cdsCondensedSequence::GraphVizDotConfig config;
         config.file_name_ = std::to_string(count) + ".dot";
         CondensedSequence::DrawGlycan(config, sequence);
 //    	std::cout << manipulator.PrintGraphViz(config) << std::endl;

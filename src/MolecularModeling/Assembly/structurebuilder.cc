@@ -65,6 +65,7 @@
 #include "../../../includes/GeometryTopology/grid.hpp"
 #include "../../../includes/GeometryTopology/cell.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/MolecularMetadata/atomicBonds.hpp"
 
 #include <unistd.h>
 #include <errno.h>
@@ -302,42 +303,42 @@ void* BuildStructureByDistanceByOptimizedThread(void* args)
         }
       }
 
-      int index = distance(all_atoms_of_assembly.begin(), it);
-      MolecularModeling::Atom* atom = (*it);
-      MolecularModeling::AtomNode* atom_node;
-      pthread_mutex_lock(&mutex1);
-      if(atom->GetNode() == NULL)
+    int index = distance(all_atoms_of_assembly.begin(), it);
+    MolecularModeling::Atom* atom = (*it);
+    MolecularModeling::AtomNode* atom_node;
+    pthread_mutex_lock(&mutex1);
+    if(atom->GetNode() == NULL)
+    {
+      atom_node = new MolecularModeling::AtomNode();
+      atom_node->SetAtom(atom);
+      atom->SetNode(atom_node);
+    }
+    else
+    {
+      atom_node = atom->GetNode();
+    }
+    atom_node->SetId(index);
+    //        std::cout << "Thread" << ti << " atom id " << i << std::endl;
+    pthread_mutex_unlock(&mutex1);
+    for(MolecularModeling::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
+    {
+      MolecularModeling::Atom* neighbor_atom = (*it1);
+      if(local_debug > 0)
       {
-        atom_node = new MolecularModeling::AtomNode();
-        atom_node->SetAtom(atom);
-        atom->SetNode(atom_node);
+        std::stringstream log;
+        log << atom->GetId() << " is being compared to " << neighbor_atom->GetId();
+        gmml::log(__LINE__,__FILE__, gmml::INF, log.str());
       }
-      else
+      //change cutoff based on atom elements
+      std::pair<double,double> minAndMaxCutoffs = atomicBonds::getBondLengthByAtomType(atom->GetElementSymbol(), neighbor_atom->GetElementSymbol());
+      cutoff = minAndMaxCutoffs.second; //Temporary comment out, is causing issues for me.Yao
+      minCutoff = minAndMaxCutoffs.first;
+      if(local_debug > 0)
       {
-        atom_node = atom->GetNode();
+        std::stringstream log;
+        log << "Cutoffs are: " << minCutoff << " and " << cutoff;
+        gmml::log(__LINE__,__FILE__, gmml::INF, log.str());
       }
-      atom_node->SetId(index);
-      //        std::cout << "Thread" << ti << " atom id " << i << std::endl;
-      pthread_mutex_unlock(&mutex1);
-      for(MolecularModeling::AtomVector::iterator it1 = it + 1; it1 != all_atoms_of_assembly.end(); it1++)
-      {
-        MolecularModeling::Atom* neighbor_atom = (*it1);
-        if(local_debug > 0)
-        {
-          std::stringstream log;
-          log << atom->GetId() << " is being compared to " << neighbor_atom->GetId();
-          gmml::log(__LINE__,__FILE__, gmml::INF, log.str());
-        }
-        //change cutoff based on atom elements
-        std::pair<double,double> minAndMaxCutoffs = arg->a->guessBondLengthByAtomType(atom, neighbor_atom);
-        cutoff = minAndMaxCutoffs.second; //Temporary comment out, is causing issues for me.Yao
-        minCutoff = minAndMaxCutoffs.first;
-        if(local_debug > 0)
-        {
-          std::stringstream log;
-          log << "Cutoffs are: " << minCutoff << " and " << cutoff;
-          gmml::log(__LINE__,__FILE__, gmml::INF, log.str());
-        }
 
         // X distance
         if(abs(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX()) < cutoff)

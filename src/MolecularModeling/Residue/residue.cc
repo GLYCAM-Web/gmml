@@ -7,6 +7,11 @@
 #include "includes/MolecularModeling/residuenode.hpp"
 #include "includes/MolecularModeling/overlaps.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
+#include "includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
+#include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
+#include "includes/MolecularModeling/moleculardynamicatom.hpp"
 
 using MolecularModeling::Residue;
 
@@ -40,7 +45,7 @@ Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue) : Node()
     this->BuildResidueFromPrepFileResidue(prep_residue);
  }
 
-Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Residue::Type type) : Node()
+Residue::Residue(PrepFileSpace::PrepFileResidue *prep_residue, Abstract::ResidueType type) : Node()
 {
     this->SetIndex(this->generateIndex());
     this->SetName(prep_residue->GetName());
@@ -166,6 +171,11 @@ std::string Residue::GetChainID()
     StringVector id = gmml::Split(id_, "_");
     return id.at(1);
 }
+std::string Residue::GetInsertionCode()
+{
+    StringVector id = gmml::Split(id_, "_");
+    return id.at(3);
+}
 MolecularModeling::AtomVector Residue::GetAtoms()
 {
     return atoms_;
@@ -178,15 +188,15 @@ MolecularModeling::AtomVector Residue::GetTailAtoms()
 {
     return tail_atoms_;
 }
-std::string Residue::GetChemicalType()
+std::string Residue::GetChemicalType() const
 {
     return chemical_type_;
 }
-std::string Residue::GetDescription()
+std::string Residue::GetDescription() const
 {
     return description_;
 }
-std::string Residue::GetId()
+std::string Residue::GetId() const
 {
     return id_;
 }
@@ -356,6 +366,52 @@ void Residue::SetIsAglycon(bool is_aglycon)
 void Residue::SetIsSugar(bool is_sugar)
 {
   is_sugar_ = is_sugar;
+}
+
+void Residue::AddChargesTypesToAtoms(LibraryFileSpace::LibraryFileResidue &libResidue)
+{
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Adjusting charges and types for residue: " + this->GetId());
+    for (auto &assemblyAtom : this->GetAtoms())
+    {
+        LibraryFileSpace::LibraryFileAtom *atomTemplate = libResidue.GetLibraryAtomByAtomName(assemblyAtom->GetName());
+        assemblyAtom->MolecularDynamicAtom::SetAtomType(atomTemplate->GetType());
+        assemblyAtom->MolecularDynamicAtom::SetCharge(atomTemplate->GetCharge());
+        // Is element needed for off files?
+        //            gmml::MolecularMetadata::GLYCAM::AmberAtomTypeInfoContainer AtomTypeMetaData;
+        //            std::string element = AtomTypeMetaData.GetElementForAtomType(atom_type);
+        //            assembly_atom->SetElementSymbol(element);
+    }
+    return;
+}
+
+// This is duct-tape for now. The PDBPreprocessor should write out an (e.g.) off file that contains all the info I'm trying to get here. And then GMML should read it in.
+std::string Residue::GetTerminalCode()
+{
+    if ( (this->GetName() == "NME") || (this->GetName() == "ACE") )
+    {
+        return ""; // Despite being on the ends, these caps don't get the CNME or NACE treatment like regular amino acids. Fun.
+    }
+    if ( selection::FindNeighborResidueConnectedViaSpecificAtom(this, "N")  == nullptr )
+    {
+        return "N"; // No residues connected to N atom, ergo I am the N terminus.
+    }
+    else if ( selection::FindNeighborResidueConnectedViaSpecificAtom(this, "C")  == nullptr )
+    {
+        return "C"; // No residues connected to N atom, ergo I am the C terminus.
+    }
+    return "";
+}
+
+void Residue::AddChargesTypesToAtoms(PrepFileSpace::PrepFileResidue &prepResidue)
+{
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Adjusting charges and types for residue: " + this->GetId());
+    for (auto &assemblyAtom : this->GetAtoms())
+    {
+        PrepFileSpace::PrepFileAtom *atomTemplate = prepResidue.GetPrepAtomByAtomName(assemblyAtom->GetName());
+        assemblyAtom->MolecularDynamicAtom::SetAtomType(atomTemplate->GetType());
+        assemblyAtom->MolecularDynamicAtom::SetCharge(atomTemplate->GetCharge());
+    }
+    return;
 }
 
 //////////////////////////////////////////////////////////
@@ -659,7 +715,7 @@ MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
-        if ((*it)->GetName().compare(query_name)==0)
+        if ((*it)->GetName() == query_name)
         {
             return_atom = (*it);
             return return_atom;
@@ -671,7 +727,7 @@ MolecularModeling::Atom* Residue::GetAtom(std::string query_name)
 
 MolecularModeling::Atom* Residue::GetAtom(unsigned long long query_index)
 {
-    MolecularModeling::Atom* return_atom=NULL;
+    MolecularModeling::Atom* return_atom = nullptr;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
@@ -685,11 +741,11 @@ MolecularModeling::Atom* Residue::GetAtom(unsigned long long query_index)
 
 MolecularModeling::Atom* Residue::GetAtomWithId(std::string query_id)
 {
-    MolecularModeling::Atom* return_atom=NULL;
+    MolecularModeling::Atom* return_atom = nullptr;
     AtomVector atoms = this->GetAtoms();
     for(AtomVector::iterator it = atoms.begin(); it != atoms.end(); ++it)
     {
-        if ((*it)->GetId().compare(query_id)==0)
+        if ((*it)->GetId() == query_id)
         {
             return_atom = (*it);
         }

@@ -3,6 +3,7 @@
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../../includes/common.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using LibraryFileSpace::LibraryFileResidue;
 
@@ -49,6 +50,39 @@ std::string LibraryFileResidue::GetName()
 LibraryFileResidue::AtomMap LibraryFileResidue::GetAtoms()
 {
     return atoms_;
+}
+
+std::vector<std::string> LibraryFileResidue::GetAtomNames()
+{
+    std::vector<std::string> foundAtoms;
+    for (auto &atom : this->GetAtomsVector())
+    {
+        foundAtoms.push_back(atom->GetName());
+    }
+    return foundAtoms;
+}
+
+std::vector<std::string> LibraryFileResidue::GetHeavyAtomNames()
+{
+    std::vector<std::string> foundAtoms;
+    for (auto &atom : this->GetAtomsVector())
+    {
+        if (atom->GetName().at(0) != 'H')
+        {
+            foundAtoms.push_back(atom->GetName());
+        }
+    }
+    return foundAtoms;
+}
+
+std::vector<LibraryFileSpace::LibraryFileAtom*> LibraryFileResidue::GetAtomsVector()
+{
+    std::vector<LibraryFileSpace::LibraryFileAtom*> atoms;
+    for(LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        atoms.push_back(it->second);
+    }
+    return atoms;
 }
 
 /// Return an atom belonging to the residue by a given index number
@@ -103,6 +137,7 @@ int LibraryFileResidue::GetTailAtomIndex()
 {
     return tail_atom_index_;
 }
+
 LibraryFileSpace::LibraryFileAtom* LibraryFileResidue::GetLibraryAtomByAtomName(std::string atom_name)
 {
     for(LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
@@ -111,11 +146,25 @@ LibraryFileSpace::LibraryFileAtom* LibraryFileResidue::GetLibraryAtomByAtomName(
         if(atom->GetName().compare(atom_name) == 0)
             return atom;
     }
-    return NULL;
+    std::string errorMessage = "Didn't find a lib file atom for  " + atom_name + " in " + this->GetName();
+    gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
+    throw std::runtime_error(errorMessage);
+    return nullptr;
 }
+
 int LibraryFileResidue::GetListingIndex()
 {
     return listing_index_;
+}
+
+double LibraryFileResidue::GetCharge()
+{
+    double charge = 0.0;
+    for(auto &atom : this->GetAtomsVector())
+    {
+        charge += atom->GetCharge();
+    }
+    return charge;
 }
 
 //////////////////////////////////////////////////////////
@@ -178,6 +227,7 @@ void LibraryFileResidue::SetTailAtomIndex(int tail_atom_index)
 {
     tail_atom_index_ = tail_atom_index;
 }
+
 void LibraryFileResidue::SetListingIndex(int listing_index)
 {
     listing_index_ = listing_index;

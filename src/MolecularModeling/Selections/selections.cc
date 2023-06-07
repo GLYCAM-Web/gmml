@@ -1,7 +1,9 @@
-#include "../../../includes/MolecularModeling/Selections/selections.hpp"
-#include "../../../includes/MolecularModeling/assembly.hpp"
 #include <regex>
 #include <iostream>
+#include "includes/MolecularModeling/Selections/selections.hpp"
+#include "includes/MolecularModeling/assembly.hpp"
+#include "includes/CodeUtils/logging.hpp"
+
 MolecularModeling::AtomVector selection::AtomsWithinDistanceOf(MolecularModeling::Atom *query_atom, double distance, MolecularModeling::AtomVector atoms)
 {
     MolecularModeling::AtomVector atoms_within_distance;
@@ -461,8 +463,7 @@ MolecularModeling::AtomVector selection::GetAtomsin_a_Notin_b_AtomVectors(Molecu
 // Assumes query is in the format ?_222 or A_222, where 222 is the residue number and ?/A is the chain ID. ? if not specified.
 MolecularModeling::Residue* selection::FindResidue(MolecularModeling::Assembly &assembly, const std::string query)
 {
-    MolecularModeling::ResidueVector allResidues = assembly.GetAllResiduesOfAssembly();
-    for(auto &residue : allResidues)
+    for(auto &residue : assembly.GetAllResiduesOfAssembly())
     {
         std::string id = residue->GetId();
         std::string formatted_query = "_" + query + "_";
@@ -472,8 +473,7 @@ MolecularModeling::Residue* selection::FindResidue(MolecularModeling::Assembly &
         }
     }
     std::cerr << "Residue " << query << " not found in assembly!" << std::endl;
-    MolecularModeling::Residue* residuePointerToNothing;
-    return residuePointerToNothing;
+    return nullptr;
 }
 
 MolecularModeling::AtomVector selection::FindOtherAtomsWithinMolecule(MolecularModeling::Atom *queryAtom)
@@ -620,3 +620,23 @@ std::vector<MolecularModeling::Residue*> selection::FindResiduesWithChainID(Mole
     }
     return foundResidues;
 }
+
+MolecularModeling::Residue* selection::FindNeighborResidueConnectedViaSpecificAtom(MolecularModeling::Residue *queryResidue, std::string queryAtomName)
+{
+    MolecularModeling::Residue* neighborResidue = nullptr;
+    MolecularModeling::Atom* queryAtom = queryResidue->GetAtom(queryAtomName);
+    if (queryAtom == nullptr)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "Warning: An atom named " + queryAtomName + " not found in residue: " + queryResidue->GetId());
+        return nullptr;
+    }
+    for (auto &neighborAtom : queryAtom->GetNode()->GetNodeNeighbors())
+    {
+        if (neighborAtom->GetResidue() != queryResidue)
+        {
+            neighborResidue = neighborAtom->GetResidue();
+        }
+    }
+    return neighborResidue;
+}
+

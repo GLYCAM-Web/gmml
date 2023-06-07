@@ -1,27 +1,15 @@
+#include "includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
 #include <regex>
-#include "../../../includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
-
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataContainer;
 using gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector;
-
 //////////////////////////////////////////////////////////
 //                      QUERY FUNCTIONS                 //
 //////////////////////////////////////////////////////////
 // Pass in the two atoms on either side the residue-residue linkage
-
-
-// I think this can go away:
-//bool OverWriteEntry(gmml::MolecularMetadata::GLYCAM::DihedralAngleData entry1, gmml::MolecularMetadata::GLYCAM::DihedralAngleData entry2)
-//{
-//   return (entry1.number_of_bonds_from_anomeric_carbon_ == entry2.number_of_bonds_from_anomeric_carbon_
-//            && entry1.index_ == entry2.index_ );
-//}
-
-DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(MolecularModeling::Atom* linking_atom1, MolecularModeling::Atom* linking_atom2)
+DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(const std::string atom1Name, const std::string residue1Name, const std::string atom2Name, const std::string residue2Name) const
 {
     DihedralAngleDataVector matching_entries;
     Glycam06NamesToTypesLookupContainer metadata_residueNamesToTypes;
@@ -33,12 +21,12 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(Molecul
         std::regex regex1(entry.linking_atom1_, std::regex_constants::ECMAScript);
         std::regex regex2(entry.linking_atom2_, std::regex_constants::ECMAScript);
         // If metadata entry matches (regex query) to the two linking atom names
-        if ( (std::regex_match(linking_atom1->GetName(), regex1)) && (std::regex_match(linking_atom2->GetName(), regex2)) )
+        if ( (std::regex_match(atom1Name, regex1)) && (std::regex_match(atom2Name, regex2)) )
         {
             // Some entries have conditions for the residue, that they have certain tags. Make sure any conditions are met:
             //std::cout << "Matched. Checking if conditions apply.\n";
-            std::vector<std::string> residue1_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom1->GetResidue()->GetName());
-            std::vector<std::string> residue2_types = metadata_residueNamesToTypes.GetTypesForResidue(linking_atom2->GetResidue()->GetName());
+            std::vector<std::string> residue1_types = metadata_residueNamesToTypes.GetTypesForResidue(residue1Name);
+            std::vector<std::string> residue2_types = metadata_residueNamesToTypes.GetTypesForResidue(residue2Name);
             if ( (checkIfResidueConditionsAreSatisfied(residue1_types, entry.residue1_conditions_))
                  && (checkIfResidueConditionsAreSatisfied(residue2_types, entry.residue2_conditions_)) )
             {
@@ -59,7 +47,7 @@ DihedralAngleDataVector DihedralAngleDataContainer::GetEntriesForLinkage(Molecul
 // Some entries have conditions for the first or second residue to have a particular type (aka tag).
 // Most entries have "none" for condition. This checks first if condition is "none", and therefore satisfied.
 // Otherwise (else if) it checks if any of the residue_types match the condition for the entry, e.g. gauche_effect=galacto.
-bool DihedralAngleDataContainer::checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::vector<std::string> entry_conditions)
+bool DihedralAngleDataContainer::checkIfResidueConditionsAreSatisfied(std::vector<std::string> residue_types, std::vector<std::string> entry_conditions) const
 {
     for (const auto& entry_condition : entry_conditions)
     {   // If no condition, return true. If can't find the condition in the list return false, otherwise, having found the condition(s), return true.
@@ -119,13 +107,13 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
 {   // const AmberAtomTypeInfo Glycam06j1AtomTypes[] =
     dihedralAngleDataVector_ =
     { // Regex1  , Regex2   , Name   , Angle  , Upper  , Lower  , Weight, Entry Type    , Name , B , I , Res1 Condition , Res2 Conditions           , Atom names                                                               // Atom names this applies to
-        { "C1"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"aldose"}     , {"monosaccharide"}                  , "C2" , "C1" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
-        { "C2"   , "O[1-9]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"n-carbon=6", "ketose", "alpha"}     , {"monosaccharide"}            , "C1" , "C2" , "O." , "C."  }, // Phi is defined by C1-C2(ano)-Ox-Cx for ketoses like Fru 
-        { "C2"   , "O[1-9]" , "Phi"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 1 , {"n-carbon=6", "ketose", "beta"}     , {"monosaccharide"}            , "C1" , "C2" , "O." , "C."  }, // Phi is defined by C1-C2(ano)-Ox-Cx for ketoses like Fru 
-        { "C2"   , "O[1-9]" , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"ketose", "ulosonate"}     , {"monosaccharide"}      , "C1" , "C2" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
-        { "C2"   , "O[3-6]" , "Phi"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"monosaccharide"}         , "C1" , "C2" , "O." , "C."  },
-        { "C."   , "O[1-5]" , "Psi"  ,   0.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "ap" , 2 , 1 , {"monosaccharide"}       , {"monosaccharide"}                  , "C." , "O." , "C." , "H."  }, // Psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)
-        { "C."   , "O[6-9]" , "Psi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 2 , 1 , {"monosaccharide"}       , {"monosaccharide"}                  , "C." , "O." , "C." , "C."  },
+        { "C1"   , "O[1-9]" , "Phi"  , 180.0  ,  25.0  ,  25.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"aldose"}     , {"monosaccharide"}                  , "C2" , "C1" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
+        { "C2"   , "O[1-9]" , "Phi"  , -60.0  ,  25.0  ,  25.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"n-carbon=6", "ketose", "alpha"}     , {"monosaccharide"}            , "C1" , "C2" , "O." , "C."  }, // Phi is defined by C1-C2(ano)-Ox-Cx for ketoses like Fru
+        { "C2"   , "O[1-9]" , "Phi"  ,  60.0  ,  25.0  ,  25.0  , 1.0   , "permutation" , "-g" , 1 , 1 , {"n-carbon=6", "ketose", "beta"}     , {"monosaccharide"}            , "C1" , "C2" , "O." , "C."  }, // Phi is defined by C1-C2(ano)-Ox-Cx for ketoses like Fru
+        { "C2"   , "O[1-9]" , "Phi"  , 180.0  ,  25.0  ,  25.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"ketose", "ulosonate"}     , {"monosaccharide"}      , "C1" , "C2" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
+        { "C2"   , "O[3-6]" , "Phi"  , -60.0  ,  25.0  ,  25.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"monosaccharide"}         , "C1" , "C2" , "O." , "C."  },
+        { "C."   , "O[1-5]" , "Psi"  ,   0.0  ,  40.0  ,  40.0  , 1.0   , "permutation" , "ap" , 2 , 1 , {"monosaccharide"}       , {"monosaccharide"}                  , "C." , "O." , "C." , "H."  }, // Psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)
+        { "C."   , "O[6-9]" , "Psi"  , 180.0  ,  40.0  ,  40.0  , 1.0   , "permutation" , "t"  , 2 , 1 , {"monosaccharide"}       , {"monosaccharide"}                  , "C." , "O." , "C." , "C."  },
         // Omega angle in x-6 linkages.        
         { "C.*"  , "O6"     , "Omg"  , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gg" , 3 , 1 , {"none"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  }, // omg is O6-C5-C5-O5
         { "C.*"  , "O6"     , "Omg"  ,  60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "gt" , 3 , 2 , {"none"}       , {"monosaccharide"}                  , "O6" , "C6" , "C5" , "O5"  },
@@ -267,10 +255,10 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C."   , "OH"     , "Psi"  , -60.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "-g" , 2 , 1 , {"none"}       , {"amino-acid"}            , "C." , "OH" , "CZ" , "CE1" },
         { "C."   , "OH"     , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.000 , "permutation" , "t"  , 1 , 1 , {"none"}       , {"amino-acid"}            , "C." , "C." , "OH ", "CZ"  },
         // ROH 
-        { "C1"   , "O1"     , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"none"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
-        { "C2"   , "O1"     , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"none"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
-        { "C1"   , "O"      , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"none"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
-        { "C2"   , "O"      , "Phi"  , 180.0  ,   0.0  ,   0.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"none"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
+        { "C1"   , "O1"     , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"none"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
+        { "C2"   , "O1"     , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"none"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
+        { "C1"   , "O"      , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"none"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
+        { "C2"   , "O"      , "Phi"  , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"none"}     , {"aglycon"}               , "C2" , "C1" , "O1" , "H1"  },
     };
 }
 

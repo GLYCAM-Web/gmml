@@ -11,12 +11,11 @@
 static pcg_extras::seed_seq_from<std::random_device> seed_source;
 // Make a random number engine
 static pcg32 rng(seed_source);
+using GeometryTopology::Coordinate;
 
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-
-// Of the next three forms, I'll probably use only one and delete the others later
 Rotatable_dihedral::Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, Atom *atom4, bool reverseAtomsThatMove)
 {
     AtomVector atoms {atom1, atom2, atom3, atom4};
@@ -28,42 +27,21 @@ Rotatable_dihedral::Rotatable_dihedral(Atom *atom1, Atom *atom2, Atom *atom3, At
     this->Initialize(atoms, reverseAtomsThatMove);
     this->AddExtraAtomsThatMove(extraAtomsThatMove);
 }
-
-//Rotatable_dihedral::Rotatable_dihedral(AtomVector atoms, bool reverseAtomsThatMove)
-//{
-//    this->Initialize(atoms, reverseAtomsThatMove);
-//}
-
-//Rotatable_dihedral::Rotatable_dihedral(AtomVector atoms, AtomVector atoms_that_move)
-//{
-//    this->SetAtoms(atoms);
-//    this->SetAtomsThatMove(atoms_that_move);
-//}
-
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
-double Rotatable_dihedral::CalculateDihedralAngle(std::string type)
+double Rotatable_dihedral::CalculateDihedralAngle(const std::string type) const
 {
     if (type == "glycamReport")
     {
         if ( (this->GetName() == "Phi") && (atom1_->GetName() == "C1") )
         {
-            GeometryTopology::Coordinate* o5Coord = atom1_->GetResidue()->GetAtom("O5")->GetCoordinate();
+            Coordinate* o5Coord = atom1_->GetResidue()->GetAtom("O5")->GetCoordinate();
             return GeometryTopology::CalculateDihedralAngle(o5Coord, atom2_->GetCoordinate(), atom3_->GetCoordinate(), atom4_->GetCoordinate());        
         }
     }
     return GeometryTopology::CalculateDihedralAngle(atom1_->GetCoordinate(), atom2_->GetCoordinate(), atom3_->GetCoordinate(), atom4_->GetCoordinate());
 }
-
-// double Rotatable_dihedral::CalculateDihedralAngle() const
-// {
-//     GeometryTopology::Coordinate* a1 = atom1_->GetCoordinate();
-//     GeometryTopology::Coordinate* a2 = atom2_->GetCoordinate();
-//     GeometryTopology::Coordinate* a3 = atom3_->GetCoordinate();
-//     GeometryTopology::Coordinate* a4 = atom4_->GetCoordinate();
-//     return GeometryTopology::CalculateDihedralAngle(a1, a2, a3, a4);
-// }
 
 AtomVector Rotatable_dihedral::GetAtoms() const
 {
@@ -71,27 +49,27 @@ AtomVector Rotatable_dihedral::GetAtoms() const
     return atoms;
 }
 
-AtomVector Rotatable_dihedral::GetAtomsThatMove()
+AtomVector Rotatable_dihedral::GetAtomsThatMove() const
 {
     return atoms_that_move_;
 }
 
-bool Rotatable_dihedral::GetIsAtomsThatMoveReversed()
+bool Rotatable_dihedral::GetIsAtomsThatMoveReversed() const
 {
     return isAtomsThatMoveReversed_;
 }
 
-double Rotatable_dihedral::GetPreviousDihedralAngle()
+double Rotatable_dihedral::GetPreviousDihedralAngle() const
 {
     return previous_dihedral_angle_;
 }
 
-DihedralAngleDataVector& Rotatable_dihedral::GetMetadata()
+const DihedralAngleDataVector& Rotatable_dihedral::GetMetadata() const
 {
     return assigned_metadata_;
 }
 
-DihedralAngleDataVector Rotatable_dihedral::GetLikelyMetadata()
+DihedralAngleDataVector Rotatable_dihedral::GetLikelyMetadata() const
 {
     DihedralAngleDataVector returningMetadata;
     for (auto &entry : this->GetMetadata())
@@ -106,7 +84,7 @@ DihedralAngleDataVector Rotatable_dihedral::GetLikelyMetadata()
     return returningMetadata;
 }
 
-int Rotatable_dihedral::GetNumberOfRotamers(bool likelyShapesOnly)
+int Rotatable_dihedral::GetNumberOfRotamers(bool likelyShapesOnly) const
 {
     if (this->GetMetadata().empty())
     {
@@ -127,7 +105,7 @@ int Rotatable_dihedral::GetNumberOfRotamers(bool likelyShapesOnly)
     }
 }
 
-std::vector<double> Rotatable_dihedral::GetAllPossibleAngleValues(int interval)
+std::vector<double> Rotatable_dihedral::GetAllPossibleAngleValues(const int interval) const
 {
     std::vector<double> allPossibleAngleValues;
     if (assigned_metadata_.empty())
@@ -157,7 +135,7 @@ std::vector<double> Rotatable_dihedral::GetAllPossibleAngleValues(int interval)
     return allPossibleAngleValues;
 }
 
-std::string Rotatable_dihedral::GetName()
+std::string Rotatable_dihedral::GetName() const
 {
     if (this->GetLikelyMetadata().empty())
         return "Boo";
@@ -168,7 +146,6 @@ std::string Rotatable_dihedral::GetName()
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-
 void Rotatable_dihedral::DetermineAtomsThatMove()
 {
     // In keeping with giving residues as GlcNAc1-4Gal, and wanting the moving atoms to be in the opposite direction (defaults):
@@ -184,10 +161,6 @@ void Rotatable_dihedral::DetermineAtomsThatMove()
         atom3_->FindConnectedAtoms(atoms_that_move);
     }
     this->SetAtomsThatMove(atoms_that_move);
-    // for(auto &atom: atoms_that_move)
-    // {
-    //     std::cout << "Moving: " << atom->GetId() << "\n";
-    // }
 }
 
 void Rotatable_dihedral::AddExtraAtomsThatMove(AtomVector extraAtoms)
@@ -204,10 +177,10 @@ void Rotatable_dihedral::SetDihedralAngle(const double dihedral_angle)
         this->SetWasEverRotated(true);
         this->DetermineAtomsThatMove();
     }
-    GeometryTopology::Coordinate* a1 = atom1_->GetCoordinate();
-    GeometryTopology::Coordinate* a2 = atom2_->GetCoordinate();
-    GeometryTopology::Coordinate* a3 = atom3_->GetCoordinate();
-    GeometryTopology::Coordinate* a4 = atom4_->GetCoordinate();
+    Coordinate* a1 = atom1_->GetCoordinate();
+    Coordinate* a2 = atom2_->GetCoordinate();
+    Coordinate* a3 = atom3_->GetCoordinate();
+    Coordinate* a4 = atom4_->GetCoordinate();
     if(this->GetIsAtomsThatMoveReversed())
     { // A function that was agnostic of this would be great.
         a1 = atom4_->GetCoordinate();
@@ -215,67 +188,20 @@ void Rotatable_dihedral::SetDihedralAngle(const double dihedral_angle)
         a3 = atom2_->GetCoordinate();
         a4 = atom1_->GetCoordinate();
     }
-    GeometryTopology::Coordinate b1 = a2;
-    b1.operator -(*a1);
-    GeometryTopology::Coordinate b2 = a3;
-    b2.operator -(*a2);
-    GeometryTopology::Coordinate b3 = a4;
-    b3.operator -(*a3);
-    GeometryTopology::Coordinate b4 = b2;
-    b4.operator *(-1);
-    GeometryTopology::Coordinate b2xb3 = b2;
-    b2xb3.CrossProduct(b3);
-    GeometryTopology::Coordinate b1_m_b2n = b1;
-    b1_m_b2n.operator *(b2.length());
-    GeometryTopology::Coordinate b1xb2 = b1;
-    b1xb2.CrossProduct(b2);
-    double current_dihedral = atan2(b1_m_b2n.DotProduct(b2xb3), b1xb2.DotProduct(b2xb3));
-    double** dihedral_angle_matrix = gmml::GenerateRotationMatrix(&b4, a2, current_dihedral - gmml::ConvertDegree2Radian(dihedral_angle));
-    this->RecordPreviousDihedralAngle(gmml::ConvertRadian2Degree(current_dihedral));
-
-    // Yo you should add something here that checks if atoms_that_move_ is set. Yeah you.
-
+    this->RecordPreviousDihedralAngle(this->CalculateDihedralAngle());
     std::stringstream ss;
     ss << "Setting dihedral for " << atom1_->GetId() << ":"  << atom2_->GetId() << ":"  << atom3_->GetId() << ":"  << atom4_->GetId() <<  ": " << dihedral_angle << "\n";
     gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
-    for(AtomVector::iterator it = atoms_that_move_.begin(); it != atoms_that_move_.end(); it++)
+    std::vector<Coordinate*> coordinatesToMove;
+    for(auto &atom : this->GetAtomsThatMove())
     {
-        Atom *atom = *it;
-    //    std::cout << ", " << atom->GetId();
-        GeometryTopology::Coordinate* atom_coordinate = atom->GetCoordinate();
-        GeometryTopology::Coordinate result;
-        result.SetX(dihedral_angle_matrix[0][0] * atom_coordinate->GetX() + dihedral_angle_matrix[0][1] * atom_coordinate->GetY() +
-                dihedral_angle_matrix[0][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[0][3]);
-        result.SetY(dihedral_angle_matrix[1][0] * atom_coordinate->GetX() + dihedral_angle_matrix[1][1] * atom_coordinate->GetY() +
-                dihedral_angle_matrix[1][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[1][3]);
-        result.SetZ(dihedral_angle_matrix[2][0] * atom_coordinate->GetX() + dihedral_angle_matrix[2][1] * atom_coordinate->GetY() +
-                dihedral_angle_matrix[2][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[2][3]);
-
-        atom->GetCoordinate()->SetX(result.GetX());
-        atom->GetCoordinate()->SetY(result.GetY());
-        atom->GetCoordinate()->SetZ(result.GetZ());
+    	coordinatesToMove.push_back(atom->GetCoordinate());
     }
-    if(!extra_atoms_that_move_.empty())
+    for(auto &atom : extra_atoms_that_move_)
     {
-        for(AtomVector::iterator it = extra_atoms_that_move_.begin(); it != extra_atoms_that_move_.end(); it++)
-        {
-            Atom *atom = *it;
-            //std::cout << ", " << atom->GetId();
-            GeometryTopology::Coordinate* atom_coordinate = atom->GetCoordinate();
-            GeometryTopology::Coordinate result;
-            result.SetX(dihedral_angle_matrix[0][0] * atom_coordinate->GetX() + dihedral_angle_matrix[0][1] * atom_coordinate->GetY() +
-                    dihedral_angle_matrix[0][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[0][3]);
-            result.SetY(dihedral_angle_matrix[1][0] * atom_coordinate->GetX() + dihedral_angle_matrix[1][1] * atom_coordinate->GetY() +
-                    dihedral_angle_matrix[1][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[1][3]);
-            result.SetZ(dihedral_angle_matrix[2][0] * atom_coordinate->GetX() + dihedral_angle_matrix[2][1] * atom_coordinate->GetY() +
-                    dihedral_angle_matrix[2][2] * atom_coordinate->GetZ() + dihedral_angle_matrix[2][3]);
-
-            atom->GetCoordinate()->SetX(result.GetX());
-            atom->GetCoordinate()->SetY(result.GetY());
-            atom->GetCoordinate()->SetZ(result.GetZ());
-        }
+    	coordinatesToMove.push_back(atom->GetCoordinate());
     }
-  //  std::cout << std::endl;
+    GeometryTopology::SetDihedralAngle(a1, a2, a3, a4, dihedral_angle, coordinatesToMove);
     return;
 }
 
@@ -603,20 +529,7 @@ void Rotatable_dihedral::UpdateAtomsIfPsi()
 
 Atom* Rotatable_dihedral::CreateHydrogenAtomForPsi(Atom *centralAtom)
 {
-    if(centralAtom->GetNode()->GetNodeNeighbors().size() != 3)
-    {
-        std::stringstream ss;
-        ss << "Error in Rotatable_dihedral::CreateHydrogenAtomForPsi. centralAtom neighbors = " <<
-                  centralAtom->GetNode()->GetNodeNeighbors().size() << " for " << centralAtom->GetId();
-        gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
-        throw std::runtime_error(ss.str());
-    }
-    GeometryTopology::CoordinateVector threeNeighborCoords;
-    for (auto &neighbor : centralAtom->GetNode()->GetNodeNeighbors())
-    {
-        threeNeighborCoords.push_back(neighbor->GetCoordinate());
-    }
-    GeometryTopology::Coordinate newCoord = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(centralAtom->GetCoordinate(), threeNeighborCoords);
+    Coordinate newCoord = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(centralAtom);
     Atom *newAtom = new Atom(centralAtom->GetResidue(), "HHH", newCoord);
     centralAtom->GetResidue()->AddAtom(newAtom);
     centralAtom->GetNode()->AddNodeNeighbor(newAtom);
@@ -632,28 +545,17 @@ void Rotatable_dihedral::SetWasEverRotated(bool wasEverRotated)
     wasEverRotated_ = wasEverRotated;
 }
 
-bool Rotatable_dihedral::CheckIfEverRotated()
+bool Rotatable_dihedral::CheckIfEverRotated() const
 {
     return wasEverRotated_;
 }
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-std::string Rotatable_dihedral::Print()
+std::string Rotatable_dihedral::Print() const
 {
-   std::stringstream logss;
-   logss << atom1_->GetName() << ", " << atom2_->GetName() << ", " << atom3_->GetName() << ", " << atom4_->GetName() << ": " << this->CalculateDihedralAngle()  << ".\n";
-//   std::cout << logss.str();
-   gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-   return logss.str();
+   std::stringstream ss;
+   ss << atom1_->GetName() << ", " << atom2_->GetName() << ", " << atom3_->GetName() << ", " << atom4_->GetName() << ": " << this->CalculateDihedralAngle()  << ".\n";
+   gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+   return ss.str();
 }
-//////////////////////////////////////////////////////////
-//                       OPERATORS                      //
-//////////////////////////////////////////////////////////
-std::ostream& operator<<(std::ostream& os, Rotatable_dihedral& rotatable_dihedral)
-{
-    AtomVector atoms = rotatable_dihedral.GetAtoms();
-    os << atoms.at(0)->GetName() << ", " << atoms.at(1)->GetName() << ", " << atoms.at(2)->GetName() << ", " << atoms.at(3)->GetName() << ": " 
-    << rotatable_dihedral.CalculateDihedralAngle() << ".\n";
-    return os;
-} // operator<<

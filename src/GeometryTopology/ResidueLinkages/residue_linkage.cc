@@ -29,22 +29,21 @@ Residue_linkage::Residue_linkage(Residue *nonReducingResidue1, Residue *reducing
 //                       ACCESSOR                       //
 //////////////////////////////////////////////////////////
 
-ResidueVector Residue_linkage::GetResidues()
+ResidueVector Residue_linkage::GetResidues() const
 {
     ResidueVector residues {from_this_residue1_, to_this_residue2_};
     return residues;
 }
 
-bool Residue_linkage::GetIfReversedAtomsThatMove()
+bool Residue_linkage::GetIfReversedAtomsThatMove() const
 {
     return reverseAtomsThatMove_;
 }
 
-
-std::vector<Rotatable_dihedral> Residue_linkage::GetRotatableDihedralsWithMultipleRotamers()
+std::vector<Rotatable_dihedral> Residue_linkage::GetRotatableDihedralsWithMultipleRotamers() const
 {
     std::vector<Rotatable_dihedral> returningDihedrals;
-    for (auto &entry : rotatable_dihedrals_)
+    for (auto &entry : this->GetRotatableDihedrals())
     {
         if (entry.GetNumberOfRotamers() > 1)
         {
@@ -66,7 +65,7 @@ std::vector<Rotatable_dihedral> Residue_linkage::GetRotatableDihedrals() const
     return rotatable_dihedrals_;
 }
 
-int Residue_linkage::GetNumberOfShapes( bool likelyShapesOnly) // Can have conformers (sets of rotamers) or permutations of rotamers
+int Residue_linkage::GetNumberOfShapes( const bool likelyShapesOnly) const// Can have conformers (sets of rotamers) or permutations of rotamers
 {
     int numberOfShapes = 1;
     if ( (rotatable_dihedrals_.empty()) || (rotatable_dihedrals_.at(0).GetMetadata().empty()) ) 
@@ -88,27 +87,27 @@ int Residue_linkage::GetNumberOfShapes( bool likelyShapesOnly) // Can have confo
     return numberOfShapes;
 }
 
-Residue* Residue_linkage::GetFromThisResidue1()
+Residue* Residue_linkage::GetFromThisResidue1() const
 {
     return from_this_residue1_;
 }
 
-Residue* Residue_linkage::GetToThisResidue2()
+Residue* Residue_linkage::GetToThisResidue2() const
 {
     return to_this_residue2_;
 }
 
-Atom* Residue_linkage::GetFromThisConnectionAtom1()
+Atom* Residue_linkage::GetFromThisConnectionAtom1() const
 {
     return from_this_connection_atom1_;
 }
 
-Atom* Residue_linkage::GetToThisConnectionAtom2()
+Atom* Residue_linkage::GetToThisConnectionAtom2() const
 {
     return to_this_connection_atom2_;
 }
 
-bool Residue_linkage::CheckIfConformer()
+bool Residue_linkage::CheckIfConformer() const
 {
     if (rotatable_dihedrals_.empty())
     {
@@ -132,7 +131,7 @@ bool Residue_linkage::CheckIfConformer()
     return false; //Default to shut up the compiler. Shut up compiler gawd.
 }
 
-bool Residue_linkage::GetIfExtraAtoms()
+bool Residue_linkage::GetIfExtraAtoms() const
 {
     return isExtraAtoms_;
 }
@@ -142,12 +141,12 @@ AtomVector Residue_linkage::GetExtraAtoms()
     return extraAtomsThatMove_;
 }
 
-unsigned long long Residue_linkage::GetIndex()
+unsigned long long Residue_linkage::GetIndex() const
 {
     return index_;
 }
 
-std::string Residue_linkage::GetName()
+std::string Residue_linkage::GetName() const
 {
     if (!name_.empty())
     {
@@ -157,7 +156,7 @@ std::string Residue_linkage::GetName()
 }
 
 
-std::string Residue_linkage::DetermineLinkageNameFromResidueNames()
+std::string Residue_linkage::DetermineLinkageNameFromResidueNames() const
 {
     gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookupContainer nameLookup;
     std::string residue1Name = nameLookup.GetResidueForCode(this->GetFromThisResidue1()->GetName());
@@ -170,11 +169,10 @@ std::string Residue_linkage::DetermineLinkageNameFromResidueNames()
     char link2 = *atom2Name.rbegin(); // Messy for Acetyl.
     std::stringstream linkageName;
     linkageName << residue1Name << link1 << "-" << link2 << residue2Name;
-    this->SetName(linkageName.str());
     return linkageName.str();
 }
 
-int Residue_linkage::GetNumberOfRotatableDihedrals()
+int Residue_linkage::GetNumberOfRotatableDihedrals() const
 {
    return rotatable_dihedrals_.size();
 }
@@ -203,12 +201,6 @@ void Residue_linkage::AddExtraAtomsThatMove(AtomVector extraAtoms)
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-
-void Residue_linkage::GenerateAllShapesUsingMetadata()
-{
-
-}
-
 void Residue_linkage::SetDefaultShapeUsingMetadata()
 {
     for (auto &entry : rotatable_dihedrals_)
@@ -308,50 +300,6 @@ void Residue_linkage::DetermineAtomsThatMove()
     return;
 }
 
-//void Residue_linkage::SimpleWiggle(AtomVector overlapAtomSet1, AtomVector overlapAtomSet2, double overlapTolerance, int angleIncrement)
-//{
-   // double current_overlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
-//    double lowest_overlap = current_overlap;
-//    std::vector<Rotatable_dihedral> rotatable_bond_vector = this->GetRotatableDihedrals();
-//    for(auto &rotatable_dihedral : rotatable_bond_vector)
-//    {
-//        double best_dihedral_angle = rotatable_dihedral.CalculateDihedralAngle();
-//        //std::cout << "Starting new linkage with best angle as " << best_dihedral_angle << "\n";
-//        gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_entries = rotatable_dihedral.GetMetadata();
-//        for(auto &metadata : metadata_entries)
-//        {
-//            double lower_bound = (metadata.default_angle_value_ - metadata.lower_deviation_);
-//            double upper_bound = (metadata.default_angle_value_ + metadata.upper_deviation_);
-//            double current_dihedral = lower_bound;
-//            while(current_dihedral <= upper_bound )
-//            {
-//                rotatable_dihedral.SetDihedralAngle(current_dihedral);
-//                current_overlap = gmml::CalculateAtomicOverlapsBetweenNonBondedAtoms(overlapAtomSet1, overlapAtomSet2);
-//                //std::cout << "Dihedral(best): " << current_dihedral << "(" << best_dihedral_angle << ")" <<  ". Overlap(best): " << current_overlap << "(" << lowest_overlap << ")" << "\n";
-//                if (lowest_overlap >= (current_overlap + 0.01)) // 0.01 otherwise rounding errors
-//                {
-//                    //rotatable_dihedral.Print();
-//                    lowest_overlap = current_overlap;
-//                    best_dihedral_angle = current_dihedral;
-//                    //std::cout << "Best angle is now " << best_dihedral_angle << "\n";
-//                }
-//                // Perfer angles closer to default.
-//                else if ( (lowest_overlap == current_overlap) && (std::abs(metadata.default_angle_value_ - best_dihedral_angle )
-//                                                                  > std::abs(metadata.default_angle_value_ - current_dihedral)) )
-//                {
-//                    best_dihedral_angle = current_dihedral;
-//                }
-//                current_dihedral += angleIncrement; // increment
-//            }
-//        }
-//        //std::cout << "Setting best angle as " << best_dihedral_angle << "\n";
-//        rotatable_dihedral.SetDihedralAngle(best_dihedral_angle);
-//        if(lowest_overlap <= overlapTolerance)
-//            return;
-//    }
-//    return; // Note possibility of earlier return above
-//}
-
 void Residue_linkage::SimpleWiggle(AtomVector& overlapAtomSet1, AtomVector& overlapAtomSet2, const int angleIncrement)
 {
     for(auto &rotatable_dihedral : this->GetRotatableDihedrals())
@@ -369,21 +317,16 @@ void Residue_linkage::SimpleWiggleCurrentRotamers(AtomVector& overlapAtomSet1, A
      }
 }
 
-
 void Residue_linkage::SetIndex(unsigned long long index)
 {
     index_ = index;
 }
 
-void Residue_linkage::SetName(std::string name)
-{
-    name_ = name;
-}
 
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-std::string Residue_linkage::Print()
+std::string Residue_linkage::Print() const
 {
     std::stringstream ss;
     ss << "Residue_linkage Index: " << this->GetIndex() << ", Name: " << this->GetName() << ", NumberOfShapes: " << this->GetNumberOfShapes() 
@@ -429,7 +372,7 @@ void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_t
         {
             gmml::log(__LINE__, __FILE__, gmml::INF, "Finding metadata for " + from_this_residue1->GetId() + " :: " + to_this_residue2->GetId());
         }
-        gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata = this->FindMetadata(from_this_connection_atom1_, to_this_connection_atom2_);
+        gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata = this->FindMetadata();
       //  std::cout << "Metadata found:\n";
       //  for (auto &dihedralAngleData : metadata)
       //  {
@@ -448,7 +391,7 @@ void Residue_linkage::InitializeClass(Residue *from_this_residue1, Residue *to_t
     this->SetIndex(this->GenerateIndex());
 }
 
-bool Residue_linkage::CheckIfViableLinkage()
+bool Residue_linkage::CheckIfViableLinkage() const
 {
     for(auto &residue : this->GetResidues())
     {
@@ -589,10 +532,14 @@ std::vector<Rotatable_dihedral> Residue_linkage::SplitAtomVectorIntoRotatableDih
     return rotatable_dihedrals_generated;
 }
 
-gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Residue_linkage::FindMetadata(Atom *from_this_connection_atom1, Atom *to_this_connection_atom2)
+gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Residue_linkage::FindMetadata() const
 {
     gmml::MolecularMetadata::GLYCAM::DihedralAngleDataContainer DihedralAngleMetadata;
-    gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector matching_entries = DihedralAngleMetadata.GetEntriesForLinkage(from_this_connection_atom1, to_this_connection_atom2);
+    gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector matching_entries = DihedralAngleMetadata.GetEntriesForLinkage(
+            this->GetFromThisConnectionAtom1()->GetName(),
+            this->GetFromThisResidue1()->GetName(),
+            this->GetToThisConnectionAtom2()->GetName(),
+            this->GetToThisResidue2()->GetName());
     //std::cout << "Found these " << matching_entries.size() << " entries:\n";
     // for (const auto& entry : matching_entries)
     // {
@@ -601,7 +548,7 @@ gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector Residue_linkage::FindMe
     if (matching_entries.empty())
     {
         std::stringstream ss;
-        ss << "No Metadata entries found for connection between " << from_this_connection_atom1->GetId() << " and " << to_this_connection_atom2->GetId() << "\n";
+        ss << "No Metadata entries found for connection between " << this->GetFromThisConnectionAtom1()->GetId() << " and " << this->GetToThisConnectionAtom2()->GetId() << "\n";
         ss << "Note that order should be reducing atom - anomeric atom\n";
         gmml::log(__LINE__,__FILE__,gmml::ERR,ss.str());
         throw std::runtime_error(ss.str());
@@ -678,4 +625,10 @@ unsigned long long Residue_linkage::GenerateIndex()
 {
     static unsigned long long s_ResidueLinkageIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
     return s_ResidueLinkageIndex++; // makes copy of s_AtomIndex, increments the real s_AtomIndex, then returns the value in the copy
+}
+
+
+void Residue_linkage::SetName(std::string name)
+{
+    name_ = name;
 }

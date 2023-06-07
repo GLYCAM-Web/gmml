@@ -1,6 +1,13 @@
 #!/bin/bash
+
+GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
+
+if [ "$(git config --get remote.origin.url)" != "https://github.com/GLYCAM-Web/gmml.git" ]; then
+            exit 1
+fi
+
 printf "Testing 016.test.DrawGlycan.cc..."
-g++ -std=c++17 -I $GEMSHOME/gmml/ -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/016.test.DrawGlycan.cc -lgmml -pthread -o drawGlycan
+g++ -std=c++17 -I "${GMML_ROOT_DIR}"/ -I "${GMML_ROOT_DIR}"/ -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ tests/016.test.DrawGlycan.cc -lgmml -pthread -o drawGlycan
 ./drawGlycan
 > 016.output_drawGlycan.txt
 for dotFile in `ls *.dot`

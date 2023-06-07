@@ -1,9 +1,4 @@
 #include "includes/gmml.hpp"
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <map>
 
 int main(int argc, char* argv[])
 {

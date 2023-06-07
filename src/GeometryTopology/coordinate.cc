@@ -12,7 +12,20 @@ using GeometryTopology::Coordinate;
 Coordinate::Coordinate() : x_(0.0), y_(0.0), z_(0.0) {}
 
 Coordinate::Coordinate(double x, double y, double z) : x_(x), y_(y), z_(z) {}
-
+Coordinate::Coordinate(const std::string x, const std::string y, const std::string z)
+{
+    try
+    {
+        x_ = std::stod(x);
+        y_ = std::stod(y);
+        z_ = std::stod(z);
+    }
+    catch (...)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::ERR, "Could not convert these strings to doubles: " + x + ", " + y + ", " + z + ", ");
+        throw;
+    }
+}
 Coordinate::Coordinate(const Coordinate &coordinate) : x_(coordinate.x_), y_(coordinate.y_), z_(coordinate.z_) {}
 
 Coordinate::Coordinate(Coordinate* coordinate) : x_(coordinate->x_), y_(coordinate->y_), z_(coordinate->z_) {}
@@ -20,17 +33,17 @@ Coordinate::Coordinate(Coordinate* coordinate) : x_(coordinate->x_), y_(coordina
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
-double Coordinate::GetX()
+double Coordinate::GetX() const
 {
     return x_;
 }
 
-double Coordinate::GetY()
+double Coordinate::GetY() const
 {
     return y_;
 }
 
-double Coordinate::GetZ()
+double Coordinate::GetZ() const
 {
     return z_;
 }
@@ -63,7 +76,7 @@ void Coordinate::Translate(double x, double y, double z)
     z_ += z;
 }
 
-bool Coordinate::CompareTo(Coordinate coordinate)
+bool Coordinate::CompareTo(Coordinate coordinate) const
 {
     if(x_ == coordinate.x_ && y_ == coordinate.y_ && z_ == coordinate.z_)
         return true;
@@ -71,22 +84,42 @@ bool Coordinate::CompareTo(Coordinate coordinate)
         return false;
 }
 
-double Coordinate::Distance(Coordinate coordinate)
-{
-    double dist = (x_ - coordinate.x_) * (x_ - coordinate.x_) + (y_ - coordinate.y_) * (y_ - coordinate.y_) + (z_ - coordinate.z_) * (z_ - coordinate.z_);
-    return sqrt(dist);
+// This should be the definitive place for this calc.
+bool Coordinate::withinDistance(const Coordinate *coordinate, const double distance) const
+{ // Vast majority of calls to this function will be able to return false after first if.
+    if (this->GetX() - coordinate->GetX() < distance)
+    {
+        if (this->GetY() - coordinate->GetY() < distance)
+        {
+            if (this->Distance(coordinate) < distance) // Need to test if also checking Z is faster.
+            {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
-double Coordinate::Distance(Coordinate *coordinate)
+double Coordinate::Distance(const Coordinate &coordinate) const
+{
+    double dist = (x_ - coordinate.x_) * (x_ - coordinate.x_) + (y_ - coordinate.y_) * (y_ - coordinate.y_) + (z_ - coordinate.z_) * (z_ - coordinate.z_);
+    if(dist > 0.00000001) // can sometimes measure distance to self, in which case get sqrt(0), which should be fine but zero is funky and somtimes is actually slightly negative.
+    {
+        return sqrt(dist);
+    }
+    return 0.0;
+}
+
+double Coordinate::Distance(const Coordinate *coordinate) const
 {
     return this->Distance(*coordinate);
 }
 
-double Coordinate::length()
+double Coordinate::length() const
 {
-    double length = (x_ * x_) + (y_ * y_) + (z_ * z_);
-    return sqrt(length);
+    return sqrt( (this->GetX() * this->GetX()) + (this->GetY() * this->GetY()) + (this->GetZ() * this->GetZ()) );
 }
+
 void Coordinate::Normalize()
 {
     double length = this->length();
@@ -546,10 +579,18 @@ Coordinate* Coordinate::ConvertCartesianCoordinate2InternalCoordinate(Coordinate
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
-void Coordinate::Print(std::ostream& out)
+void Coordinate::Print(std::ostream& out) const
 {
     if(this->CompareTo(Coordinate(gmml::dNotSet, gmml::dNotSet, gmml::dNotSet)) == true)
         out << std::setw(10) << " " << ", " << std::setw(10) << " " << ", " << std::setw(10) << " ";
     else
         out << std::setw(10) << x_ << ", " << std::setw(10) << y_ << ", " << std::setw(10) << z_;
 }
+
+std::string Coordinate::ToString() const
+{
+    std::stringstream ss;
+    this->Print(ss);
+    return ss.str();
+}
+

@@ -107,6 +107,10 @@ public:
 		this->labels_m = labels_t;
 	}
 
+	inline void clearLabels()
+	{
+	    this->labels_m.clear();
+	}
 	/************************************************
 	 *  MUTATORS
 	 ***********************************************/
@@ -124,7 +128,7 @@ public:
 	/************************************************
 	 *  FUNCTIONS
 	 ***********************************************/
-	inline bool containsLabel(const std::string query)
+	inline bool containsLabel(const std::string query) const
 	{
 		for (std::string currLabel : this->labels_m)
 		{
@@ -134,15 +138,15 @@ public:
 		}
 		return false;
 	}
-	bool compareLabels(const std::vector<std::string> otherLabels)
+	bool compareLabels(const std::vector<std::string> otherLabels) const
 	{
 		return this->compareLabels(otherLabels, 1);
 	}
 	inline bool compareLabels(const std::vector<std::string> otherLabels,
-			unsigned int numMatches)
+			unsigned int numMatches) const
 	{
 		unsigned int matchCounter = 0;
-		for (std::string currLabel : this->labels_m)
+		for (std::string currLabel : this->getLabels())
 		{
 			if (std::find(otherLabels.begin(), otherLabels.end(), currLabel)
 					!= otherLabels.end())
@@ -155,7 +159,7 @@ public:
 		return false;
 	}
 
-	inline std::string findLabelContaining(const std::string query)
+	inline std::string findLabelContaining(const std::string query) const
 	{
 		std::regex regexQuery(query, std::regex_constants::ECMAScript);
 		for (auto &label : this->getLabels())

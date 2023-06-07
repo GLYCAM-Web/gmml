@@ -1,9 +1,11 @@
 #ifndef GLYCAM06_DERIVATIVE_AGLYCONE_CONNECTION_ATOMS_HPP
 #define GLYCAM06_DERIVATIVE_AGLYCONE_CONNECTION_ATOMS_HPP
 
+#include "includes/CodeUtils/logging.hpp"
 #include <string>
 #include <map>
 #include <vector>
+#include <stdexcept>
 
 namespace gmml
 {
@@ -33,7 +35,7 @@ public:
     //                      QUERY FUNCTIONS                 //
     //////////////////////////////////////////////////////////
 
-    inline std::string GetConnectionAtomForResidue(std::string query)
+    inline std::string GetConnectionAtomForResidue(const std::string query) const
     {
         for (auto &elem : glycam06DerivativeAglyconeConnectionAtomLookup_)
         {
@@ -42,7 +44,10 @@ public:
                 return elem.second;
             }
         }
-        return "Derivative or aglycone residue is not currently supported by GLYCAM.";
+        std::string message = "The selected derivative or aglycone residue is not currently supported by GLYCAM: " + query;
+        gmml::log(__LINE__,__FILE__, gmml::ERR, message);
+        throw std::runtime_error(message);
+        return "";
     }
 private:
     std::multimap<std::string, std::string> glycam06DerivativeAglyconeConnectionAtomLookup_;

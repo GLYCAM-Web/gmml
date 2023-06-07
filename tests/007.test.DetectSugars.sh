@@ -1,8 +1,14 @@
 #!/bin/bash
 
+GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
+
+if [ "$(git config --get remote.origin.url)" != "https://github.com/GLYCAM-Web/gmml.git" ]; then
+            exit 1
+fi
+
 ###################### Test 08 ######################
 printf "Testing 007.detectSugars.cc... "
-g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/007.detectSugars.cc -lgmml -pthread -o detect_sugars
+g++ -std=c++17 -I "${GMML_ROOT_DIR}" -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ tests/007.detectSugars.cc -lgmml -lstdc++fs -pthread -o detect_sugars
 if [ -f gmmo.ttl ]; then
    mv gmmo.ttl gmmoBeforeTests.ttl > /dev/null 2>&1
 fi

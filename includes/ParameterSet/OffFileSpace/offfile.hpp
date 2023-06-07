@@ -11,7 +11,6 @@
 #include "../../MolecularModeling/residue.hpp"
 #include "../../MolecularModeling/atom.hpp"
 #include "../../MolecularModeling/atomnode.hpp"
-#include "../../MolecularMetadata/elementattributes.hpp"
 
 namespace OffFileSpace
 {

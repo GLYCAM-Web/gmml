@@ -25,6 +25,8 @@ namespace glygraph
     // TODO: Ensure we would like this functionality, current idea is pass root node then get all traversable from this
     // node and store in our set
     Graph(Node<T> *const &initialNode_t);
+    Graph(T *const &initialNode_t);
+    //Graph(T* initialNode_t);
     Graph(std::vector<Node<T> *> const &nodeList_t);
 
     // copy constructor
@@ -113,6 +115,28 @@ namespace glygraph
     this->populateLookups();
     this->populateAdjacencyMatrix();
   }
+
+  template<class T>
+    Graph<T>::Graph(T* const &initialNode_t)
+    {
+      this->allNodes_m.push_back(initialNode_t);
+      this->dfsWalk(initialNode_t);
+
+      // populate our lookups
+      this->populateLookups();
+      this->populateAdjacencyMatrix();
+    }
+
+//  template<class T>
+//  Graph<T>::Graph(T* initialNode_t)
+//  {
+//      this->allNodes_m.push_back(initialNode_t);
+//      this->dfsWalk(initialNode_t);
+//      // populate our lookups
+//      this->populateLookups();
+//      this->populateAdjacencyMatrix();
+//  }
+
 
   template<class T>
   inline Graph<T>::Graph(std::vector<Node<T> *> const &nodeList_t)

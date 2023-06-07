@@ -88,6 +88,8 @@ namespace PdbFileSpace
               * @param ordered_atoms attribute of the current object
               */
             void SetOrderedAtomCards(PdbAtomCardOrderVector ordered_atom_cards);
+            // Added by OG Dec 2021.
+            void InsertAtomCard(PdbAtomCard *insertionCard, PdbAtomCard* referenceCard = nullptr); // can pass no ref, defaults to add at end
 /** @}*/
             //////////////////////////////////////////////////////////
             //                        FUNCTIONS                     //
@@ -107,9 +109,9 @@ namespace PdbFileSpace
             //////////////////////////////////////////////////////////
             //                       ATTRIBUTES                     //
             //////////////////////////////////////////////////////////
-            std::string record_name_;           /*!< Record name of atom card: "ATOM" */
-            PdbAtomMap atom_cards_;                  /*!< Map of all atom cards information that belong to a specific model in a pdb file by their serial numbers */
-            PdbAtomCardOrderVector ordered_atom_cards_;  /*!< A list of atom cards in order of the input pdb file */
+            std::string recordName_;           /*!< Record name of atom card: "ATOM" */
+            PdbAtomMap atomCardMap_;                  /*!< Map of all atom cards information that belong to a specific model in a pdb file by their serial numbers */
+            PdbAtomCardOrderVector orderedAtomCards_;  /*!< A list of atom cards in order of the input pdb file */
 
     };
 }

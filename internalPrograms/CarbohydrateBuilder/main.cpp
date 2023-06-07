@@ -1,10 +1,9 @@
+#include "includes/CodeUtils/strings.hpp"
+#include "includes/CentralDataStructure/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <sys/stat.h> // mkdir
-
-#include "includes/CodeUtils/string.hpp"
-#include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
+#include <sys/stat.h> // stat
 
 int main(int argc, char** argv)
 {
@@ -29,19 +28,47 @@ int main(int argc, char** argv)
     std::string line;
     while (std::getline(infile, line))
     {
-        StringVector splitLine = gmml::split(line, delimiter);
+        if(line.empty())
+        {
+            continue;
+        }
+        std::vector<std::string> splitLine = codeUtils::split(line, delimiter);
         std::string inputSequence = splitLine.at(1);
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
         try
         {
-            CondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
-            std::cout << carbBuilder.Print();
-            std::string inputGlycanID = splitLine.at(0);
-            carbBuilder.GenerateSingle3DStructureSingleFile(outputFolderName, "PDB", inputGlycanID);
+            cdsCondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
+            if (carbBuilder.IsStatusOk())
+            {
+                //carbBuilder.Print();
+                std::string inputGlycanID = splitLine.at(0);
+                //carbBuilder.GenerateSingle3DStructureDefaultFiles(outputFolderName, inputGlycanID);
+                //CondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
+                carbBuilder.GenerateSingle3DStructureDefaultFiles(outputFolderName, inputGlycanID);
+                if (!carbBuilder.IsStatusOk()) // This is bad. Fix me once gems can catch what the carbBuilder throws.
+                {
+                    std::cerr << "Error thrown by the carbohydrateBuilder in gmml during 3D structure generation was: " << carbBuilder.GetStatusMessage() << std::endl;
+                }
+            }
+            else
+            {
+                std::cerr << "Error thrown by the carbohydrateBuilder in gmml during construction was: " << carbBuilder.GetStatusMessage() << std::endl;
+            }
         }
-        catch (const std::string &exception)
+        catch(const std::string &exceptionMessage)
         {
-            std::cerr << "Caught exception: " << exception << std::endl;
+            gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught this exception message: " + exceptionMessage);
+            std::cerr << "Error thrown by the carbohydrateBuilder in gmml during construction was: " << exceptionMessage << std::endl;
+        }
+        catch (const std::runtime_error &error)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::ERR, error.what());
+            std::cerr << "Error thrown by the carbohydrateBuilder in gmml during construction was: " << error.what() << std::endl;
+        }
+        catch (...)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::ERR, "carbohydrateBuilder class caught a throw that was not anticipated. Curious. Death cometh?");
+            std::cerr << "ERROR carbohydrateBuilder caught a throw type that was not anticipated. Pretty please report how you got to this to glycam@gmail.com.";
         }
     }
 }

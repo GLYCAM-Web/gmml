@@ -1,0 +1,140 @@
+Preprocessing
+Bonding atoms by distance for assembly
+Runtime error thrown when writing to offfile:
+Did not find this Element in the list of atomic Elements: o
+Finished bonding atoms by distance
+Unrecognized atoms:
+o7 | PRO | B | 58
+o7 | PRO | B | 159
+Missing heavy atoms:
+CB | PRO | B | 58
+CA | PRO | B | 159
+Unrecognized residues:
+CA | A | 401
+CL | A | 402
+EDO | A | 403
+EDO | A | 404
+IPA | A | 405
+SIA | A | 406
+GAL | A | 407
+CA | B | 401
+CL | B | 402
+EDO | B | 403
+EDO | B | 404
+EDO | B | 405
+EDO | B | 406
+EDO | B | 407
+IPA | B | 408
+SIA | B | 409
+GAL | B | 410
+CA | C | 401
+CL | C | 402
+EDO | C | 403
+EDO | C | 404
+IPA | C | 405
+CA | D | 401
+CL | D | 402
+EDO | D | 403
+EDO | D | 404
+IPA | D | 405
+SIA | D | 406
+GAL | D | 407
+CA | E | 401
+CL | E | 402
+EDO | E | 403
+EDO | E | 404
+EDO | E | 405
+IPA | E | 406
+SIA | E | 407
+GAL | E | 408
+CA | F | 401
+CL | F | 402
+EDO | F | 403
+IPA | F | 404
+CA | G | 401
+CL | G | 402
+EDO | G | 403
+EDO | G | 404
+IPA | G | 405
+CA | H | 401
+CL | H | 402
+EDO | H | 403
+IPA | H | 404
+SIA | H | 405
+GAL | H | 406
+CA | I | 401
+CL | I | 402
+EDO | I | 403
+EDO | I | 404
+IPA | I | 405
+SIA | I | 406
+GAL | I | 407
+CA | J | 401
+CL | J | 402
+EDO | J | 403
+EDO | J | 404
+EDO | J | 405
+IPA | J | 406
+SIA | J | 407
+NAG | J | 408
+GAL | J | 409
+Gaps in amino acid chain:
+A | 68 | 71 | NHCH3 | COCH3
+B | 36 | 38 | NHCH3 | COCH3
+G | 98 | 101 | NHCH3 | COCH3
+G | 104 | 106 | NHCH3 | COCH3
+H | 104 | 106 | NHCH3 | COCH3
+I | 102 | 104 | NHCH3 | COCH3
+Histidine Protonation:
+HIE | A | 26
+HIE | A | 129
+HIE | A | 151
+HIE | A | 271
+HIE | B | 26
+HIE | B | 129
+HIE | B | 151
+HIE | B | 271
+HIE | C | 26
+HIE | C | 129
+HIE | C | 151
+HIE | C | 271
+HIE | D | 26
+HIE | D | 129
+HIE | D | 151
+HIE | D | 271
+HIE | E | 26
+HIE | E | 129
+HIE | E | 151
+HIE | E | 271
+HIE | F | 26
+HIE | F | 129
+HIE | F | 151
+HIE | F | 271
+HIE | G | 26
+HIE | G | 129
+HIE | G | 151
+HIE | G | 271
+HIE | H | 26
+HIE | H | 129
+HIE | H | 151
+HIE | H | 271
+HIE | I | 26
+HIE | I | 129
+HIE | I | 151
+HIE | I | 271
+HIE | J | 26
+HIE | J | 129
+HIE | J | 151
+HIE | J | 271
+Disulphide bonds:
+Chain terminations:
+A | 25 | NH3+ | 301 | CO2-
+B | 25 | NH3+ | 299 | CO2-
+C | 25 | NH3+ | 299 | CO2-
+D | 26 | NH3+ | 299 | CO2-
+E | 25 | NH3+ | 301 | CO2-
+F | 25 | NH3+ | 298 | CO2-
+G | 25 | NH3+ | 298 | CO2-
+H | 25 | NH3+ | 298 | CO2-
+I | 25 | NH3+ | 299 | CO2-
+J | 24 | NH3+ | 300 | CO2-

@@ -5,6 +5,25 @@
 %include<std_map.i>
 %include<std_vector.i>
 
+
+// #https://www.swig.org/Doc1.3/Customization.html#exception
+// This is super bloaty, better to be specific for each class. Tidy up what actually needs to be wrapped first, then come back to this.
+%include exception.i       
+%exception
+{
+try	{
+		$action
+	} catch(const std::runtime_error& e) {
+		SWIG_exception(SWIG_RuntimeError, e.what());
+	} catch (const std::invalid_argument& e) {
+   		SWIG_exception(SWIG_ValueError, e.what());
+	} catch (const std::out_of_range& e) {
+   		SWIG_exception(SWIG_IndexError, e.what());
+	} catch(...) {
+		SWIG_exception(SWIG_RuntimeError,"Unknown exception");
+	}
+}
+
 %{
 #define SWIG_FILE_WITH_INIT
 
@@ -34,16 +53,12 @@
 #include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
 
-#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
-#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-#include "includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
-#include "includes/InputSet/CondensedSequenceSpace/sequencestring.hpp"
-
-#include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
-#include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
-
-#include "includes/InternalPrograms/Sequence/sequence.hpp"
+#include "includes/CentralDataStructure/CondensedSequence/graphVizDotConfig.hpp"
+#include "includes/CentralDataStructure/InternalPrograms/DrawGlycan/drawGlycan.hpp"
+#include "includes/CentralDataStructure/InternalPrograms/Sequence/sequence.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp"
 
 #include "includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
 #include "includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
@@ -179,14 +194,19 @@
 #include "includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
 #include "includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 
-#include "includes/Abstract/builder.hpp"
-#include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
+#include "includes/Abstract/absBuilder.hpp"
+#include "includes/CentralDataStructure/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
 %}
 
 %inline %{
 std::ostream & get_cout() { return std::cout; }
 %}
+
+///Naming conflicts///
+%rename(cds_PdbFile) pdb::PdbFile;
+%rename(cds_iPdbLineLength) pdb::iPdbLineLength;
+//%rename(B_foo) B::foo;
 
 %include "includes/gmml.hpp"
 %include "includes/common.hpp"
@@ -214,16 +234,13 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 %include "includes/ParameterSet/PrepFileSpace/prepfileprocessingexception.hpp"
 
-%include "includes/InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
-%include "includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-%include "includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-%include "includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
-%include "includes/InputSet/CondensedSequenceSpace/sequencestring.hpp"
+%include "includes/CentralDataStructure/CondensedSequence/graphVizDotConfig.hpp"
+%include "includes/CentralDataStructure/InternalPrograms/DrawGlycan/drawGlycan.hpp"
+%include "includes/CentralDataStructure/InternalPrograms/Sequence/sequence.hpp"
+%include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
+%include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
+%include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp"
 
-%include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
-%include "includes/InternalPrograms/DrawGlycan/drawGlycan.hpp"
-
-%include "includes/InternalPrograms/Sequence/sequence.hpp"
 
 %include "includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
 %include "includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
@@ -358,8 +375,8 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
 %include "includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 
-%include "includes/Abstract/builder.hpp"
-%include "includes/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
+%include "includes/Abstract/absBuilder.hpp"
+%include "includes/CentralDataStructure/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
 
 %template(string_vector) std::vector<std::string>;
@@ -664,25 +681,6 @@ std::ostream & get_cout() { return std::cout; }
 //typedef std::vector<PdbqtFileSpace::PdbqtBranchCard*> BranchCardVector;
 %template(pdbqt_branch_card_vector) std::vector<PdbqtFileSpace::PdbqtBranchCard*>;
 
-///Condensed Sequence///
-//typedef std::vector<CondensedSequenceSpace::CondensedSequenceResidue*> CondensedSequenceResidueVector;
-%template(condensedsequence_residue_vector) std::vector<CondensedSequenceSpace::CondensedSequenceResidue*>;
-
-//typedef std::vector<gmml::CondensedSequenceTokenType> CondensedSequenceTokenTypeVector;
-%template(condensedsequence_token_type_vector) std::vector<gmml::CondensedSequenceTokenType>;
-
-//typedef std::vector<CondensedSequenceSpace::CondensedSequenceResidue*> CondensedSequenceResidueTree;
-//%template(condensedsequence_residue_tree) std::vector<CondensedSequenceSpace::CondensedSequenceResidue*>;
-
-//typedef std::vector<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*> CondensedSequenceGlycam06ResidueTree;
-%template(condensedsequence_glycam06_residue_tree) std::vector<CondensedSequenceSpace::CondensedSequenceGlycam06Residue*>;
-
-//typedef std::pair<std::string, CondensedSequenceSpace::RotamersAndGlycosidicAnglesInfo*> RotamerNameInfoPair;
-%template(rotamer_name_info_pair) std::pair<std::string, CondensedSequenceSpace::RotamersAndGlycosidicAnglesInfo*>;
-
-//typedef std::vector<RotamerNameInfoPair> CondensedSequenceRatomersAndGlycosidicAnglesInfo;
-%template(rotamer_angle_info_vector) std::vector<std::pair<std::string, CondensedSequenceSpace::RotamersAndGlycosidicAnglesInfo*> >;
-
 //std::pair<std::string, double>
 %template(string_double_pair) std::pair<std::string, double>;
 
@@ -724,15 +722,25 @@ std::ostream & get_cout() { return std::cout; }
 
 ///Carbohydrate Builder///
 //typedef std::vector<DihedralOptions> DihedralOptionsVector;
-%template(dihedral_options_vector) std::vector<CondensedSequence::DihedralOptions>;
+%template(dihedral_options_vector) std::vector<cdsCondensedSequence::DihedralOptions>;
 
 //typedef std::vector<LinkageOptions> LinkageOptionsVector;
-%template(linkage_options_vector) std::vector<CondensedSequence::LinkageOptions>;
+%template(linkage_options_vector) std::vector<cdsCondensedSequence::LinkageOptions>;
 
 //typedef std::vector<SingleRotamerInfo> SingleRotamerInfoVector;
-%template(single_rotamer_info_vector) std::vector<CondensedSequence::SingleRotamerInfo>;
+%template(single_rotamer_info_vector) std::vector<cdsCondensedSequence::SingleRotamerInfo>;
 
 //typedef std::vector<MolecularModeling::Residue*> ResidueVector;
 %template(residue_vector) std::vector<MolecularModeling::Residue* >;
+
+///MD Prep///
+%template (AtomInfoVector) std::vector<pdb::AtomInfo>;
+%template (GapInAminoAcidChainVector) std::vector<pdb::GapInAminoAcidChain>;
+%template (ResidueIdVector) std::vector<pdb::ResidueId>;
+%template (ChainTerminalVector) std::vector<pdb::ChainTerminal>;
+%template (DisulphideBondVector) std::vector<pdb::DisulphideBond>;
+%template (hisSelectionPairVector) std::vector<std::pair<std::string,std::string>>;
+//%template (Vector) std::vector<>;
+
 
 //constexpr operator size_t() { return 0; }
