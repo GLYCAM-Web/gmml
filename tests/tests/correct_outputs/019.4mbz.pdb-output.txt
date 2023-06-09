@@ -3031,3 +3031,4 @@ G | 25 | NH3+ | 298 | CO2-
 H | 25 | NH3+ | 298 | CO2-
 I | 25 | NH3+ | 299 | CO2-
 J | 24 | NH3+ | 300 | CO2-
+NonNatural Protein Residues:

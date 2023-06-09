@@ -82,5 +82,10 @@ int main(int argc, char* argv[])
     {
         std::cout << chainT.chainId_ << " | " << chainT.startIndex_ << " | " << chainT.nTermination_ <<  " | " << chainT.endIndex_ << " | " << chainT.cTermination_ << "\n";
     }
+    std::cout << "NonNatural Protein Residues:\n";
+    for(auto &nonNaturalResidue : ppInfo.nonNaturalProteinResidues_)
+    {
+        std::cout << nonNaturalResidue.residue_.getChainId() << " | " <<  nonNaturalResidue.residue_.getName() << " | " <<  nonNaturalResidue.residue_.getNumberAndInsertionCode() << "\n";
+    }
     return 0;
 }

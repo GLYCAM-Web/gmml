@@ -6,10 +6,10 @@
 #include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
-
+#include "includes/CentralDataStructure/Editors/amberMdPrep.hpp" //all preprocessing should move to here.
+#include "includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp"
+#include "includes/CentralDataStructure/Selections/templatedSelections.hpp"
 #include <algorithm> // std::find
-#include "../../../../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp"
-#include "../../../../includes/CentralDataStructure/Selections/templatedSelections.hpp"
 
 using pdb::PdbModel;
 //////////////////////////////////////////////////////////
@@ -226,16 +226,20 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo,
 //                std::cout << "res2 is " + res2->getNumberAndInsertionCode() + "_" + res2->getChainId() << std::endl;
                 const cds::Atom* res1AtomC = res1->FindAtom("C");
                 const cds::Atom* res2AtomN = res2->FindAtom("N");
-                if ( !res1AtomC->isWithinBondingDistance(res2AtomN) )
+                if ( ! res1AtomC->isWithinBondingDistance(res2AtomN) )
                 { // GAP detected
-                    //Log it
-                    gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + res1->printId());
-                    gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + res2->printId());
-                    // Do it
-                    chain->InsertCap(*res1, inputOptions.gapCTermination_);
-                    chain->InsertCap(*res2, inputOptions.gapNTermination_);
-                    // Record it
-                    ppInfo.missingResidues_.emplace_back(res1->getChainId(), res1->getNumberAndInsertionCode(), res2->getNumberAndInsertionCode(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
+                    // Look for non-natural protein residues within bonding distance, they fall under ResidueType Undefined, this indicates it's not gap.
+                    if (! amberMdPrep::checkForNonNaturalProteinResidues(cdsSelections::selectResiduesByType(chain->getResidues(), cds::ResidueType::Undefined), res1AtomC, ppInfo) )
+                    {
+                        //Log it
+                        gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + res1->printId());
+                        gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + res2->printId());
+                        // Do it
+                        chain->InsertCap(*res1, inputOptions.gapCTermination_);
+                        chain->InsertCap(*res2, inputOptions.gapNTermination_);
+                        // Record it
+                        ppInfo.missingResidues_.emplace_back(res1->getChainId(), res1->getNumberAndInsertionCode(), res2->getNumberAndInsertionCode(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
+                    }
                 }
             }
         }
