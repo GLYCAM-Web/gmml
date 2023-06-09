@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     pdb::PreprocessorInformation ppInfo = pdbFile.PreProcess(options);
     for (auto &assembly : pdbFile.getAssemblies()) // Just testing, doing it this way to get around const in Ensemble. ToDo: Why is there a const blockage in Ensemble?
     {
-    	std::cout << "Bonding atoms by distance for assembly\n";
+    	std::cout << "Bonding atoms by distance for assembly" << std::endl;;
     	cds::bondAtomsByDistance(assembly->getAtoms());
     	// OFF molecule
     	try
@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
     	    gmml::log(__LINE__,__FILE__,gmml::ERR, "Unknown error when writing to offfile.\n");
     	}
     }
-    std::cout << "Finished bonding atoms by distance\n";
+    std::cout << "Finished bonding atoms by distance" << std::endl;
     pdbFile.Write("./outputPdbFile.pdb");
 
     // Just showing what's in the ppInfo and how to access it
