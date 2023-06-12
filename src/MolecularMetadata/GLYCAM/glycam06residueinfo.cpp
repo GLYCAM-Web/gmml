@@ -4,10 +4,10 @@
  * GLYCAM06 metadata for residues
  *
  * This file was generated automatically on:
- *     Di 26 Jan 2021 10:08:45 CET
+ *     Mo 12 Jun 2023 12:33:53 CEST
  *
  * by a script named:
- *     /bin/bash
+ *     1_make_glycam06_residue_tag_lookup.bash
  *
  * The script was begun on 16 June 2018 by BLFoley and
  * can be found in:
@@ -13346,32 +13346,32 @@ Glycam06NamesToTypesLookupContainer::Glycam06NamesToTypesLookupContainer()
         { "WjU"     ,  "gauche-effect=unknown"                  } , 
         { "WjU"     ,  "beta"                                   } , 
         { "WjU"     ,  "L-isomer"                               } , 
-//    Names:    KDO  
+//    Names:    0KO  
 //    Types:     carbohydrate monosaccharide pyranose ketose n-carbon=8 formal-charge=-1 alpha D-isomer deoxy ulosonate gauche-effect=unknown   
-        { "KDO"     ,  "carbohydrate"                           } , 
-        { "KDO"     ,  "monosaccharide"                         } , 
-        { "KDO"     ,  "pyranose"                               } , 
-        { "KDO"     ,  "ketose"                                 } , 
-        { "KDO"     ,  "n-carbon=8"                             } , 
-        { "KDO"     ,  "formal-charge=-1"                       } , 
-        { "KDO"     ,  "alpha"                                  } , 
-        { "KDO"     ,  "D-isomer"                               } , 
-        { "KDO"     ,  "deoxy"                                  } , 
-        { "KDO"     ,  "ulosonate"                              } , 
-        { "KDO"     ,  "gauche-effect=unknown"                  } , 
-//    Names:    KDN  
+        { "0KO"     ,  "carbohydrate"                           } , 
+        { "0KO"     ,  "monosaccharide"                         } , 
+        { "0KO"     ,  "pyranose"                               } , 
+        { "0KO"     ,  "ketose"                                 } , 
+        { "0KO"     ,  "n-carbon=8"                             } , 
+        { "0KO"     ,  "formal-charge=-1"                       } , 
+        { "0KO"     ,  "alpha"                                  } , 
+        { "0KO"     ,  "D-isomer"                               } , 
+        { "0KO"     ,  "deoxy"                                  } , 
+        { "0KO"     ,  "ulosonate"                              } , 
+        { "0KO"     ,  "gauche-effect=unknown"                  } , 
+//    Names:    0KN  
 //    Types:     carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 alpha D-isomer deoxy ulosonate gauche-effect=unknown  
-        { "KDN"     ,  "carbohydrate"                           } , 
-        { "KDN"     ,  "monosaccharide"                         } , 
-        { "KDN"     ,  "pyranose"                               } , 
-        { "KDN"     ,  "ketose"                                 } , 
-        { "KDN"     ,  "n-carbon=9"                             } , 
-        { "KDN"     ,  "formal-charge=-1"                       } , 
-        { "KDN"     ,  "alpha"                                  } , 
-        { "KDN"     ,  "D-isomer"                               } , 
-        { "KDN"     ,  "deoxy"                                  } , 
-        { "KDN"     ,  "ulosonate"                              } , 
-        { "KDN"     ,  "gauche-effect=unknown"                  } , 
+        { "0KN"     ,  "carbohydrate"                           } , 
+        { "0KN"     ,  "monosaccharide"                         } , 
+        { "0KN"     ,  "pyranose"                               } , 
+        { "0KN"     ,  "ketose"                                 } , 
+        { "0KN"     ,  "n-carbon=9"                             } , 
+        { "0KN"     ,  "formal-charge=-1"                       } , 
+        { "0KN"     ,  "alpha"                                  } , 
+        { "0KN"     ,  "D-isomer"                               } , 
+        { "0KN"     ,  "deoxy"                                  } , 
+        { "0KN"     ,  "ulosonate"                              } , 
+        { "0KN"     ,  "gauche-effect=unknown"                  } , 
 //    Names:    4SA 7SA 8SA 9SA ASA BSA CSA DSA ESA FSA GSA HSA ISA JSA KSA  
 //    Types:     carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 alpha deoxy ulosonate gauche-effect=sialic-acid-tail  D-isomer internal 
         { "4SA"     ,  "carbohydrate"                           } , 

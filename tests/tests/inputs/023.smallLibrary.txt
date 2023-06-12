@@ -46,4 +46,4 @@
 00052_DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4[4DGlcpa1-6DGlcpa1-4[4DGlcpa1-]<3>4DManpa1-]<2>OH
 
 00053_[4DGlcpa1-]<4>2DGulpa1-4[4DAllpa1-6[4DGalpa1-]<2>4DManpa1-]<3>3DManpa1-2[4DAllpa1-6[[4DGalpa1-]<5>4]DManpa1-]<5>OH
-
+00054_DKDNpa2-6[DKDOpa2-3]DGlcpb1-OH
