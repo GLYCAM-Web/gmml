@@ -136,6 +136,12 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C.*"  , "O9"     , "Omg9" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 3 , 1 , {"none"}                , {"ulosonate"}    , "O9" , "C9" , "C8" , "C7"  },
         { "C.*"  , "O9"     , "Omg8" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 4 , 1 , {"none"}                , {"ulosonate"}    , "C9" , "C8" , "C7" , "C6"  },
         { "C.*"  , "O9"     , "Omg7" , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 5 , 1 , {"none"}                , {"ulosonate"}    , "O7" , "C7" , "C6" , "O6"  },
+         // Generic x-8 linkages. Values copied from external conformer A below. Arbitrary, but I have no data for them.
+        { "C.*"   , "O8"     , "Phi"  , -79.5  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 1 , 1 , {"monosaccharide"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C.*"   , "O8"     , "Psi"  ,  88.1  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 2 , 1 , {"monosaccharide"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C.*"   , "O8"     , "Omg8" ,-170.1  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 3 , 1 , {"monosaccharide"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C.*"   , "O8"     , "Omg7" , -61.8  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 4 , 1 , {"monosaccharide"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C.*"   , "O8"     , "Omg9" ,  65.8  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 5 , 1 , {"monosaccharide"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
          // Internal 2-8 linkages   
         { "C2"   , "O8"     , "Phi"  , -79.5  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 1 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
         { "C2"   , "O8"     , "Psi"  ,  88.1  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 2 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },

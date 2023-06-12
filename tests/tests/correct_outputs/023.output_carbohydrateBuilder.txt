@@ -243,6 +243,10 @@ Building [4DGlcpa1-]<4>2DGulpa1-4[4DAllpa1-6[4DGalpa1-]<2>4DManpa1-]<3>3DManpa1-
 *********************
 Building DKDNpa2-6[DKDOpa2-3]DGlcpb1-OH
 *********************
+
+*********************
+Building DNeup5Acb2-8DNeup5Aca2-3DGalpb1-8DNeup5Aca2-OH
+*********************
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
@@ -291,3 +295,4 @@ Building DKDNpa2-6[DKDOpa2-3]DGlcpb1-OH
 00052.pdb succesfully created.
 00053.pdb succesfully created.
 00054.pdb succesfully created.
+00055.pdb succesfully created.
