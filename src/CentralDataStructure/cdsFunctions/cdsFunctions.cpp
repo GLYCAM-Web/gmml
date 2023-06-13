@@ -54,7 +54,7 @@ void cds::bondAtomsByDistance(std::vector<cds::Atom*> atoms)
     {
         entry.join();
     }
-    //std::cout << "Threads finish\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Finished setting atom connectivity by distance.");
     return;
 }
 

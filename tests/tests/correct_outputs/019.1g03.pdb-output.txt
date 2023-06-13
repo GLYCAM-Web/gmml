@@ -147,3 +147,4 @@ A | 1 | NH3+ | 134 | CO2-
 A | 1 | NH3+ | 134 | CO2-
 A | 1 | NH3+ | 134 | CO2-
 A | 1 | NH3+ | 134 | CO2-
+NonNatural Protein Residues:

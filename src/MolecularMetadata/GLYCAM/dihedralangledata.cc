@@ -1,4 +1,5 @@
 #include "includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
+#include "includes/CodeUtils/logging.hpp"
 #include <regex>
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
@@ -51,19 +52,19 @@ bool DihedralAngleDataContainer::checkIfResidueConditionsAreSatisfied(std::vecto
 {
     for (const auto& entry_condition : entry_conditions)
     {   // If no condition, return true. If can't find the condition in the list return false, otherwise, having found the condition(s), return true.
-       // std::cout << "Condition: " << entry_condition << std::endl;
-        if (entry_condition.compare("none")==0)
+        //gmml::log(__LINE__,__FILE__,gmml::INF, "Entry condition: " + entry_condition);
+        if (entry_condition == "none")
         {
-        //    std::cout << "Returning true as conditions are none" << std::endl;
+            //gmml::log(__LINE__,__FILE__,gmml::INF, "Returning true as conditions are none");
             return true;
         }
-        else if (!(std::find(residue_types.begin(), residue_types.end(), entry_condition) != residue_types.end()))
+        if (!(std::find(residue_types.begin(), residue_types.end(), entry_condition) != residue_types.end()))
         {
-        //    std::cout << "Returning false as did not find the condition in residue tags" << std::endl;
+            //gmml::log(__LINE__,__FILE__,gmml::INF, "Returning false as did not find the condition in residue tags");
             return false; //If any condition isn't satisified. return false.
         }
     }
-  //  std::cout << "Found all conditions in dihedralangledata.hpp::checkIfResidueConditionsAreSatisfied" << std::endl;
+    //gmml::log(__LINE__,__FILE__,gmml::INF, "All residue conditions are satisfied");
     return true;
 }
 
@@ -111,7 +112,9 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C2"   , "O[1-9]" , "Phi"  , -60.0  ,  25.0  ,  25.0  , 1.0   , "permutation" , "g"  , 1 , 1 , {"n-carbon=6", "ketose", "alpha"}     , {"monosaccharide"}            , "C1" , "C2" , "O." , "C."  }, // Phi is defined by C1-C2(ano)-Ox-Cx for ketoses like Fru
         { "C2"   , "O[1-9]" , "Phi"  ,  60.0  ,  25.0  ,  25.0  , 1.0   , "permutation" , "-g" , 1 , 1 , {"n-carbon=6", "ketose", "beta"}     , {"monosaccharide"}            , "C1" , "C2" , "O." , "C."  }, // Phi is defined by C1-C2(ano)-Ox-Cx for ketoses like Fru
         { "C2"   , "O[1-9]" , "Phi"  , 180.0  ,  25.0  ,  25.0  , 1.0   , "permutation" , "t"  , 1 , 1 , {"ketose", "ulosonate"}     , {"monosaccharide"}      , "C1" , "C2" , "O." , "C."  }, // Phi should be C2-C1(ano)-Ox-Cx, or C1-C2(ano)-Ox-Cx
+        // Sialic acid type 2- linkages:
         { "C2"   , "O[3-6]" , "Phi"  , -60.0  ,  25.0  ,  25.0  , 1.0   , "permutation" , "-g" , 1 , 2 , {"ulosonate", "alpha"}  , {"monosaccharide"}         , "C1" , "C2" , "O." , "C."  },
+        // Generic psi linkages, why is this labelled "ap"?
         { "C."   , "O[1-5]" , "Psi"  ,   0.0  ,  40.0  ,  40.0  , 1.0   , "permutation" , "ap" , 2 , 1 , {"monosaccharide"}       , {"monosaccharide"}                  , "C." , "O." , "C." , "H."  }, // Psi should be C(ano)-Ox-Cx-Hx, if Cx is ring, otherwise, C(ano)-Ox-Cx-C(x-1)
         { "C."   , "O[6-9]" , "Psi"  , 180.0  ,  40.0  ,  40.0  , 1.0   , "permutation" , "t"  , 2 , 1 , {"monosaccharide"}       , {"monosaccharide"}                  , "C." , "O." , "C." , "C."  },
         // Omega angle in x-6 linkages.        
@@ -133,6 +136,12 @@ DihedralAngleDataContainer::DihedralAngleDataContainer()
         { "C.*"  , "O9"     , "Omg9" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 3 , 1 , {"none"}                , {"ulosonate"}    , "O9" , "C9" , "C8" , "C7"  },
         { "C.*"  , "O9"     , "Omg8" , 180.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "t"  , 4 , 1 , {"none"}                , {"ulosonate"}    , "C9" , "C8" , "C7" , "C6"  },
         { "C.*"  , "O9"     , "Omg7" , -60.0  ,  20.0  ,  20.0  , 1.0   , "permutation" , "-g" , 5 , 1 , {"none"}                , {"ulosonate"}    , "O7" , "C7" , "C6" , "O6"  },
+         // Generic x-8 linkages. Values copied from external conformer A below. Arbitrary, but I have no data for them.
+        { "C.*"   , "O8"     , "Phi"  , -79.5  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 1 , 1 , {"monosaccharide"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
+        { "C.*"   , "O8"     , "Psi"  ,  88.1  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 2 , 1 , {"monosaccharide"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },
+        { "C.*"   , "O8"     , "Omg8" ,-170.1  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 3 , 1 , {"monosaccharide"}  , {"ulosonate"}    , "O8" , "C8" , "C7" , "C6"  },
+        { "C.*"   , "O8"     , "Omg7" , -61.8  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 4 , 1 , {"monosaccharide"}  , {"ulosonate"}    , "C8" , "C7" , "C6" , "O6"  },
+        { "C.*"   , "O8"     , "Omg9" ,  65.8  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 5 , 1 , {"monosaccharide"}  , {"ulosonate"}    , "O9" , "C9" , "C8" , "O8"  },
          // Internal 2-8 linkages   
         { "C2"   , "O8"     , "Phi"  , -79.5  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 1 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C1" , "C2" , "O8" , "C8"  },
         { "C2"   , "O8"     , "Psi"  ,  88.1  ,  20.0  ,  20.0  , 0.42  , "conformer"   , "A"  , 2 , 1 , {"ulosonate", "alpha", "internal"}  , {"ulosonate"}    , "C2" , "O8" , "C8" , "C7"  },

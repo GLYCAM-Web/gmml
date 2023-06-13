@@ -36,7 +36,7 @@ void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream)
         //std::cout << "Parsing the line: " << line << "\n";
         codeUtils::ExpandLine(line, pdb::iPdbLineLength);
         std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0,6));
-        std::vector<std::string> coordSectionCards {"MODEL", "ATOM", "ANISOU", "TER", "HETATM", "CONECT"};
+        std::vector<std::string> coordSectionCards {"MODEL", "ATOM", "ANISOU", "TER", "HETATM"};
         std::vector<std::string> databaseCards {"DBREF", "DBREF1", "DBREF2"};
         if(std::find(coordSectionCards.begin(), coordSectionCards.end(), recordName) != coordSectionCards.end())
         {
@@ -75,6 +75,10 @@ void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream)
             {
                 databaseReferences_.emplace_back(line);
             }
+        }
+        else if(recordName == "CONECT")
+        {
+            gmml::log(__LINE__,__FILE__,gmml::WAR, "Reading pdbfile that contains CONECT records. We ignore these due to the potential for overruns.");
         }
     }
     gmml::log(__LINE__,__FILE__,gmml::INF, "PdbFile Constructor Complete Captain");
