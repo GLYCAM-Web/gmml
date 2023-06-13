@@ -367,9 +367,10 @@ std::vector<RotatableDihedral> ResidueLinkage::FindRotatableDihedralsConnectingR
 
         found = false;
         connecting_atoms.clear();
-     //   std::cout << "Finding Path between:" << cycle_point1->getId() << " and " << cycle_point2->getId() << "\n";
+        //std::cout << "Finding Path between:" << cycle_point1->getId() << " in " << this->GetFromThisResidue1()->getId() << " and " << cycle_point2->getId() << " in " << this->GetToThisResidue2()->getId() << "\n";
         cdsSelections::FindPathBetweenTwoAtoms(cycle_point1, this->GetFromThisResidue1(), cycle_point2, this->GetToThisResidue2(), &connecting_atoms, &found);
-        cdsSelections::ClearAtomLabels(this->GetFromThisResidue1()); //ToDo change to free function or memeber function that clears labels.
+        //std::cout << "Found Path between:" << cycle_point1->getId() << " and " << cycle_point2->getId() << "\n";
+        cdsSelections::ClearAtomLabels(this->GetFromThisResidue1()); //ToDo change to free function or member function that clears labels.
         cdsSelections::ClearAtomLabels(this->GetToThisResidue2());
         // Find neighboring atoms needed to define dihedral. Pass in connecting atoms so don't find any of those.
         cds::Atom* neighbor1 =  cdsSelections::FindCyclePointNeighbor(connecting_atoms, cycle_point1, this->GetFromThisResidue1());
@@ -379,11 +380,11 @@ std::vector<RotatableDihedral> ResidueLinkage::FindRotatableDihedralsConnectingR
         std::reverse(connecting_atoms.begin(), connecting_atoms.end());
         connecting_atoms.insert(connecting_atoms.begin(), neighbor1);
         connecting_atoms.push_back(neighbor2);
-
-        // std::cout << "Updated Path between:\n " << cycle_point1->getId() << " and " << cycle_point2->getId() << "\n";
+//         std::cout << "Updated Path between:\n" << cycle_point1->getId() << " and " << cycle_point2->getId() << "\n";
 //         for (const auto& atom : connecting_atoms)
+//         {
 //             std::cout << atom->getId() << "\n";
-//         std::cout << "\n";
+//         }
         cdsSelections::ClearAtomLabels(this->GetFromThisResidue1()); //ToDo change to free function or member function that clears labels.
         cdsSelections::ClearAtomLabels(this->GetToThisResidue2());
         // This mess was made to address the branching in 2-7 and 2-8 linkages.
@@ -444,6 +445,11 @@ std::vector<RotatableDihedral> ResidueLinkage::SplitAtomVectorIntoRotatableDihed
         std::stringstream ss;
         ss << "ERROR in ResidueLinkage::SplitAtomVectorIntoRotatableDihedrals, not enough atoms in atom vector: " << atoms.size() << "\n";
         ss << "This should be 4 or something is very wrong\n";
+        ss << "If there are atoms, here are the ids:\n";
+        for(auto & atom: atoms)
+        {
+            ss << atom->getId() << "\n";
+        }
         gmml::log(__LINE__,__FILE__,gmml::ERR,ss.str());
         throw std::runtime_error(ss.str());
     }
