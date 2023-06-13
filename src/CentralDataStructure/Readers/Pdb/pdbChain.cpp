@@ -134,47 +134,44 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
     }
 }
 
-bool PdbChain::ModifyTerminal(const std::string& type)
+void PdbChain::ModifyTerminal(const std::string& type, PdbResidue* terminalResidue)
 {
     if (type == "NH3+") // For now, leaving it to tleap to add the correct H's
     {
-        PdbResidue* nTermResidue = this->getNTerminal();
-        if (nTermResidue == nullptr) { return false; }
-        gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + nTermResidue->printId());
-        const PdbAtom* atom = static_cast<const PdbAtom*>(nTermResidue->FindAtom("H"));
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying N Terminal of : " + terminalResidue->printId());
+        const PdbAtom* atom = static_cast<const PdbAtom*>(terminalResidue->FindAtom("H"));
         if (atom != nullptr)
         {
             gmml::log(__LINE__,__FILE__,gmml::INF, "Deleting atom with id: " + atom->GetId());
-            nTermResidue->deleteAtom(atom);
+            terminalResidue->deleteAtom(atom);
         }
+        return;
     }
     else if (type == "CO2-")
     {
-        PdbResidue* cTermResidue = this->getCTerminal();
-        if (cTermResidue == nullptr) { return false; }
-        gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + cTermResidue->printId());
-        const cds::Atom* atom = cTermResidue->FindAtom("OXT");
-        if (atom == nullptr)
-        {
-            // I don't like this, but at least it's somewhat contained:
-            const cds::Atom* atomCA = cTermResidue->FindAtom("CA");
-            const cds::Atom* atomC = cTermResidue->FindAtom("C");
-            const cds::Atom* atomO = cTermResidue->FindAtom("O");
-            cds::Coordinate oxtCoord = cds::calculateCoordinateFromInternalCoords(*(atomCA->getCoordinate()), *(atomC->getCoordinate()), *(atomO->getCoordinate()), 120.0, 180.0, 1.25);
-            cTermResidue->addAtom(std::make_unique<PdbAtom>("OXT", oxtCoord));
-            gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + static_cast<const PdbAtom*>(atomO)->GetId());
-        }
-        else
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Modifying C Terminal of : " + terminalResidue->printId());
+        const cds::Atom* atom = terminalResidue->FindAtom("OXT");
+        if (atom != nullptr)
         {
             gmml::log(__LINE__,__FILE__,gmml::INF, "OXT atom already exists: " + static_cast<const PdbAtom*>(atom)->GetId());
+            return;
         }
+        // I don't like this, but at least it's somewhat contained:
+        const cds::Atom* atomCA = terminalResidue->FindAtom("CA");
+        const cds::Atom* atomC = terminalResidue->FindAtom("C");
+        const cds::Atom* atomO = terminalResidue->FindAtom("O");
+        if (atomCA == nullptr || atomC == nullptr ||  atomO ==  nullptr)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::WAR, "Cterminal residue missing an atoms named CA, C or O, cannot create an OXT atom for this residue.");
+            return;
+        }
+        cds::Coordinate oxtCoord = cds::calculateCoordinateFromInternalCoords(*(atomCA->getCoordinate()), *(atomC->getCoordinate()), *(atomO->getCoordinate()), 120.0, 180.0, 1.25);
+        terminalResidue->addAtom(std::make_unique<PdbAtom>("OXT", oxtCoord));
+        gmml::log(__LINE__,__FILE__,gmml::INF, "Created new atom named OXT after " + static_cast<const PdbAtom*>(atomO)->GetId());
+        return;
     }
-    else
-    {
-        gmml::log(__LINE__, __FILE__, gmml::WAR, "Cannot handle this type of terminal option: " + type);
-        return false;
-    }
-    return true;
+    gmml::log(__LINE__, __FILE__, gmml::WAR, "Cannot handle this type of terminal option: " + type);
+    return;
 }
 
 // Only makes sense for proteins.
