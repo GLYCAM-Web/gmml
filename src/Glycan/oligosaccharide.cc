@@ -2234,7 +2234,7 @@ std::vector<Glycan::Monosaccharide*> Glycan::Oligosaccharide::IUPACindexMono(Gly
 
 void Glycan::Oligosaccharide::IUPACindexBranches(std::vector<Glycan::Monosaccharide*> branchedMonos)
 {
-  int local_debug = 1;
+  int local_debug = -1;
 
   for(std::vector<Glycan::Monosaccharide*>::iterator mono = branchedMonos.begin(); mono != branchedMonos.end(); mono++ )
   {

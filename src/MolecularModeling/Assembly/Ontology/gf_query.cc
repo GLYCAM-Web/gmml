@@ -17,7 +17,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     // This function will also call a function to create a graph from the 
     // search string for searching across branches.
 
-    int local_debug = 1;
+    int local_debug = -1;
     if (local_debug > 0)
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "Running QueryOntology()");
@@ -326,7 +326,7 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
 std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo, std::string url, std::string output_file_type)
 { 
     // This function runs a full query on a single result, which is unique given the pdb_id, oligo_sequence, and oligo 
-    int local_debug = 1;
+    int local_debug = -1;
     if(local_debug > 0)
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "Running MoreQuery()");

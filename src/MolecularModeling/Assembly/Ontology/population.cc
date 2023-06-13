@@ -630,6 +630,7 @@ void Assembly::PopulateNotes(std::stringstream& pdb_stream, std::stringstream& n
     std::string note_uri = "";
     for(NoteVector::iterator it = notes.begin(); it != notes.end(); it++)
     {
+        int local_debug = -1;
         Glycan::Note* note = (*it);
         std::string newPrefix = pdb_uri + "_";
         note_resource = CreateURIResource(gmml::OntNote, note_id, newPrefix, "");
@@ -652,6 +653,12 @@ void Assembly::PopulateNotes(std::stringstream& pdb_stream, std::stringstream& n
         // gmml::AddLiteral(note_uri, Ontology::note_type, note->ConvertGlycanNoteType2String(note->type_), note_stream);
         // gmml::AddLiteral(note_uri, Ontology::note_category, note->ConvertGlycanNoteCat2String(note->category_), note_stream);
         // gmml::AddLiteral(note_uri, Ontology::note_description, note->description_, note_stream);
+
+        if (local_debug > 0)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "note_resource: " + note_resource);
+            gmml::log(__LINE__, __FILE__, gmml::INF, "note_uri: " + note_uri);
+        }
 
         pdb_stream << "\t" << Ontology::hasNote << "\t\t" << note_uri << ";\n";
 
