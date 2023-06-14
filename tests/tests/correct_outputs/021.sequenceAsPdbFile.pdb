@@ -32,3 +32,9 @@ ATOM     31 O1   SO3     4      -1.763   1.709  -4.729  1.00  0.00           O
 ATOM     32 O2   SO3     4      -1.288   2.562  -6.960  1.00  0.00           O
 ATOM     33 O3   SO3     4      -2.932   0.794  -6.642  1.00  0.00           O
 TER
+CONECT    5    6
+CONECT    6    5
+CONECT   19   26
+CONECT   25   30
+CONECT   26   19
+CONECT   30   25

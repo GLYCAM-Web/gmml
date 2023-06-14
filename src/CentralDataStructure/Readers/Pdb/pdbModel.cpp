@@ -187,19 +187,20 @@ void PdbModel::preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, co
         PdbChain* chain = static_cast<PdbChain*>(cdsMolecule);
         gmml::log(__LINE__,__FILE__,gmml::INF, "Chain termination processing started for this chain");
         //Do the thing
-        if (chain->ModifyTerminal(inputOptions.chainNTermination_) && chain->ModifyTerminal(inputOptions.chainCTermination_) )
+        PdbResidue* nTerResidue = chain->getNTerminal();
+        if (nTerResidue == nullptr)
         {
-            //Log the thing
-            PdbResidue* nTer = chain->getNTerminal();
-            PdbResidue* cTer = chain->getCTerminal();
-            gmml::log(__LINE__, __FILE__, gmml::INF, "N term : " + nTer->printId());
-            gmml::log(__LINE__, __FILE__, gmml::INF, "C term : " + cTer->printId());
-            //Report the thing
-            ppInfo.chainTerminals_.emplace_back(nTer->getChainId(), nTer->getNumberAndInsertionCode(), cTer->getNumberAndInsertionCode(), inputOptions.chainNTermination_, inputOptions.chainCTermination_);
+            gmml::log(__LINE__,__FILE__,gmml::INF, "Could not modify terminals of this chain.");
         }
         else
         {
-            gmml::log(__LINE__,__FILE__,gmml::INF, "Could not modify terminals of this chain.");
+            chain->ModifyTerminal(inputOptions.chainNTermination_, nTerResidue);
+            PdbResidue* cTerResidue = chain->getCTerminal();
+            chain->ModifyTerminal(inputOptions.chainCTermination_, cTerResidue);
+            gmml::log(__LINE__, __FILE__, gmml::INF, "N term : " + nTerResidue->printId());
+            gmml::log(__LINE__, __FILE__, gmml::INF, "C term : " + cTerResidue->printId());
+            //Report the thing
+            ppInfo.chainTerminals_.emplace_back(nTerResidue->getChainId(), nTerResidue->getNumberAndInsertionCode(), cTerResidue->getNumberAndInsertionCode(), inputOptions.chainNTermination_, inputOptions.chainCTermination_);
         }
         gmml::log(__LINE__,__FILE__,gmml::INF, "Preprocessing complete for this chain");
     }

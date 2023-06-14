@@ -31,7 +31,7 @@ public:
     //////////////////////////////////////////////////////////
     void tagTerminalResidues();
     void InsertCap(const PdbResidue& refResidue, const std::string& type);
-    bool ModifyTerminal(const std::string& type);
+    void ModifyTerminal(const std::string& type, PdbResidue* terminalResidue);
     PdbResidue* getNTerminal();
     PdbResidue* getCTerminal();
     // addCapsToGaps(pdb::PreprocessorInformation &ppInfo, const pdb::PreprocessorOptions& inputOptions);

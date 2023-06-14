@@ -187,6 +187,23 @@ std::vector<const Atom*> Residue::getAtomsConnectedToOtherResidues() const
     return foundAtoms;
 }
 
+std::vector<std::pair<const Atom*,const Atom*>> Residue::getAtomPairsConnectedToOtherResidues() const
+{
+    std::vector<std::pair<const Atom*,const Atom*>> foundAtoms;
+    std::vector<Atom*> residueAtoms = this->getAtoms();
+    for(auto &atom : residueAtoms)
+    {
+        for(auto &neighbor : atom->getNeighbors())
+        { // check if neighbor is not one of the atoms in this residue.
+            if(std::find(residueAtoms.begin(), residueAtoms.end(), neighbor) == residueAtoms.end())
+            {
+                foundAtoms.push_back(std::make_pair(atom, neighbor));
+            }
+        }
+    }
+    return foundAtoms;
+}
+
 void Residue::MakeDeoxy(std::string oxygenNumber)
 { // if oxygenNumber is 6, then C6-O6-H6O becomes C6-Hd
     Atom* hydrogenAtom = this->FindAtom("H" + oxygenNumber + "O");

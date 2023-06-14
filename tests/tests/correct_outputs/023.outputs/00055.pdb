@@ -131,3 +131,11 @@ ATOM    130 C1   0SB     5      -4.035  26.907  -0.008  1.00  0.00           C
 ATOM    131 O1B  0SB     5      -4.666  26.102   0.727  1.00  0.00           O
 ATOM    132 O1A  0SB     5      -3.666  28.058   0.325  1.00  0.00           O
 TER
+CONECT    2    3
+CONECT    3    2
+CONECT   38   39
+CONECT   39   38
+CONECT   59   60
+CONECT   60   59
+CONECT   95   96
+CONECT   96   95

@@ -44,3 +44,7 @@ ATOM     43 H4O  0CA     3      -5.765   5.258  -8.613  1.00  0.00           H
 ATOM     44 O3   0CA     3      -4.064   1.895  -6.395  1.00  0.00           O
 ATOM     45 H3O  0CA     3      -3.317   1.791  -6.997  1.00  0.00           H
 TER
+CONECT    2    3
+CONECT    3    2
+CONECT   23   24
+CONECT   24   23

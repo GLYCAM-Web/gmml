@@ -48,3 +48,22 @@ void cds::writeAtomToPdb(std::ostream& stream, const cds::Atom* atom, const std:
     stream << std::endl;
     return;
 }
+
+void cds::writeConectCards(std::ostream& stream, std::vector<cds::Residue*> residues)
+{ // These are only written for atoms connecting residues. The numbers overflow/truncate when longer than 5, but the format is what the format is.
+    for(auto &residue : residues)
+    {
+        std::vector<std::pair<const Atom*,const Atom*>> atomsPairsConnectedToOtherResidues = residue->getAtomPairsConnectedToOtherResidues();
+        for(auto &atomPair : atomsPairsConnectedToOtherResidues)
+        {  // I hate that order matters, but here we are:
+//            if (atomPair.first->getNumber() < atomPair.second->getNumber())
+//            {
+                stream << "CONECT" << std::right << std::setw(5) << atomPair.first->getNumber() << std::right << std::setw(5) << atomPair.second->getNumber() << "\n";
+//            }
+//            else
+//            {
+//                stream << "CONECT" << std::right << std::setw(5) << atomPair.second->getNumber() << std::right << std::setw(5) << atomPair.first->getNumber() << "\n";
+//            }
+        }
+    }
+}
