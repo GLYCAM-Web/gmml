@@ -6,11 +6,16 @@
 using cds::Residue;
 
 std::vector<Residue*> cdsSelections::selectResiduesByType(std::vector<Residue*> inputResidues, cds::ResidueType queryType)
+{   // Quality of life wrapper: calls the below function with one queryType.
+    return selectResiduesByType(inputResidues, std::vector<cds::ResidueType>{queryType});
+}
+
+std::vector<Residue*> cdsSelections::selectResiduesByType(std::vector<Residue*> inputResidues, std::vector<cds::ResidueType> queryTypes)
 {
     std::vector<Residue*> selectedResidues;
     for(auto & residue : inputResidues)
     {
-        if ( residue->GetType() == queryType )
+        if ( std::find(queryTypes.begin(), queryTypes.end(), residue->GetType()) !=  queryTypes.end())
         {
             selectedResidues.push_back(residue);
         }
