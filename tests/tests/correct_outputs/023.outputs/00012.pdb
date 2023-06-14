@@ -146,3 +146,11 @@ ATOM    145 O5N  0SA     5      -1.622  22.800   1.397  1.00  0.00           O
 ATOM    146 O4   0SA     5       2.399  21.464   0.119  1.00  0.00           O
 ATOM    147 H4O  0SA     5       2.359  22.281   0.620  1.00  0.00           H
 TER
+CONECT    2    3
+CONECT    3    2
+CONECT   38   39
+CONECT   39   38
+CONECT   74   75
+CONECT   75   74
+CONECT  110  111
+CONECT  111  110

@@ -43,3 +43,7 @@ ATOM     42 H2   0hA     3      -6.078  15.776   0.569  1.00  0.00           H
 ATOM     43 O2   0hA     3      -5.237  16.949   2.054  1.00  0.00           O
 ATOM     44 H2O  0hA     3      -6.066  17.085   2.528  1.00  0.00           H
 TER
+CONECT    2    3
+CONECT    3    2
+CONECT   23   24
+CONECT   24   23

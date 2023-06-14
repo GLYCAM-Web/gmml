@@ -191,3 +191,15 @@ ATOM    190 O5N  0SA     7      -9.710  20.900   0.038  1.00  0.00           O
 ATOM    191 O4   0SA     7      -8.648  24.152  -2.770  1.00  0.00           O
 ATOM    192 H4O  0SA     7      -9.192  24.396  -2.019  1.00  0.00           H
 TER
+CONECT    5    6
+CONECT    6    5
+CONECT   26   27
+CONECT   27   26
+CONECT   47   48
+CONECT   48   47
+CONECT   83   84
+CONECT   84   83
+CONECT  119  120
+CONECT  120  119
+CONECT  155  156
+CONECT  156  155
