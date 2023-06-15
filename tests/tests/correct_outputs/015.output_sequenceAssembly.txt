@@ -57,7 +57,7 @@ Test level caught error: Error: the number of [ doesn't match the number of ]. B
 -----------------------------------------------------------------------------------------------------
 
 Sequence 13: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH
-Test level caught error: Error: we can't parse this residue: "Boo"
+Test level caught runtime error: Error: we can't parse this residue: "Boo"
 -----------------------------------------------------------------------------------------------------
 
 Sequence 14: dUA[2S]1-4DGlcpNAc[3S,6S]a1-4LIdopA(2SO)[2S]a1-4LIdopA(2SO)a1-4DGlcpNSa1-4DGlcpA[2S]b1-OH
