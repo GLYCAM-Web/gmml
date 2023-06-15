@@ -11,7 +11,7 @@ const std::vector<std::string> proteinResidueNames = { "ALA", "ASP", "ASN", "ARG
             "VAL", "LEU", "THR", "SER", "LYS",
             "MET", "MSE", "TYR", "TRP", "PHE", "SEC",
             "ILE", "CYX", "CYM", "HID", "HIE", "NLN",
-            "OLY", "OLS", "OLT", "ASH", "GLH", "HYP", "LYN", "NALA", "NASP",
+            "OLY", "OLS", "OLT", "ACE", "NME", "ASH", "GLH", "HYP", "LYN", "NALA", "NASP",
 "NASN", "NARG", "NGLY", "NGLU", "NGLN",
 "NPRO", "NHIS", "NCYS", "NVAL", "NLEU",
 "NTHR", "NSER", "NLYS", "NMET", "NTYR",
