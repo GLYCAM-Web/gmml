@@ -1,6 +1,6 @@
 Preprocessing
 Bonding atoms by distance for assembly
-Runtime error thrown when writing to offfile:
+Runtime error thrown when writing to off file:
 Did not find this Element in the list of atomic Elements: o
 Finished bonding atoms by distance
 Unrecognized atoms:
