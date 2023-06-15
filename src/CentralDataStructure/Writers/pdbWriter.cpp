@@ -3,11 +3,22 @@
 
 void cds::writeMoleculeToPdb(std::ostream& stream, const std::vector<cds::Residue*> residues)
 {
-    for (auto &residue : residues)
+    auto it = residues.begin();
+    while(it != residues.end())
+//    for (auto &residue : residues)
     {
-        cds::writeResidueToPdb(stream, residue);
+        cds::writeResidueToPdb(stream, *it);
+        if((*it)->GetType() != cds::ResidueType::Protein)
+        {
+            stream << "TER\n";
+        }
+        ++it;
     }
-    stream << "TER\n";
+    --it;
+    if((*it)->GetType() == cds::ResidueType::Protein)
+    {
+        stream << "TER\n";
+    }
 }
 
 void cds::writeResidueToPdb(std::ostream& stream, const cds::Residue* residue, const std::string recordName, bool addTerCard)
