@@ -21,15 +21,11 @@ void cds::writeMoleculeToPdb(std::ostream& stream, const std::vector<cds::Residu
     }
 }
 
-void cds::writeResidueToPdb(std::ostream& stream, const cds::Residue* residue, const std::string recordName, bool addTerCard)
+void cds::writeResidueToPdb(std::ostream& stream, const cds::Residue* residue, const std::string recordName)
 {
     for(auto &atom : residue->getAtoms())
     {
         cds::writeAtomToPdb(stream, atom, recordName, residue->getName(), residue->getNumber());
-    }
-    if(addTerCard)
-    {
-        stream << "TER\n";
     }
 }
 
