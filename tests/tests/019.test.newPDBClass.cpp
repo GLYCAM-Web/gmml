@@ -33,14 +33,14 @@ int main(int argc, char* argv[])
     	catch(std::runtime_error& error)
     	{
     	    std::stringstream ss;
-    	    ss << "Runtime error thrown when writing to offfile:\n" <<  error.what() << "\n";
+    	    ss << "Runtime error thrown when writing to off file:\n" <<  error.what() << "\n";
     	    std::cout << ss.str();
     	    gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
     	}
     	catch(...)
     	{
-    	    std::cout << "Unknown error when writing to offfile.\n";
-    	    gmml::log(__LINE__,__FILE__,gmml::ERR, "Unknown error when writing to offfile.\n");
+    	    std::cout << "Unknown error when writing to off file.\n";
+    	    gmml::log(__LINE__,__FILE__,gmml::ERR, "Unknown error when writing to off file.\n");
     	}
     }
     std::cout << "Finished bonding atoms by distance" << std::endl;

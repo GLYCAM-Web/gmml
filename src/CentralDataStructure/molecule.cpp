@@ -171,7 +171,6 @@ void Molecule::renumberResidues(int newStartNumber)
 void Molecule::WritePdb(std::ostream& stream) const
 {
     cds::writeMoleculeToPdb(stream, this->getResidues());
-    // CONECT CARDS
     using cds::ResidueType; // to help readability of the Sugar, etc below
     cds::writeConectCards(stream, cdsSelections::selectResiduesByType(this->getResidues(), {Sugar, Derivative, Aglycone, Undefined}));
 }
