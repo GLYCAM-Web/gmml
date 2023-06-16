@@ -1,7 +1,7 @@
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.hpp"
 
-#include "../../../../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // bondAtomsByDistance
-#include "../../../../includes/CentralDataStructure/Writers/offWriter.hpp"
+#include "includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // bondAtomsByDistance
+#include "includes/CentralDataStructure/Writers/offWriter.hpp"
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
 //#include "includes/CentralDataStructure/Overlaps/beadResidues.hpp"
 #include "includes/CodeUtils/metropolisCriterion.hpp"
@@ -49,31 +49,55 @@ GlycoproteinBuilder::GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
-void GlycoproteinBuilder::WriteOutputFiles()
+//void GlycoproteinBuilder::WriteOutputFiles(std::string prefix)
+//{
+//    // Pdb, original numbering.
+//    std::string fileName = prefix + ".pdb";
+//    std::ofstream outFileStream;
+//    outFileStream.open(fileName.c_str());
+//    cds::writeAssemblyToPdb(outFileStream, this->getGlycoprotein()->getMolecules());
+//    outFileStream.close();
+//    // Off file, serializes.
+//    fileName = prefix + ".off";
+//	outFileStream.open(fileName.c_str());
+//	cds::WriteAssemblyToOffFile(this->getGlycoprotein(), outFileStream, "GLYCOPROTEINBUILDER");
+//	outFileStream.close();
+//	// Pdb, serialized numbering.
+//	fileName = prefix + "_Serialized.pdb";
+//	outFileStream.open(fileName.c_str());
+//    cds::writeAssemblyToPdb(outFileStream, this->getGlycoprotein()->getMolecules());
+//	cds::writeConectCards(outFileStream, cdsSelections::selectResiduesByType(this->getGlycoprotein()->getResidues(), {cds::ResidueType::Sugar, cds::ResidueType::Derivative, cds::ResidueType::Aglycone, cds::ResidueType::Undefined}));
+////    this->DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(this->GetGlycosites(), this->GetOverlapTolerance());
+////	std::stringstream logss;
+////    logss << "Atomic overlap is " << this->CalculateOverlaps(ATOMIC) << "\n";
+////    logss << "Global overlap is " << this->GetGlobalOverlap() << "\n";
+////	  gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+//    this->PrintDihedralAnglesAndOverlapOfGlycosites();
+////	  this->WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_Resolved", false);
+//    return;
+//}
+
+void GlycoproteinBuilder::WriteOffFile(const std::string prefix)
 {
-    // Pdb, original numbering.
-    std::string fileName = "GlycoProtein_All_Resolved.pdb";
+    std::string fileName = prefix + ".off";
+    std::ofstream outFileStream;
+    outFileStream.open(fileName.c_str());
+    cds::WriteAssemblyToOffFile(this->getGlycoprotein(), outFileStream, "GLYCOPROTEINBUILDER");
+    outFileStream.close();
+    return;
+}
+
+void GlycoproteinBuilder::WritePdbFile(const std::string prefix, const bool writeConectSection)
+{
+    std::string fileName = prefix + ".pdb";
     std::ofstream outFileStream;
     outFileStream.open(fileName.c_str());
     cds::writeAssemblyToPdb(outFileStream, this->getGlycoprotein()->getMolecules());
+    if (writeConectSection)
+    {
+        cds::writeConectCards(outFileStream, cdsSelections::selectResiduesByType(this->getGlycoprotein()->getResidues(), {cds::ResidueType::Sugar, cds::ResidueType::Derivative, cds::ResidueType::Aglycone, cds::ResidueType::Undefined}));
+    }
     outFileStream.close();
-    // Off file, serializes.
-    fileName = "GlycoProtein_All_Resolved.off";
-	outFileStream.open(fileName.c_str());
-	cds::WriteAssemblyToOffFile(this->getGlycoprotein(), outFileStream, "GLYCOPROTEINBUILDER");
-	outFileStream.close();
-	// Pdb, serialized numbering.
-	fileName = "GlycoProtein_All_Resolved_Serialized.pdb";
-	outFileStream.open(fileName.c_str());
-    cds::writeAssemblyToPdb(outFileStream, this->getGlycoprotein()->getMolecules());
-	cds::writeConectCards(outFileStream, cdsSelections::selectResiduesByType(this->getGlycoprotein()->getResidues(), {cds::ResidueType::Sugar, cds::ResidueType::Derivative, cds::ResidueType::Aglycone, cds::ResidueType::Undefined}));
-//    this->DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(this->GetGlycosites(), this->GetOverlapTolerance());
-//	std::stringstream logss;	
-//    logss << "Atomic overlap is " << this->CalculateOverlaps(ATOMIC) << "\n";
-//    logss << "Global overlap is " << this->GetGlobalOverlap() << "\n";
-//	  gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-    this->PrintDihedralAnglesAndOverlapOfGlycosites();
-//	  this->WritePDBFile(this->GetGlycoproteinAssembly(), this->GetWorkingDirectory(), "GlycoProtein_Resolved", false);
     return;
 }
 

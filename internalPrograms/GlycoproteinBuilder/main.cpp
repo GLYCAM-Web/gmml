@@ -17,14 +17,19 @@ int main(int argc, char* argv[])
     GlycoproteinBuilder glycoproteinBuilder(inputStruct);
     if(glycoproteinBuilder.IsStatusOk())
     {    // Poor pattern, need to throw up to and catch in gems.
+        glycoproteinBuilder.WritePdbFile("glycoprotein_initial");
         std::cout << "Resolving overlaps" << std::endl;
         glycoproteinBuilder.ResolveOverlaps(); // Default randomize value is true, and output isn't deterministic.
         std::cout << "Writing output files" << std::endl;
-        glycoproteinBuilder.WriteOutputFiles();
+        glycoproteinBuilder.WritePdbFile("glycoprotein");
+        glycoproteinBuilder.WriteOffFile("glycoprotein");
+        glycoproteinBuilder.WritePdbFile("glycoprotein_serialized"); // offFile serializes. Not a great pattern tbh, but efficient.
+        glycoproteinBuilder.PrintDihedralAnglesAndOverlapOfGlycosites();
     }
     if (!glycoproteinBuilder.IsStatusOk()) // Status might be changed by ResolveOverlaps or WriteOuputfiles.
     {
-        std::cerr << glycoproteinBuilder.GetStatusMessage() << std::endl;
+        gmml::log(__LINE__,__FILE__,gmml::ERR,glycoproteinBuilder.GetStatusMessage());
+        // gpbuilder should throw instead of this.
     }
     std::cout << "Program got to end ok" << std::endl;
     return 0;

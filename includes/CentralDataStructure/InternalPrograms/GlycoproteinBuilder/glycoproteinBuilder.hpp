@@ -27,7 +27,10 @@ public:
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
     void ResolveOverlaps();
-    void WriteOutputFiles();
+    void WritePdbFile(const std::string prefix = "glycoprotein", const bool writeConectSection = true);
+    void WriteOffFile(const std::string prefix = "glycoprotein");
+    //void WriteOutputFiles(std::string prefix = "Glycoprotein_All_Resolved");
+    void PrintDihedralAnglesAndOverlapOfGlycosites();
 private:
     //////////////////////////////////////////////////////////
     //                  PRIVATE ACCESSORS                   //
