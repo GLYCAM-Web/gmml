@@ -6,11 +6,10 @@ if [ "$(git config --get remote.origin.url)" != "https://github.com/GLYCAM-Web/g
             exit 1
 fi
 
-
 printf "Testing 017.test.GlycoproteinBuilder.cpp... "
 g++ -std=c++17 -I "${GMML_ROOT_DIR}" -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ "${GMML_ROOT_DIR}"/internalPrograms/GlycoproteinBuilder/main.cpp -lgmml -pthread -o gpBuilder
 ./gpBuilder tests/inputs/017.GlycoproteinBuilderInput.txt > output_GlycoproteinBuilder.txt 2>&1
-fileList=("GlycoProtein_All_Resolved.pdb" "GlycoProtein_All_Resolved.off" "GlycoProtein_All_Resolved_Serialized.pdb" "output_GlycoproteinBuilder.txt")
+fileList=("glycoprotein_initial.pdb" "glycoprotein.pdb" "glycoprotein.off" " glycoprotein_serialized.pdb" "output_GlycoproteinBuilder.txt")
 for file in ${fileList[@]}; 
 do
   	if [ -f $file ]; then
