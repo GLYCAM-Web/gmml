@@ -291,7 +291,7 @@ bool GlycoproteinBuilder::DumbRandomWalk(int maxCycles)
     return false;
 }
 
-void GlycoproteinBuilder::CreateGlycosites(std::vector<glycoprotein::GlycositeInput> glycositesInputVector, std::string prepFileLocation)
+void GlycoproteinBuilder::CreateGlycosites(std::vector<glycoprotein::GlycositeInput> glycositesInputVector, const std::string prepFileLocation)
 {
     std::vector<Residue*> proteinResidues = this->getGlycoprotein()->getResidues(); // Before any glycans are added.
 	for (auto &glycositeInput : glycositesInputVector)
