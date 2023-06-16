@@ -301,7 +301,6 @@ void GlycoproteinBuilder::CreateGlycosites(std::vector<glycoprotein::GlycositeIn
         Residue* glycositeResidue = this->SelectResidueFromInput(glycositeInput.proteinResidueId_);
         if (glycositeResidue == nullptr)
         {
-//            std::cout << "Did not find glycosite residue" << std::endl;
             throw std::runtime_error("Did not find a residue with id matching " + glycositeInput.proteinResidueId_);
         }
 	    std::vector<Residue*> otherResidues = proteinResidues;
