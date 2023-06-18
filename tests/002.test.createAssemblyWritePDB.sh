@@ -2,7 +2,8 @@
 
 GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
 
-if [ "$(git config --get remote.origin.url)" != "https://github.com/GLYCAM-Web/gmml.git" ]; then
+if [[ "${GMML_ROOT_DIR}" != *"gmml" ]] ; then
+            echo "Test 002 failed, we think our GMML root directory is:\t${GMML_ROOT_DIR}\n"
             exit 1
 fi
 
