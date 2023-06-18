@@ -18,18 +18,29 @@ FAILED_FILES=()
 PASSED_FILES=()
 check_formatting()
 {
-    echo -e "\n${YELLOW_BOLD}Begin format enforcement checking...${RESET_STYLE}\n"
+    echo -e "\n${YELLOW_BOLD}Begin format enforcement checking...${RESET_STYLE}"
 
+    #make temp dir in our gmml directory so we dont have to deal with perm problems in the tmp dirs or w/e
+    #When debugging this script i would run into problems where stuff would act wonky, used this method
+    #cause I got sick of trying to hunt down the actual problem why my code wasnt behaving as I expected
+    TEMP_DIR=$(mktemp -d -p "${GMML_ROOT_DIR}")
+    echo -e "\n${YELLOW_BOLD}Created temporary dir to hold checked files...${RESET_STYLE}\n\tDir Name: ${TEMP_DIR}\n"
     for FILE_CHECKING in "${TO_CHECK_LIST[@]}"; do
+        
+        #make the temp file of what we be checking. Extracts the filename with extension that we be checking also
+        #in case we gotta add debug/info type ish in the future
+        TEMP_FILE=$(mktemp "${TEMP_DIR}"/"${FILE_CHECKING##*/}".XXXXXX)
 
-        clang-format-15 --dry-run --Werror "${FILE_CHECKING}" 2> /dev/null
+        (git show :"${FILE_CHECKING}") > "${TEMP_FILE}"
+        clang-format-15 --dry-run --Werror "${TEMP_FILE}" 2> /dev/null
         if [ $? == 0 ]; then
             PASSED_FILES+=("${FILE_CHECKING}")
         else
             FAILED_FILES+=("${FILE_CHECKING}")
         fi
-
+        rm "${TEMP_FILE}"
     done
+    rm -r "${TEMP_DIR}"
 
     for SUCCEDER in "${PASSED_FILES[@]}"; do
         echo -e "${GREEN_BOLD}FILE PASSED: ${RESET_STYLE}${SUCCEDER}"
