@@ -9,8 +9,8 @@ using glycoprotein::GlycoproteinBuilderInputs;
 
 GlycoproteinBuilderInputs glycoprotein::readGPInputFile(std::string inputFileName)
 {
-//    std::cout << "About to read " << inputFileName << std::endl << std::flush;
-    std::ifstream infile (inputFileName);
+    //    std::cout << "About to read " << inputFileName << std::endl << std::flush;
+    std::ifstream infile(inputFileName);
     if (!infile)
     {
         std::string message = "Uh oh, input file: " + inputFileName + ", could not be opened for reading!\n";
@@ -22,40 +22,42 @@ GlycoproteinBuilderInputs glycoprotein::readGPInputFile(std::string inputFileNam
     {
         std::string strInput;
         getline(infile, strInput);
-        if(codeUtils::startsWith(strInput, "Protein:"))
+        if (codeUtils::startsWith(strInput, "Protein:"))
         {
-        	gpInputs.substrateFileName_ = codeUtils::split(strInput, ':').at(1);
+            gpInputs.substrateFileName_ = codeUtils::split(strInput, ':').at(1);
         }
-        if(codeUtils::startsWith(strInput, "NumberOfOutputStructures:"))
+        if (codeUtils::startsWith(strInput, "NumberOfOutputStructures:"))
         {
-        	gpInputs.number3DStructures_ = std::stoi(codeUtils::split(strInput, ':').at(1));
+            gpInputs.number3DStructures_ = std::stoi(codeUtils::split(strInput, ':').at(1));
         }
-        if(codeUtils::startsWith(strInput, "prepFileLocation:"))
+        if (codeUtils::startsWith(strInput, "prepFileLocation:"))
         {
-        	gpInputs.prepFileLocation_ = codeUtils::split(strInput, ':').at(1);
+            gpInputs.prepFileLocation_ = codeUtils::split(strInput, ':').at(1);
         }
-        if(codeUtils::startsWith(strInput, "maxThreads:"))
+        if (codeUtils::startsWith(strInput, "maxThreads:"))
         {
-        	gpInputs.maxThreads_ = std::stoi(codeUtils::split(strInput, ':').at(1));
+            gpInputs.maxThreads_ = std::stoi(codeUtils::split(strInput, ':').at(1));
         }
-        if(codeUtils::startsWith(strInput, "persistCycles:"))
+        if (codeUtils::startsWith(strInput, "persistCycles:"))
         {
-        	gpInputs.persistCycles_ = std::stoi(codeUtils::split(strInput, ':').at(1));
+            gpInputs.persistCycles_ = std::stoi(codeUtils::split(strInput, ':').at(1));
         }
-        if(codeUtils::startsWith(strInput, "overlapTolerance:"))
+        if (codeUtils::startsWith(strInput, "overlapTolerance:"))
         {
-        	gpInputs.overlapTolerance_ = std::stoi(codeUtils::split(strInput, ':').at(1));
+            gpInputs.overlapTolerance_ = std::stoi(codeUtils::split(strInput, ':').at(1));
         }
-        if(codeUtils::startsWith(strInput, "isDeterministic:"))
+        if (codeUtils::startsWith(strInput, "isDeterministic:"))
         {
             if (codeUtils::split(strInput, ':').at(1) == "true")
+            {
                 gpInputs.isDeterministic_ = true;
+            }
         }
-        if(strInput == "ProteinResidue, GlycanName:")
+        if (strInput == "ProteinResidue, GlycanName:")
         {
             std::string tempBuffer; //  Temporarily holds whatever getline() finds on the line;
             getline(infile, tempBuffer);
-            while(tempBuffer != "END")
+            while (tempBuffer != "END")
             {
                 std::vector<std::string> splitLine = codeUtils::split(tempBuffer, '|');
                 gpInputs.glycositesInputVector_.emplace_back(splitLine.at(0), splitLine.at(1));
@@ -63,13 +65,11 @@ GlycoproteinBuilderInputs glycoprotein::readGPInputFile(std::string inputFileNam
             }
         }
     }
-//    std::cout << "Reading input file complete, just making a quick check\n" << std::flush;
-    if(gpInputs.glycositesInputVector_.empty())
+    //    std::cout << "Reading input file complete, just making a quick check\n" << std::flush;
+    if (gpInputs.glycositesInputVector_.empty())
     {
-        throw std::runtime_error("Error reading from gpInput file, no glycosites requested. Perhaps your formatting is incorrect.\n");
+        throw std::runtime_error(
+            "Error reading from gpInput file, no glycosites requested. Perhaps your formatting is incorrect.\n");
     }
     return gpInputs;
 }
-
-
-

@@ -9,12 +9,18 @@ using PdbFileSpace::PdbResidueModificationCard;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbResidueModificationCard::PdbResidueModificationCard() : id_code_(""), residue_name_(""), chain_id_(' '), sequence_number_(gmml::dNotSet),
-    insertion_code_(' '), standard_residue_name_(""), dscr_("") {}
-PdbResidueModificationCard::PdbResidueModificationCard(const std::string &id_code, const std::string &residue_name, char chain_id, int sequence_number,
-                                               char insertion_code, const std::string &standard_residue_name, const std::string &dscr) :
-    id_code_(id_code), residue_name_(residue_name), chain_id_(chain_id), sequence_number_(sequence_number), insertion_code_(insertion_code),
-    standard_residue_name_(standard_residue_name), dscr_(dscr) {}
+PdbResidueModificationCard::PdbResidueModificationCard()
+    : id_code_(""), residue_name_(""), chain_id_(' '), sequence_number_(gmml::dNotSet), insertion_code_(' '),
+      standard_residue_name_(""), dscr_("")
+{}
+
+PdbResidueModificationCard::PdbResidueModificationCard(const std::string& id_code, const std::string& residue_name,
+                                                       char chain_id, int sequence_number, char insertion_code,
+                                                       const std::string& standard_residue_name,
+                                                       const std::string& dscr)
+    : id_code_(id_code), residue_name_(residue_name), chain_id_(chain_id), sequence_number_(sequence_number),
+      insertion_code_(insertion_code), standard_residue_name_(standard_residue_name), dscr_(dscr)
+{}
 
 PdbResidueModificationCard::PdbResidueModificationCard(std::stringstream& stream_block)
 {
@@ -23,30 +29,43 @@ PdbResidueModificationCard::PdbResidueModificationCard(std::stringstream& stream
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
-        id_code_ = line.substr(7,4);
+        id_code_ = line.substr(7, 4);
         gmml::Trim(id_code_);
-        residue_name_ = line.substr(12,3);
+        residue_name_ = line.substr(12, 3);
         gmml::Trim(residue_name_);
-        if(line.substr(16,1) == " ")
+        if (line.substr(16, 1) == " ")
+        {
             chain_id_ = ' ';
+        }
         else
-            chain_id_ = gmml::ConvertString<char>(line.substr(16,1));
-        if(line.substr(18, 4) == "    ")
+        {
+            chain_id_ = gmml::ConvertString<char>(line.substr(16, 1));
+        }
+        if (line.substr(18, 4) == "    ")
+        {
             sequence_number_ = gmml::iNotSet;
+        }
         else
-            sequence_number_ = gmml::ConvertString<int>(line.substr(18,4));
-        if(line.substr(22,1) == " ")
+        {
+            sequence_number_ = gmml::ConvertString<int>(line.substr(18, 4));
+        }
+        if (line.substr(22, 1) == " ")
+        {
             insertion_code_ = ' ';
+        }
         else
-            insertion_code_ = gmml::ConvertString<char>(line.substr(22,1));
-        standard_residue_name_ = line.substr(24,3);
+        {
+            insertion_code_ = gmml::ConvertString<char>(line.substr(22, 1));
+        }
+        standard_residue_name_ = line.substr(24, 3);
         gmml::Trim(standard_residue_name_);
-        dscr_ = line.substr(29,41);
+        dscr_ = line.substr(29, 41);
 
         getline(stream_block, line);
         temp = line;
     }
 }
+
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
@@ -130,17 +149,18 @@ void PdbResidueModificationCard::SetDscr(const std::string dscr)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbResidueModificationCard::Print(std::ostream &out)
+void PdbResidueModificationCard::Print(std::ostream& out)
 {
-    out << "ID Code: " << id_code_
-        << ", Residue Name: " << residue_name_
-        << ", Chain Identifier: " << chain_id_
+    out << "ID Code: " << id_code_ << ", Residue Name: " << residue_name_ << ", Chain Identifier: " << chain_id_
         << ", Sequence Number: ";
-    if(sequence_number_ != gmml::iNotSet)
+    if (sequence_number_ != gmml::iNotSet)
+    {
         out << sequence_number_;
+    }
     else
+    {
         out << " ";
-    out << ", Insertion Code: " << insertion_code_
-        << ", Standard Residue Name: " << standard_residue_name_
+    }
+    out << ", Insertion Code: " << insertion_code_ << ", Standard Residue Name: " << standard_residue_name_
         << ", Description: " << dscr_ << std::endl;
 }

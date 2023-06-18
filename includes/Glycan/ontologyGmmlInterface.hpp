@@ -6,7 +6,7 @@
 
 namespace Ontology
 {
-    void PrintOntology(std::stringstream& ont_stream, const pdb::PdbFile &pdbFile);
+    void PrintOntology(std::stringstream& ont_stream, const pdb::PdbFile& pdbFile);
 }
 
 #endif // GMML_INCLUDES_GLYCAN_ONTOLOGYGMMLINTERFACE_HPP

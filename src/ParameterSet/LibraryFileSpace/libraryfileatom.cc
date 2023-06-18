@@ -7,20 +7,25 @@ using LibraryFileSpace::LibraryFileAtom;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-LibraryFileAtom::LibraryFileAtom() : type_(""), name_(""), residue_index_(-1), atom_index_(-1), atomic_number_(0), charge_(0.0), coordinate_(),
-    atom_order_(0) {}
+LibraryFileAtom::LibraryFileAtom()
+    : type_(""), name_(""), residue_index_(-1), atom_index_(-1), atomic_number_(0), charge_(0.0), coordinate_(),
+      atom_order_(0)
+{}
 
-LibraryFileAtom::LibraryFileAtom(std::string type, std::string name, int residue_index, int atom_index, int atomic_number, double charge) :
-    type_(type), name_(name), residue_index_(residue_index), atom_index_(atom_index), atomic_number_(atomic_number), charge_(charge), coordinate_(),
-    atom_order_(0) {}
+LibraryFileAtom::LibraryFileAtom(std::string type, std::string name, int residue_index, int atom_index,
+                                 int atomic_number, double charge)
+    : type_(type), name_(name), residue_index_(residue_index), atom_index_(atom_index), atomic_number_(atomic_number),
+      charge_(charge), coordinate_(), atom_order_(0)
+{}
 
-LibraryFileAtom::LibraryFileAtom(std::string type, std::string name, int residue_index, int atom_index, int atomic_number, double charge,
-                                 GeometryTopology::Coordinate coordinate, std::vector<int> bonded_atoms_indices, int atom_order) :
-    type_(type), name_(name), residue_index_(residue_index), atom_index_(atom_index), atomic_number_(atomic_number), charge_(charge),
-    coordinate_(coordinate), atom_order_(atom_order)
+LibraryFileAtom::LibraryFileAtom(std::string type, std::string name, int residue_index, int atom_index,
+                                 int atomic_number, double charge, GeometryTopology::Coordinate coordinate,
+                                 std::vector<int> bonded_atoms_indices, int atom_order)
+    : type_(type), name_(name), residue_index_(residue_index), atom_index_(atom_index), atomic_number_(atomic_number),
+      charge_(charge), coordinate_(coordinate), atom_order_(atom_order)
 {
     bonded_atoms_indices_.clear();
-    for(std::vector<int>::const_iterator it = bonded_atoms_indices.begin(); it != bonded_atoms_indices.end(); it++)
+    for (std::vector<int>::const_iterator it = bonded_atoms_indices.begin(); it != bonded_atoms_indices.end(); it++)
     {
         bonded_atoms_indices_.push_back(*it);
     }
@@ -128,7 +133,7 @@ void LibraryFileAtom::SetCoordinate(GeometryTopology::Coordinate& coordinate)
 void LibraryFileAtom::SetBondedAtomsIndices(const std::vector<int> bonded_atoms_indices)
 {
     bonded_atoms_indices_.clear();
-    for(std::vector<int>::const_iterator it = bonded_atoms_indices.begin(); it != bonded_atoms_indices.end(); it++)
+    for (std::vector<int>::const_iterator it = bonded_atoms_indices.begin(); it != bonded_atoms_indices.end(); it++)
     {
         bonded_atoms_indices_.push_back(*it);
     }
@@ -151,11 +156,8 @@ void LibraryFileAtom::SetAtomOrder(int atom_order)
 //////////////////////////////////////////////////////////
 void LibraryFileAtom::Print(std::ostream& out)
 {
-    out << std::setw(2) << atom_order_
-        << std::setw(6) << name_
-        << std::setw(6) << type_
-        << std::setw(6) << residue_index_
-        << std::setw(6) << atom_index_
-        << std::setw(10) << charge_
-        << std::setw(15) << coordinate_.GetX() << ", " << std::setw(15) << coordinate_.GetY() << ", " << std::setw(15) << coordinate_.GetZ();
+    out << std::setw(2) << atom_order_ << std::setw(6) << name_ << std::setw(6) << type_ << std::setw(6)
+        << residue_index_ << std::setw(6) << atom_index_ << std::setw(10) << charge_ << std::setw(15)
+        << coordinate_.GetX() << ", " << std::setw(15) << coordinate_.GetY() << ", " << std::setw(15)
+        << coordinate_.GetZ();
 }

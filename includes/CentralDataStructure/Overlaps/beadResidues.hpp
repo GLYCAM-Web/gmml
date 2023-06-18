@@ -7,12 +7,13 @@
 #include "includes/CentralDataStructure/residue.hpp"
 #include "includes/CentralDataStructure/atom.hpp"
 using cds::Assembly;
-using cds::Residue;
 using cds::Atom;
+using cds::Residue;
+
 namespace beads
 {
-void Remove_Beads(Assembly &glycoprotein);
-std::vector<Atom*> Add_Beads_To_Glycan(std::vector<Residue*> glycan_residues);
-std::vector<Atom*> Add_Beads_To_Protein(Assembly &assembly);
-}
+    void Remove_Beads(Assembly& glycoprotein);
+    std::vector<Atom*> Add_Beads_To_Glycan(std::vector<Residue*> glycan_residues);
+    std::vector<Atom*> Add_Beads_To_Protein(Assembly& assembly);
+} // namespace beads
 #endif // GMML_INCLUDES_INTERNALPROGRAMS_BEADRESIDUES_HPP

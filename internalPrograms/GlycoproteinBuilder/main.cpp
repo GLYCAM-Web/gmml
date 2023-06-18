@@ -15,8 +15,8 @@ int main(int argc, char* argv[])
     glycoprotein::GlycoproteinBuilderInputs inputStruct = glycoprotein::readGPInputFile(inputFile);
     std::cout << "Reading input file complete, on to construction\n" << std::flush;
     GlycoproteinBuilder glycoproteinBuilder(inputStruct);
-    if(glycoproteinBuilder.IsStatusOk())
-    {    // Poor pattern, need to throw up to and catch in gems.
+    if (glycoproteinBuilder.IsStatusOk())
+    { // Poor pattern, need to throw up to and catch in gems.
         std::cout << "Resolving overlaps" << std::endl;
         glycoproteinBuilder.ResolveOverlaps(); // Default randomize value is true, and output isn't deterministic.
         std::cout << "Writing output files" << std::endl;

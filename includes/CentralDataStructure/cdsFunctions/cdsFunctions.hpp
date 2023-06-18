@@ -14,22 +14,22 @@
 
 namespace cds
 {
-void bondAtomsByDistance(std::vector<cds::Atom*> atoms);
-double getCharge(std::vector<cds::Atom*> atoms);
-void EnsureIntegralCharge(std::vector<cds::Atom*> atoms);
-void bondAtomsByDistanceSerial(std::vector<cds::Atom*> atoms);
-void bondAtomsAndResiduesByDistance(cds::Residue* residueA, cds::Residue* residueB);
-void bondAtomsAndResiduesByDistance(std::vector<cds::Residue*> residues);
-//Templated functions
-template <typename T>
-void serializeNumbers(std::vector<T*> elements)
-{
-    unsigned int i = 0;
-    for(auto &element : elements)
+    void bondAtomsByDistance(std::vector<cds::Atom*> atoms);
+    double getCharge(std::vector<cds::Atom*> atoms);
+    void EnsureIntegralCharge(std::vector<cds::Atom*> atoms);
+    void bondAtomsByDistanceSerial(std::vector<cds::Atom*> atoms);
+    void bondAtomsAndResiduesByDistance(cds::Residue* residueA, cds::Residue* residueB);
+    void bondAtomsAndResiduesByDistance(std::vector<cds::Residue*> residues);
+
+    // Templated functions
+    template<typename T> void serializeNumbers(std::vector<T*> elements)
     {
-        element->setNumber(++i);
+        unsigned int i = 0;
+        for (auto& element : elements)
+        {
+            element->setNumber(++i);
+        }
+        return;
     }
-    return;
-}
-} // namespace
+} // namespace cds
 #endif /* INCLUDES_CENTRALDATASTRUCTURE_CDSFUNCTIONS_CDSFUNCTIONS_HPP_ */

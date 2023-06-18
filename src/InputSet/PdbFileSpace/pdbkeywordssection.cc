@@ -8,12 +8,13 @@ using PdbFileSpace::PdbKeywordsSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbKeywordsSection::PdbKeywordsSection() : record_name_("KEYWDS"), keywords_(""){}
+PdbKeywordsSection::PdbKeywordsSection() : record_name_("KEYWDS"), keywords_("")
+{}
 
-PdbKeywordsSection::PdbKeywordsSection(const std::string &record_name, const std::string &keywords)
+PdbKeywordsSection::PdbKeywordsSection(const std::string& record_name, const std::string& keywords)
 {
     record_name_ = record_name;
-    keywords_ = keywords;
+    keywords_    = keywords;
 }
 
 PdbKeywordsSection::PdbKeywordsSection(std::stringstream& stream_block)
@@ -25,12 +26,13 @@ PdbKeywordsSection::PdbKeywordsSection(std::stringstream& stream_block)
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
+        if (!is_record_name_set)
+        {
+            record_name_ = line.substr(0, 6);
             gmml::Trim(record_name_);
-            is_record_name_set=true;
+            is_record_name_set = true;
         }
-        ss << line.substr(10,70);
+        ss << line.substr(10, 70);
 
         getline(stream_block, line);
         temp = line;
@@ -72,7 +74,7 @@ void PdbKeywordsSection::SetKeywords(const std::string keywords)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbKeywordsSection::Print(std::ostream &out)
+void PdbKeywordsSection::Print(std::ostream& out)
 {
     out << "Record Name: " << record_name_ << ", Keywords: " << keywords_ << std::endl << std::endl;
 }

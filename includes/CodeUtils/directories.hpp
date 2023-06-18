@@ -1,27 +1,27 @@
 #ifndef GMML_INCLUDES_CODEUTILS_DIRECTORIES_HPP
 #define GMML_INCLUDES_CODEUTILS_DIRECTORIES_HPP
-#include <sys/stat.h> // To check if file exists using stat
+#include <sys/stat.h>  // To check if file exists using stat
 #include <sys/types.h> // The s_IFDIR
 #include <string>
-//#include "includes/CodeUtils/logging.hpp"
+
+// #include "includes/CodeUtils/logging.hpp"
 
 namespace codeUtils
 {
 
 #ifdef WINDOWS
-    #include <direct.h>
-    #define GetCurrentDir _getcwd
+#include <direct.h>
+#define GetCurrentDir _getcwd
 #else
-    #include <unistd.h>
-    #define GetCurrentDir getcwd
+#include <unistd.h>
+#define GetCurrentDir getcwd
 #endif
 
-
-std::string Find_Program_Installation_Directory();
-std::string Find_Program_workingDirectory();
-bool doesDirectoryExist(const std::string& pathName);
-void ensureDirectoryExists (const std::string& pathName);
-std::string getEnvVar( std::string const & key );
-std::string getGmmlHomeDir();
-}
-#endif //GMML_INCLUDES_CODEUTILS_DIRECTORIES_HPP
+    std::string Find_Program_Installation_Directory();
+    std::string Find_Program_workingDirectory();
+    bool doesDirectoryExist(const std::string& pathName);
+    void ensureDirectoryExists(const std::string& pathName);
+    std::string getEnvVar(const std::string& key);
+    std::string getGmmlHomeDir();
+} // namespace codeUtils
+#endif // GMML_INCLUDES_CODEUTILS_DIRECTORIES_HPP

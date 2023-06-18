@@ -1,9 +1,10 @@
 #include "includes/CentralDataStructure/Editors/superimposition.hpp"
 
-void cds::GenerateMatrixFromCoordinates(std::vector<Coordinate*> *coordinates, Eigen::Matrix3Xd *matrix)
+void cds::GenerateMatrixFromCoordinates(std::vector<Coordinate*>* coordinates, Eigen::Matrix3Xd* matrix)
 {
     int col = 0; // Column index for matrix
-    for(std::vector<Coordinate*>::iterator coordinate = coordinates->begin(); coordinate != coordinates->end(); ++coordinate)
+    for (std::vector<Coordinate*>::iterator coordinate = coordinates->begin(); coordinate != coordinates->end();
+         ++coordinate)
     {
         (*matrix)(0, col) = (*coordinate)->GetX();
         (*matrix)(1, col) = (*coordinate)->GetY();
@@ -12,14 +13,15 @@ void cds::GenerateMatrixFromCoordinates(std::vector<Coordinate*> *coordinates, E
     }
 }
 
-void cds::ReplaceCoordinatesFromMatrix(std::vector<Coordinate*> *coordinates, Eigen::Matrix3Xd *matrix)
+void cds::ReplaceCoordinatesFromMatrix(std::vector<Coordinate*>* coordinates, Eigen::Matrix3Xd* matrix)
 {
     int col = 0; // Column index for matrix
-    for(std::vector<Coordinate*>::iterator coordinate = coordinates->begin(); coordinate != coordinates->end(); ++coordinate)
+    for (std::vector<Coordinate*>::iterator coordinate = coordinates->begin(); coordinate != coordinates->end();
+         ++coordinate)
     {
-        (*coordinate)->SetX( (*matrix)(0, col) );
-        (*coordinate)->SetY( (*matrix)(1, col) );
-        (*coordinate)->SetZ( (*matrix)(2, col) );
+        (*coordinate)->SetX((*matrix)(0, col));
+        (*coordinate)->SetY((*matrix)(1, col));
+        (*coordinate)->SetZ((*matrix)(2, col));
         ++col;
     }
 }
@@ -28,7 +30,7 @@ Eigen::Affine3d cds::Find3DAffineTransform(Eigen::Matrix3Xd in, Eigen::Matrix3Xd
 {
     // Default output
     Eigen::Affine3d A;
-    A.linear() = Eigen::Matrix3d::Identity(3, 3);
+    A.linear()      = Eigen::Matrix3d::Identity(3, 3);
     A.translation() = Eigen::Vector3d::Zero();
     if (in.cols() != out.cols())
     {
@@ -37,26 +39,26 @@ Eigen::Affine3d cds::Find3DAffineTransform(Eigen::Matrix3Xd in, Eigen::Matrix3Xd
     // First find the scale, by finding the ratio of sums of some distances,
     // then bring the datasets to the same scale.
     double dist_in = 0, dist_out = 0;
-    for (int col = 0; col < in.cols()-1; col++)
+    for (int col = 0; col < in.cols() - 1; col++)
     {
-        dist_in  += (in.col(col+1) - in.col(col)).norm();
-        dist_out += (out.col(col+1) - out.col(col)).norm();
+        dist_in  += (in.col(col + 1) - in.col(col)).norm();
+        dist_out += (out.col(col + 1) - out.col(col)).norm();
     }
     if (dist_in <= 0 || dist_out <= 0)
     {
         return A;
     }
-    double scale = dist_out/dist_in;
-    out /= scale;
+    double scale            = dist_out / dist_in;
+    out                     /= scale;
     // Find the centroids then shift to the origin
-    Eigen::Vector3d in_ctr = Eigen::Vector3d::Zero();
+    Eigen::Vector3d in_ctr  = Eigen::Vector3d::Zero();
     Eigen::Vector3d out_ctr = Eigen::Vector3d::Zero();
     for (int col = 0; col < in.cols(); col++)
     {
         in_ctr  += in.col(col);
         out_ctr += out.col(col);
     }
-    in_ctr /= in.cols();
+    in_ctr  /= in.cols();
     out_ctr /= out.cols();
     for (int col = 0; col < in.cols(); col++)
     {
@@ -77,19 +79,19 @@ Eigen::Affine3d cds::Find3DAffineTransform(Eigen::Matrix3Xd in, Eigen::Matrix3Xd
         d = -1.0;
     }
     Eigen::Matrix3d I = Eigen::Matrix3d::Identity(3, 3);
-    I(2, 2) = d;
+    I(2, 2)           = d;
     Eigen::Matrix3d R = svd.matrixV() * I * svd.matrixU().transpose();
     // The final transform
-    A.linear() = scale * R;
-    A.translation() = scale*(out_ctr - R*in_ctr);
+    A.linear()        = scale * R;
+    A.translation()   = scale * (out_ctr - R * in_ctr);
     return A;
 }
 
 void cds::Superimpose(std::vector<Coordinate*> moving, std::vector<Coordinate*> target)
 {
-    Eigen::Matrix3Xd movingMatrix(3, moving.size()), targetMatrix(3, target.size()) ;
+    Eigen::Matrix3Xd movingMatrix(3, moving.size()), targetMatrix(3, target.size());
 
-    //Create Matrices containing co-ordinates of moving and target
+    // Create Matrices containing co-ordinates of moving and target
     GenerateMatrixFromCoordinates(&moving, &movingMatrix);
     GenerateMatrixFromCoordinates(&target, &targetMatrix);
 
@@ -103,7 +105,8 @@ void cds::Superimpose(std::vector<Coordinate*> moving, std::vector<Coordinate*> 
     ReplaceCoordinatesFromMatrix(&moving, &movedMatrix);
 }
 
-void cds::Superimpose(std::vector<Coordinate*> moving, std::vector<Coordinate*> target, std::vector<Coordinate*> alsoMoving)
+void cds::Superimpose(std::vector<Coordinate*> moving, std::vector<Coordinate*> target,
+                      std::vector<Coordinate*> alsoMoving)
 {
     Eigen::Matrix3Xd movingMatrix(3, moving.size()), targetMatrix(3, target.size());
     Eigen::Matrix3Xd alsoMovingMatrix(3, alsoMoving.size()); // separate from above line for clarity
@@ -117,7 +120,7 @@ void cds::Superimpose(std::vector<Coordinate*> moving, std::vector<Coordinate*> 
     Eigen::Affine3d Affine = Find3DAffineTransform(movingMatrix, targetMatrix);
 
     // Create a matrix containing the moved co-ordinates of assembly moving and alsoMoving.
-    Eigen::Matrix3Xd movedMatrix = (Affine * movingMatrix);
+    Eigen::Matrix3Xd movedMatrix     = (Affine * movingMatrix);
     Eigen::Matrix3Xd alsoMovedMatrix = (Affine * alsoMovingMatrix);
 
     // Replace co-ordinates of moving with moved co-ordinates

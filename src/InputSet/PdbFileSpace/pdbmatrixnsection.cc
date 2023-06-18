@@ -8,8 +8,10 @@ using PdbFileSpace::PdbMatrixNSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbMatrixNSection::PdbMatrixNSection() {}
-PdbMatrixNSection::PdbMatrixNSection(std::stringstream &stream_block)
+PdbMatrixNSection::PdbMatrixNSection()
+{}
+
+PdbMatrixNSection::PdbMatrixNSection(std::stringstream& stream_block)
 {
     std::string line;
     getline(stream_block, line);
@@ -18,13 +20,18 @@ PdbMatrixNSection::PdbMatrixNSection(std::stringstream &stream_block)
     while (!gmml::Trim(temp).empty())
     {
         int index;
-        if(line.substr(5,1) == " ")
+        if (line.substr(5, 1) == " ")
+        {
             index = gmml::iNotSet;
+        }
         else
+        {
             index = gmml::ConvertString<int>(line.substr(5, 1));
+        }
         PdbMatrixNCard* matrix = new PdbMatrixNCard(line);
-        switch (index) {
-            case 1 :
+        switch (index)
+        {
+            case 1:
                 matrix_1.push_back(matrix);
                 break;
             case 2:
@@ -48,16 +55,18 @@ PdbMatrixNSection::PdbMatrixNSection(std::stringstream &stream_block)
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-PdbMatrixNSection::MatrixNVectorVector PdbMatrixNSection::GetMatrixN(){
+PdbMatrixNSection::MatrixNVectorVector PdbMatrixNSection::GetMatrixN()
+{
     return matrix_n_;
 }
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbMatrixNSection::SetMatrixN(MatrixNVector matrix_n){
+void PdbMatrixNSection::SetMatrixN(MatrixNVector matrix_n)
+{
     matrix_n_.clear();
-    for(MatrixNVector::iterator it = matrix_n.begin(); it != matrix_n.end(); it++)
+    for (MatrixNVector::iterator it = matrix_n.begin(); it != matrix_n.end(); it++)
     {
         matrix_n.push_back(*it);
     }
@@ -75,12 +84,14 @@ void PdbMatrixNSection::AddMatrixN(MatrixNVector matrix)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbMatrixNSection::Print(std::ostream &out)
+void PdbMatrixNSection::Print(std::ostream& out)
 {
-    for(unsigned int i = 0; i < matrix_n_.size(); i++)
+    for (unsigned int i = 0; i < matrix_n_.size(); i++)
     {
-        for(MatrixNVector::iterator it = matrix_n_.at(i).begin(); it != matrix_n_.at(i).end(); it++)
+        for (MatrixNVector::iterator it = matrix_n_.at(i).begin(); it != matrix_n_.at(i).end(); it++)
+        {
             (*it)->Print(out);
+        }
     }
     out << std::endl;
 }

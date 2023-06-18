@@ -6,17 +6,18 @@
 namespace Glycan
 {
     /*! \enum
-      * Note type enumerator
-      */
+     * Note type enumerator
+     */
     enum NoteType
     {
         COMMENT,
         ERROR,
         WARNING
     };
+
     /*! \enum
-      * Note category enumerator
-      */
+     * Note category enumerator
+     */
     enum NoteCat
     {
         MONOSACCHARIDE,
@@ -24,65 +25,69 @@ namespace Glycan
         ANOMERIC,
         DER_MOD,
         RESIDUE_NAME,
-	IMPROPER_CONDENSED_SEQUENCE
+        IMPROPER_CONDENSED_SEQUENCE
     };
-    struct Note {
-            NoteType type_;             /*!< The type of the issue, it can be a comment, warning, error etc. >*/
-            NoteCat category_;          /*!< The category of the note>*/
-            std::string description_;   /*!< The description of the note for a specific structure>*/
-            /*! \fn
-              * Convert a NoteCat enumerator to the string version of it
-              * @param category The NoteCat enumerator that has to be converted to string
-              * @return String format of the given NoteCat enumerator
-              */
-	    Note()  //Default constructor
-	    {
-	    }
 
-	    Note(NoteType type, NoteCat cat, std::string description)
-	    {
-		type_ = type;
-		category_ = cat;
-		description_ = description;
-	    }
-           std::string ConvertGlycanNoteCat2String(NoteCat category)
+    struct Note
+    {
+        NoteType type_;           /*!< The type of the issue, it can be a comment, warning, error etc. >*/
+        NoteCat category_;        /*!< The category of the note>*/
+        std::string description_; /*!< The description of the note for a specific structure>*/
+
+        /*! \fn
+         * Convert a NoteCat enumerator to the string version of it
+         * @param category The NoteCat enumerator that has to be converted to string
+         * @return String format of the given NoteCat enumerator
+         */
+        Note() // Default constructor
+        {}
+
+        Note(NoteType type, NoteCat cat, std::string description)
+        {
+            type_        = type;
+            category_    = cat;
+            description_ = description;
+        }
+
+        std::string ConvertGlycanNoteCat2String(NoteCat category)
+        {
+            switch (category)
             {
-                switch(category)
-                {
-                    case MONOSACCHARIDE:
-                        return "monosaccharide";
-                    case GLYCOSIDIC:
-                        return "glycosidic linkage";
-                    case ANOMERIC:
-                        return "anomeric";
-                    case DER_MOD:
-                        return "derivative/modification";
-                    case RESIDUE_NAME:
-                        return "residue name";
-                    default:
-                        return "unknown";
-                }
+                case MONOSACCHARIDE:
+                    return "monosaccharide";
+                case GLYCOSIDIC:
+                    return "glycosidic linkage";
+                case ANOMERIC:
+                    return "anomeric";
+                case DER_MOD:
+                    return "derivative/modification";
+                case RESIDUE_NAME:
+                    return "residue name";
+                default:
+                    return "unknown";
             }
-            /*! \fn
-              * Convert a NoteType enumerator to the string version of it
-              * @param type The NoteType enumerator that has to be converted to string
-              * @return String format of the given NoteType enumerator
-              */
-            std::string ConvertGlycanNoteType2String(NoteType type)
+        }
+
+        /*! \fn
+         * Convert a NoteType enumerator to the string version of it
+         * @param type The NoteType enumerator that has to be converted to string
+         * @return String format of the given NoteType enumerator
+         */
+        std::string ConvertGlycanNoteType2String(NoteType type)
+        {
+            switch (type)
             {
-                switch(type)
-                {
-                    case COMMENT:
-                        return "comment";
-                    case WARNING:
-                        return "warning";
-                    case ERROR:
-                        return "error";
-                    default:
-                        return "unknown";
-                }
+                case COMMENT:
+                    return "comment";
+                case WARNING:
+                    return "warning";
+                case ERROR:
+                    return "error";
+                default:
+                    return "unknown";
             }
-    } ;
-}
+        }
+    };
+} // namespace Glycan
 
 #endif // NOTE_HPP

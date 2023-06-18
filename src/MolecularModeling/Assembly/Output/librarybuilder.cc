@@ -74,50 +74,58 @@ using MolecularModeling::Assembly;
 LibraryFileSpace::LibraryFile* Assembly::BuildLibraryFileStructureFromAssembly()
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating library file ...");
-    LibraryFileSpace::LibraryFile* library_file = new LibraryFileSpace::LibraryFile();
+    LibraryFileSpace::LibraryFile* library_file           = new LibraryFileSpace::LibraryFile();
     LibraryFileSpace::LibraryFile::ResidueMap residue_map = LibraryFileSpace::LibraryFile::ResidueMap();
-    ResidueVector residues_of_assembly = this->GetAllResiduesOfAssembly();
-    for(ResidueVector::iterator it = residues_of_assembly.begin(); it != residues_of_assembly.end(); it++)
+    ResidueVector residues_of_assembly                    = this->GetAllResiduesOfAssembly();
+    for (ResidueVector::iterator it = residues_of_assembly.begin(); it != residues_of_assembly.end(); it++)
     {
-        Residue* assembly_residue = *it;
-        int residue_index = distance(residues_of_assembly.begin(), it) + 1;
-        AtomVector assembly_residue_atoms = assembly_residue->GetAtoms();
+        Residue* assembly_residue                             = *it;
+        int residue_index                                     = distance(residues_of_assembly.begin(), it) + 1;
+        AtomVector assembly_residue_atoms                     = assembly_residue->GetAtoms();
         LibraryFileSpace::LibraryFileResidue* library_residue = new LibraryFileSpace::LibraryFileResidue();
         library_residue->SetName(assembly_residue->GetName());
         AtomVector head_atoms = assembly_residue->GetHeadAtoms();
         AtomVector tail_atoms = assembly_residue->GetTailAtoms();
-        if(!head_atoms.empty())
+        if (!head_atoms.empty())
         {
-            int head_atom_index = distance(assembly_residue_atoms.begin(), find(assembly_residue_atoms.begin(), assembly_residue_atoms.end(), head_atoms.at(0))) + 1;
+            int head_atom_index =
+                distance(assembly_residue_atoms.begin(),
+                         find(assembly_residue_atoms.begin(), assembly_residue_atoms.end(), head_atoms.at(0))) +
+                1;
             library_residue->SetHeadAtomIndex(head_atom_index);
         }
-        if(!tail_atoms.empty())
+        if (!tail_atoms.empty())
         {
-            int tail_atom_index = distance(assembly_residue_atoms.begin(), find(assembly_residue_atoms.begin(), assembly_residue_atoms.end(), tail_atoms.at(0))) + 1;
+            int tail_atom_index =
+                distance(assembly_residue_atoms.begin(),
+                         find(assembly_residue_atoms.begin(), assembly_residue_atoms.end(), tail_atoms.at(0))) +
+                1;
             library_residue->SetTailAtomIndex(tail_atom_index);
         }
         int order = 1;
-        for(AtomVector::iterator it1 = assembly_residue_atoms.begin(); it1 != assembly_residue_atoms.end(); it1++)
+        for (AtomVector::iterator it1 = assembly_residue_atoms.begin(); it1 != assembly_residue_atoms.end(); it1++)
         {
-            Atom* residue_atom = (*it1);
-            int atom_index = distance(assembly_residue_atoms.begin(), it1) + 1;
+            Atom* residue_atom                   = (*it1);
+            int atom_index                       = distance(assembly_residue_atoms.begin(), it1) + 1;
             std::vector<int> bonded_atom_indices = std::vector<int>();
-            AtomNode* atom_node = residue_atom->GetNode();
-            if(atom_node != NULL)
+            AtomNode* atom_node                  = residue_atom->GetNode();
+            if (atom_node != NULL)
             {
                 AtomVector atom_neighbours = atom_node->GetNodeNeighbors();
-                for(AtomVector::iterator it2 = atom_neighbours.begin(); it2 != atom_neighbours.end(); it2++)
+                for (AtomVector::iterator it2 = atom_neighbours.begin(); it2 != atom_neighbours.end(); it2++)
                 {
                     Atom* atom = *it2;
-                    int bonded_atom_index = distance(assembly_residue_atoms.begin(), find(assembly_residue_atoms.begin(), assembly_residue_atoms.end(),
-                                                                                          atom));
+                    int bonded_atom_index =
+                        distance(assembly_residue_atoms.begin(),
+                                 find(assembly_residue_atoms.begin(), assembly_residue_atoms.end(), atom));
                     bonded_atom_indices.push_back(bonded_atom_index);
                 }
             }
-            LibraryFileSpace::LibraryFileAtom* atom = new LibraryFileSpace::LibraryFileAtom(residue_atom->GetAtomType(), residue_atom->GetName(), residue_index, atom_index,
-                                                        gmml::iNotSet, residue_atom->MolecularDynamicAtom::GetCharge(),
-                                                        *(residue_atom->GetCoordinates()[assembly_residue->GetAssembly()->GetModelIndex()]), bonded_atom_indices,
-                    order);
+            LibraryFileSpace::LibraryFileAtom* atom = new LibraryFileSpace::LibraryFileAtom(
+                residue_atom->GetAtomType(), residue_atom->GetName(), residue_index, atom_index, gmml::iNotSet,
+                residue_atom->MolecularDynamicAtom::GetCharge(),
+                *(residue_atom->GetCoordinates()[assembly_residue->GetAssembly()->GetModelIndex()]),
+                bonded_atom_indices, order);
             order++;
             library_residue->AddAtom(atom);
         }

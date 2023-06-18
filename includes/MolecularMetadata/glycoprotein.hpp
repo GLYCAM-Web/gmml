@@ -7,10 +7,11 @@
 
 namespace glycoproteinMetadata
 {
-std::string LookupCodeForAminoAcidName(const std::string queryName);
-std::string LookupLinkTypeForAminoAcidName(const std::string queryName);
-std::vector<std::string> GetTagsForSequence(const std::string firstRes = "", const std::string midRes = "", const std::string lastRes = "");
-std::string GetSequenceContextAndDetermineTags(cds::Residue* residue, std::vector<std::string> &tags);
-}
+    std::string LookupCodeForAminoAcidName(const std::string queryName);
+    std::string LookupLinkTypeForAminoAcidName(const std::string queryName);
+    std::vector<std::string> GetTagsForSequence(const std::string firstRes = "", const std::string midRes = "",
+                                                const std::string lastRes = "");
+    std::string GetSequenceContextAndDetermineTags(cds::Residue* residue, std::vector<std::string>& tags);
+} // namespace glycoproteinMetadata
 
 #endif
