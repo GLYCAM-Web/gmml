@@ -1,0 +1,53 @@
+#!/bin/bash
+
+##### PRETTY PRINT STUFF #####
+#lazy and dont want to have to type all these color variables a bunch, also improves readability
+RESET_STYLE='\033[0m'
+GREEN_BOLD='\033[0;32m\033[1m'
+YELLOW_BOLD='\033[0;33m\033[1m'
+RED_BOLD='\033[0;31m\033[1m'
+
+##### HELPFUL STUFF #####
+GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
+
+cp -r "${GMML_ROOT_DIR}"/.hooks/* "${GMML_ROOT_DIR}"/.git/hooks/
+
+TO_CHECK_LIST=($(git diff --cached --name-only -- "*.hpp" -- "*.h" -- "*.cpp" -- "*.c" -- "*.cc" --diff-filter=ACM))
+
+FAILED_FILES=()
+PASSED_FILES=()
+check_formatting()
+{
+    echo -e "\n${YELLOW_BOLD}Begin format enforcement checking...${RESET_STYLE}\n"
+
+    for FILE_CHECKING in "${TO_CHECK_LIST[@]}"; do
+
+        clang-format-15 --dry-run --Werror "${FILE_CHECKING}" 2> /dev/null
+        if [ $? == 0 ]; then
+            PASSED_FILES+=("${FILE_CHECKING}")
+        else
+            FAILED_FILES+=("${FILE_CHECKING}")
+        fi
+
+    done
+
+    for SUCCEDER in "${PASSED_FILES[@]}"; do
+        echo -e "${GREEN_BOLD}FILE PASSED: ${RESET_STYLE}${SUCCEDER}"
+    done
+
+    if [ ${#FAILED_FILES[@]} == 0 ]; then
+        echo -e "\n${GREEN_BOLD}PASSED: ALL FILES FORMATTED CORRECTLY. COMMIT ACCEPTED.${RESET_STYLE}\n"
+        exit
+    fi
+
+    echo -e "\n${RED_BOLD}ERROR: ${#FAILED_FILES[@]} FILE(S) FAILED FORMAT CHECKING. COMMIT DENIED${RESET_STYLE}"
+
+    for FAILURE in "${FAILED_FILES[@]}"; do
+        echo -e "${RED_BOLD}FILE FAILED: ${RESET_STYLE}${FAILURE}\n"
+
+    done
+    echo -e "Please run \"clang-format-15 -i file/path/here.cpp\" on each of the failed files.\nSometimes clang-format messes up on comment blocks so just use multiline comments instead."
+    exit 1
+}
+
+check_formatting

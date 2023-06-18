@@ -11,6 +11,8 @@ The GLYCAM Molecular Modeling Library (GMML) is typically used as a library acce
 
 [Testing the Library](#testing-the-library)
 
+[Coding Standards](#coding-standards)
+
 [Documentation](#documentation)
 
 ---
@@ -31,6 +33,8 @@ We are very grateful to our funders.
 
 
 ## Prerequisites
+
+### Building GMML
 
 In order to build GMML, you are required to have the following software available on your system:
 
@@ -54,7 +58,13 @@ sudo apt-get install libssl1.1 libssl-dev git python3.9 python3.9-dev libboost-a
 ```
 For other linux distros, please follow the instructions for the package managment software included with your system.
 
-Please note that swig 4.0.2 must be installed from [their website](https://www.swig.org/download.html)
+Please note that swig 4.0.2 must be installed from [their website](https://www.swig.org/download.html). Just kidding, most current linux distros already have `swig4.0` available right out of the box.
+
+### Contributing to GMML
+
+If you want to contribute to `gmml` you will also need to install the following packages:
+
+* `clang-tidy-15`
 
 ---
 ## Obtaining the software
@@ -206,6 +216,27 @@ The official documentation for both GEMS and GMML can be found on the main GLYCA
 
 * GEMS - [http://glycam.org/gems](http://glycam.org/gems "GEMS")
 * GMML - [http://glycam.org/gmml](http://glycam.org/gmml "GMML")
+
+---
+## Coding Standards
+
+In order to make deving on the library consistent, we must enforce coding standards. They will be added piecewise, including the appropriate tests (be them pre-commit/push hooks, ci/cd hooks, etc.) and will be outlined below.
+
+### Formatting
+
+All code must follow the format described in the `.clang-format` file, and the pre-commit hook will ensure the commited format is correct. The precommit hook will ensure all files you want to commit are correctly formatted. Any files that are not correctly formatted will be listed in the terminal you tried to commit from, if you are using something like `gitflow` or `gitkraken` check the logs. Many code editors, IDEs or text editors, have the ability to apply a specific format on save of the file, so save yourself headaches and set that up.
+
+Now, how do you format a specific file?
+
+```bash
+user@host:.../gmml$ clang-tidy-15 -i path/to/bad/file.cpp 
+```
+
+What if you did a bunch of files and want to be lazy? This can miss a couple bits that need to be changed so run it a couple times, it also will use all your cores but hey it is pretty quick.
+
+```bash
+user@host:.../gmml$ find . -not -path "./cmakeBuild/*" -type f -iname "*.cpp" -o -iname "*.hpp" -o -iname "*.h" -o -iname "*.cc" | xargs -P $(nproc --all)  -I % sh -c 'clang-format-15 -i %'
+```
 
 ---
 ## Depreciated Instructions
