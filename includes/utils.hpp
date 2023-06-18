@@ -638,19 +638,43 @@ namespace gmml
 
     inline void AddTriple(std::string s, std::string p, std::string o, std::stringstream& stream)
     {
-        // Find and replace escape characters to and '\'
         stream << s << " " << p << " " << o << "." << std::endl;
     }
 
     inline void AddLiteral(std::string s, std::string p, std::string o, std::stringstream& stream)
     {
-        // Find and replace
         stream << s << " " << p << " \"\"\"" << o << "\"\"\"." << std::endl;
+    }
+
+    inline void CreateLiteral(std::string& s)
+    {
+        std::stringstream stream;
+        stream << "\"\"\"" << s << "\"\"\"";
+        s = stream.str();
     }
 
     inline void AddDecimal(std::string s, std::string p, float o, std::stringstream& stream)
     {
         stream << s << " " << p << " \"" << o << "\"^^xsd:decimal." << std::endl;
+    }
+
+    inline void CreateDecimal(std::string& s)
+    {
+        std::stringstream stream;
+        stream << "\"" << s << "\"^^xsd:decimal";
+        s = stream.str();
+    }
+
+    inline void AddInteger(std::string s, std::string p, int o, std::stringstream& stream)
+    {
+        stream << s << " " << p << " \"" << o << "\"^^xsd:integer." << std::endl;
+    }
+
+    inline void CreateInteger(std::string& s)
+    {
+        std::stringstream stream;
+        stream << "\"" << s << "\"^^xsd:integer";
+        s = stream.str();
     }
 
     /*! \fn

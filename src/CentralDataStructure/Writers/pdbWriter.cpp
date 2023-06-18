@@ -1,24 +1,40 @@
 #include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
 #include <iomanip> // setw
 
-void cds::writeMoleculeToPdb(std::ostream& stream, const std::vector<cds::Residue*> residues)
+void cds::writeAssemblyToPdb(std::ostream& stream, const std::vector<cds::Molecule*> molecules)
 {
-    for (auto &residue : residues)
+    for(auto &molecule : molecules)
     {
-        cds::writeResidueToPdb(stream, residue);
+        cds::writeMoleculeToPdb(stream, molecule->getResidues());
     }
-    stream << "TER\n";
+ //   stream << "ENDMDL\n"; ?
 }
 
-void cds::writeResidueToPdb(std::ostream& stream, const cds::Residue* residue, const std::string recordName, bool addTerCard)
+
+void cds::writeMoleculeToPdb(std::ostream& stream, const std::vector<cds::Residue*> residues)
+{
+    auto it = residues.begin();
+    while(it != residues.end())
+    {
+        cds::writeResidueToPdb(stream, *it);
+        if ( (++it != residues.end()) && ((*it)->GetType() != cds::ResidueType::Protein) )
+        {
+            stream << "TER\n";
+        }
+    }
+    stream << "TER\n";
+//    --it;
+//    if((*it)->GetType() == cds::ResidueType::Protein)
+//    {
+//        stream << "TER\n";
+//    }
+}
+
+void cds::writeResidueToPdb(std::ostream& stream, const cds::Residue* residue, const std::string recordName)
 {
     for(auto &atom : residue->getAtoms())
     {
         cds::writeAtomToPdb(stream, atom, recordName, residue->getName(), residue->getNumber());
-    }
-    if(addTerCard)
-    {
-        stream << "TER\n";
     }
 }
 
@@ -47,4 +63,16 @@ void cds::writeAtomToPdb(std::ostream& stream, const cds::Atom* atom, const std:
 //    }
     stream << std::endl;
     return;
+}
+
+void cds::writeConectCards(std::ostream& stream, std::vector<cds::Residue*> residues)
+{ // These are only written for atoms connecting residues. The numbers overflow/truncate when longer than 5, but the format is what the format is.
+    for(auto &residue : residues)
+    {
+        std::vector<std::pair<const Atom*,const Atom*>> atomsPairsConnectedToOtherResidues = residue->getAtomPairsConnectedToOtherResidues();
+        for(auto &atomPair : atomsPairsConnectedToOtherResidues)
+        {
+            stream << "CONECT" << std::right << std::setw(5) << atomPair.first->getNumber() << std::right << std::setw(5) << atomPair.second->getNumber() << "\n";
+        }
+    }
 }

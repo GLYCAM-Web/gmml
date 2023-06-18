@@ -279,28 +279,29 @@ void* BuildStructureByDistanceByOptimizedThread(void* args)
       begin_index = begin_index + (i*increase_factor);
   }
   end_index = begin_index + (i*increase_factor);
-
-  for(MolecularModeling::AtomVector::iterator it = all_atoms_of_assembly.begin() + begin_index; ; it++)
+  if(atoms_size > 0)
   {
-    if(ti + 1 < t)///if it's not the last thread
+    for(MolecularModeling::AtomVector::iterator it = all_atoms_of_assembly.begin() + begin_index; ; it++)
     {
-      if(it == all_atoms_of_assembly.begin() + end_index)
-        break;
-    }
-    else
-    {
-      if(it == all_atoms_of_assembly.end() - 1)
+      if(ti + 1 < t)///if it's not the last thread
       {
-        if((*it)->GetNode() == NULL)
-        {
-          MolecularModeling::Atom* atom = (*it);
-          MolecularModeling::AtomNode* atom_node = new MolecularModeling::AtomNode();
-          atom_node->SetAtom(atom);
-          atom->SetNode(atom_node);
-        }
-        break;
+        if(it == all_atoms_of_assembly.begin() + end_index)
+          break;
       }
-    }
+      else
+      {
+        if(it == all_atoms_of_assembly.end() - 1)
+        {
+          if((*it)->GetNode() == NULL)
+          {
+            MolecularModeling::Atom* atom = (*it);
+            MolecularModeling::AtomNode* atom_node = new MolecularModeling::AtomNode();
+            atom_node->SetAtom(atom);
+            atom->SetNode(atom_node);
+          }
+          break;
+        }
+      }
 
     int index = distance(all_atoms_of_assembly.begin(), it);
     MolecularModeling::Atom* atom = (*it);
@@ -339,55 +340,56 @@ void* BuildStructureByDistanceByOptimizedThread(void* args)
         gmml::log(__LINE__,__FILE__, gmml::INF, log.str());
       }
 
-      // X distance
-      if(abs(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX()) < cutoff)
-      {
-        // Y distance
-        if(abs(atom->GetCoordinates().at(model_index)->GetY() - neighbor_atom->GetCoordinates().at(model_index)->GetY()) < cutoff)
+        // X distance
+        if(abs(atom->GetCoordinates().at(model_index)->GetX() - neighbor_atom->GetCoordinates().at(model_index)->GetX()) < cutoff)
         {
-          // Z distance
-          if(abs(atom->GetCoordinates().at(model_index)->GetZ() - neighbor_atom->GetCoordinates().at(model_index)->GetZ()) < cutoff)
+          // Y distance
+          if(abs(atom->GetCoordinates().at(model_index)->GetY() - neighbor_atom->GetCoordinates().at(model_index)->GetY()) < cutoff)
           {
-            double thisDistance = (atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index))));
-            if(thisDistance < cutoff)
+            // Z distance
+            if(abs(atom->GetCoordinates().at(model_index)->GetZ() - neighbor_atom->GetCoordinates().at(model_index)->GetZ()) < cutoff)
             {
-              if(thisDistance > minCutoff)
+              double thisDistance = (atom->GetCoordinates().at(model_index)->Distance(*(neighbor_atom->GetCoordinates().at(model_index))));
+              if(thisDistance < cutoff)
               {
-                MolecularModeling::AtomNode* neighbor_node;
-                pthread_mutex_lock(&mutex1);
-                if (neighbor_atom->GetNode() == NULL)
+                if(thisDistance > minCutoff)
                 {
-                  neighbor_node = new MolecularModeling::AtomNode();
-                  neighbor_node->SetAtom(neighbor_atom);
+                  MolecularModeling::AtomNode* neighbor_node;
+                  pthread_mutex_lock(&mutex1);
+                  if (neighbor_atom->GetNode() == NULL)
+                  {
+                    neighbor_node = new MolecularModeling::AtomNode();
+                    neighbor_node->SetAtom(neighbor_atom);
+                  }
+                  else
+                  {
+                    neighbor_node = neighbor_atom->GetNode();
+                  }
+                  atom_node->AddNodeNeighbor(neighbor_atom);
+                  neighbor_node->AddNodeNeighbor(atom);
+                  neighbor_atom->SetNode(neighbor_node);
+                  pthread_mutex_unlock(&mutex1);
+                  if(local_debug > 0)
+                  {
+                    std::stringstream log;
+                    log << atom->GetId() << " is being bonded to " << neighbor_atom->GetId();
+                    gmml::log(__LINE__,__FILE__, gmml::INF, log.str());
+                  }
                 }
                 else
                 {
-                  neighbor_node = neighbor_atom->GetNode();
-                }
-                atom_node->AddNodeNeighbor(neighbor_atom);
-                neighbor_node->AddNodeNeighbor(atom);
-                neighbor_atom->SetNode(neighbor_node);
-                pthread_mutex_unlock(&mutex1);
-                if(local_debug > 0)
-                {
                   std::stringstream log;
-                  log << atom->GetId() << " is being bonded to " << neighbor_atom->GetId();
-                  gmml::log(__LINE__,__FILE__, gmml::INF, log.str());
+                  log << "The atoms " << atom->GetId() << " and " << neighbor_atom->GetId() << " were too close together to bond";
+                  gmml::log(__LINE__,__FILE__, gmml::ERR, log.str());
+                  std::cerr << log.str() << "\n";
                 }
-              }
-              else
-              {
-                std::stringstream log;
-                log << "The atoms " << atom->GetId() << " and " << neighbor_atom->GetId() << " were too close together to bond";
-                gmml::log(__LINE__,__FILE__, gmml::ERR, log.str());
-                std::cerr << log.str() << "\n";
               }
             }
           }
         }
       }
+      atom->SetNode(atom_node);
     }
-    atom->SetNode(atom_node);
   }
 
   //    std::cout << "Thread" << ti << " END" << std::endl;

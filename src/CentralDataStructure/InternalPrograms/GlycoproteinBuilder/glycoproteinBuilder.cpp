@@ -55,7 +55,7 @@ void GlycoproteinBuilder::WriteOutputFiles()
     std::string fileName = "GlycoProtein_All_Resolved.pdb";
     std::ofstream outFileStream;
     outFileStream.open(fileName.c_str());
-    cds::writeMoleculeToPdb(outFileStream, this->getGlycoprotein()->getResidues());
+    cds::writeAssemblyToPdb(outFileStream, this->getGlycoprotein()->getMolecules());
     outFileStream.close();
     // Off file, serializes.
     fileName = "GlycoProtein_All_Resolved.off";
@@ -65,7 +65,8 @@ void GlycoproteinBuilder::WriteOutputFiles()
 	// Pdb, serialized numbering.
 	fileName = "GlycoProtein_All_Resolved_Serialized.pdb";
 	outFileStream.open(fileName.c_str());
-	cds::writeMoleculeToPdb(outFileStream, this->getGlycoprotein()->getResidues());
+    cds::writeAssemblyToPdb(outFileStream, this->getGlycoprotein()->getMolecules());
+	cds::writeConectCards(outFileStream, cdsSelections::selectResiduesByType(this->getGlycoprotein()->getResidues(), {cds::ResidueType::Sugar, cds::ResidueType::Derivative, cds::ResidueType::Aglycone, cds::ResidueType::Undefined}));
 //    this->DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(this->GetGlycosites(), this->GetOverlapTolerance());
 //	std::stringstream logss;	
 //    logss << "Atomic overlap is " << this->CalculateOverlaps(ATOMIC) << "\n";

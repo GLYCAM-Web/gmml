@@ -4,7 +4,7 @@ NumberOfOutputStructures:1
 
 maxThreads:1
 
-persistCycles:25
+persistCycles:2
 
 overlapTolerance:0
 

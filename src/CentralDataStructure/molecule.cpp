@@ -1,10 +1,10 @@
 #include "includes/CentralDataStructure/molecule.hpp"
-
-#include "../../includes/CentralDataStructure/Selections/templatedSelections.hpp"
-#include "../../includes/CentralDataStructure/Writers/offWriter.hpp"
+#include "includes/CentralDataStructure/Selections/templatedSelections.hpp"
+#include "includes/CentralDataStructure/Writers/offWriter.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
 #include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"
+#include "includes/CentralDataStructure/Selections/residueSelections.hpp"
 
 using cds::Molecule;
 using cds::Residue;
@@ -171,6 +171,8 @@ void Molecule::renumberResidues(int newStartNumber)
 void Molecule::WritePdb(std::ostream& stream) const
 {
     cds::writeMoleculeToPdb(stream, this->getResidues());
+    using cds::ResidueType; // to help readability of the Sugar, etc below
+    cds::writeConectCards(stream, cdsSelections::selectResiduesByType(this->getResidues(), {Sugar, Derivative, Aglycone, Undefined}));
 }
 
 void Molecule::WriteOff(std::ostream& stream)

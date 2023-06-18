@@ -6,10 +6,10 @@
 #include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
-
+#include "includes/CentralDataStructure/Editors/amberMdPrep.hpp" //all preprocessing should move to here.
+#include "includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp"
+#include "includes/CentralDataStructure/Selections/templatedSelections.hpp"
 #include <algorithm> // std::find
-#include "../../../../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp"
-#include "../../../../includes/CentralDataStructure/Selections/templatedSelections.hpp"
 
 using pdb::PdbModel;
 //////////////////////////////////////////////////////////
@@ -187,19 +187,20 @@ void PdbModel::preProcessChainTerminals(pdb::PreprocessorInformation &ppInfo, co
         PdbChain* chain = static_cast<PdbChain*>(cdsMolecule);
         gmml::log(__LINE__,__FILE__,gmml::INF, "Chain termination processing started for this chain");
         //Do the thing
-        if (chain->ModifyTerminal(inputOptions.chainNTermination_) && chain->ModifyTerminal(inputOptions.chainCTermination_) )
+        PdbResidue* nTerResidue = chain->getNTerminal();
+        if (nTerResidue == nullptr)
         {
-            //Log the thing
-            PdbResidue* nTer = chain->getNTerminal();
-            PdbResidue* cTer = chain->getCTerminal();
-            gmml::log(__LINE__, __FILE__, gmml::INF, "N term : " + nTer->printId());
-            gmml::log(__LINE__, __FILE__, gmml::INF, "C term : " + cTer->printId());
-            //Report the thing
-            ppInfo.chainTerminals_.emplace_back(nTer->getChainId(), nTer->getNumberAndInsertionCode(), cTer->getNumberAndInsertionCode(), inputOptions.chainNTermination_, inputOptions.chainCTermination_);
+            gmml::log(__LINE__,__FILE__,gmml::INF, "Could not modify terminals of this chain.");
         }
         else
         {
-            gmml::log(__LINE__,__FILE__,gmml::INF, "Could not modify terminals of this chain.");
+            chain->ModifyTerminal(inputOptions.chainNTermination_, nTerResidue);
+            PdbResidue* cTerResidue = chain->getCTerminal();
+            chain->ModifyTerminal(inputOptions.chainCTermination_, cTerResidue);
+            gmml::log(__LINE__, __FILE__, gmml::INF, "N term : " + nTerResidue->printId());
+            gmml::log(__LINE__, __FILE__, gmml::INF, "C term : " + cTerResidue->printId());
+            //Report the thing
+            ppInfo.chainTerminals_.emplace_back(nTerResidue->getChainId(), nTerResidue->getNumberAndInsertionCode(), cTerResidue->getNumberAndInsertionCode(), inputOptions.chainNTermination_, inputOptions.chainCTermination_);
         }
         gmml::log(__LINE__,__FILE__,gmml::INF, "Preprocessing complete for this chain");
     }
@@ -226,16 +227,20 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation &ppInfo,
 //                std::cout << "res2 is " + res2->getNumberAndInsertionCode() + "_" + res2->getChainId() << std::endl;
                 const cds::Atom* res1AtomC = res1->FindAtom("C");
                 const cds::Atom* res2AtomN = res2->FindAtom("N");
-                if ( !res1AtomC->isWithinBondingDistance(res2AtomN) )
+                if ( ! res1AtomC->isWithinBondingDistance(res2AtomN) )
                 { // GAP detected
-                    //Log it
-                    gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + res1->printId());
-                    gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + res2->printId());
-                    // Do it
-                    chain->InsertCap(*res1, inputOptions.gapCTermination_);
-                    chain->InsertCap(*res2, inputOptions.gapNTermination_);
-                    // Record it
-                    ppInfo.missingResidues_.emplace_back(res1->getChainId(), res1->getNumberAndInsertionCode(), res2->getNumberAndInsertionCode(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
+                    // Look for non-natural protein residues within bonding distance, they fall under ResidueType Undefined, this indicates it's not gap.
+                    if (! amberMdPrep::checkForNonNaturalProteinResidues(cdsSelections::selectResiduesByType(chain->getResidues(), cds::ResidueType::Undefined), res1AtomC, ppInfo) )
+                    {
+                        //Log it
+                        gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapCTermination_ + " cap for : " + res1->printId());
+                        gmml::log(__LINE__, __FILE__, gmml::INF, inputOptions.gapNTermination_ + " cap for : " + res2->printId());
+                        // Do it
+                        chain->InsertCap(*res1, inputOptions.gapCTermination_);
+                        chain->InsertCap(*res2, inputOptions.gapNTermination_);
+                        // Record it
+                        ppInfo.missingResidues_.emplace_back(res1->getChainId(), res1->getNumberAndInsertionCode(), res2->getNumberAndInsertionCode(), inputOptions.gapCTermination_, inputOptions.gapNTermination_);
+                    }
                 }
             }
         }

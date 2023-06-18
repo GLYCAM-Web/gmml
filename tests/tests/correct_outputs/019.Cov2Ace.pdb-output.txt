@@ -113,3 +113,4 @@ Chain terminations:
  | 1121 | NH3+ | 2240 | CO2-
  | 2241 | NH3+ | 3360 | CO2-
  | 3361 | NH3+ | 3957 | CO2-
+NonNatural Protein Residues:

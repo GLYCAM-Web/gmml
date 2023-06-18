@@ -201,7 +201,9 @@ const std::map<std::string, std::pair<double, double> > bondLengthMap =
   {"OS", std::make_pair(0.4, 1.78)},
   {"SO", std::make_pair(0.4, 1.78)},
   {"NS", std::make_pair(0.4, 1.77)},
-  {"SN", std::make_pair(0.4, 1.77)}
+  {"SN", std::make_pair(0.4, 1.77)},
+  {"CS", std::make_pair(0.4, 2.0)},
+  {"SC", std::make_pair(0.4, 2.0)}
 };
 
 std::pair<double,double> Assembly::guessBondLengthByAtomType(MolecularModeling::Atom* atom1, MolecularModeling::Atom* atom2)

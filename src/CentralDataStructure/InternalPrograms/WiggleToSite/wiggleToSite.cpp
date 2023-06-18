@@ -79,10 +79,10 @@ int WiggleToSite::minimizeDistance(int persistCycles, bool useMonteCarlo, int st
                 linkage.SetShapeToPrevious();
             }
         }
-        if (structureCount > 500)
-        {
-            return structureCount;
-        }
+//        if (structureCount > 500)
+//        {
+//            return structureCount;
+//        }
     }
 //    std::cout << "ALL DONE HON\n";
     return structureCount;

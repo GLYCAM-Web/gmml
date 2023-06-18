@@ -379,23 +379,23 @@ void Glycan::Monosaccharide::createSNFGname()
 
 void Glycan::Monosaccharide::createAuthorSNFGname()
 {//Added for the PDB to create their own SNFGs
-  std::string monoSNFGName =  author_sugar_name_.monosaccharide_short_name_;
-  if(monoSNFGName.size() > 0)
-  {
-    if(monoSNFGName[0] == author_sugar_name_.isomer_[0])
+    std::string monoSNFGName = author_sugar_name_.monosaccharide_short_name_;
+    if (monoSNFGName.size() > 0)
     {
-      monoSNFGName.erase(0,1);
+        if (monoSNFGName[0] == author_sugar_name_.isomer_[0])
+        {
+        monoSNFGName.erase(0, 1);
+        }
+        if (((monoSNFGName[monoSNFGName.length() - 1] == author_sugar_name_.configuration_[0]) && (monoSNFGName[monoSNFGName.length() - 2] != 'N')) || (monoSNFGName[monoSNFGName.length() - 1] == 'x'))
+        {
+        monoSNFGName.erase(monoSNFGName.length() - 1, 1);
+        }
+        if (monoSNFGName[3] == tolower(author_sugar_name_.ring_type_[0]))
+        {
+            monoSNFGName.erase(3, 1);
+        }
     }
-    if(((monoSNFGName[monoSNFGName.length()-1] == author_sugar_name_.configuration_[0]) && (monoSNFGName[monoSNFGName.length()-2] != 'N')) || (monoSNFGName[monoSNFGName.length()-1] == 'x'))
-    {
-      monoSNFGName.erase(monoSNFGName.length()-1,1);
-    }
-    if(monoSNFGName[3] == tolower(author_sugar_name_.ring_type_[0]))
-    {
-      monoSNFGName.erase(3,1);
-    }
-  }
-  author_SNFG_name_ = monoSNFGName;
+    author_SNFG_name_ = monoSNFGName;
 }
 
 MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Note* anomeric_note, std::vector< std::string > & anomeric_carbons_status, std::vector<MolecularModeling::Atom*> cycle, std::string cycle_atoms_str )
@@ -404,7 +404,7 @@ MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Not
   for( std::vector<MolecularModeling::Atom*>::iterator it = cycle.begin(); it != cycle.end(); it++ ) {
     MolecularModeling::Atom* cycle_atom = ( *it );
 
-    if( ( cycle_atom->GetName().substr( 0, 1 ).compare( "O" ) == 0 ) ) {///find oxygen in ring
+    if( ( cycle_atom->GetElementSymbol() == "O") ) {///find oxygen in ring
       //                && isdigit(gmml::ConvertString<char>(cycle_atom->GetName().substr(1,1)))))
       MolecularModeling::AtomNode* node = cycle_atom->GetNode();
       std::vector<MolecularModeling::Atom*> neighbors = node->GetNodeNeighbors();
@@ -418,9 +418,11 @@ MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Not
         MolecularModeling::Atom* o_neighbor1_neighbor = ( *it1 );
 
         if( cycle_atoms_str.find( o_neighbor1_neighbor->GetId() ) == std::string::npos ///if the neighbor is not one of the cycle atoms
-                && ( o_neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || o_neighbor1_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 )
-                && (o_neighbor1->GetElementSymbol() != "H")) { ///if first element is "O" or "N"
-          //                        && isdigit(gmml::ConvertString<char>(neighbor1_neighbor->GetName().substr(1,1))))///if second element is a digit
+            && ( o_neighbor1_neighbor->GetElementSymbol() == "O" ||
+                  o_neighbor1_neighbor->GetElementSymbol() == "N" ||
+                  o_neighbor1_neighbor->GetElementSymbol() == "S" )
+            && (o_neighbor1->GetElementSymbol() != "H")) 
+        { ///if first element is "O", "N", or "S"
           anomeric_carbon = o_neighbor1;
           anomeric_carbons_status.push_back( "Anomeric carbon: "  );
           anomeric_note->description_ = "";
@@ -438,8 +440,10 @@ MolecularModeling::Atom* Glycan::Monosaccharide::FindAnomericCarbon( Glycan::Not
         MolecularModeling::Atom* o_neighbor2_neighbor = ( *it2 );
 
         if( cycle_atoms_str.find( o_neighbor2_neighbor->GetId() ) == std::string::npos
-                && ( o_neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "O" ) == 0 || o_neighbor2_neighbor->GetName().substr( 0, 1 ).compare( "N" ) == 0 )
-                && (o_neighbor2->GetElementSymbol() != "H")) {
+            && ( o_neighbor2_neighbor->GetElementSymbol() == "O" ||
+                 o_neighbor2_neighbor->GetElementSymbol() == "N" ||
+                 o_neighbor2_neighbor->GetElementSymbol() == "S" )
+            && (o_neighbor2->GetElementSymbol() != "H")) {
           //                        && isdigit(gmml::ConvertString<char>(neighbor2_neighbor->GetName().substr(1,1))))
           anomeric_carbon = o_neighbor2;
           anomeric_carbons_status.push_back( "Anomeric carbon: "  );
@@ -685,7 +689,9 @@ std::vector<std::string> Glycan::Monosaccharide::GetSideGroupOrientations(Molecu
             }
             //else if(neighbor_id.at(0) == 'O' || neighbor_id.at(0) == 'N')///if neighbor is a non-ring oxygen or nitrogen
 	    //Yao: After talking to Dave. Replace search based on atom id to element symbol
-            else if(neighbor->GetElementSymbol() == "O" || neighbor->GetElementSymbol() == "N")///if neighbor is a non-ring oxygen or nitrogen
+            else if(neighbor->GetElementSymbol() == "O" || 
+                    neighbor->GetElementSymbol() == "N" ||
+                    neighbor->GetElementSymbol() == "S")
             {
               if(index == 0)///current atom is anomeric
               {

@@ -1,0 +1,230 @@
+Preprocessing
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Finished bonding atoms by distance
+Unrecognized atoms:
+Missing heavy atoms:
+Unrecognized residues:
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+NAG | B | 1
+G6S | B | 2
+SIA | B | 3
+FUC | B | 4
+0D8 | A | 201
+Gaps in amino acid chain:
+Histidine Protonation:
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+HIE | A | 28
+HIE | A | 47
+HIE | A | 139
+Disulphide bonds:
+A | CYX | 31 | 2.04318 | A | CYX | 91
+A | CYX | 31 | 2.04301 | A | CYX | 91
+A | CYX | 31 | 2.04236 | A | CYX | 91
+A | CYX | 31 | 2.04095 | A | CYX | 91
+A | CYX | 31 | 2.04276 | A | CYX | 91
+A | CYX | 31 | 2.04218 | A | CYX | 91
+A | CYX | 31 | 2.04134 | A | CYX | 91
+A | CYX | 31 | 2.04173 | A | CYX | 91
+A | CYX | 31 | 2.04386 | A | CYX | 91
+A | CYX | 31 | 2.04134 | A | CYX | 91
+A | CYX | 31 | 2.03939 | A | CYX | 91
+A | CYX | 31 | 2.04438 | A | CYX | 91
+A | CYX | 31 | 2.0425 | A | CYX | 91
+A | CYX | 31 | 2.04207 | A | CYX | 91
+A | CYX | 31 | 2.03947 | A | CYX | 91
+A | CYX | 31 | 2.04364 | A | CYX | 91
+A | CYX | 31 | 2.04693 | A | CYX | 91
+A | CYX | 31 | 2.03814 | A | CYX | 91
+A | CYX | 31 | 2.04299 | A | CYX | 91
+A | CYX | 31 | 2.03781 | A | CYX | 91
+Chain terminations:
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+A | 1 | NH3+ | 145 | CO2-
+NonNatural Protein Residues:

@@ -127,6 +127,27 @@ void Assembly::RemoveAllHydrogenAtoms()
   }
 }
 
+void Assembly::RemoveAllProteinResidues()
+{
+  ResidueVector allProteinResidues = this->GetAllProteinResiduesOfAssembly();
+  for(ResidueVector::iterator it = allProteinResidues.begin(); it != allProteinResidues.end(); it++)
+  {
+    MolecularModeling::Residue* thisResidue = (*it);
+    this->RemoveResidue(thisResidue);
+  }
+}
+
+void Assembly::RemoveAllNucleicAcidResidues()
+{
+  ResidueVector allNucleicAcidResidues = this->GetAllNucleicAcidResiduesOfAssembly();
+  for(ResidueVector::iterator it = allNucleicAcidResidues.begin(); it != allNucleicAcidResidues.end(); it++)
+  {
+    MolecularModeling::Residue* thisResidue = (*it);
+    this->RemoveResidue(thisResidue);
+  }
+}
+
+
 void Assembly::AdjustCharge(Residue *residue, Residue *parent_residue, int branch_index)
 {
     if(residue->GetName().compare("SO3") == 0)

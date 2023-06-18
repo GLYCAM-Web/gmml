@@ -146,6 +146,15 @@ struct ChainTerminal
     std::string cTermination_;
 };
 
+struct NonNaturalProteinResidue
+{
+    // Constructor
+    NonNaturalProteinResidue () {}
+    NonNaturalProteinResidue(const pdb::ResidueId& residueId) : residue_(residueId) {}
+    // Members
+    pdb::ResidueId residue_;
+};
+
 struct PreprocessorInformation
 {
     std::vector<AtomInfo> unrecognizedAtoms_;
@@ -155,6 +164,7 @@ struct PreprocessorInformation
     std::vector<ChainTerminal> chainTerminals_;
     std::vector<pdb::ResidueId> hisResidues_;
     std::vector<DisulphideBond> cysBondResidues_;
+    std::vector<NonNaturalProteinResidue> nonNaturalProteinResidues_;
 };
 
 }

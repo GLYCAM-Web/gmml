@@ -508,14 +508,14 @@ done
 TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=8 formal-charge=-1 alpha D-isomer deoxy ulosonate gauche-effect=unknown '
 	echo 'i=$((i+1))' >> ${OutputFile}
 	echo "TYPES[\${i}]=\" ${TYPE_BASE} \" " >> ${OutputFile}
-	echo 'NAMES[${i}]=" KDO "' >> ${OutputFile}
-	echo 'KDO' >> ${ScriptHandledList}
+	echo 'NAMES[${i}]=" 0KO "' >> ${OutputFile}
+	echo '0KO' >> ${ScriptHandledList}
 ## KDN 
 TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 alpha D-isomer deoxy ulosonate gauche-effect=unknown'
 	echo 'i=$((i+1))' >> ${OutputFile}
 	echo "TYPES[\${i}]=\" ${TYPE_BASE} \" " >> ${OutputFile}
-	echo 'NAMES[${i}]=" KDN "' >> ${OutputFile}
-	echo 'KDN' >> ${ScriptHandledList}
+	echo 'NAMES[${i}]=" 0KN "' >> ${OutputFile}
+	echo '0KN' >> ${ScriptHandledList}
 ## Neu5Ac Neu5Gc
 TYPE_BASE=' carbohydrate monosaccharide pyranose ketose n-carbon=9 formal-charge=-1 alpha deoxy ulosonate gauche-effect=sialic-acid-tail '
 for i in SA GL ; do 

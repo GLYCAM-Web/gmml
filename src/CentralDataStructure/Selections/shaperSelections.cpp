@@ -128,6 +128,7 @@ bool cdsSelections::FindPathBetweenTwoAtoms(cds::Atom* current_atom, cds::Residu
     for(std::vector<cds::Atom*>::iterator it1 = neighbors.begin(); it1 != neighbors.end(); ++it1)
     {
         cds::Atom *neighbor = *it1;
+        //std::cout << "neighbor: " << neighbor->getId() << " with " << neighbor->getNeighbors().size() << "connections.\n";
         if(neighbor->getIndex() == target_atom->getIndex())
         {
             *found = true;
@@ -136,9 +137,7 @@ bool cdsSelections::FindPathBetweenTwoAtoms(cds::Atom* current_atom, cds::Residu
         // If not found && not previously visited atom && ( if neighbor residue is current residue || target_atom residue)
         if ( (*found == false)
             && (neighbor->getLabel() != "VistedByFindPathBetweenTwoAtoms" )
-            //(neighbor->getLabel() != "VistedByFindPathBetweenTwoAtoms" )
             && ( (currentResidue->contains(neighbor) ) || (targetResidue->contains(neighbor)) )
-            //&&  ( (current_atom->GetResidue()->GetId() == neighbor->GetResidue()->GetId()) || (target_atom->GetResidue()->GetId() == neighbor->GetResidue()->GetId()) )
             )
         {
             //std::cout << "STEEEPER\n";
@@ -147,7 +146,7 @@ bool cdsSelections::FindPathBetweenTwoAtoms(cds::Atom* current_atom, cds::Residu
     }
     if(*found) // As you fall back out from the found target, create a list of the atoms.
     {
-        //std::cout << "path atom: " << current_atom->GetId() << std::endl;
+        //std::cout << "path atom: " << current_atom->getId() << std::endl;
         atom_path->push_back(current_atom);
     }
     return *found;

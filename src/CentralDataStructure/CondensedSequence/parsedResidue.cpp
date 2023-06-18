@@ -224,8 +224,9 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
     }
     else
     { // Dunno.
-        std::string message = "Error: we can't parse this residue: \"" + residueString + "\""; 
-        throw message;
+        std::string message = "Error: we can't parse this residue: \"" + residueString + "\"";
+        gmml::log(__LINE__,__FILE__,gmml::ERR,message);
+        throw std::runtime_error(message);
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, this->PrintToString());
 }

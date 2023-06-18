@@ -19,7 +19,7 @@ int main(int argc, char* argv[])
     pdb::PreprocessorInformation ppInfo = pdbFile.PreProcess(options);
     for (auto &assembly : pdbFile.getAssemblies()) // Just testing, doing it this way to get around const in Ensemble. ToDo: Why is there a const blockage in Ensemble?
     {
-    	std::cout << "Bonding atoms by distance for assembly\n";
+    	std::cout << "Bonding atoms by distance for assembly" << std::endl;;
     	cds::bondAtomsByDistance(assembly->getAtoms());
     	// OFF molecule
     	try
@@ -33,17 +33,17 @@ int main(int argc, char* argv[])
     	catch(std::runtime_error& error)
     	{
     	    std::stringstream ss;
-    	    ss << "Runtime error thrown when writing to offfile:\n" <<  error.what() << "\n";
+    	    ss << "Runtime error thrown when writing to off file:\n" <<  error.what() << "\n";
     	    std::cout << ss.str();
     	    gmml::log(__LINE__,__FILE__,gmml::ERR, ss.str());
     	}
     	catch(...)
     	{
-    	    std::cout << "Unknown error when writing to offfile.\n";
-    	    gmml::log(__LINE__,__FILE__,gmml::ERR, "Unknown error when writing to offfile.\n");
+    	    std::cout << "Unknown error when writing to off file.\n";
+    	    gmml::log(__LINE__,__FILE__,gmml::ERR, "Unknown error when writing to off file.\n");
     	}
     }
-    std::cout << "Finished bonding atoms by distance\n";
+    std::cout << "Finished bonding atoms by distance" << std::endl;
     pdbFile.Write("./outputPdbFile.pdb");
 
     // Just showing what's in the ppInfo and how to access it
@@ -81,6 +81,11 @@ int main(int argc, char* argv[])
     for(auto &chainT : ppInfo.chainTerminals_)
     {
         std::cout << chainT.chainId_ << " | " << chainT.startIndex_ << " | " << chainT.nTermination_ <<  " | " << chainT.endIndex_ << " | " << chainT.cTermination_ << "\n";
+    }
+    std::cout << "NonNatural Protein Residues:\n";
+    for(auto &nonNaturalResidue : ppInfo.nonNaturalProteinResidues_)
+    {
+        std::cout << nonNaturalResidue.residue_.getChainId() << " | " <<  nonNaturalResidue.residue_.getName() << " | " <<  nonNaturalResidue.residue_.getNumberAndInsertionCode() << "\n";
     }
     return 0;
 }

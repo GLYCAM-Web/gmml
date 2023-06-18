@@ -4,15 +4,20 @@ namespace cds
 {// Helper struct for next function.
 struct bondAtomsByDistanceThread
 {
-void operator() (std::vector<cds::Atom*>::iterator current, std::vector<cds::Atom*>::iterator end)
+void operator() (std::vector<cds::Atom*>::iterator current, std::vector<cds::Atom*>::iterator end, std::vector<cds::Atom*> allAtoms)
 { // Check every atom from current to end against every following atom.
     while (current != end)
     {
-        cds::Atom* atom1 = *current;
-        for(typename std::vector<cds::Atom*>::iterator it2 = std::next(current); it2 != end; ++it2)
+        //cds::Atom* atom1 = *current;
+        //for(typename std::vector<cds::Atom*>::iterator it2 = std::next(current); it2 != end; ++it2)
+        //{
+         //   cds::Atom* atom2 = *it2;
+         //   static_cast<void>(atomicBonds::bondAtomsIfClose(atom1, atom2)); // i'm ignoring the returned bool.
+       // }
+        cds::Atom* currentAtom = *current;
+        for(auto & atomFromAll: allAtoms)
         {
-            cds::Atom* atom2 = *it2;
-            static_cast<void>(atomicBonds::bondAtomsIfClose(atom1, atom2)); // i'm ignoring the returned bool.
+            static_cast<void>(atomicBonds::bondAtomsIfClose(currentAtom, atomFromAll)); // i'm ignoring the returned bool.
         }
         ++current;
     }
@@ -32,6 +37,9 @@ void cds::bondAtomsByDistance(std::vector<cds::Atom*> atoms)
     unsigned long const num_threads = codeUtils::calculateNumberOfThreads(vectorLength);
     if (num_threads == 0) // if length is 0 (or 1?)
     {
+        const std::string message = "Tried to bondByDistance on an atom vector of length 0. Something is wrong.";
+        gmml::log(__LINE__, __FILE__, gmml::INF, message);
+        throw std::runtime_error(message);
         return;
     }
     unsigned long const block_size = vectorLength / num_threads;
@@ -43,18 +51,18 @@ void cds::bondAtomsByDistance(std::vector<cds::Atom*> atoms)
         //std::cout << "Launching thread " << i << "\n";
         typename std::vector<cds::Atom*>::iterator block_end = block_start;
         std::advance(block_end, block_size);
-        threads[i] = std::thread(cds::bondAtomsByDistanceThread(), block_start, block_end);
+        threads[i] = std::thread(cds::bondAtomsByDistanceThread(), block_start, block_end, atoms);
         block_start = block_end;
     }
     // Complete any remaining after division into blocks
-    cds::bondAtomsByDistanceThread()(block_start, last);
+    cds::bondAtomsByDistanceThread()(block_start, last, atoms);
     // Wait for all threads to finish before returning.
     //std::cout << "Waiting on threads to finish\n";
     for(auto& entry: threads)
     {
         entry.join();
     }
-    //std::cout << "Threads finish\n";
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Finished setting atom connectivity by distance.");
     return;
 }
 

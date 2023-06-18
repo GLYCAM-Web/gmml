@@ -5904,64 +5904,75 @@ void PdbFile::ResolveEndCard(std::ostream& stream)
 
 void PdbFile::PrintOntology(std::stringstream& ont_stream)
 {
-  //Match formatting of Ontology
-  std::stringstream uri;
-  uri << Ontology::ONT_PREFIX;
-  if(header_ != NULL)
-  {
-    uri << header_->GetIdentifierCode();
-  }
-  else
-  {
-    std::string file = gmml::Split(path_.substr(path_.find_last_of('/') + 1), ".").at(0);
-    // std::transform(file.begin(), file.end(),file.begin(), ::toupper);
-    uri << file;
-  }
-  std::string uriStr = uri.str();
-  std::transform(uriStr.begin(), uriStr.end(), uriStr.begin(), ::tolower);
+    // This prints ontology information in the PDB file but not easily accessible
+    // by the assembly
 
-  gmml::AddLiteral( uriStr, Ontology::TYPE, Ontology::PDB, ont_stream );
+    // Updated 04/2023 to use new formatting DM
 
-  //Return PDB_ID
-  if(header_ != NULL)
-    gmml::AddLiteral( uriStr, Ontology::id, this->header_->GetIdentifierCode(), ont_stream );
+    // Print PDB_ID
+    if(header_ != NULL)
+    {
+        std::string header_id = this->header_->GetIdentifierCode();
+        gmml::CreateLiteral(header_id);
+        ont_stream << "\t" << Ontology::id << "\t" << header_id << ";" << std::endl;
+    }
 
-  //Return Protein Acession Number
-  //TODO add check to make sure that it is the Uniprot database reference
-  if(database_reference_ != NULL)
-    gmml::AddLiteral( uriStr, Ontology::hasProteinID, this->database_reference_->GetUniprotIDs(), ont_stream );
+    //Print Protein Acession Number
+    if(database_reference_ != NULL)
+    {
+        // gmml::AddLiteral( uriStr, Ontology::hasProteinID, this->database_reference_->GetUniprotIDs(), ont_stream );
+        std::string uniprot = this->database_reference_->GetUniprotIDs();
+        gmml::CreateLiteral(uniprot);
+        ont_stream << "\t" << Ontology::hasProteinID << "\t" << uniprot << ";" << std::endl;
+    }
 
-  //Return Title
-  if(title_ != NULL)
-    gmml::AddLiteral( uriStr, Ontology::hasTitle, this->title_->GetTitle(), ont_stream );
+    //Print Title
+    if(title_ != NULL)
+    {
+        // gmml::AddLiteral( uriStr, Ontology::hasTitle, this->title_->GetTitle(), ont_stream );
+        std::string title = this->title_->GetTitle();
+        gmml::CreateLiteral(title);
+        ont_stream << "\t" << Ontology::hasTitle << "\t" << title << ";" << std::endl;
+    }
 
-  //Return Authors
-  if(author_ != NULL)
-    gmml::AddLiteral( uriStr, Ontology::hasAuthors, this->author_->GetAuthor(), ont_stream );
+    //Print Authors
+    if(author_ != NULL)
+    {
+        // gmml::AddLiteral( uriStr, Ontology::hasAuthors, this->author_->GetAuthor(), ont_stream );
+        std::string author = this->author_->GetAuthor();
+        gmml::CreateLiteral(author);
+        ont_stream << "\t" << Ontology::hasAuthors << "\t" << author << ";" << std::endl;
+    }
 
+    //Print JOURNAL, DOI, PMID
+    if(journal_ != NULL)
+    {
+        // gmml::AddLiteral( uriStr, Ontology::hasJournal, this->journal_->GetReference(), ont_stream );
+        // gmml::AddLiteral( uriStr, Ontology::hasDOI, this->journal_->GetDOI(), ont_stream );
+        // gmml::AddLiteral( uriStr, Ontology::hasPMID, this->journal_->GetPMID(), ont_stream );
+        std::string journal = this->journal_->GetReference();
+        std::string doi = this->journal_->GetDOI();
+        std::string pmid = this->journal_->GetPMID();
+        gmml::CreateLiteral(journal);
+        gmml::CreateLiteral(doi);
+        gmml::CreateLiteral(pmid);
+        ont_stream << "\t" << Ontology::hasJournal << "\t" << journal << ";" << std::endl;
+        ont_stream << " \t" << Ontology::hasDOI << "\t\t" << doi << ";" << std::endl;
+        ont_stream << "\t" << Ontology::hasPMID << "\t" << pmid << ";" << std::endl;
+    }
 
-  if(journal_ != NULL)
-  {
-      //Return JOURNAL
-      gmml::AddLiteral( uriStr, Ontology::hasJournal, this->journal_->GetReference(), ont_stream );
-
-      //Return DOI
-      gmml::AddLiteral( uriStr, Ontology::hasDOI, this->journal_->GetDOI(), ont_stream );
-
-      //Return PMID
-      gmml::AddLiteral( uriStr, Ontology::hasPMID, this->journal_->GetPMID(), ont_stream );
-  }
-
-
-
-  if(remark_cards_ != NULL)
-  {
-    //Return Resolution
-    gmml::AddDecimal( uriStr, Ontology::hasResolution, this->remark_cards_->GetResolution(), ont_stream );
-
-    //Return B Factor
-    gmml::AddDecimal( uriStr, Ontology::hasBFactor, this->remark_cards_->GetBFactor(), ont_stream );
-  }
+    //Print Resolution and B Factor
+    if(remark_cards_ != NULL)
+    {
+        // gmml::AddDecimal( uriStr, Ontology::hasResolution, this->remark_cards_->GetResolution(), ont_stream );
+        // gmml::AddDecimal( uriStr, Ontology::hasBFactor, this->remark_cards_->GetBFactor(), ont_stream );
+        std::string resolution = gmml::ConvertT(this->remark_cards_->GetResolution());
+        std::string bfactor = gmml::ConvertT(this->remark_cards_->GetBFactor());
+        gmml::CreateDecimal(resolution);
+        gmml::CreateDecimal(bfactor);
+        ont_stream << "\t" << Ontology::hasResolution << "\t" <<  resolution << ";" << std::endl;
+        ont_stream << "\t" << Ontology::hasBFactor << "\t" << bfactor << ";" << std::endl;
+    }
 }
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
