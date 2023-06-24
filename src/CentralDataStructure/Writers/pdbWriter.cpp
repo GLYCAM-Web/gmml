@@ -67,7 +67,7 @@ void cds::writeAtomToPdb(std::ostream& stream, const cds::Atom* atom, const std:
     return;
 }
 
-void cds::writeConectCards(std::ostream& stream, std::vector<cds::Residue*> residues)
+void cds::writeConectCards(std::ostream& stream, const std::vector<cds::Residue*> residues)
 { // These are only written for atoms connecting residues. The numbers overflow/truncate when longer than 5, but the
   // format is what the format is.
     for (auto& residue : residues)

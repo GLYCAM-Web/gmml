@@ -18,6 +18,6 @@ namespace cds
                         const std::string residueName = "", const int residueNumber = 1, const std::string chainId = "",
                         const std::string insertionCode = "", const double occupancy = 1.00,
                         const double temperatureFactor = 0.00);
-    void writeConectCards(std::ostream& stream, std::vector<cds::Residue*> residues);
+    void writeConectCards(std::ostream& stream, const std::vector<cds::Residue*> residues);
 } // namespace cds
 #endif /* INCLUDES_CENTRALDATASTRUCTURE_WRITERS_PDBWRITER_HPP_ */

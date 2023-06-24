@@ -1,28 +1,29 @@
-#include "../../../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp"
+#include "includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp"
 
 namespace cds
 { // Helper struct for next function.
 
     struct bondAtomsByDistanceThread
     {
-        void operator()(std::vector<cds::Atom*>::iterator current, std::vector<cds::Atom*>::iterator end,
-                        std::vector<cds::Atom*> allAtoms)
+        void operator()(std::vector<cds::Atom*>::iterator currentPosition, std::vector<cds::Atom*>::iterator currentEnd,
+                        std::vector<cds::Atom*>::iterator compareStart, std::vector<cds::Atom*>::iterator compareEnd)
         { // Check every atom from current to end against every following atom.
-            while (current != end)
+            // std::vector<cds::Atom*>::iterator currentPosition = currentStart;
+            while (currentPosition != currentEnd)
             {
-                // cds::Atom* atom1 = *current;
-                // for(typename std::vector<cds::Atom*>::iterator it2 = std::next(current); it2 != end; ++it2)
-                //{
-                //    cds::Atom* atom2 = *it2;
-                //    static_cast<void>(atomicBonds::bondAtomsIfClose(atom1, atom2)); // i'm ignoring the returned bool.
-                // }
-                cds::Atom* currentAtom = *current;
-                for (auto& atomFromAll : allAtoms)
+                cds::Atom* currentAtom                            = *currentPosition;
+                std::vector<cds::Atom*>::iterator comparePosition = compareStart;
+                while (comparePosition != compareEnd)
                 {
-                    static_cast<void>(
-                        atomicBonds::bondAtomsIfClose(currentAtom, atomFromAll)); // i'm ignoring the returned bool.
+                    cds::Atom* compareAtom = *comparePosition;
+                    if (currentAtom != compareAtom) // if not the same atom.
+                    {
+                        static_cast<void>(
+                            atomicBonds::bondAtomsIfClose(currentAtom, compareAtom)); // cast to ignore returned bool.
+                    }
+                    ++comparePosition;
                 }
-                ++current;
+                ++currentPosition;
             }
             return;
         }
@@ -33,12 +34,11 @@ void cds::bondAtomsByDistance(std::vector<cds::Atom*> atoms)
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Setting atom connectivity by distance.");
     // Threading here by breaking up data into blocks.
-    typename std::vector<cds::Atom*>::iterator first = atoms.begin();
-    typename std::vector<cds::Atom*>::iterator last  = atoms.end();
     // Work out details of data and from that the number of threads to use
-    const unsigned long vectorLength                 = std::distance(first, last);
-    const unsigned long num_threads                  = codeUtils::calculateNumberOfThreads(vectorLength);
-    if (num_threads == 0) // if length is 0 (or 1?)
+    const unsigned long vectorLength = atoms.size();
+    const unsigned long num_threads =
+        codeUtils::calculateNumberOfThreads(vectorLength); // guesses from hardware, includes current load, not perfect.
+    if (num_threads == 0)
     {
         const std::string message = "Tried to bondByDistance on an atom vector of length 0. Something is wrong.";
         gmml::log(__LINE__, __FILE__, gmml::INF, message);
@@ -48,19 +48,20 @@ void cds::bondAtomsByDistance(std::vector<cds::Atom*> atoms)
     const unsigned long block_size = vectorLength / num_threads;
     // Break data up into blocks of data and launch threads
     std::vector<std::thread> threads(num_threads - 1);
-    typename std::vector<cds::Atom*>::iterator block_start = first;
+    typename std::vector<cds::Atom*>::iterator block_start = atoms.begin();
     for (unsigned long i = 0; i < (num_threads - 1); ++i)
     {
         // std::cout << "Launching thread " << i << "\n";
         typename std::vector<cds::Atom*>::iterator block_end = block_start;
         std::advance(block_end, block_size);
-        threads[i]  = std::thread(cds::bondAtomsByDistanceThread(), block_start, block_end, atoms);
+        // std::cout << "Thread " << i << " checking from: " << (*block_start)->getIndex() << "_" <<
+        // (*block_start)->getNumber() << " to " << (*block_end)->getIndex() << std::endl;
+        threads[i]  = std::thread(cds::bondAtomsByDistanceThread(), block_start, block_end, block_start, atoms.end());
         block_start = block_end;
     }
     // Complete any remaining after division into blocks
-    cds::bondAtomsByDistanceThread()(block_start, last, atoms);
+    cds::bondAtomsByDistanceThread()(block_start, atoms.end(), block_start, atoms.end());
     // Wait for all threads to finish before returning.
-    // std::cout << "Waiting on threads to finish\n";
     for (auto& entry : threads)
     {
         entry.join();

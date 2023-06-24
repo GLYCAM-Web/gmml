@@ -34,7 +34,10 @@ class GlycoproteinBuilder : public Abstract::absBuilder
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
     void ResolveOverlaps();
-    void WriteOutputFiles();
+    void WritePdbFile(const std::string prefix = "glycoprotein", const bool writeConectSection = true);
+    void WriteOffFile(const std::string prefix = "glycoprotein");
+    // void WriteOutputFiles(std::string prefix = "Glycoprotein_All_Resolved");
+    void PrintDihedralAnglesAndOverlapOfGlycosites();
 
   private:
     //////////////////////////////////////////////////////////
@@ -50,22 +53,22 @@ class GlycoproteinBuilder : public Abstract::absBuilder
         return glycosites_;
     }
 
-    inline int GetOverlapTolerance()
+    inline int GetOverlapTolerance() const
     {
         return overlapTolerance_;
     }
 
-    inline int GetNumberOfOutputStructures()
+    inline int GetNumberOfOutputStructures() const
     {
         return numberOfOutputStructures_;
     }
 
-    inline int GetPersistCycles()
+    inline int GetPersistCycles() const
     {
         return persistCycles_;
     }
 
-    inline bool GetIsDeterministic()
+    inline bool GetIsDeterministic() const
     {
         return isDeterministic_;
     }
@@ -73,30 +76,30 @@ class GlycoproteinBuilder : public Abstract::absBuilder
     //////////////////////////////////////////////////////////
     //                  PRIVATE MUTATORS                    //
     //////////////////////////////////////////////////////////
-    void SetWorkingDirectory(std::string workingDirectory);
-    void SetPrepFileLocation(std::string prepFileLocation);
+    void SetWorkingDirectory(const std::string workingDirectory);
+    void SetPrepFileLocation(const std::string prepFileLocation);
 
-    inline void SetPersistCycles(int i)
+    inline void SetPersistCycles(const int i)
     {
         persistCycles_ = i;
     }
 
-    inline void SetOverlapTolerance(int i)
+    inline void SetOverlapTolerance(const int i)
     {
         overlapTolerance_ = i;
     }
 
-    inline void SetProteinPDBFileName(std::string s)
+    inline void SetProteinPDBFileName(const std::string s)
     {
         proteinPDBFileName_ = s;
     }
 
-    inline void SetNumberOfOutputStructures(int i)
+    inline void SetNumberOfOutputStructures(const int i)
     {
         numberOfOutputStructures_ = i;
     }
 
-    inline void SetIsDeterministic(bool b)
+    inline void SetIsDeterministic(const bool b)
     {
         isDeterministic_ = b;
     }
@@ -106,7 +109,7 @@ class GlycoproteinBuilder : public Abstract::absBuilder
     //////////////////////////////////////////////////////////
     // Class instantiation
     void CreateGlycosites(std::vector<glycoprotein::GlycositeInput> glycositesInputVector,
-                          std::string prepFileLocation);
+                          const std::string prepFileLocation);
     Residue* SelectResidueFromInput(const std::string userSelection);
     // Overlap Resolution
     void Wiggle(Resolution resolutionLevel = RESIDUE, int persistCycles = 100, bool firstLinkageOnly = false,
@@ -115,7 +118,6 @@ class GlycoproteinBuilder : public Abstract::absBuilder
     void SetRandomDihedralAnglesUsingMetadata();
     bool DumbRandomWalk(int maxCycles = 10);
     // I/O
-    void PrintDihedralAnglesAndOverlapOfGlycosites();
     // Overlap Calculation
     int CalculateOverlaps(Resolution resolutionLevel = RESIDUE, MoleculeType moleculeType = ALL);
     std::vector<GlycosylationSite*> DetermineSitesWithOverlap(Resolution resolutionLevel = RESIDUE,
