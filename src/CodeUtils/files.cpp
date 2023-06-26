@@ -1,5 +1,5 @@
-#include <cstdlib> // getenv
-#include <sys/stat.h> // To check if file exists using stat
+#include <cstdlib>     // getenv
+#include <sys/stat.h>  // To check if file exists using stat
 #include <sys/types.h> // The s_IFDIR
 #include "includes/CodeUtils/files.hpp"
 #include "includes/CodeUtils/logging.hpp"
@@ -7,7 +7,7 @@
 bool codeUtils::doesFileExist(const std::string& fileName)
 {
     struct stat buffer;
-    return (stat (fileName.c_str(), &buffer) == 0);
+    return (stat(fileName.c_str(), &buffer) == 0);
 }
 
 void codeUtils::ensureFileExists(const std::string& fileName)
@@ -19,11 +19,11 @@ void codeUtils::ensureFileExists(const std::string& fileName)
     }
 }
 
-std::string codeUtils::SplitFilename (const std::string& str)
+std::string codeUtils::SplitFilename(const std::string& str)
 {
-	//std::cout << "Splitting: " << str << '\n';
-	std::size_t found = str.find_last_of("/\\");
-	//  std::cout << " path: " << str.substr(0,found) << '\n';
-	//  std::cout << " file: " << str.substr(found+1) << '\n';
-	return str.substr(0,found);
+    // std::cout << "Splitting: " << str << '\n';
+    std::size_t found = str.find_last_of("/\\");
+    //  std::cout << " path: " << str.substr(0,found) << '\n';
+    //  std::cout << " file: " << str.substr(found+1) << '\n';
+    return str.substr(0, found);
 }

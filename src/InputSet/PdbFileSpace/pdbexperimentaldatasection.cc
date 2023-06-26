@@ -8,11 +8,13 @@ using PdbFileSpace::PdbExperimentalDataSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbExperimentalDataSection::PdbExperimentalDataSection() : record_name_("EXPDTA"), experimental_data_(""){}
+PdbExperimentalDataSection::PdbExperimentalDataSection() : record_name_("EXPDTA"), experimental_data_("")
+{}
 
-PdbExperimentalDataSection::PdbExperimentalDataSection(const std::string &record_name, const std::string &experimental_data)
+PdbExperimentalDataSection::PdbExperimentalDataSection(const std::string& record_name,
+                                                       const std::string& experimental_data)
 {
-    record_name_ = record_name;
+    record_name_       = record_name;
     experimental_data_ = experimental_data;
 }
 
@@ -25,12 +27,13 @@ PdbExperimentalDataSection::PdbExperimentalDataSection(std::stringstream& stream
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
+        if (!is_record_name_set)
+        {
+            record_name_ = line.substr(0, 6);
             gmml::Trim(record_name_);
-            is_record_name_set=true;
+            is_record_name_set = true;
         }
-        ss << line.substr(10,70);
+        ss << line.substr(10, 70);
 
         getline(stream_block, line);
         temp = line;
@@ -72,7 +75,7 @@ void PdbExperimentalDataSection::SetExperimentalData(const std::string experimen
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbExperimentalDataSection::Print(std::ostream &out)
+void PdbExperimentalDataSection::Print(std::ostream& out)
 {
     out << "Record Name: " << record_name_ << ", Experimental Data: " << experimental_data_ << std::endl << std::endl;
 }

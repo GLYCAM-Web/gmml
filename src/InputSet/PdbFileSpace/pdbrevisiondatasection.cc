@@ -8,8 +8,10 @@ using PdbFileSpace::PdbRevisionDataSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbRevisionDataSection::PdbRevisionDataSection() {}
-PdbRevisionDataSection::PdbRevisionDataSection(std::stringstream &stream_block)
+PdbRevisionDataSection::PdbRevisionDataSection()
+{}
+
+PdbRevisionDataSection::PdbRevisionDataSection(std::stringstream& stream_block)
 {
     std::string line;
     getline(stream_block, line);
@@ -29,22 +31,24 @@ PdbRevisionDataSection::PdbRevisionDataSection(std::stringstream &stream_block)
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-PdbRevisionDataSection::RevisionDataCardVector PdbRevisionDataSection::GetRevisionDataCards(){
+PdbRevisionDataSection::RevisionDataCardVector PdbRevisionDataSection::GetRevisionDataCards()
+{
     return revision_data_;
 }
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbRevisionDataSection::SetRevisionDataCards(RevisionDataCardVector revision_data){
+void PdbRevisionDataSection::SetRevisionDataCards(RevisionDataCardVector revision_data)
+{
     revision_data_.clear();
-    for(RevisionDataCardVector::iterator it = revision_data.begin(); it != revision_data.end(); it++)
+    for (RevisionDataCardVector::iterator it = revision_data.begin(); it != revision_data.end(); it++)
     {
         revision_data.push_back(*it);
     }
 }
 
-void PdbRevisionDataSection::AddRevisionDataCards(PdbRevisionDataCard *revision_data)
+void PdbRevisionDataSection::AddRevisionDataCards(PdbRevisionDataCard* revision_data)
 {
     revision_data_.push_back(revision_data);
 }
@@ -56,12 +60,11 @@ void PdbRevisionDataSection::AddRevisionDataCards(PdbRevisionDataCard *revision_
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbRevisionDataSection::Print(std::ostream &out)
+void PdbRevisionDataSection::Print(std::ostream& out)
 {
-    for(RevisionDataCardVector::iterator it = revision_data_.begin(); it != revision_data_.end(); it++)
+    for (RevisionDataCardVector::iterator it = revision_data_.begin(); it != revision_data_.end(); it++)
     {
-      (*it)->Print(out);
-      out << std::endl;
+        (*it)->Print(out);
+        out << std::endl;
     }
-
 }

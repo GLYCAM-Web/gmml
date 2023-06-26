@@ -2,12 +2,11 @@
 
 #include "includes/CentralDataStructure/CondensedSequence/sequenceManipulator.hpp"
 
-using CondensedSequence::DrawGlycan;
 using cdsCondensedSequence::SequenceManipulator;
+using CondensedSequence::DrawGlycan;
 
 DrawGlycan::DrawGlycan(cdsCondensedSequence::GraphVizDotConfig configs, std::string condensedSequence)
 {
     SequenceManipulator manipulator(condensedSequence);
     manipulator.PrintGraphViz(configs);
 }
-

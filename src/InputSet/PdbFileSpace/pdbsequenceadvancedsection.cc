@@ -8,8 +8,10 @@ using PdbFileSpace::PdbSequenceAdvancedSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbSequenceAdvancedSection::PdbSequenceAdvancedSection() {}
-PdbSequenceAdvancedSection::PdbSequenceAdvancedSection(std::stringstream &stream_block)
+PdbSequenceAdvancedSection::PdbSequenceAdvancedSection()
+{}
+
+PdbSequenceAdvancedSection::PdbSequenceAdvancedSection(std::stringstream& stream_block)
 {
     std::string line;
     getline(stream_block, line);
@@ -38,13 +40,13 @@ PdbSequenceAdvancedSection::SequenceAdvancedCardVector PdbSequenceAdvancedSectio
 void PdbSequenceAdvancedSection::SetSequenceAdvancedCards(SequenceAdvancedCardVector sequence_advanced)
 {
     sequence_advanced_.clear();
-    for(SequenceAdvancedCardVector::iterator it = sequence_advanced.begin(); it != sequence_advanced.end(); it++)
+    for (SequenceAdvancedCardVector::iterator it = sequence_advanced.begin(); it != sequence_advanced.end(); it++)
     {
         sequence_advanced.push_back(*it);
     }
 }
 
-void PdbSequenceAdvancedSection::AddSequenceAdvancedCards(PdbSequenceAdvancedCard *sequence_advanced)
+void PdbSequenceAdvancedSection::AddSequenceAdvancedCards(PdbSequenceAdvancedCard* sequence_advanced)
 {
     sequence_advanced_.push_back(sequence_advanced);
 }
@@ -56,9 +58,11 @@ void PdbSequenceAdvancedSection::AddSequenceAdvancedCards(PdbSequenceAdvancedCar
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbSequenceAdvancedSection::Print(std::ostream &out)
+void PdbSequenceAdvancedSection::Print(std::ostream& out)
 {
-    for(SequenceAdvancedCardVector::iterator it = sequence_advanced_.begin(); it != sequence_advanced_.end(); it++)
-            (*it)->Print(out);
+    for (SequenceAdvancedCardVector::iterator it = sequence_advanced_.begin(); it != sequence_advanced_.end(); it++)
+    {
+        (*it)->Print(out);
+    }
     out << std::endl;
 }

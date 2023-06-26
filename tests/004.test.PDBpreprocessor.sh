@@ -2,9 +2,11 @@
 
 GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
 
-if [ "$(git config --get remote.origin.url)" != "https://github.com/GLYCAM-Web/gmml.git" ]; then
+if [[ "${GMML_ROOT_DIR}" != *"gmml" ]] ; then
+            echo "Test 004 failed, we think our GMML root directory is:\t${GMML_ROOT_DIR}\n"
             exit 1
 fi
+
 printf "Testing PDBPreprocessor... ~15 seconds\n"
 g++ -std=c++17 -I "${GMML_ROOT_DIR}" -L"${GMML_ROOT_DIR}"/bin -Wl,-rpath,"${GMML_ROOT_DIR}"/bin tests/004.PDBPreprocessor.cc -lgmml -pthread -o PDBPreprocessor
  

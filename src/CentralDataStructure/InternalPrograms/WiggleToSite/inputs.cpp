@@ -10,8 +10,8 @@ using gmmlPrograms::WiggleToSiteInputs;
 
 WiggleToSiteInputs::WiggleToSiteInputs(std::string inputFileName)
 {
-//    std::cout << "About to read " << inputFileName << std::endl << std::flush;
-    std::ifstream infile (inputFileName);
+    //    std::cout << "About to read " << inputFileName << std::endl << std::flush;
+    std::ifstream infile(inputFileName);
     if (!infile)
     {
         std::string message = "Uh oh, input file: " + inputFileName + ", could not be opened for reading!\n";
@@ -22,43 +22,45 @@ WiggleToSiteInputs::WiggleToSiteInputs(std::string inputFileName)
     {
         std::string strInput;
         getline(infile, strInput);
-        if(codeUtils::startsWith(strInput, "Substrate:"))
+        if (codeUtils::startsWith(strInput, "Substrate:"))
         {
             substrateFile_ = codeUtils::split(strInput, ':').at(1);
         }
-        if(codeUtils::startsWith(strInput, "Carbohydrate:"))
+        if (codeUtils::startsWith(strInput, "Carbohydrate:"))
         {
             carbohydrateSequence_ = codeUtils::split(strInput, ':').at(1);
         }
-        if(codeUtils::startsWith(strInput, "SuperimpositionTargetResidue:"))
+        if (codeUtils::startsWith(strInput, "SuperimpositionTargetResidue:"))
         {
-            std::string inputPortion = codeUtils::split(strInput, ':').at(1);
+            std::string inputPortion      = codeUtils::split(strInput, ':').at(1);
             superimpositionTargetResidue_ = pdb::ResidueId(codeUtils::split(inputPortion, '_'));
-//            std::cout << "superimpositionTargetResidue_ in input file is: " << superimpositionTargetResidue_ << std::endl;
+            //            std::cout << "superimpositionTargetResidue_ in input file is: " <<
+            //            superimpositionTargetResidue_ << std::endl;
         }
-        if(codeUtils::startsWith(strInput, "WiggleTargetResidue:"))
+        if (codeUtils::startsWith(strInput, "WiggleTargetResidue:"))
         {
             std::string inputPortion = codeUtils::split(strInput, ':').at(1);
-            wigglingTargetResidue_ = pdb::ResidueId(codeUtils::split(inputPortion, '_'));
-//            std::cout << "wigglingTargetResidue_ in input file is: " << wigglingTargetResidue_ << std::endl;
+            wigglingTargetResidue_   = pdb::ResidueId(codeUtils::split(inputPortion, '_'));
+            //            std::cout << "wigglingTargetResidue_ in input file is: " << wigglingTargetResidue_ <<
+            //            std::endl;
         }
-        if(codeUtils::startsWith(strInput, "TargetModelNumber:"))
+        if (codeUtils::startsWith(strInput, "TargetModelNumber:"))
         {
             substrateModelNumber_ = std::stoi(codeUtils::split(strInput, ':').at(1));
         }
-        if(codeUtils::startsWith(strInput, "CarbohydrateSuperimpositionResidue:"))
+        if (codeUtils::startsWith(strInput, "CarbohydrateSuperimpositionResidue:"))
         {
             carbohydrateSuperimpositionResidue_ = std::stoi(codeUtils::split(strInput, ':').at(1));
         }
-        if(codeUtils::startsWith(strInput, "CarbohydrateWigglingResidue:"))
+        if (codeUtils::startsWith(strInput, "CarbohydrateWigglingResidue:"))
         {
             carbohydrateWigglingResidue_ = std::stoi(codeUtils::split(strInput, ':').at(1));
         }
-        if(codeUtils::startsWith(strInput, "persistCycles:"))
+        if (codeUtils::startsWith(strInput, "persistCycles:"))
         {
             persistCycles_ = std::stoi(codeUtils::split(strInput, ':').at(1));
         }
-        if(codeUtils::startsWith(strInput, "isDeterministic:"))
+        if (codeUtils::startsWith(strInput, "isDeterministic:"))
         {
             if (codeUtils::split(strInput, ':').at(1) == "true")
             {
@@ -66,7 +68,7 @@ WiggleToSiteInputs::WiggleToSiteInputs(std::string inputFileName)
             }
         }
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Reading input file complete." );
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Reading input file complete.");
 }
 
 std::string WiggleToSiteInputs::Print()
@@ -82,6 +84,3 @@ std::string WiggleToSiteInputs::Print()
     ss << "isDeterministic_ : " << isDeterministic_ << "\n";
     return ss.str();
 }
-
-
-

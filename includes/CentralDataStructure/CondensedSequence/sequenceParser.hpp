@@ -5,11 +5,12 @@
 #include "includes/CentralDataStructure/molecule.hpp"
 #include "includes/CentralDataStructure/atom.hpp"
 #include <string>
+
 namespace cdsCondensedSequence
 {
     class SequenceParser : public cds::Molecule
     {
-    public:
+      public:
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
@@ -21,12 +22,17 @@ namespace cdsCondensedSequence
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
-    private:
+      private:
         SequenceParser() {};
+
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
-        inline bool DerivativesExist() {return savedDerivatives_.size();}
+        inline bool DerivativesExist()
+        {
+            return savedDerivatives_.size();
+        }
+
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
@@ -37,15 +43,21 @@ namespace cdsCondensedSequence
         bool CheckSequenceSanity(std::string sequence);
         void ParseLabelledInput(std::string inString);
         std::string parseRepeatingUnits(const std::string inputSequence);
-        unsigned int seekRepeatStart(const std::string &inputSequence, unsigned int startPosition);
+        unsigned int seekRepeatStart(const std::string& inputSequence, unsigned int startPosition);
         bool ParseCondensedSequence(std::string inString);
-        void RecurveParseAlt(size_t &currentIndex, std::string sequence, ParsedResidue* parent);
-        ParsedResidue* SaveResidue(const size_t windowStart, const size_t windowEnd, const std::string sequence, ParsedResidue* parent);
-        inline void SaveDerivative(std::string derivative) {savedDerivatives_.push_back(derivative);}
+        void RecurveParseAlt(size_t& currentIndex, std::string sequence, ParsedResidue* parent);
+        ParsedResidue* SaveResidue(const size_t windowStart, const size_t windowEnd, const std::string sequence,
+                                   ParsedResidue* parent);
+
+        inline void SaveDerivative(std::string derivative)
+        {
+            savedDerivatives_.push_back(derivative);
+        }
+
         //////////////////////////////////////////////////////////
         //                 PRIVATE MEMBERS                      //
         //////////////////////////////////////////////////////////
-    	std::vector<std::string> savedDerivatives_;
+        std::vector<std::string> savedDerivatives_;
     };
-}
+} // namespace cdsCondensedSequence
 #endif

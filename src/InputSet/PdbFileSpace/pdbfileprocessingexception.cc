@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 #include "includes/common.hpp"
-//#include "includes/utils.hpp"
+// #include "includes/utils.hpp"
 #include "includes/InputSet/PdbFileSpace/pdbfileprocessingexception.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
@@ -13,11 +13,13 @@ using PdbFileSpace::PdbFileProcessingException;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-PdbFileProcessingException::PdbFileProcessingException(const std::string &message)
-    : line_number_(gmml::dNotSet), message_(message) {}
+PdbFileProcessingException::PdbFileProcessingException(const std::string& message)
+    : line_number_(gmml::dNotSet), message_(message)
+{}
 
-PdbFileProcessingException::PdbFileProcessingException(int line_number, const std::string &message)
-    : line_number_(line_number), message_(message) {}
+PdbFileProcessingException::PdbFileProcessingException(int line_number, const std::string& message)
+    : line_number_(line_number), message_(message)
+{}
 
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
@@ -29,7 +31,7 @@ const char* PdbFileProcessingException::what() const throw()
     if (line_number_ != gmml::dNotSet)
     {
         std::stringstream ss;
-        if(ss << line_number_)
+        if (ss << line_number_)
         {
             what_ += " (line " + ss.str() + ")";
             gmml::log(__LINE__, __FILE__, gmml::ERR, what_.c_str());
@@ -38,11 +40,13 @@ const char* PdbFileProcessingException::what() const throw()
         else
         {
             gmml::log(__LINE__, __FILE__, gmml::ERR, __LINE__ + "to_string: invalid conversion");
-            throw std::invalid_argument(__LINE__ + "to_string: invalid conversion");       /// Invalid conversion from int to string
+            throw std::invalid_argument(__LINE__ +
+                                        "to_string: invalid conversion"); /// Invalid conversion from int to string
         }
     }
     gmml::log(__LINE__, __FILE__, gmml::ERR, what_.c_str());
     return what_.c_str();
 }
 
-PdbFileProcessingException::~PdbFileProcessingException() throw() {}
+PdbFileProcessingException::~PdbFileProcessingException() throw()
+{}

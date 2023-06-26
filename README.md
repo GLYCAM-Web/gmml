@@ -11,6 +11,8 @@ The GLYCAM Molecular Modeling Library (GMML) is typically used as a library acce
 
 [Testing the Library](#testing-the-library)
 
+[Coding Standards](#coding-standards)
+
 [Documentation](#documentation)
 
 ---
@@ -31,6 +33,8 @@ We are very grateful to our funders.
 
 
 ## Prerequisites
+
+### Building GMML
 
 In order to build GMML, you are required to have the following software available on your system:
 
@@ -54,7 +58,13 @@ sudo apt-get install libssl1.1 libssl-dev git python3.9 python3.9-dev libboost-a
 ```
 For other linux distros, please follow the instructions for the package managment software included with your system.
 
-Please note that swig 4.0.2 must be installed from [their website](https://www.swig.org/download.html)
+Please note that swig 4.0.2 must be installed from [their website](https://www.swig.org/download.html). Just kidding, most current linux distros already have `swig4.0` available right out of the box.
+
+### Contributing to GMML
+
+If you want to contribute to `gmml` you will also need to install the following packages:
+
+* `clang-tidy-15`
 
 ---
 ## Obtaining the software
@@ -72,7 +82,13 @@ git clone https://github.com/GLYCAM-Web/gmml.git gmml
 ---
 ## Compiling the Library
 
-To compile the library first make sure you are still in the `gmml` directory.
+As of now, we rely upon an shell enviroment variable named `GEMSHOME` but this need is in the process of being removed. The code expects `GEMSHOME` to be the parent directory of where `gmml` is being built. An easy one liner, from within the `gmml` directory, is as follows:
+
+```bash
+user@host:.../gmml$ cd .. && export GEMSHOME=$(pwd) && cd -
+```
+
+Now to compile the library first make sure you are still in the `gmml` directory.
 ```bash
 pwd
 ./gmml
@@ -121,82 +137,154 @@ The `cmakeFileLists` directory contains the ouput from our `./updateCmakeFileLis
 ---
 ## Testing the Library
 
-From within the `gmml` directory, you must change your current working directory to the `gmml/tests` directory.
+From within the `gmml` directory, you must change your current working directory to the `gmml/tests` directory. Note that `<NUM_JOBS>` is however many tests you want to run at once.
 
 ```bash
 gmml$ cd tests/
-gmml/tests$ ./compile_run_tests.bash
+gmml/tests$ ./compile_run_tests.bash -j <NUM_JOBS>
 ```
 
-Please note that running GMML bare metal will cause some tests to fail. This is of no concern because these tests need some extra things running to check, but those are internal for now. 
+Please note that running GMML bare metal will cause test 016 (svg drawing) to fail, this is due to not setting the created svgs correctly and will eventually be fixed but for now don't worry if `016.test.DrawGlycan.sh` fails while running on bare metal; if you are utilizing the dev enviroment all tests are expected to pass. This is of no concern because these tests need some extra things running to check, but those are internal for now.
 
 The output will tell you whether or not the library is behaving appropriately and if all tests are passed the output will look similar to the following:
 
 ```bash
-Number of tests found: 18
-Beginning testing.
+#### Beginning GMML tests ####
+Number of tests found:  23
+Number of testing jobs: 4
 
+mkdir: created directory './tempTestOutputs'
 
-Using test file:  000.test.buildBySequenceOldWay.sh 
-Testing buildBySequence... Test passed.
+Beginning test: ./000.test.buildBySequenceOldWay.sh
+Beginning test: ./002.test.createAssemblyWritePDB.sh
+Beginning test: ./003.test.SuperimpositionEigen.sh
+Beginning test: ./004.test.PDBpreprocessor.sh
 
-Using test file:  001.test.buildBySequenceMetaWay.sh 
-Testing buildBySequenceMeta... Test passed.
+Testing 003.superimpositionEigen.cc... Test passed
+Exit Code: 0
 
-Using test file:  002.test.createAssemblyWritePDB.sh 
-Testing create_Assembly_WritePDB... Test passed.
+Beginning test: ./005.test.Overlaps.sh
 
-Using test file:  003.test.SuperimpositionEigen.sh 
-Testing superimposition_Eigen... Test passed.
+Testing 002.create_Assembly_WritePDB.cc... Test passed
+Exit Code: 0
 
-Using test file:  004.test.PDBpreprocessor.sh 
-Testing PDBPreprocessor... Test passed.
+Beginning test: ./006.test.BFMP-RingShapeCalculation.sh
 
-Using test file:  005.test.Overlaps.sh 
-Testing Overlaps function... Test passed.
+Testing 000.buildBySequence.cc... Test passed
+Exit Code: 0
 
-Using test file:  006.test.BFMP-RingShapeCalculation.sh 
-Testing BFMP Ring Shape Calculation... Test passed.
+Beginning test: ./007.test.DetectSugars.sh
 
-Using test file:  007.test.DetectSugars.sh 
-Testing detectSugars... Test passed.
+Testing 006.ringShapeDetection.cc (BFMP Ring Shape Calculation)... Test passed.
+Exit Code: 0
 
-Using test file:  008.test.PDB2GlycamAndSubgraphMatching.sh 
-Testing pdb2glycam and molecule subgraph matching... Iupac name: DGalpb1-4DGlcpNAcb1-3DGalpb1-4DGlcpb1-ROH
-Test passed.
+Beginning test: ./008.test.PDB2GlycamAndSubgraphMatching.sh
 
-Using test file:  009.test.Reorder_and_Label_Sequence.sh 
-Testing Sequence reordering and labeling... Test passed.
+Testing 005.overlaps.cc... Test passed
+Exit Code: 0
 
-Using test file:  010.test.buildBySequenceRotamer.sh 
-Testing buildBySequenceRotamer... Test passed.
+Beginning test: ./009.test.Reorder_and_Label_Sequence.sh
 
-Using test file:  011.test.writeResNumbers.sh 
-Testing writing original and new residue numbers into a PDB file... Test passed.
+Testing 009.reorderSequence.cc (Sequence reordering and labeling)... Test passed.
+Exit Code: 0
 
-Using test file:  012.test.AddSolventNeutralize.sh 
-Testing 012.AddSolventNeutralize... Test passed.
+Beginning test: ./010.test.buildBySequenceRotamer.sh
 
-Using test file:  013.test.buildOligoaccharideLibrary.sh 
-Testing buildOligosaccharide library... Test passed.
+Testing 008.pdb2glycam.cc and molecule subgraph matching... Test passed.
+Exit Code: 0
 
-Using test file:  014.test.SequenceParser.sh 
+Beginning test: ./011.test.writeResNumbers.sh
+
+Testing 010.buildBySequenceRotamer.cc... Test passed.
+Exit Code: 0
+
+Beginning test: ./012.test.AddSolventNeutralize.sh
+
+Testing 011.writeResNumbers.cc (write original and new residue numbers into a PDB file)... Test passed.
+Exit Code: 0
+
+Beginning test: ./014.test.SequenceParser.sh
+
 Testing 014.test.SequenceParser.cc... Test passed.
+Exit Code: 0
 
-Using test file:  015.test.SequenceToAssembly.sh 
-Testing 015.test.SequenceAssembly.cc... Test FAILED!. Output file different
+Beginning test: ./015.test.SequenceToAssembly.sh
 
-Using test file:  016.test.DrawGlycan.sh 
-Testing 016.test.DrawGlycan.cc...
-ls: cannot access '*.svg': No such file or directory
-Test FAILED!. Output file different
+Testing 012.AddSolventNeutralize... Test passed.
+Exit Code: 0
 
-Using test file:  017.test.GlycoproteinBuilder.sh 
+Beginning test: ./016.test.DrawGlycan.sh
+
+Testing PDBPreprocessor... ~15 seconds
+Test passed for tests/inputs/004.preprocessorInput_4mbz.pdb.
+Test passed for tests/inputs/004.preprocessorInput_original.pdb.
+Test passed for tests/inputs/004.preprocessorInput_reduce.pdb.
+Exit Code: 0
+
+Beginning test: ./017.test.GlycoproteinBuilder.sh
+
+Testing 016.test.DrawGlycan.cc...0.svg tests/correct_outputs/016.output_SVGs/0.svg differ: byte 132, line 2
+Test FAILED! Output file 0.svg different to tests/correct_outputs/016.output_SVGs/0.svg
+Exit Code: 1
+
+Beginning test: ./018.test.GlycoproteinBuilderTable.sh
+
+Testing 018.test.createGlycosylationTables.cpp... Test passed.
+Exit Code: 0
+
+Beginning test: ./019.test.newPDBClass.sh
+
+Testing 007.detectSugars.cc... Test passed.
+Exit Code: 0
+
+Beginning test: ./020.test.parameterFiles.sh
+
+Testing 015.test.SequenceAssembly.cc... Test passed.
+Exit Code: 0
+
+Beginning test: ./021.test.cdsSequence.sh
+
+Testing 020.test.parameterFiles.cpp... Test passed.
+Exit Code: 0
+
+Beginning test: ./022.test.libraryFileReader.sh
+
+Testing 022.test.libraryFileReader.cpp... Test passed.
+Exit Code: 0
+
+Beginning test: ./023.test.carbohydrateBuilder.sh
+
+Testing 021.test.cdsSequence.cpp... Test passed.
+Exit Code: 0
+
+Beginning test: ./024.test.wiggleToSite.sh
+
+Testing 024.wiggleToSite...Test passed.
+Exit Code: 0
+
+Testing 023.carbohydrateBuilder... Test passed.
+Exit Code: 0
+
+Testing 019.test.newPDBClass.cpp... ~30 seconds. Test passed.
+Exit Code: 0
+
 Testing 017.test.GlycoproteinBuilder.cpp... Test passed.
+Exit Code: 0
 
-18 tests were attempted
-16 tests passed 
-18 were required
+######## GMML TESTS COMPLETED ########
+Required tests: 23
+Passed tests:   22
+Failed tests:   1
+Time taken:     34 seconds
+######################################
+
+!!! OUTPUT OF THE 1 GMML TEST(S) THAT FAILED !!!
+
+Testing 016.test.DrawGlycan.cc...0.svg tests/correct_outputs/016.output_SVGs/0.svg differ: byte 132, line 2
+Test FAILED! Output file 0.svg different to tests/correct_outputs/016.output_SVGs/0.svg
+Exit Code: 1
+
+!!! FINISHED PRINTING FAILED TESTS !!!
 ```
 
 ---
@@ -206,6 +294,27 @@ The official documentation for both GEMS and GMML can be found on the main GLYCA
 
 * GEMS - [http://glycam.org/gems](http://glycam.org/gems "GEMS")
 * GMML - [http://glycam.org/gmml](http://glycam.org/gmml "GMML")
+
+---
+## Coding Standards
+
+In order to make deving on the library consistent, we must enforce coding standards. They will be added piecewise, including the appropriate tests (be them pre-commit/push hooks, ci/cd hooks, etc.) and will be outlined below.
+
+### Formatting Pre-Commit
+
+All code must follow the format described in the `.clang-format` file, and the pre-commit hook will ensure the commited format is correct. The precommit hook will ensure all files you want to commit are correctly formatted. Any files that are not correctly formatted will be listed in the terminal you tried to commit from, if you are using something like `gitflow` or `gitkraken` check the logs. Many code editors, IDEs or text editors, have the ability to apply a specific format on save of the file, so save yourself headaches and set that up.
+
+Now, how do you format a specific file?
+
+```bash
+user@host:.../gmml$ clang-tidy-15 -i path/to/bad/file.cpp 
+```
+
+What if you did a bunch of files and want to be lazy? This can miss a couple bits that need to be changed so run it a couple times, it also will use all your cores but hey it is pretty quick.
+
+```bash
+user@host:.../gmml$ find . -not -path "./cmakeBuild/*" -type f -iname "*.cpp" -o -iname "*.hpp" -o -iname "*.h" -o -iname "*.cc" | xargs -P $(nproc --all --ignore=2)  -I % sh -c 'clang-format-15 -i %'
+```
 
 ---
 ## Depreciated Instructions

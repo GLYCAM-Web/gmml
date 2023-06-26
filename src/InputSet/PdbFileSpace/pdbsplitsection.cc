@@ -8,12 +8,13 @@ using PdbFileSpace::PdbSplitSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbSplitSection::PdbSplitSection() : record_name_("SPLIT"), split_(""){}
+PdbSplitSection::PdbSplitSection() : record_name_("SPLIT"), split_("")
+{}
 
-PdbSplitSection::PdbSplitSection(const std::string &record_name, const std::string &split)
+PdbSplitSection::PdbSplitSection(const std::string& record_name, const std::string& split)
 {
     record_name_ = record_name;
-    split_ = split;
+    split_       = split;
 }
 
 PdbSplitSection::PdbSplitSection(std::stringstream& stream_block)
@@ -25,12 +26,13 @@ PdbSplitSection::PdbSplitSection(std::stringstream& stream_block)
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
+        if (!is_record_name_set)
+        {
+            record_name_ = line.substr(0, 6);
             gmml::Trim(record_name_);
-            is_record_name_set=true;
+            is_record_name_set = true;
         }
-        ss << line.substr(10,70);
+        ss << line.substr(10, 70);
 
         getline(stream_block, line);
         temp = line;
@@ -72,7 +74,7 @@ void PdbSplitSection::SetSplit(const std::string split)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbSplitSection::Print(std::ostream &out)
+void PdbSplitSection::Print(std::ostream& out)
 {
     out << "Record Name: " << record_name_ << ", Split: " << split_ << std::endl << std::endl;
 }

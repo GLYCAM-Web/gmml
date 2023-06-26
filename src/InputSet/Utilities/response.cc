@@ -4,12 +4,12 @@
 #include "includes/InputSet/Utilities/response.hpp"
 
 using InputOutput::Response;
-//Constructor
-Response::Response()
-{
-}
 
-//Accessor
+// Constructor
+Response::Response()
+{}
+
+// Accessor
 std::string Response::GetServiceType()
 {
     return this->service_type;
@@ -35,7 +35,7 @@ Response::Tags Response::GetTags()
     return this->tags;
 }
 
-//Mutator
+// Mutator
 void Response::SetServiceType(std::string new_serivce_type)
 {
     this->service_type = new_serivce_type;
@@ -46,7 +46,7 @@ void Response::AddNotice(Glycan::Note* new_notice)
     this->notices.push_back(new_notice);
 }
 
-void Response::AddOutput(std::pair <std::string, std::string> new_output)
+void Response::AddOutput(std::pair<std::string, std::string> new_output)
 {
     this->output_dict.push_back(new_output);
 }
@@ -60,6 +60,3 @@ void Response::AddTag(std::pair<std::string, std::string> new_tag)
 {
     this->tags.push_back(new_tag);
 }
-
-
-

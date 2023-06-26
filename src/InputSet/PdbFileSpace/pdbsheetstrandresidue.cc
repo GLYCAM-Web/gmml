@@ -8,11 +8,15 @@ using PdbFileSpace::PdbSheetStrandResidue;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbSheetStrandResidue::PdbSheetStrandResidue() : residue_name_(""), residue_chain_id_(' '), residue_sequence_number_(gmml::dNotSet), residue_insertion_code_(' ') {}
+PdbSheetStrandResidue::PdbSheetStrandResidue()
+    : residue_name_(""), residue_chain_id_(' '), residue_sequence_number_(gmml::dNotSet), residue_insertion_code_(' ')
+{}
 
-PdbSheetStrandResidue::PdbSheetStrandResidue(const std::string &residue_name, char residue_chain_id, int residue_sequence_number, char residue_insertion_code)
-    : residue_name_(residue_name), residue_chain_id_(residue_chain_id), residue_sequence_number_(residue_sequence_number),
-      residue_insertion_code_(residue_insertion_code) {}
+PdbSheetStrandResidue::PdbSheetStrandResidue(const std::string& residue_name, char residue_chain_id,
+                                             int residue_sequence_number, char residue_insertion_code)
+    : residue_name_(residue_name), residue_chain_id_(residue_chain_id),
+      residue_sequence_number_(residue_sequence_number), residue_insertion_code_(residue_insertion_code)
+{}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
@@ -67,15 +71,17 @@ void PdbSheetStrandResidue::SetResidueInsertionCode(char residue_insertion_code)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbSheetStrandResidue::Print(std::ostream &out)
+void PdbSheetStrandResidue::Print(std::ostream& out)
 {
-    out << "Residue Name: " << residue_name_
-        << ", Residue Cahin Identifier: " << residue_chain_id_
+    out << "Residue Name: " << residue_name_ << ", Residue Cahin Identifier: " << residue_chain_id_
         << ", Residue Sequence Number: ";
-    if( residue_sequence_number_ != gmml::iNotSet)
+    if (residue_sequence_number_ != gmml::iNotSet)
+    {
         out << residue_sequence_number_;
+    }
     else
+    {
         out << " ";
-    out << ", Residue Insertion Code: " << residue_insertion_code_
-        << std::endl;
+    }
+    out << ", Residue Insertion Code: " << residue_insertion_code_ << std::endl;
 }

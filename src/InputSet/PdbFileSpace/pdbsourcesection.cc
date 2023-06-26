@@ -8,8 +8,10 @@ using PdbFileSpace::PdbSourceSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbSourceSection::PdbSourceSection() {}
-PdbSourceSection::PdbSourceSection(std::stringstream &stream_block)
+PdbSourceSection::PdbSourceSection()
+{}
+
+PdbSourceSection::PdbSourceSection(std::stringstream& stream_block)
 {
     std::string line;
     getline(stream_block, line);
@@ -22,28 +24,30 @@ PdbSourceSection::PdbSourceSection(std::stringstream &stream_block)
         getline(stream_block, line);
         temp = line;
     }
-    }
+}
 
 //////////////////////////////////////////////////////////
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-PdbSourceSection::SourceCardVector PdbSourceSection::GetSourceCards(){
+PdbSourceSection::SourceCardVector PdbSourceSection::GetSourceCards()
+{
     return source_;
 }
 
 //////////////////////////////////////////////////////////
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
-void PdbSourceSection::SetSourceCards(SourceCardVector source){
+void PdbSourceSection::SetSourceCards(SourceCardVector source)
+{
     source_.clear();
-    for(SourceCardVector::iterator it = source.begin(); it != source.end(); it++)
+    for (SourceCardVector::iterator it = source.begin(); it != source.end(); it++)
     {
         source.push_back(*it);
     }
 }
 
-void PdbSourceSection::AddSourceCards(PdbSourceCard *source)
+void PdbSourceSection::AddSourceCards(PdbSourceCard* source)
 {
     source_.push_back(source);
 }
@@ -55,9 +59,11 @@ void PdbSourceSection::AddSourceCards(PdbSourceCard *source)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbSourceSection::Print(std::ostream &out)
+void PdbSourceSection::Print(std::ostream& out)
 {
-    for(SourceCardVector::iterator it = source_.begin(); it != source_.end(); it++)
-            (*it)->Print(out);
+    for (SourceCardVector::iterator it = source_.begin(); it != source_.end(); it++)
+    {
+        (*it)->Print(out);
+    }
     out << std::endl;
 }

@@ -18,6 +18,6 @@ do
 	fi
 done
 printf "Test passed.\n"
-rm ./newPdbClass outputPdbFile.pdb output.txt
+rm ./newPdbClass outputPdbFile.pdb output.txt outputOffFile.off
 echo "Exit Code: 0"
 return 0

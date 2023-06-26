@@ -7,13 +7,14 @@ using PdbqtFileSpace::PdbqtTorsionalDoFCard;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbqtTorsionalDoFCard::PdbqtTorsionalDoFCard() : record_name_("TORSDOF"){}
+PdbqtTorsionalDoFCard::PdbqtTorsionalDoFCard() : record_name_("TORSDOF")
+{}
 
 PdbqtTorsionalDoFCard::PdbqtTorsionalDoFCard(std::string line)
 {
-    record_name_ = line.substr(0, 7);
-    std::string temp = line.substr(7);
-    temp = gmml::Trim(temp);
+    record_name_            = line.substr(0, 7);
+    std::string temp        = line.substr(7);
+    temp                    = gmml::Trim(temp);
     number_of_tosional_dof_ = gmml::ConvertString<int>(temp);
 }
 
@@ -50,12 +51,16 @@ void PdbqtTorsionalDoFCard::SetNumberOfTorsionalDoF(int number_of_torsional_dof)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbqtTorsionalDoFCard::Print(std::ostream &out)
+void PdbqtTorsionalDoFCard::Print(std::ostream& out)
 {
     out << "Torsional DOF: ";
-    if(number_of_tosional_dof_ != gmml::iNotSet)
+    if (number_of_tosional_dof_ != gmml::iNotSet)
+    {
         out << number_of_tosional_dof_;
+    }
     else
+    {
         out << "";
+    }
     out << std::endl;
 }

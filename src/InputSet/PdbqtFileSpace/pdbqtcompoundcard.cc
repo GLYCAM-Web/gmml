@@ -8,13 +8,14 @@ using PdbqtFileSpace::PdbqtCompoundCard;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-PdbqtCompoundCard::PdbqtCompoundCard() : record_name_("COMPND"){}
+PdbqtCompoundCard::PdbqtCompoundCard() : record_name_("COMPND")
+{}
 
 PdbqtCompoundCard::PdbqtCompoundCard(std::string line)
 {
     std::vector<std::string> tokens = gmml::Split(line, " ");
-    record_name_ = tokens.at(0);
-    value_ = tokens.at(1);
+    record_name_                    = tokens.at(0);
+    value_                          = tokens.at(1);
 }
 
 //////////////////////////////////////////////////////////
@@ -50,7 +51,7 @@ void PdbqtCompoundCard::SetValue(const std::string value)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbqtCompoundCard::Print(std::ostream &out)
+void PdbqtCompoundCard::Print(std::ostream& out)
 {
     out << record_name_ << "   " << value_ << std::endl;
 }

@@ -6,73 +6,74 @@
 
 namespace abstrab
 {
-class Index
-{
-public:
-	//////////////////////////////////////////////////////////
-	//                       CONSTRUCTOR                    //
-	//////////////////////////////////////////////////////////
-	Index()
-	{
-		this->setIndex(this->generateIndex());
-	}
-	Index(unsigned int index)
-	{
-		this->setIndex(index);
-	}
+    class Index
+    {
+      public:
+        //////////////////////////////////////////////////////////
+        //                       CONSTRUCTOR                    //
+        //////////////////////////////////////////////////////////
+        Index()
+        {
+            this->setIndex(this->generateIndex());
+        }
 
-	//copy constructor
-	inline Index(const Index &rhs) :
-			index_m(rhs.index_m)
-	{
-	}
+        Index(unsigned int index)
+        {
+            this->setIndex(index);
+        }
 
-	//move constructor
-	inline Index(Index &&rhs) :
-			index_m(rhs.index_m)
-	{
-	}
+        // copy constructor
+        inline Index(const Index& rhs) : index_m(rhs.index_m)
+        {}
 
-	inline Index& operator=(const Index &rhs)
-	{
-		return *this = Index(rhs);
-	}
+        // move constructor
+        inline Index(Index&& rhs) : index_m(rhs.index_m)
+        {}
 
-	//move assignment
-	inline Index& operator=(Index &&rhs)
-	{
-		this->index_m = rhs.index_m;
-		return *this;
-	}
+        inline Index& operator=(const Index& rhs)
+        {
+            return *this = Index(rhs);
+        }
 
-	//////////////////////////////////////////////////////////
-	//                       ACCESSOR                       //
-	//////////////////////////////////////////////////////////
-	inline unsigned int getIndex() const
-	{
-		return index_m;
-	}
-	//////////////////////////////////////////////////////////
-	//                       MUTATOR                        //
-	//////////////////////////////////////////////////////////
-	inline void setIndex(unsigned int index)
-	{
-		index_m = index;
-	}
-private:
-	//////////////////////////////////////////////////////////
-	//                       FUNCTIONS                      //
-	//////////////////////////////////////////////////////////
-	inline unsigned int generateIndex()
-	{
-		static unsigned int s_NodeIndex = 0; // static keyword means it is created only once and persists beyond scope of code block.
-		return s_NodeIndex++; // makes copy of index, increments the real index, then returns the value in the copy
-	}
-	//////////////////////////////////////////////////////////
-	//                       ATTRIBUTES                     //
-	//////////////////////////////////////////////////////////
-	unsigned int index_m;
-};
+        // move assignment
+        inline Index& operator=(Index&& rhs)
+        {
+            this->index_m = rhs.index_m;
+            return *this;
+        }
 
-}
+        //////////////////////////////////////////////////////////
+        //                       ACCESSOR                       //
+        //////////////////////////////////////////////////////////
+        inline unsigned int getIndex() const
+        {
+            return index_m;
+        }
+
+        //////////////////////////////////////////////////////////
+        //                       MUTATOR                        //
+        //////////////////////////////////////////////////////////
+        inline void setIndex(unsigned int index)
+        {
+            index_m = index;
+        }
+
+      private:
+        //////////////////////////////////////////////////////////
+        //                       FUNCTIONS                      //
+        //////////////////////////////////////////////////////////
+        inline unsigned int generateIndex()
+        {
+            static unsigned int s_NodeIndex =
+                0; // static keyword means it is created only once and persists beyond scope of code block.
+            return s_NodeIndex++; // makes copy of index, increments the real index, then returns the value in the copy
+        }
+
+        //////////////////////////////////////////////////////////
+        //                       ATTRIBUTES                     //
+        //////////////////////////////////////////////////////////
+        unsigned int index_m;
+    };
+
+} // namespace abstrab
 #endif // INDEX_HPP

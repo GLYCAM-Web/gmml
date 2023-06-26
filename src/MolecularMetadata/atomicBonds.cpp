@@ -1,19 +1,19 @@
 #include "includes/MolecularMetadata/atomicBonds.hpp"
-//#include "includes/CentralDataStructure/cdsAtom.hpp"
+// #include "includes/CentralDataStructure/cdsAtom.hpp"
 
-//#include <mutex>
+// #include <mutex>
 
 using namespace atomicBonds;
 
-
-std::pair<double,double> atomicBonds::getBondLengthByAtomType(const std::string& atom1Element, const std::string& atom2Element)
-{//Using PDB bond length statistics provided by Chenghua on 2/5/19
+std::pair<double, double> atomicBonds::getBondLengthByAtomType(const std::string& atom1Element,
+                                                               const std::string& atom2Element)
+{ // Using PDB bond length statistics provided by Chenghua on 2/5/19
 
     std::string bothAtoms = atom1Element + atom2Element;
 
-    if(bondLengthMap.find(bothAtoms) != bondLengthMap.end())
+    if (bondLengthMap.find(bothAtoms) != bondLengthMap.end())
     {
-        std::pair<double,double> cutoffDistances = bondLengthMap.at(bothAtoms);
+        std::pair<double, double> cutoffDistances = bondLengthMap.at(bothAtoms);
         return cutoffDistances;
     }
     else
@@ -23,9 +23,9 @@ std::pair<double,double> atomicBonds::getBondLengthByAtomType(const std::string&
     }
 }
 
-double atomicBonds::getMaxBondLengthByAtomType(const std::string &atom1Element, const std::string &atom2Element)
-{//Using PDB bond length statistics provided by Chenghua on 2/5/19
+double atomicBonds::getMaxBondLengthByAtomType(const std::string& atom1Element, const std::string& atom2Element)
+{ // Using PDB bond length statistics provided by Chenghua on 2/5/19
 
-    std::pair<double,double> result = atomicBonds::getBondLengthByAtomType(atom1Element, atom2Element);
+    std::pair<double, double> result = atomicBonds::getBondLengthByAtomType(atom1Element, atom2Element);
     return result.second;
 }

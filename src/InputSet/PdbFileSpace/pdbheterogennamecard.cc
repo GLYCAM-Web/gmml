@@ -8,9 +8,12 @@ using PdbFileSpace::PdbHeterogenNameCard;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbHeterogenNameCard::PdbHeterogenNameCard() : heterogen_identifier_(""), heterogen_name_("") {}
-PdbHeterogenNameCard::PdbHeterogenNameCard(const std::string &heterogen_identifier, const std::string &heterogen_name) :
-    heterogen_identifier_(heterogen_identifier), heterogen_name_(heterogen_name) {}
+PdbHeterogenNameCard::PdbHeterogenNameCard() : heterogen_identifier_(""), heterogen_name_("")
+{}
+
+PdbHeterogenNameCard::PdbHeterogenNameCard(const std::string& heterogen_identifier, const std::string& heterogen_name)
+    : heterogen_identifier_(heterogen_identifier), heterogen_name_(heterogen_name)
+{}
 
 PdbHeterogenNameCard::PdbHeterogenNameCard(std::stringstream& stream_block)
 {
@@ -21,13 +24,14 @@ PdbHeterogenNameCard::PdbHeterogenNameCard(std::stringstream& stream_block)
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
-        if(!is_heterogen_identifier_set){
-            heterogen_identifier_ = line.substr(11,3);
+        if (!is_heterogen_identifier_set)
+        {
+            heterogen_identifier_ = line.substr(11, 3);
             gmml::Trim(heterogen_identifier_);
             is_heterogen_identifier_set = true;
         }
 
-        ss << line.substr(15,55) << " ";
+        ss << line.substr(15, 55) << " ";
 
         getline(stream_block, line);
         temp = line;
@@ -69,7 +73,7 @@ void PdbHeterogenNameCard::SetHeterogenName(const std::string heterogen_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbHeterogenNameCard::Print(std::ostream &out)
+void PdbHeterogenNameCard::Print(std::ostream& out)
 {
     out << "Heterogen ID: " << heterogen_identifier_ << ", Heterogen Name: " << heterogen_name_ << std::endl;
 }

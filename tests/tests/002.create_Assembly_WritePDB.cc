@@ -5,10 +5,11 @@ using namespace MolecularModeling;
 using namespace GeometryTopology;
 using namespace PdbFileSpace;
 
-int main(int argc, char* argv[]){
-    //GeometryTopology::Coordinate* c_ND2 = new GeometryTopology::Coordinate(-0.847,   0.445,  -2.872);
-    GeometryTopology::Coordinate c_ND2(-0.847,   0.445,  -2.872);
-    GeometryTopology::Coordinate c_CG(0.535,   0.914,  -3.092);
+int main(int argc, char* argv[])
+{
+    // GeometryTopology::Coordinate* c_ND2 = new GeometryTopology::Coordinate(-0.847,   0.445,  -2.872);
+    GeometryTopology::Coordinate c_ND2(-0.847, 0.445, -2.872);
+    GeometryTopology::Coordinate c_CG(0.535, 0.914, -3.092);
 
     Atom atomND2;
     atomND2.SetName("ND2");
@@ -38,7 +39,7 @@ int main(int argc, char* argv[]){
 
     assembly_NLN.BuildStructureByDistance();
     assembly_NLN.Print();
-    PdbFileSpace::PdbFile *outputPdbFileNLN = assembly_NLN.BuildPdbFileStructureFromAssembly(-1,0);
+    PdbFileSpace::PdbFile* outputPdbFileNLN = assembly_NLN.BuildPdbFileStructureFromAssembly(-1, 0);
     outputPdbFileNLN->Write("test-NLN.pdb");
     return 0;
 }

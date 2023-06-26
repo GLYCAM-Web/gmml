@@ -14,10 +14,10 @@
 namespace gmml
 {
     namespace MolecularMetadata
-	{
+    {
         namespace GLYCAM
         {
         }
-	}
-}
+    } // namespace MolecularMetadata
+} // namespace gmml
 #endif // MolecularMetaData.hpp

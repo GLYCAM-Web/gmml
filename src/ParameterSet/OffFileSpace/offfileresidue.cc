@@ -9,9 +9,10 @@ using OffFileSpace::OffFileResidue;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-OffFileResidue::OffFileResidue() :  name_(""), atoms_(), box_angle_(0.0),
-                                            box_length_(0.0), box_width_(0.0), box_height_(0.0),
-                                            head_atom_index_(-1), tail_atom_index_(-1) {}
+OffFileResidue::OffFileResidue()
+    : name_(""), atoms_(), box_angle_(0.0), box_length_(0.0), box_width_(0.0), box_height_(0.0), head_atom_index_(-1),
+      tail_atom_index_(-1)
+{}
 
 ///////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
@@ -174,6 +175,7 @@ void OffFileResidue::SetTailAtomIndex(int tail_atom_index)
 {
     tail_atom_index_ = tail_atom_index;
 }
+
 void OffFileResidue::SetListingIndex(int listing_index)
 {
     listing_index_ = listing_index;
