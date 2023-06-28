@@ -46,22 +46,22 @@ namespace CondensedSequence
         //////////////////////////////////////////////////////////
         //                       MUTATORS                       //
         //////////////////////////////////////////////////////////
-        inline void setInputSequence(const std::string& s)
+        inline void setInputSequence(const std::string s)
         {
             inputSequence_ = s;
         }
 
-        inline void setInterpretedSequence(const std::string& s)
+        inline void setInterpretedSequence(const std::string s)
         {
             interpretedSequence_ = s;
         }
 
-        inline void setIndexOrdered(const std::string& s)
+        inline void setIndexOrdered(const std::string s)
         {
             indexOrdered_ = s;
         }
 
-        inline void setIndexLabeled(const std::string& s)
+        inline void setIndexLabeled(const std::string s)
         {
             indexLabeled_ = s;
         }

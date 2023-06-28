@@ -1,5 +1,4 @@
-#include "../../../../includes/CentralDataStructure/InternalPrograms/Sequence/sequence.hpp"
-
+#include "includes/CentralDataStructure/InternalPrograms/Sequence/sequence.hpp"
 #include "includes/CentralDataStructure/CondensedSequence/sequenceManipulator.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
