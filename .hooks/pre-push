@@ -1,20 +1,50 @@
 #!/bin/bash
 
+#figure out if we are in a docker container
+WITHIN_CONTAINER=0
+if [ -f /.dockerenv ]; then
+    WITHIN_CONTAINER=1
+fi
+
+START_TIME=$(date +%s)
+
 #Check branch
 BASEDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-for h_file in `ls $BASEDIR/pre-push.d/pre-push.*`
-do
-    if [ -f "$h_file" ]; then
-        bash $h_file
-	h_file_return=$?
+for h_file in $(ls $BASEDIR/pre-push.d/pre-push.*); do
+    if [ -f "${h_file}" ]; then
+
+        if [ "${WITHIN_CONTAINER}" -eq 0 ]; then
+            #need to check if container is actually running
+            if [ "$(docker container ls -q -f name="${USER}"-gw-grpc-delegator)" ]; then
+                #our container be runnin
+                #extracts the cleaned up path to da scripts
+                CLEANED_SCRIPT_PATH=$(echo "${h_file}" | awk -F"/" '{ print $(NF-2)"/"$(NF-1)"/"$NF }')
+                docker exec -w /programs/gems/gmml "${USER}"-gw-grpc-delegator /bin/bash -c "${CLEANED_SCRIPT_PATH}"
+                h_file_return=$?
+            else
+                #container dont be runnin, so runnin on bare metal
+                bash "${h_file}"
+                h_file_return=$?
+            fi
+
+        elif [ "${WITHIN_CONTAINER}" -eq 1 ]; then
+            bash "${h_file}"
+            h_file_return=$?
+        else
+            echo "SOMETHING BROKE NO IDEA IF WE ARE IN OR OUTSIDE OF A DOCKER CONTAINER"
+            exit 1
+        fi
+
         #If the test pass, move onto the next file
-	if [ $h_file_return == 0 ]; then
+        if [ "${h_file_return}" == 0 ]; then
             #echo "$h_file --- SUCCESSFUL"
             echo ""
         else
-        #Output a fail and stop the push process
+
+            #Output a fail and stop the push process
             #echo "$h_file --- FAILED"
             exit 1
         fi
     fi
 done
+echo -e "\nTime Taken: $(($(date +%s) - START_TIME)) seconds"

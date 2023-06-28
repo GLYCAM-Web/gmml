@@ -202,7 +202,7 @@ cd "${GEMS_DIR}"/gmml/tests/ || {
     exit 1
 }
 
-nice -7 ./compile_run_tests.bash -j "$(nproc --all)"
+nice -7 ./compile_run_tests.bash -j "$(nproc --all --ignore=2)"
 result=$? # record the exit status from compile_run_tests.bash
 cd "${GEMS_DIR}"/gmml || {
     echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}/gmml"
