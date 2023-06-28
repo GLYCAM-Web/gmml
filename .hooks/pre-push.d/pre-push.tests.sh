@@ -27,7 +27,7 @@ MAX_FEATURE_BEHIND_TEST=15
 ensure_feature_close()
 {
     CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-    echo -e "\nEnsuring feature branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} in repo ${YELLOW_BOLD}GMML${RESET_STYLE} is missing less than ...."
+    echo -e "\nEnsuring feature branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} in repo ${YELLOW_BOLD}GMML${RESET_STYLE} is\nless than ${MAX_FEATURE_BEHIND_TEST} commits behind gmml-test branch"
 
     if [ "$(git rev-list --left-only --count origin/gmml-test..."${CURRENT_BRANCH}")" -gt "${MAX_FEATURE_BEHIND_TEST}" ]; then
         echo -e "${RED_BOLD}ERROR:${RESET_STYLE} MISSING TOO MANY COMMITS FROM GMML-TEST, INCORPERATE CURRENT GMML-TEST CODE INTO YOUR FEATURE BRANCH THEN TRY AGAIN.\nABORTING\n"
@@ -82,15 +82,16 @@ check_if_branch_behind()
 
         #Done to check if we actually need to hit up origin to see if we are behind, the "branch hash and name on origin"
         #part is mostly there to bug check
-        echo -e "First checking if ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} is on remote, if the branch status below is empty"
-        echo "then we know that the branch is not on remote."
-        echo "Branch hash and name on origin: $(git ls-remote --heads origin "${CURRENT_BRANCH}")"
+        echo -e "First checking if ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} is on remote"
+        #if the branch status below is empty then we know that the branch is not on remote
+        #this was just for deboogin, keep it cause it can help - P
+        #echo "Branch hash and name on origin: $(git ls-remote --heads origin "${CURRENT_BRANCH}")"
         #check if we get a non-empty return aka branch is on remote, if we are on a head branch we want to "force" acceptance to go ahead
         #and add if our branch name is HEAD then we fail
         if [ -n "$(git ls-remote --heads origin "${CURRENT_BRANCH}")" ] || [ "${CURRENT_BRANCH}" == "HEAD" ]; then
             #we hit here if our branch is actually on remote, thus we must check
             #that the current branch is up to date on remote
-            echo -e "\nBranch is present on remote, now to check if local is behind remote"
+            echo -e "Branch is present on remote, now to check if local is behind remote"
             #the left only part of this command shows how many commits behind the repo on the right is from
             #the left repo that has origin tacked onto it., the right side
             if [ "$(git rev-list --left-only --count origin/"${CURRENT_BRANCH}"..."${CURRENT_BRANCH}")" != 0 ] || [ "${CURRENT_BRANCH}" == "HEAD" ]; then
@@ -126,7 +127,7 @@ check_if_branch_behind()
 #before we try anything major we first figure out if any branches are behind.
 check_if_branch_behind "GMML"
 check_if_branch_behind "GEMS"
-echo -e "\nChecking if branches are behind remote completed\n"
+#echo -e "Checking if branches are behind remote completed\n"
 #if they are behind then the string we are checking wont be empty, thus we should exit.
 if [ -n "${BRANCH_IS_BEHIND}" ]; then
     echo -e "${RED_BOLD}failed...${RESET_STYLE} At least one of you branches are behind."
@@ -141,7 +142,7 @@ branch=$(git rev-parse --abbrev-ref HEAD)
 if [[ "${branch}" != "gmml-dev" ]] && [[ "${branch}" != "gmml-test" ]] && [[ "${branch}" != "stable" ]]; then
 
     if [[ "${branch}" != hotfix* ]]; then
-        echo -e "Ensuring feature branch is not too far from gmml-test\n"
+        #Ensuring feature branch is not too far from gmml-test
         ensure_feature_close
     else
         echo -e "You are applying making a hotfix for one of our main branches EXCEPT gmml-test,\nif this is not the case ABORT AND BUG PRESTON\n"
@@ -176,7 +177,7 @@ if [ -d "./gmml/cmakeBuild" ]; then
 fi
 echo "Compiling gmml using GEMS ./make.sh, no wrap flag cause it auto wraps"
 
-cd ${GEMS_DIR} || {
+cd "${GEMS_DIR}" || {
     echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}"
     echo "Exiting..."
     exit 1
