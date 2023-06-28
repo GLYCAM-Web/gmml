@@ -18,8 +18,9 @@ for h_file in $(ls $BASEDIR/pre-push.d/pre-push.*); do
             if [ "$(docker container ls -q -f name="${USER}"-gw-grpc-delegator)" ]; then
                 #our container be runnin
                 #extracts the cleaned up path to da scripts
-                CLEANED_SCRIPT_PATH=$(echo "${h_file}" | awk -F"/" '{ print $(NF-2)"/"$(NF-1)"/"$NF }')
-                docker exec -w /programs/gems/gmml "${USER}"-gw-grpc-delegator /bin/bash -c "${CLEANED_SCRIPT_PATH}"
+                #CLEANED_SCRIPT_PATH=$(echo "${h_file}" | awk -F"/" '{ print $(NF-3)"/"$(NF-2)"/"$(NF-1)"/"$NF }')
+                CLEANED_SCRIPT_PATH=$(echo "${h_file}" | rev | cut -d'/' -f-2 | rev)
+                docker exec -w /programs/gems/gmml "${USER}"-gw-grpc-delegator /bin/bash -c ".hooks/${CLEANED_SCRIPT_PATH}"
                 h_file_return=$?
             else
                 #container dont be runnin, so runnin on bare metal
