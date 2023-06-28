@@ -11,6 +11,9 @@ RED_BOLD='\033[0;31m\033[1m'
 #instead of a wannabe bool type flag
 BRANCH_IS_BEHIND=""
 
+#How many commits a feature branch can be missing from the gmml-test branch
+MAX_FEATURE_BEHIND_TEST=15
+
 check_gemshome()
 {
     if [ -z "${GEMSHOME}" ]; then
@@ -24,7 +27,7 @@ check_gemshome()
         echo "not appear to be a directory. It should be set to"
         echo "$1"
         exit 1
-    elif [ ! "${GEMSHOME}" = "$1" -a ! "${GEMSHOME}" = "${1}/" ]; then
+    elif [ ! "${GEMSHOME}" = "$1" ] && [ ! "${GEMSHOME}" = "${1}/" ]; then
         #try checking the inode incase there is a problem with symlinks
         if [ "$(stat -c "%i" "${GEMSHOME}")" != "$(stat -c "%i" "${1}")" ]; then
             echo ""
@@ -43,9 +46,22 @@ check_dir_exists()
     fi
 }
 
-cd ../
-gemshome=$(pwd)
-cd -
+#this isnt coded for babies, follow our git patterns and we are good, BORK ON MERGE????
+ensure_feature_close()
+{
+    CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    echo -e "\nEnsuring feature branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} in repo ${YELLOW_BOLD}GMML${RESET_STYLE} is missing less than ...."
+
+    if [ "$(git rev-list --left-only --count origin/gmml-test..."${CURRENT_BRANCH}")" -gt "${MAX_FEATURE_BEHIND_TEST}" ]; then
+        echo -e "${RED_BOLD}ERROR:${RESET_STYLE} MISSING TOO MANY COMMITS FROM GMML-TEST, INCORPERATE CURRENT GMML-TEST CODE INTO YOUR FEATURE BRANCH THEN TRY AGAIN.\nABORTING\n"
+        exit 1
+    else
+        echo -e "${GREEN_BOLD}passed...${RESET_STYLE} Feature branch is not too far from gmml-test, proceding\n"
+    fi
+}
+
+gemshome=$(cd ../ && pwd)
+
 check_gemshome "${gemshome}"
 
 ## OG Oct 2021 have the hooks update themselves.
@@ -117,7 +133,11 @@ check_if_branch_behind()
         else
             echo -e "${GREEN_BOLD}passed...${RESET_STYLE} Branch is not on remote, so no need to check if local is behind remote, proceeding"
         fi
-        cd "${GEMSHOME}"/gmml
+        cd "${GEMSHOME}"/gmml || {
+            echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"
+            echo "Exiting..."
+            exit 1
+        }
     #bad input, so end script
     else
         echo -e "${RED_BOLD}ERROR${RESET_STYLE} Incorrect param given to check_if_branch_behind function. Exiting."
@@ -142,6 +162,14 @@ TEST_SKIP=0
 #### Allow skipping tests ####
 branch=$(git rev-parse --abbrev-ref HEAD)
 if [[ "${branch}" != "gmml-dev" ]] && [[ "${branch}" != "gmml-test" ]] && [[ "${branch}" != "stable" ]]; then
+
+    if [[ "${branch}" != hotfix* ]]; then
+        echo -e "Ensuring feature branch is not too far from gmml-test\n"
+        ensure_feature_close
+    else
+        echo -e "You are applying making a hotfix for one of our main branches EXCEPT gmml-test,\nif this is not the case ABORT AND BUG PRESTON\n"
+    fi
+
     echo -e "Branch is ${branch}\nSkipping tests is allowed.\nDo you want to skip them?\ns=skip\na=abort\nEnter anything to run tests.\n"
     read -p "Enter response: " response </dev/tty
     if [[ "${response}" == [sS] ]]; then
@@ -170,7 +198,11 @@ if [ -d "./gmml/cmakeBuild" ]; then
     rm ./gmml/cmakeBuild/libgmml.so
 fi
 echo "Compiling gmml using GEMS ./make.sh, no wrap flag cause it auto wraps"
-./make.sh
+./make.sh || {
+    echo -e "\n${RED_BOLD}failed... Could not build GEMS and GMML...."
+    echo -e "Exiting... ${RESET_STYLE}"
+    exit 1
+}
 cd "${GEMSHOME}"/gmml || {
     echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"
     echo "Exiting..."
@@ -186,7 +218,11 @@ cd "${GEMSHOME}"/gmml/tests/ || {
 
 nice -7 ./compile_run_tests.bash -j "$(nproc --all)"
 result=$? # record the exit status from compile_run_tests.bash
-cd -
+cd "${GEMSHOME}"/gmml || {
+    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"
+    echo "Exiting..."
+    exit 1
+}
 if [ "${result}" -eq 0 ]; then
     echo "GMML level tests have passed. Doing gems level tests."
     cd "${GEMSHOME}"/tests/ || {
@@ -207,10 +243,10 @@ if [ "${result}" -eq 0 ]; then
     fi
 else
     echo -e "${RED_BOLD}
-         *****************************************************************
-         The GMML level tests have failed! 
-         Push cancelled.
-         *****************************************************************
+*****************************************************************
+The GMML level tests have failed!
+Push cancelled.
+*****************************************************************
          ${RESET_STYLE}"
     exit 1
 fi
