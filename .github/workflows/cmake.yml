@@ -62,21 +62,21 @@ jobs:
         fi
          
     #make sure we are setting up our python right
-    - name: Set up Python 3.9
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.9'
+#    - name: Set up Python 3.9
+#      uses: actions/setup-python@v4
+#      with:
+#        python-version: '3.9'
 
 #turns out u cant set normal env vars. Kind of annoying but w/e
 #https://stackoverflow.com/questions/57968497/how-do-i-set-an-env-var-with-a-bash-expression-in-github-actions
-    - name: Set up GEMSHOME gross
+    - name: Set up GEMSHOME
       run: echo "GEMSHOME=$(dirname $(pwd))" >> $GITHUB_ENV
 
     - name: BuildScript
       #We wanna make sure we can wrap just in case, lazy but w/e this is just getting us something.
       #takes around 7 mins for nowrap
       run: |
-        ./make.sh -j 3 -c 
+        ./make.sh -j 3 -c -d no_wrap
     - name: Run tests that are possible to run on bare metal
       run: |    
         bash ./compile_run_tests.bash -j 3 -d bare_metal
