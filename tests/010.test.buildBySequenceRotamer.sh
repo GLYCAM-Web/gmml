@@ -1,11 +1,18 @@
 #!/bin/bash
 
+GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
+
+if [[ "${GMML_ROOT_DIR}" != *"gmml" ]] ; then
+            echo "Test 010 failed, we think our GMML root directory is:\t${GMML_ROOT_DIR}\n"
+            exit 1
+fi
+
 printf "Testing 010.buildBySequenceRotamer.cc... "
-g++ -std=c++17 -I $GEMSHOME/gmml/ -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/010.buildBySequenceRotamer.cc -lgmml -pthread -o buildBySequenceRotamer
+g++ -std=c++17 -I "${GMML_ROOT_DIR}"/ -I "${GMML_ROOT_DIR}"/ -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ tests/010.buildBySequenceRotamer.cc -lgmml -pthread -o buildBySequenceRotamer
 ./buildBySequenceRotamer > 010.output_buildBySequenceRotamer.txt
 if [ -f structure.pdb ] && [ -f structure.off ]; then
     if ! cmp structure.pdb tests/correct_outputs/010.buildBySequenceRotamer.pdb > /dev/null 2>&1; then
-        printf "Test FAILED! PDB file different\n"
+        printf "Test FAILED! structure.pdb file different from tests/correct_outputs/010.buildBySequenceRotamer.pdb\n"
         echo "Exit Code: 1"
         return 1
     #elif ! cmp structure.off tests/correct_outputs/010.buildBySequenceRotamer.off > /dev/null 2>&1; then
@@ -22,7 +29,7 @@ if [ -f structure.pdb ] && [ -f structure.off ]; then
         return 0
     fi
 else
-    printf "Test FAILED!\n"
+    printf "Test FAILED!\nstructure.pdb doesn't exist\n"
     echo "Exit Code: 1"
     return 1
 fi

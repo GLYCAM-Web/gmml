@@ -9,8 +9,11 @@ using PdbFileSpace::PdbCompoundSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbCompoundSection::PdbCompoundSection() : record_name_("COMPND"){}
-PdbCompoundSection::PdbCompoundSection(const std::string& record_name) : record_name_(record_name) {}
+PdbCompoundSection::PdbCompoundSection() : record_name_("COMPND")
+{}
+
+PdbCompoundSection::PdbCompoundSection(const std::string& record_name) : record_name_(record_name)
+{}
 
 PdbCompoundSection::PdbCompoundSection(std::stringstream& stream_block)
 {
@@ -20,20 +23,22 @@ PdbCompoundSection::PdbCompoundSection(std::stringstream& stream_block)
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
+        if (!is_record_name_set)
+        {
+            record_name_ = line.substr(0, 6);
             gmml::Trim(record_name_);
-            is_record_name_set=true;
+            is_record_name_set = true;
         }
         std::stringstream ss, specification_block;
-        ss << line.substr(10,70);
+        ss << line.substr(10, 70);
         specification_block << ss.str() << std::endl;
 
         getline(stream_block, line);
         temp = line;
-        while (line.find("MOL_ID") == std::string::npos && !gmml::Trim(temp).empty()){
+        while (line.find("MOL_ID") == std::string::npos && !gmml::Trim(temp).empty())
+        {
             std::stringstream sss;
-            sss << line.substr(10,70);
+            sss << line.substr(10, 70);
 
             specification_block << sss.str() << std::endl;
             getline(stream_block, line);
@@ -72,11 +77,12 @@ void PdbCompoundSection::SetRecordName(const std::string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbCompoundSection::Print(std::ostream &out)
+void PdbCompoundSection::Print(std::ostream& out)
 {
     out << "Record Name: " << record_name_ << std::endl;
     out << "============= Compound Specification =============" << std::endl;
-    for(PdbCompoundSection::PdbCompoundSpecificationMap::iterator it = compound_specifications_.begin(); it != compound_specifications_.end(); it++)
+    for (PdbCompoundSection::PdbCompoundSpecificationMap::iterator it = compound_specifications_.begin();
+         it != compound_specifications_.end(); it++)
     {
         out << "Molecule ID: " << (it)->first << std::endl;
         (it)->second->Print();

@@ -7,65 +7,66 @@ using PdbFileSpace::PdbDatabaseReference;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbDatabaseReference::PdbDatabaseReference() {}
-PdbDatabaseReference::PdbDatabaseReference(std::string &line)
+PdbDatabaseReference::PdbDatabaseReference()
+{}
+
+PdbDatabaseReference::PdbDatabaseReference(std::string& line)
 {
     std::string temp = line;
     if (!gmml::Trim(temp).empty())
     {
-      record_name_ = line.substr(0,6);
+        record_name_ = line.substr(0, 6);
 
-      id_code_ = line.substr(7,4);
+        id_code_ = line.substr(7, 4);
 
-      chain_id_ = line.substr(12,1);
+        chain_id_ = line.substr(12, 1);
 
-      seq_begin_ = gmml::ConvertString<int>(line.substr(14,4));
+        seq_begin_ = gmml::ConvertString<int>(line.substr(14, 4));
 
-      insert_begin_ = line.substr(18,1);
+        insert_begin_ = line.substr(18, 1);
 
-      seq_end_ = gmml::ConvertString<int>(line.substr(20,4));
+        seq_end_ = gmml::ConvertString<int>(line.substr(20, 4));
 
-      insert_end_ = line.substr(24,1);
+        insert_end_ = line.substr(24, 1);
 
-      database_ = line.substr(26,6);
+        database_ = line.substr(26, 6);
 
-      if (record_name_ == "DBREF ")
-      {
-        db_accession_ = line.substr(33,8);
+        if (record_name_ == "DBREF ")
+        {
+            db_accession_ = line.substr(33, 8);
 
-        db_id_code_ = line.substr(42,12);
+            db_id_code_ = line.substr(42, 12);
 
-        db_seq_begin_ = gmml::ConvertString<int>(line.substr(55,5));
+            db_seq_begin_ = gmml::ConvertString<int>(line.substr(55, 5));
 
-        db_ins_beg_ = line.substr(60,1);
+            db_ins_beg_ = line.substr(60, 1);
 
-        db_seq_end_ = gmml::ConvertString<int>(line.substr(62,5));
+            db_seq_end_ = gmml::ConvertString<int>(line.substr(62, 5));
 
-        db_ins_end_ = line.substr(67,1);
-      }
-      else if (record_name_ == "DBREF1")
-      {
-        std::size_t position = line.find("DBREF2");
-        if (position!=std::string::npos)
-           {
-             std::string dbref2 = line.substr(position, 68);
+            db_ins_end_ = line.substr(67, 1);
+        }
+        else if (record_name_ == "DBREF1")
+        {
+            std::size_t position = line.find("DBREF2");
+            if (position != std::string::npos)
+            {
+                std::string dbref2 = line.substr(position, 68);
 
-             db_accession_ = dbref2.substr(18,22);
+                db_accession_ = dbref2.substr(18, 22);
 
-             db_id_code_ = line.substr(47,15);
+                db_id_code_ = line.substr(47, 15);
 
-             db_seq_begin_ = gmml::ConvertString<int>(dbref2.substr(45,10));
+                db_seq_begin_ = gmml::ConvertString<int>(dbref2.substr(45, 10));
 
-             db_ins_beg_ = ' ';
+                db_ins_beg_ = ' ';
 
-             db_seq_end_ = gmml::ConvertString<int>(line.substr(57,10));
+                db_seq_end_ = gmml::ConvertString<int>(line.substr(57, 10));
 
-             db_ins_end_ = ' ';
-           }
-      }
+                db_ins_end_ = ' ';
+            }
+        }
     }
 }
-
 
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
@@ -215,11 +216,10 @@ void PdbDatabaseReference::SetDatabaseInsEnd(const std::string db_ins_end)
     db_ins_end_ = db_ins_end;
 }
 
-
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void PdbDatabaseReference::Print(std::ostream &out)
+void PdbDatabaseReference::Print(std::ostream& out)
 {
     out << "Record Name: " << record_name_;
     out << "ID Code: " << id_code_;

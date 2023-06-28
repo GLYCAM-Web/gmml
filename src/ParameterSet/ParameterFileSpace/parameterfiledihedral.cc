@@ -11,10 +11,12 @@ using ParameterFileSpace::ParameterFileDihedral;
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
 ParameterFileDihedral::ParameterFileDihedral()
-    : types_(), terms_(), scee_(gmml::dNotSet), scnb_(gmml::dNotSet), is_generic_(false), is_improper_(false) {}
+    : types_(), terms_(), scee_(gmml::dNotSet), scnb_(gmml::dNotSet), is_generic_(false), is_improper_(false)
+{}
 
-ParameterFileDihedral::ParameterFileDihedral(const std::vector<std::string> &types, const ParameterFileSpace::ParameterFileDihedralTerm& term,
-                                             double scee, double scnb, bool is_generic, bool is_improper)
+ParameterFileDihedral::ParameterFileDihedral(const std::vector<std::string>& types,
+                                             const ParameterFileSpace::ParameterFileDihedralTerm& term, double scee,
+                                             double scnb, bool is_generic, bool is_improper)
     : types_(types), terms_(), scee_(scee), scnb_(scnb), is_generic_(is_generic), is_improper_(is_improper)
 {
     terms_.push_back(term);
@@ -58,39 +60,47 @@ bool ParameterFileDihedral::GetIsImproper()
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
 
-void ParameterFileDihedral::SetTypes(std::vector<std::string> types){
+void ParameterFileDihedral::SetTypes(std::vector<std::string> types)
+{
     types_.clear();
-    for(std::vector<std::string>::iterator it = types.begin(); it != types.end(); it++)
+    for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); it++)
     {
         types_.push_back(*it);
     }
 }
 
-void ParameterFileDihedral::SetTerms(std::vector<ParameterFileSpace::ParameterFileDihedralTerm> terms){
+void ParameterFileDihedral::SetTerms(std::vector<ParameterFileSpace::ParameterFileDihedralTerm> terms)
+{
     terms_.clear();
-    for(std::vector<ParameterFileSpace::ParameterFileDihedralTerm>::iterator it = terms.begin(); it != terms.end(); it++)
+    for (std::vector<ParameterFileSpace::ParameterFileDihedralTerm>::iterator it = terms.begin(); it != terms.end();
+         it++)
     {
         terms_.push_back(*it);
     }
 }
 
-void ParameterFileDihedral::AddTerm(ParameterFileSpace::ParameterFileDihedralTerm term){
+void ParameterFileDihedral::AddTerm(ParameterFileSpace::ParameterFileDihedralTerm term)
+{
     terms_.push_back(term);
 }
 
-void ParameterFileDihedral::SetScee(double scee){
+void ParameterFileDihedral::SetScee(double scee)
+{
     scee_ = scee;
 }
 
-void ParameterFileDihedral::SetScnb(double scnb){
+void ParameterFileDihedral::SetScnb(double scnb)
+{
     scnb_ = scnb;
 }
 
-void ParameterFileDihedral::SetIsGeneric(bool is_generic){
+void ParameterFileDihedral::SetIsGeneric(bool is_generic)
+{
     is_generic_ = is_generic;
 }
 
-void ParameterFileDihedral::SetIsImproper(bool is_improper){
+void ParameterFileDihedral::SetIsImproper(bool is_improper)
+{
     is_improper_ = is_improper;
 }
 
@@ -99,43 +109,63 @@ void ParameterFileDihedral::SetIsImproper(bool is_improper){
 //////////////////////////////////////////////////////////
 void ParameterFileDihedral::Print(std::ostream& out)
 {
-    for(std::vector<std::string>::iterator it = types_.begin(); it != types_.end(); it++)
+    for (std::vector<std::string>::iterator it = types_.begin(); it != types_.end(); it++)
     {
-        if(it != types_.end() - 1)
+        if (it != types_.end() - 1)
         {
-            out << std::setw(4) << (*it)
-                << std::setw(2) << "-";
+            out << std::setw(4) << (*it) << std::setw(2) << "-";
         }
         else
+        {
             out << std::setw(4) << (*it);
+        }
     }
-    if(is_generic_ == true)
-        out << std::setw(10) << "YES";
-    else
-        out << std::setw(10) << "NO";
-    if(is_improper_ == true)
-        out << std::setw(10) << "YES";
-    else
-        out << std::setw(10) << "NO";
-
-    if(scee_ == gmml::dNotSet)
-        out << std::setw(6) << "--";
-    else
-        out << std::setw(6) << scee_;
-
-    if(scnb_ == gmml::dNotSet)
-        out << std::setw(6) << "--";
-    else
-        out << std::setw(6) << scnb_;
-
-    for(std::vector<ParameterFileSpace::ParameterFileDihedralTerm>::iterator it = terms_.begin(); it != terms_.end(); it++)
+    if (is_generic_ == true)
     {
-        if(it == terms_.begin())
+        out << std::setw(10) << "YES";
+    }
+    else
+    {
+        out << std::setw(10) << "NO";
+    }
+    if (is_improper_ == true)
+    {
+        out << std::setw(10) << "YES";
+    }
+    else
+    {
+        out << std::setw(10) << "NO";
+    }
+
+    if (scee_ == gmml::dNotSet)
+    {
+        out << std::setw(6) << "--";
+    }
+    else
+    {
+        out << std::setw(6) << scee_;
+    }
+
+    if (scnb_ == gmml::dNotSet)
+    {
+        out << std::setw(6) << "--";
+    }
+    else
+    {
+        out << std::setw(6) << scnb_;
+    }
+
+    for (std::vector<ParameterFileSpace::ParameterFileDihedralTerm>::iterator it = terms_.begin(); it != terms_.end();
+         it++)
+    {
+        if (it == terms_.begin())
+        {
             it->Print(out);
+        }
         else
         {
             out << std::setw(54) << "";
-            it -> Print(out);
+            it->Print(out);
         }
     }
 }

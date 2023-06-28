@@ -7,7 +7,8 @@ using PdbFileSpace::PdbMasterCard;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbMasterCard::PdbMasterCard() {}
+PdbMasterCard::PdbMasterCard()
+{}
 
 PdbMasterCard::PdbMasterCard(std::stringstream& stream_block)
 {
@@ -16,22 +17,21 @@ PdbMasterCard::PdbMasterCard(std::stringstream& stream_block)
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
-        record_name_ = line.substr(0,6);
-        num_remark_ = gmml::ConvertString<int>(line.substr(10,5));
-        num_het_ = gmml::ConvertString<int>(line.substr(20,5));
-        num_helix_ = gmml::ConvertString<int>(line.substr(25,5));
-        num_sheet_ = gmml::ConvertString<int>(line.substr(30,5));
-        num_site_ = gmml::ConvertString<int>(line.substr(40,5));
-        num_x_form_ = gmml::ConvertString<int>(line.substr(45,5));
-        num_coord_ = gmml::ConvertString<int>(line.substr(50,5));
-        num_ter_ = gmml::ConvertString<int>(line.substr(55,5));
-        num_connect_ = gmml::ConvertString<int>(line.substr(60,5));
-        num_seq_ = gmml::ConvertString<int>(line.substr(65,5));
+        record_name_ = line.substr(0, 6);
+        num_remark_  = gmml::ConvertString<int>(line.substr(10, 5));
+        num_het_     = gmml::ConvertString<int>(line.substr(20, 5));
+        num_helix_   = gmml::ConvertString<int>(line.substr(25, 5));
+        num_sheet_   = gmml::ConvertString<int>(line.substr(30, 5));
+        num_site_    = gmml::ConvertString<int>(line.substr(40, 5));
+        num_x_form_  = gmml::ConvertString<int>(line.substr(45, 5));
+        num_coord_   = gmml::ConvertString<int>(line.substr(50, 5));
+        num_ter_     = gmml::ConvertString<int>(line.substr(55, 5));
+        num_connect_ = gmml::ConvertString<int>(line.substr(60, 5));
+        num_seq_     = gmml::ConvertString<int>(line.substr(65, 5));
         getline(stream_block, line);
         temp = line;
     }
 }
-
 
 //////////////////////////////////////////////////////////
 //                       ACCESSOR                       //
@@ -154,7 +154,7 @@ void PdbMasterCard::SetNumSeq(int num_seq)
 //////////////////////////////////////////////////////////
 //                       DISPLAY FUNCTION               //
 //////////////////////////////////////////////////////////
-void PdbMasterCard::Print(std::ostream &out)
+void PdbMasterCard::Print(std::ostream& out)
 {
     out << "Record Name: " << record_name_;
     out << "REMARK Cards: " << num_remark_;

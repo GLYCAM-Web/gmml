@@ -23,65 +23,64 @@
 
 namespace gmml
 {
-namespace MolecularMetadata
-{
-namespace GLYCAM
-{
-/**
-         *   Glycam06NamesToTypesLookupMap
-         *
-         *   The first string is the name-code for a residue.  It is typically
-         *   three or four characters long.
-         *
-         *     Examples:  OME, 0GA, WYB, ZOLT YuAP
-         *
-         *   The second string is a type or attribute appropriate to that residue.
-         *
-         *     Examples:  monosaccharide, derivative, aglycon, protonated, pyranose
-         *
-         *
-         */
-
-class Glycam06NamesToTypesLookupContainer
-{
-public:
-
-    //////////////////////////////////////////////////////////
-    //                       CONSTRUCTOR                    //
-    //////////////////////////////////////////////////////////
-    /*! \fn
-    * Default constructor
-    */
-    Glycam06NamesToTypesLookupContainer(); // Calls an initializer?
-
-    //////////////////////////////////////////////////////////
-    //                         TYPEDEFS                     //
-    //////////////////////////////////////////////////////////
-
-
-    //////////////////////////////////////////////////////////
-    //                      QUERY FUNCTIONS                 //
-    //////////////////////////////////////////////////////////
-
-    inline std::vector<std::string> GetTypesForResidue(std::string query)
+    namespace MolecularMetadata
     {
-        std::vector<std::string> matching_types;
-        // Iterate over the multimap using range based for loop
-        for (std::pair<std::string, std::string> elem : glycam06NamesToTypesLookupMap_)
+        namespace GLYCAM
         {
-            if (elem.first.compare(query)==0)
+            /**
+             *   Glycam06NamesToTypesLookupMap
+             *
+             *   The first string is the name-code for a residue.  It is typically
+             *   three or four characters long.
+             *
+             *     Examples:  OME, 0GA, WYB, ZOLT YuAP
+             *
+             *   The second string is a type or attribute appropriate to that residue.
+             *
+             *     Examples:  monosaccharide, derivative, aglycon, protonated, pyranose
+             *
+             *
+             */
+
+            class Glycam06NamesToTypesLookupContainer
             {
-                matching_types.push_back(elem.second);
-            }
-            //std::cout << elem.first << " :: " << elem.second << std::endl;
-        }
-        return matching_types;
-    }
-private:
-    std::multimap<std::string, std::string> glycam06NamesToTypesLookupMap_;
-};
-} // close namespace
-} // close namespace
-} // close namespace
+              public:
+                //////////////////////////////////////////////////////////
+                //                       CONSTRUCTOR                    //
+                //////////////////////////////////////////////////////////
+                /*! \fn
+                 * Default constructor
+                 */
+                Glycam06NamesToTypesLookupContainer(); // Calls an initializer?
+
+                //////////////////////////////////////////////////////////
+                //                         TYPEDEFS                     //
+                //////////////////////////////////////////////////////////
+
+                //////////////////////////////////////////////////////////
+                //                      QUERY FUNCTIONS                 //
+                //////////////////////////////////////////////////////////
+
+                inline std::vector<std::string> GetTypesForResidue(std::string query)
+                {
+                    std::vector<std::string> matching_types;
+                    // Iterate over the multimap using range based for loop
+                    for (std::pair<std::string, std::string> elem : glycam06NamesToTypesLookupMap_)
+                    {
+                        if (elem.first.compare(query) == 0)
+                        {
+                            matching_types.push_back(elem.second);
+                        }
+                        // std::cout << elem.first << " :: " << elem.second << std::endl;
+                    }
+                    return matching_types;
+                }
+
+              private:
+                std::multimap<std::string, std::string> glycam06NamesToTypesLookupMap_;
+            };
+        } // namespace GLYCAM
+    }     // namespace MolecularMetadata
+} // namespace gmml
 
 #endif // GLYCAM06_RESIDUE_NAMES_TYPES_META_HPP

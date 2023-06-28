@@ -1,0 +1,5 @@
+Input file is tests/inputs/017.GlycoproteinBuilderInput.txt
+Reading input file complete, on to construction
+Resolving overlaps
+Writing output files
+Program got to end ok

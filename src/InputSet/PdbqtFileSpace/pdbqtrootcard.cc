@@ -13,32 +13,38 @@ PdbqtRootCard::PdbqtRootCard() : record_name_("ROOT")
     root_atoms_ = NULL;
 }
 
-PdbqtRootCard::PdbqtRootCard(std::ifstream &root_block, std::vector<PdbqtFileSpace::PdbqtAtomCard*>& ACV)
+PdbqtRootCard::PdbqtRootCard(std::ifstream& root_block, std::vector<PdbqtFileSpace::PdbqtAtomCard*>& ACV)
 {
     root_atoms_ = NULL;
     std::string line;
     record_name_ = "ROOT";
 
-    while (getline(root_block, line)){
-        if(line.find("ATOM") != std::string::npos || line.find("HETATM") != std::string::npos)
+    while (getline(root_block, line))
+    {
+        if (line.find("ATOM") != std::string::npos || line.find("HETATM") != std::string::npos)
         {
-	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
-            root_block.seekg(offset, root_block.cur); //Go back one line
+            int offset =
+                -1 * ((int)line.length() +
+                      1); // Rewind file stream postion by length of current line + 1, to go back to the last line.
+            root_block.seekg(offset, root_block.cur); // Go back one line
             root_atoms_ = new PdbqtFileSpace::PdbqtAtomCard(root_block);
-	    ACV.push_back(root_atoms_);
-            
+            ACV.push_back(root_atoms_);
         }
 
-        else if(line.find("ENDROOT") != std::string::npos) //Quit Root section normally.
+        else if (line.find("ENDROOT") != std::string::npos) // Quit Root section normally.
         {
-	    break;
+            break;
         }
-	
-	else { //The file stream has gone one line past the root section due to the absence of "ENDROOT". Should rewind by one line and quit RootCard.
-	    int offset = -1*((int)line.length() +1);  //Rewind file stream postion by length of current line + 1, to go back to the last line. 
-            root_block.seekg(offset, root_block.cur); //Go back one line
-	    break;
-	}
+
+        else
+        { // The file stream has gone one line past the root section due to the absence of "ENDROOT". Should rewind by
+          // one line and quit RootCard.
+            int offset =
+                -1 * ((int)line.length() +
+                      1); // Rewind file stream postion by length of current line + 1, to go back to the last line.
+            root_block.seekg(offset, root_block.cur); // Go back one line
+            break;
+        }
     }
 }
 
@@ -49,6 +55,7 @@ std::string PdbqtRootCard::GetRecordName()
 {
     return record_name_;
 }
+
 PdbqtFileSpace::PdbqtAtomCard* PdbqtRootCard::GetRootAtoms()
 {
     return root_atoms_;
@@ -76,8 +83,10 @@ void PdbqtRootCard::SetRootAtoms(PdbqtFileSpace::PdbqtAtomCard* root_atoms)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbqtRootCard::Print(std::ostream &out)
+void PdbqtRootCard::Print(std::ostream& out)
 {
-    if(root_atoms_ != NULL)
+    if (root_atoms_ != NULL)
+    {
         root_atoms_->Print(out);
+    }
 }

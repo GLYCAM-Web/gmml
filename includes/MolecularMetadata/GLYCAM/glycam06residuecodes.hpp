@@ -3,51 +3,50 @@
 #include <string>
 #include <map>
 #include <vector>
+
 namespace gmml
 {
-namespace MolecularMetadata
-{
-namespace GLYCAM
-{
-struct ResidueNamesCodesTypes
-{
-    std::string residueName_ ;
-    std::string glycamCode_ ;
-    std::string residueType_ ;
-} ;
+    namespace MolecularMetadata
+    {
+        namespace GLYCAM
+        {
+            struct ResidueNamesCodesTypes
+            {
+                std::string residueName_;
+                std::string glycamCode_;
+                std::string residueType_;
+            };
 
-typedef std::vector<ResidueNamesCodesTypes> ResidueNamesCodesTypesVector;
+            typedef std::vector<ResidueNamesCodesTypes> ResidueNamesCodesTypesVector;
 
-class Glycam06ResidueNamesToCodesLookupContainer
-{
-public:
+            class Glycam06ResidueNamesToCodesLookupContainer
+            {
+              public:
+                //////////////////////////////////////////////////////////
+                //                       CONSTRUCTOR                    //
+                //////////////////////////////////////////////////////////
+                /*! \fn
+                 * Default constructor
+                 */
+                Glycam06ResidueNamesToCodesLookupContainer();
 
-    //////////////////////////////////////////////////////////
-    //                       CONSTRUCTOR                    //
-    //////////////////////////////////////////////////////////
-    /*! \fn
-    * Default constructor
-    */
-    Glycam06ResidueNamesToCodesLookupContainer();
+                //////////////////////////////////////////////////////////
+                //                         TYPEDEFS                     //
+                //////////////////////////////////////////////////////////
 
-    //////////////////////////////////////////////////////////
-    //                         TYPEDEFS                     //
-    //////////////////////////////////////////////////////////
+                //////////////////////////////////////////////////////////
+                //                      QUERY FUNCTIONS                 //
+                //////////////////////////////////////////////////////////
 
+                // The below function has no code in the .cc file, so GEMS breaks.  Commented out for now -DM
+                //  std::string GetCodeForResidue(std::string query);
+                std::string GetResidueForCode(std::string query) const;
+                std::string GetCodeForResidue(std::string query) const;
 
-    //////////////////////////////////////////////////////////
-    //                      QUERY FUNCTIONS                 //
-    //////////////////////////////////////////////////////////
-
-    //The below function has no code in the .cc file, so GEMS breaks.  Commented out for now -DM
-    // std::string GetCodeForResidue(std::string query);
-    std::string GetResidueForCode(std::string query);
-    std::string GetCodeForResidue(std::string query);
-
-private:
-    ResidueNamesCodesTypesVector ResidueNamesCodesTypesLookupTable_;
-};
-} // close namespace
-} // close namespace
-} // close namespace
+              private:
+                ResidueNamesCodesTypesVector ResidueNamesCodesTypesLookupTable_;
+            };
+        } // namespace GLYCAM
+    }     // namespace MolecularMetadata
+} // namespace gmml
 #endif // GLYCAM06RESIDUECODES_HPP

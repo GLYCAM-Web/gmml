@@ -8,82 +8,101 @@ using PdbFileSpace::PdbCompoundSpecification;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbCompoundSpecification::PdbCompoundSpecification() : molecule_id_(""), molecule_name_(""), chain_ids_(), fragment_(""),
-    molecule_synonyms_(), enzyme_commission_numbers_(), is_engineered_(false), has_mutation_(false), comments_(""){}
+PdbCompoundSpecification::PdbCompoundSpecification()
+    : molecule_id_(""), molecule_name_(""), chain_ids_(), fragment_(""), molecule_synonyms_(),
+      enzyme_commission_numbers_(), is_engineered_(false), has_mutation_(false), comments_("")
+{}
 
-PdbCompoundSpecification::PdbCompoundSpecification(const std::string& molecule_id, const std::string& molecule_name) : molecule_id_(molecule_id), molecule_name_(molecule_name){}
+PdbCompoundSpecification::PdbCompoundSpecification(const std::string& molecule_id, const std::string& molecule_name)
+    : molecule_id_(molecule_id), molecule_name_(molecule_name)
+{}
 
-PdbCompoundSpecification::PdbCompoundSpecification(const std::string &molecule_id, const std::string &molecule_name, const std::vector<std::string> &chain_ids, const std::string &fragment,
-                                                   const std::vector<std::string> &molecule_synonyms, std::vector<std::string> &enzyme_commission_numbers, bool is_engineered, bool has_mutation, const std::string& comments) :
-    molecule_id_(molecule_id), molecule_name_(molecule_name), chain_ids_(chain_ids), fragment_(fragment), molecule_synonyms_(molecule_synonyms),
-    enzyme_commission_numbers_(enzyme_commission_numbers), is_engineered_(is_engineered), has_mutation_(has_mutation), comments_(comments){}
+PdbCompoundSpecification::PdbCompoundSpecification(const std::string& molecule_id, const std::string& molecule_name,
+                                                   const std::vector<std::string>& chain_ids,
+                                                   const std::string& fragment,
+                                                   const std::vector<std::string>& molecule_synonyms,
+                                                   std::vector<std::string>& enzyme_commission_numbers,
+                                                   bool is_engineered, bool has_mutation, const std::string& comments)
+    : molecule_id_(molecule_id), molecule_name_(molecule_name), chain_ids_(chain_ids), fragment_(fragment),
+      molecule_synonyms_(molecule_synonyms), enzyme_commission_numbers_(enzyme_commission_numbers),
+      is_engineered_(is_engineered), has_mutation_(has_mutation), comments_(comments)
+{}
 
-PdbCompoundSpecification::PdbCompoundSpecification(std::stringstream& specification_block) : molecule_id_(""), molecule_name_(""), chain_ids_(), fragment_(""),
-    molecule_synonyms_(), enzyme_commission_numbers_(), is_engineered_(false), has_mutation_(false), comments_("")
+PdbCompoundSpecification::PdbCompoundSpecification(std::stringstream& specification_block)
+    : molecule_id_(""), molecule_name_(""), chain_ids_(), fragment_(""), molecule_synonyms_(),
+      enzyme_commission_numbers_(), is_engineered_(false), has_mutation_(false), comments_("")
 {
     std::string line;
     getline(specification_block, line);
     std::string temp = line;
-    int flag = 0;
+    int flag         = 0;
     std::stringstream molecule_name, chain_id, fragment, molecule_synonyms, enzyme_commission_numbers, comments;
-    while(!gmml::Trim(temp).empty())
+    while (!gmml::Trim(temp).empty())
     {
-        std::vector<std::string> tokens = gmml::Split(line,":;");
+        std::vector<std::string> tokens = gmml::Split(line, ":;");
 
         std::string token_name = gmml::Trim(tokens.at(0));
 
-        if(token_name == "MOL_ID")
+        if (token_name == "MOL_ID")
         {
             molecule_id_ = tokens.at(1);
             gmml::Trim(molecule_id_);
         }
-        else if(token_name == "MOLECULE")
+        else if (token_name == "MOLECULE")
         {
             std::string s = tokens.at(1);
             molecule_name << s;
             flag = 1;
         }
-        else if(token_name == "CHAIN")
+        else if (token_name == "CHAIN")
         {
             std::string s = tokens.at(1);
             chain_id << s;
             flag = 2;
         }
-        else if(token_name == "FRAGMENT")
+        else if (token_name == "FRAGMENT")
         {
             std::string s = tokens.at(1);
             fragment << s;
             flag = 3;
         }
-        else if(token_name == "SYNONYM")
+        else if (token_name == "SYNONYM")
         {
             std::string s = tokens.at(1);
             molecule_synonyms << s;
             flag = 4;
         }
-        else if(token_name == "EC")
+        else if (token_name == "EC")
         {
             std::string s = tokens.at(1);
             enzyme_commission_numbers << s;
             flag = 5;
         }
-        else if(token_name == "ENGINEERED")
+        else if (token_name == "ENGINEERED")
         {
             std::string status = gmml::Trim(tokens.at(1));
-            if(status == "YES")
+            if (status == "YES")
+            {
                 is_engineered_ = true;
+            }
             else
+            {
                 is_engineered_ = false;
+            }
         }
-        else if(token_name == "MUTATION")
+        else if (token_name == "MUTATION")
         {
             std::string status = gmml::Trim(tokens.at(1));
-            if(status == "YES")
+            if (status == "YES")
+            {
                 has_mutation_ = true;
+            }
             else
+            {
                 has_mutation_ = false;
+            }
         }
-        else if(token_name == "OTHER_DETAILS")
+        else if (token_name == "OTHER_DETAILS")
         {
             std::string s = tokens.at(1);
             comments << s;
@@ -116,24 +135,24 @@ PdbCompoundSpecification::PdbCompoundSpecification(std::stringstream& specificat
         getline(specification_block, line);
         temp = line;
     }
-    if(molecule_name.str().length() > 0)
+    if (molecule_name.str().length() > 0)
     {
-        molecule_name_ = gmml::Split(molecule_name.str(),";").at(0);
+        molecule_name_ = gmml::Split(molecule_name.str(), ";").at(0);
         gmml::Trim(molecule_name_);
     }
 
-    if(chain_id.str().length() > 0)
+    if (chain_id.str().length() > 0)
     {
         std::string chain_ids = chain_id.str();
         gmml::Trim(chain_ids);
-        chain_ids_ = gmml::Split(chain_ids,",;");
-//        for(std::vector<std::string>::iterator it = chain_ids_.begin(); it != chain_ids_.end(); it++)
-//        {
-//            gmml::Trim(*it);
-//        }
+        chain_ids_ = gmml::Split(chain_ids, ",;");
+        //        for(std::vector<std::string>::iterator it = chain_ids_.begin(); it != chain_ids_.end(); it++)
+        //        {
+        //            gmml::Trim(*it);
+        //        }
     }
 
-    if(fragment.str().length() > 0)
+    if (fragment.str().length() > 0)
     {
         fragment_ = fragment.str();
         gmml::Trim(fragment_);
@@ -141,31 +160,33 @@ PdbCompoundSpecification::PdbCompoundSpecification(std::stringstream& specificat
         gmml::Trim(fragment_);
     }
 
-    if(molecule_synonyms.str().length() > 0)
+    if (molecule_synonyms.str().length() > 0)
     {
         std::string synonyms = molecule_synonyms.str();
         gmml::Trim(synonyms);
         molecule_synonyms_ = gmml::Split(synonyms, ",;");
-//        for(std::vector<std::string>::iterator it = molecule_synonyms_.begin(); it != molecule_synonyms_.end(); it++)
-//        {
-//            gmml::Trim(*it);
-//        }
+        //        for(std::vector<std::string>::iterator it = molecule_synonyms_.begin(); it !=
+        //        molecule_synonyms_.end(); it++)
+        //        {
+        //            gmml::Trim(*it);
+        //        }
     }
 
-    if(enzyme_commission_numbers.str().length() > 0)
+    if (enzyme_commission_numbers.str().length() > 0)
     {
         std::string commission_numbers = enzyme_commission_numbers.str();
         gmml::Trim(commission_numbers);
         enzyme_commission_numbers_ = gmml::Split(commission_numbers, ",;");
-//        for(std::vector<std::string>::iterator it = enzyme_commission_numbers_.begin(); it != enzyme_commission_numbers_.end(); it++)
-//        {
-//            gmml::Trim(*it);
-//        }
+        //        for(std::vector<std::string>::iterator it = enzyme_commission_numbers_.begin(); it !=
+        //        enzyme_commission_numbers_.end(); it++)
+        //        {
+        //            gmml::Trim(*it);
+        //        }
     }
 
-    if(comments.str().length() > 0)
+    if (comments.str().length() > 0)
     {
-        comments_ = gmml::Split(comments.str(),";").at(0);
+        comments_ = gmml::Split(comments.str(), ";").at(0);
         gmml::Trim(comments_);
     }
 }
@@ -234,7 +255,7 @@ void PdbCompoundSpecification::SetMoleculeName(const std::string molecule_name)
 void PdbCompoundSpecification::SetChainIds(const std::vector<std::string> chain_ids)
 {
     chain_ids_.clear();
-    for(std::vector<std::string>::const_iterator it = chain_ids.begin(); it != chain_ids.end(); it++)
+    for (std::vector<std::string>::const_iterator it = chain_ids.begin(); it != chain_ids.end(); it++)
     {
         chain_ids_.push_back(*it);
     }
@@ -253,7 +274,7 @@ void PdbCompoundSpecification::SetFragment(const std::string fragment)
 void PdbCompoundSpecification::SetMoleculeSynonyms(std::vector<std::string> molecule_synonyms)
 {
     molecule_synonyms_.clear();
-    for(std::vector<std::string>::const_iterator it = molecule_synonyms.begin(); it != molecule_synonyms.end(); it++)
+    for (std::vector<std::string>::const_iterator it = molecule_synonyms.begin(); it != molecule_synonyms.end(); it++)
     {
         molecule_synonyms_.push_back(*it);
     }
@@ -267,7 +288,8 @@ void PdbCompoundSpecification::AddMoleculeSynonym(const std::string molecule_syn
 void PdbCompoundSpecification::SetEnzymeCommissionNumbers(const std::vector<std::string> enzyme_commission_numbers)
 {
     enzyme_commission_numbers_.clear();
-    for(std::vector<std::string>::const_iterator it = enzyme_commission_numbers.begin(); it != enzyme_commission_numbers.end(); it++)
+    for (std::vector<std::string>::const_iterator it = enzyme_commission_numbers.begin();
+         it != enzyme_commission_numbers.end(); it++)
     {
         enzyme_commission_numbers_.push_back(*it);
     }
@@ -300,33 +322,42 @@ void PdbCompoundSpecification::setComments(const std::string comments)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbCompoundSpecification::Print(std::ostream &out)
+void PdbCompoundSpecification::Print(std::ostream& out)
 {
     out << "Molecule ID: " << molecule_id_ << ", Molecule Name: " << molecule_name_ << std::endl;
     out << "Chain IDs: ";
-    for(std::vector<std::string>::iterator it = chain_ids_.begin(); it != chain_ids_.end(); it++)
+    for (std::vector<std::string>::iterator it = chain_ids_.begin(); it != chain_ids_.end(); it++)
     {
         out << (*it) << ", ";
     }
     out << std::endl << "Fragment: " << fragment_ << std::endl << "Molecule Synonyms: ";
-    for(std::vector<std::string>::iterator it = molecule_synonyms_.begin(); it != molecule_synonyms_.end(); it++)
+    for (std::vector<std::string>::iterator it = molecule_synonyms_.begin(); it != molecule_synonyms_.end(); it++)
     {
         out << (*it) << ", ";
     }
     out << std::endl << "Enzyme Commission Numbers: ";
-    for(std::vector<std::string>::iterator it = enzyme_commission_numbers_.begin(); it != enzyme_commission_numbers_.end(); it++)
+    for (std::vector<std::string>::iterator it = enzyme_commission_numbers_.begin();
+         it != enzyme_commission_numbers_.end(); it++)
     {
         out << (*it) << ", ";
     }
     out << std::endl << "Engineered: ";
-    if(is_engineered_)
+    if (is_engineered_)
+    {
         out << "YES" << std::endl;
+    }
     else
+    {
         out << "NO" << std::endl;
+    }
     out << "Mutation: ";
-    if(has_mutation_)
+    if (has_mutation_)
+    {
         out << "YES" << std::endl;
+    }
     else
+    {
         out << "NO" << std::endl;
+    }
     out << "Comments: " << comments_ << std::endl;
 }

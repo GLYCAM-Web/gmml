@@ -7,9 +7,10 @@ using PdbFileSpace::PdbOriginXnSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbOriginXnSection::PdbOriginXnSection() {}
+PdbOriginXnSection::PdbOriginXnSection()
+{}
 
-PdbOriginXnSection::PdbOriginXnSection(std::stringstream &stream_block)
+PdbOriginXnSection::PdbOriginXnSection(std::stringstream& stream_block)
 {
     std::string line;
     getline(stream_block, line);
@@ -29,7 +30,8 @@ PdbOriginXnSection::PdbOriginXnSection(std::stringstream &stream_block)
 //                         ACCESSOR                     //
 //////////////////////////////////////////////////////////
 
-PdbOriginXnSection::OriginXnCardVector PdbOriginXnSection::GetOriginXN(){
+PdbOriginXnSection::OriginXnCardVector PdbOriginXnSection::GetOriginXN()
+{
     return origin_x_n_;
 }
 
@@ -37,15 +39,16 @@ PdbOriginXnSection::OriginXnCardVector PdbOriginXnSection::GetOriginXN(){
 //                       MUTATOR                        //
 //////////////////////////////////////////////////////////
 
-void PdbOriginXnSection::SetOriginXN(OriginXnCardVector origin_x_n){
+void PdbOriginXnSection::SetOriginXN(OriginXnCardVector origin_x_n)
+{
     origin_x_n_.clear();
-    for(OriginXnCardVector::iterator it = origin_x_n.begin(); it != origin_x_n.end(); it++)
+    for (OriginXnCardVector::iterator it = origin_x_n.begin(); it != origin_x_n.end(); it++)
     {
         origin_x_n_.push_back(*it);
     }
 }
 
-void PdbOriginXnSection::AddOriginXN(PdbOriginXnCard *origin)
+void PdbOriginXnSection::AddOriginXN(PdbOriginXnCard* origin)
 {
     origin_x_n_.push_back(origin);
 }
@@ -57,9 +60,9 @@ void PdbOriginXnSection::AddOriginXN(PdbOriginXnCard *origin)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbOriginXnSection::Print(std::ostream &out)
+void PdbOriginXnSection::Print(std::ostream& out)
 {
-    for(PdbOriginXnSection::OriginXnCardVector::iterator it = origin_x_n_.begin(); it != origin_x_n_.end(); it++)
+    for (PdbOriginXnSection::OriginXnCardVector::iterator it = origin_x_n_.begin(); it != origin_x_n_.end(); it++)
     {
         (*it)->Print(out);
     }

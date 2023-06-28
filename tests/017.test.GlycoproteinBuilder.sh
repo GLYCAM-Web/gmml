@@ -1,15 +1,36 @@
 #!/bin/bash
 
-printf "Testing 017.test.GlycoproteinBuilder.cpp... "
-g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ tests/017.test.GlycoproteinBuilder.cpp -lgmml -pthread -o gpBuilder
-./gpBuilder 017.GlycoproteinBuilderInput.txt tests/inputs/ > 017.output_GlycoproteinBuilder.txt 2>&1
-if ! cmp  tests/inputs/GlycoProtein_All_Resolved.pdb tests/correct_outputs/017.Glycoprotein_All_Resolved.pdb > /dev/null 2>&1; then
-    printf "Test FAILED! tests/inputs/GlycoProtein_All_Resolved.pdb different from tests/correct_outputs/017.Glycoprotein_All_Resolved.pdb\n Compare using diff or VMD\n"
-    echo "Exit Code: 1"
-    return 1
-else
-    printf "Test passed.\n"
-    rm gpBuilder 017.output_GlycoproteinBuilder.txt tests/inputs/GlycoProtein_All_Resolved* ASN_*_glycan.pdb THR_*_glycan.pdb #tests/inputs/GlycoProtein_All_Resolved.pdb #tests/inputs/GlycoProtein_All_Resolved.off
-    echo "Exit Code: 0"
-    return 0
+GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
+
+if [[ "${GMML_ROOT_DIR}" != *"gmml" ]] ; then
+            echo "Test 017 failed, we think our GMML root directory is:\t${GMML_ROOT_DIR}\n"
+            exit 1
 fi
+
+printf "Testing 017.test.GlycoproteinBuilder.cpp... "
+g++ -std=c++17 -I "${GMML_ROOT_DIR}" -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ "${GMML_ROOT_DIR}"/internalPrograms/GlycoproteinBuilder/main.cpp -lgmml -pthread -o gpBuilder
+./gpBuilder tests/inputs/017.GlycoproteinBuilderInput.txt > output_GlycoproteinBuilder.txt 2>&1
+fileList=("glycoprotein_initial.pdb" "glycoprotein.pdb" "glycoprotein.off" " glycoprotein_serialized.pdb" "output_GlycoproteinBuilder.txt")
+for file in ${fileList[@]}; 
+do
+  	if [ -f $file ]; then
+  	    if ! cmp $file tests/correct_outputs/017.$file  > /dev/null 2>&1; then
+  	        printf "Test FAILED!\n $file is different from tests/correct_outputs/017.$file\n"
+            echo "Exit Code: 1"
+            return 1
+            exit 1
+        else
+            rm $file    
+        fi
+    else
+        printf "Test FAILED!\n $file does not exist\n"
+        echo "Exit Code: 1"
+        return 1
+        exit 1
+    fi      
+done	
+printf "Test passed.\n"
+rm gpBuilder  
+echo "Exit Code: 0"
+return 0
+exit 0

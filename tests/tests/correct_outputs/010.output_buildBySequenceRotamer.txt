@@ -1,3 +1,4 @@
+Number of residues for this sequence is 16
 Number of likely shapes for this sequence is 192
 Number of possible shapes for this sequence is 972
 Name: Methyl3-6DGlcNAcpb, LinkageIndex: 2, Res1: 4, Res2: 3

@@ -11,18 +11,20 @@
 
 int main()
 {
-//prep
-	// Note: Oliver was checking the functionality. It does not yet work as required, but it took a while to figure out how to run the code
+    // prep
+    //  Note: Oliver was checking the functionality. It does not yet work as required, but it took a while to figure out
+    //  how to run the code
     // So this test is just a snapshot of how it's currently working and how I managed to get output.
     // Create the carbohydrate assembly
     PrepFileSpace::PrepFile* prepA = new PrepFileSpace::PrepFile("../dat/prep/GLYCAM_06j-1.prep");
-    //std::string condensed_sequence = "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH";
+    // std::string condensed_sequence =
+    // "DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH";
     std::string condensed_sequence = "DNeu5Aca2-6DGalpb1-4DGlcpNAcb1-OH";
     MolecularModeling::Assembly carbAssembly;
     std::cout << "Building carb from assembly" << std::endl;
-    carbAssembly.BuildAssemblyFromCondensedSequence (condensed_sequence, prepA);
+    carbAssembly.BuildAssemblyFromCondensedSequence(condensed_sequence, prepA);
     // Add the ions
-    std::string ion_library_file = "../dat/CurrentParams/other/atomic_ions.lib"; // Guessed.
+    std::string ion_library_file   = "../dat/CurrentParams/other/atomic_ions.lib"; // Guessed.
     std::string ion_parameter_file = "../dat/frcmod/frcmod.ionsff99_tip3p"; // Guessed by looking in Assembly::AddIon
     // Attempt to Neutralize by adding both. Only one type will be actually added.
     std::cout << "Adding ions" << std::endl;
@@ -38,9 +40,9 @@ int main()
     carbAssembly.AddSolvent(boxExtensionFromSolute, closenessBetweenWaters, &solventAssembly, solvent_library_file);
     // Write out the pdb file.
     std::cout << "Writing PDB file" << std::endl;
-    PdbFileSpace::PdbFile *outputPdbFile = carbAssembly.BuildPdbFileStructureFromAssembly();
+    PdbFileSpace::PdbFile* outputPdbFile = carbAssembly.BuildPdbFileStructureFromAssembly();
     outputPdbFile->Write("012.addSolventNeutralize.pdb");
     std::cout << "This is the end, my only friend, the end." << std::endl;
 }
-//prep file
 
+// prep file

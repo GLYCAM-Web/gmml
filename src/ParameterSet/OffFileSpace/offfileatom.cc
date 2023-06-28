@@ -7,8 +7,10 @@ using OffFileSpace::OffFileAtom;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-OffFileAtom::OffFileAtom() : type_(""), name_(""), residue_index_(-1), atom_index_(-1), atomic_number_(0), charge_(0.0), coordinate_(),
-    atom_order_(0) {}
+OffFileAtom::OffFileAtom()
+    : type_(""), name_(""), residue_index_(-1), atom_index_(-1), atomic_number_(0), charge_(0.0), coordinate_(),
+      atom_order_(0)
+{}
 
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
@@ -138,18 +140,16 @@ void OffFileAtom::SetAtomOrder(int atom_order)
 
 void OffFileAtom::SetAtomCharge(double atom_charge)
 {
-    charge_=atom_charge;
+    charge_ = atom_charge;
 }
+
 //////////////////////////////////////////////////////////
 //                     DISPLAY FUNCTIONS                //
 //////////////////////////////////////////////////////////
 void OffFileAtom::Print(std::ostream& out)
 {
-    out << std::setw(2) << name_
-	<< std::setw(6) << atom_order_
-        << std::setw(6) << type_
-        << std::setw(6) << residue_index_
-        << std::setw(6) << atom_index_
-        << std::setw(10) << charge_
-        << std::setw(15) << coordinate_.GetX() << ", " << std::setw(15) << coordinate_.GetY() << ", " << std::setw(15) << coordinate_.GetZ();
+    out << std::setw(2) << name_ << std::setw(6) << atom_order_ << std::setw(6) << type_ << std::setw(6)
+        << residue_index_ << std::setw(6) << atom_index_ << std::setw(10) << charge_ << std::setw(15)
+        << coordinate_.GetX() << ", " << std::setw(15) << coordinate_.GetY() << ", " << std::setw(15)
+        << coordinate_.GetZ();
 }

@@ -5,9 +5,10 @@ using MolecularModeling::Molecule;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Molecule::Molecule(){
+Molecule::Molecule()
+{
 
-//    std::cout<<"Molecule class is called"<<std::endl;
+    //    std::cout<<"Molecule class is called"<<std::endl;
 }
 
 //////////////////////////////////////////////////////////
@@ -23,7 +24,7 @@ MolecularModeling::AtomVector Molecule::GetMoleculeAtoms()
     return molecule_atoms_;
 }
 
- MolecularModeling::ResidueVector Molecule::GetMoleculeResidues()
+MolecularModeling::ResidueVector Molecule::GetMoleculeResidues()
 {
     return molecule_residues_;
 }
@@ -34,32 +35,35 @@ MolecularModeling::AtomVector Molecule::GetMoleculeAtoms()
 
 void Molecule::SetMoleculeIndex(int molecule_index)
 {
-    molecule_index_= molecule_index;
+    molecule_index_ = molecule_index;
 }
 
 void Molecule::SetMoleculeAtoms(AtomVector molecule_atoms)
 {
     molecule_atoms_.clear();
-    for(AtomVector::iterator it = molecule_atoms.begin(); it != molecule_atoms.end(); it++)
+    for (AtomVector::iterator it = molecule_atoms.begin(); it != molecule_atoms.end(); it++)
+    {
         molecule_atoms_.push_back(*it);
+    }
 }
 
 void Molecule::SetMoleculeResidues(ResidueVector molecule_residues)
 {
     molecule_residues_.clear();
-    for(ResidueVector::iterator it = molecule_residues.begin(); it != molecule_residues.end(); it++)
+    for (ResidueVector::iterator it = molecule_residues.begin(); it != molecule_residues.end(); it++)
+    {
         molecule_residues_.push_back(*it);
+    }
 }
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
 
-
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void Molecule::Print(std::ostream &out)
+void Molecule::Print(std::ostream& out)
 {
-        out<<"Printing molecule details"<<std::endl;
+    out << "Printing molecule details" << std::endl;
 }

@@ -3,34 +3,34 @@
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileresidue.hpp"
 #include "../../../includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "../../../includes/common.hpp"
+#include "includes/CodeUtils/logging.hpp"
 
 using LibraryFileSpace::LibraryFileResidue;
 
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-LibraryFileResidue::LibraryFileResidue() :  name_(""), atoms_(), box_angle_(0.0),
-                                            box_length_(0.0), box_width_(0.0), box_height_(0.0),
-                                            head_atom_index_(-1), tail_atom_index_(-1) {}
+LibraryFileResidue::LibraryFileResidue()
+    : name_(""), atoms_(), box_angle_(0.0), box_length_(0.0), box_width_(0.0), box_height_(0.0), head_atom_index_(-1),
+      tail_atom_index_(-1)
+{}
 
-LibraryFileResidue::LibraryFileResidue(std::string &name, int listing_index) :
-    name_(name), box_angle_(0.0), box_length_(0.0), box_width_(0.0), box_height_(0.0),
-    head_atom_index_(-1), tail_atom_index_(-1), listing_index_(listing_index)
+LibraryFileResidue::LibraryFileResidue(std::string& name, int listing_index)
+    : name_(name), box_angle_(0.0), box_length_(0.0), box_width_(0.0), box_height_(0.0), head_atom_index_(-1),
+      tail_atom_index_(-1), listing_index_(listing_index)
 {
     atoms_ = AtomMap();
 }
 
-LibraryFileResidue::LibraryFileResidue( std::string& name, int listing_index,
-                                        std::vector<LibraryFileSpace::LibraryFileAtom*>& atoms,
-                                        int head_atom_index, int tail_atom_index,
-                                        double box_angle, double box_length,
-                                        double box_width, double box_height) :
-    name_(name), box_angle_(box_angle), box_length_(box_length), box_width_(box_width),
-    box_height_(box_height), head_atom_index_(head_atom_index), tail_atom_index_(tail_atom_index),
-    listing_index_(listing_index)
+LibraryFileResidue::LibraryFileResidue(std::string& name, int listing_index,
+                                       std::vector<LibraryFileSpace::LibraryFileAtom*>& atoms, int head_atom_index,
+                                       int tail_atom_index, double box_angle, double box_length, double box_width,
+                                       double box_height)
+    : name_(name), box_angle_(box_angle), box_length_(box_length), box_width_(box_width), box_height_(box_height),
+      head_atom_index_(head_atom_index), tail_atom_index_(tail_atom_index), listing_index_(listing_index)
 {
     atoms_.clear();
-    for(std::vector<LibraryFileSpace::LibraryFileAtom*>::iterator it = atoms.begin(); it != atoms.end(); it++)
+    for (std::vector<LibraryFileSpace::LibraryFileAtom*>::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         atoms_[(*it)->GetAtomOrder()] = *it;
     }
@@ -51,6 +51,39 @@ LibraryFileResidue::AtomMap LibraryFileResidue::GetAtoms()
     return atoms_;
 }
 
+std::vector<std::string> LibraryFileResidue::GetAtomNames()
+{
+    std::vector<std::string> foundAtoms;
+    for (auto& atom : this->GetAtomsVector())
+    {
+        foundAtoms.push_back(atom->GetName());
+    }
+    return foundAtoms;
+}
+
+std::vector<std::string> LibraryFileResidue::GetHeavyAtomNames()
+{
+    std::vector<std::string> foundAtoms;
+    for (auto& atom : this->GetAtomsVector())
+    {
+        if (atom->GetName().at(0) != 'H')
+        {
+            foundAtoms.push_back(atom->GetName());
+        }
+    }
+    return foundAtoms;
+}
+
+std::vector<LibraryFileSpace::LibraryFileAtom*> LibraryFileResidue::GetAtomsVector()
+{
+    std::vector<LibraryFileSpace::LibraryFileAtom*> atoms;
+    for (LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    {
+        atoms.push_back(it->second);
+    }
+    return atoms;
+}
+
 /// Return an atom belonging to the residue by a given index number
 LibraryFileSpace::LibraryFileAtom* LibraryFileResidue::GetAtomByIndex(int index)
 {
@@ -60,10 +93,12 @@ LibraryFileSpace::LibraryFileAtom* LibraryFileResidue::GetAtomByIndex(int index)
 /// Return an atom belonging to the residue by a given order number
 LibraryFileSpace::LibraryFileAtom* LibraryFileResidue::GetAtomByOrder(int order)
 {
-    for(LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    for (LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
-        if(it->second->GetAtomOrder() == order)
+        if (it->second->GetAtomOrder() == order)
+        {
             return it->second;
+        }
     }
     return NULL;
 }
@@ -103,19 +138,36 @@ int LibraryFileResidue::GetTailAtomIndex()
 {
     return tail_atom_index_;
 }
+
 LibraryFileSpace::LibraryFileAtom* LibraryFileResidue::GetLibraryAtomByAtomName(std::string atom_name)
 {
-    for(LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    for (LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         LibraryFileSpace::LibraryFileAtom* atom = (*it).second;
-        if(atom->GetName().compare(atom_name) == 0)
+        if (atom->GetName().compare(atom_name) == 0)
+        {
             return atom;
+        }
     }
-    return NULL;
+    std::string errorMessage = "Didn't find a lib file atom for  " + atom_name + " in " + this->GetName();
+    gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
+    throw std::runtime_error(errorMessage);
+    return nullptr;
 }
+
 int LibraryFileResidue::GetListingIndex()
 {
     return listing_index_;
+}
+
+double LibraryFileResidue::GetCharge()
+{
+    double charge = 0.0;
+    for (auto& atom : this->GetAtomsVector())
+    {
+        charge += atom->GetCharge();
+    }
+    return charge;
 }
 
 //////////////////////////////////////////////////////////
@@ -131,7 +183,7 @@ void LibraryFileResidue::SetName(std::string name)
 void LibraryFileResidue::SetAtoms(LibraryFileResidue::AtomMap& atoms)
 {
     atoms_.clear();
-    for(LibraryFileResidue::AtomMap::iterator it = atoms.begin(); it != atoms.end(); it++)
+    for (LibraryFileResidue::AtomMap::iterator it = atoms.begin(); it != atoms.end(); it++)
     {
         atoms_[it->second->GetAtomOrder()] = it->second;
     }
@@ -178,6 +230,7 @@ void LibraryFileResidue::SetTailAtomIndex(int tail_atom_index)
 {
     tail_atom_index_ = tail_atom_index;
 }
+
 void LibraryFileResidue::SetListingIndex(int listing_index)
 {
     listing_index_ = listing_index;
@@ -190,50 +243,58 @@ void LibraryFileResidue::Print(std::ostream& out)
 {
     out << std::setw(80) << "***************************** " + name_ + " *****************************" << std::endl;
     out << std::setw(60) << "======================== ATOMS ========================" << std::endl;
-    out << std::setw(2) << "#"
-        << std::setw(6) << "NAME"
-        << std::setw(6) << "TYPE"
-        << std::setw(6) << "RES_I"
-        << std::setw(6) << "ATM_I"
-        << std::setw(10) << "CHG"
-        << std::setw(45) << "CRD"
-        << std::setw(20) << "BND_ATMS"
+    out << std::setw(2) << "#" << std::setw(6) << "NAME" << std::setw(6) << "TYPE" << std::setw(6) << "RES_I"
+        << std::setw(6) << "ATM_I" << std::setw(10) << "CHG" << std::setw(45) << "CRD" << std::setw(20) << "BND_ATMS"
         << std::endl;
 
-    for(LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
+    for (LibraryFileResidue::AtomMap::iterator it = atoms_.begin(); it != atoms_.end(); it++)
     {
         it->second->Print(out);
-        for(unsigned int j = 0; j < it->second->GetBondedAtomsIndices().size(); j++)
-            out << std::setw(4) << it -> second -> GetBondedAtomsIndices()[j] << ", ";
+        for (unsigned int j = 0; j < it->second->GetBondedAtomsIndices().size(); j++)
+        {
+            out << std::setw(4) << it->second->GetBondedAtomsIndices()[j] << ", ";
+        }
         out << std::endl;
     }
 
     out << std::endl << std::setw(60) << "======================= Bound Box =======================" << std::endl;
-    out << std::setw(6) << "ANGL"
-        << std::setw(6) << "LEN"
-        << std::setw(6) << "WDTH"
-        << std::setw(6) << "HGHT"
+    out << std::setw(6) << "ANGL" << std::setw(6) << "LEN" << std::setw(6) << "WDTH" << std::setw(6) << "HGHT"
         << std::endl;
 
-    if(box_angle_ == gmml::dNotSet)
+    if (box_angle_ == gmml::dNotSet)
+    {
         out << std::setw(6) << "--";
+    }
     else
+    {
         out << std::setw(6) << box_angle_;
-    if(box_length_ == gmml::dNotSet)
+    }
+    if (box_length_ == gmml::dNotSet)
+    {
         out << std::setw(6) << "--";
+    }
     else
+    {
         out << std::setw(6) << box_length_;
-    if(box_width_ == gmml::dNotSet)
+    }
+    if (box_width_ == gmml::dNotSet)
+    {
         out << std::setw(6) << "--";
+    }
     else
+    {
         out << std::setw(6) << box_width_;
-    if(box_height_ == gmml::dNotSet)
+    }
+    if (box_height_ == gmml::dNotSet)
+    {
         out << std::setw(6) << "--";
+    }
     else
+    {
         out << std::setw(6) << box_height_;
+    }
     out << std::endl;
 
     out << "HEAD ATOM INDEX: " << head_atom_index_ << std::endl;
     out << "TAIL ATOM INDEX: " << tail_atom_index_ << std::endl;
-
 }

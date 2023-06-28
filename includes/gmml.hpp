@@ -106,10 +106,10 @@
 #include "InputSet/TopologyFileSpace/topologyfile.hpp"
 #include "InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 #include "InputSet/TopologyFileSpace/topologyresidue.hpp"
-//#include "InputSet/CondensedSequenceSpace/condensedsequence.hpp"
-//#include "InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-//#include "InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
-//#include "InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
+// #include "InputSet/CondensedSequenceSpace/condensedsequence.hpp"
+// #include "InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
+// #include "InputSet/CondensedSequenceSpace/condensedsequenceprocessingexception.hpp"
+// #include "InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
 #include "GeometryTopology/geometrytopology.hpp"
 #include "GeometryTopology/coordinate.hpp"
 #include "GeometryTopology/plane.hpp"
@@ -173,9 +173,7 @@
 #include "Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp"
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedheavyatom.hpp"
 #include "Resolver/PdbPreprocessor/pdbpreprocessorunrecognizedresidue.hpp"
-#include "InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
 
 typedef std::vector<MolecularModeling::ResidueNode*> ResidueNodeVector;
-
 
 #endif // GMML_HPP
