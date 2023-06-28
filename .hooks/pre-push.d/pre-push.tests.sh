@@ -7,44 +7,21 @@ GREEN_BOLD='\033[0;32m\033[1m'
 YELLOW_BOLD='\033[0;33m\033[1m'
 RED_BOLD='\033[0;31m\033[1m'
 
+#To replace our gemshome dealio. Not great but egh should be good enough...... hopefully.....
+if [[ $(pwd) == */gems/gmml ]]; then
+    GMML_DIR=$(pwd)
+    GEMS_DIR=$(cd .. && pwd)
+else
+    echo -e "${RED_BOLD}ERROR: Trying to run from incorrect directory being: $(pwd)\nRun from the base GMML directory.\nABORTING${RESET_STYLE}"
+    exit 1
+fi
+
 #Just a global var to check if GEMS or GMML is out of date. Here we are using string existence
 #instead of a wannabe bool type flag
 BRANCH_IS_BEHIND=""
 
 #How many commits a feature branch can be missing from the gmml-test branch
 MAX_FEATURE_BEHIND_TEST=15
-
-check_gemshome()
-{
-    if [ -z "${GEMSHOME}" ]; then
-        echo ""
-        echo "Your GEMSHOME environment variable is not set! It should be set to"
-        echo "$1"
-        exit 1
-    elif [ ! -d "${GEMSHOME}" ]; then
-        echo ""
-        echo "Your GEMSHOME environment variable is set to ${GEMSHOME} -- this does"
-        echo "not appear to be a directory. It should be set to"
-        echo "$1"
-        exit 1
-    elif [ ! "${GEMSHOME}" = "$1" ] && [ ! "${GEMSHOME}" = "${1}/" ]; then
-        #try checking the inode incase there is a problem with symlinks
-        if [ "$(stat -c "%i" "${GEMSHOME}")" != "$(stat -c "%i" "${1}")" ]; then
-            echo ""
-            echo "ERROR: GEMSHOME is expected to be $1 but it is currently"
-            echo "${GEMSHOME} This will cause problems!"
-            exit 1
-        fi
-    fi
-}
-
-check_dir_exists()
-{
-    if [ ! -d "$1" ]; then
-        echo ""
-        echo "Your $1 directory does not exist."
-    fi
-}
 
 #this isnt coded for babies, follow our git patterns and we are good, BORK ON MERGE????
 ensure_feature_close()
@@ -60,20 +37,20 @@ ensure_feature_close()
     fi
 }
 
-gemshome=$(cd ../ && pwd)
-
-check_gemshome "${gemshome}"
+if [ -z "${GEMSHOME}" ]; then
+    echo -e "${YELLOW_BOLD}WARNING: Your GEMSHOME environment variable is not set! It should be set to the GEMS directory\nthat is the parent of the GMML directory. This can cause some issues as some of the codebase\nstill relies upon the GEMSHOME variable. Continuing but you have been warned.${RESET_STYLE}"
+fi
 
 ## OG Oct 2021 have the hooks update themselves.
 #TODO: Do this more auto like, if this script is updated the first run the next time will not
 #reflect the made changes due to the old script calling the copy then continuing.
-cp -r "${GEMSHOME}"/gmml/.hooks/* "${GEMSHOME}"/gmml/.git/hooks/
+cp -r "${GMML_DIR}"/.hooks/* "${GMML_DIR}"/.git/hooks/
 
 #imagine this means "check if current branch is behind origin of the same branch". Basically all
 #we are doing are checking either the GEMS or GMML repo to ensure there are no commits that the
 #user has not pulled.
 # @param $1 is either GEMS or GMML, whichever defined is what will be checked and pathing
-# will be based off of the GEMSHOME variable. I picked caps in order to just make the check more
+# will be based off of the gemsdir variable. I picked caps in order to just make the check more
 # apparent about how its checking an actual repo status
 check_if_branch_behind()
 {
@@ -83,14 +60,14 @@ check_if_branch_behind()
     }; then
         #TODO: More legit error checking in this
         if [ "$1" == "GEMS" ]; then
-            cd "${GEMSHOME}" || {
-                echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}"
+            cd "${GEMS_DIR}" || {
+                echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}"
                 echo "Exiting..."
                 exit 1
             }
         elif [ "$1" == "GMML" ]; then
-            cd "${GEMSHOME}/gmml" || {
-                echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"
+            cd "${GEMS_DIR}/gmml" || {
+                echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}/gmml"
                 echo "Exiting..."
                 exit 1
             }
@@ -133,8 +110,8 @@ check_if_branch_behind()
         else
             echo -e "${GREEN_BOLD}passed...${RESET_STYLE} Branch is not on remote, so no need to check if local is behind remote, proceeding"
         fi
-        cd "${GEMSHOME}"/gmml || {
-            echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"
+        cd "${GEMS_DIR}"/gmml || {
+            echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}/gmml"
             echo "Exiting..."
             exit 1
         }
@@ -198,35 +175,43 @@ if [ -d "./gmml/cmakeBuild" ]; then
     rm ./gmml/cmakeBuild/libgmml.so
 fi
 echo "Compiling gmml using GEMS ./make.sh, no wrap flag cause it auto wraps"
+
+cd ${GEMS_DIR} || {
+    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}"
+    echo "Exiting..."
+    exit 1
+}
+
 ./make.sh || {
     echo -e "\n${RED_BOLD}failed... Could not build GEMS and GMML...."
     echo -e "Exiting... ${RESET_STYLE}"
     exit 1
 }
-cd "${GEMSHOME}"/gmml || {
-    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"
+
+cd "${GEMS_DIR}"/gmml || {
+    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}/gmml"
     echo "Exiting..."
     exit 1
 }
 
 echo "Running mandatory tests..."
-cd "${GEMSHOME}"/gmml/tests/ || {
-    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml/tests/"
+cd "${GEMS_DIR}"/gmml/tests/ || {
+    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}/gmml/tests/"
     echo "Exiting..."
     exit 1
 }
 
 nice -7 ./compile_run_tests.bash -j "$(nproc --all)"
 result=$? # record the exit status from compile_run_tests.bash
-cd "${GEMSHOME}"/gmml || {
-    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"
+cd "${GEMS_DIR}"/gmml || {
+    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}/gmml"
     echo "Exiting..."
     exit 1
 }
 if [ "${result}" -eq 0 ]; then
     echo "GMML level tests have passed. Doing gems level tests."
-    cd "${GEMSHOME}"/tests/ || {
-        echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/tests"
+    cd "${GEMS_DIR}"/tests/ || {
+        echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}/tests"
         echo "Exiting..."
         exit 1
     }
@@ -234,7 +219,7 @@ if [ "${result}" -eq 0 ]; then
     gems_tests_result=$? # record the exit status of previous command
     if [ "${gems_tests_result}" -ne 0 ]; then
         echo "GEMS level tests have failed. Make sure you have pulled the latest version and are on the appropriate branch. "
-        echo "If you are up-to-date, this failure indicates that you have caused the outputs of ${GEMSHOME}/tests to change. You can open the ${GEMSHOME}/tests/run_tests.sh file and run the test line by line to get an output file. Compare it to the saved \"correct\" version in ${GEMSHOME}/tests/correct_outputs."
+        echo "If you are up-to-date, this failure indicates that you have caused the outputs of ${GEMS_DIR}/tests to change. You can open the ${GEMS_DIR}/tests/run_tests.sh file and run the test line by line to get an output file. Compare it to the saved \"correct\" version in ${GEMS_DIR}/tests/correct_outputs."
         echo "Sometimes the changes you make are fine, and you just need to update what the correct output is by overwriting the old output. Make sure it is ok though, or you will be mur-didely-urdered."
         exit 1
     else
