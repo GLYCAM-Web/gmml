@@ -33,7 +33,7 @@ ERROR_STYLE='\033[0;31m\033[1m'
 
 printHelp()
 {
-echo -e "
+    echo -e "
 ===== GMML TEST RUNNING SCRIPT =====
 $0 is used to allow us to run multiple of our
 test scripts at once. This is not to be confused with compiling
@@ -52,7 +52,7 @@ Options are as follows:
 \t-h \t\t\tPrint this msg
 *************************************************************
 Exiting"
-exit 1
+    exit 1
 }
 
 ################################################################
@@ -62,8 +62,7 @@ exit 1
 #./compile_run_tests.bash -j 11 will allow us to run the script with 11 jobs.
 #The colon after j (in the while decleration) means that said flag expects an "input"
 #The lack of a colon after h means that said flag does not accept any "input"
-while getopts "j:hd:" option
-do
+while getopts "j:hd:" option; do
     case "${option}" in
         j)
             jIn=${OPTARG}
@@ -83,10 +82,12 @@ do
         d)
             dIn="${OPTARG}"
             if [ "${dIn}" == "bare_metal" ]; then
+                echo -e "${INFO_STYLE}Running for baremetal. Skipped tests:${RESET_STYLE}"
                 for TEST_SKIP in "${TEST_SKIP_LIST[@]}"; do
+                    echo -e "${TEST_SKIP}"
                     for ((SKIP_INDEX = ${#GMML_TEST_FILE_LIST[@]}; SKIP_INDEX >= 0; SKIP_INDEX--)); do
                         if [ "${GMML_TEST_FILE_LIST["${SKIP_INDEX}"]}" == "${TEST_SKIP}" ]; then
-                            unset GMML_TEST_FILE_LIST["${SKIP_INDEX}"]
+                            unset "GMML_TEST_FILE_LIST[${SKIP_INDEX}]"
                             GMML_TEST_FILE_LIST=("${GMML_TEST_FILE_LIST[@]}")
                             SKIP_TIME=1
                         fi
@@ -174,9 +175,9 @@ cleaningUpJobs()
             cat "${JOB_OUTPUT_FILES[${CURR_INDEX}]}"
             echo -ne "${RESET_STYLE}"
             #Now remove the PID from our "scheduler" array, ngl more of a tracker
-            unset JOB_PIDS["${CURR_INDEX}"]
+            unset "JOB_PIDS[${CURR_INDEX}]"
             #Now remove the job output from list
-            unset JOB_OUTPUT_FILES["${CURR_INDEX}"]
+            unset "JOB_OUTPUT_FILES[${CURR_INDEX}]"
 
             #Now we have to clean up our arrays, this kinda sucks and am unsure better way to fix
             JOB_PIDS=("${JOB_PIDS[@]}")
@@ -238,7 +239,7 @@ cleaningUpJobs
 case "${GMML_PASSED_TESTS}" in
     #if we passed as many tests as we have, we know we passed all tests thus we
     #go ahead and prepare the output to be green
-    ${#GMML_TEST_FILE_LIST[@]})
+    "${#GMML_TEST_FILE_LIST[@]}")
         RESULT_COLOR=${PASSED_STYLE}
         ;;
         #if our passed tests does not equal our number of tests, we know something is
