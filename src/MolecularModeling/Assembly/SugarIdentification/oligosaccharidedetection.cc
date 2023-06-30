@@ -322,7 +322,7 @@ std::vector<MolecularModeling::Assembly::gmml_api_output> Assembly::PDBExtractSu
 std::vector< Glycan::Oligosaccharide* > Assembly::ExtractSugars( std::vector< std::string > amino_lib_files, std::vector <Glycan::Monosaccharide*>& monos, bool glyprobity_report, bool populate_ontology, bool individualOntologies, std::string CCD_Path)
 {
   std::stringstream logss;
-  int local_debug = -1;
+  int local_debug = 1;
   gmml::ResidueNameMap dataset_residue_names = GetAllResidueNamesFromMultipleLibFilesMap( amino_lib_files );
   if(local_debug > 0)
   {
