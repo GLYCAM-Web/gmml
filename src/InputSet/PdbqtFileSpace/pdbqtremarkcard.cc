@@ -8,12 +8,13 @@ using PdbqtFileSpace::PdbqtRemarkCard;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 
-PdbqtRemarkCard::PdbqtRemarkCard() : record_name_("REMARK"){}
+PdbqtRemarkCard::PdbqtRemarkCard() : record_name_("REMARK")
+{}
 
 PdbqtRemarkCard::PdbqtRemarkCard(std::string line)
 {
-    record_name_ = line.substr(0,6);
-    value_ = line.substr(6);
+    record_name_ = line.substr(0, 6);
+    value_       = line.substr(6);
 }
 
 //////////////////////////////////////////////////////////
@@ -49,7 +50,7 @@ void PdbqtRemarkCard::SetValue(const std::string value)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbqtRemarkCard::Print(std::ostream &out)
+void PdbqtRemarkCard::Print(std::ostream& out)
 {
     out << "REMARK: " << value_ << std::endl;
 }

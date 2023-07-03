@@ -7,8 +7,8 @@
 
 namespace beads
 {
-void Remove_Beads(MolecularModeling::Assembly &glycoprotein);
-AtomVector Add_Beads_To_Glycan(ResidueVector glycan_residues);
-AtomVector Add_Beads_To_Protein(MolecularModeling::Assembly &assembly);
-}
+    void Remove_Beads(MolecularModeling::Assembly& glycoprotein);
+    AtomVector Add_Beads_To_Glycan(ResidueVector glycan_residues);
+    AtomVector Add_Beads_To_Protein(MolecularModeling::Assembly& assembly);
+} // namespace beads
 #endif // GMML_INCLUDES_INTERNALPROGRAMS_BEADRESIDUES_HPP

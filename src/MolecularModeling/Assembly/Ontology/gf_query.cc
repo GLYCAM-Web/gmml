@@ -4,9 +4,14 @@
 
 #include <regex>
 
-// For an example query with some explaination, see the bottom of this file.  For sparql query information, see https://www.w3.org/TR/rdf-sparql-query/ (It is not the greatest documentation but it helps)
+// For an example query with some explaination, see the bottom of this file.  For sparql query information, see
+// https://www.w3.org/TR/rdf-sparql-query/ (It is not the greatest documentation but it helps)
 
-std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
+std::string MolecularModeling::Assembly::QueryOntology(
+    std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min,
+    float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment,
+    int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page,
+    int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
 {
     // This function runs a basic query, looking only for ?pdb (PDB_ID),
     // ?oligo (Oligosaccharides are assigned unique IDs, ie 2dw2_oligo_1),
@@ -150,7 +155,9 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
             while (searchTerm[searchTerm.size() - 1] == '*')
             {
                 // Subgraph match will always find other nodes at the end
-                searchTerm = searchTerm.substr(0, searchTerm.size() - 1); // start at the beginning, get 1 less than the # of chars there (remove the last char)
+                searchTerm = searchTerm.substr(
+                    0, searchTerm.size() -
+                           1); // start at the beginning, get 1 less than the # of chars there (remove the last char)
             }
             GraphDS::Graph queryGraph = CreateQueryStringGraph(searchTerm);
             if (local_debug > 0)
@@ -320,7 +327,8 @@ std::string MolecularModeling::Assembly::QueryOntology(std::string searchType, s
     return FormulateCURLGF(output_file_type, query.str(), url);
 }
 
-std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo, std::string url, std::string output_file_type)
+std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::string oligo_sequence, std::string oligo,
+                                                   std::string url, std::string output_file_type)
 {
     // This function runs a full query on a single result, which is unique given the pdb_id, oligo_sequence, and oligo
     int local_debug = -1;
@@ -464,8 +472,13 @@ std::string MolecularModeling::Assembly::MoreQuery(std::string pdb_id, std::stri
     return FormulateCURLGF(output_file_type, query.str(), url);
 }
 
-std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
-{ // This query creates a list of unique PDB_IDs given all of the user specified filters, and returns a CSV which is downloaded
+std::string MolecularModeling::Assembly::ontologyPDBDownload(
+    std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min,
+    float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment,
+    int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page,
+    int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
+{ // This query creates a list of unique PDB_IDs given all of the user specified filters, and returns a CSV which is
+  // downloaded
     int local_debug = -1;
     if (local_debug > 0)
     {
@@ -668,9 +681,14 @@ std::string MolecularModeling::Assembly::ontologyPDBDownload(std::string searchT
     return FormulateCURLGF(output_file_type, query.str(), url);
 }
 
-std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min, float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment, int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page, int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
+std::string MolecularModeling::Assembly::ontologyDownload(
+    std::string searchType, std::string searchTerm, float resolution_min, float resolution_max, float b_factor_min,
+    float b_factor_max, float oligo_b_factor_min, float oligo_b_factor_max, int isError, int isWarning, int isComment,
+    int isLigand, int isGlycomimetic, int isNucleotide, std::string aglycon, std::string count, int page,
+    int resultsPerPage, std::string sortBy, std::string url, std::string output_file_type)
 {
-    // This is a complete (and therefore slow) query that is a combination of moreQuery() and QueryOntology().  It filters the database by user input, and returns a CSV with all of the data for download.
+    // This is a complete (and therefore slow) query that is a combination of moreQuery() and QueryOntology().  It
+    // filters the database by user input, and returns a CSV with all of the data for download.
     int local_debug = -1;
     if (local_debug > 0)
     {
@@ -784,7 +802,9 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
             while (searchTerm[searchTerm.size() - 1] == '*')
             {
                 // Subgraph match will always find other nodes at the end
-                searchTerm = searchTerm.substr(0, searchTerm.size() - 1); // start at the beginning, get 1 less than the # of chars there (remove the last char)
+                searchTerm = searchTerm.substr(
+                    0, searchTerm.size() -
+                           1); // start at the beginning, get 1 less than the # of chars there (remove the last char)
             }
             GraphDS::Graph queryGraph = CreateQueryStringGraph(searchTerm);
             if (local_debug > 0)
@@ -923,7 +943,6 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
         query << "FILTER NOT EXISTS { ?commentNote " << Ontology::note_type << " \"comment\".}\n}\n";
     }
 
-
     query << Ontology::END_WHERE_CLAUSE << "\n";
     query << "ORDER BY  ?" << sortBy << "\n";
 
@@ -936,12 +955,12 @@ std::string MolecularModeling::Assembly::ontologyDownload(std::string searchType
     return FormulateCURLGF(output_file_type, query.str(), url);
 }
 
-void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &queryStream, GraphDS::Graph queryGraph)
+void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& queryStream, GraphDS::Graph queryGraph)
 {
-    int local_debug = 1;
+    int local_debug                       = -1;
     GraphDS::Graph::NodeVector queryNodes = queryGraph.GetGraphNodeList();
     GraphDS::Graph::EdgeVector queryEdges = queryGraph.GetGraphEdgeList();
-    std::string terminalNodeList[] = {"ASN", "SER", "THR", "TRP", "ROH", "OME", "OtBu"};
+    std::string terminalNodeList[]        = {"ASN", "SER", "THR", "TRP", "ROH", "OME", "OtBu"};
     // TODO: Make this handle all possible terminal nodes better.  I had to add THR for C-Linked,
     // there are other residues that need to be added as well, especially for modified terminals.
 
@@ -950,9 +969,10 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
 
     for (GraphDS::Graph::NodeVector::iterator it = queryNodes.begin(); it != queryNodes.end(); it++)
     {
-        GraphDS::Node *current_node = (*it);
+        GraphDS::Node* current_node = (*it);
         // if the node isnt in the terminal list
-        if (std::find(std::begin(terminalNodeList), std::end(terminalNodeList), current_node->GetNodeId()) == std::end(terminalNodeList))
+        if (std::find(std::begin(terminalNodeList), std::end(terminalNodeList), current_node->GetNodeId()) ==
+            std::end(terminalNodeList))
         {
             // current_node->GetNodeId();
             // this gets the mono shortName (full)
@@ -989,44 +1009,47 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
                         linkStream << "\t" << Ontology::linkageType << "\t?link" << current_node->GetNodeType() << "to";
                         linkStream << destinationNode->GetNodeType() << "Type;\n";
 
-                        // All objects end with their type and a period
-                        linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n";
+                    // All objects end with their type and a period
+                    linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n";
 
-                        linkStream << "VALUES ?link" << current_node->GetNodeType() << "to" << destinationNode->GetNodeType() << "Type { ";
+                    linkStream << "VALUES ?link" << current_node->GetNodeType() << "to"
+                               << destinationNode->GetNodeType() << "Type { ";
 
-                        if (current_edge->GetEdgeLabels()[0] == "1-0")
-                        {
-                            linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\" ";
-                        }
-                        else if (current_edge->GetEdgeLabels()[0] == "2-0")
-                        {
-                            linkStream << "\"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
-                        }
-                        else if ((current_edge->GetEdgeLabels()[0] == "1-") ||
-                                (current_edge->GetEdgeLabels()[0] == "2-") ||
-                                (current_edge->GetEdgeLabels()[0] == "-"))
-                        { // Terminal linkage
-                        }
-                        else if (current_edge->GetEdgeLabels()[0] != "*")
-                        {
-                            linkStream << "\"" << current_edge->GetEdgeLabels()[0] << "\" ";
-                        }
-                        else
-                        {
-                            linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
-                        }
-                        linkStream << "}\n\n";
+                    if (current_edge->GetEdgeLabels()[0] == "1-0")
+                    {
+                        linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\" ";
+                    }
+                    else if (current_edge->GetEdgeLabels()[0] == "2-0")
+                    {
+                        linkStream << "\"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                    }
+                    else if ((current_edge->GetEdgeLabels()[0] == "1-") || (current_edge->GetEdgeLabels()[0] == "2-") ||
+                             (current_edge->GetEdgeLabels()[0] == "-"))
+                    { // Terminal linkage
+                    }
+                    else if (current_edge->GetEdgeLabels()[0] != "*")
+                    {
+                        linkStream << "\"" << current_edge->GetEdgeLabels()[0] << "\" ";
+                    }
+                    else
+                    {
+                        linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", "
+                                      "\"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                    }
+                    linkStream << "}\n\n";
                     }
                     else if ((it1 == queryEdges.begin()) && (current_edge->GetSourceNode() == NULL) &&
                             (current_edge->GetDestinationNode() != NULL) &&
-                            (std::find(std::begin(terminalNodeList), std::end(terminalNodeList), destinationNode->GetNodeId()) == std::end(terminalNodeList)))
+                            (std::find(std::begin(terminalNodeList), std::end(terminalNodeList),
+                                        destinationNode->GetNodeId()) == std::end(terminalNodeList)))
                     { // Graph that starts with an edge
                         // Name link variables by the node #s they connect
                         linkStream << "?linkXto" << destinationNode->GetNodeType() << "\n";
 
                         // Add nodes to the query
                         linkStream << "\t" << Ontology::hasParentMono << "\t?monoX;\n";
-                        linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType() << ";\n";
+                        linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType()
+                                << ";\n";
 
                         // Filter by the linkage type
                         linkStream << "\t" << Ontology::linkageType << "\t?linkXType;";
@@ -1049,23 +1072,67 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
                                     (current_edge->GetEdgeLabels()[0] == "2-") ||
                                     (current_edge->GetEdgeLabels()[0] == "-"))
                             { // Terminal linkage
-                            // shouldn't be possible to get here?
-                            // query 1-ASN?
                             }
-                            else
+                            else if (current_edge->GetEdgeLabels()[0] != "*")
                             {
                                 linkStream << "\"" << current_edge->GetEdgeLabels()[0] << "\" ";
                             }
+                            else
+                            {
+                                linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                            }
+                            linkStream << "}\n\n";
                         }
-                        else
-                        {
-                            linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                        else if ((it1 == queryEdges.begin()) && (current_edge->GetSourceNode() == NULL) &&
+                                (current_edge->GetDestinationNode() != NULL) &&
+                                (std::find(std::begin(terminalNodeList), std::end(terminalNodeList), destinationNode->GetNodeId()) == std::end(terminalNodeList)))
+                        { // Graph that starts with an edge
+                            // Name link variables by the node #s they connect
+                            linkStream << "?linkXto" << destinationNode->GetNodeType() << "\n";
+
+                            // Add nodes to the query
+                            linkStream << "\t" << Ontology::hasParentMono << "\t?monoX;\n";
+                            linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType() << ";\n";
+
+                            // Filter by the linkage type
+                            linkStream << "\t" << Ontology::linkageType << "\t?linkXType;";
+                            // All objects end with their type and a period
+                            linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n\n";
+
+                            if (current_edge->GetEdgeLabels()[0] != "*")
+                            {
+                                linkStream << "VALUES ?linkType { ";
+
+                                if (current_edge->GetEdgeLabels()[0] == "1-0")
+                                {
+                                    linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\" ";
+                                }
+                                else if (current_edge->GetEdgeLabels()[0] == "2-0")
+                                {
+                                    linkStream << "\"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                                }
+                                else if ((current_edge->GetEdgeLabels()[0] == "1-") ||
+                                        (current_edge->GetEdgeLabels()[0] == "2-") ||
+                                        (current_edge->GetEdgeLabels()[0] == "-"))
+                                { // Terminal linkage
+                                // shouldn't be possible to get here?
+                                // query 1-ASN?
+                                }
+                                else
+                                {
+                                    linkStream << "\"" << current_edge->GetEdgeLabels()[0] << "\" ";
+                                }
+                            }
+                            else
+                            {
+                                linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                            }
+                            linkStream << "}\n\n";
                         }
-                        linkStream << "}\n\n";
                     }
                 }
             }
-            monoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Monosaccharide << ".\n\n";
+            // monoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Monosaccharide << ".\n\n";
 
             // TODO This should split mono name and look at each part
 
@@ -1077,8 +1144,9 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
             // GlcN, ManN, GalN, GulN, AltN, AllN, TalN, IdoN
             // GlcA, ManA, GalA, GulA, AltA, AllA, TalA, IdoA
 
-            std::vector<std::string> monosCommonlyModified = {"Glc", "Man", "Gal", "Gul", "Alt", "All", "Tal", "Ido", "Fuc", "Qui", "Rha"};
             bool isModified = false;
+            std::vector<std::string> monosCommonlyModified = {"Glc", "Man", "Gal", "Gul", "Alt", "All",
+                                                              "Tal", "Ido", "Fuc", "Qui", "Rha"};
             for (auto mono : monosCommonlyModified)
             {
                 if (current_node->GetNodeId().find(mono) != std::string::npos)
@@ -1087,7 +1155,8 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
                     // If the last character is "a" or "b", we can just filter using the mono name
                     if ((current_node->GetNodeId().back() == 'a') || (current_node->GetNodeId().back() == 'b'))
                     {
-                        filterStream << "VALUES ?monoName" << current_node->GetNodeType() << " { \"" << current_node->GetNodeId() << "\" }\n";
+                        filterStream << "VALUES ?monoName" << current_node->GetNodeType() << " { \""
+                                     << current_node->GetNodeId() << "\" } ";
                     }
                     else
                     {
@@ -1102,7 +1171,9 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
             {
                 monoStream << "FILTER REGEX(?monoName" << current_node->GetNodeType() << ", \"" << current_node->GetNodeId() << "\")\n\n";
             }
-            // monoStream << "FILTER REGEX(?monoName" << current_node->GetNodeType() << ", \"" << current_node->GetNodeId() << "\")\n\n";
+
+            // monoStream << "FILTER REGEX(?monoName" << current_node->GetNodeType() << ", \"" <<
+            // current_node->GetNodeId() << "\")\n\n";
         }
         else // if the node is in the terminal list
         {
@@ -1111,6 +1182,7 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream &querySt
             // TODO handle terminals better
         }
     }
+    
     oligoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Oligosaccharide << ".\n\n";
 
     queryStream << oligoStream.str() << monoStream.str() << linkStream.str() << filterStream.str();
@@ -1149,7 +1221,7 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
     //{NULL,      Edge1-3, NULL, NULL,   Edge2-3, NULL, NULL,      Edge3-4, NULL} (edges)
     std::string labelStr;
     std::size_t linkageStart, linkageEnd, dashLocation;
-    dashLocation = queryString.find("-");
+    dashLocation   = queryString.find("-");
     bool noLinkage = false;
     if (dashLocation == std::string::npos)
     {
@@ -1200,9 +1272,9 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
         else if (queryString[i] == '*')
         {
             labelStr.push_back(queryString[i]);
-            GraphDS::Node *newNode = new GraphDS::Node;
+            GraphDS::Node* newNode = new GraphDS::Node;
             nodeStrings.push_back(labelStr);
-            void *ptr = &(nodeStrings[nodeStrings.size() - 1][0]);
+            void* ptr = &(nodeStrings[nodeStrings.size() - 1][0]);
             newNode->SetNodeValue(ptr);
             newNode->SetNodeId(labelStr);
             parsedVector.push_back(parsedString(labelStr, newNode));
@@ -1225,10 +1297,10 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
             if (i < queryString.size())
             {
                 labelStr.push_back(queryString[i]);
-                GraphDS::Edge *thisEdge = new GraphDS::Edge;
+                GraphDS::Edge* thisEdge = new GraphDS::Edge;
                 thisEdge->AddEdgeLabel(labelStr);
                 parsedVector.push_back(parsedString(labelStr, thisEdge));
-                labelStr = "";
+                labelStr     = "";
                 dashLocation = queryString.find("-", linkageEnd + 1);
                 if (dashLocation != std::string::npos)
                 {
@@ -1253,7 +1325,7 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
                 {
                     dashLocation = -1;
                     linkageStart = dashLocation;
-                    linkageEnd = dashLocation;
+                    linkageEnd   = dashLocation;
                 }
             }
         }
@@ -1269,9 +1341,9 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
                 if (i < queryString.size())
                 {
                     labelStr.push_back(queryString[i]);
-                    GraphDS::Node *newNode = new GraphDS::Node;
+                    GraphDS::Node* newNode = new GraphDS::Node;
                     nodeStrings.push_back(labelStr);
-                    void *ptr = &(nodeStrings[nodeStrings.size() - 1][0]);
+                    void* ptr = &(nodeStrings[nodeStrings.size() - 1][0]);
                     newNode->SetNodeValue(ptr);
                     newNode->SetNodeId(labelStr);
                     parsedVector.push_back(parsedString(labelStr, newNode));
@@ -1285,9 +1357,9 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
                     labelStr.push_back(queryString[i]);
                     i++;
                 }
-                GraphDS::Node *newNode = new GraphDS::Node;
+                GraphDS::Node* newNode = new GraphDS::Node;
                 nodeStrings.push_back(labelStr);
-                void *ptr = &(nodeStrings[nodeStrings.size() - 1][0]);
+                void* ptr = &(nodeStrings[nodeStrings.size() - 1][0]);
                 newNode->SetNodeValue(ptr);
                 newNode->SetNodeId(labelStr);
                 parsedVector.push_back(parsedString(labelStr, newNode));
@@ -1307,18 +1379,19 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
                 (parsedVector[i - 1].label != "*") && (parsedVector[i + 1].edge == NULL) &&
                 (parsedVector[i + 1].node != NULL) && (parsedVector[i + 1].label != "*"))
             { // Node then wildcard then Node; needs to be Node, wildcard edge, wildcard node, and a wildcard edge
-                GraphDS::Edge *thisEdge0 = new GraphDS::Edge;
+                GraphDS::Edge* thisEdge0 = new GraphDS::Edge;
                 thisEdge0->AddEdgeLabel("*");
                 parsedVector.insert(parsedVector.begin() + i + 1, parsedString("*", thisEdge0));
-                GraphDS::Edge *thisEdge01 = new GraphDS::Edge;
+                GraphDS::Edge* thisEdge01 = new GraphDS::Edge;
                 thisEdge01->AddEdgeLabel("*");
                 parsedVector.insert(parsedVector.begin() + i, parsedString("*", thisEdge01));
 
                 continue;
             }
-            if ((parsedVector[i - 1].edge == NULL) && (parsedVector[i - 1].node != NULL) && (parsedVector[i - 1].label != "*"))
+            if ((parsedVector[i - 1].edge == NULL) && (parsedVector[i - 1].node != NULL) &&
+                (parsedVector[i - 1].label != "*"))
             { // there is a node and then a wildcard; needs an edge to be connected
-                GraphDS::Edge *thisEdge = new GraphDS::Edge;
+                GraphDS::Edge* thisEdge = new GraphDS::Edge;
                 thisEdge->AddEdgeLabel("*");
                 parsedVector.insert(parsedVector.begin() + i, parsedString("*", thisEdge));
                 if (local_debug > 0)
@@ -1329,10 +1402,11 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
                 }
                 continue;
             }
-            if ((parsedVector[i + 1].edge == NULL) && (parsedVector[i + 1].node != NULL) && (parsedVector[i + 1].label != "*"))
+            if ((parsedVector[i + 1].edge == NULL) && (parsedVector[i + 1].node != NULL) &&
+                (parsedVector[i + 1].label != "*"))
             { // there is a wildcard and then a node; needs an edge to be connected
                 // TODO: insert * edge at i + 1
-                GraphDS::Edge *thisEdge1 = new GraphDS::Edge;
+                GraphDS::Edge* thisEdge1 = new GraphDS::Edge;
                 thisEdge1->AddEdgeLabel("*");
                 parsedVector.insert(parsedVector.begin() + i + 1, parsedString("*", thisEdge1));
                 if (local_debug > 0)
@@ -1351,7 +1425,8 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
             //   }
             //   else if(parsedVector[i-1].label == "]")
             //   {
-            //     //Wildcard is after branch, so as long as everything else is good, other nodes should attach to this fine
+            //     //Wildcard is after branch, so as long as everything else is good, other nodes should attach to this
+            //     fine
             //   }
             // }
             if ((parsedVector[i + 1].edge == NULL) && (parsedVector[i + 1].node == NULL))
@@ -1359,7 +1434,7 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
                 if (parsedVector[i + 1].label == "[")
                 {
                     // TODO: Need an edge at i + 1 added so this will attach to the node after the branch
-                    GraphDS::Edge *thisEdge2 = new GraphDS::Edge;
+                    GraphDS::Edge* thisEdge2 = new GraphDS::Edge;
                     thisEdge2->AddEdgeLabel("*");
                     parsedVector.insert(parsedVector.begin() + i + 1, parsedString("*", thisEdge2));
                     // std::cout << __LINE__ << "Adding * edge at " << i + 1 << "\n";
@@ -1367,8 +1442,9 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
                 }
                 else if (parsedVector[i + 1].label == "]")
                 {
-                    // TODO: Wildcard is at the end of a branch so add edge at i + 1 so it will connect to the node after the branch
-                    GraphDS::Edge *thisEdge3 = new GraphDS::Edge;
+                    // TODO: Wildcard is at the end of a branch so add edge at i + 1 so it will connect to the node
+                    // after the branch
+                    GraphDS::Edge* thisEdge3 = new GraphDS::Edge;
                     thisEdge3->AddEdgeLabel("*");
                     parsedVector.insert(parsedVector.begin() + i + 1, parsedString("*", thisEdge3));
                     // std::cout << __LINE__ << "Adding * edge at " << i + 1 << "\n";
@@ -1381,9 +1457,9 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
     { // add a new * node at every * node
         if ((parsedVector[i].label == "*") && (parsedVector[i].node != NULL))
         {
-            GraphDS::Node *newNode = new GraphDS::Node;
+            GraphDS::Node* newNode = new GraphDS::Node;
             nodeStrings.push_back("*");
-            void *ptr = &(nodeStrings[nodeStrings.size() - 1][0]);
+            void* ptr = &(nodeStrings[nodeStrings.size() - 1][0]);
             newNode->SetNodeValue(ptr);
             newNode->SetNodeId("*");
             parsedVector.insert(parsedVector.begin() + i, parsedString("*", newNode));
@@ -1394,17 +1470,18 @@ GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string q
     // Go through vector, add edges b/w nodes & add nodes & edges to graph
     ConnectNodes(0, static_cast<int>(parsedVector.size()), parsedVector, graph);
     GraphDS::Graph::NodeVector graphNodes = graph.GetGraphNodeList();
-    int i = 0;
+    int i                                 = 0;
     for (GraphDS::Graph::NodeVector::iterator it = graphNodes.begin(); it != graphNodes.end(); it++)
     {
-        GraphDS::Node *current_node = (*it);
+        GraphDS::Node* current_node = (*it);
         current_node->SetNodeType(std::to_string(i));
         i++;
     }
     return graph;
 }
 
-void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<parsedString> &parsedVector, GraphDS::Graph &graph)
+void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<parsedString>& parsedVector,
+                                               GraphDS::Graph& graph)
 {
     int local_debug = -1;
     if (local_debug > 0)
@@ -1439,8 +1516,8 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
                         }
                         else if (parsedVector[i + 2].label == "[")
                         { // there is a branch.  Find the end of the branch and connect to the next node
-                            int numOpenBrackets = 1;
-                            bool onSameBranchPoint = true;
+                            int numOpenBrackets       = 1;
+                            bool onSameBranchPoint    = true;
                             int numBranchesAtThisNode = 1;
                             int endBracketLocation;
                             std::vector<int> startBranchLocations;
@@ -1449,8 +1526,10 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
                             while (onSameBranchPoint)
                             {
                                 for (int j = i + 3; j < end; j++)
-                                { // this will pass over both branched branches [[]] and multiple branches at the same node [][][]
-                                    // and hopefully point to the last bracket      ^                                             ^
+                                { 
+                                    // this will pass over both branched branches [[]] and multiple branches at the same
+                                    // node [][][]
+                                    // and hopefully point to the last bracket
                                     if (parsedVector[j].label == "[")
                                     { // branched branches
                                         numOpenBrackets++;
@@ -1475,7 +1554,7 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
                                                 endBranchNodesLocations.push_back(j - 2);
                                             }
                                             endBracketLocation = j;
-                                            onSameBranchPoint = false;
+                                            onSameBranchPoint  = false;
                                             break;
                                         }
                                     }
@@ -1485,7 +1564,8 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
                                     }
                                 }
                             }
-                            if ((endBracketLocation < parsedVector.size() - 1) && (parsedVector[endBracketLocation + 1].node != NULL))
+                            if ((endBracketLocation < parsedVector.size() - 1) &&
+                                (parsedVector[endBracketLocation + 1].node != NULL))
                             { // Deal with the node before all this branching nonesense
                                 parsedVector[i + 1].edge->SetSourceNode(parsedVector[i].node);
                                 parsedVector[i + 1].edge->SetDestinationNode(parsedVector[endBracketLocation + 1].node);
@@ -1493,26 +1573,35 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
                                 {
                                     std::cout << __LINE__ << ": " << parsedVector[i].label << "{" << i << "}"
                                               << " " << parsedVector[i + 1].label << "{" << i + 1 << "}"
-                                              << " " << parsedVector[endBracketLocation + 1].label << "{" << endBracketLocation + 1 << "}"
+                                              << " " << parsedVector[endBracketLocation + 1].label << "{"
+                                              << endBracketLocation + 1 << "}"
                                               << "\n";
                                 }
                             }
                             for (unsigned int j = 0; j < endBranchNodesLocations.size(); j++)
-                            { // Attach the end of the branch to the node, recursively call this function to connect nodes in branch and deal with branched branches
-                                if ((parsedVector[endBranchNodesLocations[j] + 1].edge != NULL) && (parsedVector[endBracketLocation + 1].node != NULL))
+                            { // Attach the end of the branch to the node, recursively call this function to connect
+                              // nodes in branch and deal with branched branches
+                                if ((parsedVector[endBranchNodesLocations[j] + 1].edge != NULL) &&
+                                    (parsedVector[endBracketLocation + 1].node != NULL))
                                 {
-                                    parsedVector[endBranchNodesLocations[j] + 1].edge->SetSourceNode(parsedVector[endBranchNodesLocations[j]].node);
-                                    parsedVector[endBranchNodesLocations[j] + 1].edge->SetDestinationNode(parsedVector[endBracketLocation + 1].node);
+                                    parsedVector[endBranchNodesLocations[j] + 1].edge->SetSourceNode(
+                                        parsedVector[endBranchNodesLocations[j]].node);
+                                    parsedVector[endBranchNodesLocations[j] + 1].edge->SetDestinationNode(
+                                        parsedVector[endBracketLocation + 1].node);
                                     if (local_debug > 0)
                                     {
-                                        std::cout << __LINE__ << ": " << parsedVector[endBranchNodesLocations[j]].label << "{" << endBranchNodesLocations[j] << "}";
-                                        std::cout << " " << parsedVector[endBranchNodesLocations[j] + 1].label << "{" << endBranchNodesLocations[j] + 1 << "}"
-                                                  << " " << parsedVector[endBracketLocation + 1].label << "{" << endBracketLocation + 1 << "}"
+                                        std::cout << __LINE__ << ": " << parsedVector[endBranchNodesLocations[j]].label
+                                                  << "{" << endBranchNodesLocations[j] << "}";
+                                        std::cout << " " << parsedVector[endBranchNodesLocations[j] + 1].label << "{"
+                                                  << endBranchNodesLocations[j] + 1 << "}"
+                                                  << " " << parsedVector[endBracketLocation + 1].label << "{"
+                                                  << endBracketLocation + 1 << "}"
                                                   << "\n";
                                     }
                                     if (j > 0)
                                     {
-                                        ConnectNodes(startBranchLocations[j], endBranchNodesLocations[j], parsedVector, graph);
+                                        ConnectNodes(startBranchLocations[j], endBranchNodesLocations[j], parsedVector,
+                                                     graph);
                                     }
                                 }
                             }
@@ -1524,11 +1613,12 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
             {
                 graph.AddEdge(parsedVector[i].edge);
                 if (i == 0)
-                { // Graph starts with edge, usually you add edge to source node, but you need to add edge to dest node now
+                { // Graph starts with edge, usually you add edge to source node, but you need to add edge to dest node
+                  // now
                     if (parsedVector[i + 1].node != NULL)
                     {
                         parsedVector[i].edge->SetDestinationNode(parsedVector[i + 1].node);
-                        GraphDS::Node *newNode = NULL;
+                        GraphDS::Node* newNode = NULL;
                         parsedVector[i].edge->SetSourceNode(newNode);
                     }
                 }
@@ -1565,139 +1655,3 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
 // ?oligo :oligoBFactor ?oligo_mean_B_Factor.
 // }
 // ORDER BY DESC(?resolution)
-
-// Here's another that I ran for Rob to get all PDBs with non furanose (!regex line) sugars with unercognized side chains (symbolized as <R)
-//
-//  PREFIX : <http://gmmo.uga.edu/#>
-//  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-//  PREFIX owl: <http://www.w3.org/2002/07/owl#>
-//  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-//  PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-//  SELECT DISTINCT ?pdb ?oligo (group_concat(distinct ?oligo_sequence;separator="\n") as ?Oligosaccharides)
-//  WHERE
-//  {
-//  ?pdb_file :identifier ?pdb.
-//  ?pdb_file :hasOligo ?oligo.
-//  ?oligo :oligoName ?oligo_sequence.
-//  FILTER regex(?oligo_sequence, ".*<R.*")
-//  FILTER (!regex(?oligo_sequence, ".*f.*"))
-//  }
-
-// More filters that I am saving here for copy/paste to the virtuoso sparql endpoint
-//  ?oligo :oligoIUPACname ?oligo_IUPAC.
-//  FILTER regex(?oligo_sequence, ".*-Unknown$")
-//  FILTER (!regex(?oligo_sequence, ".*<R.*"))
-//  FILTER (!regex(?oligo_IUPAC, "- Unknown$"))
-//  FILTER (!regex(?oligo_IUPAC, "-$"))
-//  FILTER (!regex(?oligo_IUPAC, "-ASN$"))
-//  FILTER (!regex(?oligo_IUPAC, "-THR$"))
-//  FILTER (!regex(?oligo_IUPAC, "-SER$"))
-
-// PREFIX : <http://gmmo.uga.edu/#>
-// PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-// PREFIX owl: <http://www.w3.org/2002/07/owl#>
-// PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-// PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-// SELECT ?pdb ?oligo_sequence
-// WHERE
-// {
-// ?pdb_file :identifier ?pdb.
-// ?pdb_file :hasOligo ?oligo.
-// ?oligo :oligoName ?oligo_sequence.
-
-// SELECT DISTINCT ?residue_links?title ?resolution ?Mean_B_Factor?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI ?pdb_coordinates ?ProteinID(group_concat(distinct ?comment;separator="\n") as ?comments)(group_concat(distinct ?warning;separator="\n") as ?warnings)(group_concat(distinct ?error;separator="\n") as ?errors)WHERE {
-// ?pdb_file     :identifier    "1A14";
-//               :hasOligo      ?oligo.
-// FILTER regex(?oligo, "oligo1$")
-// ?oligo        :oligoIUPACname     "DManpa1-2DManpa1-2DManpa1-3DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-ASN".
-// ?pdb_file     :hasTitle               ?title;
-//               :hasAuthors             ?authors.
-// OPTIONAL {?pdb_file     :hasJournal             ?journal.}
-// OPTIONAL {?pdb_file     :hasProteinID           ?ProteinID.}
-// OPTIONAL {?pdb_file     :hasDOI                 ?DOI.}
-// OPTIONAL {?pdb_file     :hasPMID                ?PMID.}
-// OPTIONAL {?pdb_file     :hasResolution          ?resolution.}
-// OPTIONAL {?pdb_file     :hasBFactor             ?Mean_B_Factor.}
-// OPTIONAL {?oligo        :oligoResidueLinks      ?residue_links.}
-// OPTIONAL {?oligo        :oligoBFactor           ?oligo_mean_B_Factor.}
-// ?oligo        :PDBfile           ?pdb_coordinates.
-// ?oligo        :hasMono            ?mono.
-// OPTIONAL {?mono       :hasNote       ?errorNote.
-// ?errorNote	    :NoteType      "error".
-// ?errorNote      :description   ?error.}
-// OPTIONAL {?mono       :hasNote       ?warningNote.
-// ?warningNote    :NoteType      "warning".
-// ?warningNote    :description   ?warning.}
-// OPTIONAL {?mono       :hasNote       ?commentNote.
-// ?commentNote    :NoteType      "comment".
-// ?commentNote    :description   ?comment.}
-// }
-
-// // New query format for branched oligo searching
-// // Looking for DGlcpNAcb1-4[LFucpa1-3]DGlcpNAcb
-// PREFIX : <http://gmmo.uga.edu/#>
-// PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-// PREFIX owl: <http://www.w3.org/2002/07/owl#>
-// PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-// PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-// SELECT DISTINCT ?pdb (group_concat(distinct ?Oligosaccharide;separator="\n") as ?Oligosaccharides)
-// WHERE {
-// ?pdb_file     :identifier    ?pdb;
-//               :hasOligo      ?oligo.
-// ?pdb_file     :hasTitle               ?title;
-//               :hasAuthors             ?authors.
-// ?oligo        :oligoIUPACname     ?Oligosaccharide.
-// ?oligo        :hasMono            ?mono;
-//               :hasSequenceResidue ?residue1.
-// ?residue1     :monosaccharideShortName  """LFucpa""".
-//
-// ?residue1     :is1-3ConnectedTo      ?residue2.
-// ?residue2     :monosaccharideShortName """DGlcpNAcb""".
-// ?residue3 :is1-4ConnectedTo ?residue2.
-// ?residue3 :monosaccharideShortName """DGlcpNAcb""".
-// }
-// TODO make query work for any permutation of DGalpb1-4DGlcpNAcb1-2DManpa1-3[DGlcpNAcb1-2DManpa1-6]DManpb1-4DGlcpNAcb1-4[LFucpa1-6]DGlcpNAcb1-ASN
-
-// Note to self:
-// The following will remove the IRI prefix from gmmo:?PDBID
-// BIND(STRAFTER(str(?pdb_file), "#") as ?pdb)
-
-// TODO make this work for r groups
-//  PREFIX : <http://gmmo.uga.edu/#>
-//  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-//  PREFIX owl: <http://www.w3.org/2002/07/owl#>
-//  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-//  PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-//  SELECT DISTINCT ?residue_links ?title ?resolution ?Mean_B_Factor?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI ?pdb_coordinates ?ProteinID ?rGroup1 ?rGroup2 ?rGroup3 (group_concat(distinct ?comment;separator="\n") as ?comments)(group_concat(distinct ?warning;separator="\n") as ?warnings)(group_concat(distinct ?error;separator="\n") as ?errors)WHERE {
-//  ?pdb_file     :identifier    "100D";
-//                :hasOligo      ?oligo.
-//  FILTER regex(?oligo, "oligo1$")
-//  ?oligo        :oligoIUPACname     "DRibf[2D][3<R1>][3<R2>,1<R3>]b1-N1".
-//  ?oligo  :hasR1    ?R1.
-//  ?R1 :hasFormula      ?rGroup1.
-//  ?oligo  :hasR2    ?R2.
-//  ?R2 :hasFormula      ?rGroup2.
-//  ?oligo  :hasR3    ?R3.
-//  ?R3 :hasFormula      ?rGroup3.
-//  ?pdb_file     :hasTitle               ?title;
-//                :hasAuthors             ?authors.
-//  OPTIONAL {?pdb_file     :hasJournal             ?journal.}
-//  OPTIONAL {?pdb_file     :hasProteinID           ?ProteinID.}
-//  OPTIONAL {?pdb_file     :hasDOI                 ?DOI.}
-//  OPTIONAL {?pdb_file     :hasPMID                ?PMID.}
-//  OPTIONAL {?pdb_file     :hasResolution          ?resolution.}
-//  OPTIONAL {?pdb_file     :hasBFactor             ?Mean_B_Factor.}
-//  OPTIONAL {?oligo        :oligoResidueLinks      ?residue_links.}
-//  OPTIONAL {?oligo        :oligoBFactor           ?oligo_mean_B_Factor.}
-//  ?oligo        :PDBfile           ?pdb_coordinates.
-//  ?oligo        :hasMono            ?mono.
-//  OPTIONAL {?mono       :hasNote       ?errorNote.
-//  ?errorNote      :NoteType      "error".
-//  ?errorNote      :description   ?error.}
-//  OPTIONAL {?mono       :hasNote       ?warningNote.
-//  ?warningNote    :NoteType      "warning".
-//  ?warningNote    :description   ?warning.}
-//  OPTIONAL {?mono       :hasNote       ?commentNote.
-//  ?commentNote    :NoteType      "comment".
-//  ?commentNote    :description   ?comment.}
-//  }

@@ -5,17 +5,19 @@ using CodeUtils::CodeTests;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-CodeTests::CodeTests() {}
+CodeTests::CodeTests()
+{}
 
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
-StringVector  CodeTests::ListCodeTests() 
+StringVector CodeTests::ListCodeTests()
 {
-	StringVector testlist;
-	testlist.push_back("ProduceSegmentationFault");
-	return testlist;
+    StringVector testlist;
+    testlist.push_back("ProduceSegmentationFault");
+    return testlist;
 }
+
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
@@ -26,10 +28,10 @@ StringVector  CodeTests::ListCodeTests()
 
 void CodeTests::ProduceSegmentationFault()
 {
-    int *a;
-    a=NULL;
-    std::cerr<<"This program has requested a segfault.  Complying now."<<std::flush;
-    std::cout<<*a<<std::endl;
+    int* a;
+    a = NULL;
+    std::cerr << "This program has requested a segfault.  Complying now." << std::flush;
+    std::cout << *a << std::endl;
     return;
 }
 

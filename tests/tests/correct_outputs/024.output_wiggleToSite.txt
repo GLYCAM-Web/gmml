@@ -1,0 +1,22 @@
+Input file is tests/inputs/024.input.txt
+Reading input file complete
+substrateFile_ : tests/inputs/024.substrateWithProtein.pdb
+carbohydrateFile_ : DGalpb1-4DGlcpNAcb1-3DGalpb1-4DGlcpNAcb1-3DGalpb1-4DGlcpNAcb1-2DManpa1-6[DNeup5Aca2-6DGalpb1-4DGlcpNAcb1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
+superimpositionTargetResidue_ : ?_9_?_F
+carbohydrateSuperimpositionResidue_ : 7
+wigglingTargetResidue_ : ?_1_?_F
+carbohydrateWigglingResidue_ : 15
+persistCycles_ : 1
+isDeterministic_ : 1
+Gonna find path between 3LB and 0SA
+0SA_15, 6LB_14, 4YB_13, 2MA_12, VMB_4, 2MA_5, 4YB_6, 3LB_7, 
+Linkages I behold:
+
+DNeu5Acpa2-6DGalpb: 6
+DGalpb1-4DGlcNAcpb: 1
+DGlcNAcpb1-2DManpa: 1
+DManpa1-3DManpb: 1
+DManpb6-1DManpa: 3
+DManpa2-1DGlcNAcpb: 1
+DGlcNAcpb4-1DGalpb: 1
+Program got to end ok

@@ -12,8 +12,8 @@ RUNTIME = $(RFLAGS)
 DEBUG = -g 2
 RM = rm -f
 
-SRC = ${GEMSHOME}/gmml/src/InternalPrograms/CarbohydrateBuilder/
-INC = ${GEMSHOME}/gmml/includes/InternalPrograms/CarbohydrateBuilder/
+SRC = ${GEMSHOME}/gmml/src/CentralDataStructure/InternalPrograms/CarbohydrateBuilder/
+INC = ${GEMSHOME}/gmml/includes/CentralDataStructure/InternalPrograms/CarbohydrateBuilder/
 BUILD = ./build
 BIN = ./bin
 

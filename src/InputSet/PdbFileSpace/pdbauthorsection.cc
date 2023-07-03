@@ -8,12 +8,13 @@ using PdbFileSpace::PdbAuthorSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbAuthorSection::PdbAuthorSection() : record_name_("AUTHOR"), author_(""){}
+PdbAuthorSection::PdbAuthorSection() : record_name_("AUTHOR"), author_("")
+{}
 
-PdbAuthorSection::PdbAuthorSection(const std::string &record_name, const std::string &author)
+PdbAuthorSection::PdbAuthorSection(const std::string& record_name, const std::string& author)
 {
     record_name_ = record_name;
-    author_ = author;
+    author_      = author;
 }
 
 PdbAuthorSection::PdbAuthorSection(std::stringstream& stream_block)
@@ -25,17 +26,18 @@ PdbAuthorSection::PdbAuthorSection(std::stringstream& stream_block)
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
+        if (!is_record_name_set)
+        {
+            record_name_ = line.substr(0, 6);
             gmml::Trim(record_name_);
-            is_record_name_set=true;
+            is_record_name_set = true;
         }
-        ss << line.substr(10,70);
+        ss << line.substr(10, 70);
 
         getline(stream_block, line);
         temp = line;
     }
-    this->SetAuthor( ss.str() );
+    this->SetAuthor(ss.str());
 }
 
 //////////////////////////////////////////////////////////
@@ -62,8 +64,8 @@ void PdbAuthorSection::SetRecordName(const std::string record_name)
 void PdbAuthorSection::SetAuthor(const std::string author)
 {
     this->author_ = author;
-	gmml::Trim( this->author_ );
-	gmml::TrimSpaces( this->author_ );
+    gmml::Trim(this->author_);
+    gmml::TrimSpaces(this->author_);
 }
 
 //////////////////////////////////////////////////////////
@@ -73,7 +75,7 @@ void PdbAuthorSection::SetAuthor(const std::string author)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbAuthorSection::Print(std::ostream &out)
+void PdbAuthorSection::Print(std::ostream& out)
 {
     out << "Record Name: " << record_name_ << ", Author(s): " << author_ << std::endl << std::endl;
 }

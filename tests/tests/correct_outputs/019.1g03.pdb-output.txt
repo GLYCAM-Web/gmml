@@ -1,0 +1,150 @@
+Preprocessing
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Bonding atoms by distance for assembly
+Finished bonding atoms by distance
+Unrecognized atoms:
+Missing heavy atoms:
+Unrecognized residues:
+Gaps in amino acid chain:
+Histidine Protonation:
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+HID | A | 4
+HID | A | 6
+HID | A | 12
+HID | A | 71
+HID | A | 72
+Disulphide bonds:
+Chain terminations:
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+A | 1 | NH3+ | 134 | CO2-
+NonNatural Protein Residues:

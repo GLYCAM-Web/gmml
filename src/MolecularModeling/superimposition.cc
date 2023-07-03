@@ -1,50 +1,50 @@
 #include "../../includes/MolecularModeling/superimposition.hpp"
 
-using MolecularModeling::Atom;
-using MolecularModeling::AtomVector;
+using GeometryTopology::CoordinateVector;
 using MolecularModeling::Assembly;
 using MolecularModeling::AssemblyVector;
-using GeometryTopology::CoordinateVector;
+using MolecularModeling::Atom;
+using MolecularModeling::AtomVector;
 
-CoordinateVector gmml::GetCoordinatesInAtomVector(AtomVector *atoms)
+CoordinateVector gmml::GetCoordinatesInAtomVector(AtomVector* atoms)
 {
     CoordinateVector coordinates;
-    for(AtomVector::iterator it = atoms->begin(); it != atoms->end(); ++it)
+    for (AtomVector::iterator it = atoms->begin(); it != atoms->end(); ++it)
     {
-        Atom *atom = *it;
+        Atom* atom = *it;
         coordinates.push_back(atom->GetCoordinate());
     }
     return coordinates;
 }
 
-CoordinateVector gmml::GetCoordinatesInAssemblyVector(AssemblyVector *assemblies)
+CoordinateVector gmml::GetCoordinatesInAssemblyVector(AssemblyVector* assemblies)
 {
     CoordinateVector coordinates;
-    for(AssemblyVector::iterator it1 = assemblies->begin(); it1 != assemblies->end(); ++it1)
+    for (AssemblyVector::iterator it1 = assemblies->begin(); it1 != assemblies->end(); ++it1)
     {
-        Assembly *assembly = *it1;
+        Assembly* assembly                 = *it1;
         CoordinateVector extra_coordinates = assembly->GetAllCoordinates();
-        coordinates.insert( coordinates.end(), extra_coordinates.begin(), extra_coordinates.end() ); // "Concatentate"
+        coordinates.insert(coordinates.end(), extra_coordinates.begin(), extra_coordinates.end()); // "Concatentate"
     }
     return coordinates;
 }
 
-//void gmml::GenerateMatrixFromAtomVectorCoordinates(AtomVector *atoms, Eigen::Matrix3Xd *matrix)
+// void gmml::GenerateMatrixFromAtomVectorCoordinates(AtomVector *atoms, Eigen::Matrix3Xd *matrix)
 //{
-//    int col = 0; // Column index for matrix
-//    for(AtomVector::iterator it = atoms->begin(); it != atoms->end(); it++)
-//    {
-//        (*matrix)(0, col) = (*it)->GetCoordinates().at(0)->GetX();
-//        (*matrix)(1, col) = (*it)->GetCoordinates().at(0)->GetY();
-//        (*matrix)(2, col) = (*it)->GetCoordinates().at(0)->GetZ();
-//        col++;
-//    }
-//}
+//     int col = 0; // Column index for matrix
+//     for(AtomVector::iterator it = atoms->begin(); it != atoms->end(); it++)
+//     {
+//         (*matrix)(0, col) = (*it)->GetCoordinates().at(0)->GetX();
+//         (*matrix)(1, col) = (*it)->GetCoordinates().at(0)->GetY();
+//         (*matrix)(2, col) = (*it)->GetCoordinates().at(0)->GetZ();
+//         col++;
+//     }
+// }
 
-void gmml::GenerateMatrixFromCoordinates(CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix)
+void gmml::GenerateMatrixFromCoordinates(CoordinateVector* coordinates, Eigen::Matrix3Xd* matrix)
 {
     int col = 0; // Column index for matrix
-    for(CoordinateVector::iterator coordinate = coordinates->begin(); coordinate != coordinates->end(); ++coordinate)
+    for (CoordinateVector::iterator coordinate = coordinates->begin(); coordinate != coordinates->end(); ++coordinate)
     {
         (*matrix)(0, col) = (*coordinate)->GetX();
         (*matrix)(1, col) = (*coordinate)->GetY();
@@ -53,26 +53,26 @@ void gmml::GenerateMatrixFromCoordinates(CoordinateVector *coordinates, Eigen::M
     }
 }
 
-//void gmml::ReplaceAtomVectorCoordinatesFromMatrix(AtomVector *atoms, Eigen::Matrix3Xd *matrix)
+// void gmml::ReplaceAtomVectorCoordinatesFromMatrix(AtomVector *atoms, Eigen::Matrix3Xd *matrix)
 //{
-//    int col = 0; // Column index for matrix
-//    for(AtomVector::iterator it = atoms->begin(); it != atoms->end(); it++)
-//    {
-//        (*it)->GetCoordinates().at(0)->SetX( (*matrix)(0, col) );
-//        (*it)->GetCoordinates().at(0)->SetY( (*matrix)(1, col) );
-//        (*it)->GetCoordinates().at(0)->SetZ( (*matrix)(2, col) );
-//        col++;
-//    }
-//}
+//     int col = 0; // Column index for matrix
+//     for(AtomVector::iterator it = atoms->begin(); it != atoms->end(); it++)
+//     {
+//         (*it)->GetCoordinates().at(0)->SetX( (*matrix)(0, col) );
+//         (*it)->GetCoordinates().at(0)->SetY( (*matrix)(1, col) );
+//         (*it)->GetCoordinates().at(0)->SetZ( (*matrix)(2, col) );
+//         col++;
+//     }
+// }
 
-void gmml::ReplaceCoordinatesFromMatrix(CoordinateVector *coordinates, Eigen::Matrix3Xd *matrix)
+void gmml::ReplaceCoordinatesFromMatrix(CoordinateVector* coordinates, Eigen::Matrix3Xd* matrix)
 {
     int col = 0; // Column index for matrix
-    for(CoordinateVector::iterator coordinate = coordinates->begin(); coordinate != coordinates->end(); ++coordinate)
+    for (CoordinateVector::iterator coordinate = coordinates->begin(); coordinate != coordinates->end(); ++coordinate)
     {
-        (*coordinate)->SetX( (*matrix)(0, col) );
-        (*coordinate)->SetY( (*matrix)(1, col) );
-        (*coordinate)->SetZ( (*matrix)(2, col) );
+        (*coordinate)->SetX((*matrix)(0, col));
+        (*coordinate)->SetY((*matrix)(1, col));
+        (*coordinate)->SetZ((*matrix)(2, col));
         ++col;
     }
 }
@@ -81,34 +81,38 @@ Eigen::Affine3d gmml::Find3DAffineTransform(Eigen::Matrix3Xd in, Eigen::Matrix3X
 {
     // Default output
     Eigen::Affine3d A;
-    A.linear() = Eigen::Matrix3d::Identity(3, 3);
+    A.linear()      = Eigen::Matrix3d::Identity(3, 3);
     A.translation() = Eigen::Vector3d::Zero();
 
     if (in.cols() != out.cols())
+    {
         throw "Find3DAffineTransform(): input data mis-match";
+    }
 
     // First find the scale, by finding the ratio of sums of some distances,
     // then bring the datasets to the same scale.
     double dist_in = 0, dist_out = 0;
-    for (int col = 0; col < in.cols()-1; col++)
+    for (int col = 0; col < in.cols() - 1; col++)
     {
-        dist_in  += (in.col(col+1) - in.col(col)).norm();
-        dist_out += (out.col(col+1) - out.col(col)).norm();
+        dist_in  += (in.col(col + 1) - in.col(col)).norm();
+        dist_out += (out.col(col + 1) - out.col(col)).norm();
     }
     if (dist_in <= 0 || dist_out <= 0)
+    {
         return A;
-    double scale = dist_out/dist_in;
-    out /= scale;
+    }
+    double scale = dist_out / dist_in;
+    out          /= scale;
 
     // Find the centroids then shift to the origin
-    Eigen::Vector3d in_ctr = Eigen::Vector3d::Zero();
+    Eigen::Vector3d in_ctr  = Eigen::Vector3d::Zero();
     Eigen::Vector3d out_ctr = Eigen::Vector3d::Zero();
     for (int col = 0; col < in.cols(); col++)
     {
         in_ctr  += in.col(col);
         out_ctr += out.col(col);
     }
-    in_ctr /= in.cols();
+    in_ctr  /= in.cols();
     out_ctr /= out.cols();
     for (int col = 0; col < in.cols(); col++)
     {
@@ -123,25 +127,29 @@ Eigen::Affine3d gmml::Find3DAffineTransform(Eigen::Matrix3Xd in, Eigen::Matrix3X
     // Find the rotation
     double d = (svd.matrixV() * svd.matrixU().transpose()).determinant();
     if (d > 0)
+    {
         d = 1.0;
+    }
     else
+    {
         d = -1.0;
+    }
     Eigen::Matrix3d I = Eigen::Matrix3d::Identity(3, 3);
-    I(2, 2) = d;
+    I(2, 2)           = d;
     Eigen::Matrix3d R = svd.matrixV() * I * svd.matrixU().transpose();
 
     // The final transform
-    A.linear() = scale * R;
-    A.translation() = scale*(out_ctr - R*in_ctr);
+    A.linear()      = scale * R;
+    A.translation() = scale * (out_ctr - R * in_ctr);
 
     return A;
 }
 
 void gmml::Superimpose(CoordinateVector moving, CoordinateVector target)
 {
-    Eigen::Matrix3Xd movingMatrix(3, moving.size()), targetMatrix(3, target.size()) ;
+    Eigen::Matrix3Xd movingMatrix(3, moving.size()), targetMatrix(3, target.size());
 
-    //Create Matrices containing co-ordinates of moving and target
+    // Create Matrices containing co-ordinates of moving and target
     GenerateMatrixFromCoordinates(&moving, &movingMatrix);
     GenerateMatrixFromCoordinates(&target, &targetMatrix);
 
@@ -169,7 +177,7 @@ void gmml::Superimpose(CoordinateVector moving, CoordinateVector target, Coordin
     Eigen::Affine3d Affine = Find3DAffineTransform(movingMatrix, targetMatrix);
 
     // Create a matrix containing the moved co-ordinates of assembly moving and alsoMoving.
-    Eigen::Matrix3Xd movedMatrix = (Affine * movingMatrix);
+    Eigen::Matrix3Xd movedMatrix     = (Affine * movingMatrix);
     Eigen::Matrix3Xd alsoMovedMatrix = (Affine * alsoMovingMatrix);
 
     // Replace co-ordinates of moving with moved co-ordinates
@@ -177,9 +185,9 @@ void gmml::Superimpose(CoordinateVector moving, CoordinateVector target, Coordin
     ReplaceCoordinatesFromMatrix(&alsoMoving, &alsoMovedMatrix);
 }
 
-//void gmml::Superimpose(AtomVector moving, AtomVector target)
+// void gmml::Superimpose(AtomVector moving, AtomVector target)
 //{
-//    Eigen::Matrix3Xd movingMatrix(3, moving.size()), targetMatrix(3, target.size()) ;
+//     Eigen::Matrix3Xd movingMatrix(3, moving.size()), targetMatrix(3, target.size()) ;
 
 //    //Create Matrices containing co-ordinates of moving and target
 //    GenerateMatrixFromAtomVectorCoordinates(&moving, &movingMatrix);
@@ -195,10 +203,10 @@ void gmml::Superimpose(CoordinateVector moving, CoordinateVector target, Coordin
 //    ReplaceAtomVectorCoordinatesFromMatrix(&moving, &movedMatrix);
 //}
 
-//void gmml::Superimpose(AtomVector moving, AtomVector target, AtomVector alsoMoving)
+// void gmml::Superimpose(AtomVector moving, AtomVector target, AtomVector alsoMoving)
 //{
-//    Eigen::Matrix3Xd movingMatrix(3, moving.size()), targetMatrix(3, target.size());
-//    Eigen::Matrix3Xd alsoMovingMatrix(3, alsoMoving.size()); // separate from above line for clarity
+//     Eigen::Matrix3Xd movingMatrix(3, moving.size()), targetMatrix(3, target.size());
+//     Eigen::Matrix3Xd alsoMovingMatrix(3, alsoMoving.size()); // separate from above line for clarity
 
 //    // Create a matrices containing co-ordinates of assembly moving and target
 //    GenerateMatrixFromAtomVectorCoordinates(&moving, &movingMatrix);
@@ -227,14 +235,14 @@ void gmml::Superimpose(AtomVector moving, AtomVector target)
 
 void gmml::Superimpose(AtomVector moving, AtomVector target, AtomVector alsoMoving)
 {
-    CoordinateVector moving_coordinates = gmml::GetCoordinatesInAtomVector(&moving);
-    CoordinateVector target_coordinates = gmml::GetCoordinatesInAtomVector(&target);
+    CoordinateVector moving_coordinates     = gmml::GetCoordinatesInAtomVector(&moving);
+    CoordinateVector target_coordinates     = gmml::GetCoordinatesInAtomVector(&target);
     CoordinateVector alsoMoving_coordinates = gmml::GetCoordinatesInAtomVector(&alsoMoving);
 
     gmml::Superimpose(moving_coordinates, target_coordinates, alsoMoving_coordinates);
 }
 
-void gmml::Superimpose(Assembly *moving, Assembly *target)
+void gmml::Superimpose(Assembly* moving, Assembly* target)
 {
     CoordinateVector moving_coordinates = moving->GetAllCoordinates();
     CoordinateVector target_coordinates = target->GetAllCoordinates();
@@ -242,28 +250,26 @@ void gmml::Superimpose(Assembly *moving, Assembly *target)
     gmml::Superimpose(moving_coordinates, target_coordinates);
 }
 
-void gmml::Superimpose(Assembly *moving, Assembly *target, Assembly *alsoMoving)
+void gmml::Superimpose(Assembly* moving, Assembly* target, Assembly* alsoMoving)
 {
-    CoordinateVector moving_coordinates = moving->GetAllCoordinates();
-    CoordinateVector target_coordinates = target->GetAllCoordinates();
+    CoordinateVector moving_coordinates     = moving->GetAllCoordinates();
+    CoordinateVector target_coordinates     = target->GetAllCoordinates();
     CoordinateVector alsoMoving_coordinates = alsoMoving->GetAllCoordinates();
 
     gmml::Superimpose(moving_coordinates, target_coordinates, alsoMoving_coordinates);
-
 }
 
-void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving)
+void gmml::Superimpose(Assembly* moving, Assembly* target, AssemblyVector* alsoMoving)
 {
 
-    CoordinateVector moving_coordinates = moving->GetAllCoordinates();
-    CoordinateVector target_coordinates = target->GetAllCoordinates();
+    CoordinateVector moving_coordinates     = moving->GetAllCoordinates();
+    CoordinateVector target_coordinates     = target->GetAllCoordinates();
     CoordinateVector alsoMoving_coordinates = gmml::GetCoordinatesInAssemblyVector(alsoMoving);
 
     gmml::Superimpose(moving_coordinates, target_coordinates, alsoMoving_coordinates);
-
 }
 
-//void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving)
+// void gmml::Superimpose(Assembly *moving, Assembly *target, AssemblyVector *alsoMoving)
 //{
 
 //    AtomVector moving_atoms = moving->GetAllAtomsOfAssembly();

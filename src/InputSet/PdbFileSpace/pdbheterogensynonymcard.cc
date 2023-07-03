@@ -8,11 +8,15 @@ using PdbFileSpace::PdbHeterogenSynonymCard;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbHeterogenSynonymCard::PdbHeterogenSynonymCard() : heterogen_identifier_("") {}
-PdbHeterogenSynonymCard::PdbHeterogenSynonymCard(const std::string &heterogen_identifier, const std::vector<std::string> &heterogen_synonyms) : heterogen_identifier_ (heterogen_identifier)
+PdbHeterogenSynonymCard::PdbHeterogenSynonymCard() : heterogen_identifier_("")
+{}
+
+PdbHeterogenSynonymCard::PdbHeterogenSynonymCard(const std::string& heterogen_identifier,
+                                                 const std::vector<std::string>& heterogen_synonyms)
+    : heterogen_identifier_(heterogen_identifier)
 {
     heterogen_synonyms_.clear();
-    for(std::vector<std::string>::const_iterator it = heterogen_synonyms.begin(); it != heterogen_synonyms.end(); it++)
+    for (std::vector<std::string>::const_iterator it = heterogen_synonyms.begin(); it != heterogen_synonyms.end(); it++)
     {
         heterogen_synonyms_.push_back(*it);
     }
@@ -27,19 +31,20 @@ PdbHeterogenSynonymCard::PdbHeterogenSynonymCard(std::stringstream& stream_block
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
-        if(!is_heterogen_identifier_set){
-            heterogen_identifier_ = line.substr(11,3);
+        if (!is_heterogen_identifier_set)
+        {
+            heterogen_identifier_ = line.substr(11, 3);
             gmml::Trim(heterogen_identifier_);
             is_heterogen_identifier_set = true;
         }
 
-        ss << line.substr(15,55) << " ";
+        ss << line.substr(15, 55) << " ";
 
         getline(stream_block, line);
         temp = line;
     }
     std::string temp_synonym = ss.str();
-    heterogen_synonyms_ = gmml::Split(gmml::Trim(temp_synonym), ";");
+    heterogen_synonyms_      = gmml::Split(gmml::Trim(temp_synonym), ";");
 }
 
 //////////////////////////////////////////////////////////
@@ -66,7 +71,7 @@ void PdbHeterogenSynonymCard::SetHeterogenIdentifier(const std::string heterogen
 void PdbHeterogenSynonymCard::SetHeterogenSynonyms(const std::vector<std::string> heterogen_synonyms)
 {
     heterogen_synonyms_.clear();
-    for(std::vector<std::string>::const_iterator it = heterogen_synonyms.begin(); it != heterogen_synonyms.end(); it++)
+    for (std::vector<std::string>::const_iterator it = heterogen_synonyms.begin(); it != heterogen_synonyms.end(); it++)
     {
         heterogen_synonyms_.push_back(*it);
     }
@@ -84,10 +89,10 @@ void PdbHeterogenSynonymCard::AddHeterogenSynonym(const std::string heterogen_sy
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbHeterogenSynonymCard::Print(std::ostream &out)
+void PdbHeterogenSynonymCard::Print(std::ostream& out)
 {
     out << "Heterogen ID: " << heterogen_identifier_ << "Heterogen Synonyms: ";
-    for(std::vector<std::string>::iterator it = heterogen_synonyms_.begin(); it != heterogen_synonyms_.end(); it++)
+    for (std::vector<std::string>::iterator it = heterogen_synonyms_.begin(); it != heterogen_synonyms_.end(); it++)
     {
         out << (*it) << ", ";
     }

@@ -9,15 +9,19 @@ using ParameterFileSpace::ParameterFileBond;
 ///////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-ParameterFileBond::ParameterFileBond()
-    : types_(), force_constant_(gmml::dNotSet), length_(gmml::dNotSet), dscr_("") {}
+ParameterFileBond::ParameterFileBond() : types_(), force_constant_(gmml::dNotSet), length_(gmml::dNotSet), dscr_("")
+{}
 
-ParameterFileBond::ParameterFileBond(const std::vector<std::string> &types, double force_constant, double length, const std::string &dscr)
-    : types_(types), force_constant_(force_constant), length_(length), dscr_(dscr) {}
+ParameterFileBond::ParameterFileBond(const std::vector<std::string>& types, double force_constant, double length,
+                                     const std::string& dscr)
+    : types_(types), force_constant_(force_constant), length_(length), dscr_(dscr)
+{}
 
-ParameterFileBond::ParameterFileBond(const std::vector<std::string> &types, double force_constant, double length,
-                                     const std::vector<double> &hbond_coefficients, const std::string &dscr)
-    : types_(types), force_constant_(force_constant), length_(length), dscr_(dscr), hbond_coefficients_(hbond_coefficients) {}
+ParameterFileBond::ParameterFileBond(const std::vector<std::string>& types, double force_constant, double length,
+                                     const std::vector<double>& hbond_coefficients, const std::string& dscr)
+    : types_(types), force_constant_(force_constant), length_(length), dscr_(dscr),
+      hbond_coefficients_(hbond_coefficients)
+{}
 
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
@@ -59,7 +63,7 @@ std::vector<double> ParameterFileBond::GetHbondCoefficients()
 void ParameterFileBond::SetTypes(std::vector<std::string> types)
 {
     types_.clear();
-    for(std::vector<std::string>::iterator it = types.begin(); it != types.end(); it++)
+    for (std::vector<std::string>::iterator it = types.begin(); it != types.end(); it++)
     {
         types_.push_back(*it);
     }
@@ -72,18 +76,21 @@ void ParameterFileBond::SetForceConstant(double force_constant)
 }
 
 /// Set angle
-void ParameterFileBond::SetLength(double length){
+void ParameterFileBond::SetLength(double length)
+{
     length_ = length;
 }
 
 /// Set dscr
-void ParameterFileBond::SetDscr(const std::string dscr){
+void ParameterFileBond::SetDscr(const std::string dscr)
+{
     dscr_ = dscr;
 }
 
-void ParameterFileBond::SetHbondCoefficients(std::vector<double> hbond_coefficients){
+void ParameterFileBond::SetHbondCoefficients(std::vector<double> hbond_coefficients)
+{
     hbond_coefficients_.clear();
-    for(std::vector<double>::iterator it = hbond_coefficients.begin(); it != hbond_coefficients.end(); it++)
+    for (std::vector<double>::iterator it = hbond_coefficients.begin(); it != hbond_coefficients.end(); it++)
     {
         hbond_coefficients_.push_back(*it);
     }
@@ -94,27 +101,35 @@ void ParameterFileBond::SetHbondCoefficients(std::vector<double> hbond_coefficie
 //////////////////////////////////////////////////////////
 void ParameterFileBond::Print(std::ostream& out)
 {
-    for(std::vector<std::string>::iterator it = types_.begin(); it != types_.end(); it++)
+    for (std::vector<std::string>::iterator it = types_.begin(); it != types_.end(); it++)
     {
-        if(it != types_.end() - 1)
+        if (it != types_.end() - 1)
         {
-            out << std::setw(4) << (*it)
-                << std::setw(2) << "-";
+            out << std::setw(4) << (*it) << std::setw(2) << "-";
         }
         else
+        {
             out << std::setw(4) << (*it);
+        }
     }
 
-    if(force_constant_ == gmml::dNotSet)
+    if (force_constant_ == gmml::dNotSet)
+    {
         out << std::setw(15) << "--";
+    }
     else
+    {
         out << std::setw(15) << force_constant_;
+    }
 
-    if(length_ == gmml::dNotSet)
+    if (length_ == gmml::dNotSet)
+    {
         out << std::setw(10) << "--";
+    }
     else
+    {
         out << std::setw(10) << length_;
+    }
 
-    out << std::setw(60) << dscr_
-        << std::endl;
+    out << std::setw(60) << dscr_ << std::endl;
 }

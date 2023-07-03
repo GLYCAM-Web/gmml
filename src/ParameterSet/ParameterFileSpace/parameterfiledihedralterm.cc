@@ -9,33 +9,42 @@ using ParameterFileSpace::ParameterFileDihedralTerm;
 //////////////////////////////////////////////////////////
 //                       Constructor                    //
 //////////////////////////////////////////////////////////
-ParameterFileDihedralTerm::ParameterFileDihedralTerm() :
-    factor_(gmml::dNotSet), force_constant_(gmml::dNotSet), phase_(gmml::dNotSet), periodicity_(gmml::dNotSet), dscr_("") {}
+ParameterFileDihedralTerm::ParameterFileDihedralTerm()
+    : factor_(gmml::dNotSet), force_constant_(gmml::dNotSet), phase_(gmml::dNotSet), periodicity_(gmml::dNotSet),
+      dscr_("")
+{}
 
-ParameterFileDihedralTerm::ParameterFileDihedralTerm(int factor, double force_constant, double phase, double periodicity, const std::string& dscr) :
-    factor_(factor), force_constant_(force_constant), phase_(phase), periodicity_(periodicity), dscr_(dscr) {}
+ParameterFileDihedralTerm::ParameterFileDihedralTerm(int factor, double force_constant, double phase,
+                                                     double periodicity, const std::string& dscr)
+    : factor_(factor), force_constant_(force_constant), phase_(phase), periodicity_(periodicity), dscr_(dscr)
+{}
 
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
 
-int ParameterFileDihedralTerm::GetFactor(){
+int ParameterFileDihedralTerm::GetFactor()
+{
     return factor_;
 }
 
-double ParameterFileDihedralTerm::GetForceConstant(){
+double ParameterFileDihedralTerm::GetForceConstant()
+{
     return force_constant_;
 }
 
-double ParameterFileDihedralTerm::GetPhase(){
+double ParameterFileDihedralTerm::GetPhase()
+{
     return phase_;
 }
 
-double ParameterFileDihedralTerm::GetPeriodicity(){
+double ParameterFileDihedralTerm::GetPeriodicity()
+{
     return periodicity_;
 }
 
-std::string ParameterFileDihedralTerm::GetDscr(){
+std::string ParameterFileDihedralTerm::GetDscr()
+{
     return dscr_;
 }
 
@@ -43,23 +52,28 @@ std::string ParameterFileDihedralTerm::GetDscr(){
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
 
-void ParameterFileDihedralTerm::SetFactor(int factor){
+void ParameterFileDihedralTerm::SetFactor(int factor)
+{
     factor_ = factor;
 }
 
-void ParameterFileDihedralTerm::SetForceConstant(double force_constant){
+void ParameterFileDihedralTerm::SetForceConstant(double force_constant)
+{
     force_constant_ = force_constant;
 }
 
-void ParameterFileDihedralTerm::SetPhase(double phase){
+void ParameterFileDihedralTerm::SetPhase(double phase)
+{
     phase_ = phase;
 }
 
-void ParameterFileDihedralTerm::SetPeriodicity(double periodicity){
+void ParameterFileDihedralTerm::SetPeriodicity(double periodicity)
+{
     periodicity_ = periodicity;
 }
 
-void ParameterFileDihedralTerm::SetDscr(const std::string dscr){
+void ParameterFileDihedralTerm::SetDscr(const std::string dscr)
+{
     dscr_ = dscr;
 }
 
@@ -68,26 +82,41 @@ void ParameterFileDihedralTerm::SetDscr(const std::string dscr){
 //////////////////////////////////////////////////////////
 void ParameterFileDihedralTerm::Print(std::ostream& out)
 {
-    if(factor_ == gmml::iNotSet)
+    if (factor_ == gmml::iNotSet)
+    {
         out << std::setw(10) << "--";
+    }
     else
+    {
         out << std::setw(10) << factor_;
+    }
 
-    if(force_constant_ == gmml::dNotSet)
+    if (force_constant_ == gmml::dNotSet)
+    {
         out << std::setw(10) << "--";
+    }
     else
+    {
         out << std::setw(10) << force_constant_;
+    }
 
-    if(phase_ == gmml::dNotSet)
+    if (phase_ == gmml::dNotSet)
+    {
         out << std::setw(10) << "--";
+    }
     else
+    {
         out << std::setw(10) << phase_;
+    }
 
-    if(periodicity_ == gmml::dNotSet)
+    if (periodicity_ == gmml::dNotSet)
+    {
         out << std::setw(12) << "--";
+    }
     else
+    {
         out << std::setw(12) << periodicity_;
+    }
 
-    out << std::setw(60) << dscr_
-        << std::endl;
+    out << std::setw(60) << dscr_ << std::endl;
 }

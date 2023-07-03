@@ -9,10 +9,13 @@ using PdbFileSpace::PdbHeterogenNameSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbHeterogenNameSection::PdbHeterogenNameSection() : record_name_("HETNAM") {}
-PdbHeterogenNameSection::PdbHeterogenNameSection(const std::string &record_name) : record_name_(record_name) {}
+PdbHeterogenNameSection::PdbHeterogenNameSection() : record_name_("HETNAM")
+{}
 
-PdbHeterogenNameSection::PdbHeterogenNameSection(std::stringstream &stream_block)
+PdbHeterogenNameSection::PdbHeterogenNameSection(const std::string& record_name) : record_name_(record_name)
+{}
+
+PdbHeterogenNameSection::PdbHeterogenNameSection(std::stringstream& stream_block)
 {
     std::string line;
     bool is_record_name_set = false;
@@ -20,25 +23,27 @@ PdbHeterogenNameSection::PdbHeterogenNameSection(std::stringstream &stream_block
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
+        if (!is_record_name_set)
+        {
+            record_name_ = line.substr(0, 6);
             gmml::Trim(record_name_);
-            is_record_name_set=true;
+            is_record_name_set = true;
         }
         std::stringstream heterogen_name_block;
         heterogen_name_block << line << std::endl;
-        std::string heterogen_id = line.substr(11,3);
+        std::string heterogen_id = line.substr(11, 3);
 
         getline(stream_block, line);
         temp = line;
-        while (!gmml::Trim(temp).empty() && line.substr(11,3) == heterogen_id){
+        while (!gmml::Trim(temp).empty() && line.substr(11, 3) == heterogen_id)
+        {
             heterogen_name_block << line << std::endl;
             getline(stream_block, line);
             temp = line;
         }
         PdbHeterogenNameCard* heterogen_name = new PdbHeterogenNameCard(heterogen_name_block);
-        heterogen_id = gmml::Trim(heterogen_id);
-        heterogen_name_cards_[heterogen_id] = heterogen_name;
+        heterogen_id                         = gmml::Trim(heterogen_id);
+        heterogen_name_cards_[heterogen_id]  = heterogen_name;
     }
 }
 
@@ -70,11 +75,11 @@ void PdbHeterogenNameSection::SetRecordName(const std::string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbHeterogenNameSection::Print(std::ostream &out)
+void PdbHeterogenNameSection::Print(std::ostream& out)
 {
-    out << "Record Name: " << record_name_ << std::endl <<
-           "========== Heterogen Names ==========" << std::endl;
-    for(PdbHeterogenNameSection::HeterogenNameCardMap::iterator it = heterogen_name_cards_.begin(); it != heterogen_name_cards_.end(); it++)
+    out << "Record Name: " << record_name_ << std::endl << "========== Heterogen Names ==========" << std::endl;
+    for (PdbHeterogenNameSection::HeterogenNameCardMap::iterator it = heterogen_name_cards_.begin();
+         it != heterogen_name_cards_.end(); it++)
     {
         out << "Heterogen ID: " << (it)->first << std::endl;
         (it)->second->Print();

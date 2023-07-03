@@ -9,11 +9,13 @@ using PdbFileSpace::PdbHeterogenSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbHeterogenSection::PdbHeterogenSection() : record_name_("HET") {}
+PdbHeterogenSection::PdbHeterogenSection() : record_name_("HET")
+{}
 
-PdbHeterogenSection::PdbHeterogenSection(const std::string &record_name) : record_name_(record_name) {}
+PdbHeterogenSection::PdbHeterogenSection(const std::string& record_name) : record_name_(record_name)
+{}
 
-PdbHeterogenSection::PdbHeterogenSection(std::stringstream &stream_block)
+PdbHeterogenSection::PdbHeterogenSection(std::stringstream& stream_block)
 {
     std::string line;
     bool is_record_name_set = false;
@@ -21,10 +23,11 @@ PdbHeterogenSection::PdbHeterogenSection(std::stringstream &stream_block)
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
+        if (!is_record_name_set)
+        {
+            record_name_ = line.substr(0, 6);
             gmml::Trim(record_name_);
-            is_record_name_set=true;
+            is_record_name_set = true;
         }
         std::stringstream ss;
         ss << line << std::endl;
@@ -65,11 +68,11 @@ void PdbHeterogenSection::SetRecordName(const std::string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbHeterogenSection::Print(std::ostream &out)
+void PdbHeterogenSection::Print(std::ostream& out)
 {
-    out << "Record Name: " << record_name_ << std::endl <<
-           "=============== Heterogen ==============" << std::endl;
-    for(PdbHeterogenSection::HeterogenCardMap::iterator it = heterogen_cards_.begin(); it != heterogen_cards_.end(); it++)
+    out << "Record Name: " << record_name_ << std::endl << "=============== Heterogen ==============" << std::endl;
+    for (PdbHeterogenSection::HeterogenCardMap::iterator it = heterogen_cards_.begin(); it != heterogen_cards_.end();
+         it++)
     {
         out << "Heterogen ID: " << (it)->first << std::endl;
         (it)->second->Print();

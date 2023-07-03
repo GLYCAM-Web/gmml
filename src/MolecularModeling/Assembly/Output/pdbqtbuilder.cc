@@ -75,14 +75,14 @@ using MolecularModeling::Assembly;
 PdbqtFileSpace::PdbqtFile* Assembly::BuildPdbqtFileStructureFromAssembly()
 {
     gmml::log(__LINE__, __FILE__, gmml::INF, "Creating PDBQT file ...");
-    PdbqtFileSpace::PdbqtFile* pdbqt_file = new PdbqtFileSpace::PdbqtFile();
-    PdbqtFileSpace::PdbqtModelCard* model_card = new PdbqtFileSpace::PdbqtModelCard();
+    PdbqtFileSpace::PdbqtFile* pdbqt_file                = new PdbqtFileSpace::PdbqtFile();
+    PdbqtFileSpace::PdbqtModelCard* model_card           = new PdbqtFileSpace::PdbqtModelCard();
     PdbqtFileSpace::PdbqtModelCard::PdbqtModelMap models = PdbqtFileSpace::PdbqtModelCard::PdbqtModelMap();
-    PdbqtFileSpace::PdbqtModel* model = new PdbqtFileSpace::PdbqtModel();
+    PdbqtFileSpace::PdbqtModel* model                    = new PdbqtFileSpace::PdbqtModel();
     model->SetModelSerialNumber(1);
     PdbqtFileSpace::PdbqtModelResidueSet* residue_set = new PdbqtFileSpace::PdbqtModelResidueSet();
-    int serial_number = 1;
-    int sequence_number = 1;
+    int serial_number                                 = 1;
+    int sequence_number                               = 1;
 
     ExtractPdbqtModelCardFromAssembly(residue_set, serial_number, sequence_number, model_index_);
 
@@ -90,55 +90,59 @@ PdbqtFileSpace::PdbqtFile* Assembly::BuildPdbqtFileStructureFromAssembly()
     models[1] = model;
     model_card->SetModels(models);
     pdbqt_file->SetModels(model_card);
-//    std::cout << "PDBQT file created" << std::endl;
+    //    std::cout << "PDBQT file created" << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, "PDBQT file created");
 
     return pdbqt_file;
 }
 
-void Assembly::ExtractPdbqtModelCardFromAssembly(PdbqtFileSpace::PdbqtModelResidueSet* residue_set, int &serial_number, int &sequence_number, int model_number)
+void Assembly::ExtractPdbqtModelCardFromAssembly(PdbqtFileSpace::PdbqtModelResidueSet* residue_set, int& serial_number,
+                                                 int& sequence_number, int model_number)
 {
-    PdbqtFileSpace::PdbqtAtomCard* atom_card = new PdbqtFileSpace::PdbqtAtomCard();
+    PdbqtFileSpace::PdbqtAtomCard* atom_card             = new PdbqtFileSpace::PdbqtAtomCard();
     PdbqtFileSpace::PdbqtAtomCard::PdbqtAtomMap atom_map = PdbqtFileSpace::PdbqtAtomCard::PdbqtAtomMap();
-    for(AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
+    for (AssemblyVector::iterator it = this->assemblies_.begin(); it != this->assemblies_.end(); it++)
     {
-        Assembly* assembly = (*it);
+        Assembly* assembly        = (*it);
         AssemblyVector assemblies = assembly->GetAssemblies();
-        for(AssemblyVector::iterator it1 = assemblies.begin(); it1 != assemblies.end(); it1++)
+        for (AssemblyVector::iterator it1 = assemblies.begin(); it1 != assemblies.end(); it1++)
         {
             ExtractPdbqtModelCardFromAssembly(residue_set, serial_number, sequence_number, model_number);
         }
         ResidueVector residues = assembly->GetResidues();
-        for(ResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
+        for (ResidueVector::iterator it1 = residues.begin(); it1 != residues.end(); it1++)
         {
             Residue* residue = (*it1);
             AtomVector atoms = residue->GetAtoms();
-            for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+            for (AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
             {
-                Atom* atom = (*it2);
+                Atom* atom                    = (*it2);
                 std::vector<std::string> dscr = gmml::Split(atom->GetDescription(), ";");
-                if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
+                if (find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
                 {
-                    PdbqtFileSpace::PdbqtAtom* pdb_atom = new PdbqtFileSpace::PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
-                                                        *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet, atom->MolecularDynamicAtom::GetCharge(),
-                                                        atom->GetAtomType(), "ATOM");
+                    PdbqtFileSpace::PdbqtAtom* pdb_atom = new PdbqtFileSpace::PdbqtAtom(
+                        serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+                        *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet,
+                        atom->MolecularDynamicAtom::GetCharge(), atom->GetAtomType(), "ATOM");
 
                     atom_map[serial_number] = pdb_atom;
                     serial_number++;
                 }
-                else if(find(dscr.begin(), dscr.end(), "Het") != dscr.end())
+                else if (find(dscr.begin(), dscr.end(), "Het") != dscr.end())
                 {
-                    PdbqtFileSpace::PdbqtAtom* pdb_atom = new PdbqtFileSpace::PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
-                                                        *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet, atom->MolecularDynamicAtom::GetCharge(),
-                                                        atom->GetAtomType(), "HETATOM");
+                    PdbqtFileSpace::PdbqtAtom* pdb_atom = new PdbqtFileSpace::PdbqtAtom(
+                        serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+                        *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet,
+                        atom->MolecularDynamicAtom::GetCharge(), atom->GetAtomType(), "HETATOM");
                     atom_map[serial_number] = pdb_atom;
                     serial_number++;
                 }
                 else
                 {
-                    PdbqtFileSpace::PdbqtAtom* pdb_atom = new PdbqtFileSpace::PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
-                                                        *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet, atom->MolecularDynamicAtom::GetCharge(),
-                                                        atom->GetAtomType(), "ATOM");
+                    PdbqtFileSpace::PdbqtAtom* pdb_atom = new PdbqtFileSpace::PdbqtAtom(
+                        serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+                        *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet,
+                        atom->MolecularDynamicAtom::GetCharge(), atom->GetAtomType(), "ATOM");
 
                     atom_map[serial_number] = pdb_atom;
                     serial_number++;
@@ -147,36 +151,39 @@ void Assembly::ExtractPdbqtModelCardFromAssembly(PdbqtFileSpace::PdbqtModelResid
             sequence_number++;
         }
     }
-    for(ResidueVector::iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
+    for (ResidueVector::iterator it1 = residues_.begin(); it1 != residues_.end(); it1++)
     {
         Residue* residue = (*it1);
         AtomVector atoms = residue->GetAtoms();
-        for(AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
+        for (AtomVector::iterator it2 = atoms.begin(); it2 != atoms.end(); it2++)
         {
-            Atom* atom = (*it2);
+            Atom* atom                    = (*it2);
             std::vector<std::string> dscr = gmml::Split(atom->GetDescription(), ";");
 
-            if(find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
+            if (find(dscr.begin(), dscr.end(), "Atom") != dscr.end())
             {
-                PdbqtFileSpace::PdbqtAtom* pdb_atom = new PdbqtFileSpace::PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
-                                                    *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet, atom->MolecularDynamicAtom::GetCharge(),
-                                                    atom->GetAtomType(), "ATOM");
+                PdbqtFileSpace::PdbqtAtom* pdb_atom = new PdbqtFileSpace::PdbqtAtom(
+                    serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+                    *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet,
+                    atom->MolecularDynamicAtom::GetCharge(), atom->GetAtomType(), "ATOM");
                 atom_map[serial_number] = pdb_atom;
                 serial_number++;
             }
-            else if(find(dscr.begin(), dscr.end(), "Het") != dscr.end())
+            else if (find(dscr.begin(), dscr.end(), "Het") != dscr.end())
             {
-                PdbqtFileSpace::PdbqtAtom* pdb_atom = new PdbqtFileSpace::PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
-                                                    *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet, atom->MolecularDynamicAtom::GetCharge(),
-                                                    atom->GetAtomType(), "HETATOM");
+                PdbqtFileSpace::PdbqtAtom* pdb_atom = new PdbqtFileSpace::PdbqtAtom(
+                    serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+                    *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet,
+                    atom->MolecularDynamicAtom::GetCharge(), atom->GetAtomType(), "HETATOM");
                 atom_map[serial_number] = pdb_atom;
                 serial_number++;
             }
             else
             {
-                PdbqtFileSpace::PdbqtAtom* pdb_atom = new PdbqtFileSpace::PdbqtAtom(serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
-                                                    *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet, atom->MolecularDynamicAtom::GetCharge(),
-                                                    atom->GetAtomType(), "ATOM");
+                PdbqtFileSpace::PdbqtAtom* pdb_atom = new PdbqtFileSpace::PdbqtAtom(
+                    serial_number, atom->GetName(), ' ', atom->GetResidue()->GetName(), ' ', sequence_number, ' ',
+                    *((atom->GetCoordinates()).at(model_number)), gmml::dNotSet, gmml::dNotSet,
+                    atom->MolecularDynamicAtom::GetCharge(), atom->GetAtomType(), "ATOM");
                 atom_map[serial_number] = pdb_atom;
                 serial_number++;
             }

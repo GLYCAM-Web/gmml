@@ -1,5 +1,12 @@
 #!/bin/bash
 
+GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
+
+if [[ "${GMML_ROOT_DIR}" != *"gmml" ]] ; then
+            echo "Test 009 failed, we think our GMML root directory is:\t${GMML_ROOT_DIR}\n"
+            exit 1
+fi
+
 SourceCode="tests/009.reorderSequence.cc"
 Executable="reorderSequence"
 OutputFile="Reordered_Labeled_Sequences.txt"
@@ -9,7 +16,7 @@ SequenceTwo="DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpN
 SequenceThree="LFrupa2-6-DGlcpAa1-OME"
 
 printf "Testing 009.reorderSequence.cc (Sequence reordering and labeling)... "
-g++ -std=c++17 -I $GEMSHOME/gmml/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ ${SourceCode} -lgmml -pthread -o ${Executable}
+g++ -std=c++17 -I "${GMML_ROOT_DIR}"/ -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ ${SourceCode} -lgmml -pthread -o ${Executable}
 
 ./reorderSequence ${SequenceOne}  > "${OutputFile}"  2>&1
 ./reorderSequence ${SequenceTwo}  >> "${OutputFile}"  2>&1
