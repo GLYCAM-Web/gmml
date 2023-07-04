@@ -299,7 +299,8 @@ std::string MolecularModeling::Assembly::QueryOntology(
     // if(searchTerm == "*")
     // {
     // for now need something to filter out false positives
-    query << "?oligo\t" << Ontology::hasMono << " / " << Ontology::isSaccharide << " true.\n";
+    // query << "?oligo\t" << Ontology::hasMono << " / " << Ontology::isSaccharide << " true.\n";
+    // this was a horrible idea
     // }
 
     query << Ontology::END_WHERE_CLAUSE << "\n";
@@ -986,61 +987,64 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
             monoStream << "\t" << Ontology::isSaccharide << "\ttrue;\n";
             oligoStream << "\t" << Ontology::hasMono << "\t?mono" << current_node->GetNodeType() << ";\n";
             if (queryEdges.size() == 0)
-            {
-                
-            }
+            {}
             else
             {
                 for (GraphDS::Graph::EdgeVector::iterator it1 = queryEdges.begin(); it1 != queryEdges.end(); it1++)
                 {
-                    GraphDS::Edge *current_edge = (*it1);
-                    GraphDS::Node *destinationNode = current_edge->GetDestinationNode();
+                    GraphDS::Edge* current_edge    = (*it1);
+                    GraphDS::Node* destinationNode = current_edge->GetDestinationNode();
                     if ((current_edge->GetSourceNode() == current_node) &&
-                        (std::find(std::begin(terminalNodeList), std::end(terminalNodeList), destinationNode->GetNodeId()) == std::end(terminalNodeList)))
+                        (std::find(std::begin(terminalNodeList), std::end(terminalNodeList),
+                                   destinationNode->GetNodeId()) == std::end(terminalNodeList)))
                     {
                         // Name link variables by the node #s they connect
-                        linkStream << "?link" << current_node->GetNodeType() << "to" << destinationNode->GetNodeType() << "\n";
+                        linkStream << "?link" << current_node->GetNodeType() << "to" << destinationNode->GetNodeType()
+                                   << "\n";
 
                         // Add nodes to the query
-                        linkStream << "\t" << Ontology::hasParentMono << "\t?mono" << current_node->GetNodeType() << ";\n";
-                        linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType() << ";\n";
+                        linkStream << "\t" << Ontology::hasParentMono << "\t?mono" << current_node->GetNodeType()
+                                   << ";\n";
+                        linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType()
+                                   << ";\n";
 
                         // Filter by the linkage type
                         linkStream << "\t" << Ontology::linkageType << "\t?link" << current_node->GetNodeType() << "to";
                         linkStream << destinationNode->GetNodeType() << "Type;\n";
 
-                    // All objects end with their type and a period
-                    linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n";
+                        // All objects end with their type and a period
+                        linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n";
 
-                    linkStream << "VALUES ?link" << current_node->GetNodeType() << "to"
-                               << destinationNode->GetNodeType() << "Type { ";
+                        linkStream << "VALUES ?link" << current_node->GetNodeType() << "to"
+                                   << destinationNode->GetNodeType() << "Type { ";
 
-                    if (current_edge->GetEdgeLabels()[0] == "1-0")
-                    {
-                        linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\" ";
-                    }
-                    else if (current_edge->GetEdgeLabels()[0] == "2-0")
-                    {
-                        linkStream << "\"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
-                    }
-                    else if ((current_edge->GetEdgeLabels()[0] == "1-") || (current_edge->GetEdgeLabels()[0] == "2-") ||
-                             (current_edge->GetEdgeLabels()[0] == "-"))
-                    { // Terminal linkage
-                    }
-                    else if (current_edge->GetEdgeLabels()[0] != "*")
-                    {
-                        linkStream << "\"" << current_edge->GetEdgeLabels()[0] << "\" ";
-                    }
-                    else
-                    {
-                        linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", "
-                                      "\"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
-                    }
-                    linkStream << "}\n\n";
+                        if (current_edge->GetEdgeLabels()[0] == "1-0")
+                        {
+                            linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\" ";
+                        }
+                        else if (current_edge->GetEdgeLabels()[0] == "2-0")
+                        {
+                            linkStream << "\"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                        }
+                        else if ((current_edge->GetEdgeLabels()[0] == "1-") ||
+                                 (current_edge->GetEdgeLabels()[0] == "2-") ||
+                                 (current_edge->GetEdgeLabels()[0] == "-"))
+                        { // Terminal linkage
+                        }
+                        else if (current_edge->GetEdgeLabels()[0] != "*")
+                        {
+                            linkStream << "\"" << current_edge->GetEdgeLabels()[0] << "\" ";
+                        }
+                        else
+                        {
+                            linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", "
+                                          "\"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                        }
+                        linkStream << "}\n\n";
                     }
                     else if ((it1 == queryEdges.begin()) && (current_edge->GetSourceNode() == NULL) &&
-                            (current_edge->GetDestinationNode() != NULL) &&
-                            (std::find(std::begin(terminalNodeList), std::end(terminalNodeList),
+                             (current_edge->GetDestinationNode() != NULL) &&
+                             (std::find(std::begin(terminalNodeList), std::end(terminalNodeList),
                                         destinationNode->GetNodeId()) == std::end(terminalNodeList)))
                     { // Graph that starts with an edge
                         // Name link variables by the node #s they connect
@@ -1049,7 +1053,7 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
                         // Add nodes to the query
                         linkStream << "\t" << Ontology::hasParentMono << "\t?monoX;\n";
                         linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType()
-                                << ";\n";
+                                   << ";\n";
 
                         // Filter by the linkage type
                         linkStream << "\t" << Ontology::linkageType << "\t?linkXType;";
@@ -1069,8 +1073,8 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
                                 linkStream << "\"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
                             }
                             else if ((current_edge->GetEdgeLabels()[0] == "1-") ||
-                                    (current_edge->GetEdgeLabels()[0] == "2-") ||
-                                    (current_edge->GetEdgeLabels()[0] == "-"))
+                                     (current_edge->GetEdgeLabels()[0] == "2-") ||
+                                     (current_edge->GetEdgeLabels()[0] == "-"))
                             { // Terminal linkage
                             }
                             else if (current_edge->GetEdgeLabels()[0] != "*")
@@ -1079,20 +1083,23 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
                             }
                             else
                             {
-                                linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                                linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", "
+                                              "\"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
                             }
                             linkStream << "}\n\n";
                         }
                         else if ((it1 == queryEdges.begin()) && (current_edge->GetSourceNode() == NULL) &&
-                                (current_edge->GetDestinationNode() != NULL) &&
-                                (std::find(std::begin(terminalNodeList), std::end(terminalNodeList), destinationNode->GetNodeId()) == std::end(terminalNodeList)))
+                                 (current_edge->GetDestinationNode() != NULL) &&
+                                 (std::find(std::begin(terminalNodeList), std::end(terminalNodeList),
+                                            destinationNode->GetNodeId()) == std::end(terminalNodeList)))
                         { // Graph that starts with an edge
                             // Name link variables by the node #s they connect
                             linkStream << "?linkXto" << destinationNode->GetNodeType() << "\n";
 
                             // Add nodes to the query
                             linkStream << "\t" << Ontology::hasParentMono << "\t?monoX;\n";
-                            linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType() << ";\n";
+                            linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType()
+                                       << ";\n";
 
                             // Filter by the linkage type
                             linkStream << "\t" << Ontology::linkageType << "\t?linkXType;";
@@ -1112,11 +1119,11 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
                                     linkStream << "\"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
                                 }
                                 else if ((current_edge->GetEdgeLabels()[0] == "1-") ||
-                                        (current_edge->GetEdgeLabels()[0] == "2-") ||
-                                        (current_edge->GetEdgeLabels()[0] == "-"))
+                                         (current_edge->GetEdgeLabels()[0] == "2-") ||
+                                         (current_edge->GetEdgeLabels()[0] == "-"))
                                 { // Terminal linkage
-                                // shouldn't be possible to get here?
-                                // query 1-ASN?
+                                  // shouldn't be possible to get here?
+                                  // query 1-ASN?
                                 }
                                 else
                                 {
@@ -1125,14 +1132,15 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
                             }
                             else
                             {
-                                linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                                linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", "
+                                              "\"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
                             }
                             linkStream << "}\n\n";
                         }
                     }
                 }
             }
-            // monoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Monosaccharide << ".\n\n";
+            monoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Monosaccharide << ".\n\n";
 
             // TODO This should split mono name and look at each part
 
@@ -1144,7 +1152,7 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
             // GlcN, ManN, GalN, GulN, AltN, AllN, TalN, IdoN
             // GlcA, ManA, GalA, GulA, AltA, AllA, TalA, IdoA
 
-            bool isModified = false;
+            bool isModified                                = false;
             std::vector<std::string> monosCommonlyModified = {"Glc", "Man", "Gal", "Gul", "Alt", "All",
                                                               "Tal", "Ido", "Fuc", "Qui", "Rha"};
             for (auto mono : monosCommonlyModified)
@@ -1165,11 +1173,11 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
                         filterStream << current_node->GetNodeId() << "a\" \"" << current_node->GetNodeId() << "b\" }\n";
                     }
                 }
-                
             }
             if (!isModified)
             {
-                monoStream << "FILTER REGEX(?monoName" << current_node->GetNodeType() << ", \"" << current_node->GetNodeId() << "\")\n\n";
+                monoStream << "FILTER REGEX(?monoName" << current_node->GetNodeType() << ", \""
+                           << current_node->GetNodeId() << "\")\n\n";
             }
 
             // monoStream << "FILTER REGEX(?monoName" << current_node->GetNodeType() << ", \"" <<
@@ -1182,7 +1190,7 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
             // TODO handle terminals better
         }
     }
-    
+
     oligoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Oligosaccharide << ".\n\n";
 
     queryStream << oligoStream.str() << monoStream.str() << linkStream.str() << filterStream.str();
@@ -1193,8 +1201,7 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
         logSS << "Finished graph creation\n";
         gmml::log(__LINE__, __FILE__, gmml::INF, logSS.str());
         logSS.str("");
-        logSS << "Query:\n"
-              << queryStream.str() << "\n";
+        logSS << "Query:\n" << queryStream.str() << "\n";
         gmml::log(__LINE__, __FILE__, gmml::INF, logSS.str());
     }
 }
@@ -1526,7 +1533,7 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
                             while (onSameBranchPoint)
                             {
                                 for (int j = i + 3; j < end; j++)
-                                { 
+                                {
                                     // this will pass over both branched branches [[]] and multiple branches at the same
                                     // node [][][]
                                     // and hopefully point to the last bracket
