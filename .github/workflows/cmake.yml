@@ -1,4 +1,4 @@
-name: CMake
+name: Baby Bare Metal
 
 on: [push]
 
@@ -8,7 +8,8 @@ env:
   shell: bash
 
 jobs:
-  boogerTest:
+  #need to eventually separate out the setup, compile, and testing
+  setupBuildTest:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
     # You can convert this to a matrix build if you need cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
@@ -18,50 +19,35 @@ jobs:
     steps:
     - uses: actions/checkout@v3
 
-    #install and cache boost cause for some reason github doesnt include it in their images lmao
-    #peep this https://raymii.org/s/articles/Github_Actions_cpp_boost_cmake_speedup.html
-    - name: Cache boost
-      uses: actions/cache@v3
+    #check if the boost lib is already cached and if so grab it
+    - name: Cache boost lib
       id: cache-boost
-      with:
-         path: "~/boost"
-         key: libboost1.74-all-dev
-    - name: Install boost
-      env:
-        CACHE_HIT: ${{steps.cache-boost.outputs.cache-hit}}
-      run: |
-        if [[ "$CACHE_HIT" == 'true' ]]; then
-            sudo cp -v --force --recursive ~/boost/* /
-        else
-            sudo apt-get update && sudo apt-get install -yq libboost1.74-all-dev
-            mkdir -p ~/boost
-            for dep in libboost1.74-all-dev; do
-                dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp -v --parents --target-directory ~/boost/
-            done
-        fi
-    
-    #Done for installing eigen 3 lib also smdh
-    - name: Cache eigen3
       uses: actions/cache@v3
-      id: cache-eigen
       with:
-         path: "~/eigen"
-         key: libeigen3-dev
-    - name: Install eigen
-      env:
-        CACHE_HIT: ${{steps.cache-eigen.outputs.cache-hit}}
-      run: |
-        if [[ "$CACHE_HIT" == 'true' ]]; then
-            sudo cp -v --force --recursive ~/eigen/* /
-        else
-            sudo apt-get update && sudo apt-get install -yq libeigen3-dev
-            mkdir -p ~/eigen
-            for dep in libeigen3-dev; do
-                dpkg -L $dep | while IFS= read -r f; do if test -f $f; then echo $f; fi; done | xargs cp --parents --target-directory ~/eigen/
-            done
-        fi
+         path: /usr/include/boost
+         key: cached-libboost-dev
+         restore-keys: cached-libboost-dev
+
+    # now this is for if our boost lib wasnt cached, so we gotta install it
+    - name: Install boost
+      if: ${{ steps.cache-boost.outputs.cache-hit != 'true' }}
+      run: sudo apt-get update && sudo apt-get install -yq libboost1.74-dev
+    
+    #Check if the eigen3 libs are cached
+    - name: Cache eigen3 lib
+      id: cache-eigen
+      uses: actions/cache@v3
+      with:
+         path: "/usr/include/eigen3"
+         key: cached-libeigen3-dev
+         restore-keys: cached-libeigen3-dev
+
+    #now if we dont have the eigen libs cached we install em
+    - name: Install eigen3
+      if: ${{steps.cache-eigen.outputs.cache-hit != 'true' }}
+      run: sudo apt-get update && sudo apt-get install -yq libeigen3-dev
          
-    #make sure we are setting up our python right
+    #make sure we are setting up our python right, for now gonna not care about this
 #    - name: Set up Python 3.9
 #      uses: actions/setup-python@v4
 #      with:
