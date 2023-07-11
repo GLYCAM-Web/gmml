@@ -46,11 +46,21 @@ check_dir_exists()
     fi
 }
 
-#this isnt coded for babies, follow our git patterns and we are good, BORK ON MERGE????
+#need to make this so it automatically grabs the parent branch but it will take some fenangling
 ensure_feature_close()
 {
+
     CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-    echo -e "\nEnsuring feature branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} in repo ${YELLOW_BOLD}GMML${RESET_STYLE} is missing less than ...."
+
+    case "${CURRENT_BRANCH}" in
+        gmml-dev | gmml-test | actual | stable)
+            echo -e "Since you are pushing on of our stable branches, we will be skipping\nensuring that you are not too far away from your parent branch"
+            return 0
+            ;;
+        *)
+            echo -e "\nEnsuring feature branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} in repo ${YELLOW_BOLD}GMML${RESET_STYLE}\nis less than ${MAX_FEATURE_BEHIND_TEST} commits behind the parent branch...."
+            ;;
+    esac
 
     if [ "$(git rev-list --left-only --count origin/gmml-test..."${CURRENT_BRANCH}")" -gt "${MAX_FEATURE_BEHIND_TEST}" ]; then
         echo -e "${RED_BOLD}ERROR:${RESET_STYLE} MISSING TOO MANY COMMITS FROM GMML-TEST, INCORPERATE CURRENT GMML-TEST CODE INTO YOUR FEATURE BRANCH THEN TRY AGAIN.\nABORTING\n"
@@ -162,11 +172,7 @@ if [[ "${branch}" != "gmml-dev" ]] && [[ "${branch}" != "gmml-test" ]] && [[ "${
 
     if [[ "${branch}" != hotfix* ]]; then
         echo -e "Ensuring feature branch is not too far from gmml-test\n"
-        #ensure_feature_close
-        
-        
-        #exit 1
-        
+        ensure_feature_close
     else
         echo -e "You are applying making a hotfix for one of our main branches EXCEPT gmml-test,\nif this is not the case ABORT AND BUG PRESTON\n"
     fi
