@@ -24,7 +24,9 @@ jobs:
       id: cache-boost
       uses: actions/cache@v3
       with:
-         path: /usr/include/boost
+         path: |
+            /usr/include/boost
+            /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0
          key: cached-libboost-dev
          restore-keys: cached-libboost-dev
 
@@ -38,7 +40,9 @@ jobs:
       id: cache-eigen
       uses: actions/cache@v3
       with:
-         path: "/usr/include/eigen3"
+         path: |
+            /usr/include/eigen3
+            /usr/share/eigen3
          key: cached-libeigen3-dev
          restore-keys: cached-libeigen3-dev
 
