@@ -163,6 +163,7 @@ std::string MolecularModeling::Assembly::QueryOntology(
             if (local_debug > 0)
             {
                 std::stringstream logSS;
+                logSS << "Query Graph:\n";
                 queryGraph.Print(logSS);
                 gmml::log(__LINE__, __FILE__, gmml::INF, logSS.str());
             }
@@ -298,7 +299,8 @@ std::string MolecularModeling::Assembly::QueryOntology(
     // if(searchTerm == "*")
     // {
     // for now need something to filter out false positives
-    query << "?oligo\t" << Ontology::hasMono << " / " << Ontology::isSaccharide << " true.\n";
+    // query << "?oligo\t" << Ontology::hasMono << " / " << Ontology::isSaccharide << " true.\n";
+    // this was a horrible idea
     // }
 
     query << Ontology::END_WHERE_CLAUSE << "\n";
@@ -984,78 +986,37 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
             monoStream << "\t" << Ontology::mono_short_name << "\t?monoName" << current_node->GetNodeType() << ";\n";
             monoStream << "\t" << Ontology::isSaccharide << "\ttrue;\n";
             oligoStream << "\t" << Ontology::hasMono << "\t?mono" << current_node->GetNodeType() << ";\n";
-
-            for (GraphDS::Graph::EdgeVector::iterator it1 = queryEdges.begin(); it1 != queryEdges.end(); it1++)
+            if (queryEdges.size() == 0)
+            {}
+            else
             {
-                GraphDS::Edge* current_edge    = (*it1);
-                GraphDS::Node* destinationNode = current_edge->GetDestinationNode();
-                if ((current_edge->GetSourceNode() == current_node) &&
-                    (std::find(std::begin(terminalNodeList), std::end(terminalNodeList),
-                               destinationNode->GetNodeId()) == std::end(terminalNodeList)))
+                for (GraphDS::Graph::EdgeVector::iterator it1 = queryEdges.begin(); it1 != queryEdges.end(); it1++)
                 {
-                    // Name link variables by the node #s they connect
-                    linkStream << "?link" << current_node->GetNodeType() << "to" << destinationNode->GetNodeType()
-                               << "\n";
-
-                    // Add nodes to the query
-                    linkStream << "\t" << Ontology::hasParentMono << "\t?mono" << current_node->GetNodeType() << ";\n";
-                    linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType()
-                               << ";\n";
-
-                    // Filter by the linkage type
-                    linkStream << "\t" << Ontology::linkageType << "\t?link" << current_node->GetNodeType() << "to";
-                    linkStream << destinationNode->GetNodeType() << "Type;\n";
-
-                    // All objects end with their type and a period
-                    linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n";
-
-                    linkStream << "VALUES ?link" << current_node->GetNodeType() << "to"
-                               << destinationNode->GetNodeType() << "Type { ";
-
-                    if (current_edge->GetEdgeLabels()[0] == "1-0")
+                    GraphDS::Edge* current_edge    = (*it1);
+                    GraphDS::Node* destinationNode = current_edge->GetDestinationNode();
+                    if ((current_edge->GetSourceNode() == current_node) &&
+                        (std::find(std::begin(terminalNodeList), std::end(terminalNodeList),
+                                   destinationNode->GetNodeId()) == std::end(terminalNodeList)))
                     {
-                        linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\" ";
-                    }
-                    else if (current_edge->GetEdgeLabels()[0] == "2-0")
-                    {
-                        linkStream << "\"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
-                    }
-                    else if ((current_edge->GetEdgeLabels()[0] == "1-") || (current_edge->GetEdgeLabels()[0] == "2-") ||
-                             (current_edge->GetEdgeLabels()[0] == "-"))
-                    { // Terminal linkage
-                    }
-                    else if (current_edge->GetEdgeLabels()[0] != "*")
-                    {
-                        linkStream << "\"" << current_edge->GetEdgeLabels()[0] << "\" ";
-                    }
-                    else
-                    {
-                        linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", "
-                                      "\"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
-                    }
-                    linkStream << "}\n\n";
-                }
-                else if ((it1 == queryEdges.begin()) && (current_edge->GetSourceNode() == NULL) &&
-                         (current_edge->GetDestinationNode() != NULL) &&
-                         (std::find(std::begin(terminalNodeList), std::end(terminalNodeList),
-                                    destinationNode->GetNodeId()) == std::end(terminalNodeList)))
-                { // Graph that starts with an edge
-                    // Name link variables by the node #s they connect
-                    linkStream << "?linkXto" << destinationNode->GetNodeType() << "\n";
+                        // Name link variables by the node #s they connect
+                        linkStream << "?link" << current_node->GetNodeType() << "to" << destinationNode->GetNodeType()
+                                   << "\n";
 
-                    // Add nodes to the query
-                    linkStream << "\t" << Ontology::hasParentMono << "\t?monoX;\n";
-                    linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType()
-                               << ";\n";
+                        // Add nodes to the query
+                        linkStream << "\t" << Ontology::hasParentMono << "\t?mono" << current_node->GetNodeType()
+                                   << ";\n";
+                        linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType()
+                                   << ";\n";
 
-                    // Filter by the linkage type
-                    linkStream << "\t" << Ontology::linkageType << "\t?linkXType;";
-                    // All objects end with their type and a period
-                    linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n\n";
+                        // Filter by the linkage type
+                        linkStream << "\t" << Ontology::linkageType << "\t?link" << current_node->GetNodeType() << "to";
+                        linkStream << destinationNode->GetNodeType() << "Type;\n";
 
-                    if (current_edge->GetEdgeLabels()[0] != "*")
-                    {
-                        linkStream << "VALUES ?linkType { ";
+                        // All objects end with their type and a period
+                        linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n";
+
+                        linkStream << "VALUES ?link" << current_node->GetNodeType() << "to"
+                                   << destinationNode->GetNodeType() << "Type { ";
 
                         if (current_edge->GetEdgeLabels()[0] == "1-0")
                         {
@@ -1069,20 +1030,114 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
                                  (current_edge->GetEdgeLabels()[0] == "2-") ||
                                  (current_edge->GetEdgeLabels()[0] == "-"))
                         { // Terminal linkage
-                          // shouldn't be possible to get here?
-                          // query 1-ASN?
                         }
-                        else
+                        else if (current_edge->GetEdgeLabels()[0] != "*")
                         {
                             linkStream << "\"" << current_edge->GetEdgeLabels()[0] << "\" ";
                         }
+                        else
+                        {
+                            linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", "
+                                          "\"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                        }
+                        linkStream << "}\n\n";
                     }
-                    else
-                    {
-                        linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", "
-                                      "\"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                    else if ((it1 == queryEdges.begin()) && (current_edge->GetSourceNode() == NULL) &&
+                             (current_edge->GetDestinationNode() != NULL) &&
+                             (std::find(std::begin(terminalNodeList), std::end(terminalNodeList),
+                                        destinationNode->GetNodeId()) == std::end(terminalNodeList)))
+                    { // Graph that starts with an edge
+                        // Name link variables by the node #s they connect
+                        linkStream << "?linkXto" << destinationNode->GetNodeType() << "\n";
+
+                        // Add nodes to the query
+                        linkStream << "\t" << Ontology::hasParentMono << "\t?monoX;\n";
+                        linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType()
+                                   << ";\n";
+
+                        // Filter by the linkage type
+                        linkStream << "\t" << Ontology::linkageType << "\t?linkXType;";
+                        // All objects end with their type and a period
+                        linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n\n";
+
+                        if (current_edge->GetEdgeLabels()[0] != "*")
+                        {
+                            linkStream << "VALUES ?linkType { ";
+
+                            if (current_edge->GetEdgeLabels()[0] == "1-0")
+                            {
+                                linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\" ";
+                            }
+                            else if (current_edge->GetEdgeLabels()[0] == "2-0")
+                            {
+                                linkStream << "\"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                            }
+                            else if ((current_edge->GetEdgeLabels()[0] == "1-") ||
+                                     (current_edge->GetEdgeLabels()[0] == "2-") ||
+                                     (current_edge->GetEdgeLabels()[0] == "-"))
+                            { // Terminal linkage
+                            }
+                            else if (current_edge->GetEdgeLabels()[0] != "*")
+                            {
+                                linkStream << "\"" << current_edge->GetEdgeLabels()[0] << "\" ";
+                            }
+                            else
+                            {
+                                linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", "
+                                              "\"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                            }
+                            linkStream << "}\n\n";
+                        }
+                        else if ((it1 == queryEdges.begin()) && (current_edge->GetSourceNode() == NULL) &&
+                                 (current_edge->GetDestinationNode() != NULL) &&
+                                 (std::find(std::begin(terminalNodeList), std::end(terminalNodeList),
+                                            destinationNode->GetNodeId()) == std::end(terminalNodeList)))
+                        { // Graph that starts with an edge
+                            // Name link variables by the node #s they connect
+                            linkStream << "?linkXto" << destinationNode->GetNodeType() << "\n";
+
+                            // Add nodes to the query
+                            linkStream << "\t" << Ontology::hasParentMono << "\t?monoX;\n";
+                            linkStream << "\t" << Ontology::hasChildMono << "\t?mono" << destinationNode->GetNodeType()
+                                       << ";\n";
+
+                            // Filter by the linkage type
+                            linkStream << "\t" << Ontology::linkageType << "\t?linkXType;";
+                            // All objects end with their type and a period
+                            linkStream << "\t" << Ontology::TYPE << "\t" << Ontology::Linkage << ".\n\n";
+
+                            if (current_edge->GetEdgeLabels()[0] != "*")
+                            {
+                                linkStream << "VALUES ?linkType { ";
+
+                                if (current_edge->GetEdgeLabels()[0] == "1-0")
+                                {
+                                    linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\" ";
+                                }
+                                else if (current_edge->GetEdgeLabels()[0] == "2-0")
+                                {
+                                    linkStream << "\"2-1\", \"2-2\", \"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                                }
+                                else if ((current_edge->GetEdgeLabels()[0] == "1-") ||
+                                         (current_edge->GetEdgeLabels()[0] == "2-") ||
+                                         (current_edge->GetEdgeLabels()[0] == "-"))
+                                { // Terminal linkage
+                                  // shouldn't be possible to get here?
+                                  // query 1-ASN?
+                                }
+                                else
+                                {
+                                    linkStream << "\"" << current_edge->GetEdgeLabels()[0] << "\" ";
+                                }
+                            }
+                            else
+                            {
+                                linkStream << "\"1-1\", \"1-2\", \"1-3\", \"1-4\", \"1-5\", \"1-6\", \"2-1\", \"2-2\", "
+                                              "\"2-3\", \"2-4\", \"2-5\", \"2-6\" ";
+                            }
+                            linkStream << "}\n\n";
+                        }
                     }
-                    linkStream << "}\n\n";
                 }
             }
             monoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Monosaccharide << ".\n\n";
@@ -1097,12 +1152,14 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
             // GlcN, ManN, GalN, GulN, AltN, AllN, TalN, IdoN
             // GlcA, ManA, GalA, GulA, AltA, AllA, TalA, IdoA
 
+            bool isModified                                = false;
             std::vector<std::string> monosCommonlyModified = {"Glc", "Man", "Gal", "Gul", "Alt", "All",
                                                               "Tal", "Ido", "Fuc", "Qui", "Rha"};
             for (auto mono : monosCommonlyModified)
             {
                 if (current_node->GetNodeId().find(mono) != std::string::npos)
                 {
+                    isModified = true;
                     // If the last character is "a" or "b", we can just filter using the mono name
                     if ((current_node->GetNodeId().back() == 'a') || (current_node->GetNodeId().back() == 'b'))
                     {
@@ -1117,6 +1174,11 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
                     }
                 }
             }
+            if (!isModified)
+            {
+                monoStream << "FILTER REGEX(?monoName" << current_node->GetNodeType() << ", \""
+                           << current_node->GetNodeId() << "\")\n\n";
+            }
 
             // monoStream << "FILTER REGEX(?monoName" << current_node->GetNodeType() << ", \"" <<
             // current_node->GetNodeId() << "\")\n\n";
@@ -1128,6 +1190,7 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
             // TODO handle terminals better
         }
     }
+
     oligoStream << "\t" << Ontology::TYPE << "\t" << Ontology::Oligosaccharide << ".\n\n";
 
     queryStream << oligoStream.str() << monoStream.str() << linkStream.str() << filterStream.str();
@@ -1145,7 +1208,7 @@ void MolecularModeling::Assembly::ConvertGraphToQuery(std::stringstream& querySt
 
 GraphDS::Graph MolecularModeling::Assembly::CreateQueryStringGraph(std::string queryString)
 {
-    int local_debug = -1;
+    int local_debug = 1;
     std::stringstream logSS;
     if (local_debug > 0)
     {
@@ -1470,9 +1533,10 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
                             while (onSameBranchPoint)
                             {
                                 for (int j = i + 3; j < end; j++)
-                                { // this will pass over both branched branches [[]] and multiple branches at the same
-                                  // node [][][]
-                                    // and hopefully point to the last bracket      ^ ^
+                                {
+                                    // this will pass over both branched branches [[]] and multiple branches at the same
+                                    // node [][][]
+                                    // and hopefully point to the last bracket
                                     if (parsedVector[j].label == "[")
                                     { // branched branches
                                         numOpenBrackets++;
@@ -1598,145 +1662,3 @@ void MolecularModeling::Assembly::ConnectNodes(int start, int end, std::vector<p
 // ?oligo :oligoBFactor ?oligo_mean_B_Factor.
 // }
 // ORDER BY DESC(?resolution)
-
-// Here's another that I ran for Rob to get all PDBs with non furanose (!regex line) sugars with unercognized side
-// chains (symbolized as <R)
-//
-//  PREFIX : <http://gmmo.uga.edu/#>
-//  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-//  PREFIX owl: <http://www.w3.org/2002/07/owl#>
-//  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-//  PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-//  SELECT DISTINCT ?pdb ?oligo (group_concat(distinct ?oligo_sequence;separator="\n") as ?Oligosaccharides)
-//  WHERE
-//  {
-//  ?pdb_file :identifier ?pdb.
-//  ?pdb_file :hasOligo ?oligo.
-//  ?oligo :oligoName ?oligo_sequence.
-//  FILTER regex(?oligo_sequence, ".*<R.*")
-//  FILTER (!regex(?oligo_sequence, ".*f.*"))
-//  }
-
-// More filters that I am saving here for copy/paste to the virtuoso sparql endpoint
-//  ?oligo :oligoIUPACname ?oligo_IUPAC.
-//  FILTER regex(?oligo_sequence, ".*-Unknown$")
-//  FILTER (!regex(?oligo_sequence, ".*<R.*"))
-//  FILTER (!regex(?oligo_IUPAC, "- Unknown$"))
-//  FILTER (!regex(?oligo_IUPAC, "-$"))
-//  FILTER (!regex(?oligo_IUPAC, "-ASN$"))
-//  FILTER (!regex(?oligo_IUPAC, "-THR$"))
-//  FILTER (!regex(?oligo_IUPAC, "-SER$"))
-
-// PREFIX : <http://gmmo.uga.edu/#>
-// PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-// PREFIX owl: <http://www.w3.org/2002/07/owl#>
-// PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-// PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-// SELECT ?pdb ?oligo_sequence
-// WHERE
-// {
-// ?pdb_file :identifier ?pdb.
-// ?pdb_file :hasOligo ?oligo.
-// ?oligo :oligoName ?oligo_sequence.
-
-// SELECT DISTINCT ?residue_links?title ?resolution ?Mean_B_Factor?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI
-// ?pdb_coordinates ?ProteinID(group_concat(distinct ?comment;separator="\n") as ?comments)(group_concat(distinct
-// ?warning;separator="\n") as ?warnings)(group_concat(distinct ?error;separator="\n") as ?errors)WHERE { ?pdb_file
-// :identifier    "1A14";
-//               :hasOligo      ?oligo.
-// FILTER regex(?oligo, "oligo1$")
-// ?oligo        :oligoIUPACname     "DManpa1-2DManpa1-2DManpa1-3DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-ASN".
-// ?pdb_file     :hasTitle               ?title;
-//               :hasAuthors             ?authors.
-// OPTIONAL {?pdb_file     :hasJournal             ?journal.}
-// OPTIONAL {?pdb_file     :hasProteinID           ?ProteinID.}
-// OPTIONAL {?pdb_file     :hasDOI                 ?DOI.}
-// OPTIONAL {?pdb_file     :hasPMID                ?PMID.}
-// OPTIONAL {?pdb_file     :hasResolution          ?resolution.}
-// OPTIONAL {?pdb_file     :hasBFactor             ?Mean_B_Factor.}
-// OPTIONAL {?oligo        :oligoResidueLinks      ?residue_links.}
-// OPTIONAL {?oligo        :oligoBFactor           ?oligo_mean_B_Factor.}
-// ?oligo        :PDBfile           ?pdb_coordinates.
-// ?oligo        :hasMono            ?mono.
-// OPTIONAL {?mono       :hasNote       ?errorNote.
-// ?errorNote	    :NoteType      "error".
-// ?errorNote      :description   ?error.}
-// OPTIONAL {?mono       :hasNote       ?warningNote.
-// ?warningNote    :NoteType      "warning".
-// ?warningNote    :description   ?warning.}
-// OPTIONAL {?mono       :hasNote       ?commentNote.
-// ?commentNote    :NoteType      "comment".
-// ?commentNote    :description   ?comment.}
-// }
-
-// // New query format for branched oligo searching
-// // Looking for DGlcpNAcb1-4[LFucpa1-3]DGlcpNAcb
-// PREFIX : <http://gmmo.uga.edu/#>
-// PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-// PREFIX owl: <http://www.w3.org/2002/07/owl#>
-// PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-// PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-// SELECT DISTINCT ?pdb (group_concat(distinct ?Oligosaccharide;separator="\n") as ?Oligosaccharides)
-// WHERE {
-// ?pdb_file     :identifier    ?pdb;
-//               :hasOligo      ?oligo.
-// ?pdb_file     :hasTitle               ?title;
-//               :hasAuthors             ?authors.
-// ?oligo        :oligoIUPACname     ?Oligosaccharide.
-// ?oligo        :hasMono            ?mono;
-//               :hasSequenceResidue ?residue1.
-// ?residue1     :monosaccharideShortName  """LFucpa""".
-//
-// ?residue1     :is1-3ConnectedTo      ?residue2.
-// ?residue2     :monosaccharideShortName """DGlcpNAcb""".
-// ?residue3 :is1-4ConnectedTo ?residue2.
-// ?residue3 :monosaccharideShortName """DGlcpNAcb""".
-// }
-// TODO make query work for any permutation of
-// DGalpb1-4DGlcpNAcb1-2DManpa1-3[DGlcpNAcb1-2DManpa1-6]DManpb1-4DGlcpNAcb1-4[LFucpa1-6]DGlcpNAcb1-ASN
-
-// Note to self:
-// The following will remove the IRI prefix from gmmo:?PDBID
-// BIND(STRAFTER(str(?pdb_file), "#") as ?pdb)
-
-// TODO make this work for r groups
-//  PREFIX : <http://gmmo.uga.edu/#>
-//  PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-//  PREFIX owl: <http://www.w3.org/2002/07/owl#>
-//  PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-//  PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
-//  SELECT DISTINCT ?residue_links ?title ?resolution ?Mean_B_Factor?oligo_mean_B_Factor ?authors ?journal ?PMID ?DOI
-//  ?pdb_coordinates ?ProteinID ?rGroup1 ?rGroup2 ?rGroup3 (group_concat(distinct ?comment;separator="\n") as
-//  ?comments)(group_concat(distinct ?warning;separator="\n") as ?warnings)(group_concat(distinct ?error;separator="\n")
-//  as ?errors)WHERE { ?pdb_file     :identifier    "100D";
-//                :hasOligo      ?oligo.
-//  FILTER regex(?oligo, "oligo1$")
-//  ?oligo        :oligoIUPACname     "DRibf[2D][3<R1>][3<R2>,1<R3>]b1-N1".
-//  ?oligo  :hasR1    ?R1.
-//  ?R1 :hasFormula      ?rGroup1.
-//  ?oligo  :hasR2    ?R2.
-//  ?R2 :hasFormula      ?rGroup2.
-//  ?oligo  :hasR3    ?R3.
-//  ?R3 :hasFormula      ?rGroup3.
-//  ?pdb_file     :hasTitle               ?title;
-//                :hasAuthors             ?authors.
-//  OPTIONAL {?pdb_file     :hasJournal             ?journal.}
-//  OPTIONAL {?pdb_file     :hasProteinID           ?ProteinID.}
-//  OPTIONAL {?pdb_file     :hasDOI                 ?DOI.}
-//  OPTIONAL {?pdb_file     :hasPMID                ?PMID.}
-//  OPTIONAL {?pdb_file     :hasResolution          ?resolution.}
-//  OPTIONAL {?pdb_file     :hasBFactor             ?Mean_B_Factor.}
-//  OPTIONAL {?oligo        :oligoResidueLinks      ?residue_links.}
-//  OPTIONAL {?oligo        :oligoBFactor           ?oligo_mean_B_Factor.}
-//  ?oligo        :PDBfile           ?pdb_coordinates.
-//  ?oligo        :hasMono            ?mono.
-//  OPTIONAL {?mono       :hasNote       ?errorNote.
-//  ?errorNote      :NoteType      "error".
-//  ?errorNote      :description   ?error.}
-//  OPTIONAL {?mono       :hasNote       ?warningNote.
-//  ?warningNote    :NoteType      "warning".
-//  ?warningNote    :description   ?warning.}
-//  OPTIONAL {?mono       :hasNote       ?commentNote.
-//  ?commentNote    :NoteType      "comment".
-//  ?commentNote    :description   ?comment.}
-//  }
