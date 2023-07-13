@@ -26,13 +26,13 @@ check_formatting()
     TEMP_DIR=$(mktemp -d -p "${GMML_ROOT_DIR}")
     echo -e "\n${YELLOW_BOLD}Created temporary dir to hold checked files...${RESET_STYLE}\n\tDir Name: ${TEMP_DIR}\n"
     for FILE_CHECKING in "${TO_CHECK_LIST[@]}"; do
-        
+
         #make the temp file of what we be checking. Extracts the filename with extension that we be checking also
         #in case we gotta add debug/info type ish in the future
         TEMP_FILE=$(mktemp "${TEMP_DIR}"/"${FILE_CHECKING##*/}".XXXXXX)
 
-        (git show :"${FILE_CHECKING}") > "${TEMP_FILE}"
-        clang-format-15 --dry-run --Werror "${TEMP_FILE}" 2> /dev/null
+        (git show :"${FILE_CHECKING}") >"${TEMP_FILE}"
+        clang-format-15 --dry-run --Werror "${TEMP_FILE}" 2>/dev/null
         if [ $? == 0 ]; then
             PASSED_FILES+=("${FILE_CHECKING}")
         else
@@ -57,7 +57,7 @@ check_formatting()
         echo -e "${RED_BOLD}FILE FAILED: ${RESET_STYLE}${FAILURE}\n"
 
     done
-    echo -e "Please run \"clang-format-15 -i file/path/here.cpp\" on each of the failed files.\nSometimes clang-format messes up on comment blocks so just use multiline comments instead."
+    echo -e "Please run \"clang-format-15 -i file/path/here.cpp\" on each of the failed files.\nSometimes clang-format messes up on comment blocks so just use multiline comments instead.\n\nDont forget to readd your files!\n"
     exit 1
 }
 
