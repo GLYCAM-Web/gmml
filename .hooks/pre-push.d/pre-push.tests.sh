@@ -62,9 +62,13 @@ ensure_feature_close()
             ;;
     esac
 
-    if [ "$(git rev-list --left-only --count origin/gmml-test..."${CURRENT_BRANCH}")" -gt "${MAX_FEATURE_BEHIND_TEST}" ]; then
-        echo -e "${RED_BOLD}ERROR:${RESET_STYLE} MISSING TOO MANY COMMITS FROM GMML-TEST, INCORPERATE CURRENT GMML-TEST CODE INTO YOUR FEATURE BRANCH THEN TRY AGAIN.\nABORTING\n"
+    TOTAL_NUM_BEHIND=$(git rev-list --left-only --count origin/gmml-test..."${CURRENT_BRANCH}")
+
+    if [ $(( TOTAL_NUM_BEHIND*2 > "${MAX_FEATURE_BEHIND_TEST}" )) ]; then
+        echo -e "${RED_BOLD}ERROR:${RESET_STYLE} YOU ARE MISSING MORE THAN DOUBLE THE RECOMMEND COMMITS FROM GMML-TEST\nTHE HAMMER HAS FALLEN, ABORTING PUSH.\nMERGE GMML-TEST INTO YOUR BRANCH THEN PUSH.\n"
         exit 1
+    elif [ "${TOTAL_NUM_BEHIND}" -gt "${MAX_FEATURE_BEHIND_TEST}" ]; then
+        echo -e "${RED_BOLD}WARNING:${RESET_STYLE} YOU ARE MISSING A BUNCH OF COMMITS FROM GMML-TEST\nIT IS HIGHLY RECOMMENDED TO INCORPERATE CURRENT GMML-TEST CODE\nINTO YOUR FEATURE BRANCH BEFORE PUSHING AGIN.\n"
     else
         echo -e "${GREEN_BOLD}passed...${RESET_STYLE} Feature branch is not too far from gmml-test, proceding\n"
     fi
