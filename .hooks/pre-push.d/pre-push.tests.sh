@@ -62,8 +62,8 @@ ensure_feature_close()
     esac
 
     TOTAL_NUM_BEHIND=$(git rev-list --left-only --count origin/gmml-test..."${CURRENT_BRANCH}")
-
-    if [ $((TOTAL_NUM_BEHIND * 2 > "${MAX_FEATURE_BEHIND_TEST}")) ]; then
+    echo "You are ${TOTAL_NUM_BEHIND} commits behind gmml-test"
+    if ((TOTAL_NUM_BEHIND > MAX_FEATURE_BEHIND_TEST * 2)) ; then
         echo -e "${RED_BOLD}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!${RESET_STYLE}"
         echo -e "${RED_BOLD}ERROR:${RESET_STYLE} YOU ARE MISSING MORE THAN DOUBLE THE RECOMMEND COMMITS FROM GMML-TEST\nTHE HAMMER HAS FALLEN, WILL EVENTUALLY ABORT YOUR PUSHES.\nMERGE GMML-TEST INTO YOUR BRANCH ASAP BEFORE YOUR NEXT PUSH.\n"
         echo -e "${RED_BOLD}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!${RESET_STYLE}"
