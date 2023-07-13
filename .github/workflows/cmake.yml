@@ -19,12 +19,13 @@ env:
   #https://ccache.dev/manual/4.8.2.html#_the_direct_mode
   CCACHE_DIRECT: true
 
+  #pcg time macros cause cache misses
+  CCACHE_SLOPPINESS: time_macros
   #for da deboogin
   #CCACHE_DEBUG: true
-  #CCACHE_DEBUGDIR: "${{ github.workspace }}"
+  #CCACHE_DEBUGDIR: "${{ github.workspace }}/debooger"
   #for da loogin
   #CCACHE_LOGFILE: "${{ github.workspace }}/zingus.log"
-  #export CCACHE_SLOPPINESS=${CCACHE_SLOPPINESS:-pch_defines,time_macros,include_file_mtime}
 
   CCACHE_DIR: "${{ github.workspace }}/.ccache"
 
@@ -43,7 +44,7 @@ jobs:
     - name: Install Deps
       run: |
         sudo apt-get update
-        sudo apt-get install -yq libboost1.74-dev libeigen3-dev cmake ccache
+        sudo apt-get install -yq libboost1.74-dev libeigen3-dev ccache
 
       #need to think of a better way to do the cache tagging but whatevah 4 now
     - name: Get Date
@@ -72,7 +73,7 @@ jobs:
         cmake -DCMAKE_BUILD_TYPE=Release -S . -B ./cmakeBuild -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DDEBUG_NO_WRAP=True -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
         cd cmakeBuild
         make -j 3
-        ccache -sv
+        ccache -svv
 
     - name: Run Bare Metal Tests
       run: |
