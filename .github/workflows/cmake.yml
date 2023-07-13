@@ -1,6 +1,13 @@
 name: Baby Bare Metal
 
-on: [push]
+on:
+  push:
+    branches:
+      - stable
+      - actual
+      - gmml-dev
+      - gmml-test
+      - feature_basicGithubActions
 
 env:
   shell: bash
