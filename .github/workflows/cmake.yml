@@ -3,79 +3,78 @@ name: Baby Bare Metal
 on: [push]
 
 env:
-  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.), eventually wanna make cmake stuff more normal but w/e ignore this 4 now
-  #BUILD_TYPE: Release
   shell: bash
+  #now we gotta export all the config type stuff
+  #for ccache so it actually works. This is gross
+  CCACHE_COMPRESS: true
+  CCACHE_MAXSIZE: 1.0G
+  CCACHE_COMPRESSLEVEL: 1
+  #optimization for compiler stuff
+  CCACHE_CPP2: true
+  #makes sure the cache bits are not directory
+  CCACHE_COMPILERCHECK: content
+  #if this is trrue then there is a possibility that
+  #some bad builds can slip by us but it is kinda rare
+  #just read the link below:
+  #https://ccache.dev/manual/4.8.2.html#_the_direct_mode
+  CCACHE_DIRECT: true
+
+  #for da deboogin
+  #CCACHE_DEBUG: true
+  #CCACHE_DEBUGDIR: "${{ github.workspace }}"
+  #for da loogin
+  #CCACHE_LOGFILE: "${{ github.workspace }}/zingus.log"
+  #export CCACHE_SLOPPINESS=${CCACHE_SLOPPINESS:-pch_defines,time_macros,include_file_mtime}
+
+  CCACHE_DIR: "${{ github.workspace }}/.ccache"
 
 jobs:
-  #need to eventually separate out the setup, compile, and testing
   setupBuildTest:
     # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
     # You can convert this to a matrix build if you need cross-platform coverage.
     # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
     runs-on: ubuntu-22.04
-    
+
     #may need to specify cmake version idk
     steps:
     - uses: actions/checkout@v3
 
-    #check if the boost lib is already cached and if so grab it
-    - name: Cache boost lib
-      id: cache-boost
+    #install teeny boost dude
+    - name: Install Deps
+      run: |
+        sudo apt-get update
+        sudo apt-get install -yq libboost1.74-dev libeigen3-dev cmake ccache
+
+      #need to think of a better way to do the cache tagging but whatevah 4 now
+    - name: Get Date
+      id: get-date
+      run: |
+        echo "date=$(/bin/date -u "+%Y%m%d%M")" >> $GITHUB_OUTPUT
+
+      #Trying to check if we are able to restore our cache dude
+    - name: Caching ccache
+      id: cache-ccache
       uses: actions/cache@v3
       with:
-         path: |
-            /usr/include/boost
-            /usr/lib/x86_64-linux-gnu/cmake/Boost-1.74.0
-         key: cached-libboost-dev
-         restore-keys: cached-libboost-dev
+      #possibly better to use similar pattern liek this so able to
+      #not be completely constrained to a branch
+      #https://github.com/rgommers/scipy/blob/bae3476b8a245866f5f7f1b824a0a7919f3880a9/.github/workflows/linux_meson.yml#L16
+        path: ${{ env.CCACHE_DIR }}
+        key: ${{ runner.os }}-ccache-cache-${{ steps.get-date.outputs.date }}
+        restore-keys: |
+          ${{ runner.os }}-ccache-cache-
 
-    # now this is for if our boost lib wasnt cached, so we gotta install it
-    - name: Install boost
-      if: ${{ steps.cache-boost.outputs.cache-hit != 'true' }}
-      run: sudo apt-get update && sudo apt-get install -yq libboost1.74-dev
-    
-    #Check if the eigen3 libs are cached
-    - name: Cache eigen3 lib
-      id: cache-eigen
-      uses: actions/cache@v3
-      with:
-         path: |
-            /usr/include/eigen3
-            /usr/share/eigen3
-         key: cached-libeigen3-dev
-         restore-keys: cached-libeigen3-dev
-
-    #now if we dont have the eigen libs cached we install em
-    - name: Install eigen3
-      if: ${{steps.cache-eigen.outputs.cache-hit != 'true' }}
-      run: sudo apt-get update && sudo apt-get install -yq libeigen3-dev
-         
-    #make sure we are setting up our python right, for now gonna not care about this
-#    - name: Set up Python 3.9
-#      uses: actions/setup-python@v4
-#      with:
-#        python-version: '3.9'
-
-#turns out u cant set normal env vars. Kind of annoying but w/e
-#https://stackoverflow.com/questions/57968497/how-do-i-set-an-env-var-with-a-bash-expression-in-github-actions
     - name: Set up GEMSHOME
       run: echo "GEMSHOME=$(dirname $(pwd))" >> $GITHUB_ENV
 
-    - name: BuildScript
-      #We wanna make sure we can wrap just in case, lazy but w/e this is just getting us something.
-      #takes around 7 mins for nowrap
+    - name: Build Our code
       run: |
-        ./make.sh -j 3 -c -d no_wrap
-    - name: Run tests that are possible to run on bare metal
-      run: |    
+        cmake -DCMAKE_BUILD_TYPE=Release -S . -B ./cmakeBuild -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DDEBUG_NO_WRAP=True -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+        cd cmakeBuild
+        make -j 3
+        ccache -sv
+
+    - name: Run Bare Metal Tests
+      run: |
         bash ./compile_run_tests.bash -j 3 -d bare_metal
-      working-directory: tests
-      
-    
-    #ignored for now, but we eventually wanna run our tests n whatnot but right now the tests wont work outside container. 
-    #- name: Test
-      #working-directory: ${{github.workspace}}/build
-      # Execute tests defined by the CMake configuration.
-      # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
-      #run: ctest -C ${{env.BUILD_TYPE}}
+      working-directory: ${{ github.workspace }}/tests
