@@ -187,6 +187,9 @@ check_if_branch_behind()
     fi
 } #End ensuring branches not behind function
 
+#check branch naming schema
+ensure_branch_naming
+
 #before we try anything major we first figure out if any branches are behind.
 check_if_branch_behind "GMML"
 check_if_branch_behind "GEMS"
