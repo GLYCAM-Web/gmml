@@ -4,10 +4,9 @@ on:
   push:
     branches:
       - stable
-      - actual
       - gmml-dev
       - gmml-test
-      - feature_basicGithubActions
+      #we may want to add actual on here but idk, if we are testing dev then it should be fine? meh....
 
 env:
   shell: bash
