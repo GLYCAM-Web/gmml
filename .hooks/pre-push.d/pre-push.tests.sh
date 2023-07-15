@@ -11,6 +11,12 @@ RED_BOLD='\033[0;31m\033[1m'
 #instead of a wannabe bool type flag
 BRANCH_IS_BEHIND=""
 
+#this is to enforce our branch naming scheme
+branch_regex="^(feature|bugfix|hotfix|playground|juggle)_[a-zA-Z0-9]{2,36}$"
+
+#How many commits a feature branch can be missing from the gmml-test branch
+MAX_FEATURE_BEHIND_TEST=15
+
 check_gemshome()
 {
     if [ -z "${GEMSHOME}" ]; then
@@ -43,9 +49,64 @@ check_dir_exists()
     fi
 }
 
-cd ../
-gemshome=$(pwd)
-cd -
+#ensure our branch naming pattern is correct
+ensure_branch_naming()
+{
+	CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+     case "${CURRENT_BRANCH}" in
+        gmml-dev | gmml-test | actual | stable)
+            echo -e "Since you are pushing on of our stable branches, we will be skipping\nensuring that you are not too far away from your parent branch"
+            return 0
+            ;;
+        *)
+            ;;
+    esac
+
+	if [[ ! ${CURRENT_BRANCH} =~ ${branch_regex} ]]; then
+        #branch isnt on remote
+        if [ -z "$(git ls-remote --heads origin "${CURRENT_BRANCH}")" ]; then
+                echo -e "${RED_BOLD}ERROR: Youre trying to push a new branch that does not fit our naming schema"
+                echo -e "please refer to the gmml readme on github for the naming scheme. Aborting!${RESET_STYLE}"
+                exit 1
+        else
+                echo -e "${YELLOW_BOLD}WARNING: Youre trying to push to a branch that does not fit our naming schema"
+                echo -e "we should eventually take care of this. Aborting!${RESET_STYLE}"
+        fi
+    fi
+}
+
+#need to make this so it automatically grabs the parent branch but it will take some fenangling
+ensure_feature_close()
+{
+    CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+    case "${CURRENT_BRANCH}" in
+        gmml-dev | gmml-test | actual | stable)
+            echo -e "Since you are pushing on of our stable branches, we will be skipping\nensuring that you are not too far away from your parent branch"
+            return 0
+            ;;
+        *)
+            echo -e "\nEnsuring feature branch ${YELLOW_BOLD}${CURRENT_BRANCH}${RESET_STYLE} in repo ${YELLOW_BOLD}GMML${RESET_STYLE}\nis less than ${MAX_FEATURE_BEHIND_TEST} commits behind the parent branch...."
+            ;;
+    esac
+
+    TOTAL_NUM_BEHIND=$(git rev-list --left-only --count origin/gmml-test..."${CURRENT_BRANCH}")
+    echo "You are ${TOTAL_NUM_BEHIND} commits behind gmml-test"
+    if ((TOTAL_NUM_BEHIND > MAX_FEATURE_BEHIND_TEST * 2)) ; then
+        echo -e "${RED_BOLD}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!${RESET_STYLE}"
+        echo -e "${RED_BOLD}ERROR:${RESET_STYLE} YOU ARE MISSING MORE THAN DOUBLE THE RECOMMEND COMMITS FROM GMML-TEST\nTHE HAMMER HAS FALLEN, WILL EVENTUALLY ABORT YOUR PUSHES.\nMERGE GMML-TEST INTO YOUR BRANCH ASAP BEFORE YOUR NEXT PUSH.\n"
+        echo -e "${RED_BOLD}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!${RESET_STYLE}"
+        #exit 1
+    elif [ "${TOTAL_NUM_BEHIND}" -gt "${MAX_FEATURE_BEHIND_TEST}" ]; then
+        echo -e "${RED_BOLD}WARNING:${RESET_STYLE} YOU ARE MISSING A BUNCH OF COMMITS FROM GMML-TEST\nIT IS HIGHLY RECOMMENDED TO INCORPERATE CURRENT GMML-TEST CODE\nINTO YOUR FEATURE BRANCH BEFORE PUSHING AGIN.\n"
+    else
+        echo -e "${GREEN_BOLD}passed...${RESET_STYLE} Feature branch is not too far from gmml-test, proceding\n"
+    fi
+}
+
+gemshome=$(cd .. && pwd)
+
 check_gemshome "${gemshome}"
 
 ## OG Oct 2021 have the hooks update themselves.
@@ -126,6 +187,9 @@ check_if_branch_behind()
     fi
 } #End ensuring branches not behind function
 
+#check branch naming schema
+ensure_branch_naming
+
 #before we try anything major we first figure out if any branches are behind.
 check_if_branch_behind "GMML"
 check_if_branch_behind "GEMS"
@@ -142,6 +206,14 @@ TEST_SKIP=0
 #### Allow skipping tests ####
 branch=$(git rev-parse --abbrev-ref HEAD)
 if [[ "${branch}" != "gmml-dev" ]] && [[ "${branch}" != "gmml-test" ]] && [[ "${branch}" != "stable" ]]; then
+
+    if [[ "${branch}" != hotfix* ]]; then
+        echo -e "Ensuring feature branch is not too far from gmml-test\n"
+        ensure_feature_close
+    else
+        echo -e "You are applying making a hotfix for one of our main branches EXCEPT gmml-test,\nif this is not the case ABORT AND BUG PRESTON\n"
+    fi
+
     echo -e "Branch is ${branch}\nSkipping tests is allowed.\nDo you want to skip them?\ns=skip\na=abort\nEnter anything to run tests.\n"
     read -p "Enter response: " response </dev/tty
     if [[ "${response}" == [sS] ]]; then
