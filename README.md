@@ -300,6 +300,24 @@ The official documentation for both GEMS and GMML can be found on the main GLYCA
 
 In order to make deving on the library consistent, we must enforce coding standards. They will be added piecewise, including the appropriate tests (be them pre-commit/push hooks, ci/cd hooks, etc.) and will be outlined below.
 
+### Branch Naming
+
+We use a gitflow based workflow, due to us not being able to think of all the structures that could break things we slowly move our changes up in our production branches where each one should be increasingly stable. When developing on `gmml` create feature branches off of `gmml-test`.
+
+All branch names must take the form of `<branchType>_<descriptiveName>`. Be sure that you have a good descriptive name. The branch types are as follows:
+
+- `feature` - any new feature that is being created. This will be the most commonly used branch type used.
+- `bugfix` - branches that are fixing bugs
+- `hotfix` - This is to fix critical bugs, etc. that is blocking people and that need to be handled immediately
+- `playground` - For when you are not creating an actual feature or something that will be integrated into the main branches. Branches with this name would be for playing around with ideas.
+- `juggle` - this is for branches that are intermediates between others, think if you have some horrible merge conflicts or something and want to create a to help make your life a bunch easier, that is what this branch is for. For instance, you could make the `juggle_zingusMerge` branch that could be made. This one will be used rarely, but it is nice to have in our back pocket. For instance lets say two devs are working on branches that need to be merged together before everything is placed into `gmml-test`, that is when this naming will be used.
+
+Some examples of good branch names are:
+
+- `feature_basicGithubActions`
+- `bugfix_addKDNOparams`
+- `playground_llvmTooling`
+
 ### Formatting Pre-Commit
 
 All code must follow the format described in the `.clang-format` file, and the pre-commit hook will ensure the commited format is correct. The precommit hook will ensure all files you want to commit are correctly formatted. Any files that are not correctly formatted will be listed in the terminal you tried to commit from, if you are using something like `gitflow` or `gitkraken` check the logs. Many code editors, IDEs or text editors, have the ability to apply a specific format on save of the file, so save yourself headaches and set that up.

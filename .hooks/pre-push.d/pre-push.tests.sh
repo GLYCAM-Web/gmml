@@ -11,6 +11,9 @@ RED_BOLD='\033[0;31m\033[1m'
 #instead of a wannabe bool type flag
 BRANCH_IS_BEHIND=""
 
+#this is to enforce our branch naming scheme
+branch_regex="^(feature|bugfix|hotfix|playground|juggle)_[a-zA-Z0-9]{2,36}$"
+
 #How many commits a feature branch can be missing from the gmml-test branch
 MAX_FEATURE_BEHIND_TEST=15
 
@@ -43,6 +46,33 @@ check_dir_exists()
     if [ ! -d "$1" ]; then
         echo ""
         echo "Your $1 directory does not exist."
+    fi
+}
+
+#ensure our branch naming pattern is correct
+ensure_branch_naming()
+{
+	CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+
+     case "${CURRENT_BRANCH}" in
+        gmml-dev | gmml-test | actual | stable)
+            echo -e "Since you are pushing on of our stable branches, we will be skipping\nensuring that you are not too far away from your parent branch"
+            return 0
+            ;;
+        *)
+            ;;
+    esac
+
+	if [[ ! ${CURRENT_BRANCH} =~ ${branch_regex} ]]; then
+        #branch isnt on remote
+        if [ -z "$(git ls-remote --heads origin "${CURRENT_BRANCH}")" ]; then
+                echo -e "${RED_BOLD}ERROR: Youre trying to push a new branch that does not fit our naming schema"
+                echo -e "please refer to the gmml readme on github for the naming scheme. Aborting!${RESET_STYLE}"
+                exit 1
+        else
+                echo -e "${YELLOW_BOLD}WARNING: Youre trying to push to a branch that does not fit our naming schema"
+                echo -e "we should eventually take care of this. Aborting!${RESET_STYLE}"
+        fi
     fi
 }
 
