@@ -4,7 +4,7 @@
 ##########               Cool variables             ############
 ################################################################
 #Tests that dont work on baremetal. Need to make this a list but lol
-TEST_SKIP_LIST=("./016.test.DrawGlycan.sh" "./017.test.GlycoproteinBuilder.sh" "./013.test.buildOligoaccharideLibrary.sh")
+TEST_SKIP_LIST=("./016.test.DrawGlycan.sh")
 SKIP_TIME=0
 
 GMML_TEST_JOBS=4
@@ -85,7 +85,7 @@ while getopts "j:hd:" option; do
                 for TEST_SKIP in "${TEST_SKIP_LIST[@]}"; do
                     for ((SKIP_INDEX = ${#GMML_TEST_FILE_LIST[@]}; SKIP_INDEX >= 0; SKIP_INDEX--)); do
                         if [ "${GMML_TEST_FILE_LIST["${SKIP_INDEX}"]}" == "${TEST_SKIP}" ]; then
-                            unset GMML_TEST_FILE_LIST["${SKIP_INDEX}"]
+                            unset "GMML_TEST_FILE_LIST[${SKIP_INDEX}]"
                             GMML_TEST_FILE_LIST=("${GMML_TEST_FILE_LIST[@]}")
                             SKIP_TIME=1
                         fi
@@ -174,9 +174,9 @@ cleaningUpJobs()
             echo -ne "${RESET_STYLE}"
 
             #Now remove the PID from our "scheduler" array, ngl more of a tracker
-            unset JOB_PIDS["${CURR_INDEX}"]
+            unset "JOB_PIDS[${CURR_INDEX}]"
             #Now remove the job output from list
-            unset JOB_OUTPUT_FILES["${CURR_INDEX}"]
+            unset "JOB_OUTPUT_FILES[${CURR_INDEX}]"
 
             #Now we have to clean up our arrays, this kinda sucks and am unsure better way to fix
             JOB_PIDS=("${JOB_PIDS[@]}")
@@ -238,7 +238,7 @@ cleaningUpJobs
 case "${GMML_PASSED_TESTS}" in
     #if we passed as many tests as we have, we know we passed all tests thus we
     #go ahead and prepare the output to be green
-    ${#GMML_TEST_FILE_LIST[@]})
+    "${#GMML_TEST_FILE_LIST[@]}")
         RESULT_COLOR=${PASSED_STYLE}
         ;;
         #if our passed tests does not equal our number of tests, we know something is
