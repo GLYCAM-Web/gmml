@@ -4,6 +4,9 @@
 
 #include <sys/param.h> // for MIN function
 #include <cstring>     // strlen
+#include <filesystem>
+
+#include <iostream>
 
 std::string codeUtils::Find_Program_Installation_Directory()
 { // A way to get the program name plus working directory
@@ -65,12 +68,30 @@ std::string codeUtils::getEnvVar(const std::string& key)
     return val == NULL ? std::string("") : std::string(val);
 }
 
+std::string codeUtils::getGemsHomeDir()
+{
+
+    std::filesystem::path directoriesCPPFilePath = __FILE__;
+    // TODO: Fix this gross ish
+    std::string gemsDirString = directoriesCPPFilePath.parent_path().parent_path().parent_path().parent_path().string();
+    gemsDirString             += "/";
+    return gemsDirString;
+}
+
 std::string codeUtils::getGmmlHomeDir()
 {
-    std::string gmmlHome = getEnvVar("GMMLHOME");
+
+    std::filesystem::path directoriesCPPFilePath = __FILE__;
+    // TODO: Fix this gross ish
+
+    std::string gmmlDirString = directoriesCPPFilePath.parent_path().parent_path().parent_path().string();
+    gmmlDirString             += "/";
+
+    std::string gemsDirString = getGemsHomeDir();
+    std::string gmmlHome      = gmmlDirString;
     if (gmmlHome.empty())
     {
-        std::string gemsHome = getEnvVar("GEMSHOME");
+        std::string gemsHome = gemsDirString;
         if (gemsHome.empty())
         {
             std::string errorMessage =

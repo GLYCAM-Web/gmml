@@ -23,5 +23,6 @@ namespace codeUtils
     void ensureDirectoryExists(const std::string& pathName);
     std::string getEnvVar(const std::string& key);
     std::string getGmmlHomeDir();
+    std::string getGemsHomeDir();
 } // namespace codeUtils
 #endif // GMML_INCLUDES_CODEUTILS_DIRECTORIES_HPP

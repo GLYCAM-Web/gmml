@@ -72,6 +72,7 @@
 #include "includes/Glycan/glycosidiclinkage.hpp"
 #include "includes/GeometryTopology/geometrytopology.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/directories.hpp"
 
 #include <unistd.h>
 #include <errno.h>
@@ -786,8 +787,8 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractSugars(std::vector<std::s
                 // gmmo.insert(gmmo.size()-8, gmmo.substr(gmmo.size()-7, 2));
                 // gmmo.insert(gmmo.size()-8, "/");
                 // std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
-                char* gemshome_env_var = std::getenv("GEMSHOME");
-                std::string GEMSHOME(gemshome_env_var);
+
+                std::string GEMSHOME(codeUtils::getGemsHomeDir());
                 std::string ontologyDirectory = GEMSHOME + "/Ontologies";
                 std::string gmmoDirectory     = ontologyDirectory + "/" + gmmo.substr(gmmo.size() - 7, 2);
                 gmmo                          = gmmoDirectory + "/" + gmmo;
