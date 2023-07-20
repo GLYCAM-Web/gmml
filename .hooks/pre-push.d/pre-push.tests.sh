@@ -234,6 +234,8 @@ else
     echo "Beginning tests"
 fi
 
+cd "${GEMSHOME}"
+
 #Add these removes so the tests don't pass on an old version of the library
 rm -f gmml.py _gmml.so
 rm -rf ./gmml/lib
