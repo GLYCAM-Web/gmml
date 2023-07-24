@@ -77,16 +77,10 @@ std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
     //  std::cout << "Number of repeats: " << numberRepeats << "\n";
     std::string beforeRepeat = inputSequence.substr(0, repeatStart);
     // Check if using the old nomenclature. i.e. DGlcpa1-[4DGlcpa1-]<4> was old, DGlcpa1-4[4DGlcpa1-]<3> is new.
-    // if (!beforeRepeat.empty() && !std::isdigit(beforeRepeat.back())) //inputSequence.substr(repeatStart - 2,
-    // 1).at(0)) )
     if (inputSequence.find("-[") != std::string::npos)
     {
-        // std::string message = "Old repeat syntax found as >>>" + beforeRepeat + "<<< is not empty and >>>" +
-        // beforeRepeat.back() + "<<< is not a digit";
         std::string message = "Old repeat syntax detected as \"-[\" found in " + inputSequence;
         gmml::log(__LINE__, __FILE__, gmml::INF, message);
-        // gmml::log(__LINE__,__FILE__,gmml::INF, "Old repeat syntax detected as:  Oliver needs a raise: " +
-        // inputSequence);
         //  I think I'll just copy the e.g. 4 to make it look like the new syntax.
         std::string numberToInsert = inputSequence.substr(repeatStart + 1, 1);
         gmml::log(__LINE__, __FILE__, gmml::INF,
