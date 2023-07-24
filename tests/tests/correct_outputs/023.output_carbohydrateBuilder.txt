@@ -252,6 +252,10 @@ Building DNeup5Acb2-8DNeup5Aca2-3DGalpb1-8DNeup5Aca2-OH
 *********************
 Building LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-3LGlcpNSa1-4LGlcpNSa1-OH
 *********************
+
+*********************
+Building DGlcpa1-[4DGlcpa1-]<4>2DGlcpa1-[4DGlcpa1-6DGlcpa1-[4DGlcpa1-]<3>4DManpa1-]<2>OH
+*********************
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
@@ -302,3 +306,4 @@ Building LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-3LGlcpNSa1-4LGlcp
 00054.pdb succesfully created.
 00055.pdb succesfully created.
 00056.pdb succesfully created.
+00057.pdb succesfully created.
