@@ -74,3 +74,10 @@ Parsing: DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH
 Test level caught runtime error: Error: we can't parse this residue: "Boo"
 -----------------------------------------------------------------------------------------------------
 
+Parsing: DSorp[3S]a2-4DGalpA[3D]b1-2LIdopAa1-3DXylpa1-2DManp[4A,3A]a1-3DGalpb1-4[DArapa1-2]LFucpa1-3DGalpNAca1-OH
+DArapa1-2[DSorp[3S]a2-4DGalpA[3D]b1-2LIdopAa1-3DXylpa1-2DManp[3A,4A]a1-3DGalpb1-4]LFucpa1-3DGalpNAca1-OH
+DArap&Label=residue-14;a1-2&Label=link-12;[DSorp&Label=residue-11;[3&Label=link-10;S&Label=residue-12;]a2-4&Label=link-9;DGalpA&Label=residue-10;[3&Label=link-11;D&Label=residue-13;]b1-2&Label=link-8;LIdopA&Label=residue-9;a1-3&Label=link-7;DXylp&Label=residue-8;a1-2&Label=link-6;DManp&Label=residue-5;[3&Label=link-5;A&Label=residue-7;,4&Label=link-4;A&Label=residue-6;]a1-3&Label=link-3;DGalp&Label=residue-4;b1-4&Label=link-2;]LFucp&Label=residue-3;a1-3&Label=link-1;DGalpNAc&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled with no exceptions thrown.
+
+-----------------------------------------------------------------------------------------------------
+
