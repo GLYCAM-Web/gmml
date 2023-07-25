@@ -112,7 +112,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
     std::vector<std::string> derivatives;
     for (auto& neighbor : neighbors)
     {
-        if (neighbor->GetType() == cds::ResidueType::Derivative)
+        if (neighbor->GetType() == cds::ResidueType::Derivative || neighbor->GetType() == cds::ResidueType::Deoxy)
         {
             --numberOfNeighbors;
             derivatives.push_back(neighbor->GetLinkageName(withLabels) + neighbor->GetName(withLabels));
@@ -142,7 +142,7 @@ void SequenceManipulator::RecurvePrint(ParsedResidue* currentResidue, int& branc
     size_t loopCount = 0;
     for (auto& neighbor : neighbors)
     {
-        if (neighbor->GetType() != cds::ResidueType::Derivative)
+        if (neighbor->GetType() != cds::ResidueType::Derivative && neighbor->GetType() != cds::ResidueType::Deoxy)
         {
             ++loopCount;
             if (loopCount < numberOfNeighbors)
