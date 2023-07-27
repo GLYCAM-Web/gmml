@@ -291,6 +291,7 @@ void GlycoproteinBuilder::Wiggle(Resolution resolutionLevel, int persistCycles, 
     int cycle                                           = 1;
     bool stop                                           = false;
     int savedOverlap                                    = this->CalculateOverlaps(resolutionLevel, ALL);
+    logss << "savedOverlap is " << savedOverlap << "\n";
     if (sites_with_overlaps.size() == 0)
     {
         logss << "Stopping with all overlaps resolved.\n";
@@ -323,7 +324,8 @@ void GlycoproteinBuilder::Wiggle(Resolution resolutionLevel, int persistCycles, 
             logss << "Resetting cycle count to zero, will persist for another " << persistCycles << " cycles."
                   << std::endl;
             savedOverlap = this->CalculateOverlaps(resolutionLevel, ALL);
-            cycle        = 1;
+            logss << "After cycle reset, savedOverlap is : " << savedOverlap << "\n";
+            cycle = 1;
         }
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
