@@ -21,9 +21,6 @@ int main(int argc, char* argv[])
         glycoproteinBuilder.WriteOffFile("glycoprotein_initial");
         std::cout << "Resolving overlaps" << std::endl;
         glycoproteinBuilder.ResolveOverlaps(); // Default randomize value is true, and output isn't deterministic.
-        std::cout << "Writing output files" << std::endl;
-        glycoproteinBuilder.WritePdbFile("glycoprotein");
-        glycoproteinBuilder.WriteOffFile("glycoprotein");
         glycoproteinBuilder.PrintDihedralAnglesAndOverlapOfGlycosites();
     }
     if (!glycoproteinBuilder.IsStatusOk()) // Status might be changed by ResolveOverlaps or WriteOuputfiles.

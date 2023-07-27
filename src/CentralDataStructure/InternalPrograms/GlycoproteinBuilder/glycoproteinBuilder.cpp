@@ -111,8 +111,11 @@ void GlycoproteinBuilder::WritePdbFile(const std::string prefix, const bool writ
 }
 
 void GlycoproteinBuilder::ResolveOverlaps()
-{
-    while (this->GetNumberOfOuputtedStructures() <= this->GetNumberOfStructuresToOutput())
+{ // First time here so get default output files that might be deterministic for tests.
+    this->ResolveOverlapsWithWiggler();
+    this->WritePdbFile("glycoprotein");
+    this->WriteOffFile("glycoprotein");
+    while (this->GetNumberOfOuputtedStructures() < this->GetNumberOfStructuresToOutput())
     {
         this->ResolveOverlapsWithWiggler();
         std::stringstream prefix;
