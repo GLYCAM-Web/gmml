@@ -28,7 +28,20 @@ do
         return 1
         exit 1
     fi      
-done	
+done
+#These need only exist, as will have random data each time.
+fileList=("0_glycoprotein.pdb" "1_glycoprotein.pdb" )
+for file in ${fileList[@]};
+do
+    if [ ! -f $file ]; then
+        printf "Test FAILED!\n $file does not exist\n"
+        echo "Exit Code: 1"
+        return 1
+        exit 1
+    else
+	rm $file
+    fi
+done
 printf "Test passed.\n"
 rm gpBuilder  
 echo "Exit Code: 0"
