@@ -328,12 +328,21 @@ void GlycosylationSite::Wiggle(bool firstLinkageOnly, int interval)
 
 void GlycosylationSite::SetRandomDihedralAnglesUsingMetadata()
 {
+    if (this->GetGlycan()->GetGlycosidicLinkages().empty())
+    {
+        std::string message =
+            "Asked to set a dihedral for glycosite with no glycosidic linkages; " + this->GetResidueId();
+        gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+        throw std::runtime_error(message);
+    }
     for (auto& linkage : this->GetGlycan()->GetGlycosidicLinkages())
     {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Setting random shape for linkage: " + linkage.GetName());
         linkage.SetRandomShapeUsingMetadata();
     }
     if (!this->NoNewInternalCloseContacts())
     {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Nope that caused an internal contact");
         this->ResetDihedralAngles();
     }
     return;
