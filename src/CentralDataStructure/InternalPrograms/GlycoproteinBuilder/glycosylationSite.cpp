@@ -30,10 +30,10 @@ GlycosylationSite::GlycosylationSite(Residue* residue, Carbohydrate* carbohydrat
     this->AttachGlycan(glycanStartResidueNumber);
     cdsSelections::ClearAtomLabels(carbohydrate->GetReducingResidue()); // jfc
     cdsSelections::ClearAtomLabels(this->GetResidue());
-    //    cdsSelections::ClearAtomLabels(carbohydrate->GetAglycone()); //jfc
-    residueGlycanLinkage_ = ResidueLinkage(carbohydrate->GetReducingResidue(),
-                                           this->GetResidue()); // Attach glycan has to happen first as design is funky
-                                                                // here, Residue linkage should be an Edge of Residue.
+    // residueGlycanLinkage_ = ResidueLinkage(carbohydrate->GetReducingResidue(),
+    //                                        this->GetResidue()); // Attach glycan has to happen first as design is
+    //                                        funky
+    //  here, Residue linkage should be an Edge of Residue.
     //    Bro yuou need to create hte Protein-Glycan linkage to manupulate later. Where does it belong? Why isnt it an
     //    edge already you doofuc. What type woudl the edge be and ResidueLinkage needs to inherit from Edge and you
     //    know it. Ok calm donw either keep it here or insert it into the front of carb linkage. It should be addBond
@@ -62,7 +62,7 @@ void GlycosylationSite::AttachGlycan(unsigned int glycanResidueStartNumber)
     gmml::log(__LINE__, __FILE__, gmml::INF, "Superimpose prep done");
     this->Superimpose_Glycan_To_Glycosite(this->GetResidue());
     gmml::log(__LINE__, __FILE__, gmml::INF, "SuperimposedGlycanToGlycosite");
-    this->Rename_Protein_Residue_To_GLYCAM_Nomenclature();
+    // this->Rename_Protein_Residue_To_GLYCAM_Nomenclature();
     gmml::log(__LINE__, __FILE__, gmml::INF, "Setting internal bond count to check if more form later");
     // this->SetInternalBondCount(cdsSelections::CountInternalHeavyAtomBonds(this->GetAttachedGlycan()->getAtoms()));
     this->RenumberGlycanToMatch(glycanResidueStartNumber);
@@ -197,8 +197,10 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue* glycosite_resid
                   " to the protein:" + this->GetGlycan()->GetAnomericAtom()->getName() + " bonded to " +
                   protein_connection_atom->getName());
     protein_connection_atom->addBond(this->GetGlycan()->GetAnomericAtom());
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Deleting the aglycone");
-    this->GetGlycan()->deleteResidue(this->GetGlycan()->GetAglycone());
+    this->Rename_Protein_Residue_To_GLYCAM_Nomenclature(); // e.g. ASN to NLN
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Replacing the aglycone");
+    // this->GetGlycan()->deleteResidue(this->GetGlycan()->GetAglycone());
+    this->GetGlycan()->replaceAglycone(this->GetResidue());
     gmml::log(__LINE__, __FILE__, gmml::INF, "Completed superimposition to " + glycosite_residue->getStringId());
     return;
 }

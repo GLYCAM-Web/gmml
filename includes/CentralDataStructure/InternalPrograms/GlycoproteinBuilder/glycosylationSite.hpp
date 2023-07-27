@@ -127,7 +127,7 @@ class GlycosylationSite
 
     inline ResidueLinkage& GetProteinGlycanLinkage()
     {
-        return residueGlycanLinkage_;
+        return this->GetGlycan()->GetGlycosidicLinkages().front();
     }
 
     inline unsigned long int GetInternalBondCount()
@@ -176,7 +176,7 @@ class GlycosylationSite
     //////////////////////////////////////////////////////////
     Residue* residue_; /*!< A pointer back to the residue for this glycosite >*/
     Carbohydrate* glycan_;
-    ResidueLinkage residueGlycanLinkage_;
+    // ResidueLinkage residueGlycanLinkage_;
     //    glycan_overlap_ = 0.0;
     //    double protein_overlap_ = 0.0;
     std::vector<GlycosylationSite*> other_glycosites_;
