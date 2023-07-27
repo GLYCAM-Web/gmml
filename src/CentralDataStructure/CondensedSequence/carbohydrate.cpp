@@ -118,7 +118,6 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 //////////////////////////////////////////////////////////
 void Carbohydrate::deleteResidue(cds::Residue* byeBye)
 { // ToDo Have to do this because ResidueLInkages are not Edges!!! Oliver just make them Edges already.
-    cds::Molecule::deleteResidue(byeBye);
     for (cds::ResidueLinkage& linkage : glycosidicLinkages_)
     {
         if (linkage.GetFromThisResidue1() == byeBye || linkage.GetToThisResidue2() == byeBye)
@@ -126,6 +125,7 @@ void Carbohydrate::deleteResidue(cds::Residue* byeBye)
             this->deleteLinkage(&linkage);
         }
     }
+    cds::Molecule::deleteResidue(byeBye);
 }
 
 //////////////////////////////////////////////////////////
