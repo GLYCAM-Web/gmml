@@ -17,8 +17,6 @@ int main(int argc, char* argv[])
     GlycoproteinBuilder glycoproteinBuilder(inputStruct);
     if (glycoproteinBuilder.IsStatusOk())
     { // Poor pattern, need to throw up to and catch in gems.
-        glycoproteinBuilder.WritePdbFile("glycoprotein_initial");
-        glycoproteinBuilder.WriteOffFile("glycoprotein_initial");
         std::cout << "Resolving overlaps" << std::endl;
         glycoproteinBuilder.ResolveOverlaps(); // Default randomize value is true, and output isn't deterministic.
         glycoproteinBuilder.PrintDihedralAnglesAndOverlapOfGlycosites();

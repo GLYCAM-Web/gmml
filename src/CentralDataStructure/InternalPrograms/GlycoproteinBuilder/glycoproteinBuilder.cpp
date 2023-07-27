@@ -112,9 +112,11 @@ void GlycoproteinBuilder::WritePdbFile(const std::string prefix, const bool writ
 
 void GlycoproteinBuilder::ResolveOverlaps()
 { // First time here so get default output files that might be deterministic for tests.
+    this->WritePdbFile("glycoprotein_initial");
     this->ResolveOverlapsWithWiggler();
     this->WritePdbFile("glycoprotein");
     this->WriteOffFile("glycoprotein");
+    this->WritePdbFile("glycoprotein_serialized");
     while (this->GetNumberOfOuputtedStructures() < this->GetNumberOfStructuresToOutput())
     {
         this->ResolveOverlapsWithWiggler();
