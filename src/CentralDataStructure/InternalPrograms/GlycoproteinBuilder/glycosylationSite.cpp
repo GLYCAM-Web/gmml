@@ -39,16 +39,16 @@ GlycosylationSite::GlycosylationSite(Residue* residue, Carbohydrate* carbohydrat
     //    know it. Ok calm donw either keep it here or insert it into the front of carb linkage. It should be addBond
     //    though.
     this->SetInternalBondCount(cdsSelections::CountInternalHeavyAtomBonds(this->GetGlycan()->getAtoms()));
-    //    std::cout << "Done attach glycan" << std::endl;
-    //    for(auto & linkage : carbohydrate->GetGlycosidicLinkages())
-    //    {
-    //        std::cout << linkage.GetName() << std::endl;
-    //    }
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Done attach glycan to " + this->GetResidueId());
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Here are the linkages:");
+    for (auto& linkage : carbohydrate->GetGlycosidicLinkages())
+    {
+        gmml::log(__LINE__, __FILE__, gmml::INF, linkage.GetName());
+    }
     //    for(auto & residue: this->GetOtherProteinResidues())
     //    {
-    //        std::cout << residue->getId() << std::endl << std::flush;
+    //    	std::cout << residue->getId() << std::endl << std::flush;
     //    }
-    //    std::cout << "MOO\n" << std::flush;
 }
 
 //////////////////////////////////////////////////////////
@@ -155,7 +155,7 @@ void GlycosylationSite::Prepare_Glycans_For_Superimposition_To_Particular_Residu
     {
         std::string message =
             "Problem creating glycosylation site. The amino acid requested: " + amino_acid_name +
-            " has name that isn't supported. Currently you can glycosylate ASN, THR, SER or TYR. Email us to request "
+            " has name that isn't supported. Currently you can glycosylate ASN, THR, SER or TYR. Email us to request " +
             "others. Ideally include examples of 3D structures we can use as a template.";
         gmml::log(__LINE__, __FILE__, gmml::ERR, message);
         throw std::runtime_error(message);
