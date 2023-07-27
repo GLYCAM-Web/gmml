@@ -128,6 +128,19 @@ void Carbohydrate::deleteResidue(cds::Residue* byeBye)
     cds::Molecule::deleteResidue(byeBye);
 }
 
+void Carbohydrate::replaceAglycone(cds::Residue* newAglycone)
+{
+
+    for (cds::ResidueLinkage& linkage : glycosidicLinkages_)
+    {
+        if (linkage.GetFromThisResidue1() == this->GetAglycone() || linkage.GetToThisResidue2() == this->GetAglycone())
+        {
+            linkage = cds::ResidueLinkage(this->GetReducingResidue(), newAglycone);
+        }
+    }
+    cds::Molecule::deleteResidue(this->GetAglycone());
+}
+
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
 //////////////////////////////////////////////////////////
