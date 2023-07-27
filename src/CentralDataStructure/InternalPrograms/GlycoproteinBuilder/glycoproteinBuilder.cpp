@@ -27,7 +27,7 @@ GlycoproteinBuilder::GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs
     try
     {
         this->SetIsDeterministic(inputStruct.isDeterministic_);
-        this->SetNumberOfOutputStructures(inputStruct.number3DStructures_);
+        this->SetStructuresToOutput(inputStruct.number3DStructures_);
         this->SetPersistCycles(inputStruct.persistCycles_);
         this->SetOverlapTolerance(inputStruct.overlapTolerance_);
         pdb::PdbFile pdbFile(inputStruct.substrateFileName_);
@@ -111,6 +111,23 @@ void GlycoproteinBuilder::WritePdbFile(const std::string prefix, const bool writ
 }
 
 void GlycoproteinBuilder::ResolveOverlaps()
+{
+    while (this->GetNumberOfOuputtedStructures() <= this->GetNumberOfStructuresToOutput())
+    {
+        this->ResolveOverlapsWithWiggler();
+        std::stringstream prefix;
+        prefix << this->GetNumberOfOuputtedStructures() << "_glycoprotein";
+        this->WritePdbFile(prefix.str(), true);
+        this->incrementOutputtedStructures();
+        for (auto& glycosite : this->GetGlycosites())
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Setting random dihedrals for " + glycosite.GetResidueId());
+            glycosite.SetRandomDihedralAnglesUsingMetadata();
+        }
+    }
+}
+
+void GlycoproteinBuilder::ResolveOverlapsWithWiggler()
 {
     bool randomize = !this->GetIsDeterministic();
     if (randomize)
