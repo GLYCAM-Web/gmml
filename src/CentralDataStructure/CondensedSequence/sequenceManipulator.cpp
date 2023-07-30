@@ -161,9 +161,9 @@ std::string SequenceManipulator::PrintGraphViz(GraphVizDotConfig& configs)
     this->SetIndexByConnectivity();
     std::stringstream ss;
     ss << "graph G {graph [splines=false forcelabels=true  dpi=" << configs.dpi_ << "];\n";
-    ss << "node [ shape=\"none\" fontname=Helvetica labelfontsize=12 forcelabels=\"true\";\n";
+    ss << "node [ shape=\"none\" fontname=DejaVuSans labelfontsize=12 forcelabels=\"true\";\n";
     ss << "label=\"none\" size=50 fixedsize=\"true\" scale=\"true\"];\n";
-    ss << "edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];\n";
+    ss << "edge [labelfontsize=12 fontname=DejaVuSans labeldistance=1.2 labelangle = 320.0];\n";
     ss << "rankdir=LR nodesep=\"0.05\" ranksep=\"0.8\";\n";
     for (auto& residue : this->GetParsedResiduesOrderedByConnectivity())
     {
