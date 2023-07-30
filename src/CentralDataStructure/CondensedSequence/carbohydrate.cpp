@@ -93,15 +93,16 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 
     // Ok if have done greedy then the atoms-to-move needs to be updated for every linkage:
     //        std::cout << "Re-determining atoms that need to move for each linkage:" << std::endl;
-    unsigned int linkageIndex =
-        0; // Re-numbering is a hack as indices have global scope and two instances give too high numbers.
+    // Re-numbering is a hack as indices have global scope and two instances give too high numbers.
+    unsigned int linkageIndex = 0;
     // Linkages should be Edges to avoid this as they already get renumbered above.
+    // gmml::log(__LINE__, __FILE__, gmml::INF, "Determining what moves in linkages of " + inputSequence);
     for (auto& linkage : glycosidicLinkages_) // These will exist on the vector in order of edge connectivity set above.
     {
         linkage.SetIndex(linkageIndex++);
-        std::stringstream ss;
-        ss << "Linkage index in ctor is " << linkage.GetIndex();
-        gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
+        //        std::stringstream ss;
+        //  ss << linkage.GetName() << " linkage index in ctor is " << linkage.GetIndex();
+        //       gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
         linkage.DetermineAtomsThatMove();
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, "Final overlap resolution starting.");
@@ -117,7 +118,6 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
 //////////////////////////////////////////////////////////
 void Carbohydrate::deleteResidue(cds::Residue* byeBye)
 { // ToDo Have to do this because ResidueLInkages are not Edges!!! Oliver just make them Edges already.
-    cds::Molecule::deleteResidue(byeBye);
     for (cds::ResidueLinkage& linkage : glycosidicLinkages_)
     {
         if (linkage.GetFromThisResidue1() == byeBye || linkage.GetToThisResidue2() == byeBye)
@@ -125,6 +125,20 @@ void Carbohydrate::deleteResidue(cds::Residue* byeBye)
             this->deleteLinkage(&linkage);
         }
     }
+    cds::Molecule::deleteResidue(byeBye);
+}
+
+void Carbohydrate::replaceAglycone(cds::Residue* newAglycone)
+{
+
+    for (cds::ResidueLinkage& linkage : glycosidicLinkages_)
+    {
+        if (linkage.GetFromThisResidue1() == this->GetAglycone() || linkage.GetToThisResidue2() == this->GetAglycone())
+        {
+            linkage = cds::ResidueLinkage(this->GetReducingResidue(), newAglycone);
+        }
+    }
+    cds::Molecule::deleteResidue(this->GetAglycone());
 }
 
 //////////////////////////////////////////////////////////

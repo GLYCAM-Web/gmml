@@ -26,8 +26,11 @@ int main()
     std::string s11 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3DGalpb1-4DXylpb1-OH ";
     std::string s12 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalpb1-3]DGalpb1-4DXylpb1-OH";
     std::string s13 = "DGlcpNAcb1-4DGlcpAb1-4DGlcpAb1-3DGalp[Boo]b1-3DGalpb1-4DXylpb1-OH";
+    std::string s14 =
+        "DSorp[3S]a2-4DGalpA[3D]b1-2LIdopAa1-3DXylpa1-2DManp[4A,3A]a1-3DGalpb1-4[DArapa1-2]LFucpa1-3DGalpNAca1-OH";
     //   std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7};
-    std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13};
+    std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14};
+
     std::cout
         << "-----------------------------------------------------------------------------------------------------\n\n";
     for (auto& sequence : sequences)

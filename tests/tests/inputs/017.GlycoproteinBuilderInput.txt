@@ -1,10 +1,10 @@
 Protein:tests/inputs/017.1eer_eop_Asn.pdb
 
-NumberOfOutputStructures:1
+NumberOfOutputStructures:2
 
 maxThreads:1
 
-persistCycles:2
+persistCycles:5
 
 overlapTolerance:0
 

@@ -27,7 +27,7 @@ GlycoproteinBuilder::GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs
     try
     {
         this->SetIsDeterministic(inputStruct.isDeterministic_);
-        this->SetNumberOfOutputStructures(inputStruct.number3DStructures_);
+        this->SetStructuresToOutput(inputStruct.number3DStructures_);
         this->SetPersistCycles(inputStruct.persistCycles_);
         this->SetOverlapTolerance(inputStruct.overlapTolerance_);
         pdb::PdbFile pdbFile(inputStruct.substrateFileName_);
@@ -111,6 +111,28 @@ void GlycoproteinBuilder::WritePdbFile(const std::string prefix, const bool writ
 }
 
 void GlycoproteinBuilder::ResolveOverlaps()
+{ // First time here so get default output files that might be deterministic for tests.
+    this->WritePdbFile("glycoprotein_initial");
+    this->ResolveOverlapsWithWiggler();
+    this->WritePdbFile("glycoprotein");
+    this->WriteOffFile("glycoprotein");
+    this->WritePdbFile("glycoprotein_serialized");
+    while (this->GetNumberOfOuputtedStructures() < this->GetNumberOfStructuresToOutput())
+    {
+        this->ResolveOverlapsWithWiggler();
+        std::stringstream prefix;
+        prefix << this->GetNumberOfOuputtedStructures() << "_glycoprotein";
+        this->WritePdbFile(prefix.str(), true);
+        this->incrementOutputtedStructures();
+        for (auto& glycosite : this->GetGlycosites())
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Setting random dihedrals for " + glycosite.GetResidueId());
+            glycosite.SetRandomDihedralAnglesUsingMetadata();
+        }
+    }
+}
+
+void GlycoproteinBuilder::ResolveOverlapsWithWiggler()
 {
     bool randomize = !this->GetIsDeterministic();
     if (randomize)
@@ -269,6 +291,7 @@ void GlycoproteinBuilder::Wiggle(Resolution resolutionLevel, int persistCycles, 
     int cycle                                           = 1;
     bool stop                                           = false;
     int savedOverlap                                    = this->CalculateOverlaps(resolutionLevel, ALL);
+    logss << "savedOverlap is " << savedOverlap << "\n";
     if (sites_with_overlaps.size() == 0)
     {
         logss << "Stopping with all overlaps resolved.\n";
@@ -301,7 +324,8 @@ void GlycoproteinBuilder::Wiggle(Resolution resolutionLevel, int persistCycles, 
             logss << "Resetting cycle count to zero, will persist for another " << persistCycles << " cycles."
                   << std::endl;
             savedOverlap = this->CalculateOverlaps(resolutionLevel, ALL);
-            cycle        = 1;
+            logss << "After cycle reset, savedOverlap is : " << savedOverlap << "\n";
+            cycle = 1;
         }
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
@@ -310,32 +334,25 @@ void GlycoproteinBuilder::Wiggle(Resolution resolutionLevel, int persistCycles, 
 
 bool GlycoproteinBuilder::DumbRandomWalk(int maxCycles)
 {
-    std::stringstream logss;
-    logss << "Starting DumbRandomWalk\n";
-    //    std::cout << logss.str();
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Starting DumbRandomWalk.");
     int cycle                                           = 1;
     std::vector<GlycosylationSite*> sites_with_overlaps = DetermineSitesWithOverlap();
     while (cycle < maxCycles)
     {
         ++cycle;
-        logss << "Cycle " << cycle << " of " << maxCycles << std::endl;
-        //        std::cout << logss.str();
         for (auto& currentGlycosite : sites_with_overlaps)
         {
             currentGlycosite->SetRandomDihedralAnglesUsingMetadata();
         }
-        logss << "Updating list of sites with overlaps." << std::endl;
-        sites_with_overlaps =
-            this->DetermineSitesWithOverlap(); // Moved glycans may clash with other glycans. Need to check.
-        if (sites_with_overlaps.size() == 0)
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Updating list of sites with overlaps.");
+        sites_with_overlaps = this->DetermineSitesWithOverlap();
+        if (sites_with_overlaps.empty())
         {
-            logss << "DumbRandomWalk resolved the overlaps. Stopping\n";
+            gmml::log(__LINE__, __FILE__, gmml::INF, "DumbRandomWalk resolved the overlaps. Stopping.");
             return true;
         }
-        //        std::cout << logss.str();
     }
-    logss << "DumbRandomWalk did not resolve the overlaps\n";
-    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+    gmml::log(__LINE__, __FILE__, gmml::INF, "DumbRandomWalk did not resolve the overlaps.");
     return false;
 }
 

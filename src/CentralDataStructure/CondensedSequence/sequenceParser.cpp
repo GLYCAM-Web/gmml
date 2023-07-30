@@ -2,6 +2,7 @@
 #include "includes/CodeUtils/logging.hpp"
 #include <algorithm> // Reverse function.
 #include <sstream>
+#include <cctype> // isdigit()
 
 using cdsCondensedSequence::ParsedResidue;
 using cdsCondensedSequence::SequenceParser;
@@ -58,7 +59,7 @@ std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
         std::string stringNumber = inputSequence.substr(numberStart, (repeatCharacterEndLocation - numberStart));
         numberRepeats            = std::stoi(stringNumber);
     }
-    catch (...) // stoi throws this
+    catch (...) // if e.g. stoi throws
     {
         throw std::runtime_error("Number of repeating units not specified correctly in repeating unit: " +
                                  inputSequence);
@@ -74,13 +75,25 @@ std::string SequenceParser::parseRepeatingUnits(const std::string inputSequence)
     unsigned int repeatStart = this->seekRepeatStart(inputSequence, i);
     // std::cout << "Repeat starts at position " << repeatStart << " and ends here: " << repeatEnd << std::endl;
     //  std::cout << "Number of repeats: " << numberRepeats << "\n";
-    std::string before       = inputSequence.substr(0, repeatStart);
-    std::string firstRepeat  = inputSequence.substr(
+    std::string beforeRepeat = inputSequence.substr(0, repeatStart);
+    // Check if using the old nomenclature. i.e. DGlcpa1-[4DGlcpa1-]<4> was old, DGlcpa1-4[4DGlcpa1-]<3> is new.
+    if (inputSequence.find("-[") != std::string::npos)
+    {
+        std::string message = "Old repeat syntax detected as \"-[\" found in " + inputSequence;
+        gmml::log(__LINE__, __FILE__, gmml::INF, message);
+        //  I think I'll just copy the e.g. 4 to make it look like the new syntax.
+        std::string numberToInsert = inputSequence.substr(repeatStart + 1, 1);
+        gmml::log(__LINE__, __FILE__, gmml::INF,
+                  "Adding this before repeat unit to make it be new syntax: " + numberToInsert);
+        beforeRepeat += numberToInsert;
+    }
+
+    std::string firstRepeat = inputSequence.substr(
         repeatStart + 2, (repeatEnd - repeatStart - 2)); // firstRepeat does not have the e.g. 4 in 4DGlcpa1-
     std::string repeat = inputSequence.substr(repeatStart + 1, (repeatEnd - repeatStart - 1));
     std::string after  = inputSequence.substr(repeatCharacterEndLocation + 1);
     std::string newInputString;
-    newInputString += before;
+    newInputString += beforeRepeat;
     newInputString += firstRepeat;
     numberRepeats--; // firstRepeat added already.
     for (int j = 1; j <= numberRepeats; ++j)

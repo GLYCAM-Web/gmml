@@ -17,6 +17,7 @@ namespace constants
     const double dNotSet              = 123456789.0;
     const int iNotSet                 = -123456;
     const std::string sNotSet         = "?";
+    const double dSulfurCutoff        = 3.0;
 
     inline double degree2Radian(double d)
     {

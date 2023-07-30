@@ -3,7 +3,6 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbResidue.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
-#include "includes/ParameterSet/parameterManager.hpp" // for preprocssing
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
 #include "includes/CentralDataStructure/Editors/amberMdPrep.hpp" //all preprocessing should move to here.
@@ -132,7 +131,7 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation& ppInfo)
             {
                 // gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");
                 double distance = sgAtom1->calculateDistance(sgAtom2);
-                if (distance < gmml::dSulfurCutoff && distance > 0.001)
+                if (distance < constants::dSulfurCutoff && distance > 0.001)
                 {
                     // gmml::log(__LINE__, __FILE__, gmml::INF, "Distance less than cutoff");
                     cysRes1->setName("CYX");
