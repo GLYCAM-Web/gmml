@@ -1,6 +1,6 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp"
 #include "includes/CodeUtils/strings.hpp"
-#include "includes/common.hpp"
+#include "includes/CodeUtils/constants.hpp"
 
 using pdb::ResidueId;
 
@@ -72,7 +72,7 @@ std::string ResidueId::print() const
     std::string formattedId = "";
     if (this->getName().empty())
     {
-        formattedId += gmml::sNotSet;
+        formattedId += constants::sNotSet;
     }
     else
     {
@@ -81,7 +81,7 @@ std::string ResidueId::print() const
     formattedId += "_";
     if (this->getNumber().empty())
     {
-        formattedId += gmml::sNotSet;
+        formattedId += constants::sNotSet;
     }
     else
     {
@@ -90,7 +90,7 @@ std::string ResidueId::print() const
     formattedId += "_";
     if (this->getInsertionCode().empty())
     {
-        formattedId += gmml::sNotSet;
+        formattedId += constants::sNotSet;
     }
     else
     {
@@ -99,7 +99,7 @@ std::string ResidueId::print() const
     formattedId += "_";
     if (this->getChainId().empty())
     {
-        formattedId += gmml::sNotSet;
+        formattedId += constants::sNotSet;
     }
     else
     {

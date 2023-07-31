@@ -1,5 +1,5 @@
-#include "../../includes/CodeUtils/codetests.hpp"
-
+#include "includes/CodeUtils/codetests.hpp"
+#include <iostream>
 using CodeUtils::CodeTests;
 
 //////////////////////////////////////////////////////////
@@ -11,9 +11,9 @@ CodeTests::CodeTests()
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
-StringVector CodeTests::ListCodeTests()
+std::vector<std::string> CodeTests::ListCodeTests()
 {
-    StringVector testlist;
+    std::vector<std::string> testlist;
     testlist.push_back("ProduceSegmentationFault");
     return testlist;
 }
@@ -30,7 +30,7 @@ void CodeTests::ProduceSegmentationFault()
 {
     int* a;
     a = NULL;
-    std::cerr << "This program has requested a segfault.  Complying now." << std::flush;
+    std::cerr << "This program has requested a segfault.  Complying now." << std::endl;
     std::cout << *a << std::endl;
     return;
 }
