@@ -20,6 +20,7 @@
 ./includes/CentralDataStructure/Shapers
 ./includes/CentralDataStructure/Writers
 ./includes/CentralDataStructure/cdsFunctions
+./includes/CentralDataStructure/sugarIdentification
 ./includes/CodeUtils
 ./includes/GeometryTopology
 ./includes/GeometryTopology/ResidueLinkages
