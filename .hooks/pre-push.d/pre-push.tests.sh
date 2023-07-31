@@ -223,7 +223,11 @@ else
     echo "Beginning tests"
 fi
 
-cd "${GEMSHOME}"
+cd "${GEMS_DIR}" || {
+    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}"
+    echo "Exiting..."
+    exit 1
+}
 
 #Add these removes so the tests don't pass on an old version of the library
 rm -f gmml.py _gmml.so
@@ -235,27 +239,16 @@ fi
 
 echo "Compiling gmml using GEMS ./make.sh, no wrap flag cause it auto wraps"
 
-cd "${GEMS_DIR}" || {
-    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}"
-    echo "Exiting..."
-    exit 1
-}
-
 ./make.sh -j "$(nproc --all --ignore=2)"
-cd "${GMML_DIR}" || {
-    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GMML_DIR}"
-    echo "Exiting..."
-    exit 1
-}
 
-echo "Running mandatory tests..."
+echo "Running mandatory GMML tests..."
 cd "${GEMS_DIR}"/gmml/tests/ || {
     echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}/gmml/tests/"
     echo "Exiting..."
     exit 1
 }
 
-nice -7 ./compile_run_tests.bash -j "$(nproc --all --ignore=2)"
+nice -10 ./compile_run_tests.bash -j "$(nproc --all --ignore=2)"
 result=$? # record the exit status from compile_run_tests.bash
 
 cd "${GMML_DIR}" || {
