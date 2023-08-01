@@ -1,6 +1,6 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
-#include "includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // bondAtomsByDistance
+#include "includes/CentralDataStructure/cdsFunctions/bondByDistance.hpp"
 #include "includes/CentralDataStructure/Writers/offWriter.hpp"
 #include <string>
 
