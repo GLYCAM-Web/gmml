@@ -788,8 +788,16 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractSugars(std::vector<std::s
                 // gmmo.insert(gmmo.size()-8, "/");
                 // std::string gmmoDirectory = gmmo.substr(0, gmmo.size()-8);
 
-                std::string GEMSHOME(codeUtils::getGemsHomeDir());
-                std::string ontologyDirectory = GEMSHOME + "/Ontologies";
+                // I am insane I know it looks wonky but it makes the brainworms happy - P
+                if ((codeUtils::gemsHomeDirPath.string().empty()) ||
+                    !(codeUtils::doesDirectoryExist(codeUtils::gemsHomeDirPath.string())))
+                {
+                    std::string errorMessage = "Could not get the gemshome directory for oligosacch detection!";
+                    gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
+                    throw errorMessage;
+                }
+
+                std::string ontologyDirectory = codeUtils::gemsHomeDirPath.string() + "/Ontologies";
                 std::string gmmoDirectory     = ontologyDirectory + "/" + gmmo.substr(gmmo.size() - 7, 2);
                 gmmo                          = gmmoDirectory + "/" + gmmo;
                 mkdir(ontologyDirectory.c_str(), S_IRWXU | S_IRWXG | S_IRWXO);
@@ -6170,7 +6178,8 @@ double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* child_oligo, std::st
     }
     if (glycosidicO == NULL)
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, glycosidicO->GetId());
+        // Removed the attempt to log the id of glycosidico0 cause if it is null
+        // we cant get an id from it
         gmml::log(__LINE__, __FILE__, gmml::ERR, "glycosidicO is null in calculate Phi Angle");
         return -9999;
     }
@@ -6189,7 +6198,8 @@ double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* child_oligo, std::st
     }
     if (Cx == NULL)
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, Cx->GetId());
+        // Removed the attempt to log the id of Cx cause if it is null
+        // we cant get an id from it
         gmml::log(__LINE__, __FILE__, gmml::ERR, "Cx is null in calculate Phi Angle");
         return -9999;
     }

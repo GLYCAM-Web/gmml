@@ -4,9 +4,6 @@
 
 #include <sys/param.h> // for MIN function
 #include <cstring>     // strlen
-#include <filesystem>
-
-#include <iostream>
 
 std::string codeUtils::Find_Program_Installation_Directory()
 { // A way to get the program name plus working directory
@@ -68,38 +65,20 @@ std::string codeUtils::getEnvVar(const std::string& key)
     return val == NULL ? std::string("") : std::string(val);
 }
 
-std::string codeUtils::getGemsHomeDir()
-{
-
-    std::filesystem::path directoriesCPPFilePath = __FILE__;
-    // TODO: Fix this gross ish
-    std::string gemsDirString = directoriesCPPFilePath.parent_path().parent_path().parent_path().parent_path().string();
-    gemsDirString             += "/";
-    return gemsDirString;
-}
-
 std::string codeUtils::getGmmlHomeDir()
 {
-
-    std::filesystem::path directoriesCPPFilePath = __FILE__;
+    std::string gmmlHome = gmmlHomeDirPath.string();
     // TODO: Fix this gross ish
-
-    std::string gmmlDirString = directoriesCPPFilePath.parent_path().parent_path().parent_path().string();
-    gmmlDirString             += "/";
-
-    std::string gemsDirString = getGemsHomeDir();
-    std::string gmmlHome      = gmmlDirString;
     if (gmmlHome.empty())
     {
-        std::string gemsHome = gemsDirString;
-        if (gemsHome.empty())
+        if (gemsHomeDirPath.string().empty())
         {
             std::string errorMessage =
                 "$GMMLHOME and $GEMSHOME environmental variable not set (or std::getenv doesn't work on this system)";
             gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
             throw errorMessage;
         }
-        gmmlHome = gemsHome + "/gmml/"; // guessing.
+        gmmlHome = gemsHomeDirPath.string() + "/gmml/"; // guessing.
         if (!codeUtils::doesDirectoryExist(gmmlHome))
         {
             std::string errorMessage = "$GMMLHOME not set and directory $GEMSHOME/gmml/ doesn't exist.";
