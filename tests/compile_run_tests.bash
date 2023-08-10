@@ -4,7 +4,7 @@
 ##########               Cool variables             ############
 ################################################################
 #Tests that dont work on baremetal. Need to make this a list but lol
-TEST_SKIP_LIST=("./016.test.DrawGlycan.sh")
+TEST_SKIP_LIST=("")
 SKIP_TIME=0
 
 GMML_TEST_JOBS=4

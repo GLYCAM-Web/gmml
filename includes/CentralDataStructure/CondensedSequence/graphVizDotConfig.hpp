@@ -14,7 +14,7 @@ namespace
         return snfgSVGCollectionPath.string();
     }
 
-    static std::string snfgSymbolsPath = getSNFGPath();
+    static const std::string snfgSymbolsPath = getSNFGPath();
 } // namespace
 
 namespace cdsCondensedSequence

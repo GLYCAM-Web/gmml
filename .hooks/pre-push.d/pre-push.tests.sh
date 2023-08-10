@@ -248,6 +248,7 @@ cd "${GEMS_DIR}"/gmml/tests/ || {
     exit 1
 }
 
+#assuming > 2 cores
 nice -10 ./compile_run_tests.bash -j "$(nproc --all --ignore=2)"
 result=$? # record the exit status from compile_run_tests.bash
 
