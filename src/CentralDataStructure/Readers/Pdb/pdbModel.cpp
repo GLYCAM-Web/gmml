@@ -6,9 +6,10 @@
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
 #include "includes/CentralDataStructure/Editors/amberMdPrep.hpp" //all preprocessing should move to here.
-#include "includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp"
+#include "includes/CentralDataStructure/cdsFunctions/bondByDistance.hpp"
 #include "includes/CentralDataStructure/Selections/templatedSelections.hpp"
 #include <algorithm> // std::find
+#include <iomanip>   // setprecision setw
 
 using pdb::PdbModel;
 

@@ -1,6 +1,5 @@
-#include <iostream>
 #include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
-#include "includes/MolecularModeling/assembly.hpp"
+#include <iostream>
 
 int main()
 {

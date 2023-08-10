@@ -1,10 +1,9 @@
+#include "includes/CentralDataStructure/InternalPrograms/glycosylationSiteFinder.hpp"
+#include "includes/CentralDataStructure/cdsFunctions/bondByDistance.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
 #include <iostream>
 #include <string>
 #include <vector>
-
-#include "../includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // bondAtomsByDistance
-#include "../includes/CentralDataStructure/InternalPrograms/glycosylationSiteFinder.hpp"
 
 int main(int argc, char* argv[])
 {

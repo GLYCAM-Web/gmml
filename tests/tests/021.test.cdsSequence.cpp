@@ -1,8 +1,7 @@
 #include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CentralDataStructure/Writers/offWriter.hpp"
 #include <iostream>
-
-#include "../../includes/CentralDataStructure/Writers/offWriter.hpp"
 
 int main()
 {

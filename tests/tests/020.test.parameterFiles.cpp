@@ -1,8 +1,7 @@
 #include "includes/CentralDataStructure/Readers/Prep/prepFile.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CentralDataStructure/Writers/offWriter.hpp"
 #include <fstream>
-
-#include "../../includes/CentralDataStructure/Writers/offWriter.hpp"
 
 int main()
 {

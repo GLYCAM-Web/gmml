@@ -4,7 +4,6 @@
 #include "includes/CodeUtils/files.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
-#include "includes/GeometryTopology/geometrytopology.hpp"
 #include <fstream>   // std::ifstream
 #include <algorithm> // std::find
 using pdb::PdbFile;
