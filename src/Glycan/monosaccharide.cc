@@ -1029,67 +1029,7 @@ void Glycan::Monosaccharide::SetCompleteSideGroupAtoms(std::vector<MolecularMode
             SideAtomArm.push_back(working_atom);
         }
     }
-    /*for (std::vector<MolecularModeling::Atom*>::iterator it = working_node_neighbors.begin(); it !=
-    working_node_neighbors.end(); it++) {  //Detect atoms that should be added to the current side chain arm.
-      MolecularModeling::Atom* working_node_neighbor = *it;
-      if (working_node_neighbor != NULL)
-      {
-        if ((!working_node_neighbor->GetIsCycle()) &&
-            (std::find(visited_atoms.begin(), visited_atoms.end(), working_node_neighbor) == visited_atoms.end()) &&
-            (!working_node_neighbor->GetResidue()->CheckIfProtein()) )
-        {//If not part of another side chain && not part of cycle && not visited && is not protein (NLN,LNK etc)
-          std::vector<MolecularModeling::Atom*> working_node_neighbor_neighbors =
-    std::vector<MolecularModeling::Atom*>(); std::string working_neighbor_name = working_node_neighbor-> GetName(); if
-    (working_neighbor_name.substr(0,1) == "O" || working_neighbor_name.substr(0,1) == "N" ||
-              working_neighbor_name.substr(0,1) == "S")
-          { //if this neighbor is an O,N or S
-            std::vector<MolecularModeling::Atom*> attached_anomeric_carbons = std::vector<MolecularModeling::Atom*>();
-            for (std::vector<MolecularModeling::Atom*>::iterator it2 = working_node_neighbor_neighbors.begin(); it2 !=
-    working_node_neighbor_neighbors.end(); it2++)
-            {
-              if (*it2 != NULL )
-              {
-                if ( (*it2)-> GetIsAnomericCarbon() )
-                {
-                  attached_anomeric_carbons.push_back(*it2); //Check how many anomeric carbons this working neighbor is
-    attacheed to, should be either 0,1,2.
-                }
-              }
-            }
-            if (attached_anomeric_carbons.size() == 1)
-            {  // if attached to only one anomeric carbon
-              if (attached_anomeric_carbons.front() != working_atom)
-              {  // if the working atom IS NOT the anomeric carbon the neighbor is attached to,the current side chain
-    gets this oxygen. SideAtomArm.push_back(working_node_neighbor); working_node_neighbor-> SetIsSideChain(true);
-              }
-              // if the workin atom IS INDEED the anomeric carbon the neighbor is attached to, the current side chain
-    doesn't get this oxygen, unless this is a terminal hydroxyl. else
-              {
-                std::vector<MolecularModeling::Atom*> cycle_and_visited_atoms = std::vector<MolecularModeling::Atom*>();
-                cycle_and_visited_atoms.push_back(attached_anomeric_carbons.front() );
-                bool side_chain_is_terminal = true;
-                CheckIfSideChainIsTerminal (working_node_neighbor, cycle_and_visited_atoms, side_chain_is_terminal);
-                if (side_chain_is_terminal)
-                {
-                  SideAtomArm.push_back(working_node_neighbor);
-                  working_node_neighbor-> SetIsSideChain(true);
-                }
-              }
-            }
-            if (attached_anomeric_carbons.size() == 0)
-            {
-              SideAtomArm.push_back(working_node_neighbor);
-              working_node_neighbor-> SetIsSideChain(true);
-            }
-          } // if is oxygen,nitrogen or sulfur
-          else
-          {  // if this neighbor is not oxygen,nitrogen or sulfur, the current side chain should get this atom
-            SideAtomArm.push_back(working_node_neighbor);
-            working_node_neighbor-> SetIsSideChain(true);
-          }
-        }//if not cycle
-      }
-    }*///for
+
     visited_atoms.push_back(working_atom);
     for (std::vector<MolecularModeling::Atom*>::iterator it3 = working_node_neighbors.begin();
          it3 != working_node_neighbors.end(); it3++)
@@ -1832,57 +1772,7 @@ void Glycan::Monosaccharide::GenerateCompleteName(std::vector<MolecularModeling:
             sugar_name_ = updated_name;
         }
         this_mono->UpdatePdbCode();
-        // std::cout << "Complex structure side group atoms: " << std::endl;
-        // // gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex structure side group atoms: ");
-        // for( std::vector< std::vector<MolecularModeling::Atom*> >::iterator it1 = this_mono->side_atoms_.begin(); it1
-        // != this_mono->side_atoms_.end(); it1++ )
-        // {
-        //   std::stringstream complex_sugar_side;
-        //   std::vector<MolecularModeling::Atom*> sides = ( *it1 );
-        //   if( it1 == this_mono->side_atoms_.begin() )
-        //   {///side atoms of anomeric carbon
-        //     if( sides.at( 0 ) != NULL && sides.at( 1 ) != NULL )
-        //     {
-        //       complex_sugar_side << "[1] -> " << sides.at( 0 )->GetId() << ", " << sides.at( 1 )->GetId();
-        //       std::cout << complex_sugar_side.str() << std::endl;
-        //       // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
-        //     }
-        //     else if( sides.at( 1 ) != NULL )
-        //     {
-        //       complex_sugar_side << "[1] -> " << sides.at( 1 )->GetId();
-        //       std::cout << complex_sugar_side.str() << std::endl;
-        //       // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
-        //     }
-        //     else if( sides.at(0) != NULL )
-        //     {
-        //       complex_sugar_side << "[1] -> " << sides.at( 0 )->GetId();
-        //       std::cout << complex_sugar_side.str() << std::endl;
-        //       // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
-        //     }
-        //   }
-        //   else if( it1 == this_mono->side_atoms_.end() - 1 )
-        //   {//side atoms of last carbon of the ring
-        //     complex_sugar_side << "[" << this_mono->cycle_atoms_.size() - 1 << "]";
-        //     for( unsigned int i = 0; i < plus_sides.size() ; i++ )
-        //     {
-        //       complex_sugar_side << " -> " << sides.at( i )->GetId();
-        //     }
-        //     std::cout << complex_sugar_side.str() << std::endl;
-        //     // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
-        //   }
-        //   else if( sides.at( 1 ) != NULL )
-        //   {
-        //     int cycle_atom_index = distance( this_mono->side_atoms_.begin(), it1 );
-        //     complex_sugar_side << "[" << cycle_atom_index + 1 << "] -> " << sides.at( 1 )->GetId();
-        //     std::cout << complex_sugar_side.str() << std::endl;
-        //     // gmml::log(__LINE__, __FILE__,  gmml::INF, complex_sugar_side.str());
-        //   }
-        // }
-        // std::cout << std::endl << "Complex sugar chemical code:" << std::endl;
-        // // gmml::log(__LINE__, __FILE__,  gmml::INF, "Complex sugar chemical code:");
-        // // gmml::log(__LINE__, __FILE__,  gmml::INF, chemical_code_->toString());
-        // chemical_code_->Print( std::cout );
-        // std::cout << chemical_code_->toString();
+
         /// FINDING COMPLEX CHEMICAL CODE IN COMPLEX SUGAR NAME LOOKUP TABLE
         this_mono->sugar_name_ = gmml::ComplexSugarNameLookup(this_mono->chemical_code_->toString());
         // gmml::log(__LINE__, __FILE__, gmml::INF,  std::to_string(plus_sides.size()));
@@ -2327,40 +2217,6 @@ void Glycan::Monosaccharide::CheckMonoNaming(std::string original_residue, std::
         // }
     }
 }
-
-// void Glycan::Monosaccharide::addDeoxyToName(Glycan::SugarName base_name, Glycan::ChemicalCode chemical_code,
-// std::vector<int> deoxy_locations)
-// {
-//   //Figure out how to modify all parts of the sugar name (base_name) correctly for the deoxy locations specified in
-//   deoxy_locations
-//
-//   //Following the logic in GenerateCompleteSugarName
-//
-//   //chemical_code_string_ won't change for now at least
-//
-//   //monosaccharide_stereochemistry_name_
-//
-//   if(base_name.monosaccharide_stereochemistry_name_ != "")
-//   {
-//
-//   }
-//
-//   //monosaccharide_stereochemistry_short_name_
-//
-//   //isomer_ does not change
-//
-//   //name_
-//
-//   //ring_type_ doesn not change
-//
-//   //configuration_ does not change
-//
-//   //monosaccharide_name_
-//
-//   //monosaccharide_short_name_
-//
-//   //pdb_code_
-// }
 
 Glycan::ChemicalCode* Glycan::Monosaccharide::BuildChemicalCode(std::vector<std::string> orientations)
 {
