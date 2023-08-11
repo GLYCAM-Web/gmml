@@ -24,6 +24,7 @@ namespace codeUtils
     void ensureDirectoryExists(const std::string& pathName);
     std::string getEnvVar(const std::string& key);
     std::string getGmmlHomeDir();
+    std::string getSNFGSymbolsDir();
 
     // TODO: Fix this(ese) abomination(s)
     static const std::filesystem::path gmmlHomeDirPath =
@@ -32,6 +33,9 @@ namespace codeUtils
     // very last slash....
     static const std::filesystem::path gemsHomeDirPath =
         std::filesystem::path(gmmlHomeDirPath).parent_path().parent_path().string() + "/";
+
+    static const std::filesystem::path snfgSymbolsDirPath =
+        std::filesystem::path(gmmlHomeDirPath).string() + "includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/";
 
 } // namespace codeUtils
 #endif // GMML_INCLUDES_CODEUTILS_DIRECTORIES_HPP

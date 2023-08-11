@@ -65,6 +65,11 @@ std::string codeUtils::getEnvVar(const std::string& key)
     return val == NULL ? std::string("") : std::string(val);
 }
 
+std::string codeUtils::getSNFGSymbolsDir()
+{
+    return snfgSymbolsDirPath.string();
+}
+
 std::string codeUtils::getGmmlHomeDir()
 {
     std::string gmmlHome = gmmlHomeDirPath.string();
