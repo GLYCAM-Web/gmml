@@ -4,7 +4,7 @@ printf "Testing 024.wiggleToSite..."
 GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
 
 if [[ "${GMML_ROOT_DIR}" != *"gmml" ]]; then
-    echo "Test 024 failed, we think our GMML root directory is:\t${GMML_ROOT_DIR}\n"
+    echo -e "Test 024 failed, we think our GMML root directory is:\t${GMML_ROOT_DIR}\n"
     exit 1
 fi
 
