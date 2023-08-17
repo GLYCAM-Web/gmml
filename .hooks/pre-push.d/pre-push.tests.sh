@@ -17,61 +17,50 @@ branch_regex="^(feature|bugfix|hotfix|playground|juggle)_[a-zA-Z0-9]{2,36}$"
 #How many commits a feature branch can be missing from the gmml-test branch
 MAX_FEATURE_BEHIND_TEST=15
 
-check_gemshome()
-{
-    if [ -z "${GEMSHOME}" ]; then
-        echo ""
-        echo "Your GEMSHOME environment variable is not set! It should be set to"
-        echo "$1"
+if [[ $(pwd) == */gems/gmml ]]; then
+    GMML_DIR=$(pwd)
+    #checkin to be sure
+    if [ "${GMML_DIR}" != "$(git rev-parse --show-toplevel)" ]; then
+        echo -e "Prepush hook failed, we think our GMML root directory is:\t${GMML_DIR}\n"
         exit 1
-    elif [ ! -d "${GEMSHOME}" ]; then
-        echo ""
-        echo "Your GEMSHOME environment variable is set to ${GEMSHOME} -- this does"
-        echo "not appear to be a directory. It should be set to"
-        echo "$1"
-        exit 1
-    elif [ ! "${GEMSHOME}" = "$1" -a ! "${GEMSHOME}" = "${1}/" ]; then
-        #try checking the inode incase there is a problem with symlinks
-        if [ "$(stat -c "%i" "${GEMSHOME}")" != "$(stat -c "%i" "${1}")" ]; then
-            echo ""
-            echo "ERROR: GEMSHOME is expected to be $1 but it is currently"
-            echo "${GEMSHOME} This will cause problems!"
-            exit 1
-        fi
     fi
-}
+    GEMS_DIR=$(cd .. && pwd)
+    if [ "${GEMS_DIR}" != "$(cd .. && git rev-parse --show-toplevel)" ]; then
+        echo -e "Prepush hook failed, we think our GEMS root directory is:\t${GEMS_DIR}\n"
+        exit 1
+    fi
+else
+    echo -e "${RED_BOLD}ERROR: Trying to run from incorrect directory being: $(pwd)\nRun from the base GMML directory.\nABORTING${RESET_STYLE}"
+    exit 1
+fi
 
-check_dir_exists()
-{
-    if [ ! -d "$1" ]; then
-        echo ""
-        echo "Your $1 directory does not exist."
-    fi
-}
+if [ -z "${GEMSHOME}" ]; then
+    echo -e "${YELLOW_BOLD}WARNING: Your GEMSHOME environment variable is not set! It should be set to the GEMS directory\nthat is the parent of the GMML directory. This can cause some issues as some of the codebase\nstill relies upon the GEMSHOME variable. Continuing but you have been warned.${RESET_STYLE}"
+fi
 
 #ensure our branch naming pattern is correct
 ensure_branch_naming()
 {
-	CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
-     case "${CURRENT_BRANCH}" in
+    case "${CURRENT_BRANCH}" in
         gmml-dev | gmml-test | actual | stable)
             echo -e "Since you are pushing on of our stable branches, we will be skipping\nensuring that you are not too far away from your parent branch"
             return 0
             ;;
-        *)
-            ;;
+        *) ;;
+
     esac
 
-	if [[ ! ${CURRENT_BRANCH} =~ ${branch_regex} ]]; then
+    if [[ ! ${CURRENT_BRANCH} =~ ${branch_regex} ]]; then
         #branch isnt on remote
         if [ -z "$(git ls-remote --heads origin "${CURRENT_BRANCH}")" ]; then
-                echo -e "${RED_BOLD}ERROR: Youre trying to push a new branch that does not fit our naming schema"
-                echo -e "please refer to the gmml readme on github for the naming scheme. Aborting!${RESET_STYLE}"
-                exit 1
+            echo -e "${RED_BOLD}ERROR: Youre trying to push a new branch that does not fit our naming schema"
+            echo -e "please refer to the gmml readme on github for the naming scheme. Aborting!${RESET_STYLE}"
+            exit 1
         else
-                echo -e "${YELLOW_BOLD}WARNING: Youre trying to push to a branch that does not fit our naming schema"
-                echo -e "we should eventually take care of this. Aborting!${RESET_STYLE}"
+            echo -e "${YELLOW_BOLD}WARNING: Youre trying to push to a branch that does not fit our naming schema"
+            echo -e "we should eventually take care of this. Aborting!${RESET_STYLE}"
         fi
     fi
 }
@@ -93,7 +82,7 @@ ensure_feature_close()
 
     TOTAL_NUM_BEHIND=$(git rev-list --left-only --count origin/gmml-test..."${CURRENT_BRANCH}")
     echo "You are ${TOTAL_NUM_BEHIND} commits behind gmml-test"
-    if ((TOTAL_NUM_BEHIND > MAX_FEATURE_BEHIND_TEST * 2)) ; then
+    if ((TOTAL_NUM_BEHIND > MAX_FEATURE_BEHIND_TEST * 2)); then
         echo -e "${RED_BOLD}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!${RESET_STYLE}"
         echo -e "${RED_BOLD}ERROR:${RESET_STYLE} YOU ARE MISSING MORE THAN DOUBLE THE RECOMMEND COMMITS FROM GMML-TEST\nTHE HAMMER HAS FALLEN, WILL EVENTUALLY ABORT YOUR PUSHES.\nMERGE GMML-TEST INTO YOUR BRANCH ASAP BEFORE YOUR NEXT PUSH.\n"
         echo -e "${RED_BOLD}!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!${RESET_STYLE}"
@@ -105,14 +94,10 @@ ensure_feature_close()
     fi
 }
 
-gemshome=$(cd .. && pwd)
-
-check_gemshome "${gemshome}"
-
 ## OG Oct 2021 have the hooks update themselves.
 #TODO: Do this more auto like, if this script is updated the first run the next time will not
 #reflect the made changes due to the old script calling the copy then continuing.
-cp -r "${GEMSHOME}"/gmml/.hooks/* "${GEMSHOME}"/gmml/.git/hooks/
+cp -r "${GEMS_DIR}"/gmml/.hooks/* "${GEMS_DIR}"/gmml/.git/hooks/
 
 #imagine this means "check if current branch is behind origin of the same branch". Basically all
 #we are doing are checking either the GEMS or GMML repo to ensure there are no commits that the
@@ -128,14 +113,14 @@ check_if_branch_behind()
     }; then
         #TODO: More legit error checking in this
         if [ "$1" == "GEMS" ]; then
-            cd "${GEMSHOME}" || {
-                echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}"
+            cd "${GEMS_DIR}" || {
+                echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}"
                 echo "Exiting..."
                 exit 1
             }
         elif [ "$1" == "GMML" ]; then
-            cd "${GEMSHOME}/gmml" || {
-                echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"
+            cd "${GEMS_DIR}/gmml" || {
+                echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}/gmml"
                 echo "Exiting..."
                 exit 1
             }
@@ -178,7 +163,11 @@ check_if_branch_behind()
         else
             echo -e "${GREEN_BOLD}passed...${RESET_STYLE} Branch is not on remote, so no need to check if local is behind remote, proceeding"
         fi
-        cd "${GEMSHOME}"/gmml
+        cd "${GEMS_DIR}"/gmml || {
+            echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}/gmml"
+            echo "Exiting..."
+            exit 1
+        }
     #bad input, so end script
     else
         echo -e "${RED_BOLD}ERROR${RESET_STYLE} Incorrect param given to check_if_branch_behind function. Exiting."
@@ -234,7 +223,11 @@ else
     echo "Beginning tests"
 fi
 
-cd "${GEMSHOME}"
+cd "${GEMS_DIR}" || {
+    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}"
+    echo "Exiting..."
+    exit 1
+}
 
 #Add these removes so the tests don't pass on an old version of the library
 rm -f gmml.py _gmml.so
@@ -243,28 +236,32 @@ if [ -d "./gmml/cmakeBuild" ]; then
     echo "Removing the libgmml.so from our cmakeBuild directory"
     rm ./gmml/cmakeBuild/libgmml.so
 fi
+
 echo "Compiling gmml using GEMS ./make.sh, no wrap flag cause it auto wraps"
-./make.sh
-cd "${GEMSHOME}"/gmml || {
-    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml"
+
+./make.sh -j "$(nproc --all --ignore=2)"
+
+echo "Running mandatory GMML tests..."
+cd "${GEMS_DIR}"/gmml/tests/ || {
+    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}/gmml/tests/"
     echo "Exiting..."
     exit 1
 }
 
-echo "Running mandatory tests..."
-cd "${GEMSHOME}"/gmml/tests/ || {
-    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/gmml/tests/"
-    echo "Exiting..."
-    exit 1
-}
-
-nice -7 ./compile_run_tests.bash -j "$(nproc --all)"
+#assuming > 2 cores
+nice -10 ./compile_run_tests.bash -j "$(nproc --all --ignore=2)"
 result=$? # record the exit status from compile_run_tests.bash
-cd -
+
+cd "${GMML_DIR}" || {
+    echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GMML_DIR}"
+    echo "Exiting..."
+    exit 1
+}
+
 if [ "${result}" -eq 0 ]; then
     echo "GMML level tests have passed. Doing gems level tests."
-    cd "${GEMSHOME}"/tests/ || {
-        echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMSHOME}/tests"
+    cd "${GEMS_DIR}"/tests/ || {
+        echo -e "${RED_BOLD}failed...${RESET_STYLE} We could not change directory to the following:\n\t ${GEMS_DIR}/tests"
         echo "Exiting..."
         exit 1
     }
@@ -272,7 +269,7 @@ if [ "${result}" -eq 0 ]; then
     gems_tests_result=$? # record the exit status of previous command
     if [ "${gems_tests_result}" -ne 0 ]; then
         echo "GEMS level tests have failed. Make sure you have pulled the latest version and are on the appropriate branch. "
-        echo "If you are up-to-date, this failure indicates that you have caused the outputs of ${GEMSHOME}/tests to change. You can open the ${GEMSHOME}/tests/run_tests.sh file and run the test line by line to get an output file. Compare it to the saved \"correct\" version in ${GEMSHOME}/tests/correct_outputs."
+        echo "If you are up-to-date, this failure indicates that you have caused the outputs of ${GEMS_DIR}/tests to change. You can open the ${GEMS_DIR}/tests/run_tests.sh file and run the test line by line to get an output file. Compare it to the saved \"correct\" version in ${GEMS_DIR}/tests/correct_outputs."
         echo "Sometimes the changes you make are fine, and you just need to update what the correct output is by overwriting the old output. Make sure it is ok though, or you will be mur-didely-urdered."
         exit 1
     else

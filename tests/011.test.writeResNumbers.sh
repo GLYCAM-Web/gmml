@@ -2,20 +2,20 @@
 
 GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
 
-if [[ "${GMML_ROOT_DIR}" != *"gmml" ]] ; then
-            echo "Test 011 failed, we think our GMML root directory is:\t${GMML_ROOT_DIR}\n"
-            exit 1
+if [[ "${GMML_ROOT_DIR}" != *"gmml" ]]; then
+    echo -e "Test 011 failed, we think our GMML root directory is:\t${GMML_ROOT_DIR}\n"
+    exit 1
 fi
 
 printf "Testing 011.writeResNumbers.cc (write original and new residue numbers into a PDB file)... "
 g++ -std=c++17 -I "${GMML_ROOT_DIR}"/ -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ tests/011.writeResNumbers.cc -lgmml -pthread -o writeResNumbers
-./writeResNumbers tests/inputs/008.convertPdbToGlycam_4YG0.pdb > 011.output_writeResidueNumbers.txt
+./writeResNumbers tests/inputs/008.convertPdbToGlycam_4YG0.pdb >011.output_writeResidueNumbers.txt
 if [ -f 011.output.newNumbers.pdb ] && [ -f 011.output.original.pdb ]; then
-    if ! cmp 011.output.newNumbers.pdb tests/correct_outputs/011.output.newNumbers.pdb > /dev/null 2>&1; then
+    if ! cmp 011.output.newNumbers.pdb tests/correct_outputs/011.output.newNumbers.pdb >/dev/null 2>&1; then
         printf "Test FAILED! PDB file with new numbers is different\n"
         echo "Exit Code: 1"
         return 1
-    elif ! cmp 011.output.original.pdb tests/correct_outputs/011.output.original.pdb > /dev/null 2>&1; then
+    elif ! cmp 011.output.original.pdb tests/correct_outputs/011.output.original.pdb >/dev/null 2>&1; then
         printf "Test FAILED! PDB file with original numbers is different\n"
         echo "Exit Code: 1"
         return 1
@@ -30,4 +30,3 @@ else
     echo "Exit Code: 1"
     return 1
 fi
-

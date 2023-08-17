@@ -10,6 +10,11 @@ RED_BOLD='\033[0;31m\033[1m'
 ##### HELPFUL STUFF #####
 GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
 
+if [[ "${GMML_ROOT_DIR}" != *"gmml" ]] ; then
+            echo -e "Precommit hook failed, we think our GMML root directory is:\t${GMML_ROOT_DIR}\n"
+            exit 1
+fi
+
 cp -r "${GMML_ROOT_DIR}"/.hooks/* "${GMML_ROOT_DIR}"/.git/hooks/
 
 TO_CHECK_LIST=($(git diff --cached --name-only -- "*.hpp" -- "*.h" -- "*.cpp" -- "*.c" -- "*.cc" --diff-filter=ACM))

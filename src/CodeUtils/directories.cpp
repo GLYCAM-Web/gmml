@@ -65,20 +65,25 @@ std::string codeUtils::getEnvVar(const std::string& key)
     return val == NULL ? std::string("") : std::string(val);
 }
 
+std::string codeUtils::getSNFGSymbolsDir()
+{
+    return snfgSymbolsDirPath.string();
+}
+
 std::string codeUtils::getGmmlHomeDir()
 {
-    std::string gmmlHome = getEnvVar("GMMLHOME");
+    std::string gmmlHome = gmmlHomeDirPath.string();
+    // TODO: Fix this gross ish
     if (gmmlHome.empty())
     {
-        std::string gemsHome = getEnvVar("GEMSHOME");
-        if (gemsHome.empty())
+        if (gemsHomeDirPath.string().empty())
         {
             std::string errorMessage =
                 "$GMMLHOME and $GEMSHOME environmental variable not set (or std::getenv doesn't work on this system)";
             gmml::log(__LINE__, __FILE__, gmml::ERR, errorMessage);
             throw errorMessage;
         }
-        gmmlHome = gemsHome + "/gmml/"; // guessing.
+        gmmlHome = gemsHomeDirPath.string() + "/gmml/"; // guessing.
         if (!codeUtils::doesDirectoryExist(gmmlHome))
         {
             std::string errorMessage = "$GMMLHOME not set and directory $GEMSHOME/gmml/ doesn't exist.";

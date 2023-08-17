@@ -3,6 +3,7 @@
 #include <sys/stat.h>  // To check if file exists using stat
 #include <sys/types.h> // The s_IFDIR
 #include <string>
+#include <filesystem>
 
 // #include "includes/CodeUtils/logging.hpp"
 
@@ -23,5 +24,18 @@ namespace codeUtils
     void ensureDirectoryExists(const std::string& pathName);
     std::string getEnvVar(const std::string& key);
     std::string getGmmlHomeDir();
+    std::string getSNFGSymbolsDir();
+
+    // TODO: Fix this(ese) abomination(s)
+    static const std::filesystem::path gmmlHomeDirPath =
+        std::filesystem::path(__FILE__).parent_path().parent_path().parent_path().string() + "/";
+    // NOTE: Gotta double up the parent path to get rid of the
+    // very last slash....
+    static const std::filesystem::path gemsHomeDirPath =
+        std::filesystem::path(gmmlHomeDirPath).parent_path().parent_path().string() + "/";
+
+    static const std::filesystem::path snfgSymbolsDirPath =
+        std::filesystem::path(gmmlHomeDirPath).string() + "includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/";
+
 } // namespace codeUtils
 #endif // GMML_INCLUDES_CODEUTILS_DIRECTORIES_HPP
