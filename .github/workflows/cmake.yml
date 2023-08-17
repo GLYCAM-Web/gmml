@@ -71,9 +71,6 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-ccache-cache-
 
-    - name: Set up GEMSHOME
-      run: echo "GEMSHOME=$(dirname $(pwd))" >> $GITHUB_ENV
-
     - name: Build Our code
       run: |
         cmake -DCMAKE_BUILD_TYPE=Release -S . -B ./cmakeBuild -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DDEBUG_NO_WRAP=True -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
