@@ -171,7 +171,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     
 #for the project object value this passes -fpic which is needed
 #to make our files into a shared libary
-target_compile_options(${PROJECT_NAME} PUBLIC "-fPIC" -Wall -W)
+target_compile_options(${PROJECT_NAME} PUBLIC -Wall -W)
 target_link_libraries(${PROJECT_NAME} stdc++fs)
 ################## END SETTING UP GMML TARGET ###################
 

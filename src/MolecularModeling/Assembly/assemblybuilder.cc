@@ -140,7 +140,7 @@ bool Assembly::CheckCondensedSequenceSanity(
             }
         }
     }
-    catch (std::exception ex)
+    catch (std::exception& ex)
     {
         //        std::cout << "The input sequence (" << sequence << ") is not valid" << std::endl;
         return false;
@@ -2176,7 +2176,7 @@ void Assembly::BuildAssemblyFromCondensedSequence(std::string sequence, std::str
             }
         }
     }
-    catch (std::exception ex)
+    catch (std::exception& ex)
     {
         //        std::cout << "Building assembly from " << sequence << " failed." << std::endl;
     }

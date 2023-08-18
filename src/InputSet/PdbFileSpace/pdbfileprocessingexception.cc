@@ -39,8 +39,8 @@ const char* PdbFileProcessingException::what() const throw()
         }
         else
         {
-            gmml::log(__LINE__, __FILE__, gmml::ERR, __LINE__ + "to_string: invalid conversion");
-            throw std::invalid_argument(__LINE__ +
+            gmml::log(__LINE__, __FILE__, gmml::ERR, std::to_string(__LINE__) + "to_string: invalid conversion");
+            throw std::invalid_argument(std::to_string(__LINE__) +
                                         "to_string: invalid conversion"); /// Invalid conversion from int to string
         }
     }
