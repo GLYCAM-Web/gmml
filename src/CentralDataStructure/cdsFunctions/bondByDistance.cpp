@@ -12,7 +12,7 @@ namespace cds
                         std::vector<cds::Atom*>::iterator compareStart, std::vector<cds::Atom*>::iterator compareEnd)
         { // Check every atom from current to end against every following atom.
           // std::vector<cds::Atom*>::iterator currentPosition = currentStart;
-            unsigned long counter = 0;
+            unsigned long taskCounterTemp = 0;
             while (currentPosition != currentEnd)
             {
                 cds::Atom* currentAtom                            = *currentPosition;
@@ -28,9 +28,9 @@ namespace cds
                     ++comparePosition;
                 }
                 ++currentPosition;
-                ++counter;
+                ++taskCounterTemp;
             }
-            // std::cout << "Completed number of tasks: " << counter << std::endl;
+            //             std::cout << "Completed number of tasks: " << taskCounterTemp << std::endl;
             return;
         }
     };
@@ -41,24 +41,23 @@ namespace cds
                         const unsigned long jumpsToDo, std::vector<cds::Atom*>::iterator compareEnd)
         { // Check every atom from current to end against every following atom.
           // std::vector<cds::Atom*>::iterator currentPosition = currentStart;
-            unsigned long jumpCount = 0;
+            unsigned long jumpCount      = 0;
+            unsigned long atomsCompleted = 0;
             while (jumpCount < jumpsToDo)
             {
                 cds::Atom* currentAtom                            = *currentPosition;
-                std::vector<cds::Atom*>::iterator comparePosition = currentPosition;
+                std::vector<cds::Atom*>::iterator comparePosition = currentPosition + 1;
                 while (comparePosition != compareEnd)
                 {
                     cds::Atom* compareAtom = *comparePosition;
-                    if (currentAtom != compareAtom) // if not the same atom.
-                    {
-                        static_cast<void>(
-                            atomicBonds::bondAtomsIfClose(currentAtom, compareAtom)); // cast to ignore returned bool.
-                    }
+                    static_cast<void>(atomicBonds::bondAtomsIfClose(currentAtom, compareAtom));
                     ++comparePosition;
                 }
                 std::advance(currentPosition, jumpSize);
+                ++atomsCompleted;
                 ++jumpCount;
             }
+            //            std::cout << "Atoms completed: " << atomsCompleted << std::endl;
             return;
         }
     };
@@ -83,21 +82,23 @@ void cds::bondAtomsByDistance(std::vector<cds::Atom*> atoms)
     std::vector<std::thread> threads(num_threads - 1);
     typename std::vector<cds::Atom*>::iterator block_start = atoms.begin();
     const unsigned long jumpsToDo                          = (vectorLength / num_threads);
-    // std::cout << "vectorLength: " << vectorLength << ", num_threads/jumpSize: " << num_threads
-    //           << ", jumpstoDo: " << jumpsToDo << std::endl;
+    // std::cout << "vectorLength: " << vectorLength << ", num_threads: " << num_threads
+    //            << ",jumpSize:" << num_threads - 1  << ", jumpstoDo: " << jumpsToDo << std::endl;
 
     for (unsigned long i = 0; i < (num_threads - 1); ++i)
     {
         //    std::cout << "Launching thread " << i << "\n";
-        threads[i] = std::thread(cds::bondNthAtomByDistanceThread(), block_start, num_threads, jumpsToDo, atoms.end());
+        threads[i] =
+            std::thread(cds::bondNthAtomByDistanceThread(), block_start, num_threads - 1, jumpsToDo, atoms.end());
         ++block_start;
     }
     // std::cout << "Completing the remaining tasks" << std::endl;
     //  Complete any remaining
-    // std::cout << "Will now advance " << jumpsToDo * (num_threads - 1) << std::endl;
-    // std::cout << "Remaining tasks should be " << vectorLength - (jumpsToDo * (num_threads - 1)) - (num_threads - 1)
-    //           << std::endl;
-    std::advance(block_start, jumpsToDo * (num_threads - 1));
+    //     std::cout << "Will now advance " << jumpsToDo * (num_threads - 1) << std::endl;
+    //     std::cout << "Remaining tasks should be " << vectorLength - (jumpsToDo * (num_threads - 1)) - (num_threads -
+    //     1)
+    //               << std::endl;
+    std::advance(block_start, jumpsToDo * (num_threads - 1) - num_threads);
     cds::bondAtomsByDistanceThread()(block_start, atoms.end(), block_start, atoms.end());
     // Wait for all threads to finish before returning.
     for (auto& entry : threads)
