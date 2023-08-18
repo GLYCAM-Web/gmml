@@ -343,7 +343,7 @@ void Rotatable_dihedral::SetRandomAngleEntryUsingMetadata(bool useRanges)
     //    return;
 }
 
-void Rotatable_dihedral::SetSpecificAngleEntryUsingMetadata(bool useRanges, int angleEntryNumber)
+void Rotatable_dihedral::SetSpecificAngleEntryUsingMetadata(const bool useRanges, const unsigned int angleEntryNumber)
 {
     if (assigned_metadata_.empty())
     {

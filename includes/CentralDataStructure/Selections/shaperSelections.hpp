@@ -95,7 +95,8 @@ namespace cdsSelections
                                      bool* found_neighbor);
     void ClearAtomLabels(cds::Residue* residue);
     // ResidueLinkages
-    cds::ResidueLinkage* selectLinkageWithIndex(std::vector<cds::ResidueLinkage>& inputLinkages, int indexQuery);
+    cds::ResidueLinkage* selectLinkageWithIndex(std::vector<cds::ResidueLinkage>& inputLinkages,
+                                                const long long unsigned int indexQuery);
     std::vector<cds::ResidueLinkage> SplitLinkagesIntoPermutants(std::vector<cds::ResidueLinkage>& inputLinkages);
 } // namespace cdsSelections
 #endif

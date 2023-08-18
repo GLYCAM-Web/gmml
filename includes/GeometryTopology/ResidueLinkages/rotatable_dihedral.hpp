@@ -45,7 +45,7 @@ class Rotatable_dihedral
     void AddMetadata(DihedralAngleData metadata);
     void ClearMetadata();
     void SetRandomAngleEntryUsingMetadata(bool useRanges = true);
-    void SetSpecificAngleEntryUsingMetadata(bool useRanges = false, int angleEntryNumber = 0);
+    void SetSpecificAngleEntryUsingMetadata(const bool useRanges = false, const unsigned int angleEntryNumber = 0);
     bool SetSpecificShape(std::string dihedralName, std::string selectedRotamer);
     void WiggleWithinCurrentRotamer(AtomVector& overlapAtomSet1, AtomVector& overlapAtomSet2,
                                     const int& angleIncrement);

@@ -346,7 +346,7 @@ void cdsSelections::ClearAtomLabels(cds::Residue* residue)
 }
 
 cds::ResidueLinkage* cdsSelections::selectLinkageWithIndex(std::vector<cds::ResidueLinkage>& inputLinkages,
-                                                           int indexQuery)
+                                                           const long long unsigned int indexQuery)
 {
     for (auto& linkage : inputLinkages)
     {
