@@ -83,7 +83,7 @@ check_shell_scripts()
         TEMP_FILE=$(mktemp "${TEMP_DIR}"/"${FILE_CHECKING##*/}".XXXXXX)
         (git show :"${FILE_CHECKING}") >"${TEMP_FILE}"
 
-        if shellcheck --enable=require-variable-braces,quote-safe-variables,add-default-case "${TEMP_FILE}"; then
+        if shellcheck -f quiet --enable=require-variable-braces,quote-safe-variables,add-default-case "${TEMP_FILE}"; then
             PASSED_FILES+=("${FILE_CHECKING}")
         else
             FAILED_FILES+=("${FILE_CHECKING}")
