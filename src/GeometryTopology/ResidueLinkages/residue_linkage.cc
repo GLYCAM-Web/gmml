@@ -462,7 +462,7 @@ Residue_linkage::FindRotatableDihedralsConnectingResidues(Atom* from_this_connec
     //     }
     //     std::cout << "\n";
     std::vector<Rotatable_dihedral> rotatableDihedralsInBranches;
-    for (int i = 0; i < from_this_residue1_cycle_points.size(); i = i + 2)
+    for (std::size_t i = 0; i < from_this_residue1_cycle_points.size(); i = i + 2)
     {
         Atom* cycle_point1 = from_this_residue1_cycle_points.at(i);
         Atom* cycle_point2 = from_this_residue1_cycle_points.at(i + 1);
@@ -620,7 +620,7 @@ void Residue_linkage::AddMetadataToRotatableDihedrals(gmml::MolecularMetadata::G
     }
     for (const auto& entry : metadata)
     {
-        int vector_position = (entry.number_of_bonds_from_anomeric_carbon_ - 1); // vectors start at 0.
+        const std::size_t vector_position = (entry.number_of_bonds_from_anomeric_carbon_ - 1); // vectors start at 0.
         //        std::cout << "Adding to position: "<< vector_position << " in vector of size: " <<
         //        rotatable_dihedrals_.size() << std::endl;
         if (vector_position < rotatable_dihedrals_.size())

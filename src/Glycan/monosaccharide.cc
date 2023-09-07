@@ -90,7 +90,7 @@ Monosaccharide::Monosaccharide(std::string* cycle_atoms_str, std::vector<Molecul
 
     if ((local_debug > 0) && !orientations.empty())
     { // Print info on orientations
-        for (int i = 0; i < orientations.size(); i++)
+        for (unsigned int i = 0; i < orientations.size(); i++)
         {
             ss.str("");
             ss << "Orientation at position " << i;

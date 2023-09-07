@@ -33,7 +33,7 @@ namespace codeUtils
         return nullptr;
     }
 
-    template<class T> T* findElementWithNumber(const std::vector<T*>& inputVector, const int& queryNumber)
+    template<class T> T* findElementWithNumber(const std::vector<T*>& inputVector, const unsigned int& queryNumber)
     {
         for (auto& element : inputVector)
         {

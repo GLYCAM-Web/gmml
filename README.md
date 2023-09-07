@@ -65,6 +65,8 @@ Please note that swig 4.0.2 must be installed from [their website](https://www.s
 If you want to contribute to `gmml` you will also need to install the following packages:
 
 * `clang-tidy-15`
+* `shellcheck`
+* `shfmt`
 
 ---
 ## Obtaining the software
@@ -120,11 +122,9 @@ Please enter `./make.sh -h` for help regarding the make script.
 
 ### Updating file lists and whatnot
 
-**DO NOT JUST FIRE THE `updateCmakeFileList.sh` SCRIPT AND NOT KNOW WHAT IS GOING ON. The method implemented is done in order to avoid a nasty "typical" cmake pattern; if the script is just fired off too many times we will have to remove the pattern in order to avoid possible undefined behavior**. Please note that not only for cmake, but for all compilers, one should not just grab every file present and compile; these type of things must have some thought to them. The reason why one should never just glob files that one *thinks* are what one needs to compile is due to the huge increase in chances of introducing unknown behavior.
+**DO NOT JUST FIRE THE `updateCmakeFileList.sh` SCRIPT AND NOT KNOW WHAT IS GOING ON. The method implemented is done in order to avoid a taxing typical cmake pattern; if the script is just fired off too many times we will have to remove it in order to avoid possible undefined behavior**. Please note that not only for cmake, but for all compilers, one should not just grab every file present and compile; these type of things must have some thought to them. The reason why one should never just glob files that one *thinks* are what one needs to compile is due to the huge increase in chances of introducing unknown behavior.
 
-So what is the usual method people use for cmake that I am trying to avoid? Well, first off the "typical" `cmake` pattern is very annoying and I am lazy so we do this workaround. Typically you have to have a `CMakeLists.txt` in every single directory that you add with the `add_subdirectory(<DIR HERE>)` cmake command. That is super annoying, but it has some merrits; mostly being that we know what is going on with out code. Another method that is **extremely frowned upon** is using cmake globbing in the `CMakeLists.txt` file to get all our `.cc/.cpp/.h/hpp` files in the whole source tree. This is bad because by auto grabbing files to build with the user knowing nothing about what files are being used greatly reduces our knowledge of what is going on with our code. So I did a middle of the ground method, we run a diff on the command that's used to grab the data that's in the file lists and on the file lists themselves. If the diff is different we update the lists, if not we dont update the lists. Thats about it. You can also pass a `-t` flag to the `updateCmakeFileList.sh` so it grabs all the test code files which we would want to do when we are running code analysis on our code base so we can lint the code and code. When you run the script, make sure you know whats going on and why each file is either being removed or added to file lists. Basically treat this the same way as one treats using `git add --all` as bad practice due to priming the code base to have a bunch of random files (that should not be pushed) added to the repo; instead of being able to directly avoid `git add --all` and using `git add <YOUR_SPECIFIC_FILES>` instead, **YOU** must be the difference between that logic if you call the script check the git.
-
-TL;DR - **Do not just fire off the `updateCmakeFileList.sh` in order to try and fix a compile issue, and if you do fire off the script take note of what has changed and ensure that the changes make sense by git-diffing the file and reading each changed line. Sometimes there can be files that are generated from a bug, which has happened before, and by just calling the `updateCmakeFileList.sh` and adding those generated files/folders to the file-lists then commiting can break compilation and end up breaking `GMML` for everyone and do so in a manner that also introduces extra files to our repo that should never be there. Whenever you run the `updateCmakeFileList.sh` you must run a `git diff`, or something similar, and ensure all changed lines actually make sense. If this ends up becomming an issue we will be forced to remove the workaround in order to increase code stability.**
+Basically treat this the same way as one treats using `git add --all` as bad practice due to priming the code base to have a bunch of random files (that should not be pushed) added to the repo; instead of being able to directly avoid `git add --all` and using `git add <YOUR_SPECIFIC_FILES>` instead, **YOU** must be the difference between that logic if you call the script check the git.
 
 The `cmakeFileLists` directory contains the ouput from our `./updateCmakeFileList.sh` script. This script goes through and grabs all our files that we want to compile. There are 3 types:
 
@@ -318,7 +318,11 @@ Some examples of good branch names are:
 - `bugfix_addKDNOparams`
 - `playground_llvmTooling`
 
-### Formatting Pre-Commit
+### Pre-Commit Hooks
+
+We run various pre-commit hooks to help ensure `gmml`'s commit history remains as clean and readable as possible.
+
+#### Hooks for C-Files
 
 All code must follow the format described in the `.clang-format` file, and the pre-commit hook will ensure the commited format is correct. The precommit hook will ensure all files you want to commit are correctly formatted. Any files that are not correctly formatted will be listed in the terminal you tried to commit from, if you are using something like `gitflow` or `gitkraken` check the logs. Many code editors, IDEs or text editors, have the ability to apply a specific format on save of the file, so save yourself headaches and set that up.
 
@@ -332,6 +336,20 @@ What if you did a bunch of files and want to be lazy? This can miss a couple bit
 
 ```bash
 user@host:.../gmml$ find . -not -path "./cmakeBuild/*" -type f -iname "*.cpp" -o -iname "*.hpp" -o -iname "*.h" -o -iname "*.cc" | xargs -P $(nproc --all --ignore=2)  -I % sh -c 'clang-format-15 -i %'
+```
+
+#### Hooks for Shell Scripts
+
+In order to commit any shell scripts, the files must adhear to both our formatting and linting commands. Do not worry, linting shell scripts is very quick. Our checks are defined directly below:
+
+* Formatting a shell script (NOTE: the formatting will be immediately applied to the script in question):
+```bash
+user@host:.../gmml$ shfmt -i 4 -ci -fn -w path/to/bad/script.sh
+```
+
+* Linting a shell script (NOTE: you will have to edit your script so it no longer has the issues the linter displays):
+```bash
+user@host:.../gmml$ shellcheck --enable=require-variable-braces,quote-safe-variables,add-default-case path/to/bad/script.sh
 ```
 
 ---

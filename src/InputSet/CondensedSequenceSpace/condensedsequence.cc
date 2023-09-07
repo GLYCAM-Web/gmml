@@ -826,7 +826,7 @@ bool CondensedSequence::BuildArrayTreeOfCondensedSequenceGlycam06Residue(Condens
                 current_derivative_count++;
             }
         }
-        catch (std::exception ex)
+        catch (std::exception& ex)
         {
             CondensedSequenceSpace::CondensedSequenceGlycam06Residue* tree_residue =
                 new CondensedSequenceSpace::CondensedSequenceGlycam06Residue(condensed_residue->GetName().substr(0, 3),

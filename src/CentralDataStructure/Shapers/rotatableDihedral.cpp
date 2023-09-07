@@ -145,10 +145,10 @@ void RotatableDihedral::DetermineAtomsThatMove()
         cdsSelections::FindConnectedAtoms(atoms_that_move, atom3_);
     }
     //    std::cout << "Have determined that the following " << this->GetName() << " angle atoms will move:\n";
-    for (auto& atom : atoms_that_move)
-    {
-        //        std::cout << atom->getName() << ", ";
-    }
+    // for (auto& atom : atoms_that_move)
+    //{
+    //        std::cout << atom->getName() << ", ";
+    //}
     //    std::cout << "\n";
     this->SetAtomsThatMove(atoms_that_move);
 }
