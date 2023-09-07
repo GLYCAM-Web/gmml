@@ -184,10 +184,21 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue* glycosite_resid
     std::vector<Coordinate*> aglyconeCoords =
         cdsSelections::getCoordinates(this->GetGlycan()->GetAglycone()->getAtoms());
     std::vector<Coordinate*> glycanCoords = cdsSelections::getCoordinates(this->GetGlycan()->getAtoms());
-    //    std::cout << "Number of moving coords: " << glycanCoords.size() << "vs" <<
-    //    this->GetGlycan()->getAtoms().size() << "\n"; std::cout << "Number of aglycone coords: " <<
-    //    aglyconeCoords.size() << " vs " << this->GetGlycan()->GetAglycone()->getAtoms().size() << "\n"; std::cout <<
-    //    "Number of target coords: " << targetCoords.size() << "\n";
+    //        std::cout << "Number of moving coords: " << glycanCoords.size() << "vs" <<
+    //        this->GetGlycan()->getAtoms().size() << "\n"; std::cout << "Number of aglycone coords: " <<
+    //        aglyconeCoords.size() << " vs " << this->GetGlycan()->GetAglycone()->getAtoms().size() << "\n"; std::cout
+    //        << "Number of target coords: " << targetCoords.size() << "\n";
+    // Sanity checks:
+    if (aglyconeCoords.size() < 3)
+    {
+        throw std::runtime_error("The aglycone does not contain enough atoms to perform the requested "
+                                 "superimposition.\nCheck your input structure!\n");
+    }
+    if (targetCoords.size() < 3)
+    {
+        throw std::runtime_error("Did not find the correctly named atoms in target residue to perform the requested "
+                                 "superimposition.\nCheck your input structure!\n");
+    }
     gmml::log(__LINE__, __FILE__, gmml::INF, "Superimposing via the aglycone.");
     cds::Superimpose(aglyconeCoords, targetCoords, glycanCoords);
     // Connect the glycan and protein atoms to each other.
