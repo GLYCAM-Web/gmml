@@ -85,9 +85,7 @@ void GlycosylationSite::Prepare_Glycans_For_Superimposition_To_Particular_Residu
 {
     // Dear future self, the order that you add the atoms to the residue matters for superimposition ie N, CA, CB , not
     // CB, CA, N.
-    gmml::log(__LINE__, __FILE__, gmml::INF, "WEhat?");
     Residue* reducing_Residue = this->GetGlycan()->GetReducingResidue();
-    gmml::log(__LINE__, __FILE__, gmml::INF, "WEhat?");
     // Want: residue.FindAtomByTag("anomeric-carbon"); The below is risky as it uses atoms names, i.e. would break for
     // Sialic acid. ToDo Ok so I reckon the below is just assuming alpha or beta depending on the concext. Need to fix a
     // lot, but need to reproduce functionality after refactor first.
@@ -95,12 +93,12 @@ void GlycosylationSite::Prepare_Glycans_For_Superimposition_To_Particular_Residu
     //   This won't work as sometimes want alpha, sometimes beta. i.e. a CreateCoordinateForCenterAwayFromNeighbors
     //   function
     // This needs to be abstracted so it works for C2 reducing residues:
-    Coordinate* coordC5 = reducing_Residue->FindAtom("C5")->getCoordinate();
-    Coordinate* coordO5 = reducing_Residue->FindAtom("O5")->getCoordinate();
-    Coordinate* coordC1 = reducing_Residue->FindAtom("C1")->getCoordinate();
-    Atom* anomericAtom  = reducing_Residue->FindAtom("C1"); // For adding bond.
+    Coordinate* coordC5       = reducing_Residue->FindAtom("C5")->getCoordinate();
+    Coordinate* coordO5       = reducing_Residue->FindAtom("O5")->getCoordinate();
+    Coordinate* coordC1       = reducing_Residue->FindAtom("C1")->getCoordinate();
+    Atom* anomericAtom        = reducing_Residue->FindAtom("C1"); // For adding bond.
     // Delete aglycon atoms from glycan.
-    Residue* aglycon    = this->GetGlycan()->GetAglycone();
+    Residue* aglycon          = this->GetGlycan()->GetAglycone();
     for (auto& atom : aglycon->getAtoms())
     {
         aglycon->deleteAtom(atom);
@@ -171,12 +169,14 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue* glycosite_resid
     // will superimpose them onto the correspoinding "target" atoms in the protein residue (glycosite_residue).
     for (auto& superimposition_atom : this->GetGlycan()->GetAglycone()->getAtoms())
     {
-        //        std::cout << "Superimposition aglycone atom is named " << superimposition_atom->getName() << "\n";
+        //                std::cout << "Superimposition aglycone atom is named " << superimposition_atom->getName() <<
+        //                "\n";
         for (auto& protein_atom : glycosite_residue->getAtoms())
         {
             if (protein_atom->getName() == superimposition_atom->getName())
             {
-                //                std::cout << "Adding " << protein_atom->getName() << " to superimposition atoms\n";
+                //                                std::cout << "Adding " << protein_atom->getName() << " to
+                //                                superimposition atoms\n";
                 targetCoords.push_back(protein_atom->getCoordinate());
             }
         }
