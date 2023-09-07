@@ -235,42 +235,41 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation& ppInfo,
         PdbChain* chain = static_cast<PdbChain*>(cdsMolecule);
         std::vector<cds::Residue*> proteinResidues =
             cdsSelections::selectResiduesByType(chain->getResidues(), cds::ResidueType::Protein);
-        for (std::vector<cds::Residue*>::iterator it1 = proteinResidues.begin(); it1 != proteinResidues.end(); ++it1)
+        for (std::vector<cds::Residue*>::iterator it1 = proteinResidues.begin(); it1 != proteinResidues.end() - 1;
+             ++it1)
         {
             std::vector<cds::Residue*>::iterator it2 = std::next(it1);
-            if (it2 != proteinResidues.end())
-            {
-                PdbResidue* res1           = static_cast<PdbResidue*>(*it1);
-                PdbResidue* res2           = static_cast<PdbResidue*>(*it2);
-                //                std::cout << "res1 is " + res1->getNumberAndInsertionCode() + "_" + res1->getChainId()
-                //                << std::endl; std::cout << "res2 is " + res2->getNumberAndInsertionCode() + "_" +
-                //                res2->getChainId() << std::endl;
-                const cds::Atom* res1AtomC = res1->FindAtom("C");
-                const cds::Atom* res2AtomN = res2->FindAtom("N");
-                if (!res1AtomC->isWithinBondingDistance(res2AtomN))
-                { // GAP detected
-                    // Look for non-natural protein residues within bonding distance, they fall under ResidueType
-                    // Undefined, this indicates it's not gap.
-                    if (!amberMdPrep::checkForNonNaturalProteinResidues(
-                            cdsSelections::selectResiduesByType(chain->getResidues(), cds::ResidueType::Undefined),
-                            res1AtomC, ppInfo))
-                    {
-                        // Log it
-                        gmml::log(__LINE__, __FILE__, gmml::INF,
-                                  inputOptions.gapCTermination_ + " cap for : " + res1->printId());
-                        gmml::log(__LINE__, __FILE__, gmml::INF,
-                                  inputOptions.gapNTermination_ + " cap for : " + res2->printId());
-                        // Do it
-                        chain->InsertCap(*res1, inputOptions.gapCTermination_);
-                        chain->InsertCap(*res2, inputOptions.gapNTermination_);
-                        // Record it
-                        ppInfo.missingResidues_.emplace_back(
-                            res1->getChainId(), res1->getNumberAndInsertionCode(), res2->getNumberAndInsertionCode(),
-                            inputOptions.gapCTermination_, inputOptions.gapNTermination_);
-                    }
+            PdbResidue* res1                         = static_cast<PdbResidue*>(*it1);
+            PdbResidue* res2                         = static_cast<PdbResidue*>(*it2);
+            //                std::cout << "res1 is " + res1->getNumberAndInsertionCode() + "_" + res1->getChainId()
+            //                << std::endl; std::cout << "res2 is " + res2->getNumberAndInsertionCode() + "_" +
+            //                res2->getChainId() << std::endl;
+            const cds::Atom* res1AtomC               = res1->FindAtom("C");
+            const cds::Atom* res2AtomN               = res2->FindAtom("N");
+            if ((res1AtomC != nullptr) && (res2AtomN != nullptr) && (!res1AtomC->isWithinBondingDistance(res2AtomN)))
+            { // GAP detected
+                // Look for non-natural protein residues within bonding distance, they fall under ResidueType
+                // Undefined, this indicates it's not gap.
+                if (!amberMdPrep::checkForNonNaturalProteinResidues(
+                        cdsSelections::selectResiduesByType(chain->getResidues(), cds::ResidueType::Undefined),
+                        res1AtomC, ppInfo))
+                {
+                    // Log it
+                    gmml::log(__LINE__, __FILE__, gmml::INF,
+                              inputOptions.gapCTermination_ + " cap for : " + res1->printId());
+                    gmml::log(__LINE__, __FILE__, gmml::INF,
+                              inputOptions.gapNTermination_ + " cap for : " + res2->printId());
+                    // Do it
+                    chain->InsertCap(*res1, inputOptions.gapCTermination_);
+                    chain->InsertCap(*res2, inputOptions.gapNTermination_);
+                    // Record it
+                    ppInfo.missingResidues_.emplace_back(res1->getChainId(), res1->getNumberAndInsertionCode(),
+                                                         res2->getNumberAndInsertionCode(),
+                                                         inputOptions.gapCTermination_, inputOptions.gapNTermination_);
                 }
             }
         }
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Gap detection completed.");
     }
     return;
 }
