@@ -233,19 +233,28 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation& ppInfo,
     for (auto& cdsMolecule : this->getMolecules())
     {
         PdbChain* chain = static_cast<PdbChain*>(cdsMolecule);
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Gap detection started for chain " + chain->GetChainId());
         std::vector<cds::Residue*> proteinResidues =
             cdsSelections::selectResiduesByType(chain->getResidues(), cds::ResidueType::Protein);
+        if (proteinResidues.empty())
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF,
+                      "No protein residues found in chain with id: " + chain->GetChainId());
+            break;
+        }
+        std::vector<cds::Residue*>::iterator it2;
         for (std::vector<cds::Residue*>::iterator it1 = proteinResidues.begin(); it1 != proteinResidues.end() - 1;
              ++it1)
         {
-            std::vector<cds::Residue*>::iterator it2 = std::next(it1);
-            PdbResidue* res1                         = static_cast<PdbResidue*>(*it1);
-            PdbResidue* res2                         = static_cast<PdbResidue*>(*it2);
-            //                std::cout << "res1 is " + res1->getNumberAndInsertionCode() + "_" + res1->getChainId()
-            //                << std::endl; std::cout << "res2 is " + res2->getNumberAndInsertionCode() + "_" +
-            //                res2->getChainId() << std::endl;
-            const cds::Atom* res1AtomC               = res1->FindAtom("C");
-            const cds::Atom* res2AtomN               = res2->FindAtom("N");
+            it2                        = std::next(it1);
+            PdbResidue* res1           = static_cast<PdbResidue*>(*it1);
+            PdbResidue* res2           = static_cast<PdbResidue*>(*it2);
+            //                            std::cout << "res1 is " + res1->getNumberAndInsertionCode() + "_" +
+            //                            res1->getChainId()
+            //                            << std::endl; std::cout << "res2 is " + res2->getNumberAndInsertionCode() +
+            //                            "_" + res2->getChainId() << std::endl;
+            const cds::Atom* res1AtomC = res1->FindAtom("C");
+            const cds::Atom* res2AtomN = res2->FindAtom("N");
             if ((res1AtomC != nullptr) && (res2AtomN != nullptr) && (!res1AtomC->isWithinBondingDistance(res2AtomN)))
             { // GAP detected
                 // Look for non-natural protein residues within bonding distance, they fall under ResidueType
@@ -269,7 +278,7 @@ void PdbModel::preProcessGapsUsingDistance(pdb::PreprocessorInformation& ppInfo,
                 }
             }
         }
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Gap detection completed.");
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Gap detection completed for chain " + chain->GetChainId());
     }
     return;
 }
