@@ -62,6 +62,7 @@
 ./src/CodeUtils/logging.cpp
 ./src/CodeUtils/numbers.cpp
 ./src/CodeUtils/strings.cpp
+./src/CodeUtils/threads.cpp
 ./src/GeometryTopology/ResidueLinkages/residue_linkage.cc
 ./src/GeometryTopology/ResidueLinkages/rotatable_dihedral.cc
 ./src/GeometryTopology/cell.cc
