@@ -319,10 +319,10 @@ void PdbModel::preProcessMissingUnrecognized(pdb::PreprocessorInformation& ppInf
     return;
 }
 
-void PdbModel::bondAtomsByDistance()
-{
-    cds::bondAtomsByDistance(this->getAtoms());
-}
+// void PdbModel::bondAtomsByDistance()
+//{
+//     cds::bondAtomsByDistance(this->getAtoms());
+// }
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
