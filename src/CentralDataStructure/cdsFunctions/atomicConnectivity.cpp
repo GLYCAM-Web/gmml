@@ -45,18 +45,13 @@ void cds::setProteinConnectivity(std::vector<cds::Residue*> proteinResidues)
     {
         return;
     }
-    if (proteinResidues.size() == 1)
-    {
-        cds::setBondingForResidue(proteinResidues.front());
-        return;
-    }
+    cds::setBondingForResidue(proteinResidues.front()); // does the first one, and handles when size is 1.
     cds::Residue* previousRes = proteinResidues.front();
     for (std::vector<cds::Residue*>::iterator it = proteinResidues.begin() + 1; it != proteinResidues.end(); ++it)
     {
         cds::setBondingForResidue(*it); // internal bonding
-        if (!cds::autoConnectSuccessiveResidues(previousRes,
-                                                *it)) // Automatically bond the N and C atoms of successive residues
-        {
+        if (!cds::autoConnectSuccessiveResidues(previousRes, *it))
+        { // Automatically bond the N and C atoms of successive residues
             gmml::log(__LINE__, __FILE__, gmml::WAR,
                       "Gap detected between " + previousRes->getStringId() + (*it)->getStringId());
         }
