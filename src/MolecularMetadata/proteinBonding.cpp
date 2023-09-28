@@ -54,7 +54,7 @@ const std::vector<std::pair<std::string, std::string>>& biology::getSidechainBon
         {"HIS",
          {{"CA", "CB"}, {"CB", "CG"}, {"CG", "CD2"}, {"CD2", "NE2"}, {"CG", "ND1"}, {"ND1", "CE1"}, {"CE1", "NE2"}} },
         {"ILE",                                         {{"CA", "CB"}, {"CB", "CG1"}, {"CB", "CG2"}, {"CG1", "CD1"}}},
-        {"LEU",                                                         {{"CA", "CB"}, {"CB", "CD1"}, {"CB", "CD2"}}},
+        {"LEU",                                           {{"CA", "CB"}, {"CB", "CG"}, {"CG", "CD1"}, {"CG", "CD2"}}},
         {"LYS",                               {{"CA", "CB"}, {"CB", "CG"}, {"CG", "CD"}, {"CD", "CE"}, {"CE", "NZ"}}},
         {"MET",                                             {{"CA", "CB"}, {"CB", "CG"}, {"CG", "SD"}, {"SD", "CE"}}},
         {"PHE",
