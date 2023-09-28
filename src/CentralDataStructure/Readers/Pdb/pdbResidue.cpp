@@ -46,7 +46,8 @@ PdbResidue::PdbResidue(const std::string residueName, const PdbResidue* referenc
     //    this->setNumber(referenceResidue->getNumber()); // handled by cdsResidue cTor
     this->setInsertionCode(referenceResidue->getInsertionCode());
     this->setChainId(referenceResidue->getChainId());
-    this->SetType(referenceResidue->GetType());
+    // this->SetType(referenceResidue->GetType());
+    this->SetType(this->determineType(this->getName()));
     return;
 }
 

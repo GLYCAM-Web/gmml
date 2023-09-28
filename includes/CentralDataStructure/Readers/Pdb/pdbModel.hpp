@@ -37,7 +37,7 @@ namespace pdb
                                          const pdb::PreprocessorOptions& inputOptions);
         void preProcessMissingUnrecognized(pdb::PreprocessorInformation& ppInfo,
                                            const cdsParameters::ParameterManager& parmManager);
-        void bondAtomsByDistance();
+        //        void bondAtomsByDistance();
         //////////////////////////////////////////////////////////
         //                       DISPLAY FUNCTION               //
         //////////////////////////////////////////////////////////

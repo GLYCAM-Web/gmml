@@ -122,12 +122,12 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation& ppInfo)
     }
     for (std::vector<cds::Residue*>::iterator it1 = cysResidues.begin(); it1 != cysResidues.end(); ++it1)
     { // I want to go through the list and compare from current item to end. Thus it2 = std::next it1
-        PdbResidue* cysRes1      = static_cast<PdbResidue*>(*it1);
-        const cds::Atom* sgAtom1 = cysRes1->FindAtom("SG");
+        PdbResidue* cysRes1 = static_cast<PdbResidue*>(*it1);
+        cds::Atom* sgAtom1  = cysRes1->FindAtom("SG");
         for (std::vector<cds::Residue*>::iterator it2 = std::next(it1, 1); it2 != cysResidues.end(); ++it2)
         {
-            PdbResidue* cysRes2      = static_cast<PdbResidue*>(*it2);
-            const cds::Atom* sgAtom2 = cysRes2->FindAtom("SG");
+            PdbResidue* cysRes2 = static_cast<PdbResidue*>(*it2);
+            cds::Atom* sgAtom2  = cysRes2->FindAtom("SG");
             if ((sgAtom1 != nullptr) && (sgAtom2 != nullptr))
             {
                 // gmml::log(__LINE__, __FILE__, gmml::INF, "Found SG ATOMS");
@@ -138,6 +138,7 @@ void PdbModel::preProcessCysResidues(pdb::PreprocessorInformation& ppInfo)
                     cysRes1->setName("CYX");
                     cysRes2->setName("CYX");
                     // gmml::log(__LINE__, __FILE__, gmml::INF, "Names set");
+                    sgAtom1->addBond(sgAtom2); // I think I want this here. Not 100%.
                     this->addConectRecord(sgAtom1, sgAtom2);
                     ppInfo.cysBondResidues_.emplace_back(cysRes1->getId(), cysRes2->getId(), distance);
                     // gmml::log(__LINE__, __FILE__, gmml::INF, "ThisNoHappen?");
@@ -327,10 +328,10 @@ void PdbModel::preProcessMissingUnrecognized(pdb::PreprocessorInformation& ppInf
     return;
 }
 
-void PdbModel::bondAtomsByDistance()
-{
-    cds::bondAtomsByDistance(this->getAtoms());
-}
+// void PdbModel::bondAtomsByDistance()
+//{
+//     cds::bondAtomsByDistance(this->getAtoms());
+// }
 
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //

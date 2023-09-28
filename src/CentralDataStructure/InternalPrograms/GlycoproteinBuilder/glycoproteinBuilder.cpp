@@ -1,5 +1,6 @@
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycoproteinBuilder.hpp"
 #include "includes/CentralDataStructure/cdsFunctions/bondByDistance.hpp"
+#include "includes/CentralDataStructure/cdsFunctions/atomicConnectivity.hpp"
 #include "includes/CentralDataStructure/Writers/offWriter.hpp"
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
 #include "includes/CodeUtils/metropolisCriterion.hpp"
@@ -31,7 +32,8 @@ GlycoproteinBuilder::GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs
         // pdb::PreprocessorOptions defaultOptions;
         pdbFile.PreProcess(preprocessingOptions);
         glycoprotein_ = std::move(*(pdbFile.getAssemblies().front()));
-        cds::bondAtomsByDistance(glycoprotein_.getAtoms());
+        cds::setAtomicConnectivity(glycoprotein_.getResidues());
+        // cds::bondAtomsByDistance(glycoprotein_.getAtoms());
         gmml::log(__LINE__, __FILE__, gmml::INF, "Attaching Glycans To Glycosites.");
         this->CreateGlycosites(inputStruct.glycositesInputVector_, inputStruct.prepFileLocation_);
     }

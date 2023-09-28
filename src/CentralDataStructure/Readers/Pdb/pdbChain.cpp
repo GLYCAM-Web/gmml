@@ -110,12 +110,18 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
             cds::calculateCoordinateFromInternalCoords(hCoordNME, nCoordNME, ch3CoordNME, 109.0, -60.0, 1.09);
         cds::Residue* newNMEResidue =
             this->insertNewResidue(std::make_unique<PdbResidue>("NME", &refResidue), refResidue);
-        newNMEResidue->addAtom(std::make_unique<PdbAtom>("N", nCoordNME));
-        newNMEResidue->addAtom(std::make_unique<PdbAtom>("H", hCoordNME));
-        newNMEResidue->addAtom(std::make_unique<PdbAtom>("CH3", ch3CoordNME));
-        newNMEResidue->addAtom(std::make_unique<PdbAtom>("HH31", hh31CoordNME));
-        newNMEResidue->addAtom(std::make_unique<PdbAtom>("HH32", hh32CoordNME));
-        newNMEResidue->addAtom(std::make_unique<PdbAtom>("HH33", hh33CoordNME));
+        cds::Atom* nAtom    = newNMEResidue->addAtom(std::make_unique<PdbAtom>("N", nCoordNME));
+        cds::Atom* hAtom    = newNMEResidue->addAtom(std::make_unique<PdbAtom>("H", hCoordNME));
+        cds::Atom* ch3Atom  = newNMEResidue->addAtom(std::make_unique<PdbAtom>("CH3", ch3CoordNME));
+        cds::Atom* hh31Atom = newNMEResidue->addAtom(std::make_unique<PdbAtom>("HH31", hh31CoordNME));
+        cds::Atom* hh32Atom = newNMEResidue->addAtom(std::make_unique<PdbAtom>("HH32", hh32CoordNME));
+        cds::Atom* hh33Atom = newNMEResidue->addAtom(std::make_unique<PdbAtom>("HH33", hh33CoordNME));
+        nAtom->addBond(refResidue.FindAtom("C"));
+        nAtom->addBond(hAtom);
+        nAtom->addBond(ch3Atom);
+        ch3Atom->addBond(hh31Atom);
+        ch3Atom->addBond(hh32Atom);
+        ch3Atom->addBond(hh33Atom);
         static_cast<PdbResidue*>(newNMEResidue)->AddTerCard();
     }
     else if (type == "COCH3") // ACE
@@ -149,12 +155,18 @@ void PdbChain::InsertCap(const PdbResidue& refResidue, const std::string& type)
             (*refPosition).get()); // Its an iterator to a unique ptr, so deref and get the raw. Ugh.
         cds::Residue* newACEResidue =
             this->insertNewResidue(std::make_unique<PdbResidue>("ACE", previousResidue), *previousResidue);
-        newACEResidue->addAtom(std::make_unique<PdbAtom>("C", cCoordACE));
-        newACEResidue->addAtom(std::make_unique<PdbAtom>("O", oCoordACE));
-        newACEResidue->addAtom(std::make_unique<PdbAtom>("CH3", ch3CoordACE));
-        newACEResidue->addAtom(std::make_unique<PdbAtom>("HH31", hh31CoordACE));
-        newACEResidue->addAtom(std::make_unique<PdbAtom>("HH32", hh32CoordACE));
-        newACEResidue->addAtom(std::make_unique<PdbAtom>("HH33", hh33CoordACE));
+        cds::Atom* cAtom    = newACEResidue->addAtom(std::make_unique<PdbAtom>("C", cCoordACE));
+        cds::Atom* oAtom    = newACEResidue->addAtom(std::make_unique<PdbAtom>("O", oCoordACE));
+        cds::Atom* ch3Atom  = newACEResidue->addAtom(std::make_unique<PdbAtom>("CH3", ch3CoordACE));
+        cds::Atom* hh31Atom = newACEResidue->addAtom(std::make_unique<PdbAtom>("HH31", hh31CoordACE));
+        cds::Atom* hh32Atom = newACEResidue->addAtom(std::make_unique<PdbAtom>("HH32", hh32CoordACE));
+        cds::Atom* hh33Atom = newACEResidue->addAtom(std::make_unique<PdbAtom>("HH33", hh33CoordACE));
+        cAtom->addBond(refResidue.FindAtom("N"));
+        cAtom->addBond(oAtom);
+        cAtom->addBond(ch3Atom);
+        ch3Atom->addBond(hh31Atom);
+        ch3Atom->addBond(hh32Atom);
+        ch3Atom->addBond(hh33Atom);
         gmml::log(__LINE__, __FILE__, gmml::INF,
                   "Created ACE residue: " + static_cast<PdbResidue*>(newACEResidue)->printId());
     }
@@ -185,7 +197,7 @@ void PdbChain::ModifyTerminal(const std::string& type, PdbResidue* terminalResid
         }
         // I don't like this, but at least it's somewhat contained:
         const cds::Atom* atomCA = terminalResidue->FindAtom("CA");
-        const cds::Atom* atomC  = terminalResidue->FindAtom("C");
+        cds::Atom* atomC        = terminalResidue->FindAtom("C");
         const cds::Atom* atomO  = terminalResidue->FindAtom("O");
         if (atomCA == nullptr || atomC == nullptr || atomO == nullptr)
         {
@@ -196,7 +208,8 @@ void PdbChain::ModifyTerminal(const std::string& type, PdbResidue* terminalResid
         }
         cds::Coordinate oxtCoord = cds::calculateCoordinateFromInternalCoords(
             *(atomCA->getCoordinate()), *(atomC->getCoordinate()), *(atomO->getCoordinate()), 120.0, 180.0, 1.25);
-        terminalResidue->addAtom(std::make_unique<PdbAtom>("OXT", oxtCoord));
+        cds::Atom* oxtAtom = terminalResidue->addAtom(std::make_unique<PdbAtom>("OXT", oxtCoord));
+        oxtAtom->addBond(atomC);
         gmml::log(__LINE__, __FILE__, gmml::INF,
                   "Created new atom named OXT after " + static_cast<const PdbAtom*>(atomO)->GetId());
         return;
