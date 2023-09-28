@@ -5,18 +5,19 @@
 using cds::Residue;
 
 std::vector<Residue*> cdsSelections::selectResiduesByType(std::vector<Residue*> inputResidues,
-                                                          cds::ResidueType queryType)
+                                                          cds::ResidueType queryType, const bool invert)
 { // Quality of life wrapper: calls the below function with one queryType.
-    return selectResiduesByType(inputResidues, std::vector<cds::ResidueType> {queryType});
+    return selectResiduesByType(inputResidues, std::vector<cds::ResidueType> {queryType}, invert);
 }
 
 std::vector<Residue*> cdsSelections::selectResiduesByType(std::vector<Residue*> inputResidues,
-                                                          std::vector<cds::ResidueType> queryTypes)
+                                                          std::vector<cds::ResidueType> queryTypes, const bool invert)
 {
     std::vector<Residue*> selectedResidues;
     for (auto& residue : inputResidues)
     {
-        if (std::find(queryTypes.begin(), queryTypes.end(), residue->GetType()) != queryTypes.end())
+        auto findResult = std::find(queryTypes.begin(), queryTypes.end(), residue->GetType());
+        if ((findResult != queryTypes.end() && !invert) || (findResult == queryTypes.end() && invert))
         {
             selectedResidues.push_back(residue);
         }

@@ -8,9 +8,10 @@
 namespace cdsSelections
 {
     using cds::Residue;
-    std::vector<Residue*> selectResiduesByType(std::vector<Residue*> inputResidues, cds::ResidueType queryType);
+    std::vector<Residue*> selectResiduesByType(std::vector<Residue*> inputResidues, cds::ResidueType queryType,
+                                               const bool invert = false);
     std::vector<Residue*> selectResiduesByType(std::vector<Residue*> inputResidues,
-                                               std::vector<cds::ResidueType> queryTypes);
+                                               std::vector<cds::ResidueType> queryTypes, const bool invert = false);
     unsigned int findHighestResidueNumber(std::vector<Residue*> residues);
     Residue* FindNeighborResidueConnectedViaSpecificAtom(Residue* queryResidue, const std::string queryAtomName);
 } // namespace cdsSelections
