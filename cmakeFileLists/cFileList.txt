@@ -195,6 +195,7 @@
 ./src/MolecularMetadata/element.cc
 ./src/MolecularMetadata/glycoprotein.cpp
 ./src/MolecularMetadata/guesses.cc
+./src/MolecularMetadata/proteinBonding.cpp
 ./src/MolecularModeling/Assembly/Ontology/analysis.cc
 ./src/MolecularModeling/Assembly/Ontology/gf_query.cc
 ./src/MolecularModeling/Assembly/Ontology/population.cc
