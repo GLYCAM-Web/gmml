@@ -53,12 +53,12 @@ namespace pdb
             hasTerCard_ = false;
         }
 
-        inline void setInsertionCode(const std::string& s)
+        inline void setInsertionCode(const std::string s)
         {
             insertionCode_ = s;
         }
 
-        inline void setChainId(const std::string& s)
+        inline void setChainId(const std::string s)
         {
             chainId_ = s;
         }

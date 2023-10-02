@@ -35,7 +35,7 @@ Ensemble& Ensemble::operator=(Ensemble other)
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
-std::vector<Atom*> Ensemble::getAtoms() const
+std::vector<Atom*> Ensemble::getAtoms()
 {
     std::vector<Atom*> atoms;
     for (auto& residue : this->getResidues())
@@ -49,7 +49,7 @@ std::vector<Atom*> Ensemble::getAtoms() const
     return atoms;
 }
 
-std::vector<Residue*> Ensemble::getResidues() const
+std::vector<Residue*> Ensemble::getResidues()
 {
     std::vector<Residue*> residues;
     for (auto& molPtr : this->getMolecules())

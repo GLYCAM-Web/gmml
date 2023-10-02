@@ -34,8 +34,8 @@ namespace cds
         //////////////////////////////////////////////////////////
         //                    ACCESSOR                          //
         //////////////////////////////////////////////////////////
-        std::vector<Atom*> getAtoms() const;
-        std::vector<Residue*> getResidues() const;
+        std::vector<Atom*> getAtoms();
+        std::vector<Residue*> getResidues();
         std::vector<Molecule*> getMolecules() const;
         std::vector<Assembly*> getAssemblies() const;
         //////////////////////////////////////////////////////////
