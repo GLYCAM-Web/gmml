@@ -45,7 +45,7 @@ int main(int argc, char* argv[])
         }
     }
     std::cout << "Finished bonding atoms by distance" << std::endl;
-    pdbFile.Write("./outputPdbFile.pdb");
+    pdbFile.Write("./019.outputPdbFile.pdb");
 
     // Just showing what's in the ppInfo and how to access it
     std::cout << "Unrecognized atoms:\n";
