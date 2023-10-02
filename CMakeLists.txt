@@ -171,7 +171,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
     
 #for the project object value this passes -fpic which is needed
 #to make our files into a shared libary
-target_compile_options(${PROJECT_NAME} PUBLIC "-fPIC" -Wall -W)
+target_compile_options(${PROJECT_NAME} PUBLIC -Wall -W)
+target_link_libraries(${PROJECT_NAME} stdc++fs)
 ################## END SETTING UP GMML TARGET ###################
 
 
@@ -185,6 +186,8 @@ if (NOT ${DEBUG_NO_WRAP})
     #have cpp property set on for file gmml.i
     #This property is associated with the gmml.i file itself
     set_property(SOURCE gmml.i PROPERTY CPLUSPLUS ON)
+    #allow swig python stuff to use threads
+    set_property(SOURCE gmml.i PROPERTY SWIG_FLAGS "-threads")
     #add a swig library with name ${PROJECT_NAME}_wrapped, wrapping the code
     #in python, using our gmml.i as our source file for swig
     swig_add_library(${PROJECT_NAME}_wrapped LANGUAGE python SOURCES gmml.i)

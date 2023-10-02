@@ -5,6 +5,6 @@
 
 namespace codeUtils
 {
-bool isNumberIntegral(double number);
+    bool isNumberIntegral(double number);
 }
-#endif //GMML_INCLUDES_CODEUTILS_NUMBERS_HPP
+#endif // GMML_INCLUDES_CODEUTILS_NUMBERS_HPP

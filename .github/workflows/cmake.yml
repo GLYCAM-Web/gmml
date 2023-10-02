@@ -1,0 +1,84 @@
+name: Baby Bare Metal
+
+on:
+  push:
+    branches:
+      - stable
+      - gmml-dev
+      - gmml-test
+      #we may want to add actual on here but idk, if we are testing dev then it should be fine? meh....
+
+env:
+  shell: bash
+  #now we gotta export all the config type stuff
+  #for ccache so it actually works. This is gross
+  CCACHE_COMPRESS: true
+  CCACHE_MAXSIZE: 1.0G
+  CCACHE_COMPRESSLEVEL: 1
+  #optimization for compiler stuff
+  CCACHE_CPP2: true
+  #makes sure the cache bits are not directory
+  CCACHE_COMPILERCHECK: content
+  #if this is trrue then there is a possibility that
+  #some bad builds can slip by us but it is kinda rare
+  #just read the link below:
+  #https://ccache.dev/manual/4.8.2.html#_the_direct_mode
+  CCACHE_DIRECT: true
+
+  #pcg time macros cause cache misses
+  CCACHE_SLOPPINESS: time_macros
+  #for da deboogin
+  #CCACHE_DEBUG: true
+  #CCACHE_DEBUGDIR: "${{ github.workspace }}/debooger"
+  #for da loogin
+  #CCACHE_LOGFILE: "${{ github.workspace }}/zingus.log"
+
+  CCACHE_DIR: "${{ github.workspace }}/.ccache"
+
+jobs:
+  setupBuildTest:
+    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
+    # You can convert this to a matrix build if you need cross-platform coverage.
+    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+    runs-on: ubuntu-22.04
+
+    #may need to specify cmake version idk
+    steps:
+    - uses: actions/checkout@v3
+
+    #install teeny boost dude
+    - name: Install Deps
+      run: |
+        sudo apt-get update
+        sudo apt-get install -yq libboost1.74-dev libeigen3-dev ccache graphviz
+
+      #need to think of a better way to do the cache tagging but whatevah 4 now
+    - name: Get Date
+      id: get-date
+      run: |
+        echo "date=$(/bin/date -u "+%Y%m%d%M")" >> $GITHUB_OUTPUT
+
+      #Trying to check if we are able to restore our cache dude
+    - name: Caching ccache
+      id: cache-ccache
+      uses: actions/cache@v3
+      with:
+      #possibly better to use similar pattern liek this so able to
+      #not be completely constrained to a branch
+      #https://github.com/rgommers/scipy/blob/bae3476b8a245866f5f7f1b824a0a7919f3880a9/.github/workflows/linux_meson.yml#L16
+        path: ${{ env.CCACHE_DIR }}
+        key: ${{ runner.os }}-ccache-cache-${{ steps.get-date.outputs.date }}
+        restore-keys: |
+          ${{ runner.os }}-ccache-cache-
+
+    - name: Build Our code
+      run: |
+        cmake -DCMAKE_BUILD_TYPE=Release -S . -B ./cmakeBuild -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DDEBUG_NO_WRAP=True -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
+        cd cmakeBuild
+        make -j 3
+        ccache -svv
+
+    - name: Run Bare Metal Tests
+      run: |
+        bash ./compile_run_tests.bash -j 3 -d bare_metal
+      working-directory: ${{ github.workspace }}/tests

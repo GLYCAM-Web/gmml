@@ -8,15 +8,16 @@
 namespace lib
 {
 
-class LibraryFile : public cds::Molecule
-{
-public:
-    LibraryFile();
-    LibraryFile(const std::string &filePath);
-private:
-    std::stringstream ExtractUnitSection(std::ifstream& inputFileStream, const std::string unitName);
-    void ParseInFileStream(std::ifstream& inputFileStream);
-};
+    class LibraryFile : public cds::Molecule
+    {
+      public:
+        LibraryFile();
+        LibraryFile(const std::string& filePath);
 
-} // namespace
+      private:
+        std::stringstream ExtractUnitSection(std::ifstream& inputFileStream, const std::string unitName);
+        void ParseInFileStream(std::ifstream& inputFileStream);
+    };
+
+} // namespace lib
 #endif /* INCLUDES_CENTRALDATASTRUCTURE_READERS_LIB_LIBRARYFILE_HPP_ */

@@ -5,21 +5,28 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
 #include "includes/Abstract/absBuilder.hpp"
 #include <string>
-//#include <dirent.h>
-//#include <sys/stat.h>
+// #include <dirent.h>
+// #include <sys/stat.h>
 
 using cds::Assembly;
+
 class GlycoproteinBuilder : public Abstract::absBuilder
 {
-public:
+  public:
     //////////////////////////////////////////////////////////
     //                       CONSTRUCTOR                    //
     //////////////////////////////////////////////////////////
-    GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs inputStruct, pdb::PreprocessorOptions preprocessingOptions = pdb::PreprocessorOptions());
+    GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs inputStruct,
+                        pdb::PreprocessorOptions preprocessingOptions = pdb::PreprocessorOptions());
+
     //////////////////////////////////////////////////////////
     //                       ACCESSOR                       //
     //////////////////////////////////////////////////////////
-    inline Assembly* getGlycoprotein()	{return &glycoprotein_;}
+    inline Assembly* getGlycoprotein()
+    {
+        return &glycoprotein_;
+    }
+
     //////////////////////////////////////////////////////////
     //                       MUTATOR                        //
     //////////////////////////////////////////////////////////
@@ -27,55 +34,119 @@ public:
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
     void ResolveOverlaps();
-    void WriteOutputFiles();
-private:
+    void WritePdbFile(const std::string prefix = "glycoprotein", const bool writeConectSection = true);
+    void WriteOffFile(const std::string prefix = "glycoprotein");
+    // void WriteOutputFiles(std::string prefix = "Glycoprotein_All_Resolved");
+    void PrintDihedralAnglesAndOverlapOfGlycosites();
+
+  private:
     //////////////////////////////////////////////////////////
     //                  PRIVATE ACCESSORS                   //
     //////////////////////////////////////////////////////////
-    inline std::vector<GlycosylationSite>& GetGlycosites() 			{return glycosites_;}
-    inline std::vector<GlycosylationSite>& GetGlycosylationSites() 	{return glycosites_;}
-    inline int GetOverlapTolerance() 							{return overlapTolerance_;}
-    inline int GetNumberOfOutputStructures() 						{return numberOfOutputStructures_;}
-    inline int GetPersistCycles()									{return persistCycles_;}
-    inline bool GetIsDeterministic()								{return isDeterministic_;}
+    inline std::vector<GlycosylationSite>& GetGlycosites()
+    {
+        return glycosites_;
+    }
+
+    inline std::vector<GlycosylationSite>& GetGlycosylationSites()
+    {
+        return glycosites_;
+    }
+
+    inline int GetOverlapTolerance() const
+    {
+        return overlapTolerance_;
+    }
+
+    inline int GetNumberOfStructuresToOutput() const
+    {
+        return structuresToOutput_;
+    }
+
+    inline int GetNumberOfOuputtedStructures() const
+    {
+        return totalOutputtedStrucures_;
+    }
+
+    inline int GetPersistCycles() const
+    {
+        return persistCycles_;
+    }
+
+    inline bool GetIsDeterministic() const
+    {
+        return isDeterministic_;
+    }
+
     //////////////////////////////////////////////////////////
     //                  PRIVATE MUTATORS                    //
     //////////////////////////////////////////////////////////
-    void SetWorkingDirectory(std::string workingDirectory);
-    void SetPrepFileLocation(std::string prepFileLocation);
-    inline void SetPersistCycles(int i) 							{persistCycles_ = i;}
-    inline void SetOverlapTolerance(int i)						{overlapTolerance_ = i;}
-    inline void SetProteinPDBFileName(std::string s)				{proteinPDBFileName_ = s;}
-    inline void SetNumberOfOutputStructures(int i) 					{numberOfOutputStructures_ = i;}
-    inline void SetIsDeterministic(bool b)                          {isDeterministic_ = b;}
+    void SetWorkingDirectory(const std::string workingDirectory);
+    void SetPrepFileLocation(const std::string prepFileLocation);
+
+    inline void SetPersistCycles(const int i)
+    {
+        persistCycles_ = i;
+    }
+
+    inline void SetOverlapTolerance(const int i)
+    {
+        overlapTolerance_ = i;
+    }
+
+    inline void SetProteinPDBFileName(const std::string s)
+    {
+        proteinPDBFileName_ = s;
+    }
+
+    inline void SetStructuresToOutput(const int i)
+    {
+        structuresToOutput_ = i;
+    }
+
+    inline void SetIsDeterministic(const bool b)
+    {
+        isDeterministic_ = b;
+    }
+
+    inline void incrementOutputtedStructures()
+    {
+        ++totalOutputtedStrucures_;
+    }
+
     //////////////////////////////////////////////////////////
     //                  PRIVATE FUNCTIONS                   //
     //////////////////////////////////////////////////////////
     // Class instantiation
-    void CreateGlycosites(std::vector<glycoprotein::GlycositeInput> glycositesInputVector, std::string prepFileLocation);
+    void CreateGlycosites(std::vector<glycoprotein::GlycositeInput> glycositesInputVector,
+                          const std::string prepFileLocation);
     Residue* SelectResidueFromInput(const std::string userSelection);
     // Overlap Resolution
-    void Wiggle(Resolution resolutionLevel = RESIDUE, int persistCycles = 100, bool firstLinkageOnly = false, int interval = 5);
+    void ResolveOverlapsWithWiggler();
+    void Wiggle(Resolution resolutionLevel = RESIDUE, int persistCycles = 100, bool firstLinkageOnly = false,
+                int interval = 5);
     void RandomDescent(Resolution resolutionLevel, int persistCycles, bool monte_carlo);
     void SetRandomDihedralAnglesUsingMetadata();
     bool DumbRandomWalk(int maxCycles = 10);
     // I/O
-    void PrintDihedralAnglesAndOverlapOfGlycosites();
     // Overlap Calculation
     int CalculateOverlaps(Resolution resolutionLevel = RESIDUE, MoleculeType moleculeType = ALL);
-    std::vector<GlycosylationSite*> DetermineSitesWithOverlap(Resolution resolutionLevel = RESIDUE, MoleculeType moleculeType = ALL);
-    void DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(std::vector<GlycosylationSite> &glycosites, int tolerance);
-    void UpdateAtomsThatMoveInLinkages();
+    std::vector<GlycosylationSite*> DetermineSitesWithOverlap(Resolution resolutionLevel = RESIDUE,
+                                                              MoleculeType moleculeType  = ALL);
+    void DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(std::vector<GlycosylationSite>& glycosites,
+                                                               int tolerance);
     void SetOtherGlycosites();
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
-    std::vector<GlycosylationSite> glycosites_; 	// Info about each glycosylation site. See the class.
-    Assembly glycoprotein_; 		                // Generated by this code.
-    int overlapTolerance_ = 1; 						    // What amount of overlap to tolerate.
-    std::string proteinPDBFileName_; 				// The protein pdb file to attach the glycans to.
-    int numberOfOutputStructures_;  				// Number of output 3D structures. Default 1.
-    int persistCycles_;								// Algos continue for persistCycles, reset count if there is an overlap improvement.
-    bool isDeterministic_;							// "true" means produce the same output for a given input each time. Good for testing.
+    std::vector<GlycosylationSite> glycosites_; // Info about each glycosylation site. See the class.
+    Assembly glycoprotein_;                     // Generated by this code.
+    int overlapTolerance_ = 1;                  // What amount of overlap to tolerate.
+    std::string proteinPDBFileName_;            // The protein pdb file to attach the glycans to.
+    int structuresToOutput_      = 1;           // Number of output 3D structures. Default 1.
+    int totalOutputtedStrucures_ = 0;
+    int persistCycles_ = 5; // Algos continue for persistCycles, reset count if there is an overlap improvement.
+    bool isDeterministic_ =
+        false; // "true" means produce the same output for a given input each time. Good for testing.
 };
 #endif // GMML_INCLUDES_INTERNALPROGRAMS_GLYCOPROTEINBUILDER_GLYCOPROTEINBUILDER_HPP

@@ -69,9 +69,9 @@
 #include <string.h>
 
 using MolecularModeling::Assembly;
-using MolecularModeling::Residue;
 using MolecularModeling::Atom;
 using MolecularModeling::AtomVector;
+using MolecularModeling::Residue;
 
 //////////////////////////////////////////////////////////
 //                       FUNCTIONS                      //
@@ -85,1185 +85,616 @@ MolecularModeling::AtomVector Assembly::Select(std::string pattern)
     index << this->GetSequenceNumber();
     this->GetHierarchicalMapOfAssembly(hierarchical_map, index);
 
-//    for(HierarchicalContainmentMap::iterator it = hierarchical_map.begin(); it != hierarchical_map.end(); it++)
-//        std::cout << (*it).first << " " << (*it).second.size() << std::endl;
+    //    for(HierarchicalContainmentMap::iterator it = hierarchical_map.begin(); it != hierarchical_map.end(); it++)
+    //        std::cout << (*it).first << " " << (*it).second.size() << std::endl;
 
     SelectPatternMap select_pattern_map = ParsePatternString(pattern);
 
     //    for(SelectPatternMap::iterator it = select_pattern_map.begin(); it != select_pattern_map.end(); it++)
     //    {
-    //        std::cout << "================================= " << (*it).first << " ================================" << std::endl;
-    //        std::map<std::string, std::vector<std::string> > value = (*it).second;
-    //        for(std::map<std::string, std::vector<std::string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
+    //        std::cout << "================================= " << (*it).first << " ================================" <<
+    //        std::endl; std::map<std::string, std::vector<std::string> > value = (*it).second;
+    //        for(std::map<std::string, std::vector<std::string> >::iterator it1 = value.begin(); it1 != value.end();
+    //        it1++)
     //        {
-    //            std::cout << "-------------------------------- " << (*it1).first << " --------------------------" << std::endl;
-    //            std::vector<std::string> atom_names = (*it1).second;
-    //            for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+    //            std::cout << "-------------------------------- " << (*it1).first << " --------------------------" <<
+    //            std::endl; std::vector<std::string> atom_names = (*it1).second; for(std::vector<std::string>::iterator
+    //            it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
     //            {
     //                std::cout << (*it3) << std::endl;
     //            }
     //        }
     //    }
 
-    for(SelectPatternMap::iterator it = select_pattern_map.begin(); it != select_pattern_map.end(); it++)
+    for (SelectPatternMap::iterator it = select_pattern_map.begin(); it != select_pattern_map.end(); it++)
     {
         std::string key = (*it).first;
-        if(key.find("*") == std::string::npos)
+        if (key.find("*") == std::string::npos)
         {
-            ResidueVector residues_of_assembly = hierarchical_map.at(key);
-            std::map<std::string, std::vector<std::string> > value = (*it).second;
-            for(std::map<std::string, std::vector<std::string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
+            ResidueVector residues_of_assembly                    = hierarchical_map.at(key);
+            std::map<std::string, std::vector<std::string>> value = (*it).second;
+            for (std::map<std::string, std::vector<std::string>>::iterator it1 = value.begin(); it1 != value.end();
+                 it1++)
             {
-                std::string residue_name = (*it1).first;
+                std::string residue_name     = (*it1).first;
                 int residue_name_search_type = 0;
-                if(residue_name.at(0) == '^')
+                if (residue_name.at(0) == '^')
                 {
-                    residue_name = residue_name.substr(1);
+                    residue_name             = residue_name.substr(1);
                     residue_name_search_type = -1;
                 }
-                else if(residue_name.at(residue_name.size() - 1) == '$')
+                else if (residue_name.at(residue_name.size() - 1) == '$')
                 {
-                    residue_name = residue_name.substr(0, residue_name.size() - 2);
+                    residue_name             = residue_name.substr(0, residue_name.size() - 2);
                     residue_name_search_type = 1;
                 }
-                else if(residue_name.at(0) == '#')
+                else if (residue_name.at(0) == '#')
                 {
-                    residue_name = residue_name.substr(1);
+                    residue_name             = residue_name.substr(1);
                     residue_name_search_type = -2;
                 }
                 else
+                {
                     residue_name_search_type = 0;
-                if(residue_name.find("*") == std::string::npos)
+                }
+                if (residue_name.find("*") == std::string::npos)
                 {
-                    for(ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end(); it2++)
+                    for (ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end();
+                         it2++)
                     {
                         Residue* residue = *it2;
-                        switch(residue_name_search_type)
+                        switch (residue_name_search_type)
                         {
-                            case 0:  /// Search in residue set by matching the whole name of the residue
-                            {
-                                if(residue->GetName().compare(residue_name) == 0)
+                            case 0: /// Search in residue set by matching the whole name of the residue
                                 {
-                                    std::vector<std::string> atom_names = (*it1).second;
-                                    if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                    if (residue->GetName().compare(residue_name) == 0)
                                     {
-                                        AtomVector atoms = residue->GetAtoms();
-                                        for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                        std::vector<std::string> atom_names = (*it1).second;
+                                        if (find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
                                         {
-                                            std::string atom_name = *it3;
-                                            int atom_name_search_type = 0;
-                                            if(atom_name.at(0) == '^')
+                                            AtomVector atoms = residue->GetAtoms();
+                                            for (std::vector<std::string>::iterator it3 = atom_names.begin();
+                                                 it3 != atom_names.end(); it3++)
                                             {
-                                                atom_name = atom_name.substr(1);
-                                                atom_name_search_type = -1;
-                                            }
-                                            else if(atom_name.at(atom_name.size() - 1) == '$')
-                                            {
-                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                atom_name_search_type = 1;
-                                            }
-                                            else if(atom_name.at(0) == '#')
-                                            {
-                                                atom_name = atom_name.substr(1);
-                                                atom_name_search_type = -2;
-                                            }
-                                            else
-                                                atom_name_search_type = 0;
-                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                            {
-                                                Atom* atom = *it4;
-                                                switch(atom_name_search_type)
+                                                std::string atom_name     = *it3;
+                                                int atom_name_search_type = 0;
+                                                if (atom_name.at(0) == '^')
                                                 {
-                                                    case 0:
-                                                    {
-                                                        if(atom->GetName().compare(atom_name) == 0)
-                                                            selection.push_back(atom);
-                                                        break;
-                                                    }
-                                                    case 1:
-                                                    {
-                                                        if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                            selection.push_back(atom);
-                                                        break;
-                                                    }
-                                                    case -1:
-                                                    {
-                                                        if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                atom->GetName().find(atom_name) == 0)
-                                                            selection.push_back(atom);
-                                                        break;
-                                                    }
-                                                    case -2:
-                                                    {
-                                                        std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                        int range_selection = 0;
-                                                        if(atom_name.find("-") != std::string::npos)
-                                                        {
-                                                            range_selection = 1;
-
-                                                        }
-                                                        else
-                                                            range_selection = 0;
-                                                        switch(range_selection)
-                                                        {
-                                                            case 0:
-                                                            {
-                                                                if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                        atom_serial_number.find(atom_name) == 0)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case 1:
-                                                            {
-                                                                std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                        }
-                                                        break;
-                                                    }
+                                                    atom_name             = atom_name.substr(1);
+                                                    atom_name_search_type = -1;
                                                 }
-
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        AtomVector atoms = residue->GetAtoms();
-                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                        {
-                                            Atom* atom = *it4;
-                                            selection.push_back(atom);
-                                        }
-                                    }
-                                }
-                                break;
-                            }
-                            case 1:   /// Searching the residue set by maching the end of the residue names
-                            {
-                                if(residue->GetName().find(residue_name) != std::string::npos &&
-                                        residue->GetName().find(residue_name) == residue->GetName().size() - residue_name.size())
-                                {
-                                    std::vector<std::string> atom_names = (*it1).second;
-                                    if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
-                                    {
-                                        AtomVector atoms = residue->GetAtoms();
-                                        for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
-                                        {
-                                            std::string atom_name = *it3;
-                                            int atom_name_search_type = 0;
-                                            if(atom_name.at(0) == '^')
-                                            {
-                                                atom_name = atom_name.substr(1);
-                                                atom_name_search_type = -1;
-                                            }
-                                            else if(atom_name.at(atom_name.size() - 1) == '$')
-                                            {
-                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                atom_name_search_type = 1;
-                                            }
-                                            else if(atom_name.at(0) == '#')
-                                            {
-                                                atom_name = atom_name.substr(1);
-                                                atom_name_search_type = -2;
-                                            }
-                                            else
-                                                atom_name_search_type = 0;
-                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                            {
-                                                Atom* atom = *it4;
-                                                switch(atom_name_search_type)
+                                                else if (atom_name.at(atom_name.size() - 1) == '$')
                                                 {
-                                                    case 0:
-                                                    {
-                                                        if(atom->GetName().compare(atom_name) == 0)
-                                                            selection.push_back(atom);
-                                                        break;
-                                                    }
-                                                    case 1:
-                                                    {
-                                                        if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                            selection.push_back(atom);
-                                                        break;
-                                                    }
-                                                    case -1:
-                                                    {
-                                                        if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                atom->GetName().find(atom_name) == 0)
-                                                            selection.push_back(atom);
-                                                        break;
-                                                    }
-                                                    case -2:
-                                                    {
-                                                        std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                        int range_selection = 0;
-                                                        if(atom_name.find("-") != std::string::npos)
-                                                        {
-                                                            range_selection = 1;
-
-                                                        }
-                                                        else
-                                                            range_selection = 0;
-                                                        switch(range_selection)
-                                                        {
-                                                            case 0:
-                                                            {
-                                                                if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                        atom_serial_number.find(atom_name) == 0)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case 1:
-                                                            {
-                                                                std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                        }
-                                                        break;
-                                                    }
+                                                    atom_name             = atom_name.substr(0, atom_name.size() - 2);
+                                                    atom_name_search_type = 1;
                                                 }
-
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        AtomVector atoms = residue->GetAtoms();
-                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                        {
-                                            Atom* atom = *it4;
-                                            selection.push_back(atom);
-                                        }
-                                    }
-                                }
-                                break;
-                            }
-                            case -1:  /// Searching the residue set by matching the begining of the residue names
-                            {
-                                if(residue->GetName().find(residue_name) != std::string::npos &&
-                                        residue->GetName().find(residue_name) == 0)
-                                {
-                                    std::vector<std::string> atom_names = (*it1).second;
-                                    if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
-                                    {
-                                        AtomVector atoms = residue->GetAtoms();
-                                        for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
-                                        {
-                                            std::string atom_name = *it3;
-                                            int atom_name_search_type = 0;
-                                            if(atom_name.at(0) == '^')
-                                            {
-                                                atom_name = atom_name.substr(1);
-                                                atom_name_search_type = -1;
-                                            }
-                                            else if(atom_name.at(atom_name.size() - 1) == '$')
-                                            {
-                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                atom_name_search_type = 1;
-                                            }
-                                            else if(atom_name.at(0) == '#')
-                                            {
-                                                atom_name = atom_name.substr(1);
-                                                atom_name_search_type = -2;
-                                            }
-                                            else
-                                                atom_name_search_type = 0;
-                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                            {
-                                                Atom* atom = *it4;
-                                                switch(atom_name_search_type)
+                                                else if (atom_name.at(0) == '#')
                                                 {
-                                                    case 0:
-                                                    {
-                                                        if(atom->GetName().compare(atom_name) == 0)
-                                                            selection.push_back(atom);
-                                                        break;
-                                                    }
-                                                    case 1:
-                                                    {
-                                                        if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                            selection.push_back(atom);
-                                                        break;
-                                                    }
-                                                    case -1:
-                                                    {
-                                                        if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                atom->GetName().find(atom_name) == 0)
-                                                            selection.push_back(atom);
-                                                        break;
-                                                    }
-                                                    case -2:
-                                                    {
-                                                        std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                        int range_selection = 0;
-                                                        if(atom_name.find("-") != std::string::npos)
-                                                        {
-                                                            range_selection = 1;
-
-                                                        }
-                                                        else
-                                                            range_selection = 0;
-                                                        switch(range_selection)
-                                                        {
-                                                            case 0:
-                                                            {
-                                                                if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                        atom_serial_number.find(atom_name) == 0)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case 1:
-                                                            {
-                                                                std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                        }
-                                                        break;
-                                                    }
+                                                    atom_name             = atom_name.substr(1);
+                                                    atom_name_search_type = -2;
                                                 }
-
-                                            }
-                                        }
-                                    }
-                                    else
-                                    {
-                                        AtomVector atoms = residue->GetAtoms();
-                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                        {
-                                            Atom* atom = *it4;
-                                            selection.push_back(atom);
-                                        }
-                                    }
-                                }
-                                break;
-                            }
-                            case -2:  /// Searching the residue set by matching the residue sequence number
-                            {
-                                std::string residue_sequence_number = gmml::Split(residue->GetId(), "_").at(2);
-                                int range_residue_selection = 0;
-                                if(residue_sequence_number.find("-") != std::string::npos)
-                                {
-                                    range_residue_selection = 1;
-                                }
-                                else
-                                    range_residue_selection = 0;
-                                switch(range_residue_selection)
-                                {
-                                    case 0:
-                                    {
-                                        if(residue_sequence_number.find(residue_name) != std::string::npos &&
-                                                residue_sequence_number.find(residue_name) == 0)
-                                        {
-                                            std::vector<std::string> atom_names = (*it1).second;
-                                            if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
-                                            {
-                                                AtomVector atoms = residue->GetAtoms();
-                                                for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                else
                                                 {
-                                                    std::string atom_name = *it3;
-                                                    int atom_name_search_type = 0;
-                                                    if(atom_name.at(0) == '^')
-                                                    {
-                                                        atom_name = atom_name.substr(1);
-                                                        atom_name_search_type = -1;
-                                                    }
-                                                    else if(atom_name.at(atom_name.size() - 1) == '$')
-                                                    {
-                                                        atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                        atom_name_search_type = 1;
-                                                    }
-                                                    else if(atom_name.at(0) == '#')
-                                                    {
-                                                        atom_name = atom_name.substr(1);
-                                                        atom_name_search_type = -2;
-                                                    }
-                                                    else
-                                                        atom_name_search_type = 0;
-                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                    {
-                                                        Atom* atom = *it4;
-                                                        switch(atom_name_search_type)
-                                                        {
-                                                            case 0:
-                                                            {
-                                                                if(atom->GetName().compare(atom_name) == 0)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case 1:
-                                                            {
-                                                                if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                        atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case -1:
-                                                            {
-                                                                if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                        atom->GetName().find(atom_name) == 0)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case -2:
-                                                            {
-                                                                std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                                int range_selection = 0;
-                                                                if(atom_name.find("-") != std::string::npos)
-                                                                {
-                                                                    range_selection = 1;
-
-                                                                }
-                                                                else
-                                                                    range_selection = 0;
-                                                                switch(range_selection)
-                                                                {
-                                                                    case 0:
-                                                                    {
-                                                                        if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                                atom_serial_number.find(atom_name) == 0)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
-                                                                    case 1:
-                                                                    {
-                                                                        std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                        std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                        int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                        int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                        int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                        if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
-                                                                }
-                                                                break;
-                                                            }
-                                                        }
-
-                                                    }
+                                                    atom_name_search_type = 0;
                                                 }
-                                            }
-                                            else
-                                            {
-                                                AtomVector atoms = residue->GetAtoms();
-                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end();
+                                                     it4++)
                                                 {
                                                     Atom* atom = *it4;
-                                                    selection.push_back(atom);
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    }
-                                    case 1:
-                                    {
-                                        std::string residue_start_index = gmml::Split(residue_name, "-").at(0);
-                                        std::string residue_end_index = gmml::Split(residue_name, "-").at(1);
-                                        int residue_sequence_number_int = gmml::ConvertString<int>(residue_sequence_number);
-                                        int residue_start_index_int = gmml::ConvertString<int>(residue_start_index);
-                                        int residue_end_index_int = gmml::ConvertString<int>(residue_end_index);
-                                        if(residue_sequence_number_int >= residue_start_index_int && residue_sequence_number_int <= residue_end_index_int)
-                                        {
-                                            std::vector<std::string> atom_names = (*it1).second;
-                                            if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
-                                            {
-                                                AtomVector atoms = residue->GetAtoms();
-                                                for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
-                                                {
-                                                    std::string atom_name = *it3;
-                                                    int atom_name_search_type = 0;
-                                                    if(atom_name.at(0) == '^')
+                                                    switch (atom_name_search_type)
                                                     {
-                                                        atom_name = atom_name.substr(1);
-                                                        atom_name_search_type = -1;
-                                                    }
-                                                    else if(atom_name.at(atom_name.size() - 1) == '$')
-                                                    {
-                                                        atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                        atom_name_search_type = 1;
-                                                    }
-                                                    else if(atom_name.at(0) == '#')
-                                                    {
-                                                        atom_name = atom_name.substr(1);
-                                                        atom_name_search_type = -2;
-                                                    }
-                                                    else
-                                                        atom_name_search_type = 0;
-                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                    {
-                                                        Atom* atom = *it4;
-                                                        switch(atom_name_search_type)
-                                                        {
-                                                            case 0:
+                                                        case 0:
                                                             {
-                                                                if(atom->GetName().compare(atom_name) == 0)
+                                                                if (atom->GetName().compare(atom_name) == 0)
+                                                                {
                                                                     selection.push_back(atom);
+                                                                }
                                                                 break;
                                                             }
-                                                            case 1:
+                                                        case 1:
                                                             {
-                                                                if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                        atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
+                                                                if (atom->GetName().find(atom_name) !=
+                                                                        std::string::npos &&
+                                                                    atom->GetName().find(atom_name) ==
+                                                                        atom->GetName().size() - atom_name.size())
+                                                                {
                                                                     selection.push_back(atom);
+                                                                }
                                                                 break;
                                                             }
-                                                            case -1:
+                                                        case -1:
                                                             {
-                                                                if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                        atom->GetName().find(atom_name) == 0)
+                                                                if (atom->GetName().find(atom_name) !=
+                                                                        std::string::npos &&
+                                                                    atom->GetName().find(atom_name) == 0)
+                                                                {
                                                                     selection.push_back(atom);
+                                                                }
                                                                 break;
                                                             }
-                                                            case -2:
+                                                        case -2:
                                                             {
-                                                                std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
+                                                                std::string atom_serial_number =
+                                                                    gmml::Split(atom->GetId(), "_").at(1);
                                                                 int range_selection = 0;
-                                                                if(atom_name.find("-") != std::string::npos)
+                                                                if (atom_name.find("-") != std::string::npos)
                                                                 {
                                                                     range_selection = 1;
-
                                                                 }
                                                                 else
+                                                                {
                                                                     range_selection = 0;
-                                                                switch(range_selection)
+                                                                }
+                                                                switch (range_selection)
                                                                 {
                                                                     case 0:
-                                                                    {
-                                                                        if(atom_serial_number.find(atom_name) != std::string::npos &&
+                                                                        {
+                                                                            if (atom_serial_number.find(atom_name) !=
+                                                                                    std::string::npos &&
                                                                                 atom_serial_number.find(atom_name) == 0)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
                                                                     case 1:
-                                                                    {
-                                                                        std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                        std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                        int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                        int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                        int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                        if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
+                                                                        {
+                                                                            std::string start_index =
+                                                                                gmml::Split(atom_name, "-").at(0);
+                                                                            std::string end_index =
+                                                                                gmml::Split(atom_name, "-").at(1);
+                                                                            int atom_serial_number_int =
+                                                                                gmml::ConvertString<int>(
+                                                                                    atom_serial_number);
+                                                                            int start_index_int =
+                                                                                gmml::ConvertString<int>(start_index);
+                                                                            int end_index_int =
+                                                                                gmml::ConvertString<int>(end_index);
+                                                                            if (atom_serial_number_int >=
+                                                                                    start_index_int &&
+                                                                                atom_serial_number_int <= end_index_int)
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
                                                                 }
                                                                 break;
                                                             }
-                                                        }
-
                                                     }
                                                 }
                                             }
-                                            else
-                                            {
-                                                AtomVector atoms = residue->GetAtoms();
-                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                {
-                                                    Atom* atom = *it4;
-                                                    selection.push_back(atom);
-                                                }
-                                            }
-                                            break;
-                                        }
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    for(ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end(); it2++)
-                    {
-                        Residue* residue = *it2;
-                        std::vector<std::string> atom_names = (*it1).second;
-                        if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
-                        {
-                            AtomVector atoms = residue->GetAtoms();
-                            for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
-                            {
-                                std::string atom_name = *it3;
-                                int atom_name_search_type = 0;
-                                if(atom_name.at(0) == '^')
-                                {
-                                    atom_name = atom_name.substr(1);
-                                    atom_name_search_type = -1;
-                                }
-                                else if(atom_name.at(atom_name.size() - 1) == '$')
-                                {
-                                    atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                    atom_name_search_type = 1;
-                                }
-                                else if(atom_name.at(0) == '#')
-                                {
-                                    atom_name = atom_name.substr(1);
-                                    atom_name_search_type = -2;
-                                }
-                                else
-                                    atom_name_search_type = 0;
-                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                {
-                                    Atom* atom = *it4;
-                                    switch(atom_name_search_type)
-                                    {
-                                        case 0:
-                                        {
-                                            if(atom->GetName().compare(atom_name) == 0)
-                                                selection.push_back(atom);
-                                            break;
-                                        }
-                                        case 1:
-                                        {
-                                            if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                    atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                selection.push_back(atom);
-                                            break;
-                                        }
-                                        case -1:
-                                        {
-                                            if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                    atom->GetName().find(atom_name) == 0)
-                                                selection.push_back(atom);
-                                            break;
-                                        }
-                                        case -2:
-                                        {
-                                            std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                            int range_selection = 0;
-                                            if(atom_name.find("-") != std::string::npos)
-                                            {
-                                                range_selection = 1;
-
-                                            }
-                                            else
-                                                range_selection = 0;
-                                            switch(range_selection)
-                                            {
-                                                case 0:
-                                                {
-                                                    if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                            atom_serial_number.find(atom_name) == 0)
-                                                        selection.push_back(atom);
-                                                    break;
-                                                }
-                                                case 1:
-                                                {
-                                                    std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                    std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                    int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                    int start_index_int = gmml::ConvertString<int>(start_index);
-                                                    int end_index_int = gmml::ConvertString<int>(end_index);
-                                                    if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                        selection.push_back(atom);
-                                                    break;
-                                                }
-                                            }
-                                            break;
-                                        }
-                                    }
-
-                                }
-                            }
-                        }
-                        else
-                        {
-                            AtomVector atoms = residue->GetAtoms();
-                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                            {
-                                Atom* atom = *it4;
-                                selection.push_back(atom);
-                            }
-                        }
-                    }
-                }
-
-            }
-
-        }
-        else
-        {
-            int start_index = key.find("*");
-            if(start_index == 0)
-            {
-                for(HierarchicalContainmentMap::iterator it5 = hierarchical_map.begin(); it5 != hierarchical_map.end(); it5++)
-                {
-                    ResidueVector residues_of_assembly = (*it5).second;
-                    std::map<std::string, std::vector<std::string> > value = (*it).second;
-                    for(std::map<std::string, std::vector<std::string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
-                    {
-                        std::string residue_name = (*it1).first;
-                        int residue_name_search_type = 0;
-                        if(residue_name.at(0) == '^')
-                        {
-                            residue_name = residue_name.substr(1);
-                            residue_name_search_type = -1;
-                        }
-                        else if(residue_name.at(residue_name.size() - 1) == '$')
-                        {
-                            residue_name = residue_name.substr(0, residue_name.size() - 2);
-                            residue_name_search_type = 1;
-                        }
-                        else if(residue_name.at(0) == '#')
-                        {
-                            residue_name = residue_name.substr(1);
-                            residue_name_search_type = -2;
-                        }
-                        else
-                            residue_name_search_type = 0;
-                        if(residue_name.find("*") == std::string::npos)
-                        {
-                            for(ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end(); it2++)
-                            {
-                                Residue* residue = *it2;
-                                switch(residue_name_search_type)
-                                {
-                                    case 0:  /// Search in residue set by matching the whole name of the residue
-                                    {
-                                        if(residue->GetName().compare(residue_name) == 0)
-                                        {
-                                            std::vector<std::string> atom_names = (*it1).second;
-                                            if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
-                                            {
-                                                AtomVector atoms = residue->GetAtoms();
-                                                for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
-                                                {
-                                                    std::string atom_name = *it3;
-                                                    int atom_name_search_type = 0;
-                                                    if(atom_name.at(0) == '^')
-                                                    {
-                                                        atom_name = atom_name.substr(1);
-                                                        atom_name_search_type = -1;
-                                                    }
-                                                    else if(atom_name.at(atom_name.size() - 1) == '$')
-                                                    {
-                                                        atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                        atom_name_search_type = 1;
-                                                    }
-                                                    else if(atom_name.at(0) == '#')
-                                                    {
-                                                        atom_name = atom_name.substr(1);
-                                                        atom_name_search_type = -2;
-                                                    }
-                                                    else
-                                                        atom_name_search_type = 0;
-                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                    {
-                                                        Atom* atom = *it4;
-                                                        switch(atom_name_search_type)
-                                                        {
-                                                            case 0:
-                                                            {
-                                                                if(atom->GetName().compare(atom_name) == 0)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case 1:
-                                                            {
-                                                                if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                        atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case -1:
-                                                            {
-                                                                if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                        atom->GetName().find(atom_name) == 0)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case -2:
-                                                            {
-                                                                std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                                int range_selection = 0;
-                                                                if(atom_name.find("-") != std::string::npos)
-                                                                {
-                                                                    range_selection = 1;
-
-                                                                }
-                                                                else
-                                                                    range_selection = 0;
-                                                                switch(range_selection)
-                                                                {
-                                                                    case 0:
-                                                                    {
-                                                                        if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                                atom_serial_number.find(atom_name) == 0)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
-                                                                    case 1:
-                                                                    {
-                                                                        std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                        std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                        int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                        int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                        int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                        if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
-                                                                }
-                                                                break;
-                                                            }
-                                                        }
-
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                AtomVector atoms = residue->GetAtoms();
-                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                {
-                                                    Atom* atom = *it4;
-                                                    selection.push_back(atom);
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    }
-                                    case 1:   /// Searching the residue set by maching the end of the residue names
-                                    {
-                                        if(residue->GetName().find(residue_name) != std::string::npos &&
-                                                residue->GetName().find(residue_name) == residue->GetName().size() - residue_name.size())
-                                        {
-                                            std::vector<std::string> atom_names = (*it1).second;
-                                            if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
-                                            {
-                                                AtomVector atoms = residue->GetAtoms();
-                                                for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
-                                                {
-                                                    std::string atom_name = *it3;
-                                                    int atom_name_search_type = 0;
-                                                    if(atom_name.at(0) == '^')
-                                                    {
-                                                        atom_name = atom_name.substr(1);
-                                                        atom_name_search_type = -1;
-                                                    }
-                                                    else if(atom_name.at(atom_name.size() - 1) == '$')
-                                                    {
-                                                        atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                        atom_name_search_type = 1;
-                                                    }
-                                                    else if(atom_name.at(0) == '#')
-                                                    {
-                                                        atom_name = atom_name.substr(1);
-                                                        atom_name_search_type = -2;
-                                                    }
-                                                    else
-                                                        atom_name_search_type = 0;
-                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                    {
-                                                        Atom* atom = *it4;
-                                                        switch(atom_name_search_type)
-                                                        {
-                                                            case 0:
-                                                            {
-                                                                if(atom->GetName().compare(atom_name) == 0)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case 1:
-                                                            {
-                                                                if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                        atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case -1:
-                                                            {
-                                                                if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                        atom->GetName().find(atom_name) == 0)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case -2:
-                                                            {
-                                                                std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                                int range_selection = 0;
-                                                                if(atom_name.find("-") != std::string::npos)
-                                                                {
-                                                                    range_selection = 1;
-
-                                                                }
-                                                                else
-                                                                    range_selection = 0;
-                                                                switch(range_selection)
-                                                                {
-                                                                    case 0:
-                                                                    {
-                                                                        if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                                atom_serial_number.find(atom_name) == 0)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
-                                                                    case 1:
-                                                                    {
-                                                                        std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                        std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                        int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                        int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                        int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                        if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
-                                                                }
-                                                                break;
-                                                            }
-                                                        }
-
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                AtomVector atoms = residue->GetAtoms();
-                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                {
-                                                    Atom* atom = *it4;
-                                                    selection.push_back(atom);
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    }
-                                    case -1:  /// Searching the residue set by matching the begining of the residue names
-                                    {
-                                        if(residue->GetName().find(residue_name) != std::string::npos &&
-                                                residue->GetName().find(residue_name) == 0)
-                                        {
-                                            std::vector<std::string> atom_names = (*it1).second;
-                                            if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
-                                            {
-                                                AtomVector atoms = residue->GetAtoms();
-                                                for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
-                                                {
-                                                    std::string atom_name = *it3;
-                                                    int atom_name_search_type = 0;
-                                                    if(atom_name.at(0) == '^')
-                                                    {
-                                                        atom_name = atom_name.substr(1);
-                                                        atom_name_search_type = -1;
-                                                    }
-                                                    else if(atom_name.at(atom_name.size() - 1) == '$')
-                                                    {
-                                                        atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                        atom_name_search_type = 1;
-                                                    }
-                                                    else if(atom_name.at(0) == '#')
-                                                    {
-                                                        atom_name = atom_name.substr(1);
-                                                        atom_name_search_type = -2;
-                                                    }
-                                                    else
-                                                        atom_name_search_type = 0;
-                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                    {
-                                                        Atom* atom = *it4;
-                                                        switch(atom_name_search_type)
-                                                        {
-                                                            case 0:
-                                                            {
-                                                                if(atom->GetName().compare(atom_name) == 0)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case 1:
-                                                            {
-                                                                if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                        atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case -1:
-                                                            {
-                                                                if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                        atom->GetName().find(atom_name) == 0)
-                                                                    selection.push_back(atom);
-                                                                break;
-                                                            }
-                                                            case -2:
-                                                            {
-                                                                std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                                int range_selection = 0;
-                                                                if(atom_name.find("-") != std::string::npos)
-                                                                {
-                                                                    range_selection = 1;
-
-                                                                }
-                                                                else
-                                                                    range_selection = 0;
-                                                                switch(range_selection)
-                                                                {
-                                                                    case 0:
-                                                                    {
-                                                                        if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                                atom_serial_number.find(atom_name) == 0)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
-                                                                    case 1:
-                                                                    {
-                                                                        std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                        std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                        int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                        int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                        int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                        if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
-                                                                }
-                                                                break;
-                                                            }
-                                                        }
-
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                AtomVector atoms = residue->GetAtoms();
-                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                {
-                                                    Atom* atom = *it4;
-                                                    selection.push_back(atom);
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    }
-                                    case -2:  /// Searching the residue set by matching the residue sequence number
-                                    {
-                                        std::string residue_sequence_number = gmml::Split(residue->GetId(), "_").at(2);
-                                        int range_residue_selection = 0;
-                                        if(residue_sequence_number.find("-") != std::string::npos)
-                                        {
-                                            range_residue_selection = 1;
                                         }
                                         else
-                                            range_residue_selection = 0;
-                                        switch(range_residue_selection)
                                         {
-                                            case 0:
+                                            AtomVector atoms = residue->GetAtoms();
+                                            for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
                                             {
-                                                if(residue_sequence_number.find(residue_name) != std::string::npos &&
-                                                        residue_sequence_number.find(residue_name) == 0)
+                                                Atom* atom = *it4;
+                                                selection.push_back(atom);
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            case 1: /// Searching the residue set by maching the end of the residue names
+                                {
+                                    if (residue->GetName().find(residue_name) != std::string::npos &&
+                                        residue->GetName().find(residue_name) ==
+                                            residue->GetName().size() - residue_name.size())
+                                    {
+                                        std::vector<std::string> atom_names = (*it1).second;
+                                        if (find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                        {
+                                            AtomVector atoms = residue->GetAtoms();
+                                            for (std::vector<std::string>::iterator it3 = atom_names.begin();
+                                                 it3 != atom_names.end(); it3++)
+                                            {
+                                                std::string atom_name     = *it3;
+                                                int atom_name_search_type = 0;
+                                                if (atom_name.at(0) == '^')
+                                                {
+                                                    atom_name             = atom_name.substr(1);
+                                                    atom_name_search_type = -1;
+                                                }
+                                                else if (atom_name.at(atom_name.size() - 1) == '$')
+                                                {
+                                                    atom_name             = atom_name.substr(0, atom_name.size() - 2);
+                                                    atom_name_search_type = 1;
+                                                }
+                                                else if (atom_name.at(0) == '#')
+                                                {
+                                                    atom_name             = atom_name.substr(1);
+                                                    atom_name_search_type = -2;
+                                                }
+                                                else
+                                                {
+                                                    atom_name_search_type = 0;
+                                                }
+                                                for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end();
+                                                     it4++)
+                                                {
+                                                    Atom* atom = *it4;
+                                                    switch (atom_name_search_type)
+                                                    {
+                                                        case 0:
+                                                            {
+                                                                if (atom->GetName().compare(atom_name) == 0)
+                                                                {
+                                                                    selection.push_back(atom);
+                                                                }
+                                                                break;
+                                                            }
+                                                        case 1:
+                                                            {
+                                                                if (atom->GetName().find(atom_name) !=
+                                                                        std::string::npos &&
+                                                                    atom->GetName().find(atom_name) ==
+                                                                        atom->GetName().size() - atom_name.size())
+                                                                {
+                                                                    selection.push_back(atom);
+                                                                }
+                                                                break;
+                                                            }
+                                                        case -1:
+                                                            {
+                                                                if (atom->GetName().find(atom_name) !=
+                                                                        std::string::npos &&
+                                                                    atom->GetName().find(atom_name) == 0)
+                                                                {
+                                                                    selection.push_back(atom);
+                                                                }
+                                                                break;
+                                                            }
+                                                        case -2:
+                                                            {
+                                                                std::string atom_serial_number =
+                                                                    gmml::Split(atom->GetId(), "_").at(1);
+                                                                int range_selection = 0;
+                                                                if (atom_name.find("-") != std::string::npos)
+                                                                {
+                                                                    range_selection = 1;
+                                                                }
+                                                                else
+                                                                {
+                                                                    range_selection = 0;
+                                                                }
+                                                                switch (range_selection)
+                                                                {
+                                                                    case 0:
+                                                                        {
+                                                                            if (atom_serial_number.find(atom_name) !=
+                                                                                    std::string::npos &&
+                                                                                atom_serial_number.find(atom_name) == 0)
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                    case 1:
+                                                                        {
+                                                                            std::string start_index =
+                                                                                gmml::Split(atom_name, "-").at(0);
+                                                                            std::string end_index =
+                                                                                gmml::Split(atom_name, "-").at(1);
+                                                                            int atom_serial_number_int =
+                                                                                gmml::ConvertString<int>(
+                                                                                    atom_serial_number);
+                                                                            int start_index_int =
+                                                                                gmml::ConvertString<int>(start_index);
+                                                                            int end_index_int =
+                                                                                gmml::ConvertString<int>(end_index);
+                                                                            if (atom_serial_number_int >=
+                                                                                    start_index_int &&
+                                                                                atom_serial_number_int <= end_index_int)
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                }
+                                                                break;
+                                                            }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            AtomVector atoms = residue->GetAtoms();
+                                            for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                            {
+                                                Atom* atom = *it4;
+                                                selection.push_back(atom);
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            case -1: /// Searching the residue set by matching the begining of the residue names
+                                {
+                                    if (residue->GetName().find(residue_name) != std::string::npos &&
+                                        residue->GetName().find(residue_name) == 0)
+                                    {
+                                        std::vector<std::string> atom_names = (*it1).second;
+                                        if (find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                        {
+                                            AtomVector atoms = residue->GetAtoms();
+                                            for (std::vector<std::string>::iterator it3 = atom_names.begin();
+                                                 it3 != atom_names.end(); it3++)
+                                            {
+                                                std::string atom_name     = *it3;
+                                                int atom_name_search_type = 0;
+                                                if (atom_name.at(0) == '^')
+                                                {
+                                                    atom_name             = atom_name.substr(1);
+                                                    atom_name_search_type = -1;
+                                                }
+                                                else if (atom_name.at(atom_name.size() - 1) == '$')
+                                                {
+                                                    atom_name             = atom_name.substr(0, atom_name.size() - 2);
+                                                    atom_name_search_type = 1;
+                                                }
+                                                else if (atom_name.at(0) == '#')
+                                                {
+                                                    atom_name             = atom_name.substr(1);
+                                                    atom_name_search_type = -2;
+                                                }
+                                                else
+                                                {
+                                                    atom_name_search_type = 0;
+                                                }
+                                                for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end();
+                                                     it4++)
+                                                {
+                                                    Atom* atom = *it4;
+                                                    switch (atom_name_search_type)
+                                                    {
+                                                        case 0:
+                                                            {
+                                                                if (atom->GetName().compare(atom_name) == 0)
+                                                                {
+                                                                    selection.push_back(atom);
+                                                                }
+                                                                break;
+                                                            }
+                                                        case 1:
+                                                            {
+                                                                if (atom->GetName().find(atom_name) !=
+                                                                        std::string::npos &&
+                                                                    atom->GetName().find(atom_name) ==
+                                                                        atom->GetName().size() - atom_name.size())
+                                                                {
+                                                                    selection.push_back(atom);
+                                                                }
+                                                                break;
+                                                            }
+                                                        case -1:
+                                                            {
+                                                                if (atom->GetName().find(atom_name) !=
+                                                                        std::string::npos &&
+                                                                    atom->GetName().find(atom_name) == 0)
+                                                                {
+                                                                    selection.push_back(atom);
+                                                                }
+                                                                break;
+                                                            }
+                                                        case -2:
+                                                            {
+                                                                std::string atom_serial_number =
+                                                                    gmml::Split(atom->GetId(), "_").at(1);
+                                                                int range_selection = 0;
+                                                                if (atom_name.find("-") != std::string::npos)
+                                                                {
+                                                                    range_selection = 1;
+                                                                }
+                                                                else
+                                                                {
+                                                                    range_selection = 0;
+                                                                }
+                                                                switch (range_selection)
+                                                                {
+                                                                    case 0:
+                                                                        {
+                                                                            if (atom_serial_number.find(atom_name) !=
+                                                                                    std::string::npos &&
+                                                                                atom_serial_number.find(atom_name) == 0)
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                    case 1:
+                                                                        {
+                                                                            std::string start_index =
+                                                                                gmml::Split(atom_name, "-").at(0);
+                                                                            std::string end_index =
+                                                                                gmml::Split(atom_name, "-").at(1);
+                                                                            int atom_serial_number_int =
+                                                                                gmml::ConvertString<int>(
+                                                                                    atom_serial_number);
+                                                                            int start_index_int =
+                                                                                gmml::ConvertString<int>(start_index);
+                                                                            int end_index_int =
+                                                                                gmml::ConvertString<int>(end_index);
+                                                                            if (atom_serial_number_int >=
+                                                                                    start_index_int &&
+                                                                                atom_serial_number_int <= end_index_int)
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                }
+                                                                break;
+                                                            }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else
+                                        {
+                                            AtomVector atoms = residue->GetAtoms();
+                                            for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                            {
+                                                Atom* atom = *it4;
+                                                selection.push_back(atom);
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            case -2: /// Searching the residue set by matching the residue sequence number
+                                {
+                                    std::string residue_sequence_number = gmml::Split(residue->GetId(), "_").at(2);
+                                    int range_residue_selection         = 0;
+                                    if (residue_sequence_number.find("-") != std::string::npos)
+                                    {
+                                        range_residue_selection = 1;
+                                    }
+                                    else
+                                    {
+                                        range_residue_selection = 0;
+                                    }
+                                    switch (range_residue_selection)
+                                    {
+                                        case 0:
+                                            {
+                                                if (residue_sequence_number.find(residue_name) != std::string::npos &&
+                                                    residue_sequence_number.find(residue_name) == 0)
                                                 {
                                                     std::vector<std::string> atom_names = (*it1).second;
-                                                    if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                    if (find(atom_names.begin(), atom_names.end(), "*") ==
+                                                        atom_names.end())
                                                     {
                                                         AtomVector atoms = residue->GetAtoms();
-                                                        for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                        for (std::vector<std::string>::iterator it3 =
+                                                                 atom_names.begin();
+                                                             it3 != atom_names.end(); it3++)
                                                         {
-                                                            std::string atom_name = *it3;
+                                                            std::string atom_name     = *it3;
                                                             int atom_name_search_type = 0;
-                                                            if(atom_name.at(0) == '^')
+                                                            if (atom_name.at(0) == '^')
                                                             {
-                                                                atom_name = atom_name.substr(1);
+                                                                atom_name             = atom_name.substr(1);
                                                                 atom_name_search_type = -1;
                                                             }
-                                                            else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                            else if (atom_name.at(atom_name.size() - 1) == '$')
                                                             {
                                                                 atom_name = atom_name.substr(0, atom_name.size() - 2);
                                                                 atom_name_search_type = 1;
                                                             }
-                                                            else if(atom_name.at(0) == '#')
+                                                            else if (atom_name.at(0) == '#')
                                                             {
-                                                                atom_name = atom_name.substr(1);
+                                                                atom_name             = atom_name.substr(1);
                                                                 atom_name_search_type = -2;
                                                             }
                                                             else
+                                                            {
                                                                 atom_name_search_type = 0;
-                                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                            }
+                                                            for (AtomVector::iterator it4 = atoms.begin();
+                                                                 it4 != atoms.end(); it4++)
                                                             {
                                                                 Atom* atom = *it4;
-                                                                switch(atom_name_search_type)
+                                                                switch (atom_name_search_type)
                                                                 {
                                                                     case 0:
-                                                                    {
-                                                                        if(atom->GetName().compare(atom_name) == 0)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
+                                                                        {
+                                                                            if (atom->GetName().compare(atom_name) == 0)
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
                                                                     case 1:
-                                                                    {
-                                                                        if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                                atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
+                                                                        {
+                                                                            if (atom->GetName().find(atom_name) !=
+                                                                                    std::string::npos &&
+                                                                                atom->GetName().find(atom_name) ==
+                                                                                    atom->GetName().size() -
+                                                                                        atom_name.size())
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
                                                                     case -1:
-                                                                    {
-                                                                        if(atom->GetName().find(atom_name) != std::string::npos &&
+                                                                        {
+                                                                            if (atom->GetName().find(atom_name) !=
+                                                                                    std::string::npos &&
                                                                                 atom->GetName().find(atom_name) == 0)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
                                                                     case -2:
-                                                                    {
-                                                                        std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                                        int range_selection = 0;
-                                                                        if(atom_name.find("-") != std::string::npos)
                                                                         {
-                                                                            range_selection = 1;
-
-                                                                        }
-                                                                        else
-                                                                            range_selection = 0;
-                                                                        switch(range_selection)
-                                                                        {
-                                                                            case 0:
+                                                                            std::string atom_serial_number =
+                                                                                gmml::Split(atom->GetId(), "_").at(1);
+                                                                            int range_selection = 0;
+                                                                            if (atom_name.find("-") !=
+                                                                                std::string::npos)
                                                                             {
-                                                                                if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                                        atom_serial_number.find(atom_name) == 0)
-                                                                                    selection.push_back(atom);
-                                                                                break;
+                                                                                range_selection = 1;
                                                                             }
-                                                                            case 1:
+                                                                            else
                                                                             {
-                                                                                std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                                std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                                int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                                int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                                int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                                if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                                    selection.push_back(atom);
-                                                                                break;
+                                                                                range_selection = 0;
                                                                             }
+                                                                            switch (range_selection)
+                                                                            {
+                                                                                case 0:
+                                                                                    {
+                                                                                        if (atom_serial_number.find(
+                                                                                                atom_name) !=
+                                                                                                std::string::npos &&
+                                                                                            atom_serial_number.find(
+                                                                                                atom_name) == 0)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                                case 1:
+                                                                                    {
+                                                                                        std::string start_index =
+                                                                                            gmml::Split(atom_name, "-")
+                                                                                                .at(0);
+                                                                                        std::string end_index =
+                                                                                            gmml::Split(atom_name, "-")
+                                                                                                .at(1);
+                                                                                        int atom_serial_number_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                atom_serial_number);
+                                                                                        int start_index_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                start_index);
+                                                                                        int end_index_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                end_index);
+                                                                                        if (atom_serial_number_int >=
+                                                                                                start_index_int &&
+                                                                                            atom_serial_number_int <=
+                                                                                                end_index_int)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                            }
+                                                                            break;
                                                                         }
-                                                                        break;
-                                                                    }
                                                                 }
-
                                                             }
                                                         }
                                                     }
                                                     else
                                                     {
                                                         AtomVector atoms = residue->GetAtoms();
-                                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                        for (AtomVector::iterator it4 = atoms.begin();
+                                                             it4 != atoms.end(); it4++)
                                                         {
                                                             Atom* atom = *it4;
                                                             selection.push_back(atom);
@@ -1272,108 +703,150 @@ MolecularModeling::AtomVector Assembly::Select(std::string pattern)
                                                 }
                                                 break;
                                             }
-                                            case 1:
+                                        case 1:
                                             {
                                                 std::string residue_start_index = gmml::Split(residue_name, "-").at(0);
-                                                std::string residue_end_index = gmml::Split(residue_name, "-").at(1);
-                                                int residue_sequence_number_int = gmml::ConvertString<int>(residue_sequence_number);
-                                                int residue_start_index_int = gmml::ConvertString<int>(residue_start_index);
+                                                std::string residue_end_index   = gmml::Split(residue_name, "-").at(1);
+                                                int residue_sequence_number_int =
+                                                    gmml::ConvertString<int>(residue_sequence_number);
+                                                int residue_start_index_int =
+                                                    gmml::ConvertString<int>(residue_start_index);
                                                 int residue_end_index_int = gmml::ConvertString<int>(residue_end_index);
-                                                if(residue_sequence_number_int >= residue_start_index_int && residue_sequence_number_int <= residue_end_index_int)
+                                                if (residue_sequence_number_int >= residue_start_index_int &&
+                                                    residue_sequence_number_int <= residue_end_index_int)
                                                 {
                                                     std::vector<std::string> atom_names = (*it1).second;
-                                                    if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                    if (find(atom_names.begin(), atom_names.end(), "*") ==
+                                                        atom_names.end())
                                                     {
                                                         AtomVector atoms = residue->GetAtoms();
-                                                        for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                        for (std::vector<std::string>::iterator it3 =
+                                                                 atom_names.begin();
+                                                             it3 != atom_names.end(); it3++)
                                                         {
-                                                            std::string atom_name = *it3;
+                                                            std::string atom_name     = *it3;
                                                             int atom_name_search_type = 0;
-                                                            if(atom_name.at(0) == '^')
+                                                            if (atom_name.at(0) == '^')
                                                             {
-                                                                atom_name = atom_name.substr(1);
+                                                                atom_name             = atom_name.substr(1);
                                                                 atom_name_search_type = -1;
                                                             }
-                                                            else if(atom_name.at(atom_name.size() - 1) == '$')
+                                                            else if (atom_name.at(atom_name.size() - 1) == '$')
                                                             {
                                                                 atom_name = atom_name.substr(0, atom_name.size() - 2);
                                                                 atom_name_search_type = 1;
                                                             }
-                                                            else if(atom_name.at(0) == '#')
+                                                            else if (atom_name.at(0) == '#')
                                                             {
-                                                                atom_name = atom_name.substr(1);
+                                                                atom_name             = atom_name.substr(1);
                                                                 atom_name_search_type = -2;
                                                             }
                                                             else
+                                                            {
                                                                 atom_name_search_type = 0;
-                                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                            }
+                                                            for (AtomVector::iterator it4 = atoms.begin();
+                                                                 it4 != atoms.end(); it4++)
                                                             {
                                                                 Atom* atom = *it4;
-                                                                switch(atom_name_search_type)
+                                                                switch (atom_name_search_type)
                                                                 {
                                                                     case 0:
-                                                                    {
-                                                                        if(atom->GetName().compare(atom_name) == 0)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
+                                                                        {
+                                                                            if (atom->GetName().compare(atom_name) == 0)
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
                                                                     case 1:
-                                                                    {
-                                                                        if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                                atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
+                                                                        {
+                                                                            if (atom->GetName().find(atom_name) !=
+                                                                                    std::string::npos &&
+                                                                                atom->GetName().find(atom_name) ==
+                                                                                    atom->GetName().size() -
+                                                                                        atom_name.size())
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
                                                                     case -1:
-                                                                    {
-                                                                        if(atom->GetName().find(atom_name) != std::string::npos &&
+                                                                        {
+                                                                            if (atom->GetName().find(atom_name) !=
+                                                                                    std::string::npos &&
                                                                                 atom->GetName().find(atom_name) == 0)
-                                                                            selection.push_back(atom);
-                                                                        break;
-                                                                    }
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
                                                                     case -2:
-                                                                    {
-                                                                        std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                                        int range_selection = 0;
-                                                                        if(atom_name.find("-") != std::string::npos)
                                                                         {
-                                                                            range_selection = 1;
-
-                                                                        }
-                                                                        else
-                                                                            range_selection = 0;
-                                                                        switch(range_selection)
-                                                                        {
-                                                                            case 0:
+                                                                            std::string atom_serial_number =
+                                                                                gmml::Split(atom->GetId(), "_").at(1);
+                                                                            int range_selection = 0;
+                                                                            if (atom_name.find("-") !=
+                                                                                std::string::npos)
                                                                             {
-                                                                                if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                                        atom_serial_number.find(atom_name) == 0)
-                                                                                    selection.push_back(atom);
-                                                                                break;
+                                                                                range_selection = 1;
                                                                             }
-                                                                            case 1:
+                                                                            else
                                                                             {
-                                                                                std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                                std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                                int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                                int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                                int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                                if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                                    selection.push_back(atom);
-                                                                                break;
+                                                                                range_selection = 0;
                                                                             }
+                                                                            switch (range_selection)
+                                                                            {
+                                                                                case 0:
+                                                                                    {
+                                                                                        if (atom_serial_number.find(
+                                                                                                atom_name) !=
+                                                                                                std::string::npos &&
+                                                                                            atom_serial_number.find(
+                                                                                                atom_name) == 0)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                                case 1:
+                                                                                    {
+                                                                                        std::string start_index =
+                                                                                            gmml::Split(atom_name, "-")
+                                                                                                .at(0);
+                                                                                        std::string end_index =
+                                                                                            gmml::Split(atom_name, "-")
+                                                                                                .at(1);
+                                                                                        int atom_serial_number_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                atom_serial_number);
+                                                                                        int start_index_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                start_index);
+                                                                                        int end_index_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                end_index);
+                                                                                        if (atom_serial_number_int >=
+                                                                                                start_index_int &&
+                                                                                            atom_serial_number_int <=
+                                                                                                end_index_int)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                            }
+                                                                            break;
                                                                         }
-                                                                        break;
-                                                                    }
                                                                 }
-
                                                             }
                                                         }
                                                     }
                                                     else
                                                     {
                                                         AtomVector atoms = residue->GetAtoms();
-                                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                        for (AtomVector::iterator it4 = atoms.begin();
+                                                             it4 != atoms.end(); it4++)
                                                         {
                                                             Atom* atom = *it4;
                                                             selection.push_back(atom);
@@ -1382,110 +855,1080 @@ MolecularModeling::AtomVector Assembly::Select(std::string pattern)
                                                     break;
                                                 }
                                             }
-                                        }
-                                        break;
+                                    }
+                                    break;
+                                }
+                        }
+                    }
+                }
+                else
+                {
+                    for (ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end();
+                         it2++)
+                    {
+                        Residue* residue                    = *it2;
+                        std::vector<std::string> atom_names = (*it1).second;
+                        if (find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                        {
+                            AtomVector atoms = residue->GetAtoms();
+                            for (std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end();
+                                 it3++)
+                            {
+                                std::string atom_name     = *it3;
+                                int atom_name_search_type = 0;
+                                if (atom_name.at(0) == '^')
+                                {
+                                    atom_name             = atom_name.substr(1);
+                                    atom_name_search_type = -1;
+                                }
+                                else if (atom_name.at(atom_name.size() - 1) == '$')
+                                {
+                                    atom_name             = atom_name.substr(0, atom_name.size() - 2);
+                                    atom_name_search_type = 1;
+                                }
+                                else if (atom_name.at(0) == '#')
+                                {
+                                    atom_name             = atom_name.substr(1);
+                                    atom_name_search_type = -2;
+                                }
+                                else
+                                {
+                                    atom_name_search_type = 0;
+                                }
+                                for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                {
+                                    Atom* atom = *it4;
+                                    switch (atom_name_search_type)
+                                    {
+                                        case 0:
+                                            {
+                                                if (atom->GetName().compare(atom_name) == 0)
+                                                {
+                                                    selection.push_back(atom);
+                                                }
+                                                break;
+                                            }
+                                        case 1:
+                                            {
+                                                if (atom->GetName().find(atom_name) != std::string::npos &&
+                                                    atom->GetName().find(atom_name) ==
+                                                        atom->GetName().size() - atom_name.size())
+                                                {
+                                                    selection.push_back(atom);
+                                                }
+                                                break;
+                                            }
+                                        case -1:
+                                            {
+                                                if (atom->GetName().find(atom_name) != std::string::npos &&
+                                                    atom->GetName().find(atom_name) == 0)
+                                                {
+                                                    selection.push_back(atom);
+                                                }
+                                                break;
+                                            }
+                                        case -2:
+                                            {
+                                                std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
+                                                int range_selection            = 0;
+                                                if (atom_name.find("-") != std::string::npos)
+                                                {
+                                                    range_selection = 1;
+                                                }
+                                                else
+                                                {
+                                                    range_selection = 0;
+                                                }
+                                                switch (range_selection)
+                                                {
+                                                    case 0:
+                                                        {
+                                                            if (atom_serial_number.find(atom_name) !=
+                                                                    std::string::npos &&
+                                                                atom_serial_number.find(atom_name) == 0)
+                                                            {
+                                                                selection.push_back(atom);
+                                                            }
+                                                            break;
+                                                        }
+                                                    case 1:
+                                                        {
+                                                            std::string start_index = gmml::Split(atom_name, "-").at(0);
+                                                            std::string end_index   = gmml::Split(atom_name, "-").at(1);
+                                                            int atom_serial_number_int =
+                                                                gmml::ConvertString<int>(atom_serial_number);
+                                                            int start_index_int = gmml::ConvertString<int>(start_index);
+                                                            int end_index_int   = gmml::ConvertString<int>(end_index);
+                                                            if (atom_serial_number_int >= start_index_int &&
+                                                                atom_serial_number_int <= end_index_int)
+                                                            {
+                                                                selection.push_back(atom);
+                                                            }
+                                                            break;
+                                                        }
+                                                }
+                                                break;
+                                            }
                                     }
                                 }
                             }
                         }
                         else
                         {
-                            for(ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end(); it2++)
+                            AtomVector atoms = residue->GetAtoms();
+                            for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                            {
+                                Atom* atom = *it4;
+                                selection.push_back(atom);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            int start_index = key.find("*");
+            if (start_index == 0)
+            {
+                for (HierarchicalContainmentMap::iterator it5 = hierarchical_map.begin(); it5 != hierarchical_map.end();
+                     it5++)
+                {
+                    ResidueVector residues_of_assembly                    = (*it5).second;
+                    std::map<std::string, std::vector<std::string>> value = (*it).second;
+                    for (std::map<std::string, std::vector<std::string>>::iterator it1 = value.begin();
+                         it1 != value.end(); it1++)
+                    {
+                        std::string residue_name     = (*it1).first;
+                        int residue_name_search_type = 0;
+                        if (residue_name.at(0) == '^')
+                        {
+                            residue_name             = residue_name.substr(1);
+                            residue_name_search_type = -1;
+                        }
+                        else if (residue_name.at(residue_name.size() - 1) == '$')
+                        {
+                            residue_name             = residue_name.substr(0, residue_name.size() - 2);
+                            residue_name_search_type = 1;
+                        }
+                        else if (residue_name.at(0) == '#')
+                        {
+                            residue_name             = residue_name.substr(1);
+                            residue_name_search_type = -2;
+                        }
+                        else
+                        {
+                            residue_name_search_type = 0;
+                        }
+                        if (residue_name.find("*") == std::string::npos)
+                        {
+                            for (ResidueVector::iterator it2 = residues_of_assembly.begin();
+                                 it2 != residues_of_assembly.end(); it2++)
                             {
                                 Residue* residue = *it2;
+                                switch (residue_name_search_type)
+                                {
+                                    case 0: /// Search in residue set by matching the whole name of the residue
+                                        {
+                                            if (residue->GetName().compare(residue_name) == 0)
+                                            {
+                                                std::vector<std::string> atom_names = (*it1).second;
+                                                if (find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                {
+                                                    AtomVector atoms = residue->GetAtoms();
+                                                    for (std::vector<std::string>::iterator it3 = atom_names.begin();
+                                                         it3 != atom_names.end(); it3++)
+                                                    {
+                                                        std::string atom_name     = *it3;
+                                                        int atom_name_search_type = 0;
+                                                        if (atom_name.at(0) == '^')
+                                                        {
+                                                            atom_name             = atom_name.substr(1);
+                                                            atom_name_search_type = -1;
+                                                        }
+                                                        else if (atom_name.at(atom_name.size() - 1) == '$')
+                                                        {
+                                                            atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                            atom_name_search_type = 1;
+                                                        }
+                                                        else if (atom_name.at(0) == '#')
+                                                        {
+                                                            atom_name             = atom_name.substr(1);
+                                                            atom_name_search_type = -2;
+                                                        }
+                                                        else
+                                                        {
+                                                            atom_name_search_type = 0;
+                                                        }
+                                                        for (AtomVector::iterator it4 = atoms.begin();
+                                                             it4 != atoms.end(); it4++)
+                                                        {
+                                                            Atom* atom = *it4;
+                                                            switch (atom_name_search_type)
+                                                            {
+                                                                case 0:
+                                                                    {
+                                                                        if (atom->GetName().compare(atom_name) == 0)
+                                                                        {
+                                                                            selection.push_back(atom);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                case 1:
+                                                                    {
+                                                                        if (atom->GetName().find(atom_name) !=
+                                                                                std::string::npos &&
+                                                                            atom->GetName().find(atom_name) ==
+                                                                                atom->GetName().size() -
+                                                                                    atom_name.size())
+                                                                        {
+                                                                            selection.push_back(atom);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                case -1:
+                                                                    {
+                                                                        if (atom->GetName().find(atom_name) !=
+                                                                                std::string::npos &&
+                                                                            atom->GetName().find(atom_name) == 0)
+                                                                        {
+                                                                            selection.push_back(atom);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                case -2:
+                                                                    {
+                                                                        std::string atom_serial_number =
+                                                                            gmml::Split(atom->GetId(), "_").at(1);
+                                                                        int range_selection = 0;
+                                                                        if (atom_name.find("-") != std::string::npos)
+                                                                        {
+                                                                            range_selection = 1;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            range_selection = 0;
+                                                                        }
+                                                                        switch (range_selection)
+                                                                        {
+                                                                            case 0:
+                                                                                {
+                                                                                    if (atom_serial_number.find(
+                                                                                            atom_name) !=
+                                                                                            std::string::npos &&
+                                                                                        atom_serial_number.find(
+                                                                                            atom_name) == 0)
+                                                                                    {
+                                                                                        selection.push_back(atom);
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                            case 1:
+                                                                                {
+                                                                                    std::string start_index =
+                                                                                        gmml::Split(atom_name, "-")
+                                                                                            .at(0);
+                                                                                    std::string end_index =
+                                                                                        gmml::Split(atom_name, "-")
+                                                                                            .at(1);
+                                                                                    int atom_serial_number_int =
+                                                                                        gmml::ConvertString<int>(
+                                                                                            atom_serial_number);
+                                                                                    int start_index_int =
+                                                                                        gmml::ConvertString<int>(
+                                                                                            start_index);
+                                                                                    int end_index_int =
+                                                                                        gmml::ConvertString<int>(
+                                                                                            end_index);
+                                                                                    if (atom_serial_number_int >=
+                                                                                            start_index_int &&
+                                                                                        atom_serial_number_int <=
+                                                                                            end_index_int)
+                                                                                    {
+                                                                                        selection.push_back(atom);
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    AtomVector atoms = residue->GetAtoms();
+                                                    for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end();
+                                                         it4++)
+                                                    {
+                                                        Atom* atom = *it4;
+                                                        selection.push_back(atom);
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    case 1: /// Searching the residue set by maching the end of the residue names
+                                        {
+                                            if (residue->GetName().find(residue_name) != std::string::npos &&
+                                                residue->GetName().find(residue_name) ==
+                                                    residue->GetName().size() - residue_name.size())
+                                            {
+                                                std::vector<std::string> atom_names = (*it1).second;
+                                                if (find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                {
+                                                    AtomVector atoms = residue->GetAtoms();
+                                                    for (std::vector<std::string>::iterator it3 = atom_names.begin();
+                                                         it3 != atom_names.end(); it3++)
+                                                    {
+                                                        std::string atom_name     = *it3;
+                                                        int atom_name_search_type = 0;
+                                                        if (atom_name.at(0) == '^')
+                                                        {
+                                                            atom_name             = atom_name.substr(1);
+                                                            atom_name_search_type = -1;
+                                                        }
+                                                        else if (atom_name.at(atom_name.size() - 1) == '$')
+                                                        {
+                                                            atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                            atom_name_search_type = 1;
+                                                        }
+                                                        else if (atom_name.at(0) == '#')
+                                                        {
+                                                            atom_name             = atom_name.substr(1);
+                                                            atom_name_search_type = -2;
+                                                        }
+                                                        else
+                                                        {
+                                                            atom_name_search_type = 0;
+                                                        }
+                                                        for (AtomVector::iterator it4 = atoms.begin();
+                                                             it4 != atoms.end(); it4++)
+                                                        {
+                                                            Atom* atom = *it4;
+                                                            switch (atom_name_search_type)
+                                                            {
+                                                                case 0:
+                                                                    {
+                                                                        if (atom->GetName().compare(atom_name) == 0)
+                                                                        {
+                                                                            selection.push_back(atom);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                case 1:
+                                                                    {
+                                                                        if (atom->GetName().find(atom_name) !=
+                                                                                std::string::npos &&
+                                                                            atom->GetName().find(atom_name) ==
+                                                                                atom->GetName().size() -
+                                                                                    atom_name.size())
+                                                                        {
+                                                                            selection.push_back(atom);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                case -1:
+                                                                    {
+                                                                        if (atom->GetName().find(atom_name) !=
+                                                                                std::string::npos &&
+                                                                            atom->GetName().find(atom_name) == 0)
+                                                                        {
+                                                                            selection.push_back(atom);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                case -2:
+                                                                    {
+                                                                        std::string atom_serial_number =
+                                                                            gmml::Split(atom->GetId(), "_").at(1);
+                                                                        int range_selection = 0;
+                                                                        if (atom_name.find("-") != std::string::npos)
+                                                                        {
+                                                                            range_selection = 1;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            range_selection = 0;
+                                                                        }
+                                                                        switch (range_selection)
+                                                                        {
+                                                                            case 0:
+                                                                                {
+                                                                                    if (atom_serial_number.find(
+                                                                                            atom_name) !=
+                                                                                            std::string::npos &&
+                                                                                        atom_serial_number.find(
+                                                                                            atom_name) == 0)
+                                                                                    {
+                                                                                        selection.push_back(atom);
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                            case 1:
+                                                                                {
+                                                                                    std::string start_index =
+                                                                                        gmml::Split(atom_name, "-")
+                                                                                            .at(0);
+                                                                                    std::string end_index =
+                                                                                        gmml::Split(atom_name, "-")
+                                                                                            .at(1);
+                                                                                    int atom_serial_number_int =
+                                                                                        gmml::ConvertString<int>(
+                                                                                            atom_serial_number);
+                                                                                    int start_index_int =
+                                                                                        gmml::ConvertString<int>(
+                                                                                            start_index);
+                                                                                    int end_index_int =
+                                                                                        gmml::ConvertString<int>(
+                                                                                            end_index);
+                                                                                    if (atom_serial_number_int >=
+                                                                                            start_index_int &&
+                                                                                        atom_serial_number_int <=
+                                                                                            end_index_int)
+                                                                                    {
+                                                                                        selection.push_back(atom);
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    AtomVector atoms = residue->GetAtoms();
+                                                    for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end();
+                                                         it4++)
+                                                    {
+                                                        Atom* atom = *it4;
+                                                        selection.push_back(atom);
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    case -1: /// Searching the residue set by matching the begining of the residue names
+                                        {
+                                            if (residue->GetName().find(residue_name) != std::string::npos &&
+                                                residue->GetName().find(residue_name) == 0)
+                                            {
+                                                std::vector<std::string> atom_names = (*it1).second;
+                                                if (find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                {
+                                                    AtomVector atoms = residue->GetAtoms();
+                                                    for (std::vector<std::string>::iterator it3 = atom_names.begin();
+                                                         it3 != atom_names.end(); it3++)
+                                                    {
+                                                        std::string atom_name     = *it3;
+                                                        int atom_name_search_type = 0;
+                                                        if (atom_name.at(0) == '^')
+                                                        {
+                                                            atom_name             = atom_name.substr(1);
+                                                            atom_name_search_type = -1;
+                                                        }
+                                                        else if (atom_name.at(atom_name.size() - 1) == '$')
+                                                        {
+                                                            atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                            atom_name_search_type = 1;
+                                                        }
+                                                        else if (atom_name.at(0) == '#')
+                                                        {
+                                                            atom_name             = atom_name.substr(1);
+                                                            atom_name_search_type = -2;
+                                                        }
+                                                        else
+                                                        {
+                                                            atom_name_search_type = 0;
+                                                        }
+                                                        for (AtomVector::iterator it4 = atoms.begin();
+                                                             it4 != atoms.end(); it4++)
+                                                        {
+                                                            Atom* atom = *it4;
+                                                            switch (atom_name_search_type)
+                                                            {
+                                                                case 0:
+                                                                    {
+                                                                        if (atom->GetName().compare(atom_name) == 0)
+                                                                        {
+                                                                            selection.push_back(atom);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                case 1:
+                                                                    {
+                                                                        if (atom->GetName().find(atom_name) !=
+                                                                                std::string::npos &&
+                                                                            atom->GetName().find(atom_name) ==
+                                                                                atom->GetName().size() -
+                                                                                    atom_name.size())
+                                                                        {
+                                                                            selection.push_back(atom);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                case -1:
+                                                                    {
+                                                                        if (atom->GetName().find(atom_name) !=
+                                                                                std::string::npos &&
+                                                                            atom->GetName().find(atom_name) == 0)
+                                                                        {
+                                                                            selection.push_back(atom);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                case -2:
+                                                                    {
+                                                                        std::string atom_serial_number =
+                                                                            gmml::Split(atom->GetId(), "_").at(1);
+                                                                        int range_selection = 0;
+                                                                        if (atom_name.find("-") != std::string::npos)
+                                                                        {
+                                                                            range_selection = 1;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            range_selection = 0;
+                                                                        }
+                                                                        switch (range_selection)
+                                                                        {
+                                                                            case 0:
+                                                                                {
+                                                                                    if (atom_serial_number.find(
+                                                                                            atom_name) !=
+                                                                                            std::string::npos &&
+                                                                                        atom_serial_number.find(
+                                                                                            atom_name) == 0)
+                                                                                    {
+                                                                                        selection.push_back(atom);
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                            case 1:
+                                                                                {
+                                                                                    std::string start_index =
+                                                                                        gmml::Split(atom_name, "-")
+                                                                                            .at(0);
+                                                                                    std::string end_index =
+                                                                                        gmml::Split(atom_name, "-")
+                                                                                            .at(1);
+                                                                                    int atom_serial_number_int =
+                                                                                        gmml::ConvertString<int>(
+                                                                                            atom_serial_number);
+                                                                                    int start_index_int =
+                                                                                        gmml::ConvertString<int>(
+                                                                                            start_index);
+                                                                                    int end_index_int =
+                                                                                        gmml::ConvertString<int>(
+                                                                                            end_index);
+                                                                                    if (atom_serial_number_int >=
+                                                                                            start_index_int &&
+                                                                                        atom_serial_number_int <=
+                                                                                            end_index_int)
+                                                                                    {
+                                                                                        selection.push_back(atom);
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    AtomVector atoms = residue->GetAtoms();
+                                                    for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end();
+                                                         it4++)
+                                                    {
+                                                        Atom* atom = *it4;
+                                                        selection.push_back(atom);
+                                                    }
+                                                }
+                                            }
+                                            break;
+                                        }
+                                    case -2: /// Searching the residue set by matching the residue sequence number
+                                        {
+                                            std::string residue_sequence_number =
+                                                gmml::Split(residue->GetId(), "_").at(2);
+                                            int range_residue_selection = 0;
+                                            if (residue_sequence_number.find("-") != std::string::npos)
+                                            {
+                                                range_residue_selection = 1;
+                                            }
+                                            else
+                                            {
+                                                range_residue_selection = 0;
+                                            }
+                                            switch (range_residue_selection)
+                                            {
+                                                case 0:
+                                                    {
+                                                        if (residue_sequence_number.find(residue_name) !=
+                                                                std::string::npos &&
+                                                            residue_sequence_number.find(residue_name) == 0)
+                                                        {
+                                                            std::vector<std::string> atom_names = (*it1).second;
+                                                            if (find(atom_names.begin(), atom_names.end(), "*") ==
+                                                                atom_names.end())
+                                                            {
+                                                                AtomVector atoms = residue->GetAtoms();
+                                                                for (std::vector<std::string>::iterator it3 =
+                                                                         atom_names.begin();
+                                                                     it3 != atom_names.end(); it3++)
+                                                                {
+                                                                    std::string atom_name     = *it3;
+                                                                    int atom_name_search_type = 0;
+                                                                    if (atom_name.at(0) == '^')
+                                                                    {
+                                                                        atom_name             = atom_name.substr(1);
+                                                                        atom_name_search_type = -1;
+                                                                    }
+                                                                    else if (atom_name.at(atom_name.size() - 1) == '$')
+                                                                    {
+                                                                        atom_name =
+                                                                            atom_name.substr(0, atom_name.size() - 2);
+                                                                        atom_name_search_type = 1;
+                                                                    }
+                                                                    else if (atom_name.at(0) == '#')
+                                                                    {
+                                                                        atom_name             = atom_name.substr(1);
+                                                                        atom_name_search_type = -2;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        atom_name_search_type = 0;
+                                                                    }
+                                                                    for (AtomVector::iterator it4 = atoms.begin();
+                                                                         it4 != atoms.end(); it4++)
+                                                                    {
+                                                                        Atom* atom = *it4;
+                                                                        switch (atom_name_search_type)
+                                                                        {
+                                                                            case 0:
+                                                                                {
+                                                                                    if (atom->GetName().compare(
+                                                                                            atom_name) == 0)
+                                                                                    {
+                                                                                        selection.push_back(atom);
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                            case 1:
+                                                                                {
+                                                                                    if (atom->GetName().find(
+                                                                                            atom_name) !=
+                                                                                            std::string::npos &&
+                                                                                        atom->GetName().find(
+                                                                                            atom_name) ==
+                                                                                            atom->GetName().size() -
+                                                                                                atom_name.size())
+                                                                                    {
+                                                                                        selection.push_back(atom);
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                            case -1:
+                                                                                {
+                                                                                    if (atom->GetName().find(
+                                                                                            atom_name) !=
+                                                                                            std::string::npos &&
+                                                                                        atom->GetName().find(
+                                                                                            atom_name) == 0)
+                                                                                    {
+                                                                                        selection.push_back(atom);
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                            case -2:
+                                                                                {
+                                                                                    std::string atom_serial_number =
+                                                                                        gmml::Split(atom->GetId(), "_")
+                                                                                            .at(1);
+                                                                                    int range_selection = 0;
+                                                                                    if (atom_name.find("-") !=
+                                                                                        std::string::npos)
+                                                                                    {
+                                                                                        range_selection = 1;
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        range_selection = 0;
+                                                                                    }
+                                                                                    switch (range_selection)
+                                                                                    {
+                                                                                        case 0:
+                                                                                            {
+                                                                                                if (atom_serial_number.find(
+                                                                                                        atom_name) !=
+                                                                                                        std::string::
+                                                                                                            npos &&
+                                                                                                    atom_serial_number.find(
+                                                                                                        atom_name) == 0)
+                                                                                                {
+                                                                                                    selection.push_back(
+                                                                                                        atom);
+                                                                                                }
+                                                                                                break;
+                                                                                            }
+                                                                                        case 1:
+                                                                                            {
+                                                                                                std::string
+                                                                                                    start_index =
+                                                                                                        gmml::Split(
+                                                                                                            atom_name,
+                                                                                                            "-")
+                                                                                                            .at(0);
+                                                                                                std::string end_index =
+                                                                                                    gmml::Split(
+                                                                                                        atom_name, "-")
+                                                                                                        .at(1);
+                                                                                                int atom_serial_number_int =
+                                                                                                    gmml::ConvertString<
+                                                                                                        int>(
+                                                                                                        atom_serial_number);
+                                                                                                int start_index_int =
+                                                                                                    gmml::ConvertString<
+                                                                                                        int>(
+                                                                                                        start_index);
+                                                                                                int end_index_int =
+                                                                                                    gmml::ConvertString<
+                                                                                                        int>(end_index);
+                                                                                                if (atom_serial_number_int >=
+                                                                                                        start_index_int &&
+                                                                                                    atom_serial_number_int <=
+                                                                                                        end_index_int)
+                                                                                                {
+                                                                                                    selection.push_back(
+                                                                                                        atom);
+                                                                                                }
+                                                                                                break;
+                                                                                            }
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                AtomVector atoms = residue->GetAtoms();
+                                                                for (AtomVector::iterator it4 = atoms.begin();
+                                                                     it4 != atoms.end(); it4++)
+                                                                {
+                                                                    Atom* atom = *it4;
+                                                                    selection.push_back(atom);
+                                                                }
+                                                            }
+                                                        }
+                                                        break;
+                                                    }
+                                                case 1:
+                                                    {
+                                                        std::string residue_start_index =
+                                                            gmml::Split(residue_name, "-").at(0);
+                                                        std::string residue_end_index =
+                                                            gmml::Split(residue_name, "-").at(1);
+                                                        int residue_sequence_number_int =
+                                                            gmml::ConvertString<int>(residue_sequence_number);
+                                                        int residue_start_index_int =
+                                                            gmml::ConvertString<int>(residue_start_index);
+                                                        int residue_end_index_int =
+                                                            gmml::ConvertString<int>(residue_end_index);
+                                                        if (residue_sequence_number_int >= residue_start_index_int &&
+                                                            residue_sequence_number_int <= residue_end_index_int)
+                                                        {
+                                                            std::vector<std::string> atom_names = (*it1).second;
+                                                            if (find(atom_names.begin(), atom_names.end(), "*") ==
+                                                                atom_names.end())
+                                                            {
+                                                                AtomVector atoms = residue->GetAtoms();
+                                                                for (std::vector<std::string>::iterator it3 =
+                                                                         atom_names.begin();
+                                                                     it3 != atom_names.end(); it3++)
+                                                                {
+                                                                    std::string atom_name     = *it3;
+                                                                    int atom_name_search_type = 0;
+                                                                    if (atom_name.at(0) == '^')
+                                                                    {
+                                                                        atom_name             = atom_name.substr(1);
+                                                                        atom_name_search_type = -1;
+                                                                    }
+                                                                    else if (atom_name.at(atom_name.size() - 1) == '$')
+                                                                    {
+                                                                        atom_name =
+                                                                            atom_name.substr(0, atom_name.size() - 2);
+                                                                        atom_name_search_type = 1;
+                                                                    }
+                                                                    else if (atom_name.at(0) == '#')
+                                                                    {
+                                                                        atom_name             = atom_name.substr(1);
+                                                                        atom_name_search_type = -2;
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        atom_name_search_type = 0;
+                                                                    }
+                                                                    for (AtomVector::iterator it4 = atoms.begin();
+                                                                         it4 != atoms.end(); it4++)
+                                                                    {
+                                                                        Atom* atom = *it4;
+                                                                        switch (atom_name_search_type)
+                                                                        {
+                                                                            case 0:
+                                                                                {
+                                                                                    if (atom->GetName().compare(
+                                                                                            atom_name) == 0)
+                                                                                    {
+                                                                                        selection.push_back(atom);
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                            case 1:
+                                                                                {
+                                                                                    if (atom->GetName().find(
+                                                                                            atom_name) !=
+                                                                                            std::string::npos &&
+                                                                                        atom->GetName().find(
+                                                                                            atom_name) ==
+                                                                                            atom->GetName().size() -
+                                                                                                atom_name.size())
+                                                                                    {
+                                                                                        selection.push_back(atom);
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                            case -1:
+                                                                                {
+                                                                                    if (atom->GetName().find(
+                                                                                            atom_name) !=
+                                                                                            std::string::npos &&
+                                                                                        atom->GetName().find(
+                                                                                            atom_name) == 0)
+                                                                                    {
+                                                                                        selection.push_back(atom);
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                            case -2:
+                                                                                {
+                                                                                    std::string atom_serial_number =
+                                                                                        gmml::Split(atom->GetId(), "_")
+                                                                                            .at(1);
+                                                                                    int range_selection = 0;
+                                                                                    if (atom_name.find("-") !=
+                                                                                        std::string::npos)
+                                                                                    {
+                                                                                        range_selection = 1;
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        range_selection = 0;
+                                                                                    }
+                                                                                    switch (range_selection)
+                                                                                    {
+                                                                                        case 0:
+                                                                                            {
+                                                                                                if (atom_serial_number.find(
+                                                                                                        atom_name) !=
+                                                                                                        std::string::
+                                                                                                            npos &&
+                                                                                                    atom_serial_number.find(
+                                                                                                        atom_name) == 0)
+                                                                                                {
+                                                                                                    selection.push_back(
+                                                                                                        atom);
+                                                                                                }
+                                                                                                break;
+                                                                                            }
+                                                                                        case 1:
+                                                                                            {
+                                                                                                std::string
+                                                                                                    start_index =
+                                                                                                        gmml::Split(
+                                                                                                            atom_name,
+                                                                                                            "-")
+                                                                                                            .at(0);
+                                                                                                std::string end_index =
+                                                                                                    gmml::Split(
+                                                                                                        atom_name, "-")
+                                                                                                        .at(1);
+                                                                                                int atom_serial_number_int =
+                                                                                                    gmml::ConvertString<
+                                                                                                        int>(
+                                                                                                        atom_serial_number);
+                                                                                                int start_index_int =
+                                                                                                    gmml::ConvertString<
+                                                                                                        int>(
+                                                                                                        start_index);
+                                                                                                int end_index_int =
+                                                                                                    gmml::ConvertString<
+                                                                                                        int>(end_index);
+                                                                                                if (atom_serial_number_int >=
+                                                                                                        start_index_int &&
+                                                                                                    atom_serial_number_int <=
+                                                                                                        end_index_int)
+                                                                                                {
+                                                                                                    selection.push_back(
+                                                                                                        atom);
+                                                                                                }
+                                                                                                break;
+                                                                                            }
+                                                                                    }
+                                                                                    break;
+                                                                                }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                AtomVector atoms = residue->GetAtoms();
+                                                                for (AtomVector::iterator it4 = atoms.begin();
+                                                                     it4 != atoms.end(); it4++)
+                                                                {
+                                                                    Atom* atom = *it4;
+                                                                    selection.push_back(atom);
+                                                                }
+                                                            }
+                                                            break;
+                                                        }
+                                                    }
+                                            }
+                                            break;
+                                        }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (ResidueVector::iterator it2 = residues_of_assembly.begin();
+                                 it2 != residues_of_assembly.end(); it2++)
+                            {
+                                Residue* residue                    = *it2;
                                 std::vector<std::string> atom_names = (*it1).second;
-                                if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                if (find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
                                 {
                                     AtomVector atoms = residue->GetAtoms();
-                                    for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                    for (std::vector<std::string>::iterator it3 = atom_names.begin();
+                                         it3 != atom_names.end(); it3++)
                                     {
-                                        std::string atom_name = *it3;
+                                        std::string atom_name     = *it3;
                                         int atom_name_search_type = 0;
-                                        if(atom_name.at(0) == '^')
+                                        if (atom_name.at(0) == '^')
                                         {
-                                            atom_name = atom_name.substr(1);
+                                            atom_name             = atom_name.substr(1);
                                             atom_name_search_type = -1;
                                         }
-                                        else if(atom_name.at(atom_name.size() - 1) == '$')
+                                        else if (atom_name.at(atom_name.size() - 1) == '$')
                                         {
-                                            atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                            atom_name             = atom_name.substr(0, atom_name.size() - 2);
                                             atom_name_search_type = 1;
                                         }
-                                        else if(atom_name.at(0) == '#')
+                                        else if (atom_name.at(0) == '#')
                                         {
-                                            atom_name = atom_name.substr(1);
+                                            atom_name             = atom_name.substr(1);
                                             atom_name_search_type = -2;
                                         }
                                         else
+                                        {
                                             atom_name_search_type = 0;
-                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                        }
+                                        for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
                                         {
                                             Atom* atom = *it4;
-                                            switch(atom_name_search_type)
+                                            switch (atom_name_search_type)
                                             {
                                                 case 0:
-                                                {
-                                                    if(atom->GetName().compare(atom_name) == 0)
-                                                        selection.push_back(atom);
-                                                    break;
-                                                }
+                                                    {
+                                                        if (atom->GetName().compare(atom_name) == 0)
+                                                        {
+                                                            selection.push_back(atom);
+                                                        }
+                                                        break;
+                                                    }
                                                 case 1:
-                                                {
-                                                    if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                            atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                        selection.push_back(atom);
-                                                    break;
-                                                }
+                                                    {
+                                                        if (atom->GetName().find(atom_name) != std::string::npos &&
+                                                            atom->GetName().find(atom_name) ==
+                                                                atom->GetName().size() - atom_name.size())
+                                                        {
+                                                            selection.push_back(atom);
+                                                        }
+                                                        break;
+                                                    }
                                                 case -1:
-                                                {
-                                                    if(atom->GetName().find(atom_name) != std::string::npos &&
+                                                    {
+                                                        if (atom->GetName().find(atom_name) != std::string::npos &&
                                                             atom->GetName().find(atom_name) == 0)
-                                                        selection.push_back(atom);
-                                                    break;
-                                                }
+                                                        {
+                                                            selection.push_back(atom);
+                                                        }
+                                                        break;
+                                                    }
                                                 case -2:
-                                                {
-                                                    std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                    int range_selection = 0;
-                                                    if(atom_name.find("-") != std::string::npos)
                                                     {
-                                                        range_selection = 1;
-
-                                                    }
-                                                    else
-                                                        range_selection = 0;
-                                                    switch(range_selection)
-                                                    {
-                                                        case 0:
+                                                        std::string atom_serial_number =
+                                                            gmml::Split(atom->GetId(), "_").at(1);
+                                                        int range_selection = 0;
+                                                        if (atom_name.find("-") != std::string::npos)
                                                         {
-                                                            if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                    atom_serial_number.find(atom_name) == 0)
-                                                                selection.push_back(atom);
-                                                            break;
+                                                            range_selection = 1;
                                                         }
-                                                        case 1:
+                                                        else
                                                         {
-                                                            std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                            std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                            int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                            int start_index_int = gmml::ConvertString<int>(start_index);
-                                                            int end_index_int = gmml::ConvertString<int>(end_index);
-                                                            if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                selection.push_back(atom);
-                                                            break;
+                                                            range_selection = 0;
                                                         }
+                                                        switch (range_selection)
+                                                        {
+                                                            case 0:
+                                                                {
+                                                                    if (atom_serial_number.find(atom_name) !=
+                                                                            std::string::npos &&
+                                                                        atom_serial_number.find(atom_name) == 0)
+                                                                    {
+                                                                        selection.push_back(atom);
+                                                                    }
+                                                                    break;
+                                                                }
+                                                            case 1:
+                                                                {
+                                                                    std::string start_index =
+                                                                        gmml::Split(atom_name, "-").at(0);
+                                                                    std::string end_index =
+                                                                        gmml::Split(atom_name, "-").at(1);
+                                                                    int atom_serial_number_int =
+                                                                        gmml::ConvertString<int>(atom_serial_number);
+                                                                    int start_index_int =
+                                                                        gmml::ConvertString<int>(start_index);
+                                                                    int end_index_int =
+                                                                        gmml::ConvertString<int>(end_index);
+                                                                    if (atom_serial_number_int >= start_index_int &&
+                                                                        atom_serial_number_int <= end_index_int)
+                                                                    {
+                                                                        selection.push_back(atom);
+                                                                    }
+                                                                    break;
+                                                                }
+                                                        }
+                                                        break;
                                                     }
-                                                    break;
-                                                }
                                             }
-
                                         }
                                     }
                                 }
                                 else
                                 {
                                     AtomVector atoms = residue->GetAtoms();
-                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                    for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
                                     {
                                         Atom* atom = *it4;
                                         selection.push_back(atom);
@@ -1493,697 +1936,984 @@ MolecularModeling::AtomVector Assembly::Select(std::string pattern)
                                 }
                             }
                         }
-
                     }
-
                 }
             }
             else
             {
                 std::string partial_key = key.substr(0, key.find(".*"));
-                for(HierarchicalContainmentMap::iterator it5 = hierarchical_map.begin(); it5 != hierarchical_map.end(); it5++)
+                for (HierarchicalContainmentMap::iterator it5 = hierarchical_map.begin(); it5 != hierarchical_map.end();
+                     it5++)
                 {
-                    if((*it5).first.find(partial_key) == 0)
+                    if ((*it5).first.find(partial_key) == 0)
                     {
-                        ResidueVector residues_of_assembly = (*it5).second;
-                        std::map<std::string, std::vector<std::string> > value = (*it).second;
-                        for(std::map<std::string, std::vector<std::string> >::iterator it1 = value.begin(); it1 != value.end(); it1++)
+                        ResidueVector residues_of_assembly                    = (*it5).second;
+                        std::map<std::string, std::vector<std::string>> value = (*it).second;
+                        for (std::map<std::string, std::vector<std::string>>::iterator it1 = value.begin();
+                             it1 != value.end(); it1++)
                         {
-                            std::string residue_name = (*it1).first;
+                            std::string residue_name     = (*it1).first;
                             int residue_name_search_type = 0;
-                            if(residue_name.at(0) == '^')
+                            if (residue_name.at(0) == '^')
                             {
-                                residue_name = residue_name.substr(1);
+                                residue_name             = residue_name.substr(1);
                                 residue_name_search_type = -1;
                             }
-                            else if(residue_name.at(residue_name.size() - 1) == '$')
+                            else if (residue_name.at(residue_name.size() - 1) == '$')
                             {
-                                residue_name = residue_name.substr(0, residue_name.size() - 2);
+                                residue_name             = residue_name.substr(0, residue_name.size() - 2);
                                 residue_name_search_type = 1;
                             }
-                            else if(residue_name.at(0) == '#')
+                            else if (residue_name.at(0) == '#')
                             {
-                                residue_name = residue_name.substr(1);
+                                residue_name             = residue_name.substr(1);
                                 residue_name_search_type = -2;
                             }
                             else
-                                residue_name_search_type = 0;
-                            if(residue_name.find("*") == std::string::npos)
                             {
-                                for(ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end(); it2++)
+                                residue_name_search_type = 0;
+                            }
+                            if (residue_name.find("*") == std::string::npos)
+                            {
+                                for (ResidueVector::iterator it2 = residues_of_assembly.begin();
+                                     it2 != residues_of_assembly.end(); it2++)
                                 {
                                     Residue* residue = *it2;
-                                    switch(residue_name_search_type)
+                                    switch (residue_name_search_type)
                                     {
-                                        case 0:  /// Search in residue set by matching the whole name of the residue
-                                        {
-                                            if(residue->GetName().compare(residue_name) == 0)
+                                        case 0: /// Search in residue set by matching the whole name of the residue
                                             {
-                                                std::vector<std::string> atom_names = (*it1).second;
-                                                if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                if (residue->GetName().compare(residue_name) == 0)
                                                 {
-                                                    AtomVector atoms = residue->GetAtoms();
-                                                    for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                    std::vector<std::string> atom_names = (*it1).second;
+                                                    if (find(atom_names.begin(), atom_names.end(), "*") ==
+                                                        atom_names.end())
                                                     {
-                                                        std::string atom_name = *it3;
-                                                        int atom_name_search_type = 0;
-                                                        if(atom_name.at(0) == '^')
+                                                        AtomVector atoms = residue->GetAtoms();
+                                                        for (std::vector<std::string>::iterator it3 =
+                                                                 atom_names.begin();
+                                                             it3 != atom_names.end(); it3++)
                                                         {
-                                                            atom_name = atom_name.substr(1);
-                                                            atom_name_search_type = -1;
-                                                        }
-                                                        else if(atom_name.at(atom_name.size() - 1) == '$')
-                                                        {
-                                                            atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                            atom_name_search_type = 1;
-                                                        }
-                                                        else if(atom_name.at(0) == '#')
-                                                        {
-                                                            atom_name = atom_name.substr(1);
-                                                            atom_name_search_type = -2;
-                                                        }
-                                                        else
-                                                            atom_name_search_type = 0;
-                                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                        {
-                                                            Atom* atom = *it4;
-                                                            switch(atom_name_search_type)
+                                                            std::string atom_name     = *it3;
+                                                            int atom_name_search_type = 0;
+                                                            if (atom_name.at(0) == '^')
                                                             {
-                                                                case 0:
+                                                                atom_name             = atom_name.substr(1);
+                                                                atom_name_search_type = -1;
+                                                            }
+                                                            else if (atom_name.at(atom_name.size() - 1) == '$')
+                                                            {
+                                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                                atom_name_search_type = 1;
+                                                            }
+                                                            else if (atom_name.at(0) == '#')
+                                                            {
+                                                                atom_name             = atom_name.substr(1);
+                                                                atom_name_search_type = -2;
+                                                            }
+                                                            else
+                                                            {
+                                                                atom_name_search_type = 0;
+                                                            }
+                                                            for (AtomVector::iterator it4 = atoms.begin();
+                                                                 it4 != atoms.end(); it4++)
+                                                            {
+                                                                Atom* atom = *it4;
+                                                                switch (atom_name_search_type)
                                                                 {
-                                                                    if(atom->GetName().compare(atom_name) == 0)
-                                                                        selection.push_back(atom);
-                                                                    break;
-                                                                }
-                                                                case 1:
-                                                                {
-                                                                    if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                            atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                                        selection.push_back(atom);
-                                                                    break;
-                                                                }
-                                                                case -1:
-                                                                {
-                                                                    if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                            atom->GetName().find(atom_name) == 0)
-                                                                        selection.push_back(atom);
-                                                                    break;
-                                                                }
-                                                                case -2:
-                                                                {
-                                                                    std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                                    int range_selection = 0;
-                                                                    if(atom_name.find("-") != std::string::npos)
-                                                                    {
-                                                                        range_selection = 1;
-
-                                                                    }
-                                                                    else
-                                                                        range_selection = 0;
-                                                                    switch(range_selection)
-                                                                    {
-                                                                        case 0:
+                                                                    case 0:
                                                                         {
-                                                                            if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                                    atom_serial_number.find(atom_name) == 0)
+                                                                            if (atom->GetName().compare(atom_name) == 0)
+                                                                            {
                                                                                 selection.push_back(atom);
+                                                                            }
                                                                             break;
                                                                         }
-                                                                        case 1:
+                                                                    case 1:
                                                                         {
-                                                                            std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                            std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                            int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                            int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                            int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                            if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                            if (atom->GetName().find(atom_name) !=
+                                                                                    std::string::npos &&
+                                                                                atom->GetName().find(atom_name) ==
+                                                                                    atom->GetName().size() -
+                                                                                        atom_name.size())
+                                                                            {
                                                                                 selection.push_back(atom);
+                                                                            }
                                                                             break;
                                                                         }
-                                                                    }
-                                                                    break;
+                                                                    case -1:
+                                                                        {
+                                                                            if (atom->GetName().find(atom_name) !=
+                                                                                    std::string::npos &&
+                                                                                atom->GetName().find(atom_name) == 0)
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                    case -2:
+                                                                        {
+                                                                            std::string atom_serial_number =
+                                                                                gmml::Split(atom->GetId(), "_").at(1);
+                                                                            int range_selection = 0;
+                                                                            if (atom_name.find("-") !=
+                                                                                std::string::npos)
+                                                                            {
+                                                                                range_selection = 1;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                range_selection = 0;
+                                                                            }
+                                                                            switch (range_selection)
+                                                                            {
+                                                                                case 0:
+                                                                                    {
+                                                                                        if (atom_serial_number.find(
+                                                                                                atom_name) !=
+                                                                                                std::string::npos &&
+                                                                                            atom_serial_number.find(
+                                                                                                atom_name) == 0)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                                case 1:
+                                                                                    {
+                                                                                        std::string start_index =
+                                                                                            gmml::Split(atom_name, "-")
+                                                                                                .at(0);
+                                                                                        std::string end_index =
+                                                                                            gmml::Split(atom_name, "-")
+                                                                                                .at(1);
+                                                                                        int atom_serial_number_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                atom_serial_number);
+                                                                                        int start_index_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                start_index);
+                                                                                        int end_index_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                end_index);
+                                                                                        if (atom_serial_number_int >=
+                                                                                                start_index_int &&
+                                                                                            atom_serial_number_int <=
+                                                                                                end_index_int)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                            }
+                                                                            break;
+                                                                        }
                                                                 }
                                                             }
-
                                                         }
                                                     }
-                                                }
-                                                else
-                                                {
-                                                    AtomVector atoms = residue->GetAtoms();
-                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                    else
                                                     {
-                                                        Atom* atom = *it4;
-                                                        selection.push_back(atom);
-                                                    }
-                                                }
-                                            }
-                                            break;
-                                        }
-                                        case 1:   /// Searching the residue set by maching the end of the residue names
-                                        {
-                                            if(residue->GetName().find(residue_name) != std::string::npos &&
-                                                    residue->GetName().find(residue_name) == residue->GetName().size() - residue_name.size())
-                                            {
-                                                std::vector<std::string> atom_names = (*it1).second;
-                                                if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
-                                                {
-                                                    AtomVector atoms = residue->GetAtoms();
-                                                    for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
-                                                    {
-                                                        std::string atom_name = *it3;
-                                                        int atom_name_search_type = 0;
-                                                        if(atom_name.at(0) == '^')
-                                                        {
-                                                            atom_name = atom_name.substr(1);
-                                                            atom_name_search_type = -1;
-                                                        }
-                                                        else if(atom_name.at(atom_name.size() - 1) == '$')
-                                                        {
-                                                            atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                            atom_name_search_type = 1;
-                                                        }
-                                                        else if(atom_name.at(0) == '#')
-                                                        {
-                                                            atom_name = atom_name.substr(1);
-                                                            atom_name_search_type = -2;
-                                                        }
-                                                        else
-                                                            atom_name_search_type = 0;
-                                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                        AtomVector atoms = residue->GetAtoms();
+                                                        for (AtomVector::iterator it4 = atoms.begin();
+                                                             it4 != atoms.end(); it4++)
                                                         {
                                                             Atom* atom = *it4;
-                                                            switch(atom_name_search_type)
-                                                            {
-                                                                case 0:
-                                                                {
-                                                                    if(atom->GetName().compare(atom_name) == 0)
-                                                                        selection.push_back(atom);
-                                                                    break;
-                                                                }
-                                                                case 1:
-                                                                {
-                                                                    if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                            atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                                        selection.push_back(atom);
-                                                                    break;
-                                                                }
-                                                                case -1:
-                                                                {
-                                                                    if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                            atom->GetName().find(atom_name) == 0)
-                                                                        selection.push_back(atom);
-                                                                    break;
-                                                                }
-                                                                case -2:
-                                                                {
-                                                                    std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                                    int range_selection = 0;
-                                                                    if(atom_name.find("-") != std::string::npos)
-                                                                    {
-                                                                        range_selection = 1;
-
-                                                                    }
-                                                                    else
-                                                                        range_selection = 0;
-                                                                    switch(range_selection)
-                                                                    {
-                                                                        case 0:
-                                                                        {
-                                                                            if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                                    atom_serial_number.find(atom_name) == 0)
-                                                                                selection.push_back(atom);
-                                                                            break;
-                                                                        }
-                                                                        case 1:
-                                                                        {
-                                                                            std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                            std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                            int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                            int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                            int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                            if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                                selection.push_back(atom);
-                                                                            break;
-                                                                        }
-                                                                    }
-                                                                    break;
-                                                                }
-                                                            }
-
+                                                            selection.push_back(atom);
                                                         }
                                                     }
                                                 }
-                                                else
+                                                break;
+                                            }
+                                        case 1: /// Searching the residue set by maching the end of the residue names
+                                            {
+                                                if (residue->GetName().find(residue_name) != std::string::npos &&
+                                                    residue->GetName().find(residue_name) ==
+                                                        residue->GetName().size() - residue_name.size())
                                                 {
-                                                    AtomVector atoms = residue->GetAtoms();
-                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                    std::vector<std::string> atom_names = (*it1).second;
+                                                    if (find(atom_names.begin(), atom_names.end(), "*") ==
+                                                        atom_names.end())
                                                     {
-                                                        Atom* atom = *it4;
-                                                        selection.push_back(atom);
+                                                        AtomVector atoms = residue->GetAtoms();
+                                                        for (std::vector<std::string>::iterator it3 =
+                                                                 atom_names.begin();
+                                                             it3 != atom_names.end(); it3++)
+                                                        {
+                                                            std::string atom_name     = *it3;
+                                                            int atom_name_search_type = 0;
+                                                            if (atom_name.at(0) == '^')
+                                                            {
+                                                                atom_name             = atom_name.substr(1);
+                                                                atom_name_search_type = -1;
+                                                            }
+                                                            else if (atom_name.at(atom_name.size() - 1) == '$')
+                                                            {
+                                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                                atom_name_search_type = 1;
+                                                            }
+                                                            else if (atom_name.at(0) == '#')
+                                                            {
+                                                                atom_name             = atom_name.substr(1);
+                                                                atom_name_search_type = -2;
+                                                            }
+                                                            else
+                                                            {
+                                                                atom_name_search_type = 0;
+                                                            }
+                                                            for (AtomVector::iterator it4 = atoms.begin();
+                                                                 it4 != atoms.end(); it4++)
+                                                            {
+                                                                Atom* atom = *it4;
+                                                                switch (atom_name_search_type)
+                                                                {
+                                                                    case 0:
+                                                                        {
+                                                                            if (atom->GetName().compare(atom_name) == 0)
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                    case 1:
+                                                                        {
+                                                                            if (atom->GetName().find(atom_name) !=
+                                                                                    std::string::npos &&
+                                                                                atom->GetName().find(atom_name) ==
+                                                                                    atom->GetName().size() -
+                                                                                        atom_name.size())
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                    case -1:
+                                                                        {
+                                                                            if (atom->GetName().find(atom_name) !=
+                                                                                    std::string::npos &&
+                                                                                atom->GetName().find(atom_name) == 0)
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                    case -2:
+                                                                        {
+                                                                            std::string atom_serial_number =
+                                                                                gmml::Split(atom->GetId(), "_").at(1);
+                                                                            int range_selection = 0;
+                                                                            if (atom_name.find("-") !=
+                                                                                std::string::npos)
+                                                                            {
+                                                                                range_selection = 1;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                range_selection = 0;
+                                                                            }
+                                                                            switch (range_selection)
+                                                                            {
+                                                                                case 0:
+                                                                                    {
+                                                                                        if (atom_serial_number.find(
+                                                                                                atom_name) !=
+                                                                                                std::string::npos &&
+                                                                                            atom_serial_number.find(
+                                                                                                atom_name) == 0)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                                case 1:
+                                                                                    {
+                                                                                        std::string start_index =
+                                                                                            gmml::Split(atom_name, "-")
+                                                                                                .at(0);
+                                                                                        std::string end_index =
+                                                                                            gmml::Split(atom_name, "-")
+                                                                                                .at(1);
+                                                                                        int atom_serial_number_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                atom_serial_number);
+                                                                                        int start_index_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                start_index);
+                                                                                        int end_index_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                end_index);
+                                                                                        if (atom_serial_number_int >=
+                                                                                                start_index_int &&
+                                                                                            atom_serial_number_int <=
+                                                                                                end_index_int)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        AtomVector atoms = residue->GetAtoms();
+                                                        for (AtomVector::iterator it4 = atoms.begin();
+                                                             it4 != atoms.end(); it4++)
+                                                        {
+                                                            Atom* atom = *it4;
+                                                            selection.push_back(atom);
+                                                        }
                                                     }
                                                 }
+                                                break;
                                             }
-                                            break;
-                                        }
-                                        case -1:  /// Searching the residue set by matching the begining of the residue names
-                                        {
-                                            if(residue->GetName().find(residue_name) != std::string::npos &&
+                                        case -1: /// Searching the residue set by matching the begining of the residue
+                                                 /// names
+                                            {
+                                                if (residue->GetName().find(residue_name) != std::string::npos &&
                                                     residue->GetName().find(residue_name) == 0)
-                                            {
-                                                std::vector<std::string> atom_names = (*it1).second;
-                                                if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
                                                 {
-                                                    AtomVector atoms = residue->GetAtoms();
-                                                    for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                    std::vector<std::string> atom_names = (*it1).second;
+                                                    if (find(atom_names.begin(), atom_names.end(), "*") ==
+                                                        atom_names.end())
                                                     {
-                                                        std::string atom_name = *it3;
-                                                        int atom_name_search_type = 0;
-                                                        if(atom_name.at(0) == '^')
+                                                        AtomVector atoms = residue->GetAtoms();
+                                                        for (std::vector<std::string>::iterator it3 =
+                                                                 atom_names.begin();
+                                                             it3 != atom_names.end(); it3++)
                                                         {
-                                                            atom_name = atom_name.substr(1);
-                                                            atom_name_search_type = -1;
-                                                        }
-                                                        else if(atom_name.at(atom_name.size() - 1) == '$')
-                                                        {
-                                                            atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                            atom_name_search_type = 1;
-                                                        }
-                                                        else if(atom_name.at(0) == '#')
-                                                        {
-                                                            atom_name = atom_name.substr(1);
-                                                            atom_name_search_type = -2;
-                                                        }
-                                                        else
-                                                            atom_name_search_type = 0;
-                                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                        {
-                                                            Atom* atom = *it4;
-                                                            switch(atom_name_search_type)
+                                                            std::string atom_name     = *it3;
+                                                            int atom_name_search_type = 0;
+                                                            if (atom_name.at(0) == '^')
                                                             {
-                                                                case 0:
+                                                                atom_name             = atom_name.substr(1);
+                                                                atom_name_search_type = -1;
+                                                            }
+                                                            else if (atom_name.at(atom_name.size() - 1) == '$')
+                                                            {
+                                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                                atom_name_search_type = 1;
+                                                            }
+                                                            else if (atom_name.at(0) == '#')
+                                                            {
+                                                                atom_name             = atom_name.substr(1);
+                                                                atom_name_search_type = -2;
+                                                            }
+                                                            else
+                                                            {
+                                                                atom_name_search_type = 0;
+                                                            }
+                                                            for (AtomVector::iterator it4 = atoms.begin();
+                                                                 it4 != atoms.end(); it4++)
+                                                            {
+                                                                Atom* atom = *it4;
+                                                                switch (atom_name_search_type)
                                                                 {
-                                                                    if(atom->GetName().compare(atom_name) == 0)
-                                                                        selection.push_back(atom);
-                                                                    break;
-                                                                }
-                                                                case 1:
-                                                                {
-                                                                    if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                            atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                                        selection.push_back(atom);
-                                                                    break;
-                                                                }
-                                                                case -1:
-                                                                {
-                                                                    if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                            atom->GetName().find(atom_name) == 0)
-                                                                        selection.push_back(atom);
-                                                                    break;
-                                                                }
-                                                                case -2:
-                                                                {
-                                                                    std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                                    int range_selection = 0;
-                                                                    if(atom_name.find("-") != std::string::npos)
-                                                                    {
-                                                                        range_selection = 1;
-
-                                                                    }
-                                                                    else
-                                                                        range_selection = 0;
-                                                                    switch(range_selection)
-                                                                    {
-                                                                        case 0:
+                                                                    case 0:
                                                                         {
-                                                                            if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                                    atom_serial_number.find(atom_name) == 0)
+                                                                            if (atom->GetName().compare(atom_name) == 0)
+                                                                            {
                                                                                 selection.push_back(atom);
+                                                                            }
                                                                             break;
                                                                         }
-                                                                        case 1:
+                                                                    case 1:
                                                                         {
-                                                                            std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                            std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                            int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                            int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                            int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                            if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
+                                                                            if (atom->GetName().find(atom_name) !=
+                                                                                    std::string::npos &&
+                                                                                atom->GetName().find(atom_name) ==
+                                                                                    atom->GetName().size() -
+                                                                                        atom_name.size())
+                                                                            {
                                                                                 selection.push_back(atom);
+                                                                            }
                                                                             break;
                                                                         }
-                                                                    }
-                                                                    break;
+                                                                    case -1:
+                                                                        {
+                                                                            if (atom->GetName().find(atom_name) !=
+                                                                                    std::string::npos &&
+                                                                                atom->GetName().find(atom_name) == 0)
+                                                                            {
+                                                                                selection.push_back(atom);
+                                                                            }
+                                                                            break;
+                                                                        }
+                                                                    case -2:
+                                                                        {
+                                                                            std::string atom_serial_number =
+                                                                                gmml::Split(atom->GetId(), "_").at(1);
+                                                                            int range_selection = 0;
+                                                                            if (atom_name.find("-") !=
+                                                                                std::string::npos)
+                                                                            {
+                                                                                range_selection = 1;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                range_selection = 0;
+                                                                            }
+                                                                            switch (range_selection)
+                                                                            {
+                                                                                case 0:
+                                                                                    {
+                                                                                        if (atom_serial_number.find(
+                                                                                                atom_name) !=
+                                                                                                std::string::npos &&
+                                                                                            atom_serial_number.find(
+                                                                                                atom_name) == 0)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                                case 1:
+                                                                                    {
+                                                                                        std::string start_index =
+                                                                                            gmml::Split(atom_name, "-")
+                                                                                                .at(0);
+                                                                                        std::string end_index =
+                                                                                            gmml::Split(atom_name, "-")
+                                                                                                .at(1);
+                                                                                        int atom_serial_number_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                atom_serial_number);
+                                                                                        int start_index_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                start_index);
+                                                                                        int end_index_int =
+                                                                                            gmml::ConvertString<int>(
+                                                                                                end_index);
+                                                                                        if (atom_serial_number_int >=
+                                                                                                start_index_int &&
+                                                                                            atom_serial_number_int <=
+                                                                                                end_index_int)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                            }
+                                                                            break;
+                                                                        }
                                                                 }
                                                             }
-
                                                         }
                                                     }
+                                                    else
+                                                    {
+                                                        AtomVector atoms = residue->GetAtoms();
+                                                        for (AtomVector::iterator it4 = atoms.begin();
+                                                             it4 != atoms.end(); it4++)
+                                                        {
+                                                            Atom* atom = *it4;
+                                                            selection.push_back(atom);
+                                                        }
+                                                    }
+                                                }
+                                                break;
+                                            }
+                                        case -2: /// Searching the residue set by matching the residue sequence number
+                                            {
+                                                std::string residue_sequence_number =
+                                                    gmml::Split(residue->GetId(), "_").at(2);
+                                                int range_residue_selection = 0;
+                                                if (residue_sequence_number.find("-") != std::string::npos)
+                                                {
+                                                    range_residue_selection = 1;
                                                 }
                                                 else
                                                 {
-                                                    AtomVector atoms = residue->GetAtoms();
-                                                    for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                    {
-                                                        Atom* atom = *it4;
-                                                        selection.push_back(atom);
-                                                    }
+                                                    range_residue_selection = 0;
                                                 }
-                                            }
-                                            break;
-                                        }
-                                        case -2:  /// Searching the residue set by matching the residue sequence number
-                                        {
-                                            std::string residue_sequence_number = gmml::Split(residue->GetId(), "_").at(2);
-                                            int range_residue_selection = 0;
-                                            if(residue_sequence_number.find("-") != std::string::npos)
-                                            {
-                                                range_residue_selection = 1;
-                                            }
-                                            else
-                                                range_residue_selection = 0;
-                                            switch(range_residue_selection)
-                                            {
-                                                case 0:
+                                                switch (range_residue_selection)
                                                 {
-                                                    if(residue_sequence_number.find(residue_name) != std::string::npos &&
-                                                            residue_sequence_number.find(residue_name) == 0)
-                                                    {
-                                                        std::vector<std::string> atom_names = (*it1).second;
-                                                        if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                                    case 0:
                                                         {
-                                                            AtomVector atoms = residue->GetAtoms();
-                                                            for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                                            if (residue_sequence_number.find(residue_name) !=
+                                                                    std::string::npos &&
+                                                                residue_sequence_number.find(residue_name) == 0)
                                                             {
-                                                                std::string atom_name = *it3;
-                                                                int atom_name_search_type = 0;
-                                                                if(atom_name.at(0) == '^')
+                                                                std::vector<std::string> atom_names = (*it1).second;
+                                                                if (find(atom_names.begin(), atom_names.end(), "*") ==
+                                                                    atom_names.end())
                                                                 {
-                                                                    atom_name = atom_name.substr(1);
-                                                                    atom_name_search_type = -1;
-                                                                }
-                                                                else if(atom_name.at(atom_name.size() - 1) == '$')
-                                                                {
-                                                                    atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                                    atom_name_search_type = 1;
-                                                                }
-                                                                else if(atom_name.at(0) == '#')
-                                                                {
-                                                                    atom_name = atom_name.substr(1);
-                                                                    atom_name_search_type = -2;
-                                                                }
-                                                                else
-                                                                    atom_name_search_type = 0;
-                                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                                {
-                                                                    Atom* atom = *it4;
-                                                                    switch(atom_name_search_type)
+                                                                    AtomVector atoms = residue->GetAtoms();
+                                                                    for (std::vector<std::string>::iterator it3 =
+                                                                             atom_names.begin();
+                                                                         it3 != atom_names.end(); it3++)
                                                                     {
-                                                                        case 0:
+                                                                        std::string atom_name     = *it3;
+                                                                        int atom_name_search_type = 0;
+                                                                        if (atom_name.at(0) == '^')
                                                                         {
-                                                                            if(atom->GetName().compare(atom_name) == 0)
-                                                                                selection.push_back(atom);
-                                                                            break;
+                                                                            atom_name             = atom_name.substr(1);
+                                                                            atom_name_search_type = -1;
                                                                         }
-                                                                        case 1:
+                                                                        else if (atom_name.at(atom_name.size() - 1) ==
+                                                                                 '$')
                                                                         {
-                                                                            if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                                    atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                                                selection.push_back(atom);
-                                                                            break;
+                                                                            atom_name = atom_name.substr(
+                                                                                0, atom_name.size() - 2);
+                                                                            atom_name_search_type = 1;
                                                                         }
-                                                                        case -1:
+                                                                        else if (atom_name.at(0) == '#')
                                                                         {
-                                                                            if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                                    atom->GetName().find(atom_name) == 0)
-                                                                                selection.push_back(atom);
-                                                                            break;
+                                                                            atom_name             = atom_name.substr(1);
+                                                                            atom_name_search_type = -2;
                                                                         }
-                                                                        case -2:
+                                                                        else
                                                                         {
-                                                                            std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                                            int range_selection = 0;
-                                                                            if(atom_name.find("-") != std::string::npos)
-                                                                            {
-                                                                                range_selection = 1;
-
-                                                                            }
-                                                                            else
-                                                                                range_selection = 0;
-                                                                            switch(range_selection)
+                                                                            atom_name_search_type = 0;
+                                                                        }
+                                                                        for (AtomVector::iterator it4 = atoms.begin();
+                                                                             it4 != atoms.end(); it4++)
+                                                                        {
+                                                                            Atom* atom = *it4;
+                                                                            switch (atom_name_search_type)
                                                                             {
                                                                                 case 0:
-                                                                                {
-                                                                                    if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                                            atom_serial_number.find(atom_name) == 0)
-                                                                                        selection.push_back(atom);
-                                                                                    break;
-                                                                                }
+                                                                                    {
+                                                                                        if (atom->GetName().compare(
+                                                                                                atom_name) == 0)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
                                                                                 case 1:
-                                                                                {
-                                                                                    std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                                    std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                                    int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                                    int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                                    int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                                    if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                                        selection.push_back(atom);
-                                                                                    break;
-                                                                                }
+                                                                                    {
+                                                                                        if (atom->GetName().find(
+                                                                                                atom_name) !=
+                                                                                                std::string::npos &&
+                                                                                            atom->GetName().find(
+                                                                                                atom_name) ==
+                                                                                                atom->GetName().size() -
+                                                                                                    atom_name.size())
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                                case -1:
+                                                                                    {
+                                                                                        if (atom->GetName().find(
+                                                                                                atom_name) !=
+                                                                                                std::string::npos &&
+                                                                                            atom->GetName().find(
+                                                                                                atom_name) == 0)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                                case -2:
+                                                                                    {
+                                                                                        std::string atom_serial_number =
+                                                                                            gmml::Split(atom->GetId(),
+                                                                                                        "_")
+                                                                                                .at(1);
+                                                                                        int range_selection = 0;
+                                                                                        if (atom_name.find("-") !=
+                                                                                            std::string::npos)
+                                                                                        {
+                                                                                            range_selection = 1;
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            range_selection = 0;
+                                                                                        }
+                                                                                        switch (range_selection)
+                                                                                        {
+                                                                                            case 0:
+                                                                                                {
+                                                                                                    if (atom_serial_number
+                                                                                                                .find(
+                                                                                                                    atom_name) !=
+                                                                                                            std::string::
+                                                                                                                npos &&
+                                                                                                        atom_serial_number
+                                                                                                                .find(
+                                                                                                                    atom_name) ==
+                                                                                                            0)
+                                                                                                    {
+                                                                                                        selection
+                                                                                                            .push_back(
+                                                                                                                atom);
+                                                                                                    }
+                                                                                                    break;
+                                                                                                }
+                                                                                            case 1:
+                                                                                                {
+                                                                                                    std::string
+                                                                                                        start_index =
+                                                                                                            gmml::Split(
+                                                                                                                atom_name,
+                                                                                                                "-")
+                                                                                                                .at(0);
+                                                                                                    std::string
+                                                                                                        end_index =
+                                                                                                            gmml::Split(
+                                                                                                                atom_name,
+                                                                                                                "-")
+                                                                                                                .at(1);
+                                                                                                    int atom_serial_number_int =
+                                                                                                        gmml::ConvertString<
+                                                                                                            int>(
+                                                                                                            atom_serial_number);
+                                                                                                    int start_index_int =
+                                                                                                        gmml::ConvertString<
+                                                                                                            int>(
+                                                                                                            start_index);
+                                                                                                    int end_index_int =
+                                                                                                        gmml::ConvertString<
+                                                                                                            int>(
+                                                                                                            end_index);
+                                                                                                    if (atom_serial_number_int >=
+                                                                                                            start_index_int &&
+                                                                                                        atom_serial_number_int <=
+                                                                                                            end_index_int)
+                                                                                                    {
+                                                                                                        selection
+                                                                                                            .push_back(
+                                                                                                                atom);
+                                                                                                    }
+                                                                                                    break;
+                                                                                                }
+                                                                                        }
+                                                                                        break;
+                                                                                    }
                                                                             }
-                                                                            break;
                                                                         }
                                                                     }
-
-                                                                }
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            AtomVector atoms = residue->GetAtoms();
-                                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
-                                                            {
-                                                                Atom* atom = *it4;
-                                                                selection.push_back(atom);
-                                                            }
-                                                        }
-                                                    }
-                                                    break;
-                                                }
-                                                case 1:
-                                                {
-                                                    std::string residue_start_index = gmml::Split(residue_name, "-").at(0);
-                                                    std::string residue_end_index = gmml::Split(residue_name, "-").at(1);
-                                                    int residue_sequence_number_int = gmml::ConvertString<int>(residue_sequence_number);
-                                                    int residue_start_index_int = gmml::ConvertString<int>(residue_start_index);
-                                                    int residue_end_index_int = gmml::ConvertString<int>(residue_end_index);
-                                                    if(residue_sequence_number_int >= residue_start_index_int && residue_sequence_number_int <= residue_end_index_int)
-                                                    {
-                                                        std::vector<std::string> atom_names = (*it1).second;
-                                                        if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
-                                                        {
-                                                            AtomVector atoms = residue->GetAtoms();
-                                                            for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
-                                                            {
-                                                                std::string atom_name = *it3;
-                                                                int atom_name_search_type = 0;
-                                                                if(atom_name.at(0) == '^')
-                                                                {
-                                                                    atom_name = atom_name.substr(1);
-                                                                    atom_name_search_type = -1;
-                                                                }
-                                                                else if(atom_name.at(atom_name.size() - 1) == '$')
-                                                                {
-                                                                    atom_name = atom_name.substr(0, atom_name.size() - 2);
-                                                                    atom_name_search_type = 1;
-                                                                }
-                                                                else if(atom_name.at(0) == '#')
-                                                                {
-                                                                    atom_name = atom_name.substr(1);
-                                                                    atom_name_search_type = -2;
                                                                 }
                                                                 else
-                                                                    atom_name_search_type = 0;
-                                                                for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
                                                                 {
-                                                                    Atom* atom = *it4;
-                                                                    switch(atom_name_search_type)
+                                                                    AtomVector atoms = residue->GetAtoms();
+                                                                    for (AtomVector::iterator it4 = atoms.begin();
+                                                                         it4 != atoms.end(); it4++)
                                                                     {
-                                                                        case 0:
-                                                                        {
-                                                                            if(atom->GetName().compare(atom_name) == 0)
-                                                                                selection.push_back(atom);
-                                                                            break;
-                                                                        }
-                                                                        case 1:
-                                                                        {
-                                                                            if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                                    atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                                                selection.push_back(atom);
-                                                                            break;
-                                                                        }
-                                                                        case -1:
-                                                                        {
-                                                                            if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                                    atom->GetName().find(atom_name) == 0)
-                                                                                selection.push_back(atom);
-                                                                            break;
-                                                                        }
-                                                                        case -2:
-                                                                        {
-                                                                            std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                                            int range_selection = 0;
-                                                                            if(atom_name.find("-") != std::string::npos)
-                                                                            {
-                                                                                range_selection = 1;
-
-                                                                            }
-                                                                            else
-                                                                                range_selection = 0;
-                                                                            switch(range_selection)
-                                                                            {
-                                                                                case 0:
-                                                                                {
-                                                                                    if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                                            atom_serial_number.find(atom_name) == 0)
-                                                                                        selection.push_back(atom);
-                                                                                    break;
-                                                                                }
-                                                                                case 1:
-                                                                                {
-                                                                                    std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                                    std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                                    int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                                    int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                                    int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                                    if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                                        selection.push_back(atom);
-                                                                                    break;
-                                                                                }
-                                                                            }
-                                                                            break;
-                                                                        }
+                                                                        Atom* atom = *it4;
+                                                                        selection.push_back(atom);
                                                                     }
-
                                                                 }
                                                             }
+                                                            break;
                                                         }
-                                                        else
+                                                    case 1:
                                                         {
-                                                            AtomVector atoms = residue->GetAtoms();
-                                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                                            std::string residue_start_index =
+                                                                gmml::Split(residue_name, "-").at(0);
+                                                            std::string residue_end_index =
+                                                                gmml::Split(residue_name, "-").at(1);
+                                                            int residue_sequence_number_int =
+                                                                gmml::ConvertString<int>(residue_sequence_number);
+                                                            int residue_start_index_int =
+                                                                gmml::ConvertString<int>(residue_start_index);
+                                                            int residue_end_index_int =
+                                                                gmml::ConvertString<int>(residue_end_index);
+                                                            if (residue_sequence_number_int >=
+                                                                    residue_start_index_int &&
+                                                                residue_sequence_number_int <= residue_end_index_int)
                                                             {
-                                                                Atom* atom = *it4;
-                                                                selection.push_back(atom);
+                                                                std::vector<std::string> atom_names = (*it1).second;
+                                                                if (find(atom_names.begin(), atom_names.end(), "*") ==
+                                                                    atom_names.end())
+                                                                {
+                                                                    AtomVector atoms = residue->GetAtoms();
+                                                                    for (std::vector<std::string>::iterator it3 =
+                                                                             atom_names.begin();
+                                                                         it3 != atom_names.end(); it3++)
+                                                                    {
+                                                                        std::string atom_name     = *it3;
+                                                                        int atom_name_search_type = 0;
+                                                                        if (atom_name.at(0) == '^')
+                                                                        {
+                                                                            atom_name             = atom_name.substr(1);
+                                                                            atom_name_search_type = -1;
+                                                                        }
+                                                                        else if (atom_name.at(atom_name.size() - 1) ==
+                                                                                 '$')
+                                                                        {
+                                                                            atom_name = atom_name.substr(
+                                                                                0, atom_name.size() - 2);
+                                                                            atom_name_search_type = 1;
+                                                                        }
+                                                                        else if (atom_name.at(0) == '#')
+                                                                        {
+                                                                            atom_name             = atom_name.substr(1);
+                                                                            atom_name_search_type = -2;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            atom_name_search_type = 0;
+                                                                        }
+                                                                        for (AtomVector::iterator it4 = atoms.begin();
+                                                                             it4 != atoms.end(); it4++)
+                                                                        {
+                                                                            Atom* atom = *it4;
+                                                                            switch (atom_name_search_type)
+                                                                            {
+                                                                                case 0:
+                                                                                    {
+                                                                                        if (atom->GetName().compare(
+                                                                                                atom_name) == 0)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                                case 1:
+                                                                                    {
+                                                                                        if (atom->GetName().find(
+                                                                                                atom_name) !=
+                                                                                                std::string::npos &&
+                                                                                            atom->GetName().find(
+                                                                                                atom_name) ==
+                                                                                                atom->GetName().size() -
+                                                                                                    atom_name.size())
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                                case -1:
+                                                                                    {
+                                                                                        if (atom->GetName().find(
+                                                                                                atom_name) !=
+                                                                                                std::string::npos &&
+                                                                                            atom->GetName().find(
+                                                                                                atom_name) == 0)
+                                                                                        {
+                                                                                            selection.push_back(atom);
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                                case -2:
+                                                                                    {
+                                                                                        std::string atom_serial_number =
+                                                                                            gmml::Split(atom->GetId(),
+                                                                                                        "_")
+                                                                                                .at(1);
+                                                                                        int range_selection = 0;
+                                                                                        if (atom_name.find("-") !=
+                                                                                            std::string::npos)
+                                                                                        {
+                                                                                            range_selection = 1;
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            range_selection = 0;
+                                                                                        }
+                                                                                        switch (range_selection)
+                                                                                        {
+                                                                                            case 0:
+                                                                                                {
+                                                                                                    if (atom_serial_number
+                                                                                                                .find(
+                                                                                                                    atom_name) !=
+                                                                                                            std::string::
+                                                                                                                npos &&
+                                                                                                        atom_serial_number
+                                                                                                                .find(
+                                                                                                                    atom_name) ==
+                                                                                                            0)
+                                                                                                    {
+                                                                                                        selection
+                                                                                                            .push_back(
+                                                                                                                atom);
+                                                                                                    }
+                                                                                                    break;
+                                                                                                }
+                                                                                            case 1:
+                                                                                                {
+                                                                                                    std::string
+                                                                                                        start_index =
+                                                                                                            gmml::Split(
+                                                                                                                atom_name,
+                                                                                                                "-")
+                                                                                                                .at(0);
+                                                                                                    std::string
+                                                                                                        end_index =
+                                                                                                            gmml::Split(
+                                                                                                                atom_name,
+                                                                                                                "-")
+                                                                                                                .at(1);
+                                                                                                    int atom_serial_number_int =
+                                                                                                        gmml::ConvertString<
+                                                                                                            int>(
+                                                                                                            atom_serial_number);
+                                                                                                    int start_index_int =
+                                                                                                        gmml::ConvertString<
+                                                                                                            int>(
+                                                                                                            start_index);
+                                                                                                    int end_index_int =
+                                                                                                        gmml::ConvertString<
+                                                                                                            int>(
+                                                                                                            end_index);
+                                                                                                    if (atom_serial_number_int >=
+                                                                                                            start_index_int &&
+                                                                                                        atom_serial_number_int <=
+                                                                                                            end_index_int)
+                                                                                                    {
+                                                                                                        selection
+                                                                                                            .push_back(
+                                                                                                                atom);
+                                                                                                    }
+                                                                                                    break;
+                                                                                                }
+                                                                                        }
+                                                                                        break;
+                                                                                    }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                                else
+                                                                {
+                                                                    AtomVector atoms = residue->GetAtoms();
+                                                                    for (AtomVector::iterator it4 = atoms.begin();
+                                                                         it4 != atoms.end(); it4++)
+                                                                    {
+                                                                        Atom* atom = *it4;
+                                                                        selection.push_back(atom);
+                                                                    }
+                                                                }
+                                                                break;
                                                             }
                                                         }
-                                                        break;
-                                                    }
                                                 }
+                                                break;
                                             }
-                                            break;
-                                        }
                                     }
                                 }
                             }
                             else
                             {
-                                for(ResidueVector::iterator it2 = residues_of_assembly.begin(); it2 != residues_of_assembly.end(); it2++)
+                                for (ResidueVector::iterator it2 = residues_of_assembly.begin();
+                                     it2 != residues_of_assembly.end(); it2++)
                                 {
-                                    Residue* residue = *it2;
+                                    Residue* residue                    = *it2;
                                     std::vector<std::string> atom_names = (*it1).second;
-                                    if(find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
+                                    if (find(atom_names.begin(), atom_names.end(), "*") == atom_names.end())
                                     {
                                         AtomVector atoms = residue->GetAtoms();
-                                        for(std::vector<std::string>::iterator it3 = atom_names.begin(); it3 != atom_names.end(); it3++)
+                                        for (std::vector<std::string>::iterator it3 = atom_names.begin();
+                                             it3 != atom_names.end(); it3++)
                                         {
-                                            std::string atom_name = *it3;
+                                            std::string atom_name     = *it3;
                                             int atom_name_search_type = 0;
-                                            if(atom_name.at(0) == '^')
+                                            if (atom_name.at(0) == '^')
                                             {
-                                                atom_name = atom_name.substr(1);
+                                                atom_name             = atom_name.substr(1);
                                                 atom_name_search_type = -1;
                                             }
-                                            else if(atom_name.at(atom_name.size() - 1) == '$')
+                                            else if (atom_name.at(atom_name.size() - 1) == '$')
                                             {
-                                                atom_name = atom_name.substr(0, atom_name.size() - 2);
+                                                atom_name             = atom_name.substr(0, atom_name.size() - 2);
                                                 atom_name_search_type = 1;
                                             }
-                                            else if(atom_name.at(0) == '#')
+                                            else if (atom_name.at(0) == '#')
                                             {
-                                                atom_name = atom_name.substr(1);
+                                                atom_name             = atom_name.substr(1);
                                                 atom_name_search_type = -2;
                                             }
                                             else
+                                            {
                                                 atom_name_search_type = 0;
-                                            for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                            }
+                                            for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
                                             {
                                                 Atom* atom = *it4;
-                                                switch(atom_name_search_type)
+                                                switch (atom_name_search_type)
                                                 {
                                                     case 0:
-                                                    {
-                                                        if(atom->GetName().compare(atom_name) == 0)
-                                                            selection.push_back(atom);
-                                                        break;
-                                                    }
+                                                        {
+                                                            if (atom->GetName().compare(atom_name) == 0)
+                                                            {
+                                                                selection.push_back(atom);
+                                                            }
+                                                            break;
+                                                        }
                                                     case 1:
-                                                    {
-                                                        if(atom->GetName().find(atom_name) != std::string::npos &&
-                                                                atom->GetName().find(atom_name) == atom->GetName().size() - atom_name.size())
-                                                            selection.push_back(atom);
-                                                        break;
-                                                    }
+                                                        {
+                                                            if (atom->GetName().find(atom_name) != std::string::npos &&
+                                                                atom->GetName().find(atom_name) ==
+                                                                    atom->GetName().size() - atom_name.size())
+                                                            {
+                                                                selection.push_back(atom);
+                                                            }
+                                                            break;
+                                                        }
                                                     case -1:
-                                                    {
-                                                        if(atom->GetName().find(atom_name) != std::string::npos &&
+                                                        {
+                                                            if (atom->GetName().find(atom_name) != std::string::npos &&
                                                                 atom->GetName().find(atom_name) == 0)
-                                                            selection.push_back(atom);
-                                                        break;
-                                                    }
+                                                            {
+                                                                selection.push_back(atom);
+                                                            }
+                                                            break;
+                                                        }
                                                     case -2:
-                                                    {
-                                                        std::string atom_serial_number = gmml::Split(atom->GetId(), "_").at(1);
-                                                        int range_selection = 0;
-                                                        if(atom_name.find("-") != std::string::npos)
                                                         {
-                                                            range_selection = 1;
-
-                                                        }
-                                                        else
-                                                            range_selection = 0;
-                                                        switch(range_selection)
-                                                        {
-                                                            case 0:
+                                                            std::string atom_serial_number =
+                                                                gmml::Split(atom->GetId(), "_").at(1);
+                                                            int range_selection = 0;
+                                                            if (atom_name.find("-") != std::string::npos)
                                                             {
-                                                                if(atom_serial_number.find(atom_name) != std::string::npos &&
-                                                                        atom_serial_number.find(atom_name) == 0)
-                                                                    selection.push_back(atom);
-                                                                break;
+                                                                range_selection = 1;
                                                             }
-                                                            case 1:
+                                                            else
                                                             {
-                                                                std::string start_index = gmml::Split(atom_name, "-").at(0);
-                                                                std::string end_index = gmml::Split(atom_name, "-").at(1);
-                                                                int atom_serial_number_int = gmml::ConvertString<int>(atom_serial_number);
-                                                                int start_index_int = gmml::ConvertString<int>(start_index);
-                                                                int end_index_int = gmml::ConvertString<int>(end_index);
-                                                                if(atom_serial_number_int >= start_index_int && atom_serial_number_int <= end_index_int)
-                                                                    selection.push_back(atom);
-                                                                break;
+                                                                range_selection = 0;
                                                             }
+                                                            switch (range_selection)
+                                                            {
+                                                                case 0:
+                                                                    {
+                                                                        if (atom_serial_number.find(atom_name) !=
+                                                                                std::string::npos &&
+                                                                            atom_serial_number.find(atom_name) == 0)
+                                                                        {
+                                                                            selection.push_back(atom);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                                case 1:
+                                                                    {
+                                                                        std::string start_index =
+                                                                            gmml::Split(atom_name, "-").at(0);
+                                                                        std::string end_index =
+                                                                            gmml::Split(atom_name, "-").at(1);
+                                                                        int atom_serial_number_int =
+                                                                            gmml::ConvertString<int>(
+                                                                                atom_serial_number);
+                                                                        int start_index_int =
+                                                                            gmml::ConvertString<int>(start_index);
+                                                                        int end_index_int =
+                                                                            gmml::ConvertString<int>(end_index);
+                                                                        if (atom_serial_number_int >= start_index_int &&
+                                                                            atom_serial_number_int <= end_index_int)
+                                                                        {
+                                                                            selection.push_back(atom);
+                                                                        }
+                                                                        break;
+                                                                    }
+                                                            }
+                                                            break;
                                                         }
-                                                        break;
-                                                    }
                                                 }
-
                                             }
                                         }
                                     }
                                     else
                                     {
                                         AtomVector atoms = residue->GetAtoms();
-                                        for(AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
+                                        for (AtomVector::iterator it4 = atoms.begin(); it4 != atoms.end(); it4++)
                                         {
                                             Atom* atom = *it4;
                                             selection.push_back(atom);
@@ -2191,12 +2921,9 @@ MolecularModeling::AtomVector Assembly::Select(std::string pattern)
                                     }
                                 }
                             }
-
                         }
-
                     }
                 }
-
             }
         }
     }
@@ -2207,33 +2934,38 @@ MolecularModeling::AtomVector Assembly::Select(std::string pattern)
 Assembly::SelectPatternMap Assembly::ParsePatternString(std::string pattern)
 {
     SelectPatternMap select_pattern_map = SelectPatternMap();
-    std::vector<std::string> tokens = gmml::Split(pattern, ";");
-    for(unsigned int i = 0; i < tokens.size(); i++)
+    std::vector<std::string> tokens     = gmml::Split(pattern, ";");
+    for (unsigned int i = 0; i < tokens.size(); i++)
     {
-        std::string token = tokens.at(i);
-        std::vector<std::string> assembly_tokens = gmml::Split(token, ":");
-        std::string assembly_id_token = assembly_tokens.at(0);
-        std::vector<std::string> assembly_ids = gmml::Split(assembly_id_token, ",");
-        std::map<std::string, std::vector<std::string> > residues = std::map<std::string, std::vector<std::string> >();
-        for(unsigned int j = 1; j < assembly_tokens.size(); j++)
+        std::string token                                        = tokens.at(i);
+        std::vector<std::string> assembly_tokens                 = gmml::Split(token, ":");
+        std::string assembly_id_token                            = assembly_tokens.at(0);
+        std::vector<std::string> assembly_ids                    = gmml::Split(assembly_id_token, ",");
+        std::map<std::string, std::vector<std::string>> residues = std::map<std::string, std::vector<std::string>>();
+        for (unsigned int j = 1; j < assembly_tokens.size(); j++)
         {
-            std::string assembly_token = assembly_tokens.at(j);
+            std::string assembly_token                       = assembly_tokens.at(j);
             std::vector<std::string> assembly_residue_tokens = gmml::Split(assembly_token, "@");
-            std::string residue_token = assembly_residue_tokens.at(0);
-            std::string atom_token = assembly_residue_tokens.at(1);
-            std::vector<std::string> residue_tokens = gmml::Split(residue_token, ",");
-            std::vector<std::string> atom_tokens = gmml::Split(atom_token, ",");
-            for(unsigned int k = 0; k < residue_tokens.size(); k++)
+            std::string residue_token                        = assembly_residue_tokens.at(0);
+            std::string atom_token                           = assembly_residue_tokens.at(1);
+            std::vector<std::string> residue_tokens          = gmml::Split(residue_token, ",");
+            std::vector<std::string> atom_tokens             = gmml::Split(atom_token, ",");
+            for (unsigned int k = 0; k < residue_tokens.size(); k++)
             {
-                for(unsigned int l = 0; l < atom_tokens.size(); l++)
+                for (unsigned int l = 0; l < atom_tokens.size(); l++)
                 {
-                    if(find(residues[residue_tokens.at(k)].begin(), residues[residue_tokens.at(k)].end(), atom_tokens.at(l)) == residues[residue_tokens.at(k)].end())
+                    if (find(residues[residue_tokens.at(k)].begin(), residues[residue_tokens.at(k)].end(),
+                             atom_tokens.at(l)) == residues[residue_tokens.at(k)].end())
+                    {
                         residues[residue_tokens.at(k)].push_back(atom_tokens.at(l));
+                    }
                 }
             }
         }
-        for(unsigned int j = 0; j < assembly_ids.size(); j++)
+        for (unsigned int j = 0; j < assembly_ids.size(); j++)
+        {
             select_pattern_map[assembly_ids.at(j)] = residues;
+        }
     }
     return select_pattern_map;
 }

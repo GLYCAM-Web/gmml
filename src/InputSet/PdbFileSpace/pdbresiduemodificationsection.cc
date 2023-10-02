@@ -9,11 +9,13 @@ using PdbFileSpace::PdbResidueModificationSection;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-PdbResidueModificationSection::PdbResidueModificationSection() : record_name_("MODRES") {}
+PdbResidueModificationSection::PdbResidueModificationSection() : record_name_("MODRES")
+{}
 
-PdbResidueModificationSection::PdbResidueModificationSection(const std::string &record_name) : record_name_(record_name) {}
+PdbResidueModificationSection::PdbResidueModificationSection(const std::string& record_name) : record_name_(record_name)
+{}
 
-PdbResidueModificationSection::PdbResidueModificationSection(std::stringstream &stream_block)
+PdbResidueModificationSection::PdbResidueModificationSection(std::stringstream& stream_block)
 {
     std::string line;
     std::stringstream ss;
@@ -22,14 +24,15 @@ PdbResidueModificationSection::PdbResidueModificationSection(std::stringstream &
     std::string temp = line;
     while (!gmml::Trim(temp).empty())
     {
-        if(!is_record_name_set){
-            record_name_ = line.substr(0,6);
+        if (!is_record_name_set)
+        {
+            record_name_ = line.substr(0, 6);
             gmml::Trim(record_name_);
-            is_record_name_set=true;
+            is_record_name_set = true;
         }
 
         ss << line << std::endl;
-        PdbResidueModificationCard* residue_modification_cards = new PdbResidueModificationCard(ss);
+        PdbResidueModificationCard* residue_modification_cards               = new PdbResidueModificationCard(ss);
         residue_modification_cards_[residue_modification_cards->GetIdCode()] = residue_modification_cards;
         getline(stream_block, line);
         temp = line;
@@ -64,11 +67,11 @@ void PdbResidueModificationSection::SetRecordName(const std::string record_name)
 //////////////////////////////////////////////////////////
 //                      DISPLAY FUNCTION                //
 //////////////////////////////////////////////////////////
-void PdbResidueModificationSection::Print(std::ostream &out)
+void PdbResidueModificationSection::Print(std::ostream& out)
 {
-    out << "Record Name: " << record_name_ << std::endl <<
-           "============ Residue Modification ===========" << std::endl;
-    for(PdbResidueModificationSection::ResidueModificationCardMap::iterator it = residue_modification_cards_.begin(); it != residue_modification_cards_.end(); it++)
+    out << "Record Name: " << record_name_ << std::endl << "============ Residue Modification ===========" << std::endl;
+    for (PdbResidueModificationSection::ResidueModificationCardMap::iterator it = residue_modification_cards_.begin();
+         it != residue_modification_cards_.end(); it++)
     {
         out << "ID Code: " << (it)->first << std::endl;
         (it)->second->Print();

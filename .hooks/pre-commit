@@ -1,0 +1,163 @@
+#!/bin/bash
+
+##### PRETTY PRINT STUFF #####
+#lazy and dont want to have to type all these color variables a bunch, also improves readability
+RESET_STYLE='\033[0m'
+GREEN_BOLD='\033[0;32m\033[1m'
+YELLOW_BOLD='\033[0;33m\033[1m'
+RED_BOLD='\033[0;31m\033[1m'
+
+##### HELPFUL STUFF #####
+GMML_ROOT_DIR=$(git rev-parse --show-toplevel)
+
+if [[ "${GMML_ROOT_DIR}" != *"gmml" ]]; then
+    echo -e "Precommit hook failed, we think our GMML root directory is:\t${GMML_ROOT_DIR}\n"
+    exit 1
+fi
+
+cp -r "${GMML_ROOT_DIR}"/.hooks/* "${GMML_ROOT_DIR}"/.git/hooks/
+
+FAILED_FILES=()
+PASSED_FILES=()
+
+#for some reason using the read was being annoying and I may be dumb - P
+# shellcheck disable=SC2207
+CPP_CHECK_LIST=($(git diff --cached --name-only -- "*.hpp" -- "*.h" -- "*.cpp" -- "*.c" -- "*.cc" --diff-filter=ACM))
+
+#Populate with all soon to commit shell scripts that we need to lint or check formatting on
+# shellcheck disable=SC2207
+SHELL_CHECK_LIST=($(git diff --cached --name-only --diff-filter=ACM | xargs -I % sh -c 'file -b % | grep -q "shell script" && echo %'))
+
+#will both check formatting and linting of our shell scripts
+check_shell_scripts()
+{
+
+    #check script formatting start
+    echo -e "\n${YELLOW_BOLD}Begin shell script format enforcement...${RESET_STYLE}"
+    TEMP_DIR=$(mktemp -d -p "${GMML_ROOT_DIR}")
+    echo -e "${YELLOW_BOLD}Created temporary dir to hold format checked files...${RESET_STYLE}\n\tDir Name: ${TEMP_DIR}\n"
+
+    for FILE_CHECKING in "${SHELL_CHECK_LIST[@]}"; do
+
+        #make the temp file of what we be checking. Extracts the filename with extension that we be checking also
+        #in case we gotta add debug/info type ish in the future
+        TEMP_FILE=$(mktemp "${TEMP_DIR}"/"${FILE_CHECKING##*/}".XXXXXX)
+        #output the code we gonna commit to the tmp file
+        (git show :"${FILE_CHECKING}") >"${TEMP_FILE}"
+
+        if shfmt -d -i 4 -ci -fn "${TEMP_FILE}" >>/dev/null; then
+            PASSED_FILES+=("${FILE_CHECKING}")
+        else
+            FAILED_FILES+=("${FILE_CHECKING}")
+        fi
+        #dont delete cause still need to run shellcheck on these dudes
+    done
+
+    #dont wanna keep track of the tmp files
+    rm -r "${TEMP_DIR}"
+
+    #failure of format
+    if [ ${#FAILED_FILES[@]} != 0 ]; then
+        echo -e "${RED_BOLD}ERROR: ${#FAILED_FILES[@]} SHELL SCRIPT(S) FAILED FORMAT CHECKING. COMMIT DENIED${RESET_STYLE}"
+        for FAILURE in "${FAILED_FILES[@]}"; do
+            echo -e "${RED_BOLD}FILE FAILED: ${RESET_STYLE}${FAILURE}"
+        done
+        echo -e "\nPlease run \"shfmt -i 4 -ci -fn -w file/path/here.sh\" on each of the failed files.\nDont forget to re-add your files to the commit!\n"
+        exit 1
+    fi
+
+    echo -e "${GREEN_BOLD}SHELL SCRIPT FORMAT CHECK PASSED: ALL FILES FORMATTED CORRECTLY.${RESET_STYLE}\n"
+
+    echo -e "${YELLOW_BOLD}Begin shell script linting enforcement...${RESET_STYLE}"
+
+    #just to prevent ugly clean our passed files dude
+    PASSED_FILES=()
+
+    TEMP_DIR=$(mktemp -d -p "${GMML_ROOT_DIR}")
+    echo -e "${YELLOW_BOLD}Created temporary dir to hold format checked files...${RESET_STYLE}\n\tDir Name: ${TEMP_DIR}\n"
+
+    #lint all files
+    for FILE_CHECKING in "${SHELL_CHECK_LIST[@]}"; do
+        #make the temp file of what we be checking. Done so I dont have to keep track of
+        #pairs thru both loops
+        TEMP_FILE=$(mktemp "${TEMP_DIR}"/"${FILE_CHECKING##*/}".XXXXXX)
+        (git show :"${FILE_CHECKING}") >"${TEMP_FILE}"
+
+        if shellcheck -f quiet --enable=require-variable-braces,quote-safe-variables,add-default-case "${TEMP_FILE}"; then
+            PASSED_FILES+=("${FILE_CHECKING}")
+        else
+            FAILED_FILES+=("${FILE_CHECKING}")
+        fi
+    done
+
+    rm -r "${TEMP_DIR}"
+    for SUCCEDER in "${PASSED_FILES[@]}"; do
+        echo -e "${GREEN_BOLD}SCRIPT FILE PASSED: ${RESET_STYLE}${SUCCEDER}"
+    done
+
+    if [ ${#FAILED_FILES[@]} == 0 ]; then
+        echo -e "${GREEN_BOLD}SHELL SCRIPT LINTER CHECK PASSED: ALL FILES PASS LINTER.${RESET_STYLE}\n"
+        return 0
+    fi
+
+    echo -e "${RED_BOLD}ERROR: ${#FAILED_FILES[@]} SHELL SCRIPT(S) FAILED LINT CHECKING. COMMIT DENIED${RESET_STYLE}"
+
+    for FAILURE in "${FAILED_FILES[@]}"; do
+        echo -e "${RED_BOLD}FILE FAILED: ${RESET_STYLE}${FAILURE}\n"
+    done
+    echo -e "Please run:\n\"shellcheck --enable=require-variable-braces,quote-safe-variables,add-default-case file/path/here.sh\"\non each of the failed files, and apply the changes the linter requests.\nDont forget to re-add your files to the commit when complete!\n"
+    exit 1
+}
+
+check_c_formatting()
+{
+    echo -e "\n${YELLOW_BOLD}Begin C++ code format enforcement...${RESET_STYLE}"
+
+    #make temp dir in our gmml directory so we dont have to deal with perm problems in the tmp dirs or w/e
+    #When debugging this script i would run into problems where stuff would act wonky, used this method
+    #cause I got sick of trying to hunt down the actual problem why my code wasnt behaving as I expected
+    TEMP_DIR=$(mktemp -d -p "${GMML_ROOT_DIR}")
+    echo -e "${YELLOW_BOLD}Created temporary dir to hold checked files...${RESET_STYLE}\n\tDir Name: ${TEMP_DIR}\n"
+    for FILE_CHECKING in "${CPP_CHECK_LIST[@]}"; do
+
+        #make the temp file of what we be checking. Extracts the filename with extension that we be checking also
+        #in case we gotta add debug/info type ish in the future
+        TEMP_FILE=$(mktemp "${TEMP_DIR}"/"${FILE_CHECKING##*/}".XXXXXX)
+
+        (git show :"${FILE_CHECKING}") >"${TEMP_FILE}"
+        if clang-format-15 --dry-run --Werror "${TEMP_FILE}" 2>/dev/null; then
+            PASSED_FILES+=("${FILE_CHECKING}")
+        else
+            FAILED_FILES+=("${FILE_CHECKING}")
+        fi
+        rm "${TEMP_FILE}"
+    done
+    rm -r "${TEMP_DIR}"
+
+    for SUCCEDER in "${PASSED_FILES[@]}"; do
+        echo -e "${GREEN_BOLD}FILE PASSED: ${RESET_STYLE}${SUCCEDER}"
+    done
+
+    if [ ${#FAILED_FILES[@]} == 0 ]; then
+        echo -e "${GREEN_BOLD}C++ FORMAT CHECK PASSED: ALL FILES FORMATTED CORRECTLY.${RESET_STYLE}\n"
+        return 0
+    fi
+
+    echo -e "\n${RED_BOLD}ERROR: ${#FAILED_FILES[@]} FILE(S) FAILED FORMAT CHECKING. COMMIT DENIED${RESET_STYLE}"
+
+    for FAILURE in "${FAILED_FILES[@]}"; do
+        echo -e "${RED_BOLD}FILE FAILED: ${RESET_STYLE}${FAILURE}\n"
+
+    done
+    echo -e "Please run \"clang-format-15 -i file/path/here.cpp\" on each of the failed files.\nSometimes clang-format messes up on comment blocks so just use multiline comments instead.\n\nDont forget to re-add your files to the commit!\n"
+    exit 1
+}
+
+check_c_formatting
+#clear out our passed files so we dont get a buncha crud
+PASSED_FILES=()
+
+check_shell_scripts
+
+#hit here we pass everything
+echo -e "\n${GREEN_BOLD}ALL PRECOMMIT CHECKS PASSED. COMMIT ACCEPTED.${RESET_STYLE}"

@@ -7,7 +7,7 @@
 
 namespace pdb
 {
-PdbResidue* residueSelector(const PdbFile& pdbFile, const pdb::ResidueId& residueId, const int modelNumber = 0);
-PdbResidue* residueSelector(std::vector<cds::Residue*> residues, const pdb::ResidueId& queryId);
-}
+    PdbResidue* residueSelector(const PdbFile& pdbFile, const pdb::ResidueId& residueId, const int modelNumber = 0);
+    PdbResidue* residueSelector(std::vector<cds::Residue*> residues, const pdb::ResidueId& queryId);
+} // namespace pdb
 #endif /* INCLUDES_CENTRALDATASTRUCTURE_READERS_PDB_PDBSELECTIONS_HPP_ */

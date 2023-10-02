@@ -1,7 +1,7 @@
 graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+node [ shape="none" fontname=DejaVuSans labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+edge [labelfontsize=12 fontname=DejaVuSans labeldistance=1.2 labelangle = 320.0];
 rankdir=LR nodesep="0.05" ranksep="0.8";
 1 [shape=box label="OH"]
 2 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg"];
@@ -51,9 +51,9 @@ b13--13 [style=invis];
 
 }
 graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+node [ shape="none" fontname=DejaVuSans labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+edge [labelfontsize=12 fontname=DejaVuSans labeldistance=1.2 labelangle = 320.0];
 rankdir=LR nodesep="0.05" ranksep="0.8";
 1 [shape=box label="OH"]
 2 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNAc.svg"];
@@ -103,9 +103,9 @@ b13--13 [style=invis];
 
 }
 graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+node [ shape="none" fontname=DejaVuSans labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+edge [labelfontsize=12 fontname=DejaVuSans labeldistance=1.2 labelangle = 320.0];
 rankdir=LR nodesep="0.05" ranksep="0.8";
 1 [shape=box label="OH"]
 2 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DXyl.svg"];
@@ -128,9 +128,9 @@ rankdir=LR nodesep="0.05" ranksep="0.8";
 
 }
 graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+node [ shape="none" fontname=DejaVuSans labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+edge [labelfontsize=12 fontname=DejaVuSans labeldistance=1.2 labelangle = 320.0];
 rankdir=LR nodesep="0.05" ranksep="0.8";
 1 [shape=box label="OH"]
 2 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DXyl.svg"];
@@ -182,9 +182,9 @@ b14--14 [style=invis];
 
 }
 graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+node [ shape="none" fontname=DejaVuSans labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+edge [labelfontsize=12 fontname=DejaVuSans labeldistance=1.2 labelangle = 320.0];
 rankdir=LR nodesep="0.05" ranksep="0.8";
 1 [shape=box label="OH"]
 2 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlcNS.svg"];
@@ -222,9 +222,9 @@ b9--9 [style=invis];
 
 }
 graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+node [ shape="none" fontname=DejaVuSans labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+edge [labelfontsize=12 fontname=DejaVuSans labeldistance=1.2 labelangle = 320.0];
 rankdir=LR nodesep="0.05" ranksep="0.8";
 1 [label="f" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DFru.svg"];
 
@@ -233,9 +233,9 @@ rankdir=LR nodesep="0.05" ranksep="0.8";
 
 }
 graph G {graph [splines=false forcelabels=true  dpi=72];
-node [ shape="none" fontname=Helvetica labelfontsize=12 forcelabels="true";
+node [ shape="none" fontname=DejaVuSans labelfontsize=12 forcelabels="true";
 label="none" size=50 fixedsize="true" scale="true"];
-edge [labelfontsize=12 fontname=Helvetica labeldistance=1.2 labelangle = 320.0];
+edge [labelfontsize=12 fontname=DejaVuSans labeldistance=1.2 labelangle = 320.0];
 rankdir=LR nodesep="0.05" ranksep="0.8";
 1 [label="" height="0.7" image="/programs/gems/gmml/includes/MolecularMetadata/Sugars/SNFG_Symbol_Images/DGlc.svg"];
 

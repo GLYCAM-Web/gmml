@@ -11,10 +11,10 @@
 
 namespace cds
 {
-std::string getOffType(const cds::ResidueType queryType);
-void WriteOffFileUnit(std::vector<cds::Residue*> residues, std::ostream& stream, const std::string unitName);
-void WriteResiduesToOffFile(std::vector<cds::Residue*> residues, std::ostream& stream);
-void WriteMoleculeToOffFile(cds::Molecule* molecule, std::ostream& stream, const std::string unitName);
-void WriteAssemblyToOffFile(cds::Assembly* assembly, std::ostream& stream, const std::string unitName);
-} // namespace
+    std::string getOffType(const cds::ResidueType queryType);
+    void WriteOffFileUnit(std::vector<cds::Residue*> residues, std::ostream& stream, const std::string unitName);
+    void WriteResiduesToOffFile(std::vector<cds::Residue*> residues, std::ostream& stream);
+    void WriteMoleculeToOffFile(cds::Molecule* molecule, std::ostream& stream, const std::string unitName);
+    void WriteAssemblyToOffFile(cds::Assembly* assembly, std::ostream& stream, const std::string unitName);
+} // namespace cds
 #endif
