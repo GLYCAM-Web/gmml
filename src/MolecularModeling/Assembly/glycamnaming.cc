@@ -118,6 +118,11 @@ void Assembly::PutAglyconeInNewResidueAndRearrangeGlycanResidues(std::vector<Gly
 
         AtomVector terminal_atoms = AtomVector();
         std::string terminal = CheckTerminals(anomeric_o, terminal_atoms);
+
+		for (unsigned int i = 0; i < terminal_atoms.size(); i++){
+			std::cout << "Terminal aglycone atom: " << terminal_atoms[i]->GetName() << "\n";
+		}
+
         if(terminal.compare("") == 0)
         {
             std::cerr << "Unknown aglycone detected.Aborting" << std::endl;
@@ -163,13 +168,17 @@ void Assembly::PutAglyconeInNewResidueAndRearrangeGlycanResidues(std::vector<Gly
         }
 
         std::string aglycone_name = condensed_sequence_glycam06_residue_tree.at(0)->GetName();
+
         MolecularModeling::Residue* residue_with_aglycone = oligo_residues[0];
+
         MolecularModeling::Residue* new_terminal_residue = NULL;
 
         if ( !(anomeric_o->GetResidue()->CheckIfProtein()) )  //If this terminal atom is not part of protein,for example,NLN, then it should be in a new glycam residue, for example, ROH.
         {
             gmml::log(__LINE__, __FILE__, gmml::INF, "First sugar residue is: " + residue_with_aglycone->GetId());
             new_terminal_residue = new Residue(this,aglycone_name);
+			new_terminal_residue->SetName(aglycone_name);
+
             oligo_residue_map[oligo].push_back(new_terminal_residue);
 
             //If there is no preceding residue, simply add the new terminal residue, which will be the 1st residue
@@ -284,6 +293,9 @@ gmml::GlycamResidueNamingMap Assembly::ExtractResidueGlycamNamingMap(std::vector
 
         AtomVector terminal_atoms = AtomVector();
         std::string terminal = CheckTerminals(anomeric_o, terminal_atoms);
+		
+		std::cout << "In extract map detected terminal name: " << terminal << std::endl;
+		
         if(terminal.compare("") == 0)
         {
             std::cerr << "Unknown aglycone detected.Aborting" << std::endl;
@@ -537,7 +549,7 @@ void Assembly::MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVe
         for (unsigned int i = 0; i < template_atoms.size(); i++){
         }
 
-        PdbFileSpace::PdbFile *outputPdbFile = template_assembly.BuildPdbFileStructureFromAssembly();
+        //PdbFileSpace::PdbFile *outputPdbFile = template_assembly.BuildPdbFileStructureFromAssembly();
         //outputPdbFile->Write("template.pdb");
 
         AtomVector target_atoms;
@@ -564,7 +576,7 @@ void Assembly::MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVe
             label += atom->GetElementSymbol();
             //label += atom->DetermineChirality();
             target_atom_label_map[atom] = label;
-            //std::cout << "Target atom " << atom->GetResidue()->GetName() << " has label " << label << std::endl;
+            //std::cout << "Target atom " << atom->GetResidue()->GetName() << "-" <<  atom->GetName() << " has label " << label << std::endl;
         }
 
         std::map<Atom*, std::string> template_atom_label_map;
@@ -585,7 +597,7 @@ void Assembly::MatchPdbAtoms2Glycam(std::map<Glycan::Oligosaccharide*, ResidueVe
             label += atom->GetElementSymbol();
             //label += atom->DetermineChirality();
             template_atom_label_map[atom] = label;
-            //std::cout << "Template atom " << atom->GetResidue()->GetName() << " has label " << label << std::endl;
+            //std::cout << "Template atom " << atom->GetResidue()->GetName() << "-" << atom->GetName() << " has label " << label << std::endl;
         }
 
         Atom* target_start_atom = target_atoms[0];
