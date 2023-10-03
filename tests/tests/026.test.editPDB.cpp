@@ -22,15 +22,14 @@ int main(int argc, char* argv[])
     // ResidueTypes are guessed upon input. Using that guess to find the ligand, can improve this if you need:
     std::vector<cds::Residue*> ligandResidues =
         cdsSelections::selectResiduesByType(pdbFile.getResidues(), cds::ResidueType::Undefined);
-    cds::Residue* firstLigandResidue =
-        ligandResidues.front(); // Everything has the same residue number as the first one.
-    if (firstLigandResidue == nullptr)
+    if (ligandResidues.empty())
     {
-        std::cout << "Error: no ligand residues found in input file\n";
-        std::exit(EXIT_FAILURE);
+        std::cout << "No ligand residues found in input file\n";
+        return 0;
     }
+    cds::Residue* firstLigandResidue = ligandResidues.front();
     for (auto& ligandResidue : ligandResidues) // Each MODEL in PdbFile is converted into an "Assembly"
-    {
+    {                                          // Every ligand residue gets the same residue number as the first one.
         // std::cout << "Renumbering and renaming " << ligandResidue->getStringId() << "\n";
         ligandResidue->setNumber(firstLigandResidue->getNumber());
         ligandResidue->setName(firstLigandResidue->getName());
