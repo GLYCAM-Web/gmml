@@ -1,6 +1,7 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbModel.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbChain.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbResidue.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbFunctions.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp"
@@ -58,7 +59,7 @@ PdbModel::PdbModel(std::stringstream& stream_block)
 //////////////////////////////////////////////////////////
 std::string PdbModel::extractChainId(const std::string& line)
 { // serialNumber can overrun into position 12 in input.
-    int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
+    int shift = pdb::checkShiftFromSerialNumberOverrun(line);
     return codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
 }
 

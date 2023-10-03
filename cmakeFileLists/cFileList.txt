@@ -23,6 +23,7 @@
 ./src/CentralDataStructure/Readers/Pdb/pdbAtom.cpp
 ./src/CentralDataStructure/Readers/Pdb/pdbChain.cpp
 ./src/CentralDataStructure/Readers/Pdb/pdbFile.cpp
+./src/CentralDataStructure/Readers/Pdb/pdbFunctions.cpp
 ./src/CentralDataStructure/Readers/Pdb/pdbModel.cpp
 ./src/CentralDataStructure/Readers/Pdb/pdbResidue.cpp
 ./src/CentralDataStructure/Readers/Pdb/pdbResidueId.cpp

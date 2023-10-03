@@ -1,4 +1,5 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbResidueId.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbFunctions.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/constants.hpp"
 
@@ -8,9 +9,8 @@ using pdb::ResidueId;
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
 ResidueId::ResidueId(const std::string& line)
-{
-    int shift =
-        codeUtils::GetSizeOfIntInString(line.substr(12)); // atom number can overrun, shifting everything to the right.
+{ // atom number can overrun, shifting everything to the right.
+    int shift            = pdb::checkShiftFromSerialNumberOverrun(line);
     alternativeLocation_ = codeUtils::RemoveWhiteSpace(line.substr(
         16 + shift, 1)); // I created this to use it only when reading, so I can discard the additional entries.
     residueName_         = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
@@ -112,7 +112,7 @@ std::string ResidueId::print() const
 //{
 //     // Dealing with number overruns for serialNumber and residueNumber
 //     ResidueId residueId;
-//     int shift = codeUtils::GetSizeOfIntInString(line.substr(12));
+//         int shift = pdb::checkShiftFromSerialNumberOverrun(line);
 //     residueId.residueName_ = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));
 //     residueId.chainId_ = codeUtils::RemoveWhiteSpace(line.substr(21 + shift, 1));
 //     int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));

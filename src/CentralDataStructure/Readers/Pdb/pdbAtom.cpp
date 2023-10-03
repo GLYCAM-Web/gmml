@@ -1,4 +1,5 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbAtom.hpp"
+#include "includes/CentralDataStructure/Readers/Pdb/pdbFunctions.hpp"
 #include "includes/CodeUtils/constants.hpp" // gmml::iNotSet
 #include "includes/CodeUtils/strings.hpp"
 #include "includes/CodeUtils/logging.hpp"
@@ -21,8 +22,7 @@ PdbAtom::PdbAtom(const std::string& line)
     //  serial doesn't matter as there should be a space between the number and the name. So the problem is above 999999
     this->SetRecordName(codeUtils::RemoveWhiteSpace(line.substr(0, 6)));
     // Dealing with number overruns for serialNumber and residueNumber
-    int shift = 0;
-    shift     = codeUtils::GetSizeOfIntInString(line.substr(12));
+    int shift = pdb::checkShiftFromSerialNumberOverrun(line);
     try
     {
         this->setNumber(std::stoi(codeUtils::RemoveWhiteSpace(line.substr(6, 6 + shift))));
