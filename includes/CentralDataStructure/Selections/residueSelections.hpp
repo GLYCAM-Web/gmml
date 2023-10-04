@@ -14,5 +14,6 @@ namespace cdsSelections
                                                std::vector<cds::ResidueType> queryTypes, const bool invert = false);
     unsigned int findHighestResidueNumber(std::vector<Residue*> residues);
     Residue* FindNeighborResidueConnectedViaSpecificAtom(Residue* queryResidue, const std::string queryAtomName);
+    void FindConnectedResidues(std::vector<Residue*>& visitedList, Residue* current);
 } // namespace cdsSelections
 #endif

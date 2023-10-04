@@ -1,6 +1,7 @@
 #include "includes/CentralDataStructure/Shapers/residueLinkage.hpp"
 #include "includes/CentralDataStructure/Selections/shaperSelections.hpp"
-#include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp" // For lookup in GetName function
+#include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"     // For lookup in GetName function
+#include "includes/CentralDataStructure/Selections/residueSelections.hpp" //FindConnectedResidues()
 
 using cds::ResidueLinkage;
 using cds::RotatableDihedral;
@@ -111,6 +112,16 @@ std::string ResidueLinkage::GetName() const
         return name_;
     }
     return this->DetermineLinkageNameFromResidueNames();
+}
+
+std::vector<cds::Residue*>& ResidueLinkage::GetMovingResidues()
+{
+    return movingResidues_;
+}
+
+std::vector<cds::Residue*>& ResidueLinkage::GetFixedResidues()
+{
+    return fixedResidues_;
 }
 
 std::string ResidueLinkage::DetermineLinkageNameFromResidueNames() const
@@ -355,6 +366,7 @@ void ResidueLinkage::InitializeClass(cds::Residue* from_this_residue1, cds::Resi
         this->AddMetadataToRotatableDihedrals(metadata);
     }
     this->SetIndex(this->GenerateIndex());
+    this->DetermineMovingResidues(); // speedup overlap calcs
     return;
 }
 
@@ -653,4 +665,19 @@ unsigned long long ResidueLinkage::GenerateIndex()
         0; // static keyword means it is created only once and persists beyond scope of code block.
     return s_ResidueLinkageIndex++; // makes copy of s_AtomIndex, increments the real s_AtomIndex, then returns the
                                     // value in the copy
+}
+
+void ResidueLinkage::DetermineMovingResidues()
+{ // In keeping with giving residues as GlcNAc1-4Gal, and wanting the moving parts to be in the opposite direction
+    cds::Residue* movingResidue = to_this_residue2_;
+    cds::Residue* fixedResidue  = from_this_residue1_;
+    if (this->GetIfReversedAtomsThatMove())
+    { // Reverse what's moving and fixed from above;
+        movingResidue = from_this_residue1_;
+        fixedResidue  = to_this_residue2_;
+    }
+    movingResidues_.push_back(fixedResidue);
+    cdsSelections::FindConnectedResidues(movingResidues_, movingResidue);
+    fixedResidues_.push_back(movingResidue);
+    cdsSelections::FindConnectedResidues(fixedResidues_, fixedResidue);
 }

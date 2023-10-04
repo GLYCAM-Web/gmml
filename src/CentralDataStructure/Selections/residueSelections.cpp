@@ -70,3 +70,16 @@ Residue* cdsSelections::FindNeighborResidueConnectedViaSpecificAtom(Residue* que
                   " to residue: " + queryResidue->getStringId());
     return nullptr;
 }
+
+void cdsSelections::FindConnectedResidues(std::vector<Residue*>& visitedList, Residue* current)
+{
+    visitedList.push_back(current);
+    for (auto& neighbor : current->getNeighbors())
+    {
+        if (std::find(visitedList.begin(), visitedList.end(), neighbor) == visitedList.end())
+        {                                                                // Keep looking if neighbor wasn't yet visited.
+            cdsSelections::FindConnectedResidues(visitedList, neighbor); // recursive function call
+        }
+    }
+    return;
+}
