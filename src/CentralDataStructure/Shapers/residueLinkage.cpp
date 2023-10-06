@@ -116,12 +116,12 @@ std::string ResidueLinkage::GetName() const
 
 std::vector<cds::Residue*>& ResidueLinkage::GetMovingResidues()
 {
-    return movingResidues_;
+    return overlapResidues1_;
 }
 
 std::vector<cds::Residue*>& ResidueLinkage::GetFixedResidues()
 {
-    return fixedResidues_;
+    return overlapResidues2_;
 }
 
 std::string ResidueLinkage::DetermineLinkageNameFromResidueNames() const
@@ -366,7 +366,7 @@ void ResidueLinkage::InitializeClass(cds::Residue* from_this_residue1, cds::Resi
         this->AddMetadataToRotatableDihedrals(metadata);
     }
     this->SetIndex(this->GenerateIndex());
-    this->DetermineMovingResidues(); // speedup overlap calcs
+    this->DetermineResiduesForOverlapCheck(); // speedup overlap calcs
     return;
 }
 
@@ -667,17 +667,22 @@ unsigned long long ResidueLinkage::GenerateIndex()
                                     // value in the copy
 }
 
-void ResidueLinkage::DetermineMovingResidues()
-{ // In keeping with giving residues as GlcNAc1-4Gal, and wanting the moving parts to be in the opposite direction
-    cds::Residue* movingResidue = to_this_residue2_;
-    cds::Residue* fixedResidue  = from_this_residue1_;
-    if (this->GetIfReversedAtomsThatMove())
-    { // Reverse what's moving and fixed from above;
-        movingResidue = from_this_residue1_;
-        fixedResidue  = to_this_residue2_;
+void ResidueLinkage::DetermineResiduesForOverlapCheck()
+{
+    overlapResidues1_.push_back(from_this_residue1_);
+    for (auto& neighbor : from_this_residue1_->getNeighbors())
+    {
+        if (neighbor != to_this_residue2_)
+        {
+            cdsSelections::FindConnectedResidues(overlapResidues1_, neighbor);
+        }
     }
-    movingResidues_.push_back(fixedResidue);
-    cdsSelections::FindConnectedResidues(movingResidues_, movingResidue);
-    fixedResidues_.push_back(movingResidue);
-    cdsSelections::FindConnectedResidues(fixedResidues_, fixedResidue);
+    overlapResidues2_.push_back(to_this_residue2_);
+    for (auto& neighbor : to_this_residue2_->getNeighbors())
+    {
+        if (neighbor != from_this_residue1_)
+        {
+            cdsSelections::FindConnectedResidues(overlapResidues1_, neighbor);
+        }
+    }
 }
