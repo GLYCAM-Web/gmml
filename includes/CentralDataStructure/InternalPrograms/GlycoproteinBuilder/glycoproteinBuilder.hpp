@@ -123,16 +123,14 @@ class GlycoproteinBuilder : public Abstract::absBuilder
     Residue* SelectResidueFromInput(const std::string userSelection);
     // Overlap Resolution
     void ResolveOverlapsWithWiggler();
-    void Wiggle(Resolution resolutionLevel = RESIDUE, int persistCycles = 100, bool firstLinkageOnly = false,
-                int interval = 5);
-    void RandomDescent(Resolution resolutionLevel, int persistCycles, bool monte_carlo);
+    void Wiggle(int persistCycles = 100, bool firstLinkageOnly = false, int interval = 5);
+    void RandomDescent(int persistCycles, bool monte_carlo);
     void SetRandomDihedralAnglesUsingMetadata();
     bool DumbRandomWalk(int maxCycles = 10);
     // I/O
     // Overlap Calculation
-    int CalculateOverlaps(Resolution resolutionLevel = RESIDUE, MoleculeType moleculeType = ALL);
-    std::vector<GlycosylationSite*> DetermineSitesWithOverlap(Resolution resolutionLevel = RESIDUE,
-                                                              MoleculeType moleculeType  = ALL);
+    unsigned int CountOverlaps(MoleculeType moleculeType = ALL);
+    std::vector<GlycosylationSite*> DetermineSitesWithOverlap(MoleculeType moleculeType = ALL);
     void DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(std::vector<GlycosylationSite>& glycosites,
                                                                int tolerance);
     void SetOtherGlycosites();

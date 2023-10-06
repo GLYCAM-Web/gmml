@@ -259,13 +259,13 @@ void GlycosylationSite::Rename_Protein_Residue_From_GLYCAM_To_Standard()
     }
 }
 
-int GlycosylationSite::CalculateOverlaps(Resolution resolutionLevel, MoleculeType moleculeType)
+unsigned int GlycosylationSite::CountOverlaps(MoleculeType moleculeType)
 {
-    int overlap = 0;
+    unsigned int overlap = 0;
     if (moleculeType == ALL)
     {
-        int proteinOverlap = this->CalculateOverlaps(resolutionLevel, PROTEIN);
-        int glycanOverlap  = this->CalculateOverlaps(resolutionLevel, GLYCAN);
+        unsigned int proteinOverlap = this->CountOverlaps(MoleculeType::PROTEIN);
+        unsigned int glycanOverlap  = this->CountOverlaps(MoleculeType::GLYCAN);
         return (proteinOverlap + glycanOverlap);
     }
     if (moleculeType == PROTEIN)
@@ -273,11 +273,7 @@ int GlycosylationSite::CalculateOverlaps(Resolution resolutionLevel, MoleculeTyp
         // This should not be necessary, either return a ref for the get, or accept a value in the function.
         std::vector<Residue*> proteinResidues = this->GetOtherProteinResidues();
         std::vector<Residue*> glycanResidues  = this->GetGlycan()->getResidues();
-        //        std::stringstream ss;
-        //        ss << "Number of proteinResidue to glycanResidues is: " << proteinResidues.size() << " : " <<
-        //        glycanResidues.size(); gmml::log(__LINE__,__FILE__, gmml::INF, ss.str() );
-        int numberOfOverlaps = this->CalculateOverlaps(resolutionLevel, proteinResidues, glycanResidues);
-        // std::cout << "Number of overlaps: " << numberOfOverlaps << std::endl << std::flush;
+        unsigned int numberOfOverlaps         = this->CountOverlaps(proteinResidues, glycanResidues);
         return numberOfOverlaps;
     }
     if (moleculeType == GLYCAN)
@@ -286,19 +282,15 @@ int GlycosylationSite::CalculateOverlaps(Resolution resolutionLevel, MoleculeTyp
         for (auto& other_glycosite : other_glycosites_)
         {
             std::vector<Residue*> otherGlycanResidues = other_glycosite->GetGlycan()->getResidues();
-            overlap += this->CalculateOverlaps(resolutionLevel, otherGlycanResidues, glycanResidues);
+            overlap                                   += this->CountOverlaps(otherGlycanResidues, glycanResidues);
         }
     }
     return overlap;
 }
 
-int GlycosylationSite::CalculateOverlaps(Resolution resolutionLevel, const std::vector<Residue*> residuesA,
-                                         const std::vector<Residue*> residuesB)
+unsigned int GlycosylationSite::CountOverlaps(const std::vector<Residue*> residuesA,
+                                              const std::vector<Residue*> residuesB)
 {
-    if (resolutionLevel == ATOMIC)
-    {
-        return cds::CountOverlappingAtoms(residuesA, residuesB);
-    }
     return cds::CountOverlappingResidues(residuesA, residuesB);
 }
 
@@ -306,7 +298,7 @@ void GlycosylationSite::PrintOverlaps()
 {
     std::stringstream logss;
     logss << std::fixed << std::setprecision(2) << std::setw(17) << this->GetResidue()->getStringId() << " | "
-          << std::setw(6) << this->CalculateOverlaps() << std::endl;
+          << std::setw(6) << this->CountOverlaps() << std::endl;
     gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
 }
 
@@ -392,7 +384,7 @@ void GlycosylationSite::Print(std::string type)
     std::stringstream logss;
     if (type.compare("All") == 0)
     {
-        logss << "Residue ID: " << this->GetResidue()->getStringId() << ", overlap: " << this->CalculateOverlaps();
+        logss << "Residue ID: " << this->GetResidue()->getStringId() << ", overlap: " << this->CountOverlaps();
         gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
     }
 }
@@ -433,7 +425,7 @@ Atom* GlycosylationSite::GetConnectingProteinAtom(const std::string residue_name
 // OG re-re-reading. It's because you need to calculate overlaps.
 void GlycosylationSite::WiggleOneLinkage(ResidueLinkage& linkage, int interval)
 {
-    int current_overlap                                           = this->CalculateOverlaps();
+    int current_overlap                                           = this->CountOverlaps();
     int lowest_overlap                                            = current_overlap;
     // Reverse as convention is Glc1-4Gal and I want to wiggle in opposite direction i.e. from first rotatable bond in
     // Asn outwards
@@ -452,7 +444,7 @@ void GlycosylationSite::WiggleOneLinkage(ResidueLinkage& linkage, int interval)
             while (current_dihedral <= upper_bound)
             {
                 rotatable_dihedral.SetDihedralAngle(current_dihedral);
-                current_overlap = this->CalculateOverlaps();
+                current_overlap = this->CountOverlaps();
                 //      std::cout << this->GetResidueNumber() << ": current dihedral : overlap " << current_dihedral <<
                 //      " : " << current_overlap << ". Best dihedral : overlap: " << best_dihedral_angle << " : "<<
                 //      lowest_overlap << "\n";

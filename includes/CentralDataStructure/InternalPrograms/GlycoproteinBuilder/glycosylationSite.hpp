@@ -5,12 +5,6 @@
 #include "includes/CentralDataStructure/assembly.hpp"
 #include "includes/CentralDataStructure/Shapers/residueLinkage.hpp"
 
-enum Resolution
-{
-    RESIDUE,
-    ATOMIC,
-};
-
 enum MoleculeType
 {
     PROTEIN,
@@ -62,7 +56,7 @@ class GlycosylationSite
     //////////////////////////////////////////////////////////
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
-    int CalculateOverlaps(Resolution overlapType = RESIDUE, MoleculeType moleculeType = ALL);
+    unsigned int CountOverlaps(MoleculeType moleculeType = MoleculeType::ALL);
     //    void StashCoordinates();
     //    void SetStashedCoordinates();
     void Wiggle(bool firstLinkageOnly = false, int interval = 5);
@@ -168,8 +162,7 @@ class GlycosylationSite
     Atom* GetConnectingProteinAtom(const std::string residue_name) const;
     void WiggleOneLinkage(ResidueLinkage& linkage, int interval = 5);
     // double Calculate_and_print_bead_overlaps();
-    int CalculateOverlaps(Resolution resolutionLevel, const std::vector<Residue*> residuesA,
-                          const std::vector<Residue*> residuesB);
+    unsigned int CountOverlaps(const std::vector<Residue*> residuesA, const std::vector<Residue*> residuesB);
     bool NoNewInternalCloseContacts();
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
