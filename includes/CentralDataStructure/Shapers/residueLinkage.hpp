@@ -62,6 +62,9 @@ namespace cds
 
         std::string GetName() const;
 
+        std::vector<cds::Residue*>& GetMovingResidues();
+        std::vector<cds::Residue*>& GetFixedResidues();
+
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////
@@ -155,6 +158,7 @@ namespace cds
         void SetConformerUsingMetadata(bool useRanges = false, int conformerNumber = 0);
         unsigned long long GenerateIndex();
         std::string DetermineLinkageNameFromResidueNames() const;
+        void DetermineMovingResidues();
 
         inline void SetName(std::string name)
         {
@@ -173,7 +177,9 @@ namespace cds
         std::vector<cds::Atom*> extraAtomsThatMove_;
         bool isExtraAtoms_        = true;
         unsigned long long index_ = 0;
-        std::string name_         = ""; // e.g. "DGalpb1-6DGlcpNAc". It being empty works with GetName();
+        std::string name_         = "";             // e.g. "DGalpb1-6DGlcpNAc". It being empty works with GetName();
+        std::vector<cds::Residue*> movingResidues_; // overlap speedups
+        std::vector<cds::Residue*> fixedResidues_;  // overlap speedups
     };
 } // namespace cds
 #endif // GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_RESIDUE_LINKAGE_HPP
