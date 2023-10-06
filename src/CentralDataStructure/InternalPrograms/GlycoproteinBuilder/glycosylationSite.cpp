@@ -169,14 +169,13 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue* glycosite_resid
     // will superimpose them onto the correspoinding "target" atoms in the protein residue (glycosite_residue).
     for (auto& superimposition_atom : this->GetGlycan()->GetAglycone()->getAtoms())
     {
-        //                std::cout << "Superimposition aglycone atom is named " << superimposition_atom->getName() <<
-        //                "\n";
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Aglycone atom is named: " + superimposition_atom->getName());
         for (auto& protein_atom : glycosite_residue->getAtoms())
         {
             if (protein_atom->getName() == superimposition_atom->getName())
             {
-                //                                std::cout << "Adding " << protein_atom->getName() << " to
-                //                                superimposition atoms\n";
+                gmml::log(__LINE__, __FILE__, gmml::INF,
+                          "Adding " + protein_atom->getName() + " to superimposition atoms\n");
                 targetCoords.push_back(protein_atom->getCoordinate());
             }
         }
@@ -192,12 +191,14 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue* glycosite_resid
     if (aglyconeCoords.size() < 3)
     {
         throw std::runtime_error("The aglycone does not contain enough atoms to perform the requested "
-                                 "superimposition.\nCheck your input structure!\n");
+                                 "superimposition to " +
+                                 this->GetResidueId() + ".\nCheck your input structure!\n");
     }
     if (targetCoords.size() < 3)
     {
         throw std::runtime_error("Did not find the correctly named atoms in target residue to perform the requested "
-                                 "superimposition.\nCheck your input structure!\n");
+                                 "superimposition to " +
+                                 this->GetResidueId() + ".\nCheck your input structure!\n");
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, "Superimposing via the aglycone.");
     cds::Superimpose(aglyconeCoords, targetCoords, glycanCoords);
