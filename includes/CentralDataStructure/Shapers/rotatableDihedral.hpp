@@ -70,6 +70,8 @@ namespace cds
                                         std::vector<cds::Residue*>& overlapResidueSet2, const int& angleIncrement);
         void WiggleUsingAllRotamers(std::vector<cds::Atom*>& overlapAtomSet1, std::vector<cds::Atom*>& overlapAtomSet2,
                                     const int& angleIncrement);
+        void WiggleUsingAllRotamers(std::vector<cds::Residue*>& overlapAtomSet1,
+                                    std::vector<cds::Residue*>& overlapAtomSet2, const int& angleIncrement);
         bool IsThereHydrogenForPsiAngle(); // ToDo which of these functions are only public for ResidueLinkage? How
                                            // about friend function huh?
         std::unique_ptr<cds::Atom> CreateHydrogenAtomForPsiAngle();

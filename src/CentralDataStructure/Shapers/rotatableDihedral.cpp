@@ -353,6 +353,32 @@ bool RotatableDihedral::SetSpecificShape(std::string dihedralName, std::string s
     return false;
 }
 
+void RotatableDihedral::WiggleUsingAllRotamers(std::vector<cds::Residue*>& overlapSet1,
+                                               std::vector<cds::Residue*>& overlapSet2, const int& angleIncrement)
+{
+
+    double bestDihedral        = this->CalculateDihedralAngle();
+    unsigned int lowestOverlap = cds::CountOverlappingAtoms(overlapSet2, overlapSet1);
+    for (auto& metadata : this->GetMetadata())
+    {
+        double lowerBound = (metadata.default_angle_value_ - metadata.lower_deviation_);
+        double upperBound = (metadata.default_angle_value_ + metadata.upper_deviation_);
+        unsigned int newOverlap =
+            this->WiggleWithinRangesDistanceCheck(overlapSet1, overlapSet2, angleIncrement, lowerBound, upperBound);
+        if (lowestOverlap >= (newOverlap + 1))
+        {
+            lowestOverlap = newOverlap;
+            bestDihedral  = this->CalculateDihedralAngle();
+            this->SetCurrentMetaData(metadata);
+        }
+        else
+        {
+            this->SetDihedralAngle(bestDihedral);
+        }
+    }
+    return;
+}
+
 void RotatableDihedral::WiggleUsingAllRotamers(std::vector<cds::Atom*>& overlapAtomSet1,
                                                std::vector<cds::Atom*>& overlapAtomSet2, const int& angleIncrement)
 {
