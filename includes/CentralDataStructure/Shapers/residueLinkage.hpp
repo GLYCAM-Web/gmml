@@ -96,6 +96,8 @@ namespace cds
             index_ = index;
         }
 
+        // void AddResiduesForOverlapCheck(std::vector<cds::Residue*> extraResidues, bool reducingSide = true);
+        void DetermineResiduesForOverlapCheck();
         //////////////////////////////////////////////////////////
         //                       DISPLAY FUNCTION               //
         //////////////////////////////////////////////////////////
@@ -158,7 +160,6 @@ namespace cds
         void SetConformerUsingMetadata(bool useRanges = false, int conformerNumber = 0);
         unsigned long long GenerateIndex();
         std::string DetermineLinkageNameFromResidueNames() const;
-        void DetermineResiduesForOverlapCheck();
 
         inline void SetName(std::string name)
         {
