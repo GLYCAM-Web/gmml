@@ -36,6 +36,7 @@ GlycosylationSite::GlycosylationSite(Residue* residue, Carbohydrate* carbohydrat
     for (auto& linkage : carbohydrate->GetGlycosidicLinkages())
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, linkage.GetName());
+        linkage.DetermineResiduesForOverlapCheck(); // Now that the protein is attached.
     }
 }
 
@@ -192,10 +193,10 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue* glycosite_resid
     Atom* protein_connection_atom = this->GetConnectingProteinAtom(glycosite_residue->getName());
     gmml::log(__LINE__, __FILE__, gmml::INF,
               "Connecting the reducing atom of " + this->GetGlycan()->GetReducingResidue()->getStringId() +
-                  " to the protein:" + this->GetGlycan()->GetAnomericAtom()->getName() + " bonded to " +
-                  protein_connection_atom->getName());
-    protein_connection_atom->addBond(this->GetGlycan()->GetAnomericAtom());
-    this->Rename_Protein_Residue_To_GLYCAM_Nomenclature(); // e.g. ASN to NLN
+                  " to the protein:" + this->GetGlycan()->GetAnomericAtom()->getId() + " bonded to " +
+                  protein_connection_atom->getId());
+    protein_connection_atom->addBond(this->GetGlycan()->GetAnomericAtom()); // Atom connectivity
+    this->Rename_Protein_Residue_To_GLYCAM_Nomenclature();                  // e.g. ASN to NLN
     gmml::log(__LINE__, __FILE__, gmml::INF, "Replacing the aglycone");
     // this->GetGlycan()->deleteResidue(this->GetGlycan()->GetAglycone());
     this->GetGlycan()->replaceAglycone(this->GetResidue());
@@ -261,7 +262,6 @@ void GlycosylationSite::Wiggle(bool firstLinkageOnly, int interval)
     this->WiggleOneLinkage(this->GetProteinGlycanLinkage(), interval);
     if (!firstLinkageOnly)
     {
-        //        std::cout << "Moving to second linkage\n" << std::flush;
         for (auto& linkage : this->GetGlycan()->GetGlycosidicLinkages())
         {
             this->WiggleOneLinkage(linkage, interval);
@@ -358,6 +358,7 @@ Atom* GlycosylationSite::GetConnectingProteinAtom(const std::string residue_name
         gmml::log(__LINE__, __FILE__, gmml::ERR, message);
         throw std::runtime_error(message);
     }
+    return this->GetResidue()->FindAtom(connectionAtomName);
 }
 
 // OG re-reading. I'm pretty sure this belongs in Residue_linkage. linkage.wiggle(output_pdb_id, tolerance, interval
@@ -365,61 +366,17 @@ Atom* GlycosylationSite::GetConnectingProteinAtom(const std::string residue_name
 void GlycosylationSite::WiggleOneLinkage(ResidueLinkage& linkage, int interval)
 {
     int current_overlap                                           = this->CountOverlaps();
-    int lowest_overlap                                            = current_overlap;
-    // Reverse as convention is Glc1-4Gal and I want to wiggle in opposite direction i.e. from first rotatable bond in
-    // Asn outwards
-    std::vector<RotatableDihedral> reversed_rotatable_bond_vector = linkage.GetRotatableDihedrals();
+    // int lowest_overlap                                            = current_overlap;
+    //  Reverse as convention is Glc1-4Gal and I want to wiggle in opposite direction i.e. from first rotatable bond in
+    //  Asn outwards
+    std::vector<RotatableDihedral> reversed_rotatable_bond_vector = linkage.GetRotatableDihedralsRef();
     std::reverse(reversed_rotatable_bond_vector.begin(), reversed_rotatable_bond_vector.end());
     for (auto& rotatable_dihedral : reversed_rotatable_bond_vector)
     {
-        double best_dihedral_angle = rotatable_dihedral.CalculateDihedralAngle();
-        // std::cout << "Starting new rotatable dihedral with best angle as " << best_dihedral_angle << "\n";
-        gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector metadata_entries = rotatable_dihedral.GetMetadata();
-        for (auto& metadata : metadata_entries)
-        {
-            double lower_bound      = (metadata.default_angle_value_ - metadata.lower_deviation_);
-            double upper_bound      = (metadata.default_angle_value_ + metadata.upper_deviation_);
-            double current_dihedral = lower_bound;
-            while (current_dihedral <= upper_bound)
-            {
-                rotatable_dihedral.SetDihedralAngle(current_dihedral);
-                current_overlap = this->CountOverlaps();
-                //      std::cout << this->GetResidueNumber() << ": current dihedral : overlap " << current_dihedral <<
-                //      " : " << current_overlap << ". Best dihedral : overlap: " << best_dihedral_angle << " : "<<
-                //      lowest_overlap << "\n";
-                if (lowest_overlap >= (current_overlap))
-                {
-                    if (this->NoNewInternalCloseContacts())
-                    {
-                        lowest_overlap      = current_overlap;
-                        best_dihedral_angle = current_dihedral;
-                        //                		std::stringstream ss;
-                        //                		ss << "betterOverlap_" << lowest_overlap << "_";
-                        //                		std::cout << "Wiggler: site " << this->GetResidue()->getNumber()
-                        //                << " has overlap: " << lowest_overlap << "\n";
-                        // gmml::WritePDBFile(*(this->GetResidue()->GetAssembly()), "", "best_");
-                        //    		std::cout << "Best angle is now " << best_dihedral_angle << "\n";
-                    }
-                }
-                // Perfer angles closer to default.
-                else if ((lowest_overlap == current_overlap) &&
-                         (abs(metadata.default_angle_value_ - best_dihedral_angle) >
-                          abs(metadata.default_angle_value_ - current_dihedral)))
-                {
-                    if (this->NoNewInternalCloseContacts())
-                    {
-                        best_dihedral_angle = current_dihedral;
-                    }
-                }
-                current_dihedral += interval; // increment
-            }
-        }
-        // std::cout << "Setting best angle as " << best_dihedral_angle << "\n";
-        rotatable_dihedral.SetDihedralAngle(best_dihedral_angle);
-        if (lowest_overlap == 0)
-        {
-            return;
-        }
+        //        gmml::log(__LINE__, __FILE__, gmml::INF,
+        //                  "About to wiggle all the rotamers of " + rotatable_dihedral.GetName() +
+        //                      " in this linkage: " + linkage.GetName());
+        rotatable_dihedral.WiggleUsingAllRotamers(linkage.GetMovingResidues(), linkage.GetFixedResidues(), interval);
     }
     return; // Note possibility of earlier return above
 }
