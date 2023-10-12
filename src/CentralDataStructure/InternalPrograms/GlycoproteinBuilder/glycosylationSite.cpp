@@ -205,44 +205,12 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue* glycosite_resid
 
 void GlycosylationSite::Rename_Protein_Residue_To_GLYCAM_Nomenclature()
 {
-    std::string amino_acid_name = this->GetResidue()->getName();
-    if (amino_acid_name == "ASN")
-    {
-        this->GetResidue()->setName("NLN");
-    }
-    if (amino_acid_name == "SER")
-    {
-        this->GetResidue()->setName("OLS");
-    }
-    if (amino_acid_name == "THR")
-    {
-        this->GetResidue()->setName("OLT");
-    }
-    if (amino_acid_name == "TYR")
-    {
-        this->GetResidue()->setName("OLY");
-    }
+    this->GetResidue()->setName(glycoproteinMetadata::ConvertGlycosylatedResidueName(this->GetResidue()->getName()));
 }
 
 void GlycosylationSite::Rename_Protein_Residue_From_GLYCAM_To_Standard()
 {
-    std::string amino_acid_name = this->GetResidue()->getName();
-    if (amino_acid_name == "NLN")
-    {
-        this->GetResidue()->setName("ASN");
-    }
-    if (amino_acid_name == "OLS")
-    {
-        this->GetResidue()->setName("SER");
-    }
-    if (amino_acid_name == "OLT")
-    {
-        this->GetResidue()->setName("THR");
-    }
-    if (amino_acid_name == "OLY")
-    {
-        this->GetResidue()->setName("TYR");
-    }
+    this->GetResidue()->setName(glycoproteinMetadata::ConvertGlycosylatedResidueName(this->GetResidue()->getName()));
 }
 
 unsigned int GlycosylationSite::CountOverlaps(MoleculeType moleculeType)
@@ -380,23 +348,8 @@ void GlycosylationSite::Print(std::string type)
 //////////////////////////////////////////////////////////
 Atom* GlycosylationSite::GetConnectingProteinAtom(const std::string residue_name) const
 {
-    if (residue_name == "NLN" || residue_name == "ASN")
-    {
-        return this->GetResidue()->FindAtom("ND2");
-    }
-    else if (residue_name == "OLT" || residue_name == "THR")
-    {
-        return this->GetResidue()->FindAtom("OG1");
-    }
-    else if (residue_name == "OLS" || residue_name == "SER")
-    {
-        return this->GetResidue()->FindAtom("OG");
-    }
-    else if (residue_name == "OLY" || residue_name == "TYR")
-    {
-        return this->GetResidue()->FindAtom("OH");
-    }
-    else
+    std::string connectionAtomName = glycoproteinMetadata::GetGlycositeConnectionAtomName(residue_name);
+    if (connectionAtomName == "")
     {
         std::string message =
             "Problem in GetConnectingProteinAtom. The amino acid requested: " + residue_name +
