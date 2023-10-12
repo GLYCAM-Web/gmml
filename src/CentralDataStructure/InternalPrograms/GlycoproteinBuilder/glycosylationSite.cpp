@@ -1,3 +1,11 @@
+#include <bits/std_abs.h>
+#include <cstdlib>
+#include <iostream>
+#include <iterator>
+#include <string>
+#include <utility>
+#include <vector>
+#include <iomanip> // For setting precision and formating in output
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycosylationSite.hpp"
 #include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
 #include "includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
@@ -7,16 +15,8 @@
 // #include "includes/CentralDataStructure/Overlaps/beadResidues.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CentralDataStructure/Selections/shaperSelections.hpp" // For the ClearAtomLabels sillyness.
-#include <bits/std_abs.h>
-#include <cstdlib>
-#include <iostream>
-#include <iterator>
-#include <string>
-#include <utility>
-#include <vector>
-#include <iomanip> // For setting precision and formating in output
-
-#include "../../../../includes/CentralDataStructure/Selections/templatedSelections.hpp"
+#include "includes/MolecularMetadata/glycoprotein.hpp"
+#include "includes/CentralDataStructure/Selections/templatedSelections.hpp"
 
 // #include <algorithm> //  std::erase, std::remove
 //////////////////////////////////////////////////////////
