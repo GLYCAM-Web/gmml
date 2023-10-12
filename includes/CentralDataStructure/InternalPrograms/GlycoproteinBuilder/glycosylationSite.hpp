@@ -124,11 +124,6 @@ class GlycosylationSite
         return this->GetGlycan()->GetGlycosidicLinkages().front();
     }
 
-    inline unsigned long int GetInternalBondCount()
-    {
-        return internalBondCount_;
-    }
-
     //////////////////////////////////////////////////////////
     //                  PRIVATE FRIENDS                     //
     //////////////////////////////////////////////////////////
@@ -139,10 +134,6 @@ class GlycosylationSite
     //    inline void SetGlycanOverlap(double d)						{glycan_overlap_ = d;}
     //    inline void SetProteinOverlap(double d)						{protein_overlap_ = d;}
     // inline void SetSelfGlycanBeads(std::vector<Atom*> *beads)			{self_glycan_beads_ = *beads;}
-    inline void SetInternalBondCount(unsigned long int i)
-    {
-        internalBondCount_ = i;
-    }
 
     // void SetOverlap(MoleculeType moleculeType, double overlap);
     // void SetProteinBeads(std::vector<Atom*> beads);
@@ -163,7 +154,6 @@ class GlycosylationSite
     void WiggleOneLinkage(ResidueLinkage& linkage, int interval = 5);
     // double Calculate_and_print_bead_overlaps();
     unsigned int CountOverlaps(const std::vector<Residue*> residuesA, const std::vector<Residue*> residuesB);
-    bool NoNewInternalCloseContacts();
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////
@@ -174,7 +164,6 @@ class GlycosylationSite
     //    double protein_overlap_ = 0.0;
     std::vector<GlycosylationSite*> other_glycosites_;
     std::vector<Residue*> otherProteinResidues_;
-    unsigned long int internalBondCount_ = 0;
     //  std::vector<Atom*> proteinAtoms_;
 };
 #endif // GMML_INCLUDES_INTERNALPROGRAMS_GLYCOPROTEINBUILDER_GLYCOSYLATIONSITE_HPP

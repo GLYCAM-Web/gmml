@@ -30,25 +30,13 @@ GlycosylationSite::GlycosylationSite(Residue* residue, Carbohydrate* carbohydrat
     this->AttachGlycan(glycanStartResidueNumber);
     cdsSelections::ClearAtomLabels(carbohydrate->GetReducingResidue()); // jfc
     cdsSelections::ClearAtomLabels(this->GetResidue());
-    // residueGlycanLinkage_ = ResidueLinkage(carbohydrate->GetReducingResidue(),
-    //                                        this->GetResidue()); // Attach glycan has to happen first as design is
-    //                                        funky
-    //  here, Residue linkage should be an Edge of Residue.
-    //    Bro yuou need to create hte Protein-Glycan linkage to manupulate later. Where does it belong? Why isnt it an
-    //    edge already you doofuc. What type woudl the edge be and ResidueLinkage needs to inherit from Edge and you
-    //    know it. Ok calm donw either keep it here or insert it into the front of carb linkage. It should be addBond
-    //    though.
-    this->SetInternalBondCount(cdsSelections::CountInternalHeavyAtomBonds(this->GetGlycan()->getAtoms()));
+    // this->SetInternalBondCount(cdsSelections::CountInternalHeavyAtomBonds(this->GetGlycan()->getAtoms()));
     gmml::log(__LINE__, __FILE__, gmml::INF, "Done attach glycan to " + this->GetResidueId());
     gmml::log(__LINE__, __FILE__, gmml::INF, "Here are the linkages:");
     for (auto& linkage : carbohydrate->GetGlycosidicLinkages())
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, linkage.GetName());
     }
-    //    for(auto & residue: this->GetOtherProteinResidues())
-    //    {
-    //    	std::cout << residue->getId() << std::endl << std::flush;
-    //    }
 }
 
 //////////////////////////////////////////////////////////
@@ -62,9 +50,7 @@ void GlycosylationSite::AttachGlycan(unsigned int glycanResidueStartNumber)
     gmml::log(__LINE__, __FILE__, gmml::INF, "Superimpose prep done");
     this->Superimpose_Glycan_To_Glycosite(this->GetResidue());
     gmml::log(__LINE__, __FILE__, gmml::INF, "SuperimposedGlycanToGlycosite");
-    // this->Rename_Protein_Residue_To_GLYCAM_Nomenclature();
     gmml::log(__LINE__, __FILE__, gmml::INF, "Setting internal bond count to check if more form later");
-    // this->SetInternalBondCount(cdsSelections::CountInternalHeavyAtomBonds(this->GetAttachedGlycan()->getAtoms()));
     this->RenumberGlycanToMatch(glycanResidueStartNumber);
     gmml::log(__LINE__, __FILE__, gmml::INF, "Attach glycan done");
 }
@@ -346,11 +332,11 @@ void GlycosylationSite::SetRandomDihedralAnglesUsingMetadata()
         gmml::log(__LINE__, __FILE__, gmml::INF, "Setting random shape for linkage: " + linkage.GetName());
         linkage.SetRandomShapeUsingMetadata();
     }
-    if (!this->NoNewInternalCloseContacts())
-    {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Nope that caused an internal contact");
-        this->ResetDihedralAngles();
-    }
+    //    if (!this->NoNewInternalCloseContacts())
+    //    {
+    //        gmml::log(__LINE__, __FILE__, gmml::INF, "Nope that caused an internal contact");
+    //        this->ResetDihedralAngles();
+    //    }
     return;
 }
 
@@ -483,14 +469,4 @@ void GlycosylationSite::WiggleOneLinkage(ResidueLinkage& linkage, int interval)
         }
     }
     return; // Note possibility of earlier return above
-}
-
-bool GlycosylationSite::NoNewInternalCloseContacts()
-{
-    unsigned long int newCount = cdsSelections::CountInternalHeavyAtomBonds(this->GetGlycan()->getAtoms());
-    if (newCount > this->GetInternalBondCount())
-    {
-        return false;
-    }
-    return true;
 }
