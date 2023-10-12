@@ -53,8 +53,13 @@ void cds::setProteinConnectivity(std::vector<cds::Residue*> proteinResidues)
         if (!cds::autoConnectSuccessiveResidues(previousRes, *it))
         { // Automatically bond the N and C atoms of successive residues
             gmml::log(__LINE__, __FILE__, gmml::WAR,
-                      "Gap detected between " + previousRes->getStringId() + (*it)->getStringId());
+                      "Gap detected between " + previousRes->getStringId() + " and " + (*it)->getStringId());
         }
+        //        else
+        //        {
+        //            gmml::log(__LINE__, __FILE__, gmml::INF,
+        //                                  "Connected " + previousRes->getStringId() + " to "+ (*it)->getStringId());
+        //        }
         previousRes = *it;
     }
     return;
