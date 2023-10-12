@@ -39,6 +39,19 @@ std::vector<RotatableDihedral> ResidueLinkage::GetRotatableDihedralsWithMultiple
     return returningDihedrals;
 }
 
+std::vector<RotatableDihedral>& ResidueLinkage::GetRotatableDihedralsRef()
+{
+    if (rotatableDihedrals_.empty())
+    {
+        std::stringstream ss;
+        ss << "Error: RotatableDihedrals in this linkage is empty: " << from_this_residue1_->getStringId() << "-"
+           << to_this_residue2_->getStringId() << std::endl;
+        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+        throw std::runtime_error(ss.str());
+    }
+    return rotatableDihedrals_;
+}
+
 std::vector<RotatableDihedral> ResidueLinkage::GetRotatableDihedrals() const
 {
     if (rotatableDihedrals_.empty())

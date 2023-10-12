@@ -28,6 +28,7 @@ namespace cds
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
+        std::vector<RotatableDihedral>& GetRotatableDihedralsRef();
         std::vector<RotatableDihedral> GetRotatableDihedrals() const;
         std::vector<RotatableDihedral> GetRotatableDihedralsWithMultipleRotamers() const;
         unsigned long int GetNumberOfRotatableDihedrals() const;
