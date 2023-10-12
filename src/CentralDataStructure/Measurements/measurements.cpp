@@ -14,6 +14,10 @@ Coordinate cds::calculateGeometricCenter(const std::vector<Coordinate*> coords)
         y += coord->GetY();
         z += coord->GetZ();
     }
+    if (x == 0.0 || y == 0.0 || x == 0.0 || coords.size() == 0)
+    {
+        throw std::runtime_error("Oliver what were you thinking in cds::calculateGeometricCenter?");
+    }
     x = x / coords.size();
     y = y / coords.size();
     z = z / coords.size();
