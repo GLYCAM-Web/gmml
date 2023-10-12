@@ -190,9 +190,11 @@ void RotatableDihedral::SetDihedralAngle(const double dihedral_angle)
         a4 = atom1_->getCoordinate();
     }
     this->RecordPreviousDihedralAngle(this->CalculateDihedralAngle());
-    //    std::stringstream ss;
-    //    ss << "Setting dihedral for " << atom1_->getId() << ":"  << atom2_->getId() << ":"  << atom3_->getId() << ":"
-    //    << atom4_->getId() <<  ": " << dihedral_angle << "\n"; gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
+    // gmml::log(__LINE__,__FILE__,gmml::INF, "Here my dude");
+    // std::stringstream ss;
+    // ss << "Setting dihedral for: " << atom1_->getId() << " "  << atom2_->getId() << " "  << atom3_->getId() << " "
+    //            << atom4_->getId() <<  "  " << dihedral_angle << "\n";
+    // gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
     cds::SetDihedralAngle(a1, a2, a3, a4, dihedral_angle, this->GetCoordinatesThatMove());
     return;
 }
@@ -506,13 +508,22 @@ unsigned int RotatableDihedral::WiggleWithinRangesDistanceCheck(std::vector<cds:
                                                                 const int& angleIncrement, const double& lowerBound,
                                                                 const double& upperBound)
 {
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Starting to wiggleWithinRangesDistanceCheck()");
     this->SetDihedralAngle(lowerBound);
     double currentDihedral      = lowerBound;
     double bestDihedral         = lowerBound;
     unsigned int currentOverlap = cds::CountOverlappingAtoms(overlapResidueSet1, overlapResidueSet2);
     unsigned int lowestOverlap  = currentOverlap;
-    //    std::cout << "Starting wiggle with overlap : " << currentOverlap << " . Current Angle: " << currentDihedral <<
-    //    " lowerBound: " << lowerBound << " upperBound: " << upperBound << "\n";
+    // std::stringstream ss;
+    // ss << "Starting wiggle with overlap : " << currentOverlap << " . Current Angle: " << currentDihedral <<
+    // " lowerBound: " << lowerBound << " upperBound: " << upperBound << "\n";
+    // gmml::log(__LINE__,__FILE__,gmml::INF, ss.str());
+    if (this->GetCurrentMetaData() == nullptr) // you don't need these checks if you have RAII OLIVER
+    {
+        std::string message = "Error: current metadata not set for RotatableDihedral " + this->GetName();
+        gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+        throw std::runtime_error(message);
+    }
     while (currentDihedral < upperBound)
     {
         currentDihedral += angleIncrement; // increment
@@ -564,7 +575,7 @@ void RotatableDihedral::Initialize(std::vector<cds::Atom*> atoms, bool reverseAt
 {
     this->SetAtoms(atoms);
     this->SetIsAtomsThatMoveReversed(reverseAtomsThatMove);
-    currentMetadata_ = nullptr;
+    currentMetadata_ = nullptr; // When does this get set? This is bad.
     // this->DetermineAtomsThatMove(); // Will be done the first time SetDihedralAngle is called.
     return;
 }
