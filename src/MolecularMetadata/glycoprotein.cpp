@@ -5,7 +5,7 @@
 
 std::string glycoproteinMetadata::LookupCodeForAminoAcidName(const std::string queryName)
 {
-    std::unordered_map<std::string, std::string> aminoAcidNameToCodeMap({
+    static const std::unordered_map<std::string, std::string> aminoAcidNameToCodeMap({
         {"ALA", "A"},
         {"ARG", "R"},
         {"ASN", "N"},
@@ -37,7 +37,7 @@ std::string glycoproteinMetadata::LookupCodeForAminoAcidName(const std::string q
 
 std::string glycoproteinMetadata::LookupLinkTypeForAminoAcidName(const std::string queryName)
 {
-    std::unordered_map<std::string, std::string> residueLinkMap({
+    static const std::unordered_map<std::string, std::string> residueLinkMap({
         {"ASN", "nLink"},
         {"THR", "oLink"},
         {"SER", "oLink"},
@@ -125,4 +125,34 @@ std::string glycoproteinMetadata::GetSequenceContextAndDetermineTags(cds::Residu
     std::string context = precedingContext + "_" + conjugationResidueCode + "_" + followingContext;
     gmml::log(__LINE__, __FILE__, gmml::INF, "Context: " + context);
     return context;
+}
+
+std::string glycoproteinMetadata::ConvertGlycosylatedResidueName(const std::string queryname)
+{
+    static const std::unordered_map<std::string, std::string> GlycamGlycosylatedResidueNameMap({
+        {"ASN", "NLN"},
+        {"SER", "OLS"},
+        {"THR", "OLT"},
+        {"TYR", "OLY"},
+        {"NLN", "ASN"},
+        {"OLS", "SER"},
+        {"OLT", "THR"},
+        {"OLY", "TYR"}
+    });
+    return codeUtils::FindStringInStringMap(queryname, GlycamGlycosylatedResidueNameMap);
+}
+
+std::string glycoproteinMetadata::GetGlycositeConnectionAtomName(const std::string queryname)
+{
+    static const std::unordered_map<std::string, std::string> connectionAtomNameMap({
+        {"NLN", "ND2"},
+        {"ASN", "ND2"},
+        {"OLT", "OG1"},
+        {"THR", "OG1"},
+        {"OLS",  "OG"},
+        {"SER",  "OG"},
+        {"OLY",  "OH"},
+        {"TYR",  "OH"}
+    });
+    return codeUtils::FindStringInStringMap(queryname, connectionAtomNameMap);
 }
