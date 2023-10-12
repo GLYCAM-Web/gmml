@@ -673,15 +673,15 @@ void ResidueLinkage::SetConformerUsingMetadata(bool useRanges, int conformerNumb
 }
 
 unsigned long long ResidueLinkage::GenerateIndex()
-{
-    static unsigned long long s_ResidueLinkageIndex =
-        0; // static keyword means it is created only once and persists beyond scope of code block.
+{ // static keyword means it is created only once and persists beyond scope of code block.
+    static unsigned long long s_ResidueLinkageIndex = 0;
     return s_ResidueLinkageIndex++; // makes copy of s_AtomIndex, increments the real s_AtomIndex, then returns the
                                     // value in the copy
 }
 
 void ResidueLinkage::DetermineResiduesForOverlapCheck()
 {
+    overlapResidues1_.clear();
     overlapResidues1_.push_back(from_this_residue1_);
     for (auto& neighbor : from_this_residue1_->getNeighbors())
     {
@@ -690,12 +690,24 @@ void ResidueLinkage::DetermineResiduesForOverlapCheck()
             cdsSelections::FindConnectedResidues(overlapResidues1_, neighbor);
         }
     }
+    overlapResidues2_.clear();
     overlapResidues2_.push_back(to_this_residue2_);
     for (auto& neighbor : to_this_residue2_->getNeighbors())
     {
         if (neighbor != from_this_residue1_)
         {
-            cdsSelections::FindConnectedResidues(overlapResidues1_, neighbor);
+            cdsSelections::FindConnectedResidues(overlapResidues2_, neighbor);
         }
     }
+    gmml::log(__LINE__, __FILE__, gmml::INF, "For this linkage: " + this->GetName() + "\noverlapResidues1: ");
+    for (auto& res : overlapResidues1_)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "    " + res->getStringId() + ",");
+    }
+    gmml::log(__LINE__, __FILE__, gmml::INF, "overlapResidues2: ");
+    for (auto& res : overlapResidues2_)
+    {
+        gmml::log(__LINE__, __FILE__, gmml::INF, "    " + res->getStringId() + ",");
+    }
+    return;
 }
