@@ -11,9 +11,6 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbResidue.hpp"
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp" // selectResiduesByType
-// ToDo Check for negative overlap in case the funk gets funky.
-// ToDo The cout for accepting overlap changes doesn't match the values printed. Why? Is it making them high, not
-// printing, accepting lower, then rejecting, etc?
 using cds::Assembly;
 
 //////////////////////////////////////////////////////////
@@ -471,46 +468,48 @@ std::vector<GlycosylationSite*> GlycoproteinBuilder::DetermineSitesWithOverlap(M
     return sites_to_return;
 }
 
-void GlycoproteinBuilder::DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(
-    std::vector<GlycosylationSite>& glycosites, int tolerance)
-{
-    std::stringstream logss;
-    logss << "Atomic overlap before deleting sites is " << this->CountOverlaps() << "\n";
-    bool continue_deleting = true;
-    // While overlap for any site is > tolerance delete site with highest overlap then re-calculate overlaps as there
-    // may be glycan-glycan overlap.
-    while (continue_deleting)
-    {
-        GlycosylationSite* worst_site =
-            glycosites.data(); // Pointer to the first glycosite. Remember an erase/remove "advances"
-        for (auto& glycosite : this->GetGlycosites())
-        {
-            if (glycosite.CountOverlaps() > worst_site->CountOverlaps())
-            {
-                worst_site = &glycosite;
-            }
-        }
-        int worst_site_overlap = worst_site->CountOverlaps();
-        if (worst_site_overlap > tolerance)
-        {
-            continue_deleting = true;
-            // worst_site->Remove(this->GetGlycoproteinAssemblyPtr());
-            worst_site->Rename_Protein_Residue_From_GLYCAM_To_Standard();
-            logss << "Site " << worst_site->GetResidueId() << ": " << worst_site_overlap << " :"
-                  << "Removed\n";
-            glycosites.erase(std::remove(glycosites.begin(), glycosites.end(), *worst_site), glycosites.end());
-            this->SetOtherGlycosites(); // This needs to be updated after you delete each site, so the others no longer
-                                        // have a pointer to it. Great design Oliver well done you nailed it high five.
-        }
-        else
-        {
-            continue_deleting = false;
-        }
-        if (glycosites.empty()) // If we have deleted every site
-        {
-            continue_deleting = false;
-        }
-    }
-    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
-    return;
-}
+// void GlycoproteinBuilder::DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(
+//     std::vector<GlycosylationSite>& glycosites, int tolerance)
+//{
+//     std::stringstream logss;
+//     logss << "Atomic overlap before deleting sites is " << this->CountOverlaps() << "\n";
+//     bool continue_deleting = true;
+//     // While overlap for any site is > tolerance delete site with highest overlap then re-calculate overlaps as there
+//     // may be glycan-glycan overlap.
+//     while (continue_deleting)
+//     {
+//         GlycosylationSite* worst_site =
+//             glycosites.data(); // Pointer to the first glycosite. Remember an erase/remove "advances"
+//         for (auto& glycosite : this->GetGlycosites())
+//         {
+//             if (glycosite.CountOverlaps() > worst_site->CountOverlaps())
+//             {
+//                 worst_site = &glycosite;
+//             }
+//         }
+//         int worst_site_overlap = worst_site->CountOverlaps();
+//         if (worst_site_overlap > tolerance)
+//         {
+//             continue_deleting = true;
+//             // worst_site->Remove(this->GetGlycoproteinAssemblyPtr());
+//             worst_site->Rename_Protein_Residue_From_GLYCAM_To_Standard();
+//             logss << "Site " << worst_site->GetResidueId() << ": " << worst_site_overlap << " :"
+//                   << "Removed\n";
+//             glycosites.erase(std::remove(glycosites.begin(), glycosites.end(), *worst_site), glycosites.end());
+//             this->SetOtherGlycosites(); // This needs to be updated after you delete each site, so the others no
+//             longer
+//                                         // have a pointer to it. Great design Oliver well done you nailed it high
+//                                         five.
+//         }
+//         else
+//         {
+//             continue_deleting = false;
+//         }
+//         if (glycosites.empty()) // If we have deleted every site
+//         {
+//             continue_deleting = false;
+//         }
+//     }
+//     gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+//     return;
+// }

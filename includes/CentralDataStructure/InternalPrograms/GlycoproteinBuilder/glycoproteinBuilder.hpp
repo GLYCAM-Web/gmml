@@ -131,8 +131,8 @@ class GlycoproteinBuilder : public Abstract::absBuilder
     // Overlap Calculation
     unsigned int CountOverlaps(MoleculeType moleculeType = ALL);
     std::vector<GlycosylationSite*> DetermineSitesWithOverlap(MoleculeType moleculeType = ALL);
-    void DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(std::vector<GlycosylationSite>& glycosites,
-                                                               int tolerance);
+    // void DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(std::vector<GlycosylationSite>& glycosites,
+    //                                                            int tolerance);
     void SetOtherGlycosites();
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
