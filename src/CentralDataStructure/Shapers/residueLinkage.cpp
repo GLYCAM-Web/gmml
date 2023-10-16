@@ -129,12 +129,12 @@ std::string ResidueLinkage::GetName() const
 
 std::vector<cds::Residue*>& ResidueLinkage::GetMovingResidues()
 {
-    return overlapResidues1_;
+    return nonReducingOverlapResidues_;
 }
 
 std::vector<cds::Residue*>& ResidueLinkage::GetFixedResidues()
 {
-    return overlapResidues2_;
+    return reducingOverlapResidues_;
 }
 
 std::string ResidueLinkage::DetermineLinkageNameFromResidueNames() const
@@ -681,31 +681,31 @@ unsigned long long ResidueLinkage::GenerateIndex()
 
 void ResidueLinkage::DetermineResiduesForOverlapCheck()
 {
-    overlapResidues1_.clear();
-    overlapResidues1_.push_back(from_this_residue1_);
+    nonReducingOverlapResidues_.clear();
+    nonReducingOverlapResidues_.push_back(from_this_residue1_);
     for (auto& neighbor : from_this_residue1_->getNeighbors())
     {
         if (neighbor != to_this_residue2_)
         {
-            cdsSelections::FindConnectedResidues(overlapResidues1_, neighbor);
+            cdsSelections::FindConnectedResidues(nonReducingOverlapResidues_, neighbor);
         }
     }
-    overlapResidues2_.clear();
-    overlapResidues2_.push_back(to_this_residue2_);
+    reducingOverlapResidues_.clear();
+    reducingOverlapResidues_.push_back(to_this_residue2_);
     for (auto& neighbor : to_this_residue2_->getNeighbors())
     {
         if (neighbor != from_this_residue1_)
         {
-            cdsSelections::FindConnectedResidues(overlapResidues2_, neighbor);
+            cdsSelections::FindConnectedResidues(reducingOverlapResidues_, neighbor);
         }
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, "For this linkage: " + this->GetName() + "\noverlapResidues1: ");
-    for (auto& res : overlapResidues1_)
+    for (auto& res : nonReducingOverlapResidues_)
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "    " + res->getStringId() + ",");
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, "overlapResidues2: ");
-    for (auto& res : overlapResidues2_)
+    for (auto& res : reducingOverlapResidues_)
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, "    " + res->getStringId() + ",");
     }

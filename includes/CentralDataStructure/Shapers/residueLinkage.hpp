@@ -179,9 +179,9 @@ namespace cds
         std::vector<cds::Atom*> extraAtomsThatMove_;
         bool isExtraAtoms_        = true;
         unsigned long long index_ = 0;
-        std::string name_         = "";               // e.g. "DGalpb1-6DGlcpNAc". It being empty works with GetName();
-        std::vector<cds::Residue*> overlapResidues1_; // overlap speedups
-        std::vector<cds::Residue*> overlapResidues2_; // overlap speedups
+        std::string name_         = ""; // e.g. "DGalpb1-6DGlcpNAc". It being empty works with GetName();
+        std::vector<cds::Residue*> nonReducingOverlapResidues_; // overlap speedups
+        std::vector<cds::Residue*> reducingOverlapResidues_;    // overlap speedups
     };
 } // namespace cds
 #endif // GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_RESIDUE_LINKAGE_HPP
