@@ -5,10 +5,12 @@
 
 namespace cds
 {
-    void setBondingForResidue(cds::Residue* proteinRes);
+    void setBondingForAminoAcid(cds::Residue* proteinRes);
     bool autoConnectSuccessiveResidues(cds::Residue* cTermRes, cds::Residue* nTermRes);
-    void setProteinConnectivity(std::vector<cds::Residue*> proteinResidues);
-    void setAtomicConnectivity(std::vector<cds::Residue*> residues);
+    void setProteinIntraConnectivity(std::vector<cds::Residue*> proteinResidues);
+    void setProteinInterConnectivity(std::vector<cds::Residue*> proteinResidues);
+    void setIntraConnectivity(std::vector<cds::Residue*> residues);
+    void setInterConnectivity(std::vector<cds::Residue*> residues);
 } // namespace cds
 
 #endif /* INCLUDES_CENTRALDATASTRUCTURE_CDSFUNCTIONS_ATOMICCONNECTIVITY_HPP_ */

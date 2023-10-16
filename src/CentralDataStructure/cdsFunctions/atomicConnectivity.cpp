@@ -4,7 +4,7 @@
 #include "includes/MolecularMetadata/proteinBonding.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
-void cds::setBondingForResidue(cds::Residue* proteinRes)
+void cds::setBondingForAminoAcid(cds::Residue* proteinRes)
 {
     for (auto& bondPair : biology::getBackboneBonding())
     {
@@ -34,41 +34,56 @@ bool cds::autoConnectSuccessiveResidues(cds::Residue* cTermRes, cds::Residue* nT
     if (cAtom != nullptr && nAtom != nullptr && cAtom->isWithinBondingDistance(nAtom))
     {
         cAtom->addBond(nAtom);
+        cTermRes->addNeighbor(nTermRes->getStringId() + "-" + cTermRes->getStringId(), nTermRes);
         return true;
     }
     return false;
 }
 
-void cds::setProteinConnectivity(std::vector<cds::Residue*> proteinResidues)
+void cds::setProteinIntraConnectivity(std::vector<cds::Residue*> proteinResidues)
+{
+    for (auto& aa : proteinResidues)
+    {
+        cds::setBondingForAminoAcid(aa);
+    }
+    return;
+}
+
+void cds::setProteinInterConnectivity(std::vector<cds::Residue*> proteinResidues)
 {
     if (proteinResidues.empty())
     {
         return;
     }
-    cds::setBondingForResidue(proteinResidues.front()); // does the first one, and handles when size is 1.
+    cds::setBondingForAminoAcid(proteinResidues.front()); // does the first one, and handles when size is 1.
     cds::Residue* previousRes = proteinResidues.front();
     for (std::vector<cds::Residue*>::iterator it = proteinResidues.begin() + 1; it != proteinResidues.end(); ++it)
     {
-        cds::setBondingForResidue(*it); // internal bonding
         if (!cds::autoConnectSuccessiveResidues(previousRes, *it))
         { // Automatically bond the N and C atoms of successive residues
             gmml::log(__LINE__, __FILE__, gmml::WAR,
                       "Gap detected between " + previousRes->getStringId() + " and " + (*it)->getStringId());
         }
-        //        else
-        //        {
-        //            gmml::log(__LINE__, __FILE__, gmml::INF,
-        //                                  "Connected " + previousRes->getStringId() + " to "+ (*it)->getStringId());
-        //        }
+        // else
+        //{
+        //     gmml::log(__LINE__, __FILE__, gmml::INF, "Connected " + previousRes->getStringId() + " to "+
+        //     (*it)->getStringId());
+        // }
         previousRes = *it;
     }
     return;
 }
 
-void cds::setAtomicConnectivity(std::vector<cds::Residue*> residues)
+void cds::setIntraConnectivity(std::vector<cds::Residue*> residues)
 {
-    cds::setProteinConnectivity(cdsSelections::selectResiduesByType(residues, ResidueType::Protein));
+    cds::setProteinIntraConnectivity(cdsSelections::selectResiduesByType(residues, ResidueType::Protein));
     bool invertSelection = true;
-    cds::bondAtomsAndResiduesByDistance(
-        cdsSelections::selectResiduesByType(residues, ResidueType::Protein, invertSelection));
+    cds::distanceBondIntra(cdsSelections::selectResiduesByType(residues, ResidueType::Protein, invertSelection));
+}
+
+void cds::setInterConnectivity(std::vector<cds::Residue*> residues)
+{
+    cds::setProteinInterConnectivity(cdsSelections::selectResiduesByType(residues, ResidueType::Protein));
+    bool invertSelection = true;
+    cds::distanceBondInter(cdsSelections::selectResiduesByType(residues, ResidueType::Protein, invertSelection));
 }
