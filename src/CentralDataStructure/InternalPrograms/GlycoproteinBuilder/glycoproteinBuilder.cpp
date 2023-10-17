@@ -378,6 +378,7 @@ void GlycoproteinBuilder::CreateGlycosites(std::vector<glycoprotein::GlycositeIn
     }
     //    std::cout << "Done attaching all glycans" << std::endl;
     this->SetOtherGlycosites();
+    this->UpdateOverlapAtomsInLinkages();
     return;
 }
 
@@ -423,6 +424,15 @@ void GlycoproteinBuilder::SetOtherGlycosites()
     for (auto& glycosite : this->GetGlycosites())
     {
         glycosite.SetOtherGlycosites(this->GetGlycosites());
+    }
+    return;
+}
+
+void GlycoproteinBuilder::UpdateOverlapAtomsInLinkages()
+{
+    for (auto& glycosite : this->GetGlycosites())
+    {
+        glycosite.AddOtherGlycositesToLinkageOverlapAtoms();
     }
     return;
 }

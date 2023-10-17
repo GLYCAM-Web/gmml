@@ -1,31 +1,6 @@
 #include "includes/CentralDataStructure/Overlaps/cdsOverlaps.hpp"
 #include "includes/CodeUtils/constants.hpp" // maxcutoff
-using cds::Coordinate;
-
-// I meant to time which is faster
-bool cds::CheckIfOtherCoordinateIsWithinDistance(const Coordinate* a, const Coordinate* b, const double distance)
-{
-    double xDiff = a->GetX() - b->GetX();
-    double yDiff = a->GetY() - b->GetY();
-    double zDiff = a->GetZ() - b->GetZ();
-    if ((xDiff * xDiff + yDiff * yDiff + zDiff * zDiff) < distance * distance)
-    {
-        return true;
-    }
-    return false;
-}
-
-bool cds::CheckIfOtherCoordinateIsWithinDistanceA(const Coordinate* a, const Coordinate* b, const double distance)
-{
-    double xDiff = std::abs(a->GetX() - b->GetX());
-    double yDiff = std::abs(a->GetY() - b->GetY());
-    double zDiff = std::abs(a->GetZ() - b->GetZ());
-    if ((xDiff < distance) && (yDiff < distance) && (zDiff < distance))
-    {
-        return cds::CheckIfOtherCoordinateIsWithinDistance(a, b, distance);
-    }
-    return false;
-}
+#include "includes/CentralDataStructure/Measurements/measurements.hpp"
 
 double cds::CalculateAtomicOverlaps(cds::Atom* atomA, cds::Atom* atomB, double radiusA, double radiusB)
 {

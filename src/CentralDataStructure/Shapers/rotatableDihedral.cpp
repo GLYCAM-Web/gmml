@@ -508,7 +508,6 @@ unsigned int RotatableDihedral::WiggleWithinRangesDistanceCheck(std::vector<cds:
                                                                 const int& angleIncrement, const double& lowerBound,
                                                                 const double& upperBound)
 {
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Starting to wiggleWithinRangesDistanceCheck()");
     this->SetDihedralAngle(lowerBound);
     double currentDihedral      = lowerBound;
     double bestDihedral         = lowerBound;

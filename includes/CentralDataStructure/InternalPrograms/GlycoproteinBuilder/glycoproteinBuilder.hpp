@@ -134,6 +134,7 @@ class GlycoproteinBuilder : public Abstract::absBuilder
     // void DeleteSitesIterativelyWithAtomicOverlapAboveTolerance(std::vector<GlycosylationSite>& glycosites,
     //                                                            int tolerance);
     void SetOtherGlycosites();
+    void UpdateOverlapAtomsInLinkages();
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////

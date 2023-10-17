@@ -127,12 +127,17 @@ std::string ResidueLinkage::GetName() const
     return this->DetermineLinkageNameFromResidueNames();
 }
 
-std::vector<cds::Residue*>& ResidueLinkage::GetMovingResidues()
+void ResidueLinkage::AddNonReducingOverlapResidues(std::vector<cds::Residue*> extraResidues)
+{ // this dumb and expensive.
+    nonReducingOverlapResidues_.insert(nonReducingOverlapResidues_.end(), extraResidues.begin(), extraResidues.end());
+}
+
+std::vector<cds::Residue*>& ResidueLinkage::GetNonReducingOverlapResidues()
 {
     return nonReducingOverlapResidues_;
 }
 
-std::vector<cds::Residue*>& ResidueLinkage::GetFixedResidues()
+std::vector<cds::Residue*>& ResidueLinkage::GetReducingOverlapResidues()
 {
     return reducingOverlapResidues_;
 }

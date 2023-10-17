@@ -63,8 +63,9 @@ namespace cds
 
         std::string GetName() const;
 
-        std::vector<cds::Residue*>& GetMovingResidues();
-        std::vector<cds::Residue*>& GetFixedResidues();
+        void AddNonReducingOverlapResidues(std::vector<cds::Residue*> extraResidues);
+        std::vector<cds::Residue*>& GetNonReducingOverlapResidues();
+        std::vector<cds::Residue*>& GetReducingOverlapResidues();
 
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //

@@ -8,17 +8,16 @@
 #include <iomanip> // For setting precision and formating in output
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycosylationSite.hpp"
 #include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
-#include "includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
 #include "includes/CentralDataStructure/Measurements/measurements.hpp" // calculateCoordinateFromInternalCoords
-#include "includes/CentralDataStructure/Selections/atomSelections.hpp" //cdsSelections
 #include "includes/CentralDataStructure/Editors/superimposition.hpp"
-// #include "includes/CentralDataStructure/Overlaps/beadResidues.hpp"
-#include "includes/CodeUtils/logging.hpp"
 #include "includes/CentralDataStructure/Selections/shaperSelections.hpp" // For the ClearAtomLabels sillyness.
-#include "includes/MolecularMetadata/glycoprotein.hpp"
 #include "includes/CentralDataStructure/Selections/templatedSelections.hpp"
+#include "includes/CentralDataStructure/Selections/residueSelections.hpp"
+#include "includes/CentralDataStructure/Selections/atomSelections.hpp" //cdsSelections
+#include "includes/CodeUtils/logging.hpp"
+#include "includes/MolecularMetadata/GLYCAM/dihedralangledata.hpp"
+#include "includes/MolecularMetadata/glycoprotein.hpp"
 
-// #include <algorithm> //  std::erase, std::remove
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
@@ -36,7 +35,11 @@ GlycosylationSite::GlycosylationSite(Residue* residue, Carbohydrate* carbohydrat
     for (auto& linkage : carbohydrate->GetGlycosidicLinkages())
     {
         gmml::log(__LINE__, __FILE__, gmml::INF, linkage.GetName());
-        linkage.DetermineResiduesForOverlapCheck(); // Now that the protein is attached.
+        linkage.DetermineResiduesForOverlapCheck(); // Now that the protein residue is attached.
+        std::vector<Residue*> closestProteinResidues =
+            cdsSelections::selectNClosestResidues(otherProteinResidues, linkage.GetFromThisResidue1(), 20);
+        linkage.AddNonReducingOverlapResidues(closestProteinResidues);
+        // linkage.AddNonReducingOverlapResidues(otherProteinResidues);
     }
 }
 
@@ -214,6 +217,21 @@ void GlycosylationSite::Rename_Protein_Residue_From_GLYCAM_To_Standard()
     this->GetResidue()->setName(glycoproteinMetadata::ConvertGlycosylatedResidueName(this->GetResidue()->getName()));
 }
 
+void GlycosylationSite::AddOtherGlycositesToLinkageOverlapAtoms()
+{ // Why not store these as a residue vector??? Glycosite deletion, which totally screws this.
+    std::vector<cds::Residue*> allOtherGlycanResidues;
+    for (auto& other_glycosite : other_glycosites_)
+    {
+        std::vector otherSiteResidues = other_glycosite->GetGlycan()->getResidues();
+        allOtherGlycanResidues.insert(allOtherGlycanResidues.end(), otherSiteResidues.begin(), otherSiteResidues.end());
+    }
+    for (auto& glycoLinkage : this->GetGlycan()->GetGlycosidicLinkages())
+    {
+        glycoLinkage.AddNonReducingOverlapResidues(allOtherGlycanResidues);
+    }
+    return;
+}
+
 unsigned int GlycosylationSite::CountOverlaps(MoleculeType moleculeType)
 {
     unsigned int overlap = 0;
@@ -246,7 +264,7 @@ unsigned int GlycosylationSite::CountOverlaps(MoleculeType moleculeType)
 unsigned int GlycosylationSite::CountOverlaps(const std::vector<Residue*> residuesA,
                                               const std::vector<Residue*> residuesB)
 {
-    return cds::CountOverlappingResidues(residuesA, residuesB);
+    return cds::CountOverlappingAtoms(residuesA, residuesB);
 }
 
 void GlycosylationSite::PrintOverlaps()
@@ -361,12 +379,8 @@ Atom* GlycosylationSite::GetConnectingProteinAtom(const std::string residue_name
     return this->GetResidue()->FindAtom(connectionAtomName);
 }
 
-// OG re-reading. I'm pretty sure this belongs in Residue_linkage. linkage.wiggle(output_pdb_id, tolerance, interval
-// OG re-re-reading. It's because you need to calculate overlaps.
 void GlycosylationSite::WiggleOneLinkage(ResidueLinkage& linkage, int interval)
 {
-    int current_overlap                                           = this->CountOverlaps();
-    // int lowest_overlap                                            = current_overlap;
     //  Reverse as convention is Glc1-4Gal and I want to wiggle in opposite direction i.e. from first rotatable bond in
     //  Asn outwards
     std::vector<RotatableDihedral> reversed_rotatable_bond_vector = linkage.GetRotatableDihedralsRef();
@@ -376,7 +390,8 @@ void GlycosylationSite::WiggleOneLinkage(ResidueLinkage& linkage, int interval)
         //        gmml::log(__LINE__, __FILE__, gmml::INF,
         //                  "About to wiggle all the rotamers of " + rotatable_dihedral.GetName() +
         //                      " in this linkage: " + linkage.GetName());
-        rotatable_dihedral.WiggleUsingAllRotamers(linkage.GetMovingResidues(), linkage.GetFixedResidues(), interval);
+        rotatable_dihedral.WiggleUsingAllRotamers(linkage.GetNonReducingOverlapResidues(),
+                                                  linkage.GetReducingOverlapResidues(), interval);
     }
     return; // Note possibility of earlier return above
 }
