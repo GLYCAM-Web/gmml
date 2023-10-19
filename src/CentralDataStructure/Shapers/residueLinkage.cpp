@@ -683,22 +683,22 @@ unsigned long long ResidueLinkage::GenerateIndex()
 
 void ResidueLinkage::DetermineResiduesForOverlapCheck()
 {
-    nonReducingOverlapResidues_.clear();
-    nonReducingOverlapResidues_.push_back(from_this_residue1_);
+    reducingOverlapResidues_.clear();
+    reducingOverlapResidues_.push_back(from_this_residue1_);
     for (auto& neighbor : from_this_residue1_->getNeighbors())
     {
         if (neighbor != to_this_residue2_)
         {
-            cdsSelections::FindConnectedResidues(nonReducingOverlapResidues_, neighbor);
+            cdsSelections::FindConnectedResidues(reducingOverlapResidues_, neighbor);
         }
     }
-    reducingOverlapResidues_.clear();
-    reducingOverlapResidues_.push_back(to_this_residue2_);
+    nonReducingOverlapResidues_.clear();
+    nonReducingOverlapResidues_.push_back(to_this_residue2_);
     for (auto& neighbor : to_this_residue2_->getNeighbors())
     {
         if (neighbor != from_this_residue1_)
         {
-            cdsSelections::FindConnectedResidues(reducingOverlapResidues_, neighbor);
+            cdsSelections::FindConnectedResidues(nonReducingOverlapResidues_, neighbor);
         }
     }
     //    gmml::log(__LINE__, __FILE__, gmml::INF, "For this linkage: " + this->GetName() + "\noverlapResidues1: ");
