@@ -1,6 +1,7 @@
 #include "includes/CentralDataStructure/Overlaps/cdsOverlaps.hpp"
 #include "includes/CodeUtils/constants.hpp" // maxcutoff
 #include "includes/CentralDataStructure/Measurements/measurements.hpp"
+#include "includes/CentralDataStructure/Selections/residueSelections.hpp"
 
 double cds::CalculateAtomicOverlaps(cds::Atom* atomA, cds::Atom* atomB, double radiusA, double radiusB)
 {
@@ -184,7 +185,8 @@ unsigned int cds::CountOverlappingAtoms(const std::vector<cds::Residue*>& residu
         {
             if (cds::CheckIfOtherCoordinateIsWithinDistance(residueA->calculateGeometricCenter(),
                                                             residueB->calculateGeometricCenter(),
-                                                            constants::residueDistanceOverlapCutoff))
+                                                            constants::residueDistanceOverlapCutoff) &&
+                !cdsSelections::areNeighbors(residueA, residueB))
             {
                 std::vector<cds::Atom*> atomsA = residueA->getAtoms();
                 std::vector<cds::Atom*> atomsB = residueB->getAtoms();
