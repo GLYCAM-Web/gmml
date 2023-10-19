@@ -43,9 +43,10 @@ class GlycosylationSite
     //                       FUNCTIONS                      //
     //////////////////////////////////////////////////////////
     unsigned int CountOverlaps(MoleculeType moleculeType = MoleculeType::ALL);
+    unsigned int CountOverlapsFast();
     //    void StashCoordinates();
     //    void SetStashedCoordinates();
-    void Wiggle(bool firstLinkageOnly = false, int interval = 5);
+    void Wiggle(bool firstLinkageOnly = false, int interval = 5, bool useAllResiduesForOverlap = false);
     void SetRandomDihedralAnglesUsingMetadata();
     void ResetDihedralAngles();
     void Rename_Protein_Residue_From_GLYCAM_To_Standard();
@@ -83,12 +84,12 @@ class GlycosylationSite
     //////////////////////////////////////////////////////////
     //                  PRIVATE ACCESSOR                    //
     //////////////////////////////////////////////////////////
-    inline std::vector<GlycosylationSite*> GetOtherGlycosites()
+    inline std::vector<GlycosylationSite*>& GetOtherGlycosites()
     {
         return other_glycosites_;
     }
 
-    inline std::vector<Residue*> GetOtherProteinResidues()
+    inline std::vector<Residue*>& GetOtherProteinResidues()
     {
         return otherProteinResidues_;
     }
@@ -117,8 +118,8 @@ class GlycosylationSite
     void Superimpose_Glycan_To_Glycosite(Residue* glycosite_residue);
     void Rename_Protein_Residue_To_GLYCAM_Nomenclature();
     Atom* GetConnectingProteinAtom(const std::string residue_name) const;
-    void WiggleOneLinkage(ResidueLinkage& linkage, int interval = 5);
-    unsigned int CountOverlaps(const std::vector<Residue*> residuesA, const std::vector<Residue*> residuesB);
+    void WiggleOneLinkage(ResidueLinkage& linkage, int interval = 5, bool useAllResiduesForOverlap = false);
+    unsigned int CountOverlaps(const std::vector<Residue*>& residuesA, const std::vector<Residue*>& residuesB);
     //////////////////////////////////////////////////////////
     //                       ATTRIBUTES                     //
     //////////////////////////////////////////////////////////

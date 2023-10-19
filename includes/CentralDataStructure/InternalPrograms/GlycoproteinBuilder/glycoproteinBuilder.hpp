@@ -123,8 +123,9 @@ class GlycoproteinBuilder : public Abstract::absBuilder
     Residue* SelectResidueFromInput(const std::string userSelection);
     // Overlap Resolution
     void ResolveOverlapsWithWiggler();
-    void Wiggle(int persistCycles = 100, bool firstLinkageOnly = false, int interval = 5);
-    void RandomDescent(int persistCycles, bool monte_carlo);
+    unsigned int Wiggle(int persistCycles = 10, bool firstLinkageOnly = false, int interval = 5,
+                        bool useAllResiduesForOverlap = false);
+    unsigned int RandomDescent(int persistCycles, bool monte_carlo);
     void SetRandomDihedralAnglesUsingMetadata();
     bool DumbRandomWalk(int maxCycles = 10);
     // I/O
@@ -144,8 +145,7 @@ class GlycoproteinBuilder : public Abstract::absBuilder
     std::string proteinPDBFileName_;            // The protein pdb file to attach the glycans to.
     int structuresToOutput_      = 1;           // Number of output 3D structures. Default 1.
     int totalOutputtedStrucures_ = 0;
-    int persistCycles_ = 5; // Algos continue for persistCycles, reset count if there is an overlap improvement.
-    bool isDeterministic_ =
-        false; // "true" means produce the same output for a given input each time. Good for testing.
+    int persistCycles_    = 5;     // Algos continue for persistCycles, reset count if there is an overlap improvement.
+    bool isDeterministic_ = false; // "true" is good for testing: always same output.
 };
 #endif // GMML_INCLUDES_INTERNALPROGRAMS_GLYCOPROTEINBUILDER_GLYCOPROTEINBUILDER_HPP
