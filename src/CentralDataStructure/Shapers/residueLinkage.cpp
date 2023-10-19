@@ -329,9 +329,6 @@ void ResidueLinkage::InitializeClass(cds::Residue* from_this_residue1, cds::Resi
 {
     // set local debug flag
     int local_debug = -1;
-    gmml::log(__LINE__, __FILE__, gmml::INF,
-              "Maybe Finding connection between " + from_this_residue1->getStringId() +
-                  " :: " + to_this_residue2->getStringId());
     this->SetResidues(from_this_residue1, to_this_residue2);
     this->SetIfReversedAtomsThatMove(reverseAtomsThatMove);
     this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
@@ -704,15 +701,15 @@ void ResidueLinkage::DetermineResiduesForOverlapCheck()
             cdsSelections::FindConnectedResidues(reducingOverlapResidues_, neighbor);
         }
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, "For this linkage: " + this->GetName() + "\noverlapResidues1: ");
-    for (auto& res : nonReducingOverlapResidues_)
-    {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "    " + res->getStringId() + ",");
-    }
-    gmml::log(__LINE__, __FILE__, gmml::INF, "overlapResidues2: ");
-    for (auto& res : reducingOverlapResidues_)
-    {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "    " + res->getStringId() + ",");
-    }
+    //    gmml::log(__LINE__, __FILE__, gmml::INF, "For this linkage: " + this->GetName() + "\noverlapResidues1: ");
+    //    for (auto& res : nonReducingOverlapResidues_)
+    //    {
+    //        gmml::log(__LINE__, __FILE__, gmml::INF, "    " + res->getStringId() + ",");
+    //    }
+    //    gmml::log(__LINE__, __FILE__, gmml::INF, "overlapResidues2: ");
+    //    for (auto& res : reducingOverlapResidues_)
+    //    {
+    //        gmml::log(__LINE__, __FILE__, gmml::INF, "    " + res->getStringId() + ",");
+    //    }
     return;
 }

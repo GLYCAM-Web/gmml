@@ -42,7 +42,7 @@ PdbAtom::PdbAtom(const std::string& line)
     {
         this->setName(atomName);
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Hi, my name is " + this->getName());
+    // gmml::log(__LINE__, __FILE__, gmml::INF, "Hi, my name is " + this->getName());
     // alternateLocation_ = ""; // OG Dec2021, we don't want alt locations in gmml for now. Messes with the
     // preprocessor.
     residueName_ = codeUtils::RemoveWhiteSpace(line.substr(17 + shift, 3));

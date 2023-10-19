@@ -110,8 +110,8 @@ Residue* Molecule::insertNewResidue(std::unique_ptr<Residue> myResidue, const Re
     auto position = this->findPositionOfResidue(&positionReferenceResidue);
     if (position != residues_.end())
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF,
-                  "New residue named " + myResidue->getName() + " will be born; You're welcome.");
+        //        gmml::log(__LINE__, __FILE__, gmml::INF,
+        //                  "New residue named " + myResidue->getName() + " will be born; You're welcome.");
         ++position; // it is ok to insert at end(). I checked. It was ok. Ok.
         position = residues_.insert(position, std::move(myResidue));
     }
@@ -159,7 +159,8 @@ void Molecule::deleteResidue(Residue* residue)
     auto i = this->findPositionOfResidue(residue); // auto makes my life easier
     if (i != residues_.end())
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Residue " + residue->getName() + " has been erased. You're welcome.");
+        // gmml::log(__LINE__, __FILE__, gmml::INF, "Residue " + residue->getName() + " has been erased. You're
+        // welcome.");
         i = residues_.erase(i);
     }
     return;

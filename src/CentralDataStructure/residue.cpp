@@ -131,7 +131,7 @@ bool Residue::deleteAtom(const Atom* atom)
     auto i = this->FindPositionOfAtom(atom); // auto makes my life easier
     if (i != atoms_.end())
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Atom " + atom->getName() + " has been erased. You're welcome.");
+        // gmml::log(__LINE__, __FILE__, gmml::INF, "Atom " + atom->getName() + " has been erased. You're welcome.");
         i = atoms_.erase(i); // this costs a lot as everything after i gets shifted.
         return true;
     }

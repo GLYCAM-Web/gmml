@@ -37,7 +37,7 @@ const std::string biology::equivalentResidueNameLookup(const std::string queryRe
         // gmml::log(__LINE__, __FILE__, gmml::INF, "Found nothing in weirdo lookup map for " + queryResidueName);
         return queryResidueName;
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Found a conversion for " + queryResidueName + " : " + convertedName);
+    // gmml::log(__LINE__, __FILE__, gmml::INF, "Found a conversion for " + queryResidueName + " : " + convertedName);
     return convertedName;
 }
 
@@ -106,6 +106,6 @@ const std::vector<std::pair<std::string, std::string>>& biology::getSidechainBon
                                  "entry in this table. Git gud son. This was the problem residue: " +
                                  queryResidueName);
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Found sidechain bonding info for " + queryResidueName);
+    // gmml::log(__LINE__, __FILE__, gmml::INF, "Found sidechain bonding info for " + queryResidueName);
     return (sidechainBonding.at(queryResidueName));
 }

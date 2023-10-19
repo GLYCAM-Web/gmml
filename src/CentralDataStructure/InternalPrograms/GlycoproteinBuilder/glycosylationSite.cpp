@@ -30,16 +30,15 @@ GlycosylationSite::GlycosylationSite(Residue* residue, Carbohydrate* carbohydrat
     cdsSelections::ClearAtomLabels(carbohydrate->GetReducingResidue()); // jfc
     cdsSelections::ClearAtomLabels(this->GetResidue());
     // this->SetInternalBondCount(cdsSelections::CountInternalHeavyAtomBonds(this->GetGlycan()->getAtoms()));
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Done attach glycan to " + this->GetResidueId());
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Here are the linkages:");
+    //    gmml::log(__LINE__, __FILE__, gmml::INF, "Done attach glycan to " + this->GetResidueId());
+    //    gmml::log(__LINE__, __FILE__, gmml::INF, "Here are the linkages:");
     for (auto& linkage : carbohydrate->GetGlycosidicLinkages())
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, linkage.GetName());
+        //        gmml::log(__LINE__, __FILE__, gmml::INF, linkage.GetName());
         linkage.DetermineResiduesForOverlapCheck(); // Now that the protein residue is attached.
         std::vector<Residue*> closestProteinResidues =
             cdsSelections::selectNClosestResidues(otherProteinResidues, linkage.GetFromThisResidue1(), 20);
         linkage.AddNonReducingOverlapResidues(closestProteinResidues);
-        // linkage.AddNonReducingOverlapResidues(otherProteinResidues);
     }
 }
 
@@ -159,13 +158,14 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue* glycosite_resid
     // will superimpose them onto the correspoinding "target" atoms in the protein residue (glycosite_residue).
     for (auto& superimposition_atom : this->GetGlycan()->GetAglycone()->getAtoms())
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Aglycone atom is named: " + superimposition_atom->getName());
+        //        gmml::log(__LINE__, __FILE__, gmml::INF, "Aglycone atom is named: " +
+        //        superimposition_atom->getName());
         for (auto& protein_atom : glycosite_residue->getAtoms())
         {
             if (protein_atom->getName() == superimposition_atom->getName())
             {
-                gmml::log(__LINE__, __FILE__, gmml::INF,
-                          "Adding " + protein_atom->getName() + " to superimposition atoms\n");
+                //                gmml::log(__LINE__, __FILE__, gmml::INF,
+                //                          "Adding " + protein_atom->getName() + " to superimposition atoms\n");
                 targetCoords.push_back(protein_atom->getCoordinate());
             }
         }
@@ -190,20 +190,20 @@ void GlycosylationSite::Superimpose_Glycan_To_Glycosite(Residue* glycosite_resid
                                  "superimposition to " +
                                  this->GetResidueId() + ".\nCheck your input structure!\n");
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Superimposing via the aglycone.");
+    //    gmml::log(__LINE__, __FILE__, gmml::INF, "Superimposing via the aglycone.");
     cds::Superimpose(aglyconeCoords, targetCoords, glycanCoords);
     // Connect the glycan and protein atoms to each other.
     Atom* protein_connection_atom = this->GetConnectingProteinAtom(glycosite_residue->getName());
-    gmml::log(__LINE__, __FILE__, gmml::INF,
-              "Connecting the reducing atom of " + this->GetGlycan()->GetReducingResidue()->getStringId() +
-                  " to the protein:" + this->GetGlycan()->GetAnomericAtom()->getId() + " bonded to " +
-                  protein_connection_atom->getId());
+    //    gmml::log(__LINE__, __FILE__, gmml::INF,
+    //              "Connecting the reducing atom of " + this->GetGlycan()->GetReducingResidue()->getStringId() +
+    //                  " to the protein:" + this->GetGlycan()->GetAnomericAtom()->getId() + " bonded to " +
+    //                  protein_connection_atom->getId());
     protein_connection_atom->addBond(this->GetGlycan()->GetAnomericAtom()); // Atom connectivity
     this->Rename_Protein_Residue_To_GLYCAM_Nomenclature();                  // e.g. ASN to NLN
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Replacing the aglycone");
+    //    gmml::log(__LINE__, __FILE__, gmml::INF, "Replacing the aglycone");
     // this->GetGlycan()->deleteResidue(this->GetGlycan()->GetAglycone());
     this->GetGlycan()->replaceAglycone(this->GetResidue());
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Completed superimposition to " + glycosite_residue->getStringId());
+    //    gmml::log(__LINE__, __FILE__, gmml::INF, "Completed superimposition to " + glycosite_residue->getStringId());
     return;
 }
 
@@ -315,7 +315,7 @@ void GlycosylationSite::SetRandomDihedralAnglesUsingMetadata()
     }
     for (auto& linkage : this->GetGlycan()->GetGlycosidicLinkages())
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Setting random shape for linkage: " + linkage.GetName());
+        //        gmml::log(__LINE__, __FILE__, gmml::INF, "Setting random shape for linkage: " + linkage.GetName());
         linkage.SetRandomShapeUsingMetadata();
     }
     //    if (!this->NoNewInternalCloseContacts())
