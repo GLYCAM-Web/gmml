@@ -17,5 +17,6 @@ namespace cdsSelections
     void FindConnectedResidues(std::vector<Residue*>& visitedList, Residue* current);
     std::vector<Residue*> selectNClosestResidues(std::vector<Residue*> inputResidues, Residue* query,
                                                  unsigned int n = 1);
+    bool areNeighbors(Residue* a, Residue* b);
 } // namespace cdsSelections
 #endif

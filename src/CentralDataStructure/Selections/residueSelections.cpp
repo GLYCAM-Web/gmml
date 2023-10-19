@@ -115,3 +115,15 @@ std::vector<Residue*> cdsSelections::selectNClosestResidues(std::vector<Residue*
     inputResidues.resize(n);
     return inputResidues;
 }
+
+bool cdsSelections::areNeighbors(Residue* a, Residue* b)
+{
+    for (auto& neighbor : a->getNeighbors())
+    {
+        if (neighbor == b)
+        {
+            return true;
+        }
+    }
+    return false;
+}
