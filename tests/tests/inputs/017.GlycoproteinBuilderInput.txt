@@ -1,12 +1,12 @@
 Protein:tests/inputs/017.1eer_eop_Asn.pdb
 
-NumberOfOutputStructures:2
+NumberOfOutputStructures:3
 
 maxThreads:1
 
 persistCycles:5
 
-overlapTolerance:0
+overlapTolerance:1
 
 prepFileLocation:../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep
 
