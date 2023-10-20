@@ -83,3 +83,18 @@ void cdsSelections::FindConnectedResidues(std::vector<Residue*>& visitedList, Re
     }
     return;
 }
+
+std::vector<Residue*> cdsSelections::selectResiduesWithinDistanceN(std::vector<Residue*> inputResidues,
+                                                                   Residue* queryResidue, double queryDistance)
+{
+    std::vector<Residue*> foundResidues;
+    const cds::Coordinate* queryCenter = queryResidue->getGeometricCenter();
+    for (auto& inputRes : inputResidues)
+    {
+        if (queryCenter->Distance(inputRes->getGeometricCenter()) <= queryDistance)
+        {
+            foundResidues.push_back(inputRes);
+        }
+    }
+    return foundResidues;
+}
