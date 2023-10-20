@@ -1,13 +1,24 @@
 #include "includes/CentralDataStructure/Writers/pdbWriter.hpp"
 #include <iomanip> // setw
 
+void cds::writeEnsembleToPdb(std::ostream& stream, const std::vector<cds::Assembly*> assemblies)
+{
+    int modelCount = 1;
+    for (auto& assembly : assemblies)
+    {
+        stream << "MODEL " << std::right << std::setw(8) << modelCount << "\n";
+        cds::writeAssemblyToPdb(stream, assembly->getMolecules());
+        stream << "ENDMDL\n";
+        modelCount++;
+    }
+}
+
 void cds::writeAssemblyToPdb(std::ostream& stream, const std::vector<cds::Molecule*> molecules)
 {
     for (auto& molecule : molecules)
     {
         cds::writeMoleculeToPdb(stream, molecule->getResidues());
     }
-    //   stream << "ENDMDL\n"; ?
 }
 
 void cds::writeMoleculeToPdb(std::ostream& stream, const std::vector<cds::Residue*> residues)
