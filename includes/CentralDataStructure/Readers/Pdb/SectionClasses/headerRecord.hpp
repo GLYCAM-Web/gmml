@@ -44,10 +44,10 @@ namespace pdb
         //////////////////////////////////////////////////////////
         //                       ATTRIBUTES                     //
         //////////////////////////////////////////////////////////
-        std::string record_name_;     /*!< Record name of headr card in a pdb file >*/
-        std::string classification_;  /*!< Classification of the pdb file >*/
-        std::string deposition_date_; /*!< Date of deposition >*/
-        std::string identifier_code_; /*!< Identifier code of the pdb file >*/
+        std::string record_name_     = ""; /*!< Record name of headr card in a pdb file >*/
+        std::string classification_  = ""; /*!< Classification of the pdb file >*/
+        std::string deposition_date_ = ""; /*!< Date of deposition >*/
+        std::string identifier_code_ = ""; /*!< Identifier code of the pdb file >*/
     };
 } // namespace pdb
 #endif // GMML_INCLUDES_INPUTSET_PDBFILE_HEADERRECORD_HPP

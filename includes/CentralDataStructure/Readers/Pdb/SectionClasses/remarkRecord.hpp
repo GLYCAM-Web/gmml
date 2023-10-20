@@ -43,8 +43,8 @@ namespace pdb
         //////////////////////////////////////////////////////////
         //                       ATTRIBUTES                     //
         //////////////////////////////////////////////////////////
-        float resolution_; /*!< Resolution of PDB >*/
-        float b_factor_;   /*!< B Factor of PDB >*/
+        float resolution_ = 0.0; /*!< Resolution of PDB >*/
+        float b_factor_   = 0.0; /*!< B Factor of PDB >*/
     };
 } // namespace pdb
 

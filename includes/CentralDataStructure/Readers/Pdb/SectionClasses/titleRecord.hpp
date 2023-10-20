@@ -37,8 +37,8 @@ namespace pdb
         //////////////////////////////////////////////////////////
         //                       ATTRIBUTES                     //
         //////////////////////////////////////////////////////////
-        std::string name_;  /*!< Record name which appears in the first column of each line in a pdb file >*/
-        std::string title_; /*!< Title that appears in TITLE record of a pdb file >*/
+        std::string name_  = ""; /*!< Record name which appears in the first column of each line in a pdb file >*/
+        std::string title_ = ""; /*!< Title that appears in TITLE record of a pdb file >*/
     };
 } // namespace pdb
 

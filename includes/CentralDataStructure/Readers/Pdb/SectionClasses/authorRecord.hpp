@@ -45,8 +45,8 @@ namespace pdb
         //////////////////////////////////////////////////////////
         //                       ATTRIBUTES                     //
         //////////////////////////////////////////////////////////
-        std::string record_name_; /*!< Record name which appears in the first column of each line in a pdb file >*/
-        std::string author_;      /*!< Author that appears in KEYWORD record of a pdb file >*/
+        std::string record_name_ = ""; /*!< Record name which appears in the first column of each line in a pdb file >*/
+        std::string author_      = ""; /*!< Author that appears in KEYWORD record of a pdb file >*/
     };
 } // namespace pdb
 

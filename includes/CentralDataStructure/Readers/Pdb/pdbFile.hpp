@@ -96,7 +96,7 @@ namespace pdb
         //////////////////////////////////////////////////////////
         //                        ATTRIBUTES                    //
         //////////////////////////////////////////////////////////
-        std::string inFilePath_;
+        std::string inFilePath_ = "";
         pdb::HeaderRecord headerRecord_; // SWIG wants the pdb::
         pdb::TitleRecord titleRecord_;
         pdb::AuthorRecord authorRecord_;

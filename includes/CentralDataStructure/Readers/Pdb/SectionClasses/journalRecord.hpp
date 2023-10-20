@@ -92,17 +92,17 @@ namespace pdb
         //////////////////////////////////////////////////////////
         //                       ATTRIBUTES                     //
         //////////////////////////////////////////////////////////
-        std::string record_name_; /*!< Record name which appears in the first column of each line in a pdb file >*/
+        std::string record_name_ = ""; /*!< Record name which appears in the first column of each line in a pdb file >*/
         std::vector<std::string> authors_; /*!< List of authors that appear in Journal record of a pdb file >*/
-        std::string title_;                /*!< Title that appears in Journal record of a pdb file >*/
+        std::string title_ = "";           /*!< Title that appears in Journal record of a pdb file >*/
         std::vector<std::string> editors_; /*!< List of editors that appear in Journal record of a pdb file >*/
-        std::string reference_;            /*!< Reference that appears in Journal record of a pdb file >*/
-        std::string publisher_;            /*!< Publisher that appears in Journal record of a pdb file >*/
+        std::string reference_ = "";       /*!< Reference that appears in Journal record of a pdb file >*/
+        std::string publisher_ = "";       /*!< Publisher that appears in Journal record of a pdb file >*/
         std::vector<std::string>
-            reference_nums_; /*!< List of reference numbers that appear in Journal record of a pdb file >*/
-        std::string pmid_;   /*!< Pub Med ID number that appears in Journal record of a pdb file >*/
-        std::string doi_;    /*!< DOI number that appears in Journal record of a pdb file >*/
-        std::string text_;   /*!< Text in a Journal Section >*/
+            reference_nums_;    /*!< List of reference numbers that appear in Journal record of a pdb file >*/
+        std::string pmid_ = ""; /*!< Pub Med ID number that appears in Journal record of a pdb file >*/
+        std::string doi_  = ""; /*!< DOI number that appears in Journal record of a pdb file >*/
+        std::string text_ = ""; /*!< Text in a Journal Section >*/
     };
 } // namespace pdb
 #endif // GMML_INCLUDES_INPUTSET_PDBFILE_JOURNALRECORD_HPP
