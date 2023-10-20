@@ -19,6 +19,7 @@ namespace cds
         Assembly()
         {}
 
+        Assembly(std::vector<Residue*>& residues);
         Assembly(Assembly&& other) noexcept; // Move Ctor
         Assembly(const Assembly& other);     // Copy Ctor
         Assembly& operator=(Assembly other); // Move and Copy assignment operator

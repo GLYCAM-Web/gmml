@@ -91,3 +91,9 @@ void Ensemble::addAssembly(std::unique_ptr<Assembly> myAssembly)
     assemblies_.push_back(std::move(myAssembly));
     return;
 }
+
+void Ensemble::addAssembly(Assembly& myAssembly)
+{
+    this->addAssembly(std::make_unique<Assembly>(std::move(myAssembly)));
+    return;
+}

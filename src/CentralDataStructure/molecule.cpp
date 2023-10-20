@@ -16,6 +16,14 @@ using cds::Residue;
 Molecule::Molecule(const std::string chainID) : number_(0), chainId_(chainID)
 {}
 
+Molecule::Molecule(std::vector<Residue*>& residues) : number_(0)
+{
+    for (auto& residue : residues)
+    {
+        residues_.push_back(std::make_unique<Residue>(std::move(*residue)));
+    }
+}
+
 // Move Ctor
 Molecule::Molecule(Molecule&& other) noexcept : glygraph::Node<cds::Molecule>(other)
 {

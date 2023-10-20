@@ -42,6 +42,7 @@ namespace cds
         //                    MUTATOR                           //
         //////////////////////////////////////////////////////////
         void addAssembly(std::unique_ptr<Assembly> myAssembly);
+        void addAssembly(Assembly& myAssembly);
         //////////////////////////////////////////////////////////
         //                    FUNCTIONS                         //
         //////////////////////////////////////////////////////////

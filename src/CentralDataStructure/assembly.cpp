@@ -14,6 +14,11 @@ using cds::Residue;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTORS                   //
 //////////////////////////////////////////////////////////
+Assembly::Assembly(std::vector<Residue*>& residues)
+{
+    this->addMolecule(std::make_unique<Molecule>(residues));
+}
+
 // Move Ctor
 Assembly::Assembly(Assembly&& other) noexcept : glygraph::Node<cds::Assembly>(other)
 {

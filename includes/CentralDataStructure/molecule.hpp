@@ -20,6 +20,7 @@ namespace cds
             this->setName("cdsMoleculeDefault");
         } // std::cout << "Molecule default ctor\n";}
 
+        Molecule(std::vector<Residue*>& residues);
         Molecule(const std::string chainId);
         Molecule(Molecule&& other) noexcept; // Move Ctor
         Molecule(const Molecule& other);     // Copy Ctor
