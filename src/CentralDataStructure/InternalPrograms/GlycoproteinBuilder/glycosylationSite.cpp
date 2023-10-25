@@ -218,7 +218,7 @@ void GlycosylationSite::Rename_Protein_Residue_From_GLYCAM_To_Standard()
 }
 
 void GlycosylationSite::AddOtherGlycositesToLinkageOverlapAtoms()
-{ // Why not store these as a residue vector??? Glycosite deletion, which totally screws this.
+{ // Why not store these as a residue vector??? Glycosite deletion, which requires updating everything btw.
     std::vector<cds::Residue*> allOtherGlycanResidues;
     for (auto& other_glycosite : this->GetOtherGlycosites())
     {
@@ -230,6 +230,18 @@ void GlycosylationSite::AddOtherGlycositesToLinkageOverlapAtoms()
         glycoLinkage.AddNonReducingOverlapResidues(allOtherGlycanResidues);
     }
     return;
+}
+
+void GlycosylationSite::UpdateOverlapAtomsInLinkages(unsigned int maxProteinResidues)
+{ // This is an inefficient mess, but allows for speedups. Improve when able.
+    for (auto& linkage : this->GetGlycan()->GetGlycosidicLinkages())
+    {
+        linkage.DetermineResiduesForOverlapCheck();
+        std::vector<Residue*> closestProteinResidues = cdsSelections::selectNClosestResidues(
+            this->GetOtherProteinResidues(), linkage.GetFromThisResidue1(), maxProteinResidues);
+        linkage.AddNonReducingOverlapResidues(closestProteinResidues);
+    }
+    this->AddOtherGlycositesToLinkageOverlapAtoms();
 }
 
 unsigned int GlycosylationSite::CountOverlapsFast()

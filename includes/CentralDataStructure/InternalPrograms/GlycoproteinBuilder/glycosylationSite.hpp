@@ -51,6 +51,7 @@ class GlycosylationSite
     void ResetDihedralAngles();
     void Rename_Protein_Residue_From_GLYCAM_To_Standard();
     void AddOtherGlycositesToLinkageOverlapAtoms();
+    void UpdateOverlapAtomsInLinkages(unsigned int maxProteinResidues = 20);
     //////////////////////////////////////////////////////////
     //                       DISPLAY FUNCTION               //
     //////////////////////////////////////////////////////////

@@ -128,7 +128,7 @@ std::string ResidueLinkage::GetName() const
 }
 
 void ResidueLinkage::AddNonReducingOverlapResidues(std::vector<cds::Residue*> extraResidues)
-{ // this dumb and expensive.
+{
     nonReducingOverlapResidues_.insert(nonReducingOverlapResidues_.end(), extraResidues.begin(), extraResidues.end());
 }
 

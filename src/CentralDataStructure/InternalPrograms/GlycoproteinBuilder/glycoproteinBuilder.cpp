@@ -152,6 +152,8 @@ void GlycoproteinBuilder::ResolveOverlapsWithWiggler()
     }
     currentOverlap = this->Wiggle(this->GetPersistCycles());
     gmml::log(__LINE__, __FILE__, gmml::INF, "2. Overlap: " + std::to_string(currentOverlap));
+    // this->UpdateAllOverlapAtomsInGlycosites(20);
+    // currentOverlap = this->Wiggle(this->GetPersistCycles(), wiggleFirstLinkageOnly);
     currentOverlap = this->Wiggle(this->GetPersistCycles(), wiggleFirstLinkageOnly, 5, useAllResiduesForOverlap);
     gmml::log(__LINE__, __FILE__, gmml::INF, "3. Overlap: " + std::to_string(currentOverlap));
     this->PrintDihedralAnglesAndOverlapOfGlycosites();
@@ -321,7 +323,7 @@ void GlycoproteinBuilder::CreateGlycosites(std::vector<glycoprotein::GlycositeIn
     }
     //    std::cout << "Done attaching all glycans" << std::endl;
     this->SetOtherGlycosites();
-    this->UpdateOverlapAtomsInLinkages();
+    this->AddOtherGlycositesToLinkageOverlapAtoms();
     return;
 }
 
@@ -371,11 +373,20 @@ void GlycoproteinBuilder::SetOtherGlycosites()
     return;
 }
 
-void GlycoproteinBuilder::UpdateOverlapAtomsInLinkages()
+void GlycoproteinBuilder::AddOtherGlycositesToLinkageOverlapAtoms()
 {
     for (auto& glycosite : this->GetGlycosites())
     {
         glycosite.AddOtherGlycositesToLinkageOverlapAtoms();
+    }
+    return;
+}
+
+void GlycoproteinBuilder::UpdateAllOverlapAtomsInGlycosites(unsigned int maxProteinResidues)
+{
+    for (auto& glycosite : this->GetGlycosites())
+    {
+        glycosite.UpdateOverlapAtomsInLinkages(maxProteinResidues);
     }
     return;
 }
