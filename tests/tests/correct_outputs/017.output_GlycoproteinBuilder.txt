@@ -1,4 +1,4 @@
-Input file is tests/inputs/017.GlycoproteinBuilderInput.txt
-Reading input file complete, on to construction
-Resolving overlaps
-Program got to end ok
+Test 017 Input file is tests/inputs/017.GlycoproteinBuilderInput.txt
+Test 017 Reading input file complete, on to construction
+Test 017 Resolving overlaps
+Test 017 Program got to end ok
