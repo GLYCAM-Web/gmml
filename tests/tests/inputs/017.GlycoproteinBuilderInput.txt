@@ -1,6 +1,6 @@
 Protein:tests/inputs/017.1eer_eop_Asn.pdb
 
-NumberOfOutputStructures:3
+NumberOfOutputStructures:2
 
 maxThreads:1
 
