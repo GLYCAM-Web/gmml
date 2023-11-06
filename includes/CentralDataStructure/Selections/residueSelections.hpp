@@ -15,5 +15,8 @@ namespace cdsSelections
     unsigned int findHighestResidueNumber(std::vector<Residue*> residues);
     Residue* FindNeighborResidueConnectedViaSpecificAtom(Residue* queryResidue, const std::string queryAtomName);
     void FindConnectedResidues(std::vector<Residue*>& visitedList, Residue* current);
+    std::vector<Residue*> selectNClosestResidues(std::vector<Residue*> inputResidues, Residue* query,
+                                                 unsigned int n = 1);
+    bool areNeighbors(Residue* a, Residue* b);
 } // namespace cdsSelections
 #endif

@@ -39,6 +39,19 @@ std::vector<RotatableDihedral> ResidueLinkage::GetRotatableDihedralsWithMultiple
     return returningDihedrals;
 }
 
+std::vector<RotatableDihedral>& ResidueLinkage::GetRotatableDihedralsRef()
+{
+    if (rotatableDihedrals_.empty())
+    {
+        std::stringstream ss;
+        ss << "Error: RotatableDihedrals in this linkage is empty: " << from_this_residue1_->getStringId() << "-"
+           << to_this_residue2_->getStringId() << std::endl;
+        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+        throw std::runtime_error(ss.str());
+    }
+    return rotatableDihedrals_;
+}
+
 std::vector<RotatableDihedral> ResidueLinkage::GetRotatableDihedrals() const
 {
     if (rotatableDihedrals_.empty())
@@ -114,14 +127,19 @@ std::string ResidueLinkage::GetName() const
     return this->DetermineLinkageNameFromResidueNames();
 }
 
-std::vector<cds::Residue*>& ResidueLinkage::GetMovingResidues()
+void ResidueLinkage::AddNonReducingOverlapResidues(std::vector<cds::Residue*> extraResidues)
 {
-    return movingResidues_;
+    nonReducingOverlapResidues_.insert(nonReducingOverlapResidues_.end(), extraResidues.begin(), extraResidues.end());
 }
 
-std::vector<cds::Residue*>& ResidueLinkage::GetFixedResidues()
+std::vector<cds::Residue*>& ResidueLinkage::GetNonReducingOverlapResidues()
 {
-    return fixedResidues_;
+    return nonReducingOverlapResidues_;
+}
+
+std::vector<cds::Residue*>& ResidueLinkage::GetReducingOverlapResidues()
+{
+    return reducingOverlapResidues_;
 }
 
 std::string ResidueLinkage::DetermineLinkageNameFromResidueNames() const
@@ -311,9 +329,6 @@ void ResidueLinkage::InitializeClass(cds::Residue* from_this_residue1, cds::Resi
 {
     // set local debug flag
     int local_debug = -1;
-    gmml::log(__LINE__, __FILE__, gmml::INF,
-              "Maybe Finding connection between " + from_this_residue1->getStringId() +
-                  " :: " + to_this_residue2->getStringId());
     this->SetResidues(from_this_residue1, to_this_residue2);
     this->SetIfReversedAtomsThatMove(reverseAtomsThatMove);
     this->SetConnectionAtoms(from_this_residue1_, to_this_residue2_);
@@ -366,7 +381,7 @@ void ResidueLinkage::InitializeClass(cds::Residue* from_this_residue1, cds::Resi
         this->AddMetadataToRotatableDihedrals(metadata);
     }
     this->SetIndex(this->GenerateIndex());
-    this->DetermineMovingResidues(); // speedup overlap calcs
+    this->DetermineResiduesForOverlapCheck(); // speedup overlap calcs
     return;
 }
 
@@ -660,24 +675,41 @@ void ResidueLinkage::SetConformerUsingMetadata(bool useRanges, int conformerNumb
 }
 
 unsigned long long ResidueLinkage::GenerateIndex()
-{
-    static unsigned long long s_ResidueLinkageIndex =
-        0; // static keyword means it is created only once and persists beyond scope of code block.
+{ // static keyword means it is created only once and persists beyond scope of code block.
+    static unsigned long long s_ResidueLinkageIndex = 0;
     return s_ResidueLinkageIndex++; // makes copy of s_AtomIndex, increments the real s_AtomIndex, then returns the
                                     // value in the copy
 }
 
-void ResidueLinkage::DetermineMovingResidues()
-{ // In keeping with giving residues as GlcNAc1-4Gal, and wanting the moving parts to be in the opposite direction
-    cds::Residue* movingResidue = to_this_residue2_;
-    cds::Residue* fixedResidue  = from_this_residue1_;
-    if (this->GetIfReversedAtomsThatMove())
-    { // Reverse what's moving and fixed from above;
-        movingResidue = from_this_residue1_;
-        fixedResidue  = to_this_residue2_;
+void ResidueLinkage::DetermineResiduesForOverlapCheck()
+{
+    reducingOverlapResidues_.clear();
+    reducingOverlapResidues_.push_back(from_this_residue1_);
+    for (auto& neighbor : from_this_residue1_->getNeighbors())
+    {
+        if (neighbor != to_this_residue2_)
+        {
+            cdsSelections::FindConnectedResidues(reducingOverlapResidues_, neighbor);
+        }
     }
-    movingResidues_.push_back(fixedResidue);
-    cdsSelections::FindConnectedResidues(movingResidues_, movingResidue);
-    fixedResidues_.push_back(movingResidue);
-    cdsSelections::FindConnectedResidues(fixedResidues_, fixedResidue);
+    nonReducingOverlapResidues_.clear();
+    nonReducingOverlapResidues_.push_back(to_this_residue2_);
+    for (auto& neighbor : to_this_residue2_->getNeighbors())
+    {
+        if (neighbor != from_this_residue1_)
+        {
+            cdsSelections::FindConnectedResidues(nonReducingOverlapResidues_, neighbor);
+        }
+    }
+    //    gmml::log(__LINE__, __FILE__, gmml::INF, "For this linkage: " + this->GetName() + "\noverlapResidues1: ");
+    //    for (auto& res : nonReducingOverlapResidues_)
+    //    {
+    //        gmml::log(__LINE__, __FILE__, gmml::INF, "    " + res->getStringId() + ",");
+    //    }
+    //    gmml::log(__LINE__, __FILE__, gmml::INF, "overlapResidues2: ");
+    //    for (auto& res : reducingOverlapResidues_)
+    //    {
+    //        gmml::log(__LINE__, __FILE__, gmml::INF, "    " + res->getStringId() + ",");
+    //    }
+    return;
 }

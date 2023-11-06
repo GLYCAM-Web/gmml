@@ -6,58 +6,55 @@ Uses GEMS/GMML to add and adapt 3D structures of N-glycans and O-glycans onto gl
 
 ### Notes
 Project is under development, contact olivercgrant "at" gmail.com with queries. 
-This code will replace the glycoprotein builder currently available on glycam.org/gp.
-Has been tested on linux, but should install on both Mac and Windows with appropriate C++ complilers.
+This code is intended to replace the glycoprotein builder currently available on glycam.org/gp. You can compile and run it locally.
+Has been tested on linux, but might install on both Mac and Windows.
 
 ### Prerequisites
 
-You'll need GMML. See here for installation instructions: http://glycam.org/docs/gems/download-and-install/.
+You'll need GMML: [Click here for installation instructions](https://github.com/GLYCAM-Web/gmml#readme)
 
 ### Installation of GlycoProteinBuilder
-export GEMSHOME=<Your Path To Gems > # eg: export GEMSHOME=/home/oliver/Programs/gems
-
-#### Makefile:
-Some commands defined in the Makefile are:
-* $ make
-* $ make all
-* $ make clean
-
-    So you can just type "make" to compile the program.
-    
-#### Comand line (skip the Makefile):
-g++ -std=c++17 -I $GEMSHOME/gmml/includes/ -I includes/ -L$GEMSHOME/gmml/bin/ -Wl,-rpath,$GEMSHOME/gmml/bin/ src/*.cpp -lgmml -o bin/gpBuilder
+    cd gmml/tests/
+    GMML_ROOT_DIR=$(git rev-parse --show-toplevel) # assumes you have cloned the gmml repo using git.
+    g++ -std=c++17 -I "${GMML_ROOT_DIR}" -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ "${GMML_ROOT_DIR}"/internalPrograms/GlycoproteinBuilder/main.cpp -lgmml -pthread -o gpBuilder
 
 ### Testing
 Once compiled, you can run:
-bash runTests.sh
-If it says "Test passed.", everything is ready to go.
+
+./gpBuilder tests/inputs/017.GlycoproteinBuilderInput.txt 
 
 ### Setup
-Edit or create an input.txt file and place in a folder called tests/. See tests/simple/input.txt for an example.
+Edit or create an input.txt file. See tests/inputs/017.GlycoproteinBuilderInput.txt for an example.
 
 You must provide:
 
     A protein 3D structure
-
     A Glycan 3D structure(s) or sequences in GLYCAM condensed nomenclature (just like the carb builder here: glycam.org/cb)
-
     An input.txt, which contains:
-
         protein file name
-
         the protein residue numbers you want to attach to (no automatic detection of sequons)
-
-        the glycan you want to attach. Either the name in a library of PDB files or the glycan sequence
-    
-        example here: https://github.com/gitoliver/GlycoProteinBuilder/blob/stable/tests/tough/input.txt
-
-## Extra information you can likely ignore
-### Bead based overlap calculation
-In order to speed up the overlap calculation, certain atoms in the glycan and protein are replaced with large spheres that encompass the neighbouring atoms. The overlap calculation only looks at the beads, and as there are much fewer of them, it will be faster. The downside is that it is not as accurate and may be unncessarily optimizing. However, as the beads will encompass all atoms in the protein/glycan, if the bead overlap reaches zero, the per atom overlap will be zero.
-Here is a figure showing the atoms being replaced by beads:
-![bead replacment](schematic/beads.png)
+        the glycan you want to attach in Glycam condensed sequence format.
 
 ## Algorithm
 This is regularly being tweaked. Right now it's a combination of random movements and "wiggling" (grid searching within the known ranges of the glycosidic bonds).
 
+## Development Notes 2023-10-25 (users can ignore everything below here)
+#### Current timings
+Updating the overlap residues considered by each linkage is costly. Need to figure out if it's worth doing it during the algo for big systems, or to just do all atoms at the end.
 
+    E.g FVIIItbg.pdb: 
+        Before this merge: 2hrs. 
+        With closest 20 protein residues and all atoms for the last wiggle only: 29 min. #This is what is implemented.
+        With closest 20 protein residues and update closest 20 residues for last wiggle only: 30min
+        with closest 20 protein residues and no update or no all atom for last wiggle: 16min. # faster, but I'm worried about overlaps existing that we don't see
+    The speedups are the same for putting out 30 epo structures. Updating which residues get considered needs to be faster, the only thing thats changing is the protein, but the 
+    current code is recalcs everything. If it was instead storing a ref to a vector, could just update closest N residues in that vector.
+
+#### Future directions
+Validation by comparing to NMR structures.
+
+Linkages: Do you need to search both directions when looking for overlap residues, or is it more efficient to extract from a vector of everything and put the remainder in the other direction vector?
+
+Would closest N protein residues to NLN work for each linkage in a glycosite, and can you just have a ref to them in the linkage? A vector of ptrs to the other glycosite residues and proteinWithinX vectors? Messy, but much faster?
+
+Considering only close / closest N glycosites needs to come back. Scaling issues will come from not doing this

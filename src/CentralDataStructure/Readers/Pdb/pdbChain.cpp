@@ -13,9 +13,9 @@ using pdb::PdbChain;
 ////////////////////////////////////////////////////////////
 PdbChain::PdbChain(std::stringstream& stream_block, const std::string& chainId) : cds::Molecule(chainId)
 {
-    gmml::log(__LINE__, __FILE__, gmml::INF,
-              "Constructing PdbChain from stream_block >>>>>>>>>:\n" + stream_block.str() +
-                  "\n<<<<<<<<<<<<<< end stream_block");
+    // gmml::log(__LINE__, __FILE__, gmml::INF,
+    //           "Constructing PdbChain from stream_block >>>>>>>>>:\n" + stream_block.str() +
+    //               "\n<<<<<<<<<<<<<< end stream_block");
     std::string line;
     while (getline(stream_block, line))
     {
@@ -28,14 +28,14 @@ PdbChain::PdbChain(std::stringstream& stream_block, const std::string& chainId) 
         }
         else
         {
-            gmml::log(__LINE__, __FILE__, gmml::INF,
+            gmml::log(__LINE__, __FILE__, gmml::WAR,
                       "In PdbChain Constructor with record that isn't cool: " + recordName);
             break;
         }
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Adding NTerminal and CTerminal tags if protein present");
+    // gmml::log(__LINE__, __FILE__, gmml::INF, "Adding NTerminal and CTerminal tags if protein present");
     this->tagTerminalResidues();
-    gmml::log(__LINE__, __FILE__, gmml::INF, "PdbChain Constructor Complete Captain");
+    // gmml::log(__LINE__, __FILE__, gmml::INF, "PdbChain Constructor Complete Captain");
     return;
 }
 
@@ -78,10 +78,10 @@ std::stringstream PdbChain::extractSingleResidueFromRecordSection(std::stringstr
         }
         residueId = ResidueId(line);
     }
-    pdbFileStream.seekg(
-        previousLinePosition); // Go back to previous line position. E.g. was reading HEADER and found TITLE.
-    gmml::log(__LINE__, __FILE__, gmml::INF,
-              "Single residue section is:\n" + singleResidueSection.str() + "\nEnd of single residue section.");
+    // Go back to previous line position. E.g. was reading HEADER and found TITLE:
+    pdbFileStream.seekg(previousLinePosition);
+    //    gmml::log(__LINE__, __FILE__, gmml::INF,
+    //              "Single residue section is:\n" + singleResidueSection.str() + "\nEnd of single residue section.");
     return singleResidueSection;
 }
 

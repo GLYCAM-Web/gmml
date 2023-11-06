@@ -259,10 +259,9 @@ void SequenceParser::RecurveParseAlt(size_t& i, const std::string sequence, Pars
 ParsedResidue* SequenceParser::SaveResidue(const size_t windowStart, const size_t windowEnd, const std::string sequence,
                                            ParsedResidue* parent)
 {
-    std::stringstream logss;
     std::string residueString = sequence.substr(windowStart, (windowEnd - windowStart));
-    logss << "At start of save: " << residueString << std::endl;
-    // Splice out anything within [ and ].
+    // gmml::log(__LINE__, __FILE__, gmml::INF, " Saving " + residueString + " with parent " + parent->GetName() );
+    //  Splice out anything within [ and ].
     if (residueString.find('[') != std::string::npos)
     {
         size_t branch_start   = residueString.find_first_of('[');
@@ -270,28 +269,25 @@ ParsedResidue* SequenceParser::SaveResidue(const size_t windowStart, const size_
         std::string firstPart = residueString.substr(0, branch_start);
         std::string lastPart  = residueString.substr(branch_finish);
         residueString         = firstPart + lastPart;
-        logss << firstPart << " + " << lastPart << std::endl;
     }
     if (residueString.find('-') != std::string::npos)
     {
-        logss << "Saving " << residueString << " with parent " << parent->GetName() << std::endl;
         this->addResidue(std::make_unique<ParsedResidue>(residueString, parent));
         ParsedResidue* newRes = static_cast<ParsedResidue*>(this->getResidues().back());
         if (this->DerivativesExist())
         {
             for (auto& derivative : this->ExtractDerivatives())
             {
-                logss << "Saving derivative: " << derivative << " with parent " << newRes->getName() << std::endl;
+                // gmml::log(__LINE__, __FILE__, gmml::INF, " Saving derivative " + derivative + " with parent " +
+                // newRes->GetName() );
                 this->addResidue(std::make_unique<ParsedResidue>(derivative, newRes));
             }
         }
-        gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
         return newRes;
     }
     else // A derivatve. The parent residue doesn't exist yet, so save it.
     {
-        logss << "Temporarily holding derivative: " << residueString << "\n";
-        gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+        // gmml::log(__LINE__, __FILE__, gmml::INF, "Temporarily holding derivative: " + residueString);
         this->SaveDerivative(residueString);
         return parent;
     }

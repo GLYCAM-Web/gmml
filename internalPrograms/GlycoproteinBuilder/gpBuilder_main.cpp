@@ -11,13 +11,13 @@ int main(int argc, char* argv[])
         std::exit(1);
     }
     std::string inputFile = argv[1];
-    std::cout << "Input file is " << inputFile << "\n";
+    std::cout << "Test 017 Input file is " << inputFile << "\n";
     glycoprotein::GlycoproteinBuilderInputs inputStruct = glycoprotein::readGPInputFile(inputFile);
-    std::cout << "Reading input file complete, on to construction\n" << std::flush;
+    std::cout << "Test 017 Reading input file complete, on to construction\n" << std::flush;
     GlycoproteinBuilder glycoproteinBuilder(inputStruct);
     if (glycoproteinBuilder.IsStatusOk())
     { // Poor pattern, need to throw up to and catch in gems.
-        std::cout << "Resolving overlaps" << std::endl;
+        std::cout << "Test 017 Resolving overlaps" << std::endl;
         glycoproteinBuilder.ResolveOverlaps(); // Default randomize value is true, and output isn't deterministic.
         glycoproteinBuilder.PrintDihedralAnglesAndOverlapOfGlycosites();
     }
@@ -26,6 +26,6 @@ int main(int argc, char* argv[])
         gmml::log(__LINE__, __FILE__, gmml::ERR, glycoproteinBuilder.GetStatusMessage());
         // gpbuilder should throw instead of this.
     }
-    std::cout << "Program got to end ok" << std::endl;
+    std::cout << "Test 017 Program got to end ok" << std::endl;
     return 0;
 }

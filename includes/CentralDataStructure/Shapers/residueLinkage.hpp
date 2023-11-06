@@ -28,6 +28,7 @@ namespace cds
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
         //////////////////////////////////////////////////////////
+        std::vector<RotatableDihedral>& GetRotatableDihedralsRef();
         std::vector<RotatableDihedral> GetRotatableDihedrals() const;
         std::vector<RotatableDihedral> GetRotatableDihedralsWithMultipleRotamers() const;
         unsigned long int GetNumberOfRotatableDihedrals() const;
@@ -62,8 +63,9 @@ namespace cds
 
         std::string GetName() const;
 
-        std::vector<cds::Residue*>& GetMovingResidues();
-        std::vector<cds::Residue*>& GetFixedResidues();
+        void AddNonReducingOverlapResidues(std::vector<cds::Residue*> extraResidues);
+        std::vector<cds::Residue*>& GetNonReducingOverlapResidues();
+        std::vector<cds::Residue*>& GetReducingOverlapResidues();
 
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
@@ -96,6 +98,8 @@ namespace cds
             index_ = index;
         }
 
+        // void AddResiduesForOverlapCheck(std::vector<cds::Residue*> extraResidues, bool reducingSide = true);
+        void DetermineResiduesForOverlapCheck();
         //////////////////////////////////////////////////////////
         //                       DISPLAY FUNCTION               //
         //////////////////////////////////////////////////////////
@@ -158,7 +162,6 @@ namespace cds
         void SetConformerUsingMetadata(bool useRanges = false, int conformerNumber = 0);
         unsigned long long GenerateIndex();
         std::string DetermineLinkageNameFromResidueNames() const;
-        void DetermineMovingResidues();
 
         inline void SetName(std::string name)
         {
@@ -177,9 +180,9 @@ namespace cds
         std::vector<cds::Atom*> extraAtomsThatMove_;
         bool isExtraAtoms_        = true;
         unsigned long long index_ = 0;
-        std::string name_         = "";             // e.g. "DGalpb1-6DGlcpNAc". It being empty works with GetName();
-        std::vector<cds::Residue*> movingResidues_; // overlap speedups
-        std::vector<cds::Residue*> fixedResidues_;  // overlap speedups
+        std::string name_         = ""; // e.g. "DGalpb1-6DGlcpNAc". It being empty works with GetName();
+        std::vector<cds::Residue*> nonReducingOverlapResidues_; // overlap speedups
+        std::vector<cds::Residue*> reducingOverlapResidues_;    // overlap speedups
     };
 } // namespace cds
 #endif // GMML_INCLUDES_GEOMETRYTOPOLOGY_RESIDUELINKAGES_RESIDUE_LINKAGE_HPP

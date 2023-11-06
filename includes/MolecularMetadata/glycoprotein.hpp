@@ -12,6 +12,8 @@ namespace glycoproteinMetadata
     std::vector<std::string> GetTagsForSequence(const std::string firstRes = "", const std::string midRes = "",
                                                 const std::string lastRes = "");
     std::string GetSequenceContextAndDetermineTags(cds::Residue* residue, std::vector<std::string>& tags);
+    std::string ConvertGlycosylatedResidueName(const std::string queryname);
+    std::string GetGlycositeConnectionAtomName(const std::string queryname);
 } // namespace glycoproteinMetadata
 
 #endif

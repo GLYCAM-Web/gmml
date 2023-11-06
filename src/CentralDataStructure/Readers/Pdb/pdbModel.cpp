@@ -50,7 +50,7 @@ PdbModel::PdbModel(std::stringstream& stream_block)
             this->addMolecule(std::make_unique<PdbChain>(singleChainSection, this->extractChainId(line)));
         }
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, "PdbModel Constructor Complete Captain");
+    // gmml::log(__LINE__, __FILE__, gmml::INF, "PdbModel Constructor Complete Captain");
     return;
 }
 
@@ -83,8 +83,8 @@ std::stringstream PdbModel::extractSingleChainFromRecordSection(std::stringstrea
     }
     stream_block.seekg(
         previousLinePosition); // Go back to previous line position. E.g. was reading HEADER and found TITLE.
-    gmml::log(__LINE__, __FILE__, gmml::INF,
-              "Single chain section is:\n" + singleChainSection.str() + "\nEnd of single chain section.");
+                               //    gmml::log(__LINE__, __FILE__, gmml::INF,
+    //              "Single chain section is:\n" + singleChainSection.str() + "\nEnd of single chain section.");
     return singleChainSection;
 }
 
