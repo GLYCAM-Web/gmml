@@ -34,7 +34,8 @@ namespace cds
                          Atom& rhs) // ToDo figure out how to put this in cpp file once everything is working.
         {
             using std::swap;
-            swap(lhs.coordinates_, rhs.coordinates_);
+            swap(lhs.currentCoordinate_, rhs.currentCoordinate_);
+            swap(lhs.allCoordinates_, rhs.allCoordinates_);
             swap(lhs.charge_, rhs.charge_);
             swap(lhs.atomType_, rhs.atomType_);
             swap(lhs.number_, rhs.number_);
@@ -80,7 +81,7 @@ namespace cds
         }
 
         void setCoordinate(const Coordinate& c);
-        void addCoordinate(const Coordinate& c);
+        Coordinate* addCoordinate(const Coordinate& c);
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
@@ -105,7 +106,8 @@ namespace cds
         //////////////////////////////////////////////////////////
         //                       ATTRIBUTES                     //
         //////////////////////////////////////////////////////////
-        std::vector<std::unique_ptr<Coordinate>> coordinates_; /*!< Position of the atom >*/
+        Coordinate* currentCoordinate_ = nullptr;
+        std::vector<std::unique_ptr<Coordinate>> allCoordinates_;
         double charge_        = constants::dNotSet;
         std::string atomType_ = " ";
         int number_           = constants::iNotSet;
