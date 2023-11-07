@@ -17,8 +17,8 @@ PdbFile::PdbFile()
     inFilePath_ = "GMML-Generated";
 }
 
-PdbFile::PdbFile(const std::string& pdbFilePath) : inFilePath_(pdbFilePath)
-{ // ToDo have a generic file opener in codeUtils
+PdbFile::PdbFile(const std::string& pdbFilePath, const InputType pdbFileType) : inFilePath_(pdbFilePath)
+{
     std::ifstream pdbFileStream(pdbFilePath);
     if (pdbFileStream.fail())
     {
@@ -26,11 +26,11 @@ PdbFile::PdbFile(const std::string& pdbFilePath) : inFilePath_(pdbFilePath)
         throw std::runtime_error("PdbFile constructor could not open this file: " + pdbFilePath);
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, "File opened: " + pdbFilePath + ". Ready to parse!");
-    this->ParseInFileStream(pdbFileStream);
+    this->ParseInFileStream(pdbFileStream, pdbFileType);
     gmml::log(__LINE__, __FILE__, gmml::INF, "Finished parsing " + pdbFilePath);
 }
 
-void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream)
+void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream, const InputType pdbFileType)
 {
     //    std::cout << "Parsing inputfile\n";
     for (std::string line; std::getline(pdbFileStream, line);)
@@ -39,12 +39,16 @@ void PdbFile::ParseInFileStream(std::ifstream& pdbFileStream)
         codeUtils::ExpandLine(line, pdb::iPdbLineLength);
         std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0, 6));
         std::vector<std::string> coordSectionCards {"MODEL", "ATOM", "ANISOU", "TER", "HETATM"};
+        if (pdbFileType == modelsAsCoordinates)
+        { // want to pass in the whole block to assembly so it can read the extra coords
+            coordSectionCards.push_back("ENDMDL");
+        }
         std::vector<std::string> databaseCards {"DBREF", "DBREF1", "DBREF2"};
         if (std::find(coordSectionCards.begin(), coordSectionCards.end(), recordName) != coordSectionCards.end())
         {
             std::stringstream recordSection =
                 this->ExtractHeterogenousRecordSection(pdbFileStream, line, coordSectionCards);
-            this->addAssembly(std::make_unique<PdbModel>(recordSection)); // addAssembly is inherited
+            this->addAssembly(std::make_unique<PdbModel>(recordSection));
         }
         else if (recordName == "HEADER")
         {

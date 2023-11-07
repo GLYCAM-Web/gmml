@@ -21,12 +21,27 @@ void cds::writeAssemblyToPdb(std::ostream& stream, const std::vector<cds::Molecu
     }
 }
 
-void cds::writeMoleculeToPdb(std::ostream& stream, const std::vector<cds::Residue*> residues)
+void cds::writeTrajectoryToPdb(std::ostream& stream, const std::vector<cds::Molecule*> molecules)
+{
+    unsigned int coordinateSets = molecules.at(0)->getAtoms().at(0)->getNumberOfCoordinateSets();
+    for (unsigned int modelCount = 1; modelCount <= coordinateSets; modelCount++)
+    {
+        stream << "MODEL " << std::right << std::setw(8) << modelCount << "\n";
+        for (auto& molecule : molecules)
+        {
+            cds::writeMoleculeToPdb(stream, molecule->getResidues(), (modelCount - 1));
+        }
+        stream << "ENDMDL\n";
+    }
+}
+
+void cds::writeMoleculeToPdb(std::ostream& stream, const std::vector<cds::Residue*> residues,
+                             unsigned int coordinateSetNumber)
 {
     auto it = residues.begin();
     while (it != residues.end())
     {
-        cds::writeResidueToPdb(stream, *it);
+        cds::writeResidueToPdb(stream, *it, "ATOM", coordinateSetNumber);
         if ((++it != residues.end()) && ((*it)->GetType() != cds::ResidueType::Protein))
         {
             stream << "TER\n";
@@ -40,10 +55,12 @@ void cds::writeMoleculeToPdb(std::ostream& stream, const std::vector<cds::Residu
     //    }
 }
 
-void cds::writeResidueToPdb(std::ostream& stream, const cds::Residue* residue, const std::string recordName)
+void cds::writeResidueToPdb(std::ostream& stream, const cds::Residue* residue, const std::string recordName,
+                            unsigned int coordinateSetNumber)
 {
     for (auto& atom : residue->getAtoms())
     {
+        atom->setCurrentCoordinate(coordinateSetNumber);
         cds::writeAtomToPdb(stream, atom, recordName, residue->getName(), residue->getNumber());
     }
 }

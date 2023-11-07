@@ -49,6 +49,12 @@ PdbModel::PdbModel(std::stringstream& stream_block)
                 this->extractSingleChainFromRecordSection(stream_block, line, this->extractChainId(line));
             this->addMolecule(std::make_unique<PdbChain>(singleChainSection, this->extractChainId(line)));
         }
+        else if (recordName == "ENDMDL")
+        { // Only happens when reading "modelsAsCoordinates", now read the rest of the entry as extra coords for
+          // MODEL 1.
+            gmml::log(__LINE__, __FILE__, gmml::INF, "PdbFile being read in as trajectory");
+            this->extractCoordinatesFromModel(stream_block, line);
+        }
     }
     // gmml::log(__LINE__, __FILE__, gmml::INF, "PdbModel Constructor Complete Captain");
     return;
@@ -86,6 +92,36 @@ std::stringstream PdbModel::extractSingleChainFromRecordSection(std::stringstrea
                                //    gmml::log(__LINE__, __FILE__, gmml::INF,
     //              "Single chain section is:\n" + singleChainSection.str() + "\nEnd of single chain section.");
     return singleChainSection;
+}
+
+void PdbModel::extractCoordinatesFromModel(std::stringstream& stream_block, std::string line)
+{
+    const int iPdbLineLength = 80; // repeat for now, fix later
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Section to extract coordinates from is\n" + stream_block.str());
+    std::vector<Atom*> myAtoms = this->getAtoms();
+    if (myAtoms.empty())
+    {
+        std::string message = "No atoms available when extracting coords from multiple models";
+        gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+        throw message;
+    }
+    std::vector<Atom*>::iterator it = myAtoms.begin();
+    while ((std::getline(stream_block, line)))
+    {
+        codeUtils::ExpandLine(line, iPdbLineLength);
+        std::string recordName = codeUtils::RemoveWhiteSpace(line.substr(0, 6));
+        if (recordName == "ATOM" || recordName == "HETATM")
+        {
+            Atom* atomPtr = *it;
+            atomPtr->addCoordinate(checkShiftsAndExtractCoordinate(line));
+            it++;
+        }
+        if (recordName == "ENDMDL")
+        { // reset to read next set of coords
+            it = myAtoms.begin();
+        }
+    }
+    return;
 }
 
 void PdbModel::addConectRecord(const cds::Atom* atom1, const cds::Atom* atom2)

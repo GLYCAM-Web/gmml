@@ -25,9 +25,7 @@ namespace pdb
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
         void ChangeResidueName(const std::string& selector, const std::string& newName);
-        std::string extractChainId(const std::string& line);
-        std::stringstream extractSingleChainFromRecordSection(std::stringstream& stream_block, std::string line,
-                                                              const std::string& initialChainID);
+
         // Preprocessing functions
         void preProcessCysResidues(pdb::PreprocessorInformation& ppInfo);
         void preProcessHisResidues(pdb::PreprocessorInformation& ppInfo, const pdb::PreprocessorOptions& inputOptions);
@@ -55,6 +53,10 @@ namespace pdb
             return conectRecords_;
         }
 
+        std::string extractChainId(const std::string& line);
+        std::stringstream extractSingleChainFromRecordSection(std::stringstream& stream_block, std::string line,
+                                                              const std::string& initialChainID);
+        void extractCoordinatesFromModel(std::stringstream& stream_block, std::string line);
         //////////////////////////////////////////////////////////
         //                       ATTRIBUTES                     //
         //////////////////////////////////////////////////////////

@@ -55,7 +55,8 @@ PdbAtom::PdbAtom(const std::string& line)
     {
         chainId_ = " ";
     }
-    int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));
+    int secondShift = pdb::checkSecondShiftFromResidueNumberOverrun(line, shift);
+    // int secondShift = codeUtils::GetSizeOfIntInString(line.substr(26 + shift));
     try
     {
         residueSequenceNumber_ = std::stoi(codeUtils::RemoveWhiteSpace(line.substr(22 + shift, 4 + secondShift)));

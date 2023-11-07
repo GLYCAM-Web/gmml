@@ -18,6 +18,12 @@
 namespace pdb
 {
     const int iPdbLineLength = 80;
+
+    enum InputType
+    {
+        modelsAsMolecules,
+        modelsAsCoordinates,
+    };
     class PdbModel;
 
     class PdbFile : public cds::Ensemble
@@ -27,7 +33,7 @@ namespace pdb
         //                       CONSTRUCTOR                    //
         //////////////////////////////////////////////////////////
         PdbFile();
-        PdbFile(const std::string& pdbFilePath);
+        PdbFile(const std::string& pdbFilePath, const InputType pdbFileType = modelsAsMolecules);
 
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
@@ -88,7 +94,7 @@ namespace pdb
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //
         //////////////////////////////////////////////////////////
-        void ParseInFileStream(std::ifstream& pdbFileStream);
+        void ParseInFileStream(std::ifstream& pdbFileStream, const InputType pdbFileType = modelsAsMolecules);
         std::stringstream ExtractHeterogenousRecordSection(std::ifstream& pdbFileStream, std::string& line,
                                                            const std::vector<std::string> recordNames);
         std::stringstream ExtractHomogenousRecordSection(std::ifstream& pdbFileStream, std::string& line,
