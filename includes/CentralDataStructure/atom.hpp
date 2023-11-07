@@ -46,6 +46,7 @@ namespace cds
         //////////////////////////////////////////////////////////
         Coordinate* getCoordinate();
         Coordinate* getCoordinate() const;
+        unsigned int getNumberOfCoordinateSets() const;
 
         inline double getCharge() const
         {
@@ -81,6 +82,7 @@ namespace cds
         }
 
         void setCoordinate(const Coordinate& c);
+        void setCurrentCoordinate(unsigned int coordinateIndex = 0);
         Coordinate* addCoordinate(const Coordinate& c);
         //////////////////////////////////////////////////////////
         //                       FUNCTIONS                      //

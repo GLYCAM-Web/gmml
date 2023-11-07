@@ -60,12 +60,30 @@ Coordinate* Atom::getCoordinate() const
     return currentCoordinate_;
 }
 
+unsigned int Atom::getNumberOfCoordinateSets() const
+{
+    return allCoordinates_.size();
+}
+
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
 void Atom::setCoordinate(const Coordinate& newCoord)
 {
     currentCoordinate_ = this->addCoordinate(newCoord);
+}
+
+void Atom::setCurrentCoordinate(unsigned int coordinateIndex)
+{
+    if (allCoordinates_.size() <= coordinateIndex)
+    {
+        std::stringstream ss;
+        ss << "Error: requested coordinateIndex: " << coordinateIndex
+           << " that doesn't exist in Atom class as allCoordinates_ size is " << allCoordinates_.size();
+        gmml::log(__LINE__, __FILE__, gmml::ERR, ss.str());
+        throw std::runtime_error(ss.str());
+    }
+    currentCoordinate_ = allCoordinates_.at(coordinateIndex).get();
 }
 
 Coordinate* Atom::addCoordinate(const Coordinate& newCoord)
