@@ -18,5 +18,6 @@ namespace cds
                                                      double distance_Angstrom);
     Coordinate subtractCoordinates(const Coordinate& minuaend, const Coordinate& subtrahend);
     double CalculateMaxDistanceBetweenCoordinates(std::vector<Coordinate*> coords);
+    bool CheckIfOtherCoordinateIsWithinDistance(const Coordinate* a, const Coordinate* b, const double distance);
 } // namespace cds
 #endif /* INCLUDES_CENTRALDATASTRUCTURE_MEASUREMENTS_MEASUREMENTS_HPP_ */

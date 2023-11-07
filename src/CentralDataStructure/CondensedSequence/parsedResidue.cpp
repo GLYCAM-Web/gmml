@@ -136,10 +136,7 @@ std::string ParsedResidue::GetLinkageName(const bool withLabels) const
 
 void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, ResidueType specifiedType)
 {
-
-    std::stringstream logss;
-    logss << "PARSING RESIDUE: " << residueString << std::endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, logss.str());
+    // gmml::log(__LINE__, __FILE__, gmml::INF, "PARSING RESIDUE: " + residueString);
     // Set defaults:
     this->SetIsomer("");
     this->SetResidueName("");
@@ -233,7 +230,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         gmml::log(__LINE__, __FILE__, gmml::ERR, message);
         throw std::runtime_error(message);
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, this->PrintToString());
+    // gmml::log(__LINE__, __FILE__, gmml::INF, this->PrintToString());
 }
 
 std::string ParsedResidue::PrintToString() const

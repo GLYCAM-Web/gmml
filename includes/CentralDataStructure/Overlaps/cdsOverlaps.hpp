@@ -3,7 +3,6 @@
 
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/constants.hpp"
-#include "includes/CentralDataStructure/coordinate.hpp"
 #include "includes/CentralDataStructure/atom.hpp"
 #include "includes/CentralDataStructure/residue.hpp"
 
@@ -14,10 +13,6 @@
 namespace cds
 {
     using cds::Atom;
-    using cds::Coordinate;
-    // ToDo this should be in Coordinate.
-    bool CheckIfOtherCoordinateIsWithinDistance(const Coordinate* a, const Coordinate* b, const double distance);
-    bool CheckIfOtherCoordinateIsWithinDistanceA(const Coordinate* a, const Coordinate* b, const double distance);
     double CalculateAtomicOverlaps(Atom* atomA, Atom* atomB, double radiusA = 0.0, double radiusB = 0.0);
     double CalculateAtomicOverlaps(std::vector<Atom*> atomsA, std::vector<Atom*> atomsB, bool print = false);
     double CalculateAtomicOverlapsBetweenNonBondedAtoms(std::vector<Atom*>& atomsA, std::vector<Atom*>& atomsB);

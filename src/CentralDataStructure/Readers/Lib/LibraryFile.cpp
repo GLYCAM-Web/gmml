@@ -15,9 +15,9 @@ namespace lib
             gmml::log(__LINE__, __FILE__, gmml::ERR, "Could not open this file: " + filePath);
             throw std::runtime_error("PdbFile constructor could not open this file: " + filePath);
         }
-        gmml::log(__LINE__, __FILE__, gmml::INF, "File opened: " + filePath + ". Ready to parse!");
+        // gmml::log(__LINE__, __FILE__, gmml::INF, "File opened: " + filePath + ". Ready to parse!");
         this->ParseInFileStream(fileStream);
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Finished parsing " + filePath);
+        // gmml::log(__LINE__, __FILE__, gmml::INF, "Finished parsing " + filePath);
     }
 
     // Private

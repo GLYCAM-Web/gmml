@@ -70,6 +70,8 @@ namespace cds
                                         std::vector<cds::Residue*>& overlapResidueSet2, const int& angleIncrement);
         void WiggleUsingAllRotamers(std::vector<cds::Atom*>& overlapAtomSet1, std::vector<cds::Atom*>& overlapAtomSet2,
                                     const int& angleIncrement);
+        void WiggleUsingAllRotamers(std::vector<cds::Residue*>& overlapAtomSet1,
+                                    std::vector<cds::Residue*>& overlapAtomSet2, const int& angleIncrement);
         bool IsThereHydrogenForPsiAngle(); // ToDo which of these functions are only public for ResidueLinkage? How
                                            // about friend function huh?
         std::unique_ptr<cds::Atom> CreateHydrogenAtomForPsiAngle();
@@ -143,15 +145,17 @@ namespace cds
             return currentMetadata_;
         }
 
-        double WiggleWithinRanges(std::vector<cds::Atom*>& overlapAtomSet1, std::vector<cds::Atom*>& overlapAtomSet2,
-                                  const int& angleIncrement, const double& lowerBound, const double& upperBound);
-        double WiggleWithinRangesDistanceCheck(std::vector<cds::Atom*>& overlapAtomSet1,
-                                               std::vector<cds::Atom*>& overlapAtomSet2, const int& angleIncrement,
-                                               const double& lowerBound, const double& upperBound);
-        double WiggleWithinRangesDistanceCheck(std::vector<cds::Residue*>& overlapResidueSet1,
-                                               std::vector<cds::Residue*>& overlapResidueSet2,
-                                               const int& angleIncrement, const double& lowerBound,
-                                               const double& upperBound);
+        // double WiggleWithinRanges(std::vector<cds::Atom*>& overlapAtomSet1, std::vector<cds::Atom*>& overlapAtomSet2,
+        //                                  const int& angleIncrement, const double& lowerBound, const double&
+        //                                  upperBound);
+        unsigned int WiggleWithinRangesDistanceCheck(std::vector<cds::Atom*>& overlapAtomSet1,
+                                                     std::vector<cds::Atom*>& overlapAtomSet2,
+                                                     const int& angleIncrement, const double& lowerBound,
+                                                     const double& upperBound);
+        unsigned int WiggleWithinRangesDistanceCheck(std::vector<cds::Residue*>& overlapResidueSet1,
+                                                     std::vector<cds::Residue*>& overlapResidueSet2,
+                                                     const int& angleIncrement, const double& lowerBound,
+                                                     const double& upperBound);
 
         inline std::vector<cds::Coordinate*>& GetCoordinatesThatMove()
         {

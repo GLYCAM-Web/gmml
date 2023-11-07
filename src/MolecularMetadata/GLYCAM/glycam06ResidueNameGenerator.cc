@@ -29,7 +29,7 @@ namespace gmml
                 std::string inputs = "\nInputs:\nlinkages: " + linkages + "\nisomer: " + isomer +
                                      "\ninputResName: " + inputResName + "\nringType: " + ringType +
                                      "\nresidueModifier: " + residueModifier + "\nconfiguration: " + configuration;
-                gmml::log(__LINE__, __FILE__, gmml::INF, inputs);
+                // gmml::log(__LINE__, __FILE__, gmml::INF, inputs);
 
                 std::string linkCode = ""; // Can be empty for e.g. ROH
                 if (!linkages.empty())
@@ -101,8 +101,8 @@ namespace gmml
                     residueCode.at(0) = std::tolower(residueCode.at(0));
                 }
                 // ConfigurationCode may be empty.
-                gmml::log(__LINE__, __FILE__, gmml::INF,
-                          ("Returning: " + linkCode + residueCode + configurationCode + "\n"));
+                // gmml::log(__LINE__, __FILE__, gmml::INF,
+                //          ("Returning: " + linkCode + residueCode + configurationCode + "\n"));
                 return (linkCode + residueCode + configurationCode);
             }
         } // namespace GLYCAM

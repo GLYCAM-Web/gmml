@@ -1,5 +1,6 @@
 #include "includes/MolecularMetadata/proteinBonding.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CodeUtils/strings.hpp"
 #include <unordered_map>
 #include <stdexcept>
 
@@ -30,14 +31,14 @@ const std::string biology::equivalentResidueNameLookup(const std::string queryRe
         {"GLH", "GLU"},
         {"LYN", "LYS"},
     };
-    if (proteinNameMap.find(queryResidueName) == proteinNameMap.end())
+    std::string convertedName = codeUtils::FindStringInStringMap(queryResidueName, proteinNameMap);
+    if (convertedName == "")
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Found nothing in weirdo lookup map for " + queryResidueName);
+        // gmml::log(__LINE__, __FILE__, gmml::INF, "Found nothing in weirdo lookup map for " + queryResidueName);
         return queryResidueName;
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF,
-              "Found a conversion for " + queryResidueName + " : " + proteinNameMap.at(queryResidueName));
-    return proteinNameMap.at(queryResidueName);
+    // gmml::log(__LINE__, __FILE__, gmml::INF, "Found a conversion for " + queryResidueName + " : " + convertedName);
+    return convertedName;
 }
 
 const std::vector<std::pair<std::string, std::string>>& biology::getSidechainBonding(std::string queryResidueName)
@@ -105,6 +106,6 @@ const std::vector<std::pair<std::string, std::string>>& biology::getSidechainBon
                                  "entry in this table. Git gud son. This was the problem residue: " +
                                  queryResidueName);
     }
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Found sidechain bonding info for " + queryResidueName);
+    // gmml::log(__LINE__, __FILE__, gmml::INF, "Found sidechain bonding info for " + queryResidueName);
     return (sidechainBonding.at(queryResidueName));
 }

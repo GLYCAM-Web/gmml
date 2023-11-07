@@ -473,7 +473,7 @@ void PrepResidue::DeleteDummyAtoms()
 {
     for (auto dummyAtom : codeUtils::getElementsWithNames(this->getAtoms(), {"DUMM"}))
     {
-        gmml::log(__LINE__, __FILE__, gmml::INF, "Deleting: " + dummyAtom->getName());
+        // gmml::log(__LINE__, __FILE__, gmml::INF, "Deleting: " + dummyAtom->getName());
         this->deleteAtom(dummyAtom);
     }
     return;

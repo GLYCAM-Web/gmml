@@ -10,5 +10,7 @@ namespace cds
     void bondAtomsByDistanceSerial(std::vector<cds::Atom*> atoms);
     void bondAtomsAndResiduesByDistance(cds::Residue* residueA, cds::Residue* residueB);
     void bondAtomsAndResiduesByDistance(std::vector<cds::Residue*> residues);
+    void distanceBondIntra(std::vector<cds::Residue*> residues);
+    void distanceBondInter(std::vector<cds::Residue*> residues);
 } // namespace cds
 #endif /* INCLUDES_CENTRALDATASTRUCTURE_CDSFUNCTIONS_CDSFUNCTIONS_HPP_ */

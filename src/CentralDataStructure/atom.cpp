@@ -13,7 +13,7 @@ using cds::Atom;
 //////////////////////////////////////////////////////////
 Atom::Atom(const std::string name, const Coordinate& coord)
 {
-    this->addCoordinate(coord);
+    this->setCoordinate(coord);
     this->setName(name);
     this->setNumber(1); // Seems like a fine default?
 }
@@ -21,83 +21,57 @@ Atom::Atom(const std::string name, const Coordinate& coord)
 // Move Ctor
 Atom::Atom(Atom&& other) noexcept : glygraph::Node<cds::Atom>(other)
 {
-    coordinates_ = std::move(other.coordinates_);
-    charge_      = std::move(other.charge_);
-    atomType_    = std::move(other.atomType_);
-    number_      = std::move(other.number_);
+    currentCoordinate_ = std::move(other.currentCoordinate_);
+    allCoordinates_    = std::move(other.allCoordinates_);
+    charge_            = std::move(other.charge_);
+    atomType_          = std::move(other.atomType_);
+    number_            = std::move(other.number_);
 }
 
 // Copy Ctor
 Atom::Atom(const Atom& other)
-    : glygraph::Node<cds::Atom>(other), charge_(other.charge_), atomType_(other.atomType_), number_(other.number_)
+    : glygraph::Node<cds::Atom>(other), charge_(other.charge_), atomType_(other.atomType_), number_(other.number_),
+      currentCoordinate_(other.currentCoordinate_)
 {
-    for (auto& coord : other.coordinates_)
+    for (auto& coord : other.allCoordinates_)
     {
-        coordinates_.push_back(std::make_unique<Coordinate>((*coord.get())));
+        allCoordinates_.push_back(std::make_unique<Coordinate>((*coord.get())));
     }
-    // std::cout << "Atom ctor triggered\n";
 }
 
 // Move and Copy assignment operator
 Atom& Atom::operator=(Atom other)
 {
-    glygraph::Node<cds::Atom>::operator=(other); // ToDo fuck.
+    glygraph::Node<cds::Atom>::operator=(other);
     swap(*this, other);
-    // std::cout << "MoveOrCopy operator triggered\n";
     return *this;
 }
 
-// This copy constructor causes const issues in Edge<T>
-// Atom::Atom(Atom* refAtom) : Abstract::absAtom(refAtom->getCoordinate()), Node(*refAtom)
-//{
-//    this->setName(refAtom->getName());
-//    this->setType(refAtom->getType());
-//    this->setCharge(refAtom->getCharge());
-//    this->setNumber(refAtom->getNumber());
-//}
 //////////////////////////////////////////////////////////
 //                    ACCESSOR                          //
 //////////////////////////////////////////////////////////
-// ToDo why is there two? const ref is better?
 Coordinate* Atom::getCoordinate()
 {
-    if (coordinates_.empty())
-    {
-        return nullptr;
-    }
-    return coordinates_.front().get();
+    return currentCoordinate_;
 }
 
 Coordinate* Atom::getCoordinate() const
 {
-    if (coordinates_.empty())
-    {
-        return nullptr;
-    }
-    return coordinates_.front().get();
+    return currentCoordinate_;
 }
 
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
 void Atom::setCoordinate(const Coordinate& newCoord)
-{ // Dealing with one coord, so want it to be the coord returned when someone calls getCoordiante.
-    if (coordinates_.empty())
-    {
-        this->addCoordinate(newCoord);
-    }
-    else
-    {
-        Coordinate* firstCoord = coordinates_.front().get();
-        *firstCoord            = newCoord; // Should copy the x,y,z from newCoord.
-    }
-    return;
+{
+    currentCoordinate_ = this->addCoordinate(newCoord);
 }
 
-void Atom::addCoordinate(const Coordinate& newCoord)
+Coordinate* Atom::addCoordinate(const Coordinate& newCoord)
 {
-    coordinates_.push_back(std::make_unique<Coordinate>(newCoord));
-    return;
+    allCoordinates_.push_back(std::make_unique<Coordinate>(newCoord));
+    return allCoordinates_.back().get();
 }
 
 //////////////////////////////////////////////////////////
