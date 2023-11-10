@@ -15,18 +15,6 @@
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyatom.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologybond.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyangle.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
-#include "../../../includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
@@ -69,6 +57,8 @@
 #include "../../../includes/MolecularMetadata/GLYCAM/bondlengthbytypepair.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
+#include "includes/GeometryTopology/plane.hpp"
+
 // #include "includes/CodeUtils/logging.hpp"
 
 #include <unistd.h>

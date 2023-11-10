@@ -31,8 +31,6 @@
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
-#include "../../../includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
-#include "../../../includes/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/inputfile.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbatomcard.hpp"
 #include "../../../includes/InputSet/PdbFileSpace/pdbatomsection.hpp"
@@ -56,18 +54,6 @@
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodel.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelcard.hpp"
 #include "../../../includes/InputSet/PdbqtFileSpace/pdbqtmodelresidueset.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyangle.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyatom.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologybond.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
 #include "../../../includes/MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
 #include "../../../includes/MolecularModeling/assembly.hpp"
 #include "../../../includes/MolecularModeling/atom.hpp"
@@ -2919,101 +2905,6 @@ void Assembly::BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile* pdbqt_file,
 }
 
 /** ***************************************************************************
- *          Build from AMBER Prmtop files
- * ************************************************************************* **/
-
-void Assembly::BuildAssemblyFromTopologyFile(std::string topology_file_path, std::string parameter_file)
-{
-    //    std::cout << "Building assembly from an AMBER parameter-topology file ..." << std::endl;
-    //    std::cout << "Reading AMBER parameter-topology file into TopologyFileSpace::TopologyFile structure." <<
-    //    std::endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF,
-              "Reading AMBER parameter-topology file into TopologyFileSpace::TopologyFile structure.");
-    TopologyFileSpace::TopologyFile topology_file;
-    try
-    {
-        topology_file = TopologyFileSpace::TopologyFile(topology_file_path);
-    }
-    catch (TopologyFileSpace::TopologyFileProcessingException& ex)
-    {
-        //        std::cout << "Generating TopologyFileSpace::TopologyFile structure from " << topology_file_path <<
-        //        "failed." << std::endl;
-    }
-    this->BuildAssemblyFromTopologyFile(&topology_file, parameter_file);
-}
-
-void Assembly::BuildAssemblyFromTopologyFile(TopologyFileSpace::TopologyFile* topology_file, std::string parameter_file)
-{
-    //    std::cout << "Building assembly from topology file ..." << std::endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from topology file ...");
-    this->ClearAssembly();
-    ParameterFileSpace::ParameterFile* parameter                 = NULL;
-    ParameterFileSpace::ParameterFile::AtomTypeMap atom_type_map = ParameterFileSpace::ParameterFile::AtomTypeMap();
-    if (parameter_file.compare("") != 0)
-    {
-        parameter     = new ParameterFileSpace::ParameterFile(parameter_file);
-        atom_type_map = parameter->GetAtomTypes();
-    }
-    name_             = topology_file->GetTitle();
-    sequence_number_  = 1;
-    int serial_number = 0;
-    TopologyFileSpace::TopologyAssembly::TopologyResidueVector topology_residues =
-        topology_file->GetAssembly()->GetResidues();
-    for (TopologyFileSpace::TopologyAssembly::TopologyResidueVector::iterator it = topology_residues.begin();
-         it != topology_residues.end(); it++)
-    {
-        Residue* assembly_residue = new Residue();
-        assembly_residue->SetAssembly(this);
-        TopologyFileSpace::TopologyResidue* topology_residue = (*it);
-        std::string residue_name                             = topology_residue->GetResidueName();
-        assembly_residue->SetName(residue_name);
-        std::stringstream id;
-        id << residue_name << "_" << gmml::BLANK_SPACE << "_" << topology_residue->GetIndex() << "_"
-           << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << id_;
-        assembly_residue->SetId(id.str());
-
-        TopologyFileSpace::TopologyResidue::TopologyAtomVector topology_atoms = topology_residue->GetAtoms();
-
-        for (TopologyFileSpace::TopologyResidue::TopologyAtomVector::iterator it1 = topology_atoms.begin();
-             it1 != topology_atoms.end(); it1++)
-        {
-            serial_number++;
-            Atom* assembly_atom   = new Atom();
-            std::string atom_name = (*it1)->GetAtomName();
-            assembly_atom->SetName(atom_name);
-            std::stringstream atom_id;
-            atom_id << atom_name << "_" << serial_number << "_" << id.str();
-            assembly_atom->SetId(atom_id.str());
-            TopologyFileSpace::TopologyAtom* topology_atom = (*it1);
-            assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge() / gmml::CHARGE_DIVIDER);
-            assembly_atom->MolecularDynamicAtom::SetMass(topology_atom->GetAtomMass());
-            assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
-            if (parameter != NULL)
-            {
-                if (atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
-                {
-                    ParameterFileSpace::ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
-                    assembly_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
-                }
-                else
-                {
-                    assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
-                }
-            }
-            else
-            {
-                assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
-            }
-            assembly_atom->SetResidue(assembly_residue);
-            assembly_atom->SetName(topology_atom->GetAtomName());
-
-            assembly_residue->AddAtom(assembly_atom);
-        }
-        this->AddResidue(assembly_residue);
-    }
-}
-
-/** ***************************************************************************
  *          Build from AMBER Lib/OFF files
  * ************************************************************************* **/
 
@@ -3171,122 +3062,6 @@ void Assembly::BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile* libra
         residues_.push_back(assembly_residue);
     }
     name_ = ss.str();
-}
-
-/** ***************************************************************************
- *          Build from AMBER Prmtop & Inpcrd files
- * ************************************************************************* **/
-
-void Assembly::BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path,
-                                                       std::string parameter_file)
-{
-    //    std::cout << "Building assembly from AMBER parameter-topology and unknown-style coordinate files ..." <<
-    //    std::endl; std::cout << "Reading AMBER parameter-topology and unknown-style coordinate files into their file
-    //    structure." << std::endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF,
-              "Reading AMBER parameter-topology and unknown-style coordinate files into their file structure.");
-    TopologyFileSpace::TopologyFile topology_file;
-    CoordinateFileSpace::CoordinateFile coordinate_file;
-    try
-    {
-        topology_file = TopologyFileSpace::TopologyFile(topology_file_path);
-    }
-    catch (TopologyFileSpace::TopologyFileProcessingException& ex)
-    {
-        //        std::cout << "Generating TopologyFileSpace::TopologyFile structure from " << topology_file_path <<
-        //        "failed." << std::endl;
-    }
-    try
-    {
-        coordinate_file = CoordinateFileSpace::CoordinateFile(coordinate_file_path);
-    }
-    catch (CoordinateFileSpace::CoordinateFileProcessingException& ex)
-    {
-        //        std::cout << "Generating CoordinateFileSpace::CoordinateFile structure from " << coordinate_file_path
-        //        << "failed." << std::endl;
-    }
-    this->BuildAssemblyFromTopologyCoordinateFile(&topology_file, &coordinate_file, parameter_file);
-}
-
-void Assembly::BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::TopologyFile* topology_file,
-                                                       CoordinateFileSpace::CoordinateFile* coordinate_file,
-                                                       std::string parameter_file)
-{
-    //    std::cout << "Building assembly from topology and coordinate files ..." << std::endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Building assembly from topology and coordinate files ...");
-    this->ClearAssembly();
-    ParameterFileSpace::ParameterFile* parameter                 = NULL;
-    ParameterFileSpace::ParameterFile::AtomTypeMap atom_type_map = ParameterFileSpace::ParameterFile::AtomTypeMap();
-    if (parameter_file.compare("") != 0)
-    {
-        parameter     = new ParameterFileSpace::ParameterFile(parameter_file);
-        atom_type_map = parameter->GetAtomTypes();
-    }
-
-    name_             = topology_file->GetTitle();
-    sequence_number_  = 1;
-    int serial_number = 0;
-    TopologyFileSpace::TopologyAssembly::TopologyResidueVector topology_residues =
-        topology_file->GetAssembly()->GetResidues();
-    for (TopologyFileSpace::TopologyAssembly::TopologyResidueVector::iterator it = topology_residues.begin();
-         it != topology_residues.end(); it++)
-    {
-        Residue* assembly_residue = new Residue();
-        assembly_residue->SetAssembly(this);
-        TopologyFileSpace::TopologyResidue* topology_residue = (*it);
-        std::string residue_name                             = topology_residue->GetResidueName();
-        assembly_residue->SetName(residue_name);
-        std::stringstream id;
-        id << residue_name << "_" << gmml::BLANK_SPACE << "_" << topology_residue->GetIndex() << "_"
-           << gmml::BLANK_SPACE << "_" << gmml::BLANK_SPACE << "_" << id_;
-        assembly_residue->SetId(id.str());
-
-        TopologyFileSpace::TopologyResidue::TopologyAtomVector topology_atoms = topology_residue->GetAtoms();
-
-        for (TopologyFileSpace::TopologyResidue::TopologyAtomVector::iterator it1 = topology_atoms.begin();
-             it1 != topology_atoms.end(); it1++)
-        {
-            serial_number++;
-            Atom* assembly_atom   = new Atom();
-            std::string atom_name = (*it1)->GetAtomName();
-            assembly_atom->SetName(atom_name);
-            std::stringstream atom_id;
-            atom_id << atom_name << "_" << serial_number << "_" << id.str();
-            assembly_atom->SetId(atom_id.str());
-            TopologyFileSpace::TopologyAtom* topology_atom = (*it1);
-
-            assembly_atom->MolecularDynamicAtom::SetCharge(topology_atom->GetAtomCharge() / gmml::CHARGE_DIVIDER);
-            assembly_atom->MolecularDynamicAtom::SetAtomType(topology_atom->GetType());
-            assembly_atom->MolecularDynamicAtom::SetMass(topology_atom->GetAtomMass());
-            if (parameter != NULL)
-            {
-                if (atom_type_map.find(assembly_atom->GetAtomType()) != atom_type_map.end())
-                {
-                    ParameterFileSpace::ParameterFileAtom* parameter_atom = atom_type_map[assembly_atom->GetAtomType()];
-                    assembly_atom->MolecularDynamicAtom::SetRadius(parameter_atom->GetRadius());
-                }
-                else
-                {
-                    assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
-                }
-            }
-            else
-            {
-                assembly_atom->MolecularDynamicAtom::SetRadius(gmml::dNotSet);
-            }
-
-            int topology_atom_index = topology_atom->GetIndex();
-
-            assembly_atom->SetResidue(assembly_residue);
-            assembly_atom->SetName(topology_atom->GetAtomName());
-
-            GeometryTopology::CoordinateVector coord_file_coordinates = coordinate_file->GetCoordinates();
-            // std::vector<GeometryTopology::Coordinate*> coord_file_coordinates = coordinate_file->GetCoordinates();
-            assembly_atom->AddCoordinate(coord_file_coordinates.at(topology_atom_index - 1));
-            assembly_residue->AddAtom(assembly_atom);
-        }
-        residues_.push_back(assembly_residue);
-    }
 }
 
 /** ***************************************************************************
@@ -3476,4 +3251,223 @@ void Assembly::BuildAssemblyFromPrepFile(PrepFileSpace::PrepFile* prep_file, std
         residues_.push_back(assembly_residue);
     }
     name_ = ss.str();
+}
+
+std::vector<std::vector<std::string>>
+Assembly::CreateAllAtomTypePermutationsforImproperDihedralType(std::string neighbor1_type, std::string neighbor2_type,
+                                                               std::string neighbor3_type, std::string atom_type)
+{
+    std::vector<std::vector<std::string>> all_permutations = std::vector<std::vector<std::string>>();
+    std::vector<std::string> order1                        = std::vector<std::string>();
+    std::vector<std::string> order2                        = std::vector<std::string>();
+    std::vector<std::string> order3                        = std::vector<std::string>();
+    std::vector<std::string> reverse_order1                = std::vector<std::string>();
+    std::vector<std::string> reverse_order2                = std::vector<std::string>();
+    std::vector<std::string> reverse_order3                = std::vector<std::string>();
+
+    order1.push_back(neighbor1_type);
+    order1.push_back(neighbor2_type);
+    order1.push_back(atom_type);
+    order1.push_back(neighbor3_type);
+    reverse_order1.push_back(neighbor3_type);
+    reverse_order1.push_back(atom_type);
+    reverse_order1.push_back(neighbor2_type);
+    reverse_order1.push_back(neighbor1_type);
+
+    order2.push_back(neighbor1_type);
+    order2.push_back(atom_type);
+    order2.push_back(neighbor3_type);
+    order2.push_back(neighbor2_type);
+    reverse_order2.push_back(neighbor2_type);
+    reverse_order2.push_back(neighbor3_type);
+    reverse_order2.push_back(atom_type);
+    reverse_order2.push_back(neighbor1_type);
+
+    order3.push_back(neighbor1_type);
+    order3.push_back(neighbor3_type);
+    order3.push_back(atom_type);
+    order3.push_back(neighbor2_type);
+    reverse_order3.push_back(neighbor2_type);
+    reverse_order3.push_back(atom_type);
+    reverse_order3.push_back(neighbor3_type);
+    reverse_order3.push_back(neighbor1_type);
+
+    all_permutations.push_back(order1);
+    all_permutations.push_back(order2);
+    all_permutations.push_back(order3);
+    all_permutations.push_back(reverse_order1);
+    all_permutations.push_back(reverse_order2);
+    all_permutations.push_back(reverse_order3);
+
+    /// Permutations w/ one X
+    for (int i = 0; i < 4; i++)
+    {
+        order1.clear();
+        order2.clear();
+        order3.clear();
+        reverse_order1.clear();
+        reverse_order2.clear();
+        reverse_order3.clear();
+
+        order1.push_back(neighbor1_type);
+        order1.push_back(neighbor2_type);
+        order1.push_back(atom_type);
+        order1.push_back(neighbor3_type);
+        order1.at(i) = "X";
+        reverse_order1.push_back(neighbor3_type);
+        reverse_order1.push_back(atom_type);
+        reverse_order1.push_back(neighbor2_type);
+        reverse_order1.push_back(neighbor1_type);
+        reverse_order1.at(i) = "X";
+        order2.push_back(neighbor1_type);
+        order2.push_back(atom_type);
+        order2.push_back(neighbor3_type);
+        order2.push_back(neighbor2_type);
+        order2.at(i) = "X";
+        reverse_order2.push_back(neighbor2_type);
+        reverse_order2.push_back(neighbor3_type);
+        reverse_order2.push_back(atom_type);
+        reverse_order2.push_back(neighbor1_type);
+        reverse_order2.at(i) = "X";
+        order3.push_back(neighbor1_type);
+        order3.push_back(neighbor3_type);
+        order3.push_back(atom_type);
+        order3.push_back(neighbor2_type);
+        order3.at(i) = "X";
+        reverse_order3.push_back(neighbor2_type);
+        reverse_order3.push_back(atom_type);
+        reverse_order3.push_back(neighbor3_type);
+        reverse_order3.push_back(neighbor1_type);
+        reverse_order3.at(i) = "X";
+
+        all_permutations.push_back(order1);
+        all_permutations.push_back(reverse_order1);
+        all_permutations.push_back(order2);
+        all_permutations.push_back(reverse_order2);
+        all_permutations.push_back(order3);
+        all_permutations.push_back(reverse_order3);
+    }
+    /// Permutations w/ two X
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = i + 1; j < 4; j++)
+        {
+            order1.clear();
+            order2.clear();
+            order3.clear();
+            reverse_order1.clear();
+            reverse_order2.clear();
+            reverse_order3.clear();
+
+            order1.push_back(neighbor1_type);
+            order1.push_back(neighbor2_type);
+            order1.push_back(atom_type);
+            order1.push_back(neighbor3_type);
+            order1.at(i) = "X";
+            order1.at(j) = "X";
+            reverse_order1.push_back(neighbor3_type);
+            reverse_order1.push_back(atom_type);
+            reverse_order1.push_back(neighbor2_type);
+            reverse_order1.push_back(neighbor1_type);
+            reverse_order1.at(i) = "X";
+            order2.push_back(neighbor1_type);
+            order2.push_back(atom_type);
+            order2.push_back(neighbor3_type);
+            order2.push_back(neighbor2_type);
+            order2.at(i) = "X";
+            order2.at(j) = "X";
+            reverse_order2.push_back(neighbor2_type);
+            reverse_order2.push_back(neighbor3_type);
+            reverse_order2.push_back(atom_type);
+            reverse_order2.push_back(neighbor1_type);
+            reverse_order2.at(i) = "X";
+            reverse_order2.at(j) = "X";
+            order3.push_back(neighbor1_type);
+            order3.push_back(neighbor3_type);
+            order3.push_back(atom_type);
+            order3.push_back(neighbor2_type);
+            order3.at(i) = "X";
+            order3.at(j) = "X";
+            reverse_order3.push_back(neighbor2_type);
+            reverse_order3.push_back(atom_type);
+            reverse_order3.push_back(neighbor3_type);
+            reverse_order3.push_back(neighbor1_type);
+            reverse_order3.at(i) = "X";
+            reverse_order3.at(j) = "X";
+
+            all_permutations.push_back(order1);
+            all_permutations.push_back(reverse_order1);
+            all_permutations.push_back(order2);
+            all_permutations.push_back(reverse_order2);
+            all_permutations.push_back(order3);
+            all_permutations.push_back(reverse_order3);
+            ;
+        }
+    }
+    /// Permutations w/ three X
+    for (int i = 0; i < 2; i++)
+    {
+        for (int j = i + 1; j < 3; j++)
+        {
+            for (int k = j + 1; k < 4; k++)
+            {
+                order1.clear();
+                order2.clear();
+                order3.clear();
+                reverse_order1.clear();
+                reverse_order2.clear();
+                reverse_order3.clear();
+
+                order1.push_back(neighbor1_type);
+                order1.push_back(neighbor2_type);
+                order1.push_back(atom_type);
+                order1.push_back(neighbor3_type);
+                order1.at(i) = "X";
+                order1.at(j) = "X";
+                order1.at(k) = "X";
+                reverse_order1.push_back(neighbor3_type);
+                reverse_order1.push_back(atom_type);
+                reverse_order1.push_back(neighbor2_type);
+                reverse_order1.push_back(neighbor1_type);
+                reverse_order1.at(i) = "X";
+                order2.push_back(neighbor1_type);
+                order2.push_back(atom_type);
+                order2.push_back(neighbor3_type);
+                order2.push_back(neighbor2_type);
+                order2.at(i) = "X";
+                order2.at(j) = "X";
+                order2.at(k) = "X";
+                reverse_order2.push_back(neighbor2_type);
+                reverse_order2.push_back(neighbor3_type);
+                reverse_order2.push_back(atom_type);
+                reverse_order2.push_back(neighbor1_type);
+                reverse_order2.at(i) = "X";
+                reverse_order2.at(j) = "X";
+                reverse_order2.at(k) = "X";
+                order3.push_back(neighbor1_type);
+                order3.push_back(neighbor3_type);
+                order3.push_back(atom_type);
+                order3.push_back(neighbor2_type);
+                order3.at(i) = "X";
+                order3.at(j) = "X";
+                order3.at(k) = "X";
+                reverse_order3.push_back(neighbor2_type);
+                reverse_order3.push_back(atom_type);
+                reverse_order3.push_back(neighbor3_type);
+                reverse_order3.push_back(neighbor1_type);
+                reverse_order3.at(i) = "X";
+                reverse_order3.at(j) = "X";
+                reverse_order3.at(k) = "X";
+
+                all_permutations.push_back(order1);
+                all_permutations.push_back(reverse_order1);
+                all_permutations.push_back(order2);
+                all_permutations.push_back(reverse_order2);
+                all_permutations.push_back(order3);
+                all_permutations.push_back(reverse_order3);
+                ;
+            }
+        }
+    }
+    return all_permutations;
 }

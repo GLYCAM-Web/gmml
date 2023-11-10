@@ -14,18 +14,6 @@
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
 #include "../../../includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyfile.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyatom.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologybond.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyangle.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
-#include "../../../includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
-#include "../../../includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../../../includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
@@ -755,16 +743,11 @@ void Assembly::BuildStructureByOriginalFileBondingInformation()
             break;
         case gmml::PDBQT:
             break;
-        case gmml::TOP:
-            this->BuildStructureByTOPFileInformation();
-            break;
         case gmml::LIB:
             this->BuildStructureByLIBFileInformation();
             break;
         case gmml::PREP:
             this->BuildStructureByPrepFileInformation();
-            break;
-        case gmml::TOP_CRD:
             break;
         case gmml::MULTIPLE:
             break;
@@ -831,65 +814,6 @@ void Assembly::BuildStructureByPDBFileInformation()
     }
     catch (PdbFileSpace::PdbFileProcessingException& ex)
     {}
-}
-
-void Assembly::BuildStructureByTOPFileInformation()
-{
-    //    std::cout << "Building structure by topology file information ..." << std::endl;
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Building structure by topology file information ...");
-    TopologyFileSpace::TopologyFile* topology_file =
-        new TopologyFileSpace::TopologyFile(gmml::Split(this->GetSourceFile(), ";")[0]);
-    AtomVector all_atoms_of_assembly = this->GetAllAtomsOfAssembly();
-    int i                            = 0;
-    for (AtomVector::iterator it = all_atoms_of_assembly.begin(); it != all_atoms_of_assembly.end(); it++)
-    {
-        MolecularModeling::Atom* atom_1        = (*it);
-        MolecularModeling::AtomNode* atom_node = new MolecularModeling::AtomNode();
-        atom_node->SetAtom(atom_1);
-        atom_node->SetId(i);
-        i++;
-        for (AtomVector::iterator it1 = all_atoms_of_assembly.begin(); it1 != all_atoms_of_assembly.end(); it1++)
-        {
-            if (it != it1)
-            {
-                MolecularModeling::Atom* atom_2 = (*it1);
-                std::stringstream ss;
-                ss << gmml::Split(atom_1->GetId(), "_").at(2) << "(" << gmml::Split(atom_1->GetId(), "_").at(4) << ")"
-                   << ":" << gmml::Split(atom_1->GetId(), "_").at(0) << "(" << gmml::Split(atom_1->GetId(), "_").at(1)
-                   << ")"
-                   << "-" << gmml::Split(atom_2->GetId(), "_").at(2) << "(" << gmml::Split(atom_2->GetId(), "_").at(4)
-                   << ")"
-                   << ":" << gmml::Split(atom_2->GetId(), "_").at(0) << "(" << gmml::Split(atom_2->GetId(), "_").at(1)
-                   << ")";
-                std::string key                                                = ss.str();
-                TopologyFileSpace::TopologyFile::TopologyBondMap topology_bond = topology_file->GetBonds();
-                for (TopologyFileSpace::TopologyFile::TopologyBondMap::iterator it2 = topology_bond.begin();
-                     it2 != topology_bond.end(); it2++)
-                {
-                    TopologyFileSpace::TopologyBond* bond = (*it2).second;
-                    std::stringstream sss;
-                    sss << bond->GetResidueNames().at(0) << ":" << bond->GetBonds().at(0) << "-"
-                        << bond->GetResidueNames().at(1) << ":" << bond->GetBonds().at(1);
-                    std::string topology_bond_key = sss.str();
-                    if (key.compare(topology_bond_key) == 0)
-                    {
-                        atom_node->AddNodeNeighbor(atom_2);
-                        break;
-                    }
-                    std::stringstream ssss;
-                    ssss << bond->GetResidueNames().at(1) << ":" << bond->GetBonds().at(1) << "-"
-                         << bond->GetResidueNames().at(0) << ":" << bond->GetBonds().at(0);
-                    topology_bond_key = ssss.str();
-                    if (key.compare(topology_bond_key) == 0)
-                    {
-                        atom_node->AddNodeNeighbor(atom_2);
-                        break;
-                    }
-                }
-            }
-        }
-        atom_1->SetNode(atom_node);
-    }
 }
 
 void Assembly::BuildStructureByLIBFileInformation()

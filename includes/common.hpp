@@ -1096,8 +1096,6 @@ namespace gmml
         PDBQT,
         LIB,
         PREP,
-        TOP,
-        TOP_CRD,
         MULTIPLE,
         UNKNOWN
     };

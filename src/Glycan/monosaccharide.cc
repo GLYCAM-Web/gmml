@@ -11,6 +11,7 @@
 #include "../../includes/Glycan/monosaccharide.hpp"
 #include "../../includes/MolecularModeling/assembly.hpp"
 #include "../../includes/MolecularModeling/ring_shape_detection.hpp"
+#include "includes/GeometryTopology/plane.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
 using Glycan::Monosaccharide;

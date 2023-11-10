@@ -33,10 +33,7 @@ try	{
 #include "includes/generictypedefs.hpp"
 #include "includes/CodeUtils/codetests.hpp"
 #include "includes/CodeUtils/logging.hpp"
-#include "includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
-#include "includes/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp"
 #include "includes/GeometryTopology/coordinate.hpp"
-#include "includes/GeometryTopology/plane.hpp"
 #include "includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 #include "includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 #include "includes/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.hpp"
@@ -159,8 +156,6 @@ try	{
 #include "includes/Resolver/PdbPreprocessor/pdbpreprocessorresidueinfo.hpp"
 
 #include "includes/GeometryTopology/rotation.hpp"
-#include "includes/GeometryTopology/grid.hpp"
-#include "includes/GeometryTopology/cell.hpp"
 #include "includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "includes/GeometryTopology/ResidueLinkages/rotatable_dihedral.hpp"
 
@@ -180,19 +175,6 @@ try	{
 #include "includes/MolecularModeling/assembly.hpp"
 #include "includes/MolecularModeling/molecule.hpp"
 #include "includes/MolecularModeling/Selections/selections.hpp"
-
-#include "includes/InputSet/TopologyFileSpace/topologyangle.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyatom.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologybond.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyfile.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 
 #include "includes/Abstract/absBuilder.hpp"
 #include "includes/CentralDataStructure/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
@@ -214,10 +196,7 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/generictypedefs.hpp"
 %include "includes/CodeUtils/codetests.hpp"
 %include "includes/CodeUtils/logging.hpp"
-%include "includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
-%include "includes/InputSet/CoordinateFileSpace/coordinatefileprocessingexception.hpp"
 %include "includes/GeometryTopology/coordinate.hpp"
-%include "includes/GeometryTopology/plane.hpp"
 %include "includes/ParameterSet/LibraryFileSpace/libraryfile.hpp"
 %include "includes/ParameterSet/LibraryFileSpace/libraryfileatom.hpp"
 %include "includes/ParameterSet/LibraryFileSpace/libraryfileprocessingexception.hpp"
@@ -357,23 +336,8 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/MolecularModeling/molecule.hpp"
 %include "includes/MolecularModeling/Selections/selections.hpp"
 
-%include "includes/GeometryTopology/grid.hpp"
-%include "includes/GeometryTopology/cell.hpp"
 %include "includes/GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 %include "includes/GeometryTopology/ResidueLinkages/rotatable_dihedral.hpp"
-
-%include "includes/InputSet/TopologyFileSpace/topologyangle.hpp"
-%include "includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
-%include "includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
-%include "includes/InputSet/TopologyFileSpace/topologyatom.hpp"
-%include "includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
-%include "includes/InputSet/TopologyFileSpace/topologybond.hpp"
-%include "includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
-%include "includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
-%include "includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
-%include "includes/InputSet/TopologyFileSpace/topologyfile.hpp"
-%include "includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
-%include "includes/InputSet/TopologyFileSpace/topologyfileprocessingexception.hpp"
 
 %include "includes/Abstract/absBuilder.hpp"
 %include "includes/CentralDataStructure/InternalPrograms/CarbohydrateBuilder/carbohydrateBuilder.hpp"
@@ -614,43 +578,6 @@ std::ostream & get_cout() { return std::cout; }
 
 //typedef std::vector<MolecularModeling::ResidueNode*> ResidueNodeVector;
 %template(residue_node_vector) std::vector<MolecularModeling::ResidueNode* >;
-
-///Topology File///
-//typedef std::map<std::string, TopologyFileSpace::TopologyResidue*> TopologyResidueMap;
-%template() std::pair<std::string, TopologyFileSpace::TopologyResidue*>;
-%template(residue_map_Topology_file) std::map<std::string, TopologyFileSpace::TopologyResidue*>;
-
-//typedef std::map<std::vector<std::string>, TopologyFileSpace::TopologyBond*> TopologyBondMap;
-%template() std::pair<std::string, TopologyFileSpace::TopologyBond*>;
-%template(bond_map_Topology_file) std::map<std::string, TopologyFileSpace::TopologyBond*>;
-
-//typedef std::map<std::vector<std::string>, TopologyFileSpace::TopologyAngle*> TopologyAngleMap;
-%template() std::pair<std::string, TopologyFileSpace::TopologyAngle*>;
-%template(angle_map_Topology_file) std::map<std::string, TopologyFileSpace::TopologyAngle*>;
-
-//typedef std::map<std::vector<std::string>, TopologyFileSpace::TopologyDihedral*> TopologyDihedralMap;
-%template() std::pair<std::string, TopologyFileSpace::TopologyDihedral*>;
-%template(dihedral_map_Topology_file) std::map<std::string, TopologyFileSpace::TopologyDihedral*>;
-
-//typedef std::map<int, double> TopologyCoefficientMap;
-%template() std::pair<int, double>;
-%template(coefficient_map_Topology_file) std::map<int, double>;
-
-//typedef std::map<int, TopologyFileSpace::TopologyAtomType*> TopologyAtomPairMap;
-%template() std::pair<std::string, TopologyFileSpace::TopologyAtomPair*>;
-%template(atom_pair_map_Topology_file) std::map<std::string, TopologyFileSpace::TopologyAtomPair*>;
-
-//typedef std::map<int, TopologyFileSpace::TopologyBondType*> TopologyBondTypeMap;
-%template() std::pair<int, TopologyFileSpace::TopologyBondType*>;
-%template(bond_type_map_Topology_file) std::map<int, TopologyFileSpace::TopologyBondType*>;
-
-//typedef std::map<int, TopologyFileSpace::TopologyAngleType*> TopologyAngleTypeMap;
-%template() std::pair<int, TopologyFileSpace::TopologyAngleType*>;
-%template(angle_type_map_Topology_file) std::map<int, TopologyFileSpace::TopologyAngleType*>;
-
-//typedef std::map<int, TopologyFileSpace::TopologyDihedralType*> TopologyDihedralTypeMap;
-%template() std::pair<int, TopologyFileSpace::TopologyDihedralType*>;
-%template(dihedral_type_map_Topology_file) std::map<int, TopologyFileSpace::TopologyDihedralType*>;
 
 ///PDBQT file///
 //typedef std::map<std::string, PdbFileSpace::PdbFile::PdbAtomCardVector* > PdbResidueAtomsMap;

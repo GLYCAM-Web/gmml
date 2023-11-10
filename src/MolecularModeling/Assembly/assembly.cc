@@ -17,18 +17,6 @@
 #include "includes/InputSet/CondensedSequenceSpace/condensedsequence.hpp"
 #include "includes/InputSet/CondensedSequenceSpace/condensedsequenceresidue.hpp"
 #include "includes/InputSet/CondensedSequenceSpace/condensedsequenceglycam06residue.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyfile.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyassembly.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyresidue.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyatom.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologybond.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologybondtype.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyangle.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyangletype.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologydihedral.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologydihedraltype.hpp"
-#include "includes/InputSet/TopologyFileSpace/topologyatompair.hpp"
-#include "includes/InputSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "includes/ParameterSet/PrepFileSpace/prepfileatom.hpp"
@@ -110,9 +98,6 @@ Assembly::Assembly(std::string file_path, gmml::InputFileType type)
         case gmml::PDBQT:
             BuildAssemblyFromPdbqtFile(source_file_);
             break;
-        case gmml::TOP:
-            BuildAssemblyFromTopologyFile(source_file_);
-            break;
         case gmml::LIB:
             BuildAssemblyFromLibraryFile(source_file_);
             break;
@@ -150,12 +135,6 @@ Assembly::Assembly(std::vector<std::string> file_paths, gmml::InputFileType type
             BuildAssemblyFromPdbqtFile(source_file_);
             assemblies_ = AssemblyVector();
             break;
-        case gmml::TOP:
-            source_file_ = file_paths.at(0);
-            residues_    = ResidueVector();
-            BuildAssemblyFromTopologyFile(source_file_);
-            assemblies_ = AssemblyVector();
-            break;
         case gmml::LIB:
             source_file_ = file_paths.at(0);
             residues_    = ResidueVector();
@@ -166,12 +145,6 @@ Assembly::Assembly(std::vector<std::string> file_paths, gmml::InputFileType type
             source_file_ = file_paths.at(0);
             residues_    = ResidueVector();
             BuildAssemblyFromPrepFile(source_file_);
-            assemblies_ = AssemblyVector();
-            break;
-        case gmml::TOP_CRD:
-            source_file_ = file_paths.at(0) + ";" + file_paths.at(1);
-            residues_    = ResidueVector();
-            BuildAssemblyFromTopologyCoordinateFile(file_paths.at(0), file_paths.at(1));
             assemblies_ = AssemblyVector();
             break;
         case gmml::MULTIPLE:

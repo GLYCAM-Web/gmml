@@ -26,10 +26,8 @@
 ./includes/Glycan
 ./includes/InputSet
 ./includes/InputSet/CondensedSequenceSpace
-./includes/InputSet/CoordinateFileSpace
 ./includes/InputSet/PdbFileSpace
 ./includes/InputSet/PdbqtFileSpace
-./includes/InputSet/TopologyFileSpace
 ./includes/InputSet/Utilities
 ./includes/MolecularMetadata
 ./includes/MolecularMetadata/AMBER

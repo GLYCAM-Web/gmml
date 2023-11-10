@@ -229,14 +229,6 @@ namespace gmml
         {
             return PREP;
         }
-        if (type.compare("TOP") == 0)
-        {
-            return TOP;
-        }
-        if (type.compare("TOP_CRD") == 0)
-        {
-            return TOP_CRD;
-        }
         if (type.compare("MULTIPLE") == 0)
         {
             return MULTIPLE;
@@ -261,10 +253,6 @@ namespace gmml
                 return "LIB";
             case PREP:
                 return "PREP";
-            case TOP:
-                return "TOP";
-            case TOP_CRD:
-                return "TOP_CRD";
             case MULTIPLE:
                 return "MULTIPLE";
             case UNKNOWN:

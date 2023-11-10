@@ -8,7 +8,6 @@
 #include <algorithm> // added for std::erase remove
 
 #include "../GeometryTopology/coordinate.hpp"
-#include "../GeometryTopology/plane.hpp"
 #include "../GeometryTopology/ResidueLinkages/residue_linkage.hpp"
 #include "../common.hpp"
 #include "../Glycan/chemicalcode.hpp"
@@ -17,8 +16,6 @@
 #include "../Glycan/ontologyvocabulary.hpp"
 #include "../InputSet/PdbFileSpace/pdbfile.hpp"
 #include "../InputSet/PdbqtFileSpace/pdbqtfile.hpp"
-#include "../InputSet/TopologyFileSpace/topologyfile.hpp"
-#include "../InputSet/CoordinateFileSpace/coordinatefile.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfile.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfileresidue.hpp"
 #include "../ParameterSet/PrepFileSpace/prepfileatom.hpp"
@@ -704,19 +701,6 @@ namespace MolecularModeling
          */
         void BuildAssemblyFromPdbqtFile(PdbqtFileSpace::PdbqtFile* pdbqt_file, std::string parameter_file = "");
         /*! \fn
-         * A function to build a structure from a single topology file
-         * Imports data from topology file data structure into central data structure
-         * @param topology_file_path Path to a topology file
-         */
-        void BuildAssemblyFromTopologyFile(std::string topology_file_path, std::string parameter_file = "");
-        /*! \fn
-         * A function to build a structure from a single topology file
-         * Imports data from topology file data structure into central data structure
-         * @param topology_file Topology file object
-         */
-        void BuildAssemblyFromTopologyFile(TopologyFileSpace::TopologyFile* topology_file,
-                                           std::string parameter_file = "");
-        /*! \fn
          * A function to build a structure from a single library file
          * Imports data from library file data structure into central data structure
          * @param library_file_path Path to a library file
@@ -728,26 +712,6 @@ namespace MolecularModeling
          * @param library_file Library file object
          */
         void BuildAssemblyFromLibraryFile(LibraryFileSpace::LibraryFile* library_file, std::string parameter_file = "");
-        /*! \fn
-         * A function to build a structure from a combination of a topology file and its corresponding coordinate file
-         * Imports data from topology file data structure into central data structure and assign the atom coordinates
-         * based on the coordinate file
-         * @param topology_file_path Path to a topology file
-         * @param coordinate_file_path Path to a coordinate file corresponding to the given topology file
-         */
-        void BuildAssemblyFromTopologyCoordinateFile(std::string topology_file_path, std::string coordinate_file_path,
-                                                     std::string parameter_file = "");
-        /*! \fn
-         * A function to build a structure from a combination of a topology file and its corresponding coordinate file
-         * Imports data from topology file data structure into central data structure and assign the atom coordinates
-         * based on the coordinate file
-         * @param topology_file Topology file object
-         * @param coordinate_file Coordinate file object corresponding to the given topology file
-         */
-        void BuildAssemblyFromTopologyCoordinateFile(TopologyFileSpace::TopologyFile* topology_file,
-                                                     CoordinateFileSpace::CoordinateFile* coordinate_file,
-                                                     std::string parameter_file = "");
-
         /*! \fn
          * A funcion that builds a template assembly that contains all template residues extracted from prep file.
          * @param prep_file A pointer to prep file
@@ -796,33 +760,6 @@ namespace MolecularModeling
                                                int link_card_direction = -1);
         void ExtractPdbConnectSectionFromAssembly(PdbFileSpace::PdbConnectSection* connect_card,
                                                   AssemblytoPdbSerialNumberMap assembly_to_pdb_serial_number);
-        /*! \fn
-         * A function to extract bonds from the current assembly object
-         * @param inserted_bond_types Bond types that have been already detected in the assembly structure
-         * @param assembly_atom A source atom in a bond in the assembly structure
-         * @param neighbor Second atom in a bond which is a neighbor of assembly_atom
-         * @param bonds All known bonds from parameter file
-         * @param bond_type_counter A counter that indicates the number of bond types that have been already detected
-         * and also determines the index associated with it
-         * @param topology_file Output topology file structure that the detected bond types belong to
-         */
-        void ExtractTopologyBondTypesFromAssembly(std::vector<std::vector<std::string>>& inserted_bond_types,
-                                                  Atom* assembly_atom, Atom* neighbor,
-                                                  ParameterFileSpace::ParameterFile::BondMap& bonds,
-                                                  int& bond_type_counter,
-                                                  TopologyFileSpace::TopologyFile* topology_file);
-        /*! \fn
-         * A function to extract bond types from the current assembly object
-         * @param inserted_bonds Bonds that have been already detected in the assembly structure
-         * @param inserted_bond_types Bond types that have been already detected in the assembly structure
-         * @param assembly_atom A source atom in a bond in the assembly structure
-         * @param neighbor Second atom in a bond which is a neighbor of assembly_atom
-         * @param topology_file Output topology file structure that the detected bond types belong to
-         */
-        void ExtractTopologyBondsFromAssembly(std::vector<std::vector<std::string>>& inserted_bonds,
-                                              std::vector<std::vector<std::string>>& inserted_bond_tyoes,
-                                              Atom* assembly_atom, Atom* neighbor,
-                                              TopologyFileSpace::TopologyFile* topology_file);
 
         /*! \fn
          * A function to build a prep file structure from the current assembly object
@@ -866,98 +803,6 @@ namespace MolecularModeling
                                                std::vector<int>& bond_index,
                                                int dummy_atoms = gmml::DEFAULT_DUMMY_ATOMS);
         /*! \fn
-         * A function to build a topology file structure from the current assembly object
-         * Exports data from assembly data structure into topology file structure
-         */
-        TopologyFileSpace::TopologyFile*
-        BuildTopologyFileStructureFromAssembly(std::string parameter_file_path,
-                                               std::string ion_parameter_file_path = "");
-        /*! \fn
-         * A function to build agnle types of topology file structure from the current assembly object
-         * Exports data from assembly data structure to generate topology atom types
-         * @param assembly_atom A source atom in an angle in the assembly structure
-         * @param neighbor Second atom in an angle which is a neighbor of assembly_atom
-         * @param neighbor_of_neighbor Third atom in an angle which is a neighbor of neighbor atom and it is not
-         * identical to assmebly_atom
-         * @param inserted_angle_types Angle types that have been already detected in an assembly structure
-         * @param angle_type_counter A counter that indicates the number of angle types that have been already detected
-         * and also determines the index associated with it
-         * @param topology_file Output topology file structure that the detected angle types belong to
-         * @param angles All known angles from parameter file
-         */
-        void ExtractTopologyAngleTypesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor,
-                                                   std::vector<std::vector<std::string>>& inserted_angle_types,
-                                                   int& angle_type_counter,
-                                                   TopologyFileSpace::TopologyFile* topology_file,
-                                                   ParameterFileSpace::ParameterFile::AngleMap& angles);
-        /*! \fn
-         * A function to build agnle types of topology file structure from the current assembly object
-         * Exports data from assembly data structure to generate topology atom types
-         * @param assembly_atom A source atom in an angle in the assembly structure
-         * @param neighbor Second atom in an angle which is a neighbor of assembly_atom
-         * @param neighbor_of_neighbor Third atom in an angle which is a neighbor of neighbor atom and it is not
-         * identical to assmebly_atom
-         * @param inserted_angles Angles that have been already detected in an assembly structure
-         * @param inserted_angle_types Angle types that have been already detected in an assembly structure
-         * @param angle_type_counter A counter that indicates the number of angle types that have been already detected
-         * and also determines the index associated with it
-         * @param topology_file Output topology file structure that the detected angle types belong to
-         */
-        void ExtractTopologyAnglesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor,
-                                               std::vector<std::vector<std::string>>& inserted_angles,
-                                               std::vector<std::vector<std::string>>& inserted_angle_types,
-                                               TopologyFileSpace::TopologyFile* topology_file);
-        /*! \fn
-         * A function to build dihedral types of topology file structure from the current assembly object
-         * Exports data from assembly data structure to generate topology dihedral types
-         * @param assembly_atom A source atom in a dihedral in the assembly structure
-         * @param neighbor Second atom in a dihedral which is a neighbor of assembly_atom
-         * @param neighbor_of_neighbor Third atom in a dihedral which is a neighbor of neighbor atom and it is not
-         * identical to assmebly_atom
-         * @param neighbor_of_neighbor_of_neighbor Fourth atom in a dihedral which is a neighbor of neighbor of neighbor
-         * atom and it is not identical to neighbor atom
-         * @param inserted_dihedrals_types Dihedral types that have been already detected in an assembly structure
-         * @param dihedral_type_counter A counter that indicates the number of dihedral types that have been already
-         * detected and also determines the index associated with it
-         * @param topology_file Output topology file structure that the detected angle types belong to
-         * @param dihedrals All known dihedrals from parameter file
-         */
-        void ExtractTopologyDihedralTypesFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor,
-                                                      Atom* neighbor_of_neighbor_of_neighbor,
-                                                      std::vector<std::string>& inserted_dihedral_types,
-                                                      int& dihedral_type_counter,
-                                                      TopologyFileSpace::TopologyFile* topology_file,
-                                                      ParameterFileSpace::ParameterFile::DihedralMap& dihedrals);
-        /*! \fn
-         * A function to build dihedrals of topology file structure from the current assembly object
-         * Exports data from assembly data structure to generate topology dihedrals
-         * @param assembly_atom A source atom in a dihedral in the assembly structure
-         * @param neighbor Second atom in a dihedral which is a neighbor of assembly_atom
-         * @param neighbor_of_neighbor Third atom in a dihedral which is a neighbor of neighbor atom and it is not
-         * identical to assmebly_atom
-         * @param neighbor_of_neighbor_of_neighbor Fourth atom in a dihedral which is a neighbor of neighbor of neighbor
-         * atom and it is not identical to neighbor atom
-         * @param inserted_dihedrals Dihedrals that have been already detected in an assembly structure
-         * @param inserted_dihedral_types Dihedral types that have been already detected in an assembly structure
-         * @param dihedrals All known dihedrals from parameter file
-         * @param topology_file Output topology file structure that the detected angle types belong to
-         */
-        void ExtractTopologyDihedralsFromAssembly(Atom* assembly_atom, Atom* neighbor, Atom* neighbor_of_neighbor,
-                                                  Atom* neighbor_of_neighbor_of_neighbor,
-                                                  std::vector<std::vector<std::string>>& inserted_dihedrals,
-                                                  std::vector<std::string>& inserted_dihedral_types,
-                                                  ParameterFileSpace::ParameterFile::DihedralMap& dihedrals,
-                                                  TopologyFileSpace::TopologyFile* topology_file);
-
-        /*! \fn
-         * A function to build a coordinate file structure from the current assembly object
-         * Exports data from assembly data structure into coordinate file structure
-         */
-        /** @}*/
-        /** @addtogroup Molecular_Data_Structure_Builders
-         * @{ */
-        CoordinateFileSpace::CoordinateFile* BuildCoordinateFileStructureFromAssembly();
-        /*! \fn
          * A function to build a library file structure from the current assembly object
          * Exports data from assembly data structure into library file structure
          */
@@ -991,11 +836,6 @@ namespace MolecularModeling
         void BuildStructureByPDBFileInformation();
         /*! \fn
          * A function to build a graph structure for the current object of central data structure based on the bonding
-         * information provided in the original file in the case that the original file is a topology file
-         */
-        void BuildStructureByTOPFileInformation();
-        /*! \fn
-         * A function to build a graph structure for the current object of central data structure based on the bonding
          * information provided in the original file in the case that the original file is a lib file
          */
         void BuildStructureByLIBFileInformation();
@@ -1016,124 +856,9 @@ namespace MolecularModeling
         /** \addtogroup Data_Sets
          * @{
          */
-        /*! \fn
-         * A function that counts the number of atoms in all assemblies and residues of the assembly
-         * @return counter Number of atoms in all assemblies and residues in the current object of assembly
-         */
-        int CountNumberOfAtoms();
-        /*! \fn
-         * A function that counts the number of atoms types in all assemblies and residues of the assembly
-         * @return counter Number of atoms in all assemblies and residues in the current object of assembly
-         */
-        int CountNumberOfAtomTypes();
-        /*! \fn
-         * A function that counts the number of residues in all assemblies and residues of the assembly
-         * @return type_list Number of residues in all assemblies and residues in the current object of assembly
-         */
-        int CountNumberOfResidues();
-        /*! \fn
-         * A function that counts the number of bonds including hydrogen in all assemblies and residues of the assembly
-         * @param parameter_file_path The path of the parameter file
-         * @return counter Number of bonds including hydrogen in all assemblies and residues in the current object of
-         * assembly
-         */
-        int CountNumberOfBondsIncludingHydrogen(std::string parameter_file_path);
-        /*! \fn
-         * A function that counts the number of bonds excluding hydrogen in all assemblies and residues of the assembly
-         * @param parameter_file_path The path of the parameter file
-         * @return counter Number of bonds excluding hydrogen in all assemblies and residues in the current object of
-         * assembly
-         */
-        int CountNumberOfBondsExcludingHydrogen(std::string parameter_file_path);
-        /*! \fn
-         * A function that counts the number of bonds in all assemblies and residues of the assembly
-         * @return counter Number of bonds in all assemblies and residues in the current object of assembly
-         */
-        int CountNumberOfBonds();
-        /*! \fn
-         * A function that counts the number of bond types in all assemblies and residues of the assembly
-         * @param parameter_file_path The path of the parameter file
-         * @return type_list Number of bond types in all assemblies and residues in the current object of assembly
-         */
-        int CountNumberOfBondTypes(std::string parameter_file_path);
-        /*! \fn
-         * A function that counts the number of angles including hydrogen in all assemblies and residues of the assembly
-         * @param parameter_file_path The path of the parameter file
-         * @return counter Number of angles including hydrogen in all assemblies and residues in the current object of
-         * assembly
-         */
-        int CountNumberOfAnglesIncludingHydrogen(std::string parameter_file_path);
-        /*! \fn
-         * A function that counts the number of angles excluding hydrogen in all assemblies and residues of the assembly
-         * @param parameter_file_path The path of the parameter file
-         * @return counter Number of angles excluding hydrogen in all assemblies and residues in the current object of
-         * assembly
-         */
-        int CountNumberOfAnglesExcludingHydrogen(std::string parameter_file_path);
-        /*! \fn
-         * A function that counts the number of angles in all assemblies and residues of the assembly
-         * @return counter Number of angles in all assemblies and residues in the current object of assembly
-         */
-        int CountNumberOfAngles();
-        /*! \fn
-         * A function that counts the number of angle types in all assemblies and residues of the assembly
-         * @param parameter_file_path The path of the parameter file
-         * @return type_list Number of angle types in all assemblies and residues in the current object of assembly
-         */
-        int CountNumberOfAngleTypes(std::string parameter_file_path);
-        /*! \fn
-         * A function that counts the number of dihedrals includig hydrogen in all assemblies and residues of the
-         * assembly
-         * @param parameter_file_path The path of the parameter file
-         * @return type_list Number of dihedrals including hydrogen in all assemblies and residues in the current object
-         * of assembly
-         */
-        int CountNumberOfDihedralsIncludingHydrogen(std::string parameter_file_path);
-        /*! \fn
-         * A function that counts the number of dihedrals excluding hydrogen in all assemblies and residues of the
-         * assembly
-         * @param parameter_file_path The path of the parameter file
-         * @return counter Number of dihedrals excluding hydrogen in all assemblies and residues in the current object
-         * of assembly
-         */
-        int CountNumberOfDihedralsExcludingHydrogen(std::string parameter_file_path);
-        /*! \fn
-         * A function that counts the number of dihedrals in all assemblies and residues of the assembly
-         * @param parameter_file_path The path of the parameter file
-         * @return counter Number of dihedrals in all assemblies and residues in the current object of assembly
-         */
-        int CountNumberOfDihedrals(std::string parameter_file_path);
-        std::vector<std::vector<std::string>> CreateAllAtomTypePermutationsforDihedralType(std::string atom_type1,
-                                                                                           std::string atom_type2,
-                                                                                           std::string atom_type3,
-                                                                                           std::string atom_type4);
         std::vector<std::vector<std::string>>
         CreateAllAtomTypePermutationsforImproperDihedralType(std::string atom_type1, std::string atom_type2,
                                                              std::string atom_type3, std::string atom_type4);
-        /*! \fn
-         * A function that counts the number of dihedral types in all assemblies and residues of the assembly
-         * @param parameter_file_path The path of the parameter file
-         * @return type_list Number of dihedral types in all assemblies and residues in the current object of assembly
-         */
-        int CountNumberOfDihedralTypes(std::string parameter_file_path);
-        /*! \fn
-         * A function that returns all atoms with at least three neighbors in all assemblies and residues of the
-         * assembly
-         * @return atoms_with_at_least_three_neighbors A list of atoms with at least three neighbors in all assemblies
-         * and residues in the current object of assembly
-         */
-        AtomVector GetAllAtomsOfAssemblyWithAtLeastThreeNeighbors();
-        /*! \fn
-         * A function that counts the number of excluded atoms in all assemblies and residues of the assembly
-         * @return counter Number of excluded atoms in all assemblies and residues in the current object of assembly
-         */
-        int CountNumberOfExcludedAtoms();
-        /*! \fn
-         * A function that counts the number of atoms in largest residue in all assemblies and residues of the assembly
-         * @return max Number of atoms in largest residue in all assemblies and residues in the current object of
-         * assembly
-         */
-        int CountMaxNumberOfAtomsInLargestResidue();
 
         /*! \fn
          * A function to select a set of atoms in an assembly by using a string pattern
