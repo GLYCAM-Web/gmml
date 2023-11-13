@@ -1,38 +1,21 @@
-#include <iostream>  // for cout, can remove after debug
 #include <algorithm> // sort
-
+#include <iostream>
 #include "includes/MolecularMetadata/GLYCAM/glycam06LinkageCodes.hpp"
 #include "includes/CodeUtils/strings.hpp"
 
-using gmml::MolecularMetadata::GLYCAM::Glycam06LinkageCodesLookupContainer;
-
-//////////////////////////////////////////////////////////
-//                      QUERY FUNCTIONS                 //
-//////////////////////////////////////////////////////////
-
-std::string Glycam06LinkageCodesLookupContainer::GetCodeForLinkages(std::string queryLinkage)
-{ // e.g. input is 2,3, or 3,2 and output is "Z".
-    for (const auto& entry : Glycam06LinkageCodesLookup_)
+std::string GlycamMetadata::GetGlycam06ResidueLinkageCode(const std::string query)
+{ // If something like 3,2,6 or 6,4,2 comes in, we need to sort it first.
+    std::vector<std::string> queryLinkages = codeUtils::split(query, ',');
+    std::sort(queryLinkages.begin(), queryLinkages.end());
+    std::string sortedQuery = "";
+    std::string deliminator = "";
+    for (auto& element : queryLinkages)
     {
-        std::vector<std::string> linkages      = codeUtils::split(entry.linkage_, ','); // These are already sorted.
-        std::vector<std::string> queryLinkages = codeUtils::split(queryLinkage, ',');
-        std::sort(queryLinkages.begin(), queryLinkages.end()); // These might not be sorted
-        if (std::equal(linkages.begin(), linkages.end(), queryLinkages.begin(), queryLinkages.end()))
-        {
-            return entry.glycamLinkageCode_;
-        }
+        sortedQuery += (deliminator + element);
+        deliminator = ",";
     }
-    return "";
-}
-
-//////////////////////////////////////////////////////////
-//                    INITIALIZER                       //
-//////////////////////////////////////////////////////////
-
-Glycam06LinkageCodesLookupContainer::Glycam06LinkageCodesLookupContainer()
-{
-    Glycam06LinkageCodesLookup_ = {
-  // linkage_    , glycamLinkageCode_
+    static const std::unordered_map<std::string, std::string> Glycam06LinkageCodeLookup = {
+  // linkage    , glycamLinkageCode
         {"Terminal", "0"},
         {       "1", "1"},
         {       "2", "2"},
@@ -66,4 +49,5 @@ Glycam06LinkageCodesLookupContainer::Glycam06LinkageCodesLookupContainer()
         {   "7,8,9", "B"},
         { "4,7,8,9", "A"},
     };
+    return codeUtils::FindStringInStringMap(sortedQuery, Glycam06LinkageCodeLookup);
 }
