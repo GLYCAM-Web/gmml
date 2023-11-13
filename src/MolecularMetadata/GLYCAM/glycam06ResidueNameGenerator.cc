@@ -34,8 +34,7 @@ namespace gmml
                 std::string linkCode = ""; // Can be empty for e.g. ROH
                 if (!linkages.empty())
                 {
-                    Glycam06LinkageCodesLookupContainer linkageCodeLookup;
-                    linkCode = linkageCodeLookup.GetCodeForLinkages(linkages);
+                    linkCode = GlycamMetadata::GetGlycam06ResidueLinkageCode(linkages);
                     if (linkCode.empty())
                     {
                         std::string message = "No linkage code found in GMML metadata for a carbohydrate residue with "
