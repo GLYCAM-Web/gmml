@@ -71,7 +71,7 @@ void cds::WriteOffFileUnit(std::vector<cds::Residue*> residues, std::ostream& st
         {
             for (auto& neighbor : atom->getChildren())
             { // According to docs: (the *second* atom is the one with the larger index). So ordering
-                if (atom->getNumber() > neighbor->getNumber())
+                if (atom->getNumber() < neighbor->getNumber())
                 {
                     stream << " " << atom->getNumber() << " " << neighbor->getNumber() << " " << 1 << std::endl;
                 }
@@ -191,7 +191,6 @@ void cds::WriteOffFileUnit(std::vector<cds::Residue*> residues, std::ostream& st
     return;
 }
 
-// ToDo shouldn't this have a .lib suffix?
 void cds::WriteResiduesToOffFile(std::vector<cds::Residue*> residues, std::ostream& stream)
 { // For writing each residue separately
     stream << "!!index array str" << std::endl;
