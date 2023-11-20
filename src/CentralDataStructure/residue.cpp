@@ -33,16 +33,32 @@ Residue::Residue(const Residue& other)
     : glygraph::Node<cds::Residue>(other), name_(other.name_), geometricCenter_(other.geometricCenter_),
       type_(other.type_), number_(other.number_)
 {
-    for (auto& atom : other.getAtoms())
-    {
+    std::vector<cds::Atom*> otherAtoms = other.getAtoms();
+    for (auto& atom : otherAtoms)
+    { // create all the copies
         atoms_.push_back(std::make_unique<Atom>(*atom));
     }
-    // std::cout << "cds::Residue Copy ctor complete" << std::endl;
+    std::vector<cds::Atom*>::iterator ito = otherAtoms.begin();
+    for (long unsigned int i = 0; i < otherAtoms.size(); i++)
+    { // copy the connectivities
+        std::vector<cds::Atom*> neighbors = otherAtoms.at(i)->getNeighbors();
+        for (auto& neighbor : neighbors)
+        {
+            auto neighborPosition = std::find(otherAtoms.begin(), otherAtoms.end(), neighbor);
+            if (neighborPosition != std::end(otherAtoms))
+            { // neighbor could be in other residue, ignore here.
+                auto difference      = std::distance(ito, neighborPosition);
+                int j                = i + difference;
+                std::string edgeName = atoms_.at(i)->getName() + "-" + atoms_.at(j)->getName();
+                atoms_.at(i)->addNeighbor(edgeName, atoms_.at(j).get());
+            }
+        }
+        ++ito;
+    }
 }
 
 Residue& Residue::operator=(Residue other)
 {
-    // Swap the contents of the current object with the contents of the other object
     swap(*this, other);
     return *this;
 }

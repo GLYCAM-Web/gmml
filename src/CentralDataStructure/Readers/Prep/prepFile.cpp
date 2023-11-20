@@ -132,13 +132,14 @@ void PrepFile::ReadQueryResidues(std::ifstream& in_file, const std::vector<std::
 {
     std::string line;
     getline(in_file, line);
-    getline(in_file, line);                                         // first two lines are always blank apparently. smh.
-    getline(in_file, line);                                         // This should be first line of residue entry.
+    getline(in_file, line); // first two lines of the file are always blank apparently. smh.
+    getline(in_file, line); // This should be first line of residue entry. Title.
     while (codeUtils::Trim(line).find("STOP") == std::string::npos) // While not at end of file
     {
         std::streampos firstResidueLinePosition = in_file.tellg(); // save correct position to start reading residue
+        std::string savedTitle                  = line;
         // Need to move to line with residue name on it.
-        getline(in_file, line);                                                 // title
+        getline(in_file, line);                                                 // blank line
         getline(in_file, line);                                                 // residue name appears here
         std::vector<std::string> residueNameLine = codeUtils::split(line, ' '); // front() string will be name
         // std::cout << "Current residue name is: " << residueNameLine.front() << std::endl;
@@ -152,6 +153,7 @@ void PrepFile::ReadQueryResidues(std::ifstream& in_file, const std::vector<std::
             while (numberOfTimesToReadInResidue > 0)
             {
                 in_file.seekg(firstResidueLinePosition); // go back here so the residue constructor works
+                line = savedTitle;
                 this->addResidue(std::make_unique<PrepResidue>(in_file, line));
                 --numberOfTimesToReadInResidue;
             }
@@ -183,6 +185,7 @@ void PrepFile::Write(const std::string& prep_file)
     try
     {
         this->Write(out_file);
+        out_file.close();
     }
     catch (...)
     {

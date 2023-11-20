@@ -191,26 +191,24 @@ namespace glygraph
     {
         // std::cout << "\n\tGiven object ptr: " << rhs.objectPtr << "\n\n";
         // lazyInfo(__LINE__, __func__, "Calling copy constructor");
-        for (const Edge<T>* currInEdge : rhs.inEdges_m)
-        {
-            // ToDo Check if the "new" is best. Shouldn't Edge class copy constructor not handle some of this?
-            std::unique_ptr<Edge<T>> tempIn(std::make_unique<Edge<T>>(*currInEdge));
-
-            tempIn.get()->setTargetNode(this->getDeriviedClass());
-
-            this->inEdges_m.push_back(tempIn.get());
-            tempIn.get()->getSourceNode()->outEdges_m.push_back(std::move(tempIn));
-        }
-        for (const std::unique_ptr<Edge<T>>& currOutEdge : rhs.outEdges_m)
-        {
-            std::unique_ptr<Edge<T>> tempOut(std::make_unique<Edge<T>>(*currOutEdge.get()));
-
-            tempOut.get()->setSourceNode(this->getDeriviedClass());
-
-            tempOut.get()->getTargetNode()->inEdges_m.push_back(tempOut.get());
-            this->outEdges_m.push_back(std::move(
-                tempOut)); // Could emplace back onto the vector when first constructing "tempOut", no need for a move.
-        }
+        //        for (const Edge<T>* currInEdge : rhs.inEdges_m)
+        //        {
+        //            std::unique_ptr<Edge<T>> tempIn(std::make_unique<Edge<T>>(*currInEdge));
+        //
+        //            tempIn.get()->setTargetNode(this->getDeriviedClass());
+        //
+        //            this->inEdges_m.push_back(tempIn.get());
+        //            tempIn.get()->getSourceNode()->outEdges_m.push_back(std::move(tempIn));
+        //        }
+        //        for (const std::unique_ptr<Edge<T>>& currOutEdge : rhs.outEdges_m)
+        //        {
+        //            std::unique_ptr<Edge<T>> tempOut(std::make_unique<Edge<T>>(*currOutEdge.get()));
+        //
+        //            tempOut.get()->setSourceNode(this->getDeriviedClass());
+        //
+        //            tempOut.get()->getTargetNode()->inEdges_m.push_back(tempOut.get());
+        //            this->outEdges_m.push_back(std::move(tempOut));
+        //        }
     }
 
     // move constructor
