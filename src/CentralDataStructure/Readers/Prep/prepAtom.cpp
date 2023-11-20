@@ -26,12 +26,34 @@ PrepAtom::PrepAtom(const std::string& line)
     this->SetAngle(codeUtils::extractFromStream(ss, double()));
     this->SetDihedral(codeUtils::extractFromStream(ss, double()));
     this->setCharge(codeUtils::extractFromStream(ss, double()));
-    //	std::cout << "Prep atom ctor with " << this->getName() << "_" << this->getIndex() << "\n";
+}
+
+// Move Ctor
+PrepAtom::PrepAtom(PrepAtom&& other) noexcept : PrepAtom() //: cds::Atom(other)
+{
+    swap(*this, other);
+}
+
+PrepAtom::PrepAtom(const PrepAtom& other) noexcept
+    : cds::Atom(other), type_(other.type_), topological_type_(other.topological_type_), bond_index_(other.bond_index_),
+      angle_index_(other.angle_index_), dihedral_index_(other.dihedral_index_), bond_length_(other.bond_length_),
+      angle_(other.angle_), dihedral_(other.dihedral_), visitCount_(other.visitCount_)
+{}
+
+PrepAtom& PrepAtom::operator=(PrepAtom other) noexcept
+{
+    swap(*this, other);
+    return *this;
 }
 
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////
+std::string PrepAtom::GetType() const
+{
+    return type_;
+}
+
 prep::TopologicalType PrepAtom::GetTopologicalType() const
 {
     return topological_type_;
@@ -123,6 +145,11 @@ prep::TopologicalType PrepAtom::GetTopologicalTypeFromString(std::string topolog
 //////////////////////////////////////////////////////////
 //                           MUTATOR                    //
 //////////////////////////////////////////////////////////
+void PrepAtom::SetType(std::string type)
+{
+    type_ = type;
+}
+
 void PrepAtom::SetTopologicalType(TopologicalType topological_type)
 {
     topological_type_ = topological_type;

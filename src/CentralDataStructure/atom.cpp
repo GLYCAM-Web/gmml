@@ -19,19 +19,15 @@ Atom::Atom(const std::string name, const Coordinate& coord)
 }
 
 // Move Ctor
-Atom::Atom(Atom&& other) noexcept : glygraph::Node<cds::Atom>(other)
+Atom::Atom(Atom&& other) noexcept : Atom()
 {
-    currentCoordinate_ = std::move(other.currentCoordinate_);
-    allCoordinates_    = std::move(other.allCoordinates_);
-    charge_            = std::move(other.charge_);
-    atomType_          = std::move(other.atomType_);
-    number_            = std::move(other.number_);
+    swap(*this, other);
 }
 
 // Copy Ctor
-Atom::Atom(const Atom& other)
-    : glygraph::Node<cds::Atom>(other), charge_(other.charge_), atomType_(other.atomType_), number_(other.number_),
-      currentCoordinate_(other.currentCoordinate_)
+Atom::Atom(const Atom& other) noexcept
+    : glygraph::Node<cds::Atom>(other), currentCoordinate_(other.currentCoordinate_), charge_(other.charge_),
+      atomType_(other.atomType_), number_(other.number_)
 {
     for (auto& coord : other.allCoordinates_)
     {
@@ -40,9 +36,8 @@ Atom::Atom(const Atom& other)
 }
 
 // Move and Copy assignment operator
-Atom& Atom::operator=(Atom other)
+Atom& Atom::operator=(Atom other) noexcept
 {
-    glygraph::Node<cds::Atom>::operator=(other);
     swap(*this, other);
     return *this;
 }

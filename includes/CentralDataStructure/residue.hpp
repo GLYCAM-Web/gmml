@@ -149,6 +149,7 @@ namespace cds
         friend void swap(Residue& lhs, Residue& rhs)
         {
             using std::swap;
+            swap(static_cast<glygraph::Node<cds::Residue>&>(lhs), static_cast<glygraph::Node<cds::Residue>&>(rhs));
             swap(lhs.atoms_, rhs.atoms_);
             swap(lhs.name_, rhs.name_);
             swap(lhs.geometricCenter_, rhs.geometricCenter_);

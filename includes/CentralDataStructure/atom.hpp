@@ -18,27 +18,24 @@ namespace cds
         //////////////////////////////////////////////////////////
         //                       CONSTRUCTORS                   //
         //////////////////////////////////////////////////////////
-        Atom()
-        {} // std::cout << "Atom default ctor with name_index: " << this->getName() << "_ " << this->getIndex() <<
-           // "\n";}
-
+        Atom()          = default;
+        virtual ~Atom() = default;
         Atom(const std::string name, const Coordinate& coord);
-        Atom(Atom&& other) noexcept; // Move Ctor
-        Atom(const Atom& other);     // Copy Ctor
-        Atom& operator=(Atom other); // Move and Copy assignment operator
+        Atom(Atom&& other) noexcept;               // Move Ctor
+        explicit Atom(const Atom& other) noexcept; // Copy Ctor
+        Atom& operator=(Atom other) noexcept;      // Move and Copy assignment operator
 
-        virtual ~Atom()
-        {} // std::cout << "cds::Atom default dtor for " << this->getName() << "_" << this->getIndex() << "\n";}
-
-        friend void swap(Atom& lhs,
-                         Atom& rhs) // ToDo figure out how to put this in cpp file once everything is working.
+        friend void swap(Atom& lhs, Atom& rhs) noexcept
         {
             using std::swap;
+            swap(static_cast<glygraph::Node<cds::Atom>&>(lhs), static_cast<glygraph::Node<cds::Atom>&>(rhs));
             swap(lhs.currentCoordinate_, rhs.currentCoordinate_);
             swap(lhs.allCoordinates_, rhs.allCoordinates_);
             swap(lhs.charge_, rhs.charge_);
             swap(lhs.atomType_, rhs.atomType_);
             swap(lhs.number_, rhs.number_);
+            std::cout << "Swap triggered for Atom, everything in " << rhs.getName() << " swapped with " << lhs.getName()
+                      << std::endl;
         }
 
         //////////////////////////////////////////////////////////

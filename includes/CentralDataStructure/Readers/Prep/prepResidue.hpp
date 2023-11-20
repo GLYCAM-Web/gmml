@@ -60,9 +60,28 @@ namespace prep
         //                       Constructor                    //
         //////////////////////////////////////////////////////////
         PrepResidue(std::ifstream& in_file, std::string& line);
+        PrepResidue()  = default;
+        ~PrepResidue() = default;
+        PrepResidue(PrepResidue&& other) noexcept; // Move Ctor
+        PrepResidue(const PrepResidue& other);     // Copy Ctor
+        PrepResidue& operator=(PrepResidue other); // Move and Copy assignment operator
 
-        ~PrepResidue()
-        {} // std::cout << "PrepResidue dtor for " << this->getName() << ", ";}
+        friend void swap(PrepResidue& lhs,
+                         PrepResidue& rhs) // ToDo figure out how to put this in cpp file once everything is working.
+        {
+            using std::swap;
+            swap(static_cast<cds::Residue&>(lhs), static_cast<cds::Residue&>(rhs));
+            swap(lhs.title_, rhs.title_);
+            swap(lhs.coordinate_type_, rhs.coordinate_type_);
+            swap(lhs.output_format_, rhs.output_format_);
+            swap(lhs.geometry_type_, rhs.geometry_type_);
+            swap(lhs.dummy_atom_omission_, rhs.dummy_atom_omission_);
+            swap(lhs.dummy_atom_type_, rhs.dummy_atom_type_);
+            swap(lhs.dummy_atom_position_, rhs.dummy_atom_position_);
+            swap(lhs.charge_, rhs.charge_);
+            swap(lhs.improper_dihedrals_, rhs.improper_dihedrals_);
+            swap(lhs.loops_, rhs.loops_);
+        }
 
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
@@ -94,6 +113,7 @@ namespace prep
         double CalculatePrepResidueCharge();
         std::string Print() const;
         void Write(std::ostream& stream);
+        std::string GetTitle() const;
 
       private:
         //////////////////////////////////////////////////////////
@@ -111,7 +131,6 @@ namespace prep
         //////////////////////////////////////////////////////////
         //                         ACCESSOR                     //
         //////////////////////////////////////////////////////////
-        std::string GetTitle() const;
         CoordinateType GetCoordinateType() const;
         OutputFormat GetOutputFormat() const;
         GeometryType GetGeometryType() const;
@@ -136,6 +155,7 @@ namespace prep
         //////////////////////////////////////////////////////////
         //                         ATTRIBUTES                   //
         //////////////////////////////////////////////////////////
+
         std::string title_ = ""; //!< Residue title; fill by the first line of each residue section of the file
         CoordinateType coordinate_type_ = prep::kINT; //!< Coordinate type(INT, XYZ); fill by the 2nd column of the
                                                       //!< third line of each residue section of the file

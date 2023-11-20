@@ -69,6 +69,36 @@ PrepResidue::PrepResidue(std::ifstream& in_file, std::string& line)
     }
 }
 
+// Move Ctor
+PrepResidue::PrepResidue(PrepResidue&& other) noexcept : PrepResidue()
+{
+    swap(*this, other);
+}
+
+// Copy Ctor
+PrepResidue::PrepResidue(const PrepResidue& other)
+    : cds::Residue(other), title_(other.title_), coordinate_type_(other.coordinate_type_),
+      output_format_(other.output_format_), geometry_type_(other.geometry_type_),
+      dummy_atom_omission_(other.dummy_atom_omission_), dummy_atom_type_(other.dummy_atom_type_),
+      dummy_atom_position_(other.dummy_atom_position_), charge_(other.charge_),
+      improper_dihedrals_(other.improper_dihedrals_), loops_(other.loops_)
+{ // Bro you gotta loop through the atoms here and copy the info over, cause the cds::Residue(other) copies them as
+  // cds::Atom types. Update no! you can't, they aren't castable cause they aren't PrepAtom types.
+    this->deleteAllAtoms(); // This works, but it points to fundamental design issues.
+    for (auto& otherCdsAtom : other.getAtoms())
+    {
+        PrepAtom* otherAtom = static_cast<PrepAtom*>(otherCdsAtom);
+        this->addAtom(std::make_unique<PrepAtom>(*otherAtom));
+    }
+}
+
+PrepResidue& PrepResidue::operator=(PrepResidue other)
+{
+    cds::Residue::operator=(other);
+    swap(*this, other);
+    return *this;
+}
+
 //////////////////////////////////////////////////////////
 //                           ACCESSOR                   //
 //////////////////////////////////////////////////////////

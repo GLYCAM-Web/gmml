@@ -27,9 +27,27 @@ namespace prep
         //                       Constructor                    //
         //////////////////////////////////////////////////////////
         PrepAtom(const std::string& line);
+        PrepAtom()  = default;
+        ~PrepAtom() = default;
+        PrepAtom(PrepAtom&& other) noexcept;               // Move Ctor
+        explicit PrepAtom(const PrepAtom& other) noexcept; // Copy Ctor
+        PrepAtom& operator=(PrepAtom other) noexcept;      // Move and Copy assignment operator
 
-        ~PrepAtom()
-        {} //{std::cout << "PrepAtom dtor for " << this->getName() << ", ";}
+        friend void swap(PrepAtom& lhs, PrepAtom& rhs) noexcept
+        {
+            std::cout << "PrepAtom swap triggered" << std::endl;
+            using std::swap;
+            swap(static_cast<cds::Atom&>(lhs), static_cast<cds::Atom&>(rhs));
+            swap(lhs.type_, rhs.type_);
+            swap(lhs.topological_type_, rhs.topological_type_);
+            swap(lhs.bond_index_, rhs.bond_index_);
+            swap(lhs.angle_index_, rhs.angle_index_);
+            swap(lhs.dihedral_index_, rhs.dihedral_index_);
+            swap(lhs.bond_length_, rhs.bond_length_);
+            swap(lhs.angle_, rhs.angle_);
+            swap(lhs.dihedral_, rhs.dihedral_);
+            swap(lhs.visitCount_, rhs.visitCount_);
+        }
 
         //////////////////////////////////////////////////////////
         //                         FUNCTIONS                    //
@@ -56,6 +74,7 @@ namespace prep
             return visitCount_;
         }
 
+        std::string GetType() const;
         TopologicalType GetTopologicalType() const;
         int GetBondIndex() const;
         int GetAngleIndex() const;
@@ -66,6 +85,7 @@ namespace prep
         //////////////////////////////////////////////////////////
         //                           MUTATOR                    //
         //////////////////////////////////////////////////////////
+        void SetType(std::string type);
         void SetTopologicalType(TopologicalType topological_type);
         void SetBondIndex(int bond_index);
         void SetAngleIndex(int angle_index);
