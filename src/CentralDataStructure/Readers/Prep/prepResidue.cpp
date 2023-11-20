@@ -84,12 +84,6 @@ PrepResidue::PrepResidue(const PrepResidue& other)
       improper_dihedrals_(other.improper_dihedrals_), loops_(other.loops_)
 { // Bro you gotta loop through the atoms here and copy the info over, cause the cds::Residue(other) copies them as
   // cds::Atom types. Update no! you can't, they aren't castable cause they aren't PrepAtom types.
-    this->deleteAllAtoms(); // This works, but it points to fundamental design issues.
-    for (auto& otherCdsAtom : other.getAtoms())
-    {
-        PrepAtom* otherAtom = static_cast<PrepAtom*>(otherCdsAtom);
-        this->addAtom(std::make_unique<PrepAtom>(*otherAtom));
-    }
 }
 
 PrepResidue& PrepResidue::operator=(PrepResidue other)
