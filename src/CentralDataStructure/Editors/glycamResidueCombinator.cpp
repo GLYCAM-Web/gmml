@@ -1,9 +1,10 @@
-#include "includes/CentralDataStructure/Readers/Prep/prepPermutator.hpp"
+#include "includes/CentralDataStructure/Editors/glycamResidueCombinator.hpp"
+#include "includes/MolecularMetadata/GLYCAM/glycam06LinkageCodes.hpp"
 
-std::vector<std::string> prep::selectAllAtomsThatCanBeSubstituted(std::vector<cds::Atom*> queryAtoms)
+std::vector<std::string> residueCombinator::selectAllAtomsThatCanBeSubstituted(std::vector<cds::Atom*> queryAtoms)
 {
     std::vector<std::string> foundNames;
-    for(auto & atom : queryAtoms )
+    for (auto& atom : queryAtoms)
     {
         if (atom->getType() == "Oh") // If a hydroxyl.
         {
@@ -15,8 +16,8 @@ std::vector<std::string> prep::selectAllAtomsThatCanBeSubstituted(std::vector<cd
     return foundNames;
 }
 
-//ChatGPT made this:
-std::vector<std::vector<std::string>> prep::getCombinations(const std::vector<std::string>& elements)
+// ChatGPT made this:
+std::vector<std::vector<std::string>> residueCombinator::getCombinations(const std::vector<std::string>& elements)
 {
     std::vector<std::vector<std::string>> combinations;
     std::vector<std::string> currentCombination;
@@ -46,36 +47,35 @@ std::vector<std::vector<std::string>> prep::getCombinations(const std::vector<st
     return combinations;
 }
 
-
-std::vector<prep::PrepResidue*> prep::generatePrepPermuations(PrepResidue* starterResidue)
+std::vector<cds::Residue*> residueCombinator::generateResidueCombinations(cds::Residue* starterResidue)
 {
-    std::vector<PrepResidue*> prepPermutations;
     // Find all positions that can be substituted
-
-    std::cout << "Finding hydroxyl oxygen numbers:" << std::endl;
-    std::vector<std::string> atomNumbers = prep::selectAllAtomsThatCanBeSubstituted(starterResidue->getAtoms());
-        // Create the combinations of the numbers
-    std::cout << "Create combos:" << std::endl;
-    std::vector<std::vector<std::string>> numberCombinations = prep::getCombinations(atomNumbers);
+    std::vector<std::string> atomNumbers =
+        residueCombinator::selectAllAtomsThatCanBeSubstituted(starterResidue->getAtoms());
+    // Create the combinations of the numbers
+    std::vector<std::vector<std::string>> numberCombinations = residueCombinator::getCombinations(atomNumbers);
     // Create a prep residue for each of the combinations, copying and modifying the original.
-    for(auto & combination : numberCombinations)
+    std::vector<cds::Residue*> glycamResiduePermutations;
+    for (auto& combination : numberCombinations)
     {
-        std::cout << "Creating a new residue" << std::endl;
-        prepPermutations.emplace_back(new PrepResidue(*starterResidue));
-        std::cout << "Fin" << std::endl;
-        PrepResidue* newResidue = prepPermutations.back();
-        std::cout << "Fin" << std::endl;
-        for(auto & atomNumber : combination)
+        glycamResiduePermutations.emplace_back(new cds::Residue(*starterResidue));
+        cds::Residue* newResidue = glycamResiduePermutations.back();
+        std::string delimiter    = "";
+        std::stringstream numbersAsString;
+        for (auto& atomNumber : combination)
         {
-            std::cout << "atomNumber: " << atomNumber  << std::endl;
+            numbersAsString << delimiter << atomNumber;
+            delimiter           = ",";
             cds::Atom* hydrogen = newResidue->FindAtom("H" + atomNumber + "O");
-            cds::Atom* oxygen = newResidue->FindAtom("O" + atomNumber);
+            cds::Atom* oxygen   = newResidue->FindAtom("O" + atomNumber);
             oxygen->setCharge(oxygen->getCharge() + hydrogen->getCharge() - 0.194);
             newResidue->deleteAtom(hydrogen);
             oxygen->setType("Os");
         }
-        std::string residueName = ""; // // Use the class in #include "includes/MolecularMetadata/GLYCAM/glycam06LinkageCodes.hpp" to figure out the code
+        std::string residueName = GlycamMetadata::GetGlycam06ResidueLinkageCode(numbersAsString.str());
+        residueName             += starterResidue->getName().substr(1);
         newResidue->setName(residueName);
+        std::cout << numbersAsString.str() << ": " << newResidue->getName() << "\n";
     }
-    return prepPermutations;
+    return glycamResiduePermutations;
 }
