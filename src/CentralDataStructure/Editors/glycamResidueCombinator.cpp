@@ -7,8 +7,8 @@ std::vector<std::string> residueCombinator::selectAllAtomsThatCanBeSubstituted(s
     std::vector<std::string> foundNames;
     std::string delimiter = "";
     for (auto& atom : queryAtoms)
-    {
-        if (atom->getType() == "Oh") // If a hydroxyl.
+    { // if a hydroxyl with a digit in the second position of atom name. e.g. O2, not OHG.
+        if (atom->getType() == "Oh" && isdigit(atom->getName().at(1))) // If a hydroxyl.
         {
             foundNames.push_back(atom->getName().substr(1, 1));
             std::cout << delimiter << atom->getName();
