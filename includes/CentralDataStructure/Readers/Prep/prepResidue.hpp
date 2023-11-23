@@ -45,6 +45,7 @@ namespace prep
         kSectionLoop,
         kSectionImproper,
         kSectionDone,
+        kSectionBlank,
         kSectionOther
     };
 
@@ -66,8 +67,7 @@ namespace prep
         PrepResidue(const PrepResidue& other);     // Copy Ctor
         PrepResidue& operator=(PrepResidue other); // Move and Copy assignment operator
 
-        friend void swap(PrepResidue& lhs,
-                         PrepResidue& rhs) // ToDo figure out how to put this in cpp file once everything is working.
+        friend void swap(PrepResidue& lhs, PrepResidue& rhs)
         {
             using std::swap;
             swap(static_cast<cds::Residue&>(lhs), static_cast<cds::Residue&>(rhs));

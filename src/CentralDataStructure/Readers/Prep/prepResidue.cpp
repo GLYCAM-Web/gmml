@@ -38,19 +38,13 @@ PrepResidue::PrepResidue(std::ifstream& in_file, std::string& line)
     /// Process atoms of the residue
     while (getline(in_file, line) && !codeUtils::Trim(line).empty())
     {
+        // cds::Atom* latestAtom = this->addAtom(std::make_unique<PrepAtom>(line));
         this->addAtom(std::make_unique<PrepAtom>(line));
     }
     /// Process the extra sections: IMPROPER, LOOP, DONE
-    bool done = false;
-    while (!done)
-    {
-        /// Skip blank lines until to reach to a known section title
-        getline(in_file, line);
-        while (codeUtils::Trim(line).empty())
-        {
-            getline(in_file, line);
-        }
-        /// Does a corresponding action based on the section title
+    /// Skip blank lines until to reach to a known section title
+    while (getline(in_file, line))
+    { /// Does a corresponding action based on the section title
         switch (ExtractSectionType(line))
         {
             case prep::kSectionLoop:
@@ -60,7 +54,8 @@ PrepResidue::PrepResidue(std::ifstream& in_file, std::string& line)
                 this->ExtractImproperDihedral(in_file);
                 break;
             case prep::kSectionDone:
-                done = true;
+                return;
+            case prep::kSectionBlank:
                 break;
             case prep::kSectionOther:
                 gmml::log(__LINE__, __FILE__, gmml::WAR, "Unrecognized section in prep file");
