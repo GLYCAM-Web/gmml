@@ -72,10 +72,25 @@ int codeUtils::GetSizeOfIntInString(const std::string str)
     return size;
 }
 
+#include <iostream>
+
 std::string& codeUtils::Trim(std::string& str)
 {
-    str.erase(str.find_last_not_of(" ") + 1);
-    str.erase(0, str.find_first_not_of(" "));
+    if (str.size() > 2)
+    {
+        // Find last thing that isn't a space and delete from there to end.
+        std::size_t lastNotSpacePosition = str.find_last_not_of(" ") + 1;
+        if (lastNotSpacePosition < str.size())
+        {
+            str.erase(lastNotSpacePosition);
+        }
+        // Find first thing that isn't a space and delete from start to there.
+        std::size_t firstNotSpacePosition = str.find_first_not_of(" ");
+        if (firstNotSpacePosition > 0)
+        {
+            str.erase(0, str.find_first_not_of(" "));
+        }
+    }
     return str;
 }
 
