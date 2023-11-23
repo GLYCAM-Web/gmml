@@ -7,16 +7,8 @@
 int main()
 {
     std::string prepFilePath                        = "../dat/prep/GLYCAM_06j-1_GAGS.prep";
-    // std::string condensed_sequence =
-    // "LIdopAa1-4DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-8DNeup5Aca2-8DNeup5Aca2-6DGalpb1-4DGlcpNAc[6S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH";
-    //    prep::PrepFile glycamPrepFile(prepFilePath);
-    //    for ( auto &prepResidue : glycamPrepFile.getResidues() )
-    //    {
-    //    	prepResidue->SetConnectivities();
-    //    }
-    //    std::cout << "*\n*\n*\n*\n*\n*\n*\n*\n*\n";
     std::vector<std::string> residuesToLoadFromPrep = {"0GA", "4YB", "4uA", "Cake", "4YA"};
-    //      std::vector<std::string> residuesToLoadFromPrep = {"0GA"};
+    // std::vector<std::string> residuesToLoadFromPrep = {"0GA"};
     prep::PrepFile glycamPrepFileSelect(prepFilePath, residuesToLoadFromPrep);
     // PREP residues
     glycamPrepFileSelect.Write("./prepAsPrepFile.prep");
@@ -62,18 +54,5 @@ int main()
     {
         gmml::log(__LINE__, __FILE__, gmml::ERR, "Error when writing to file:\n" + fileName);
         throw std::runtime_error("Error when writing to file:\n" + fileName);
-    }
-    // Ok now combinator:
-    residuesToLoadFromPrep = {"0GA"};
-    prep::PrepFile glycamPrepFile(prepFilePath, residuesToLoadFromPrep);
-    for (auto& residue : glycamPrepFile.getResidues())
-    {
-        std::vector<cds::Residue*> newResidues = residueCombinator::generateResidueCombinations(residue);
-        newResidues.push_back(residue);
-        std::ofstream outFileStream;
-        std::string fileName = residue->getName() + ".lib";
-        outFileStream.open(fileName.c_str());
-        cds::WriteResiduesToOffFile(newResidues, outFileStream);
-        outFileStream.close();
     }
 }
