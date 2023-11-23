@@ -17,7 +17,6 @@ using prep::PrepFile;
 PrepFile::PrepFile(const std::string& prep_file)
 {
     this->setName("prepFile");
-    //	std::cout << "Constructor entered" << std::endl;
     codeUtils::ensureFileExists(prep_file);
     std::ifstream in_file(prep_file.c_str());
     if (in_file.is_open())
@@ -122,15 +121,13 @@ void PrepFile::ReadAllResidues(std::ifstream& in_file)
     {
         this->addResidue(std::make_unique<PrepResidue>(in_file, line));
         getline(in_file, line); // This should be first line of next residue entry or STOP.
-        // std::cout << "Back out and line is: " << line << std::endl;
     }
-    // std::cout << "Ok this is done with line as:\n " << line << std::endl;
 }
 
 // Reads each line of the file. If it finds one of the query residues it reads it in. Won't read in query repeats twice.
 void PrepFile::ReadQueryResidues(std::ifstream& in_file, const std::vector<std::string>& queryNames)
 {
-    std::string line;
+    std::string line = "";
     getline(in_file, line);
     getline(in_file, line); // first two lines of the file are always blank apparently. smh.
     getline(in_file, line); // This should be first line of residue entry. Title.
@@ -142,14 +139,12 @@ void PrepFile::ReadQueryResidues(std::ifstream& in_file, const std::vector<std::
         getline(in_file, line);                                                 // blank line
         getline(in_file, line);                                                 // residue name appears here
         std::vector<std::string> residueNameLine = codeUtils::split(line, ' '); // front() string will be name
-        // std::cout << "Current residue name is: " << residueNameLine.front() << std::endl;
         if (std::find(queryNames.begin(), queryNames.end(), residueNameLine.front()) != queryNames.end())
         {
-            //    		std::cout << "Found query residue: " << residueNameLine.front() << "\n";
             int numberOfTimesToReadInResidue =
                 std::count(queryNames.begin(), queryNames.end(), residueNameLine.front());
-            //    		std::cout << residueNameLine.front() << " will be read in " <<
-            //    numberOfTimesToReadInResidue << " times.\n";
+            //                		std::cout << residueNameLine.front() << " will be read in " <<
+            //                numberOfTimesToReadInResidue << " times.\n";
             while (numberOfTimesToReadInResidue > 0)
             {
                 in_file.seekg(firstResidueLinePosition); // go back here so the residue constructor works
