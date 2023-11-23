@@ -245,6 +245,25 @@ void Residue::MakeDeoxy(std::string oxygenNumber)
     gmml::log(__LINE__, __FILE__, gmml::INF, "Completed MakeDeoxy\n");
 }
 
+void Residue::RemoveHydroxyHydrogen(std::string hydrogenNumber)
+{
+    cds::Atom* hydrogen = this->FindAtom("H" + hydrogenNumber + "O");
+    cds::Atom* oxygen   = this->FindAtom("O" + hydrogenNumber);
+    if (hydrogen == nullptr || oxygen == nullptr)
+    {
+        std::string message =
+            "Cannot find appropriately named atoms in residue. Glycam combinations cannot be created. Oxygen should be "
+            "named e.g. O2 and not 2O. Hydrogen to be substituted should be H2O and not HO2. Both must be present. "
+            "This was a fatal issue for the atom numbered: " +
+            hydrogenNumber + " in residue: " + this->getName();
+        gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+        throw std::runtime_error(message);
+    }
+    oxygen->setCharge(oxygen->getCharge() + hydrogen->getCharge() - 0.194);
+    this->deleteAtom(hydrogen);
+    oxygen->setType("Os");
+}
+
 const Coordinate* Residue::calculateGeometricCenter()
 {
     geometricCenter_ = cds::calculateGeometricCenter(this->getCoordinates());

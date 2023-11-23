@@ -113,6 +113,7 @@ namespace cds
         std::vector<const Atom*> getAtomsConnectedToOtherResidues() const;
         std::vector<std::pair<const Atom*, const Atom*>> getAtomPairsConnectedToOtherResidues() const;
         void MakeDeoxy(std::string oxygenNumber);
+        void RemoveHydroxyHydrogen(std::string hydrogenNumber);
         const Coordinate* calculateGeometricCenter();
         ResidueType determineType(const std::string& residueName);
         //////////////////////////////////////////////////////////
