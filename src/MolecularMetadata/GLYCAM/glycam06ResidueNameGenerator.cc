@@ -95,8 +95,8 @@ namespace gmml
                     configurationCode = ""; // Make it empty, it will implied by residueCode
                 }
                 // D vs L sugars. Residue code will be lowercase for L sugars
-                if (isomer == "L") //&& (residueCode.size() == 1))
-                {                  // Update: I think it should always lower, even for e.g. YS, KO, etc,
+                if (isomer == "L")
+                {
                     residueCode.at(0) = std::tolower(residueCode.at(0));
                 }
                 // ConfigurationCode may be empty.
