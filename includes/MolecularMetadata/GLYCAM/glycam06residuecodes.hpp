@@ -25,11 +25,7 @@ namespace gmml
                 //////////////////////////////////////////////////////////
                 //                       CONSTRUCTOR                    //
                 //////////////////////////////////////////////////////////
-                /*! \fn
-                 * Default constructor
-                 */
                 Glycam06ResidueNamesToCodesLookupContainer();
-
                 //////////////////////////////////////////////////////////
                 //                         TYPEDEFS                     //
                 //////////////////////////////////////////////////////////
@@ -37,9 +33,6 @@ namespace gmml
                 //////////////////////////////////////////////////////////
                 //                      QUERY FUNCTIONS                 //
                 //////////////////////////////////////////////////////////
-
-                // The below function has no code in the .cc file, so GEMS breaks.  Commented out for now -DM
-                //  std::string GetCodeForResidue(std::string query);
                 std::string GetResidueForCode(std::string query) const;
                 std::string GetCodeForResidue(std::string query) const;
 

@@ -140,8 +140,14 @@ Glycam06ResidueNamesToCodesLookupContainer::Glycam06ResidueNamesToCodesLookupCon
         {        "Tag",   "J", "Saccharide"},
         {        "Tal",   "T", "Saccharide"},
         {        "Xyl",   "X", "Saccharide"},
-        {      "GlcNS",  "YS", "Saccharide"},
-        {       "Tyvp",  "TV", "Saccharide"}, // Can be alpha or beta. Feck.
+        {   "DGlcpNSa",  "YS", "Saccharide"},
+        {   "DGlcpNSb",  "Ys", "Saccharide"},
+        {    "DGlcpNa",  "YN", "Saccharide"},
+        {    "DGlcpNb",  "Yn", "Saccharide"},
+        {   "DGlcpNPa", "YNP", "Saccharide"},
+        {   "DGlcpNPb", "YnP", "Saccharide"},
+        {     "DTyvpa",  "TV", "Saccharide"},
+        {     "DTyvpb",  "Tv", "Saccharide"},
         {        "dUA",  "45", "Saccharide"}, // Unsaturated 4,5-unsaturated uronate.
         {"LIdopA(1C4)", "uA1", "Saccharide"}, // e.g 0uA1 with the 1 over-running.
         {"LIdopA(2SO)", "uA2", "Saccharide"},
