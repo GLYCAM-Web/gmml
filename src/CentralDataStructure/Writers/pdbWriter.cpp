@@ -75,7 +75,7 @@ void cds::writeAtomToPdb(std::ostream& stream, const cds::Atom* atom, const std:
     stream << std::right << std::setw(5) << atom->getNumber() << std::left << std::setw(1) << " ";
     stream << std::left << std::setw(4) << atom->getName();
     stream << std::left << std::setw(1) << residueAlternativeLocation;
-    stream << std::right << std::setw(3) << residueName << std::left << std::setw(1) << " ";
+    stream << std::right << std::setw(3) << residueName.substr(0, 3) << std::left << std::setw(1) << " ";
     stream << std::left << std::setw(1) << chainId;
     stream << std::right << std::setw(4) << residueNumber;
     stream << std::left << std::setw(1) << insertionCode << std::left << std::setw(3) << " ";
