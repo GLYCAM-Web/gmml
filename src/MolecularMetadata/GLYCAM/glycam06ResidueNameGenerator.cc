@@ -92,7 +92,7 @@ namespace gmml
                 }
                 if (residueCode.size() > 1)
                 {
-                    configurationCode = ""; // Make it empty, it will implied by residueCode
+                    configurationCode = ""; // Make it empty, in this case it will implied by residueCode
                 }
                 // D vs L sugars. Residue code will be lowercase for L sugars
                 if (isomer == "L")

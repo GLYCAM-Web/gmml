@@ -20,8 +20,7 @@ Test level caught runtime error: Did not find prep entry for LIdopA(2SO)a1-4 wit
 -----------------------------------------------------------------------------------------------------
 
 Sequence 5: dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
-Test level caught runtime error: No Metadata entries found for connection between 4uA3@C1 and UYS@O4
-Note that order should be reducing atom - anomeric atom, but I've tried reversing the order and it didn't fix the issue.
+Carbohydrate created without throwing an exception for: dUA[2S]a1-4DGlcpNSa1-4LIdopA[2S]a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNS[6S]a1-OH
 
 -----------------------------------------------------------------------------------------------------
 
