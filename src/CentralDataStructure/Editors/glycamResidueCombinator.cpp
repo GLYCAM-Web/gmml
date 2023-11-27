@@ -11,11 +11,11 @@ std::vector<std::string> residueCombinator::selectAllAtomsThatCanBeSubstituted(s
         if (atom->getType() == "Oh" && isdigit(atom->getName().at(1))) // If a hydroxyl.
         {
             foundNames.push_back(atom->getName().substr(1, 1));
-            std::cout << delimiter << atom->getName();
-            delimiter = ",";
+            //            std::cout << delimiter << atom->getName();
+            //            delimiter = ",";
         }
     }
-    std::cout << "\nDone selecting atoms" << std::endl;
+    //    std::cout << "\nDone selecting atoms" << std::endl;
     return foundNames;
 }
 
@@ -92,7 +92,7 @@ std::vector<cds::Residue*> residueCombinator::generateResidueCombinations(cds::R
         {
             residueName += starterResidue->getName().substr(1);
             newResidue->setName(residueName);
-            std::cout << numbersAsString.str() << ": " << newResidue->getName() << "\n";
+            // std::cout << numbersAsString.str() << ": " << newResidue->getName() << "\n";
         }
     }
     return glycamResiduePermutations;

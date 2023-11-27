@@ -12,9 +12,9 @@ int main(int argc, char* argv[])
         std::cout << "Exmpl: " << argv[0] << "../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep";
         std::exit(1);
     }
-    std::string inputFile = argv[1];
-    std::cout << "Test 027 Input file is " << inputFile << "\n";
-    // std::vector<std::string> residuesToLoadFromPrep = {"0GA", "0YB"};
+    std::string inputFile                           = argv[1];
+    // std::cout << "Test 027 Input file is " << inputFile << "\n";
+    //  std::vector<std::string> residuesToLoadFromPrep = {"0GA", "0YB"};
     std::vector<std::string> residuesToLoadFromPrep = {
         {"0AA"}, {"0AB"}, {"0AD"}, {"0AU"}, {"0BA"}, {"0BB"}, {"0BC"}, {"0BD"}, {"0BU"}, {"0CA"}, {"0CB"}, {"0CD"},
         {"0CU"}, {"0DA"}, {"0DB"}, {"0DD"}, {"0DU"}, {"0EA"}, {"0EB"}, {"0FA"}, {"0FB"}, {"0GA"}, {"0GB"}, {"0GL"},
@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
     allTheResidues.reserve(residuesToLoadFromPrep.size() * 10);
     for (auto& residue : glycamPrepFile.getResidues())
     {
-        std::cout << "Generating those combos boi" << std::endl;
+        //   std::cout << "Generating those combos boi" << std::endl;
         std::vector<cds::Residue*> newResidues = residueCombinator::generateResidueCombinations(residue);
         newResidues.push_back(residue);
         std::ofstream outFileStream;
