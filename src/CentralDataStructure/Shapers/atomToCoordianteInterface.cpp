@@ -52,13 +52,11 @@ void cds::FindAtomsToMoveSetDistance(cds::Atom* parentAtom, cds::Atom* childAtom
 { // Figure out distance
     //    std::cout << "parent is " << parentAtom->getName() << " " << parentAtom->getCoordinate()->ToString() << "\n";
     //    std::cout << "child is " << childAtom->getName() << " " << childAtom->getCoordinate()->ToString() << "\n";
-    gmml::MolecularMetadata::GLYCAM::BondLengthByTypePairContainer bondLengthByTypePairContainer;
     // std::cout << "Types for parent is " << parentAtom->getType() << " and child is " << childAtom->getType() << "\n";
-    double distance =
-        bondLengthByTypePairContainer.GetBondLengthForAtomTypes(parentAtom->getType(), childAtom->getType());
+    double distance = GlycamMetadata::GetBondLengthForAtomTypes(parentAtom->getType(), childAtom->getType());
     // std::cout << "distance to new atom sill be: " << distance << "\n";
     //  Create an atom c that is will superimpose onto the a atom, bringing b atom with it.
-    Coordinate c = cds::GuessMissingCoordinateForAtom(childAtom, distance);
+    Coordinate c    = cds::GuessMissingCoordinateForAtom(childAtom, distance);
     // std::cout << "New tetraAtom for child is: " << c.ToString() << "\n";
     Coordinate cToParent(parentAtom->getCoordinate()->GetX() - c.GetX(), parentAtom->getCoordinate()->GetY() - c.GetY(),
                          parentAtom->getCoordinate()->GetZ() - c.GetZ());

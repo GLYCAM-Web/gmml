@@ -257,9 +257,8 @@ void GeometryTopology::SetAngle(Coordinate* a1, Coordinate* a2, Coordinate* a3, 
 
 void GeometryTopology::SetDistance(MolecularModeling::Atom* a, MolecularModeling::Atom* b)
 { // Figure out distance
-    gmml::MolecularMetadata::GLYCAM::BondLengthByTypePairContainer bondLengthByTypePairContainer;
-    double distance = bondLengthByTypePairContainer.GetBondLengthForAtomTypes(a->MolecularDynamicAtom::GetAtomType(),
-                                                                              b->MolecularDynamicAtom::GetAtomType());
+    double distance = GlycamMetadata::GetBondLengthForAtomTypes(a->MolecularDynamicAtom::GetAtomType(),
+                                                                b->MolecularDynamicAtom::GetAtomType());
     // Figure out position of where the b atom should end up relative to a
     Coordinate c    = GeometryTopology::CreateMissingCoordinateForTetrahedralAtom(a, distance);
     // Figure out which atoms will move

@@ -234,9 +234,7 @@ void Assembly::SetResidueResidueBondDistance(MolecularModeling::Atom* tail_atom,
     // entry = amberAtomTypeInfoContainer.GetEntryWithAtomType(tail_atom_type);
     // std::string tail_atom_hybridization = entry.hybridization_; // OG: This is never used...
 
-    gmml::MolecularMetadata::GLYCAM::BondLengthByTypePairContainer bondLengthByTypePairContainer;
-    double head_tail_bond_length =
-        bondLengthByTypePairContainer.GetBondLengthForAtomTypes(tail_atom_type, head_atom_type);
+    double head_tail_bond_length = GlycamMetadata::GetBondLengthForAtomTypes(tail_atom_type, head_atom_type);
     // End Oliver 2018-10-26 replacement code
 
     // for sp3 and sp2 hybridzation, sum up all bond vectors between tail atom and neighbors excluding head. Then

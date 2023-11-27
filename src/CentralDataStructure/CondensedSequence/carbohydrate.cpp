@@ -524,7 +524,7 @@ std::string Carbohydrate::GetGlycamResidueName(ParsedResidue* residue) const
         //                  "Checking for glycosidic linkages that connect to " + residue->GetResidueName());
         linkages = residue->GetChildLinkagesForGlycamResidueNaming();
     }
-    std::string code = gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNameGenerator(
+    std::string code = GlycamMetadata::Glycam06ResidueNameGenerator(
         linkages, residue->GetIsomer(), residue->GetResidueName(), residue->GetRingType(),
         residue->GetResidueModifier() + residue->GetRingShape(), residue->GetConfiguration());
     return code;
