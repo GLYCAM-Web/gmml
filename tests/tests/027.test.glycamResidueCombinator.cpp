@@ -37,11 +37,11 @@ int main(int argc, char* argv[])
         //   std::cout << "Generating those combos boi" << std::endl;
         std::vector<cds::Residue*> newResidues = residueCombinator::generateResidueCombinations(residue);
         newResidues.push_back(residue);
-        std::ofstream outFileStream;
-        std::string fileName = residue->getName() + ".lib";
-        outFileStream.open(fileName.c_str());
-        cds::WriteResiduesToOffFile(newResidues, outFileStream);
-        outFileStream.close();
+        //        std::ofstream outFileStream;
+        //        std::string fileName = residue->getName() + ".lib";
+        //        outFileStream.open(fileName.c_str());
+        //        cds::WriteResiduesToOffFile(newResidues, outFileStream);
+        //        outFileStream.close();
         allTheResidues.insert(allTheResidues.end(), newResidues.begin(), newResidues.end());
     }
     std::ofstream outFileStream;

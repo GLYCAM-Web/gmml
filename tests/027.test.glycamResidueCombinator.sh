@@ -12,7 +12,7 @@ fi
 g++ -std=c++17 -I "${GMML_ROOT_DIR}"/ -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ tests/027.test.glycamResidueCombinator.cpp -lgmml -pthread -o 027.glycamResiduecombinator.exe
 ./027.glycamResiduecombinator.exe ../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep
 
-fileList=("0GA.lib" "0YB.lib")
+fileList=("GLYCAM06k.lib")
 for file in "${fileList[@]}"; do
     if [ ! -f "${file}" ]; then
         echo -e "Test FAILED!\n ${file} does not exist\n"
