@@ -130,7 +130,6 @@
 #include "MolecularMetadata/GLYCAM/glycam06residueinfo.hpp"
 #include "MolecularMetadata/GLYCAM/amberatomtypeinfo.hpp"
 #include "MolecularMetadata/GLYCAM/dihedralangledata.hpp"
-#include "MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
 #include "MolecularMetadata/AMBER/amberelements.hpp"
 #include "MolecularModeling/assembly.hpp"
 #include "MolecularModeling/atom.hpp"

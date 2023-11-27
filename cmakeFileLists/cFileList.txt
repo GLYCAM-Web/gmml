@@ -187,12 +187,9 @@
 ./src/MolecularMetadata/GLYCAM/amberatomtypeinfo.cpp
 ./src/MolecularMetadata/GLYCAM/amberelements.cpp
 ./src/MolecularMetadata/GLYCAM/bondlengthbytypepair.cpp
-./src/MolecularMetadata/GLYCAM/dihedralangledata.cc
-./src/MolecularMetadata/GLYCAM/glycam06DerivativeAglyconeInfo.cpp
-./src/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.cpp
-./src/MolecularMetadata/GLYCAM/glycam06LinkageCodes.cc
-./src/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.cc
-./src/MolecularMetadata/GLYCAM/glycam06residuecodes.cc
+./src/MolecularMetadata/GLYCAM/dihedralangledata.cpp
+./src/MolecularMetadata/GLYCAM/glycam06Functions.cpp
+./src/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.cpp
 ./src/MolecularMetadata/GLYCAM/glycam06residueinfo.cpp
 ./src/MolecularMetadata/atomicBonds.cpp
 ./src/MolecularMetadata/element.cc

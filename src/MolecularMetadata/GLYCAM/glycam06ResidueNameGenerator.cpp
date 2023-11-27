@@ -1,6 +1,5 @@
 #include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp"
-#include "includes/MolecularMetadata/GLYCAM/glycam06LinkageCodes.hpp"
-#include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
+#include "includes/MolecularMetadata/GLYCAM/glycam06Functions.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include <locale> // for isLower()
 
@@ -65,22 +64,20 @@ namespace gmml
                 }
 
                 // Residue Code e.g. G, U, A, KN, ROH, NLN
-                Glycam06ResidueNamesToCodesLookupContainer ResidueCodeLookup;
-                std::string residueCode = ResidueCodeLookup.GetCodeForResidue(inputResName + residueModifier);
+                std::string residueCode = GlycamMetadata::GetCodeForName(inputResName + residueModifier);
                 if (residueCode.empty())
                 {
                     residueCode =
-                        ResidueCodeLookup.GetCodeForResidue(inputResName + ringType + residueModifier + configuration);
+                        GlycamMetadata::GetCodeForName(inputResName + ringType + residueModifier + configuration);
                 }
                 if (residueCode.empty())
                 {
-                    residueCode = ResidueCodeLookup.GetCodeForResidue(isomer + inputResName + ringType +
-                                                                      residueModifier + configuration);
+                    residueCode = GlycamMetadata::GetCodeForName(isomer + inputResName + ringType + residueModifier +
+                                                                 configuration);
                 }
                 if (residueCode.empty())
                 {
-                    residueCode =
-                        ResidueCodeLookup.GetCodeForResidue(isomer + inputResName + ringType + residueModifier);
+                    residueCode = GlycamMetadata::GetCodeForName(isomer + inputResName + ringType + residueModifier);
                 }
                 if (residueCode.empty())
                 {

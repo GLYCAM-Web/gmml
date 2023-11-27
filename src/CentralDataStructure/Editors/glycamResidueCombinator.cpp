@@ -1,5 +1,5 @@
 #include "includes/CentralDataStructure/Editors/glycamResidueCombinator.hpp"
-#include "includes/MolecularMetadata/GLYCAM/glycam06LinkageCodes.hpp"
+#include "includes/MolecularMetadata/GLYCAM/glycam06Functions.hpp"
 #include "includes/CodeUtils/logging.hpp"
 
 std::vector<std::string> residueCombinator::selectAllAtomsThatCanBeSubstituted(std::vector<cds::Atom*> queryAtoms)

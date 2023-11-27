@@ -1,8 +1,7 @@
 #include "includes/CentralDataStructure/CondensedSequence/carbohydrate.hpp"
-#include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeAglyconeInfo.hpp"
-#include "includes/MolecularMetadata/GLYCAM/glycam06DerivativeChargeAdjustment.hpp"
-#include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp" // To get glycam name for ParsedResidue
-#include "includes/Abstract/absResidue.hpp"                                   // For the Residue::Type
+#include "includes/MolecularMetadata/GLYCAM/glycam06Functions.hpp"
+#include "includes/MolecularMetadata/GLYCAM/glycam06ResidueNameGenerator.hpp"
+#include "includes/Abstract/absResidue.hpp" // For the Residue::Type
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/files.hpp"
 #include "includes/CentralDataStructure/residue.hpp"
@@ -312,11 +311,10 @@ void Carbohydrate::MoveAtomsFromPrepResidueToParsedResidue(prep::PrepFile& prepR
 
 void Carbohydrate::DerivativeChargeAdjustment(ParsedResidue* parsedResidue)
 {
-    gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeChargeAdjustmentLookupContainer lookup;
-    std::string adjustAtomName = lookup.GetAdjustmentAtom(parsedResidue->getName());
+    std::string adjustAtomName = GlycamMetadata::GetAdjustmentAtom(parsedResidue->getName());
     adjustAtomName             += parsedResidue->GetLinkageName().substr(0, 1);
     cds::Atom* atomToAdjust    = parsedResidue->GetParent()->FindAtom(adjustAtomName);
-    atomToAdjust->setCharge(atomToAdjust->getCharge() + lookup.GetAdjustmentCharge(parsedResidue->getName()));
+    atomToAdjust->setCharge(atomToAdjust->getCharge() + GlycamMetadata::GetAdjustmentCharge(parsedResidue->getName()));
     // Log it:
     //    std::stringstream ss;
     //    ss << "Charge Adjustment.\n"
@@ -359,8 +357,7 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
     std::string childAtomName, parentAtomName;
     if (parentResidue->GetType() == ResidueType::Aglycone)
     {
-        gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeAglyconeConnectionAtomLookup connectionAtomLookup;
-        parentAtomName = connectionAtomLookup.GetConnectionAtomForResidue(parentResidue->getName());
+        parentAtomName = GlycamMetadata::GetConnectionAtomForResidue(parentResidue->getName());
         parentAtom     = parentResidue->FindAtom(parentAtomName);
     }
     else if (parentResidue->GetType() == ResidueType::Sugar)
@@ -404,9 +401,8 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
     // Now get child atom
     if (childResidue->GetType() == ResidueType::Derivative)
     {
-        gmml::MolecularMetadata::GLYCAM::Glycam06DerivativeAglyconeConnectionAtomLookup connectionAtomLookup;
         std::string glycamNameForResidue = this->GetGlycamResidueName(static_cast<ParsedResidue*>(childResidue));
-        childAtomName                    = connectionAtomLookup.GetConnectionAtomForResidue(glycamNameForResidue);
+        childAtomName                    = GlycamMetadata::GetConnectionAtomForResidue(glycamNameForResidue);
     }
     else if (childResidue->GetType() == ResidueType::Sugar)
     {

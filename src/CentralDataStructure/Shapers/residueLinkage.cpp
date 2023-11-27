@@ -1,6 +1,6 @@
 #include "includes/CentralDataStructure/Shapers/residueLinkage.hpp"
 #include "includes/CentralDataStructure/Selections/shaperSelections.hpp"
-#include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"     // For lookup in GetName function
+#include "includes/MolecularMetadata/GLYCAM/glycam06Functions.hpp" // For GetDescriptiveNameForGlycamResidueName in GetName function
 #include "includes/CentralDataStructure/Selections/residueSelections.hpp" //FindConnectedResidues()
 
 using cds::ResidueLinkage;
@@ -144,15 +144,16 @@ std::vector<cds::Residue*>& ResidueLinkage::GetReducingOverlapResidues()
 
 std::string ResidueLinkage::DetermineLinkageNameFromResidueNames() const
 {
-    gmml::MolecularMetadata::GLYCAM::Glycam06ResidueNamesToCodesLookupContainer nameLookup;
-    std::string residue1Name = nameLookup.GetResidueForCode(this->GetFromThisResidue1()->getName());
-    std::string residue2Name = nameLookup.GetResidueForCode(this->GetToThisResidue2()->getName());
+    std::string residue1Name =
+        GlycamMetadata::GetDescriptiveNameForGlycamResidueName(this->GetFromThisResidue1()->getName());
+    std::string residue2Name =
+        GlycamMetadata::GetDescriptiveNameForGlycamResidueName(this->GetToThisResidue2()->getName());
     // std::cout << this->GetFromThisConnectionAtom1()->GetName() << std::endl;
     // std::cout << this->GetToThisConnectionAtom2()->GetName() << std::endl;
-    std::string atom1Name    = this->GetFromThisConnectionAtom1()->getName();
-    std::string atom2Name    = this->GetToThisConnectionAtom2()->getName();
-    char link1               = *atom1Name.rbegin(); //
-    char link2               = *atom2Name.rbegin(); // Messy for Acetyl.
+    std::string atom1Name = this->GetFromThisConnectionAtom1()->getName();
+    std::string atom2Name = this->GetToThisConnectionAtom2()->getName();
+    char link1            = *atom1Name.rbegin(); //
+    char link2            = *atom2Name.rbegin(); // Messy for Acetyl.
     std::stringstream linkageName;
     linkageName << residue1Name << link1 << "-" << link2 << residue2Name;
     return linkageName.str();
