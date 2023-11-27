@@ -171,8 +171,6 @@ try	{
 #include "includes/MolecularMetadata/AMBER/amberelements.hpp"
 #include "includes/MolecularMetadata/element.hpp"
 #include "includes/MolecularMetadata/molecularmetadata.hpp"
-#include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
-
 #include "includes/MolecularModeling/moleculardynamicatom.hpp"
 #include "includes/MolecularModeling/atom.hpp"
 #include "includes/MolecularModeling/residue.hpp"
@@ -347,7 +345,6 @@ std::ostream & get_cout() { return std::cout; }
 %include "includes/MolecularMetadata/AMBER/amberelements.hpp"
 %include "includes/MolecularMetadata/element.hpp"
 %include "includes/MolecularMetadata/molecularmetadata.hpp"
-%include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
 
 %include "includes/MolecularModeling/moleculardynamicatom.hpp"
 %include "includes/MolecularModeling/atom.hpp"
