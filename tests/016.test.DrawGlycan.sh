@@ -7,17 +7,6 @@ if [[ "${GMML_ROOT_DIR}" != *"gmml" ]]; then
     exit 1
 fi
 
-#I am sorry for I have sinned, this is lazy and gross. I didnt want
-#to deal with doing weird regex stuff within the diff file so I just
-#back up the og test files then change the ones that will actually
-#be changed so the pathing matches up to the bare metal paths
-if [[ "${GMML_ROOT_DIR}" != "/programs/gems/gmml" ]]; then
-    cp tests/correct_outputs/016.output_drawGlycan.txt tests/correct_outputs/016.output_drawGlycan.txt_backup
-    sed -i -e "s#/programs/gems/gmml#${GMML_ROOT_DIR}#g" tests/correct_outputs/016.output_drawGlycan.txt
-    #reverts our file back to normal once script exits and delets the backup
-    trap 'cp -f tests/correct_outputs/016.output_drawGlycan.txt_backup tests/correct_outputs/016.output_drawGlycan.txt && rm tests/correct_outputs/016.output_drawGlycan.txt_backup' EXIT
-fi
-
 printf "Testing 016.test.DrawGlycan.cc..."
 g++ -std=c++17 -I "${GMML_ROOT_DIR}"/ -I "${GMML_ROOT_DIR}"/ -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ tests/016.test.DrawGlycan.cc -lgmml -pthread -o drawGlycan
 ./drawGlycan >016.output_drawGlycan.txt

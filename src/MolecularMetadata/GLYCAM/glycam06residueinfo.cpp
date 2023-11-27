@@ -4,7 +4,7 @@
  * GLYCAM06 metadata for residues
  *
  * This file was generated automatically on:
- *     Mo 12 Jun 2023 12:33:53 CEST
+ *     Fr 24 Nov 2023 14:12:48 CET
  *
  * by a script named:
  *     1_make_glycam06_residue_tag_lookup.bash
@@ -7127,7 +7127,7 @@ Glycam06NamesToTypesLookupContainer::Glycam06NamesToTypesLookupContainer()
         { "ZzB",               "gauche-effect=na"},
         { "ZzB",                           "beta"},
         { "ZzB",                       "L-isomer"},
- //    Names:    0uA 1uA 2uA 3uA 4uA TuA WuA YuA ZuA
+ //    Names:    0uA 0uA1 1uA 2uA 3uA 4uA 4uA1 4uA2 4uA3 TuA WuA YuA ZuA
   //    Types:     carbohydrate monosaccharide pyranose aldose n-carbon=6 formal-charge=-1 uronate
   //    gauche-effect=na  alpha L-isomer
         { "0uA",                   "carbohydrate"},
@@ -7140,6 +7140,16 @@ Glycam06NamesToTypesLookupContainer::Glycam06NamesToTypesLookupContainer()
         { "0uA",               "gauche-effect=na"},
         { "0uA",                          "alpha"},
         { "0uA",                       "L-isomer"},
+        {"0uA1",                   "carbohydrate"},
+        {"0uA1",                 "monosaccharide"},
+        {"0uA1",                       "pyranose"},
+        {"0uA1",                         "aldose"},
+        {"0uA1",                     "n-carbon=6"},
+        {"0uA1",               "formal-charge=-1"},
+        {"0uA1",                        "uronate"},
+        {"0uA1",               "gauche-effect=na"},
+        {"0uA1",                          "alpha"},
+        {"0uA1",                       "L-isomer"},
         { "1uA",                   "carbohydrate"},
         { "1uA",                 "monosaccharide"},
         { "1uA",                       "pyranose"},
@@ -7180,6 +7190,36 @@ Glycam06NamesToTypesLookupContainer::Glycam06NamesToTypesLookupContainer()
         { "4uA",               "gauche-effect=na"},
         { "4uA",                          "alpha"},
         { "4uA",                       "L-isomer"},
+        {"4uA1",                   "carbohydrate"},
+        {"4uA1",                 "monosaccharide"},
+        {"4uA1",                       "pyranose"},
+        {"4uA1",                         "aldose"},
+        {"4uA1",                     "n-carbon=6"},
+        {"4uA1",               "formal-charge=-1"},
+        {"4uA1",                        "uronate"},
+        {"4uA1",               "gauche-effect=na"},
+        {"4uA1",                          "alpha"},
+        {"4uA1",                       "L-isomer"},
+        {"4uA2",                   "carbohydrate"},
+        {"4uA2",                 "monosaccharide"},
+        {"4uA2",                       "pyranose"},
+        {"4uA2",                         "aldose"},
+        {"4uA2",                     "n-carbon=6"},
+        {"4uA2",               "formal-charge=-1"},
+        {"4uA2",                        "uronate"},
+        {"4uA2",               "gauche-effect=na"},
+        {"4uA2",                          "alpha"},
+        {"4uA2",                       "L-isomer"},
+        {"4uA3",                   "carbohydrate"},
+        {"4uA3",                 "monosaccharide"},
+        {"4uA3",                       "pyranose"},
+        {"4uA3",                         "aldose"},
+        {"4uA3",                     "n-carbon=6"},
+        {"4uA3",               "formal-charge=-1"},
+        {"4uA3",                        "uronate"},
+        {"4uA3",               "gauche-effect=na"},
+        {"4uA3",                          "alpha"},
+        {"4uA3",                       "L-isomer"},
         { "TuA",                   "carbohydrate"},
         { "TuA",                 "monosaccharide"},
         { "TuA",                       "pyranose"},

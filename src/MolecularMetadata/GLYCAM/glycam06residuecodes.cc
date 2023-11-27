@@ -1,4 +1,5 @@
-#include "../../../includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
+#include "includes/MolecularMetadata/GLYCAM/glycam06residuecodes.hpp"
+#include "includes/CodeUtils/logging.hpp"
 #include <iostream> // for cout, can remove after debug
 #include <locale>   // for isLower()
 #include <sstream>  // for stringstream
@@ -31,7 +32,9 @@ std::string Glycam06ResidueNamesToCodesLookupContainer::GetResidueForCode(std::s
     //    std::cout << "Input name is " << residueNameInGLYCAMFormat << std::endl;
     if (residueNameInGLYCAMFormat.length() < 3)
     {
-        return "PrObLeM";
+        std::string message = "Residue name is too short: " + residueNameInGLYCAMFormat;
+        gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+        throw std::runtime_error(message);
     }
 
     for (const auto& entry : ResidueNamesCodesTypesLookupTable_)
@@ -140,8 +143,14 @@ Glycam06ResidueNamesToCodesLookupContainer::Glycam06ResidueNamesToCodesLookupCon
         {        "Tag",   "J", "Saccharide"},
         {        "Tal",   "T", "Saccharide"},
         {        "Xyl",   "X", "Saccharide"},
-        {      "GlcNS",  "YS", "Saccharide"},
-        {       "Tyvp",  "TV", "Saccharide"}, // Can be alpha or beta. Feck.
+        {    "GlcpNSa",  "YS", "Saccharide"},
+        {    "GlcpNSb",  "Ys", "Saccharide"},
+        {     "GlcpNa",  "YN", "Saccharide"},
+        {     "GlcpNb",  "Yn", "Saccharide"},
+        {    "GlcpNPa", "YNP", "Saccharide"},
+        {    "GlcpNPb", "YnP", "Saccharide"},
+        {      "Tyvpa",  "TV", "Saccharide"},
+        {      "Tyvpb",  "Tv", "Saccharide"},
         {        "dUA",  "45", "Saccharide"}, // Unsaturated 4,5-unsaturated uronate.
         {"LIdopA(1C4)", "uA1", "Saccharide"}, // e.g 0uA1 with the 1 over-running.
         {"LIdopA(2SO)", "uA2", "Saccharide"},
