@@ -28,3 +28,14 @@ IndexOrdered:
 LFrupa2-6GlcpAa1-OME
 IndexOrderedLabeled:
 LFrup&Label=residue-3;a2-6&Label=link-1;GlcpA&Label=residue-2;a1-&Label=link-0;OME&Label=residue-1;
+
+***********************************************************************
+
+Input:
+DGlcpa1-1DGlcpa
+Interpreted:
+DGlcpa1-1DGlcpa
+IndexOrdered:
+DGlcpa1-1DGlcpa
+IndexOrderedLabeled:
+DGlcp&Label=residue-2;a1-1&Label=link-0;DGlcp&Label=residue-1;

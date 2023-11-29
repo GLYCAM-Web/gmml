@@ -31,9 +31,12 @@ int main()
     std::string s15 = "DGlNAcb1-OH";
     std::string s16 = "DManpa1-4DManpa1-4DManpa1-4DManpa1-4DManpa1-4DManp[6D]a1-4DManp[2S,6S]a1-4DManpa1-OME";
     std::string s17 = "DManpa[6S,2S]1-OME";
+    std::string s18 = "DGlcpa1-1DGlcpa";
+
     // std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7};
     // std::vector<std::string> sequences {s17};
-    std::vector<std::string> sequences {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15, s16, s17};
+    std::vector<std::string> sequences {s1,  s2,  s3,  s4,  s5,  s6,  s7,  s8,  s9,
+                                        s10, s11, s12, s13, s14, s15, s16, s17, s18};
     //    std::string prepFilePath = "/programs/gems/gmml/dat/prep/GLYCAM_06j-1_GAGS.prep";
     std::string prepFilePath = "../dat/prep/GLYCAM_06j-1_GAGS.prep";
     int loopCounter          = 0;

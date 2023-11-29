@@ -131,7 +131,11 @@ std::string ParsedResidue::GetLinkageName(const bool withLabels) const
             return linkage->getLabel();
         }
     }
-    return ""; // aglycone/reducing terminal will not have linkage.
+    if (this->getInEdges().empty() && this->GetType() == ResidueType::Sugar && !withLabels)
+    { // ano-ano linkage as in Glca1-1Glcb, return the "b" of Glc
+        return this->GetConfiguration();
+    }
+    return ""; // aglycones like ROH and OME will not have linkage info.
 }
 
 void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, ResidueType specifiedType)

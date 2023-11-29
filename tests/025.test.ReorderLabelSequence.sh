@@ -14,6 +14,7 @@ CompareFile="tests/correct_outputs/025.output.reorderedLabeledSequences.txt"
 SequenceOne="DManpa1-3[DGalpb1-4DGalpb1-4DGalpb1-4DGalpb1-4]LRhapa1-OH"
 SequenceTwo="DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH"
 SequenceThree="LFrupa2-6-DGlcpAa1-OME"
+SequenceFour="DGlcpa1-1DGlcpa"
 
 echo "Testing ${SourceCode} (Sequence reordering and labeling)... "
 g++ -std=c++17 -I "${GMML_ROOT_DIR}"/ -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ "${SourceCode}" -lgmml -pthread -o "${Executable}"
@@ -23,6 +24,8 @@ printf "\n**********************************************************************
 ./"${Executable}" "${SequenceTwo}" >>"${OutputFile}" 2>&1
 printf "\n***********************************************************************\n\n" >>"${OutputFile}"
 ./"${Executable}" "${SequenceThree}" >>"${OutputFile}" 2>&1
+printf "\n***********************************************************************\n\n" >>"${OutputFile}"
+./"${Executable}" "${SequenceFour}" >>"${OutputFile}" 2>&1
 
 if [ ! -f "${CompareFile}" ]; then
     printf "Test FAILED! (cannot find correct output to compare against)\n"
