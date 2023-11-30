@@ -41,8 +41,6 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
             }
         }
     }
-    // Have atom numbers go from 1 to number of atoms.
-    cds::serializeNumbers(this->getAtoms());
     for (auto& cdsResidue : this->getResidues())
     { // Apply any deoxy
         if (cdsResidue->GetType() == cds::ResidueType::Deoxy)
@@ -50,6 +48,8 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
             this->ApplyDeoxy(static_cast<ParsedResidue*>(cdsResidue));
         }
     }
+    // Have atom numbers go from 1 to number of atoms. Note this should be after deleting atoms due to deoxy
+    cds::serializeNumbers(this->getAtoms());
     // Set 3D structure
     this->DepthFirstSetConnectivityAndGeometry(this->GetTerminal()); // recurve start with terminal
     // Re-numbering is a hack as indices have global scope and two instances give too high numbers.
