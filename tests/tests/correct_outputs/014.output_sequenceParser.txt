@@ -36,14 +36,14 @@ Parsed and labelled with no exceptions thrown.
 -----------------------------------------------------------------------------------------------------
 
 Parsing: DGlcpa1-2DFrufb
-DGlcpa1-2DFruf
+DGlcpa1-2DFrufb
 DGlcp&Label=residue-2;a1-2&Label=link-0;DFruf&Label=residue-1;
 Parsed and labelled with no exceptions thrown.
 
 -----------------------------------------------------------------------------------------------------
 
 Parsing: DFrufb2-1DGlcpa
-DFrufb2-1DGlcp
+DFrufb2-1DGlcpa
 DFruf&Label=residue-2;b2-1&Label=link-0;DGlcp&Label=residue-1;
 Parsed and labelled with no exceptions thrown.
 
