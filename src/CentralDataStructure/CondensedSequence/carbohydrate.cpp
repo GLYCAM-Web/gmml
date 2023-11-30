@@ -25,79 +25,39 @@ using cdsCondensedSequence::Carbohydrate;
 Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) : SequenceManipulator {inputSequence}
 {
     this->setName("CONDENSEDSEQUENCE");
-    // Better to throw once I figure out how to catch it in gems. This setting status thing and checking it is a bad
-    // pattern.
-    this->ReorderSequence(); // Linkages must be in ascending order for looking up Glycam codes? Fix this dependency
-                             // Oliver. Update: Fixed. Todo: Confirm/Test the fix Oliver. Just delete this line and test
-                             // you toolbag.
+    this->ReorderSequence();        // So output is consistent regardless of input order e.g. Fuca1-2[Gala1-3]Glca vs
+                                    // Gala1-3[Fuca1-2]Glca. Same 3D structure.
     this->SetIndexByConnectivity(); // For reporting residue index numbers to the user
-    // Find relevant Prep residues:
-    prep::PrepFile glycamPrepFileSelect(
-        prepFilePath,
-        this->GetGlycamNamesOfResidues()); // PrepFile is a cds::Molecule i.e. contains a vector of residues.
+    prep::PrepFile glycamPrepFileSelect(prepFilePath, this->GetGlycamNamesOfResidues());
     for (auto& cdsResidue : this->getResidues())
-    {
-        // Move atoms from prep file into parsedResidues.
+    { // Move atoms from prep file into parsedResidues.
         if (cdsResidue->GetType() != cds::ResidueType::Deoxy)
         {
             ParsedResidue* parsedResidue = static_cast<ParsedResidue*>(cdsResidue);
             this->MoveAtomsFromPrepResidueToParsedResidue(glycamPrepFileSelect, parsedResidue);
-            // Deal with adjusting charges for derivatives
             if (parsedResidue->GetType() == cds::ResidueType::Derivative)
-            {
+            { // Deal with adjusting charges for derivatives
                 this->DerivativeChargeAdjustment(parsedResidue);
             }
         }
     }
     // Have atom numbers go from 1 to number of atoms.
     cds::serializeNumbers(this->getAtoms());
-    // Apply any deoxy
     for (auto& cdsResidue : this->getResidues())
-    {
+    { // Apply any deoxy
         if (cdsResidue->GetType() == cds::ResidueType::Deoxy)
         {
             this->ApplyDeoxy(static_cast<ParsedResidue*>(cdsResidue));
         }
     }
-    //        std::cout << "\n\n\nOn to setting 3d structure!\n\n";
     // Set 3D structure
     this->DepthFirstSetConnectivityAndGeometry(this->GetTerminal()); // recurve start with terminal
-    //        for( auto &cdsResidue: this->getResidues() )
-    //        {
-    //            for( auto &parentNeighbor : cdsResidue->getParents()) //
-    //            {
-    //                std::cout << "Setting connection between " << cdsResidue->getName() << " and its parent " <<
-    //                parentNeighbor->getName() << ", the connection has linkageLabel: "
-    //                        << static_cast<ParsedResidue*>(parentNeighbor)->GetLinkageName() << "\n";
-    //                this->ConnectAndSetGeometry(cdsResidue, parentNeighbor);
-    //            }
-    //        }
-    // Set torsions now that everything is attached and the molecule is whole.
-    //        for( auto &cdsResidue: this->getResidues() )
-    //        {
-    //            for( auto &parentNeighbor : cdsResidue->getParents()) //
-    //            {
-    //                std::cout << "Finding rotatable dihedrals and applying metadata." << std::endl;
-    //                cds::ResidueLinkage& linkage = glycosidicLinkages_.emplace_back(cdsResidue, parentNeighbor);
-    //                std::cout << "Setting default shape" << std::endl;
-    //                linkage.SetDefaultShapeUsingMetadata();
-    //            }
-    //        }
-    //        this->Generate3DStructureFiles("./", "defaultGeometry");
-    //        // Wiggle to resolve overlaps:
-    //        std::cout << "Resolving overlaps" << std::endl;
-    //        std::vector<cds::Atom*> allAtomsInCarb = this->getAtoms();
-    //        this->ResolveOverlaps();
-    //        std::cout << "Overlaps resolved" << std::endl;
-
-    // Ok if have done greedy then the atoms-to-move needs to be updated for every linkage:
-    //        std::cout << "Re-determining atoms that need to move for each linkage:" << std::endl;
     // Re-numbering is a hack as indices have global scope and two instances give too high numbers.
     unsigned int linkageIndex = 0;
     // Linkages should be Edges to avoid this as they already get renumbered above.
     // gmml::log(__LINE__, __FILE__, gmml::INF, "Determining what moves in linkages of " + inputSequence);
     for (auto& linkage : glycosidicLinkages_) // These will exist on the vector in order of edge connectivity set above.
-    {
+    { // Greedy first means the atoms-to-move needs to be updated for every linkage:
         linkage.SetIndex(linkageIndex++);
         //        std::stringstream ss;
         //  ss << linkage.GetName() << " linkage index in ctor is " << linkage.GetIndex();
@@ -108,8 +68,6 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
     this->ResolveOverlaps();
     gmml::log(__LINE__, __FILE__, gmml::INF,
               "Final carbohydrate overlap resolution finished. Returning from carbohydrate ctor");
-    //	Ensure integralCharge can be a free function that accepts atom vector right?
-    //	this->EnsureIntegralCharge(inputAssembly->GetTotalCharge());
     return;
 }
 

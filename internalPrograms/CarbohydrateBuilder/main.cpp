@@ -35,36 +35,20 @@ int main(int argc, char** argv)
             continue;
         }
         std::vector<std::string> splitLine = codeUtils::split(line, delimiter);
-        std::string inputSequence          = splitLine.at(1);
+        if (splitLine.size() != 2)
+        {
+            std::cerr << "Encountered problem when splitting this line >>>" << line << "<<< from file >>>" << argv[1]
+                      << "<<< into an ID and carb string separated by your specified delimiter: >>>" << argv[2]
+                      << "<<<\n";
+            std::exit(EXIT_FAILURE);
+        }
+        std::string inputSequence = splitLine.at(1);
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
         try
         {
             cdsCondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
-            if (carbBuilder.IsStatusOk())
-            {
-                // carbBuilder.Print();
-                std::string inputGlycanID = splitLine.at(0);
-                // carbBuilder.GenerateSingle3DStructureDefaultFiles(outputFolderName, inputGlycanID);
-                // CondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
-                carbBuilder.GenerateSingle3DStructureDefaultFiles(outputFolderName, inputGlycanID);
-                if (!carbBuilder.IsStatusOk()) // This is bad. Fix me once gems can catch what the carbBuilder throws.
-                {
-                    std::cerr << "Error thrown by the carbohydrateBuilder in gmml during 3D structure generation was: "
-                              << carbBuilder.GetStatusMessage() << std::endl;
-                }
-            }
-            else
-            {
-                std::cerr << "Error thrown by the carbohydrateBuilder in gmml during construction was: "
-                          << carbBuilder.GetStatusMessage() << std::endl;
-            }
-        }
-        catch (const std::string& exceptionMessage)
-        {
-            gmml::log(__LINE__, __FILE__, gmml::ERR,
-                      "carbohydrateBuilder class caught this exception message: " + exceptionMessage);
-            std::cerr << "Error thrown by the carbohydrateBuilder in gmml during construction was: " << exceptionMessage
-                      << std::endl;
+            std::string inputGlycanID = splitLine.at(0);
+            carbBuilder.GenerateSingle3DStructureDefaultFiles(outputFolderName, inputGlycanID);
         }
         catch (const std::runtime_error& error)
         {
