@@ -252,6 +252,10 @@ Building DGlcpa1-[4DGlcpa1-]<4>2DGlcpa1-[4DGlcpa1-6DGlcpa1-[4DGlcpa1-]<3>4DManpa
 *********************
 Building DGlcpNPa1-4LIdopA(1C4)a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNSa1-4LIdopA(2SO)a1-OH
 *********************
+
+*********************
+Building DGlcpa1-1DGlcpa
+*********************
 00001.pdb not created.
 00002.pdb succesfully created.
 00003.pdb succesfully created.
@@ -304,3 +308,4 @@ Building DGlcpNPa1-4LIdopA(1C4)a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNSa1-4LIdopA(2
 00056.pdb succesfully created.
 00057.pdb succesfully created.
 00058.pdb succesfully created.
+00059.pdb succesfully created.

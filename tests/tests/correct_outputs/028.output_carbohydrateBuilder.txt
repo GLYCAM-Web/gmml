@@ -1,0 +1,1375 @@
+
+*********************
+Building id 00001:DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+*********************
+Input:
+DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+Interpreted:
+DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+IndexOrdered:
+DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3[DGlcpNAcb1-4][DManp[2S,3Me]a1-6DManpa1-6]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+IndexOrderedLabeled:
+DNeu5Ac&Label=residue-14;a2-6&Label=link-12;DGalp&Label=residue-13;b1-4&Label=link-11;DGlcpNAc&Label=residue-12;[3&Label=link-13;S&Label=residue-15;]b1-2&Label=link-10;DManp&Label=residue-11;a1-3&Label=link-9;[DGlcpNAc&Label=residue-10;b1-4&Label=link-8;][DManp&Label=residue-7;[2&Label=link-7;S&Label=residue-9;,3&Label=link-6;Me&Label=residue-8;]a1-6&Label=link-5;DManp&Label=residue-6;a1-6&Label=link-4;]DManp&Label=residue-5;b1-4&Label=link-3;DGlcpNAc&Label=residue-3;[6&Label=link-2;Me&Label=residue-4;]b1-4&Label=link-1;DGlcpNAc&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00001 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DNeu5Aca2-6 with glycam residue code: 0Sa
+
+*********************
+Building id 00002:DNeup5Aca2-9DNeup5Aca2-8DNeup5Aca2-7DNeup5Aca2-3DGlcpb1-6DManpb1-OME
+*********************
+Input:
+DNeup5Aca2-9DNeup5Aca2-8DNeup5Aca2-7DNeup5Aca2-3DGlcpb1-6DManpb1-OME
+Interpreted:
+DNeup5Aca2-9DNeup5Aca2-8DNeup5Aca2-7DNeup5Aca2-3DGlcpb1-6DManpb1-OME
+IndexOrdered:
+DNeup5Aca2-9DNeup5Aca2-8DNeup5Aca2-7DNeup5Aca2-3DGlcpb1-6DManpb1-OME
+IndexOrderedLabeled:
+DNeup5Ac&Label=residue-7;a2-9&Label=link-5;DNeup5Ac&Label=residue-6;a2-8&Label=link-4;DNeup5Ac&Label=residue-5;a2-7&Label=link-3;DNeup5Ac&Label=residue-4;a2-3&Label=link-2;DGlcp&Label=residue-3;b1-6&Label=link-1;DManp&Label=residue-2;b1-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00002 with no exceptions thrown.
+
+Number of residues for this sequence is 7
+Number of likely shapes is 80
+Number of possible shapes is 120
+OME_1_?_?
+6MB_2_?_?
+3GB_3_?_?
+7SA_4_?_?
+8SA_5_?_?
+9SA_6_?_?
+0SA_7_?_?
+Name: DGlcpb1-6DManpb, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gg, gt
+Name: DNeu5Acpa2-3DGlcpb, LinkageIndex: 2, Res1: 4, Res2: 3
+    LikelyRotamers: Phi, t, -g
+Name: DNeu5Acpa2-7DNeu5Acpa, LinkageIndex: 3, Res1: 5, Res2: 4
+    LikelyRotamers: Phi, t, -g
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 4, Res1: 6, Res2: 5
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+    LikelyRotamers: Omg9, A, B, C, D, E
+Name: DNeu5Acpa2-9DNeu5Acpa, LinkageIndex: 5, Res1: 7, Res2: 6
+    LikelyRotamers: Phi, t, -g
+
+*********************
+Building id 00003:DGlcpa1-2DFrufb
+*********************
+Input:
+DGlcpa1-2DFrufb
+Interpreted:
+DGlcpa1-2DFrufb
+IndexOrdered:
+DGlcpa1-2DFrufb
+IndexOrderedLabeled:
+DGlcp&Label=residue-2;a1-2&Label=link-0;DFruf&Label=residue-1;
+Parsed and labelled 00003 with no exceptions thrown.
+
+Number of residues for this sequence is 2
+Number of likely shapes is 1
+Number of possible shapes is 1
+2CU_1_?_?
+0GA_2_?_?
+
+*********************
+Building id 00004:DFrufb2-1DGlcpa
+*********************
+Input:
+DFrufb2-1DGlcpa
+Interpreted:
+DFrufb2-1DGlcpa
+IndexOrdered:
+DFrufb2-1DGlcpa
+IndexOrderedLabeled:
+DFruf&Label=residue-2;b2-1&Label=link-0;DGlcp&Label=residue-1;
+Parsed and labelled 00004 with no exceptions thrown.
+
+Number of residues for this sequence is 2
+Number of likely shapes is 1
+Number of possible shapes is 1
+1GA_1_?_?
+0CU_2_?_?
+
+*********************
+Building id 00005:DGlcpa1-R
+*********************
+Input:
+DGlcpa1-R
+Interpreted:
+DGlcpa1-R
+IndexOrdered:
+DGlcpa1-R
+IndexOrderedLabeled:
+DGlcp&Label=residue-2;a1-&Label=link-0;R&Label=residue-1;
+Parsed and labelled 00005 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: Cannot create 3D structure as no GLYCAM residue code was found in the GMML metadata for residue: R
+
+*********************
+Building id 00009:LRhapa1-6DGlcpb1-OH
+*********************
+Input:
+LRhapa1-6DGlcpb1-OH
+Interpreted:
+LRhapa1-6DGlcpb1-OH
+IndexOrdered:
+LRhapa1-6DGlcpb1-OH
+IndexOrderedLabeled:
+LRhap&Label=residue-3;a1-6&Label=link-1;DGlcp&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00009 with no exceptions thrown.
+
+Number of residues for this sequence is 3
+Number of likely shapes is 2
+Number of possible shapes is 3
+ROH_1_?_?
+6GB_2_?_?
+0hA_3_?_?
+Name: LRhapa1-6DGlcpb, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gg, gt
+
+*********************
+Building id 00010:LRhapa1-6DGalpb1-OH
+*********************
+Input:
+LRhapa1-6DGalpb1-OH
+Interpreted:
+LRhapa1-6DGalpb1-OH
+IndexOrdered:
+LRhapa1-6DGalpb1-OH
+IndexOrderedLabeled:
+LRhap&Label=residue-3;a1-6&Label=link-1;DGalp&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00010 with no exceptions thrown.
+
+Number of residues for this sequence is 3
+Number of likely shapes is 3
+Number of possible shapes is 3
+ROH_1_?_?
+6LB_2_?_?
+0hA_3_?_?
+Name: LRhapa1-6DGalpb, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gg, gt, tg
+
+*********************
+Building id 00011:DNeupNAca2-4DGalpb1-3LIdopa1-OH
+*********************
+Input:
+DNeupNAca2-4DGalpb1-3LIdopa1-OH
+Interpreted:
+DNeupNAca2-4DGalpb1-3LIdopa1-OH
+IndexOrdered:
+DNeupNAca2-4DGalpb1-3LIdopa1-OH
+IndexOrderedLabeled:
+DNeupNAc&Label=residue-4;a2-4&Label=link-2;DGalp&Label=residue-3;b1-3&Label=link-1;LIdop&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00011 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LIdopa1- with glycam residue code: 3iA
+
+*********************
+Building id 00012:DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
+*********************
+Input:
+DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
+Interpreted:
+DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
+IndexOrdered:
+DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
+IndexOrderedLabeled:
+DNeupNAc&Label=residue-5;a2-8&Label=link-3;DNeupNAc&Label=residue-4;a2-8&Label=link-2;DNeupNAc&Label=residue-3;a2-8&Label=link-1;DNeupNAc&Label=residue-2;a2-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00012 with no exceptions thrown.
+
+Number of residues for this sequence is 5
+Number of likely shapes is 125
+Number of possible shapes is 125
+ROH_1_?_?
+8SA_2_?_?
+8SA_3_?_?
+8SA_4_?_?
+0SA_5_?_?
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+    LikelyRotamers: Omg9, A, B, C, D, E
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 2, Res1: 4, Res2: 3
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+    LikelyRotamers: Omg9, A, B, C, D, E
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 3, Res1: 5, Res2: 4
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+    LikelyRotamers: Omg9, A, B, C, D, E
+
+*********************
+Building id 00013:DGlcpA1-OH
+*********************
+Input:
+DGlcpA1-OH
+Interpreted:
+DGlcp1-OH
+IndexOrdered:
+DGlcp1-OH
+IndexOrderedLabeled:
+DGlcp&Label=residue-2;1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00013 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpA1- with glycam residue code: 0G
+
+*********************
+Building id 00014:DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
+*********************
+Input:
+DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
+Interpreted:
+DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
+IndexOrdered:
+DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
+IndexOrderedLabeled:
+DGalpNAc&Label=residue-3;[4&Label=link-3;S&Label=residue-5;,6&Label=link-2;S&Label=residue-4;]b1-4&Label=link-1;DGlcpA&Label=residue-2;[2&Label=link-4;S&Label=residue-6;]b1-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00014 with no exceptions thrown.
+
+Number of residues for this sequence is 6
+Number of likely shapes is 1
+Number of possible shapes is 1
+OME_1_?_?
+YZB_2_?_?
+UVB_3_?_?
+SO3_4_?_?
+SO3_5_?_?
+SO3_6_?_?
+
+*********************
+Building id 00015:DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-6DGlcpb1-6DGalpb1-OH
+*********************
+Input:
+DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-6DGlcpb1-6DGalpb1-OH
+Interpreted:
+DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-6DGlcpb1-6DGalpb1-OH
+IndexOrdered:
+DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-6DGlcpb1-6DGalpb1-OH
+IndexOrderedLabeled:
+DNeupNAc&Label=residue-7;a2-8&Label=link-5;DNeupNAc&Label=residue-6;a2-8&Label=link-4;DNeupNAc&Label=residue-5;a2-8&Label=link-3;DNeupNAc&Label=residue-4;a2-6&Label=link-2;DGlcp&Label=residue-3;b1-6&Label=link-1;DGalp&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00015 with no exceptions thrown.
+
+Number of residues for this sequence is 7
+Number of likely shapes is 1500
+Number of possible shapes is 2250
+ROH_1_?_?
+6LB_2_?_?
+6GB_3_?_?
+8SA_4_?_?
+8SA_5_?_?
+8SA_6_?_?
+0SA_7_?_?
+Name: DGlcpb1-6DGalpb, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gg, gt, tg
+Name: DNeu5Acpa2-6DGlcpb, LinkageIndex: 2, Res1: 4, Res2: 3
+    LikelyRotamers: Phi, t, -g
+    LikelyRotamers: Omg, gg, gt
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 3, Res1: 5, Res2: 4
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+    LikelyRotamers: Omg9, A, B, C, D, E
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 4, Res1: 6, Res2: 5
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+    LikelyRotamers: Omg9, A, B, C, D, E
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 5, Res1: 7, Res2: 6
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+    LikelyRotamers: Omg9, A, B, C, D, E
+
+*********************
+Building id 00016:LFucpa1-1DFrufb2-OME
+*********************
+Input:
+LFucpa1-1DFrufb2-OME
+Interpreted:
+LFucpa1-1DFrufb2-OME
+IndexOrdered:
+LFucpa1-1DFrufb2-OME
+IndexOrderedLabeled:
+LFucp&Label=residue-3;a1-1&Label=link-1;DFruf&Label=residue-2;b2-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00016 with no exceptions thrown.
+
+Number of residues for this sequence is 3
+Number of likely shapes is 1
+Number of possible shapes is 1
+OME_1_?_?
+1CU_2_?_?
+0fA_3_?_?
+
+*********************
+Building id 00019:DManpb1-2DManp[6A]b1-2[DGalp[6Ac]b1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+*********************
+Input:
+DManpb1-2DManp[6A]b1-2[DGalp[6Ac]b1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+Interpreted:
+DManpb1-2DManp[6A]b1-2[DGalp[6Ac]b1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+IndexOrdered:
+DManpb1-2DManp[6A]b1-2[DGalp[6Ac]b1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+IndexOrderedLabeled:
+DManp&Label=residue-13;b1-2&Label=link-11;DManp&Label=residue-11;[6&Label=link-10;A&Label=residue-12;]b1-2&Label=link-9;[DGalp&Label=residue-9;[6&Label=link-8;Ac&Label=residue-10;]b1-6&Label=link-7;]DManp&Label=residue-8;b1-2&Label=link-6;DManp&Label=residue-6;[6&Label=link-5;Me&Label=residue-7;]b1-2&Label=link-4;[DGlcp&Label=residue-4;b1-6&Label=link-2;DManp&Label=residue-3;[2&Label=link-3;S&Label=residue-5;]a1-4&Label=link-1;]DGalp&Label=residue-2;a1-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00019 with no exceptions thrown.
+
+Number of residues for this sequence is 13
+Number of likely shapes is 48
+Number of possible shapes is 243
+OME_1_?_?
+YLA_2_?_?
+XMA_3_?_?
+0GB_4_?_?
+SO3_5_?_?
+XMB_6_?_?
+MEX_7_?_?
+XMB_8_?_?
+6LB_9_?_?
+ACX_10_?_?
+XMB_11_?_?
+ACX_12_?_?
+0MB_13_?_?
+Name: DGlcpb1-6DManpa, LinkageIndex: 2, Res1: 4, Res2: 3
+    LikelyRotamers: Omg, gg, gt
+Name: Methyl3-6DManpb, LinkageIndex: 5, Res1: 7, Res2: 6
+    LikelyRotamers: Omg, gg, gt
+Name: DGalpb1-6DManpb, LinkageIndex: 7, Res1: 9, Res2: 8
+    LikelyRotamers: Omg, gg, gt
+Name: AcetylA-6DGalpb, LinkageIndex: 8, Res1: 10, Res2: 9
+    LikelyRotamers: Omg, gg, gt, tg
+Name: AcetylA-6DManpb, LinkageIndex: 10, Res1: 12, Res2: 11
+    LikelyRotamers: Omg, gg, gt
+
+*********************
+Building id 00020:DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+*********************
+Input:
+DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+Interpreted:
+DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+IndexOrdered:
+DManpb1-2DManp[6A]b1-2[DGalpb1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
+IndexOrderedLabeled:
+DManp&Label=residue-12;b1-2&Label=link-10;DManp&Label=residue-10;[6&Label=link-9;A&Label=residue-11;]b1-2&Label=link-8;[DGalp&Label=residue-9;b1-6&Label=link-7;]DManp&Label=residue-8;b1-2&Label=link-6;DManp&Label=residue-6;[6&Label=link-5;Me&Label=residue-7;]b1-2&Label=link-4;[DGlcp&Label=residue-4;b1-6&Label=link-2;DManp&Label=residue-3;[2&Label=link-3;S&Label=residue-5;]a1-4&Label=link-1;]DGalp&Label=residue-2;a1-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00020 with no exceptions thrown.
+
+Number of residues for this sequence is 12
+Number of likely shapes is 16
+Number of possible shapes is 81
+OME_1_?_?
+YLA_2_?_?
+XMA_3_?_?
+0GB_4_?_?
+SO3_5_?_?
+XMB_6_?_?
+MEX_7_?_?
+XMB_8_?_?
+0LB_9_?_?
+XMB_10_?_?
+ACX_11_?_?
+0MB_12_?_?
+Name: DGlcpb1-6DManpa, LinkageIndex: 2, Res1: 4, Res2: 3
+    LikelyRotamers: Omg, gg, gt
+Name: Methyl3-6DManpb, LinkageIndex: 5, Res1: 7, Res2: 6
+    LikelyRotamers: Omg, gg, gt
+Name: DGalpb1-6DManpb, LinkageIndex: 7, Res1: 9, Res2: 8
+    LikelyRotamers: Omg, gg, gt
+Name: AcetylA-6DManpb, LinkageIndex: 9, Res1: 11, Res2: 10
+    LikelyRotamers: Omg, gg, gt
+
+*********************
+Building id 00021:LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
+*********************
+Input:
+LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
+Interpreted:
+LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
+IndexOrdered:
+LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
+IndexOrderedLabeled:
+LIdopA&Label=residue-11;a1-4&Label=link-9;[DNeupNAc&Label=residue-10;a2-8&Label=link-8;DNeupNAc&Label=residue-9;a2-8&Label=link-7;DNeupNAc&Label=residue-8;a2-5&Label=link-6;]LFrup&Label=residue-7;a2-6&Label=link-5;DGalp&Label=residue-6;[2&Label=link-10;Me&Label=residue-12;]b1-3&Label=link-4;[DNeupNAc&Label=residue-4;a2-6&Label=link-2;DGlcp&Label=residue-3;[2&Label=link-3;S&Label=residue-5;]a1-4&Label=link-1;]DGlcpA&Label=residue-2;a1-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00021 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LFrupa2-6 with glycam residue code: scA
+
+*********************
+Building id 00023:DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
+*********************
+Input:
+DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
+Interpreted:
+DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
+IndexOrdered:
+DManpa1-2DManpa1-2DManpa1-3[DManpa1-2DManpa1-3[DManpa1-2DManpa1-6]DManpa1-6]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
+IndexOrderedLabeled:
+DManp&Label=residue-12;a1-2&Label=link-10;DManp&Label=residue-11;a1-2&Label=link-9;DManp&Label=residue-10;a1-3&Label=link-8;[DManp&Label=residue-9;a1-2&Label=link-7;DManp&Label=residue-8;a1-3&Label=link-6;[DManp&Label=residue-7;a1-2&Label=link-5;DManp&Label=residue-6;a1-6&Label=link-4;]DManp&Label=residue-5;a1-6&Label=link-3;]DManp&Label=residue-4;b1-4&Label=link-2;DGlcpNAc&Label=residue-3;b1-4&Label=link-1;DGlcpNAc&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00023 with no exceptions thrown.
+
+Number of residues for this sequence is 12
+Number of likely shapes is 4
+Number of possible shapes is 9
+ROH_1_?_?
+4YB_2_?_?
+4YB_3_?_?
+VMB_4_?_?
+VMA_5_?_?
+2MA_6_?_?
+0MA_7_?_?
+2MA_8_?_?
+0MA_9_?_?
+2MA_10_?_?
+2MA_11_?_?
+0MA_12_?_?
+Name: DManpa1-6DManpb, LinkageIndex: 3, Res1: 5, Res2: 4
+    LikelyRotamers: Omg, gg, gt
+Name: DManpa1-6DManpa, LinkageIndex: 4, Res1: 6, Res2: 5
+    LikelyRotamers: Omg, gg, gt
+
+*********************
+Building id 00024:DLyxpa1-2[DManpb1-4][LGulpb1-6]DGlcpa1-2[LGalpa1-5][LFucpa1-1]DFrufb
+*********************
+Input:
+DLyxpa1-2[DManpb1-4][LGulpb1-6]DGlcpa1-2[LGalpa1-5][LFucpa1-1]DFrufb
+Interpreted:
+DLyxpa1-2[DManpb1-4][LGulpb1-6]DGlcpa1-2[LGalpa1-5][LFucpa1-1]DFrufb
+IndexOrdered:
+LFucpa1-1[DLyxpa1-2[DManpb1-4][LGulpb1-6]DGlcpa1-2][LGalpa1-5]DFrufb
+IndexOrderedLabeled:
+LFucp&Label=residue-7;a1-1&Label=link-5;[DLyxp&Label=residue-6;a1-2&Label=link-4;[DManp&Label=residue-5;b1-4&Label=link-3;][LGulp&Label=residue-4;b1-6&Label=link-2;]DGlcp&Label=residue-3;a1-2&Label=link-1;][LGalp&Label=residue-2;a1-5&Label=link-0;]DFruf&Label=residue-1;
+Parsed and labelled 00024 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 5,2,1
+Check these inputs for mistakes: 
+Inputs:
+linkages: 5,2,1
+isomer: D
+inputResName: Fru
+ringType: f
+residueModifier: 
+configuration: b
+
+*********************
+Building id 00025:DManpb1-4[DLyxpa1-2][LGulpb1-6]DGlcpa1-2[LFucpa1-1][LGalpa1-5]DFrufb
+*********************
+Input:
+DManpb1-4[DLyxpa1-2][LGulpb1-6]DGlcpa1-2[LFucpa1-1][LGalpa1-5]DFrufb
+Interpreted:
+DManpb1-4[DLyxpa1-2][LGulpb1-6]DGlcpa1-2[LFucpa1-1][LGalpa1-5]DFrufb
+IndexOrdered:
+LFucpa1-1[DLyxpa1-2[DManpb1-4][LGulpb1-6]DGlcpa1-2][LGalpa1-5]DFrufb
+IndexOrderedLabeled:
+LFucp&Label=residue-7;a1-1&Label=link-5;[DLyxp&Label=residue-6;a1-2&Label=link-4;[DManp&Label=residue-5;b1-4&Label=link-3;][LGulp&Label=residue-4;b1-6&Label=link-2;]DGlcp&Label=residue-3;a1-2&Label=link-1;][LGalp&Label=residue-2;a1-5&Label=link-0;]DFruf&Label=residue-1;
+Parsed and labelled 00025 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 5,2,1
+Check these inputs for mistakes: 
+Inputs:
+linkages: 5,2,1
+isomer: D
+inputResName: Fru
+ringType: f
+residueModifier: 
+configuration: b
+
+*********************
+Building id 00026:DFrupa2-6DManpa1-OH
+*********************
+Input:
+DFrupa2-6DManpa1-OH
+Interpreted:
+DFrupa2-6DManpa1-OH
+IndexOrdered:
+DFrupa2-6DManpa1-OH
+IndexOrderedLabeled:
+DFrup&Label=residue-3;a2-6&Label=link-1;DManp&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00026 with no exceptions thrown.
+
+Number of residues for this sequence is 3
+Number of likely shapes is 2
+Number of possible shapes is 3
+ROH_1_?_?
+6MA_2_?_?
+0CA_3_?_?
+Name: DFrupa2-6DManpa, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gg, gt
+
+*********************
+Building id 00027:DFrupb2-6DManpa1-OH
+*********************
+Input:
+DFrupb2-6DManpa1-OH
+Interpreted:
+DFrupb2-6DManpa1-OH
+IndexOrdered:
+DFrupb2-6DManpa1-OH
+IndexOrderedLabeled:
+DFrup&Label=residue-3;b2-6&Label=link-1;DManp&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00027 with no exceptions thrown.
+
+Number of residues for this sequence is 3
+Number of likely shapes is 2
+Number of possible shapes is 3
+ROH_1_?_?
+6MA_2_?_?
+0CB_3_?_?
+Name: DFrupb2-6DManpa, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gg, gt
+
+*********************
+Building id 00028:DGlcp[4D,3Me]b1-2DManp[6H]a1-OH
+*********************
+Input:
+DGlcp[4D,3Me]b1-2DManp[6H]a1-OH
+Interpreted:
+DGlcp[4D,3Me]b1-2DManp[6H]a1-OH
+IndexOrdered:
+DGlcp[3Me,4D]b1-2DManp[6H]a1-OH
+IndexOrderedLabeled:
+DGlcp&Label=residue-4;[3&Label=link-4;Me&Label=residue-6;,4&Label=link-3;D&Label=residue-5;]b1-2&Label=link-2;DManp&Label=residue-2;[6&Label=link-1;H&Label=residue-3;]a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00028 with no exceptions thrown.
+
+Number of residues for this sequence is 4
+Number of likely shapes is 1
+Number of possible shapes is 1
+ROH_1_?_?
+2MA_2_?_?
+3GB_3_?_?
+MEX_4_?_?
+
+*********************
+Building id 00029:DFrufb2-6DFrufb2-6[DFrufb2-6DFrufb2-1]DFrufb2-6DFrufb2-6DFrufb2-OH
+*********************
+Input:
+DFrufb2-6DFrufb2-6[DFrufb2-6DFrufb2-1]DFrufb2-6DFrufb2-6DFrufb2-OH
+Interpreted:
+DFrufb2-6DFrufb2-6[DFrufb2-6DFrufb2-1]DFrufb2-6DFrufb2-6DFrufb2-OH
+IndexOrdered:
+DFrufb2-6DFrufb2-1[DFrufb2-6DFrufb2-6]DFrufb2-6DFrufb2-6DFrufb2-OH
+IndexOrderedLabeled:
+DFruf&Label=residue-8;b2-6&Label=link-6;DFruf&Label=residue-7;b2-1&Label=link-5;[DFruf&Label=residue-6;b2-6&Label=link-4;DFruf&Label=residue-5;b2-6&Label=link-3;]DFruf&Label=residue-4;b2-6&Label=link-2;DFruf&Label=residue-3;b2-6&Label=link-1;DFruf&Label=residue-2;b2-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00029 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 6,1
+Check these inputs for mistakes: 
+Inputs:
+linkages: 6,1
+isomer: D
+inputResName: Fru
+ringType: f
+residueModifier: 
+configuration: b
+
+*********************
+Building id 00030:DGalpb1-OtBu
+*********************
+Input:
+DGalpb1-OtBu
+Interpreted:
+DGalpb1-OtBu
+IndexOrdered:
+DGalpb1-OtBu
+IndexOrderedLabeled:
+DGalp&Label=residue-2;b1-&Label=link-0;OtBu&Label=residue-1;
+Parsed and labelled 00030 with no exceptions thrown.
+
+Number of residues for this sequence is 2
+Number of likely shapes is 1
+Number of possible shapes is 1
+TBT_1_?_?
+0LB_2_?_?
+
+*********************
+Building id 00031:dUAa1-OME
+*********************
+Input:
+dUAa1-OME
+Interpreted:
+dUAa1-OME
+IndexOrdered:
+dUAa1-OME
+IndexOrderedLabeled:
+dUA&Label=residue-2;a1-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00031 with no exceptions thrown.
+
+Number of residues for this sequence is 2
+Number of likely shapes is 1
+Number of possible shapes is 1
+OME_1_?_?
+045_2_?_?
+
+*********************
+Building id 00032:dUA-OME
+*********************
+Input:
+dUA-OME
+Interpreted:
+dUAA-OME
+IndexOrdered:
+dUAA-OME
+IndexOrderedLabeled:
+dUA&Label=residue-2;A-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00032 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: Could not convert the first linkage number to an integer: -
+
+*********************
+Building id 00033:dUA-4DGalpb1-OH
+*********************
+Input:
+dUA-4DGalpb1-OH
+Interpreted:
+dUAA-4DGalpb1-OH
+IndexOrdered:
+dUAA-4DGalpb1-OH
+IndexOrderedLabeled:
+dUA&Label=residue-3;A-4&Label=link-1;DGalp&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00033 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: The deduced linkageLabel is too small:
+A-4.
+We require anomer, start atom number, a dash, and connecting atom number. Example:
+a1-4
+
+*********************
+Building id 00034:DManpa1-9DGlcpNAcb1-OH
+*********************
+Input:
+DManpa1-9DGlcpNAcb1-OH
+Interpreted:
+DManpa1-9DGlcpNAcb1-OH
+IndexOrdered:
+DManpa1-9DGlcpNAcb1-OH
+IndexOrderedLabeled:
+DManp&Label=residue-3;a1-9&Label=link-1;DGlcpNAc&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00034 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpNAcb1- with glycam residue code: 9YB
+
+*********************
+Building id 00035:DNeup5Ac[7A,8A,9A]a2-8DNeup5Ac[9A]a2-9[DNeup5Aca2-8DNeup5Ac[7A,9A]a2-8[DNeup5Aca2-7]DNeup5Aca2-8]DNeup5Ac[7A]a2-OH
+*********************
+Input:
+DNeup5Ac[7A,8A,9A]a2-8DNeup5Ac[9A]a2-9[DNeup5Aca2-8DNeup5Ac[7A,9A]a2-8[DNeup5Aca2-7]DNeup5Aca2-8]DNeup5Ac[7A]a2-OH
+Interpreted:
+DNeup5Ac[7A,8A,9A]a2-8DNeup5Ac[9A]a2-9[DNeup5Aca2-8DNeup5Ac[7A,9A]a2-8[DNeup5Aca2-7]DNeup5Aca2-8]DNeup5Ac[7A]a2-OH
+IndexOrdered:
+DNeup5Aca2-7[DNeup5Aca2-8DNeup5Ac[7A,9A]a2-8]DNeup5Aca2-8[DNeup5Ac[7A,8A,9A]a2-8DNeup5Ac[9A]a2-9]DNeup5Ac[7A]a2-OH
+IndexOrderedLabeled:
+DNeup5Ac&Label=residue-14;a2-7&Label=link-12;[DNeup5Ac&Label=residue-12;a2-8&Label=link-10;DNeup5Ac&Label=residue-10;[7&Label=link-11;A&Label=residue-13;,9&Label=link-9;A&Label=residue-11;]a2-8&Label=link-8;]DNeup5Ac&Label=residue-9;a2-8&Label=link-7;[DNeup5Ac&Label=residue-5;[7&Label=link-6;A&Label=residue-8;,8&Label=link-5;A&Label=residue-7;,9&Label=link-4;A&Label=residue-6;]a2-8&Label=link-3;DNeup5Ac&Label=residue-3;[9&Label=link-2;A&Label=residue-4;]a2-9&Label=link-1;]DNeup5Ac&Label=residue-2;[7&Label=link-13;A&Label=residue-15;]a2-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00035 with no exceptions thrown.
+
+Number of residues for this sequence is 15
+Number of likely shapes is 2500
+Number of possible shapes is 2500
+ROH_1_?_?
+BSA_2_?_?
+FSA_3_?_?
+ACX_4_?_?
+BSA_5_?_?
+ACX_6_?_?
+ACX_7_?_?
+ACX_8_?_?
+HSA_9_?_?
+BSA_10_?_?
+ACX_11_?_?
+0SA_12_?_?
+ACX_13_?_?
+0SA_14_?_?
+ACX_15_?_?
+Name: DNeu5Acpa2-9DNeu5Acpa, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Phi, t, -g
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 3, Res1: 5, Res2: 3
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 7, Res1: 9, Res2: 2
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 8, Res1: 10, Res2: 9
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+    LikelyRotamers: Omg9, A, B, C, D, E
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 10, Res1: 12, Res2: 10
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+Name: DNeu5Acpa2-7DNeu5Acpa, LinkageIndex: 12, Res1: 14, Res2: 9
+    LikelyRotamers: Phi, t, -g
+
+*********************
+Building id 00036:DGlcpNSa1-4DGlcpNS[3S,6S]a1-4DGlcpNS[6S]a1-4DGlcpNS[3S]a1-4DGlcpNSa1-3DGlcpNSa1-6DGlcpNSa1-OH
+*********************
+Input:
+DGlcpNSa1-4DGlcpNS[3S,6S]a1-4DGlcpNS[6S]a1-4DGlcpNS[3S]a1-4DGlcpNSa1-3DGlcpNSa1-6DGlcpNSa1-OH
+Interpreted:
+DGlcpNSa1-4DGlcpNS[3S,6S]a1-4DGlcpNS[6S]a1-4DGlcpNS[3S]a1-4DGlcpNSa1-3DGlcpNSa1-6DGlcpNSa1-OH
+IndexOrdered:
+DGlcpNSa1-4DGlcpNS[3S,6S]a1-4DGlcpNS[6S]a1-4DGlcpNS[3S]a1-4DGlcpNSa1-3DGlcpNSa1-6DGlcpNSa1-OH
+IndexOrderedLabeled:
+DGlcpNS&Label=residue-10;a1-4&Label=link-8;DGlcpNS&Label=residue-8;[3&Label=link-9;S&Label=residue-11;,6&Label=link-7;S&Label=residue-9;]a1-4&Label=link-6;DGlcpNS&Label=residue-6;[6&Label=link-5;S&Label=residue-7;]a1-4&Label=link-4;DGlcpNS&Label=residue-5;[3&Label=link-10;S&Label=residue-12;]a1-4&Label=link-3;DGlcpNS&Label=residue-4;a1-3&Label=link-2;DGlcpNS&Label=residue-3;a1-6&Label=link-1;DGlcpNS&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00036 with no exceptions thrown.
+
+Number of residues for this sequence is 12
+Number of likely shapes is 2
+Number of possible shapes is 3
+ROH_1_?_?
+6YS_2_?_?
+3YS_3_?_?
+4YS_4_?_?
+WYS_5_?_?
+UYS_6_?_?
+SO3_7_?_?
+QYS_8_?_?
+SO3_9_?_?
+0YS_10_?_?
+SO3_11_?_?
+SO3_12_?_?
+Name: DGlcpNSa1-6DGlcpNSa, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gg, gt
+
+*********************
+Building id 00037:LGlcpNSa1-4LGlcpNS[3S,6S]a1-4LGlcpNS[6S]a1-4LGlcpNS[3S]a1-4LGlcpNSa1-3LGlcpNSa1-6LGlcpNSa1-OH
+*********************
+Input:
+LGlcpNSa1-4LGlcpNS[3S,6S]a1-4LGlcpNS[6S]a1-4LGlcpNS[3S]a1-4LGlcpNSa1-3LGlcpNSa1-6LGlcpNSa1-OH
+Interpreted:
+LGlcpNSa1-4LGlcpNS[3S,6S]a1-4LGlcpNS[6S]a1-4LGlcpNS[3S]a1-4LGlcpNSa1-3LGlcpNSa1-6LGlcpNSa1-OH
+IndexOrdered:
+LGlcpNSa1-4LGlcpNS[3S,6S]a1-4LGlcpNS[6S]a1-4LGlcpNS[3S]a1-4LGlcpNSa1-3LGlcpNSa1-6LGlcpNSa1-OH
+IndexOrderedLabeled:
+LGlcpNS&Label=residue-10;a1-4&Label=link-8;LGlcpNS&Label=residue-8;[3&Label=link-9;S&Label=residue-11;,6&Label=link-7;S&Label=residue-9;]a1-4&Label=link-6;LGlcpNS&Label=residue-6;[6&Label=link-5;S&Label=residue-7;]a1-4&Label=link-4;LGlcpNS&Label=residue-5;[3&Label=link-10;S&Label=residue-12;]a1-4&Label=link-3;LGlcpNS&Label=residue-4;a1-3&Label=link-2;LGlcpNS&Label=residue-3;a1-6&Label=link-1;LGlcpNS&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00037 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LGlcpNSa1- with glycam residue code: 6yS
+
+*********************
+Building id 00038:DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4[4DGlcpa1-6[LFucpa1-2]DManpa1-]<2>OH
+*********************
+Input:
+DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4[4DGlcpa1-6[LFucpa1-2]DManpa1-]<2>OH
+Interpreted:
+DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-2DGlcpa1-4DGlcpa1-6[LFucpa1-2]DManpa1-4DGlcpa1-6[LFucpa1-2]DManpa1-OH
+IndexOrdered:
+LFucpa1-2[LFucpa1-2[DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-2DGlcpa1-4DGlcpa1-6]DManpa1-4DGlcpa1-6]DManpa1-OH
+IndexOrderedLabeled:
+LFucp&Label=residue-13;a1-2&Label=link-11;[LFucp&Label=residue-12;a1-2&Label=link-10;[DGlcp&Label=residue-11;a1-4&Label=link-9;DGlcp&Label=residue-10;a1-4&Label=link-8;DGlcp&Label=residue-9;a1-4&Label=link-7;DGlcp&Label=residue-8;a1-4&Label=link-6;DGlcp&Label=residue-7;a1-2&Label=link-5;DGlcp&Label=residue-6;a1-4&Label=link-4;DGlcp&Label=residue-5;a1-6&Label=link-3;]DManp&Label=residue-4;a1-4&Label=link-2;DGlcp&Label=residue-3;a1-6&Label=link-1;]DManp&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00038 with no exceptions thrown.
+
+Number of residues for this sequence is 13
+Number of likely shapes is 4
+Number of possible shapes is 9
+ROH_1_?_?
+XMA_2_?_?
+4GA_3_?_?
+XMA_4_?_?
+4GA_5_?_?
+2GA_6_?_?
+4GA_7_?_?
+4GA_8_?_?
+4GA_9_?_?
+4GA_10_?_?
+0GA_11_?_?
+0fA_12_?_?
+0fA_13_?_?
+Name: DGlcpa1-6DManpa, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gg, gt
+Name: DGlcpa1-6DManpa, LinkageIndex: 3, Res1: 5, Res2: 4
+    LikelyRotamers: Omg, gg, gt
+
+*********************
+Building id 00039:<
+*********************
+Input:
+
+Interpreted:
+
+IndexOrdered:
+
+IndexOrderedLabeled:
+
+Parsed and labelled 00039 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: Number of repeating units not specified correctly in repeating unit: <
+
+*********************
+Building id 00040:Bad<15>OH
+*********************
+Input:
+
+Interpreted:
+
+IndexOrdered:
+
+IndexOrderedLabeled:
+
+Parsed and labelled 00040 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: Missing or incorrect usage of ']' in repeating sequence: Bad<15>OH
+
+*********************
+Building id 00041:DGlcpa1-4DGlcpa1-6DManpa1-<15>OH
+*********************
+Input:
+
+Interpreted:
+
+IndexOrdered:
+
+IndexOrderedLabeled:
+
+Parsed and labelled 00041 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: Missing or incorrect usage of ']' in repeating sequence: DGlcpa1-4DGlcpa1-6DManpa1-<15>OH
+
+*********************
+Building id 00042:DGlcpa1-4DGlcpa1-4[4DGlcpa1-]<>OH
+*********************
+Input:
+
+Interpreted:
+
+IndexOrdered:
+
+IndexOrderedLabeled:
+
+Parsed and labelled 00042 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: Number of repeating units not specified correctly in repeating unit: DGlcpa1-4DGlcpa1-4[4DGlcpa1-]<>OH
+
+*********************
+Building id 00043:DArafb1-2DArafa1-3DArafa1-5DArafa1-OME
+*********************
+Input:
+DArafb1-2DArafa1-3DArafa1-5DArafa1-OME
+Interpreted:
+DArafb1-2DArafa1-3DArafa1-5DArafa1-OME
+IndexOrdered:
+DArafb1-2DArafa1-3DArafa1-5DArafa1-OME
+IndexOrderedLabeled:
+DAraf&Label=residue-5;b1-2&Label=link-3;DAraf&Label=residue-4;a1-3&Label=link-2;DAraf&Label=residue-3;a1-5&Label=link-1;DAraf&Label=residue-2;a1-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00043 with no exceptions thrown.
+
+Number of residues for this sequence is 5
+Number of likely shapes is 2
+Number of possible shapes is 2
+OME_1_?_?
+5AD_2_?_?
+3AD_3_?_?
+2AD_4_?_?
+0AU_5_?_?
+Name: DArafa1-5DArafa, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gg, gt
+
+*********************
+Building id 00044:DKDNpa2-8DKDOpa2-9DKDNpb2-7DKDOpb2-OME
+*********************
+Input:
+DKDNpa2-8DKDOpa2-9DKDNpb2-7DKDOpb2-OME
+Interpreted:
+DKDNpa2-8DKDOpa2-9DKDNpb2-7DKDOpb2-OME
+IndexOrdered:
+DKDNpa2-8DKDOpa2-9DKDNpb2-7DKDOpb2-OME
+IndexOrderedLabeled:
+DKDNp&Label=residue-5;a2-8&Label=link-3;DKDOp&Label=residue-4;a2-9&Label=link-2;DKDNp&Label=residue-3;b2-7&Label=link-1;DKDOp&Label=residue-2;b2-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00044 with no exceptions thrown.
+
+Error thrown by the carbohydrateBuilder in gmml during construction was: No Metadata entries found for connection between 9Kn@C2 and 7Ko@O7
+Note that order should be reducing atom - anomeric atom, but I've tried reversing the order and it didn't fix the issue.
+
+
+*********************
+Building id 00045:DKDOpa2-OME
+*********************
+Input:
+DKDOpa2-OME
+Interpreted:
+DKDOpa2-OME
+IndexOrdered:
+DKDOpa2-OME
+IndexOrderedLabeled:
+DKDOp&Label=residue-2;a2-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00045 with no exceptions thrown.
+
+Number of residues for this sequence is 2
+Number of likely shapes is 1
+Number of possible shapes is 1
+OME_1_?_?
+0KO_2_?_?
+
+*********************
+Building id 00046:DKDOpb2-OME
+*********************
+Input:
+DKDOpb2-OME
+Interpreted:
+DKDOpb2-OME
+IndexOrdered:
+DKDOpb2-OME
+IndexOrderedLabeled:
+DKDOp&Label=residue-2;b2-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00046 with no exceptions thrown.
+
+Number of residues for this sequence is 2
+Number of likely shapes is 1
+Number of possible shapes is 1
+OME_1_?_?
+0Ko_2_?_?
+
+*********************
+Building id 00047:DKDNpa2-OME
+*********************
+Input:
+DKDNpa2-OME
+Interpreted:
+DKDNpa2-OME
+IndexOrdered:
+DKDNpa2-OME
+IndexOrderedLabeled:
+DKDNp&Label=residue-2;a2-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00047 with no exceptions thrown.
+
+Number of residues for this sequence is 2
+Number of likely shapes is 1
+Number of possible shapes is 1
+OME_1_?_?
+0KN_2_?_?
+
+*********************
+Building id 00048:DKDNpb2-OME
+*********************
+Input:
+DKDNpb2-OME
+Interpreted:
+DKDNpb2-OME
+IndexOrdered:
+DKDNpb2-OME
+IndexOrderedLabeled:
+DKDNp&Label=residue-2;b2-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00048 with no exceptions thrown.
+
+Number of residues for this sequence is 2
+Number of likely shapes is 1
+Number of possible shapes is 1
+OME_1_?_?
+0Kn_2_?_?
+
+*********************
+Building id 00049:DNeupNAca2-OME
+*********************
+Input:
+DNeupNAca2-OME
+Interpreted:
+DNeupNAca2-OME
+IndexOrdered:
+DNeupNAca2-OME
+IndexOrderedLabeled:
+DNeupNAc&Label=residue-2;a2-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00049 with no exceptions thrown.
+
+Number of residues for this sequence is 2
+Number of likely shapes is 1
+Number of possible shapes is 1
+OME_1_?_?
+0SA_2_?_?
+
+*********************
+Building id 00050:DNeupNAcb2-OME
+*********************
+Input:
+DNeupNAcb2-OME
+Interpreted:
+DNeupNAcb2-OME
+IndexOrdered:
+DNeupNAcb2-OME
+IndexOrderedLabeled:
+DNeupNAc&Label=residue-2;b2-&Label=link-0;OME&Label=residue-1;
+Parsed and labelled 00050 with no exceptions thrown.
+
+Number of residues for this sequence is 2
+Number of likely shapes is 1
+Number of possible shapes is 1
+OME_1_?_?
+0SB_2_?_?
+
+*********************
+Building id 00051:DSorp[3S]a2-4DGalpA[3D]b1-2LIdopAa1-3DXylpa1-2DManp[4A,3A]a1-3DGalpb1-4[DArapa1-2]LFucpa1-3DGalpNAca1-OH
+*********************
+Input:
+DSorp[3S]a2-4DGalpA[3D]b1-2LIdopAa1-3DXylpa1-2DManp[4A,3A]a1-3DGalpb1-4[DArapa1-2]LFucpa1-3DGalpNAca1-OH
+Interpreted:
+DSorp[3S]a2-4DGalpA[3D]b1-2LIdopAa1-3DXylpa1-2DManp[4A,3A]a1-3DGalpb1-4[DArapa1-2]LFucpa1-3DGalpNAca1-OH
+IndexOrdered:
+DArapa1-2[DSorp[3S]a2-4DGalpA[3D]b1-2LIdopAa1-3DXylpa1-2DManp[3A,4A]a1-3DGalpb1-4]LFucpa1-3DGalpNAca1-OH
+IndexOrderedLabeled:
+DArap&Label=residue-14;a1-2&Label=link-12;[DSorp&Label=residue-11;[3&Label=link-10;S&Label=residue-12;]a2-4&Label=link-9;DGalpA&Label=residue-10;[3&Label=link-11;D&Label=residue-13;]b1-2&Label=link-8;LIdopA&Label=residue-9;a1-3&Label=link-7;DXylp&Label=residue-8;a1-2&Label=link-6;DManp&Label=residue-5;[3&Label=link-5;A&Label=residue-7;,4&Label=link-4;A&Label=residue-6;]a1-3&Label=link-3;DGalp&Label=residue-4;b1-4&Label=link-2;]LFucp&Label=residue-3;a1-3&Label=link-1;DGalpNAc&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00051 with no exceptions thrown.
+
+Number of residues for this sequence is 13
+Number of likely shapes is 1
+Number of possible shapes is 1
+ROH_1_?_?
+3VA_2_?_?
+YfA_3_?_?
+3LB_4_?_?
+TMA_5_?_?
+ACX_6_?_?
+ACX_7_?_?
+3XA_8_?_?
+2uA_9_?_?
+4OB_10_?_?
+3BA_11_?_?
+SO3_12_?_?
+0AA_13_?_?
+
+*********************
+Building id 00052:DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4[4DGlcpa1-6DGlcpa1-4[4DGlcpa1-]<3>4DManpa1-]<2>OH
+*********************
+Input:
+DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4[4DGlcpa1-6DGlcpa1-4[4DGlcpa1-]<3>4DManpa1-]<2>OH
+Interpreted:
+DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-2DGlcpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-OH
+IndexOrdered:
+DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-2DGlcpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-OH
+IndexOrderedLabeled:
+DGlcp&Label=residue-19;a1-4&Label=link-17;DGlcp&Label=residue-18;a1-4&Label=link-16;DGlcp&Label=residue-17;a1-4&Label=link-15;DGlcp&Label=residue-16;a1-4&Label=link-14;DGlcp&Label=residue-15;a1-2&Label=link-13;DGlcp&Label=residue-14;a1-4&Label=link-12;DGlcp&Label=residue-13;a1-6&Label=link-11;DGlcp&Label=residue-12;a1-4&Label=link-10;DGlcp&Label=residue-11;a1-4&Label=link-9;DGlcp&Label=residue-10;a1-4&Label=link-8;DGlcp&Label=residue-9;a1-4&Label=link-7;DManp&Label=residue-8;a1-4&Label=link-6;DGlcp&Label=residue-7;a1-6&Label=link-5;DGlcp&Label=residue-6;a1-4&Label=link-4;DGlcp&Label=residue-5;a1-4&Label=link-3;DGlcp&Label=residue-4;a1-4&Label=link-2;DGlcp&Label=residue-3;a1-4&Label=link-1;DManp&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00052 with no exceptions thrown.
+
+Number of residues for this sequence is 19
+Number of likely shapes is 4
+Number of possible shapes is 9
+ROH_1_?_?
+4MA_2_?_?
+4GA_3_?_?
+4GA_4_?_?
+4GA_5_?_?
+6GA_6_?_?
+4GA_7_?_?
+4MA_8_?_?
+4GA_9_?_?
+4GA_10_?_?
+4GA_11_?_?
+6GA_12_?_?
+4GA_13_?_?
+2GA_14_?_?
+4GA_15_?_?
+4GA_16_?_?
+4GA_17_?_?
+4GA_18_?_?
+0GA_19_?_?
+Name: DGlcpa1-6DGlcpa, LinkageIndex: 5, Res1: 7, Res2: 6
+    LikelyRotamers: Omg, gg, gt
+Name: DGlcpa1-6DGlcpa, LinkageIndex: 11, Res1: 13, Res2: 12
+    LikelyRotamers: Omg, gg, gt
+
+*********************
+Building id 00053:[4DGlcpa1-]<4>2DGulpa1-4[4DAllpa1-6[4DGalpa1-]<2>4DManpa1-]<3>3DManpa1-2[4DAllpa1-6[[4DGalpa1-]<5>4]DManpa1-]<5>OH
+*********************
+Input:
+[4DGlcpa1-]<4>2DGulpa1-4[4DAllpa1-6[4DGalpa1-]<2>4DManpa1-]<3>3DManpa1-2[4DAllpa1-6[[4DGalpa1-]<5>4]DManpa1-]<5>OH
+Interpreted:
+DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-2DGulpa1-4DAllpa1-6DGalpa1-4DGalpa1-4DManpa1-4DAllpa1-6DGalpa1-4DGalpa1-4DManpa1-4DAllpa1-6DGalpa1-4DGalpa1-4DManpa1-3DManpa1-2DAllpa1-6[DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4]DManpa1-4DAllpa1-6[DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4]DManpa1-4DAllpa1-6[DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4]DManpa1-4DAllpa1-6[DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4]DManpa1-4DAllpa1-6[DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4]DManpa1-OH
+IndexOrdered:
+DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4[DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4[DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4[DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4[DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4DGalpa1-4[DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-2DGulpa1-4DAllpa1-6DGalpa1-4DGalpa1-4DManpa1-4DAllpa1-6DGalpa1-4DGalpa1-4DManpa1-4DAllpa1-6DGalpa1-4DGalpa1-4DManpa1-3DManpa1-2DAllpa1-6]DManpa1-4DAllpa1-6]DManpa1-4DAllpa1-6]DManpa1-4DAllpa1-6]DManpa1-4DAllpa1-6]DManpa1-OH
+IndexOrderedLabeled:
+DGalp&Label=residue-54;a1-4&Label=link-52;DGalp&Label=residue-53;a1-4&Label=link-51;DGalp&Label=residue-52;a1-4&Label=link-50;DGalp&Label=residue-51;a1-4&Label=link-49;DGalp&Label=residue-50;a1-4&Label=link-48;[DGalp&Label=residue-49;a1-4&Label=link-47;DGalp&Label=residue-48;a1-4&Label=link-46;DGalp&Label=residue-47;a1-4&Label=link-45;DGalp&Label=residue-46;a1-4&Label=link-44;DGalp&Label=residue-45;a1-4&Label=link-43;[DGalp&Label=residue-44;a1-4&Label=link-42;DGalp&Label=residue-43;a1-4&Label=link-41;DGalp&Label=residue-42;a1-4&Label=link-40;DGalp&Label=residue-41;a1-4&Label=link-39;DGalp&Label=residue-40;a1-4&Label=link-38;[DGalp&Label=residue-39;a1-4&Label=link-37;DGalp&Label=residue-38;a1-4&Label=link-36;DGalp&Label=residue-37;a1-4&Label=link-35;DGalp&Label=residue-36;a1-4&Label=link-34;DGalp&Label=residue-35;a1-4&Label=link-33;[DGalp&Label=residue-34;a1-4&Label=link-32;DGalp&Label=residue-33;a1-4&Label=link-31;DGalp&Label=residue-32;a1-4&Label=link-30;DGalp&Label=residue-31;a1-4&Label=link-29;DGalp&Label=residue-30;a1-4&Label=link-28;[DGlcp&Label=residue-29;a1-4&Label=link-27;DGlcp&Label=residue-28;a1-4&Label=link-26;DGlcp&Label=residue-27;a1-4&Label=link-25;DGlcp&Label=residue-26;a1-2&Label=link-24;DGulp&Label=residue-25;a1-4&Label=link-23;DAllp&Label=residue-24;a1-6&Label=link-22;DGalp&Label=residue-23;a1-4&Label=link-21;DGalp&Label=residue-22;a1-4&Label=link-20;DManp&Label=residue-21;a1-4&Label=link-19;DAllp&Label=residue-20;a1-6&Label=link-18;DGalp&Label=residue-19;a1-4&Label=link-17;DGalp&Label=residue-18;a1-4&Label=link-16;DManp&Label=residue-17;a1-4&Label=link-15;DAllp&Label=residue-16;a1-6&Label=link-14;DGalp&Label=residue-15;a1-4&Label=link-13;DGalp&Label=residue-14;a1-4&Label=link-12;DManp&Label=residue-13;a1-3&Label=link-11;DManp&Label=residue-12;a1-2&Label=link-10;DAllp&Label=residue-11;a1-6&Label=link-9;]DManp&Label=residue-10;a1-4&Label=link-8;DAllp&Label=residue-9;a1-6&Label=link-7;]DManp&Label=residue-8;a1-4&Label=link-6;DAllp&Label=residue-7;a1-6&Label=link-5;]DManp&Label=residue-6;a1-4&Label=link-4;DAllp&Label=residue-5;a1-6&Label=link-3;]DManp&Label=residue-4;a1-4&Label=link-2;DAllp&Label=residue-3;a1-6&Label=link-1;]DManp&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00053 with no exceptions thrown.
+
+Number of residues for this sequence is 54
+Number of likely shapes is 864
+Number of possible shapes is 6561
+ROH_1_?_?
+UMA_2_?_?
+4NA_3_?_?
+UMA_4_?_?
+4NA_5_?_?
+UMA_6_?_?
+4NA_7_?_?
+UMA_8_?_?
+4NA_9_?_?
+UMA_10_?_?
+2NA_11_?_?
+3MA_12_?_?
+4MA_13_?_?
+4LA_14_?_?
+6LA_15_?_?
+4NA_16_?_?
+4MA_17_?_?
+4LA_18_?_?
+6LA_19_?_?
+4NA_20_?_?
+4MA_21_?_?
+4LA_22_?_?
+6LA_23_?_?
+4NA_24_?_?
+2KA_25_?_?
+4GA_26_?_?
+4GA_27_?_?
+4GA_28_?_?
+0GA_29_?_?
+4LA_30_?_?
+4LA_31_?_?
+4LA_32_?_?
+4LA_33_?_?
+0LA_34_?_?
+4LA_35_?_?
+4LA_36_?_?
+4LA_37_?_?
+4LA_38_?_?
+0LA_39_?_?
+4LA_40_?_?
+4LA_41_?_?
+4LA_42_?_?
+4LA_43_?_?
+0LA_44_?_?
+4LA_45_?_?
+4LA_46_?_?
+4LA_47_?_?
+4LA_48_?_?
+0LA_49_?_?
+4LA_50_?_?
+4LA_51_?_?
+4LA_52_?_?
+4LA_53_?_?
+0LA_54_?_?
+Name: DAllpa1-6DManpa, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gg, gt
+Name: DAllpa1-6DManpa, LinkageIndex: 3, Res1: 5, Res2: 4
+    LikelyRotamers: Omg, gg, gt
+Name: DAllpa1-6DManpa, LinkageIndex: 5, Res1: 7, Res2: 6
+    LikelyRotamers: Omg, gg, gt
+Name: DAllpa1-6DManpa, LinkageIndex: 7, Res1: 9, Res2: 8
+    LikelyRotamers: Omg, gg, gt
+Name: DAllpa1-6DManpa, LinkageIndex: 9, Res1: 11, Res2: 10
+    LikelyRotamers: Omg, gg, gt
+Name: DAllpa1-6DGalpa, LinkageIndex: 14, Res1: 16, Res2: 15
+    LikelyRotamers: Omg, gg, gt, tg
+Name: DAllpa1-6DGalpa, LinkageIndex: 18, Res1: 20, Res2: 19
+    LikelyRotamers: Omg, gg, gt, tg
+Name: DAllpa1-6DGalpa, LinkageIndex: 22, Res1: 24, Res2: 23
+    LikelyRotamers: Omg, gg, gt, tg
+
+*********************
+Building id 00054:DKDNpa2-6[DKDOpa2-3]DGlcpb1-OH
+*********************
+Input:
+DKDNpa2-6[DKDOpa2-3]DGlcpb1-OH
+Interpreted:
+DKDNpa2-6[DKDOpa2-3]DGlcpb1-OH
+IndexOrdered:
+DKDOpa2-3[DKDNpa2-6]DGlcpb1-OH
+IndexOrderedLabeled:
+DKDOp&Label=residue-4;a2-3&Label=link-2;[DKDNp&Label=residue-3;a2-6&Label=link-1;]DGlcp&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00054 with no exceptions thrown.
+
+Number of residues for this sequence is 4
+Number of likely shapes is 8
+Number of possible shapes is 12
+ROH_1_?_?
+VGB_2_?_?
+0KN_3_?_?
+0KO_4_?_?
+Name: DKDNpa2-6DGlcpb, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Phi, t, -g
+    LikelyRotamers: Omg, gg, gt
+Name: DKDOpa2-3DGlcpb, LinkageIndex: 2, Res1: 4, Res2: 2
+    LikelyRotamers: Phi, t, -g
+
+*********************
+Building id 00055:DNeup5Acb2-8DNeup5Aca2-3DGalpb1-8DNeup5Aca2-OH
+*********************
+Input:
+DNeup5Acb2-8DNeup5Aca2-3DGalpb1-8DNeup5Aca2-OH
+Interpreted:
+DNeup5Acb2-8DNeup5Aca2-3DGalpb1-8DNeup5Aca2-OH
+IndexOrdered:
+DNeup5Acb2-8DNeup5Aca2-3DGalpb1-8DNeup5Aca2-OH
+IndexOrderedLabeled:
+DNeup5Ac&Label=residue-5;b2-8&Label=link-3;DNeup5Ac&Label=residue-4;a2-3&Label=link-2;DGalp&Label=residue-3;b1-8&Label=link-1;DNeup5Ac&Label=residue-2;a2-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00055 with no exceptions thrown.
+
+Number of residues for this sequence is 5
+Number of likely shapes is 2
+Number of possible shapes is 2
+ROH_1_?_?
+8SA_2_?_?
+3LB_3_?_?
+8SA_4_?_?
+0SB_5_?_?
+Name: DNeu5Acpa2-3DGalpb, LinkageIndex: 2, Res1: 4, Res2: 3
+    LikelyRotamers: Phi, t, -g
+
+*********************
+Building id 00056:LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-3LGlcpNSa1-4LGlcpNSa1-OH
+*********************
+Input:
+LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-3LGlcpNSa1-4LGlcpNSa1-OH
+Interpreted:
+LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-3LGlcpNSa1-4LGlcpNSa1-OH
+IndexOrdered:
+LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-4LGlcpNSa1-3LGlcpNSa1-4LGlcpNSa1-OH
+IndexOrderedLabeled:
+LGlcpNS&Label=residue-8;a1-4&Label=link-6;LGlcpNS&Label=residue-7;a1-4&Label=link-5;LGlcpNS&Label=residue-6;a1-4&Label=link-4;LGlcpNS&Label=residue-5;a1-4&Label=link-3;LGlcpNS&Label=residue-4;a1-3&Label=link-2;LGlcpNS&Label=residue-3;a1-4&Label=link-1;LGlcpNS&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00056 with no exceptions thrown.
+
+Number of residues for this sequence is 8
+Number of likely shapes is 1
+Number of possible shapes is 1
+ROH_1_?_?
+4yS_2_?_?
+3yS_3_?_?
+4yS_4_?_?
+4yS_5_?_?
+4yS_6_?_?
+4yS_7_?_?
+0yS_8_?_?
+
+*********************
+Building id 00057:DGlcpa1-[4DGlcpa1-]<4>2DGlcpa1-[4DGlcpa1-6DGlcpa1-[4DGlcpa1-]<3>4DManpa1-]<2>OH
+*********************
+Input:
+DGlcpa1-[4DGlcpa1-]<4>2DGlcpa1-[4DGlcpa1-6DGlcpa1-[4DGlcpa1-]<3>4DManpa1-]<2>OH
+Interpreted:
+DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-2DGlcpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-OH
+IndexOrdered:
+DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-2DGlcpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-4DGlcpa1-6DGlcpa1-4DGlcpa1-4DGlcpa1-4DGlcpa1-4DManpa1-OH
+IndexOrderedLabeled:
+DGlcp&Label=residue-19;a1-4&Label=link-17;DGlcp&Label=residue-18;a1-4&Label=link-16;DGlcp&Label=residue-17;a1-4&Label=link-15;DGlcp&Label=residue-16;a1-4&Label=link-14;DGlcp&Label=residue-15;a1-2&Label=link-13;DGlcp&Label=residue-14;a1-4&Label=link-12;DGlcp&Label=residue-13;a1-6&Label=link-11;DGlcp&Label=residue-12;a1-4&Label=link-10;DGlcp&Label=residue-11;a1-4&Label=link-9;DGlcp&Label=residue-10;a1-4&Label=link-8;DGlcp&Label=residue-9;a1-4&Label=link-7;DManp&Label=residue-8;a1-4&Label=link-6;DGlcp&Label=residue-7;a1-6&Label=link-5;DGlcp&Label=residue-6;a1-4&Label=link-4;DGlcp&Label=residue-5;a1-4&Label=link-3;DGlcp&Label=residue-4;a1-4&Label=link-2;DGlcp&Label=residue-3;a1-4&Label=link-1;DManp&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00057 with no exceptions thrown.
+
+Number of residues for this sequence is 19
+Number of likely shapes is 4
+Number of possible shapes is 9
+ROH_1_?_?
+4MA_2_?_?
+4GA_3_?_?
+4GA_4_?_?
+4GA_5_?_?
+6GA_6_?_?
+4GA_7_?_?
+4MA_8_?_?
+4GA_9_?_?
+4GA_10_?_?
+4GA_11_?_?
+6GA_12_?_?
+4GA_13_?_?
+2GA_14_?_?
+4GA_15_?_?
+4GA_16_?_?
+4GA_17_?_?
+4GA_18_?_?
+0GA_19_?_?
+Name: DGlcpa1-6DGlcpa, LinkageIndex: 5, Res1: 7, Res2: 6
+    LikelyRotamers: Omg, gg, gt
+Name: DGlcpa1-6DGlcpa, LinkageIndex: 11, Res1: 13, Res2: 12
+    LikelyRotamers: Omg, gg, gt
+
+*********************
+Building id 00058:DGlcpNPa1-4LIdopA(1C4)a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNSa1-4LIdopA(2SO)a1-OH
+*********************
+Input:
+DGlcpNPa1-4LIdopA(1C4)a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNSa1-4LIdopA(2SO)a1-OH
+Interpreted:
+DGlcpNPa1-4LIdopA(1C4)a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNSa1-4LIdopA(2SO)a1-OH
+IndexOrdered:
+DGlcpNPa1-4LIdopA(1C4)a1-4DGlcpNSa1-4LIdopA(4C1)a1-4DGlcpNSa1-4LIdopA(2SO)a1-OH
+IndexOrderedLabeled:
+DGlcpNP&Label=residue-7;a1-4&Label=link-5;LIdopA(1C4)&Label=residue-6;a1-4&Label=link-4;DGlcpNS&Label=residue-5;a1-4&Label=link-3;LIdopA(4C1)&Label=residue-4;a1-4&Label=link-2;DGlcpNS&Label=residue-3;a1-4&Label=link-1;LIdopA(2SO)&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
+Parsed and labelled 00058 with no exceptions thrown.
+
+Number of residues for this sequence is 7
+Number of likely shapes is 1
+Number of possible shapes is 1
+ROH_1_?_?
+4uA2_2_?_?
+4YS_3_?_?
+4uA3_4_?_?
+4YS_5_?_?
+4uA1_6_?_?
+0YNP_7_?_?
+
+*********************
+Building id 00059:DGlcpa1-1DGlcpa
+*********************
+Input:
+DGlcpa1-1DGlcpa
+Interpreted:
+DGlcpa1-1DGlcpa
+IndexOrdered:
+DGlcpa1-1DGlcpa
+IndexOrderedLabeled:
+DGlcp&Label=residue-2;a1-1&Label=link-0;DGlcp&Label=residue-1;
+Parsed and labelled 00059 with no exceptions thrown.
+
+Number of residues for this sequence is 2
+Number of likely shapes is 1
+Number of possible shapes is 1
+1GA_1_?_?
+0GA_2_?_?
+00001.pdb not created.
+00002.pdb succesfully created.
+00003.pdb succesfully created.
+00004.pdb succesfully created.
+00005.pdb not created.
+00009.pdb succesfully created.
+00010.pdb succesfully created.
+00011.pdb not created.
+00012.pdb succesfully created.
+00013.pdb not created.
+00014.pdb succesfully created.
+00015.pdb succesfully created.
+00016.pdb succesfully created.
+00019.pdb succesfully created.
+00020.pdb succesfully created.
+00021.pdb not created.
+00023.pdb succesfully created.
+00024.pdb not created.
+00025.pdb not created.
+00026.pdb succesfully created.
+00027.pdb succesfully created.
+00028.pdb succesfully created.
+00029.pdb not created.
+00030.pdb succesfully created.
+00031.pdb succesfully created.
+00032.pdb not created.
+00033.pdb not created.
+00034.pdb not created.
+00035.pdb succesfully created.
+00036.pdb succesfully created.
+00037.pdb not created.
+00038.pdb succesfully created.
+00039.pdb not created.
+00040.pdb not created.
+00041.pdb not created.
+00042.pdb not created.
+00043.pdb succesfully created.
+00044.pdb not created.
+00045.pdb succesfully created.
+00046.pdb succesfully created.
+00047.pdb succesfully created.
+00048.pdb succesfully created.
+00049.pdb succesfully created.
+00050.pdb succesfully created.
+00051.pdb succesfully created.
+00052.pdb succesfully created.
+00053.pdb succesfully created.
+00054.pdb succesfully created.
+00055.pdb succesfully created.
+00056.pdb succesfully created.
+00057.pdb succesfully created.
+00058.pdb succesfully created.
+00059.pdb succesfully created.
