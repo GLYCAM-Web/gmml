@@ -138,15 +138,15 @@ ATOM    131 H62  0YN     7      15.312   6.122   9.438  1.00  0.00           H
 ATOM    132 O6   0YN     7      17.329   5.627   9.277  1.00  0.00           O
 ATOM    133 H6O  0YN     7      17.395   6.342   9.900  1.00  0.00           H
 TER
-CONECT    2   14
-CONECT    3   22
 CONECT   14    2
+CONECT    2   14
 CONECT   22    3
-CONECT   46   47
+CONECT    3   22
 CONECT   47   46
-CONECT   65   66
+CONECT   46   47
 CONECT   66   65
-CONECT   90   91
+CONECT   65   66
 CONECT   91   90
-CONECT  101  110
+CONECT   90   91
 CONECT  110  101
+CONECT  101  110

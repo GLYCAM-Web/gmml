@@ -98,14 +98,18 @@ void cds::writeAtomToPdb(std::ostream& stream, const cds::Atom* atom, const std:
 void cds::writeConectCards(std::ostream& stream, const std::vector<cds::Residue*> residues)
 { // These are only written for atoms connecting residues. The numbers overflow/truncate when longer than 5, but the
   // format is what the format is.
+    std::vector<std::pair<const Atom*, const Atom*>> atomsPairsConnectedToOtherResidues;
     for (auto& residue : residues)
     {
-        std::vector<std::pair<const Atom*, const Atom*>> atomsPairsConnectedToOtherResidues =
-            residue->getAtomPairsConnectedToOtherResidues();
-        for (auto& atomPair : atomsPairsConnectedToOtherResidues)
-        {
-            stream << "CONECT" << std::right << std::setw(5) << atomPair.first->getNumber() << std::right
-                   << std::setw(5) << atomPair.second->getNumber() << "\n";
-        }
+        residue->getAtomPairsConnectedToOtherResidues(atomsPairsConnectedToOtherResidues);
+    }
+    //    auto it = std::unique(atomsPairsConnectedToOtherResidues.begin(),atomsPairsConnectedToOtherResidues.end() );
+    //    atomsPairsConnectedToOtherResidues.resize(std::distance(atomsPairsConnectedToOtherResidues.begin(), it));
+    for (auto& atomPair : atomsPairsConnectedToOtherResidues)
+    {
+        stream << "CONECT" << std::right << std::setw(5) << atomPair.first->getNumber() << std::right << std::setw(5)
+               << atomPair.second->getNumber() << "\n";
+        stream << "CONECT" << std::right << std::setw(5) << atomPair.second->getNumber() << std::right << std::setw(5)
+               << atomPair.first->getNumber() << "\n";
     }
 }

@@ -111,7 +111,8 @@ namespace cds
         Atom* FindAtom(const int& queryNumber) const;
         bool contains(const Atom* queryAtom) const;
         std::vector<const Atom*> getAtomsConnectedToOtherResidues() const;
-        std::vector<std::pair<const Atom*, const Atom*>> getAtomPairsConnectedToOtherResidues() const;
+        void getAtomPairsConnectedToOtherResidues(std::vector<std::pair<const Atom*, const Atom*>>& foundAtoms) const;
+        //        std::vector<std::pair<const Atom*, const Atom*>> getAtomPairsConnectedToOtherResidues() const;
         void MakeDeoxy(std::string oxygenNumber);
         void RemoveHydroxyHydrogen(std::string hydrogenNumber);
         const Coordinate* calculateGeometricCenter();
