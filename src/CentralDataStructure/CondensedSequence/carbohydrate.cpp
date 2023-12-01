@@ -25,9 +25,8 @@ using cdsCondensedSequence::Carbohydrate;
 Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) : SequenceManipulator {inputSequence}
 {
     this->setName("CONDENSEDSEQUENCE");
-    this->ReorderSequence();        // So output is consistent regardless of input order e.g. Fuca1-2[Gala1-3]Glca vs
-                                    // Gala1-3[Fuca1-2]Glca. Same 3D structure.
-    this->SetIndexByConnectivity(); // For reporting residue index numbers to the user
+    this->ReorderSequence(); // So output is consistent regardless of input order e.g. Fuca1-2[Gala1-3]Glca vs
+                             // Gala1-3[Fuca1-2]Glca. Same 3D structure.
     prep::PrepFile glycamPrepFileSelect(prepFilePath, this->GetGlycamNamesOfResidues());
     for (auto& cdsResidue : this->getResidues())
     { // Move atoms from prep file into parsedResidues.
@@ -49,6 +48,7 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
         }
     }
     // Have atom numbers go from 1 to number of atoms. Note this should be after deleting atoms due to deoxy
+    this->SetIndexByConnectivity(); // For reporting residue index numbers to the user
     cds::serializeNumbers(this->getAtoms());
     // Set 3D structure
     this->DepthFirstSetConnectivityAndGeometry(this->GetTerminal()); // recurve start with terminal
