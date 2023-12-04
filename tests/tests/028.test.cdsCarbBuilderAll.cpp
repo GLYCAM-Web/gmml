@@ -85,7 +85,7 @@ int main(int argc, char** argv)
             std::cout << "IndexOrdered:\n" << sequence.getIndexOrdered() << "\n";
             std::cout << "IndexOrderedLabeled:\n" << sequence.getIndexLabeled() << "\n";
             std::cout << "Parsed and labelled " << inputGlycanID << " with no exceptions thrown.\n\n";
-            cdsCondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
+            cdsCondensedSequence::carbohydrateBuilder carbBuilder(sequence.getIndexOrdered(), prepFile);
             bool likelyShapesOnly = true; // Not sure I like this. Two functions probably more readable.
             std::cout << "Number of residues for this sequence is " << carbBuilder.GetCarbohydrate().GetResidueCount()
                       << "\n";
