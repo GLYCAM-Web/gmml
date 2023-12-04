@@ -141,14 +141,6 @@ std::string ParsedResidue::GetLinkageName(const bool withLabels) const
 void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, ResidueType specifiedType)
 {
     // gmml::log(__LINE__, __FILE__, gmml::INF, "PARSING RESIDUE: " + residueString);
-    // Set defaults:
-    this->SetIsomer("");
-    this->SetResidueName("");
-    this->SetRingType("");
-    this->SetRingShape("");
-    this->SetResidueModifier("");
-    this->SetConfiguration("");
-    this->SetLinkage("");
     this->SetType(specifiedType);
     if ((residueString.find('-') != std::string::npos) || (specifiedType == ResidueType::Sugar))
     { // E.g. DManpNAca1-4 . Isomer (D or L), residueName (ManNAc), ring type (f or p), configuration (a or b), linkage
@@ -156,18 +148,15 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         // Reading from front.
         this->SetType(ResidueType::Sugar);
         // Assumptions
-        size_t residueStart  = 1; // e.g. Gal, Glc, Ido
-        size_t modifierStart = 5; // E.g. NAc, A, A(1C4)
+        size_t residueStart  = 0; // e.g. Gal, Glc, Ido
+        size_t modifierStart = 3; // E.g. NAc, A, A(1C4)
         // Checks
         std::string isomer   = residueString.substr(0, 1);
         if ((isomer == "D") || (isomer == "L"))
         {
             this->SetIsomer(isomer);
-        }
-        else
-        {
-            residueStart--;
-            modifierStart--;
+            ++residueStart;  // 1
+            ++modifierStart; // 4
         }
         this->SetResidueName(residueString.substr(residueStart, 3));
         size_t ringPosition  = (residueStart + 3);
@@ -175,10 +164,7 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         if ((ringType == "p") || (ringType == "f"))
         {
             this->SetRingType(ringType);
-        }
-        else
-        {
-            modifierStart--;
+            ++modifierStart; // 5
         }
         // Find the dash, read around it.
         size_t dashPosition = residueString.find('-');
@@ -190,28 +176,30 @@ void ParsedResidue::ParseResidueStringIntoComponents(std::string residueString, 
         {
             this->SetLinkage(residueString.substr((dashPosition - 1), 3));
         }
+        size_t modifierEnd = dashPosition - 2; // They are 2 apart if no modifier i.e. DGlcpa1-2, the "a1" size is 2
         std::string configuration = residueString.substr(dashPosition - 2, 1);
         if ((configuration == "a" || configuration == "b"))
         {
-            this->SetConfiguration(residueString.substr(dashPosition - 2, 1));
+            this->SetConfiguration(configuration);
         }
-        // Find any special modifiers e.g. NAc, Gc, A in IdoA
-        size_t modifierLength = (dashPosition - modifierStart - 2); // They are 2 apart if no modifier
+        else
+        {
+            modifierEnd++; // e.g. if ano is missing DGlcpA1-OH
+        }
+        // Find any special modifiers e.g. NAc, Gc, A in DGlcpAa1-OH NAc in DGlcpNAca1-2
+        size_t modifierLength = (modifierEnd - modifierStart);
         // logss << "modifierLength is " << modifierLength << ", dashPosition was " << dashPosition << ", ringPosition
         // was " << ringPosition << std::endl;
         if (modifierLength > 100)
         {
-            gmml::log(__LINE__, __FILE__, gmml::WAR,
-                      "This is a non-standard residue string that may cause issues: " + residueString);
+            std::string message = "This is a non-standard residue string that gmml can't handle: " + residueString;
+            gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+            throw std::runtime_error(message);
         }
         if (modifierLength > 0 && modifierLength < 100)
         {
             this->SetResidueModifier(residueString.substr(modifierStart, modifierLength));
             this->ExciseRingShapeFromModifier();
-        }
-        else
-        {
-            this->SetResidueModifier("");
         }
     }
     else if (isdigit(residueString[0]))

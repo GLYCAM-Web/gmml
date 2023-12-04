@@ -160,14 +160,14 @@ namespace cdsCondensedSequence
         //////////////////////////////////////////////////////////
         //                       ATTRRIBUTES                    //
         //////////////////////////////////////////////////////////
-        std::string fullResidueString_; // DManpNAca1-4, etc
-        std::string isomer_;            // D or L
-        std::string residueName_;       // Man, Neu, Ido etc
-        std::string ringType_;          // f or p
-        std::string ringShape_;         // 2SO, 4C1, 1C4 etc
-        std::string residueModifier_;   // NAc, Gc, A (IdoA) etc
-        std::string configuration_;     // a or b
-        std::string linkage_;           // 1-4, 2-6, 1- (when connected to OH) etc
+        std::string fullResidueString_ = ""; // DManpNAca1-4, etc
+        std::string isomer_            = ""; // D or L
+        std::string residueName_       = ""; // Man, Neu, Ido etc
+        std::string ringType_          = ""; // f or p
+        std::string ringShape_         = ""; // 2SO, 4C1, 1C4 etc
+        std::string residueModifier_   = ""; // NAc, Gc, A (IdoA) etc
+        std::string configuration_     = ""; // a or b
+        std::string linkage_           = ""; // 1-4, 2-6, 1- (when connected to OH) etc
     };
 } // namespace cdsCondensedSequence
 #endif
