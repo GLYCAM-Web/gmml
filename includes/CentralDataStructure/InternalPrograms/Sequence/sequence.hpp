@@ -11,7 +11,7 @@
 
 namespace CondensedSequence
 {
-    class Sequence : public Abstract::absBuilder
+    class Sequence
     {
       public:
         //////////////////////////////////////////////////////////
