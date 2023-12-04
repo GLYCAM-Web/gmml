@@ -41,7 +41,7 @@ Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
 *********************
 Building DGlcpA1-OH
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpA1- with glycam residue code: 0G
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpA1- with glycam residue code: 0Z
 
 *********************
 Building DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
@@ -134,15 +134,12 @@ Building dUAa1-OME
 *********************
 Building dUA-OME
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: Could not convert the first linkage number to an integer: -
+Error thrown by the carbohydrateBuilder in gmml during construction was: This is a non-standard residue string that gmml can't handle: dUA-
 
 *********************
 Building dUA-4DGalpb1-OH
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: The deduced linkageLabel is too small:
-A-4.
-We require anomer, start atom number, a dash, and connecting atom number. Example:
-a1-4
+Error thrown by the carbohydrateBuilder in gmml during construction was: This is a non-standard residue string that gmml can't handle: dUA-4
 
 *********************
 Building DManpa1-9DGlcpNAcb1-OH

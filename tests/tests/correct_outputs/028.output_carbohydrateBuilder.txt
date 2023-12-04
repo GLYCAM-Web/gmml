@@ -210,14 +210,14 @@ Building id 00013:DGlcpA1-OH
 Input:
 DGlcpA1-OH
 Interpreted:
-DGlcp1-OH
+DGlcpA1-OH
 IndexOrdered:
-DGlcp1-OH
+DGlcpA1-OH
 IndexOrderedLabeled:
-DGlcp&Label=residue-2;1-&Label=link-0;OH&Label=residue-1;
+DGlcpA&Label=residue-2;1-&Label=link-0;OH&Label=residue-1;
 Parsed and labelled 00013 with no exceptions thrown.
 
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpA1- with glycam residue code: 0G
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpA1- with glycam residue code: 0Z
 
 *********************
 Building id 00014:DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
@@ -609,35 +609,12 @@ OME_1_?_?
 *********************
 Building id 00032:dUA-OME
 *********************
-Input:
-dUA-OME
-Interpreted:
-dUAA-OME
-IndexOrdered:
-dUAA-OME
-IndexOrderedLabeled:
-dUA&Label=residue-2;A-&Label=link-0;OME&Label=residue-1;
-Parsed and labelled 00032 with no exceptions thrown.
-
-Error thrown by the carbohydrateBuilder in gmml during construction was: Could not convert the first linkage number to an integer: -
+Error thrown by the carbohydrateBuilder in gmml during construction was: This is a non-standard residue string that gmml can't handle: dUA-
 
 *********************
 Building id 00033:dUA-4DGalpb1-OH
 *********************
-Input:
-dUA-4DGalpb1-OH
-Interpreted:
-dUAA-4DGalpb1-OH
-IndexOrdered:
-dUAA-4DGalpb1-OH
-IndexOrderedLabeled:
-dUA&Label=residue-3;A-4&Label=link-1;DGalp&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
-Parsed and labelled 00033 with no exceptions thrown.
-
-Error thrown by the carbohydrateBuilder in gmml during construction was: The deduced linkageLabel is too small:
-A-4.
-We require anomer, start atom number, a dash, and connecting atom number. Example:
-a1-4
+Error thrown by the carbohydrateBuilder in gmml during construction was: This is a non-standard residue string that gmml can't handle: dUA-4
 
 *********************
 Building id 00034:DManpa1-9DGlcpNAcb1-OH
@@ -794,61 +771,21 @@ Name: DGlcpa1-6DManpa, LinkageIndex: 3, Res1: 5, Res2: 4
 *********************
 Building id 00039:<
 *********************
-Input:
-
-Interpreted:
-
-IndexOrdered:
-
-IndexOrderedLabeled:
-
-Parsed and labelled 00039 with no exceptions thrown.
-
 Error thrown by the carbohydrateBuilder in gmml during construction was: Number of repeating units not specified correctly in repeating unit: <
 
 *********************
 Building id 00040:Bad<15>OH
 *********************
-Input:
-
-Interpreted:
-
-IndexOrdered:
-
-IndexOrderedLabeled:
-
-Parsed and labelled 00040 with no exceptions thrown.
-
 Error thrown by the carbohydrateBuilder in gmml during construction was: Missing or incorrect usage of ']' in repeating sequence: Bad<15>OH
 
 *********************
 Building id 00041:DGlcpa1-4DGlcpa1-6DManpa1-<15>OH
 *********************
-Input:
-
-Interpreted:
-
-IndexOrdered:
-
-IndexOrderedLabeled:
-
-Parsed and labelled 00041 with no exceptions thrown.
-
 Error thrown by the carbohydrateBuilder in gmml during construction was: Missing or incorrect usage of ']' in repeating sequence: DGlcpa1-4DGlcpa1-6DManpa1-<15>OH
 
 *********************
 Building id 00042:DGlcpa1-4DGlcpa1-4[4DGlcpa1-]<>OH
 *********************
-Input:
-
-Interpreted:
-
-IndexOrdered:
-
-IndexOrderedLabeled:
-
-Parsed and labelled 00042 with no exceptions thrown.
-
 Error thrown by the carbohydrateBuilder in gmml during construction was: Number of repeating units not specified correctly in repeating unit: DGlcpa1-4DGlcpa1-4[4DGlcpa1-]<>OH
 
 *********************
