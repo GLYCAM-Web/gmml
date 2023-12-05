@@ -209,7 +209,7 @@ std::vector<const Atom*> Residue::getAtomsConnectedToOtherResidues() const
     return foundAtoms;
 }
 
-void Residue::getAtomPairsConnectedToOtherResidues(std::vector<std::pair<const Atom*, const Atom*>>& foundAtoms) const
+void Residue::findAtomPairsConnectedToOtherResidues(std::vector<std::pair<const Atom*, const Atom*>>& foundAtoms) const
 {
     // std::vector<std::pair<const Atom*, const Atom*>> foundAtoms;
     std::vector<Atom*> residueAtoms = this->getAtoms();
@@ -226,7 +226,7 @@ void Residue::getAtomPairsConnectedToOtherResidues(std::vector<std::pair<const A
     return;
 }
 
-void Residue::MakeDeoxy(std::string oxygenNumber)
+void Residue::MakeDeoxy(const std::string oxygenNumber)
 { // if oxygenNumber is 6, then C6-O6-H6O becomes C6-Hd
     Atom* hydrogenAtom = this->FindAtom("H" + oxygenNumber + "O");
     Atom* oxygenAtom   = this->FindAtom("O" + oxygenNumber);
@@ -245,7 +245,7 @@ void Residue::MakeDeoxy(std::string oxygenNumber)
     gmml::log(__LINE__, __FILE__, gmml::INF, "Completed MakeDeoxy\n");
 }
 
-void Residue::RemoveHydroxyHydrogen(std::string hydrogenNumber)
+void Residue::RemoveHydroxyHydrogen(const std::string hydrogenNumber)
 {
     cds::Atom* hydrogen = this->FindAtom("H" + hydrogenNumber + "O");
     cds::Atom* oxygen   = this->FindAtom("O" + hydrogenNumber);

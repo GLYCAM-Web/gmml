@@ -101,7 +101,7 @@ void cds::writeConectCards(std::ostream& stream, const std::vector<cds::Residue*
     std::vector<std::pair<const Atom*, const Atom*>> atomsPairsConnectedToOtherResidues;
     for (auto& residue : residues)
     {
-        residue->getAtomPairsConnectedToOtherResidues(atomsPairsConnectedToOtherResidues);
+        residue->findAtomPairsConnectedToOtherResidues(atomsPairsConnectedToOtherResidues);
     }
     //    auto it = std::unique(atomsPairsConnectedToOtherResidues.begin(),atomsPairsConnectedToOtherResidues.end() );
     //    atomsPairsConnectedToOtherResidues.resize(std::distance(atomsPairsConnectedToOtherResidues.begin(), it));
