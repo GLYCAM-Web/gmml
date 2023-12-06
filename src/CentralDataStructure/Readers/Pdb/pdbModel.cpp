@@ -327,7 +327,7 @@ void PdbModel::preProcessMissingUnrecognized(pdb::PreprocessorInformation& ppInf
     for (auto& cdsResidue : this->getResidues())
     {
         PdbResidue* residue            = static_cast<PdbResidue*>(cdsResidue);
-        cds::Residue* parameterResidue = parmManager.getParameterResidue(residue->GetParmName());
+        cds::Residue* parameterResidue = parmManager.findParameterResidue(residue->GetParmName());
         // Unrecognized residue->
         if (parameterResidue == nullptr)
         {

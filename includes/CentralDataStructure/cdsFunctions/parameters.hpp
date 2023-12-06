@@ -16,9 +16,9 @@ namespace cdsParameters
         // Constructor
         ParameterManager(); // Take in nothing for now, just use defaults
         // Functions
-        cds::Residue* getParameterResidue(const std::string name) const;
-        bool setAtomCharges(cds::Residue* queryResidue);
-        void setAtomCharges(std::vector<cds::Residue*> queryResidues);
+        cds::Residue* findParameterResidue(const std::string name) const;
+        bool setAtomChargesForResidue(cds::Residue* queryResidue);
+        void setAtomChargesForResidues(std::vector<cds::Residue*> queryResidues);
 
       private:
         // Functions
