@@ -1,11 +1,12 @@
 #include "includes/CentralDataStructure/Readers/Pdb/pdbFile.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbModel.hpp"
-#include "includes/CentralDataStructure/cdsFunctions/parameters.hpp"
+#include "includes/CentralDataStructure/Parameters/parameters.hpp"
 #include "includes/CodeUtils/files.hpp"
 #include "includes/CodeUtils/logging.hpp"
 #include "includes/CodeUtils/strings.hpp"
 #include <fstream>   // std::ifstream
 #include <algorithm> // std::find
+
 using pdb::PdbFile;
 
 //////////////////////////////////////////////////////////

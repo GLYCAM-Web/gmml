@@ -11,6 +11,7 @@
 ./includes/CentralDataStructure/InternalPrograms/WiggleToSite
 ./includes/CentralDataStructure/Measurements
 ./includes/CentralDataStructure/Overlaps
+./includes/CentralDataStructure/Parameters
 ./includes/CentralDataStructure/Readers
 ./includes/CentralDataStructure/Readers/Lib
 ./includes/CentralDataStructure/Readers/Pdb

@@ -1,4 +1,4 @@
-#include "includes/CentralDataStructure/cdsFunctions/parameters.hpp"
+#include "includes/CentralDataStructure/Parameters/parameters.hpp"
 #include "includes/CodeUtils/directories.hpp"
 
 using cdsParameters::ParameterManager;

@@ -18,6 +18,7 @@
 ./src/CentralDataStructure/Measurements/measurements.cpp
 ./src/CentralDataStructure/Overlaps/beadResidues.cpp
 ./src/CentralDataStructure/Overlaps/cdsOverlaps.cpp
+./src/CentralDataStructure/Parameters/parameterManager.cpp
 ./src/CentralDataStructure/Readers/Lib/LibraryAtom.cpp
 ./src/CentralDataStructure/Readers/Lib/LibraryFile.cpp
 ./src/CentralDataStructure/Readers/Lib/LibraryResidue.cpp
@@ -54,7 +55,6 @@
 ./src/CentralDataStructure/cdsFunctions/atomicConnectivity.cpp
 ./src/CentralDataStructure/cdsFunctions/bondByDistance.cpp
 ./src/CentralDataStructure/cdsFunctions/cdsFunctions.cpp
-./src/CentralDataStructure/cdsFunctions/parameters.cpp
 ./src/CentralDataStructure/coordinate.cpp
 ./src/CentralDataStructure/ensemble.cpp
 ./src/CentralDataStructure/molecule.cpp

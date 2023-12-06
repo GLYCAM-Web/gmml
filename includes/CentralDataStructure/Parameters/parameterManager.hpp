@@ -1,5 +1,5 @@
-#ifndef INCLUDES_CENTRALDATASTRUCTURE_CDSFUNCTIONS_PARAMETERS_HPP_
-#define INCLUDES_CENTRALDATASTRUCTURE_CDSFUNCTIONS_PARAMETERS_HPP_
+#ifndef INCLUDES_CENTRALDATASTRUCTURE_PARAMETERS_PARAMETERS_HPP_
+#define INCLUDES_CENTRALDATASTRUCTURE_PARAMETERS_PARAMETERS_HPP_
 
 #include "includes/CentralDataStructure/residue.hpp"
 #include "includes/CentralDataStructure/Readers/Prep/prepFile.hpp"
@@ -34,4 +34,4 @@ namespace cdsParameters
     // bool setCharges(cds::Residue* queryResidue, std::vector<cds::Residue*> referenceResidues);
     void setCharges(std::vector<cds::Residue*> queryResidues);
 } // namespace cdsParameters
-#endif /* INCLUDES_CENTRALDATASTRUCTURE_CDSFUNCTIONS_PARAMETERS_HPP_ */
+#endif /* INCLUDES_CENTRALDATASTRUCTURE_PARAMETERS_PARAMETERS_HPP_ */
