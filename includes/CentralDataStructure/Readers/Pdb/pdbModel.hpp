@@ -3,7 +3,7 @@
 #include "includes/CentralDataStructure/assembly.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/SectionClasses/conectRecord.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
-#include "includes/CentralDataStructure/Parameters/parameters.hpp"
+#include "includes/CentralDataStructure/Parameters/parameterManager.hpp"
 #include <vector>
 #include <iostream>
 

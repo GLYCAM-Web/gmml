@@ -1,46 +1,44 @@
-#include "includes/CentralDataStructure/Parameters/parameters.hpp"
+#include "includes/CentralDataStructure/Parameters/parameterManager.hpp"
 #include "includes/CodeUtils/directories.hpp"
+
+// How exactly this happens can be improved, but the information should only ever be loaded into gmml in one place.
+namespace cdsParameters
+{
+    static const std::vector<std::string> prepFilesToLoad = {"/dat/prep/GLYCAM_06j-1_GAGS_KDN.prep"};
+
+    static const std::vector<std::string> libFilesToLoad = {
+        "/dat/CurrentParams/leaprc_GLYCAM_06j-1_2014-03-14/GLYCAM_amino_06j_12SB.lib",
+        "/dat/CurrentParams/leaprc_GLYCAM_06j-1_2014-03-14/GLYCAM_aminont_06j_12SB.lib",
+        "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/nucleic12.lib",
+        "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/nucleic12.lib",
+        "/dat/CurrentParams/other/solvents.lib",
+        "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/amino12.lib",
+        "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/aminoct12.lib",
+        "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/aminont12.lib",
+    };
+} // namespace cdsParameters
 
 using cdsParameters::ParameterManager;
 
 ParameterManager::ParameterManager()
 { // Library files of 3D structures with parameters for simulations.
-    // How exactly this happens can be improved, but the information should only ever be loaded into gmml in one place.
-    // Find $GMMLHOME
-    std::string gmmlHomeDir = codeUtils::getGmmlHomeDir();
-    gmml::log(__LINE__, __FILE__, gmml::INF, "gmmlhome is: " + codeUtils::getGmmlHomeDir());
-    prepFiles_.emplace_back(gmmlHomeDir + "/dat/prep/GLYCAM_06j-1_GAGS_KDN.prep");
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Initializing ResidueMap with lprepFiles");
-    for (auto& file : prepFiles_)
+    const std::string gmmlhome = codeUtils::getGmmlHomeDir();
+    gmml::log(__LINE__, __FILE__, gmml::INF, "gmmlhome is: " + gmmlhome);
+    for (auto& prepFilePath : cdsParameters::prepFilesToLoad)
     {
+        auto& file = prepFiles_.emplace_back(gmmlhome + prepFilePath);
         this->InitializeResidueMap(file.getResidues());
     }
-    libFiles_.emplace_back(gmmlHomeDir + "/dat/CurrentParams/leaprc_GLYCAM_06j-1_2014-03-14/GLYCAM_amino_06j_12SB.lib");
-    libFiles_.emplace_back(gmmlHomeDir +
-                           "/dat/CurrentParams/leaprc_GLYCAM_06j-1_2014-03-14/GLYCAM_aminoct_06j_12SB.lib");
-    libFiles_.emplace_back(gmmlHomeDir +
-                           "/dat/CurrentParams/leaprc_GLYCAM_06j-1_2014-03-14/GLYCAM_aminont_06j_12SB.lib");
-    libFiles_.emplace_back(gmmlHomeDir + "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/nucleic12.lib");
-    libFiles_.emplace_back(gmmlHomeDir + "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/nucleic12.lib");
-    libFiles_.emplace_back(gmmlHomeDir + "/dat/CurrentParams/other/solvents.lib");
-    libFiles_.emplace_back(gmmlHomeDir + "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/amino12.lib");
-    libFiles_.emplace_back(gmmlHomeDir + "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/aminoct12.lib");
-    libFiles_.emplace_back(gmmlHomeDir + "/dat/CurrentParams/leaprc.ff12SB_2014-04-24/aminont12.lib");
-    gmml::log(__LINE__, __FILE__, gmml::INF, "Initializing ResidueMap with libFiles");
-    for (auto& file : libFiles_)
+    for (auto& libFilePath : cdsParameters::libFilesToLoad)
     {
+        auto& file = libFiles_.emplace_back(gmmlhome + libFilePath);
         this->InitializeResidueMap(file.getResidues());
     }
     gmml::log(__LINE__, __FILE__, gmml::INF, "Finished construction of ParameterManager.");
 }
 
-void ParameterManager::InitializeResidueMap(std::vector<cds::Residue*> incomingResidues)
-{
-    for (auto& residue : incomingResidues)
-    {
-        parameterResidueMap_[residue->getName()] = residue;
-    }
-}
+ParameterManager::ParameterManager(const std::vector<std::string> queryNames)
+{}
 
 cds::Residue* ParameterManager::findParameterResidue(const std::string name) const
 {
@@ -52,7 +50,19 @@ cds::Residue* ParameterManager::findParameterResidue(const std::string name) con
     return nullptr;
 }
 
-void ParameterManager::setAtomChargesForResidues(std::vector<cds::Residue*> queryResidues)
+cds::Residue ParameterManager::copyParameterResidue(const std::string name) const
+{
+    cds::Residue* reference = this->findParameterResidue(name);
+    if (reference == nullptr)
+    {
+        std::string message = "Did not find and therefore cannot copy a parameter residue with this name: " + name;
+        gmml::log(__LINE__, __FILE__, gmml::ERR, message);
+        throw std::runtime_error(message);
+    }
+    return *reference; // copy
+}
+
+void ParameterManager::setAtomChargesForResidues(std::vector<cds::Residue*> queryResidues) const
 {
     for (auto& residue : queryResidues)
     {
@@ -60,7 +70,29 @@ void ParameterManager::setAtomChargesForResidues(std::vector<cds::Residue*> quer
     }
 }
 
-bool ParameterManager::setAtomChargesForResidue(cds::Residue* queryResidue)
+void ParameterManager::createAtomsForResidue(cds::Residue* queryResidue, const std::string glycamNameForResidue) const
+{
+    cds::Residue parameterResidue = this->copyParameterResidue(glycamNameForResidue);
+    // Need parsedResidue as e.g. 0MA and not DManpa1-4. Maybe a "GlycamName" variable?
+    queryResidue->setName(parameterResidue.getName());
+    // extractAtoms moves the atoms parameterResidue will go out of scope
+    queryResidue->setAtoms(parameterResidue.extractAtoms());
+    // std::cout << "Finished moving atoms from parameterResidue to parsed Residue. Adventure awaits! Huzzah!" <<
+    // std::endl;
+    return;
+}
+
+// PRIVATE FUNCTIONS
+
+void ParameterManager::InitializeResidueMap(std::vector<cds::Residue*> incomingResidues)
+{
+    for (auto& residue : incomingResidues)
+    {
+        parameterResidueMap_[residue->getName()] = residue;
+    }
+}
+
+bool ParameterManager::setAtomChargesForResidue(cds::Residue* queryResidue) const
 {
     bool allAtomsPresent           = true;
     cds::Residue* parameterResidue = this->findParameterResidue(queryResidue->GetParmName());

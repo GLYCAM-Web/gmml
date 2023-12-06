@@ -1,5 +1,5 @@
-#ifndef INCLUDES_CENTRALDATASTRUCTURE_PARAMETERS_PARAMETERS_HPP_
-#define INCLUDES_CENTRALDATASTRUCTURE_PARAMETERS_PARAMETERS_HPP_
+#ifndef INCLUDES_CENTRALDATASTRUCTURE_PARAMETERS_PARAMETERMANAGER_HPP_
+#define INCLUDES_CENTRALDATASTRUCTURE_PARAMETERS_PARAMETERMANAGER_HPP_
 
 #include "includes/CentralDataStructure/residue.hpp"
 #include "includes/CentralDataStructure/Readers/Prep/prepFile.hpp"
@@ -14,14 +14,17 @@ namespace cdsParameters
     {
       public:
         // Constructor
-        ParameterManager(); // Take in nothing for now, just use defaults
+        ParameterManager(); // Loading everything by default
+        ParameterManager(const std::vector<std::string> queryNames);
         // Functions
         cds::Residue* findParameterResidue(const std::string name) const;
-        bool setAtomChargesForResidue(cds::Residue* queryResidue);
-        void setAtomChargesForResidues(std::vector<cds::Residue*> queryResidues);
+        bool setAtomChargesForResidue(cds::Residue* queryResidue) const;
+        void setAtomChargesForResidues(std::vector<cds::Residue*> queryResidues) const;
+        void createAtomsForResidue(cds::Residue* queryResidue, const std::string glycamNameForResidue) const;
 
       private:
         // Functions
+        cds::Residue copyParameterResidue(const std::string name) const;
         void InitializeResidueMap(std::vector<cds::Residue*> incomingResidues);
         // Attributes
         std::unordered_map<std::string, cds::Residue*> parameterResidueMap_;
@@ -34,4 +37,4 @@ namespace cdsParameters
     // bool setCharges(cds::Residue* queryResidue, std::vector<cds::Residue*> referenceResidues);
     void setCharges(std::vector<cds::Residue*> queryResidues);
 } // namespace cdsParameters
-#endif /* INCLUDES_CENTRALDATASTRUCTURE_PARAMETERS_PARAMETERS_HPP_ */
+#endif /* INCLUDES_CENTRALDATASTRUCTURE_PARAMETERS_PARAMETERMANAGER_HPP_ */
