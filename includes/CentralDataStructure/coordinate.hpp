@@ -19,9 +19,10 @@ namespace cds
 
         Coordinate(const std::string x, const std::string y, const std::string z);
         Coordinate(double x, double y, double z);
+        Coordinate(Coordinate&& other) noexcept; // Move Ctor
+        Coordinate(const Coordinate& coordinate);
+        Coordinate& operator=(const Coordinate&);
 
-        // Coordinate(const Coordinate& coordinate);
-        // Coordinate(Coordinate* coordinate);
         //////////////////////////////////////////////////////////
         //                           ACCESSOR                   //
         //////////////////////////////////////////////////////////

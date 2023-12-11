@@ -29,8 +29,31 @@ Coordinate::Coordinate(const std::string x, const std::string y, const std::stri
     }
 }
 
-// Coordinate::Coordinate(const Coordinate &coordinate) : x_(coordinate.x_), y_(coordinate.y_), z_(coordinate.z_) {}
-// Coordinate::Coordinate(Coordinate* coordinate) : x_(coordinate->x_), y_(coordinate->y_), z_(coordinate->z_) {}
+// Move Ctor.
+Coordinate::Coordinate(Coordinate&& other) noexcept : Coordinate()
+{
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Coordinate move ctor\n");
+    x_ = std::move(other.x_);
+    y_ = std::move(other.y_);
+    z_ = std::move(other.z_);
+}
+
+Coordinate::Coordinate(const Coordinate& coordinate) : x_(coordinate.x_), y_(coordinate.y_), z_(coordinate.z_)
+{
+    // gmml::log(__LINE__,__FILE__,gmml::INF, "Coordinate copy ctor for " + std::to_string(x_) + " " +
+    // std::to_string(y_) + " " + std::to_string(z_));
+}
+
+Coordinate& Coordinate::operator=(const Coordinate& other)
+{
+    x_ = other.x_;
+    y_ = other.y_;
+    z_ = other.z_;
+    // gmml::log(__LINE__,__FILE__,gmml::INF, "Assign copy ctor for " + std::to_string(x_) + " " + std::to_string(y_) +
+    // " " + std::to_string(z_));
+    return *this;
+}
+
 //////////////////////////////////////////////////////////
 //                         FUNCTIONS                    //
 //////////////////////////////////////////////////////////
