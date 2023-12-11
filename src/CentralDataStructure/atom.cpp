@@ -29,16 +29,20 @@ Atom::Atom(const Atom& other) noexcept
     : glygraph::Node<cds::Atom>(other), currentCoordinate_(other.currentCoordinate_), charge_(other.charge_),
       atomType_(other.atomType_), number_(other.number_)
 {
+    //    gmml::log(__LINE__, __FILE__, gmml::INF,
+    //              "Atom copy ctor creating " + this->getName() + "_" + std::to_string(this->getIndex()));
     for (auto& coord : other.allCoordinates_)
     {
         allCoordinates_.push_back(std::make_unique<Coordinate>((*coord.get())));
     }
+    currentCoordinate_ = allCoordinates_.at(0).get();
 }
 
 // Move and Copy assignment operator
 Atom& Atom::operator=(Atom other) noexcept
 {
     swap(*this, other);
+    currentCoordinate_ = allCoordinates_.at(0).get();
     return *this;
 }
 
