@@ -50,17 +50,17 @@ void cds::FindAtomsToMoveAndSetAngle(cds::Atom* a, cds::Atom* b, cds::Atom* c, c
 // parentAtom (e.g. O of OME), childAtom (e.g. C1 of Gal1-, S1 of SO3)
 void cds::FindAtomsToMoveSetDistance(cds::Atom* parentAtom, cds::Atom* childAtom)
 { // Figure out distance
-    //    std::cout << "parent is " << parentAtom->getName() << " " << parentAtom->getCoordinate()->ToString() << "\n";
-    //    std::cout << "child is " << childAtom->getName() << " " << childAtom->getCoordinate()->ToString() << "\n";
-    // std::cout << "Types for parent is " << parentAtom->getType() << " and child is " << childAtom->getType() << "\n";
+    //    std::stringstream ss;
+    //    ss << "parent is " << parentAtom->getName() << "_" << parentAtom->getIndex() << " "
+    //       << parentAtom->getCoordinate()->ToString() << "\n";
+    //    ss << "child is " << childAtom->getName() << "_" << childAtom->getIndex() << " "
+    //       << childAtom->getCoordinate()->ToString() << "\n";
     double distance = GlycamMetadata::GetBondLengthForAtomTypes(parentAtom->getType(), childAtom->getType());
-    // std::cout << "distance to new atom sill be: " << distance << "\n";
     //  Create an atom c that is will superimpose onto the a atom, bringing b atom with it.
     Coordinate c    = cds::GuessMissingCoordinateForAtom(childAtom, distance);
     // std::cout << "New tetraAtom for child is: " << c.ToString() << "\n";
     Coordinate cToParent(parentAtom->getCoordinate()->GetX() - c.GetX(), parentAtom->getCoordinate()->GetY() - c.GetY(),
                          parentAtom->getCoordinate()->GetZ() - c.GetZ());
-    //    std::cout << "cToParent is " << cToParent.ToString() << "\n";
     // Figure out which atoms will move
     std::vector<cds::Atom*> atomsToRotate;
     atomsToRotate.push_back(parentAtom); // add Parent atom so search doesn't go through it.
@@ -69,9 +69,10 @@ void cds::FindAtomsToMoveSetDistance(cds::Atom* parentAtom, cds::Atom* childAtom
     for (auto& atom : atomsToRotate)
     {
         atom->getCoordinate()->Translate(cToParent.GetX(), cToParent.GetY(), cToParent.GetZ());
-        //       std::cout << "Moved " << atom->getName() << " to new position:\n";
-        //        atom->getCoordinate()->Print(std::cout);
-        //        std::cout << "\n";
+        //        ss << "Moved " << atom->getName() << "_" << atom->getIndex() << " to new position:\n";
+        //        atom->getCoordinate()->Print(ss);
+        //        ss << "\n";
     }
+    //    gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
     return;
 }

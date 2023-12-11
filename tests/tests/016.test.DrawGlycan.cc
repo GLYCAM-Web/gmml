@@ -1,9 +1,8 @@
-#include <iostream>
 #include <vector>
 #include <string>
 // #include "includes/InputSet/CondensedSequence/sequenceManipulator.hpp"
 
-#include "../../includes/CentralDataStructure/InternalPrograms/DrawGlycan/drawGlycan.hpp"
+#include "includes/CentralDataStructure/InternalPrograms/DrawGlycan/drawGlycan.hpp"
 
 // #include "includes/InputSet/CondensedSequence/graphVizDotConfig.hpp"
 

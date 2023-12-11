@@ -20,6 +20,20 @@ namespace lib
         // gmml::log(__LINE__, __FILE__, gmml::INF, "Finished parsing " + filePath);
     }
 
+    LibraryFile::LibraryFile(const std::string& filePath, const std::vector<std::string> queryNames)
+    {
+        codeUtils::ensureFileExists(filePath);
+        std::ifstream fileStream(filePath);
+        if (fileStream.fail())
+        {
+            gmml::log(__LINE__, __FILE__, gmml::ERR, "Could not open this file: " + filePath);
+            throw std::runtime_error("PdbFile constructor could not open this file: " + filePath);
+        }
+        // gmml::log(__LINE__, __FILE__, gmml::INF, "File opened: " + filePath + ". Ready to parse!");
+        this->ParseQueryResidues(fileStream, queryNames);
+        // gmml::log(__LINE__, __FILE__, gmml::INF, "Finished parsing " + filePath);
+    }
+
     // Private
     void LibraryFile::ParseInFileStream(std::ifstream& inputFileStream)
     {
@@ -58,6 +72,49 @@ namespace lib
             residueStream = this->ExtractUnitSection(inputFileStream, residueName);
             // std::cout << "Residue stream is:\n" << residueStream.str() << "\n fin. " << std::endl;
             this->addResidue(std::make_unique<LibraryResidue>(residueStream, residueName));
+        }
+    }
+
+    void LibraryFile::ParseQueryResidues(std::ifstream& inputFileStream, const std::vector<std::string>& queryNames)
+    {
+        std::string line;
+        // Skip any blank lines at the beginning of the file
+        while (line.empty() || line.front() != '!')
+        {
+            getline(inputFileStream, line);
+        }
+        // Read in the array of residue names
+        // std::cout << "First readable line is " << line << "\n";
+        std::vector<std::string> residueNames;
+        if (line.find("index") != std::string::npos)
+        {
+            while (getline(inputFileStream, line) && line.front() != '!')
+            {
+                codeUtils::RemoveQuotes(line);
+                codeUtils::RemoveSpaces(line);
+                residueNames.push_back(line);
+                //
+            }
+        }
+        if (line.find("atoms") ==
+            std::string::npos) // If first line passed in for a residue isn't the atoms table, Freak out.
+        {
+            std::string message =
+                "Error reading library file, I expected the !entry line of an atoms table, but got this: " + line;
+            throw std::runtime_error(message);
+        }
+        // Iterate on residue names
+        for (auto& residueName : residueNames)
+        { // Process the atom section of the file for the corresponding residue
+
+            // std::cout << "Starting to read residue " << residueName << " with line:\n" << line << "\n";
+            std::stringstream residueStream;
+            residueStream = this->ExtractUnitSection(inputFileStream, residueName);
+            // std::cout << "Residue stream is:\n" << residueStream.str() << "\n fin. " << std::endl;
+            if (std::find(queryNames.begin(), queryNames.end(), residueName) != queryNames.end())
+            {
+                this->addResidue(std::make_unique<LibraryResidue>(residueStream, residueName));
+            }
         }
     }
 

@@ -13,10 +13,12 @@ namespace lib
       public:
         LibraryFile();
         LibraryFile(const std::string& filePath);
+        LibraryFile(const std::string& filePath, const std::vector<std::string> queryNames);
 
       private:
         std::stringstream ExtractUnitSection(std::ifstream& inputFileStream, const std::string unitName);
         void ParseInFileStream(std::ifstream& inputFileStream);
+        void ParseQueryResidues(std::ifstream& inputFileStream, const std::vector<std::string>& queryNames);
     };
 
 } // namespace lib

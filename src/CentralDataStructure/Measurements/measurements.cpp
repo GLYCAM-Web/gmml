@@ -48,8 +48,8 @@ double cds::CalculateDihedralAngle(Coordinate* a1, Coordinate* a2, Coordinate* a
     b2.operator-(*a2);
     Coordinate b3 = *a4;
     b3.operator-(*a3);
-    Coordinate b4 = b2;
-    b4.operator*(-1);
+    //    Coordinate b4 = b2;
+    //    b4.operator*(-1);
 
     Coordinate b2xb3 = b2;
     b2xb3.CrossProduct(b3);
