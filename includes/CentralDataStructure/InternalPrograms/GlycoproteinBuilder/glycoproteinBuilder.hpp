@@ -118,8 +118,7 @@ class GlycoproteinBuilder : public Abstract::absBuilder
     //                  PRIVATE FUNCTIONS                   //
     //////////////////////////////////////////////////////////
     // Class instantiation
-    void CreateGlycosites(std::vector<glycoprotein::GlycositeInput> glycositesInputVector,
-                          const std::string prepFileLocation);
+    void CreateGlycosites(std::vector<glycoprotein::GlycositeInput> glycositesInputVector);
     Residue* SelectResidueFromInput(const std::string userSelection);
     // Overlap Resolution
     void ResolveOverlapsWithWiggler();

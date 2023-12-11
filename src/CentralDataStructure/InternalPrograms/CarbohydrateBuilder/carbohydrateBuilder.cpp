@@ -6,9 +6,9 @@ using cdsCondensedSequence::carbohydrateBuilder;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence, std::string prepFilePath)
+carbohydrateBuilder::carbohydrateBuilder(std::string condensedSequence)
 
-try : carbohydrate_(condensedSequence, prepFilePath)
+try : carbohydrate_(condensedSequence)
 {}
 
 // If a ctor throws, even if you catch it the standard guarantees another throw. So this is just to make a message.

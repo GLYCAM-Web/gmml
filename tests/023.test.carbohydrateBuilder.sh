@@ -11,7 +11,7 @@ fi
 g++ -std=c++17 -I "${GMML_ROOT_DIR}"/ -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ ../internalPrograms/CarbohydrateBuilder/main.cpp -lgmml -pthread -o carbohydrateBuilder
 rm -r 023.outputs/ >/dev/null 2>&1
 mkdir 023.outputs/
-./carbohydrateBuilder tests/inputs/023.smallLibrary.txt _ 023.outputs ../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep >023.output_carbohydrateBuilder.txt 2>&1
+./carbohydrateBuilder tests/inputs/023.smallLibrary.txt _ 023.outputs >023.output_carbohydrateBuilder.txt 2>&1
 
 for i in $(cut -d _ -f1 tests/inputs/023.smallLibrary.txt); do
     if [ -f 023.outputs/"${i}".pdb ]; then

@@ -22,8 +22,6 @@ namespace glycoprotein
 
     struct GlycoproteinBuilderInputs
     {
-        std::string prepFileLocation_ =
-            "../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep"; // default when running from test folder
         std::string substrateFileName_ = "Undefined"; // Program should throw if left as "Undefined".
         int number3DStructures_        = 1;           // ToDo Implement this.
         int maxThreads_                = 1;           // ToDo Implement this.

@@ -30,10 +30,6 @@ GlycoproteinBuilderInputs glycoprotein::readGPInputFile(std::string inputFileNam
         {
             gpInputs.number3DStructures_ = std::stoi(codeUtils::split(strInput, ':').at(1));
         }
-        if (codeUtils::startsWith(strInput, "prepFileLocation:"))
-        {
-            gpInputs.prepFileLocation_ = codeUtils::split(strInput, ':').at(1);
-        }
         if (codeUtils::startsWith(strInput, "maxThreads:"))
         {
             gpInputs.maxThreads_ = std::stoi(codeUtils::split(strInput, ':').at(1));

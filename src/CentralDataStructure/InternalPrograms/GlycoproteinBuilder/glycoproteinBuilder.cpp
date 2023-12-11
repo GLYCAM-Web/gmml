@@ -32,7 +32,7 @@ GlycoproteinBuilder::GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs
         std::vector<cds::Residue*> gpInitialResidues = glycoprotein_.getResidues();
         cds::setIntraConnectivity(gpInitialResidues);
         gmml::log(__LINE__, __FILE__, gmml::INF, "Attaching Glycans To Glycosites.");
-        this->CreateGlycosites(inputStruct.glycositesInputVector_, inputStruct.prepFileLocation_);
+        this->CreateGlycosites(inputStruct.glycositesInputVector_);
         cds::setInterConnectivity(gpInitialResidues); // do the inter here, so that the whole protein isn't included as
                                                       // overlap residues in the glycan linkages.
     }
@@ -291,8 +291,7 @@ bool GlycoproteinBuilder::DumbRandomWalk(int maxCycles)
     return false;
 }
 
-void GlycoproteinBuilder::CreateGlycosites(std::vector<glycoprotein::GlycositeInput> glycositesInputVector,
-                                           const std::string prepFileLocation)
+void GlycoproteinBuilder::CreateGlycosites(std::vector<glycoprotein::GlycositeInput> glycositesInputVector)
 {
     std::vector<Residue*> proteinResidues = this->getGlycoprotein()->getResidues(); // Before any glycans are added.
     for (auto& glycositeInput : glycositesInputVector)
@@ -301,7 +300,7 @@ void GlycoproteinBuilder::CreateGlycosites(std::vector<glycoprotein::GlycositeIn
                   "Creating glycosite on residue " + glycositeInput.proteinResidueId_ + " with glycan " +
                       glycositeInput.glycanInput_);
         Carbohydrate* carb = static_cast<Carbohydrate*>(
-            glycoprotein_.addMolecule(std::make_unique<Carbohydrate>(glycositeInput.glycanInput_, prepFileLocation)));
+            glycoprotein_.addMolecule(std::make_unique<Carbohydrate>(glycositeInput.glycanInput_)));
         Residue* glycositeResidue = this->SelectResidueFromInput(glycositeInput.proteinResidueId_);
         if (glycositeResidue == nullptr)
         {

@@ -20,7 +20,7 @@ using cdsCondensedSequence::Carbohydrate;
 //////////////////////////////////////////////////////////
 //                       CONSTRUCTOR                    //
 //////////////////////////////////////////////////////////
-Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) : SequenceManipulator {inputSequence}
+Carbohydrate::Carbohydrate(std::string inputSequence) : SequenceManipulator {inputSequence}
 {
     this->setName("CONDENSEDSEQUENCE");
     this->ReorderSequence(); // So output is consistent regardless of input order e.g. Fuca1-2[Gala1-3]Glca vs

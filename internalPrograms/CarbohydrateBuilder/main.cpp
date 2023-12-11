@@ -7,12 +7,11 @@
 
 int main(int argc, char** argv)
 {
-    if (argc != 5)
+    if (argc != 4)
     {
         std::cerr << "Usage:   ./buildOligosaccharideLibrary <List IDs and sequences> <Char delimiter used in list> "
-                     "<Folder to put outputs> <Prepfile>\n";
-        std::cerr << "Example: ./buildOligosaccharideLibrary exampleLibrary.txt _ outputs/ "
-                     "../../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep\n";
+                     "<Folder to put outputs>\n";
+        std::cerr << "Example: ./buildOligosaccharideLibrary exampleLibrary.txt _ outputs/ ";
         std::cerr << "Don't use a delimiter that appears in glycan sequences or ids. Like - or , or [] etc\n";
         std::exit(EXIT_FAILURE);
     }
@@ -20,7 +19,6 @@ int main(int argc, char** argv)
     std::ifstream infile(argv[1]);
     char delimiter = argv[2][0]; // The second [0] gets me the first element of the argv which is type char**
     std::string outputFolderName = argv[3];
-    std::string prepFile         = argv[4];
     struct stat info;
     if (stat(argv[3], &info) != 0)
     {
@@ -46,7 +44,7 @@ int main(int argc, char** argv)
         std::cout << "\n*********************\nBuilding " << inputSequence << "\n*********************\n";
         try
         {
-            cdsCondensedSequence::carbohydrateBuilder carbBuilder(inputSequence, prepFile);
+            cdsCondensedSequence::carbohydrateBuilder carbBuilder(inputSequence);
             std::string inputGlycanID = splitLine.at(0);
             carbBuilder.GenerateSingle3DStructureDefaultFiles(outputFolderName, inputGlycanID);
         }
