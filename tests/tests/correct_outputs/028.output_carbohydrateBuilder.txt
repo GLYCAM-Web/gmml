@@ -12,7 +12,7 @@ IndexOrderedLabeled:
 DNeu5Ac&Label=residue-14;a2-6&Label=link-12;DGalp&Label=residue-13;b1-4&Label=link-11;DGlcpNAc&Label=residue-12;[3&Label=link-13;S&Label=residue-15;]b1-2&Label=link-10;DManp&Label=residue-11;a1-3&Label=link-9;[DGlcpNAc&Label=residue-10;b1-4&Label=link-8;][DManp&Label=residue-7;[2&Label=link-7;S&Label=residue-9;,3&Label=link-6;Me&Label=residue-8;]a1-6&Label=link-5;DManp&Label=residue-6;a1-6&Label=link-4;]DManp&Label=residue-5;b1-4&Label=link-3;DGlcpNAc&Label=residue-3;[6&Label=link-2;Me&Label=residue-4;]b1-4&Label=link-1;DGlcpNAc&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
 Parsed and labelled 00001 with no exceptions thrown.
 
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DNeu5Aca2-6 with glycam residue code: 0Sa
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for DNeu5Aca2-6 with this glycam residue code: 0Sa
 
 *********************
 Building id 00002:DNeup5Aca2-9DNeup5Aca2-8DNeup5Aca2-7DNeup5Aca2-3DGlcpb1-6DManpb1-OME
@@ -162,7 +162,7 @@ IndexOrderedLabeled:
 DNeupNAc&Label=residue-4;a2-4&Label=link-2;DGalp&Label=residue-3;b1-3&Label=link-1;LIdop&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
 Parsed and labelled 00011 with no exceptions thrown.
 
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LIdopa1- with glycam residue code: 3iA
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for LIdopa1- with this glycam residue code: 3iA
 
 *********************
 Building id 00012:DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
@@ -217,7 +217,7 @@ IndexOrderedLabeled:
 DGlcpA&Label=residue-2;1-&Label=link-0;OH&Label=residue-1;
 Parsed and labelled 00013 with no exceptions thrown.
 
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpA1- with glycam residue code: 0Z
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for DGlcpA1- with this glycam residue code: 0Z
 
 *********************
 Building id 00014:DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
@@ -399,7 +399,7 @@ IndexOrderedLabeled:
 LIdopA&Label=residue-11;a1-4&Label=link-9;[DNeupNAc&Label=residue-10;a2-8&Label=link-8;DNeupNAc&Label=residue-9;a2-8&Label=link-7;DNeupNAc&Label=residue-8;a2-5&Label=link-6;]LFrup&Label=residue-7;a2-6&Label=link-5;DGalp&Label=residue-6;[2&Label=link-10;Me&Label=residue-12;]b1-3&Label=link-4;[DNeupNAc&Label=residue-4;a2-6&Label=link-2;DGlcp&Label=residue-3;[2&Label=link-3;S&Label=residue-5;]a1-4&Label=link-1;]DGlcpA&Label=residue-2;a1-&Label=link-0;OME&Label=residue-1;
 Parsed and labelled 00021 with no exceptions thrown.
 
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LFrupa2-6 with glycam residue code: scA
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for LFrupa2-6 with this glycam residue code: scA
 
 *********************
 Building id 00023:DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
@@ -629,7 +629,7 @@ IndexOrderedLabeled:
 DManp&Label=residue-3;a1-9&Label=link-1;DGlcpNAc&Label=residue-2;b1-&Label=link-0;OH&Label=residue-1;
 Parsed and labelled 00034 with no exceptions thrown.
 
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpNAcb1- with glycam residue code: 9YB
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for DGlcpNAcb1- with this glycam residue code: 9YB
 
 *********************
 Building id 00035:DNeup5Ac[7A,8A,9A]a2-8DNeup5Ac[9A]a2-9[DNeup5Aca2-8DNeup5Ac[7A,9A]a2-8[DNeup5Aca2-7]DNeup5Aca2-8]DNeup5Ac[7A]a2-OH
@@ -732,7 +732,7 @@ IndexOrderedLabeled:
 LGlcpNS&Label=residue-10;a1-4&Label=link-8;LGlcpNS&Label=residue-8;[3&Label=link-9;S&Label=residue-11;,6&Label=link-7;S&Label=residue-9;]a1-4&Label=link-6;LGlcpNS&Label=residue-6;[6&Label=link-5;S&Label=residue-7;]a1-4&Label=link-4;LGlcpNS&Label=residue-5;[3&Label=link-10;S&Label=residue-12;]a1-4&Label=link-3;LGlcpNS&Label=residue-4;a1-3&Label=link-2;LGlcpNS&Label=residue-3;a1-6&Label=link-1;LGlcpNS&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
 Parsed and labelled 00037 with no exceptions thrown.
 
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LGlcpNSa1- with glycam residue code: 6yS
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for LGlcpNSa1- with this glycam residue code: 6yS
 
 *********************
 Building id 00038:DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4[4DGlcpa1-6[LFucpa1-2]DManpa1-]<2>OH

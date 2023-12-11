@@ -32,9 +32,7 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
         if (cdsResidue->GetType() != cds::ResidueType::Deoxy)
         {
             ParsedResidue* parsedResidue = static_cast<ParsedResidue*>(cdsResidue);
-            // ACTIAVET THIS ANSD TEST
             parameterManager.createAtomsForResidue(cdsResidue, this->GetGlycamResidueName(parsedResidue));
-            // this->MoveAtomsFromPrepResidueToParsedResidue(glycamPrepFileSelect, parsedResidue);
             if (parsedResidue->GetType() == cds::ResidueType::Derivative)
             { // Deal with adjusting charges for derivatives
                 this->DerivativeChargeAdjustment(parsedResidue);
