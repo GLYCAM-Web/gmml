@@ -85,13 +85,13 @@ void Coordinate::Normalize()
     }
 }
 
-double Coordinate::DotProduct(Coordinate coordinate)
+double Coordinate::DotProduct(const Coordinate& coordinate)
 {
     return ((x_ * coordinate.x_) + (y_ * coordinate.y_) + (z_ * coordinate.z_));
 }
 
 // Should this not return a coord instead of altering this one?
-void Coordinate::CrossProduct(Coordinate coordinate)
+void Coordinate::CrossProduct(const Coordinate& coordinate)
 {
     double x = x_;
     double y = y_;
@@ -102,42 +102,42 @@ void Coordinate::CrossProduct(Coordinate coordinate)
 }
 
 // These can all be better, the call is weird:
-void Coordinate::operator+(Coordinate coordinate)
+void Coordinate::operator+(const Coordinate& coordinate)
 {
     x_ += coordinate.x_;
     y_ += coordinate.y_;
     z_ += coordinate.z_;
 }
 
-void Coordinate::operator+(double addition)
+void Coordinate::operator+(const double addition)
 {
     x_ += addition;
     y_ += addition;
     z_ += addition;
 }
 
-void Coordinate::operator-(Coordinate coordinate)
+void Coordinate::operator-(const Coordinate& coordinate)
 {
     x_ -= coordinate.x_;
     y_ -= coordinate.y_;
     z_ -= coordinate.z_;
 }
 
-void Coordinate::operator/(Coordinate coordinate)
+void Coordinate::operator/(const Coordinate& coordinate)
 {
     x_ /= coordinate.x_;
     y_ /= coordinate.y_;
     z_ /= coordinate.z_;
 }
 
-void Coordinate::operator/(double divisor)
+void Coordinate::operator/(const double divisor)
 {
     x_ /= divisor;
     y_ /= divisor;
     z_ /= divisor;
 }
 
-void Coordinate::operator*(double multiplier)
+void Coordinate::operator*(const double multiplier)
 {
     x_ *= multiplier;
     y_ *= multiplier;

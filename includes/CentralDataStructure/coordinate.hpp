@@ -73,14 +73,14 @@ namespace cds
         double Distance(const Coordinate* coordinate) const;
         double length() const;
         void Normalize();
-        double DotProduct(Coordinate coordinate);
-        void CrossProduct(Coordinate coordinate);
-        void operator+(Coordinate coordinate);
-        void operator+(double addition);
-        void operator-(Coordinate coordinate);
-        void operator/(Coordinate coordinate);
-        void operator/(double divisor);
-        void operator*(double multiplier);
+        double DotProduct(const Coordinate& coordinate);
+        void CrossProduct(const Coordinate& coordinate);
+        void operator+(const Coordinate& coordinate);
+        void operator+(const double addition);
+        void operator-(const Coordinate& coordinate);
+        void operator/(const Coordinate& coordinate);
+        void operator/(const double divisor);
+        void operator*(const double multiplier);
 
         bool operator==(const Coordinate& rhs) const
         {
