@@ -38,7 +38,21 @@ ParameterManager::ParameterManager()
 }
 
 ParameterManager::ParameterManager(const std::vector<std::string> queryNames)
-{}
+{
+    const std::string gmmlhome = codeUtils::getGmmlHomeDir();
+    gmml::log(__LINE__, __FILE__, gmml::INF, "gmmlhome is: " + gmmlhome);
+    for (auto& prepFilePath : cdsParameters::prepFilesToLoad)
+    {
+        auto& file = prepFiles_.emplace_back(gmmlhome + prepFilePath, queryNames);
+        this->InitializeResidueMap(file.getResidues());
+    }
+    for (auto& libFilePath : cdsParameters::libFilesToLoad)
+    {
+        auto& file = libFiles_.emplace_back(gmmlhome + libFilePath, queryNames);
+        this->InitializeResidueMap(file.getResidues());
+    }
+    gmml::log(__LINE__, __FILE__, gmml::INF, "Finished construction of ParameterManager.");
+}
 
 cds::Residue* ParameterManager::findParameterResidue(const std::string name) const
 {
@@ -72,14 +86,19 @@ void ParameterManager::setAtomChargesForResidues(std::vector<cds::Residue*> quer
 
 void ParameterManager::createAtomsForResidue(cds::Residue* queryResidue, const std::string glycamNameForResidue) const
 {
-    cds::Residue parameterResidue = this->copyParameterResidue(glycamNameForResidue);
-    // Need parsedResidue as e.g. 0MA and not DManpa1-4. Maybe a "GlycamName" variable?
-    queryResidue->setName(parameterResidue.getName());
-    // extractAtoms moves the atoms parameterResidue will go out of scope
-    queryResidue->setAtoms(parameterResidue.extractAtoms());
-    // std::cout << "Finished moving atoms from parameterResidue to parsed Residue. Adventure awaits! Huzzah!" <<
-    // std::endl;
-    return;
+    try
+    {
+        cds::Residue parameterResidue = this->copyParameterResidue(glycamNameForResidue);
+        queryResidue->setName(parameterResidue.getName());
+        queryResidue->setAtoms(parameterResidue.extractAtoms());
+        return;
+    }
+    catch (const std::runtime_error& error)
+    { // I just want to throw a nicer error as this happens a lot:
+        std::string message = "Did not find a parameter residue for " + queryResidue->getName() +
+                              " with this glycam residue code: " + glycamNameForResidue;
+        throw std::runtime_error(message);
+    }
 }
 
 // PRIVATE FUNCTIONS
@@ -89,6 +108,7 @@ void ParameterManager::InitializeResidueMap(std::vector<cds::Residue*> incomingR
     for (auto& residue : incomingResidues)
     {
         parameterResidueMap_[residue->getName()] = residue;
+        gmml::log(__LINE__, __FILE__, gmml::INF, "Added this to map: " + residue->getName());
     }
 }
 

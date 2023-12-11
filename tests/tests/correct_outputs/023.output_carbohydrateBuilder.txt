@@ -2,7 +2,7 @@
 *********************
 Building DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeu5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DNeu5Aca2-6 with glycam residue code: 0Sa
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for DNeu5Aca2-6 with this glycam residue code: 0Sa
 
 *********************
 Building DNeup5Aca2-9DNeup5Aca2-8DNeup5Aca2-7DNeup5Aca2-3DGlcpb1-6DManpb1-OME
@@ -32,7 +32,7 @@ Building LRhapa1-6DGalpb1-OH
 *********************
 Building DNeupNAca2-4DGalpb1-3LIdopa1-OH
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LIdopa1- with glycam residue code: 3iA
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for LIdopa1- with this glycam residue code: 3iA
 
 *********************
 Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
@@ -41,7 +41,7 @@ Building DNeupNAca2-8DNeupNAca2-8DNeupNAca2-8DNeupNAca2-OH
 *********************
 Building DGlcpA1-OH
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpA1- with glycam residue code: 0Z
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for DGlcpA1- with this glycam residue code: 0Z
 
 *********************
 Building DGalpNAc[4S,6S]b1-4DGlcpA[2S]b1-OME
@@ -66,7 +66,7 @@ Building DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp
 *********************
 Building LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LFrupa2-6 with glycam residue code: scA
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for LFrupa2-6 with this glycam residue code: scA
 
 *********************
 Building DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
@@ -144,7 +144,7 @@ Error thrown by the carbohydrateBuilder in gmml during construction was: This is
 *********************
 Building DManpa1-9DGlcpNAcb1-OH
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for DGlcpNAcb1- with glycam residue code: 9YB
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for DGlcpNAcb1- with this glycam residue code: 9YB
 
 *********************
 Building DNeup5Ac[7A,8A,9A]a2-8DNeup5Ac[9A]a2-9[DNeup5Aca2-8DNeup5Ac[7A,9A]a2-8[DNeup5Aca2-7]DNeup5Aca2-8]DNeup5Ac[7A]a2-OH
@@ -157,7 +157,7 @@ Building DGlcpNSa1-4DGlcpNS[3S,6S]a1-4DGlcpNS[6S]a1-4DGlcpNS[3S]a1-4DGlcpNSa1-3D
 *********************
 Building LGlcpNSa1-4LGlcpNS[3S,6S]a1-4LGlcpNS[6S]a1-4LGlcpNS[3S]a1-4LGlcpNSa1-3LGlcpNSa1-6LGlcpNSa1-OH
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find prep entry for LGlcpNSa1- with glycam residue code: 6yS
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for LGlcpNSa1- with this glycam residue code: 6yS
 
 *********************
 Building DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4[4DGlcpa1-6[LFucpa1-2]DManpa1-]<2>OH

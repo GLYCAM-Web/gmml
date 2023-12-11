@@ -8,9 +8,7 @@
 #include "includes/CentralDataStructure/molecule.hpp"
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
 #include "includes/CentralDataStructure/Shapers/atomToCoordinateInterface.hpp"
-#include "includes/CentralDataStructure/Readers/Prep/prepAtom.hpp"
-#include "includes/CentralDataStructure/Readers/Prep/prepFile.hpp"
-#include "includes/CentralDataStructure/Readers/Prep/prepResidue.hpp"
+#include "includes/CentralDataStructure/Parameters/parameterManager.hpp"
 #include "includes/CentralDataStructure/cdsFunctions/cdsFunctions.hpp" // serializeAtomNumbers
 #include "includes/CentralDataStructure/Writers/offWriter.hpp"
 #include <sstream>
@@ -27,13 +25,16 @@ Carbohydrate::Carbohydrate(std::string inputSequence, std::string prepFilePath) 
     this->setName("CONDENSEDSEQUENCE");
     this->ReorderSequence(); // So output is consistent regardless of input order e.g. Fuca1-2[Gala1-3]Glca vs
                              // Gala1-3[Fuca1-2]Glca. Same 3D structure.
-    prep::PrepFile glycamPrepFileSelect(prepFilePath, this->GetGlycamNamesOfResidues());
+    cdsParameters::ParameterManager parameterManager(this->GetGlycamNamesOfResidues());
+    // prep::PrepFile glycamPrepFileSelect(prepFilePath, this->GetGlycamNamesOfResidues());
     for (auto& cdsResidue : this->getResidues())
     { // Move atoms from prep file into parsedResidues.
         if (cdsResidue->GetType() != cds::ResidueType::Deoxy)
         {
             ParsedResidue* parsedResidue = static_cast<ParsedResidue*>(cdsResidue);
-            this->MoveAtomsFromPrepResidueToParsedResidue(glycamPrepFileSelect, parsedResidue);
+            // ACTIAVET THIS ANSD TEST
+            parameterManager.createAtomsForResidue(cdsResidue, this->GetGlycamResidueName(parsedResidue));
+            // this->MoveAtomsFromPrepResidueToParsedResidue(glycamPrepFileSelect, parsedResidue);
             if (parsedResidue->GetType() == cds::ResidueType::Derivative)
             { // Deal with adjusting charges for derivatives
                 this->DerivativeChargeAdjustment(parsedResidue);
@@ -271,7 +272,9 @@ void Carbohydrate::DerivativeChargeAdjustment(ParsedResidue* parsedResidue)
 {
     std::string adjustAtomName = GlycamMetadata::GetAdjustmentAtom(parsedResidue->getName());
     adjustAtomName             += parsedResidue->GetLinkageName().substr(0, 1);
-    cds::Atom* atomToAdjust    = parsedResidue->GetParent()->FindAtom(adjustAtomName);
+    // parsedResidue->getInEdges().at(0)->getLabel().substr(0, 1);
+
+    cds::Atom* atomToAdjust = parsedResidue->GetParent()->FindAtom(adjustAtomName);
     atomToAdjust->setCharge(atomToAdjust->getCharge() + GlycamMetadata::GetAdjustmentCharge(parsedResidue->getName()));
     // Log it:
     //    std::stringstream ss;
@@ -396,11 +399,16 @@ void Carbohydrate::ConnectAndSetGeometry(cds::Residue* childResidue, cds::Residu
     {
         if ((parentAtomNeighbor->getName().at(0) != 'H') && (parentAtomNeighbor != childAtom))
         {
-            // std::cout << "Setting angle between\nparentNeighbor " << parentAtomNeighbor->getName() << " " <<
-            // parentAtomNeighbor->getCoordinate()->ToString() << "\nparent " << parentAtom->getName() << " " <<
-            // parentAtom->getCoordinate()->ToString() << "\nand child " << childAtom->getName() << " " <<
-            // childAtom->getCoordinate()->ToString() << "\nchild residue " << childResidue->getName() << " will
-            // move\n";
+            //            std::stringstream ss;
+            //            ss << "Setting angle between\nparentNeighbor " << parentAtomNeighbor->getName() << " "
+            //               << parentAtomNeighbor->getCoordinate()->ToString() << "\nparent " << parentAtom->getName()
+            //               << "_"
+            //               << parentAtom->getIndex() << " " << parentAtom->getCoordinate()->ToString() << "\nand child
+            //               "
+            //               << childAtom->getName() << "_" << childAtom->getIndex() << " " <<
+            //               childAtom->getCoordinate()->ToString()
+            //               << "\nchild residue " << childResidue->getName() << " will move\n";
+            //            gmml::log(__LINE__, __FILE__, gmml::INF, ss.str());
             cds::SetAngle(parentAtomNeighbor->getCoordinate(), parentAtom->getCoordinate(), childAtom->getCoordinate(),
                           constants::DEFAULT_ANGLE, childResidue->getCoordinates());
             break;
