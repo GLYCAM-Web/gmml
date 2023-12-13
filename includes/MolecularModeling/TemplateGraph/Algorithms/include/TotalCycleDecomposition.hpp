@@ -321,9 +321,14 @@ namespace cycle_decomp
                         // tested using the set stl and it did
                         // return the correct 				order (i.e. order we traversed everything) BUT
                         // this was due 				to memory following the comparator.
+
+                        // OG2023: Internal usage of T* vs Node<T>* is inconsistent now. It was a year ago that I
+                        // changed how it works so I don't recall the logic for changing to T*. Without a test this was
+                        // silently broken since then. So now this requires both a reload why I was changing, and
+                        // figuring out what a working state of this looks like.
+                        glygraph::Node<T>* tmpNode = inputGraph_t.getNodeFromIndex(bNodeIndex);
                         glygraph::Edge<T>* tempLoleEdge =
-                            inputGraph_t.getNodeFromIndex(aNodeIndex)
-                                ->getConnectingEdge(inputGraph_t.getNodeFromIndex(bNodeIndex));
+                            inputGraph_t.getNodeFromIndex(aNodeIndex)->getConnectingEdge(tmpNode->getDeriviedClass());
                         temporaryEdgeCycleSet.insert(tempLoleEdge);
                     }
                 }

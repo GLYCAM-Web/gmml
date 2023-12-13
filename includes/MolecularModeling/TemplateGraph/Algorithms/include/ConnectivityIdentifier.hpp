@@ -42,7 +42,7 @@ namespace
                     //	Now we know all edges between our two nodes are bridge edges so
                     //		we must label them as such. Since we are not dealing with a multigraph
                     //  	we know we only have 1 edge to label for now.
-                    glygraph::Edge<T>* connectingEdge = currNeigh->getConnectingEdge(nextNode_t);
+                    glygraph::Edge<T>* connectingEdge = currNeigh->getConnectingEdge(nextNode_t->getDeriviedClass());
                     connectingEdge->setConnectivityTypeIdentifier(glygraph::ConnectivityType::BRIDGE);
                 } // end if where we lable our bridge edges
 

@@ -1,0 +1,136 @@
+Atoms bonded to: Frank
+	Bonded to: Steve, Delux, Ronne, Bingo, Marsh, 
+
+
+Nodes: 
+Edges: 
+Nodes: Marsh1, Bridge1, jeff, 
+Edges: 
+Nodes: Bobie, Bingo1, 
+Edges: Bridge1 -> cycle1, cycle1 -> Steve, Bobie -> Steve, Ronne -> Bingo1, Bingo1 -> Marsh1, jeff -> Bobie, 
+Nodes: Steve, Ronne, Bingo, Marsh, Delux, Frank, cycle1, cycle2, cycle3, 
+Edges: cycle1 -> cycle2, cycle2 -> cycle3, cycle1 -> cycle3, Steve -> Ronne, Ronne -> Bingo, Bingo -> Marsh, Marsh -> Delux, Steve -> Frank, Delux -> Frank, Ronne -> Delux, Ronne -> Frank, Delux -> Bingo, Frank -> Bingo, Frank -> Marsh, 
+Cycle #0
+	Nodes: Frank, Ronne, Steve, 
+	Edges: Ronne -> Frank, Steve -> Frank, Steve -> Ronne, 
+Cycle #1
+	Nodes: Frank, Marsh, Bingo, 
+	Edges: Frank -> Marsh, Frank -> Bingo, Bingo -> Marsh, 
+Cycle #2
+	Nodes: Frank, Marsh, Delux, 
+	Edges: Frank -> Marsh, Delux -> Frank, Marsh -> Delux, 
+Cycle #3
+	Nodes: Delux, Frank, Ronne, Steve, 
+	Edges: Ronne -> Delux, Delux -> Frank, Steve -> Frank, Steve -> Ronne, 
+Cycle #4
+	Nodes: Frank, Delux, Bingo, 
+	Edges: Delux -> Frank, Frank -> Bingo, Delux -> Bingo, 
+Cycle #5
+	Nodes: Bingo, Frank, Ronne, Steve, 
+	Edges: Frank -> Bingo, Ronne -> Bingo, Steve -> Frank, Steve -> Ronne, 
+Cycle #6
+	Nodes: cycle3, cycle2, cycle1, 
+	Edges: cycle2 -> cycle3, cycle1 -> cycle3, cycle1 -> cycle2, 
+Cycle #7
+	Nodes: Frank, Delux, Ronne, 
+	Edges: Delux -> Frank, Ronne -> Frank, Ronne -> Delux, 
+Cycle #8
+	Nodes: Frank, Bingo, Ronne, 
+	Edges: Frank -> Bingo, Ronne -> Frank, Ronne -> Bingo, 
+Cycle #9
+	Nodes: Delux, Frank, Marsh, Bingo, 
+	Edges: Delux -> Frank, Marsh -> Delux, Frank -> Bingo, Bingo -> Marsh, 
+Cycle #10
+	Nodes: Frank, Marsh, Delux, Bingo, 
+	Edges: Frank -> Marsh, Delux -> Frank, Bingo -> Marsh, Delux -> Bingo, 
+Cycle #11
+	Nodes: Marsh, Bingo, Frank, Ronne, Steve, 
+	Edges: Frank -> Marsh, Bingo -> Marsh, Ronne -> Bingo, Steve -> Frank, Steve -> Ronne, 
+Cycle #12
+	Nodes: Marsh, Delux, Frank, Ronne, Steve, 
+	Edges: Frank -> Marsh, Ronne -> Delux, Marsh -> Delux, Steve -> Frank, Steve -> Ronne, 
+Cycle #13
+	Nodes: Marsh, Frank, Delux, Bingo, 
+	Edges: Frank -> Marsh, Marsh -> Delux, Frank -> Bingo, Delux -> Bingo, 
+Cycle #14
+	Nodes: Bingo, Delux, Frank, Ronne, Steve, 
+	Edges: Frank -> Bingo, Delux -> Bingo, Ronne -> Delux, Steve -> Frank, Steve -> Ronne, 
+Cycle #15
+	Nodes: Frank, Delux, Bingo, Ronne, 
+	Edges: Delux -> Frank, Frank -> Bingo, Ronne -> Delux, Ronne -> Bingo, 
+Cycle #16
+	Nodes: Delux, Bingo, Frank, Ronne, Steve, 
+	Edges: Delux -> Bingo, Ronne -> Bingo, Delux -> Frank, Steve -> Frank, Steve -> Ronne, 
+Cycle #17
+	Nodes: Marsh, Frank, Bingo, Ronne, 
+	Edges: Frank -> Marsh, Bingo -> Marsh, Ronne -> Frank, Ronne -> Bingo, 
+Cycle #18
+	Nodes: Marsh, Frank, Delux, Ronne, 
+	Edges: Frank -> Marsh, Marsh -> Delux, Ronne -> Frank, Ronne -> Delux, 
+Cycle #19
+	Nodes: Bingo, Frank, Delux, Ronne, 
+	Edges: Frank -> Bingo, Ronne -> Frank, Delux -> Bingo, Ronne -> Delux, 
+Cycle #20
+	Nodes: Delux, Frank, Bingo, Ronne, 
+	Edges: Delux -> Frank, Delux -> Bingo, Ronne -> Frank, Ronne -> Bingo, 
+Cycle #21
+	Nodes: Marsh, Bingo, Delux, Frank, Ronne, Steve, 
+	Edges: Frank -> Bingo, Bingo -> Marsh, Ronne -> Delux, Marsh -> Delux, Steve -> Frank, Steve -> Ronne, 
+Cycle #22
+	Nodes: Marsh, Delux, Bingo, 
+	Edges: Marsh -> Delux, Bingo -> Marsh, Delux -> Bingo, 
+Cycle #23
+	Nodes: Delux, Marsh, Bingo, Frank, Ronne, Steve, 
+	Edges: Bingo -> Marsh, Ronne -> Bingo, Delux -> Frank, Marsh -> Delux, Steve -> Frank, Steve -> Ronne, 
+Cycle #24
+	Nodes: Marsh, Bingo, Delux, Frank, Ronne, Steve, 
+	Edges: Frank -> Marsh, Bingo -> Marsh, Delux -> Bingo, Ronne -> Delux, Steve -> Frank, Steve -> Ronne, 
+Cycle #25
+	Nodes: Frank, Marsh, Delux, Bingo, Ronne, 
+	Edges: Frank -> Marsh, Delux -> Frank, Bingo -> Marsh, Ronne -> Delux, Ronne -> Bingo, 
+Cycle #26
+	Nodes: Marsh, Frank, Delux, Bingo, Ronne, 
+	Edges: Frank -> Marsh, Marsh -> Delux, Frank -> Bingo, Ronne -> Delux, Ronne -> Bingo, 
+Cycle #27
+	Nodes: Marsh, Delux, Bingo, Frank, Ronne, Steve, 
+	Edges: Frank -> Marsh, Delux -> Bingo, Ronne -> Bingo, Marsh -> Delux, Steve -> Frank, Steve -> Ronne, 
+Cycle #28
+	Nodes: Delux, Bingo, Ronne, 
+	Edges: Delux -> Bingo, Ronne -> Delux, Ronne -> Bingo, 
+Cycle #29
+	Nodes: Marsh, Bingo, Frank, Delux, Ronne, 
+	Edges: Marsh -> Delux, Frank -> Bingo, Bingo -> Marsh, Ronne -> Frank, Ronne -> Delux, 
+Cycle #30
+	Nodes: Delux, Marsh, Frank, Bingo, Ronne, 
+	Edges: Delux -> Frank, Marsh -> Delux, Bingo -> Marsh, Ronne -> Frank, Ronne -> Bingo, 
+Cycle #31
+	Nodes: Marsh, Bingo, Frank, Delux, Ronne, 
+	Edges: Frank -> Marsh, Bingo -> Marsh, Ronne -> Frank, Delux -> Bingo, Ronne -> Delux, 
+Cycle #32
+	Nodes: Marsh, Delux, Frank, Bingo, Ronne, 
+	Edges: Frank -> Marsh, Marsh -> Delux, Delux -> Bingo, Ronne -> Frank, Ronne -> Bingo, 
+Cycle #33
+	Nodes: Marsh, Delux, Bingo, Ronne, 
+	Edges: Marsh -> Delux, Bingo -> Marsh, Ronne -> Delux, Ronne -> Bingo, 
+
+
+Node Key: Marsh
+	Nodes: Marsh, Bingo, Ronne, Delux, 
+	Edges: Bingo -> Marsh, Ronne -> Bingo, Ronne -> Delux, 
+
+Node Key: Delux
+	Nodes: Delux, Ronne, Bingo, Marsh, 
+	Edges: Ronne -> Delux, Ronne -> Bingo, Bingo -> Marsh, 
+
+Node Key: Bingo
+	Nodes: Bingo, Ronne, Delux, Marsh, 
+	Edges: Ronne -> Bingo, Ronne -> Delux, Bingo -> Marsh, 
+
+Node Key: Ronne
+	Nodes: Ronne, Bingo, Marsh, Delux, 
+	Edges: Ronne -> Bingo, Bingo -> Marsh, Ronne -> Delux, 
+
+Finished atom section
+
+********************************************
+Finishing!

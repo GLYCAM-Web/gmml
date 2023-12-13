@@ -138,7 +138,7 @@ namespace
                 // if (!(currNode == resultsPair.first.back()))
                 if (!(previousNode_t == currNode))
                 {
-                    resultsPair_t.second.push_back(currNode->getConnectingEdge(previousNode_t));
+                    resultsPair_t.second.push_back(currNode->getConnectingEdge(previousNode_t->getDeriviedClass()));
                 }
                 //}				//end our bit that inserts edge.
 
@@ -162,7 +162,8 @@ namespace
                     //	our node and itself (a "loop" edge).
                     if (!(currNode == resultsPair_t.first.back()))
                     {
-                        resultsPair_t.second.push_back(currNode->getConnectingEdge(resultsPair_t.first.back()));
+                        resultsPair_t.second.push_back(
+                            currNode->getConnectingEdge(resultsPair_t.first.back()->getDeriviedClass()));
                     }
                 } // end our bit that inserts edge.
 
