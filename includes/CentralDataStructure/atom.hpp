@@ -60,6 +60,8 @@ namespace cds
             return number_;
         }
 
+        unsigned int getNumberFromName() const;
+
         //////////////////////////////////////////////////////////
         //                       MUTATOR                        //
         //////////////////////////////////////////////////////////

@@ -64,6 +64,24 @@ unsigned int Atom::getNumberOfCoordinateSets() const
     return allCoordinates_.size();
 }
 
+unsigned int Atom::getNumberFromName() const
+{
+    const std::string name        = this->getName();
+    std::string convertableNumber = "";
+    for (int i = 1; i < name.size(); i++)
+    {
+        if (isdigit(name[i]))
+        {
+            convertableNumber += name[i];
+        }
+    }
+    if (convertableNumber.empty())
+    {
+        return 0;
+    }
+    return std::stoi(convertableNumber);
+}
+
 //////////////////////////////////////////////////////////
 //                    MUTATOR                           //
 //////////////////////////////////////////////////////////
