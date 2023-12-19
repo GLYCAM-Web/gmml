@@ -69,6 +69,26 @@ std::string GlycamMetadata::GetGlycam06ResidueLinkageCode(const std::string quer
         {  "4,5,7,9", "c"},
         {  "5,7,8,9", "b"},
         {"4,5,7,8,9", "a"},
+ // These are ones the generation code found were missing from Xiao's table:
+        {    "1,4,5", "v"},
+        {    "2,4,5", "w"},
+        {    "3,4,5", "x"},
+        {  "1,3,4,5", "y"},
+        {  "4,5,8,9", "z"},
+ // These are repeats of the 2 version. Not allowing branches from the anomeric oxygen version, e.g. 1GA, means
+  // we can do this for C2 anomeric sugars:
+        {      "1,3", "Z"},
+        {      "1,4", "Y"},
+        {      "1,6", "X"},
+        {    "1,3,4", "T"},
+        {    "1,3,6", "S"},
+        {    "1,4,6", "R"},
+        {  "1,3,4,6", "P"},
+        {      "1,5", "u"},
+        {    "1,3,5", "n"},
+        {    "1,5,6", "m"},
+        {  "1,3,5,6", "e"},
+ // Unused: L M N O
     };
     return codeUtils::FindStringInStringMap(sortedQuery, Glycam06LinkageCodeLookup);
 }
