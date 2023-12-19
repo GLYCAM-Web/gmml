@@ -221,7 +221,7 @@ cds::Residue* Carbohydrate::GetAglycone()
 
 cds::Atom* Carbohydrate::GetAnomericAtom()
 {
-    return cdsSelections::guessAnomericAtom(this->GetReducingResidue());
+    return cdsSelections::guessAnomericAtomByForeignNeighbor(this->GetReducingResidue());
 }
 
 //////////////////////////////////////////////////////////

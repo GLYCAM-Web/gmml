@@ -23,7 +23,7 @@ namespace glygraph
         Graph();
         // TODO: Ensure we would like this functionality, current idea is pass root node then get all traversable from
         // this node and store in our set
-        Graph(Node<T>* const& initialNode_t);
+        Graph(Node<T>* const& initialNode_t); // initialNode_t is a reference to a const ptr of type Node<T>.
         Graph(T* const& initialNode_t);
         // Graph(T* initialNode_t);
         Graph(const std::vector<Node<T>*>& nodeList_t);

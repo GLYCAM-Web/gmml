@@ -18,8 +18,8 @@ namespace pdb
         //////////////////////////////////////////////////////////
         //                    CONSTRUCTOR                       //
         //////////////////////////////////////////////////////////
-        PdbAtom(const std::string& name, const cds::Coordinate& coord);
         PdbAtom(const std::string& line);
+        PdbAtom(const std::string& name, const cds::Coordinate& c);
 
         //////////////////////////////////////////////////////////
         //                       ACCESSOR                       //
@@ -92,7 +92,7 @@ namespace pdb
         //////////////////////////////////////////////////////////
         //                       ATTRIBUTES                     //
         //////////////////////////////////////////////////////////
-        std::string recordName_;             // Can be HETATM or ATOM
+        std::string recordName_        = "ATOM"; // Can be HETATM or ATOM
         std::string alternateLocation_ = ""; // Atom residue name in a single atom record in a model card of a pdb file
         std::string residueName_       = ""; // Residue name that the atom is assigned to
         std::string chainId_           = ""; // Chain id that the atom belongs to

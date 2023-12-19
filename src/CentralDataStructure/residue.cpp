@@ -254,10 +254,10 @@ void Residue::RemoveHydroxyHydrogen(const std::string hydrogenNumber)
         std::string message =
             "Cannot find appropriately named atoms in residue. Glycam combinations cannot be created. Oxygen should be "
             "named e.g. O2 and not 2O. Hydrogen to be substituted should be H2O and not HO2. Both must be present. "
-            "This was a fatal issue for the atom numbered: " +
+            "This may turn into a fatal issue for the atom numbered: " +
             hydrogenNumber + " in residue: " + this->getName();
-        gmml::log(__LINE__, __FILE__, gmml::ERR, message);
-        throw std::runtime_error(message);
+        gmml::log(__LINE__, __FILE__, gmml::WAR, message);
+        return;
     }
     oxygen->setCharge(oxygen->getCharge() + hydrogen->getCharge() - 0.194);
     this->deleteAtom(hydrogen);

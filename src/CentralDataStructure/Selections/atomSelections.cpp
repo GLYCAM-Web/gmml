@@ -1,5 +1,6 @@
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/MolecularModeling/TemplateGraph/Algorithms/include/TotalCycleDecomposition.hpp"
 
 Atom* cdsSelections::getNonCarbonHeavyAtomNumbered(std::vector<Atom*> atoms, const std::string queryNumber)
 {
@@ -40,7 +41,7 @@ Atom* cdsSelections::getNeighborNamed(const Atom* queryAtom, const std::string n
 // Step 1. If the C1 atom has a neighbor that isn't in the queryResidue, return C1.
 // Step 2. If the C2 atom has a neighbor that isn't in the queryResidue, return C2.
 // Step 3. Panic.
-Atom* cdsSelections::guessAnomericAtom(cds::Residue* queryResidue)
+Atom* cdsSelections::guessAnomericAtomByForeignNeighbor(const cds::Residue* queryResidue)
 {
     std::vector<std::string> usualSuspects = {"C1", "C2"};
     for (auto& suspectName : usualSuspects)
@@ -56,6 +57,71 @@ Atom* cdsSelections::guessAnomericAtom(cds::Residue* queryResidue)
     gmml::log(__LINE__, __FILE__, gmml::ERR, message);
     throw std::runtime_error(message);
     return nullptr;
+}
+
+std::vector<Atom*> cdsSelections::findCycleAtoms(cds::Atom* const starterAtom)
+{
+    glygraph::Graph<cds::Atom> atomGraph(starterAtom);
+    std::vector<std::pair<std::unordered_set<glygraph::Node<Atom>*>, std::unordered_set<glygraph::Edge<Atom>*>>>
+        g1Cycles = cycle_decomp::totalCycleDetect(atomGraph);
+    std::vector<Atom*> cycleAtoms;
+    for (std::pair<std::unordered_set<glygraph::Node<Atom>*>, std::unordered_set<glygraph::Edge<Atom>*>> currCyclePair :
+         g1Cycles)
+    {
+        // std::cout << "Cycle:""\n\tNodes: ";
+        for (glygraph::Node<Atom>* currAtom : currCyclePair.first)
+        {
+            // std::cout << currAtom->getName() + ", ";
+            cycleAtoms.push_back(currAtom->getDeriviedClass());
+        }
+    }
+    return cycleAtoms;
+}
+
+// For now it's the lowest numbered (e.g. C1 lower than C6) ring atom connected to the ring oxygen.
+Atom* cdsSelections::guessAnomericAtomByInternalNeighbors(const std::vector<cds::Atom*> atoms)
+{
+    std::vector<Atom*> cycleAtoms = cdsSelections::findCycleAtoms(atoms.at(0));
+    cds::Atom* cycleOxygen        = nullptr;
+    for (auto& cycleAtom : cycleAtoms)
+    {
+        if (cycleAtom->getDeriviedClass()->getElement() == "O")
+        {
+            cycleOxygen = cycleAtom->getDeriviedClass();
+        }
+    }
+    if (cycleOxygen == nullptr)
+    {
+        throw std::runtime_error("Did not find a ring oxygen when trying to guess what the anomeric carbon is. Your "
+                                 "atom names, are likely, strange.");
+    }
+    // std::cout << "\nCycle oxygen is " << cycleOxygen->getName() << std::endl;
+    std::vector<Atom*> anomerCandidates = cycleOxygen->getNeighbors();
+    // So deciding this isn't straightforward. For me use case of prep files this is fine. For reading form the PDB I
+    // want a meeting first to figure out what we really need. Using a lambda to sort the candidates so that C1 appears
+    // before C2 etc.
+    std::sort(anomerCandidates.begin(), anomerCandidates.end(),
+              [](Atom*& a, Atom*& b)
+              {
+                  return (a->getNumberFromName() < b->getNumberFromName());
+              });
+    Atom* bestOne = anomerCandidates.front();
+    // std::cout << "Anomer is " << bestOne->getName() << "\n";
+    return bestOne;
+    //    for(auto & anomerCandidate : anomerCandidates)
+    //    {
+    //        for (auto & candidateNeighbor: anomerCandidate->getNeighbors())
+    //        {
+    //            if (cdsSelections::selectNeighborNotInAtomVector(candidateNeighbor, cycleAtoms) != nullptr)
+    //            { // candidateNeighbor is not in the ring and has type O N or S
+    //                std::string element = candidateNeighbor->getElement();
+    //                if (element == "S" || element == "O" || element == "N")
+    //                {
+    //
+    //                }
+    //            }
+    //        }
+    //    }
 }
 
 Atom* cdsSelections::selectNeighborNotInAtomVector(const Atom* atomWithNeighbors, std::vector<Atom*> queryAtoms)

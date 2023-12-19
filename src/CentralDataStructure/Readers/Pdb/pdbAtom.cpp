@@ -121,10 +121,9 @@ PdbAtom::PdbAtom(const std::string& line)
     }
 }
 
-// ToDo Is this necessary? Won't the base class one be called?
-PdbAtom::PdbAtom(const std::string& name, const Coordinate& coord) : cds::Atom(name, coord)
+// Necessary for creating with unique ptr
+PdbAtom::PdbAtom(const std::string& name, const cds::Coordinate& c) : cds::Atom(name, c)
 {
-    this->SetRecordName("ATOM");
     this->SetTempretureFactor(0.0);
     this->SetOccupancy(1.0);
 }
