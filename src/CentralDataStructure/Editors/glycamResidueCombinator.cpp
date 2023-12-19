@@ -1,21 +1,23 @@
 #include "includes/CentralDataStructure/Editors/glycamResidueCombinator.hpp"
 #include "includes/MolecularMetadata/GLYCAM/glycam06Functions.hpp"
 #include "includes/CodeUtils/logging.hpp"
+#include "includes/CentralDataStructure/Selections/atomSelections.hpp"
+#include "includes/CentralDataStructure/Measurements/measurements.hpp" //calculateCoordinateFromInternalCoords
 
-std::vector<std::string> residueCombinator::selectAllAtomsThatCanBeSubstituted(std::vector<cds::Atom*> queryAtoms)
+std::vector<std::string> residueCombinator::selectAllAtomsThatCanBeSubstituted(const cds::Residue& queryResidue)
 {
     std::vector<std::string> foundNames;
     std::string delimiter = "";
-    for (auto& atom : queryAtoms)
-    { // if a hydroxyl with a digit in the second position of atom name. e.g. O2, not OHG.
-        if (atom->getType() == "Oh" && isdigit(atom->getName().at(1))) // If a hydroxyl.
+    for (auto& atom : queryResidue.getAtoms())
+    { // if a hydroxyl with a digit in the second position of atom name. e.g. O2, not OHG, and not O1A.
+        if (atom->getType() == "Oh" && atom->getNumberFromName() != 0) // If a hydroxyl like O2
         {
-            foundNames.push_back(atom->getName().substr(1, 1));
-            //            std::cout << delimiter << atom->getName();
-            //            delimiter = ",";
+            foundNames.push_back(std::to_string(atom->getNumberFromName()));
+            std::cout << delimiter << atom->getName();
+            delimiter = ",";
         }
     }
-    //    std::cout << "\nDone selecting atoms" << std::endl;
+    std::cout << "\n";
     return foundNames;
 }
 
@@ -50,50 +52,101 @@ std::vector<std::vector<std::string>> residueCombinator::getCombinations(const s
     return combinations;
 }
 
-std::vector<cds::Residue*> residueCombinator::generateResidueCombinations(cds::Residue* starterResidue)
+void generateResidueCombination(std::vector<cds::Residue*>& glycamResidueCombinations,
+                                const std::vector<std::string> numberCombination, const cds::Residue& templateResidue)
 {
-    std::vector<cds::Residue*> glycamResiduePermutations;
-    // Find all positions that can be substituted
-    std::vector<std::string> atomNumbers =
-        residueCombinator::selectAllAtomsThatCanBeSubstituted(starterResidue->getAtoms());
-    // Handle the special cases of reducing O1.
-    auto found = std::find(atomNumbers.begin(), atomNumbers.end(), "1");
-    if (found != std::end(atomNumbers))
+    cds::Residue* newResidue = glycamResidueCombinations.emplace_back(new cds::Residue(templateResidue));
+    // cds::Residue* newResidue = glycamResidueCombinations.back();
+    std::string delimiter    = "";
+    std::stringstream numbersAsString;
+    for (auto& atomNumber : numberCombination)
     {
-        atomNumbers.erase(found); // don't make combos with 1
-        glycamResiduePermutations.emplace_back(new cds::Residue(*starterResidue));
-        cds::Residue* newResidue = glycamResiduePermutations.back();
-        newResidue->RemoveHydroxyHydrogen("1");
-        newResidue->setName("1" + starterResidue->getName().substr(1));
+        numbersAsString << delimiter << atomNumber;
+        delimiter = ",";
+        newResidue->RemoveHydroxyHydrogen(atomNumber);
     }
+    std::string residueName = GlycamMetadata::GetGlycam06ResidueLinkageCode(numbersAsString.str());
+    if (residueName.empty())
+    { // Now we have the need for a new residue nomenclature to kick in.
+        gmml::log(__LINE__, __FILE__, gmml::WAR,
+                  "No linkage code found for possible combo: " + numbersAsString.str() + " in residue " +
+                      templateResidue.getName());
+        glycamResidueCombinations.pop_back(); // This should be rare/never?
+    }
+    else
+    {
+        residueName += templateResidue.getName().substr(1);
+        newResidue->setName(residueName);
+        std::cout << numbersAsString.str() << ": " << newResidue->getName() << "\n";
+    }
+}
+
+// Problem: The input residue will either contain an anomeric oxygen or not.
+// Must generate the version that's missing as both are required.
+// Combinations that include the anomeric position should include an anomeric oxygen (eg 1GA).
+// Combinations that do not include the anomeric position should not (eg 0GA).
+
+void residueCombinator::generateResidueCombinations(std::vector<cds::Residue*>& glycamResidueCombinations,
+                                                    const cds::Residue* starterResidue)
+{
+    // First generate both versions of the residue; with and without anomeric oxygen.
+    cds::Residue residueWithoutAnomericOxygen = *starterResidue;
+    cds::Residue residueWithAnomericOxygen    = *starterResidue;
+    Atom* anomer             = cdsSelections::guessAnomericAtomByInternalNeighbors(starterResidue->getAtoms());
+    std::string anomerNumber = std::to_string(anomer->getNumberFromName());
+    std::vector<Atom*> anomerNeighbors = anomer->getNeighbors();
+    auto isTypeHydroxy                 = [](Atom*& a) // Lamda function for the  std::find;
+    {
+        return (a->getType() == "Oh");
+    };
+    const auto anomericOxygen = std::find_if(anomerNeighbors.begin(), anomerNeighbors.end(), isTypeHydroxy);
+    if (anomericOxygen != anomerNeighbors.end())
+    {
+        std::cout << "Anomeric Oxygen Found\n";
+        residueWithAnomericOxygen.RemoveHydroxyHydrogen(anomerNumber); // ToDo this should be here, not in Residue
+        residueWithoutAnomericOxygen = residueWithAnomericOxygen;
+        residueWithoutAnomericOxygen.deleteAtom(*anomericOxygen);
+        // ToDo CHARGE?
+    }
+    else // Ok then grow the anomeric oxygen for the residueWithAnomericOxygen
+    {
+        std::cout << "No Anomeric Oxygen Found in Template\n";
+        std::vector<Coordinate*> threeNeighbors;
+        for (auto& neighbor : anomer->getNeighbors())
+        {
+            threeNeighbors.push_back(neighbor->getCoordinate());
+        }
+        Coordinate newOxygenCoordinate =
+            cds::CreateCoordinateForCenterAwayFromNeighbors(anomer->getCoordinate(), threeNeighbors, 1.4);
+        Atom* newAnomericOxygen =
+            residueWithAnomericOxygen.addAtom(std::make_unique<cds::Atom>("O" + anomerNumber, newOxygenCoordinate));
+        newAnomericOxygen->setCharge(-0.388);
+        newAnomericOxygen->setType("Os");
+    }
+    // Find all positions that can be substituted, ignore the anomer.
+    std::vector<std::string> atomNumbers =
+        residueCombinator::selectAllAtomsThatCanBeSubstituted(residueWithoutAnomericOxygen);
     // Create the combinations of the numbers
     std::vector<std::vector<std::string>> numberCombinations = residueCombinator::getCombinations(atomNumbers);
-    // Create a prep residue for each of the combinations, copying and modifying the original.
+    // Create a residue for each of the combinations, copying and modifying the original.
     for (auto& combination : numberCombinations)
     {
-        glycamResiduePermutations.emplace_back(new cds::Residue(*starterResidue));
-        cds::Residue* newResidue = glycamResiduePermutations.back();
-        std::string delimiter    = "";
-        std::stringstream numbersAsString;
-        for (auto& atomNumber : combination)
-        {
-            numbersAsString << delimiter << atomNumber;
-            delimiter = ",";
-            newResidue->RemoveHydroxyHydrogen(atomNumber);
-        }
-        std::string residueName = GlycamMetadata::GetGlycam06ResidueLinkageCode(numbersAsString.str());
-        if (residueName.empty())
-        { // Now we have the need for a new residue nomenclature to kick in.
-            gmml::log(__LINE__, __FILE__, gmml::WAR,
-                      "No linkage code found for possible combo: " + numbersAsString.str() + " in residue " +
-                          starterResidue->getName());
-        }
-        else
-        {
-            residueName += starterResidue->getName().substr(1);
-            newResidue->setName(residueName);
-            // std::cout << numbersAsString.str() << ": " << newResidue->getName() << "\n";
-        }
+        generateResidueCombination(glycamResidueCombinations, combination, residueWithoutAnomericOxygen);
+        // ToDo Activate the below when we can handle combinations with anomeric positions.
+        // combination.push_back(anomerNumber);
+        // generateResidueCombination(glycamResidueCombinations, combination, residueWithAnomericOxygen);
     }
-    return glycamResiduePermutations;
+    // Handle the anomeric position separately. No combinations allowed with this position.
+    cds::Residue* newResidue = glycamResidueCombinations.emplace_back(new cds::Residue(residueWithAnomericOxygen));
+    std::string residueName  = anomerNumber;
+    residueName              += starterResidue->getName().substr(1);
+    newResidue->setName(residueName);
+    std::cout << "Added " << residueName << "\n";
+    // Write out the 0.. version:
+    newResidue  = glycamResidueCombinations.emplace_back(new cds::Residue(residueWithoutAnomericOxygen));
+    residueName = "0";
+    residueName += starterResidue->getName().substr(1);
+    newResidue->setName(residueName);
+    std::cout << "Added " << residueName << "\n";
+    return;
 }

@@ -12,15 +12,15 @@ fi
 g++ -std=c++17 -I "${GMML_ROOT_DIR}"/ -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ tests/027.test.glycamResidueCombinator.cpp -lgmml -pthread -o 027.glycamResiduecombinator.exe
 ./027.glycamResiduecombinator.exe ../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep
 
-fileList=("GLYCAM06k.lib")
+fileList=("GLYCAM_06k.lib")
 for file in "${fileList[@]}"; do
     if [ ! -f "${file}" ]; then
         echo -e "Test FAILED!\n ${file} does not exist\n"
         echo "Exit Code: 1"
         return 1
     fi
-    if ! cmp -s "${file}" tests/correct_outputs/027."${file}"; then
-        echo -e "Test FAILED!\n ${file} is different from tests/correct_outputs/027.${file}\n"
+    if ! cmp -s "${file}" ../dat/CurrentParams/"${file}"; then
+        echo -e "Test FAILED!\n ${file} is different from ../dat/CurrentParams/${file}\n"
         echo "Exit Code: 1"
         return 1
     fi

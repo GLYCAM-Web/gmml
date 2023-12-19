@@ -113,15 +113,7 @@ Building DGlcp[4D,3Me]b1-2DManp[6H]a1-OH
 *********************
 Building DFrufb2-6DFrufb2-6[DFrufb2-6DFrufb2-1]DFrufb2-6DFrufb2-6DFrufb2-OH
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: No linkage code found in GMML metadata for a carbohydrate residue with other residues attached at these positions: 6,1
-Check these inputs for mistakes: 
-Inputs:
-linkages: 6,1
-isomer: D
-inputResName: Fru
-ringType: f
-residueModifier: 
-configuration: b
+Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for DFrufb2-6 with this glycam residue code: XCU
 
 *********************
 Building DGalpb1-OtBu

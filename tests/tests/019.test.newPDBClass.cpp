@@ -20,7 +20,6 @@ int main(int argc, char* argv[])
                                                    // ToDo: Why is there a const blockage in Ensemble?
     {
         std::cout << "Bonding atoms by distance for assembly" << std::endl;
-        ;
         cds::bondAtomsByDistance(assembly->getAtoms());
         // OFF molecule
         try

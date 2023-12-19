@@ -11,10 +11,9 @@
 // charge" + "removed Hydrogen Charge" - 0.194.
 namespace residueCombinator
 {
-
-    std::vector<std::string> selectAllAtomsThatCanBeSubstituted(std::vector<cds::Atom*> queryAtoms);
+    std::vector<std::string> selectAllAtomsThatCanBeSubstituted(const cds::Residue& queryResidue);
     std::vector<std::vector<std::string>> getCombinations(const std::vector<std::string>& elements);
-    std::vector<cds::Residue*> generateResidueCombinations(cds::Residue* starterResidue);
-
+    void generateResidueCombinations(std::vector<cds::Residue*>& glycamResidueCombinations,
+                                     const cds::Residue* starterResidue);
 } // namespace residueCombinator
 #endif /* INCLUDES_CENTRALDATASTRUCTURE_EDITORS_GLYCAMRESIDUECOMBINATOR_HPP_ */
