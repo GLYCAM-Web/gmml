@@ -10,7 +10,8 @@ std::vector<std::string> residueCombinator::selectAllAtomsThatCanBeSubstituted(c
     std::string delimiter = "";
     for (auto& atom : queryResidue.getAtoms())
     { // if a hydroxyl with a digit in the second position of atom name. e.g. O2, not OHG, and not O1A.
-        if (atom->getType() == "Oh" && atom->getNumberFromName() != 0) // If a hydroxyl like O2
+        if (atom->getType() == "Oh" && atom->getNumberFromName() != 0 &&
+            isdigit(atom->getName().back())) // If a hydroxyl like O2
         {
             foundNames.push_back(std::to_string(atom->getNumberFromName()));
             std::cout << delimiter << atom->getName();
@@ -64,6 +65,9 @@ void generateResidueCombination(std::vector<cds::Residue*>& glycamResidueCombina
         numbersAsString << delimiter << atomNumber;
         delimiter = ",";
         newResidue->RemoveHydroxyHydrogen(atomNumber);
+        // Set the tail. All can go to the end of the residue. Don't think order matters.
+        Atom* atom = newResidue->FindAtom("O" + atomNumber);
+        newResidue->moveAtomToLastPosition(atom);
     }
     std::string residueName = GlycamMetadata::GetGlycam06ResidueLinkageCode(numbersAsString.str());
     if (residueName.empty())
@@ -118,8 +122,8 @@ void residueCombinator::generateResidueCombinations(std::vector<cds::Residue*>& 
         }
         Coordinate newOxygenCoordinate =
             cds::CreateCoordinateForCenterAwayFromNeighbors(anomer->getCoordinate(), threeNeighbors, 1.4);
-        Atom* newAnomericOxygen =
-            residueWithAnomericOxygen.addAtom(std::make_unique<cds::Atom>("O" + anomerNumber, newOxygenCoordinate));
+        Atom* newAnomericOxygen = residueWithAnomericOxygen.addAtomToFront(
+            std::make_unique<cds::Atom>("O" + anomerNumber, newOxygenCoordinate));
         newAnomericOxygen->setCharge(-0.388);
         newAnomericOxygen->setType("Os");
     }

@@ -136,11 +136,33 @@ Atom* Residue::addAtom(std::unique_ptr<Atom> myAtom)
     return atoms_.back().get();
 }
 
+Atom* Residue::addAtomToFront(std::unique_ptr<Atom> myAtom)
+{ // Yes expensive, but sometimes necessary.
+    atoms_.insert(atoms_.begin(), std::move(myAtom));
+    return atoms_.front().get();
+}
+
 // void Residue::addAtom(Atom* myAtom)
 //{
 //     atoms_.push_back(std::make_unique<Atom>(myAtom));
 //     return;
 // }
+
+bool Residue::moveAtomToLastPosition(const Atom* atom)
+{ // Passing in a raw ptr, but the vector is unique_ptr so gotta use i->get() to compare raws.
+    auto i = this->FindPositionOfAtom(atom); // auto makes my life easier
+    if (*i == atoms_.back())
+    {
+        return true; // already in last position
+    }
+    if (i == atoms_.end())
+    {
+        gmml::log(__LINE__, __FILE__, gmml::WAR, "Could not find atom in Residue to move to last position");
+        return false; // atom not found maybe throw is better?
+    }
+    std::iter_swap(i, atoms_.end() - 1);
+    return true;
+}
 
 bool Residue::deleteAtom(const Atom* atom)
 { // Passing in a raw ptr, but the vector is unique_ptr so gotta use i->get() to compare raws.

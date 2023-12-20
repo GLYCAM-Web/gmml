@@ -30,6 +30,23 @@ for i in $(cut -d _ -f1 tests/inputs/023.smallLibrary.txt); do
         fi
     fi
 done
+for i in $(cut -d _ -f1 tests/inputs/023.smallLibrary.txt); do
+    if [ -f 023.outputs/"${i}".off ]; then
+        echo "${i}.off succesfully created." >>023.output_carbohydrateBuilder.txt
+        if ! cmp 023.outputs/"${i}".off tests/correct_outputs/023.outputs/"${i}".off >/dev/null 2>&1; then
+            echo "Test FAILED! Created off file 023.outputs/${i}.off is different from tests/correct_outputs/023.outputs/${i}.off"
+            echo "Exit Code: 1"
+            return 1
+        fi
+    else
+        echo "${i}.off not created." >>023.output_carbohydrateBuilder.txt
+        if [ -f tests/correct_outputs/023.outputs/"${i}".off ]; then
+            echo "Test FAILED! Did not create ${i}.off, yet it exists in tests/correct_outputs/023.outputs/${i}.off"
+            echo "Exit Code: 1"
+            return 1
+        fi
+    fi
+done
 if ! cmp 023.output_carbohydrateBuilder.txt tests/correct_outputs/023.output_carbohydrateBuilder.txt >/dev/null 2>&1; then
     printf "Test FAILED! Output file %s different from %s \n" 023.output_carbohydrateBuilder.txt tests/correct_outputs/023.output_carbohydrateBuilder.txt
     echo "Exit Code: 1"

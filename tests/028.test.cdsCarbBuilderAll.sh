@@ -24,7 +24,24 @@ for i in $(cut -d _ -f1 tests/inputs/023.smallLibrary.txt); do
     else
         echo "${i}.pdb not created." >>028.output_carbohydrateBuilder.txt
         if [ -f tests/correct_outputs/028.outputs/"${i}".pdb ]; then
-            echo "Test FAILED! Did not create ${i}.pdb, yet it exists in tests/correct_outputs/028.outputs/${i}.pdb"
+            echo "Test FAILED! Did not create ${i}.pdb, yet it exists in tests/correct_outputs/023.outputs/${i}.pdb"
+            echo "Exit Code: 1"
+            return 1
+        fi
+    fi
+done
+for i in $(cut -d _ -f1 tests/inputs/023.smallLibrary.txt); do
+    if [ -f 028.outputs/"${i}".off ]; then
+        echo "${i}.off succesfully created." >>028.output_carbohydrateBuilder.txt
+        if ! cmp 028.outputs/"${i}".off tests/correct_outputs/023.outputs/"${i}".off >/dev/null 2>&1; then
+            echo "Test FAILED! Created pdb file 028.outputs/${i}.off is different from tests/correct_outputs/023.outputs/${i}.off"
+            echo "Exit Code: 1"
+            return 1
+        fi
+    else
+        echo "${i}.off not created." >>028.output_carbohydrateBuilder.txt
+        if [ -f tests/correct_outputs/028.outputs/"${i}".off ]; then
+            echo "Test FAILED! Did not create ${i}.off, yet it exists in tests/correct_outputs/028.outputs/${i}.off"
             echo "Exit Code: 1"
             return 1
         fi

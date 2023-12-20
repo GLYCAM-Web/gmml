@@ -85,7 +85,8 @@ namespace cds
         }
 
         Atom* addAtom(std::unique_ptr<Atom> myAtom);
-        // void addAtom(Atom* myAtom);
+        Atom* addAtomToFront(std::unique_ptr<Atom> myAtom);
+        bool moveAtomToLastPosition(const Atom* atom);
         bool deleteAtom(const Atom* atom);
 
         std::vector<std::unique_ptr<Atom>> extractAtoms()

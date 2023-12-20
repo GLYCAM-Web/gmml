@@ -99,6 +99,7 @@
  10 11 1
  10 12 1
  10 13 1
+ 15 33 1
  15 16 1
  15 17 1
  14 15 1
@@ -120,7 +121,6 @@
  31 32 1
  33 34 1
  33 35 1
- 15 33 1
  35 36 1
 !entry.CONDENSEDSEQUENCE.unit.hierarchy table  str abovetype  int abovex  str belowtype  int belowx
  "U" 0 "R" 1
