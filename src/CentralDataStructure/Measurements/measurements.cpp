@@ -73,21 +73,13 @@ Coordinate cds::CreateCoordinateForCenterAwayFromNeighbors(const Coordinate* cen
                                                            const double distance)
 {
     Coordinate combinedVs(0.0, 0.0, 0.0);
-    //    double xValue = 0.0;
-    //    double yValue = 0.0;
-    //    double zValue = 0.0;
     for (auto& neighbor : threeNeighbors)
     {
-
-        //        xValue += centralCoord->GetX() - neighbor->GetX();
-        //        yValue += centralCoord->GetY() - neighbor->GetY();
-        //        zValue += centralCoord->GetZ() - neighbor->GetZ();
         Coordinate temp(centralCoord->GetX() - neighbor->GetX(), centralCoord->GetY() - neighbor->GetY(),
                         centralCoord->GetZ() - neighbor->GetZ());
+        temp.Normalize(); // So a small bond length in a H doesn't create a wonky tetrahedral
         combinedVs += temp;
     }
-    //    Coordinate combinedVs(xValue, yValue, zValue);
-    combinedVs.Normalize();
     return Coordinate(centralCoord->GetX() + (combinedVs.GetX() * distance),
                       centralCoord->GetY() + (combinedVs.GetY() * distance),
                       centralCoord->GetZ() + (combinedVs.GetZ() * distance));
