@@ -115,8 +115,8 @@ void residueCombinator::generateResidueCombinations(std::vector<cds::Residue*>& 
     // First generate both versions of the residue; with and without anomeric oxygen.
     cds::Residue residueWithoutAnomericOxygen = *starterResidue;
     cds::Residue residueWithAnomericOxygen    = *starterResidue;
-    Atom* anomer             = cdsSelections::guessAnomericAtomByInternalNeighbors(starterResidue->getAtoms());
-    std::string anomerNumber = std::to_string(anomer->getNumberFromName());
+    Atom* anomer = cdsSelections::guessAnomericAtomByInternalNeighbors(residueWithAnomericOxygen.getAtoms());
+    std::string anomerNumber           = std::to_string(anomer->getNumberFromName());
     std::vector<Atom*> anomerNeighbors = anomer->getNeighbors();
     auto isTypeHydroxy                 = [](Atom*& a) // Lamda function for the  std::find;
     {
@@ -145,6 +145,7 @@ void residueCombinator::generateResidueCombinations(std::vector<cds::Residue*>& 
             std::make_unique<cds::Atom>("O" + anomerNumber, newOxygenCoordinate));
         newAnomericOxygen->setCharge(-0.388);
         newAnomericOxygen->setType("Os");
+        newAnomericOxygen->addBond(anomer);
     }
     // Find all positions that can be substituted, ignore the anomer.
     std::vector<std::string> atomNumbers =
