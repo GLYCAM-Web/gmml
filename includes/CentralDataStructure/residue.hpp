@@ -115,7 +115,6 @@ namespace cds
         void findAtomPairsConnectedToOtherResidues(std::vector<std::pair<const Atom*, const Atom*>>& foundAtoms) const;
         //        std::vector<std::pair<const Atom*, const Atom*>> getAtomPairsConnectedToOtherResidues() const;
         void MakeDeoxy(const std::string oxygenNumber);
-        void RemoveHydroxyHydrogen(const std::string hydrogenNumber);
         const Coordinate* calculateGeometricCenter();
         ResidueType determineType(const std::string& residueName);
         //////////////////////////////////////////////////////////

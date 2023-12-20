@@ -4,6 +4,25 @@
 #include "includes/CentralDataStructure/Selections/atomSelections.hpp"
 #include "includes/CentralDataStructure/Measurements/measurements.hpp" //calculateCoordinateFromInternalCoords
 
+void residueCombinator::removeHydroxyHydrogen(cds::Residue& queryResidue, const std::string hydrogenNumber)
+{
+    cds::Atom* hydrogen = queryResidue.FindAtom("H" + hydrogenNumber + "O");
+    cds::Atom* oxygen   = queryResidue.FindAtom("O" + hydrogenNumber);
+    if (hydrogen == nullptr || oxygen == nullptr)
+    {
+        std::string message =
+            "Cannot find appropriately named atoms in residue. Glycam combinations cannot be created. Oxygen should be "
+            "named e.g. O2 and not 2O. Hydrogen to be substituted should be H2O and not HO2. Both must be present. "
+            "This may turn into a fatal issue for the atom numbered: " +
+            hydrogenNumber + " in residue: " + queryResidue.getName();
+        gmml::log(__LINE__, __FILE__, gmml::WAR, message);
+        return;
+    }
+    oxygen->setCharge(oxygen->getCharge() + hydrogen->getCharge() - 0.194);
+    queryResidue.deleteAtom(hydrogen);
+    oxygen->setType("Os");
+}
+
 std::vector<std::string> residueCombinator::selectAllAtomsThatCanBeSubstituted(const cds::Residue& queryResidue)
 {
     std::vector<std::string> foundNames;
@@ -64,7 +83,7 @@ void generateResidueCombination(std::vector<cds::Residue*>& glycamResidueCombina
     {
         numbersAsString << delimiter << atomNumber;
         delimiter = ",";
-        newResidue->RemoveHydroxyHydrogen(atomNumber);
+        residueCombinator::removeHydroxyHydrogen(*newResidue, atomNumber);
         // Set the tail. All can go to the end of the residue. Don't think order matters.
         Atom* atom = newResidue->FindAtom("O" + atomNumber);
         newResidue->moveAtomToLastPosition(atom);
@@ -107,7 +126,7 @@ void residueCombinator::generateResidueCombinations(std::vector<cds::Residue*>& 
     if (anomericOxygen != anomerNeighbors.end())
     {
         std::cout << "Anomeric Oxygen Found\n";
-        residueWithAnomericOxygen.RemoveHydroxyHydrogen(anomerNumber); // ToDo this should be here, not in Residue
+        residueCombinator::removeHydroxyHydrogen(residueWithAnomericOxygen, anomerNumber);
         residueWithoutAnomericOxygen = residueWithAnomericOxygen;
         residueWithoutAnomericOxygen.deleteAtom(*anomericOxygen);
         // ToDo CHARGE?
