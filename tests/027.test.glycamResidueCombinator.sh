@@ -28,7 +28,7 @@ sed -n '/\!entry/q;p' GLYCAM_06k.lib | sed 's/ "//g' | sed 's/"//g' | grep -v "i
 grep INT ../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep | cut -d \  -f1 >prepEntriesList.txt
 for id in `cat libEntries.txt`
 do
-    if ! grep -q "^$id" GLYCAM_06j-1_GAGS_KDN.prep;then
+    if ! grep -q "^$id" ../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep;then
         echo "$id is new in lib file" >>$outputFile; 
     fi;
 done
@@ -50,7 +50,7 @@ if ! cmp -s $outputFile tests/correct_outputs/$outputFile; then
 fi
     
 echo -e "Test passed.\n"
-rm 027.glycamResiduecombinator.exe $outputFile libEntries.txt prepEntriesList.txt
+rm 027.glycamResiduecombinator.exe $outputFile libEntries.txt prepEntriesList.txt $file
 echo "Exit Code: 0"
 
 return 0
