@@ -74,12 +74,11 @@ int main(int argc, char* argv[])
     for (auto& specialResidue : glycamPrepFile2.getResidues())
     {
         allTheResidues.push_back(specialResidue);
-        // tmp
-        std::ofstream outFileStream;
-        std::string fileName = specialResidue->getName() + ".pdb";
-        outFileStream.open(fileName.c_str());
-        cds::writeResidueToPdb(outFileStream, specialResidue);
-        outFileStream.close();
+        //        std::ofstream outFileStream;
+        //        std::string fileName = specialResidue->getName() + ".pdb";
+        //        outFileStream.open(fileName.c_str());
+        //        cds::writeResidueToPdb(outFileStream, specialResidue);
+        //        outFileStream.close();
     }
 
     std::ofstream outFileStream;
