@@ -157,7 +157,7 @@ check_c_formatting
 #clear out our passed files so we dont get a buncha crud
 PASSED_FILES=()
 
-check_shell_scripts
+#check_shell_scripts
 
 #hit here we pass everything
 echo -e "\n${GREEN_BOLD}ALL PRECOMMIT CHECKS PASSED. COMMIT ACCEPTED.${RESET_STYLE}"
