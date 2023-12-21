@@ -560,17 +560,19 @@ std::vector<RotatableDihedral> ResidueLinkage::SplitAtomVectorIntoRotatableDihed
 
 gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector ResidueLinkage::FindMetadata() const
 {
+    //    std::cout << "Finding metadata for linkage between " << this->GetFromThisResidue1()->getStringId() << " and "
+    //              << this->GetToThisResidue2()->getStringId() << "\n";
     gmml::MolecularMetadata::GLYCAM::DihedralAngleDataContainer DihedralAngleMetadata;
     gmml::MolecularMetadata::GLYCAM::DihedralAngleDataVector matching_entries =
         DihedralAngleMetadata.GetEntriesForLinkage(
             this->GetFromThisConnectionAtom1()->getName(), this->GetFromThisResidue1()->getName(),
             this->GetToThisConnectionAtom2()->getName(), this->GetToThisResidue2()->getName());
-    // std::cout << "Found these " << matching_entries.size() << " entries:\n";
-    //  for (const auto& entry : matching_entries)
-    //  {
-    //      std::cout << entry.index_ << " : " << entry.atom1_ << ", " << entry.atom2_ << ", " << entry.atom3_ << ", "
-    //      << entry.atom4_ << ", " << entry.default_angle_value_ << "\n";
-    //  }
+    //    std::cout << "Found these " << matching_entries.size() << " entries:\n";
+    //    for (const auto& entry : matching_entries)
+    //    {
+    //        std::cout << entry.index_ << " : " << entry.atom1_ << ", " << entry.atom2_ << ", " << entry.atom3_ << ", "
+    //                  << entry.atom4_ << ", " << entry.default_angle_value_ << "\n";
+    //    }
     if (matching_entries.empty())
     {
         matching_entries = DihedralAngleMetadata.GetEntriesForLinkage(

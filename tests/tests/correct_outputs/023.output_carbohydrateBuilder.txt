@@ -64,9 +64,8 @@ Building DGalpb1-6[DManpb1-2DManp[6A]b1-2]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp
 *********************
 
 *********************
-Building LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
+Building LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]b1-4]DGlcpAa1-OME
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for LFrupa2-6 with this glycam residue code: scA
 
 *********************
 Building DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
@@ -113,7 +112,6 @@ Building DGlcp[4D,3Me]b1-2DManp[6H]a1-OH
 *********************
 Building DFrufb2-6DFrufb2-6[DFrufb2-6DFrufb2-1]DFrufb2-6DFrufb2-6DFrufb2-OH
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for DFrufb2-6 with this glycam residue code: XCU
 
 *********************
 Building DGalpb1-OtBu
@@ -149,7 +147,6 @@ Building DGlcpNSa1-4DGlcpNS[3S,6S]a1-4DGlcpNS[6S]a1-4DGlcpNS[3S]a1-4DGlcpNSa1-3D
 *********************
 Building LGlcpNSa1-4LGlcpNS[3S,6S]a1-4LGlcpNS[6S]a1-4LGlcpNS[3S]a1-4LGlcpNSa1-3LGlcpNSa1-6LGlcpNSa1-OH
 *********************
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for LGlcpNSa1- with this glycam residue code: 6yS
 
 *********************
 Building DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4[4DGlcpa1-6[LFucpa1-2]DManpa1-]<2>OH
@@ -260,14 +257,14 @@ Building DGlcpa1-1DGlcpa
 00016.pdb succesfully created.
 00019.pdb succesfully created.
 00020.pdb succesfully created.
-00021.pdb not created.
+00021.pdb succesfully created.
 00023.pdb succesfully created.
 00024.pdb not created.
 00025.pdb not created.
 00026.pdb succesfully created.
 00027.pdb succesfully created.
 00028.pdb succesfully created.
-00029.pdb not created.
+00029.pdb succesfully created.
 00030.pdb succesfully created.
 00031.pdb succesfully created.
 00032.pdb not created.
@@ -275,7 +272,7 @@ Building DGlcpa1-1DGlcpa
 00034.pdb not created.
 00035.pdb succesfully created.
 00036.pdb succesfully created.
-00037.pdb not created.
+00037.pdb succesfully created.
 00038.pdb succesfully created.
 00039.pdb not created.
 00040.pdb not created.
@@ -313,14 +310,14 @@ Building DGlcpa1-1DGlcpa
 00016.off succesfully created.
 00019.off succesfully created.
 00020.off succesfully created.
-00021.off not created.
+00021.off succesfully created.
 00023.off succesfully created.
 00024.off not created.
 00025.off not created.
 00026.off succesfully created.
 00027.off succesfully created.
 00028.off succesfully created.
-00029.off not created.
+00029.off succesfully created.
 00030.off succesfully created.
 00031.off succesfully created.
 00032.off not created.
@@ -328,7 +325,7 @@ Building DGlcpa1-1DGlcpa
 00034.off not created.
 00035.off succesfully created.
 00036.off succesfully created.
-00037.off not created.
+00037.off succesfully created.
 00038.off succesfully created.
 00039.off not created.
 00040.off not created.

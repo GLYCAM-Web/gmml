@@ -10,8 +10,8 @@ if [[ "${GMML_ROOT_DIR}" != *"gmml" ]]; then
 fi
 
 g++ -std=c++17 -I "${GMML_ROOT_DIR}"/ -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ tests/027.test.glycamResidueCombinator.cpp -lgmml -pthread -o 027.glycamResiduecombinator.exe
-./027.glycamResiduecombinator.exe ../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep
-
+outputFile=027.output.txt
+./027.glycamResiduecombinator.exe ../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep > $outputFile
 fileList=("GLYCAM_06k.lib")
 for file in "${fileList[@]}"; do
     if [ ! -f "${file}" ]; then
@@ -26,8 +26,14 @@ for file in "${fileList[@]}"; do
     fi
     rm "${file}"
 done
+if ! cmp -s $outputFile tests/correct_outputs/$outputFile; then
+    echo -e "Test FAILED!\nOutput files different. Try:\ndiff $outputFile tests/correct_outputs/$outputFile"
+    echo "Exit Code: 1"
+    return 1    
+fi
+    
 echo -e "Test passed.\n"
-rm 027.glycamResiduecombinator.exe
+rm 027.glycamResiduecombinator.exe $outputFile 
 echo "Exit Code: 0"
 
 return 0

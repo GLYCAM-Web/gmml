@@ -1,0 +1,2432 @@
+Generating those combos from 0AA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TAA
+4,3: WAA
+4,2: YAA
+4: 4AA
+3,2: ZAA
+3: 3AA
+2: 2AA
+Added 1AA
+Added 0AA
+Generating those combos from 0AB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TAB
+4,3: WAB
+4,2: YAB
+4: 4AB
+3,2: ZAB
+3: 3AB
+2: 2AB
+Added 1AB
+Added 0AB
+Generating those combos from 0AD
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: nAD
+5,3: tAD
+5,2: uAD
+5: 5AD
+3,2: ZAD
+3: 3AD
+2: 2AD
+Added 1AD
+Added 0AD
+Generating those combos from 0AU
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: nAU
+5,3: tAU
+5,2: uAU
+5: 5AU
+3,2: ZAU
+3: 3AU
+2: 2AU
+Added 1AU
+Added 0AU
+Generating those combos from 0BA
+No Anomeric Oxygen Found in Template
+O1,O5,O4,O3
+1,5,4,3: yBA
+1,5,4: vBA
+1,5,3: nBA
+1,5: uBA
+1,4,3: TBA
+1,4: YBA
+1,3: ZBA
+1: 1BA
+5,4,3: xBA
+5,4: sBA
+5,3: tBA
+5: 5BA
+4,3: WBA
+4: 4BA
+3: 3BA
+Added 2BA
+Added 0BA
+Generating those combos from 0BB
+No Anomeric Oxygen Found in Template
+O5,O4,O3,O1
+5,4,3,1: yBB
+5,4,3: xBB
+5,4,1: vBB
+5,4: sBB
+5,3,1: nBB
+5,3: tBB
+5,1: uBB
+5: 5BB
+4,3,1: TBB
+4,3: WBB
+4,1: YBB
+4: 4BB
+3,1: ZBB
+3: 3BB
+1: 1BB
+Added 2BB
+Added 0BB
+Generating those combos from 0BC
+No Anomeric Oxygen Found in Template
+O3
+3: 3BC
+Added 1BC
+Added 0BC
+Generating those combos from 0BD
+No Anomeric Oxygen Found in Template
+O1,O6,O4,O3
+1,6,4,3: PBD
+1,6,4: RBD
+1,6,3: SBD
+1,6: XBD
+1,4,3: TBD
+1,4: YBD
+1,3: ZBD
+1: 1BD
+6,4,3: QBD
+6,4: UBD
+6,3: VBD
+6: 6BD
+4,3: WBD
+4: 4BD
+3: 3BD
+Added 2BD
+Added 0BD
+Generating those combos from 0BU
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O1
+6,4,3,1: PBU
+6,4,3: QBU
+6,4,1: RBU
+6,4: UBU
+6,3,1: SBU
+6,3: VBU
+6,1: XBU
+6: 6BU
+4,3,1: TBU
+4,3: WBU
+4,1: YBU
+4: 4BU
+3,1: ZBU
+3: 3BU
+1: 1BU
+Added 2BU
+Added 0BU
+Generating those combos from 0CA
+No Anomeric Oxygen Found in Template
+O1,O5,O4,O3
+1,5,4,3: yCA
+1,5,4: vCA
+1,5,3: nCA
+1,5: uCA
+1,4,3: TCA
+1,4: YCA
+1,3: ZCA
+1: 1CA
+5,4,3: xCA
+5,4: sCA
+5,3: tCA
+5: 5CA
+4,3: WCA
+4: 4CA
+3: 3CA
+Added 2CA
+Added 0CA
+Generating those combos from 0CB
+No Anomeric Oxygen Found in Template
+O5,O4,O3,O1
+5,4,3,1: yCB
+5,4,3: xCB
+5,4,1: vCB
+5,4: sCB
+5,3,1: nCB
+5,3: tCB
+5,1: uCB
+5: 5CB
+4,3,1: TCB
+4,3: WCB
+4,1: YCB
+4: 4CB
+3,1: ZCB
+3: 3CB
+1: 1CB
+Added 2CB
+Added 0CB
+Generating those combos from 0CD
+No Anomeric Oxygen Found in Template
+O1,O6,O4,O3
+1,6,4,3: PCD
+1,6,4: RCD
+1,6,3: SCD
+1,6: XCD
+1,4,3: TCD
+1,4: YCD
+1,3: ZCD
+1: 1CD
+6,4,3: QCD
+6,4: UCD
+6,3: VCD
+6: 6CD
+4,3: WCD
+4: 4CD
+3: 3CD
+Added 2CD
+Added 0CD
+Generating those combos from 0CU
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O1
+6,4,3,1: PCU
+6,4,3: QCU
+6,4,1: RCU
+6,4: UCU
+6,3,1: SCU
+6,3: VCU
+6,1: XCU
+6: 6CU
+4,3,1: TCU
+4,3: WCU
+4,1: YCU
+4: 4CU
+3,1: ZCU
+3: 3CU
+1: 1CU
+Added 2CU
+Added 0CU
+Generating those combos from 0DA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TDA
+4,3: WDA
+4,2: YDA
+4: 4DA
+3,2: ZDA
+3: 3DA
+2: 2DA
+Added 1DA
+Added 0DA
+Generating those combos from 0DB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TDB
+4,3: WDB
+4,2: YDB
+4: 4DB
+3,2: ZDB
+3: 3DB
+2: 2DB
+Added 1DB
+Added 0DB
+Generating those combos from 0DD
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: nDD
+5,3: tDD
+5,2: uDD
+5: 5DD
+3,2: ZDD
+3: 3DD
+2: 2DD
+Added 1DD
+Added 0DD
+Generating those combos from 0DU
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: nDU
+5,3: tDU
+5,2: uDU
+5: 5DU
+3,2: ZDU
+3: 3DU
+2: 2DU
+Added 1DU
+Added 0DU
+Generating those combos from 0EA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PEA
+6,4,3: QEA
+6,4,2: REA
+6,4: UEA
+6,3,2: SEA
+6,3: VEA
+6,2: XEA
+6: 6EA
+4,3,2: TEA
+4,3: WEA
+4,2: YEA
+4: 4EA
+3,2: ZEA
+3: 3EA
+2: 2EA
+Added 1EA
+Added 0EA
+Generating those combos from 0EB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PEB
+6,4,3: QEB
+6,4,2: REB
+6,4: UEB
+6,3,2: SEB
+6,3: VEB
+6,2: XEB
+6: 6EB
+4,3,2: TEB
+4,3: WEB
+4,2: YEB
+4: 4EB
+3,2: ZEB
+3: 3EB
+2: 2EB
+Added 1EB
+Added 0EB
+Generating those combos from 0FA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TFA
+4,3: WFA
+4,2: YFA
+4: 4FA
+3,2: ZFA
+3: 3FA
+2: 2FA
+Added 1FA
+Added 0FA
+Generating those combos from 0FB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TFB
+4,3: WFB
+4,2: YFB
+4: 4FB
+3,2: ZFB
+3: 3FB
+2: 2FB
+Added 1FB
+Added 0FB
+Generating those combos from 0GA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PGA
+6,4,3: QGA
+6,4,2: RGA
+6,4: UGA
+6,3,2: SGA
+6,3: VGA
+6,2: XGA
+6: 6GA
+4,3,2: TGA
+4,3: WGA
+4,2: YGA
+4: 4GA
+3,2: ZGA
+3: 3GA
+2: 2GA
+Added 1GA
+Added 0GA
+Generating those combos from 0GB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PGB
+6,4,3: QGB
+6,4,2: RGB
+6,4: UGB
+6,3,2: SGB
+6,3: VGB
+6,2: XGB
+6: 6GB
+4,3,2: TGB
+4,3: WGB
+4,2: YGB
+4: 4GB
+3,2: ZGB
+3: 3GB
+2: 2GB
+Added 1GB
+Added 0GB
+Generating those combos from 0GL
+No Anomeric Oxygen Found in Template
+O9,O8,O7,O4
+9,8,7,4: AGL
+9,8,7: BGL
+9,8,4: CGL
+9,8: FGL
+9,7,4: DGL
+9,7: GGL
+9,4: IGL
+9: 9GL
+8,7,4: EGL
+8,7: HGL
+8,4: JGL
+8: 8GL
+7,4: KGL
+7: 7GL
+4: 4GL
+Added 2GL
+Added 0GL
+Generating those combos from 0HA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: THA
+4,3: WHA
+4,2: YHA
+4: 4HA
+3,2: ZHA
+3: 3HA
+2: 2HA
+Added 1HA
+Added 0HA
+Generating those combos from 0HB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: THB
+4,3: WHB
+4,2: YHB
+4: 4HB
+3,2: ZHB
+3: 3HB
+2: 2HB
+Added 1HB
+Added 0HB
+Generating those combos from 0JA
+No Anomeric Oxygen Found in Template
+O1,O5,O4,O3
+1,5,4,3: yJA
+1,5,4: vJA
+1,5,3: nJA
+1,5: uJA
+1,4,3: TJA
+1,4: YJA
+1,3: ZJA
+1: 1JA
+5,4,3: xJA
+5,4: sJA
+5,3: tJA
+5: 5JA
+4,3: WJA
+4: 4JA
+3: 3JA
+Added 2JA
+Added 0JA
+Generating those combos from 0JB
+No Anomeric Oxygen Found in Template
+O5,O4,O3,O1
+5,4,3,1: yJB
+5,4,3: xJB
+5,4,1: vJB
+5,4: sJB
+5,3,1: nJB
+5,3: tJB
+5,1: uJB
+5: 5JB
+4,3,1: TJB
+4,3: WJB
+4,1: YJB
+4: 4JB
+3,1: ZJB
+3: 3JB
+1: 1JB
+Added 2JB
+Added 0JB
+Generating those combos from 0JD
+No Anomeric Oxygen Found in Template
+O1,O6,O4,O3
+1,6,4,3: PJD
+1,6,4: RJD
+1,6,3: SJD
+1,6: XJD
+1,4,3: TJD
+1,4: YJD
+1,3: ZJD
+1: 1JD
+6,4,3: QJD
+6,4: UJD
+6,3: VJD
+6: 6JD
+4,3: WJD
+4: 4JD
+3: 3JD
+Added 2JD
+Added 0JD
+Generating those combos from 0JU
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O1
+6,4,3,1: PJU
+6,4,3: QJU
+6,4,1: RJU
+6,4: UJU
+6,3,1: SJU
+6,3: VJU
+6,1: XJU
+6: 6JU
+4,3,1: TJU
+4,3: WJU
+4,1: YJU
+4: 4JU
+3,1: ZJU
+3: 3JU
+1: 1JU
+Added 2JU
+Added 0JU
+Generating those combos from 0KA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PKA
+6,4,3: QKA
+6,4,2: RKA
+6,4: UKA
+6,3,2: SKA
+6,3: VKA
+6,2: XKA
+6: 6KA
+4,3,2: TKA
+4,3: WKA
+4,2: YKA
+4: 4KA
+3,2: ZKA
+3: 3KA
+2: 2KA
+Added 1KA
+Added 0KA
+Generating those combos from 0KB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PKB
+6,4,3: QKB
+6,4,2: RKB
+6,4: UKB
+6,3,2: SKB
+6,3: VKB
+6,2: XKB
+6: 6KB
+4,3,2: TKB
+4,3: WKB
+4,2: YKB
+4: 4KB
+3,2: ZKB
+3: 3KB
+2: 2KB
+Added 1KB
+Added 0KB
+Generating those combos from 0LA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PLA
+6,4,3: QLA
+6,4,2: RLA
+6,4: ULA
+6,3,2: SLA
+6,3: VLA
+6,2: XLA
+6: 6LA
+4,3,2: TLA
+4,3: WLA
+4,2: YLA
+4: 4LA
+3,2: ZLA
+3: 3LA
+2: 2LA
+Added 1LA
+Added 0LA
+Generating those combos from 0LB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PLB
+6,4,3: QLB
+6,4,2: RLB
+6,4: ULB
+6,3,2: SLB
+6,3: VLB
+6,2: XLB
+6: 6LB
+4,3,2: TLB
+4,3: WLB
+4,2: YLB
+4: 4LB
+3,2: ZLB
+3: 3LB
+2: 2LB
+Added 1LB
+Added 0LB
+Generating those combos from 0MA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PMA
+6,4,3: QMA
+6,4,2: RMA
+6,4: UMA
+6,3,2: SMA
+6,3: VMA
+6,2: XMA
+6: 6MA
+4,3,2: TMA
+4,3: WMA
+4,2: YMA
+4: 4MA
+3,2: ZMA
+3: 3MA
+2: 2MA
+Added 1MA
+Added 0MA
+Generating those combos from 0MB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PMB
+6,4,3: QMB
+6,4,2: RMB
+6,4: UMB
+6,3,2: SMB
+6,3: VMB
+6,2: XMB
+6: 6MB
+4,3,2: TMB
+4,3: WMB
+4,2: YMB
+4: 4MB
+3,2: ZMB
+3: 3MB
+2: 2MB
+Added 1MB
+Added 0MB
+Generating those combos from 0NA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PNA
+6,4,3: QNA
+6,4,2: RNA
+6,4: UNA
+6,3,2: SNA
+6,3: VNA
+6,2: XNA
+6: 6NA
+4,3,2: TNA
+4,3: WNA
+4,2: YNA
+4: 4NA
+3,2: ZNA
+3: 3NA
+2: 2NA
+Added 1NA
+Added 0NA
+Generating those combos from 0NB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PNB
+6,4,3: QNB
+6,4,2: RNB
+6,4: UNB
+6,3,2: SNB
+6,3: VNB
+6,2: XNB
+6: 6NB
+4,3,2: TNB
+4,3: WNB
+4,2: YNB
+4: 4NB
+3,2: ZNB
+3: 3NB
+2: 2NB
+Added 1NB
+Added 0NB
+Generating those combos from 0OA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TOA
+4,3: WOA
+4,2: YOA
+4: 4OA
+3,2: ZOA
+3: 3OA
+2: 2OA
+Added 1OA
+Added 0OA
+Generating those combos from 0OB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TOB
+4,3: WOB
+4,2: YOB
+4: 4OB
+3,2: ZOB
+3: 3OB
+2: 2OB
+Added 1OB
+Added 0OB
+Generating those combos from 0PA
+No Anomeric Oxygen Found in Template
+O1,O5,O4,O3
+1,5,4,3: yPA
+1,5,4: vPA
+1,5,3: nPA
+1,5: uPA
+1,4,3: TPA
+1,4: YPA
+1,3: ZPA
+1: 1PA
+5,4,3: xPA
+5,4: sPA
+5,3: tPA
+5: 5PA
+4,3: WPA
+4: 4PA
+3: 3PA
+Added 2PA
+Added 0PA
+Generating those combos from 0PB
+No Anomeric Oxygen Found in Template
+O5,O4,O3,O1
+5,4,3,1: yPB
+5,4,3: xPB
+5,4,1: vPB
+5,4: sPB
+5,3,1: nPB
+5,3: tPB
+5,1: uPB
+5: 5PB
+4,3,1: TPB
+4,3: WPB
+4,1: YPB
+4: 4PB
+3,1: ZPB
+3: 3PB
+1: 1PB
+Added 2PB
+Added 0PB
+Generating those combos from 0PD
+No Anomeric Oxygen Found in Template
+O1,O6,O4,O3
+1,6,4,3: PPD
+1,6,4: RPD
+1,6,3: SPD
+1,6: XPD
+1,4,3: TPD
+1,4: YPD
+1,3: ZPD
+1: 1PD
+6,4,3: QPD
+6,4: UPD
+6,3: VPD
+6: 6PD
+4,3: WPD
+4: 4PD
+3: 3PD
+Added 2PD
+Added 0PD
+Generating those combos from 0PU
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O1
+6,4,3,1: PPU
+6,4,3: QPU
+6,4,1: RPU
+6,4: UPU
+6,3,1: SPU
+6,3: VPU
+6,1: XPU
+6: 6PU
+4,3,1: TPU
+4,3: WPU
+4,1: YPU
+4: 4PU
+3,1: ZPU
+3: 3PU
+1: 1PU
+Added 2PU
+Added 0PU
+Generating those combos from 0QA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TQA
+4,3: WQA
+4,2: YQA
+4: 4QA
+3,2: ZQA
+3: 3QA
+2: 2QA
+Added 1QA
+Added 0QA
+Generating those combos from 0QB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TQB
+4,3: WQB
+4,2: YQB
+4: 4QB
+3,2: ZQB
+3: 3QB
+2: 2QB
+Added 1QB
+Added 0QB
+Generating those combos from 0RA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TRA
+4,3: WRA
+4,2: YRA
+4: 4RA
+3,2: ZRA
+3: 3RA
+2: 2RA
+Added 1RA
+Added 0RA
+Generating those combos from 0RB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TRB
+4,3: WRB
+4,2: YRB
+4: 4RB
+3,2: ZRB
+3: 3RB
+2: 2RB
+Added 1RB
+Added 0RB
+Generating those combos from 0RD
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: nRD
+5,3: tRD
+5,2: uRD
+5: 5RD
+3,2: ZRD
+3: 3RD
+2: 2RD
+Added 1RD
+Added 0RD
+Generating those combos from 0RU
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: nRU
+5,3: tRU
+5,2: uRU
+5: 5RU
+3,2: ZRU
+3: 3RU
+2: 2RU
+Added 1RU
+Added 0RU
+Generating those combos from 0SA
+No Anomeric Oxygen Found in Template
+O9,O8,O7,O4
+9,8,7,4: ASA
+9,8,7: BSA
+9,8,4: CSA
+9,8: FSA
+9,7,4: DSA
+9,7: GSA
+9,4: ISA
+9: 9SA
+8,7,4: ESA
+8,7: HSA
+8,4: JSA
+8: 8SA
+7,4: KSA
+7: 7SA
+4: 4SA
+Added 2SA
+Added 0SA
+Generating those combos from 0SB
+No Anomeric Oxygen Found in Template
+O7,O8,O9,O4
+7,8,9,4: ASB
+7,8,9: BSB
+7,8,4: ESB
+7,8: HSB
+7,9,4: DSB
+7,9: GSB
+7,4: KSB
+7: 7SB
+8,9,4: CSB
+8,9: FSB
+8,4: JSB
+8: 8SB
+9,4: ISB
+9: 9SB
+4: 4SB
+Added 2SB
+Added 0SB
+Generating those combos from 0TA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PTA
+6,4,3: QTA
+6,4,2: RTA
+6,4: UTA
+6,3,2: STA
+6,3: VTA
+6,2: XTA
+6: 6TA
+4,3,2: TTA
+4,3: WTA
+4,2: YTA
+4: 4TA
+3,2: ZTA
+3: 3TA
+2: 2TA
+Added 1TA
+Added 0TA
+Generating those combos from 0TB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PTB
+6,4,3: QTB
+6,4,2: RTB
+6,4: UTB
+6,3,2: STB
+6,3: VTB
+6,2: XTB
+6: 6TB
+4,3,2: TTB
+4,3: WTB
+4,2: YTB
+4: 4TB
+3,2: ZTB
+3: 3TB
+2: 2TB
+Added 1TB
+Added 0TB
+Generating those combos from 0TV
+No Anomeric Oxygen Found in Template
+O4,O2
+4,2: YTV
+4: 4TV
+2: 2TV
+Added 1TV
+Added 0TV
+Generating those combos from 0Tv
+No Anomeric Oxygen Found in Template
+O4,O2
+4,2: YTv
+4: 4Tv
+2: 2Tv
+Added 1Tv
+Added 0Tv
+Generating those combos from 0UA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TUA
+4,3: WUA
+4,2: YUA
+4: 4UA
+3,2: ZUA
+3: 3UA
+2: 2UA
+Added 1UA
+Added 0UA
+Generating those combos from 0UB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TUB
+4,3: WUB
+4,2: YUB
+4: 4UB
+3,2: ZUB
+3: 3UB
+2: 2UB
+Added 1UB
+Added 0UB
+Generating those combos from 0VA
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QVA
+6,4: UVA
+6,3: VVA
+6: 6VA
+4,3: WVA
+4: 4VA
+3: 3VA
+Added 1VA
+Added 0VA
+Generating those combos from 0VB
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QVB
+6,4: UVB
+6,3: VVB
+6: 6VB
+4,3: WVB
+4: 4VB
+3: 3VB
+Added 1VB
+Added 0VB
+Generating those combos from 0WA
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QWA
+6,4: UWA
+6,3: VWA
+6: 6WA
+4,3: WWA
+4: 4WA
+3: 3WA
+Added 1WA
+Added 0WA
+Generating those combos from 0WB
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QWB
+6,4: UWB
+6,3: VWB
+6: 6WB
+4,3: WWB
+4: 4WB
+3: 3WB
+Added 1WB
+Added 0WB
+Generating those combos from 0XA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TXA
+4,3: WXA
+4,2: YXA
+4: 4XA
+3,2: ZXA
+3: 3XA
+2: 2XA
+Added 1XA
+Added 0XA
+Generating those combos from 0XB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TXB
+4,3: WXB
+4,2: YXB
+4: 4XB
+3,2: ZXB
+3: 3XB
+2: 2XB
+Added 1XB
+Added 0XB
+Generating those combos from 0XD
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: nXD
+5,3: tXD
+5,2: uXD
+5: 5XD
+3,2: ZXD
+3: 3XD
+2: 2XD
+Added 1XD
+Added 0XD
+Generating those combos from 0XU
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: nXU
+5,3: tXU
+5,2: uXU
+5: 5XU
+3,2: ZXU
+3: 3XU
+2: 2XU
+Added 1XU
+Added 0XU
+Generating those combos from 0YA
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QYA
+6,4: UYA
+6,3: VYA
+6: 6YA
+4,3: WYA
+4: 4YA
+3: 3YA
+Added 1YA
+Added 0YA
+Generating those combos from 0YB
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QYB
+6,4: UYB
+6,3: VYB
+6: 6YB
+4,3: WYB
+4: 4YB
+3: 3YB
+Added 1YB
+Added 0YB
+Generating those combos from 0ZA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TZA
+4,3: WZA
+4,2: YZA
+4: 4ZA
+3,2: ZZA
+3: 3ZA
+2: 2ZA
+Added 1ZA
+Added 0ZA
+Generating those combos from 0ZB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TZB
+4,3: WZB
+4,2: YZB
+4: 4ZB
+3,2: ZZB
+3: 3ZB
+2: 2ZB
+Added 1ZB
+Added 0ZB
+Generating those combos from 0aA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TaA
+4,3: WaA
+4,2: YaA
+4: 4aA
+3,2: ZaA
+3: 3aA
+2: 2aA
+Added 1aA
+Added 0aA
+Generating those combos from 0aB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TaB
+4,3: WaB
+4,2: YaB
+4: 4aB
+3,2: ZaB
+3: 3aB
+2: 2aB
+Added 1aB
+Added 0aB
+Generating those combos from 0aD
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: naD
+5,3: taD
+5,2: uaD
+5: 5aD
+3,2: ZaD
+3: 3aD
+2: 2aD
+Added 1aD
+Added 0aD
+Generating those combos from 0aU
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: naU
+5,3: taU
+5,2: uaU
+5: 5aU
+3,2: ZaU
+3: 3aU
+2: 2aU
+Added 1aU
+Added 0aU
+Generating those combos from 0bA
+No Anomeric Oxygen Found in Template
+O5,O4,O3,O1
+5,4,3,1: ybA
+5,4,3: xbA
+5,4,1: vbA
+5,4: sbA
+5,3,1: nbA
+5,3: tbA
+5,1: ubA
+5: 5bA
+4,3,1: TbA
+4,3: WbA
+4,1: YbA
+4: 4bA
+3,1: ZbA
+3: 3bA
+1: 1bA
+Added 2bA
+Added 0bA
+Generating those combos from 0bB
+No Anomeric Oxygen Found in Template
+O1,O5,O4,O3
+1,5,4,3: ybB
+1,5,4: vbB
+1,5,3: nbB
+1,5: ubB
+1,4,3: TbB
+1,4: YbB
+1,3: ZbB
+1: 1bB
+5,4,3: xbB
+5,4: sbB
+5,3: tbB
+5: 5bB
+4,3: WbB
+4: 4bB
+3: 3bB
+Added 2bB
+Added 0bB
+Generating those combos from 0bC
+No Anomeric Oxygen Found in Template
+O3
+3: 3bC
+Added 1bC
+Added 0bC
+Generating those combos from 0bD
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O1
+6,4,3,1: PbD
+6,4,3: QbD
+6,4,1: RbD
+6,4: UbD
+6,3,1: SbD
+6,3: VbD
+6,1: XbD
+6: 6bD
+4,3,1: TbD
+4,3: WbD
+4,1: YbD
+4: 4bD
+3,1: ZbD
+3: 3bD
+1: 1bD
+Added 2bD
+Added 0bD
+Generating those combos from 0bU
+No Anomeric Oxygen Found in Template
+O1,O6,O4,O3
+1,6,4,3: PbU
+1,6,4: RbU
+1,6,3: SbU
+1,6: XbU
+1,4,3: TbU
+1,4: YbU
+1,3: ZbU
+1: 1bU
+6,4,3: QbU
+6,4: UbU
+6,3: VbU
+6: 6bU
+4,3: WbU
+4: 4bU
+3: 3bU
+Added 2bU
+Added 0bU
+Generating those combos from 0cA
+No Anomeric Oxygen Found in Template
+O5,O4,O3,O1
+5,4,3,1: ycA
+5,4,3: xcA
+5,4,1: vcA
+5,4: scA
+5,3,1: ncA
+5,3: tcA
+5,1: ucA
+5: 5cA
+4,3,1: TcA
+4,3: WcA
+4,1: YcA
+4: 4cA
+3,1: ZcA
+3: 3cA
+1: 1cA
+Added 2cA
+Added 0cA
+Generating those combos from 0cB
+No Anomeric Oxygen Found in Template
+O1,O5,O4,O3
+1,5,4,3: ycB
+1,5,4: vcB
+1,5,3: ncB
+1,5: ucB
+1,4,3: TcB
+1,4: YcB
+1,3: ZcB
+1: 1cB
+5,4,3: xcB
+5,4: scB
+5,3: tcB
+5: 5cB
+4,3: WcB
+4: 4cB
+3: 3cB
+Added 2cB
+Added 0cB
+Generating those combos from 0cD
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O1
+6,4,3,1: PcD
+6,4,3: QcD
+6,4,1: RcD
+6,4: UcD
+6,3,1: ScD
+6,3: VcD
+6,1: XcD
+6: 6cD
+4,3,1: TcD
+4,3: WcD
+4,1: YcD
+4: 4cD
+3,1: ZcD
+3: 3cD
+1: 1cD
+Added 2cD
+Added 0cD
+Generating those combos from 0cU
+No Anomeric Oxygen Found in Template
+O1,O6,O4,O3
+1,6,4,3: PcU
+1,6,4: RcU
+1,6,3: ScU
+1,6: XcU
+1,4,3: TcU
+1,4: YcU
+1,3: ZcU
+1: 1cU
+6,4,3: QcU
+6,4: UcU
+6,3: VcU
+6: 6cU
+4,3: WcU
+4: 4cU
+3: 3cU
+Added 2cU
+Added 0cU
+Generating those combos from 0dA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TdA
+4,3: WdA
+4,2: YdA
+4: 4dA
+3,2: ZdA
+3: 3dA
+2: 2dA
+Added 1dA
+Added 0dA
+Generating those combos from 0dB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TdB
+4,3: WdB
+4,2: YdB
+4: 4dB
+3,2: ZdB
+3: 3dB
+2: 2dB
+Added 1dB
+Added 0dB
+Generating those combos from 0dD
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: ndD
+5,3: tdD
+5,2: udD
+5: 5dD
+3,2: ZdD
+3: 3dD
+2: 2dD
+Added 1dD
+Added 0dD
+Generating those combos from 0dU
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: ndU
+5,3: tdU
+5,2: udU
+5: 5dU
+3,2: ZdU
+3: 3dU
+2: 2dU
+Added 1dU
+Added 0dU
+Generating those combos from 0eA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PeA
+6,4,3: QeA
+6,4,2: ReA
+6,4: UeA
+6,3,2: SeA
+6,3: VeA
+6,2: XeA
+6: 6eA
+4,3,2: TeA
+4,3: WeA
+4,2: YeA
+4: 4eA
+3,2: ZeA
+3: 3eA
+2: 2eA
+Added 1eA
+Added 0eA
+Generating those combos from 0eB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PeB
+6,4,3: QeB
+6,4,2: ReB
+6,4: UeB
+6,3,2: SeB
+6,3: VeB
+6,2: XeB
+6: 6eB
+4,3,2: TeB
+4,3: WeB
+4,2: YeB
+4: 4eB
+3,2: ZeB
+3: 3eB
+2: 2eB
+Added 1eB
+Added 0eB
+Generating those combos from 0fA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TfA
+4,3: WfA
+4,2: YfA
+4: 4fA
+3,2: ZfA
+3: 3fA
+2: 2fA
+Added 1fA
+Added 0fA
+Generating those combos from 0fB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TfB
+4,3: WfB
+4,2: YfB
+4: 4fB
+3,2: ZfB
+3: 3fB
+2: 2fB
+Added 1fB
+Added 0fB
+Generating those combos from 0gA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PgA
+6,4,3: QgA
+6,4,2: RgA
+6,4: UgA
+6,3,2: SgA
+6,3: VgA
+6,2: XgA
+6: 6gA
+4,3,2: TgA
+4,3: WgA
+4,2: YgA
+4: 4gA
+3,2: ZgA
+3: 3gA
+2: 2gA
+Added 1gA
+Added 0gA
+Generating those combos from 0gB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PgB
+6,4,3: QgB
+6,4,2: RgB
+6,4: UgB
+6,3,2: SgB
+6,3: VgB
+6,2: XgB
+6: 6gB
+4,3,2: TgB
+4,3: WgB
+4,2: YgB
+4: 4gB
+3,2: ZgB
+3: 3gB
+2: 2gB
+Added 1gB
+Added 0gB
+Generating those combos from 0gL
+No Anomeric Oxygen Found in Template
+O7,O8,O9,O4
+7,8,9,4: AgL
+7,8,9: BgL
+7,8,4: EgL
+7,8: HgL
+7,9,4: DgL
+7,9: GgL
+7,4: KgL
+7: 7gL
+8,9,4: CgL
+8,9: FgL
+8,4: JgL
+8: 8gL
+9,4: IgL
+9: 9gL
+4: 4gL
+Added 2gL
+Added 0gL
+Generating those combos from 0hA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: ThA
+4,3: WhA
+4,2: YhA
+4: 4hA
+3,2: ZhA
+3: 3hA
+2: 2hA
+Added 1hA
+Added 0hA
+Generating those combos from 0hB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: ThB
+4,3: WhB
+4,2: YhB
+4: 4hB
+3,2: ZhB
+3: 3hB
+2: 2hB
+Added 1hB
+Added 0hB
+Generating those combos from 0jA
+No Anomeric Oxygen Found in Template
+O5,O4,O3,O1
+5,4,3,1: yjA
+5,4,3: xjA
+5,4,1: vjA
+5,4: sjA
+5,3,1: njA
+5,3: tjA
+5,1: ujA
+5: 5jA
+4,3,1: TjA
+4,3: WjA
+4,1: YjA
+4: 4jA
+3,1: ZjA
+3: 3jA
+1: 1jA
+Added 2jA
+Added 0jA
+Generating those combos from 0jB
+No Anomeric Oxygen Found in Template
+O1,O5,O4,O3
+1,5,4,3: yjB
+1,5,4: vjB
+1,5,3: njB
+1,5: ujB
+1,4,3: TjB
+1,4: YjB
+1,3: ZjB
+1: 1jB
+5,4,3: xjB
+5,4: sjB
+5,3: tjB
+5: 5jB
+4,3: WjB
+4: 4jB
+3: 3jB
+Added 2jB
+Added 0jB
+Generating those combos from 0jD
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O1
+6,4,3,1: PjD
+6,4,3: QjD
+6,4,1: RjD
+6,4: UjD
+6,3,1: SjD
+6,3: VjD
+6,1: XjD
+6: 6jD
+4,3,1: TjD
+4,3: WjD
+4,1: YjD
+4: 4jD
+3,1: ZjD
+3: 3jD
+1: 1jD
+Added 2jD
+Added 0jD
+Generating those combos from 0jU
+No Anomeric Oxygen Found in Template
+O1,O6,O4,O3
+1,6,4,3: PjU
+1,6,4: RjU
+1,6,3: SjU
+1,6: XjU
+1,4,3: TjU
+1,4: YjU
+1,3: ZjU
+1: 1jU
+6,4,3: QjU
+6,4: UjU
+6,3: VjU
+6: 6jU
+4,3: WjU
+4: 4jU
+3: 3jU
+Added 2jU
+Added 0jU
+Generating those combos from 0kA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PkA
+6,4,3: QkA
+6,4,2: RkA
+6,4: UkA
+6,3,2: SkA
+6,3: VkA
+6,2: XkA
+6: 6kA
+4,3,2: TkA
+4,3: WkA
+4,2: YkA
+4: 4kA
+3,2: ZkA
+3: 3kA
+2: 2kA
+Added 1kA
+Added 0kA
+Generating those combos from 0kB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PkB
+6,4,3: QkB
+6,4,2: RkB
+6,4: UkB
+6,3,2: SkB
+6,3: VkB
+6,2: XkB
+6: 6kB
+4,3,2: TkB
+4,3: WkB
+4,2: YkB
+4: 4kB
+3,2: ZkB
+3: 3kB
+2: 2kB
+Added 1kB
+Added 0kB
+Generating those combos from 0lA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PlA
+6,4,3: QlA
+6,4,2: RlA
+6,4: UlA
+6,3,2: SlA
+6,3: VlA
+6,2: XlA
+6: 6lA
+4,3,2: TlA
+4,3: WlA
+4,2: YlA
+4: 4lA
+3,2: ZlA
+3: 3lA
+2: 2lA
+Added 1lA
+Added 0lA
+Generating those combos from 0lB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PlB
+6,4,3: QlB
+6,4,2: RlB
+6,4: UlB
+6,3,2: SlB
+6,3: VlB
+6,2: XlB
+6: 6lB
+4,3,2: TlB
+4,3: WlB
+4,2: YlB
+4: 4lB
+3,2: ZlB
+3: 3lB
+2: 2lB
+Added 1lB
+Added 0lB
+Generating those combos from 0mA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PmA
+6,4,3: QmA
+6,4,2: RmA
+6,4: UmA
+6,3,2: SmA
+6,3: VmA
+6,2: XmA
+6: 6mA
+4,3,2: TmA
+4,3: WmA
+4,2: YmA
+4: 4mA
+3,2: ZmA
+3: 3mA
+2: 2mA
+Added 1mA
+Added 0mA
+Generating those combos from 0mB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PmB
+6,4,3: QmB
+6,4,2: RmB
+6,4: UmB
+6,3,2: SmB
+6,3: VmB
+6,2: XmB
+6: 6mB
+4,3,2: TmB
+4,3: WmB
+4,2: YmB
+4: 4mB
+3,2: ZmB
+3: 3mB
+2: 2mB
+Added 1mB
+Added 0mB
+Generating those combos from 0nA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PnA
+6,4,3: QnA
+6,4,2: RnA
+6,4: UnA
+6,3,2: SnA
+6,3: VnA
+6,2: XnA
+6: 6nA
+4,3,2: TnA
+4,3: WnA
+4,2: YnA
+4: 4nA
+3,2: ZnA
+3: 3nA
+2: 2nA
+Added 1nA
+Added 0nA
+Generating those combos from 0nB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PnB
+6,4,3: QnB
+6,4,2: RnB
+6,4: UnB
+6,3,2: SnB
+6,3: VnB
+6,2: XnB
+6: 6nB
+4,3,2: TnB
+4,3: WnB
+4,2: YnB
+4: 4nB
+3,2: ZnB
+3: 3nB
+2: 2nB
+Added 1nB
+Added 0nB
+Generating those combos from 0oA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: ToA
+4,3: WoA
+4,2: YoA
+4: 4oA
+3,2: ZoA
+3: 3oA
+2: 2oA
+Added 1oA
+Added 0oA
+Generating those combos from 0oB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: ToB
+4,3: WoB
+4,2: YoB
+4: 4oB
+3,2: ZoB
+3: 3oB
+2: 2oB
+Added 1oB
+Added 0oB
+Generating those combos from 0pA
+No Anomeric Oxygen Found in Template
+O5,O4,O3,O1
+5,4,3,1: ypA
+5,4,3: xpA
+5,4,1: vpA
+5,4: spA
+5,3,1: npA
+5,3: tpA
+5,1: upA
+5: 5pA
+4,3,1: TpA
+4,3: WpA
+4,1: YpA
+4: 4pA
+3,1: ZpA
+3: 3pA
+1: 1pA
+Added 2pA
+Added 0pA
+Generating those combos from 0pB
+No Anomeric Oxygen Found in Template
+O1,O5,O4,O3
+1,5,4,3: ypB
+1,5,4: vpB
+1,5,3: npB
+1,5: upB
+1,4,3: TpB
+1,4: YpB
+1,3: ZpB
+1: 1pB
+5,4,3: xpB
+5,4: spB
+5,3: tpB
+5: 5pB
+4,3: WpB
+4: 4pB
+3: 3pB
+Added 2pB
+Added 0pB
+Generating those combos from 0pD
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O1
+6,4,3,1: PpD
+6,4,3: QpD
+6,4,1: RpD
+6,4: UpD
+6,3,1: SpD
+6,3: VpD
+6,1: XpD
+6: 6pD
+4,3,1: TpD
+4,3: WpD
+4,1: YpD
+4: 4pD
+3,1: ZpD
+3: 3pD
+1: 1pD
+Added 2pD
+Added 0pD
+Generating those combos from 0pU
+No Anomeric Oxygen Found in Template
+O1,O6,O4,O3
+1,6,4,3: PpU
+1,6,4: RpU
+1,6,3: SpU
+1,6: XpU
+1,4,3: TpU
+1,4: YpU
+1,3: ZpU
+1: 1pU
+6,4,3: QpU
+6,4: UpU
+6,3: VpU
+6: 6pU
+4,3: WpU
+4: 4pU
+3: 3pU
+Added 2pU
+Added 0pU
+Generating those combos from 0qA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TqA
+4,3: WqA
+4,2: YqA
+4: 4qA
+3,2: ZqA
+3: 3qA
+2: 2qA
+Added 1qA
+Added 0qA
+Generating those combos from 0qB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TqB
+4,3: WqB
+4,2: YqB
+4: 4qB
+3,2: ZqB
+3: 3qB
+2: 2qB
+Added 1qB
+Added 0qB
+Generating those combos from 0rA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TrA
+4,3: WrA
+4,2: YrA
+4: 4rA
+3,2: ZrA
+3: 3rA
+2: 2rA
+Added 1rA
+Added 0rA
+Generating those combos from 0rB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TrB
+4,3: WrB
+4,2: YrB
+4: 4rB
+3,2: ZrB
+3: 3rB
+2: 2rB
+Added 1rB
+Added 0rB
+Generating those combos from 0rD
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: nrD
+5,3: trD
+5,2: urD
+5: 5rD
+3,2: ZrD
+3: 3rD
+2: 2rD
+Added 1rD
+Added 0rD
+Generating those combos from 0rU
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: nrU
+5,3: trU
+5,2: urU
+5: 5rU
+3,2: ZrU
+3: 3rU
+2: 2rU
+Added 1rU
+Added 0rU
+Generating those combos from 0sA
+No Anomeric Oxygen Found in Template
+O7,O8,O9,O4
+7,8,9,4: AsA
+7,8,9: BsA
+7,8,4: EsA
+7,8: HsA
+7,9,4: DsA
+7,9: GsA
+7,4: KsA
+7: 7sA
+8,9,4: CsA
+8,9: FsA
+8,4: JsA
+8: 8sA
+9,4: IsA
+9: 9sA
+4: 4sA
+Added 2sA
+Added 0sA
+Generating those combos from 0sB
+No Anomeric Oxygen Found in Template
+O9,O8,O7,O4
+9,8,7,4: AsB
+9,8,7: BsB
+9,8,4: CsB
+9,8: FsB
+9,7,4: DsB
+9,7: GsB
+9,4: IsB
+9: 9sB
+8,7,4: EsB
+8,7: HsB
+8,4: JsB
+8: 8sB
+7,4: KsB
+7: 7sB
+4: 4sB
+Added 2sB
+Added 0sB
+Generating those combos from 0tA
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PtA
+6,4,3: QtA
+6,4,2: RtA
+6,4: UtA
+6,3,2: StA
+6,3: VtA
+6,2: XtA
+6: 6tA
+4,3,2: TtA
+4,3: WtA
+4,2: YtA
+4: 4tA
+3,2: ZtA
+3: 3tA
+2: 2tA
+Added 1tA
+Added 0tA
+Generating those combos from 0tB
+No Anomeric Oxygen Found in Template
+O6,O4,O3,O2
+6,4,3,2: PtB
+6,4,3: QtB
+6,4,2: RtB
+6,4: UtB
+6,3,2: StB
+6,3: VtB
+6,2: XtB
+6: 6tB
+4,3,2: TtB
+4,3: WtB
+4,2: YtB
+4: 4tB
+3,2: ZtB
+3: 3tB
+2: 2tB
+Added 1tB
+Added 0tB
+Generating those combos from 0tV
+No Anomeric Oxygen Found in Template
+O4,O2
+4,2: YtV
+4: 4tV
+2: 2tV
+Added 1tV
+Added 0tV
+Generating those combos from 0tv
+No Anomeric Oxygen Found in Template
+O4,O2
+4,2: Ytv
+4: 4tv
+2: 2tv
+Added 1tv
+Added 0tv
+Generating those combos from 0uA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TuA
+4,3: WuA
+4,2: YuA
+4: 4uA
+3,2: ZuA
+3: 3uA
+2: 2uA
+Added 1uA
+Added 0uA
+Generating those combos from 0uB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TuB
+4,3: WuB
+4,2: YuB
+4: 4uB
+3,2: ZuB
+3: 3uB
+2: 2uB
+Added 1uB
+Added 0uB
+Generating those combos from 0vA
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QvA
+6,4: UvA
+6,3: VvA
+6: 6vA
+4,3: WvA
+4: 4vA
+3: 3vA
+Added 1vA
+Added 0vA
+Generating those combos from 0vB
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QvB
+6,4: UvB
+6,3: VvB
+6: 6vB
+4,3: WvB
+4: 4vB
+3: 3vB
+Added 1vB
+Added 0vB
+Generating those combos from 0wA
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QwA
+6,4: UwA
+6,3: VwA
+6: 6wA
+4,3: WwA
+4: 4wA
+3: 3wA
+Added 1wA
+Added 0wA
+Generating those combos from 0wB
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QwB
+6,4: UwB
+6,3: VwB
+6: 6wB
+4,3: WwB
+4: 4wB
+3: 3wB
+Added 1wB
+Added 0wB
+Generating those combos from 0xA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TxA
+4,3: WxA
+4,2: YxA
+4: 4xA
+3,2: ZxA
+3: 3xA
+2: 2xA
+Added 1xA
+Added 0xA
+Generating those combos from 0xB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TxB
+4,3: WxB
+4,2: YxB
+4: 4xB
+3,2: ZxB
+3: 3xB
+2: 2xB
+Added 1xB
+Added 0xB
+Generating those combos from 0xD
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: nxD
+5,3: txD
+5,2: uxD
+5: 5xD
+3,2: ZxD
+3: 3xD
+2: 2xD
+Added 1xD
+Added 0xD
+Generating those combos from 0xU
+No Anomeric Oxygen Found in Template
+O5,O3,O2
+5,3,2: nxU
+5,3: txU
+5,2: uxU
+5: 5xU
+3,2: ZxU
+3: 3xU
+2: 2xU
+Added 1xU
+Added 0xU
+Generating those combos from 0yA
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QyA
+6,4: UyA
+6,3: VyA
+6: 6yA
+4,3: WyA
+4: 4yA
+3: 3yA
+Added 1yA
+Added 0yA
+Generating those combos from 0yB
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QyB
+6,4: UyB
+6,3: VyB
+6: 6yB
+4,3: WyB
+4: 4yB
+3: 3yB
+Added 1yB
+Added 0yB
+Generating those combos from 0zA
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TzA
+4,3: WzA
+4,2: YzA
+4: 4zA
+3,2: ZzA
+3: 3zA
+2: 2zA
+Added 1zA
+Added 0zA
+Generating those combos from 0zB
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TzB
+4,3: WzB
+4,2: YzB
+4: 4zB
+3,2: ZzB
+3: 3zB
+2: 2zB
+Added 1zB
+Added 0zB
+Generating those combos from 0AE
+No Anomeric Oxygen Found in Template
+O2,O4
+2,4: YAE
+2: 2AE
+4: 4AE
+Added 1AE
+Added 0AE
+Generating those combos from 0AF
+No Anomeric Oxygen Found in Template
+O4,O2
+4,2: YAF
+4: 4AF
+2: 2AF
+Added 1AF
+Added 0AF
+Generating those combos from 0dR
+No Anomeric Oxygen Found in Template
+O4,O3
+4,3: WdR
+4: 4dR
+3: 3dR
+Added 1dR
+Added 0dR
+Generating those combos from 045
+No Anomeric Oxygen Found in Template
+O3,O2
+3,2: Z45
+3: 345
+2: 245
+Added 145
+Added 045
+Generating those combos from 0ZBP
+No Anomeric Oxygen Found in Template
+O4,O3,O2
+4,3,2: TZBP
+4,3: WZBP
+4,2: YZBP
+4: 4ZBP
+3,2: ZZBP
+3: 3ZBP
+2: 2ZBP
+Added 1ZBP
+Added 0ZBP
+Generating those combos from 0YN
+No Anomeric Oxygen Found in Template
+O3,O4,O6
+3,4,6: QYN
+3,4: WYN
+3,6: VYN
+3: 3YN
+4,6: UYN
+4: 4YN
+6: 6YN
+Added 1YN
+Added 0YN
+Generating those combos from 0Yn
+No Anomeric Oxygen Found in Template
+O3,O6,O4
+3,6,4: QYn
+3,6: VYn
+3,4: WYn
+3: 3Yn
+6,4: UYn
+6: 6Yn
+4: 4Yn
+Added 1Yn
+Added 0Yn
+Generating those combos from 0YNP
+No Anomeric Oxygen Found in Template
+O3,O4,O6
+3,4,6: QYNP
+3,4: WYNP
+3,6: VYNP
+3: 3YNP
+4,6: UYNP
+4: 4YNP
+6: 6YNP
+Added 1YNP
+Added 0YNP
+Generating those combos from 0YnP
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QYnP
+6,4: UYnP
+6,3: VYnP
+6: 6YnP
+4,3: WYnP
+4: 4YnP
+3: 3YnP
+Added 1YnP
+Added 0YnP
+Generating those combos from 0YS
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QYS
+6,4: UYS
+6,3: VYS
+6: 6YS
+4,3: WYS
+4: 4YS
+3: 3YS
+Added 1YS
+Added 0YS
+Generating those combos from 0Ys
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QYs
+6,4: UYs
+6,3: VYs
+6: 6Ys
+4,3: WYs
+4: 4Ys
+3: 3Ys
+Added 1Ys
+Added 0Ys
+Generating those combos from 0yS
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: QyS
+6,4: UyS
+6,3: VyS
+6: 6yS
+4,3: WyS
+4: 4yS
+3: 3yS
+Added 1yS
+Added 0yS
+Generating those combos from 0ys
+No Anomeric Oxygen Found in Template
+O6,O4,O3
+6,4,3: Qys
+6,4: Uys
+6,3: Vys
+6: 6ys
+4,3: Wys
+4: 4ys
+3: 3ys
+Added 1ys
+Added 0ys
+Generating those combos from 0Kn
+No Anomeric Oxygen Found in Template
+O7,O8,O9,O5,O4
+7,8,9,5,4: aKn
+7,8,9,5: bKn
+7,8,9,4: AKn
+7,8,9: BKn
+7,8,5,4: dKn
+7,8,5: hKn
+7,8,4: EKn
+7,8: HKn
+7,9,5,4: cKn
+7,9,5: gKn
+7,9,4: DKn
+7,9: GKn
+7,5,4: kKn
+7,5: qKn
+7,4: KKn
+7: 7Kn
+8,9,5,4: zKn
+8,9,5: fKn
+8,9,4: CKn
+8,9: FKn
+8,5,4: jKn
+8,5: pKn
+8,4: JKn
+8: 8Kn
+9,5,4: iKn
+9,5: oKn
+9,4: IKn
+9: 9Kn
+5,4: sKn
+5: 5Kn
+4: 4Kn
+Added 2Kn
+Added 0Kn
+Generating those combos from 0Ko
+No Anomeric Oxygen Found in Template
+O7,O8,O5,O4
+7,8,5,4: dKo
+7,8,5: hKo
+7,8,4: EKo
+7,8: HKo
+7,5,4: kKo
+7,5: qKo
+7,4: KKo
+7: 7Ko
+8,5,4: jKo
+8,5: pKo
+8,4: JKo
+8: 8Ko
+5,4: sKo
+5: 5Ko
+4: 4Ko
+Added 2Ko
+Added 0Ko
+Generating those combos from 0KN
+No Anomeric Oxygen Found in Template
+O9,O8,O7,O5,O4
+9,8,7,5,4: aKN
+9,8,7,5: bKN
+9,8,7,4: AKN
+9,8,7: BKN
+9,8,5,4: zKN
+9,8,5: fKN
+9,8,4: CKN
+9,8: FKN
+9,7,5,4: cKN
+9,7,5: gKN
+9,7,4: DKN
+9,7: GKN
+9,5,4: iKN
+9,5: oKN
+9,4: IKN
+9: 9KN
+8,7,5,4: dKN
+8,7,5: hKN
+8,7,4: EKN
+8,7: HKN
+8,5,4: jKN
+8,5: pKN
+8,4: JKN
+8: 8KN
+7,5,4: kKN
+7,5: qKN
+7,4: KKN
+7: 7KN
+5,4: sKN
+5: 5KN
+4: 4KN
+Added 2KN
+Added 0KN
+Generating those combos from 0KO
+No Anomeric Oxygen Found in Template
+O4,O5,O7,O8
+4,5,7,8: dKO
+4,5,7: kKO
+4,5,8: jKO
+4,5: sKO
+4,7,8: EKO
+4,7: KKO
+4,8: JKO
+4: 4KO
+5,7,8: hKO
+5,7: qKO
+5,8: pKO
+5: 5KO
+7,8: HKO
+7: 7KO
+8: 8KO
+Added 2KO
+Added 0KO

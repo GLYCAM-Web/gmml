@@ -303,11 +303,13 @@ LFucp&Label=residue-3;a1-1&Label=link-1;DFruf&Label=residue-2;b2-&Label=link-0;O
 Parsed and labelled 00016 with no exceptions thrown.
 
 Number of residues for this sequence is 3
-Number of likely shapes is 1
-Number of possible shapes is 1
+Number of likely shapes is 2
+Number of possible shapes is 2
 OME_1_?_?
 1CU_2_?_?
 0fA_3_?_?
+Name: LFucpa1-1DFrufb, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gt, 
 
 *********************
 Building id 00019:DManpb1-2DManp[6A]b1-2[DGalp[6Ac]b1-6]DManpb1-2DManp[6Me]b1-2[DGlcpb1-6DManp[2S]a1-4]DGalpa1-OME
@@ -387,19 +389,52 @@ Name: AcetylA-6DManpb, LinkageIndex: 9, Res1: 11, Res2: 10
     LikelyRotamers: Omg, gg, gt
 
 *********************
-Building id 00021:LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
+Building id 00021:LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]b1-4]DGlcpAa1-OME
 *********************
 Input:
-LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
+LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]b1-4]DGlcpAa1-OME
 Interpreted:
-LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
+LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]b1-4]DGlcpAa1-OME
 IndexOrdered:
-LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]a1-4]DGlcpAa1-OME
+LIdopAa1-4[DNeupNAca2-8DNeupNAca2-8DNeupNAca2-5]LFrupa2-6DGalp[2Me]b1-3[DNeupNAca2-6DGlcp[2S]b1-4]DGlcpAa1-OME
 IndexOrderedLabeled:
-LIdopA&Label=residue-11;a1-4&Label=link-9;[DNeupNAc&Label=residue-10;a2-8&Label=link-8;DNeupNAc&Label=residue-9;a2-8&Label=link-7;DNeupNAc&Label=residue-8;a2-5&Label=link-6;]LFrup&Label=residue-7;a2-6&Label=link-5;DGalp&Label=residue-6;[2&Label=link-10;Me&Label=residue-12;]b1-3&Label=link-4;[DNeupNAc&Label=residue-4;a2-6&Label=link-2;DGlcp&Label=residue-3;[2&Label=link-3;S&Label=residue-5;]a1-4&Label=link-1;]DGlcpA&Label=residue-2;a1-&Label=link-0;OME&Label=residue-1;
+LIdopA&Label=residue-11;a1-4&Label=link-9;[DNeupNAc&Label=residue-10;a2-8&Label=link-8;DNeupNAc&Label=residue-9;a2-8&Label=link-7;DNeupNAc&Label=residue-8;a2-5&Label=link-6;]LFrup&Label=residue-7;a2-6&Label=link-5;DGalp&Label=residue-6;[2&Label=link-10;Me&Label=residue-12;]b1-3&Label=link-4;[DNeupNAc&Label=residue-4;a2-6&Label=link-2;DGlcp&Label=residue-3;[2&Label=link-3;S&Label=residue-5;]b1-4&Label=link-1;]DGlcpA&Label=residue-2;a1-&Label=link-0;OME&Label=residue-1;
 Parsed and labelled 00021 with no exceptions thrown.
 
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for LFrupa2-6 with this glycam residue code: scA
+Number of residues for this sequence is 12
+Number of likely shapes is 600
+Number of possible shapes is 900
+OME_1_?_?
+WZA_2_?_?
+XGB_3_?_?
+0SA_4_?_?
+SO3_5_?_?
+XLB_6_?_?
+scA_7_?_?
+8SA_8_?_?
+8SA_9_?_?
+0SA_10_?_?
+0uA_11_?_?
+MEX_12_?_?
+Name: DNeu5Acpa2-6DGlcpb, LinkageIndex: 2, Res1: 4, Res2: 3
+    LikelyRotamers: Phi, t, -g
+    LikelyRotamers: Omg, gg, gt
+Name: LFrupa2-6DGalpb, LinkageIndex: 5, Res1: 7, Res2: 6
+    LikelyRotamers: Omg, gg, gt, tg
+Name: DNeu5Acpa2-5LFrupa, LinkageIndex: 6, Res1: 8, Res2: 7
+    LikelyRotamers: Phi, t, -g
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 7, Res1: 9, Res2: 8
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+    LikelyRotamers: Omg9, A, B, C, D, E
+Name: DNeu5Acpa2-8DNeu5Acpa, LinkageIndex: 8, Res1: 10, Res2: 9
+    LikelyRotamers: Phi, A, B, C, D, E
+    LikelyRotamers: Psi, A, B, C, D, E
+    LikelyRotamers: Omg8, A, B, C, D, E
+    LikelyRotamers: Omg7, A, B, C, D, E
+    LikelyRotamers: Omg9, A, B, C, D, E
 
 *********************
 Building id 00023:DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
@@ -558,7 +593,29 @@ IndexOrderedLabeled:
 DFruf&Label=residue-8;b2-6&Label=link-6;DFruf&Label=residue-7;b2-1&Label=link-5;[DFruf&Label=residue-6;b2-6&Label=link-4;DFruf&Label=residue-5;b2-6&Label=link-3;]DFruf&Label=residue-4;b2-6&Label=link-2;DFruf&Label=residue-3;b2-6&Label=link-1;DFruf&Label=residue-2;b2-&Label=link-0;OH&Label=residue-1;
 Parsed and labelled 00029 with no exceptions thrown.
 
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for DFrufb2-6 with this glycam residue code: XCU
+Number of residues for this sequence is 8
+Number of likely shapes is 64
+Number of possible shapes is 64
+ROH_1_?_?
+6CU_2_?_?
+6CU_3_?_?
+XCU_4_?_?
+6CU_5_?_?
+0CU_6_?_?
+6CU_7_?_?
+0CU_8_?_?
+Name: DFrufb2-6DFrufb, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gg, gt
+Name: DFrufb2-6DFrufb, LinkageIndex: 2, Res1: 4, Res2: 3
+    LikelyRotamers: Omg, gg, gt
+Name: DFrufb2-6DFrufb, LinkageIndex: 3, Res1: 5, Res2: 4
+    LikelyRotamers: Omg, gg, gt
+Name: DFrufb2-6DFrufb, LinkageIndex: 4, Res1: 6, Res2: 5
+    LikelyRotamers: Omg, gg, gt
+Name: DFrufb2-1DFrufb, LinkageIndex: 5, Res1: 7, Res2: 4
+    LikelyRotamers: Omg, gg, gt
+Name: DFrufb2-6DFrufb, LinkageIndex: 6, Res1: 8, Res2: 7
+    LikelyRotamers: Omg, gg, gt
 
 *********************
 Building id 00030:DGalpb1-OtBu
@@ -724,7 +781,23 @@ IndexOrderedLabeled:
 LGlcpNS&Label=residue-10;a1-4&Label=link-8;LGlcpNS&Label=residue-8;[3&Label=link-9;S&Label=residue-11;,6&Label=link-7;S&Label=residue-9;]a1-4&Label=link-6;LGlcpNS&Label=residue-6;[6&Label=link-5;S&Label=residue-7;]a1-4&Label=link-4;LGlcpNS&Label=residue-5;[3&Label=link-10;S&Label=residue-12;]a1-4&Label=link-3;LGlcpNS&Label=residue-4;a1-3&Label=link-2;LGlcpNS&Label=residue-3;a1-6&Label=link-1;LGlcpNS&Label=residue-2;a1-&Label=link-0;OH&Label=residue-1;
 Parsed and labelled 00037 with no exceptions thrown.
 
-Error thrown by the carbohydrateBuilder in gmml during construction was: Did not find a parameter residue for LGlcpNSa1- with this glycam residue code: 6yS
+Number of residues for this sequence is 12
+Number of likely shapes is 2
+Number of possible shapes is 3
+ROH_1_?_?
+6yS_2_?_?
+3yS_3_?_?
+4yS_4_?_?
+WyS_5_?_?
+UyS_6_?_?
+SO3_7_?_?
+QyS_8_?_?
+SO3_9_?_?
+0yS_10_?_?
+SO3_11_?_?
+SO3_12_?_?
+Name: LGlcpNSa1-6LGlcpNSa, LinkageIndex: 1, Res1: 3, Res2: 2
+    LikelyRotamers: Omg, gg, gt
 
 *********************
 Building id 00038:DGlcpa1-4[4DGlcpa1-]<4>2DGlcpa1-4[4DGlcpa1-6[LFucpa1-2]DManpa1-]<2>OH
@@ -1264,14 +1337,14 @@ Number of possible shapes is 1
 00016.pdb succesfully created.
 00019.pdb succesfully created.
 00020.pdb succesfully created.
-00021.pdb not created.
+00021.pdb succesfully created.
 00023.pdb succesfully created.
 00024.pdb not created.
 00025.pdb not created.
 00026.pdb succesfully created.
 00027.pdb succesfully created.
 00028.pdb succesfully created.
-00029.pdb not created.
+00029.pdb succesfully created.
 00030.pdb succesfully created.
 00031.pdb succesfully created.
 00032.pdb not created.
@@ -1279,7 +1352,7 @@ Number of possible shapes is 1
 00034.pdb not created.
 00035.pdb succesfully created.
 00036.pdb succesfully created.
-00037.pdb not created.
+00037.pdb succesfully created.
 00038.pdb succesfully created.
 00039.pdb not created.
 00040.pdb not created.
@@ -1317,14 +1390,14 @@ Number of possible shapes is 1
 00016.off succesfully created.
 00019.off succesfully created.
 00020.off succesfully created.
-00021.off not created.
+00021.off succesfully created.
 00023.off succesfully created.
 00024.off not created.
 00025.off not created.
 00026.off succesfully created.
 00027.off succesfully created.
 00028.off succesfully created.
-00029.off not created.
+00029.off succesfully created.
 00030.off succesfully created.
 00031.off succesfully created.
 00032.off not created.
@@ -1332,7 +1405,7 @@ Number of possible shapes is 1
 00034.off not created.
 00035.off succesfully created.
 00036.off succesfully created.
-00037.off not created.
+00037.off succesfully created.
 00038.off succesfully created.
 00039.off not created.
 00040.off not created.
