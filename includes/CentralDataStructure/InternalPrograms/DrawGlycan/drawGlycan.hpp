@@ -8,12 +8,11 @@
 
 #include <string>
 
-#include "includes/Abstract/absBuilder.hpp"
 #include "includes/CentralDataStructure/CondensedSequence/graphVizDotConfig.hpp"
 
 namespace CondensedSequence
 {
-    class DrawGlycan : public Abstract::absBuilder
+    class DrawGlycan
     {
       public:
         //////////////////////////////////////////////////////////

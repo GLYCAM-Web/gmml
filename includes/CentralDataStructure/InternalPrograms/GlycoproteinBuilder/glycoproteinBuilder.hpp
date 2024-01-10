@@ -3,14 +3,13 @@
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/glycosylationSite.hpp"
 #include "includes/CentralDataStructure/InternalPrograms/GlycoproteinBuilder/gpInputStructs.hpp"
 #include "includes/CentralDataStructure/Readers/Pdb/pdbPreprocessorInputs.hpp"
-#include "includes/Abstract/absBuilder.hpp"
 #include <string>
 // #include <dirent.h>
 // #include <sys/stat.h>
 
 using cds::Assembly;
 
-class GlycoproteinBuilder : public Abstract::absBuilder
+class GlycoproteinBuilder
 {
   public:
     //////////////////////////////////////////////////////////

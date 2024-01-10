@@ -7,7 +7,6 @@
 // when wrapping.
 
 #include <string>
-#include "includes/Abstract/absBuilder.hpp"
 
 namespace CondensedSequence
 {
