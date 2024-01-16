@@ -26,8 +26,11 @@ GlycoproteinBuilder::GlycoproteinBuilder(glycoprotein::GlycoproteinBuilderInputs
         this->SetPersistCycles(inputStruct.persistCycles_);
         this->SetOverlapTolerance(inputStruct.overlapTolerance_);
         pdb::PdbFile pdbFile(inputStruct.substrateFileName_);
-        // pdb::PreprocessorOptions defaultOptions;
-        pdbFile.PreProcess(preprocessingOptions);
+        if (!inputStruct.skipMDPrep_)
+        {
+            gmml::log(__LINE__, __FILE__, gmml::INF, "Performing MDPrep aka preprocessing.");
+            pdbFile.PreProcess(preprocessingOptions);
+        }
         glycoprotein_                                = std::move(*(pdbFile.getAssemblies().front()));
         std::vector<cds::Residue*> gpInitialResidues = glycoprotein_.getResidues();
         cds::setIntraConnectivity(gpInitialResidues);

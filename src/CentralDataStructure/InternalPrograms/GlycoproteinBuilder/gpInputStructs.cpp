@@ -43,11 +43,12 @@ GlycoproteinBuilderInputs glycoprotein::readGPInputFile(std::string inputFileNam
             gpInputs.overlapTolerance_ = std::stoi(codeUtils::split(strInput, ':').at(1));
         }
         if (codeUtils::startsWith(strInput, "isDeterministic:"))
+        { // variable = (condition) ? expressionTrue : expressionFalse;
+            gpInputs.isDeterministic_ = (codeUtils::split(strInput, ':').at(1) == "true") ? true : false;
+        }
+        if (codeUtils::startsWith(strInput, "skipMDPrep:"))
         {
-            if (codeUtils::split(strInput, ':').at(1) == "true")
-            {
-                gpInputs.isDeterministic_ = true;
-            }
+            gpInputs.skipMDPrep_ = (codeUtils::split(strInput, ':').at(1) == "true") ? true : false;
         }
         if (strInput == "ProteinResidue, GlycanName:")
         {

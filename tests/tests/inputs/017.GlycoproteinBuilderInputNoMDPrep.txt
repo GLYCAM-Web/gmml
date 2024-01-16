@@ -1,0 +1,22 @@
+Protein:tests/inputs/017.1eer_eop_Asn.pdb
+
+NumberOfOutputStructures:2
+
+maxThreads:1
+
+persistCycles:5
+
+overlapTolerance:1
+
+prepFileLocation:../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep
+
+isDeterministic:true
+
+skipMDPrep:true
+
+ProteinResidue, GlycanName:
+A_24|DManpa1-2DManpa1-6[DManpa1-2DManpa1-3]DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
+A_38|DManpa1-6[DManpa1-2DManpa1-2DManpa1-3]DManpb1-4DGlcpNAcb1-4DGlcpNAcb1-OH
+A_40|DGalpNAca1-OH
+A_83|DManp[2S,3Me]a1-6DManpa1-6[DGlcpNAcb1-4][DNeup5Aca2-6DGalpb1-4DGlcpNAc[3S]b1-2DManpa1-3]DManpb1-4DGlcpNAc[6Me]b1-4DGlcpNAcb1-OH
+END
