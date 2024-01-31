@@ -5,6 +5,43 @@
 #include "includes/CentralDataStructure/Editors/glycamResidueCombinator.hpp"
 #include <fstream>
 
+// For reading a single prep file and generating the combos.
+// int main(int argc, char* argv[])
+//{
+//    if (argc != 3)
+//    {
+//        std::cout << "Usage: " << argv[0] << " inputPrepFile outLibFileName\n";
+//        std::cout << "Exmpl: " << argv[0] << " ../dat/prep/GLYCAM_06j-1_GAGS_KDN.prep myLib.lib\n";
+//        std::exit(1);
+//    }
+//    std::string inputFile                           = argv[1];
+//    std::string outputFile                          = argv[2];
+//    std::cout << "Reading prep file\n";
+//    prep::PrepFile glycamPrepFile(inputFile);
+//    std::cout << "Reading complete\n";
+//    std::vector<cds::Residue*> allTheResidues;
+//    allTheResidues.reserve(59);
+//    for (auto& residue : glycamPrepFile.getResidues())
+//    {
+//        std::cout << "Generating those combos from " << residue->getName() << std::endl;
+//        residueCombinator::generateResidueCombinations(allTheResidues, residue);
+//        for(auto & combiRes : allTheResidues)
+//        {
+//            std::ofstream outFileStream;
+//            std::string fileName = combiRes->getName() + ".pdb";
+//            outFileStream.open(fileName.c_str());
+//            cds::writeResidueToPdb(outFileStream, combiRes);
+//            outFileStream.close();
+//        }
+//    }
+//    std::cout << "About to write" << std::endl;
+//    std::ofstream outFileStream;
+//    outFileStream.open(outputFile.c_str());
+//    cds::WriteResiduesToOffFile(allTheResidues, outFileStream);
+//    outFileStream.close();
+//}
+
+// For loading select residues from glycam06.prep files
 int main(int argc, char* argv[])
 {
     if (argc != 2)

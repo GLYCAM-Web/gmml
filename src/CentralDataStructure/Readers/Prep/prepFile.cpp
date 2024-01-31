@@ -28,6 +28,8 @@ PrepFile::PrepFile(const std::string& prep_file)
     {
         throw std::runtime_error("Prep file exists but couldn't be opened.");
     }
+    this->SetAtomConnectivities();
+    this->Generate3dStructures();
 }
 
 PrepFile::PrepFile(const std::string& prep_file, const std::vector<std::string> queryNames)
@@ -113,10 +115,10 @@ void PrepFile::Generate3dStructures()
 //////////////////////////////////////////////////////////
 void PrepFile::ReadAllResidues(std::ifstream& in_file)
 {
-    std::string line;
+    std::string line = "";
     getline(in_file, line);
     getline(in_file, line);                                         // first two lines are always blank apparently. smh.
-    getline(in_file, line);                                         // This should be first line of residue entry.
+    getline(in_file, line);                                         // This should be first line of residue entry. Title
     while (codeUtils::Trim(line).find("STOP") == std::string::npos) /// End of file
     {
         this->addResidue(std::make_unique<PrepResidue>(in_file, line));

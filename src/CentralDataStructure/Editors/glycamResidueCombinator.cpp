@@ -7,7 +7,11 @@
 void residueCombinator::removeHydroxyHydrogen(cds::Residue& queryResidue, const std::string hydrogenNumber)
 {
     cds::Atom* hydrogen = queryResidue.FindAtom("H" + hydrogenNumber + "O");
-    cds::Atom* oxygen   = queryResidue.FindAtom("O" + hydrogenNumber);
+    if (hydrogen == nullptr)
+    { // In ROH and some input prep files it's HO1. Otherwise H1O. Fun.
+        hydrogen = queryResidue.FindAtom("HO" + hydrogenNumber);
+    }
+    cds::Atom* oxygen = queryResidue.FindAtom("O" + hydrogenNumber);
     if (hydrogen == nullptr || oxygen == nullptr)
     {
         std::string message =
@@ -113,39 +117,47 @@ void residueCombinator::generateResidueCombinations(std::vector<cds::Residue*>& 
                                                     const cds::Residue* starterResidue)
 {
     // First generate both versions of the residue; with and without anomeric oxygen.
-    cds::Residue residueWithoutAnomericOxygen = *starterResidue;
-    cds::Residue residueWithAnomericOxygen    = *starterResidue;
-    Atom* anomer = cdsSelections::guessAnomericAtomByInternalNeighbors(residueWithAnomericOxygen.getAtoms());
+    // starterResidue may or may not have it. Thus the code is a bit funk.
+    cds::Residue residueWithoutAnomericOxygen =
+        *starterResidue; // careful below when thinking of neighbors; these are now distinct residues.
+    cds::Residue residueWithAnomericOxygen =
+        *starterResidue; // careful below when thinking of neighbors; these are now distinct residues.
+    Atom* anomer = cdsSelections::guessAnomericAtomByInternalNeighbors(residueWithoutAnomericOxygen.getAtoms());
     std::string anomerNumber           = std::to_string(anomer->getNumberFromName());
     std::vector<Atom*> anomerNeighbors = anomer->getNeighbors();
-    auto isTypeHydroxy                 = [](Atom*& a) // Lamda function for the  std::find;
+    // Lamda function for the  std::find;
+    auto isTypeHydroxy                 = [](Atom*& a)
     {
         return (a->getType() == "Oh");
     };
     const auto anomericOxygen = std::find_if(anomerNeighbors.begin(), anomerNeighbors.end(), isTypeHydroxy);
     if (anomericOxygen != anomerNeighbors.end())
     {
-        std::cout << "Anomeric Oxygen Found\n";
+        std::cout << "Anomeric Oxygen Found:" << (*anomericOxygen)->getName() << "\n";
         residueCombinator::removeHydroxyHydrogen(residueWithAnomericOxygen, anomerNumber);
-        residueWithoutAnomericOxygen = residueWithAnomericOxygen;
-        residueWithoutAnomericOxygen.deleteAtom(*anomericOxygen);
+        residueCombinator::removeHydroxyHydrogen(residueWithoutAnomericOxygen, anomerNumber);
+        if (!residueWithoutAnomericOxygen.deleteAtom(*anomericOxygen))
+        {
+            throw std::runtime_error("Did not delete the anomericOxgen, something is funky\n");
+        }
         // ToDo CHARGE?
     }
     else // Ok then grow the anomeric oxygen for the residueWithAnomericOxygen
     {
+        Atom* thisAnomer = cdsSelections::guessAnomericAtomByInternalNeighbors(residueWithAnomericOxygen.getAtoms());
         std::cout << "No Anomeric Oxygen Found in Template\n";
         std::vector<Coordinate*> threeNeighbors;
-        for (auto& neighbor : anomer->getNeighbors())
+        for (auto& neighbor : thisAnomer->getNeighbors())
         {
             threeNeighbors.push_back(neighbor->getCoordinate());
         }
         Coordinate newOxygenCoordinate =
-            cds::CreateCoordinateForCenterAwayFromNeighbors(anomer->getCoordinate(), threeNeighbors, 1.4);
+            cds::CreateCoordinateForCenterAwayFromNeighbors(thisAnomer->getCoordinate(), threeNeighbors, 1.4);
         Atom* newAnomericOxygen = residueWithAnomericOxygen.addAtomToFront(
             std::make_unique<cds::Atom>("O" + anomerNumber, newOxygenCoordinate));
         newAnomericOxygen->setCharge(-0.388);
         newAnomericOxygen->setType("Os");
-        newAnomericOxygen->addBond(anomer);
+        newAnomericOxygen->addBond(thisAnomer);
     }
     // Find all positions that can be substituted, ignore the anomer.
     std::vector<std::string> atomNumbers =
