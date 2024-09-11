@@ -37,6 +37,8 @@
 ./includes/MolecularMetadata/GLYCAM
 ./includes/MolecularMetadata/Sugars
 ./includes/MolecularMetadata/Sugars/SNFG_Symbol_Images
+./includes/MolecularMetadata/Sugars/SNFG_Symbols_Images_Names
+./includes/MolecularMetadata/Sugars/SNFG_Symbols_Images_Names/SnfgSymbolAndName
 ./includes/MolecularModeling
 ./includes/MolecularModeling/Graph
 ./includes/MolecularModeling/Selections
