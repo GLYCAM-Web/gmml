@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   id="Layer_1"
+   data-name="Layer 1"
+   width="229.06673"
+   height="86.79525"
+   viewBox="0 0 229.06671 86.79525"
+   version="1.1"
+   inkscape:version="1.3.2 (091e20ef0f, 2023-11-25)"
+   sodipodi:docname="Rib.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <metadata
+     id="metadata14">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>GalA</dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1008"
+     id="namedview12"
+     showgrid="false"
+     inkscape:zoom="1.6845222"
+     inkscape:cx="192.04259"
+     inkscape:cy="-28.197907"
+     inkscape:window-x="1080"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="Layer_1"
+     inkscape:showpageshadow="2"
+     inkscape:pagecheckerboard="false"
+     inkscape:deskcolor="#d1d1d1" />
+  <defs
+     id="defs3">
+    <style
+       id="style5">
+      .cls-1 {
+        fill: #ffcf25;
+        stroke-width: 39.78px;
+      }
+
+      .cls-1, .cls-2 {
+        stroke: #000;
+      }
+
+      .cls-2 {
+        fill: #fff;
+        stroke-linejoin: bevel;
+        stroke-width: 25px;
+      }
+    </style>
+    <clipPath
+       clipPathUnits="userSpaceOnUse"
+       id="clipPath4">
+      <rect
+         style="fill:#007fcd;fill-opacity:0.427902;stroke:none;stroke-width:6.30814;stroke-dasharray:none;stroke-opacity:1"
+         id="rect5"
+         width="47.238911"
+         height="93.615646"
+         x="-162.40248"
+         y="317.64841"
+         ry="0.0081967544" />
+    </clipPath>
+  </defs>
+  <title
+     id="title7">GalA</title>
+  <text
+     xml:space="preserve"
+     style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:64px;font-family:FreeMono;-inkscape-font-specification:FreeMono;fill:#069d54;stroke:#000000;stroke-width:25.897;stroke-dasharray:none"
+     x="567.83331"
+     y="62.206127"
+     id="text2"><tspan
+       sodipodi:role="line"
+       id="tspan2"
+       x="567.83331"
+       y="62.206127"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:64px;font-family:FreeMono;-inkscape-font-specification:FreeMono" /></text>
+  <path
+     id="path4925-8-5"
+     class="cls-1"
+     d="M 59.8717,68.81817 43.6372,57.59043 27.4124,68.83779 33.0737,49.92147 17.3661,37.96726 37.1021,37.50911 43.6175,18.87422 50.151,37.50419 69.8887,37.94107 54.1908,49.91164 Z"
+     inkscape:connector-curvature="0"
+     style="fill:#fe95c1;stroke:#000000;stroke-width:3.175;stroke-dasharray:none" />
+  <text
+     xml:space="preserve"
+     style="font-size:32px;font-family:sans-serif;-inkscape-font-specification:sans-serif;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.999999;stroke-opacity:1"
+     x="85.462875"
+     y="55.327312"
+     id="text11-5-3-94"><tspan
+       sodipodi:role="line"
+       id="tspan11-0-4-7"
+       style="font-size:32px;stroke-width:0.999999"
+       x="85.462875"
+       y="55.327312">Rib</tspan></text>
+</svg>
