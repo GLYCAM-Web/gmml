@@ -1,3 +1,5 @@
+# Unless you are a GLYCAM-Web developer, you probably want GMML2, see here: https://github.com/GLYCAM-Web/gmml2
+
 # GMML
 The GLYCAM Molecular Modeling Library (GMML) can be used as a library accessed by GEMS (GLYCAM Extensible Modeling Script).
 
