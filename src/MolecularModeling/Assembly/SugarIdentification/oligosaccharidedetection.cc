@@ -322,8 +322,8 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractSugars(std::vector<std::s
         mono->assembly_              = this;
         monos.push_back(mono);
         // OG Feb 2025 // Oliver adding this for Lachele in 2025 so Ab docking can determine cycles.
-        std::cout << "ATOM\n";              // OG Feb 2025
-        for (auto& cycleAtom : cycle_atoms) // OG Feb 2025
+        std::cout << "RES " << mono->cycle_atoms_.front()->GetResidue()->GetNumber() << "\n"; // OG Feb 2025
+        for (auto& cycleAtom : cycle_atoms)                                                   // OG Feb 2025
         {
             std::cout << cycleAtom->GetName() << "\n"; // OG Feb 2025
         }
