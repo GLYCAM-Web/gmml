@@ -9,7 +9,7 @@ fi
 
 printf "Testing 008.pdb2glycam.cc and molecule subgraph matching... "
 g++ -std=c++17 -I "${GMML_ROOT_DIR}" -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMML_ROOT_DIR}"/bin/ "${GMML_ROOT_DIR}"/internalPrograms/convertPdbToGlycam.cpp -lgmml -pthread -o convertPdbToGlycam
-./convertPdbToGlycam tests/inputs/008.convertPdbToGlycam_4YG0.pdb convertPdbToGlycam_output
+./convertPdbToGlycam tests/inputs/008.convertPdbToGlycam_4YG0.pdb convertPdbToGlycam_output > 008.output.txt
 if [ -f convertPdbToGlycam_output.pdb ]; then
     if ! cmp convertPdbToGlycam_output.pdb tests/correct_outputs/008.convertPdbToGlycam_4YG0_output.pdb >/dev/null 2>&1; then
         printf "\nTest FAILED!\n convertPdbToGlycam_output.pdb does not match tests/correct_outputs/008.convertPdbToGlycam_4YG0_output.pdb"
@@ -18,7 +18,7 @@ if [ -f convertPdbToGlycam_output.pdb ]; then
         exit 1
     else
         printf "Test passed.\n"
-        rm ring_conformations.txt convertPdbToGlycam_output.pdb convertPdbToGlycam >/dev/null 2>&1
+        rm ring_conformations.txt convertPdbToGlycam_output.pdb convertPdbToGlycam 008.output.txt >/dev/null 2>&1
         echo "Exit Code: 0"
         return 0
         exit 0

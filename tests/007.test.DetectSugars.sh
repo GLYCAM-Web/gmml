@@ -13,15 +13,19 @@ g++ -std=c++17 -I "${GMML_ROOT_DIR}" -L"${GMML_ROOT_DIR}"/bin/ -Wl,-rpath,"${GMM
 if [ -f gmmo.ttl ]; then
     mv gmmo.ttl gmmoBeforeTests.ttl >/dev/null 2>&1
 fi
-./detect_sugars tests/inputs/4mbz.pdb >/dev/null 2>&1
+./detect_sugars tests/inputs/4mbz.pdb > 007.output.txt
 if [ -f gmmo.ttl ]; then
     if ! cmp gmmo.ttl tests/correct_outputs/gmmo.ttl >/dev/null 2>&1; then
         printf "\nTest FAILED! gmmo.ttl differs from tests/correct_outputs/gmmo.ttl\n"
         echo "Exit Code: 1"
         return 1
+    elif ! cmp 007.output.txt tests/correct_outputs/007.output.txt; then
+        printf "\nTest FAILED! 007.output.txt differs from tests/correct_outputs/007.output.txt\n"
+        echo "Exit Code: 1"
+        return 1
     else
         printf "Test passed.\n"
-        rm gmmo.ttl ring_conformations.txt detect_sugars >/dev/null 2>&1
+        rm gmmo.ttl ring_conformations.txt detect_sugars 007.output.txt >/dev/null 2>&1
         if [ -f gmmoBeforeTests.ttl ]; then
             mv gmmoBeforeTests.ttl gmmo.ttl >/dev/null 2>&1
         fi

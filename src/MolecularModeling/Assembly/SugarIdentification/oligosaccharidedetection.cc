@@ -321,6 +321,13 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractSugars(std::vector<std::s
         Glycan::Monosaccharide* mono = new Glycan::Monosaccharide(&cycle_atoms_str, cycle_atoms, this, CCD_Path);
         mono->assembly_              = this;
         monos.push_back(mono);
+        // OG Feb 2025 // Oliver adding this for Lachele in 2025 so Ab docking can determine cycles.
+        std::cout << "RES " << mono->cycle_atoms_.front()->GetResidue()->GetNumber() << "\n"; // OG Feb 2025
+        for (auto& cycleAtom : cycle_atoms)                                                   // OG Feb 2025
+        {
+            std::cout << cycleAtom->GetName() << "\n"; // OG Feb 2025
+        }
+        std::cout << "END\n"; // OG Feb 2025
         if (local_debug > 0)
         {
             logss << cycle_atoms_str << "\n";
@@ -328,7 +335,6 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractSugars(std::vector<std::s
             /// C5_3814_NAG_A_1521_?_?_1-C4_3813_NAG_A_1521_?_?_1-C3_3812_NAG_A_1521_?_?_1-C2_3811_NAG_A_1521_?_?_1
         }
     }
-
     std::map<unsigned long long, Glycan::Monosaccharide*> ordered_monos_map =
         std::map<unsigned long long, Glycan::Monosaccharide*>();
     for (std::vector<Glycan::Monosaccharide*>::iterator it = monos.begin(); it != monos.end(); it++)
@@ -485,8 +491,8 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractSugars(std::vector<std::s
                              << mono->cycle_atoms_[0]->GetResidue()->GetId() << "), in input PDB file for "
                              << mono->sugar_name_.monosaccharide_short_name_
                              << " does not match GlyFinder residue code: " << mono->sugar_name_.pdb_code_
-                             << ". " /* << mono->sugar_name_.monosaccharide_name_ << " vs. " <<
-                                        mono->author_sugar_name_.monosaccharide_name_*/
+                             << ". " // << mono->sugar_name_.monosaccharide_name_ << " vs. " <<
+                                     // mono->author_sugar_name_.monosaccharide_name_
                             ;
                         mismatch_note->description_ = note.str();
                         // this->AddNote(mismatch_note);
@@ -580,9 +586,6 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractSugars(std::vector<std::s
     // Glycan::Oligosaccharide* testOligo = new Glycan::Oligosaccharide(ordered_monos, dataset_residue_names, this);
     // Glycan::Oligosaccharide* testOligo = new Glycan::Oligosaccharide();
     std::vector<Glycan::Oligosaccharide*> testOligos = createOligosaccharides(ordered_monos);
-    /*for (unsigned int i = 0; i < ordered_monos.size(); i++){
-        std::cout << "This mono cycle str: " << ordered_monos[i]->cycle_atoms_str_ << std::endl;
-    }*/
     if (local_debug > 0)
     {
         std::stringstream ss;
@@ -1204,7 +1207,7 @@ MolecularModeling::AtomVector Assembly::SortCycle(MolecularModeling::AtomVector 
 }
 
 std::string Assembly::CheckxC_N(MolecularModeling::Atom* target,
-                                std::string cycle_atoms_str /*, MolecularModeling::AtomVector& pattern_atoms*/)
+                                std::string cycle_atoms_str) //, MolecularModeling::AtomVector& pattern_atoms)
 {
     int local_debug = -1;
     std::stringstream pattern;
@@ -2052,7 +2055,7 @@ std::string Assembly::CheckxC_NxO_C(MolecularModeling::Atom* target, std::string
 }
 
 std::string Assembly::CheckxCOO(MolecularModeling::Atom* target,
-                                std::string cycle_atoms_str /*, MolecularModeling::AtomVector& pattern_atoms*/)
+                                std::string cycle_atoms_str) //, MolecularModeling::AtomVector& pattern_atoms)
 {
     int local_debug = -1;
     std::stringstream pattern;
@@ -4069,9 +4072,9 @@ std::vector<Glycan::Oligosaccharide*> Assembly::ExtractOligosaccharides(std::vec
 
 void Assembly::UpdateMonosaccharides2Residues(std::vector<Glycan::Monosaccharide*>& monos)
 {
-    /*An old PDB feature puts multiple monosaccharides in a sigle residue.This is incompatible with downstream GMML
-      codes. Solution: Each monosaccharide becomes an residue, replacing the corresponding old residue. Complete side
-      group atoms were determined in function SetCompleteSideGroupAtoms().*/
+    // An old PDB feature puts multiple monosaccharides in a sigle residue.This is incompatible with downstream GMML
+    // codes. Solution: Each monosaccharide becomes an residue, replacing the corresponding old residue. Complete side
+    // group atoms were determined in function SetCompleteSideGroupAtoms().
     std::vector<Residue*> OldResidue2BeErasedFromAssembly = std::vector<Residue*>();
     int mono_index                                        = 0;
     for (std::vector<Glycan::Monosaccharide*>::iterator it = monos.begin(); it != monos.end(); it++)
@@ -4493,12 +4496,12 @@ std::string Assembly::CheckTerminals(MolecularModeling::Atom* target, MolecularM
             }
 
             // My code for assigning target_o_neighbor:
-            /*for (unsigned int i=0; i< o_neighbors.size(); i++){
-                if (o_neighbors[i] -> GetResidue() -> CheckIfProtein()){
-                    //assuming normal structure, all neighbor atoms should belong to the same protein.
-                    target_o_neighbor = o_neighbors[i];
-                }
-            }*/
+            //            for (unsigned int i=0; i< o_neighbors.size(); i++){
+            //                if (o_neighbors[i] -> GetResidue() -> CheckIfProtein()){
+            //                    //assuming normal structure, all neighbor atoms should belong to the same protein.
+            //                    target_o_neighbor = o_neighbors[i];
+            //                }
+            //            }
             // Yao Xiao: my code ends.
             if (target_o_neighbor != NULL)
             {
@@ -4669,9 +4672,9 @@ void Assembly::BuildOligosaccharideTreeStructure(
             {
                 int it_index                               = distance(values.begin(), it);
                 std::vector<std::string> key_mono_linkages = monos_table_linkages[key];
-                /*for(int i = 0; i < key_mono_linkages.size(); i++ )  {
-                    std::cout << "HELP US!" << key_mono_linkages.at( i ) << "\n";
-                }*/
+                // for(int i = 0; i < key_mono_linkages.size(); i++ )  {
+                //     std::cout << "HELP US!" << key_mono_linkages.at( i ) << "\n";
+                // }
                 std::string link                           = key_mono_linkages.at(it_index);
                 std::stringstream reverse_link;
                 reverse_link << gmml::Split(link, "-").at(2) << "-" << gmml::Split(link, "-").at(1) << "-"
@@ -4716,17 +4719,16 @@ void Assembly::CalculateOligosaccharideBFactor(Glycan::Oligosaccharide* oligo,
 // I know there is a better way to do this and assign Phi/Psi/Omega values to the oligosaccharide struct, but for now it
 // just needs to be done quickly See Figure 1 in Vina Carb paper by our group if confused about which atoms are chosen
 // and why Dave 9/27/18
-/*! \todo Fix unused parent_oligo variable
+//! \todo Fix unused parent_oligo variable
 
-Here is the error:
-
-src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc: At global scope:
-src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc:4014:61: warning: unused parameter
-'parent_oligo' [-Wunused-parameter] double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo,
-Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string
-glycosidic_atom_id)
-                                                             ^
-*/
+// Here is the error:
+//
+// src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc: At global scope:
+// src/MolecularModeling/Assembly/SugarIdentification/oligosaccharidedetection.cc:4014:61: warning: unused parameter
+//'parent_oligo' [-Wunused-parameter] double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* parent_oligo,
+// Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id, std::string child_atom_id, std::string
+// glycosidic_atom_id)
+//                                                             ^
 double Assembly::CalculatePhiAngle(Glycan::Oligosaccharide* child_oligo, std::string parent_atom_id,
                                    std::string child_atom_id, std::string glycosidic_atom_id)
 {
