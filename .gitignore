@@ -2,7 +2,6 @@
 Makefile
 DOXY_DOCUMENTS
 log.log
-*VERSIONS.sh
 *.swp
 *.dum
 internalPrograms/*/bin/*
